@@ -1,37 +1,53 @@
 import React from 'react';
 
-import { makeStyles } from '@material-ui/core/styles';
+import {makeStyles} from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
-import Typography from '@material-ui/core/Typography';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
+import SpreadsheetTextField from '../SpreadsheetTextField/SpreadsheetTextField.js';
+import SpreadsheetName from '../SpreadsheetName/SpreadsheetName.js';
 
-const useStyles = makeStyles((theme) => ({
-    root: {
-        flexGrow: 1,
-    },
-    menuButton: {
-        marginRight: theme.spacing(2),
-    },
-    title: {
-        flexGrow: 1,
-    },
-}));
+/**
+ * An header that displays a menu, followed by an editable spreadsheet name
+ */
+export default class SpreadsheetAppBarTop extends React.Component {
 
-export default function SpreadsheetAppBarTop() {
-    const classes = useStyles();
+    static classes = makeStyles((theme) => ({
+        root: {
+            flexGrow: 1,
+        },
+        menuButton: {
+            marginRight: theme.spacing(2),
+        },
+        title: {
+            flexGrow: 1,
+        },
+    }));
 
-    return (
-        <AppBar position="static">
+    constructor(props) {
+        super(props);
+        this.state = {spreadsheetName: props.spreadsheetName};
+    }
+
+    updateSpreadsheetName(v) {
+        this.setState({spreadsheetName: v});
+    }
+
+    render() {
+        return (<AppBar position="static">
             <Toolbar>
-                <IconButton edge="start" className={classes.menuButton} color="inherit" aria-label="menu">
-                    <MenuIcon />
+                <IconButton edge="start"
+                            className={SpreadsheetAppBarTop.classes.menuButton}
+                            color="inherit"
+                            aria-label="menu">
+                    <MenuIcon/>
                 </IconButton>
-                <Typography variant="h6" className={classes.title}>
-                    Spreadsheet name
-                </Typography>
+                <SpreadsheetName
+                    value={this.state.spreadsheetName}
+                    onValueChange={(v) => this.updateSpreadsheetName(v)}/>
             </Toolbar>
-        </AppBar>
-    );
+        </AppBar>);
+    }
 }
+

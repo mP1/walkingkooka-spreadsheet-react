@@ -10,7 +10,7 @@ import Divider from '@material-ui/core/Divider';
 function App() {
     return (
         <div>
-            <SpreadsheetAppBarTop/>
+            <SpreadsheetAppBarTop spreadsheetName={"Spreadsheet1"}/>
             <Divider/>
             <SpreadsheetFormula/>
             <Divider/>
