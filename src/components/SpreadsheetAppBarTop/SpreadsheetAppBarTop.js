@@ -6,6 +6,7 @@ import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
 import SpreadsheetName from '../SpreadsheetName/SpreadsheetName.js';
+import PropTypes from "prop-types";
 
 /**
  * An header that displays a menu, followed by an editable spreadsheet name
@@ -26,11 +27,7 @@ export default class SpreadsheetAppBarTop extends React.Component {
 
     constructor(props) {
         super(props);
-        this.state = {spreadsheetName: props.spreadsheetName};
-    }
-
-    updateSpreadsheetName(v) {
-        this.setState({spreadsheetName: v});
+        this.app = props.app;
     }
 
     render() {
@@ -42,11 +39,12 @@ export default class SpreadsheetAppBarTop extends React.Component {
                             aria-label="menu">
                     <MenuIcon/>
                 </IconButton>
-                <SpreadsheetName
-                    value={this.state.spreadsheetName}
-                    onValueChange={(v) => this.updateSpreadsheetName(v)}/>
+                <SpreadsheetName app={this.app}/>
             </Toolbar>
         </AppBar>);
     }
 }
 
+SpreadsheetAppBarTop.propTypes = {
+    app: PropTypes.object.isRequired,
+}

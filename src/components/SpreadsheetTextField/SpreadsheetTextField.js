@@ -1,6 +1,7 @@
 import React from 'react';
 import Button from '@material-ui/core/Button';
 import TextField from '@material-ui/core/TextField';
+import PropTypes from "prop-types";
 
 /**
  * A component that is initially a button and when clicked turns into a TextField with the value ready to edit.
@@ -10,10 +11,18 @@ import TextField from '@material-ui/core/TextField';
 // TODO stop Button capitalizing spreadsheet name
 // TODO make button & textfields have the same padding/margin etc
 export default class SpreadsheetTextField extends React.Component {
+
     constructor(props) {
         super(props);
-        this.state = {edit: false};
+        this.state = {
+            edit: false,
+            value: props.value
+        };
+        this.setValue = props.setValue;
+
         this.ref = React.createRef();
+
+        console.log("SpreadsheetTextField ctor: " + this.props.value);
     }
 
     componentDidMount() {
@@ -34,9 +43,9 @@ export default class SpreadsheetTextField extends React.Component {
     }
 
     render() {
-        return !this.state.edit ?
-            this.renderButtonClickToEdit() : // click to edit
-            this.renderEditTextField();
+        return this.state.edit ?
+            this.renderEditTextField() :
+            this.renderButtonClickToEdit();
     }
 
     // VIEW ............................................................................................................
@@ -46,7 +55,7 @@ export default class SpreadsheetTextField extends React.Component {
     }
 
     renderButtonClickToEdit() {
-        return (<Button onClick={() => this.handleButtonClick()}>{this.props.value}</Button>);
+        return (<Button onClick={() => this.handleButtonClick()}>{this.state.value}</Button>);
     }
 
     // EDIT ............................................................................................................
@@ -72,7 +81,7 @@ export default class SpreadsheetTextField extends React.Component {
     // update the value and fire an event with the updated value
     handleEnterKey(event) {
         this.stopEditing(event);
-        this.props.onValueChange(event.target.value);
+        this.setValue(event.target.value);
     }
 
     stopEditing(event) {
@@ -85,7 +94,12 @@ export default class SpreadsheetTextField extends React.Component {
             ref={this.ref}
             fullWidth={true}
             onKeyDown={(event) => this.handleKeyDown(event)}
-            defaultValue={this.props.value}
+            defaultValue={this.state.value}
             autoFocus/>);
     }
+}
+
+SpreadsheetTextField.propTypes = {
+    value: PropTypes.string.isRequired,
+    setValue: PropTypes.func.isRequired,
 }
