@@ -1,3 +1,8 @@
+import timeoutPromise from "./FetchTimeoutPromise";
+
+// default timeout if timeout property in parameters is missing
+const DEFAULT_TIMEOUT = 30 * 1000;
+
 /**
  * The preferred way to make requests to a server. This class supports talking to a real server using fetch(HTTP) or a webworker using messages.
  */
@@ -57,35 +62,36 @@ export default class SpreadsheetMessenger {
 
         let responseBuilder = {};
 
-        fetch(url, parameters)
-            .then(response => {
-                const statusCode = response.status;
-                const statusText = response.statusText;
-                switch(statusCode/100) {
-                    case 1:
-                        throw new Error("1xx " + statusCode + "=" + statusText);
-                    case 2:
-                        responseBuilder.statusCode = statusCode;
-                        responseBuilder.statusText = statusText;
-                        responseBuilder.headers = response.headers;
+        timeoutPromise(parameters.timeout || DEFAULT_TIMEOUT,
+            fetch(url, parameters)
+                .then(response => {
+                    const statusCode = response.status;
+                    const statusText = response.statusText;
+                    switch (statusCode / 100) {
+                        case 1:
+                            throw new Error("1xx " + statusCode + "=" + statusText);
+                        case 2:
+                            responseBuilder.statusCode = statusCode;
+                            responseBuilder.statusText = statusText;
+                            responseBuilder.headers = response.headers;
 
-                        return response.json()
-                    case 3:
-                        throw new Error("Redirect " + statusCode + "=" + statusText);
-                    case 4:
-                        throw new Error("Bad request " + statusCode + "=" + statusText);
-                    case 5:
-                        throw new Error("Server error " + statusCode + "=" + statusText);
+                            return response.json()
+                        case 3:
+                            throw new Error("Redirect " + statusCode + "=" + statusText);
+                        case 4:
+                            throw new Error("Bad request " + statusCode + "=" + statusText);
+                        case 5:
+                            throw new Error("Server error " + statusCode + "=" + statusText);
 
-                }
-            })
-            .then(json => {
-                responseBuilder.json = json;
-                this.dispatch(responseBuilder);
-            })
-            .catch((e) => {
-                error("fetch failed, using " + url + " with " + JSON.stringify(parameters) + "\n" + e);
-            })
+                    }
+                })
+                .then(json => {
+                    responseBuilder.json = json;
+                    this.dispatch(responseBuilder);
+                })
+                .catch((e) => {
+                    error("fetch failed, using " + url + " with " + JSON.stringify(parameters) + "\n" + e);
+                }));
     }
 
     /**
