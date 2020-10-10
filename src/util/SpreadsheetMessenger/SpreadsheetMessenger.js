@@ -37,10 +37,21 @@ export default class SpreadsheetMessenger {
     }
 
     send(url, parameters) {
+        const headers = Object.assign({
+            "Accept-Charset": "UTF-8",
+            "Content-Type": "application/json"
+        }, parameters && parameters.headers);
+
+        const parametersWithDefaults = Object.assign({},
+            parameters,
+            {
+                headers: headers
+            });
+
         if (this.offline) {
-            this.postMessage(url, parameters);
+            this.postMessage(url, parametersWithDefaults);
         } else {
-            this.doFetch(url, parameters);
+            this.doFetch(url, parametersWithDefaults);
         }
     }
 

@@ -46,11 +46,7 @@ export default class App extends React.Component {
     createEmptySpreadsheet() {
         this.messenger.send("/api/spreadsheet",
             {
-                method: "POST",
-                headers: {
-                    "Accept-Charset": "UTF-8",
-                    "Content-Type": "application/json"
-                },
+                method: "POST"
             });
     }
 
