@@ -4,7 +4,7 @@ import './App.css';
 import SpreadsheetAppBarTop from "./components/SpreadsheetAppBarTop/SpreadsheetAppBarTop.js";
 import SpreadsheetContent from "./components/SpreadsheetContent/SpreadsheetContent.js";
 import SpreadsheetFormula from "./components/SpreadsheetFormula/SpreadsheetFormula.js";
-import SpreadsheetMessenger from "./util/SpreadsheetMessenger/SpreadsheetMessenger.js";
+import SpreadsheetMessenger from "./util/SpreadsheetMessenger.js";
 
 import Divider from '@material-ui/core/Divider';
 
