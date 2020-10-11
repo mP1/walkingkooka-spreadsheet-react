@@ -27,8 +27,7 @@ export default class App extends React.Component {
         }
 
         // the names must match the name of the classes in walkingkooka-spreadsheet
-        this.messenger = new SpreadsheetMessenger(new Worker("http://localhost:3000/"),
-            {
+        this.messenger = new SpreadsheetMessenger({
                 "SpreadsheetMetadataNonEmpty": handleSpreadsheetMetadata,
                 "SpreadsheetDeltaNonWindowed": handleSpreadsheetDelta,
                 "SpreadsheetDeltaWindowed": handleSpreadsheetDelta,

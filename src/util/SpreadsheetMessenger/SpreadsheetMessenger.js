@@ -8,8 +8,7 @@ const DEFAULT_TIMEOUT = 30 * 1000;
  */
 export default class SpreadsheetMessenger {
 
-    constructor(webworker, handlers) {
-        this.webworker = webworker;
+    constructor(handlers) {
         this.handlers = handlers;
 
         this.onMessage.bind();
@@ -18,13 +17,13 @@ export default class SpreadsheetMessenger {
     /**
      * To enable offline mode pass the webworker, to make calls to a real server using fetch pass null.
      */
-    setWebWorker(webWorkerMode) {
-        this.webWorkerMode = webWorkerMode;
-
-        if(webWorkerMode) {
+    setWebWorker(webworker) {
+        if(webworker) {
+            this.webworker = webworker;
             this.addMessagingSupport();
         } else {
             this.removeMessagingSupport();
+            this.webworker = webworker;
         }
     }
 
@@ -33,7 +32,7 @@ export default class SpreadsheetMessenger {
     }
 
     removeMessagingSupport() {
-        this.webworker.removeEventListener('message', this.onMessage);
+        this.webworker && this.webworker.removeEventListener('message', this.onMessage);
     }
 
     send(url, parameters) {
@@ -48,7 +47,7 @@ export default class SpreadsheetMessenger {
                 headers: headers
             });
 
-        if (this.offline) {
+        if (this.webworker) {
             this.postMessage(url, parametersWithDefaults);
         } else {
             this.doFetch(url, parametersWithDefaults);
