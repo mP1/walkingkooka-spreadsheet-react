@@ -4,6 +4,7 @@ import './App.css';
 import SpreadsheetAppBarTop from "./components/SpreadsheetAppBarTop/SpreadsheetAppBarTop.js";
 import SpreadsheetContent from "./components/SpreadsheetContent/SpreadsheetContent.js";
 import SpreadsheetFormula from "./components/SpreadsheetFormula/SpreadsheetFormula.js";
+import SpreadsheetMetadata from "./spreadsheet/SpreadsheetMetadata.js";
 import SpreadsheetMessenger from "./util/SpreadsheetMessenger.js";
 
 import Divider from '@material-ui/core/Divider';
@@ -13,17 +14,18 @@ export default class App extends React.Component {
         super(props);
 
         this.state = {
-            spreadsheetMetadata: {
-                name: "Untitled 1"
-            },
-            cells: {}
+            spreadsheetMetadata: SpreadsheetMetadata.EMPTY
         }
 
         const handleSpreadsheetMetadata = (metadata) => {
-            this.setState({spreadsheetMetadata: metadata});
+            console.log("handleSpreadsheetMetadata " + new SpreadsheetMetadata(metadata));
+
+            //this.setState({spreadsheetMetadata: new SpreadsheetMetadata(metadata)});
+            this.dispatchSpreadsheetMetadataListeners(new SpreadsheetMetadata(metadata));
         }
+
         const handleSpreadsheetDelta = (delta) => {
-            this.setState({cells: delta.cells});
+            this.setState({cells: delta.cells}); // TODO dispatch listeners
         }
 
         // the names must match the name of the classes in walkingkooka-spreadsheet
@@ -53,15 +55,54 @@ export default class App extends React.Component {
      * Renders the basic spreadsheet layout.
      */
     render() {
-        const {spreadsheetMetadata, cells} = this.state;
+        console.log("App.render " + JSON.stringify(this.state));
+
         return (
             <div>
-                <SpreadsheetAppBarTop spreadsheetName={spreadsheetMetadata.name}/>
+                <SpreadsheetAppBarTop app={this}/>
                 <Divider/>
                 <SpreadsheetFormula/>
                 <Divider/>
-                <SpreadsheetContent cells={cells}/>
+                <SpreadsheetContent/>
             </div>
         );
+    }
+
+    spreadsheetMetadata() {
+        return this.state.spreadsheetMetadata;
+    }
+
+    /**
+     * Updates the state and saves the metadata.
+     */
+    saveSpreadsheetMetadata(metadata) {
+        console.log("saveSpreadsheetMetadata: " + metadata);
+
+        //this.setState({spreadsheetMetadata: metadata});
+        this.messenger.send("/api/spreadsheet/" + metadata.spreadsheetId(), {
+            "method": "POST",
+            "body": metadata.toJson()
+        });
+    }
+
+    addSpreadsheetMetadataListener(listener) {
+        this.spreadsheetMetadataListeners.push(listener);
+    }
+
+    removeSpreadsheetMetadataListener(listener) {
+        const index = this.spreadsheetMetadataListeners.indexOf(listener);
+        if(-1 != index) {
+            this.spreadsheetMetadataListeners.slice(index, 1);
+        }
+    }
+
+    dispatchSpreadsheetMetadataListeners(metadata) {
+        this.spreadsheetMetadataListeners.forEach(l => l.setState({spreadsheetMetadata: metadata}))
+    }
+
+    spreadsheetMetadataListeners = [];
+
+    toString() {
+        return this.spreadsheetMetadata().toString();
     }
 }
