@@ -1,8 +1,4 @@
-language: java
-jdk:
-- oraclejdk9
+language: node_js
+node_js:
+  - 14.13.0
 
-after_success:
-- mvn jacoco:report coveralls:report
-
-dist: trusty
