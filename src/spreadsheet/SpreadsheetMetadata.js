@@ -36,10 +36,10 @@ export default class SpreadsheetMetadata {
     }
 
     /**
-     * Returns this metadata as a JSON STRING. Perfect to perform REST api calls.
+     * Returns this metadata as a JSON object. This must be JSON.stringify for use in JSON calls
      */
     toJson() {
-        return this.toString();
+        return Object.assign({}, this.json);
     }
 
     toString() {
