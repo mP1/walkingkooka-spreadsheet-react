@@ -77,6 +77,6 @@ function checkSpreadsheetName(spreadsheet, name) {
 // checks toJson and toString
 function checkJson(spreadsheet, json) {
     expect(spreadsheet.toObject()).toEqual(json);
-    expect(spreadsheet.toJson()).toBe(JSON.stringify(json));
+    expect(spreadsheet.toJson()).toStrictEqual(json);
     expect(spreadsheet.toString()).toBe(JSON.stringify(json));
 }
