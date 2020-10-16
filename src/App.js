@@ -20,7 +20,6 @@ export default class App extends React.Component {
         const handleSpreadsheetMetadata = (metadata) => {
             console.log("handleSpreadsheetMetadata " + new SpreadsheetMetadata(metadata));
 
-            //this.setState({spreadsheetMetadata: new SpreadsheetMetadata(metadata)});
             this.dispatchSpreadsheetMetadataListeners(new SpreadsheetMetadata(metadata));
         }
 
