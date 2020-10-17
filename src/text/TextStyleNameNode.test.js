@@ -3,6 +3,7 @@ import TextStyleNameNode from "./TextStyleNameNode";
 import TextPlaceholderNode from "./TextPlaceholderNode";
 import fromJson from "./TextNodeJsonSupport";
 import TextNodeJsonSupport from "./TextNodeJsonSupport";
+import {TextStyle} from "./TextStyle";
 
 const styleName = "style-name-123-abc";
 
@@ -49,8 +50,8 @@ test("json with children", () => {
 
 // helpers..............................................................................................................
 
-// checks toJson and toString
 function checkJson(styleNameNode, json) {
+    expect(styleNameNode.styles()).toStrictEqual(TextStyle.EMPTY);
     expect(styleNameNode.toJson()).toStrictEqual(json);
     expect(styleNameNode.toString()).toBe(JSON.stringify(json));
     expect(fromJson(styleNameNode.toJson())).toStrictEqual(styleNameNode);

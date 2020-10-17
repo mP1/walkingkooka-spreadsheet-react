@@ -1,5 +1,6 @@
 import Text from "./Text";
 import fromJson from "./TextNodeJsonSupport";
+import {TextStyle} from "./TextStyle";
 
 const textValue = "text-123-abc";
 
@@ -11,13 +12,13 @@ test("create", () => {
 test("json", () => {
     const text = new Text(textValue);
 
-    checkJson(text, {typeName: "text", value: textValue});
+    check(text, {typeName: "text", value: textValue});
 });
 
 // helpers..............................................................................................................
 
-// checks toJson and toString
-function checkJson(text, json) {
+function check(text, json) {
+    expect(text.styles()).toStrictEqual(TextStyle.EMPTY);
     expect(text.toJson()).toStrictEqual(json);
     expect(text.toString()).toBe(JSON.stringify(json));
     expect(fromJson(text.toJson())).toStrictEqual(text);

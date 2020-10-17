@@ -1,4 +1,5 @@
 import {TextNode, STYLE_NAME} from "./TextNode";
+import {TextStyle} from "./TextStyle";
 
 export default class TextStyleNameNode extends TextNode {
 
@@ -10,6 +11,10 @@ export default class TextStyleNameNode extends TextNode {
 
     styleName() {
         return this.styleNameValue;
+    }
+
+    styles() {
+        return TextStyle.EMPTY;
     }
 
     children() {

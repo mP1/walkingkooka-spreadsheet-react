@@ -1,6 +1,7 @@
-import {TextNode, PLACEHOLDER} from "./TextNode";
+import {PLACEHOLDER} from "./TextNode";
+import TextLeafNode from "./TextLeafNode";
 
-export default class TextPlaceholderNode extends TextNode {
+export default class TextPlaceholderNode extends TextLeafNode {
 
     constructor(placeholder) {
         super();

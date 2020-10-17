@@ -2,6 +2,7 @@ import Text from "./Text";
 import TextStyleNode from "./TextStyleNode";
 import TextPlaceholderNode from "./TextPlaceholderNode";
 import fromJson from "./TextNodeJsonSupport";
+import {TextStyle} from "./TextStyle";
 
 const styles = {"background-color": "#123"};
 
@@ -11,7 +12,7 @@ test("create style only", () => {
 });
 
 test("create style with children", () => {
-    const style = {
+    const styles = {
         "background-color": "#123"
     }
     const text = new Text("text-xyz");
@@ -22,31 +23,46 @@ test("create style with children", () => {
 });
 
 test("json", () => {
-    const styles = {
+    const styles = new TextStyle({
         "background-color": "#123",
         "color": "#456"
-    }
+    });
     const style = new TextStyleNode(styles);
 
-    checkJson(style, {typeName: "text-style", value: {styles: styles}});
+    check(style,
+        styles,
+        {
+            typeName: "text-style", value: {
+                styles: {
+                    "background-color": "#123",
+                    "color": "#456"
+                }
+            }
+        });
 });
 
 test("json with children", () => {
     const text = new Text("text-xyz");
     const placeholder = new TextPlaceholderNode("placeholder-tuv");
 
+    const styles = new TextStyle({
+        "background-color": "#123",
+        "color": "#456"
+    });
     const style = new TextStyleNode(styles, [text, placeholder]);
 
-    checkJson(style, {
-        typeName: "text-style",
-        value: {styles: styles, children: [text.toJson(), placeholder.toJson()]}
-    });
+    check(style,
+        styles,
+        {
+            typeName: "text-style",
+            value: {styles: styles.toJson(), children: [text.toJson(), placeholder.toJson()]}
+        });
 });
 
 // helpers..............................................................................................................
 
-// checks toJson and toString
-function checkJson(style, json) {
+function check(style, styles, json) {
+    expect(style.styles()).toStrictEqual(styles);
     expect(style.toJson()).toStrictEqual(json);
     expect(style.toString()).toBe(JSON.stringify(json));
     expect(fromJson(style.toJson())).toStrictEqual(style);
