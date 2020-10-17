@@ -1,4 +1,4 @@
-import {TextStyle, fromJson} from "./TextStyle";
+import {fromJson, TextStyle} from "./TextStyle";
 
 const BACKGROUND_COLOR = "background-color";
 const BACKGROUND_COLOR_VALUE = "#123";
@@ -6,6 +6,14 @@ const BACKGROUND_COLOR_VALUE2 = "#456";
 
 const COLOR = "color";
 const COLOR_VALUE = "#789";
+
+test("create without text fails", () => {
+    expect(() => new TextStyle(null)).toThrow("Styles missing");
+});
+
+test("create with non string fails", () => {
+    expect(() => new TextStyle(1.5)).toThrow("Styles expected object got 1.5");
+});
 
 test("EMPTY", () => {
     const textStyle = TextStyle.EMPTY;

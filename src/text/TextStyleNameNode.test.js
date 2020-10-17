@@ -2,7 +2,6 @@ import Text from "./Text";
 import TextStyleNameNode from "./TextStyleNameNode";
 import TextPlaceholderNode from "./TextPlaceholderNode";
 import fromJson from "./TextNodeJsonSupport";
-import TextNodeJsonSupport from "./TextNodeJsonSupport";
 import {TextStyle} from "./TextStyle";
 
 const styleName = "style-name-123-abc";

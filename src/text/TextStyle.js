@@ -29,6 +29,12 @@ export class TextStyle {
     static EMPTY = new TextStyle({});
 
     constructor(styles) {
+        if (!styles) {
+            throw new Error("Styles missing");
+        }
+        if (typeof styles != "object") {
+            throw new Error("Styles expected object got " + styles);
+        }
         this.styles = Object.assign({}, styles);
     }
 
