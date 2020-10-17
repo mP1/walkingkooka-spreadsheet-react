@@ -4,17 +4,18 @@ import TextPlaceholderNode from "./TextPlaceholderNode";
 import fromJson from "./TextNodeJsonSupport";
 import {TextStyle} from "./TextStyle";
 
-const styles = {"background-color": "#123"};
-
 test("create style only", () => {
+    const styles = new TextStyle({
+        "background-color": "#123"
+    });
     const style = new TextStyleNode(styles);
     expect(style.styles()).toStrictEqual(styles);
 });
 
 test("create style with children", () => {
-    const styles = {
+    const styles = new TextStyle({
         "background-color": "#123"
-    }
+    });
     const text = new Text("text-xyz");
     const textStyleNode = new TextStyleNode(styles, [text]);
 
