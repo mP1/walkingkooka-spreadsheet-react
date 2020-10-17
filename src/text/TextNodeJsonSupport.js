@@ -3,6 +3,7 @@ import TextStyleNode from "./TextStyleNode";
 import TextStyleNameNode from "./TextStyleNameNode";
 import Text from "./Text";
 import {PLACEHOLDER, STYLE, STYLE_NAME, TEXT} from "./TextNode";
+import {TextStyle} from "./TextStyle";
 
 /**
  * Parses the provided marshalled JSON form of Text and its sub classes back into instances.
@@ -16,7 +17,7 @@ export default function fromJson(json) {
         case PLACEHOLDER:
             return new TextPlaceholderNode(value);
         case STYLE:
-            return new TextStyleNode(value.styles, array(value.children).map(c => fromJson(c)));
+            return new TextStyleNode(new TextStyle(value.styles), array(value.children).map(c => fromJson(c)));
         case STYLE_NAME:
             return new TextStyleNameNode(value.styleName, array(value.children).map(c => fromJson(c)));
         case TEXT:

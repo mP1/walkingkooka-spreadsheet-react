@@ -1,9 +1,7 @@
-import {TextNode, TEXT} from "./TextNode";
+import {TEXT} from "./TextNode";
+import TextLeafNode from "./TextLeafNode";
 
-/**
- * Base class for several text sub classes that live in walkingkooka.text.*
- */
-export default class Text extends TextNode {
+export default class Text extends TextLeafNode {
 
     constructor(text) {
         super();
