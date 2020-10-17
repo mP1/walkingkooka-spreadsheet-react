@@ -1,9 +1,16 @@
-import Text from "./Text";
 import TextPlaceholderNode from "./TextPlaceholderNode";
 import fromJson from "./TextNodeJsonSupport";
 import {TextStyle} from "./TextStyle";
 
 const value = "text-placeholder-123-abc";
+
+test("create without text fails", () => {
+    expect(() => new TextPlaceholderNode(null)).toThrow("text missing");
+});
+
+test("create with non string fails", () => {
+    expect(() => new TextPlaceholderNode(1.5)).toThrow("Expected string got 1.5");
+});
 
 test("create", () => {
     const placeholder = new TextPlaceholderNode(value);

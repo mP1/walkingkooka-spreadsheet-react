@@ -1,4 +1,4 @@
-import {TextNode, STYLE} from "./TextNode";
+import {STYLE, TextNode} from "./TextNode";
 import {TextStyle} from "./TextStyle";
 
 /**
@@ -7,7 +7,7 @@ import {TextStyle} from "./TextStyle";
 export default class TextStyleNode extends TextNode {
     constructor(styles, children) {
         super();
-        if(!styles instanceof TextStyle) {
+        if (!styles instanceof TextStyle) {
             throw new Error("styles is not a TextStyle");
         }
 
