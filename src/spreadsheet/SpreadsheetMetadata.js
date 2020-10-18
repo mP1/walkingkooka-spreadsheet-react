@@ -1,5 +1,11 @@
 const SPREADSHEET_NAME = "spreadsheet-name";
 
+function createWithName(metadata, name) {
+    let copy = new SpreadsheetMetadata(metadata.json);
+    copy.json[SPREADSHEET_NAME] = name;
+    return copy;
+}
+
 /**
  * Immutable SpreadsheetMetadata, with getters and would be setters.
  */
@@ -20,11 +26,13 @@ export default class SpreadsheetMetadata {
     }
 
     spreadsheetName() {
-        return this.json["spreadsheet-name"];
+        return this.json[SPREADSHEET_NAME];
     }
 
     setSpreadsheetName(name) {
-        return new SpreadsheetMetadata(Object.assign({}, this.json, {"spreadsheet-name": name}));
+        return name == this.spreadsheetName() ?
+            this :
+            createWithName(this, name);
     }
 
     /**

@@ -39,7 +39,19 @@ test("from json with spreadsheet-name", () => {
     checkSpreadsheetName(spreadsheet, name);
 })
 
-test("setSpreadsheetName", () => {
+test("setSpreadsheetName same", () => {
+    const name = "old-spreadsheet-name-111";
+    const json = {"spreadsheet-name": name};
+
+    const spreadsheet = new SpreadsheetMetadata(json);
+    const same = spreadsheet.setSpreadsheetName(name);
+    expect(spreadsheet).toEqual(same);
+
+    checkJson(spreadsheet, json);
+    checkSpreadsheetName(spreadsheet, name);
+})
+
+test("setSpreadsheetName different name", () => {
     const id = "123f";
     const name = "old-spreadsheet-name-111";
     const json = {"spreadsheet-name": name, "spreadsheet-id": id};
