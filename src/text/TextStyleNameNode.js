@@ -1,4 +1,4 @@
-import {STYLE_NAME, TextNode} from "./TextNode";
+import TextNode, {STYLE_NAME} from "./TextNode";
 import TextStyle from "./TextStyle";
 
 export default class TextStyleNameNode extends TextNode {

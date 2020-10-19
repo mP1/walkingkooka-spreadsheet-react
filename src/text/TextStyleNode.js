@@ -1,4 +1,4 @@
-import {STYLE, TextNode} from "./TextNode";
+import TextNode, {STYLE} from "./TextNode";
 import TextStyle from "./TextStyle";
 
 /**
