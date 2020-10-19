@@ -1,6 +1,6 @@
 import Text from "./Text";
 import fromJson from "./TextNodeJsonSupport";
-import {TextStyle} from "./TextStyle";
+import TextStyle from "./TextStyle";
 
 const textValue = "text-123-abc";
 

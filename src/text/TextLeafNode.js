@@ -1,5 +1,5 @@
 import {TextNode} from "./TextNode";
-import {TextStyle} from "./TextStyle";
+import TextStyle from "./TextStyle";
 
 export default class TextLeafNode extends TextNode {
 

@@ -3,7 +3,7 @@ import TextStyleNode from "./TextStyleNode";
 import TextStyleNameNode from "./TextStyleNameNode";
 import Text from "./Text";
 import {PLACEHOLDER, STYLE, STYLE_NAME, TEXT} from "./TextNode";
-import {TextStyle} from "./TextStyle";
+import TextStyle from "./TextStyle";
 
 /**
  * Parses the provided marshalled JSON form of Text and its sub classes back into instances.

@@ -1,8 +1,8 @@
+import TextStyle from "./TextStyle";
 import Text from "./Text";
 import TextStyleNode from "./TextStyleNode";
 import TextPlaceholderNode from "./TextPlaceholderNode";
 import fromJson from "./TextNodeJsonSupport";
-import {TextStyle} from "./TextStyle";
 
 test("create style only", () => {
     const styles = new TextStyle({
