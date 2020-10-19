@@ -2,6 +2,7 @@ import SpreadsheetMetadata from "./SpreadsheetMetadata";
 
 test("Empty", () => {
     const spreadsheet = SpreadsheetMetadata.EMPTY;
+    expect(spreadsheet).toBeDefined();
 
     checkJson(spreadsheet, {});
     checkSpreadsheetId(spreadsheet);
@@ -70,6 +71,74 @@ test("setSpreadsheetName different name", () => {
     checkJson(spreadsheet, json);
     checkSpreadsheetId(spreadsheet, id);
     checkSpreadsheetName(spreadsheet, name);
+})
+
+// get..................................................................................................................
+
+test("property present without defaults", () => {
+    const propertyName = "creator";
+    const propertyValue = "user1@example.com";
+
+    const spreadsheet = new SpreadsheetMetadata({"creator": propertyValue});
+    expect(spreadsheet.get(propertyName)).toEqual(propertyValue);
+})
+
+test("property missing without defaults", () => {
+    const spreadsheet = new SpreadsheetMetadata({});
+    expect(spreadsheet.get("creator")).toBeUndefined();
+})
+
+test("property missing but defaulted", () => {
+    const propertyName = "creator";
+    const propertyValue = "user1@example.com";
+
+    const spreadsheet = new SpreadsheetMetadata({_defaults: {"creator": propertyValue}});
+    expect(spreadsheet.get(propertyName)).toEqual(propertyValue);
+})
+
+// defaults..............................................................................................................
+
+test("defaults", () => {
+    const propertyValue = "user1@example.com";
+    const defaultJson = {"creator": propertyValue};
+
+    const spreadsheet = new SpreadsheetMetadata({_defaults: defaultJson});
+    const defaultSpreadsheetMetadata = spreadsheet.defaults();
+    expect(defaultSpreadsheetMetadata).toEqual(new SpreadsheetMetadata(defaultJson));
+})
+
+test("set defaults EMPTY", () => {
+    const spreadsheet = SpreadsheetMetadata.EMPTY;
+    const same = spreadsheet.setDefaults(SpreadsheetMetadata.EMPTY);
+    expect(same).toEqual(spreadsheet);
+})
+
+test("set defaults same", () => {
+    const spreadsheet = new SpreadsheetMetadata({});
+    const same = spreadsheet.setDefaults(SpreadsheetMetadata.EMPTY);
+    expect(same).toEqual(spreadsheet);
+})
+
+test("set defaults same 2", () => {
+    const defaultSpreadsheetMetadata = new SpreadsheetMetadata({"creator": "user1@example.com"});
+    const withDefaults = new SpreadsheetMetadata({_defaults: defaultSpreadsheetMetadata.toJson()})
+    const same = withDefaults.setDefaults(defaultSpreadsheetMetadata);
+    expect(same).toEqual(withDefaults);
+})
+
+test("set defaults different", () => {
+    const firstValue = "user1@example.com";
+    const withDefaults = new SpreadsheetMetadata({_defaults: {"creator": firstValue}});
+
+    const differentValue = "different@example.com";
+    const different = new SpreadsheetMetadata({_defaults: {"creator": differentValue}});
+
+    const withDifferent = withDefaults.setDefaults(different);
+    expect(different).not.toEqual(withDefaults);
+
+    const propertyName = "creator";
+    expect(withDefaults.get(propertyName)).toEqual(firstValue);
+    expect(withDifferent.get(propertyName)).toEqual(differentValue);
 })
 
 // helpers..............................................................................................................
