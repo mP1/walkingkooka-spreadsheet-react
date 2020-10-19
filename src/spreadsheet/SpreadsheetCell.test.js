@@ -1,5 +1,5 @@
 import SpreadsheetCell from "./SpreadsheetCell";
-import SpreadsheetCellReference from "./SpreadsheetCellReference";
+import SpreadsheetCellReference from "./reference/SpreadsheetCellReference";
 import SpreadsheetFormula from "./SpreadsheetFormula";
 import SpreadsheetCellFormat from "./SpreadsheetCellFormat";
 import TextStyle from "../text/TextStyle";
