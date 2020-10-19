@@ -24,7 +24,7 @@ function copyAndRemove(styles, style) {
  * Holds many style properties and values.
  */
 // TODO validate style and value.
-export class TextStyle {
+export default class TextStyle {
 
     static EMPTY = new TextStyle({});
 

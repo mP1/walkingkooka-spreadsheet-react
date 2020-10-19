@@ -1,5 +1,5 @@
 import {STYLE, TextNode} from "./TextNode";
-import {TextStyle} from "./TextStyle";
+import TextStyle from "./TextStyle";
 
 /**
  * Holds some styles that are applied to many child text nodes.

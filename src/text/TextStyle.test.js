@@ -1,4 +1,4 @@
-import {fromJson, TextStyle} from "./TextStyle";
+import TextStyle, {fromJson} from "./TextStyle";
 
 const BACKGROUND_COLOR = "background-color";
 const BACKGROUND_COLOR_VALUE = "#123";

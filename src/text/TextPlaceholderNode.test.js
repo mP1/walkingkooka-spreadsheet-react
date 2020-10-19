@@ -1,6 +1,6 @@
 import TextPlaceholderNode from "./TextPlaceholderNode";
 import fromJson from "./TextNodeJsonSupport";
-import {TextStyle} from "./TextStyle";
+import TextStyle from "./TextStyle";
 
 const value = "text-placeholder-123-abc";
 
