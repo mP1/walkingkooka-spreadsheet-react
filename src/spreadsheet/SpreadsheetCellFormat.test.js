@@ -1,4 +1,4 @@
-import SpreadsheetCellFormat, {fromJson} from "./SpreadsheetCellFormat";
+import SpreadsheetCellFormat from "./SpreadsheetCellFormat";
 
 const pattern = "###-123-abc";
 
@@ -16,7 +16,7 @@ test("create", () => {
 });
 
 test("fromJson null", () => {
-    expect(fromJson(null)).toBeNull();
+    expect(SpreadsheetCellFormat.fromJson(null)).toBeNull();
 });
 
 test("json", () => {
@@ -31,5 +31,5 @@ function check(spreadsheetCellFormat, pattern) {
     expect(spreadsheetCellFormat.pattern()).toStrictEqual(pattern);
     expect(spreadsheetCellFormat.toJson()).toStrictEqual(pattern);
     expect(spreadsheetCellFormat.toString()).toBe(pattern);
-    expect(fromJson(spreadsheetCellFormat.toJson())).toStrictEqual(spreadsheetCellFormat);
+    expect(SpreadsheetCellFormat.fromJson(spreadsheetCellFormat.toJson())).toStrictEqual(spreadsheetCellFormat);
 }

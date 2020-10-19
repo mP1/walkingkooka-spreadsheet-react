@@ -1,4 +1,4 @@
-import SpreadsheetFormula, {fromJson} from "./SpreadsheetFormula";
+import SpreadsheetFormula from "./SpreadsheetFormula";
 import SpreadsheetError from "./SpreadsheetError";
 
 const text = "###-123-abc";
@@ -30,7 +30,7 @@ test("create text, error", () => {
 // json.................................................................................................................
 
 test("fromJson null", () => {
-    expect(() => fromJson(null)).toThrow("Json missing");
+    expect(() => SpreadsheetFormula.fromJson(null)).toThrow("Json missing");
 });
 
 test("json only text", () => {
@@ -62,5 +62,5 @@ function check(spreadsheetFormula, text, value, error, json) {
     expect(spreadsheetFormula.toJson()).toStrictEqual(json);
     expect(spreadsheetFormula.toString()).toBe(JSON.stringify(json));
 
-    expect(fromJson(spreadsheetFormula.toJson())).toStrictEqual(spreadsheetFormula);
+    expect(SpreadsheetFormula.fromJson(spreadsheetFormula.toJson())).toStrictEqual(spreadsheetFormula);
 }

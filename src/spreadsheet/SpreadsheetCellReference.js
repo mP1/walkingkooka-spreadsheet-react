@@ -1,11 +1,11 @@
-export function fromJson(reference) {
-    return new SpreadsheetCellReference(reference);
-}
-
 /**
  * Holds a cell reference. Note the reference is not validated in anyway.
  */
 export default class SpreadsheetCellReference {
+
+    static fromJson(reference) {
+        return new SpreadsheetCellReference(reference);
+    }
 
     constructor(reference) {
         if (!reference) {

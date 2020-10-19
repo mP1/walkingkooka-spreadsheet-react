@@ -1,18 +1,18 @@
-import SpreadsheetError, {fromJson as SpreadsheetErrorFromJson} from "./SpreadsheetError";
-
-export function fromJson(json) {
-    if(!json) {
-        throw new Error("Json missing");
-    }
-
-    const {text, value, error} = json;
-    return new SpreadsheetFormula(text, value, SpreadsheetErrorFromJson(error));
-}
+import SpreadsheetError from "./SpreadsheetError";
 
 /**
  * Represents a formula.
  */
 export default class SpreadsheetFormula {
+
+    static fromJson(json) {
+        if(!json) {
+            throw new Error("Json missing");
+        }
+
+        const {text, value, error} = json;
+        return new SpreadsheetFormula(text, value, SpreadsheetError.fromJson(error));
+    }
 
     constructor(text, value, error) {
         if (!text) {

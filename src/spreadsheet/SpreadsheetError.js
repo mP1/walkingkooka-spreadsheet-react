@@ -1,11 +1,11 @@
-export function fromJson(message) {
-    return message && new SpreadsheetError(message);
-}
-
 /**
  * Holds an error within processing of a spreadsheet cell.
  */
 export default class SpreadsheetError {
+
+    static fromJson(message) {
+        return message && new SpreadsheetError(message);
+    }
 
     constructor(message) {
         if (!message) {
