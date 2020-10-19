@@ -107,6 +107,14 @@ test("defaults", () => {
     expect(defaultSpreadsheetMetadata).toEqual(new SpreadsheetMetadata(defaultJson));
 })
 
+test("set defaults missing fails", () => {
+    expect(() => SpreadsheetMetadata.EMPTY.setDefaults(null)).toThrow("Missing SpreadsheetMetadata");
+})
+
+test("set defaults wrong type fails", () => {
+    expect(() => SpreadsheetMetadata.EMPTY.setDefaults(1.5)).toThrow("Expected SpreadsheetMetadata got 1.5");
+})
+
 test("set defaults EMPTY", () => {
     const spreadsheet = SpreadsheetMetadata.EMPTY;
     const same = spreadsheet.setDefaults(SpreadsheetMetadata.EMPTY);
