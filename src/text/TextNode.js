@@ -3,7 +3,7 @@ export const STYLE = "text-style";
 export const PLACEHOLDER = "text-placeholder";
 export const STYLE_NAME = "text-style-name";
 
-export class TextNode {
+export default class TextNode {
 
     constructor() {
     }
