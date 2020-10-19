@@ -1,5 +1,5 @@
 import textNodeJsonSupportFromJson from "../text/TextNodeJsonSupport";
-import SpreadsheetCellReference from "./SpreadsheetCellReference";
+import SpreadsheetCellReference from "./reference/SpreadsheetCellReference";
 import SpreadsheetFormula from "./SpreadsheetFormula";
 import TextStyle from "../text/TextStyle";
 import SpreadsheetCellFormat from "./SpreadsheetCellFormat";
