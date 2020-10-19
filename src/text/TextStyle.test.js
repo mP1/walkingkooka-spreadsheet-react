@@ -1,4 +1,4 @@
-import TextStyle, {fromJson} from "./TextStyle";
+import TextStyle from "./TextStyle";
 
 const BACKGROUND_COLOR = "background-color";
 const BACKGROUND_COLOR_VALUE = "#123";
@@ -125,5 +125,5 @@ test("remove existing leaving one style", () => {
 function checkJson(textStyle, json) {
     expect(textStyle.toJson()).toStrictEqual(json);
     expect(textStyle.toString()).toBe(JSON.stringify(json));
-    expect(fromJson(textStyle.toJson())).toStrictEqual(textStyle);
+    expect(TextStyle.fromJson(textStyle.toJson())).toStrictEqual(textStyle);
 }

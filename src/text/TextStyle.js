@@ -1,7 +1,3 @@
-export function fromJson(json) {
-    return new TextStyle(json);
-}
-
 /**
  * Used to create a new instance and then the given style and value.
  */
@@ -27,6 +23,10 @@ function copyAndRemove(styles, style) {
 export default class TextStyle {
 
     static EMPTY = new TextStyle({});
+
+    static fromJson(json) {
+        return new TextStyle(json);
+    }
 
     constructor(styles) {
         if (!styles) {
