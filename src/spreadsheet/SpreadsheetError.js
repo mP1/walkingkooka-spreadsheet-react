@@ -1,7 +1,5 @@
 export function fromJson(message) {
-    return message ?
-        new SpreadsheetError(message) :
-        null;
+    return message && new SpreadsheetError(message);
 }
 
 /**
