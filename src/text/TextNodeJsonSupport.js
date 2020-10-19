@@ -9,7 +9,7 @@ import TextStyle from "./TextStyle";
  * Parses the provided marshalled JSON form of Text and its sub classes back into instances.
  * To avoid circular references this is not placed on TextNode
  */
-export default function fromJson(json) {
+export default function textNodeJsonSupportFromJson(json) {
     const typeName = json.typeName;
     const value = json.value;
 
@@ -17,9 +17,9 @@ export default function fromJson(json) {
         case PLACEHOLDER:
             return new TextPlaceholderNode(value);
         case STYLE:
-            return new TextStyleNode(new TextStyle(value.styles), array(value.children).map(c => fromJson(c)));
+            return new TextStyleNode(new TextStyle(value.styles), array(value.children).map(c => textNodeJsonSupportFromJson(c)));
         case STYLE_NAME:
-            return new TextStyleNameNode(value.styleName, array(value.children).map(c => fromJson(c)));
+            return new TextStyleNameNode(value.styleName, array(value.children).map(c => textNodeJsonSupportFromJson(c)));
         case TEXT:
             return new Text(value);
         default:
