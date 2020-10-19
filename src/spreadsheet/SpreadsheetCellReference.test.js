@@ -1,4 +1,4 @@
-import SpreadsheetCellReference, {fromJson} from "./SpreadsheetCellReference";
+import SpreadsheetCellReference from "./SpreadsheetCellReference";
 
 const reference = "A1";
 
@@ -16,7 +16,7 @@ test("create", () => {
 });
 
 test("fromJson null fails", () => {
-    expect(() => fromJson(null)).toThrow("reference missing");
+    expect(() => SpreadsheetCellReference.fromJson(null)).toThrow("reference missing");
 });
 
 test("json", () => {
@@ -31,5 +31,5 @@ function check(spreadsheetCellReference, reference) {
     expect(spreadsheetCellReference.reference()).toStrictEqual(reference);
     expect(spreadsheetCellReference.toJson()).toStrictEqual(reference);
     expect(spreadsheetCellReference.toString()).toBe(reference);
-    expect(fromJson(spreadsheetCellReference.toJson())).toStrictEqual(spreadsheetCellReference);
+    expect(SpreadsheetCellReference.fromJson(spreadsheetCellReference.toJson())).toStrictEqual(spreadsheetCellReference);
 }
