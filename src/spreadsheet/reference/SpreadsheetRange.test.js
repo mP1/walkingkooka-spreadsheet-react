@@ -1,8 +1,6 @@
 import SpreadsheetRange from "./SpreadsheetRange";
 import SpreadsheetCellReference from "./SpreadsheetCellReference";
 
-const reference = "A1";
-
 function begin() {
     return new SpreadsheetCellReference("A1");
 }
