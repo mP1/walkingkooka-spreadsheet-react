@@ -12,7 +12,7 @@ export default class SpreadsheetCell {
 
     static fromJson(json) {
         if (!json) {
-            throw new Error("Json missing");
+            throw new Error("Missing json");
         }
 
         const {reference, formula, style, format, formatted} = json;
@@ -26,13 +26,13 @@ export default class SpreadsheetCell {
 
     constructor(reference, formula, style, format, formatted) {
         if (!reference) {
-            throw new Error("Reference missing");
+            throw new Error("Missing reference");
         }
         if (!(reference instanceof SpreadsheetCellReference)) {
             throw new Error("Expected SpreadsheetCellReference reference got " + reference);
         }
         if (!formula) {
-            throw new Error("Formula missing");
+            throw new Error("Missing formula");
         }
         if (!(formula instanceof SpreadsheetFormula)) {
             throw new Error("Expected SpreadsheetFormula formula got " + formula);

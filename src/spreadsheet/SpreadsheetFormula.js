@@ -7,7 +7,7 @@ export default class SpreadsheetFormula {
 
     static fromJson(json) {
         if(!json) {
-            throw new Error("Json missing");
+            throw new Error("Missing json");
         }
 
         const {text, value, error} = json;
@@ -16,7 +16,7 @@ export default class SpreadsheetFormula {
 
     constructor(text, value, error) {
         if (!text) {
-            throw new Error("Text missing");
+            throw new Error("Missing text");
         }
         if (typeof text != "string") {
             throw new Error("Expected string got " + text);

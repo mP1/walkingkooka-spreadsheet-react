@@ -9,7 +9,7 @@ export default class SpreadsheetCellReference {
 
     constructor(reference) {
         if (!reference) {
-            throw new Error("reference missing");
+            throw new Error("Missing reference");
         }
         if (typeof reference != "string") {
             throw new Error("Expected string got " + reference);

@@ -30,7 +30,7 @@ export default class TextStyle {
 
     constructor(styles) {
         if (!styles) {
-            throw new Error("Styles missing");
+            throw new Error("Missing styles");
         }
         if (typeof styles != "object") {
             throw new Error("Styles expected object got " + styles);
