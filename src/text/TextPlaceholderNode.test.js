@@ -5,7 +5,7 @@ import TextStyle from "./TextStyle";
 const value = "text-placeholder-123-abc";
 
 test("create without text fails", () => {
-    expect(() => new TextPlaceholderNode(null)).toThrow("text missing");
+    expect(() => new TextPlaceholderNode(null)).toThrow("Missing text");
 });
 
 test("create with non string fails", () => {

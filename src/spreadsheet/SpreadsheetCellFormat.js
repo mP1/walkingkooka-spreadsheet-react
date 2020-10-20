@@ -11,7 +11,7 @@ export default class SpreadsheetCellFormat {
 
     constructor(pattern) {
         if (!pattern) {
-            throw new Error("pattern missing");
+            throw new Error("Missing pattern");
         }
         if (typeof pattern != "string") {
             throw new Error("Expected string got " + pattern);

@@ -3,7 +3,7 @@ import SpreadsheetCellReference from "./SpreadsheetCellReference";
 const reference = "A1";
 
 test("create without reference fails", () => {
-    expect(() => new SpreadsheetCellReference(null)).toThrow("reference missing");
+    expect(() => new SpreadsheetCellReference(null)).toThrow("Missing reference");
 });
 
 test("create with non string fails", () => {
@@ -16,7 +16,7 @@ test("create", () => {
 });
 
 test("fromJson null fails", () => {
-    expect(() => SpreadsheetCellReference.fromJson(null)).toThrow("reference missing");
+    expect(() => SpreadsheetCellReference.fromJson(null)).toThrow("Missing reference");
 });
 
 test("json", () => {

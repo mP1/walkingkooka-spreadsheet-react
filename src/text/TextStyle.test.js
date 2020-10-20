@@ -8,7 +8,7 @@ const COLOR = "color";
 const COLOR_VALUE = "#789";
 
 test("create without text fails", () => {
-    expect(() => new TextStyle(null)).toThrow("Styles missing");
+    expect(() => new TextStyle(null)).toThrow("Missing styles");
 });
 
 test("create with non string fails", () => {

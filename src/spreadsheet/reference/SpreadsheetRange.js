@@ -7,7 +7,7 @@ export default class SpreadsheetRange {
 
     static fromJson(json) {
         if (!json) {
-            throw new Error("Json missing");
+            throw new Error("Missing json");
         }
         if (typeof json != "string") {
             throw new Error("Expected string got " + json);
@@ -23,7 +23,7 @@ export default class SpreadsheetRange {
 
     constructor(begin, end) {
         if (!begin) {
-            throw new Error("Begin missing");
+            throw new Error("Missing begin");
         }
         if (!(begin instanceof SpreadsheetCellReference)) {
             throw new Error("Expected SpreadsheetCellReference begin got " + begin);
@@ -31,7 +31,7 @@ export default class SpreadsheetRange {
         this.beginValue = begin;
 
         if (!end) {
-            throw new Error("End missing");
+            throw new Error("Missing end");
         }
         if (!(end instanceof SpreadsheetCellReference)) {
             throw new Error("Expected SpreadsheetCellReference end got " + end);

@@ -5,7 +5,7 @@ const text = "###-123-abc";
 const value = 1.5;
 
 test("create without text fails", () => {
-    expect(() => new SpreadsheetFormula(null)).toThrow("Text missing");
+    expect(() => new SpreadsheetFormula(null)).toThrow("Missing text");
 });
 
 test("create with non string fails", () => {
@@ -30,7 +30,7 @@ test("create text, error", () => {
 // json.................................................................................................................
 
 test("fromJson null", () => {
-    expect(() => SpreadsheetFormula.fromJson(null)).toThrow("Json missing");
+    expect(() => SpreadsheetFormula.fromJson(null)).toThrow("Missing json");
 });
 
 test("json only text", () => {

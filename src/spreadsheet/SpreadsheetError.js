@@ -9,7 +9,7 @@ export default class SpreadsheetError {
 
     constructor(message) {
         if (!message) {
-            throw new Error("message missing");
+            throw new Error("Missing message");
         }
         if (typeof message != "string") {
             throw new Error("Expected string got " + message);

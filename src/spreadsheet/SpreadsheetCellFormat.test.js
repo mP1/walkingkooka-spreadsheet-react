@@ -3,7 +3,7 @@ import SpreadsheetCellFormat from "./SpreadsheetCellFormat";
 const pattern = "###-123-abc";
 
 test("create without pattern fails", () => {
-    expect(() => new SpreadsheetCellFormat(null)).toThrow("pattern missing");
+    expect(() => new SpreadsheetCellFormat(null)).toThrow("Missing pattern");
 });
 
 test("create with non string fails", () => {

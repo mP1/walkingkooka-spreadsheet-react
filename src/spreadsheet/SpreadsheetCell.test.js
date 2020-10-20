@@ -28,7 +28,7 @@ function formatted() {
 // constructor(reference, formula, style, format, formatted) {
 
 test("create without reference fails", () => {
-    expect(() => new SpreadsheetCell()).toThrow("Reference missing");
+    expect(() => new SpreadsheetCell()).toThrow("Missing reference");
 });
 
 test("create with invalid reference fails", () => {
@@ -36,7 +36,7 @@ test("create with invalid reference fails", () => {
 });
 
 test("create without formula fails", () => {
-    expect(() => new SpreadsheetCell(reference())).toThrow("Formula missing");
+    expect(() => new SpreadsheetCell(reference())).toThrow("Missing formula");
 });
 
 test("create with invalid formula fails", () => {
@@ -130,7 +130,7 @@ test("create reference, formula, style, format, formatted", () => {
 });
 
 test("fromJson null fails", () => {
-    expect(() => SpreadsheetCell.fromJson(null)).toThrow("Json missing");
+    expect(() => SpreadsheetCell.fromJson(null)).toThrow("Missing json");
 });
 
 // helpers..............................................................................................................

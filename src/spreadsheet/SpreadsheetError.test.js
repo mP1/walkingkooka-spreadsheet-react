@@ -3,7 +3,7 @@ import SpreadsheetError from "./SpreadsheetError";
 const message = "spreadsheetError-123-abc";
 
 test("create without message fails", () => {
-    expect(() => new SpreadsheetError(null)).toThrow("message missing");
+    expect(() => new SpreadsheetError(null)).toThrow("Missing message");
 });
 
 test("create with non string fails", () => {

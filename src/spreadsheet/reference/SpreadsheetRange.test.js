@@ -10,7 +10,7 @@ function end() {
 }
 
 test("create without begin fails", () => {
-    expect(() => new SpreadsheetRange(null, end())).toThrow("Begin missing");
+    expect(() => new SpreadsheetRange(null, end())).toThrow("Missing begin");
 });
 
 test("create with begin non cell fails", () => {
@@ -18,7 +18,7 @@ test("create with begin non cell fails", () => {
 });
 
 test("create without end fails", () => {
-    expect(() => new SpreadsheetRange(begin(), null)).toThrow("End missing");
+    expect(() => new SpreadsheetRange(begin(), null)).toThrow("Missing end");
 });
 
 test("create with end non cell fails", () => {
@@ -30,7 +30,7 @@ test("create", () => {
 });
 
 test("fromJson null fails", () => {
-    expect(() => SpreadsheetRange.fromJson(null)).toThrow("Json missing");
+    expect(() => SpreadsheetRange.fromJson(null)).toThrow("Missing json");
 });
 
 test("fromJson wrong token count fails", () => {

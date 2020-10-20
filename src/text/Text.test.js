@@ -5,7 +5,7 @@ import TextStyle from "./TextStyle";
 const textValue = "text-123-abc";
 
 test("create without text fails", () => {
-    expect(() => new Text(null)).toThrow("text missing");
+    expect(() => new Text(null)).toThrow("Missing text");
 });
 
 test("create with non string fails", () => {
