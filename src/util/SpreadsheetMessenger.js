@@ -85,7 +85,7 @@ export default class SpreadsheetMessenger {
                             responseBuilder.statusText = statusText;
                             responseBuilder.headers = response.headers;
 
-                            return response.json()
+                            return response.json();
                         case 3:
                             throw new Error("Redirect " + statusCode + "=" + statusText);
                         case 4:
