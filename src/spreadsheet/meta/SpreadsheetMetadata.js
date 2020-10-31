@@ -84,7 +84,7 @@ export default class SpreadsheetMetadata {
         if (!(defaultSpreadsheetMetadata instanceof SpreadsheetMetadata)) {
             throw new Error("Expected SpreadsheetMetadata got " + defaultSpreadsheetMetadata);
         }
-        return this.defaults() == defaultSpreadsheetMetadata ?
+        return this.defaults() === defaultSpreadsheetMetadata ?
             this :
             createWithDefaults(this.json, defaultSpreadsheetMetadata);
     }

@@ -92,7 +92,8 @@ export default class SpreadsheetMessenger {
                             throw new Error("Bad request " + statusCode + "=" + statusText);
                         case 5:
                             throw new Error("Server error " + statusCode + "=" + statusText);
-
+                        default:
+                            throw new Error("Misc error: " + statusCode + "=" + statusText);
                     }
                 })
                 .then(json => {
