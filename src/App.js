@@ -54,7 +54,7 @@ export default class App extends React.Component {
      * Renders the basic spreadsheet layout.
      */
     render() {
-        console.log("App.render " + JSON.stringify(this.state));
+        console.log("App.render " + this.state);
 
         return (
             <div>
