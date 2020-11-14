@@ -162,10 +162,25 @@ test("set style", () => {
 
 // viewportX.............................................................................................................
 
-test("set viewport", () => {
+test("set viewport x", () => {
     checkJson(SpreadsheetMetadata.EMPTY.setViewportX(123.0),
         {
             "viewport-x": 123.0
+        });
+})
+
+// viewportY.............................................................................................................
+
+test("get viewport y", () => {
+    expect(new SpreadsheetMetadata({
+        'viewport-y': 123.5
+    }).viewportY()).toBe(123.5);
+})
+
+test("set viewport y", () => {
+    checkJson(SpreadsheetMetadata.EMPTY.setViewportY(123.0),
+        {
+            "viewport-y": 123.0
         });
 })
 

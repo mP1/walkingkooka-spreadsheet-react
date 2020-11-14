@@ -7,6 +7,7 @@ const DEFAULTS = "_defaults";
 const SPREADSHEET_NAME = "spreadsheet-name";
 const STYLE = "style";
 const VIEWPORT_X = "viewport-x";
+const VIEWPORT_Y = "viewport-y";
 
 function createEmpty() {
     const empty = new SpreadsheetMetadata({});
@@ -85,6 +86,7 @@ export default class SpreadsheetMetadata {
                 type = TextStyle;
                 break;
             case VIEWPORT_X:
+            case VIEWPORT_Y:
                 type = Number;
                 break;
             default:
@@ -166,6 +168,14 @@ export default class SpreadsheetMetadata {
         return this.set(VIEWPORT_X, viewportX);
     }
 
+    viewportY() {
+        return this.get(VIEWPORT_Y);
+    }
+
+    setViewportY(viewportY) {
+        return this.set(VIEWPORT_Y, viewportY);
+    }
+    
     /**
      * Returns an Object representing this instance. Useful when posting to a server. Should probably never be necessary
      * but is available.
