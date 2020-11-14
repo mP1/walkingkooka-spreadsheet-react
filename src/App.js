@@ -1,9 +1,9 @@
 import React from 'react';
 import './App.css';
 
-import SpreadsheetAppBarTop from "./components/SpreadsheetAppBarTop/SpreadsheetAppBarTop.js";
-import SpreadsheetContent from "./components/SpreadsheetContent/SpreadsheetContent.js";
-import SpreadsheetFormulaWidget from "./components/SpreadsheetFormula/SpreadsheetFormulaWidget.js";
+import SpreadsheetAppBarTop from "./widget/SpreadsheetAppBarTop.js";
+import SpreadsheetContent from "./widget/SpreadsheetContent.js";
+import SpreadsheetFormulaWidget from "./widget/SpreadsheetFormulaWidget.js";
 import SpreadsheetMetadata from "./spreadsheet/meta/SpreadsheetMetadata.js";
 import SpreadsheetMessenger from "./util/SpreadsheetMessenger.js";
 
