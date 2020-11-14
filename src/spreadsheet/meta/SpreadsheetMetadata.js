@@ -1,7 +1,11 @@
 import SpreadsheetName from "../SpreadsheetName";
 
+import TextStyle from "../../text/TextStyle";
+
+// these constants should match the constants in walkingkooka-spreadsheet/walkingkooka.spreadsheet.meta.SpreadsheetMetadataPropertyName.java
 const DEFAULTS = "_defaults";
 const SPREADSHEET_NAME = "spreadsheet-name";
+const STYLE = "style";
 
 function createEmpty() {
     const empty = new SpreadsheetMetadata({});
@@ -76,6 +80,9 @@ export default class SpreadsheetMetadata {
             case SPREADSHEET_NAME:
                 type = SpreadsheetName;
                 break;
+            case STYLE:
+                type = TextStyle;
+                break;
             default:
                 throw new Error("Unknown property \"" + property + "\"");
         }
@@ -136,6 +143,14 @@ export default class SpreadsheetMetadata {
 
     setSpreadsheetName(name) {
         return this.set(SPREADSHEET_NAME, name);
+    }
+
+    style() {
+        return this.get(STYLE);
+    }
+
+    setStyle(style) {
+        return this.set(STYLE, style);
     }
 
     /**

@@ -1,5 +1,6 @@
 import SpreadsheetMetadata from "./SpreadsheetMetadata";
 import SpreadsheetName from "../SpreadsheetName";
+import TextStyle from "../../text/TextStyle";
 
 test("Empty", () => {
     const metadata = SpreadsheetMetadata.EMPTY;
@@ -94,7 +95,7 @@ test("get property missing but defaulted", () => {
     expect(metadata.get(propertyName)).toEqual(propertyValue);
 })
 
-// get..................................................................................................................
+// set..................................................................................................................
 
 test("set property null fails", () => {
     expect(() => SpreadsheetMetadata.EMPTY.set(null, "user1@example.com")).toThrow("Missing property");
@@ -145,6 +146,17 @@ test("set property different", () => {
         {
             "spreadsheet-id": propertyValue,
             "spreadsheet-name": propertyValue2.toJson()
+        });
+})
+
+// setStyle.............................................................................................................
+
+test("set style", () => {
+    checkJson(SpreadsheetMetadata.EMPTY.setStyle(TextStyle.EMPTY.set("width", "50px")),
+        {
+            "style": {
+                "width": "50px"
+            }
         });
 })
 
