@@ -1,8 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import SpreadsheetTextField from '../SpreadsheetTextField/SpreadsheetTextField.js';
-import AppAwareComponent from "../AppAwareComponent";
+import SpreadsheetTextField from './SpreadsheetTextField.js';
+import AppAwareComponent from "./AppAwareComponent";
 
 /**
  * A wrapper that is a bridge between App updates and also updating following changes to the text field.
