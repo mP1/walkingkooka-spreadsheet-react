@@ -4,6 +4,10 @@
 export default class SpreadsheetCellReference {
 
     static fromJson(reference) {
+        return SpreadsheetCellReference.parse(reference);
+    }
+
+    static parse(reference) {
         return new SpreadsheetCellReference(reference);
     }
 

@@ -33,5 +33,7 @@ function check(spreadsheetCellReference, reference) {
 
     expect(spreadsheetCellReference.toJson()).toStrictEqual(reference);
     expect(spreadsheetCellReference.toString()).toBe(reference);
+
+    expect(SpreadsheetCellReference.parse(spreadsheetCellReference.toJson())).toStrictEqual(spreadsheetCellReference);
     expect(SpreadsheetCellReference.fromJson(spreadsheetCellReference.toJson())).toStrictEqual(spreadsheetCellReference);
 }

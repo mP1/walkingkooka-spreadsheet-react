@@ -71,7 +71,7 @@ test("create invalid height value fails2", () => {
 // json
 
 test("fromJson null fails", () => {
-    expect(() => SpreadsheetPixelRectangle.fromJson(null)).toThrow("Missing json");
+    expect(() => SpreadsheetPixelRectangle.fromJson(null)).toThrow("Missing text");
 });
 
 test("json", () => {
@@ -94,5 +94,7 @@ function check(pixel, reference, width, height) {
     const json = reference + ":" + width + ":" + height;
     expect(pixel.toJson()).toStrictEqual(json);
     expect(pixel.toString()).toBe(json);
+
+    expect(SpreadsheetPixelRectangle.parse(json)).toStrictEqual(pixel);
     expect(SpreadsheetPixelRectangle.fromJson(json)).toStrictEqual(pixel);
 }
