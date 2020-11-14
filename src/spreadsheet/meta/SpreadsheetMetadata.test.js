@@ -19,9 +19,9 @@ test("from json", () => {
     checkSpreadsheetName(metadata);
 });
 
-test("from json with metadata-id", () => {
+test("from json with spreadsheet-id", () => {
     const id = "123f";
-    const json = {"metadata-id": id};
+    const json = {"spreadsheet-id": id};
 
     const metadata = new SpreadsheetMetadata(json);
 
@@ -30,9 +30,9 @@ test("from json with metadata-id", () => {
     checkSpreadsheetName(metadata);
 })
 
-test("from json with metadata-name", () => {
+test("from json with spreadsheet-name", () => {
     const name = "Spreadsheet-abc-123";
-    const json = {"metadata-name": name};
+    const json = {"spreadsheet-name": name};
     const metadata = new SpreadsheetMetadata(json);
 
     checkJson(metadata, json);
@@ -41,8 +41,8 @@ test("from json with metadata-name", () => {
 })
 
 test("setSpreadsheetName same", () => {
-    const name = "old-metadata-name-111";
-    const json = {"metadata-name": name};
+    const name = "old-spreadsheet-name-111";
+    const json = {"spreadsheet-name": name};
 
     const metadata = new SpreadsheetMetadata(json);
     const same = metadata.setSpreadsheetName(name);
@@ -54,18 +54,18 @@ test("setSpreadsheetName same", () => {
 
 test("setSpreadsheetName different name", () => {
     const id = "123f";
-    const name = "old-metadata-name-111";
-    const json = {"metadata-name": name, "metadata-id": id};
+    const name = "old-spreadsheet-name-111";
+    const json = {"spreadsheet-name": name, "spreadsheet-id": id};
 
     const metadata = new SpreadsheetMetadata(json);
 
-    const newName = "new-metadata-name-222";
+    const newName = "new-spreadsheet-name-222";
     const updated = metadata.setSpreadsheetName(newName);
     expect(metadata == updated).toBeFalsy();
 
     checkSpreadsheetId(updated, id);
     checkSpreadsheetName(updated, newName);
-    checkJson(updated, {"metadata-name": newName, "metadata-id": id});
+    checkJson(updated, {"spreadsheet-name": newName, "spreadsheet-id": id});
 
     // original should be unmodified
     checkJson(metadata, json);
@@ -155,12 +155,12 @@ function checkSpreadsheetId(metadata, id) {
     if (id) {
         expect(metadata.spreadsheetId()).toBe(id);
     } else {
-        expect(() => metadata.spreadsheetId()).toThrow("Missing \"metadata-id\" " + metadata.toString());
+        expect(() => metadata.spreadsheetId()).toThrow("Missing \"spreadsheet-id\" " + metadata.toString());
     }
 }
 
 function checkSpreadsheetName(metadata, name) {
-    expect(metadata.metadataName()).toBe(name);
+    expect(metadata.spreadsheetName()).toBe(name);
 }
 
 // checks toJson and toString
