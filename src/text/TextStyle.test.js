@@ -119,6 +119,18 @@ test("remove existing leaving one style", () => {
     checkJson(empty, {});
 });
 
+// width................................................................................................................
+
+test("width missing", () => {
+    expect(TextStyle.EMPTY.width()).toBeUndefined();
+});
+
+test("width pixel value", () => {
+    expect(TextStyle.fromJson({
+        "width": "123px"
+    }).width()).toBe(123.0);
+});
+
 // helpers..............................................................................................................
 
 // checks toJson and toString
