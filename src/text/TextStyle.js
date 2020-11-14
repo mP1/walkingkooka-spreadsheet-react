@@ -1,6 +1,8 @@
 /**
  * Used to create a new instance and then the given style and value.
  */
+import PixelLength from "./PixelLength";
+
 function copyAndSet(styles, style, value) {
     let copy = new TextStyle(styles);
     copy.styles[style] = value;
@@ -19,9 +21,8 @@ function copyAndRemove(styles, style) {
 const WIDTH = "width";
 const HEIGHT = "height";
 
-function fromPixel(value) {
-    const number = value && Number.parseFloat(value);
-    return (value || !Number.isNaN(number)) && number;
+function fromPixel(text) {
+    return text && PixelLength.parse(text);
 }
 
 /**

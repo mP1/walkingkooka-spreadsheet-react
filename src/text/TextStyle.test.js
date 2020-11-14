@@ -1,4 +1,5 @@
 import TextStyle from "./TextStyle";
+import PixelLength from "./PixelLength";
 
 const BACKGROUND_COLOR = "background-color";
 const BACKGROUND_COLOR_VALUE = "#123";
@@ -128,7 +129,7 @@ test("width missing", () => {
 test("width pixel value", () => {
     expect(TextStyle.fromJson({
         "width": "123px"
-    }).width()).toBe(123.0);
+    }).width()).toStrictEqual(new PixelLength(123.0));
 });
 
 // height................................................................................................................
@@ -140,7 +141,7 @@ test("height missing", () => {
 test("height pixel value", () => {
     expect(TextStyle.fromJson({
         "height": "123px"
-    }).height()).toBe(123.0);
+    }).height()).toStrictEqual(new PixelLength(123.0));
 });
 
 // helpers..............................................................................................................
