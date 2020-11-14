@@ -7,12 +7,6 @@ function createEmpty() {
     return empty;
 }
 
-function createWithName(metadata, name) {
-    let copy = new SpreadsheetMetadata(metadata.json);
-    copy.json[SPREADSHEET_NAME] = name;
-    return copy;
-}
-
 /**
  * Makes a new defensive copy using the provided json and replaces the existing defaults.
  */
@@ -23,6 +17,17 @@ function createWithDefaults(json, defaultSpreadsheetMetadata) {
         copy.json[DEFAULTS] = defaultSpreadsheetMetadata.toJson();
     }
     copy.defaultSpreadsheetMetadata = defaultSpreadsheetMetadata;
+    return copy;
+}
+
+/**
+ * Creates a new SpreadsheetMetadata and sets or replaces the new property/value pair.
+ */
+function copyAndSet(json, property, value) {
+    const copy = new SpreadsheetMetadata(json);
+    copy.json[property] = value.toJson ?
+        value.toJson() :
+        value;
     return copy;
 }
 
@@ -53,6 +58,20 @@ export default class SpreadsheetMetadata {
         } while (json);
 
         return value;
+    }
+
+    // TODO introduce value validation.
+    set(property, value) {
+        if (!property) {
+            throw new Error("Missing property");
+        }
+        if (!value) {
+            throw new Error("Missing value");
+        }
+
+        return value == this.get(property) ?
+            this :
+            copyAndSet(this.json, property, value);
     }
 
     /**
@@ -102,9 +121,7 @@ export default class SpreadsheetMetadata {
     }
 
     setSpreadsheetName(name) {
-        return name == this.spreadsheetName() ?
-            this :
-            createWithName(this, name);
+        return this.set(SPREADSHEET_NAME, name);
     }
 
     /**
