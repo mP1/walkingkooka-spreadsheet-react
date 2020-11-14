@@ -71,6 +71,18 @@ export default class SpreadsheetMetadata {
             throw new Error("Missing value");
         }
 
+        let type;
+        switch (property) {
+            case SPREADSHEET_NAME:
+                type = SpreadsheetName;
+                break;
+            default:
+                throw new Error("Unknown property \"" + property + "\"");
+        }
+        if (!(value instanceof type)) {
+            throw new Error("Expected " + type + " property " + property + " with value " + value);
+        }
+
         return value === this.get(property) ?
             this :
             copyAndSet(this.json, property, value);

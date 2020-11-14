@@ -105,45 +105,46 @@ test("set value null fail", () => {
 })
 
 test("set property same", () => {
-    const metadata = new SpreadsheetMetadata({"creator": "user1@example.com"});
-    expect(metadata).toEqual(metadata.set("creator", "user1@example.com"));
+    const name = new SpreadsheetName("spreadsheet-name-123");
+    const metadata = new SpreadsheetMetadata({"spreadsheet-name": name.toJson()});
+    expect(metadata).toEqual(metadata.set("spreadsheet-name", name));
 })
 
 test("set property replace different value", () => {
-    const propertyValue = "user1@example.com";
-    const metadata = new SpreadsheetMetadata({"creator": "user1@example.com"});
+    const propertyValue = new SpreadsheetName("spreadsheet-name-123");
+    const metadata = new SpreadsheetMetadata({"spreadsheet-name": propertyValue.toJson()});
 
-    const differentPropertyValue = "different@example.com";
-    const differentMetadata = metadata.set("creator", differentPropertyValue);
+    const differentPropertyValue = new SpreadsheetName("different-spreadsheet-name-456");
+    const differentMetadata = metadata.set("spreadsheet-name", differentPropertyValue);
 
     expect(metadata).not.toEqual(differentMetadata);
 
     checkJson(metadata, {
-        "creator": propertyValue
+        "spreadsheet-name": propertyValue.toJson()
     });
     checkJson(differentMetadata,
         {
-            "creator": differentPropertyValue
+            "spreadsheet-name": differentPropertyValue.toJson()
         });
 })
 
 test("set property different", () => {
-    const propertyValue = "user1@example.com";
-    const metadata = new SpreadsheetMetadata({"creator": propertyValue});
+    const propertyValue = "spreadsheet-id-123";
+    const metadata = new SpreadsheetMetadata({"spreadsheet-id": propertyValue});
 
-    const propertyValue2 = "user2@example.com";
-    const metadata2 = metadata.set("modified", propertyValue2);
+    const propertyValue2 = new SpreadsheetName("spreadsheet-name-123");
+    const metadata2 = metadata.set("spreadsheet-name", propertyValue2);
 
     expect(metadata).not.toEqual(metadata2);
 
     checkJson(metadata,
         {
-            "creator": propertyValue
+            "spreadsheet-id": propertyValue
         });
     checkJson(metadata2,
         {
-            "creator": propertyValue,
-            "modified": propertyValue2
+            "spreadsheet-id": propertyValue,
+            "spreadsheet-name": propertyValue2.toJson()
         });
 })
 
