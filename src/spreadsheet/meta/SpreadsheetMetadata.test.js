@@ -75,7 +75,7 @@ test("setSpreadsheetName different name", () => {
 
 // get..................................................................................................................
 
-test("property present without defaults", () => {
+test("get property present without defaults", () => {
     const propertyName = "creator";
     const propertyValue = "user1@example.com";
 
@@ -83,17 +83,70 @@ test("property present without defaults", () => {
     expect(metadata.get(propertyName)).toEqual(propertyValue);
 })
 
-test("property missing without defaults", () => {
+test("get property missing without defaults", () => {
     const metadata = new SpreadsheetMetadata({});
     expect(metadata.get("creator")).toBeUndefined();
 })
 
-test("property missing but defaulted", () => {
+test("get property missing but defaulted", () => {
     const propertyName = "creator";
     const propertyValue = "user1@example.com";
 
     const metadata = new SpreadsheetMetadata({_defaults: {"creator": propertyValue}});
     expect(metadata.get(propertyName)).toEqual(propertyValue);
+})
+
+// get..................................................................................................................
+
+test("set property null fails", () => {
+    expect(() => SpreadsheetMetadata.EMPTY.set(null, "user1@example.com")).toThrow("Missing property");
+})
+
+test("set value null fail", () => {
+    expect(() => SpreadsheetMetadata.EMPTY.set("creator", null)).toThrow("Missing value");
+})
+
+test("set property same", () => {
+    const metadata = new SpreadsheetMetadata({"creator": "user1@example.com"});
+    expect(metadata).toEqual(metadata.set("creator", "user1@example.com"));
+})
+
+test("set property replace different value", () => {
+    const propertyValue = "user1@example.com";
+    const metadata = new SpreadsheetMetadata({"creator": "user1@example.com"});
+
+    const differentPropertyValue = "different@example.com";
+    const differentMetadata = metadata.set("creator", differentPropertyValue);
+
+    expect(metadata).not.toEqual(differentMetadata);
+
+    checkJson(metadata, {
+        "creator": propertyValue
+    });
+    checkJson(differentMetadata,
+        {
+            "creator": differentPropertyValue
+        });
+})
+
+test("set property different", () => {
+    const propertyValue = "user1@example.com";
+    const metadata = new SpreadsheetMetadata({"creator": propertyValue});
+
+    const propertyValue2 = "user2@example.com";
+    const metadata2 = metadata.set("modified", propertyValue2);
+
+    expect(metadata).not.toEqual(metadata2);
+
+    checkJson(metadata,
+        {
+            "creator": propertyValue
+        });
+    checkJson(metadata2,
+        {
+            "creator": propertyValue,
+            "modified": propertyValue2
+        });
 })
 
 // defaults..............................................................................................................
