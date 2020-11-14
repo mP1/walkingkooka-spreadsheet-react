@@ -1,3 +1,5 @@
+import SpreadsheetName from "../SpreadsheetName";
+
 const DEFAULTS = "_defaults";
 const SPREADSHEET_NAME = "spreadsheet-name";
 
@@ -117,7 +119,7 @@ export default class SpreadsheetMetadata {
     }
 
     spreadsheetName() {
-        return this.json[SPREADSHEET_NAME];
+        return SpreadsheetName.fromJson(this.json[SPREADSHEET_NAME]);
     }
 
     setSpreadsheetName(name) {
