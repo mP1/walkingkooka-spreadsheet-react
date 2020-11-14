@@ -16,6 +16,8 @@ function copyAndRemove(styles, style) {
     return copy;
 }
 
+const WIDTH = "width";
+
 /**
  * Holds many style properties and values.
  */
@@ -53,6 +55,15 @@ export default class TextStyle {
         return value ?
             copyAndRemove(this.styles, style) :
             this;
+    }
+
+    /**
+     * Returns the width as a number removing the px suffix or undefined if absent.
+     */
+    width() {
+        const width = this.get(WIDTH);
+        const number = width && Number.parseFloat(width);
+        return (width || !Number.isNaN(number)) && number;
     }
 
     /**
