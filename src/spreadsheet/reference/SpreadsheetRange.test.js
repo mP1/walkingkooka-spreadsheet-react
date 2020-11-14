@@ -30,7 +30,7 @@ test("create", () => {
 });
 
 test("fromJson null fails", () => {
-    expect(() => SpreadsheetRange.fromJson(null)).toThrow("Missing json");
+    expect(() => SpreadsheetRange.fromJson(null)).toThrow("Missing text");
 });
 
 test("fromJson wrong token count fails", () => {
@@ -47,4 +47,5 @@ function check(range, begin, end, json) {
     expect(range.toString()).toBe(json);
 
     expect(SpreadsheetRange.fromJson(range.toJson())).toStrictEqual(range);
+    expect(SpreadsheetRange.parse(range.toString())).toStrictEqual(range);
 }

@@ -7,16 +7,20 @@ import SpreadsheetRectangle from "./SpreadsheetRectangle";
 export default class SpreadsheetRange extends SpreadsheetRectangle{
 
     static fromJson(json) {
-        if (!json) {
-            throw new Error("Missing json");
+        return SpreadsheetRange.parse(json);
+    }
+
+    static parse(text) {
+        if (!text) {
+            throw new Error("Missing text");
         }
-        if (typeof json != "string") {
-            throw new Error("Expected string got " + json);
+        if (typeof text != "string") {
+            throw new Error("Expected string got " + text);
         }
 
-        let tokens = json.split(":");
+        let tokens = text.split(":");
         if (2 != tokens.length) {
-            throw new Error("Expected 2 tokens got " + json);
+            throw new Error("Expected 2 tokens got " + text);
         }
 
         return new SpreadsheetRange(new SpreadsheetCellReference(tokens[0]), new SpreadsheetCellReference(tokens[1]));
