@@ -1,4 +1,5 @@
 import SpreadsheetMetadata from "./SpreadsheetMetadata";
+import SpreadsheetName from "../SpreadsheetName";
 
 test("Empty", () => {
     const metadata = SpreadsheetMetadata.EMPTY;
@@ -6,7 +7,6 @@ test("Empty", () => {
 
     checkJson(metadata, {});
     checkSpreadsheetId(metadata);
-    checkSpreadsheetName(metadata);
 });
 
 test("from json", () => {
@@ -16,7 +16,6 @@ test("from json", () => {
 
     checkJson(metadata, json);
     checkSpreadsheetId(metadata);
-    checkSpreadsheetName(metadata);
 });
 
 test("from json with spreadsheet-id", () => {
@@ -27,12 +26,11 @@ test("from json with spreadsheet-id", () => {
 
     checkJson(metadata, json);
     checkSpreadsheetId(metadata, id);
-    checkSpreadsheetName(metadata);
 })
 
 test("from json with spreadsheet-name", () => {
-    const name = "Spreadsheet-abc-123";
-    const json = {"spreadsheet-name": name};
+    const name = new SpreadsheetName("Spreadsheet-abc-123");
+    const json = {"spreadsheet-name": name.toJson()};
     const metadata = new SpreadsheetMetadata(json);
 
     checkJson(metadata, json);
@@ -41,8 +39,8 @@ test("from json with spreadsheet-name", () => {
 })
 
 test("setSpreadsheetName same", () => {
-    const name = "old-spreadsheet-name-111";
-    const json = {"spreadsheet-name": name};
+    const name = new SpreadsheetName("old-spreadsheet-name-111");
+    const json = {"spreadsheet-name": name.toJson()};
 
     const metadata = new SpreadsheetMetadata(json);
     const same = metadata.setSpreadsheetName(name);
@@ -54,18 +52,18 @@ test("setSpreadsheetName same", () => {
 
 test("setSpreadsheetName different name", () => {
     const id = "123f";
-    const name = "old-spreadsheet-name-111";
-    const json = {"spreadsheet-name": name, "spreadsheet-id": id};
+    const name = new SpreadsheetName("old-spreadsheet-name-111");
+    const json = {"spreadsheet-name": name.toJson(), "spreadsheet-id": id};
 
     const metadata = new SpreadsheetMetadata(json);
 
-    const newName = "new-spreadsheet-name-222";
+    const newName = new SpreadsheetName("new-spreadsheet-name-222");
     const updated = metadata.setSpreadsheetName(newName);
     expect(metadata == updated).toBeFalsy();
 
     checkSpreadsheetId(updated, id);
     checkSpreadsheetName(updated, newName);
-    checkJson(updated, {"spreadsheet-name": newName, "spreadsheet-id": id});
+    checkJson(updated, {"spreadsheet-name": newName.toJson(), "spreadsheet-id": id});
 
     // original should be unmodified
     checkJson(metadata, json);
@@ -213,7 +211,7 @@ function checkSpreadsheetId(metadata, id) {
 }
 
 function checkSpreadsheetName(metadata, name) {
-    expect(metadata.spreadsheetName()).toBe(name);
+    expect(metadata.spreadsheetName()).toStrictEqual(name);
 }
 
 // checks toJson and toString
