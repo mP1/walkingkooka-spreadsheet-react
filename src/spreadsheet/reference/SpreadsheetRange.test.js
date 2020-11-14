@@ -43,6 +43,9 @@ function check(range, begin, end, json) {
     expect(range.begin()).toStrictEqual(begin);
     expect(range.end()).toStrictEqual(end);
 
+    expect(range.begin()).toBeInstanceOf(SpreadsheetCellReference);
+    expect(range.end()).toBeInstanceOf(SpreadsheetCellReference);
+
     expect(range.toJson()).toStrictEqual(json);
     expect(range.toString()).toBe(json);
 

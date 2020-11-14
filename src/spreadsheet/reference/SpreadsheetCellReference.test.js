@@ -29,6 +29,8 @@ test("json", () => {
 
 function check(spreadsheetCellReference, reference) {
     expect(spreadsheetCellReference.reference()).toStrictEqual(reference);
+    expect(spreadsheetCellReference.reference()).toBeString();
+
     expect(spreadsheetCellReference.toJson()).toStrictEqual(reference);
     expect(spreadsheetCellReference.toString()).toBe(reference);
     expect(SpreadsheetCellReference.fromJson(spreadsheetCellReference.toJson())).toStrictEqual(spreadsheetCellReference);

@@ -29,6 +29,8 @@ test("json", () => {
 
 function check(spreadsheetCellFormat, pattern) {
     expect(spreadsheetCellFormat.pattern()).toStrictEqual(pattern);
+    expect(spreadsheetCellFormat.pattern()).toBeString();
+
     expect(spreadsheetCellFormat.toJson()).toStrictEqual(pattern);
     expect(spreadsheetCellFormat.toString()).toBe(pattern);
     expect(SpreadsheetCellFormat.fromJson(spreadsheetCellFormat.toJson())).toStrictEqual(spreadsheetCellFormat);

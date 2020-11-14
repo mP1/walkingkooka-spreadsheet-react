@@ -64,6 +64,8 @@ test("json with children", () => {
 
 function check(style, styles, json) {
     expect(style.styles()).toStrictEqual(styles);
+    expect(style.styles()).toBeInstanceOf(TextStyle);
+
     expect(style.toJson()).toStrictEqual(json);
     expect(style.toString()).toBe(JSON.stringify(json));
     expect(fromJson(style.toJson())).toStrictEqual(style);

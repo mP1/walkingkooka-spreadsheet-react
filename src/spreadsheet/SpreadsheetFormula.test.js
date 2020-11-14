@@ -56,8 +56,14 @@ test("json text & error", () => {
 
 function check(spreadsheetFormula, text, value, error, json) {
     expect(spreadsheetFormula.text()).toStrictEqual(text);
+    expect(spreadsheetFormula.text()).toBeString();
+
     expect(spreadsheetFormula.value()).toStrictEqual(value);
+
     expect(spreadsheetFormula.error()).toStrictEqual(error);
+    if (error) {
+        expect(spreadsheetFormula.error()).toBeInstanceOf(SpreadsheetError);
+    }
 
     expect(spreadsheetFormula.toJson()).toStrictEqual(json);
     expect(spreadsheetFormula.toString()).toBe(JSON.stringify(json));
