@@ -5,7 +5,7 @@ import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
-import SpreadsheetName from '../SpreadsheetName/SpreadsheetName.js';
+import SpreadsheetNameWidget from '../SpreadsheetName/SpreadsheetNameWidget.js';
 import PropTypes from "prop-types";
 
 /**
@@ -39,7 +39,7 @@ export default class SpreadsheetAppBarTop extends React.Component {
                             aria-label="menu">
                     <MenuIcon/>
                 </IconButton>
-                <SpreadsheetName app={this.app}/>
+                <SpreadsheetNameWidget app={this.app}/>
             </Toolbar>
         </AppBar>);
     }

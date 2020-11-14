@@ -7,7 +7,7 @@ import AppAwareComponent from "../AppAwareComponent";
 /**
  * A wrapper that is a bridge between App updates and also updating following changes to the text field.
  */
-export default class SpreadsheetName extends AppAwareComponent {
+export default class SpreadsheetNameWidget extends AppAwareComponent {
 
     constructor(props) {
         super(props);
@@ -28,6 +28,6 @@ export default class SpreadsheetName extends AppAwareComponent {
     }
 }
 
-SpreadsheetName.propTypes = {
+SpreadsheetNameWidget.propTypes = {
     app: PropTypes.object.isRequired,
 }
