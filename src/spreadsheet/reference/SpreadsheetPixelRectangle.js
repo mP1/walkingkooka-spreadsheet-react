@@ -9,20 +9,24 @@ const SEPARATOR = ":";
 export default class SpreadsheetPixelRectangle extends SpreadsheetRectangle {
 
     static fromJson(json) {
-        if (!json) {
-            throw new Error("Missing json");
+        return SpreadsheetPixelRectangle.parse(json);
+    }
+
+    static parse(text) {
+        if (!text) {
+            throw new Error("Missing text");
         }
-        if (typeof json != "string") {
-            throw new Error("Expected string got " + json);
+        if (typeof text != "string") {
+            throw new Error("Expected string got " + text);
         }
 
-        let tokens = json.split(SEPARATOR);
+        let tokens = text.split(SEPARATOR);
         if (3 != tokens.length) {
-            throw new Error("Expected 3 tokens got " + json);
+            throw new Error("Expected 3 tokens got " + text);
         }
 
         return new SpreadsheetPixelRectangle(
-            SpreadsheetCellReference.fromJson(tokens[0]),
+            SpreadsheetCellReference.parse(tokens[0]),
             Number(tokens[1]),
             Number(tokens[2])
         );
