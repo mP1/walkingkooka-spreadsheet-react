@@ -69,7 +69,7 @@ export default class SpreadsheetMetadata {
             throw new Error("Missing value");
         }
 
-        return value == this.get(property) ?
+        return value === this.get(property) ?
             this :
             copyAndSet(this.json, property, value);
     }

@@ -90,7 +90,7 @@ export default class App extends React.Component {
 
     removeSpreadsheetMetadataListener(listener) {
         const index = this.spreadsheetMetadataListeners.indexOf(listener);
-        if(-1 != index) {
+        if(-1 !== index) {
             this.spreadsheetMetadataListeners = this.spreadsheetMetadataListeners.slice(index, 1);
         }
     }
