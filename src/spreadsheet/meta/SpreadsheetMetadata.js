@@ -6,6 +6,7 @@ import TextStyle from "../../text/TextStyle";
 const DEFAULTS = "_defaults";
 const SPREADSHEET_NAME = "spreadsheet-name";
 const STYLE = "style";
+const VIEWPORT_X = "viewport-x";
 
 function createEmpty() {
     const empty = new SpreadsheetMetadata({});
@@ -83,10 +84,14 @@ export default class SpreadsheetMetadata {
             case STYLE:
                 type = TextStyle;
                 break;
+            case VIEWPORT_X:
+                type = Number;
+                break;
             default:
                 throw new Error("Unknown property \"" + property + "\"");
         }
-        if (!(value instanceof type)) {
+        if ((type == Number && Number.isNaN(value)) ||
+            (typeof value == "function" && !(value instanceof type))) {
             throw new Error("Expected " + type + " property " + property + " with value " + value);
         }
 
@@ -151,6 +156,14 @@ export default class SpreadsheetMetadata {
 
     setStyle(style) {
         return this.set(STYLE, style);
+    }
+
+    viewportX() {
+        return this.get(VIEWPORT_X);
+    }
+
+    setViewportX(viewportX) {
+        return this.set(VIEWPORT_X, viewportX);
     }
 
     /**
