@@ -1,9 +1,10 @@
 import SpreadsheetCellReference from "./SpreadsheetCellReference";
+import SpreadsheetRectangle from "./SpreadsheetRectangle";
 
 /**
  * A range is marked by two cell references.
  */
-export default class SpreadsheetRange {
+export default class SpreadsheetRange extends SpreadsheetRectangle{
 
     static fromJson(json) {
         if (!json) {
@@ -22,6 +23,7 @@ export default class SpreadsheetRange {
     }
 
     constructor(begin, end) {
+        super();
         if (!begin) {
             throw new Error("Missing begin");
         }
