@@ -3,7 +3,7 @@ import './App.css';
 
 import SpreadsheetAppBarTop from "./components/SpreadsheetAppBarTop/SpreadsheetAppBarTop.js";
 import SpreadsheetContent from "./components/SpreadsheetContent/SpreadsheetContent.js";
-import SpreadsheetFormula from "./components/SpreadsheetFormula/SpreadsheetFormula.js";
+import SpreadsheetFormulaWidget from "./components/SpreadsheetFormula/SpreadsheetFormulaWidget.js";
 import SpreadsheetMetadata from "./spreadsheet/meta/SpreadsheetMetadata.js";
 import SpreadsheetMessenger from "./util/SpreadsheetMessenger.js";
 
@@ -60,7 +60,7 @@ export default class App extends React.Component {
             <div>
                 <SpreadsheetAppBarTop app={this}/>
                 <Divider/>
-                <SpreadsheetFormula/>
+                <SpreadsheetFormulaWidget/>
                 <Divider/>
                 <SpreadsheetContent/>
             </div>
