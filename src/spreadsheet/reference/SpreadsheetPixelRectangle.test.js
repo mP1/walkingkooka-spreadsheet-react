@@ -84,12 +84,13 @@ test("json", () => {
 
 function check(pixel, reference, width, height) {
     expect(pixel.reference()).toStrictEqual(reference);
-    expect(pixel.width()).toStrictEqual(width);
-    expect(pixel.height()).toStrictEqual(height);
-
     expect(pixel.reference()).toBeInstanceOf(SpreadsheetCellReference);
-    expect(typeof pixel.width()).toStrictEqual("number");
-    expect(typeof pixel.height()).toStrictEqual("number");
+
+    expect(pixel.width()).toStrictEqual(width);
+    expect(pixel.width()).toBeNumber();
+
+    expect(pixel.height()).toStrictEqual(height);
+    expect(pixel.height()).toBeNumber();
 
     const json = reference + ":" + width + ":" + height;
     expect(pixel.toJson()).toStrictEqual(json);
