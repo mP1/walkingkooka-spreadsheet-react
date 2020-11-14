@@ -137,10 +137,27 @@ test("fromJson null fails", () => {
 
 function check(cell, reference, formula, style, format, formatted, json) {
     expect(cell.reference()).toStrictEqual(reference);
+    expect(cell.reference()).toBeInstanceOf(SpreadsheetCellReference);
+
     expect(cell.formula()).toStrictEqual(formula);
+    expect(cell.formula()).toBeInstanceOf(SpreadsheetFormula);
+
     expect(cell.style()).toStrictEqual(style);
+
+    if (style) {
+        expect(cell.style()).toBeInstanceOf(TextStyle);
+    }
+
     expect(cell.format()).toStrictEqual(format);
+
+    if (format) {
+        expect(cell.format()).toBeInstanceOf(SpreadsheetCellFormat);
+    }
+
     expect(cell.formatted()).toStrictEqual(formatted);
+    if (formatted) {
+        expect(cell.formatted()).toBeInstanceOf(Text);
+    }
 
     expect(cell.toJson()).toStrictEqual(json);
     expect(cell.toString()).toBe(JSON.stringify(json));

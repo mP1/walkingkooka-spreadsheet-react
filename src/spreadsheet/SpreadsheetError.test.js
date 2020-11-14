@@ -29,6 +29,8 @@ test("json", () => {
 
 function check(spreadsheetError, message) {
     expect(spreadsheetError.message()).toStrictEqual(message);
+    expect(spreadsheetError.message()).toBeString();
+
     expect(spreadsheetError.toJson()).toStrictEqual(message);
     expect(spreadsheetError.toString()).toBe(message);
     expect(SpreadsheetError.fromJson(spreadsheetError.toJson())).toStrictEqual(spreadsheetError);
