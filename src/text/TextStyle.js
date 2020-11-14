@@ -17,6 +17,12 @@ function copyAndRemove(styles, style) {
 }
 
 const WIDTH = "width";
+const HEIGHT = "height";
+
+function fromPixel(value) {
+    const number = value && Number.parseFloat(value);
+    return (value || !Number.isNaN(number)) && number;
+}
 
 /**
  * Holds many style properties and values.
@@ -61,9 +67,14 @@ export default class TextStyle {
      * Returns the width as a number removing the px suffix or undefined if absent.
      */
     width() {
-        const width = this.get(WIDTH);
-        const number = width && Number.parseFloat(width);
-        return (width || !Number.isNaN(number)) && number;
+        return fromPixel(this.get(WIDTH));
+    }
+
+    /**
+     * Returns the height as a number removing the px suffix or undefined if absent.
+     */
+    height() {
+        return fromPixel(this.get(HEIGHT));
     }
 
     /**

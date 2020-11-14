@@ -131,6 +131,18 @@ test("width pixel value", () => {
     }).width()).toBe(123.0);
 });
 
+// height................................................................................................................
+
+test("height missing", () => {
+    expect(TextStyle.EMPTY.height()).toBeUndefined();
+});
+
+test("height pixel value", () => {
+    expect(TextStyle.fromJson({
+        "height": "123px"
+    }).height()).toBe(123.0);
+});
+
 // helpers..............................................................................................................
 
 // checks toJson and toString
