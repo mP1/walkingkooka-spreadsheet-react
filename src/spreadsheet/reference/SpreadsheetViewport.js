@@ -6,10 +6,10 @@ import SpreadsheetRectangle from "./SpreadsheetRectangle";
 
 const SEPARATOR = ":";
 
-export default class SpreadsheetPixelRectangle extends SpreadsheetRectangle {
+export default class SpreadsheetViewport extends SpreadsheetRectangle {
 
     static fromJson(json) {
-        return SpreadsheetPixelRectangle.parse(json);
+        return SpreadsheetViewport.parse(json);
     }
 
     static parse(text) {
@@ -25,7 +25,7 @@ export default class SpreadsheetPixelRectangle extends SpreadsheetRectangle {
             throw new Error("Expected 3 tokens got " + text);
         }
 
-        return new SpreadsheetPixelRectangle(
+        return new SpreadsheetViewport(
             SpreadsheetCellReference.parse(tokens[0]),
             Number(tokens[1]),
             Number(tokens[2])
