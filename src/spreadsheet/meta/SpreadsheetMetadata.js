@@ -1,13 +1,13 @@
 import SpreadsheetName from "../SpreadsheetName";
 
 import TextStyle from "../../text/TextStyle";
+import SpreadsheetCoordinates from "../SpreadsheetCoordinates";
 
 // these constants should match the constants in walkingkooka-spreadsheet/walkingkooka.spreadsheet.meta.SpreadsheetMetadataPropertyName.java
 const DEFAULTS = "_defaults";
 const SPREADSHEET_NAME = "spreadsheet-name";
 const STYLE = "style";
-const VIEWPORT_X = "viewport-x";
-const VIEWPORT_Y = "viewport-y";
+const VIEWPORT = "viewport";
 
 function createEmpty() {
     const empty = new SpreadsheetMetadata({});
@@ -85,9 +85,8 @@ export default class SpreadsheetMetadata {
             case STYLE:
                 type = TextStyle;
                 break;
-            case VIEWPORT_X:
-            case VIEWPORT_Y:
-                type = Number;
+            case VIEWPORT:
+                type = SpreadsheetCoordinates;
                 break;
             default:
                 throw new Error("Unknown property \"" + property + "\"");
@@ -160,20 +159,13 @@ export default class SpreadsheetMetadata {
         return this.set(STYLE, style);
     }
 
-    viewportX() {
-        return this.get(VIEWPORT_X);
+    viewport() {
+        const viewport = this.get(VIEWPORT);
+        return viewport && SpreadsheetCoordinates.fromJson(viewport);
     }
 
-    setViewportX(viewportX) {
-        return this.set(VIEWPORT_X, viewportX);
-    }
-
-    viewportY() {
-        return this.get(VIEWPORT_Y);
-    }
-
-    setViewportY(viewportY) {
-        return this.set(VIEWPORT_Y, viewportY);
+    setViewport(viewport) {
+        return this.set(VIEWPORT, viewport);
     }
     
     /**
