@@ -1,6 +1,7 @@
 import SpreadsheetMetadata from "./SpreadsheetMetadata";
 import SpreadsheetName from "../SpreadsheetName";
 import TextStyle from "../../text/TextStyle";
+import SpreadsheetCoordinates from "../SpreadsheetCoordinates";
 
 test("Empty", () => {
     const metadata = SpreadsheetMetadata.EMPTY;
@@ -160,33 +161,18 @@ test("set style", () => {
         });
 })
 
-// viewportX.............................................................................................................
+// viewport.............................................................................................................
 
-test("get viewport x", () => {
+test("get viewport", () => {
     expect(new SpreadsheetMetadata({
-        'viewport-x': 123.5
-    }).viewportX()).toBe(123.5);
+        'viewport': "123.5,400"
+    }).viewport()).toEqual(SpreadsheetCoordinates.parse("123.5,400"));
 })
 
-test("set viewport x", () => {
-    checkJson(SpreadsheetMetadata.EMPTY.setViewportX(123.0),
+test("set viewport", () => {
+    checkJson(SpreadsheetMetadata.EMPTY.setViewport(SpreadsheetCoordinates.parse("123.5,400")),
         {
-            "viewport-x": 123.0
-        });
-})
-
-// viewportY.............................................................................................................
-
-test("get viewport y", () => {
-    expect(new SpreadsheetMetadata({
-        'viewport-y': 123.5
-    }).viewportY()).toBe(123.5);
-})
-
-test("set viewport y", () => {
-    checkJson(SpreadsheetMetadata.EMPTY.setViewportY(123.0),
-        {
-            "viewport-y": 123.0
+            "viewport": "123.5,400"
         });
 })
 
