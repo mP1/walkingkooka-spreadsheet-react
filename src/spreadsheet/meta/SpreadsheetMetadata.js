@@ -152,7 +152,8 @@ export default class SpreadsheetMetadata {
     }
 
     style() {
-        return this.get(STYLE);
+        const style = this.get(STYLE);
+        return style && TextStyle.fromJson(style);
     }
 
     setStyle(style) {
