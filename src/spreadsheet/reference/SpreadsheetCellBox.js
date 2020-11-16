@@ -48,16 +48,16 @@ export default class SpreadsheetCellBox {
         if (typeof (width) !== "number") {
             throw new Error("Expected number width got " + width);
         }
-        if (width <= 0) {
-            throw new Error("Expected width > 0 got " + width);
+        if (width < 0) {
+            throw new Error("Expected width >= 0 got " + width);
         }
         this.widthValue = width;
 
         if (typeof (height) !== "number") {
             throw new Error("Expected number height got " + height);
         }
-        if (height <= 0) {
-            throw new Error("Expected height > 0 got " + height);
+        if (height < 0) {
+            throw new Error("Expected height >= 0 got " + height);
         }
         this.heightValue = height;
     }
