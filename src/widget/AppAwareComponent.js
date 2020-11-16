@@ -11,11 +11,15 @@ export default class AppAwareComponent extends React.Component {
     }
 
     componentDidMount() {
-        this.app.addSpreadsheetMetadataListener(this);
+        this.app.addSpreadsheetMetadataListener(this.setSpreadsheetMetadata.bind(this));
     }
 
     componentWillUnmount() {
-        this.app.removeSpreadsheetMetadataListener(this);
+        this.app.removeSpreadsheetMetadataListener(this.setSpreadsheetMetadata);
+    }
+
+    setSpreadsheetMetadata(metadata) {
+        this.setState({spreadsheetMetadata: metadata});
     }
 
     spreadsheetName() {
