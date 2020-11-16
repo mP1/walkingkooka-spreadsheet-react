@@ -91,8 +91,8 @@ export default class SpreadsheetMetadata {
             default:
                 throw new Error("Unknown property \"" + property + "\"");
         }
-        if ((type == Number && Number.isNaN(value)) ||
-            (typeof value == "function" && !(value instanceof type))) {
+        if ((type === Number && Number.isNaN(value)) ||
+            (typeof value === "function" && !(value instanceof type))) {
             throw new Error("Expected " + type + " property " + property + " with value " + value);
         }
 

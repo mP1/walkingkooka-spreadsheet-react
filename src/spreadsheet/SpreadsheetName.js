@@ -11,7 +11,7 @@ export default class SpreadsheetName {
         if (!value) {
             throw new Error("Missing value");
         }
-        if (typeof value != "string") {
+        if (typeof value !== "string") {
             throw new Error("Expected string got " + value);
         }
         this.valueValue = value;

@@ -15,7 +15,7 @@ export default class SpreadsheetCellReference {
         if (!reference) {
             throw new Error("Missing reference");
         }
-        if (typeof reference != "string") {
+        if (typeof reference !== "string") {
             throw new Error("Expected string got " + reference);
         }
         this.referenceValue = reference;
