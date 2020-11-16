@@ -19,7 +19,7 @@ export default class SpreadsheetRange extends SpreadsheetRectangle{
         }
 
         let tokens = text.split(":");
-        if (2 != tokens.length) {
+        if (2 !== tokens.length) {
             throw new Error("Expected 2 tokens got " + text);
         }
 
