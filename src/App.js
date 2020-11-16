@@ -86,13 +86,6 @@ export default class App extends React.Component {
         });
     }
 
-    addSpreadsheetMetadataListener(listener) {
-        this.spreadsheetMetadataListeners.add(listener);
-    }
-
-    removeSpreadsheetMetadataListener(listener) {
-        this.spreadsheetMetadataListeners.remove(listener);
-    }
     spreadsheetMetadataListeners = new Listeners();
 
     toString() {
