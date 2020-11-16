@@ -21,7 +21,7 @@ export default class App extends React.Component {
         const handleSpreadsheetMetadata = (metadata) => {
             console.log("handleSpreadsheetMetadata " + new SpreadsheetMetadata(metadata));
 
-            this.dispatchSpreadsheetMetadataListeners(new SpreadsheetMetadata(metadata));
+            this.spreadsheetMetadataListeners.dispatch(new SpreadsheetMetadata(metadata));
         }
 
         const handleSpreadsheetDelta = (delta) => {
@@ -68,6 +68,8 @@ export default class App extends React.Component {
         );
     }
 
+    // SpreadsheetMetadata..............................................................................................
+
     spreadsheetMetadata() {
         return this.state.spreadsheetMetadata;
     }
@@ -92,11 +94,6 @@ export default class App extends React.Component {
     removeSpreadsheetMetadataListener(listener) {
         this.spreadsheetMetadataListeners.remove(listener);
     }
-
-    dispatchSpreadsheetMetadataListeners(metadata) {
-        this.spreadsheetMetadataListeners.dispatch(metadata);
-    }
-
     spreadsheetMetadataListeners = new Listeners();
 
     toString() {
