@@ -4,7 +4,11 @@
 export default class SpreadsheetName {
 
     static fromJson(value) {
-        return new SpreadsheetName(value);
+        return SpreadsheetName.parse(value);
+    }
+
+    static parse(text) {
+        return new SpreadsheetName(text);
     }
 
     constructor(value) {

@@ -5,6 +5,7 @@ import SpreadsheetCoordinates from "../SpreadsheetCoordinates";
 
 // these constants should match the constants in walkingkooka-spreadsheet/walkingkooka.spreadsheet.meta.SpreadsheetMetadataPropertyName.java
 const DEFAULTS = "_defaults";
+const SPREADSHEET_ID = "spreadsheet-id";
 const SPREADSHEET_NAME = "spreadsheet-name";
 const STYLE = "style";
 const VIEWPORT_COORDINATES = "viewport-coordinates";
@@ -50,10 +51,18 @@ export default class SpreadsheetMetadata {
         this.json = Object.assign({}, json) || {} // defensive copy
     }
 
+    getOrFail(property, factory) {
+        const value = this.get(property, factory);
+        if(!value) {
+            throw new Error("Missing \"" + property + "\" " + this);
+        }
+        return value;
+    }
+
     /**
      * General purpose getter
      */
-    get(property) {
+    get(property, factory) {
         let json = this.json;
         var value;
 
@@ -65,7 +74,9 @@ export default class SpreadsheetMetadata {
             json = json[DEFAULTS];
         } while (json);
 
-        return value;
+        return value && factory ?
+            factory(value) :
+            value;
     }
 
     // TODO introduce value validation.
@@ -136,15 +147,11 @@ export default class SpreadsheetMetadata {
     }
 
     spreadsheetId() {
-        const id = this.get("spreadsheet-id");
-        if (!id) {
-            throw new Error("Missing \"spreadsheet-id\" " + this);
-        }
-        return id;
+        return this.getOrFail(SPREADSHEET_ID);
     }
 
     spreadsheetName() {
-        return SpreadsheetName.fromJson(this.json[SPREADSHEET_NAME]);
+        return this.get(SPREADSHEET_NAME, SpreadsheetName.fromJson);
     }
 
     setSpreadsheetName(name) {
@@ -152,8 +159,7 @@ export default class SpreadsheetMetadata {
     }
 
     style() {
-        const style = this.get(STYLE);
-        return style && TextStyle.fromJson(style);
+        return this.get(STYLE, TextStyle.fromJson);
     }
 
     setStyle(style) {
@@ -161,8 +167,7 @@ export default class SpreadsheetMetadata {
     }
 
     viewportCoordinates() {
-        const coords = this.get(VIEWPORT_COORDINATES);
-        return coords && SpreadsheetCoordinates.fromJson(coords);
+        return this.get(VIEWPORT_COORDINATES, SpreadsheetCoordinates.fromJson);
     }
 
     setViewportCoordinates(coords) {
