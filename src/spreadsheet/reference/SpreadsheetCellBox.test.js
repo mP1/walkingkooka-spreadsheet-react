@@ -45,13 +45,13 @@ test("create invalid x type fails", () => {
 });
 
 test("create invalid x value fails", () => {
-    const x = 0;
-    expect(() => new SpreadsheetCellBox(reference(), x, y(), width(), height())).toThrow("Expected x > 0 got " + x);
+    const x = -1;
+    expect(() => new SpreadsheetCellBox(reference(), x, y(), width(), height())).toThrow("Expected x >= 0 got " + x);
 });
 
 test("create invalid x value fails2", () => {
     const x = -123;
-    expect(() => new SpreadsheetCellBox(reference(), x, y(), width(), height())).toThrow("Expected x > 0 got " + x);
+    expect(() => new SpreadsheetCellBox(reference(), x, y(), width(), height())).toThrow("Expected x >= 0 got " + x);
 });
 
 // y
@@ -67,13 +67,13 @@ test("create invalid y type fails", () => {
 });
 
 test("create invalid y value fails", () => {
-    const y = 0;
-    expect(() => new SpreadsheetCellBox(reference(), x(), y, width(), height())).toThrow("Expected y > 0 got " + y);
+    const y = -1;
+    expect(() => new SpreadsheetCellBox(reference(), x(), y, width(), height())).toThrow("Expected y >= 0 got " + y);
 });
 
 test("create invalid y value fails2", () => {
     const y = -123;
-    expect(() => new SpreadsheetCellBox(reference(), x(), y, width(), height())).toThrow("Expected y > 0 got " + y);
+    expect(() => new SpreadsheetCellBox(reference(), x(), y, width(), height())).toThrow("Expected y >= 0 got " + y);
 });
 
 // width
@@ -131,6 +131,18 @@ test("new", () => {
         reference(),
         x(),
         y(),
+        width(),
+        height());
+});
+
+test("new x=0 y=0", () => {
+    const x = 0;
+    const y = 0;
+
+    check(new SpreadsheetCellBox(reference(), x, y, width(), height()),
+        reference(),
+        x,
+        y,
         width(),
         height());
 });
