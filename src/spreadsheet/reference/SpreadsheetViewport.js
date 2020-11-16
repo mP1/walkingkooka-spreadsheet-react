@@ -21,7 +21,7 @@ export default class SpreadsheetViewport extends SpreadsheetRectangle {
         }
 
         let tokens = text.split(SEPARATOR);
-        if (3 != tokens.length) {
+        if (3 !== tokens.length) {
             throw new Error("Expected 3 tokens got " + text);
         }
 
