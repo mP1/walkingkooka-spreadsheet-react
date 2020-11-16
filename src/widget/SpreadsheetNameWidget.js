@@ -18,19 +18,24 @@ export default class SpreadsheetNameWidget extends AppAwareComponent {
     }
 
     componentWillUpdate(nextProps, nextState) {
-        this.textField.current.setState({value: nextState.spreadsheetMetadata.spreadsheetName().value()});
+        this.textField.current.setState({value: spreadsheetNameText(nextState.spreadsheetMetadata.spreadsheetName())});
     }
 
     render() {
-        const name = this.spreadsheetName();
-
         // TODO add a validator to verify spreadsheetName characters, then call setSpreadsheetName function
         return <SpreadsheetTextField ref={this.textField}
-                                     value={(name && name.value()) || ""}
+                                     value={spreadsheetNameText(this.spreadsheetName())}
                                      setValue={v => this.setSpreadsheetName.bind(this)(new SpreadsheetName(v))}/>
     }
 }
 
 SpreadsheetNameWidget.propTypes = {
     app: PropTypes.object.isRequired,
+}
+
+/**
+ * Safely defaults to empty string if spreadsheetname is absent.
+ */
+function spreadsheetNameText(name) {
+    return (name && name.value()) || "";
 }
