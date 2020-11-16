@@ -144,6 +144,28 @@ test("height pixel value", () => {
     }).height()).toStrictEqual(new PixelLength(123.0));
 });
 
+// toString.............................................................................................................
+
+test("toString", () => {
+    expect(TextStyle.EMPTY
+        .set(BACKGROUND_COLOR, BACKGROUND_COLOR_VALUE)
+        .toString())
+        .toEqual(JSON.stringify({
+            "background-color": BACKGROUND_COLOR_VALUE
+        }));
+});
+
+test("toString several properties", () => {
+    expect(TextStyle.EMPTY
+        .set(BACKGROUND_COLOR, BACKGROUND_COLOR_VALUE)
+        .set(COLOR, COLOR_VALUE)
+        .toString())
+        .toEqual(JSON.stringify({
+            "background-color": BACKGROUND_COLOR_VALUE,
+            "color": COLOR_VALUE
+        }));
+});
+
 // helpers..............................................................................................................
 
 // checks toJson and toString
