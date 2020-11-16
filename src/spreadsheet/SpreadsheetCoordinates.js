@@ -29,16 +29,16 @@ export default class SpreadsheetCoordinates {
         if (typeof (x) !== "number") {
             throw new Error("Expected number x got " + x);
         }
-        if (x <= 0) {
-            throw new Error("Expected x > 0 got " + x);
+        if (x < 0) {
+            throw new Error("Expected x >= 0 got " + x);
         }
         this.xValue = x;
 
         if (typeof (y) !== "number") {
             throw new Error("Expected number y got " + y);
         }
-        if (y <= 0) {
-            throw new Error("Expected y > 0 got " + y);
+        if (y < 0) {
+            throw new Error("Expected y >= 0 got " + y);
         }
         this.yValue = y;
     }
