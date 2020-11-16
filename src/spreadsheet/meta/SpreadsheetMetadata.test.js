@@ -151,6 +151,35 @@ test("set property different", () => {
         });
 })
 
+// id.............................................................................................................
+
+test("get spreadsheet-id", () => {
+    const id = "123ABC";
+
+    expect(new SpreadsheetMetadata({
+        "spreadsheet-id": id
+    }).spreadsheetId()).toEqual(id);
+})
+
+// viewportCoordinates.............................................................................................................
+
+test("get spreadsheet-name", () => {
+    const name = "spreadsheet-name-123";
+
+    expect(new SpreadsheetMetadata({
+        "spreadsheet-name": name
+    }).spreadsheetName()).toEqual(SpreadsheetName.parse(name));
+})
+
+test("set spreadsheet-name", () => {
+    const name = SpreadsheetName.parse("spreadsheet-name-123");
+
+    checkJson(SpreadsheetMetadata.EMPTY.setSpreadsheetName(name),
+        {
+            "spreadsheet-name": name.value()
+        });
+})
+
 // setStyle.............................................................................................................
 
 test("set style", () => {
