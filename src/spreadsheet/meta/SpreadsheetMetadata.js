@@ -7,7 +7,7 @@ import SpreadsheetCoordinates from "../SpreadsheetCoordinates";
 const DEFAULTS = "_defaults";
 const SPREADSHEET_NAME = "spreadsheet-name";
 const STYLE = "style";
-const VIEWPORT = "viewport";
+const VIEWPORT_COORDINATES = "viewport-coordinates";
 
 function createEmpty() {
     const empty = new SpreadsheetMetadata({});
@@ -85,7 +85,7 @@ export default class SpreadsheetMetadata {
             case STYLE:
                 type = TextStyle;
                 break;
-            case VIEWPORT:
+            case VIEWPORT_COORDINATES:
                 type = SpreadsheetCoordinates;
                 break;
             default:
@@ -159,13 +159,13 @@ export default class SpreadsheetMetadata {
         return this.set(STYLE, style);
     }
 
-    viewport() {
-        const viewport = this.get(VIEWPORT);
-        return viewport && SpreadsheetCoordinates.fromJson(viewport);
+    viewportCoordinates() {
+        const coords = this.get(VIEWPORT_COORDINATES);
+        return coords && SpreadsheetCoordinates.fromJson(coords);
     }
 
-    setViewport(viewport) {
-        return this.set(VIEWPORT, viewport);
+    setViewportCoordinates(coords) {
+        return this.set(VIEWPORT_COORDINATES, coords);
     }
     
     /**
