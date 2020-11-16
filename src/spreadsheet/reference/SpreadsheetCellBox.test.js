@@ -89,13 +89,13 @@ test("create invalid width type fails", () => {
 });
 
 test("create invalid width value fails", () => {
-    const width = 0;
-    expect(() => new SpreadsheetCellBox(reference(), x(), y(), width, height())).toThrow("Expected width > 0 got " + width);
+    const width = -1;
+    expect(() => new SpreadsheetCellBox(reference(), x(), y(), width, height())).toThrow("Expected width >= 0 got " + width);
 });
 
 test("create invalid width value fails2", () => {
     const width = -123;
-    expect(() => new SpreadsheetCellBox(reference(), x(), y(), width, height())).toThrow("Expected width > 0 got " + width);
+    expect(() => new SpreadsheetCellBox(reference(), x(), y(), width, height())).toThrow("Expected width >= 0 got " + width);
 });
 
 // height
@@ -111,13 +111,13 @@ test("create invalid height type fails", () => {
 });
 
 test("create invalid height value fails", () => {
-    const height = 0;
-    expect(() => new SpreadsheetCellBox(reference(), x(), y(), width(), height)).toThrow("Expected height > 0 got " + height);
+    const height = -1;
+    expect(() => new SpreadsheetCellBox(reference(), x(), y(), width(), height)).toThrow("Expected height >= 0 got " + height);
 });
 
 test("create invalid height value fails2", () => {
     const height = -123;
-    expect(() => new SpreadsheetCellBox(reference(), x(), y(), width(), height)).toThrow("Expected height > 0 got " + height);
+    expect(() => new SpreadsheetCellBox(reference(), x(), y(), width(), height)).toThrow("Expected height >= 0 got " + height);
 });
 
 // json
@@ -145,6 +145,26 @@ test("new x=0 y=0", () => {
         y,
         width(),
         height());
+});
+
+test("new 0 width", () => {
+    const width = 0;
+    check(new SpreadsheetCellBox(reference(), x(), y(), width, height()),
+        reference(),
+        x(),
+        y(),
+        width,
+        height());
+});
+
+test("new 0 height", () => {
+    const height = 0;
+    check(new SpreadsheetCellBox(reference(), x(), y(), width(), height),
+        reference(),
+        x(),
+        y(),
+        width(),
+        height);
 });
 
 test("from json", () => {
