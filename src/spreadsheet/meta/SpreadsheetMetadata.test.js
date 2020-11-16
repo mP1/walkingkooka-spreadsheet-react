@@ -161,18 +161,18 @@ test("set style", () => {
         });
 })
 
-// viewport.............................................................................................................
+// viewportCoordinates.............................................................................................................
 
-test("get viewport", () => {
+test("get viewport-coordinates", () => {
     expect(new SpreadsheetMetadata({
-        'viewport': "123.5,400"
-    }).viewport()).toEqual(SpreadsheetCoordinates.parse("123.5,400"));
+        "viewport-coordinates": "123.5,400"
+    }).viewportCoordinates()).toEqual(SpreadsheetCoordinates.parse("123.5,400"));
 })
 
-test("set viewport", () => {
-    checkJson(SpreadsheetMetadata.EMPTY.setViewport(SpreadsheetCoordinates.parse("123.5,400")),
+test("set viewport-coordinates", () => {
+    checkJson(SpreadsheetMetadata.EMPTY.setViewportCoordinates(SpreadsheetCoordinates.parse("123.5,400")),
         {
-            "viewport": "123.5,400"
+            "viewport-coordinates": "123.5,400"
         });
 })
 

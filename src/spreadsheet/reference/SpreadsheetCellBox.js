@@ -1,6 +1,6 @@
 /**
  * Captures the coordinates and dimensions of a rendered {@link SpreadsheetCell}.
- * This is used to locate the origin of the viewport and the dimensions of the cell there.
+ * This is used to locate the origin of the viewportCoordinates and the dimensions of the cell there.
  */
 import SpreadsheetCellReference from "./SpreadsheetCellReference";
 
