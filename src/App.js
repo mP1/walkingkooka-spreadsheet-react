@@ -6,6 +6,7 @@ import SpreadsheetContent from "./widget/SpreadsheetContent.js";
 import SpreadsheetFormulaWidget from "./widget/SpreadsheetFormulaWidget.js";
 import SpreadsheetMetadata from "./spreadsheet/meta/SpreadsheetMetadata.js";
 import SpreadsheetMessenger from "./util/SpreadsheetMessenger.js";
+import Listeners from "./util/Listeners";
 
 import Divider from '@material-ui/core/Divider';
 
@@ -85,21 +86,18 @@ export default class App extends React.Component {
     }
 
     addSpreadsheetMetadataListener(listener) {
-        this.spreadsheetMetadataListeners.push(listener);
+        this.spreadsheetMetadataListeners.add(listener);
     }
 
     removeSpreadsheetMetadataListener(listener) {
-        const index = this.spreadsheetMetadataListeners.indexOf(listener);
-        if(-1 !== index) {
-            this.spreadsheetMetadataListeners = this.spreadsheetMetadataListeners.slice(index, 1);
-        }
+        this.spreadsheetMetadataListeners.remove(listener);
     }
 
     dispatchSpreadsheetMetadataListeners(metadata) {
-        this.spreadsheetMetadataListeners.forEach(l => l.setState({spreadsheetMetadata: metadata}))
+        this.spreadsheetMetadataListeners.dispatch(metadata);
     }
 
-    spreadsheetMetadataListeners = [];
+    spreadsheetMetadataListeners = new Listeners();
 
     toString() {
         return this.spreadsheetMetadata().toString();
