@@ -21,8 +21,6 @@ export default class SpreadsheetTextField extends React.Component {
         this.setValue = props.setValue;
 
         this.ref = React.createRef();
-
-        console.log("SpreadsheetTextField ctor: " + this.props.value);
     }
 
     componentDidMount() {
@@ -81,7 +79,9 @@ export default class SpreadsheetTextField extends React.Component {
     // update the value and fire an event with the updated value
     handleEnterKey(event) {
         this.stopEditing(event);
-        this.setValue(event.target.value);
+        const value = event.target.value;
+        this.setValue(value);
+        this.setState({"value": value});
     }
 
     stopEditing(event) {

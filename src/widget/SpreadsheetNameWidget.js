@@ -22,9 +22,11 @@ export default class SpreadsheetNameWidget extends AppAwareComponent {
     }
 
     render() {
+        const name = this.spreadsheetName();
+
         // TODO add a validator to verify spreadsheetName characters, then call setSpreadsheetName function
         return <SpreadsheetTextField ref={this.textField}
-                                     value={v => this.spreadsheetName.bind(this).value()}
+                                     value={(name && name.value()) || ""}
                                      setValue={v => this.setSpreadsheetName.bind(this)(new SpreadsheetName(v))}/>
     }
 }
