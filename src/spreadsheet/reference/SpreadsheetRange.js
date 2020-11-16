@@ -14,7 +14,7 @@ export default class SpreadsheetRange extends SpreadsheetRectangle{
         if (!text) {
             throw new Error("Missing text");
         }
-        if (typeof text != "string") {
+        if (typeof text !== "string") {
             throw new Error("Expected string got " + text);
         }
 

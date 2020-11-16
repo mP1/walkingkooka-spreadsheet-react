@@ -13,7 +13,7 @@ export default class SpreadsheetCellFormat {
         if (!pattern) {
             throw new Error("Missing pattern");
         }
-        if (typeof pattern != "string") {
+        if (typeof pattern !== "string") {
             throw new Error("Expected string got " + pattern);
         }
         this.patternValue = pattern;

@@ -11,7 +11,7 @@ export default class SpreadsheetError {
         if (!message) {
             throw new Error("Missing message");
         }
-        if (typeof message != "string") {
+        if (typeof message !== "string") {
             throw new Error("Expected string got " + message);
         }
         this.messageValue = message;

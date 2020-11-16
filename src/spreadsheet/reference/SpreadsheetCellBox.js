@@ -29,7 +29,7 @@ export default class SpreadsheetCellBox {
         }
         this.referenceValue = reference;
 
-        if (typeof (x) != "number") {
+        if (typeof (x) !== "number") {
             throw new Error("Expected number x got " + x);
         }
         if (x <= 0) {
@@ -37,7 +37,7 @@ export default class SpreadsheetCellBox {
         }
         this.xValue = x;
 
-        if (typeof (y) != "number") {
+        if (typeof (y) !== "number") {
             throw new Error("Expected number y got " + y);
         }
         if (y <= 0) {
@@ -45,7 +45,7 @@ export default class SpreadsheetCellBox {
         }
         this.yValue = y;
 
-        if (typeof (width) != "number") {
+        if (typeof (width) !== "number") {
             throw new Error("Expected number width got " + width);
         }
         if (width <= 0) {
@@ -53,7 +53,7 @@ export default class SpreadsheetCellBox {
         }
         this.widthValue = width;
 
-        if (typeof (height) != "number") {
+        if (typeof (height) !== "number") {
             throw new Error("Expected number height got " + height);
         }
         if (height <= 0) {

@@ -16,7 +16,7 @@ export default class SpreadsheetViewport extends SpreadsheetRectangle {
         if (!text) {
             throw new Error("Missing text");
         }
-        if (typeof text != "string") {
+        if (typeof text !== "string") {
             throw new Error("Expected string got " + text);
         }
 
@@ -43,7 +43,7 @@ export default class SpreadsheetViewport extends SpreadsheetRectangle {
         }
         this.referenceValue = reference;
 
-        if (typeof (width) != "number") {
+        if (typeof (width) !== "number") {
             throw new Error("Expected number width got " + width);
         }
         if (width <= 0) {
@@ -51,7 +51,7 @@ export default class SpreadsheetViewport extends SpreadsheetRectangle {
         }
         this.widthValue = width;
 
-        if (typeof (height) != "number") {
+        if (typeof (height) !== "number") {
             throw new Error("Expected number height got " + height);
         }
         if (height <= 0) {
