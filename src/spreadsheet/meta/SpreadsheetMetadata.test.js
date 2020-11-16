@@ -2,6 +2,7 @@ import SpreadsheetMetadata from "./SpreadsheetMetadata";
 import SpreadsheetName from "../SpreadsheetName";
 import TextStyle from "../../text/TextStyle";
 import SpreadsheetCoordinates from "../SpreadsheetCoordinates";
+import PixelLength from "../../text/PixelLength";
 
 test("Empty", () => {
     const metadata = SpreadsheetMetadata.EMPTY;
@@ -175,6 +176,24 @@ test("set viewport-coordinates", () => {
             "viewport-coordinates": "123.5,400"
         });
 })
+
+// set..................................................................................................................
+
+test("all setters & getters", () => {
+    const name = new SpreadsheetName("Spreadsheet-name-123");
+    const style = TextStyle.EMPTY
+        .set("width", PixelLength.parse("123px"));
+    const coords = new SpreadsheetCoordinates(12, 34);
+
+    const metadata = SpreadsheetMetadata.EMPTY
+        .setSpreadsheetName(name)
+        .setStyle(style)
+        .setViewportCoordinates(coords);
+
+    expect(metadata.spreadsheetName()).toEqual(name);
+    expect(metadata.style()).toEqual(style);
+    expect(metadata.viewportCoordinates()).toEqual(coords);
+});
 
 // defaults..............................................................................................................
 
