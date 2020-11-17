@@ -63,10 +63,11 @@ test("create reference, formula, missing style, format, formatted", () => {
     const f3 = formatted();
 
     check(new SpreadsheetCell(r, f, style, f2, f3), r, f, style, f2, f3, {
-        reference: r.toJson(),
-        formula: f.toJson(),
-        format: f2.toJson(),
-        formatted: f3.toJson()
+        "A99": {
+            formula: f.toJson(),
+            format: f2.toJson(),
+            formatted: f3.toJson()
+        }
     })
 })
 
@@ -78,10 +79,11 @@ test("create reference, formula, style, missing format, formatted", () => {
     const f3 = formatted();
 
     check(new SpreadsheetCell(r, f, s, format, f3), r, f, s, format, f3, {
-        reference: r.toJson(),
-        formula: f.toJson(),
-        style: s.toJson(),
-        formatted: f3.toJson()
+        "A99": {
+            formula: f.toJson(),
+            style: s.toJson(),
+            formatted: f3.toJson()
+        }
     })
 })
 
@@ -93,10 +95,11 @@ test("create reference, formula, style, format, missing formatted", () => {
     const f3 = undefined;
 
     check(new SpreadsheetCell(r, f, s, f2, f3), r, f, s, f2, f3, {
-        reference: r.toJson(),
-        formula: f.toJson(),
-        style: s.toJson(),
-        format: f2.toJson(),
+        "A99": {
+            formula: f.toJson(),
+            style: s.toJson(),
+            format: f2.toJson(),
+        }
     })
 });
 
@@ -108,8 +111,9 @@ test("create reference, formula", () => {
     const formatted = undefined;
 
     check(new SpreadsheetCell(r, f, s, format, formatted), r, f, s, format, formatted, {
-        reference: r.toJson(),
-        formula: f.toJson()
+        "A99": {
+            formula: f.toJson()
+        }
     })
 });
 
@@ -121,11 +125,12 @@ test("create reference, formula, style, format, formatted", () => {
     const f3 = formatted();
 
     check(new SpreadsheetCell(r, f, s, f2, f3), r, f, s, f2, f3, {
-        reference: r.toJson(),
-        formula: f.toJson(),
-        style: s.toJson(),
-        format: f2.toJson(),
-        formatted: f3.toJson()
+        "A99": {
+            formula: f.toJson(),
+            style: s.toJson(),
+            format: f2.toJson(),
+            formatted: f3.toJson()
+        }
     })
 });
 
@@ -170,11 +175,12 @@ test("setFormula different", () => {
         f2,
         f3,
         {
-            reference: r.toJson(),
-            formula: differentFormula.toJson(),
-            style: s.toJson(),
-            format: f2.toJson(),
-            formatted: f3.toJson()
+            "A99": {
+                formula: differentFormula.toJson(),
+                style: s.toJson(),
+                format: f2.toJson(),
+                formatted: f3.toJson()
+            }
         });
 });
 

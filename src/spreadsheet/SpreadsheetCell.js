@@ -10,18 +10,43 @@ import TextNode from "../text/TextNode";
  */
 export default class SpreadsheetCell {
 
+    /**
+     * <pre>
+     * {
+     *   "$B$21": {
+     *     "formula": {
+     *       "text": "=1+2"
+     *       },
+     *       "style": {
+     *         "font-textStyle": "ITALIC",
+     *         "font-weight": "bold"
+     *       },
+     *       "format": "pattern"
+     *    }
+     * }
+     * </pre>
+     */
     static fromJson(json) {
         if (!json) {
             throw new Error("Missing json");
         }
 
-        const {reference, formula, style, format, formatted} = json;
+        const keys = Object.keys(json);
+        switch (keys.length) {
+            case 0:
+                throw new Error("Missing reference");
+            case 1:
+                const reference = keys[0];
+                const {formula, style, format, formatted} = json[reference];
 
-        return new SpreadsheetCell(SpreadsheetCellReference.fromJson(reference),
-            SpreadsheetFormula.fromJson(formula),
-            style && TextStyle.fromJson(style),
-            format && SpreadsheetCellFormat.fromJson(format),
-            formatted && textNodeJsonSupportFromJson(formatted));
+                return new SpreadsheetCell(SpreadsheetCellReference.fromJson(reference),
+                    SpreadsheetFormula.fromJson(formula),
+                    style && TextStyle.fromJson(style),
+                    format && SpreadsheetCellFormat.fromJson(format),
+                    formatted && textNodeJsonSupportFromJson(formatted));
+            default:
+                throw new Error("Expected only reference got " + JSON.stringify(json));
+        }
     }
 
     constructor(reference, formula, style, format, formatted) {
@@ -81,24 +106,26 @@ export default class SpreadsheetCell {
     }
 
     toJson() {
-        const {referenceValue, formulaValue, styleValue, formatValue, formattedValue} = this;
-        let json = {
-            reference: referenceValue.toJson(),
+        const {formulaValue, styleValue, formatValue, formattedValue} = this;
+
+        let json2 = {
             formula: formulaValue.toJson()
         };
 
         if (styleValue) {
-            json.style = styleValue.toJson();
+            json2.style = styleValue.toJson();
         }
 
         if (formatValue) {
-            json.format = formatValue.toJson();
+            json2.format = formatValue.toJson();
         }
 
         if (formattedValue) {
-            json.formatted = formattedValue.toJson();
+            json2.formatted = formattedValue.toJson();
         }
 
+        const json = {};
+        json[this.reference().toJson()] = json2;
         return json;
     }
 
