@@ -133,6 +133,51 @@ test("fromJson null fails", () => {
     expect(() => SpreadsheetCell.fromJson(null)).toThrow("Missing json");
 });
 
+// setFormula...........................................................................................................
+
+test("setFormula missing fails", () => {
+    expect(() => new SpreadsheetCell(reference(), formula()).setFormula()).toThrow("Missing formula");
+});
+
+test("setFormula invalid type fails", () => {
+    expect(() => new SpreadsheetCell(reference(), formula()).setFormula("!invalid")).toThrow("Expected SpreadsheetFormula formula got !invalid");
+});
+
+test("setFormula same", () => {
+    const f = formula();
+    const cell = new SpreadsheetCell(reference(), f);
+
+    expect(cell.setFormula(f)).toStrictEqual(cell);
+});
+
+test("setFormula different", () => {
+    const r = reference();
+    const f = formula();
+    const s = style();
+    const f2 = format();
+    const f3 = formatted();
+
+    const cell = new SpreadsheetCell(r, f, s, f2, f3);
+
+    const differentFormula = new SpreadsheetFormula("3+4");
+    expect(differentFormula).not.toStrictEqual(f);
+
+    const different = cell.setFormula(differentFormula);
+    check(different,
+        r,
+        differentFormula,
+        s,
+        f2,
+        f3,
+        {
+            reference: r.toJson(),
+            formula: differentFormula.toJson(),
+            style: s.toJson(),
+            format: f2.toJson(),
+            formatted: f3.toJson()
+        });
+});
+
 // helpers..............................................................................................................
 
 function check(cell, reference, formula, style, format, formatted, json) {

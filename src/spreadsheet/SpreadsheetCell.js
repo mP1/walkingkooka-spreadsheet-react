@@ -31,12 +31,7 @@ export default class SpreadsheetCell {
         if (!(reference instanceof SpreadsheetCellReference)) {
             throw new Error("Expected SpreadsheetCellReference reference got " + reference);
         }
-        if (!formula) {
-            throw new Error("Missing formula");
-        }
-        if (!(formula instanceof SpreadsheetFormula)) {
-            throw new Error("Expected SpreadsheetFormula formula got " + formula);
-        }
+        checkFormula(formula);
         if (style && !(style instanceof TextStyle)) {
             throw new Error("Expected TextStyle style got " + style);
         }
@@ -60,6 +55,17 @@ export default class SpreadsheetCell {
 
     formula() {
         return this.formulaValue;
+    }
+
+    /**
+     * Would be setter that returns a {@link SpreadsheetCell} with the given {@link SpreadsheetFormula}.
+     */
+    setFormula(formula) {
+        checkFormula(formula);
+
+        return this.formula() == formula ?
+            this:
+            new SpreadsheetCell(this.reference(), formula, this.style(), this.format(), this.formatted());
     }
 
     style() {
@@ -98,5 +104,14 @@ export default class SpreadsheetCell {
 
     toString() {
         return JSON.stringify(this.toJson());
+    }
+}
+
+function checkFormula(formula) {
+    if (!formula) {
+        throw new Error("Missing formula");
+    }
+    if (!(formula instanceof SpreadsheetFormula)) {
+        throw new Error("Expected SpreadsheetFormula formula got " + formula);
     }
 }
