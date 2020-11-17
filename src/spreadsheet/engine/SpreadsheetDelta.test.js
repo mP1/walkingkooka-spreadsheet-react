@@ -97,6 +97,10 @@ test("fromJson null fails", () => {
     expect(() => SpreadsheetDelta.fromJson(null)).toThrow("Missing json");
 });
 
+test("fromJson empty json object without cells, without window", () => {
+    expect(SpreadsheetDelta.fromJson({})).toStrictEqual(new SpreadsheetDelta([]));
+});
+
 test("fromJson without window", () => {
     expect(SpreadsheetDelta.fromJson({
         cells: [{
