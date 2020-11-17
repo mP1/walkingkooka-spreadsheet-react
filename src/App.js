@@ -9,6 +9,10 @@ import SpreadsheetMessenger from "./util/SpreadsheetMessenger.js";
 import Listeners from "./util/Listeners";
 
 import Divider from '@material-ui/core/Divider';
+import SpreadsheetCellBox from "./spreadsheet/reference/SpreadsheetCellBox";
+import SpreadsheetCoordinates from "./spreadsheet/SpreadsheetCoordinates";
+import SpreadsheetViewport from "./spreadsheet/reference/SpreadsheetViewport";
+import SpreadsheetRange from "./spreadsheet/reference/SpreadsheetRange";
 
 export default class App extends React.Component {
     constructor(props) {
@@ -18,21 +22,90 @@ export default class App extends React.Component {
             spreadsheetMetadata: SpreadsheetMetadata.EMPTY
         }
 
-        const handleSpreadsheetMetadata = (metadata) => {
-            this.spreadsheetMetadataListeners.dispatch(new SpreadsheetMetadata(metadata));
+        const handleSpreadsheetCellBox = (json) => {
+            this.spreadsheetCellBoxListeners.dispatch(SpreadsheetCellBox.fromJson(json));
+        }
+
+        const handleSpreadsheetCoordinates = (json) => {
+            this.spreadsheetCoordinatesListeners.dispatch(SpreadsheetCoordinates.fromJson(json));
+        }
+        
+        const handleSpreadsheetMetadata = (json) => {
+            this.spreadsheetMetadataListeners.dispatch(new SpreadsheetMetadata(json));
         }
 
         const handleSpreadsheetDelta = (delta) => {
             this.setState({cells: delta.cells}); // TODO dispatch listeners
         }
 
-        // the names must match the name of the classes in walkingkooka-spreadsheet
+        const handleSpreadsheetRange = (json) => {
+            this.spreadsheetRangeListeners.dispatch(SpreadsheetRange.fromJson(json));
+        }
+
+        // the names must match the Class.getSimpleName in walkingkooka-spreadsheet
         this.messenger = new SpreadsheetMessenger({
-                "SpreadsheetMetadataNonEmpty": handleSpreadsheetMetadata,
-                "SpreadsheetDeltaNonWindowed": handleSpreadsheetDelta,
-                "SpreadsheetDeltaWindowed": handleSpreadsheetDelta,
-            });
+            "SpreadsheetCellBox": handleSpreadsheetCellBox,
+            "SpreadsheetCoordinates": handleSpreadsheetCoordinates,
+            "SpreadsheetMetadataNonEmpty": handleSpreadsheetMetadata,
+            "SpreadsheetDeltaNonWindowed": handleSpreadsheetDelta,
+            "SpreadsheetDeltaWindowed": handleSpreadsheetDelta,
+            "SpreadsheetRange": handleSpreadsheetRange,
+        });
         this.messenger.setWebWorker(false); // TODO test webworker mode
+
+        this.spreadsheetMetadataListeners.add(this.setStateMetadata.bind(this));
+        this.spreadsheetMetadataListeners.add(this.viewportCoordinatesUpdate.bind(this));
+        this.spreadsheetCellBoxListeners.add(this.requestViewportRange.bind(this));
+        this.spreadsheetRangeListeners.add(this.loadSpreadsheetRangeCell.bind(this));
+    }
+
+    setStateMetadata(metadata) {
+        this.setState({"spreadsheetMetadata": metadata});
+    }
+
+    /**
+     * Reads the new metadata viewport and fetches the cellbox for those coordinates.
+     */
+    viewportCoordinatesUpdate(metadata) {
+        const viewport = metadata.viewportCoordinates();
+
+        // TODO make request *ONLY* if metadata.viewport changed or forced.
+        this.messenger.send(this.spreadsheetApiUrl(metadata) + "/cellbox/" + viewport, {
+            method: "GET"
+        })
+    }
+
+    /**
+     * Accepts {@link SpreadsheetCellBox} and requests the {@link SpreadsheetRange} that fill the content.
+     */
+    requestViewportRange(cellBox) {
+        const width = 1000; // TODO retrieve from viewport widget.
+        const height = 500;
+
+        // always make request
+        this.messenger.send(this.spreadsheetApiUrl() + "/viewport/" + new SpreadsheetViewport(cellBox.reference(), width, height),
+            {
+                method: "GET"
+            });
+    }
+
+    /**
+     * Accepts the {@link SpreadsheetRange} returned by {@link #requestViewportRange} and then loads all the cells in that
+     * range.
+     */
+    loadSpreadsheetRangeCell(range) {
+        // TODO add window
+        // always make request
+        this.messenger.send(this.spreadsheetCellLoadUrl(range),
+            {
+                method: "GET"
+            });
+    }
+
+    spreadsheetCellLoadUrl(idOrRange) {
+        const evaluation = this.state.spreadsheetEngineEvaluation || "compute-if-necessary";
+
+        return this.spreadsheetApiUrl() + "/cell/" + idOrRange + "/" + evaluation;
     }
 
     componentDidMount() {
@@ -66,7 +139,19 @@ export default class App extends React.Component {
         );
     }
 
+    // SpreadsheetCellBox...............................................................................................
+
+    spreadsheetCellBoxListeners = new Listeners();
+
+    // SpreadsheetCoordinates...........................................................................................
+
+    spreadsheetCoordinatesListeners = new Listeners();
+
     // SpreadsheetMetadata..............................................................................................
+
+    spreadsheetApiUrl(metadata) {
+        return "/api/spreadsheet/" + (metadata || this.spreadsheetMetadata()).spreadsheetId();
+    }
 
     spreadsheetMetadata() {
         return this.state.spreadsheetMetadata;
@@ -78,13 +163,19 @@ export default class App extends React.Component {
     saveSpreadsheetMetadata(metadata) {
         console.log("saveSpreadsheetMetadata: " + metadata);
 
-        this.messenger.send("/api/spreadsheet/" + metadata.spreadsheetId(), {
+        this.messenger.send(this.spreadsheetApiUrl(), {
             "method": "POST",
             "body": JSON.stringify(metadata.toJson())
         });
     }
 
     spreadsheetMetadataListeners = new Listeners();
+
+    // SpreadsheetRange.................................................................................................
+
+    spreadsheetRangeListeners = new Listeners();
+
+    // toString.........................................................................................................
 
     toString() {
         return this.spreadsheetMetadata().toString();
