@@ -1,135 +1,331 @@
-import SpreadsheetRange from "../reference/SpreadsheetRange";
 import SpreadsheetCell from "../SpreadsheetCell";
 import SpreadsheetDelta from "./SpreadsheetDelta";
+import SpreadsheetRange from "../reference/SpreadsheetRange";
 
 function a1() {
     return SpreadsheetCell.fromJson({
-        reference: "A1",
-        formula: {
-            text: "1+2",
-            error: "Custom error #1"
+        "A1": {
+            formula: {
+                text: "1+2",
+                error: "Custom error #1"
+            }
+        }
+    });
+}
+
+function b2() {
+    return SpreadsheetCell.fromJson({
+        "B2": {
+            formula: {
+                text: "3+4",
+                error: "Custom error #2"
+            }
         }
     });
 }
 
 function cells() {
-    return [a1(),
-        SpreadsheetCell.fromJson({
-            reference: "B2",
-            formula: {
-                text: "2+3",
-                value: 5.0
-            }
-        })
-    ];
+    return [a1(), b2()];
+}
+
+function maxColumnWidths() {
+    return {
+        "A": 100
+    }
+}
+
+function maxRowHeights() {
+    return {
+        "1": 20
+    }
 }
 
 function window() {
-    return [SpreadsheetRange.fromJson("A1:B2"), SpreadsheetRange.fromJson("C3:D4")]
+    return [
+        SpreadsheetRange.fromJson("A1:B2"),
+        SpreadsheetRange.fromJson("C3:D4")
+    ]
 }
 
+const windowJson = "A1:B2,C3:D4";
+
+// tests................................................................................................................
+
 test("create without cells fails", () => {
-    expect(() => new SpreadsheetDelta(null, window())).toThrow("Missing cells");
+    const c = undefined;
+    const mcw = maxColumnWidths();
+    const mrh = maxRowHeights();
+    const w = window();
+
+    expect(() => new SpreadsheetDelta(c, mcw, mrh, w)).toThrow("Missing cells");
 });
 
 test("create with cell non array fails", () => {
-    expect(() => new SpreadsheetDelta(1.5, window())).toThrow("Expected array cells got 1.5");
+    const c = "!invalid";
+    const mcw = maxColumnWidths();
+    const mrh = maxRowHeights();
+    const w = window();
+
+    expect(() => new SpreadsheetDelta(c, mcw, mrh, w)).toThrow("Expected array cells got !invalid");
 });
 
-test("create 1 cell without window", () => {
-    let cells = [a1()];
+test("create without maxColumnWidths fails", () => {
+    const c = cells();
+    const mcw = undefined;
+    const mrh = maxRowHeights();
+    const w = window();
 
-    check(new SpreadsheetDelta(cells), cells, [], {
-        cells: cells.map(c => c.toJson())
-    });
+    expect(() => new SpreadsheetDelta(c, mcw, mrh, w)).toThrow("Missing maxColumnWidths");
 });
 
-test("create 1 cell with window", () => {
-    let cells = [a1()];
+test("create with maxColumnWidths non object fails", () => {
+    const c = cells();
+    const mcw = "!invalid";
+    const mrh = maxRowHeights();
+    const w = window();
 
-    check(new SpreadsheetDelta(cells, window()), cells, window(), {
-        cells: cells.map(c => c.toJson()),
-        window: "A1:B2,C3:D4"
-    });
+    expect(() => new SpreadsheetDelta(c, mcw, mrh, w)).toThrow("Expected object maxColumnWidths got !invalid");
 });
 
-test("create with window", () => {
-    check(new SpreadsheetDelta(cells(), window()), cells(), window(), {
-        cells: cells().map(c => c.toJson()),
-        window: "A1:B2,C3:D4"
-    });
+test("create without maxRowHeights fails", () => {
+    const c = cells();
+    const mcw = maxColumnWidths();
+    const mrh = undefined;
+    const w = window();
+
+    expect(() => new SpreadsheetDelta(c, mcw, mrh, w)).toThrow("Missing maxRowHeights");
 });
 
-test("create without window", () => {
-    check(new SpreadsheetDelta(cells(), undefined), cells(), [], {
-        cells: cells().map(c => c.toJson())
-    });
+test("create with maxRowHeights non object fails", () => {
+    const c = cells();
+    const mcw = maxColumnWidths();
+    const mrh = "!invalid";
+    const w = window();
+
+    expect(() => new SpreadsheetDelta(c, mcw, mrh, w)).toThrow("Expected object maxRowHeights got !invalid");
 });
 
-test("toJson without window", () => {
-    expect(new SpreadsheetDelta([a1()]).toJson())
-        .toStrictEqual({
-            cells: [{
-                reference: "A1",
-                formula: {
-                    text: "1+2",
-                    error: "Custom error #1"
+test("create", () => {
+    const c = cells();
+    const mcw = maxColumnWidths();
+    const mrh = maxRowHeights();
+    const w = window();
+
+    check(new SpreadsheetDelta(c, mcw, mrh, w),
+        c,
+        mcw,
+        mrh,
+        w,
+        {
+            cells: {
+                "A1": {
+                    formula: {
+                        text: "1+2",
+                        error: "Custom error #1"
+                    }
+                },
+                "B2": {
+                    formula: {
+                        text: "3+4",
+                        error: "Custom error #2"
+                    }
                 }
-            }]
+            },
+            maxColumnWidths: {
+                "A": 100
+            },
+            maxRowHeights: {
+                "1": 20
+            },
+            window: windowJson
         });
 });
 
-test("toJson with window", () => {
-    expect(new SpreadsheetDelta([a1()], [SpreadsheetRange.fromJson("A1:B2")]).toJson())
+test("create empty", () => {
+    const c = [];
+    const mcw = {};
+    const mrh = {};
+    const w = [];
+
+    check(new SpreadsheetDelta(c, mcw, mrh, w),
+        c,
+        mcw,
+        mrh,
+        w,
+        {});
+});
+
+// toJson...............................................................................................................
+
+test("toJson only 1 cell", () => {
+    const c = [a1()];
+    const mcw = {};
+    const mrh = {};
+    const w = [];
+
+    expect(new SpreadsheetDelta(c, mcw, mrh, w).toJson())
         .toStrictEqual({
-            cells: [{
-                reference: "A1",
-                formula: {
-                    text: "1+2",
-                    error: "Custom error #1"
+            cells: {
+                "A1": {
+                    formula: {
+                        text: "1+2",
+                        error: "Custom error #1"
+                    }
                 }
-            }],
-            window: "A1:B2"
+            }
         });
 });
 
+test("toJson only 2 cells", () => {
+    const c = cells();
+    const mcw = {};
+    const mrh = {};
+    const w = [];
+
+    expect(new SpreadsheetDelta(c, mcw, mrh, w).toJson())
+        .toStrictEqual({
+            "cells": {
+                "A1": {
+                    formula: {
+                        text: "1+2",
+                        error: "Custom error #1"
+                    }
+                },
+                "B2": {
+                    formula: {
+                        text: "3+4",
+                        error: "Custom error #2"
+                    }
+                },
+            }
+        });
+});
+
+test("toJson all properties", () => {
+    const c = cells();
+    const mcw = maxColumnWidths();
+    const mrh = maxRowHeights();
+    const w = window();
+
+    expect(new SpreadsheetDelta(c, mcw, mrh, w).toJson())
+        .toStrictEqual({
+            "cells": {
+                "A1": {
+                    formula: {
+                        text: "1+2",
+                        error: "Custom error #1"
+                    }
+                },
+                "B2": {
+                    formula: {
+                        text: "3+4",
+                        error: "Custom error #2"
+                    }
+                },
+            },
+            maxColumnWidths: {
+                "A": 100
+            },
+            maxRowHeights: {
+                "1": 20
+            },
+            window: windowJson
+        });
+});
+
+// fromJson.............................................................................................................
 test("fromJson null fails", () => {
     expect(() => SpreadsheetDelta.fromJson(null)).toThrow("Missing json");
 });
 
-test("fromJson empty json object without cells, without window", () => {
-    expect(SpreadsheetDelta.fromJson({})).toStrictEqual(new SpreadsheetDelta([]));
+test("fromJson empty", () => {
+    const c = [];
+    const mcw = {};
+    const mrh = {};
+    const w = [];
+
+    expect(SpreadsheetDelta.fromJson({})).toStrictEqual(new SpreadsheetDelta(c, mcw, mrh, w));
 });
 
-test("fromJson without window", () => {
+test("fromJson 1 cell", () => {
+    const c = [a1()];
+    const mcw = {};
+    const mrh = {};
+    const w = [];
+
     expect(SpreadsheetDelta.fromJson({
-        cells: [{
-            reference: "A1",
-            formula: {
-                text: "1+2",
-                error: "Custom error #1"
+        cells: {
+            "A1": {
+                formula: {
+                    text: "1+2",
+                    error: "Custom error #1"
+                }
             }
-        }]
-    })).toStrictEqual(new SpreadsheetDelta([a1()]));
+        }
+    })).toStrictEqual(new SpreadsheetDelta(c, mcw, mrh, w));
 });
 
-test("toJson with window", () => {
+test("fromJson 2 cells", () => {
+    const c = [a1(), b2()];
+    const mcw = {};
+    const mrh = {};
+    const w = [];
+
     expect(SpreadsheetDelta.fromJson({
-        cells: [{
-            reference: "A1",
-            formula: {
-                text: "1+2",
-                error: "Custom error #1"
+        cells: {
+            "A1": {
+                formula: {
+                    text: "1+2",
+                    error: "Custom error #1"
+                }
+            },
+            "B2": {
+                formula: {
+                    text: "3+4",
+                    error: "Custom error #2"
+                }
             }
-        }],
-        window: "A1:B2"
-    })).toStrictEqual(new SpreadsheetDelta([a1()], [SpreadsheetRange.fromJson("A1:B2")]));
+        }
+    })).toStrictEqual(new SpreadsheetDelta(c, mcw, mrh, w));
+});
+
+test("fromJson all properties", () => {
+    const c = cells();
+    const mcw = maxColumnWidths();
+    const mrh = maxRowHeights();
+    const w = window();
+
+    expect(SpreadsheetDelta.fromJson({
+        cells: {
+            "A1": {
+                formula: {
+                    text: "1+2",
+                    error: "Custom error #1"
+                }
+            },
+            "B2": {
+                formula: {
+                    text: "3+4",
+                    error: "Custom error #2"
+                }
+            }
+        },
+        maxColumnWidths: {
+            "A": 100
+        },
+        maxRowHeights: {
+            "1": 20
+        },
+        window: windowJson
+    })).toStrictEqual(new SpreadsheetDelta(c, mcw, mrh, w));
 });
 
 // helpers..............................................................................................................
 
-function check(delta, cells, window, json) {
+function check(delta, cells, maxColumnWidths, maxRowHeights, window, json) {
     expect(delta.cells()).toStrictEqual(cells);
+    expect(delta.maxColumnWidths()).toStrictEqual(maxColumnWidths);
+    expect(delta.maxRowHeights()).toStrictEqual(maxRowHeights);
     expect(delta.window()).toStrictEqual(window);
 
     expect(delta.toJson()).toStrictEqual(json);
