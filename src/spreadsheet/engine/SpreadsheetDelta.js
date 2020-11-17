@@ -29,7 +29,7 @@ export default class SpreadsheetDelta {
         }
 
         this.cellsValue = cells.slice();
-        this.windowValue = window && window.slice() || [];
+        this.windowValue = (window && window.slice()) || [];
     }
 
     cells() {
