@@ -20,7 +20,8 @@ export default class App extends React.Component {
         super(props);
 
         this.state = {
-            spreadsheetMetadata: SpreadsheetMetadata.EMPTY
+            spreadsheetMetadata: SpreadsheetMetadata.EMPTY,
+            cells: {},
         }
 
         const handleSpreadsheetCellBox = (json) => {
@@ -54,10 +55,20 @@ export default class App extends React.Component {
         });
         this.messenger.setWebWorker(false); // TODO test webworker mode
 
+        this.spreadsheetDeltaListeners.add(this.setStateCells.bind(this));
         this.spreadsheetMetadataListeners.add(this.setStateMetadata.bind(this));
         this.spreadsheetMetadataListeners.add(this.viewportCoordinatesUpdate.bind(this));
         this.spreadsheetCellBoxListeners.add(this.requestViewportRange.bind(this));
         this.spreadsheetRangeListeners.add(this.loadSpreadsheetRangeCell.bind(this));
+    }
+
+    setStateCells(delta) {
+        this.setState({
+            "cells": Object.assign(
+                {},
+                this.state.cells,
+                delta.toJson().cells)
+        });
     }
 
     setStateMetadata(metadata) {
