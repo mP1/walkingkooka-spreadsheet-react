@@ -68,7 +68,7 @@ export default class SpreadsheetMessenger {
     }
 
     doFetch(url, parameters) {
-        log("doFetch: " + url + " " + JSON.stringify(parameters));
+        console.log("doFetch \"" + url + "\"", parameters);
 
         let responseBuilder = {};
 
@@ -116,7 +116,7 @@ export default class SpreadsheetMessenger {
      * Examines the "X-Content-Type-Name" header and dispatches to the required handler.
      */
     dispatch(response) {
-        log("dispatching response: " + JSON.stringify(response));
+        console.log("dispatching response", response);
 
         const body = response.json;
         const typeName = response.headers.get("X-Content-Type-Name");
@@ -136,8 +136,4 @@ export default class SpreadsheetMessenger {
 
 function error(string) {
     alert(string);
-}
-
-function log(string) {
-    console.log(string);
 }

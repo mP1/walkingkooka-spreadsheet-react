@@ -161,7 +161,7 @@ export default class App extends React.Component {
      * Updates the state and saves the metadata.
      */
     saveSpreadsheetMetadata(metadata) {
-        console.log("saveSpreadsheetMetadata: " + metadata);
+        console.log("saveSpreadsheetMetadata", metadata);
 
         this.messenger.send(this.spreadsheetApiUrl(), {
             "method": "POST",
