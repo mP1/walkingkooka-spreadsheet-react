@@ -63,7 +63,7 @@ export default class SpreadsheetCell {
     setFormula(formula) {
         checkFormula(formula);
 
-        return this.formula() == formula ?
+        return this.formula() === formula ?
             this:
             new SpreadsheetCell(this.reference(), formula, this.style(), this.format(), this.formatted());
     }
