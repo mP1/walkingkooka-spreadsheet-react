@@ -11,7 +11,8 @@ export default class SpreadsheetDelta {
             throw new Error("Missing json");
         }
 
-        let cells = json["cells"].map(c => SpreadsheetCell.fromJson(c));
+        let cells = (json["cells"] || [])
+            .map(c => SpreadsheetCell.fromJson(c));
         let windowJson = json["window"];
 
         return new SpreadsheetDelta(cells, windowJson && windowJson.split(",").map(r => SpreadsheetRange.fromJson(r)));
