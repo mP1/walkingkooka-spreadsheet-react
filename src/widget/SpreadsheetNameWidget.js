@@ -1,7 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import SpreadsheetTextField from './SpreadsheetTextField.js';
+import SpreadsheetButtonTextField from './SpreadsheetButtonTextField.js';
 import AppAwareComponent from "./AppAwareComponent";
 import SpreadsheetName from "../spreadsheet/SpreadsheetName";
 
@@ -23,9 +23,9 @@ export default class SpreadsheetNameWidget extends AppAwareComponent {
 
     render() {
         // TODO add a validator to verify spreadsheetName characters, then call setSpreadsheetName function
-        return <SpreadsheetTextField ref={this.textField}
-                                     value={spreadsheetNameText(this.spreadsheetName())}
-                                     setValue={v => this.setSpreadsheetName.bind(this)(new SpreadsheetName(v))}/>
+        return <SpreadsheetButtonTextField ref={this.textField}
+                                           value={spreadsheetNameText(this.spreadsheetName())}
+                                           setValue={v => this.setSpreadsheetName.bind(this)(new SpreadsheetName(v))}/>
     }
 }
 
