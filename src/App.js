@@ -13,6 +13,7 @@ import SpreadsheetCellBox from "./spreadsheet/reference/SpreadsheetCellBox";
 import SpreadsheetCoordinates from "./spreadsheet/SpreadsheetCoordinates";
 import SpreadsheetViewport from "./spreadsheet/reference/SpreadsheetViewport";
 import SpreadsheetRange from "./spreadsheet/reference/SpreadsheetRange";
+import SpreadsheetDelta from "./spreadsheet/engine/SpreadsheetDelta";
 
 export default class App extends React.Component {
     constructor(props) {
@@ -29,13 +30,13 @@ export default class App extends React.Component {
         const handleSpreadsheetCoordinates = (json) => {
             this.spreadsheetCoordinatesListeners.dispatch(SpreadsheetCoordinates.fromJson(json));
         }
-        
-        const handleSpreadsheetMetadata = (json) => {
-            this.spreadsheetMetadataListeners.dispatch(new SpreadsheetMetadata(json));
+
+        const handleSpreadsheetDelta = (json) => {
+            this.spreadsheetDeltaListeners.dispatch(SpreadsheetDelta.fromJson(json));
         }
 
-        const handleSpreadsheetDelta = (delta) => {
-            this.setState({cells: delta.cells}); // TODO dispatch listeners
+        const handleSpreadsheetMetadata = (json) => {
+            this.spreadsheetMetadataListeners.dispatch(new SpreadsheetMetadata(json));
         }
 
         const handleSpreadsheetRange = (json) => {
@@ -46,9 +47,9 @@ export default class App extends React.Component {
         this.messenger = new SpreadsheetMessenger({
             "SpreadsheetCellBox": handleSpreadsheetCellBox,
             "SpreadsheetCoordinates": handleSpreadsheetCoordinates,
-            "SpreadsheetMetadataNonEmpty": handleSpreadsheetMetadata,
             "SpreadsheetDeltaNonWindowed": handleSpreadsheetDelta,
             "SpreadsheetDeltaWindowed": handleSpreadsheetDelta,
+            "SpreadsheetMetadataNonEmpty": handleSpreadsheetMetadata,
             "SpreadsheetRange": handleSpreadsheetRange,
         });
         this.messenger.setWebWorker(false); // TODO test webworker mode
@@ -146,6 +147,10 @@ export default class App extends React.Component {
     // SpreadsheetCoordinates...........................................................................................
 
     spreadsheetCoordinatesListeners = new Listeners();
+
+    // SpreadsheetDelta.................................................................................................
+
+    spreadsheetDeltaListeners = new Listeners();
 
     // SpreadsheetMetadata..............................................................................................
 
