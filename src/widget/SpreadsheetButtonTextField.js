@@ -5,12 +5,12 @@ import PropTypes from "prop-types";
 
 /**
  * A component that is initially a button and when clicked turns into a TextField with the value ready to edit.
- * When ENTER is pressed the onValueChange handler is invoked. When either ENTER or ESC are pressed the component returns
- * to be disabled and only viewable.
+ * When ENTER is pressed the setValue handler is invoked with the new text value.
+ * When either ENTER or ESC are pressed the component returns to be disabled and only viewable.
  */
 // TODO stop Button capitalizing spreadsheet name
 // TODO make button & textfields have the same padding/margin etc
-export default class SpreadsheetTextField extends React.Component {
+export default class SpreadsheetButtonTextField extends React.Component {
 
     constructor(props) {
         super(props);
@@ -99,7 +99,7 @@ export default class SpreadsheetTextField extends React.Component {
     }
 }
 
-SpreadsheetTextField.propTypes = {
+SpreadsheetButtonTextField.propTypes = {
     value: PropTypes.string.isRequired,
     setValue: PropTypes.func.isRequired,
 }
