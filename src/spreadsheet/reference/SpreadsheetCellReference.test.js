@@ -66,6 +66,36 @@ test("fromJson $A$1", () => {
         "$A$1");
 });
 
+// setColumn............................................................................................................
+
+test("setColumn missing fails", () => {
+    expect(() => new SpreadsheetCellReference(column(), row()).setColumn()).toThrow("Missing column");
+});
+
+test("setColumn with non SpreadsheetRowReference fails", () => {
+    expect(() => new SpreadsheetCellReference(column(), row()).setColumn("!invalid")).toThrow("Expected SpreadsheetColumnReference column got !invalid");
+});
+
+test("setColumn same", () => {
+    const c = column();
+    const reference = new SpreadsheetCellReference(c, row());
+    expect(reference.setColumn(c)).toEqual(reference);
+});
+
+test("setColumn different ABSOLUTE", () => {
+    const r = row();
+    const reference = new SpreadsheetCellReference(column(), r);
+    const different = SpreadsheetColumnReference.parse("XY");
+    expect(reference.setColumn(different)).toEqual(new SpreadsheetCellReference(different, r));
+});
+
+test("setColumn different RELATIVE", () => {
+    const r = row();
+    const reference = new SpreadsheetCellReference(column(), r);
+    const different = SpreadsheetColumnReference.parse("YZ");
+    expect(reference.setColumn(different)).toEqual(new SpreadsheetCellReference(different, r));
+});
+
 // helpers..............................................................................................................
 
 function check(cell,
