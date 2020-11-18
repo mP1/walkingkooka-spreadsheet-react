@@ -47,8 +47,12 @@ test("new ABSOLUTE", () => {
         "$3");
 });
 
-test("toJson", () => {
-    expect(SpreadsheetReferenceKind.of("RELATIVE").toJson()).toStrictEqual("RELATIVE");
+test("toJson ABSOLUTE", () => {
+    expect(new SpreadsheetRowReference(2, SpreadsheetReferenceKind.ABSOLUTE).toJson()).toStrictEqual("$3");
+});
+
+test("toJson RELATIVE", () => {
+    expect(new SpreadsheetRowReference(3, SpreadsheetReferenceKind.RELATIVE).toJson()).toStrictEqual("4");
 });
 
 test("toStringAbsolute", () => {
