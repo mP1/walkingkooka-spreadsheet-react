@@ -2,11 +2,11 @@ import SpreadsheetRange from "./SpreadsheetRange";
 import SpreadsheetCellReference from "./SpreadsheetCellReference";
 
 function begin() {
-    return new SpreadsheetCellReference("A1");
+    return SpreadsheetCellReference.parse("A1");
 }
 
 function end() {
-    return new SpreadsheetCellReference("B2");
+    return SpreadsheetCellReference.parse("B2");
 }
 
 test("create without begin fails", () => {
