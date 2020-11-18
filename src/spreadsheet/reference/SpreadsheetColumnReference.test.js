@@ -1,5 +1,6 @@
 import SpreadsheetColumnReference from "./SpreadsheetColumnReference";
 import SpreadsheetReferenceKind from "./SpreadsheetReferenceKind";
+import SpreadsheetRowReference from "./SpreadsheetRowReference";
 
 test("parse missing text fails", () => {
     expect(() => SpreadsheetColumnReference.parse()).toThrow("Missing text");
@@ -49,6 +50,36 @@ test("new ABSOLUTE", () => {
         1,
         SpreadsheetReferenceKind.ABSOLUTE,
         "$B");
+});
+
+test("set missing kind fails", () => {
+    expect(() => new SpreadsheetColumnReference(0, SpreadsheetReferenceKind.RELATIVE).setRelativeKind()).toThrow("Missing kind");
+});
+
+test("set invalid kind fails", () => {
+    expect(() => new SpreadsheetColumnReference(0, SpreadsheetReferenceKind.RELATIVE).setRelativeKind("!invalid")).toThrow("Expected SpreadsheetReferenceKind kind got !invalid");
+});
+
+test("set same kind ABSOLUTE", () => {
+    const kind = SpreadsheetReferenceKind.ABSOLUTE;
+    const reference = new SpreadsheetColumnReference(2, kind);
+    expect(reference.setRelativeKind(kind)).toStrictEqual(reference);
+});
+
+test("set same kind RELATIVE", () => {
+    const kind = SpreadsheetReferenceKind.RELATIVE;
+    const reference = new SpreadsheetColumnReference(2, kind);
+    expect(reference.setRelativeKind(kind)).toStrictEqual(reference);
+});
+
+test("set different kind ABSOLUTE", () => {
+    const reference = new SpreadsheetColumnReference(2, SpreadsheetReferenceKind.RELATIVE);
+    expect(reference.setRelativeKind(SpreadsheetReferenceKind.ABSOLUTE)).toStrictEqual(new SpreadsheetColumnReference(2, SpreadsheetReferenceKind.ABSOLUTE));
+});
+
+test("set different kind RELATIVE", () => {
+    const reference = new SpreadsheetColumnReference(2, SpreadsheetReferenceKind.ABSOLUTE);
+    expect(reference.setRelativeKind(SpreadsheetReferenceKind.RELATIVE)).toStrictEqual(new SpreadsheetColumnReference(2, SpreadsheetReferenceKind.RELATIVE));
 });
 
 test("toJson", () => {

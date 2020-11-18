@@ -24,6 +24,22 @@ export default class SpreadsheetColumnOrRowReference {
         return this.kindValue;
     }
 
+    /**
+     * Helper only intended to be called by sub classes.
+     */
+    setRelativeKind0(kind, factory) {
+        if (!kind) {
+            throw new Error("Missing kind");
+        }
+        if (!(kind instanceof SpreadsheetReferenceKind)) {
+            throw new Error("Expected SpreadsheetReferenceKind kind got " + kind);
+        }
+
+        return this.kind() == kind ?
+            this :
+            new factory(this.value(), kind);
+    }
+
     value() {
         return this.valueValue;
     }

@@ -42,6 +42,10 @@ export default class SpreadsheetRowReference extends SpreadsheetColumnOrRowRefer
         super(value, kind, SpreadsheetRowReference.MAX);
     }
 
+    setRelativeKind(kind) {
+        return this.setRelativeKind0(kind, SpreadsheetRowReference);
+    }
+
     toString() {
         return this.kind().prefix() + (1+this.value());
     }
