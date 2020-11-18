@@ -2,22 +2,22 @@ import SpreadsheetReferenceKind from "./SpreadsheetReferenceKind";
 
 export default class SpreadsheetColumnOrRowReference {
 
-    constructor(kind, value) {
-        if (!kind) {
-            throw new Error("Missing reference");
-        }
-        if (!kind instanceof SpreadsheetReferenceKind) {
-            throw new Error("Expected SpreadsheetReferenceKind kind got " + kind);
-        }
-        this.kindValue = kind;
-
-        if (!value) {
-            throw new Error("Missing value");
-        }
+    constructor(value, kind, max) {
         if (typeof value !== "number") {
             throw new Error("Expected number value got " + value);
         }
+        if (value < 0 || value >= max) {
+            throw new Error("Invalid value not between 0 and " + max + " got " + value);
+        }
         this.valueValue = value;
+
+        if (!kind) {
+            throw new Error("Missing kind");
+        }
+        if (!(kind instanceof SpreadsheetReferenceKind)) {
+            throw new Error("Expected SpreadsheetReferenceKind kind got " + kind);
+        }
+        this.kindValue = kind;
     }
 
     kind() {

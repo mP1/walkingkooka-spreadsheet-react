@@ -35,14 +35,14 @@ export default class SpreadsheetRowReference extends SpreadsheetColumnOrRowRefer
             throw new Error("Invalid value > " + SpreadsheetRowReference.MAX + " got " + value);
         }
 
-        return new SpreadsheetRowReference(value, kind);
+        return new SpreadsheetRowReference(value -1, kind);
     }
 
     constructor(value, kind) {
-        super(kind, value);
+        super(value, kind, SpreadsheetRowReference.MAX);
     }
 
     toString() {
-        return this.kind().prefix() + this.value();
+        return this.kind().prefix() + (1+this.value());
     }
 }
