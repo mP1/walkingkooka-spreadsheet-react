@@ -96,6 +96,36 @@ test("setColumn different RELATIVE", () => {
     expect(reference.setColumn(different)).toEqual(new SpreadsheetCellReference(different, r));
 });
 
+// setRow............................................................................................................
+
+test("setRow missing fails", () => {
+    expect(() => new SpreadsheetCellReference(column(), row()).setRow()).toThrow("Missing row");
+});
+
+test("setRow with non SpreadsheetRowReference fails", () => {
+    expect(() => new SpreadsheetCellReference(column(), row()).setRow("!invalid")).toThrow("Expected SpreadsheetRowReference row got !invalid");
+});
+
+test("setRow same", () => {
+    const r = row();
+    const reference = new SpreadsheetCellReference(column(), r);
+    expect(reference.setRow(r)).toEqual(reference);
+});
+
+test("setRow different ABSOLUTE", () => {
+    const c = column();
+    const reference = new SpreadsheetCellReference(c, row());
+    const different = SpreadsheetRowReference.parse("$34");
+    expect(reference.setRow(different)).toEqual(new SpreadsheetCellReference(c, different));
+});
+
+test("setRow different RELATIVE", () => {
+    const c = column();
+    const reference = new SpreadsheetCellReference(c, row());
+    const different = SpreadsheetRowReference.parse("45");
+    expect(reference.setRow(different)).toEqual(new SpreadsheetCellReference(c, different));
+});
+
 // helpers..............................................................................................................
 
 function check(cell,

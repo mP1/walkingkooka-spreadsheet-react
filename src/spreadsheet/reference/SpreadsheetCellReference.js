@@ -13,6 +13,15 @@ function checkColumn(column) {
     }
 }
 
+function checkRow(row) {
+    if (!row) {
+        throw new Error("Missing row");
+    }
+    if (!(row instanceof SpreadsheetRowReference)) {
+        throw new Error("Expected SpreadsheetRowReference row got " + row);
+    }
+}
+
 export default class SpreadsheetCellReference {
 
     static fromJson(json) {
@@ -54,13 +63,7 @@ export default class SpreadsheetCellReference {
 
     constructor(column, row) {
         checkColumn(column);
-
-        if (!row) {
-            throw new Error("Missing row");
-        }
-        if (!(row instanceof SpreadsheetRowReference)) {
-            throw new Error("Expected SpreadsheetRowReference row got " + row);
-        }
+        checkRow(row);
 
         this.columnValue = column;
         this.rowValue = row;
@@ -76,6 +79,14 @@ export default class SpreadsheetCellReference {
 
     column() {
         return this.columnValue;
+    }
+
+    setRow(row) {
+        checkRow(row);
+
+        return this.row() === row ?
+            this :
+            new SpreadsheetCellReference(this.column(), row);
     }
 
     row() {
