@@ -3,6 +3,7 @@
  */
 import SpreadsheetColumnReference from "./SpreadsheetColumnReference";
 import SpreadsheetRowReference from "./SpreadsheetRowReference";
+import SpreadsheetReferenceKind from "./SpreadsheetReferenceKind";
 
 function checkColumn(column) {
     if (!column) {
@@ -91,6 +92,13 @@ export default class SpreadsheetCellReference {
 
     row() {
         return this.rowValue;
+    }
+
+    toRelative() {
+        return this.setColumn(this.column()
+            .setKind(SpreadsheetReferenceKind.RELATIVE))
+            .setRow(this.row()
+                .setKind(SpreadsheetReferenceKind.RELATIVE));
     }
 
     toJson() {
