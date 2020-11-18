@@ -67,7 +67,7 @@ export default class SpreadsheetCell {
             throw new Error("Expected TextNode formatted got " + formatted);
         }
 
-        this.referenceValue = reference;
+        this.referenceValue = reference.toRelative();
         this.formulaValue = formula;
         this.styleValue = style;
         this.formatValue = format;
