@@ -41,7 +41,7 @@ export default class SpreadsheetViewport extends SpreadsheetRectangle {
         if (!(reference instanceof SpreadsheetCellReference)) {
             throw new Error("Expected SpreadsheetCellReference reference got " + reference);
         }
-        this.referenceValue = reference;
+        this.referenceValue = reference.toRelative();
 
         if (typeof (width) !== "number") {
             throw new Error("Expected number width got " + width);
