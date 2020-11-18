@@ -68,6 +68,15 @@ test("create invalid height value fails2", () => {
     expect(() => new SpreadsheetViewport(reference(), width(), height)).toThrow("Expected height > 0 got " + height);
 });
 
+test("create ABSOLUTE reference", () => {
+    const w = width();
+    const h = height();
+    check(new SpreadsheetViewport(SpreadsheetCellReference.parse("$B$99"), w, h),
+        SpreadsheetCellReference.parse("B99"),
+        w,
+        h);
+});
+
 // json
 
 test("fromJson null fails", () => {
