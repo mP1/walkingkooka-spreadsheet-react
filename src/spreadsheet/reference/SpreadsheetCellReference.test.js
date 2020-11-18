@@ -1,39 +1,86 @@
 import SpreadsheetCellReference from "./SpreadsheetCellReference";
+import SpreadsheetColumnReference from "./SpreadsheetColumnReference";
+import SpreadsheetRowReference from "./SpreadsheetRowReference";
 
-const reference = "A1";
+function column() {
+    return SpreadsheetColumnReference.parse("A");
+};
 
-test("create without reference fails", () => {
-    expect(() => new SpreadsheetCellReference(null)).toThrow("Missing reference");
+function row() {
+    return SpreadsheetRowReference.parse("1");
+};
+
+test("create without column fails", () => {
+    expect(() => new SpreadsheetCellReference(null)).toThrow("Missing column");
 });
 
-test("create with non string fails", () => {
-    expect(() => new SpreadsheetCellReference(1.5)).toThrow("Expected string got 1.5");
+test("create with non SpreadsheetColumnReference fails", () => {
+    expect(() => new SpreadsheetCellReference(1.5)).toThrow("Expected SpreadsheetColumnReference column got 1.5");
 });
 
-test("create", () => {
-    const spreadsheetCellReference = new SpreadsheetCellReference(reference);
-    expect(spreadsheetCellReference.reference()).toBe(reference);
+test("create without row fails", () => {
+    expect(() => new SpreadsheetCellReference(column())).toThrow("Missing row");
+});
+
+test("create with non SpreadsheetRowReference fails", () => {
+    expect(() => new SpreadsheetCellReference(column(), 1.5)).toThrow("Expected SpreadsheetRowReference row got 1.5");
+});
+
+test("create A1", () => {
+    const c = column();
+    const r = row();
+    const cell = new SpreadsheetCellReference(c, r);
+
+    check(cell,
+        c,
+        r,
+        "A1");
+});
+
+test("create BC987", () => {
+    const c = SpreadsheetColumnReference.parse("$BC");
+    const r = SpreadsheetRowReference.parse("$987");
+    const cell = new SpreadsheetCellReference(c, r);
+
+    check(cell,
+        c,
+        r,
+        "$BC$987");
 });
 
 test("fromJson null fails", () => {
-    expect(() => SpreadsheetCellReference.fromJson(null)).toThrow("Missing reference");
+    expect(() => SpreadsheetCellReference.fromJson(null)).toThrow("Missing text");
 });
 
-test("json", () => {
-    const spreadsheetCellReference = new SpreadsheetCellReference(reference);
+test("fromJson A1", () => {
+    check(SpreadsheetCellReference.fromJson("A1"),
+        column(),
+        row(),
+        "A1");
+});
 
-    check(spreadsheetCellReference, reference);
+test("fromJson $A$1", () => {
+    check(SpreadsheetCellReference.fromJson("$A$1"),
+        SpreadsheetColumnReference.parse("$A"),
+        SpreadsheetRowReference.parse("$1"),
+        "$A$1");
 });
 
 // helpers..............................................................................................................
 
-function check(spreadsheetCellReference, reference) {
-    expect(spreadsheetCellReference.reference()).toStrictEqual(reference);
-    expect(spreadsheetCellReference.reference()).toBeString();
+function check(cell,
+               column,
+               row) {
+    expect(cell.column()).toStrictEqual(column);
+    expect(cell.column()).toBeInstanceOf(SpreadsheetColumnReference);
 
-    expect(spreadsheetCellReference.toJson()).toStrictEqual(reference);
-    expect(spreadsheetCellReference.toString()).toBe(reference);
+    expect(cell.row()).toStrictEqual(row);
+    expect(cell.row()).toBeInstanceOf(SpreadsheetRowReference);
 
-    expect(SpreadsheetCellReference.parse(spreadsheetCellReference.toJson())).toStrictEqual(spreadsheetCellReference);
-    expect(SpreadsheetCellReference.fromJson(spreadsheetCellReference.toJson())).toStrictEqual(spreadsheetCellReference);
+    const json = "" + column + row;
+    expect(cell.toJson()).toStrictEqual(json);
+    expect(cell.toString()).toBe(json);
+
+    expect(SpreadsheetCellReference.parse(json)).toStrictEqual(cell);
+    expect(SpreadsheetCellReference.fromJson(json)).toStrictEqual(cell);
 }

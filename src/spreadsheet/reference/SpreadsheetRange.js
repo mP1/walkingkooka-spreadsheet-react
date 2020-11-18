@@ -23,7 +23,10 @@ export default class SpreadsheetRange extends SpreadsheetRectangle{
             throw new Error("Expected 2 tokens got " + text);
         }
 
-        return new SpreadsheetRange(new SpreadsheetCellReference(tokens[0]), new SpreadsheetCellReference(tokens[1]));
+        return new SpreadsheetRange(
+            SpreadsheetCellReference.fromJson(tokens[0]),
+            SpreadsheetCellReference.fromJson(tokens[1])
+        );
     }
 
     constructor(begin, end) {

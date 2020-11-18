@@ -6,7 +6,7 @@ import TextStyle from "../text/TextStyle";
 import Text from "../text/Text";
 
 function reference() {
-    return new SpreadsheetCellReference("A99");
+    return SpreadsheetCellReference.parse("A99");
 }
 
 function formula() {
