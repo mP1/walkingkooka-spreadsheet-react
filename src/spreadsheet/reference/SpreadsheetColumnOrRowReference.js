@@ -27,7 +27,7 @@ export default class SpreadsheetColumnOrRowReference {
     /**
      * Helper only intended to be called by sub classes.
      */
-    setRelativeKind0(kind, factory) {
+    setKind0(kind, factory) {
         if (!kind) {
             throw new Error("Missing kind");
         }
