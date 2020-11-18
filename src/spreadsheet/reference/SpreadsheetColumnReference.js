@@ -37,13 +37,13 @@ export default class SpreadsheetColumnReference extends SpreadsheetColumnOrRowRe
             if (c < 'A' || c > 'Z') {
                 throw new Error("Expected letter between 'A' to 'Z' at " + i + " got " + text);
             }
-            value = value * RADIX + text.charCodeAt(i) - A;
+            value = value * RADIX + text.charCodeAt(i) - A + 1;
         }
         if (value > SpreadsheetColumnReference.MAX) {
             throw new Error("Invalid value > " + SpreadsheetColumnReference.MAX + " got " + value);
         }
 
-        return new SpreadsheetColumnReference(value, kind);
+        return new SpreadsheetColumnReference(value -1, kind);
     }
 
     constructor(value, kind) {
