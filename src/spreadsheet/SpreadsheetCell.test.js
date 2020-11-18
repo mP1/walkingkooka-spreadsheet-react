@@ -134,6 +134,30 @@ test("create reference, formula, style, format, formatted", () => {
     })
 });
 
+test("create ABSOLUTE reference, formula, style, format, formatted", () => {
+    const r = SpreadsheetCellReference.parse("$B$78");
+    const f = formula();
+    const s = style();
+    const f2 = format();
+    const f3 = formatted();
+
+    check(new SpreadsheetCell(r, f, s, f2, f3),
+        r.toRelative(),
+        f,
+        s,
+        f2,
+        f3,
+        {
+            "B78": {
+                formula: f.toJson(),
+                style: s.toJson(),
+                format: f2.toJson(),
+                formatted: f3.toJson()
+            }
+        })
+});
+
+
 test("fromJson null fails", () => {
     expect(() => SpreadsheetCell.fromJson(null)).toThrow("Missing json");
 });
