@@ -1,5 +1,22 @@
 import SpreadsheetCell from "../SpreadsheetCell";
 import SpreadsheetRange from "../reference/SpreadsheetRange";
+import SpreadsheetColumnReference from "../reference/SpreadsheetColumnReference";
+import SpreadsheetRowReference from "../reference/SpreadsheetRowReference";
+
+/**
+ * Transforms the object into a Map using the keyFactory to convert the strings to keys.
+ */
+function buildMap(json, keyFactory) {
+    var map = new Map();
+
+    if (json) {
+        for (const [key, value] of Object.entries(json)) {
+            map.set(keyFactory(key), value);
+        }
+    }
+
+    return map;
+}
 
 /**
  * Holds cells and window that have been updated following one or more cells being saved/updated
@@ -19,8 +36,8 @@ export default class SpreadsheetDelta {
             cells.push(SpreadsheetCell.fromJson(reference));
         }
 
-        const maxColumnWidths = (json.maxColumnWidths || {});
-        const maxRowHeights = (json.maxRowHeights || {});
+        const maxColumnWidths = buildMap(json.maxColumnWidths, SpreadsheetColumnReference.fromJson);
+        const maxRowHeights = buildMap(json.maxRowHeights, SpreadsheetRowReference.fromJson);
         const windowJson = json["window"];
 
         return new SpreadsheetDelta(cells,
@@ -59,8 +76,8 @@ export default class SpreadsheetDelta {
         }
 
         this.cellsValue = cells.slice();
-        this.maxColumnWidthsValue = Object.assign({}, maxColumnWidths);
-        this.maxRowHeightsValue = Object.assign({}, maxRowHeights);
+        this.maxColumnWidthsValue = new Map(maxColumnWidths);
+        this.maxRowHeightsValue = new Map(maxRowHeights);
         this.windowValue = window.slice();
     }
 
@@ -69,11 +86,11 @@ export default class SpreadsheetDelta {
     }
 
     maxColumnWidths() {
-        return Object.assign({}, this.maxColumnWidthsValue);
+        return new Map(this.maxColumnWidthsValue);
     }
 
     maxRowHeights() {
-        return Object.assign({}, this.maxRowHeightsValue);
+        return new Map(this.maxRowHeightsValue);
     }
 
     window() {
@@ -114,15 +131,15 @@ export default class SpreadsheetDelta {
         }
 
         const maxColumnWidths = this.maxColumnWidths();
-        if (Object.keys(maxColumnWidths).length > 0) {
-            json.maxColumnWidths = maxColumnWidths;
+        if (maxColumnWidths.size > 0) {
+            json.maxColumnWidths = mapToJson(maxColumnWidths);
         }
 
         const maxRowHeights = this.maxRowHeights();
-        if (Object.keys(maxRowHeights).length > 0) {
-            json.maxRowHeights = maxRowHeights;
+        if (maxRowHeights.size > 0) {
+            json.maxRowHeights = mapToJson(maxRowHeights);
         }
-        
+
         const window = this.window();
         if (window.length > 0) {
             json.window = window.map(w => w.toJson()).join(",");
@@ -133,4 +150,12 @@ export default class SpreadsheetDelta {
     toString() {
         return JSON.stringify(this.toJson());
     }
+}
+
+function mapToJson(map) {
+    let json = {};
+    for (let [key, value] of map.entries()) {
+        json[key.toString()] = value;
+    }
+    return json;
 }

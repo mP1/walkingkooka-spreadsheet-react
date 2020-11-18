@@ -1,6 +1,8 @@
 import SpreadsheetCell from "../SpreadsheetCell";
 import SpreadsheetDelta from "./SpreadsheetDelta";
 import SpreadsheetRange from "../reference/SpreadsheetRange";
+import SpreadsheetColumnReference from "../reference/SpreadsheetColumnReference";
+import SpreadsheetRowReference from "../reference/SpreadsheetRowReference";
 
 function a1() {
     return SpreadsheetCell.fromJson({
@@ -29,15 +31,11 @@ function cells() {
 }
 
 function maxColumnWidths() {
-    return {
-        "A": 100
-    }
+    return new Map([[SpreadsheetColumnReference.parse("A"), 100]]);
 }
 
 function maxRowHeights() {
-    return {
-        "1": 20
-    }
+    return new Map([[SpreadsheetRowReference.parse("1"), 20]]);
 }
 
 function window() {
@@ -143,8 +141,8 @@ test("create", () => {
 
 test("create empty", () => {
     const c = [];
-    const mcw = {};
-    const mrh = {};
+    const mcw = new Map();
+    const mrh = new Map();
     const w = [];
 
     check(new SpreadsheetDelta(c, mcw, mrh, w),
@@ -159,8 +157,8 @@ test("create empty", () => {
 
 test("toJson only 1 cell", () => {
     const c = [a1()];
-    const mcw = {};
-    const mrh = {};
+    const mcw = new Map();
+    const mrh = new Map();
     const w = [];
 
     expect(new SpreadsheetDelta(c, mcw, mrh, w).toJson())
@@ -178,8 +176,8 @@ test("toJson only 1 cell", () => {
 
 test("toJson only 2 cells", () => {
     const c = cells();
-    const mcw = {};
-    const mrh = {};
+    const mcw = new Map();
+    const mrh = new Map();
     const w = [];
 
     expect(new SpreadsheetDelta(c, mcw, mrh, w).toJson())
@@ -240,8 +238,8 @@ test("fromJson null fails", () => {
 
 test("fromJson empty", () => {
     const c = [];
-    const mcw = {};
-    const mrh = {};
+    const mcw = new Map();
+    const mrh = new Map();
     const w = [];
 
     expect(SpreadsheetDelta.fromJson({})).toStrictEqual(new SpreadsheetDelta(c, mcw, mrh, w));
@@ -249,8 +247,8 @@ test("fromJson empty", () => {
 
 test("fromJson 1 cell", () => {
     const c = [a1()];
-    const mcw = {};
-    const mrh = {};
+    const mcw = new Map();
+    const mrh = new Map();
     const w = [];
 
     expect(SpreadsheetDelta.fromJson({
@@ -267,8 +265,8 @@ test("fromJson 1 cell", () => {
 
 test("fromJson 2 cells", () => {
     const c = [a1(), b2()];
-    const mcw = {};
-    const mrh = {};
+    const mcw = new Map();
+    const mrh = new Map();
     const w = [];
 
     expect(SpreadsheetDelta.fromJson({
