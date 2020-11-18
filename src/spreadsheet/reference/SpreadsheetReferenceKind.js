@@ -22,6 +22,12 @@ export default class SpreadsheetReferenceKind {
         this.name = name;
     }
 
+    prefix() {
+        return SpreadsheetReferenceKind.ABSOLUTE === this ?
+            "$" :
+            "";
+    }
+
     toJson() {
         return this.name;
     }

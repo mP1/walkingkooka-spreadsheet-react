@@ -16,6 +16,14 @@ test("of RELATIVE", () => {
     expect(SpreadsheetReferenceKind.of("RELATIVE")).toStrictEqual(SpreadsheetReferenceKind.RELATIVE);
 });
 
+test("prefix ABSOLUTE", () => {
+    expect(SpreadsheetReferenceKind.ABSOLUTE.prefix()).toStrictEqual("$");
+});
+
+test("prefix RELATIVE", () => {
+    expect(SpreadsheetReferenceKind.RELATIVE.prefix()).toStrictEqual("");
+});
+
 test("toJson", () => {
     expect(SpreadsheetReferenceKind.of("RELATIVE").toJson()).toStrictEqual("RELATIVE");
 });
