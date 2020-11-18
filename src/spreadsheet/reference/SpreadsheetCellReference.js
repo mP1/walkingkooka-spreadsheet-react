@@ -4,6 +4,15 @@
 import SpreadsheetColumnReference from "./SpreadsheetColumnReference";
 import SpreadsheetRowReference from "./SpreadsheetRowReference";
 
+function checkColumn(column) {
+    if (!column) {
+        throw new Error("Missing column");
+    }
+    if (!(column instanceof SpreadsheetColumnReference)) {
+        throw new Error("Expected SpreadsheetColumnReference column got " + column);
+    }
+}
+
 export default class SpreadsheetCellReference {
 
     static fromJson(json) {
@@ -44,12 +53,7 @@ export default class SpreadsheetCellReference {
     }
 
     constructor(column, row) {
-        if (!column) {
-            throw new Error("Missing column");
-        }
-        if (!(column instanceof SpreadsheetColumnReference)) {
-            throw new Error("Expected SpreadsheetColumnReference column got " + column);
-        }
+        checkColumn(column);
 
         if (!row) {
             throw new Error("Missing row");
@@ -60,6 +64,14 @@ export default class SpreadsheetCellReference {
 
         this.columnValue = column;
         this.rowValue = row;
+    }
+
+    setColumn(column) {
+        checkColumn(column);
+
+        return this.column() === column ?
+            this :
+            new SpreadsheetCellReference(column, this.row());
     }
 
     column() {
