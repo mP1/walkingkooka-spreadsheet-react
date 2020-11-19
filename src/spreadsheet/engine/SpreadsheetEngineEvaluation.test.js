@@ -25,10 +25,10 @@ test("valueof SKIP_EVALUATE", () => {
 });
 
 test("toString CLEAR_VALUE_ERROR_SKIP_EVALUATE", () => {
-    expect(SpreadsheetEngineEvaluation.CLEAR_VALUE_ERROR_SKIP_EVALUATE.toString()).toEqual("CLEAR_VALUE_ERROR_SKIP_EVALUATE");
+    expect(SpreadsheetEngineEvaluation.CLEAR_VALUE_ERROR_SKIP_EVALUATE.toString()).toEqual("clear-value-error-skip-evaluate");
 });
 
 test("toString SKIP_EVALUATE", () => {
-    expect(SpreadsheetEngineEvaluation.SKIP_EVALUATE.toString()).toEqual("SKIP_EVALUATE");
+    expect(SpreadsheetEngineEvaluation.SKIP_EVALUATE.toString()).toEqual("skip-evaluate");
 });
 

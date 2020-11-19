@@ -39,6 +39,6 @@ export default class SpreadsheetEngineEvaluation {
     }
 
     toString() {
-        return this.value;
+        return this.value.toLowerCase().replace(/_/g, '-');
     }
 }
