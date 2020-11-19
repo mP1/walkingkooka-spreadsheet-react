@@ -35,7 +35,7 @@ export default class SpreadsheetColumnOrRowReference {
             throw new Error("Expected SpreadsheetReferenceKind kind got " + kind);
         }
 
-        return this.kind() == kind ?
+        return this.kind() === kind ?
             this :
             new factory(this.value(), kind);
     }
