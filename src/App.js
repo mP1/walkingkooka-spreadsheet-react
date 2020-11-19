@@ -14,12 +14,14 @@ import SpreadsheetCoordinates from "./spreadsheet/SpreadsheetCoordinates";
 import SpreadsheetViewport from "./spreadsheet/reference/SpreadsheetViewport";
 import SpreadsheetRange from "./spreadsheet/reference/SpreadsheetRange";
 import SpreadsheetDelta from "./spreadsheet/engine/SpreadsheetDelta";
+import SpreadsheetEngineEvaluation from "./spreadsheet/engine/SpreadsheetEngineEvaluation";
 
 export default class App extends React.Component {
     constructor(props) {
         super(props);
 
         this.state = {
+            spreadsheetEngineEvaluation: SpreadsheetEngineEvaluation.COMPUTE_IF_NECESSARY,
             spreadsheetMetadata: SpreadsheetMetadata.EMPTY,
             cells: {},
         }
@@ -115,7 +117,7 @@ export default class App extends React.Component {
     }
 
     spreadsheetCellLoadUrl(idOrRange) {
-        const evaluation = this.state.spreadsheetEngineEvaluation || "compute-if-necessary";
+        const evaluation = this.state.spreadsheetEngineEvaluation || SpreadsheetEngineEvaluation.COMPUTE_IF_NECESSARY;
 
         return this.spreadsheetApiUrl() + "/cell/" + idOrRange + "/" + evaluation;
     }
