@@ -10,6 +10,7 @@ const EDIT_CELL = "edit-cell";
 const SPREADSHEET_ID = "spreadsheet-id";
 const SPREADSHEET_NAME = "spreadsheet-name";
 const STYLE = "style";
+const VIEWPORT_CELL = "viewport-cell";
 const VIEWPORT_COORDINATES = "viewport-coordinates";
 
 function createEmpty() {
@@ -101,6 +102,9 @@ export default class SpreadsheetMetadata {
             case STYLE:
                 type = TextStyle;
                 break;
+            case VIEWPORT_CELL:
+                type = SpreadsheetCellReference;
+                break;
             case VIEWPORT_COORDINATES:
                 type = SpreadsheetCoordinates;
                 break;
@@ -179,6 +183,14 @@ export default class SpreadsheetMetadata {
         return this.set(STYLE, style);
     }
 
+    viewportCell() {
+        return this.get(VIEWPORT_CELL, SpreadsheetCellReference.fromJson);
+    }
+
+    setViewportCell(cell) {
+        return this.set(VIEWPORT_CELL, cell);
+    }
+    
     viewportCoordinates() {
         return this.get(VIEWPORT_COORDINATES, SpreadsheetCoordinates.fromJson);
     }

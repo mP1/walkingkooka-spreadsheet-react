@@ -211,6 +211,25 @@ test("set style", () => {
         });
 })
 
+// viewport-cell............................................................................................................
+
+test("get viewport-cell missing", () => {
+    expect(SpreadsheetMetadata.EMPTY.viewportCell()).toBeUndefined();
+});
+
+test("get viewport-cell", () => {
+    expect(new SpreadsheetMetadata({
+        "viewport-cell": "B97"
+    }).viewportCell()).toEqual(SpreadsheetCellReference.parse("B97"));
+});
+
+test("set viewport-cell", () => {
+    checkJson(SpreadsheetMetadata.EMPTY.setViewportCell(SpreadsheetCellReference.parse("B98")),
+        {
+            "viewport-cell": "B98"
+        });
+});
+
 // viewportCoordinates.............................................................................................................
 
 test("get viewport-coordinates", () => {
@@ -233,14 +252,17 @@ test("all setters & getters", () => {
     const style = TextStyle.EMPTY
         .set("width", PixelLength.parse("123px"));
     const coords = new SpreadsheetCoordinates(12, 34);
+    const viewportCell = SpreadsheetCellReference.parse("A99");
 
     const metadata = SpreadsheetMetadata.EMPTY
         .setSpreadsheetName(name)
         .setStyle(style)
+        .setViewportCell(viewportCell)
         .setViewportCoordinates(coords);
 
     expect(metadata.spreadsheetName()).toEqual(name);
     expect(metadata.style()).toEqual(style);
+    expect(metadata.viewportCell()).toEqual(viewportCell);
     expect(metadata.viewportCoordinates()).toEqual(coords);
 });
 
