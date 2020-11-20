@@ -24,6 +24,8 @@ export default class App extends React.Component {
             spreadsheetEngineEvaluation: SpreadsheetEngineEvaluation.COMPUTE_IF_NECESSARY,
             spreadsheetMetadata: SpreadsheetMetadata.EMPTY,
             cells: new Map(),
+            columnWidths: new Map(),
+            rowHeights: new Map(),
         }
 
         const handleSpreadsheetCellBox = (json) => {
@@ -77,8 +79,8 @@ export default class App extends React.Component {
         // merge columnWidths and rowHeights
         this.setState({
             cells: cells,
-            columnWidths: new Map([...this.state.columnWidths || [], ...delta.maxColumnWidths()]),
-            rowHeights: new Map([...this.state.rowHeights || [], ...delta.maxRowHeights()]),
+            columnWidths: new Map([...this.state.columnWidths, ...delta.maxColumnWidths()]),
+            rowHeights: new Map([...this.state.rowHeights, ...delta.maxRowHeights()]),
         });
     }
 
