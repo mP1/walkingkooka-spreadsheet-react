@@ -78,33 +78,49 @@ export default class App extends React.Component {
     }
 
     /**
-     * Reads the new metadata viewport and fetches the cellbox for those coordinates.
+     * Fires a new {@link SpreadsheetCellBox} which should trigger a redraw.
      */
     viewportCoordinatesUpdate(metadata) {
-        const viewport = metadata.viewportCoordinates();
+        const coords = metadata.viewportCoordinates();
 
-        // TODO make request *ONLY* if metadata.viewport changed or forced.
-        this.messenger.send(this.spreadsheetApiUrl(metadata) + "/cellbox/" + viewport, {
-            method: "GET"
-        })
+        this.spreadsheetCellBoxListeners.dispatch(new SpreadsheetCellBox(metadata.viewportCell(),
+            coords.x(),
+            coords.y(),
+            0,
+            0));
     }
 
     /**
      * Accepts {@link SpreadsheetCellBox} and requests the {@link SpreadsheetRange} that fill the content.
      */
     requestViewportRange(cellBox) {
-        const width = 1000; // TODO retrieve from viewport widget.
-        const height = 500;
-
         // always make request
-        this.messenger.send(this.spreadsheetApiUrl() + "/viewport/" + new SpreadsheetViewport(cellBox.reference(), width, height),
+        this.messenger.send(this.spreadsheetApiUrl() + "/viewport/" + this.fetchSpreadsheetViewport(cellBox.reference()),
             {
                 method: "GET"
             });
     }
 
     /**
-     * Accepts the {@link SpreadsheetRange} returned by {@link #requestViewportRange} and then loads all the cells in that
+     * Fetch or computes the {@link SpreadsheetViewport} taking the width and height from the viewport holding the cells.
+     */
+    fetchSpreadsheetViewport(homeCellReference) {
+        return new SpreadsheetViewport(homeCellReference,
+            this.viewportWidth(),
+            this.viewportHeight());
+    }
+
+    // TODO fetch width and height from viewport widget
+    viewportWidth() {
+        return 2000;
+    }
+
+    viewportHeight() {
+        return 1000;
+    }
+
+    /**
+     * Accepts the {@link SpreadsheetRange} returned by {@link #fetchViewport} and then loads all the cells in that
      * range.
      */
     loadSpreadsheetRangeCell(range) {
