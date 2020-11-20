@@ -51,6 +51,8 @@ test("new ABSOLUTE", () => {
         "$B");
 });
 
+// setKind..............................................................................................................
+
 test("set missing kind fails", () => {
     expect(() => new SpreadsheetColumnReference(0, SpreadsheetReferenceKind.RELATIVE).setKind()).toThrow("Missing kind");
 });
@@ -80,6 +82,38 @@ test("set different kind RELATIVE", () => {
     const reference = new SpreadsheetColumnReference(2, SpreadsheetReferenceKind.ABSOLUTE);
     expect(reference.setKind(SpreadsheetReferenceKind.RELATIVE)).toStrictEqual(new SpreadsheetColumnReference(2, SpreadsheetReferenceKind.RELATIVE));
 });
+
+// setValue..............................................................................................................
+
+test("set missing value fails", () => {
+    expect(() => new SpreadsheetColumnReference(undefined, SpreadsheetReferenceKind.RELATIVE).setValue()).toThrow("Expected number value got undefined");
+});
+
+test("set invalid value fails", () => {
+    expect(() => new SpreadsheetColumnReference("!invalid", SpreadsheetReferenceKind.RELATIVE).setValue("!invalid")).toThrow("Expected number value got !invalid");
+});
+
+test("set same value", () => {
+    const value = 2;
+    const reference = new SpreadsheetColumnReference(value, SpreadsheetReferenceKind.ABSOLUTE);
+    expect(reference.setValue(value)).toStrictEqual(reference);
+});
+
+test("set different value ABSOLUTE", () => {
+    const kind = SpreadsheetReferenceKind.ABSOLUTE;
+    const value = 2;
+    const reference = new SpreadsheetColumnReference(value, kind);
+    expect(reference.setValue(value)).toStrictEqual(new SpreadsheetColumnReference(value, kind));
+});
+
+test("set different value RELATIVE", () => {
+    const kind = SpreadsheetReferenceKind.RELATIVE;
+    const value = 2;
+    const reference = new SpreadsheetColumnReference(value, kind);
+    expect(reference.setValue(value)).toStrictEqual(new SpreadsheetColumnReference(value, kind));
+});
+
+// toJson...............................................................................................................
 
 test("toJson", () => {
     expect(SpreadsheetReferenceKind.of("RELATIVE").toJson()).toStrictEqual("RELATIVE");

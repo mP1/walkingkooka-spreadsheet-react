@@ -37,6 +37,12 @@ export default class SpreadsheetColumnOrRowReference {
         return this.valueValue;
     }
 
+    setValue(value) {
+        return this.value() === value ?
+            this :
+            new this.constructor(this.kind(), value);
+    }
+
     toJson() {
         return this.toString();
     }
