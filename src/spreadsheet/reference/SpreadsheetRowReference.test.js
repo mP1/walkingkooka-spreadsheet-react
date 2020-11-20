@@ -1,6 +1,5 @@
 import SpreadsheetRowReference from "./SpreadsheetRowReference";
 import SpreadsheetReferenceKind from "./SpreadsheetReferenceKind";
-import SpreadsheetColumnReference from "./SpreadsheetColumnReference";
 
 test("parse missing text fails", () => {
     expect(() => SpreadsheetRowReference.parse()).toThrow("Missing text");
@@ -106,6 +105,38 @@ test("set different value RELATIVE", () => {
     const value = 2;
     const reference = new SpreadsheetRowReference(value, kind);
     expect(reference.setValue(value)).toStrictEqual(new SpreadsheetRowReference(value, kind));
+});
+
+// add..............................................................................................................
+
+test("add missing value fails", () => {
+    expect(() => new SpreadsheetRowReference(1, SpreadsheetReferenceKind.RELATIVE).add()).toThrow("Expected number delta got undefined");
+});
+
+test("add invalid value fails", () => {
+    expect(() => new SpreadsheetRowReference(1, SpreadsheetReferenceKind.RELATIVE).add("!invalid")).toThrow("Expected number delta got !invalid");
+});
+
+test("add same value", () => {
+    const value = 2;
+    const reference = new SpreadsheetRowReference(value, SpreadsheetReferenceKind.ABSOLUTE);
+    expect(reference.add(0)).toStrictEqual(reference);
+});
+
+test("add non zero value ABSOLUTE", () => {
+    const kind = SpreadsheetReferenceKind.ABSOLUTE;
+    const value = 2;
+    const delta = 100;
+    const reference = new SpreadsheetRowReference(value, kind);
+    expect(reference.add(delta)).toStrictEqual(new SpreadsheetRowReference(value + delta, kind));
+});
+
+test("add non zero value RELATIVE", () => {
+    const kind = SpreadsheetReferenceKind.RELATIVE;
+    const value = 2;
+    const delta = 100;
+    const reference = new SpreadsheetRowReference(value, kind);
+    expect(reference.add(delta)).toStrictEqual(new SpreadsheetRowReference(value + delta, kind));
 });
 
 // toJson...............................................................................................................

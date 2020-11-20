@@ -35,6 +35,13 @@ export default class SpreadsheetColumnOrRowReference {
             new this.constructor(this.value(), kind);
     }
 
+    add(delta) {
+        if (typeof delta !== "number") {
+            throw new Error("Expected number delta got " + delta);
+        }
+        return this.setValue(this.value() + delta);
+    }
+
     value() {
         return this.valueValue;
     }
