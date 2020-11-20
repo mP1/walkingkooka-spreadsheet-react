@@ -15,12 +15,7 @@ export default class SpreadsheetFormula {
     }
 
     constructor(text, value, error) {
-        if (!text) {
-            throw new Error("Missing text");
-        }
-        if (typeof text !== "string") {
-            throw new Error("Expected string got " + text);
-        }
+        checkText(text);
         if (error) {
             if (value) {
                 throw new Error("Expected either value or error but got both " + value + " " + error);
@@ -36,6 +31,14 @@ export default class SpreadsheetFormula {
 
     text() {
         return this.textValue;
+    }
+
+    setText(text) {
+        checkText(text);
+
+        return this.text() === text ?
+            this :
+            new SpreadsheetFormula(text, this.value(), this.error());
     }
 
     value() {
@@ -66,5 +69,14 @@ export default class SpreadsheetFormula {
 
     toString() {
         return JSON.stringify(this.toJson());
+    }
+}
+
+function checkText(text) {
+    if (!text && "" !== text) {
+        throw new Error("Missing text");
+    }
+    if (typeof text !== "string") {
+        throw new Error("Expected string text got " + text);
     }
 }
