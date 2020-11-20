@@ -39,7 +39,11 @@ export default class SpreadsheetRowReference extends SpreadsheetColumnOrRowRefer
     }
 
     constructor(value, kind) {
-        super(value, kind, SpreadsheetRowReference.MAX);
+        super(value, kind);
+    }
+
+    max() {
+        return SpreadsheetRowReference.MAX;
     }
 
     toString() {
