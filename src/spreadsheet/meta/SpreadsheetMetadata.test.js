@@ -3,6 +3,7 @@ import SpreadsheetName from "../SpreadsheetName";
 import TextStyle from "../../text/TextStyle";
 import SpreadsheetCoordinates from "../SpreadsheetCoordinates";
 import PixelLength from "../../text/PixelLength";
+import SpreadsheetCellReference from "../reference/SpreadsheetCellReference";
 
 test("Empty", () => {
     const metadata = SpreadsheetMetadata.EMPTY;
@@ -150,6 +151,25 @@ test("set property different", () => {
             "spreadsheet-name": propertyValue2.toJson()
         });
 })
+
+// edit-cell............................................................................................................
+
+test("get edit-cell missing", () => {
+    expect(SpreadsheetMetadata.EMPTY.editCell()).toBeUndefined();
+});
+
+test("get edit-cell", () => {
+    expect(new SpreadsheetMetadata({
+        "edit-cell": "B97"
+    }).editCell()).toEqual(SpreadsheetCellReference.parse("B97"));
+});
+
+test("set edit-cell", () => {
+    checkJson(SpreadsheetMetadata.EMPTY.setEditCell(SpreadsheetCellReference.parse("B98")),
+        {
+            "edit-cell": "B98"
+        });
+});
 
 // spreadsheetId.........................................................................................................
 

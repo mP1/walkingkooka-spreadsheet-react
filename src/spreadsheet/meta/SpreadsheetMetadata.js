@@ -2,9 +2,11 @@ import SpreadsheetName from "../SpreadsheetName";
 
 import TextStyle from "../../text/TextStyle";
 import SpreadsheetCoordinates from "../SpreadsheetCoordinates";
+import SpreadsheetCellReference from "../reference/SpreadsheetCellReference";
 
 // these constants should match the constants in walkingkooka-spreadsheet/walkingkooka.spreadsheet.meta.SpreadsheetMetadataPropertyName.java
 const DEFAULTS = "_defaults";
+const EDIT_CELL = "edit-cell";
 const SPREADSHEET_ID = "spreadsheet-id";
 const SPREADSHEET_NAME = "spreadsheet-name";
 const STYLE = "style";
@@ -90,6 +92,9 @@ export default class SpreadsheetMetadata {
 
         let type;
         switch (property) {
+            case EDIT_CELL:
+                type = SpreadsheetCellReference;
+                break;
             case SPREADSHEET_NAME:
                 type = SpreadsheetName;
                 break;
@@ -144,6 +149,14 @@ export default class SpreadsheetMetadata {
         return this.defaults() === defaultSpreadsheetMetadata ?
             this :
             createWithDefaults(this.json, defaultSpreadsheetMetadata);
+    }
+
+    editCell() {
+        return this.get(EDIT_CELL, SpreadsheetCellReference.fromJson);
+    }
+
+    setEditCell(coords) {
+        return this.set(EDIT_CELL, coords);
     }
 
     spreadsheetId() {
