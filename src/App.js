@@ -64,6 +64,9 @@ export default class App extends React.Component {
         this.spreadsheetRangeListeners.add(this.loadSpreadsheetRangeCell.bind(this));
     }
 
+    /**
+     * Merge the new cells, columnWidths, rowHeights with the old in state.
+     */
     setStateDelta(delta) {
         // merge the old and new cells.
         const cells = new Map(this.state.cells);
@@ -71,8 +74,11 @@ export default class App extends React.Component {
             cells.put(c.reference(), c);
         });
 
+        // merge columnWidths and rowHeights
         this.setState({
             cells: cells,
+            columnWidths: new Map([...this.state.columnWidths || [], ...delta.maxColumnWidths()]),
+            rowHeights: new Map([...this.state.rowHeights || [], ...delta.maxRowHeights()]),
         });
     }
 
