@@ -2,7 +2,9 @@ import SpreadsheetReferenceKind from "./SpreadsheetReferenceKind";
 
 export default class SpreadsheetColumnOrRowReference {
 
-    constructor(value, kind, max) {
+    constructor(value, kind) {
+        const max = this.max();
+
         if (typeof value !== "number") {
             throw new Error("Expected number value got " + value);
         }
@@ -40,7 +42,7 @@ export default class SpreadsheetColumnOrRowReference {
     setValue(value) {
         return this.value() === value ?
             this :
-            new this.constructor(this.kind(), value);
+            new this.constructor(value, this.kind());
     }
 
     toJson() {
