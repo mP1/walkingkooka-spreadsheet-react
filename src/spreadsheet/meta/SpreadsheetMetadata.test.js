@@ -319,6 +319,20 @@ test("set defaults different", () => {
     expect(withDifferent.get(propertyName)).toEqual(differentValue);
 })
 
+// isEmpty..............................................................................................................
+
+test("isEmpty EMPTY", () => {
+    expect(SpreadsheetMetadata.EMPTY.isEmpty()).toEqual(true);
+});
+
+test("isEmpty empty 2", () => {
+    expect(new SpreadsheetMetadata({}).isEmpty()).toEqual(true);
+});
+
+test("isEmpty not empty", () => {
+    expect(new SpreadsheetMetadata({"spreadsheetId": "1"}).isEmpty()).toEqual(false);
+});
+
 // helpers..............................................................................................................
 
 function checkSpreadsheetId(metadata, id) {

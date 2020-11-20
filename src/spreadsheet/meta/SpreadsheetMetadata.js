@@ -54,6 +54,13 @@ export default class SpreadsheetMetadata {
         this.json = Object.assign({}, json) || {} // defensive copy
     }
 
+    /**
+     * Returns true if this is empty without any values.
+     */
+    isEmpty() {
+        return Object.keys(this.json).length === 0;
+    }
+
     getOrFail(property, factory) {
         const value = this.get(property, factory);
         if(!value) {
