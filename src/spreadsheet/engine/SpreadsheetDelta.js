@@ -57,14 +57,14 @@ export default class SpreadsheetDelta {
         if (!maxColumnWidths) {
             throw new Error("Missing maxColumnWidths");
         }
-        if (typeof maxColumnWidths != "object") {
+        if (!(maxColumnWidths instanceof Map)) {
             throw new Error("Expected object maxColumnWidths got " + maxColumnWidths);
         }
 
         if (!maxRowHeights) {
             throw new Error("Missing maxRowHeights");
         }
-        if (typeof maxRowHeights != "object") {
+        if (!(maxRowHeights instanceof Map)) {
             throw new Error("Expected object maxRowHeights got " + maxRowHeights);
         }
 
