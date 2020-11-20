@@ -1,5 +1,6 @@
 import SpreadsheetRowReference from "./SpreadsheetRowReference";
 import SpreadsheetReferenceKind from "./SpreadsheetReferenceKind";
+import SpreadsheetColumnReference from "./SpreadsheetColumnReference";
 
 test("parse missing text fails", () => {
     expect(() => SpreadsheetRowReference.parse()).toThrow("Missing text");
@@ -76,6 +77,38 @@ test("set different kind RELATIVE", () => {
     const reference = new SpreadsheetRowReference(2, SpreadsheetReferenceKind.ABSOLUTE);
     expect(reference.setKind(SpreadsheetReferenceKind.RELATIVE)).toStrictEqual(new SpreadsheetRowReference(2, SpreadsheetReferenceKind.RELATIVE));
 });
+
+// setValue..............................................................................................................
+
+test("set missing value fails", () => {
+    expect(() => new SpreadsheetRowReference(undefined, SpreadsheetReferenceKind.RELATIVE).setValue()).toThrow("Expected number value got undefined");
+});
+
+test("set invalid value fails", () => {
+    expect(() => new SpreadsheetRowReference("!invalid", SpreadsheetReferenceKind.RELATIVE).setValue("!invalid")).toThrow("Expected number value got !invalid");
+});
+
+test("set same value", () => {
+    const value = 2;
+    const reference = new SpreadsheetRowReference(value, SpreadsheetReferenceKind.ABSOLUTE);
+    expect(reference.setValue(value)).toStrictEqual(reference);
+});
+
+test("set different value ABSOLUTE", () => {
+    const kind = SpreadsheetReferenceKind.ABSOLUTE;
+    const value = 2;
+    const reference = new SpreadsheetRowReference(value, kind);
+    expect(reference.setValue(value)).toStrictEqual(new SpreadsheetRowReference(value, kind));
+});
+
+test("set different value RELATIVE", () => {
+    const kind = SpreadsheetReferenceKind.RELATIVE;
+    const value = 2;
+    const reference = new SpreadsheetRowReference(value, kind);
+    expect(reference.setValue(value)).toStrictEqual(new SpreadsheetRowReference(value, kind));
+});
+
+// toJson...............................................................................................................
 
 test("toJson ABSOLUTE", () => {
     expect(new SpreadsheetRowReference(2, SpreadsheetReferenceKind.ABSOLUTE).toJson()).toStrictEqual("$3");
