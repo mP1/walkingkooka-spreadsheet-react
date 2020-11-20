@@ -155,8 +155,8 @@ export default class SpreadsheetMetadata {
         return this.get(EDIT_CELL, SpreadsheetCellReference.fromJson);
     }
 
-    setEditCell(coords) {
-        return this.set(EDIT_CELL, coords);
+    setEditCell(cell) {
+        return this.set(EDIT_CELL, cell);
     }
 
     spreadsheetId() {
