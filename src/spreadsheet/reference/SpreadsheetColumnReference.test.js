@@ -113,6 +113,38 @@ test("set different value RELATIVE", () => {
     expect(reference.setValue(value)).toStrictEqual(new SpreadsheetColumnReference(value, kind));
 });
 
+// add..............................................................................................................
+
+test("add missing value fails", () => {
+    expect(() => new SpreadsheetColumnReference(1, SpreadsheetReferenceKind.RELATIVE).add()).toThrow("Expected number delta got undefined");
+});
+
+test("add invalid value fails", () => {
+    expect(() => new SpreadsheetColumnReference(1, SpreadsheetReferenceKind.RELATIVE).add("!invalid")).toThrow("Expected number delta got !invalid");
+});
+
+test("add same value", () => {
+    const value = 2;
+    const reference = new SpreadsheetColumnReference(value, SpreadsheetReferenceKind.ABSOLUTE);
+    expect(reference.add(0)).toStrictEqual(reference);
+});
+
+test("add non zero value ABSOLUTE", () => {
+    const kind = SpreadsheetReferenceKind.ABSOLUTE;
+    const value = 2;
+    const delta = 100;
+    const reference = new SpreadsheetColumnReference(value, kind);
+    expect(reference.add(delta)).toStrictEqual(new SpreadsheetColumnReference(value + delta, kind));
+});
+
+test("add non zero value RELATIVE", () => {
+    const kind = SpreadsheetReferenceKind.RELATIVE;
+    const value = 2;
+    const delta = 100;
+    const reference = new SpreadsheetColumnReference(value, kind);
+    expect(reference.add(delta)).toStrictEqual(new SpreadsheetColumnReference(value + delta, kind));
+});
+
 // toJson...............................................................................................................
 
 test("toJson", () => {
