@@ -9,10 +9,16 @@ test("create without text fails", () => {
 });
 
 test("create with non string fails", () => {
-    expect(() => new SpreadsheetFormula(1.5)).toThrow("Expected string got 1.5");
+    expect(() => new SpreadsheetFormula(1.5)).toThrow("Expected string text got 1.5");
 });
 
 test("create text", () => {
+    const spreadsheetFormula = new SpreadsheetFormula(text);
+    expect(spreadsheetFormula.text()).toBe(text);
+});
+
+test("create text empty", () => {
+    const text = "";
     const spreadsheetFormula = new SpreadsheetFormula(text);
     expect(spreadsheetFormula.text()).toBe(text);
 });
@@ -25,6 +31,33 @@ test("create text, error", () => {
     const error = new SpreadsheetError("Error message #1");
 
     check(new SpreadsheetFormula(text, undefined, error), text, undefined, error, {text: text, error: error.toJson()})
+});
+
+// text.................................................................................................................
+
+test("text", () => {
+    expect(new SpreadsheetFormula(text, value).text()).toStrictEqual(text);
+});
+
+test("setText missing fails", () => {
+    expect(() => new SpreadsheetFormula(text).setText()).toThrow("Missing text");
+});
+
+test("setText non string fails", () => {
+    expect(() => new SpreadsheetFormula(text).setText(1.5)).toThrow("Expected string text got 1.5");
+});
+
+test("setText same", () => {
+    expect(new SpreadsheetFormula(text, value).setText(text)).toStrictEqual(new SpreadsheetFormula(text, value));
+});
+
+test("setText", () => {
+    expect(new SpreadsheetFormula("before", value).setText(text)).toStrictEqual(new SpreadsheetFormula(text, value));
+});
+
+test("setText empty string", () => {
+    const text = "";
+    expect(new SpreadsheetFormula("before", value).setText(text)).toStrictEqual(new SpreadsheetFormula(text, value));
 });
 
 // json.................................................................................................................
