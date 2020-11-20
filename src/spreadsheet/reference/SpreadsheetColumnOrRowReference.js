@@ -25,12 +25,12 @@ export default class SpreadsheetColumnOrRowReference {
     }
 
     /**
-     * Helper only intended to be called by sub classes.
+     * Would be setter that returns a {@link SpreadsheetColumnOrRowReference} of the same type with the given {@link SpreadsheetReferenceKind}.
      */
-    setKind0(kind, factory) {
+    setKind(kind) {
         return this.kind() === kind ?
             this :
-            new factory(this.value(), kind);
+            new this.constructor(this.value(), kind);
     }
 
     value() {
