@@ -93,6 +93,29 @@ export default class TextStyle {
     }
 
     /**
+     * Produces a JSON object holding the styles with style properties converted from kebab case to camel case.
+     */
+    toCss() {
+        const css = {};
+
+        for (const [key, value] of Object.entries(this.styles)) {
+            const components = key.split("-");
+            const first = components.shift();
+
+            const camelCase =
+                first +
+                components.map(c => {
+                    return c.charAt(0).toUpperCase() + c.substring(1);
+                })
+                    .join("");
+
+            css[camelCase] = value.toString();
+        }
+
+        return css;
+    }
+
+    /**
      * Returns this metadata as a JSON. Perfect to perform REST api calls.
      */
     toJson() {

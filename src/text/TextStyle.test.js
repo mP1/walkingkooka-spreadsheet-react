@@ -195,6 +195,62 @@ test("merge replace", () => {
     }));
 });
 
+// toCss................................................................................................................
+
+test("toCss EMPTY", () => {
+    expect(TextStyle.EMPTY.toCss())
+        .toEqual({});
+});
+
+test("toCss width", () => {
+    expect(TextStyle.EMPTY
+        .set("width", "10px")
+        .toCss())
+        .toEqual({
+            width: "10px",
+        });
+});
+
+test("toCss width, height", () => {
+    expect(TextStyle.EMPTY
+        .set("width", "10px")
+        .set("height", "20px")
+        .toCss())
+        .toEqual({
+            width: "10px",
+            height: "20px",
+        });
+});
+
+test("toCss margin-left", () => {
+    expect(TextStyle.EMPTY
+        .set("margin-left", "10px")
+        .toCss())
+        .toEqual({
+            marginLeft: "10px",
+        });
+});
+
+test("toCss border-left-width", () => {
+    expect(TextStyle.EMPTY
+        .set("border-left-width", "10px")
+        .toCss())
+        .toEqual({
+            borderLeftWidth: "10px",
+        });
+});
+
+test("toCss mixed property names", () => {
+    expect(TextStyle.EMPTY
+        .set("border-left-width", "10px")
+        .set("color", "#123456")
+        .toCss())
+        .toEqual({
+            borderLeftWidth: "10px",
+            color: "#123456",
+        });
+});
+
 // toString.............................................................................................................
 
 test("toString", () => {
