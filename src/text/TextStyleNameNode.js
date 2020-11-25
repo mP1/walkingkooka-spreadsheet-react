@@ -42,4 +42,8 @@ export default class TextStyleNameNode extends TextNode {
         }
         textNodeVisitor.endVisitTextStyleNameNode(this);
     }
+
+    toHtml() {
+        throw new Error("Unsupported: toHtml");
+    }
 }

@@ -17,6 +17,14 @@ test("create", () => {
     expect(placeholder.value()).toBe(value);
 });
 
+// toJson...............................................................................................................
+
+test("toHtml fails", () => {
+    expect(() => new TextPlaceholderNode(value).toHtml()).toThrow("Unsupported: toHtml");
+});
+
+// toJson...............................................................................................................
+
 test("json", () => {
     const placeholder = new TextPlaceholderNode(value);
 

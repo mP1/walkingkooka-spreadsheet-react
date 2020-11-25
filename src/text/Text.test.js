@@ -1,6 +1,7 @@
 import Text from "./Text";
 import fromJson from "./TextNodeJsonSupport";
 import TextStyle from "./TextStyle";
+import React from "react";
 
 const textValue = "text-123-abc";
 
@@ -16,6 +17,16 @@ test("create", () => {
     const text = new Text(textValue);
     expect(text.value()).toBe(textValue);
 });
+
+// toHtml...............................................................................................................
+
+test("toHtml", () => {
+    expect(new Text(textValue)
+        .toHtml())
+        .toStrictEqual(textValue);
+});
+
+// toHtml...............................................................................................................
 
 test("json", () => {
     const text = new Text(textValue);

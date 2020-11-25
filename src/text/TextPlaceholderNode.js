@@ -25,4 +25,8 @@ export default class TextPlaceholderNode extends TextLeafNode {
     accept(textNodeVisitor) {
         textNodeVisitor.visitTextPlaceholderNode(this);
     }
+
+    toHtml() {
+        throw new Error("Unsupported: toHtml");
+    }
 }
