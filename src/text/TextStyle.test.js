@@ -144,6 +144,57 @@ test("height pixel value", () => {
     }).height()).toStrictEqual(new PixelLength(123.0));
 });
 
+// merge................................................................................................................
+
+test("merge TextStyle missing", () => {
+    expect(() => TextStyle.EMPTY.merge()).toThrow("Missing style");
+});
+
+test("merge invalid fails", () => {
+    expect(() => TextStyle.EMPTY.merge("!invalid")).toThrow("Expected TextStyle style got !invalid");
+});
+
+test("merge with empty", () => {
+    const style = TextStyle.fromJson({
+        "width": "10px",
+    });
+    expect(style.merge(TextStyle.EMPTY)).toStrictEqual(style);
+});
+
+test("merge empty with non empty", () => {
+    const style = TextStyle.fromJson({
+        "width": "10px",
+    });
+    expect(TextStyle.EMPTY.merge(style)).toStrictEqual(style);
+});
+
+test("merge non empty", () => {
+    const width = TextStyle.fromJson({
+        "width": "10px",
+    });
+    const height = TextStyle.fromJson({
+        "height": "20px",
+    });
+    expect(width.merge(height)).toStrictEqual(TextStyle.fromJson({
+        "width": "10px",
+        "height": "20px",
+    }));
+});
+
+test("merge replace", () => {
+    const width = TextStyle.fromJson({
+        "width": "10px",
+        "height": "5px",
+    });
+    const height = TextStyle.fromJson({
+        "height": "20px",
+    });
+    expect(width.merge(height)).toStrictEqual(TextStyle.fromJson({
+        "width": "10px",
+        "height": "20px",
+    }));
+});
+
 // toString.............................................................................................................
 
 test("toString", () => {

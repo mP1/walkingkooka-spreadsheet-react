@@ -79,6 +79,20 @@ export default class TextStyle {
     }
 
     /**
+     * Merges this style with the entries from the given, this means properties in other will replace any that exist in this.
+     */
+    merge(style) {
+        if (!style) {
+            throw new Error("Missing style");
+        }
+        if (!(style instanceof TextStyle)) {
+            throw new Error("Expected TextStyle style got " + style);
+        }
+
+        return new TextStyle(Object.assign({}, this.styles, style.styles));
+    }
+
+    /**
      * Returns this metadata as a JSON. Perfect to perform REST api calls.
      */
     toJson() {
