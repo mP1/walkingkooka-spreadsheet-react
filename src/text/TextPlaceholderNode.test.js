@@ -17,10 +17,10 @@ test("create", () => {
     expect(placeholder.value()).toBe(value);
 });
 
-// toJson...............................................................................................................
+// render...............................................................................................................
 
-test("toHtml fails", () => {
-    expect(() => new TextPlaceholderNode(value).toHtml()).toThrow("Unsupported: toHtml");
+test("render fails", () => {
+    expect(() => new TextPlaceholderNode(value).render()).toThrow("Unsupported: render");
 });
 
 // toJson...............................................................................................................
