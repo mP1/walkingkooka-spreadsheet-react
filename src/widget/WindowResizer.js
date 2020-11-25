@@ -43,6 +43,6 @@ export default class WindowResizer extends React.Component {
 }
 
 WindowResizer.propTypes = {
-    children: PropTypes.elementType.isRequired,
+    children: PropTypes.arrayOf(PropTypes.object).isRequired,
     dimensions: PropTypes.func.isRequired,
 }
