@@ -21,4 +21,8 @@ export default class Text extends TextLeafNode {
     value() {
         return this.text;
     }
+
+    accept(textNodeVisitor) {
+        textNodeVisitor.visitText(this);
+    }
 }

@@ -21,4 +21,8 @@ export default class TextPlaceholderNode extends TextLeafNode {
     value() {
         return this.placeholder;
     }
+
+    accept(textNodeVisitor) {
+        textNodeVisitor.visitTextPlaceholderNode(this);
+    }
 }

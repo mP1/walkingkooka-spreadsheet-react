@@ -85,6 +85,10 @@ export default class TextStyle {
         return Object.assign({}, this.styles);
     }
 
+    accept(textNodeVisitor) {
+        textNodeVisitor.visitTextStyle(this);
+    }
+
     toString() {
         return JSON.stringify(this.toJson());
     }
