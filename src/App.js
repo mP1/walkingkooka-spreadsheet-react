@@ -2,7 +2,7 @@ import React from 'react';
 import './App.css';
 
 import SpreadsheetAppBarTop from "./widget/SpreadsheetAppBarTop.js";
-import SpreadsheetContent from "./widget/SpreadsheetContent.js";
+import SpreadsheetViewportWidget from "./widget/SpreadsheetViewportWidget.js";
 import SpreadsheetFormulaWidget from "./widget/SpreadsheetFormulaWidget.js";
 import SpreadsheetMetadata from "./spreadsheet/meta/SpreadsheetMetadata.js";
 import SpreadsheetMessenger from "./util/SpreadsheetMessenger.js";
@@ -15,6 +15,8 @@ import SpreadsheetViewport from "./spreadsheet/reference/SpreadsheetViewport";
 import SpreadsheetRange from "./spreadsheet/reference/SpreadsheetRange";
 import SpreadsheetDelta from "./spreadsheet/engine/SpreadsheetDelta";
 import SpreadsheetEngineEvaluation from "./spreadsheet/engine/SpreadsheetEngineEvaluation";
+import SpreadsheetBox from "./widget/SpreadsheetBox";
+import WindowResizer from "./widget/WindowResizer";
 
 export default class App extends React.Component {
     constructor(props) {
@@ -26,6 +28,10 @@ export default class App extends React.Component {
             cells: new Map(),
             columnWidths: new Map(),
             rowHeights: new Map(),
+            viewportDimensions: {
+                width: 0,
+                height: 0,
+            }
         }
 
         const handleSpreadsheetCellBox = (json) => {
@@ -61,10 +67,12 @@ export default class App extends React.Component {
 
         this.spreadsheetDeltaListeners.add(this.setStateDelta.bind(this));
         this.spreadsheetMetadataListeners.add(this.setStateMetadata.bind(this));
-        this.spreadsheetMetadataListeners.add(this.viewportCoordinatesUpdate.bind(this));
+        this.spreadsheetMetadataListeners.add(this.viewportCellAndCoordinatesUpdate.bind(this));
         this.spreadsheetCellBoxListeners.add(this.requestViewportRange.bind(this));
         this.spreadsheetRangeListeners.add(this.loadSpreadsheetRangeCell.bind(this));
     }
+
+    // state............................................................................................................
 
     /**
      * Merge the new cells, columnWidths, rowHeights with the old in state.
@@ -89,16 +97,38 @@ export default class App extends React.Component {
     }
 
     /**
+     * Returns the viewport dimensions of the area allocated to the cells.
+     */
+    viewportDimensions() {
+        return this.state.viewportDimensions || {
+            width: 0,
+            height: 0,
+        }
+    }
+
+    /**
+     * Factory that creates a {@link SpreadsheetViewport} with the given home cell and also computes the actual dimensions.
+     */
+    spreadsheetViewport(homeCellReference) {
+        const {width, height} = this.viewportDimensions();
+
+        return new SpreadsheetViewport(homeCellReference, width, height);
+    }
+
+    // event updates....................................................................................................
+
+    componentDidMount() {
+        this.createEmptySpreadsheet(); // TODO add logic to allow selecting: create empty, prompt to load and more.
+    }
+
+    /**
      * Fires a new {@link SpreadsheetCellBox} which should trigger a redraw.
      */
-    viewportCoordinatesUpdate(metadata) {
-        const coords = metadata.viewportCoordinates();
-
-        this.spreadsheetCellBoxListeners.dispatch(new SpreadsheetCellBox(metadata.viewportCell(),
-            coords.x(),
-            coords.y(),
-            0,
-            0));
+    viewportCellAndCoordinatesUpdate(metadata) {
+        this.spreadsheetUpdate({
+            viewportCell: metadata.viewportCell(),
+            viewportCoordinates: metadata.viewportCoordinates(),
+        });
     }
 
     /**
@@ -106,33 +136,15 @@ export default class App extends React.Component {
      */
     requestViewportRange(cellBox) {
         // always make request
-        this.messenger.send(this.spreadsheetApiUrl() + "/viewport/" + this.fetchSpreadsheetViewport(cellBox.reference()),
+        this.messenger.send(this.spreadsheetApiUrl() + "/viewport/" + this.spreadsheetViewport(cellBox.reference()),
             {
                 method: "GET"
             });
     }
 
     /**
-     * Fetch or computes the {@link SpreadsheetViewport} taking the width and height from the viewport holding the cells.
-     */
-    fetchSpreadsheetViewport(homeCellReference) {
-        return new SpreadsheetViewport(homeCellReference,
-            this.viewportWidth(),
-            this.viewportHeight());
-    }
-
-    // TODO fetch width and height from viewport widget
-    viewportWidth() {
-        return 2000;
-    }
-
-    viewportHeight() {
-        return 1000;
-    }
-
-    /**
-     * Accepts the {@link SpreadsheetRange} returned by {@link #fetchViewport} and then loads all the cells in that
-     * range.
+     * Accepts the {@link SpreadsheetRange} returned by {@link #spreadsheetViewport} and then loads all the cells in the
+     * range
      */
     loadSpreadsheetRangeCell(range) {
         // TODO add window
@@ -143,14 +155,10 @@ export default class App extends React.Component {
             });
     }
 
-    spreadsheetCellLoadUrl(idOrRange) {
+    spreadsheetCellLoadUrl(selection) {
         const evaluation = this.state.spreadsheetEngineEvaluation || SpreadsheetEngineEvaluation.COMPUTE_IF_NECESSARY;
 
-        return this.spreadsheetApiUrl() + "/cell/" + idOrRange + "/" + evaluation;
-    }
-
-    componentDidMount() {
-        this.createEmptySpreadsheet(); // TODO add logic to allow selecting: create empty, prompt to load and more.
+        return this.spreadsheetApiUrl() + "/cell/" + selection + "/" + evaluation;
     }
 
     /**
@@ -163,21 +171,95 @@ export default class App extends React.Component {
             });
     }
 
+    // rendering........................................................................................................
+
     /**
      * Renders the basic spreadsheet layout.
      */
     render() {
-        console.log("App.render " + this.state);
-
         return (
-            <div>
-                <SpreadsheetAppBarTop app={this}/>
-                <Divider/>
-                <SpreadsheetFormulaWidget/>
-                <Divider/>
-                <SpreadsheetContent/>
-            </div>
-        );
+            <WindowResizer dimensions={this.onWindowResized.bind(this)}>
+                <SpreadsheetBox dimensions={this.onHeaderEtcResize.bind(this)}>
+                    <SpreadsheetAppBarTop app={this}/>
+                    <Divider/>
+                    <SpreadsheetFormulaWidget/>
+                    <Divider/>
+                </SpreadsheetBox>
+                <SpreadsheetViewportWidget dimensions={this.viewportDimensions()}/>
+            </WindowResizer>
+        )
+    }
+
+    // resizing.........................................................................................................
+
+    /**
+     * Updates the state windowDimensions which will triggers a redraw of the spreadsheet content and reloading of
+     * the viewport cells
+     */
+    onWindowResized(dimensions) {
+        this.spreadsheetUpdate({
+            windowDimensions: dimensions,
+        });
+    }
+
+    /**
+     * Fired whenever the header and other tools above the cells viewport know their new size
+     */
+    onHeaderEtcResize(dimensions) {
+        this.spreadsheetUpdate({
+            aboveViewportDimensions: dimensions,
+        });
+    }
+
+    /**
+     * Computes and returns the cell viewport dimensions. This should be called whenever the window or header size changes.
+     */
+    spreadsheetUpdate(params) {
+        const metadata = this.spreadsheetMetadata();
+        const viewportCell = params.viewportCell || metadata.viewportCell();
+        const viewportCoords = params.viewportCoordinates || metadata.viewportCoordinates();
+
+        const windowDimensions = params.windowDimensions || {
+            width: window.innerWidth,
+            height: window.innerHeight,
+        };
+        const aboveViewportDimensions = params.aboveViewportDimensions || this.state.aboveViewportDimensions;
+
+        var viewportDimensions;
+        if(aboveViewportDimensions) {
+            viewportDimensions = {
+                width: windowDimensions.width,
+                height: windowDimensions.height - aboveViewportDimensions.height,
+            };
+        }
+
+        console.log("params", params,
+            "windowDimensions: ", windowDimensions,
+            "aboveViewportDimensions", aboveViewportDimensions,
+            "viewportCell", viewportCell,
+            "viewportCoords", viewportCoords,
+            "viewportDimensions", viewportDimensions,
+            "metadata", metadata);
+
+        this.setState({
+            windowDimensions: windowDimensions,
+            aboveViewportDimensions: aboveViewportDimensions,
+            viewportCell: viewportCell,
+            viewportCoords: viewportCoords,
+            viewportDimensions: viewportDimensions,
+        });
+
+        // wont try and fetch cellbox until ALL required layout dimensions are available.
+        if(viewportCell && aboveViewportDimensions) {
+            this.spreadsheetCellBoxListeners.dispatch(
+                new SpreadsheetCellBox(
+                    viewportCell,
+                    viewportCoords.x(),
+                    viewportCoords.y(),
+                    viewportDimensions.width,
+                    viewportDimensions.height,
+                ));
+        }
     }
 
     // SpreadsheetCellBox...............................................................................................
