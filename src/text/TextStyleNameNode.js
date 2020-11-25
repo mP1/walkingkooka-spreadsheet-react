@@ -35,4 +35,11 @@ export default class TextStyleNameNode extends TextNode {
         }
         return value;
     }
+
+    accept(textNodeVisitor) {
+        if(textNodeVisitor.startVisitTextStyleNameNode(this)) {
+            textNodeVisitor.acceptChildren(this.children());
+        }
+        textNodeVisitor.endVisitTextStyleNameNode(this);
+    }
 }
