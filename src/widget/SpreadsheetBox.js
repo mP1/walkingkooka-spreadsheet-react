@@ -34,6 +34,6 @@ export default class SpreadsheetBox extends React.Component {
 }
 
 SpreadsheetBox.propTypes = {
-    children: PropTypes.elementType.isRequired,
+    children: PropTypes.arrayOf(PropTypes.object).isRequired,
     dimensions: PropTypes.func.isRequired,
 }
