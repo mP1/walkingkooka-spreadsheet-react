@@ -144,7 +144,7 @@ export default class SpreadsheetCell {
         }
 
         const style = defaultStyle.merge(this.style());
-        const formatted = this.formatted().toHtml(); // formatted may be String or DIV, react will do the correct thing.
+        const formatted = this.formatted().render(); // formatted may be String or DIV, react will do the correct thing.
 
         return <TableCell style={style.toCss()}>{formatted}</TableCell>;
     }

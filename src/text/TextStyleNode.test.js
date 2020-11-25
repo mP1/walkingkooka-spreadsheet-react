@@ -24,48 +24,48 @@ test("create style with children", () => {
     expect(textStyleNode.children()).toStrictEqual([text]);
 });
 
-// toHtml...............................................................................................................
+// render...............................................................................................................
 
-test("toHtml EMPTY", () => {
+test("render EMPTY", () => {
     expect(new TextStyleNode(TextStyle.EMPTY, [])
-        .toHtml())
+        .render())
         .toStrictEqual((<div style={{}}>{[]}</div>));
 });
 
-test("toHtml EMPTY width", () => {
+test("render EMPTY width", () => {
     expect(new TextStyleNode(TextStyle.EMPTY
         .set("width", "100px"), [])
-        .toHtml())
+        .render())
         .toStrictEqual((<div style={{width: "100px"}}>{[]}</div>));
 });
 
-test("toHtml EMPTY background-color", () => {
+test("render EMPTY background-color", () => {
     expect(new TextStyleNode(TextStyle.EMPTY
         .set("background-color", "#123456"), [])
-        .toHtml())
+        .render())
         .toStrictEqual((<div style={{backgroundColor: "#123456"}}>{[]}</div>));
 });
 
-test("toHtml EMPTY background-color & width", () => {
+test("render EMPTY background-color & width", () => {
     expect(new TextStyleNode(TextStyle.EMPTY
             .set("background-color", "#123456")
             .set("width", "100px")
         , [])
-        .toHtml())
+        .render())
         .toStrictEqual((<div style={{backgroundColor: "#123456", width: "100px"}}>{[]}</div>));
 });
 
-test("toHtml style & text child", () => {
+test("render style & text child", () => {
     const styles = new TextStyle({
         "background-color": "#123"
     });
     const text = "text-xyz";
     expect(new TextStyleNode(styles, [new Text(text)])
-        .toHtml())
+        .render())
         .toStrictEqual((<div style={{backgroundColor: "#123"}}>{[text]}</div>));
 });
 
-test("toHtml style & 2 text child", () => {
+test("render style & 2 text child", () => {
     const styles = new TextStyle({
         "background-color": "#123"
     });
@@ -73,11 +73,11 @@ test("toHtml style & 2 text child", () => {
     const text2 = "text-2";
 
     expect(new TextStyleNode(styles, [new Text(text1), new Text(text2)])
-        .toHtml())
+        .render())
         .toStrictEqual((<div style={{backgroundColor: "#123"}}>{[text1, text2]}</div>));
 });
 
-test("toHtml style & TextStyleNode child ", () => {
+test("render style & TextStyleNode child ", () => {
     const styles1 = new TextStyle({
         "width": "100px"
     });
@@ -88,7 +88,7 @@ test("toHtml style & TextStyleNode child ", () => {
     const text2 = "text2";
 
     expect(new TextStyleNode(styles1, [new Text(text1), new TextStyleNode(styles2, [new Text(text2)])])
-        .toHtml())
+        .render())
         .toStrictEqual((<div style={{width: "100px"}}>{[text1, <div style={{height: "50px"}}>{[text2]}</div>]}</div>));
 });
 

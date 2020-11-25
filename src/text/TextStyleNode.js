@@ -46,10 +46,10 @@ export default class TextStyleNode extends TextNode {
         textNodeVisitor.endVisitTextStyleNode(this);
     }
 
-    toHtml() {
+    render() {
         return (
             <div style={this.styles().toCss()}>
-                {this.children().map(c => c.toHtml())}
+                {this.children().map(c => c.render())}
             </div>
         );
     }

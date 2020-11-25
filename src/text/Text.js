@@ -26,7 +26,7 @@ export default class Text extends TextLeafNode {
         textNodeVisitor.visitText(this);
     }
 
-    toHtml() {
+    render() {
         return this.value();
     }
 }
