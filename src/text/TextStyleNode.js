@@ -1,5 +1,6 @@
 import TextNode, {STYLE} from "./TextNode";
 import TextStyle from "./TextStyle";
+import React from "react";
 
 /**
  * Holds some styles that are applied to many child text nodes.
@@ -43,5 +44,13 @@ export default class TextStyleNode extends TextNode {
             textNodeVisitor.acceptChildren(this.children());
         }
         textNodeVisitor.endVisitTextStyleNode(this);
+    }
+
+    toHtml() {
+        return (
+            <div style={this.styles().toCss()}>
+                {this.children().map(c => c.toHtml())}
+            </div>
+        );
     }
 }

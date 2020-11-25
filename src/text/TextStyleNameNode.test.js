@@ -19,6 +19,14 @@ test("create style with children", () => {
     expect(styleNameNode.children()).toStrictEqual([text]);
 });
 
+// toJson...............................................................................................................
+
+test("toHtml fails", () => {
+    expect(() => new TextStyleNameNode(styleName).toHtml()).toThrow("Unsupported: toHtml");
+});
+
+// toJson...............................................................................................................
+
 test("json", () => {
     const styleNameNode = new TextStyleNameNode(styleName);
 
