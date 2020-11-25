@@ -4,6 +4,9 @@ import SpreadsheetFormula from "./SpreadsheetFormula";
 import TextStyle from "../text/TextStyle";
 import SpreadsheetCellFormat from "./SpreadsheetCellFormat";
 import TextNode from "../text/TextNode";
+import TableCell from "@material-ui/core/TableCell";
+import React from "react";
+import TextNodeVisitor from "../text/TextNodeVisitor";
 
 /**
  * Represents a spreadsheet cell only reference and formula are required.
@@ -127,6 +130,23 @@ export default class SpreadsheetCell {
         const json = {};
         json[this.reference().toJson()] = json2;
         return json;
+    }
+
+    /**
+     * Renders a TableCell with the formatted content. The default style will typically come from {@link SpreadsheetMetadata}.
+     */
+    render(defaultStyle) {
+        if(!defaultStyle) {
+            throw new Error("Missing defaultStyle");
+        }
+        if(!(defaultStyle instanceof TextStyle)) {
+            throw new Error("Expected TextStyle defaultStyle got " + defaultStyle);
+        }
+
+        const style = defaultStyle.merge(this.style());
+        const formatted = this.formatted().toHtml(); // formatted may be String or DIV, react will do the correct thing.
+
+        return <TableCell style={style.toCss()}>{formatted}</TableCell>;
     }
 
     toString() {
