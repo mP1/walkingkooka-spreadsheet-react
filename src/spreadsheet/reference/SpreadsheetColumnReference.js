@@ -46,6 +46,7 @@ export default class SpreadsheetColumnReference extends SpreadsheetColumnOrRowRe
         return new SpreadsheetColumnReference(value -1, kind);
     }
 
+    // eslint-disable-next-line no-useless-constructor
     constructor(value, kind) {
         super(value, kind);
     }

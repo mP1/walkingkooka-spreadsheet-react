@@ -3,6 +3,7 @@ import TextStyle from "./TextStyle";
 
 export default class TextLeafNode extends TextNode {
 
+    // eslint-disable-next-line no-useless-constructor
     constructor() {
         super();
     }

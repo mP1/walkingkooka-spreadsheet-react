@@ -5,6 +5,7 @@ export const STYLE_NAME = "text-style-name";
 
 export default class TextNode {
 
+    // eslint-disable-next-line no-useless-constructor
     constructor() {
     }
 
