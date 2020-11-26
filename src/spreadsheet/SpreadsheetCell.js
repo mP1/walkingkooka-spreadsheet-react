@@ -6,7 +6,6 @@ import SpreadsheetCellFormat from "./SpreadsheetCellFormat";
 import TextNode from "../text/TextNode";
 import TableCell from "@material-ui/core/TableCell";
 import React from "react";
-import TextNodeVisitor from "../text/TextNodeVisitor";
 
 /**
  * Represents a spreadsheet cell only reference and formula are required.
