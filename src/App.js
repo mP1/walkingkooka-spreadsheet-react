@@ -225,13 +225,10 @@ export default class App extends React.Component {
         };
         const aboveViewportDimensions = params.aboveViewportDimensions || this.state.aboveViewportDimensions;
 
-        var viewportDimensions;
-        if(aboveViewportDimensions) {
-            viewportDimensions = {
-                width: windowDimensions.width,
-                height: windowDimensions.height - aboveViewportDimensions.height,
-            };
-        }
+        const viewportDimensions = aboveViewportDimensions && {
+            width: windowDimensions.width,
+            height: windowDimensions.height - aboveViewportDimensions.height,
+        };
 
         console.log("params", params,
             "windowDimensions: ", windowDimensions,
