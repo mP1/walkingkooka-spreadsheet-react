@@ -5,7 +5,7 @@ export default class Text extends TextLeafNode {
 
     constructor(text) {
         super();
-        if (!text) {
+        if (!text && text !== "") {
             throw new Error("Missing text");
         }
         if (typeof text !== "string") {

@@ -13,7 +13,13 @@ test("create with non string fails", () => {
     expect(() => new Text(1.5)).toThrow("Expected string got 1.5");
 });
 
-test("create", () => {
+test("create empty string", () => {
+    const value = "";
+    const text = new Text(value);
+    expect(text.value()).toBe(value);
+});
+
+test("create non empty string", () => {
     const text = new Text(textValue);
     expect(text.value()).toBe(textValue);
 });
