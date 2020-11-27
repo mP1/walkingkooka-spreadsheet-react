@@ -70,6 +70,8 @@ export default class App extends React.Component {
         this.spreadsheetMetadataListeners.add(this.viewportCellAndCoordinatesUpdate.bind(this));
         this.spreadsheetCellBoxListeners.add(this.requestViewportRange.bind(this));
         this.spreadsheetRangeListeners.add(this.loadSpreadsheetRangeCell.bind(this));
+
+        this.viewport = React.createRef();
     }
 
     // state............................................................................................................
@@ -177,6 +179,25 @@ export default class App extends React.Component {
      * Renders the basic spreadsheet layout.
      */
     render() {
+        const metadata = this.spreadsheetMetadata();
+        const style = metadata.style();
+        const {cells, columnWidths, rowHeights} = this.state;
+
+        const viewportDimensions = this.viewportDimensions();
+        const viewportCell = metadata.viewportCell();
+
+        const viewport = this.viewport.current;
+        if(viewport) {
+            viewport.setState({
+                dimensions: viewportDimensions,
+                cells: cells,
+                columnWidths: columnWidths,
+                rowHeights: rowHeights,
+                defaultStyle: style,
+                home: viewportCell,
+            });
+        }
+
         return (
             <WindowResizer dimensions={this.onWindowResized.bind(this)}>
                 <SpreadsheetBox dimensions={this.onHeaderEtcResize.bind(this)}>
@@ -185,7 +206,14 @@ export default class App extends React.Component {
                     <SpreadsheetFormulaWidget/>
                     <Divider/>
                 </SpreadsheetBox>
-                <SpreadsheetViewportWidget dimensions={this.viewportDimensions()}/>
+                <SpreadsheetViewportWidget ref={this.viewport}
+                                           dimensions={viewportDimensions}
+                                           cells={cells}
+                                           columnWidths={columnWidths}
+                                           rowHeights={rowHeights}
+                                           defaultStyle={style}
+                                           home={viewportCell}
+                />
             </WindowResizer>
         )
     }
