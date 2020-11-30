@@ -17,14 +17,12 @@ export default class SpreadsheetNameWidget extends AppAwareComponent {
         this.textField = React.createRef();
     }
 
-    UNSAFE_componentWillUpdate(nextProps, nextState) {
-        this.textField.current.setState({value: spreadsheetNameText(nextState.spreadsheetMetadata.spreadsheetName())});
-    }
-
     render() {
+        const spreadsheetName = this.spreadsheetName();
         // TODO add a validator to verify spreadsheetName characters, then call setSpreadsheetName function
         return <SpreadsheetButtonTextField ref={this.textField}
-                                           value={spreadsheetNameText(this.spreadsheetName())}
+                                           key={spreadsheetName}
+                                           value={spreadsheetNameText(spreadsheetName)}
                                            setValue={v => this.setSpreadsheetName.bind(this)(new SpreadsheetName(v))}/>
     }
 }
