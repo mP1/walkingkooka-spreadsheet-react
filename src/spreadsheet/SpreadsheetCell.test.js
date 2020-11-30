@@ -222,20 +222,35 @@ test("render invalid defaultStyle fails", () => {
 
 test("render empty style, text & defaultStyle EMPTY", () => {
     const text = "text-abc123";
+    const ref = reference();
 
-    expect(new SpreadsheetCell(reference(),
+    expect(new SpreadsheetCell(ref,
         formula(),
         TextStyle.EMPTY,
         format(),
         new Text(text))
         .render(TextStyle.EMPTY))
-        .toStrictEqual(<TableCell style={{}}>{text}</TableCell>);
+        .toStrictEqual(<TableCell key={ref} style={{}}>{text}</TableCell>);
+});
+
+test("render empty style, text & defaultStyle EMPTY 2", () => {
+    const text = "text-abc123";
+    const ref = SpreadsheetCellReference.parse("B123");
+
+    expect(new SpreadsheetCell(ref,
+        formula(),
+        TextStyle.EMPTY,
+        format(),
+        new Text(text))
+        .render(TextStyle.EMPTY))
+        .toStrictEqual(<TableCell key={ref} style={{}}>{text}</TableCell>);
 });
 
 test("render empty style, text & defaultStyle width&height", () => {
     const text = "text-abc123";
+    const r = reference();
 
-    expect(new SpreadsheetCell(reference(),
+    expect(new SpreadsheetCell(r,
         formula(),
         TextStyle.EMPTY,
         format(),
@@ -244,13 +259,14 @@ test("render empty style, text & defaultStyle width&height", () => {
             TextStyle.EMPTY
                 .set("width", "100px")
                 .set("height", "50px")))
-        .toStrictEqual(<TableCell style={{width: "100px", height: "50px"}}>{text}</TableCell>);
+        .toStrictEqual(<TableCell key={r} style={{width: "100px", height: "50px"}}>{text}</TableCell>);
 });
 
 test("render style=width&height, text & defaultStyle=empty", () => {
     const text = "text-abc123";
+    const r = reference();
 
-    expect(new SpreadsheetCell(reference(),
+    expect(new SpreadsheetCell(r,
         formula(),
         TextStyle.EMPTY
             .set("width", "100px")
@@ -258,13 +274,14 @@ test("render style=width&height, text & defaultStyle=empty", () => {
         format(),
         new Text(text))
         .render(TextStyle.EMPTY))
-        .toStrictEqual(<TableCell style={{width: "100px", height: "50px"}}>{text}</TableCell>);
+        .toStrictEqual(<TableCell key={r} style={{width: "100px", height: "50px"}}>{text}</TableCell>);
 });
 
 test("render style=height, text & defaultStyle=width", () => {
     const text = "text-abc123";
+    const r = reference();
 
-    expect(new SpreadsheetCell(reference(),
+    expect(new SpreadsheetCell(r,
         formula(),
         TextStyle.EMPTY
             .set("height", "50px"),
@@ -272,13 +289,14 @@ test("render style=height, text & defaultStyle=width", () => {
         new Text(text))
         .render(TextStyle.EMPTY
             .set("width", "100px")))
-        .toStrictEqual(<TableCell style={{width: "100px", height: "50px"}}>{text}</TableCell>);
+        .toStrictEqual(<TableCell key={r} style={{width: "100px", height: "50px"}}>{text}</TableCell>);
 });
 
 test("render style=width&height, text & defaultStyle=width", () => {
     const text = "text-abc123";
+    const r = reference();
 
-    expect(new SpreadsheetCell(reference(),
+    expect(new SpreadsheetCell(r,
         formula(),
         TextStyle.EMPTY
             .set("width", "100px")
@@ -287,7 +305,7 @@ test("render style=width&height, text & defaultStyle=width", () => {
         new Text(text))
         .render(TextStyle.EMPTY
             .set("width", "99px")))
-        .toStrictEqual(<TableCell style={{width: "100px", height: "50px"}}>{text}</TableCell>);
+        .toStrictEqual(<TableCell key={r} style={{width: "100px", height: "50px"}}>{text}</TableCell>);
 });
 
 // helpers..............................................................................................................
