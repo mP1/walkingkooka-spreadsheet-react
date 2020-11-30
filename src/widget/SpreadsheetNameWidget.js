@@ -17,7 +17,7 @@ export default class SpreadsheetNameWidget extends AppAwareComponent {
         this.textField = React.createRef();
     }
 
-    componentWillUpdate(nextProps, nextState) {
+    UNSAFE_componentWillUpdate(nextProps, nextState) {
         this.textField.current.setState({value: spreadsheetNameText(nextState.spreadsheetMetadata.spreadsheetName())});
     }
 
