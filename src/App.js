@@ -223,14 +223,14 @@ export default class App extends React.Component {
 
         return (
             <WindowResizer dimensions={this.onWindowResized.bind(this)}>
-                <SpreadsheetBox key="above-viewport"
+                <SpreadsheetBox key={"above-viewport"}
                                 dimensions={this.onAboveViewportResize.bind(this)}>
                     <SpreadsheetAppBarTop app={this}/>
                     <Divider/>
                     <SpreadsheetFormulaWidget/>
                     <Divider/>
                 </SpreadsheetBox>
-                <SpreadsheetViewportWidget key="viewport"
+                <SpreadsheetViewportWidget key={"viewport"}
                                            ref={this.viewport}
                                            dimensions={viewportDimensions}
                                            cells={cells}

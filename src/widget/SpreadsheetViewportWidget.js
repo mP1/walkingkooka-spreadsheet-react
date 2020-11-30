@@ -88,7 +88,7 @@ export default class SpreadsheetViewportWidget extends React.Component {
 
         while (x < viewportWidth) {
             headers.push(
-                <TableCell>{column.toString()}</TableCell>
+                <TableCell key={column}>{column.toString()}</TableCell>
             );
 
             x = x + (columnWidths.get(column) || defaultColumnWidth);
@@ -133,7 +133,7 @@ export default class SpreadsheetViewportWidget extends React.Component {
             }
 
             tableRows.push(
-                <TableRow>
+                <TableRow key={row}>
                     {
                         tableCells
                     }
