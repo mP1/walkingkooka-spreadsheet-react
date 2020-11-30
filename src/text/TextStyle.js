@@ -99,7 +99,19 @@ export default class TextStyle {
         const css = {};
 
         for (const [key, value] of Object.entries(this.styles)) {
-            const components = key.split("-");
+            var key2;
+
+            // translate some property names
+            switch(key) {
+                case "text-color":
+                    key2 = "color";
+                    break;
+                default:
+                    key2 = key;
+                    break;
+            }
+
+            const components = key2.split("-");
             const first = components.shift();
 
             const camelCase =
