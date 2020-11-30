@@ -109,7 +109,23 @@ export default class TextStyle {
                 })
                     .join("");
 
-            css[camelCase] = value.toString();
+            var value2;
+            switch (first) {
+                case "border":
+                case "margin":
+                case "padding":
+                    if (value === "none") {
+                        value2 = "0";
+                        break;
+                    }
+                    value2 = value;
+                    break;
+                default:
+                    value2 = value;
+                    break;
+            }
+
+            css[camelCase] = value2.toString();
         }
 
         return css;
