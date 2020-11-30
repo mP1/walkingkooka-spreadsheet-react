@@ -200,13 +200,15 @@ export default class App extends React.Component {
 
         return (
             <WindowResizer dimensions={this.onWindowResized.bind(this)}>
-                <SpreadsheetBox dimensions={this.onHeaderEtcResize.bind(this)}>
+                <SpreadsheetBox key="above-viewport"
+                                dimensions={this.onHeaderEtcResize.bind(this)}>
                     <SpreadsheetAppBarTop app={this}/>
                     <Divider/>
                     <SpreadsheetFormulaWidget/>
                     <Divider/>
                 </SpreadsheetBox>
-                <SpreadsheetViewportWidget ref={this.viewport}
+                <SpreadsheetViewportWidget key="viewport"
+                                           ref={this.viewport}
                                            dimensions={viewportDimensions}
                                            cells={cells}
                                            columnWidths={columnWidths}
