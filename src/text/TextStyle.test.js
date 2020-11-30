@@ -251,6 +251,68 @@ test("toCss mixed property names", () => {
         });
 });
 
+test("toCss border-xxx-width, margin-xxx, padding-xxx none", () => {
+    expect(TextStyle.EMPTY
+        .set("border-left-width", "none")
+        .set("border-top-width", "none")
+        .set("border-right-width", "none")
+        .set("border-bottom-width", "none")
+        .set("margin-left", "none")
+        .set("margin-top", "none")
+        .set("margin-right", "none")
+        .set("margin-bottom", "none")
+        .set("padding-left", "none")
+        .set("padding-top", "none")
+        .set("padding-right", "none")
+        .set("padding-bottom", "none")
+        .toCss())
+        .toEqual({
+            borderLeftWidth: "0",
+            borderTopWidth: "0",
+            borderRightWidth: "0",
+            borderBottomWidth: "0",
+            marginLeft: "0",
+            marginTop: "0",
+            marginRight: "0",
+            marginBottom: "0",
+            paddingLeft: "0",
+            paddingTop: "0",
+            paddingRight: "0",
+            paddingBottom: "0",
+        });
+});
+
+test("toCss border-xxx-width, margin-xxx, padding-xxx none/mixed", () => {
+    expect(TextStyle.EMPTY
+        .set("border-left-width", "none")
+        .set("border-top-width", "1px")
+        .set("border-right-width", "2px")
+        .set("border-bottom-width", "3px")
+        .set("margin-left", "3px")
+        .set("margin-top", "2px")
+        .set("margin-right", "1px")
+        .set("margin-bottom", "none")
+        .set("padding-left", "1px")
+        .set("padding-top", "none")
+        .set("padding-right", "2px")
+        .set("padding-bottom", "none")
+        .toCss())
+        .toEqual({
+            borderLeftWidth: "0",
+            borderTopWidth: "1px",
+            borderRightWidth: "2px",
+            borderBottomWidth: "3px",
+            marginLeft: "3px",
+            marginTop: "2px",
+            marginRight: "1px",
+            marginBottom: "0",
+            paddingLeft: "1px",
+            paddingTop: "0",
+            paddingRight: "2px",
+            paddingBottom: "0",
+        });
+});
+
 // toString.............................................................................................................
 
 test("toString", () => {
