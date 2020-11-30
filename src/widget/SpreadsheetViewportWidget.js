@@ -56,7 +56,11 @@ export default class SpreadsheetViewportWidget extends React.Component {
 
         return <TableContainer className="{classes}"
                                component={Paper}
-                               style={{width: dimensions.width, height: dimensions.height}}>
+                               style={{
+                                   width: dimensions.width,
+                                   height: dimensions.height,
+                                   overflow: "hidden",
+                               }}>
                     <Table className={SpreadsheetViewportWidget.classes.table}>
                         <TableHead>
                             <TableRow>
