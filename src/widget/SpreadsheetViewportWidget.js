@@ -23,6 +23,9 @@ export default class SpreadsheetViewportWidget extends React.Component {
         table: {
             minWidth: "100%"
         },
+        td: {
+            boxSizing: "border-box",
+        }
     }));
 
     constructor(props) {
