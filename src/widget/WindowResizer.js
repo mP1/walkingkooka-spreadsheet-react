@@ -27,7 +27,7 @@ export default class WindowResizer extends React.Component {
      * Update the state with the current window dimensions. This can be used to trigger a redraw of the children.
      */
     updateDimensions() {
-        this.setState({
+        this.dimensions({
             width: window.innerWidth,
             height: window.innerHeight,
         });

@@ -31,7 +31,11 @@ export default class App extends React.Component {
             viewportDimensions: {
                 width: 0,
                 height: 0,
-            }
+            },
+            windowDimensions: {
+                width: window.innerWidth,
+                height: window.innerHeight,
+            },
         }
 
         const handleSpreadsheetCellBox = (json) => {
@@ -66,8 +70,10 @@ export default class App extends React.Component {
         this.messenger.setWebWorker(false); // TODO test webworker mode
 
         this.spreadsheetDeltaListeners.add(this.setStateDelta.bind(this));
+        this.spreadsheetDeltaListeners.add(this.viewportChange.bind(this));
+
         this.spreadsheetMetadataListeners.add(this.setStateMetadata.bind(this));
-        this.spreadsheetMetadataListeners.add(this.viewportCellAndCoordinatesUpdate.bind(this));
+        this.spreadsheetMetadataListeners.add(this.viewportSpreadsheetMetadataUpdate.bind(this));
         this.spreadsheetCellBoxListeners.add(this.requestViewportRange.bind(this));
         this.spreadsheetRangeListeners.add(this.loadSpreadsheetRangeCell.bind(this));
 
@@ -99,6 +105,26 @@ export default class App extends React.Component {
     }
 
     /**
+     * Update the viewport widget with the new cells, columnWidth & rowHeight from the delta.
+     */
+    viewportChange(delta) {
+        const cells = new Map(this.state.cells);
+        delta.cells()
+            .forEach(c => {
+                cells.put(c.reference(), c);
+            });
+        const columnWidths = new Map([...this.state.columnWidths, ...delta.maxColumnWidths()]);
+        const rowHeights = new Map([...this.state.rowHeights, ...delta.maxRowHeights()]);
+
+        const viewport = this.viewport.current;
+        viewport && viewport.setState({
+            cells: cells,
+            columnWidths: columnWidths,
+            rowHeights: rowHeights,
+        });
+    }
+
+    /**
      * Returns the viewport dimensions of the area allocated to the cells.
      */
     viewportDimensions() {
@@ -126,11 +152,20 @@ export default class App extends React.Component {
     /**
      * Fires a new {@link SpreadsheetCellBox} which should trigger a redraw.
      */
-    viewportCellAndCoordinatesUpdate(metadata) {
-        this.spreadsheetUpdate({
-            viewportCell: metadata.viewportCell(),
+    viewportSpreadsheetMetadataUpdate(metadata) {
+        const cell = metadata.viewportCell();
+
+        this.setState({
+            viewportCell: cell,
             viewportCoordinates: metadata.viewportCoordinates(),
         });
+        const viewport = this.viewport.current;
+        if (viewport) {
+            viewport.setState({
+                home: cell,
+                defaultStyle: metadata.style(),
+            });
+        }
     }
 
     /**
@@ -186,22 +221,10 @@ export default class App extends React.Component {
         const viewportDimensions = this.viewportDimensions();
         const viewportCell = metadata.viewportCell();
 
-        const viewport = this.viewport.current;
-        if(viewport) {
-            viewport.setState({
-                dimensions: viewportDimensions,
-                cells: cells,
-                columnWidths: columnWidths,
-                rowHeights: rowHeights,
-                defaultStyle: style,
-                home: viewportCell,
-            });
-        }
-
         return (
             <WindowResizer dimensions={this.onWindowResized.bind(this)}>
                 <SpreadsheetBox key="above-viewport"
-                                dimensions={this.onHeaderEtcResize.bind(this)}>
+                                dimensions={this.onAboveViewportResize.bind(this)}>
                     <SpreadsheetAppBarTop app={this}/>
                     <Divider/>
                     <SpreadsheetFormulaWidget/>
@@ -227,7 +250,7 @@ export default class App extends React.Component {
      * the viewport cells
      */
     onWindowResized(dimensions) {
-        this.spreadsheetUpdate({
+        this.setState({
             windowDimensions: dimensions,
         });
     }
@@ -235,8 +258,8 @@ export default class App extends React.Component {
     /**
      * Fired whenever the header and other tools above the cells viewport know their new size
      */
-    onHeaderEtcResize(dimensions) {
-        this.spreadsheetUpdate({
+    onAboveViewportResize(dimensions) {
+        this.setState({
             aboveViewportDimensions: dimensions,
         });
     }
@@ -244,48 +267,29 @@ export default class App extends React.Component {
     /**
      * Computes and returns the cell viewport dimensions. This should be called whenever the window or header size changes.
      */
-    spreadsheetUpdate(params) {
-        const metadata = this.spreadsheetMetadata();
-        const viewportCell = params.viewportCell || metadata.viewportCell();
-        const viewportCoords = params.viewportCoordinates || metadata.viewportCoordinates();
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        const viewport = this.viewport.current;
 
-        const windowDimensions = params.windowDimensions || {
-            width: window.innerWidth,
-            height: window.innerHeight,
-        };
-        const aboveViewportDimensions = params.aboveViewportDimensions || this.state.aboveViewportDimensions;
+        if(viewport) {
+            const state = this.state;
 
-        const viewportDimensions = aboveViewportDimensions && {
-            width: windowDimensions.width,
-            height: windowDimensions.height - aboveViewportDimensions.height,
-        };
+            const windowDimensions = state.windowDimensions;
+            const aboveViewportDimensions = state.aboveViewportDimensions;
 
-        console.log("params", params,
-            "windowDimensions: ", windowDimensions,
-            "aboveViewportDimensions", aboveViewportDimensions,
-            "viewportCell", viewportCell,
-            "viewportCoords", viewportCoords,
-            "viewportDimensions", viewportDimensions,
-            "metadata", metadata);
+            if(windowDimensions && aboveViewportDimensions) {
+                const previous = viewport.state.dimensions;
+                const width = windowDimensions.width;
+                const height = windowDimensions.height - aboveViewportDimensions.height;
 
-        this.setState({
-            windowDimensions: windowDimensions,
-            aboveViewportDimensions: aboveViewportDimensions,
-            viewportCell: viewportCell,
-            viewportCoords: viewportCoords,
-            viewportDimensions: viewportDimensions,
-        });
-
-        // wont try and fetch cellbox until ALL required layout dimensions are available.
-        if(viewportCell && aboveViewportDimensions) {
-            this.spreadsheetCellBoxListeners.dispatch(
-                new SpreadsheetCellBox(
-                    viewportCell,
-                    viewportCoords.x(),
-                    viewportCoords.y(),
-                    viewportDimensions.width,
-                    viewportDimensions.height,
-                ));
+                if(previous.width !== width || previous.height !== height) {
+                    viewport.setState({
+                        dimensions: {
+                            width: width,
+                            height: height,
+                        }
+                    });
+                }
+            }
         }
     }
 
