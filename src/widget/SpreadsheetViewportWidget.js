@@ -103,7 +103,7 @@ export default class SpreadsheetViewportWidget extends React.Component {
         const editCellColumn = editCell && editCell.column();
 
         let headers = [];
-        headers.push(<div/>);
+        headers.push(<TableCell key={"all"} style={headerCell}></TableCell>);
 
         let x = 0;
         let column = home.column();
