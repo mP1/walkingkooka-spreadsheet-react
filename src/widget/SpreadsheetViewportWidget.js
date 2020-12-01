@@ -147,7 +147,7 @@ export default class SpreadsheetViewportWidget extends React.Component {
             let x = 0;
             let column = home.column();
 
-            tableCells.push(this.headerCell(row, row == editCellRow));
+            tableCells.push(this.headerCell(row, row === editCellRow));
 
             // reference, formula, style, format, formatted
             while (x < viewportWidth) {
