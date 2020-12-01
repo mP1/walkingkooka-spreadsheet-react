@@ -144,9 +144,11 @@ export default class SpreadsheetCell {
 
         const style = defaultStyle.merge(this.style());
         const formatted = this.formatted().render(); // formatted may be String or DIV, react will do the correct thing.
+        const css = style.toCss();
+        css.boxSizing="border-box";
 
         return <TableCell key={this.reference()}
-                          style={style.toCss()}>{formatted}</TableCell>;
+                          style={css}>{formatted}</TableCell>;
     }
 
     toString() {
