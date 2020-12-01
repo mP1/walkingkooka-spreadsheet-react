@@ -1,5 +1,4 @@
 import React from 'react';
-import {makeStyles} from '@material-ui/core/styles';
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -14,19 +13,25 @@ import SpreadsheetFormula from "../spreadsheet/SpreadsheetFormula";
 import TextStyle from "../text/TextStyle";
 import Text from "../text/Text";
 
+const columnHeader = {
+    margin: "0",
+    borderColor: "#000",
+    borderStyle: "solid",
+    borderWidth: "1px",
+    padding: "0",
+    fontWeight: "bold",
+
+    textAlign: "center",
+    verticalAlign: "middle",
+
+    backgroundColor: "#bbb", // TODO take colours from theme
+    color: "#444",
+};
+
 /**
  * This component holds the cells viewport as well as the column and row controls.
  */
 export default class SpreadsheetViewportWidget extends React.Component {
-
-    static classes = makeStyles((theme) => ({
-        table: {
-            minWidth: "100%"
-        },
-        td: {
-            boxSizing: "border-box",
-        }
-    }));
 
     constructor(props) {
         super(props);
@@ -54,14 +59,15 @@ export default class SpreadsheetViewportWidget extends React.Component {
     renderTable() {
         const dimensions = this.state.dimensions;
 
-        return <TableContainer className="{classes}"
-                               component={Paper}
+        return <TableContainer component={Paper}
                                style={{
                                    width: dimensions.width,
                                    height: dimensions.height,
+                                   minWidth: "100%",
                                    overflow: "hidden",
+                                   borderRadius: 0, // cancel paper rounding.
                                }}>
-                    <Table className={SpreadsheetViewportWidget.classes.table}>
+                    <Table>
                         <TableHead>
                             <TableRow>
                                 {
@@ -92,7 +98,7 @@ export default class SpreadsheetViewportWidget extends React.Component {
 
         while (x < viewportWidth) {
             headers.push(
-                <TableCell key={column}>{column.toString()}</TableCell>
+                <TableCell key={column} style={columnHeader}>{column.toString()}</TableCell>
             );
 
             x = x + (columnWidths.get(column) || defaultColumnWidth);
