@@ -13,7 +13,7 @@ import SpreadsheetFormula from "../spreadsheet/SpreadsheetFormula";
 import TextStyle from "../text/TextStyle";
 import Text from "../text/Text";
 
-const columnHeader = {
+const headerCell = {
     margin: "0",
     borderColor: "#000",
     borderStyle: "solid",
@@ -24,9 +24,17 @@ const columnHeader = {
     textAlign: "center",
     verticalAlign: "middle",
 
-    backgroundColor: "#bbb", // TODO take colours from theme
-    color: "#444",
+    backgroundColor: "#ccc", // TODO take colours from theme
+    color: "#333",
 };
+
+const headerCellSelected = Object.assign({},
+    headerCell,
+    {
+        backgroundColor: "#444", // TODO take colours from theme
+        color: "#bbb",
+     },
+);
 
 /**
  * This component holds the cells viewport as well as the column and row controls.
@@ -91,6 +99,7 @@ export default class SpreadsheetViewportWidget extends React.Component {
         const {columnWidths, dimensions, defaultStyle, home} = this.state;
         const viewportWidth = dimensions.width;
         const defaultColumnWidth = defaultStyle.width().value();
+        const selected = home.column();
 
         let headers = [];
         let x = 0;
@@ -98,7 +107,7 @@ export default class SpreadsheetViewportWidget extends React.Component {
 
         while (x < viewportWidth) {
             headers.push(
-                <TableCell key={column} style={columnHeader}>{column.toString()}</TableCell>
+                this.headerCell(column, selected === column)
             );
 
             x = x + (columnWidths.get(column) || defaultColumnWidth);
@@ -106,6 +115,14 @@ export default class SpreadsheetViewportWidget extends React.Component {
         }
 
         return headers;
+    }
+
+    /**
+     * Creates a TABLE CELL which will be the column or row header.
+     */
+    headerCell(reference, highlighted) {
+        return <TableCell key={reference}
+                          style={highlighted ? headerCellSelected : headerCell}>{reference.toString()}</TableCell>
     }
 
     /**
