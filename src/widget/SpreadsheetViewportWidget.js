@@ -14,6 +14,8 @@ import TextStyle from "../text/TextStyle";
 import Text from "../text/Text";
 
 const headerCell = {
+    minWidth: "4ex",
+
     margin: "0",
     borderColor: "#000",
     borderStyle: "solid",
