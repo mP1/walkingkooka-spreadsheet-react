@@ -51,6 +51,7 @@ export default class SpreadsheetViewportWidget extends React.Component {
             defaultStyle: props.defaultStyle,
             dimensions: props.dimensions,
             home: props.home,
+            editCell: props.editCell,
         }
     }
 
@@ -96,18 +97,20 @@ export default class SpreadsheetViewportWidget extends React.Component {
      * Returns an array of TableCell, one for each column header.
      */
     headers() {
-        const {columnWidths, dimensions, defaultStyle, home} = this.state;
+        const {columnWidths, dimensions, defaultStyle, home, editCell} = this.state;
         const viewportWidth = dimensions.width;
         const defaultColumnWidth = defaultStyle.width().value();
-        const selected = home.column();
+        const editCellColumn = editCell && editCell.column();
 
         let headers = [];
+        headers.push(<div/>);
+
         let x = 0;
         let column = home.column();
 
         while (x < viewportWidth) {
             headers.push(
-                this.headerCell(column, selected === column)
+                this.headerCell(column, editCellColumn === column)
             );
 
             x = x + (columnWidths.get(column) || defaultColumnWidth);
@@ -118,24 +121,18 @@ export default class SpreadsheetViewportWidget extends React.Component {
     }
 
     /**
-     * Creates a TABLE CELL which will be the column or row header.
-     */
-    headerCell(reference, highlighted) {
-        return <TableCell key={reference}
-                          style={highlighted ? headerCellSelected : headerCell}>{reference.toString()}</TableCell>
-    }
-
-    /**
      * Render the required TABLE ROW each filled with available or empty TABLE CELL cells.
      */
     body() {
-        const {cells, columnWidths, rowHeights, defaultStyle, dimensions, home} = this.state;
+        const {cells, columnWidths, rowHeights, defaultStyle, dimensions, home, editCell} = this.state;
 
         const defaultColumnWidth = defaultStyle.width().value();
         const defaultRowHeight = defaultStyle.height().value();
 
         const viewportWidth = dimensions.width;
         const viewportHeight = dimensions.height;
+
+        const editCellRow = editCell && editCell.row();
 
         const tableRows = [];
 
@@ -147,6 +144,8 @@ export default class SpreadsheetViewportWidget extends React.Component {
             const tableCells = [];
             let x = 0;
             let column = home.column();
+
+            tableCells.push(this.headerCell(row, row == editCellRow));
 
             // reference, formula, style, format, formatted
             while (x < viewportWidth) {
@@ -172,6 +171,14 @@ export default class SpreadsheetViewportWidget extends React.Component {
         }
 
         return tableRows;
+    }
+
+    /**
+     * Creates a TABLE CELL which will be the column or row header.
+     */
+    headerCell(reference, highlighted) {
+        return <TableCell key={reference}
+                          style={highlighted ? headerCellSelected : headerCell}>{reference.toString()}</TableCell>
     }
 
     /**

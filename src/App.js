@@ -220,6 +220,7 @@ export default class App extends React.Component {
 
         const viewportDimensions = this.viewportDimensions();
         const viewportCell = metadata.viewportCell();
+        const editCell = metadata.editCell();
 
         return (
             <WindowResizer dimensions={this.onWindowResized.bind(this)}>
@@ -238,6 +239,7 @@ export default class App extends React.Component {
                                            rowHeights={rowHeights}
                                            defaultStyle={style}
                                            home={viewportCell}
+                                           editCell={editCell}
                 />
             </WindowResizer>
         )
