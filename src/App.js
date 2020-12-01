@@ -18,6 +18,9 @@ import SpreadsheetEngineEvaluation from "./spreadsheet/engine/SpreadsheetEngineE
 import SpreadsheetBox from "./widget/SpreadsheetBox";
 import WindowResizer from "./widget/WindowResizer";
 import ImmutableMap from "./util/ImmutableMap";
+import SpreadsheetCell from "./spreadsheet/SpreadsheetCell";
+import SpreadsheetFormula from "./spreadsheet/SpreadsheetFormula";
+import TextStyle from "./text/TextStyle.js";
 
 export default class App extends React.Component {
     constructor(props) {
@@ -74,10 +77,12 @@ export default class App extends React.Component {
         this.spreadsheetDeltaListeners.add(this.viewportChange.bind(this));
 
         this.spreadsheetMetadataListeners.add(this.setStateMetadata.bind(this));
+        this.spreadsheetMetadataListeners.add(this.formulaSpreadsheetMetadataUpdate.bind(this));
         this.spreadsheetMetadataListeners.add(this.viewportSpreadsheetMetadataUpdate.bind(this));
         this.spreadsheetCellBoxListeners.add(this.requestViewportRange.bind(this));
         this.spreadsheetRangeListeners.add(this.loadSpreadsheetCellOrRange.bind(this));
 
+        this.formula = React.createRef();
         this.viewport = React.createRef();
     }
 
@@ -144,6 +149,31 @@ export default class App extends React.Component {
     }
 
     /**
+     * Fires a new {@link SpreadsheetCellBox} which should/might trigger a redraw of the formula editing widget
+     */
+    formulaSpreadsheetMetadataUpdate(metadata) {
+        console.log("formulaSpreadsheetMetadataUpdate", metadata, "formula", this.formula.current);
+
+        const formula = this.formula.current;
+        if (formula) {
+            const reference = metadata.editCell();
+            if (reference) {
+                const cell = this.getCellOrEmpty(reference);
+                formula.setValue = this.cellToFormulaTextSetter(cell);
+
+                const formulaText = this.cellToFormulaText(cell);
+
+                console.log("formulaSpreadsheetMetadataUpdate " + reference + " formula text=" + formulaText);
+
+                formula.setState({
+                    value: formulaText,
+                    reference: reference,
+                });
+            }
+        }
+    }
+
+    /**
      * Fires a new {@link SpreadsheetCellBox} which should trigger a redraw.
      */
     viewportSpreadsheetMetadataUpdate(metadata) {
@@ -197,7 +227,34 @@ export default class App extends React.Component {
     spreadsheetCellLoadUrl(selection) {
         const evaluation = this.state.spreadsheetEngineEvaluation || SpreadsheetEngineEvaluation.COMPUTE_IF_NECESSARY;
 
-        return this.spreadsheetApiUrl() + "/cell/" + selection + "/" + evaluation;
+        this.messenger.send(this.spreadsheetCellUrl(selection) + "/" + evaluation,
+            {
+                method: "GET"
+            });
+    }
+
+    /**
+     * Saves the given cell. Eventually the returned value will trigger a re-render.
+     */
+    saveSpreadsheetCell(cell) {
+        console.log("saveSpreadsheetCell", cell);
+
+        this.messenger.send(this.spreadsheetCellUrl(cell.reference()),
+            {
+                method: "POST",
+                body: JSON.stringify(new SpreadsheetDelta([cell],
+                    ImmutableMap.EMPTY,
+                    ImmutableMap.EMPTY,
+                    []) // TODO include actual edit range.
+                    .toJson()),
+            });
+    }
+
+    /**
+     * Returns a URL with the spreadsheet id and ONLY the provided cell selection.
+     */
+    spreadsheetCellUrl(selection) {
+        return this.spreadsheetApiUrl() + "/cell/" + selection;
     }
 
     /**
@@ -218,6 +275,35 @@ export default class App extends React.Component {
         this.saveSpreadsheetMetadata(this.spreadsheetMetadata().setEditCell(reference));
     }
 
+    // SpreadsheetFormula...............................................................................................
+
+    /**
+     * Returns the formula text to be edited or undefined.
+     */
+    cellToFormulaText(cell) {
+        return (cell && cell.formula().text()) || "";
+    }
+
+    /**
+     * Returns a function that updates the value of a {@link SpreadsheetFormula} triggering a cell reload.
+     */
+    cellToFormulaTextSetter(cell) {
+        var setter;
+
+        if (cell) {
+            const formula = cell.formula();
+            setter = (text) => this.saveSpreadsheetCell(cell.setFormula(formula.setText(text)));
+        }
+        return setter;
+    }
+
+    /**
+     * Fetches the cell by the given reference or returns an empty {@link SpreadsheetCell}.
+     */
+    getCellOrEmpty(reference) {
+        return this.state.cells.get(reference) || new SpreadsheetCell(reference, new SpreadsheetFormula(""), TextStyle.EMPTY);
+    }
+
     // rendering........................................................................................................
 
     /**
@@ -228,11 +314,17 @@ export default class App extends React.Component {
 
         const metadata = this.spreadsheetMetadata();
         const style = metadata.style();
-        const {cells, columnWidths, rowHeights} = this.state;
+
+        const state = this.state;
+        const {cells, columnWidths, rowHeights} = state;
 
         const viewportDimensions = this.viewportDimensions();
         const viewportCell = metadata.viewportCell();
-        const editCell = metadata.editCell();
+
+        const editCellReference = metadata.editCell(); // SpreadsheetCellReference: may be undefined,
+        const editCell = editCellReference && this.getCellOrEmpty(editCellReference);
+
+        const formulaText = this.cellToFormulaText(editCell);
 
         return (
             <WindowResizer dimensions={this.onWindowResized.bind(this)}>
@@ -240,7 +332,11 @@ export default class App extends React.Component {
                                 dimensions={this.onAboveViewportResize.bind(this)}>
                     <SpreadsheetAppBarTop app={this}/>
                     <Divider/>
-                    <SpreadsheetFormulaWidget/>
+                    <SpreadsheetFormulaWidget ref={this.formula}
+                                              key={[editCellReference, formulaText]}
+                                              reference={editCellReference}
+                                              value={formulaText}
+                                              setValue={editCellReference && this.cellToFormulaTextSetter(editCell)}/>
                     <Divider/>
                 </SpreadsheetBox>
                 <SpreadsheetViewportWidget key={[viewportDimensions, cells, columnWidths, rowHeights, style, viewportCell, editCell]}

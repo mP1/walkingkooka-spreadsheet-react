@@ -64,6 +64,8 @@ export default class SpreadsheetViewportWidget extends React.Component {
      * Renders a TABLE CONTAINER which contains the header and cells to fill the table body.
      */
     render() {
+        console.log("SpreadsheetViewportWidget.render", this.state);
+
         const {dimensions, defaultStyle, home} = this.state;
 
         return (dimensions && defaultStyle && home && this.renderTable()) ||
@@ -158,6 +160,10 @@ export default class SpreadsheetViewportWidget extends React.Component {
             while (x < viewportWidth) {
                 const cellReference = new SpreadsheetCellReference(column, row);
                 const cell = cells.get(cellReference) || this.emptyCell(cellReference);
+
+                if(cells.get(cellReference)) {
+                    console.log("SpreadsheetViewportWidget cell " + cellReference, cellReference, cell);
+                }
 
                 tableCells.push(cell.render(defaultStyle, () => editCellSetter(cellReference)));
 
