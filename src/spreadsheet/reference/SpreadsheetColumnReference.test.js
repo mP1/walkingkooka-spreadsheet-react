@@ -147,9 +147,15 @@ test("add non zero value RELATIVE", () => {
 
 // toJson...............................................................................................................
 
-test("toJson", () => {
-    expect(SpreadsheetReferenceKind.of("RELATIVE").toJson()).toStrictEqual("RELATIVE");
+test("toJson B", () => {
+    expect(SpreadsheetColumnReference.parse("B").toJson()).toStrictEqual("B");
 });
+
+test("toJson C", () => {
+    expect(SpreadsheetColumnReference.parse("C").toJson()).toStrictEqual("C");
+});
+
+// toString.............................................................................................................
 
 test("toStringAbsolute", () => {
     expect(new SpreadsheetColumnReference(0, SpreadsheetReferenceKind.ABSOLUTE).toString()).toStrictEqual("$A");
