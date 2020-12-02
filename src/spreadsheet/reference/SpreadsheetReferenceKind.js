@@ -28,6 +28,10 @@ export default class SpreadsheetReferenceKind {
             "";
     }
 
+    equals(other) {
+        return this === other;
+    }
+
     toJson() {
         return this.name;
     }
