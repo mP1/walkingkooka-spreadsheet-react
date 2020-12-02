@@ -55,6 +55,9 @@ export default class SpreadsheetViewportWidget extends React.Component {
             home: props.home,
             editCell: props.editCell,
         }
+
+        // this is called whenever a cell is clicked.
+        this.editCellSetter = props.editCellSetter;
     }
 
     /**
@@ -141,6 +144,8 @@ export default class SpreadsheetViewportWidget extends React.Component {
         let y = 0;
         let row = home.row();
 
+        const editCellSetter = this.editCellSetter;
+
         while (y < viewportHeight) {
 
             const tableCells = [];
@@ -154,7 +159,7 @@ export default class SpreadsheetViewportWidget extends React.Component {
                 const cellReference = new SpreadsheetCellReference(column, row);
                 const cell = cells.get(cellReference) || this.emptyCell(cellReference);
 
-                tableCells.push(cell.render(defaultStyle));
+                tableCells.push(cell.render(defaultStyle, () => editCellSetter(cellReference)));
 
                 x = x + (columnWidths.get(row) || defaultColumnWidth);
                 column = column.add(1);
@@ -204,4 +209,5 @@ export default class SpreadsheetViewportWidget extends React.Component {
 
 SpreadsheetViewportWidget.propTypes = {
     dimensions: PropTypes.object.isRequired,
+    editCellSetter: PropTypes.func.isRequired,
 }
