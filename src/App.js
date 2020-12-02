@@ -128,10 +128,11 @@ export default class App extends React.Component {
      * Returns the viewport dimensions of the area allocated to the cells.
      */
     viewportDimensions() {
-        return this.state.viewportDimensions || {
+        const viewport = this.viewport.current;
+        return (viewport && viewport.state.dimensions) || {
             width: 0,
             height: 0,
-        }
+        };
     }
 
     /**
