@@ -1,7 +1,7 @@
 import Text from "./Text";
-import fromJson from "./TextNodeJsonSupport";
 import TextStyle from "./TextStyle";
 import React from "react";
+import textNodeJsonSupportFromJson from "./TextNodeJsonSupport";
 
 const textValue = "text-123-abc";
 
@@ -32,12 +32,12 @@ test("render", () => {
         .toStrictEqual(textValue);
 });
 
-// render...............................................................................................................
+// toJson...............................................................................................................
 
-test("json", () => {
+test("toJson", () => {
     const text = new Text(textValue);
 
-    check(text, {typeName: "text", value: textValue});
+    check(text, {type: "text", value: textValue});
 });
 
 // helpers..............................................................................................................
@@ -46,5 +46,5 @@ function check(text, json) {
     expect(text.styles()).toStrictEqual(TextStyle.EMPTY);
     expect(text.toJson()).toStrictEqual(json);
     expect(text.toString()).toBe(JSON.stringify(json));
-    expect(fromJson(text.toJson())).toStrictEqual(text);
+    expect(textNodeJsonSupportFromJson(text.toJson())).toStrictEqual(text);
 }

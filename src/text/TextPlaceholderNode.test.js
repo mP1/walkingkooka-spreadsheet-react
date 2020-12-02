@@ -1,6 +1,6 @@
 import TextPlaceholderNode from "./TextPlaceholderNode";
-import fromJson from "./TextNodeJsonSupport";
 import TextStyle from "./TextStyle";
+import textNodeJsonSupportFromJson from "./TextNodeJsonSupport";
 
 const value = "text-placeholder-123-abc";
 
@@ -25,10 +25,10 @@ test("render fails", () => {
 
 // toJson...............................................................................................................
 
-test("json", () => {
+test("toJson", () => {
     const placeholder = new TextPlaceholderNode(value);
 
-    check(placeholder, {typeName: "text-placeholder", value: value});
+    check(placeholder, {type: "text-placeholder", value: value});
 });
 
 // helpers..............................................................................................................
@@ -37,5 +37,5 @@ function check(placeholder, json) {
     expect(placeholder.styles()).toStrictEqual(TextStyle.EMPTY);
     expect(placeholder.toJson()).toStrictEqual(json);
     expect(placeholder.toString()).toBe(JSON.stringify(json));
-    expect(fromJson(placeholder.toJson())).toStrictEqual(placeholder);
+    expect(textNodeJsonSupportFromJson(placeholder.toJson())).toStrictEqual(placeholder);
 }
