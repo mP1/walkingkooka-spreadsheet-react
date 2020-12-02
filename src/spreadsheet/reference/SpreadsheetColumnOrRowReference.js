@@ -57,6 +57,6 @@ export default class SpreadsheetColumnOrRowReference {
     }
 
     equals(other) {
-        return this == other || (other instanceof this.constructor && this.kind().equals(other.kind()) && this.value() === other.value());
+        return this === other || (other instanceof this.constructor && this.kind().equals(other.kind()) && this.value() === other.value());
     }
 }
