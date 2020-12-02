@@ -112,7 +112,7 @@ export default class SpreadsheetViewportWidget extends React.Component {
 
         while (x < viewportWidth) {
             headers.push(
-                this.headerCell(column, editCellColumn === column)
+                this.headerCell(column, column.equals(editCellColumn))
             );
 
             x = x + (columnWidths.get(column) || defaultColumnWidth);
@@ -147,7 +147,7 @@ export default class SpreadsheetViewportWidget extends React.Component {
             let x = 0;
             let column = home.column();
 
-            tableCells.push(this.headerCell(row, row === editCellRow));
+            tableCells.push(this.headerCell(row, row.equals(editCellRow)));
 
             // reference, formula, style, format, formatted
             while (x < viewportWidth) {
