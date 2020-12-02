@@ -134,20 +134,27 @@ export default class SpreadsheetCell {
     /**
      * Renders a TableCell with the formatted content. The default style will typically come from {@link SpreadsheetMetadata}.
      */
-    render(defaultStyle) {
-        if(!defaultStyle) {
+    render(defaultStyle, onClick) {
+        if (!defaultStyle) {
             throw new Error("Missing defaultStyle");
         }
-        if(!(defaultStyle instanceof TextStyle)) {
+        if (!(defaultStyle instanceof TextStyle)) {
             throw new Error("Expected TextStyle defaultStyle got " + defaultStyle);
+        }
+        if (!onClick) {
+            throw new Error("Missing onClick");
+        }
+        if (typeof onClick !== "function") {
+            throw new Error("Expected function onClick got " + onClick);
         }
 
         const style = defaultStyle.merge(this.style());
         const formatted = this.formatted().render(); // formatted may be String or DIV, react will do the correct thing.
         const css = style.toCss();
-        css.boxSizing="border-box";
+        css.boxSizing = "border-box";
 
         return <TableCell key={this.reference()}
+                          onClick={onClick}
                           style={css}>{formatted}</TableCell>;
     }
 
