@@ -55,4 +55,8 @@ export default class SpreadsheetColumnOrRowReference {
     toJson() {
         return this.toString();
     }
+
+    equals(other) {
+        return this == other || (other instanceof this.constructor && this.kind().equals(other.kind()) && this.value() === other.value());
+    }
 }

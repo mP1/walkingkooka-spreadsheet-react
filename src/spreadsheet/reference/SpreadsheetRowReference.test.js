@@ -1,5 +1,6 @@
-import SpreadsheetRowReference from "./SpreadsheetRowReference";
+import SpreadsheetColumnReference from "./SpreadsheetColumnReference";
 import SpreadsheetReferenceKind from "./SpreadsheetReferenceKind";
+import SpreadsheetRowReference from "./SpreadsheetRowReference";
 
 test("parse missing text fails", () => {
     expect(() => SpreadsheetRowReference.parse()).toThrow("Missing text");
@@ -148,6 +149,43 @@ test("toJson ABSOLUTE", () => {
 test("toJson RELATIVE", () => {
     expect(new SpreadsheetRowReference(3, SpreadsheetReferenceKind.RELATIVE).toJson()).toStrictEqual("4");
 });
+
+// equals................................................................................................................
+
+test("equals undefined false", () => {
+    expect(SpreadsheetRowReference.parse("1").equals()).toStrictEqual(false);
+});
+
+test("equals null false", () => {
+    expect(SpreadsheetRowReference.parse("2").equals(null)).toStrictEqual(false);
+});
+
+test("equals invalid false", () => {
+    expect(SpreadsheetRowReference.parse("3").equals("!invalid")).toStrictEqual(false);
+});
+
+test("equals SpreadsheetColumnReference false", () => {
+    const kind = SpreadsheetReferenceKind.ABSOLUTE;
+    expect(new SpreadsheetRowReference(1, kind).equals(new SpreadsheetColumnReference(1, kind))).toStrictEqual(false);
+});
+
+test("equals different value false", () => {
+    expect(SpreadsheetRowReference.parse("4").equals(SpreadsheetRowReference.parse("5"))).toStrictEqual(false);
+});
+
+test("equals different kind false", () => {
+    expect(SpreadsheetRowReference.parse("$6").equals(SpreadsheetRowReference.parse("$7"))).toStrictEqual(false);
+});
+
+test("equals H true", () => {
+    expect(SpreadsheetRowReference.parse("8").equals(SpreadsheetRowReference.parse("8"))).toStrictEqual(true);
+});
+
+test("equals I true", () => {
+    expect(SpreadsheetRowReference.parse("9").equals(SpreadsheetRowReference.parse("9"))).toStrictEqual(true);
+});
+
+// toString.............................................................................................................
 
 test("toStringAbsolute", () => {
     expect(new SpreadsheetRowReference(0, SpreadsheetReferenceKind.ABSOLUTE).toString()).toStrictEqual("$1");

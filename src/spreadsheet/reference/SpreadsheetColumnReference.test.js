@@ -1,5 +1,6 @@
 import SpreadsheetColumnReference from "./SpreadsheetColumnReference";
 import SpreadsheetReferenceKind from "./SpreadsheetReferenceKind";
+import SpreadsheetRowReference from "./SpreadsheetRowReference";
 
 test("parse missing text fails", () => {
     expect(() => SpreadsheetColumnReference.parse()).toThrow("Missing text");
@@ -153,6 +154,41 @@ test("toJson B", () => {
 
 test("toJson C", () => {
     expect(SpreadsheetColumnReference.parse("C").toJson()).toStrictEqual("C");
+});
+
+// equals................................................................................................................
+
+test("equals undefined false", () => {
+    expect(SpreadsheetColumnReference.parse("C").equals()).toStrictEqual(false);
+});
+
+test("equals null false", () => {
+    expect(SpreadsheetColumnReference.parse("D").equals(null)).toStrictEqual(false);
+});
+
+test("equals invalid false", () => {
+    expect(SpreadsheetColumnReference.parse("E").equals("!invalid")).toStrictEqual(false);
+});
+
+test("equals SpreadsheetColumnReference false", () => {
+    const kind = SpreadsheetReferenceKind.ABSOLUTE;
+    expect(new SpreadsheetColumnReference(1, kind).equals(new SpreadsheetRowReference(1, kind))).toStrictEqual(false);
+});
+
+test("equals different value false", () => {
+    expect(SpreadsheetColumnReference.parse("F").equals(SpreadsheetColumnReference.parse("G"))).toStrictEqual(false);
+});
+
+test("equals different kind false", () => {
+    expect(SpreadsheetColumnReference.parse("$F").equals(SpreadsheetColumnReference.parse("G"))).toStrictEqual(false);
+});
+
+test("equals H true", () => {
+    expect(SpreadsheetColumnReference.parse("H").equals(SpreadsheetColumnReference.parse("H"))).toStrictEqual(true);
+});
+
+test("equals I true", () => {
+    expect(SpreadsheetColumnReference.parse("I").equals(SpreadsheetColumnReference.parse("I"))).toStrictEqual(true);
 });
 
 // toString.............................................................................................................
