@@ -10,20 +10,35 @@ import TextStyle from "./TextStyle";
  * To avoid circular references this is not placed on TextNode
  */
 export default function textNodeJsonSupportFromJson(json) {
-    const typeName = json.typeName;
-    const value = json.value;
+    if (!json) {
+        throw new Error("Missing json");
+    }
+    if (typeof json !== "object") {
+        throw new Error("Expected object json got " + json);
+    }
 
-    switch (typeName) {
+    const {type, value} = json;
+    if (!type) {
+        throw new Error("Missing type got " + JSON.stringify(json));
+    }
+    if (typeof type !== "string") {
+        throw new Error("Expected String type got " + JSON.stringify(json));
+    }
+    if (!value) {
+        throw new Error("Missing value got " + JSON.stringify(json));
+    }
+
+    switch (type) {
         case PLACEHOLDER:
             return new TextPlaceholderNode(value);
         case STYLE:
-            return new TextStyleNode(new TextStyle(value.styles), array(value.children).map(c => textNodeJsonSupportFromJson(c)));
+            return new TextStyleNode(TextStyle.fromJson(value.styles), array(value.children).map(c => textNodeJsonSupportFromJson(c)));
         case STYLE_NAME:
             return new TextStyleNameNode(value.styleName, array(value.children).map(c => textNodeJsonSupportFromJson(c)));
         case TEXT:
             return new Text(value);
         default:
-            throw new Error("Unexpected type name \"" + typeName + "\" in " + JSON.stringify(json));
+            throw new Error("Unexpected type name \"" + type + "\" in " + JSON.stringify(json));
     }
 }
 

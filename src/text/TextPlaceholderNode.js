@@ -3,6 +3,10 @@ import TextLeafNode from "./TextLeafNode";
 
 export default class TextPlaceholderNode extends TextLeafNode {
 
+    static fromJson(json) {
+        return new TextPlaceholderNode(json);
+    }
+
     constructor(placeholder) {
         super();
         if (!placeholder) {

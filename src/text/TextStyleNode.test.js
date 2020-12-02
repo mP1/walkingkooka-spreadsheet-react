@@ -94,7 +94,7 @@ test("render style & TextStyleNode child ", () => {
 
 // toJson...............................................................................................................
 
-test("json", () => {
+test("toJson", () => {
     const styles = new TextStyle({
         "background-color": "#123",
         "color": "#456"
@@ -104,7 +104,7 @@ test("json", () => {
     check(style,
         styles,
         {
-            typeName: "text-style", value: {
+            type: "text-style-node", value: {
                 styles: {
                     "background-color": "#123",
                     "color": "#456"
@@ -113,7 +113,7 @@ test("json", () => {
         });
 });
 
-test("json with children", () => {
+test("toJson with children", () => {
     const text = new Text("text-xyz");
     const placeholder = new TextPlaceholderNode("placeholder-tuv");
 
@@ -126,7 +126,7 @@ test("json with children", () => {
     check(style,
         styles,
         {
-            typeName: "text-style",
+            type: "text-style-node",
             value: {styles: styles.toJson(), children: [text.toJson(), placeholder.toJson()]}
         });
 });

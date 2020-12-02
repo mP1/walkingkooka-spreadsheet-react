@@ -27,27 +27,27 @@ test("render fails", () => {
 
 // toJson...............................................................................................................
 
-test("json", () => {
+test("toJson", () => {
     const styleNameNode = new TextStyleNameNode(styleName);
 
-    checkJson(styleNameNode, {typeName: "text-style-name", value: {styleName: styleName}});
+    checkJson(styleNameNode, {type: "text-styleName", value: {styleName: styleName}});
 });
 
-test("json with children", () => {
+test("toJson with children", () => {
     const text = new Text("text-xyz");
     const placeholder = new TextPlaceholderNode("placeholder-tuv");
     const styleNameNode = new TextStyleNameNode(styleName, [text, placeholder]);
 
     checkJson(styleNameNode, {
-        typeName: "text-style-name",
+        type: "text-styleName",
         value: {
             styleName: styleName, children: [
                 {
-                    typeName: "text",
+                    type: "text",
                     value: "text-xyz"
                 },
                 {
-                    typeName: "text-placeholder",
+                    type: "text-placeholder",
                     value: "placeholder-tuv"
                 },
             ]

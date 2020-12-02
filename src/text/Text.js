@@ -3,6 +3,10 @@ import TextLeafNode from "./TextLeafNode";
 
 export default class Text extends TextLeafNode {
 
+    static fromJson(json) {
+        return new Text(json);
+    }
+
     constructor(text) {
         super();
         if (!text && text !== "") {

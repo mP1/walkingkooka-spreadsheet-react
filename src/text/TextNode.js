@@ -1,7 +1,7 @@
 export const TEXT = "text";
-export const STYLE = "text-style";
+export const STYLE = "text-style-node";
 export const PLACEHOLDER = "text-placeholder";
-export const STYLE_NAME = "text-style-name";
+export const STYLE_NAME = "text-styleName";
 
 export default class TextNode {
 
@@ -14,8 +14,8 @@ export default class TextNode {
      */
     toJson() {
         return {
-            "typeName": this.typeName(),
-            "value": this.value()
+            type: this.typeName(),
+            value: this.value()
         };
     }
 
