@@ -28,6 +28,34 @@ test("toJson", () => {
     expect(SpreadsheetReferenceKind.of("RELATIVE").toJson()).toStrictEqual("RELATIVE");
 });
 
+// equals................................................................................................................
+
+test("equals undefined false", () => {
+    expect(SpreadsheetReferenceKind.of("RELATIVE").equals()).toStrictEqual(false);
+});
+
+test("equals null false", () => {
+    expect(SpreadsheetReferenceKind.of("RELATIVE").equals(null)).toStrictEqual(false);
+});
+
+test("equals invalid false", () => {
+    expect(SpreadsheetReferenceKind.of("RELATIVE").equals("!invalid")).toStrictEqual(false);
+});
+
+test("equals different false", () => {
+    expect(SpreadsheetReferenceKind.RELATIVE.equals(SpreadsheetReferenceKind.ABSOLUTE)).toStrictEqual(false);
+});
+
+test("equals RELATIVE true", () => {
+    expect(SpreadsheetReferenceKind.ABSOLUTE.equals(SpreadsheetReferenceKind.ABSOLUTE)).toStrictEqual(true);
+});
+
+test("equals RELATIVE true", () => {
+    expect(SpreadsheetReferenceKind.RELATIVE.equals(SpreadsheetReferenceKind.RELATIVE)).toStrictEqual(true);
+});
+
+// toString.............................................................................................................
+
 test("toString", () => {
     expect(SpreadsheetReferenceKind.of("RELATIVE").toString()).toStrictEqual("RELATIVE");
 });
