@@ -27,6 +27,10 @@ function formatted() {
     return new Text("1+2 formatted");
 }
 
+function onClick() {
+    return true;
+}
+
 // constructor(reference, formula, style, format, formatted) {
 
 test("create without reference fails", () => {
@@ -220,35 +224,46 @@ test("render invalid defaultStyle fails", () => {
     expect(() => new SpreadsheetCell(reference(), formula()).render("!invalid")).toThrow("Expected TextStyle defaultStyle got !invalid");
 });
 
+test("render missing onClick fails", () => {
+    expect(() => new SpreadsheetCell(reference(), formula()).render(TextStyle.EMPTY)).toThrow("Missing onClick");
+});
+
+test("render invalid onClick fails", () => {
+    expect(() => new SpreadsheetCell(reference(), formula()).render(TextStyle.EMPTY,"!invalid")).toThrow("Expected function onClick got !invalid");
+});
+
 test("render empty style, text & defaultStyle EMPTY", () => {
     const text = "text-abc123";
     const ref = reference();
+    const c = onClick;
 
     expect(new SpreadsheetCell(ref,
         formula(),
         TextStyle.EMPTY,
         format(),
         new Text(text))
-        .render(TextStyle.EMPTY))
-        .toStrictEqual(<TableCell key={ref} style={{boxSizing: "border-box"}}>{text}</TableCell>);
+        .render(TextStyle.EMPTY, c))
+        .toStrictEqual(<TableCell key={ref} onClick={c} style={{boxSizing: "border-box"}}>{text}</TableCell>);
 });
 
 test("render empty style, text & defaultStyle EMPTY 2", () => {
     const text = "text-abc123";
     const ref = SpreadsheetCellReference.parse("B123");
+    const c = onClick;
 
     expect(new SpreadsheetCell(ref,
         formula(),
         TextStyle.EMPTY,
         format(),
         new Text(text))
-        .render(TextStyle.EMPTY))
-        .toStrictEqual(<TableCell key={ref} style={{boxSizing: "border-box"}}>{text}</TableCell>);
+        .render(TextStyle.EMPTY, c))
+        .toStrictEqual(<TableCell key={ref} onClick={c} style={{boxSizing: "border-box"}}>{text}</TableCell>);
 });
 
 test("render empty style, text & defaultStyle width&height", () => {
     const text = "text-abc123";
     const r = reference();
+    const c = onClick;
 
     expect(new SpreadsheetCell(r,
         formula(),
@@ -258,13 +273,15 @@ test("render empty style, text & defaultStyle width&height", () => {
         .render(
             TextStyle.EMPTY
                 .set("width", "100px")
-                .set("height", "50px")))
-        .toStrictEqual(<TableCell key={r} style={{boxSizing: "border-box", width: "100px", height: "50px"}}>{text}</TableCell>);
+                .set("height", "50px"),
+            c))
+        .toStrictEqual(<TableCell key={r} onClick={c} style={{boxSizing: "border-box", width: "100px", height: "50px"}}>{text}</TableCell>);
 });
 
 test("render style=width&height, text & defaultStyle=empty", () => {
     const text = "text-abc123";
     const r = reference();
+    const c = onClick;
 
     expect(new SpreadsheetCell(r,
         formula(),
@@ -273,13 +290,14 @@ test("render style=width&height, text & defaultStyle=empty", () => {
             .set("height", "50px"),
         format(),
         new Text(text))
-        .render(TextStyle.EMPTY))
-        .toStrictEqual(<TableCell key={r} style={{boxSizing: "border-box", width: "100px", height: "50px"}}>{text}</TableCell>);
+        .render(TextStyle.EMPTY, c))
+        .toStrictEqual(<TableCell key={r} onClick={c} style={{boxSizing: "border-box", width: "100px", height: "50px"}}>{text}</TableCell>);
 });
 
 test("render style=height, text & defaultStyle=width", () => {
     const text = "text-abc123";
     const r = reference();
+    const c = onClick;
 
     expect(new SpreadsheetCell(r,
         formula(),
@@ -288,13 +306,15 @@ test("render style=height, text & defaultStyle=width", () => {
         format(),
         new Text(text))
         .render(TextStyle.EMPTY
-            .set("width", "100px")))
-        .toStrictEqual(<TableCell key={r} style={{boxSizing: "border-box", width: "100px", height: "50px"}}>{text}</TableCell>);
+            .set("width", "100px"),
+            c))
+        .toStrictEqual(<TableCell key={r} onClick={c} style={{boxSizing: "border-box", width: "100px", height: "50px"}}>{text}</TableCell>);
 });
 
 test("render style=width&height, text & defaultStyle=width", () => {
     const text = "text-abc123";
     const r = reference();
+    const c = onClick;
 
     expect(new SpreadsheetCell(r,
         formula(),
@@ -304,8 +324,9 @@ test("render style=width&height, text & defaultStyle=width", () => {
         format(),
         new Text(text))
         .render(TextStyle.EMPTY
-            .set("width", "99px")))
-        .toStrictEqual(<TableCell key={r} style={{boxSizing: "border-box", width: "100px", height: "50px"}}>{text}</TableCell>);
+            .set("width", "99px"),
+            c))
+        .toStrictEqual(<TableCell key={r} onClick={c} style={{boxSizing: "border-box", width: "100px", height: "50px"}}>{text}</TableCell>);
 });
 
 // helpers..............................................................................................................
