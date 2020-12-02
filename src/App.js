@@ -153,16 +153,18 @@ export default class App extends React.Component {
      * Fires a new {@link SpreadsheetCellBox} which should trigger a redraw.
      */
     viewportSpreadsheetMetadataUpdate(metadata) {
-        const cell = metadata.viewportCell();
+        const viewportCell = metadata.viewportCell();
 
         this.setState({
-            viewportCell: cell,
+            viewportCell: viewportCell,
             viewportCoordinates: metadata.viewportCoordinates(),
         });
+
         const viewport = this.viewport.current;
         if (viewport) {
             viewport.setState({
-                home: cell,
+                home: viewportCell,
+                editCell: metadata.editCell(),
                 defaultStyle: metadata.style(),
             });
         }
@@ -208,6 +210,14 @@ export default class App extends React.Component {
             });
     }
 
+    /**
+     * This is called whenever a cell is clicked or selected for editing.
+     */
+    editCell(reference) {
+        console.log("setEditCell " + reference);
+        this.saveSpreadsheetMetadata(this.spreadsheetMetadata().setEditCell(reference));
+    }
+
     // rendering........................................................................................................
 
     /**
@@ -231,7 +241,7 @@ export default class App extends React.Component {
                     <SpreadsheetFormulaWidget/>
                     <Divider/>
                 </SpreadsheetBox>
-                <SpreadsheetViewportWidget key={"viewport"}
+                <SpreadsheetViewportWidget key={[viewportDimensions, cells, columnWidths, rowHeights, style, viewportCell, editCell]}
                                            ref={this.viewport}
                                            dimensions={viewportDimensions}
                                            cells={cells}
@@ -240,6 +250,7 @@ export default class App extends React.Component {
                                            defaultStyle={style}
                                            home={viewportCell}
                                            editCell={editCell}
+                                           editCellSetter={this.editCell.bind(this)}
                 />
             </WindowResizer>
         )
