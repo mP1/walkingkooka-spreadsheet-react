@@ -1,5 +1,10 @@
 /**
- * A wrapper for the native Map using the toString for keys as well as being immutable.
+ * An immutable Map, that is a wrapper for the native Map with a few gotchas.
+ * <ul>
+ * <li>Internally keys are converted to String before the lookup using the wrapped Map is performed.</li>
+ * <li>Equals also tries to compare values using equals falling back to triple equals ===</li>
+ * <li>toJson tries each toJson for each value during the toJson process.</li>
+ * </ul>
  */
 export default class ImmutableMap {
 
