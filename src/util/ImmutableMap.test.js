@@ -92,6 +92,77 @@ test("get unknown key", () => {
     expect(map.get(SpreadsheetCellReference.parse("Z99"))).toBeUndefined();
 });
 
+// set..................................................................................................................
+
+test("set missing map fails", () => {
+    expect(() => ImmutableMap.EMPTY.set()).toThrow("Missing map");
+});
+
+test("set invalid map type fails", () => {
+    expect(() => ImmutableMap.EMPTY.set("!invalid")).toThrow("Expected ImmutableMap map got !invalid");
+});
+
+test("set empty map empty map", () => {
+    const map = ImmutableMap.EMPTY;
+    const after = ImmutableMap.EMPTY.set(map);
+    expect(after === map).toBeTrue();
+});
+
+test("set empty map not empty map", () => {
+    const a1 = SpreadsheetCellReference.parse("A1");
+    const b2 = SpreadsheetCellReference.parse("B2");
+
+    const a1v = "A1-value";
+    const b2v = "B2-value";
+
+    const map = new ImmutableMap(new Map([[a1.toString(), a1v], [b2.toString(), b2v]]));
+    const after = ImmutableMap.EMPTY.set(map);
+    expect(after === map).toBeTrue();
+});
+
+test("set not empty map empty map", () => {
+    const a1 = SpreadsheetCellReference.parse("A1");
+    const b2 = SpreadsheetCellReference.parse("B2");
+
+    const a1v = "A1-value";
+    const b2v = "B2-value";
+
+    const map = new ImmutableMap(new Map([[a1.toString(), a1v], [b2.toString(), b2v]]));
+    const after = map.set(ImmutableMap.EMPTY);
+    expect(after === map).toBeTrue();
+});
+
+test("set not empty map different not empty map", () => {
+    const a1 = SpreadsheetCellReference.parse("A1");
+    const b2 = SpreadsheetCellReference.parse("B2");
+
+    const a1v = "A1-value";
+    const b2v = "B2-value";
+
+    const map = new ImmutableMap(new Map([[a1.toString(), a1v]]));
+    const other = new ImmutableMap(new Map([[b2.toString(), b2v]]));
+
+    const after = map.set(other);
+
+    expect(after)
+        .toStrictEqual(new ImmutableMap(
+            new Map([
+                [a1.toString(), a1v],
+                [b2.toString(), b2v]
+            ])));
+});
+
+test("set not empty map same not empty map", () => {
+    const a1 = SpreadsheetCellReference.parse("A1");
+    const a1v = "A1-value";
+
+    const map = new ImmutableMap(new Map([[a1.toString(), a1v]]));
+    const other = new ImmutableMap(new Map([[a1.toString(), a1v]]));
+
+    const after = map.set(other);
+    expect(after === map).toBeTrue();
+});
+
 // fromJson.............................................................................................................
 
 test("fromJson missing json fails", () => {
