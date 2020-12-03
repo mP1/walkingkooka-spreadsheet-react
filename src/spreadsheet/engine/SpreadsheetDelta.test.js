@@ -3,6 +3,7 @@ import SpreadsheetDelta from "./SpreadsheetDelta";
 import SpreadsheetRange from "../reference/SpreadsheetRange";
 import SpreadsheetColumnReference from "../reference/SpreadsheetColumnReference";
 import SpreadsheetRowReference from "../reference/SpreadsheetRowReference";
+import ImmutableMap from "../../util/ImmutableMap";
 
 function a1() {
     return SpreadsheetCell.fromJson({
@@ -31,11 +32,19 @@ function cells() {
 }
 
 function maxColumnWidths() {
-    return new Map([[SpreadsheetColumnReference.parse("A"), 100]]);
+    return ImmutableMap.fromJson({
+        "A": 100,
+    },
+        SpreadsheetColumnReference.parse,
+        (v) => v);
 }
 
 function maxRowHeights() {
-    return new Map([[SpreadsheetRowReference.parse("1"), 20]]);
+    return ImmutableMap.fromJson({
+            "1": 20,
+        },
+        SpreadsheetRowReference.parse,
+        (v) => v);
 }
 
 function window() {
@@ -82,7 +91,7 @@ test("create with maxColumnWidths non object fails", () => {
     const mrh = maxRowHeights();
     const w = window();
 
-    expect(() => new SpreadsheetDelta(c, mcw, mrh, w)).toThrow("Expected object maxColumnWidths got !invalid");
+    expect(() => new SpreadsheetDelta(c, mcw, mrh, w)).toThrow("Expected ImmutableMap maxColumnWidths got !invalid");
 });
 
 test("create without maxRowHeights fails", () => {
@@ -100,7 +109,7 @@ test("create with maxRowHeights non object fails", () => {
     const mrh = "!invalid";
     const w = window();
 
-    expect(() => new SpreadsheetDelta(c, mcw, mrh, w)).toThrow("Expected object maxRowHeights got !invalid");
+    expect(() => new SpreadsheetDelta(c, mcw, mrh, w)).toThrow("Expected ImmutableMap maxRowHeights got !invalid");
 });
 
 test("create", () => {
@@ -141,8 +150,8 @@ test("create", () => {
 
 test("create empty", () => {
     const c = [];
-    const mcw = new Map();
-    const mrh = new Map();
+    const mcw = ImmutableMap.EMPTY;
+    const mrh = ImmutableMap.EMPTY;
     const w = [];
 
     check(new SpreadsheetDelta(c, mcw, mrh, w),
@@ -157,8 +166,8 @@ test("create empty", () => {
 
 test("toJson only 1 cell", () => {
     const c = [a1()];
-    const mcw = new Map();
-    const mrh = new Map();
+    const mcw = ImmutableMap.EMPTY;
+    const mrh = ImmutableMap.EMPTY;
     const w = [];
 
     expect(new SpreadsheetDelta(c, mcw, mrh, w).toJson())
@@ -176,8 +185,8 @@ test("toJson only 1 cell", () => {
 
 test("toJson only 2 cells", () => {
     const c = cells();
-    const mcw = new Map();
-    const mrh = new Map();
+    const mcw = ImmutableMap.EMPTY;
+    const mrh = ImmutableMap.EMPTY;
     const w = [];
 
     expect(new SpreadsheetDelta(c, mcw, mrh, w).toJson())
@@ -238,8 +247,8 @@ test("fromJson null fails", () => {
 
 test("fromJson empty", () => {
     const c = [];
-    const mcw = new Map();
-    const mrh = new Map();
+    const mcw = ImmutableMap.EMPTY;
+    const mrh = ImmutableMap.EMPTY;
     const w = [];
 
     expect(SpreadsheetDelta.fromJson({})).toStrictEqual(new SpreadsheetDelta(c, mcw, mrh, w));
@@ -247,8 +256,8 @@ test("fromJson empty", () => {
 
 test("fromJson 1 cell", () => {
     const c = [a1()];
-    const mcw = new Map();
-    const mrh = new Map();
+    const mcw = ImmutableMap.EMPTY;
+    const mrh = ImmutableMap.EMPTY;
     const w = [];
 
     expect(SpreadsheetDelta.fromJson({
@@ -265,8 +274,8 @@ test("fromJson 1 cell", () => {
 
 test("fromJson 2 cells", () => {
     const c = [a1(), b2()];
-    const mcw = new Map();
-    const mrh = new Map();
+    const mcw = ImmutableMap.EMPTY;
+    const mrh = ImmutableMap.EMPTY;
     const w = [];
 
     expect(SpreadsheetDelta.fromJson({

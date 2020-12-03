@@ -2,20 +2,20 @@ import SpreadsheetCell from "../SpreadsheetCell";
 import SpreadsheetRange from "../reference/SpreadsheetRange";
 import SpreadsheetColumnReference from "../reference/SpreadsheetColumnReference";
 import SpreadsheetRowReference from "../reference/SpreadsheetRowReference";
+import ImmutableMap from "../../util/ImmutableMap";
+import SpreadsheetCellReference from "../reference/SpreadsheetCellReference";
 
 /**
- * Transforms the object into a Map using the keyFactory to convert the strings to keys.
+ * A function used by fromJson to verify number column widths and row heights
+ * @param value
+ * @returns {number}
+ * @constructor
  */
-function buildMap(json, keyFactory) {
-    var map = new Map();
-
-    if (json) {
-        for (const [key, value] of Object.entries(json)) {
-            map.set(keyFactory(key), value);
-        }
+const NUMBER = (value) => {
+    if(typeof value !== 'number') {
+        throw new Error("Expected number value got " + value);
     }
-
-    return map;
+    return value;
 }
 
 /**
@@ -36,8 +36,8 @@ export default class SpreadsheetDelta {
             cells.push(SpreadsheetCell.fromJson(reference));
         }
 
-        const maxColumnWidths = buildMap(json.maxColumnWidths, SpreadsheetColumnReference.fromJson);
-        const maxRowHeights = buildMap(json.maxRowHeights, SpreadsheetRowReference.fromJson);
+        const maxColumnWidths = ImmutableMap.fromJson(json.maxColumnWidths || {}, SpreadsheetColumnReference.fromJson, NUMBER);
+        const maxRowHeights = ImmutableMap.fromJson(json.maxRowHeights || {}, SpreadsheetRowReference.fromJson, NUMBER);
         const windowJson = json["window"];
 
         return new SpreadsheetDelta(cells,
@@ -57,15 +57,15 @@ export default class SpreadsheetDelta {
         if (!maxColumnWidths) {
             throw new Error("Missing maxColumnWidths");
         }
-        if (!(maxColumnWidths instanceof Map)) {
-            throw new Error("Expected object maxColumnWidths got " + maxColumnWidths);
+        if (!(maxColumnWidths instanceof ImmutableMap)) {
+            throw new Error("Expected ImmutableMap maxColumnWidths got " + maxColumnWidths);
         }
 
         if (!maxRowHeights) {
             throw new Error("Missing maxRowHeights");
         }
-        if (!(maxRowHeights instanceof Map)) {
-            throw new Error("Expected object maxRowHeights got " + maxRowHeights);
+        if (!(maxRowHeights instanceof ImmutableMap)) {
+            throw new Error("Expected ImmutableMap maxRowHeights got " + maxRowHeights);
         }
 
         if (!window) {
@@ -76,8 +76,8 @@ export default class SpreadsheetDelta {
         }
 
         this.cellsValue = cells.slice();
-        this.maxColumnWidthsValue = new Map(maxColumnWidths);
-        this.maxRowHeightsValue = new Map(maxRowHeights);
+        this.maxColumnWidthsValue = maxColumnWidths;
+        this.maxRowHeightsValue = maxRowHeights;
         this.windowValue = window.slice();
     }
 
@@ -86,11 +86,11 @@ export default class SpreadsheetDelta {
     }
 
     maxColumnWidths() {
-        return new Map(this.maxColumnWidthsValue);
+        return this.maxColumnWidthsValue;
     }
 
     maxRowHeights() {
-        return new Map(this.maxRowHeightsValue);
+        return this.maxRowHeightsValue;
     }
 
     window() {
@@ -131,13 +131,13 @@ export default class SpreadsheetDelta {
         }
 
         const maxColumnWidths = this.maxColumnWidths();
-        if (maxColumnWidths.size > 0) {
-            json.maxColumnWidths = mapToJson(maxColumnWidths);
+        if (maxColumnWidths.size() > 0) {
+            json.maxColumnWidths = maxColumnWidths.toJson();
         }
 
         const maxRowHeights = this.maxRowHeights();
-        if (maxRowHeights.size > 0) {
-            json.maxRowHeights = mapToJson(maxRowHeights);
+        if (maxRowHeights.size() > 0) {
+            json.maxRowHeights = maxRowHeights.toJson();
         }
 
         const window = this.window();
@@ -150,12 +150,4 @@ export default class SpreadsheetDelta {
     toString() {
         return JSON.stringify(this.toJson());
     }
-}
-
-function mapToJson(map) {
-    let json = {};
-    for (let [key, value] of map.entries()) {
-        json[key.toString()] = value;
-    }
-    return json;
 }
