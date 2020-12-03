@@ -74,7 +74,7 @@ export default class ImmutableMap {
     toJson() {
         let json = {};
         for (const [key, value] of this.map.entries()) {
-            json[key.toString()] = value.toJson();
+            json[key.toString()] = (value.toJson && value.toJson()) || value;
         }
         return json;
     }
