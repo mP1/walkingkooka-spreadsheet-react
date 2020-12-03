@@ -176,6 +176,62 @@ test("toJson value missing toJson", () => {
     expect(map.toJson()).toStrictEqual({A1: a1v.toJson(), B2: b2v.toJson()});
 });
 
+// equals...............................................................................................................
+
+test("equals undefined", () => {
+    expect(ImmutableMap.EMPTY.equals()).toStrictEqual(false);
+});
+
+test("equals null", () => {
+    expect(ImmutableMap.EMPTY.equals(null)).toStrictEqual(false);
+});
+
+test("equals non ImmutableMap", () => {
+    expect(ImmutableMap.EMPTY.equals("!invalid")).toStrictEqual(false);
+});
+
+test("equals empty map and empty map", () => {
+    expect(ImmutableMap.EMPTY.equals(ImmutableMap.EMPTY)).toStrictEqual(true);
+});
+
+test("equals different map", () => {
+    expect(ImmutableMap.EMPTY.equals(new ImmutableMap(new Map([["A1", "A1-value"]])))).toStrictEqual(false);
+});
+
+test("equals different map #2", () => {
+    expect(new ImmutableMap(new Map([["A1", "A1-value"]])).equals(new ImmutableMap(new Map([["B2", "B2-value"]])))).toStrictEqual(false);
+});
+
+test("equals different map #3", () => {
+    expect(new ImmutableMap(new Map([["A1", "A1-value"]])).equals(new ImmutableMap(new Map([["A1", "different"]])))).toStrictEqual(false);
+});
+
+test("equals different map #4", () => {
+    expect(new ImmutableMap(new Map([["A1", SpreadsheetColumnReference.parse("A")]])).equals(new ImmutableMap(new Map([["A1", SpreadsheetColumnReference.parse("Z")]])))).toStrictEqual(false);
+});
+
+test("equals equivalent map", () => {
+    expect(new ImmutableMap(new Map([["A1", "A1-value"]])).equals(new ImmutableMap(new Map([["A1", "A1-value"]])))).toStrictEqual(true);
+});
+
+test("equals equivalent map #2", () => {
+    const map = new Map([
+        ["A1", "A1-value"],
+        ["B2", "B2-value"]
+    ]);
+
+    expect(new ImmutableMap(map).equals(new ImmutableMap(new Map(map)))).toStrictEqual(true);
+});
+
+test("equals equivalent map #3", () => {
+    const map = new Map([
+        ["A1", SpreadsheetColumnReference.parse("A")],
+        ["B2", SpreadsheetColumnReference.parse("B")]
+    ]);
+
+    expect(new ImmutableMap(map).equals(new ImmutableMap(new Map(map)))).toStrictEqual(true);
+});
+
 // toString.............................................................................................................
 
 test("toString", () => {
