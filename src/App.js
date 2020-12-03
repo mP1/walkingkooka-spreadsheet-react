@@ -17,6 +17,7 @@ import SpreadsheetDelta from "./spreadsheet/engine/SpreadsheetDelta";
 import SpreadsheetEngineEvaluation from "./spreadsheet/engine/SpreadsheetEngineEvaluation";
 import SpreadsheetBox from "./widget/SpreadsheetBox";
 import WindowResizer from "./widget/WindowResizer";
+import ImmutableMap from "./util/ImmutableMap";
 
 export default class App extends React.Component {
     constructor(props) {
@@ -25,9 +26,9 @@ export default class App extends React.Component {
         this.state = {
             spreadsheetEngineEvaluation: SpreadsheetEngineEvaluation.COMPUTE_IF_NECESSARY,
             spreadsheetMetadata: SpreadsheetMetadata.EMPTY,
-            cells: new Map(),
-            columnWidths: new Map(),
-            rowHeights: new Map(),
+            cells: ImmutableMap.EMPTY,
+            columnWidths: ImmutableMap.EMPTY,
+            rowHeights: ImmutableMap.EMPTY,
             viewportDimensions: {
                 width: 0,
                 height: 0,
@@ -86,17 +87,10 @@ export default class App extends React.Component {
      * Merge the new cells, columnWidths, rowHeights with the old in state.
      */
     setStateDelta(delta) {
-        // merge the old and new cells.
-        const cells = new Map(this.state.cells);
-        delta.cells().forEach(c => {
-            cells.put(c.reference(), c);
-        });
-
-        // merge columnWidths and rowHeights
         this.setState({
-            cells: cells,
-            columnWidths: new Map([...this.state.columnWidths, ...delta.maxColumnWidths()]),
-            rowHeights: new Map([...this.state.rowHeights, ...delta.maxRowHeights()]),
+            cells: this.state.cells.set(delta.referenceToCellMap()),
+            columnWidths: this.state.columnWidths.set(delta.maxColumnWidths()),
+            rowHeights: this.state.rowHeights.set(delta.maxRowHeights()),
         });
     }
 
@@ -108,20 +102,15 @@ export default class App extends React.Component {
      * Update the viewport widget with the new cells, columnWidth & rowHeight from the delta.
      */
     viewportChange(delta) {
-        const cells = new Map(this.state.cells);
-        delta.cells()
-            .forEach(c => {
-                cells.put(c.reference(), c);
-            });
-        const columnWidths = new Map([...this.state.columnWidths, ...delta.maxColumnWidths()]);
-        const rowHeights = new Map([...this.state.rowHeights, ...delta.maxRowHeights()]);
-
         const viewport = this.viewport.current;
-        viewport && viewport.setState({
-            cells: cells,
-            columnWidths: columnWidths,
-            rowHeights: rowHeights,
-        });
+        if (viewport) {
+            viewport.setState({
+                cells: this.state.cells.set(delta.referenceToCellMap()),
+                columnWidths: this.state.columnWidths.set(delta.maxColumnWidths()),
+                rowHeights: this.state.rowHeights.set(delta.maxRowHeights()),
+            });
+
+        }
     }
 
     /**
