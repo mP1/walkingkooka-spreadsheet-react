@@ -93,8 +93,28 @@ export default class ImmutableMap {
         return json;
     }
 
+    equals(other) {
+        return this === other || (other instanceof ImmutableMap && equals0(this.map, other.map));
+    }
+
     toString() {
         return JSON.stringify(this.toJson());
     }
 }
 
+function equals0(map, other) {
+    return map.size === other.size && equals1(map, other);
+}
+
+function equals1(map, other) {
+    var result = true;
+
+    for (const [key, value] of map.entries()) {
+        const otherValue = other.get(key);
+        result = (value && value.equals && value.equals(otherValue)) || value === otherValue;
+        if (!result) {
+            break;
+        }
+    }
+    return result;
+}
