@@ -105,6 +105,10 @@ export default class SpreadsheetCellReference {
         return this.toString();
     }
 
+    equals(other) {
+        return this === other || (other instanceof SpreadsheetCellReference && this.column().equals(other.column()) && this.row().equals(other.row()));
+    }
+
     toString() {
         return this.column().toString() + this.row();
     }

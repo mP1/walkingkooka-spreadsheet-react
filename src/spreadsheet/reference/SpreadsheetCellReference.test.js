@@ -140,6 +140,55 @@ test("toRelative absolute2", () => {
     expect(SpreadsheetCellReference.parse("$C3").toRelative()).toEqual(SpreadsheetCellReference.parse("C3"));
 });
 
+// equals................................................................................................................
+
+test("equals undefined false", () => {
+    expect(SpreadsheetCellReference.parse("A1").equals()).toStrictEqual(false);
+});
+
+test("equals null false", () => {
+    expect(SpreadsheetCellReference.parse("B2").equals(null)).toStrictEqual(false);
+});
+
+test("equals invalid false", () => {
+    expect(SpreadsheetCellReference.parse("C3").equals("!invalid")).toStrictEqual(false);
+});
+
+test("equals different column false", () => {
+    expect(SpreadsheetCellReference.parse("D4").equals(SpreadsheetCellReference.parse("E4"))).toStrictEqual(false);
+});
+
+test("equals different column kind false", () => {
+    expect(SpreadsheetCellReference.parse("F5").equals(SpreadsheetCellReference.parse("$F5"))).toStrictEqual(false);
+});
+
+test("equals different row false", () => {
+    expect(SpreadsheetCellReference.parse("G6").equals(SpreadsheetCellReference.parse("G7"))).toStrictEqual(false);
+});
+
+test("equals different row kind false", () => {
+    expect(SpreadsheetCellReference.parse("H8").equals(SpreadsheetCellReference.parse("$H8"))).toStrictEqual(false);
+});
+
+test("equals", () => {
+    expect(SpreadsheetCellReference.parse("I9").equals(SpreadsheetCellReference.parse("I9"))).toStrictEqual(true);
+});
+
+test("equals absolute", () => {
+    const reference = "$J11";
+    expect(SpreadsheetCellReference.parse(reference).equals(SpreadsheetCellReference.parse(reference))).toStrictEqual(true);
+});
+
+test("equals absolute #2", () => {
+    const reference = "K$12";
+    expect(SpreadsheetCellReference.parse(reference).equals(SpreadsheetCellReference.parse(reference))).toStrictEqual(true);
+});
+
+test("equals absolute #3", () => {
+    const reference = "$L$13";
+    expect(SpreadsheetCellReference.parse(reference).equals(SpreadsheetCellReference.parse(reference))).toStrictEqual(true);
+});
+
 // helpers..............................................................................................................
 
 function check(cell,
