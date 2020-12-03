@@ -81,6 +81,25 @@ export default class ImmutableMap {
     }
 
     /**
+     * Returns a new {@link ImmutableMap} that combines the entries of this with the new map. Entries with the same key
+     * in the new will replace those in the old.
+     */
+    set(map) {
+        if (!map) {
+            throw new Error("Missing map");
+        }
+        if (!(map instanceof ImmutableMap)) {
+            throw new Error("Expected ImmutableMap map got " + map);
+        }
+
+        return map.isEmpty() ?
+            this :
+            this.isEmpty() ?
+                map :
+                merge(this, map);
+    }
+
+    /**
      * Returns a Map assumes the keys are strings.
      */
     toMap() {
@@ -105,6 +124,13 @@ export default class ImmutableMap {
     toString() {
         return JSON.stringify(this.toJson());
     }
+}
+
+function merge(map, other) {
+    const merged = new ImmutableMap(new Map([...map.map, ...other.map]));
+    return map.equals(merged) ?
+        map :
+        merged;
 }
 
 function equals0(map, other) {
