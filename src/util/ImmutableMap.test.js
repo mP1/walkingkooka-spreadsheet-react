@@ -1,6 +1,5 @@
 import ImmutableMap from "./ImmutableMap";
 import SpreadsheetCellReference from "../spreadsheet/reference/SpreadsheetCellReference";
-import TextPlaceholderNode from "../text/TextPlaceholderNode";
 import TextStyle from "../text/TextStyle";
 import SpreadsheetColumnReference from "../spreadsheet/reference/SpreadsheetColumnReference";
 
@@ -116,7 +115,7 @@ test("toJson empty", () => {
     expect(ImmutableMap.EMPTY.toJson()).toStrictEqual({});
 });
 
-test("toJson", () => {
+test("toJson value.toJson", () => {
     const a1 = SpreadsheetCellReference.parse("A1");
     const b2 = SpreadsheetCellReference.parse("B2");
 
@@ -126,10 +125,10 @@ test("toJson", () => {
     const nativeMap = new Map([[a1.toString(), a1v], [b2.toString(), b2v]]);
     const map = new ImmutableMap(nativeMap);
 
-    expect(map.toJson()).toStrictEqual({A1:"$C", B2:"$D"});
+    expect(map.toJson()).toStrictEqual({A1: "$C", B2: "$D"});
 });
 
-test("toJson 2", () => {
+test("toJson value missing toJson", () => {
     const a1 = SpreadsheetCellReference.parse("A1");
     const b2 = SpreadsheetCellReference.parse("B2");
 
@@ -139,7 +138,7 @@ test("toJson 2", () => {
     const nativeMap = new Map([[a1.toString(), a1v], [b2.toString(), b2v]]);
     const map = new ImmutableMap(nativeMap);
 
-    expect(map.toJson()).toStrictEqual({A1:a1v.toJson(), B2:b2v.toJson()});
+    expect(map.toJson()).toStrictEqual({A1: a1v.toJson(), B2: b2v.toJson()});
 });
 
 // toString.............................................................................................................
@@ -155,4 +154,17 @@ test("toString", () => {
     const map = new ImmutableMap(nativeMap);
 
     expect(map.toString()).toStrictEqual("{\"A1\":\"$C\",\"B2\":\"$D\"}");
+});
+
+test("toString values missing toJson", () => {
+    const a1 = SpreadsheetCellReference.parse("A1");
+    const b2 = SpreadsheetCellReference.parse("B2");
+
+    const a1v = 3;
+    const b2v = 4;
+
+    const nativeMap = new Map([[a1.toString(), a1v], [b2.toString(), b2v]]);
+    const map = new ImmutableMap(nativeMap);
+
+    expect(map.toString()).toStrictEqual("{\"A1\":3,\"B2\":4}");
 });
