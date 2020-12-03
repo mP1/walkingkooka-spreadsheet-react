@@ -3,7 +3,6 @@ import SpreadsheetRange from "../reference/SpreadsheetRange";
 import SpreadsheetColumnReference from "../reference/SpreadsheetColumnReference";
 import SpreadsheetRowReference from "../reference/SpreadsheetRowReference";
 import ImmutableMap from "../../util/ImmutableMap";
-import SpreadsheetCellReference from "../reference/SpreadsheetCellReference";
 
 /**
  * A function used by fromJson to verify number column widths and row heights
@@ -83,6 +82,19 @@ export default class SpreadsheetDelta {
 
     cells() {
         return this.cellsValue.slice();
+    }
+
+    /**
+     * Returns an {@link ImmutableMap} where the {@link SpreadsheetCellReference} is the key and the cell the value.
+     */
+    referenceToCellMap() {
+        const referenceToCell = new Map();
+
+        this.cells().forEach(c => {
+            referenceToCell.set(c.reference().toString(), c);
+        });
+
+        return new ImmutableMap(referenceToCell);
     }
 
     maxColumnWidths() {

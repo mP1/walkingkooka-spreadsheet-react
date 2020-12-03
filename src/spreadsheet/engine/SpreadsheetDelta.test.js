@@ -162,6 +162,48 @@ test("create empty", () => {
         {});
 });
 
+// referenceToCellMap...................................................................................................
+
+test("referenceToCellMap, no cells", () => {
+    const c = [];
+    const mcw = ImmutableMap.EMPTY;
+    const mrh = ImmutableMap.EMPTY;
+    const w = [];
+
+    expect(new SpreadsheetDelta(c, mcw, mrh, w).referenceToCellMap())
+        .toStrictEqual(ImmutableMap.EMPTY);
+});
+
+test("referenceToCellMap, 1 cell", () => {
+    const cell = a1();
+
+    const c = [cell];
+    const mcw = ImmutableMap.EMPTY;
+    const mrh = ImmutableMap.EMPTY;
+    const w = [];
+
+    expect(new SpreadsheetDelta(c, mcw, mrh, w).referenceToCellMap())
+        .toStrictEqual(new ImmutableMap(new Map([
+            [cell.reference().toString(), cell]
+        ])));
+});
+
+test("referenceToCellMap, 2 cells", () => {
+    const cell = a1();
+    const cell2 = b2();
+
+    const c = [cell, cell2];
+    const mcw = ImmutableMap.EMPTY;
+    const mrh = ImmutableMap.EMPTY;
+    const w = [];
+
+    expect(new SpreadsheetDelta(c, mcw, mrh, w).referenceToCellMap())
+        .toStrictEqual(new ImmutableMap(new Map([
+            [cell.reference().toString(), cell],
+            [cell2.reference().toString(), cell2]
+        ])));
+});
+
 // toJson...............................................................................................................
 
 test("toJson only 1 cell", () => {
