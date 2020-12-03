@@ -1,4 +1,3 @@
-import fromJson from "./TextNodeJsonSupport";
 import Text from "./Text";
 import TextPlaceholderNode from "./TextPlaceholderNode";
 import TextStyle from "./TextStyle";
