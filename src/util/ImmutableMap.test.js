@@ -29,6 +29,41 @@ test("ctor map copied", () => {
     expect(map.get(a1)).toStrictEqual(a1v);
 });
 
+// isEmpty/Size..................................................................................................................
+
+test("isEmpty/size empty", () => {
+    const map = ImmutableMap.EMPTY;
+
+    expect(map.size()).toStrictEqual(0);
+    expect(map.isEmpty()).toStrictEqual(true);
+});
+
+test("isEmpty/size not empty size=1", () => {
+    const a1 = SpreadsheetCellReference.parse("A1");
+
+    const a1v = "A1-value";
+
+    const nativeMap = new Map([[a1.toString(), a1v]]);
+    const map = new ImmutableMap(nativeMap);
+
+    expect(map.size()).toStrictEqual(1);
+    expect(map.isEmpty()).toStrictEqual(false);
+});
+
+test("isEmpty/size not empty 1", () => {
+    const a1 = SpreadsheetCellReference.parse("A1");
+    const b2 = SpreadsheetCellReference.parse("B2");
+
+    const a1v = "A1-value";
+    const b2v = "B2-value";
+
+    const nativeMap = new Map([[a1.toString(), a1v], [b2.toString(), b2v]]);
+    const map = new ImmutableMap(nativeMap);
+
+    expect(map.size()).toStrictEqual(2);
+    expect(map.isEmpty()).toStrictEqual(false);
+});
+
 // get..................................................................................................................
 
 test("get", () => {

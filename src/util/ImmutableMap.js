@@ -62,6 +62,20 @@ export default class ImmutableMap {
     }
 
     /**
+     * Returns true if the map is empty that is has no entries.
+     */
+    isEmpty() {
+        return 0 === this.size();
+    }
+
+    /**
+     * Returns the number of entries in the map.
+     */
+    size() {
+        return this.map.size;
+    }
+
+    /**
      * Returns a Map assumes the keys are strings.
      */
     toMap() {
