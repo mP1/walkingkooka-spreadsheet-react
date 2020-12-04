@@ -49,6 +49,10 @@ test("create with invalid formula fails", () => {
     expect(() => new SpreadsheetCell(reference(), 1.5)).toThrow("Expected SpreadsheetFormula formula got 1.5");
 });
 
+test("create with missing style fails", () => {
+    expect(() => new SpreadsheetCell(reference(), formula())).toThrow("Missing style");
+});
+
 test("create with invalid style fails", () => {
     expect(() => new SpreadsheetCell(reference(), formula(), 1.5)).toThrow("Expected TextStyle style got 1.5");
 });
@@ -61,10 +65,10 @@ test("create with invalid formatted fails", () => {
     expect(() => new SpreadsheetCell(reference(), formula(), style(), format(), 1.5)).toThrow("Expected TextNode formatted got 1.5");
 });
 
-test("create reference, formula, missing style, format, formatted", () => {
+test("create reference, formula, TextStyle.EMPTY, format, formatted", () => {
     const r = reference();
     const f = formula();
-    const style = undefined;
+    const style = TextStyle.EMPTY;
     const f2 = format();
     const f3 = formatted();
 
@@ -109,10 +113,10 @@ test("create reference, formula, style, format, missing formatted", () => {
     })
 });
 
-test("create reference, formula", () => {
+test("create reference, formula, TextStyle.EMPTY", () => {
     const r = reference();
     const f = formula();
-    const s = undefined;
+    const s = TextStyle.EMPTY;
     const format = undefined;
     const formatted = undefined;
 
@@ -171,16 +175,16 @@ test("fromJson null fails", () => {
 // setFormula...........................................................................................................
 
 test("setFormula missing fails", () => {
-    expect(() => new SpreadsheetCell(reference(), formula()).setFormula()).toThrow("Missing formula");
+    expect(() => new SpreadsheetCell(reference(), formula(), style()).setFormula()).toThrow("Missing formula");
 });
 
 test("setFormula invalid type fails", () => {
-    expect(() => new SpreadsheetCell(reference(), formula()).setFormula("!invalid")).toThrow("Expected SpreadsheetFormula formula got !invalid");
+    expect(() => new SpreadsheetCell(reference(), formula(), style()).setFormula("!invalid")).toThrow("Expected SpreadsheetFormula formula got !invalid");
 });
 
 test("setFormula same", () => {
     const f = formula();
-    const cell = new SpreadsheetCell(reference(), f);
+    const cell = new SpreadsheetCell(reference(), f, style());
 
     expect(cell.setFormula(f)).toStrictEqual(cell);
 });
@@ -217,19 +221,27 @@ test("setFormula different", () => {
 // render...............................................................................................................
 
 test("render missing defaultStyle fails", () => {
-    expect(() => new SpreadsheetCell(reference(), formula()).render()).toThrow("Missing defaultStyle");
+    expect(() => new SpreadsheetCell(reference(), formula(), style())
+        .render())
+        .toThrow("Missing defaultStyle");
 });
 
 test("render invalid defaultStyle fails", () => {
-    expect(() => new SpreadsheetCell(reference(), formula()).render("!invalid")).toThrow("Expected TextStyle defaultStyle got !invalid");
+    expect(() => new SpreadsheetCell(reference(), formula(), style())
+        .render("!invalid"))
+        .toThrow("Expected TextStyle defaultStyle got !invalid");
 });
 
 test("render missing onClick fails", () => {
-    expect(() => new SpreadsheetCell(reference(), formula()).render(TextStyle.EMPTY)).toThrow("Missing onClick");
+    expect(() => new SpreadsheetCell(reference(), formula(), style())
+        .render(TextStyle.EMPTY))
+        .toThrow("Missing onClick");
 });
 
 test("render invalid onClick fails", () => {
-    expect(() => new SpreadsheetCell(reference(), formula()).render(TextStyle.EMPTY,"!invalid")).toThrow("Expected function onClick got !invalid");
+    expect(() => new SpreadsheetCell(reference(), formula(), style())
+        .render(TextStyle.EMPTY, "!invalid"))
+        .toThrow("Expected function onClick got !invalid");
 });
 
 test("render empty style, text & defaultStyle EMPTY", () => {

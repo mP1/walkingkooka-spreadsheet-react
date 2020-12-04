@@ -43,7 +43,7 @@ export default class SpreadsheetCell {
 
                 return new SpreadsheetCell(SpreadsheetCellReference.fromJson(reference),
                     SpreadsheetFormula.fromJson(formula),
-                    style && TextStyle.fromJson(style),
+                    style && TextStyle.fromJson(style) || TextStyle.EMPTY,
                     format && SpreadsheetCellFormat.fromJson(format),
                     formatted && textNodeJsonSupportFromJson(formatted));
             default:
@@ -59,9 +59,14 @@ export default class SpreadsheetCell {
             throw new Error("Expected SpreadsheetCellReference reference got " + reference);
         }
         checkFormula(formula);
-        if (style && !(style instanceof TextStyle)) {
+
+        if (!style) {
+            throw new Error("Missing style");
+        }
+        if (!(style instanceof TextStyle)) {
             throw new Error("Expected TextStyle style got " + style);
         }
+
         if (format && !(format instanceof SpreadsheetCellFormat)) {
             throw new Error("Expected SpreadsheetCellFormat format got " + format);
         }
@@ -114,7 +119,7 @@ export default class SpreadsheetCell {
             formula: formulaValue.toJson()
         };
 
-        if (styleValue) {
+        if (!styleValue.isEmpty()) {
             json2.style = styleValue.toJson();
         }
 
