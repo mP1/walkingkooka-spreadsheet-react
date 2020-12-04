@@ -87,6 +87,8 @@ export default class App extends React.Component {
      * Merge the new cells, columnWidths, rowHeights with the old in state.
      */
     setStateDelta(delta) {
+        console.log("setStateDelta", delta);
+
         this.setState({
             cells: this.state.cells.set(delta.referenceToCellMap()),
             columnWidths: this.state.columnWidths.set(delta.maxColumnWidths()),
@@ -102,6 +104,8 @@ export default class App extends React.Component {
      * Update the viewport widget with the new cells, columnWidth & rowHeight from the delta.
      */
     viewportChange(delta) {
+        console.log("viewportChange", delta);
+
         const viewport = this.viewport.current;
         if (viewport) {
             viewport.setState({
@@ -143,6 +147,8 @@ export default class App extends React.Component {
      * Fires a new {@link SpreadsheetCellBox} which should trigger a redraw.
      */
     viewportSpreadsheetMetadataUpdate(metadata) {
+        console.log("viewportSpreadsheetMetadataUpdate", metadata);
+
         const viewportCell = metadata.viewportCell();
 
         this.setState({
@@ -164,6 +170,8 @@ export default class App extends React.Component {
      * Accepts {@link SpreadsheetCellBox} and requests the {@link SpreadsheetRange} that fill the content.
      */
     requestViewportRange(cellBox) {
+        console.log("requestViewportRange", cellBox);
+
         // always make request
         this.messenger.send(this.spreadsheetApiUrl() + "/viewport/" + this.spreadsheetViewport(cellBox.reference()),
             {
@@ -176,6 +184,8 @@ export default class App extends React.Component {
      * range
      */
     loadSpreadsheetRangeCell(range) {
+        console.log("loadSpreadsheetRangeCell", range);
+
         // TODO add window
         // always make request
         this.messenger.send(this.spreadsheetCellLoadUrl(range),
@@ -214,6 +224,8 @@ export default class App extends React.Component {
      * Renders the basic spreadsheet layout.
      */
     render() {
+        console.log("render");
+
         const metadata = this.spreadsheetMetadata();
         const style = metadata.style();
         const {cells, columnWidths, rowHeights} = this.state;
