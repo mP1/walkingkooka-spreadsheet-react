@@ -89,7 +89,11 @@ export default class TextStyle {
             throw new Error("Expected TextStyle style got " + style);
         }
 
-        return new TextStyle(Object.assign({}, this.styles, style.styles));
+        return style.isEmpty() ?
+            this :
+            this.isEmpty() ?
+                style :
+                new TextStyle(Object.assign({}, this.styles, style.styles));
     }
 
     /**

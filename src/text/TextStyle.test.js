@@ -158,14 +158,18 @@ test("merge with empty", () => {
     const style = TextStyle.fromJson({
         "width": "10px",
     });
-    expect(style.merge(TextStyle.EMPTY)).toStrictEqual(style);
+
+    const after = style.merge(TextStyle.EMPTY);
+    expect(style === after).toStrictEqual(true);
 });
 
 test("merge empty with non empty", () => {
     const style = TextStyle.fromJson({
         "width": "10px",
     });
-    expect(TextStyle.EMPTY.merge(style)).toStrictEqual(style);
+
+    const after = TextStyle.EMPTY.merge(style);
+    expect(style === after).toStrictEqual(true);
 });
 
 test("merge non empty", () => {
