@@ -433,8 +433,8 @@ export default class App extends React.Component {
         console.log("saveSpreadsheetMetadata", metadata);
 
         this.messenger.send(this.spreadsheetApiUrl(), {
-            "method": "POST",
-            "body": JSON.stringify(metadata.toJson())
+            method: "POST",
+            body: JSON.stringify(metadata.toJson())
         });
     }
 
