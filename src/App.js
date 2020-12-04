@@ -3,7 +3,7 @@ import './App.css';
 
 import SpreadsheetAppBarTop from "./widget/SpreadsheetAppBarTop.js";
 import SpreadsheetViewportWidget from "./widget/SpreadsheetViewportWidget.js";
-import SpreadsheetFormulaWidget from "./widget/SpreadsheetFormulaWidget.js";
+import SpreadsheetFormulaWidget from "./spreadsheet/SpreadsheetFormulaWidget.js";
 import SpreadsheetMetadata from "./spreadsheet/meta/SpreadsheetMetadata.js";
 import SpreadsheetMessenger from "./util/SpreadsheetMessenger.js";
 import Listeners from "./util/Listeners";
