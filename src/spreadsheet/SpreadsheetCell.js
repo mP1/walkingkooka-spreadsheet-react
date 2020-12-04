@@ -43,7 +43,7 @@ export default class SpreadsheetCell {
 
                 return new SpreadsheetCell(SpreadsheetCellReference.fromJson(reference),
                     SpreadsheetFormula.fromJson(formula),
-                    style && TextStyle.fromJson(style) || TextStyle.EMPTY,
+                    (style && TextStyle.fromJson(style)) || TextStyle.EMPTY,
                     format && SpreadsheetCellFormat.fromJson(format),
                     formatted && textNodeJsonSupportFromJson(formatted));
             default:
