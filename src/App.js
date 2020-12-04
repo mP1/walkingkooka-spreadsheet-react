@@ -351,7 +351,7 @@ export default class App extends React.Component {
                                            editCellSetter={this.editCell.bind(this)}
                 />
             </WindowResizer>
-        )
+        );
     }
 
     // resizing.........................................................................................................
