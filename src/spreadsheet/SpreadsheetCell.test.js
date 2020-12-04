@@ -167,9 +167,40 @@ test("create ABSOLUTE reference, formula, style, format, formatted", () => {
         })
 });
 
+// fromJson.............................................................................................................
 
 test("fromJson null fails", () => {
     expect(() => SpreadsheetCell.fromJson(null)).toThrow("Missing json");
+});
+
+test("fromJson missing style", () => {
+    const r = SpreadsheetCellReference.parse("$B$78");
+    const f = formula();
+    const s = TextStyle.EMPTY;
+    const f2 = format();
+    const f3 = formatted();
+
+    expect(SpreadsheetCell.fromJson({
+        "B78": {
+            formula: f.toJson(),
+            format: f2.toJson(),
+            formatted: f3.toJson()
+        }
+    })).toStrictEqual(new SpreadsheetCell(r, f, s, f2, f3));
+});
+
+test("fromJson missing style, format, formatted", () => {
+    const r = SpreadsheetCellReference.parse("$B$78");
+    const f = formula();
+    const s = TextStyle.EMPTY;
+    const f2 = undefined;
+    const f3 = undefined;
+
+    expect(SpreadsheetCell.fromJson({
+        "B78": {
+            formula: f.toJson(),
+        }
+    })).toStrictEqual(new SpreadsheetCell(r, f, s, f2, f3));
 });
 
 // setFormula...........................................................................................................
