@@ -93,6 +93,13 @@ export default class TextStyle {
     }
 
     /**
+     * Returns true only if this {@link TextStyle} has no actual entries.
+     */
+    isEmpty() {
+        return Object.keys(this.styles).length === 0;
+    }
+
+    /**
      * Produces a JSON object holding the styles with style properties converted from kebab case to camel case.
      */
     toCss() {
