@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 
-import SpreadsheetButtonTextField from './SpreadsheetButtonTextField.js';
-import AppAwareComponent from "./AppAwareComponent";
-import SpreadsheetName from "../spreadsheet/SpreadsheetName";
+import SpreadsheetButtonTextField from '../widget/SpreadsheetButtonTextField.js';
+import AppAwareComponent from "../widget/AppAwareComponent.js";
+import SpreadsheetName from "./SpreadsheetName.js";
 
 /**
  * A wrapper that is a bridge between App updates and also updating following changes to the text field.
