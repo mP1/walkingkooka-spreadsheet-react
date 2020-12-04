@@ -195,6 +195,21 @@ test("merge replace", () => {
     }));
 });
 
+// isEmpty..............................................................................................................
+
+test("isEmpty EMPTY", () => {
+    expect(TextStyle.EMPTY
+        .isEmpty())
+        .toEqual(true);
+});
+
+test("isEmpty not empty", () => {
+    expect(TextStyle.EMPTY
+        .set(BACKGROUND_COLOR, BACKGROUND_COLOR_VALUE)
+        .isEmpty())
+        .toEqual(false);
+});
+
 // toCss................................................................................................................
 
 test("toCss EMPTY", () => {
