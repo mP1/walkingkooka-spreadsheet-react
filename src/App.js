@@ -73,13 +73,13 @@ export default class App extends React.Component {
         });
         this.messenger.setWebWorker(false); // TODO test webworker mode
 
-        this.spreadsheetDeltaListeners.add(this.setStateDelta.bind(this));
-        this.spreadsheetDeltaListeners.add(this.viewportChange.bind(this));
+        this.spreadsheetDeltaListeners.add(this.onSpreadsheetDeltaSetState.bind(this));
+        this.spreadsheetDeltaListeners.add(this.onSpreadsheetDeltaViewportChange.bind(this));
 
-        this.spreadsheetMetadataListeners.add(this.setStateMetadata.bind(this));
-        this.spreadsheetMetadataListeners.add(this.formulaSpreadsheetMetadataUpdate.bind(this));
-        this.spreadsheetMetadataListeners.add(this.viewportSpreadsheetMetadataUpdate.bind(this));
-        this.spreadsheetCellBoxListeners.add(this.requestViewportRange.bind(this));
+        this.spreadsheetMetadataListeners.add(this.onSpreadsheetMetadataSetState.bind(this));
+        this.spreadsheetMetadataListeners.add(this.onSpreadsheetMetadataEditCell.bind(this));
+        this.spreadsheetMetadataListeners.add(this.onSpreadsheetMetadataViewport.bind(this));
+        this.spreadsheetCellBoxListeners.add(this.onCellBoxViewportRangeUpdate.bind(this));
         this.spreadsheetRangeListeners.add(this.loadSpreadsheetCellOrRange.bind(this));
 
         this.formula = React.createRef();
@@ -91,8 +91,8 @@ export default class App extends React.Component {
     /**
      * Merge the new cells, columnWidths, rowHeights with the old in state.
      */
-    setStateDelta(delta) {
-        console.log("setStateDelta", delta);
+    onSpreadsheetDeltaSetState(delta) {
+        console.log("onSpreadsheetDeltaSetState", delta);
 
         this.setState({
             cells: this.state.cells.set(delta.referenceToCellMap()),
@@ -101,15 +101,15 @@ export default class App extends React.Component {
         });
     }
 
-    setStateMetadata(metadata) {
+    onSpreadsheetMetadataSetState(metadata) {
         this.setState({"spreadsheetMetadata": metadata});
     }
 
     /**
      * Update the viewport widget with the new cells, columnWidth & rowHeight from the delta.
      */
-    viewportChange(delta) {
-        console.log("viewportChange", delta);
+    onSpreadsheetDeltaViewportChange(delta) {
+        console.log("onSpreadsheetDeltaViewportChange", delta);
 
         const viewport = this.viewport.current;
         if (viewport) {
@@ -151,8 +151,8 @@ export default class App extends React.Component {
     /**
      * Fires a new {@link SpreadsheetCellBox} which should/might trigger a redraw of the formula editing widget
      */
-    formulaSpreadsheetMetadataUpdate(metadata) {
-        console.log("formulaSpreadsheetMetadataUpdate", metadata, "formula", this.formula.current);
+    onSpreadsheetMetadataEditCell(metadata) {
+        console.log("onSpreadsheetMetadataEditCell", metadata, "formula", this.formula.current);
 
         const formula = this.formula.current;
         if (formula) {
@@ -163,7 +163,7 @@ export default class App extends React.Component {
 
                 const formulaText = this.cellToFormulaText(cell);
 
-                console.log("formulaSpreadsheetMetadataUpdate " + reference + " formula text=" + formulaText);
+                console.log("onSpreadsheetMetadataEditCell " + reference + " formula text=" + formulaText);
 
                 formula.setState({
                     value: formulaText,
@@ -176,8 +176,8 @@ export default class App extends React.Component {
     /**
      * Fires a new {@link SpreadsheetCellBox} which should trigger a redraw.
      */
-    viewportSpreadsheetMetadataUpdate(metadata) {
-        console.log("viewportSpreadsheetMetadataUpdate", metadata);
+    onSpreadsheetMetadataViewport(metadata) {
+        console.log("onSpreadsheetMetadataViewport", metadata);
 
         const viewportCell = metadata.viewportCell();
 
@@ -199,8 +199,8 @@ export default class App extends React.Component {
     /**
      * Accepts {@link SpreadsheetCellBox} and requests the {@link SpreadsheetRange} that fill the content.
      */
-    requestViewportRange(cellBox) {
-        console.log("requestViewportRange", cellBox);
+    onCellBoxViewportRangeUpdate(cellBox) {
+        console.log("onCellBoxViewportRangeUpdate", cellBox);
 
         // always make request
         this.messenger.send(this.spreadsheetApiUrl() + "/viewport/" + this.spreadsheetViewport(cellBox.reference()),
