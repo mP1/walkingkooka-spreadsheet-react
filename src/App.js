@@ -76,7 +76,7 @@ export default class App extends React.Component {
         this.spreadsheetMetadataListeners.add(this.setStateMetadata.bind(this));
         this.spreadsheetMetadataListeners.add(this.viewportSpreadsheetMetadataUpdate.bind(this));
         this.spreadsheetCellBoxListeners.add(this.requestViewportRange.bind(this));
-        this.spreadsheetRangeListeners.add(this.loadSpreadsheetRangeCell.bind(this));
+        this.spreadsheetRangeListeners.add(this.loadSpreadsheetCellOrRange.bind(this));
 
         this.viewport = React.createRef();
     }
@@ -183,12 +183,12 @@ export default class App extends React.Component {
      * Accepts the {@link SpreadsheetRange} returned by {@link #spreadsheetViewport} and then loads all the cells in the
      * range
      */
-    loadSpreadsheetRangeCell(range) {
-        console.log("loadSpreadsheetRangeCell", range);
+    loadSpreadsheetCellOrRange(selection) {
+        console.log("loadSpreadsheetCellOrRange", selection);
 
         // TODO add window
         // always make request
-        this.messenger.send(this.spreadsheetCellLoadUrl(range),
+        this.messenger.send(this.spreadsheetCellLoadUrl(selection),
             {
                 method: "GET"
             });
