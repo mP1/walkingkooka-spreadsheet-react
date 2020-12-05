@@ -110,19 +110,33 @@ export default class App extends React.Component {
                 const height = windowDimensions.height - aboveViewportDimensions.height;
 
                 if (previous.width !== width || previous.height !== height) {
-                    const dimensions = {
+                    this.setState({
+                        viewportDimensions: {
+                            width: width,
+                            height: height,
+                        },
+                    })
+                    viewport.setState({
                         dimensions: {
                             width: width,
                             height: height,
                         }
-                    };
-                    this.setState({
-                        viewportDimensions: dimensions,
-                    })
-                    viewport.setState(dimensions);
+                    });
 
-                    // TODO load cells to fill viewport...
-                    // TODO smarts only load if viewport got bigger etc and same viewport cell.
+                    // TODO if same viewportCell & viewport got bigger then load...
+                    const metadata = state.spreadsheetMetadata;
+                    const viewportCell = metadata.viewportCell();
+                    const viewportCoordinates = metadata.viewportCoordinates();
+
+                    if (viewportCell && viewportCoordinates) {
+                        this.spreadsheetCellBoxListeners.dispatch(
+                            new SpreadsheetCellBox(viewportCell,
+                                viewportCoordinates.x(),
+                                viewportCoordinates.y(),
+                                width,
+                                height)
+                        );
+                    }
                 }
             }
         }
@@ -218,10 +232,11 @@ export default class App extends React.Component {
         console.log("onSpreadsheetMetadataViewport", metadata);
 
         const viewportCell = metadata.viewportCell();
+        const viewportCoordinates = metadata.viewportCoordinates();
 
         this.setState({
             viewportCell: viewportCell,
-            viewportCoordinates: metadata.viewportCoordinates(),
+            viewportCoordinates: viewportCoordinates,
         });
 
         const viewport = this.viewport.current;
@@ -231,6 +246,15 @@ export default class App extends React.Component {
                 editCell: metadata.editCell(),
                 defaultStyle: metadata.style(),
             });
+
+            const dimensions = this.viewportDimensions();
+            this.spreadsheetCellBoxListeners.dispatch(
+                new SpreadsheetCellBox(viewportCell,
+                    viewportCoordinates.x(),
+                    viewportCoordinates.y(),
+                    dimensions.width,
+                    dimensions.height)
+            );
         }
     }
 
