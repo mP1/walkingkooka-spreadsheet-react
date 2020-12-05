@@ -117,7 +117,7 @@ export default class App extends React.Component {
                             width: width,
                             height: height,
                         },
-                    })
+                    });
                     viewport.setState({
                         dimensions: {
                             width: width,
