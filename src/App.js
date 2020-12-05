@@ -80,6 +80,8 @@ export default class App extends React.Component {
         this.spreadsheetMetadataListeners.add(this.onSpreadsheetMetadataEditCell.bind(this));
         this.spreadsheetMetadataListeners.add(this.onSpreadsheetMetadataViewport.bind(this));
         this.spreadsheetCellBoxListeners.add(this.onCellBoxViewportRangeUpdate.bind(this));
+
+        this.spreadsheetRangeListeners.add(this.onSpreadsheetRangeSetState.bind(this));
         this.spreadsheetRangeListeners.add(this.loadSpreadsheetCellOrRange.bind(this));
 
         this.formula = React.createRef();
@@ -276,13 +278,23 @@ export default class App extends React.Component {
     }
 
     /**
+     * Saves the new range in the state for later usage as the window parameter.
+     */
+    onSpreadsheetRangeSetState(range) {
+        console.log("onSpreadsheetRangeSetState " + range);
+
+        this.setState({
+            viewportRange: range,
+        });
+    }
+
+    /**
      * Accepts the {@link SpreadsheetRange} returned by {@link #spreadsheetViewport} and then loads all the cells in the
      * range
      */
     loadSpreadsheetCellOrRange(selection) {
         console.log("loadSpreadsheetCellOrRange", selection);
 
-        // TODO add window
         const evaluation = this.state.spreadsheetEngineEvaluation || SpreadsheetEngineEvaluation.COMPUTE_IF_NECESSARY;
 
         this.messenger.send(this.spreadsheetCellUrl(selection) + "/" + evaluation,
@@ -303,7 +315,7 @@ export default class App extends React.Component {
                 body: JSON.stringify(new SpreadsheetDelta([cell],
                     ImmutableMap.EMPTY,
                     ImmutableMap.EMPTY,
-                    []) // TODO include actual edit range.
+                    [this.state.viewportRange])
                     .toJson()),
             });
     }
