@@ -98,7 +98,7 @@ export default class SpreadsheetCellBox {
 }
 
 function doubleToString(number) {
-    const toString = String.valueOf(number);
+    const toString = number.toString();
     return toString.endsWith(".0") ?
         toString.substring(0, toString.length() - 2) :
         toString;
