@@ -268,7 +268,7 @@ export default class App extends React.Component {
      * Accepts {@link SpreadsheetCellBox} and requests the {@link SpreadsheetRange} that fill the content.
      */
     onCellBoxViewportRangeUpdate(cellBox) {
-        console.log("onCellBoxViewportRangeUpdate", cellBox);
+        console.log("onCellBoxViewportRangeUpdate " + cellBox);
 
         // always make request
         this.messenger.send(this.spreadsheetApiUrl() + "/viewport/" + this.spreadsheetViewport(cellBox.reference()),
@@ -293,7 +293,7 @@ export default class App extends React.Component {
      * range
      */
     loadSpreadsheetCellOrRange(selection) {
-        console.log("loadSpreadsheetCellOrRange", selection);
+        console.log("loadSpreadsheetCellOrRange " + selection);
 
         const evaluation = this.state.spreadsheetEngineEvaluation || SpreadsheetEngineEvaluation.COMPUTE_IF_NECESSARY;
 
