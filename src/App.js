@@ -187,7 +187,7 @@ export default class App extends React.Component {
     // event updates....................................................................................................
 
     /**
-     * Fires a new {@link SpreadsheetCellBox} which should/might trigger a redraw of the formula editing widget
+     * Updates the state of the formula widget so it matches the metadata editCell
      */
     onSpreadsheetMetadataEditCell(metadata) {
         console.log("onSpreadsheetMetadataEditCell", metadata, "formula", this.formula.current);
