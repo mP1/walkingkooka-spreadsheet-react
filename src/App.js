@@ -255,14 +255,6 @@ export default class App extends React.Component {
         console.log("loadSpreadsheetCellOrRange", selection);
 
         // TODO add window
-        // always make request
-        this.messenger.send(this.spreadsheetCellLoadUrl(selection),
-            {
-                method: "GET"
-            });
-    }
-
-    spreadsheetCellLoadUrl(selection) {
         const evaluation = this.state.spreadsheetEngineEvaluation || SpreadsheetEngineEvaluation.COMPUTE_IF_NECESSARY;
 
         this.messenger.send(this.spreadsheetCellUrl(selection) + "/" + evaluation,
