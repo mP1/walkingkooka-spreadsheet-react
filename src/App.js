@@ -391,6 +391,8 @@ export default class App extends React.Component {
      * the viewport cells
      */
     onWindowResized(dimensions) {
+        console.log("onWindowResized", dimensions);
+
         this.setState({
             windowDimensions: dimensions,
         });
@@ -400,6 +402,8 @@ export default class App extends React.Component {
      * Fired whenever the header and other tools above the cells viewport know their new size
      */
     onAboveViewportResize(dimensions) {
+        console.log("onAboveViewportResize", dimensions);
+
         this.setState({
             aboveViewportDimensions: dimensions,
         });
