@@ -123,19 +123,23 @@ export default class App extends React.Component {
                         }
                     });
 
-                    // TODO if same viewportCell & viewport got bigger then load...
                     const metadata = state.spreadsheetMetadata;
                     const viewportCell = metadata.viewportCell();
                     const viewportCoordinates = metadata.viewportCoordinates();
 
                     if (viewportCell && viewportCoordinates) {
-                        this.spreadsheetCellBoxListeners.dispatch(
-                            new SpreadsheetCellBox(viewportCell,
-                                viewportCoordinates.x(),
-                                viewportCoordinates.y(),
-                                width,
-                                height)
-                        );
+                        const previousMetadata = prevState.spreadsheetMetadata;
+                        const previousViewportCell = previousMetadata && previousMetadata.viewportCell();
+
+                        if ((width > previous.width || height > previous.height) && (viewportCell.equals(previousViewportCell) || !previousViewportCell)) {
+                            this.spreadsheetCellBoxListeners.dispatch(
+                                new SpreadsheetCellBox(viewportCell,
+                                    viewportCoordinates.x(),
+                                    viewportCoordinates.y(),
+                                    width,
+                                    height)
+                            );
+                        }
                     }
                 }
             }
