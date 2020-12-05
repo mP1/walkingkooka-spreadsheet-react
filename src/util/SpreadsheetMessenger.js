@@ -36,10 +36,23 @@ export default class SpreadsheetMessenger {
     }
 
     send(url, parameters) {
+        if (!url) {
+            throw new Error("Missing url");
+        }
+        if (typeof url !== "string") {
+            throw new Error("Expected String url got " + url);
+        }
+        if (!parameters) {
+            throw new Error("Missing parameters");
+        }
+        if (typeof parameters !== "object") {
+            throw new Error("Expected object parameters got " + parameters);
+        }
+
         const headers = Object.assign({
             "Accept-Charset": "UTF-8",
             "Content-Type": "application/json"
-        }, parameters && parameters.headers);
+        }, parameters.headers);
 
         const parametersWithDefaults = Object.assign({},
             parameters,
