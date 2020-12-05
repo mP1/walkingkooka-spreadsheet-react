@@ -35,7 +35,7 @@ export default class App extends React.Component {
             viewportDimensions: {
                 width: 0,
                 height: 0,
-            },
+            }, // required so changes will trigger viewport cell reload...
             windowDimensions: {
                 width: window.innerWidth,
                 height: window.innerHeight,
@@ -98,24 +98,31 @@ export default class App extends React.Component {
     componentDidUpdate(prevProps, prevState, snapshot) {
         const viewport = this.viewport.current;
 
-        if(viewport) {
+        if (viewport) {
             const state = this.state;
 
             const windowDimensions = state.windowDimensions;
             const aboveViewportDimensions = state.aboveViewportDimensions;
 
-            if(windowDimensions && aboveViewportDimensions) {
+            if (windowDimensions && aboveViewportDimensions) {
                 const previous = viewport.state.dimensions;
                 const width = windowDimensions.width;
                 const height = windowDimensions.height - aboveViewportDimensions.height;
 
-                if(previous.width !== width || previous.height !== height) {
-                    viewport.setState({
+                if (previous.width !== width || previous.height !== height) {
+                    const dimensions = {
                         dimensions: {
                             width: width,
                             height: height,
                         }
-                    });
+                    };
+                    this.setState({
+                        viewportDimensions: dimensions,
+                    })
+                    viewport.setState(dimensions);
+
+                    // TODO load cells to fill viewport...
+                    // TODO smarts only load if viewport got bigger etc and same viewport cell.
                 }
             }
         }
