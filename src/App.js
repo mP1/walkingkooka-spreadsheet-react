@@ -86,6 +86,41 @@ export default class App extends React.Component {
         this.viewport = React.createRef();
     }
 
+    // component lifecycle..............................................................................................
+
+    componentDidMount() {
+        this.createEmptySpreadsheet(); // TODO add logic to allow selecting: create empty, prompt to load and more.
+    }
+
+    /**
+     * Computes and returns the cell viewport dimensions. This should be called whenever the window or header size changes.
+     */
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        const viewport = this.viewport.current;
+
+        if(viewport) {
+            const state = this.state;
+
+            const windowDimensions = state.windowDimensions;
+            const aboveViewportDimensions = state.aboveViewportDimensions;
+
+            if(windowDimensions && aboveViewportDimensions) {
+                const previous = viewport.state.dimensions;
+                const width = windowDimensions.width;
+                const height = windowDimensions.height - aboveViewportDimensions.height;
+
+                if(previous.width !== width || previous.height !== height) {
+                    viewport.setState({
+                        dimensions: {
+                            width: width,
+                            height: height,
+                        }
+                    });
+                }
+            }
+        }
+    }
+
     // state............................................................................................................
 
     /**
@@ -143,10 +178,6 @@ export default class App extends React.Component {
     }
 
     // event updates....................................................................................................
-
-    componentDidMount() {
-        this.createEmptySpreadsheet(); // TODO add logic to allow selecting: create empty, prompt to load and more.
-    }
 
     /**
      * Fires a new {@link SpreadsheetCellBox} which should/might trigger a redraw of the formula editing widget
@@ -373,35 +404,6 @@ export default class App extends React.Component {
         this.setState({
             aboveViewportDimensions: dimensions,
         });
-    }
-
-    /**
-     * Computes and returns the cell viewport dimensions. This should be called whenever the window or header size changes.
-     */
-    componentDidUpdate(prevProps, prevState, snapshot) {
-        const viewport = this.viewport.current;
-
-        if(viewport) {
-            const state = this.state;
-
-            const windowDimensions = state.windowDimensions;
-            const aboveViewportDimensions = state.aboveViewportDimensions;
-
-            if(windowDimensions && aboveViewportDimensions) {
-                const previous = viewport.state.dimensions;
-                const width = windowDimensions.width;
-                const height = windowDimensions.height - aboveViewportDimensions.height;
-
-                if(previous.width !== width || previous.height !== height) {
-                    viewport.setState({
-                        dimensions: {
-                            width: width,
-                            height: height,
-                        }
-                    });
-                }
-            }
-        }
     }
 
     // SpreadsheetCellBox...............................................................................................
