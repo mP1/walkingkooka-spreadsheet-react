@@ -7,6 +7,14 @@ import Text from "../text/Text";
 import React from "react";
 import TableCell from "@material-ui/core/TableCell";
 
+function cell() {
+    return new SpreadsheetCell(reference(),
+        formula(),
+        style(),
+        format(),
+        formatted());
+}
+
 function reference() {
     return SpreadsheetCellReference.parse("A99");
 }
@@ -367,9 +375,98 @@ test("render style=width&height, text & defaultStyle=width", () => {
         format(),
         new Text(text))
         .render(TextStyle.EMPTY
-            .set("width", "99px"),
+                .set("width", "99px"),
             c))
-        .toStrictEqual(<TableCell key={r} onClick={c} style={{boxSizing: "border-box", width: "100px", height: "50px"}}>{text}</TableCell>);
+        .toStrictEqual(<TableCell key={r} onClick={c}
+                                  style={{boxSizing: "border-box", width: "100px", height: "50px"}}>{text}</TableCell>);
+});
+
+// equals...............................................................................................................
+
+test("equals undefined false", () => {
+    const c = cell();
+    expect(c.equals()).toBeFalse();
+});
+
+test("equals null false", () => {
+    const c = cell();
+    expect(c.equals(null)).toBeFalse();
+});
+
+test("equals different type false", () => {
+    const c = cell();
+    expect(c.equals("different")).toBeFalse();
+});
+
+test("equals self true", () => {
+    const c = cell();
+    expect(c.equals(c)).toBeTrue();
+});
+
+test("equals different reference false", () => {
+    const c = cell();
+    expect(c.equals(new SpreadsheetCell(SpreadsheetCellReference.parse("Z9"),
+        formula(),
+        style(),
+        format(),
+        formatted())
+    )).toBeFalse();
+});
+
+test("equals different format false", () => {
+    const c = cell();
+    expect(c.equals(new SpreadsheetCell(reference(),
+        formula().setText("999"),
+        style(),
+        format(),
+        formatted())
+    )).toBeFalse();
+});
+
+test("equals different style false", () => {
+    const c = cell();
+    expect(c.equals(new SpreadsheetCell(reference(),
+        formula(),
+        TextStyle.EMPTY,
+        format(),
+        formatted())
+    )).toBeFalse();
+});
+
+test("equals different format false", () => {
+    const c = cell();
+    expect(c.equals(new SpreadsheetCell(reference(),
+        formula(),
+        style(),
+        new SpreadsheetCellFormat("0"),
+        formatted())
+    )).toBeFalse();
+});
+
+test("equals different formatted false", () => {
+    const c = cell();
+    expect(c.equals(new SpreadsheetCell(reference(),
+        formula(),
+        style(),
+        format(),
+        new Text("different"))
+    )).toBeFalse();
+});
+
+test("equals equivalent true", () => {
+    const c = cell();
+    expect(c.equals(cell())).toBeTrue();
+});
+
+test("equals equivalent true #2", () => {
+    const r = SpreadsheetCellReference.parse("Z9");
+    const f = formula();
+    const s = style();
+    const f2 = format();
+    const f3 = formatted();
+
+    const c = new SpreadsheetCell(r, f, s, f2, f3);
+    expect(c.equals(new SpreadsheetCell(r, f, s, f2, f3))).toBeTrue();
 });
 
 // helpers..............................................................................................................
