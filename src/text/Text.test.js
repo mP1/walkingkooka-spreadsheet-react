@@ -5,6 +5,10 @@ import textNodeJsonSupportFromJson from "./TextNodeJsonSupport";
 
 const textValue = "text-123-abc";
 
+function text() {
+    return new Text(textValue);
+}
+
 test("create without text fails", () => {
     expect(() => new Text(null)).toThrow("Missing text");
 });
@@ -38,6 +42,34 @@ test("toJson", () => {
     const text = new Text(textValue);
 
     check(text, {type: "text", value: textValue});
+});
+
+// equals...............................................................................................................
+
+test("equals undefined false", () => {
+    const t = text();
+    expect(t.equals()).toBe(false);
+});
+
+test("equals null false", () => {
+    const t = text();
+    expect(t.equals(null)).toBe(false);
+});
+
+test("equals self true", () => {
+    const t = text();
+    expect(t.equals(t)).toBe(true);
+});
+
+test("equals different false", () => {
+    const t = text();
+    expect(t.equals(new Text("different-text"))).toBe(false);
+});
+
+test("equals equivalent true", () => {
+    const value = "text-2";
+    const t = new Text(value);
+    expect(t.equals(new Text(value))).toBe(true);
 });
 
 // helpers..............................................................................................................

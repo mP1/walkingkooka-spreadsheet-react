@@ -33,4 +33,10 @@ export default class Text extends TextLeafNode {
     render() {
         return this.value();
     }
+
+    equals(other) {
+        return this === other ||
+            (other instanceof Text &&
+                this.value() === other.value());
+    }
 }
