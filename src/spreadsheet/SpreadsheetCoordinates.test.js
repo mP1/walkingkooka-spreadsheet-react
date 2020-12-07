@@ -8,6 +8,10 @@ function y() {
     return 400;
 }
 
+function coordinates() {
+    return new SpreadsheetCoordinates(x(), y());
+}
+
 // x
 
 test("create missing x fails", () => {
@@ -78,6 +82,50 @@ test("from json", () => {
     check(coords,
         x(),
         y());
+});
+
+// equals...............................................................................................................
+
+test("equals undefined false", () => {
+    const c = coordinates();
+    expect(c.equals()).toBe(false);
+});
+
+test("equals null false", () => {
+    const c = coordinates();
+    expect(c.equals(null)).toBe(false);
+});
+
+test("equals different type false", () => {
+    const c = coordinates();
+    expect(c.equals("different")).toBe(false);
+});
+
+test("equals self true", () => {
+    const c = coordinates();
+    expect(c.equals(c)).toBe(true);
+});
+
+test("equals different x false", () => {
+    const c = coordinates();
+    expect(c.equals(new SpreadsheetCoordinates(x() + 1, y()))).toBe(false);
+});
+
+test("equals different y false", () => {
+    const c = coordinates();
+    expect(c.equals(new SpreadsheetCoordinates(x(), y() + 1))).toBe(false);
+});
+
+test("equals equivalent true", () => {
+    const c = coordinates();
+    expect(c.equals(coordinates())).toBe(true);
+});
+
+test("equals equivalent true #2", () => {
+    const x = 1;
+    const y = 2;
+    const c = new SpreadsheetCoordinates(x, y);
+    expect(c.equals(new SpreadsheetCoordinates(x, y))).toBe(true);
 });
 
 // helpers..............................................................................................................
