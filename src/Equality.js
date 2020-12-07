@@ -4,8 +4,8 @@
 export default class Equality {
 
     static safeEquals(left, right) {
-        return Array.isArray(left) && equalsArray(left, right) ||
-            typeof left === "object" && equalsObject(left, right) ||
+        return (Array.isArray(left) && equalsArray(left, right)) ||
+            (typeof left === "object" && equalsObject(left, right)) ||
             left === right;
     }
 }
@@ -15,7 +15,7 @@ function equalsArray(left, right) {
 
     if (equals) {
         const length = left.length;
-        var equals = length === right.length;
+        equals = length === right.length;
 
         if (equals) {
             for (var i = 0; equals && i < length; i++) {
@@ -28,5 +28,5 @@ function equalsArray(left, right) {
 }
 
 function equalsObject(left, right) {
-    return (left && left.equals && left.equals(right) || left === right);
+    return (left && left.equals && left.equals(right)) || left === right;
 }
