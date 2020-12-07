@@ -13,6 +13,10 @@ function height() {
     return 20;
 }
 
+function viewport() {
+    return new SpreadsheetViewport(reference(), width(), height());
+}
+
 // reference
 
 test("create without reference fails", () => {
@@ -87,6 +91,46 @@ test("json", () => {
     const viewport = new SpreadsheetViewport(reference(), width(), height());
 
     check(viewport, reference(), width(), height());
+});
+
+// equals...............................................................................................................
+
+test("equals undefined false", () => {
+    expect(viewport().equals()).toBe(false);
+});
+
+test("equals null false", () => {
+    expect(viewport().equals(null)).toBe(false);
+});
+
+test("equals different type false", () => {
+    expect(viewport().equals("different")).toBe(false);
+});
+
+test("equals self true", () => {
+    const b = viewport();
+    expect(b.equals(b)).toBe(true);
+});
+
+test("equals different width false", () => {
+    const b = viewport();
+    expect(b.equals(new SpreadsheetViewport(reference(), width() + 1, height()))).toBe(false);
+});
+
+test("equals different height false", () => {
+    const v = viewport();
+    expect(v.equals(new SpreadsheetViewport(reference(), width(), height() + 1))).toBe(false);
+});
+
+test("equals equivalent true", () => {
+    expect(viewport().equals(viewport())).toBe(true);
+});
+
+test("equals equivalent true #2", () => {
+    const viewport = new SpreadsheetViewport(SpreadsheetCellReference.parse("Z9"), 1, 2);
+    const viewport2 = new SpreadsheetViewport(SpreadsheetCellReference.parse("Z9"), 1, 2);
+
+    expect(viewport.equals(viewport2)).toBe(true);
 });
 
 // helpers..............................................................................................................
