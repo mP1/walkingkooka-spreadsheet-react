@@ -206,6 +206,11 @@ test("equals self true", () => {
     expect(b.equals(b)).toBe(true);
 });
 
+test("equals different reference false", () => {
+    const b = box();
+    expect(b.equals(new SpreadsheetCellBox(SpreadsheetCellReference.parse("Z9"), x(), y(), width(), height()))).toBe(false);
+});
+
 test("equals different x false", () => {
     const b = box();
     expect(b.equals(new SpreadsheetCellBox(reference(), x() + 1, y(), width(), height()))).toBe(false);
