@@ -1,4 +1,5 @@
 import SpreadsheetError from "./SpreadsheetError";
+import Equality from "../Equality.js";
 
 /**
  * Represents a formula.
@@ -80,12 +81,8 @@ export default class SpreadsheetFormula {
 
 function equals0(formula, other) {
     return formula.text() == other.text() &&
-        safeEquals(formula.value(), other.value()) &&
-        safeEquals(formula.error(), other.error());
-}
-
-function safeEquals(left, right) {
-    return (left.equals && left.equal(right) || left === right);
+        Equality.safeEquals(formula.value(), other.value()) &&
+        Equality.safeEquals(formula.error(), other.error());
 }
 
 function checkText(text) {
