@@ -6,6 +6,7 @@ import SpreadsheetCellFormat from "./SpreadsheetCellFormat";
 import TextNode from "../text/TextNode";
 import TableCell from "@material-ui/core/TableCell";
 import React from "react";
+import Equality from "../Equality.js";
 
 /**
  * Represents a spreadsheet cell only reference and formula are required.
@@ -161,6 +162,17 @@ export default class SpreadsheetCell {
         return <TableCell key={this.reference()}
                           onClick={onClick}
                           style={css}>{formatted}</TableCell>;
+    }
+
+    equals(other) {
+        return this === other ||
+            (other instanceof SpreadsheetCell &&
+                this.reference().equals(other.reference()) &&
+                this.formula().equals(other.formula()) &&
+                Equality.safeEquals(this.style(), other.style()) &&
+                Equality.safeEquals(this.format(), other.format()) &&
+                Equality.safeEquals(this.formatted(), other.formatted())
+            );
     }
 
     toString() {
