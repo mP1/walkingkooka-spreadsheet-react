@@ -33,4 +33,10 @@ export default class TextPlaceholderNode extends TextLeafNode {
     render() {
         throw new Error("Unsupported: render");
     }
+
+    equals(other) {
+        return this === other ||
+            (other instanceof TextPlaceholderNode &&
+                this.value() === other.value());
+    }
 }

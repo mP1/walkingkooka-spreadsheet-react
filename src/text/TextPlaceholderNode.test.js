@@ -4,6 +4,10 @@ import textNodeJsonSupportFromJson from "./TextNodeJsonSupport";
 
 const value = "text-placeholder-123-abc";
 
+function placeholder() {
+    return new TextPlaceholderNode(value);
+}
+
 test("create without text fails", () => {
     expect(() => new TextPlaceholderNode(null)).toThrow("Missing text");
 });
@@ -29,6 +33,39 @@ test("toJson", () => {
     const placeholder = new TextPlaceholderNode(value);
 
     check(placeholder, {type: "text-placeholder", value: value});
+});
+
+// equals...............................................................................................................
+
+test("equals undefined false", () => {
+    const p = placeholder();
+    expect(p.equals()).toBe(false);
+});
+
+test("equals null false", () => {
+    const p = placeholder();
+    expect(p.equals(null)).toBe(false);
+});
+
+test("equals self true", () => {
+    const p = placeholder();
+    expect(p.equals(p)).toBe(true);
+});
+
+test("equals different false", () => {
+    const p = placeholder();
+    expect(p.equals(new TextPlaceholderNode("different"))).toBe(false);
+});
+
+test("equals equivalent true", () => {
+    const p = placeholder();
+    expect(p.equals(placeholder())).toBe(true);
+});
+
+test("equals equivalent true #2", () => {
+    const value = "placeholder-2";
+    const p = new TextPlaceholderNode(value);
+    expect(p.equals(new TextPlaceholderNode(value))).toBe(true);
 });
 
 // helpers..............................................................................................................
