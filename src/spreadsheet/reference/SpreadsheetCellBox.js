@@ -92,6 +92,10 @@ export default class SpreadsheetCellBox {
         };
     }
 
+    equals(other) {
+        return this === other || (other instanceof SpreadsheetCellBox && this.x() === other.x() && this.y() === other.y() && this.width() === other.width() && this.height() === other.height());
+    }
+
     toString() {
         return this.reference() + " " + doubleToString(this.x()) + "," + doubleToString(this.y()) + " " + doubleToString(this.width()) + "x" + doubleToString(this.height());
     }

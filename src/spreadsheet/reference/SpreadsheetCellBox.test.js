@@ -21,6 +21,10 @@ function height() {
     return 20;
 }
 
+function box() {
+    return new SpreadsheetCellBox(reference(), x(), y(), width(), height());
+}
+
 // reference
 
 test("create without reference fails", () => {
@@ -181,6 +185,56 @@ test("from json", () => {
         y(),
         width(),
         height());
+});
+
+// equals...............................................................................................................
+
+test("equals undefined false", () => {
+    expect(box().equals()).toBe(false);
+});
+
+test("equals null false", () => {
+    expect(box().equals(null)).toBe(false);
+});
+
+test("equals different type false", () => {
+    expect(box().equals("different")).toBe(false);
+});
+
+test("equals self true", () => {
+    const b = box();
+    expect(b.equals(b)).toBe(true);
+});
+
+test("equals different x false", () => {
+    const b = box();
+    expect(b.equals(new SpreadsheetCellBox(reference(), x() + 1, y(), width(), height()))).toBe(false);
+});
+
+test("equals different y false", () => {
+    const b = box();
+    expect(b.equals(new SpreadsheetCellBox(reference(), x(), y() + 1, width(), height()))).toBe(false);
+});
+
+test("equals different width false", () => {
+    const b = box();
+    expect(b.equals(new SpreadsheetCellBox(reference(), x(), y(), width() + 1, height()))).toBe(false);
+});
+
+test("equals different height false", () => {
+    const b = box();
+    expect(b.equals(new SpreadsheetCellBox(reference(), x(), y(), width(), height() + 1))).toBe(false);
+});
+
+test("equals equivalent true", () => {
+    expect(box().equals(box())).toBe(true);
+});
+
+test("equals equivalent true #2", () => {
+    const box = new SpreadsheetCellBox(SpreadsheetCellReference.parse("Z9"), 1, 2, 3, 4);
+    const box2 = new SpreadsheetCellBox(SpreadsheetCellReference.parse("Z9"), 1, 2, 3, 4);
+
+    expect(box.equals(box2)).toBe(true);
 });
 
 // helpers..............................................................................................................
