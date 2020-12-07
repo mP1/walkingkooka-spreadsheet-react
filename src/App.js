@@ -88,6 +88,18 @@ export default class App extends React.Component {
         this.viewport = React.createRef();
     }
 
+    // app lifecycle....................................................................................................
+
+    /**
+     * Makes a request which returns some basic default metadata, and without cells the spreadsheet will be empty.
+     */
+    createEmptySpreadsheet() {
+        this.messenger.send("/api/spreadsheet",
+            {
+                method: "POST"
+            });
+    }
+
     // component lifecycle..............................................................................................
 
     componentDidMount() {
@@ -331,16 +343,6 @@ export default class App extends React.Component {
      */
     spreadsheetCellUrl(selection) {
         return this.spreadsheetApiUrl() + "/cell/" + selection;
-    }
-
-    /**
-     * Makes a request which returns some basic default metadata, and without cells the spreadsheet will be empty.
-     */
-    createEmptySpreadsheet() {
-        this.messenger.send("/api/spreadsheet",
-            {
-                method: "POST"
-            });
     }
 
     /**
