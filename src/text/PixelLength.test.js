@@ -1,5 +1,9 @@
 import PixelLength from "./PixelLength";
 
+function length() {
+    return PixelLength.parse("1px");
+}
+
 test("parse null fails", () => {
     expect(() => PixelLength.parse(null)).toThrow("Missing text");
 });
@@ -18,6 +22,34 @@ test("parse invalid value fails", () => {
 
 test("create", () => {
     check(PixelLength.parse("123px"), 123);
+});
+
+// equals...............................................................................................................
+
+test("equals undefined false", () => {
+    const l = length();
+    expect(l.equals()).toBe(false);
+});
+
+test("equals null false", () => {
+    const l = length();
+    expect(l.equals(null)).toBe(false);
+});
+
+test("equals self true", () => {
+    const l = length();
+    expect(l.equals(l)).toBe(true);
+});
+
+test("equals different false", () => {
+    const l = length();
+    expect(l.equals(PixelLength.parse("2px"))).toBe(false);
+});
+
+test("equals equivalent true", () => {
+    const value = 2;
+    const l = new PixelLength(value);
+    expect(l.equals(new PixelLength(value))).toBe(true);
 });
 
 // helpers..............................................................................................................
