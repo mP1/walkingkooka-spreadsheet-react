@@ -80,7 +80,7 @@ export default class SpreadsheetFormula {
 }
 
 function equals0(formula, other) {
-    return formula.text() == other.text() &&
+    return formula.text() === other.text() &&
         Equality.safeEquals(formula.value(), other.value()) &&
         Equality.safeEquals(formula.error(), other.error());
 }
