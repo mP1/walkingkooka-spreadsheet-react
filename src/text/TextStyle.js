@@ -41,7 +41,7 @@ export default class TextStyle {
         if (!styles) {
             throw new Error("Missing styles");
         }
-        if (typeof styles != "object") {
+        if (typeof styles !== "object") {
             throw new Error("Styles expected object got " + styles);
         }
         this.styles = Object.assign({}, styles);
