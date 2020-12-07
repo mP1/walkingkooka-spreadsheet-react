@@ -29,6 +29,10 @@ export default class SpreadsheetName {
         return this.value();
     }
 
+    equals(other) {
+        return this === other || (other instanceof SpreadsheetName && this.value() == other.value());
+    }
+
     toString() {
         return this.value();
     }
