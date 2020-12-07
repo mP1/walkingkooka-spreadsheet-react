@@ -50,6 +50,16 @@ export default class SpreadsheetMetadata {
 
     static EMPTY = createEmpty();
 
+    static fromJson(json) {
+        if (!json) {
+            throw new Error("Missing json");
+        }
+        if (typeof json !== "object") {
+            throw new Error("Expected Object json got " + json);
+        }
+        return new SpreadsheetMetadata(json);
+    }
+
     constructor(json) {
         this.json = Object.assign({}, json) || {} // defensive copy
     }

@@ -55,7 +55,7 @@ export default class App extends React.Component {
         }
 
         const handleSpreadsheetMetadata = (json) => {
-            this.spreadsheetMetadataListeners.dispatch(new SpreadsheetMetadata(json));
+            this.spreadsheetMetadataListeners.dispatch(SpreadsheetMetadata.fromJson(json));
         }
 
         const handleSpreadsheetRange = (json) => {

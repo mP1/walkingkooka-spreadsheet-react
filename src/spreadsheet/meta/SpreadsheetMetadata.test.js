@@ -5,6 +5,8 @@ import SpreadsheetCoordinates from "../SpreadsheetCoordinates";
 import PixelLength from "../../text/PixelLength";
 import SpreadsheetCellReference from "../reference/SpreadsheetCellReference";
 
+// EMPTY................................................................................................................
+
 test("Empty", () => {
     const metadata = SpreadsheetMetadata.EMPTY;
     expect(metadata).toBeDefined();
@@ -13,10 +15,20 @@ test("Empty", () => {
     checkSpreadsheetId(metadata);
 });
 
+// fromJson.............................................................................................................
+
+test("from json missing fails", () => {
+    expect(() => SpreadsheetMetadata.fromJson()).toThrow("Missing json");
+});
+
+test("from json invalid fails", () => {
+    expect(() => SpreadsheetMetadata.fromJson("!invalid")).toThrow("Expected Object json got !invalid");
+});
+
 test("from json", () => {
     const json = {};
 
-    const metadata = new SpreadsheetMetadata(json);
+    const metadata = SpreadsheetMetadata.fromJson(json);
 
     checkJson(metadata, json);
     checkSpreadsheetId(metadata);
@@ -26,7 +38,7 @@ test("from json with spreadsheet-id", () => {
     const id = "123f";
     const json = {"spreadsheet-id": id};
 
-    const metadata = new SpreadsheetMetadata(json);
+    const metadata = SpreadsheetMetadata.fromJson(json);
 
     checkJson(metadata, json);
     checkSpreadsheetId(metadata, id);
@@ -35,18 +47,20 @@ test("from json with spreadsheet-id", () => {
 test("from json with spreadsheet-name", () => {
     const name = new SpreadsheetName("Spreadsheet-abc-123");
     const json = {"spreadsheet-name": name.toJson()};
-    const metadata = new SpreadsheetMetadata(json);
+    const metadata = SpreadsheetMetadata.fromJson(json);
 
     checkJson(metadata, json);
     checkSpreadsheetId(metadata);
     checkSpreadsheetName(metadata, name);
 })
 
+// setSpreadsheetName...................................................................................................
+
 test("setSpreadsheetName same", () => {
     const name = new SpreadsheetName("old-spreadsheet-name-111");
     const json = {"spreadsheet-name": name.toJson()};
 
-    const metadata = new SpreadsheetMetadata(json);
+    const metadata = SpreadsheetMetadata.fromJson(json);
     const same = metadata.setSpreadsheetName(name);
     expect(metadata).toEqual(same);
 
@@ -59,7 +73,7 @@ test("setSpreadsheetName different name", () => {
     const name = new SpreadsheetName("old-spreadsheet-name-111");
     const json = {"spreadsheet-name": name.toJson(), "spreadsheet-id": id};
 
-    const metadata = new SpreadsheetMetadata(json);
+    const metadata = SpreadsheetMetadata.fromJson(json);
 
     const newName = new SpreadsheetName("new-spreadsheet-name-222");
     const updated = metadata.setSpreadsheetName(newName);
