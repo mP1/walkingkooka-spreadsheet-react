@@ -76,6 +76,14 @@ export default class SpreadsheetViewport extends SpreadsheetRectangle {
         return this.reference() + SEPARATOR + this.width() + SEPARATOR + this.height();
     }
 
+    equals(other) {
+        return this === other ||
+            (other instanceof SpreadsheetViewport &&
+                this.reference().equals(other.reference()) &&
+                this.width() === other.width() &&
+                this.height() === other.height());
+    }
+
     toString() {
         return this.toJson();
     }
