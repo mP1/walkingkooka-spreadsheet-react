@@ -307,17 +307,23 @@ export default class App extends React.Component {
      * Saves the given cell. Eventually the returned value will trigger a re-render.
      */
     saveSpreadsheetCell(cell) {
-        console.log("saveSpreadsheetCell", cell);
+        const reference = cell.reference();
 
-        this.messenger.send(this.spreadsheetCellUrl(cell.reference()),
-            {
-                method: "POST",
-                body: JSON.stringify(new SpreadsheetDelta([cell],
-                    ImmutableMap.EMPTY,
-                    ImmutableMap.EMPTY,
-                    [this.state.viewportRange])
-                    .toJson()),
-            });
+        if (cell.equals(this.state.cells.get(reference))) {
+            console.log("saveSpreadsheetCell cell unchanged save skipped", cell);
+        } else {
+            console.log("saveSpreadsheetCell", cell);
+
+            this.messenger.send(this.spreadsheetCellUrl(cell.reference()),
+                {
+                    method: "POST",
+                    body: JSON.stringify(new SpreadsheetDelta([cell],
+                        ImmutableMap.EMPTY,
+                        ImmutableMap.EMPTY,
+                        [this.state.viewportRange])
+                        .toJson()),
+                });
+        }
     }
 
     /**
