@@ -6,6 +6,15 @@ import TextStyle from "./TextStyle";
 
 const styleName = "style-name-123-abc";
 
+function textStyleNameNode() {
+    return new TextStyleNameNode(styleName,
+        [
+            new Text("text-1"),
+            new Text("text-2")
+        ]
+    );
+}
+
 test("create style only", () => {
     const styleNameNode = new TextStyleNameNode(styleName);
     expect(styleNameNode.styleName()).toBe(styleName);
@@ -53,6 +62,44 @@ test("toJson with children", () => {
             ]
         }
     });
+});
+
+// equals...............................................................................................................
+
+test("equals undefined false", () => {
+    const s = textStyleNameNode();
+    expect(s.equals()).toBeFalse();
+});
+
+test("equals null false", () => {
+    const s = textStyleNameNode();
+    expect(s.equals(null)).toBeFalse();
+});
+
+test("equals self true", () => {
+    const s = textStyleNameNode();
+    expect(s.equals(s)).toBeTrue();
+});
+
+test("equals different false", () => {
+    const s = textStyleNameNode();
+    expect(s.equals(new TextStyleNameNode("different"))).toBeFalse();
+});
+
+test("equals different children false", () => {
+    const s = textStyleNameNode();
+    expect(s.equals(new TextStyleNameNode(styleName, new Text("different")))).toBeFalse();
+});
+
+test("equals equivalent true", () => {
+    const s = textStyleNameNode();
+    expect(s.equals(textStyleNameNode())).toBeTrue();
+});
+
+test("equals equivalent true #2", () => {
+    const c = [new Text("text-1")];
+    const s = new TextStyleNameNode(styleName, [c]);
+    expect(s.equals(new TextStyleNameNode(styleName, [c]))).toBeTrue();
 });
 
 // helpers..............................................................................................................
