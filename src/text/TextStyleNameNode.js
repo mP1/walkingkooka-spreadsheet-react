@@ -1,5 +1,6 @@
 import TextNode, {STYLE_NAME} from "./TextNode";
 import TextStyle from "./TextStyle";
+import Equality from "../Equality.js";
 
 export default class TextStyleNameNode extends TextNode {
 
@@ -37,7 +38,7 @@ export default class TextStyleNameNode extends TextNode {
     }
 
     accept(textNodeVisitor) {
-        if(textNodeVisitor.startVisitTextStyleNameNode(this)) {
+        if (textNodeVisitor.startVisitTextStyleNameNode(this)) {
             textNodeVisitor.acceptChildren(this.children());
         }
         textNodeVisitor.endVisitTextStyleNameNode(this);
@@ -45,5 +46,12 @@ export default class TextStyleNameNode extends TextNode {
 
     render() {
         throw new Error("Unsupported: render");
+    }
+
+    equals(other) {
+        return this === other ||
+            (other instanceof TextStyleNameNode &&
+                this.styleName() === other.styleName() &&
+                Equality.safeEquals(this.children(), other.children()));
     }
 }
