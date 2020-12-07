@@ -3,6 +3,7 @@ import SpreadsheetRange from "../reference/SpreadsheetRange";
 import SpreadsheetColumnReference from "../reference/SpreadsheetColumnReference";
 import SpreadsheetRowReference from "../reference/SpreadsheetRowReference";
 import ImmutableMap from "../../util/ImmutableMap";
+import Equality from "../../Equality.js";
 
 /**
  * A function used by fromJson to verify number column widths and row heights
@@ -157,6 +158,16 @@ export default class SpreadsheetDelta {
             json.window = window.map(w => w.toJson()).join(",");
         }
         return json;
+    }
+
+    equals(other) {
+        return this === other ||
+            (other instanceof SpreadsheetDelta &&
+                Equality.safeEquals(this.cells(), other.cells()) &&
+                this.maxColumnWidths().equals(other.maxColumnWidths()) &&
+                this.maxRowHeights().equals(other.maxRowHeights()) &&
+                Equality.safeEquals(this.window(), other.window())
+            );
     }
 
     toString() {

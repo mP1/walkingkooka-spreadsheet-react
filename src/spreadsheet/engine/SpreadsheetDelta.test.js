@@ -56,6 +56,10 @@ function window() {
 
 const windowJson = "A1:B2,C3:D4";
 
+function delta() {
+    return new SpreadsheetDelta(cells(), maxColumnWidths(), maxRowHeights(), window());
+}
+
 // tests................................................................................................................
 
 test("create without cells fails", () => {
@@ -367,6 +371,91 @@ test("fromJson all properties", () => {
         },
         window: windowJson
     })).toStrictEqual(new SpreadsheetDelta(c, mcw, mrh, w));
+});
+
+// equals...............................................................................................................
+
+test("equals undefined false", () => {
+    expect(delta().equals()).toBeFalse();
+});
+
+test("equals null false", () => {
+    expect(delta().equals(null)).toBeFalse();
+});
+
+test("equals different type false", () => {
+    expect(delta().equals("!different")).toBeFalse();
+});
+
+test("equals different cells false", () => {
+    const c = cells();
+    const mcw = maxColumnWidths();
+    const mrh = maxRowHeights();
+    const w = window();
+
+    expect(new SpreadsheetDelta(c, mcw, mrh, w)
+        .equals(
+            new SpreadsheetDelta([
+                SpreadsheetCell.fromJson({
+                    "Z9": {
+                        formula: {
+                            text: "999",
+                            error: "Custom error #999"
+                        }
+                    }
+                })
+            ], mcw, mrh, w)
+        )
+    ).toBeFalse();
+});
+
+test("equals different maxColumnWidths false", () => {
+    const c = cells();
+    const mcw = maxColumnWidths();
+    const mrh = maxRowHeights();
+    const w = window();
+
+    expect(new SpreadsheetDelta(c, mcw, mrh, w)
+        .equals(
+            new SpreadsheetDelta(c, ImmutableMap.EMPTY, mrh, w)
+        )
+    ).toBeFalse();
+});
+
+test("equals different maxRowHeights false", () => {
+    const c = cells();
+    const mcw = maxColumnWidths();
+    const mrh = maxRowHeights();
+    const w = window();
+
+    expect(new SpreadsheetDelta(c, mcw, mrh, w)
+        .equals(
+            new SpreadsheetDelta(c, mcw, ImmutableMap.EMPTY, w)
+        )
+    ).toBeFalse();
+});
+
+test("equals different window false", () => {
+    const c = cells();
+    const mcw = maxColumnWidths();
+    const mrh = maxRowHeights();
+    const w = window();
+
+    expect(new SpreadsheetDelta(c, mcw, mrh, w)
+        .equals(
+            new SpreadsheetDelta(c, mcw, mrh, [])
+        )
+    ).toBeFalse();
+});
+
+test("equals self true", () => {
+    const d = delta();
+    expect(d.equals(d)).toBeTrue();
+});
+
+test("equals equivalent true", () => {
+    const d = delta();
+    expect(d.equals(delta())).toBeTrue();
 });
 
 // helpers..............................................................................................................
