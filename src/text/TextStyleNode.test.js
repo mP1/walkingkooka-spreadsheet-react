@@ -5,6 +5,19 @@ import TextPlaceholderNode from "./TextPlaceholderNode";
 import fromJson from "./TextNodeJsonSupport";
 import React from 'react';
 
+function children() {
+    return [new Text("text-1")];
+}
+
+function textStyle() {
+    return TextStyle.EMPTY
+        .set("color", "black");
+}
+
+function textStyleNode() {
+    return new TextStyleNode(textStyle(), children());
+}
+
 test("create style only", () => {
     const styles = new TextStyle({
         "background-color": "#123"
@@ -129,6 +142,48 @@ test("toJson with children", () => {
             type: "text-style-node",
             value: {styles: styles.toJson(), children: [text.toJson(), placeholder.toJson()]}
         });
+});
+
+// equals...............................................................................................................
+
+test("equals undefined false", () => {
+    const s = textStyleNode();
+    expect(s.equals()).toBeFalse();
+});
+
+test("equals null false", () => {
+    const s = textStyleNode();
+    expect(s.equals(null)).toBeFalse();
+});
+
+test("equals self true", () => {
+    const s = textStyleNode();
+    expect(s.equals(s)).toBeTrue();
+});
+
+test("equals different TextStyle false", () => {
+    const s = textStyleNode();
+    expect(s.equals(new TextStyleNode(textStyle()
+            .set("background-color", "blue"),
+        children()))).toBeFalse();
+});
+
+test("equals different children false", () => {
+    const s = textStyleNode();
+    expect(s.equals(new TextStyleNode(textStyle(), new Text("different")))).toBeFalse();
+});
+
+test("equals equivalent true", () => {
+    const s = textStyleNode();
+    expect(s.equals(textStyleNode())).toBeTrue();
+});
+
+test("equals equivalent true #2", () => {
+    const t = textStyle()
+        .set("width", "10px");
+    const c = [new Text("text-1")];
+    const s = new TextStyleNode(t, [c]);
+    expect(s.equals(new TextStyleNode(t, [c]))).toBeTrue();
 });
 
 // helpers..............................................................................................................
