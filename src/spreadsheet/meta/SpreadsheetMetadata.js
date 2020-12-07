@@ -14,6 +14,35 @@ const STYLE = "style";
 const VIEWPORT_CELL = "viewport-cell";
 const VIEWPORT_COORDINATES = "viewport-coordinates";
 
+const CREATOR = "creator";
+const CREATE_DATE_TIME = "create-date-time";
+const CURRENCY_SYMBOL = "currency-symbol";
+const DATE_FORMAT_PATTERN = "date-format-pattern";
+const DATE_PARSE_PATTERNS = "date-parse-patterns";
+const DATETIME_OFFSET = "date-time-offset";
+const DATETIME_FORMAT_PATTERN = "date-time-format-pattern";
+const DATETIME_PARSE_PATTERNS = "date-time-parse-patterns";
+const DECIMAL_SEPARATOR = "decimal-separator";
+const EXPONENT_SYMBOL = "exponent-symbol";
+const EDIT_RANGE = "edit-range";
+const EXPRESSION_NUMBER_KIND = "expression-number-kind";
+const GROUPING_SEPARATOR = "grouping-separator";
+const LOCALE = "locale";
+const MODIFIED_BY = "modified-by";
+const MODIFIED_DATE_TIME = "modified-date-time";
+const NEGATIVE_SIGN = "negative-sign";
+const NUMBER_FORMAT_PATTERN = "number-format-pattern";
+const NUMBER_PARSE_PATTERNS = "number-parse-patterns";
+const PERCENTAGE_SYMBOL = "percentage-symbol";
+const POSITIVE_SIGN = "positive-sign";
+const ROUNDING_MODE = "rounding-mode";
+const PRECISION = "precision";
+const TEXT_FORMAT_PATTERN = "text-format-pattern";
+const TIME_FORMAT_PATTERN = "time-format-pattern";
+const TIME_PARSE_PATTERNS = "time-parse-patterns";
+const TWO_DIGIT_YEAR = "two-digit-year";
+const WIDTH = "width";
+
 /**
  * Creates a new SpreadsheetMetadata and sets or replaces the new property/value pair.
  */
@@ -70,7 +99,40 @@ export default class SpreadsheetMetadata {
                 case VIEWPORT_COORDINATES:
                     unmarshaller = SpreadsheetCoordinates.fromJson;
                     break;
+                case CREATOR:
+                case CREATE_DATE_TIME:
+                case CURRENCY_SYMBOL:
+                case DATE_FORMAT_PATTERN:
+                case DATE_PARSE_PATTERNS:
+                case DATETIME_OFFSET:
+                case DATETIME_FORMAT_PATTERN:
+                case DATETIME_PARSE_PATTERNS:
+                case DECIMAL_SEPARATOR:
+                case EXPONENT_SYMBOL:
+                case EDIT_RANGE:
+                case EXPRESSION_NUMBER_KIND:
+                case GROUPING_SEPARATOR:
+                case LOCALE:
+                case MODIFIED_BY:
+                case MODIFIED_DATE_TIME:
+                case NEGATIVE_SIGN:
+                case NUMBER_FORMAT_PATTERN:
+                case NUMBER_PARSE_PATTERNS:
+                case PERCENTAGE_SYMBOL:
+                case POSITIVE_SIGN:
+                case ROUNDING_MODE:
+                case PRECISION:
+                case TEXT_FORMAT_PATTERN:
+                case TIME_FORMAT_PATTERN:
+                case TIME_PARSE_PATTERNS:
+                case TWO_DIGIT_YEAR:
+                case WIDTH:
+                    unmarshaller = null; // TODO types not yet implemented
+                    break;
                 default:
+                    if(key.startsWith("color-")) {
+                        break;
+                    }
                     throw new Error("Unknown property \"" + key + "\"");
             }
             properties[key] = (unmarshaller && unmarshaller(value)) || value;
@@ -152,7 +214,40 @@ export default class SpreadsheetMetadata {
             case VIEWPORT_COORDINATES:
                 type = SpreadsheetCoordinates;
                 break;
+            case CREATOR:
+            case CREATE_DATE_TIME:
+            case CURRENCY_SYMBOL:
+            case DATE_FORMAT_PATTERN:
+            case DATE_PARSE_PATTERNS:
+            case DATETIME_OFFSET:
+            case DATETIME_FORMAT_PATTERN:
+            case DATETIME_PARSE_PATTERNS:
+            case DECIMAL_SEPARATOR:
+            case EXPONENT_SYMBOL:
+            case EDIT_RANGE:
+            case EXPRESSION_NUMBER_KIND:
+            case GROUPING_SEPARATOR:
+            case LOCALE:
+            case MODIFIED_BY:
+            case MODIFIED_DATE_TIME:
+            case NEGATIVE_SIGN:
+            case NUMBER_FORMAT_PATTERN:
+            case NUMBER_PARSE_PATTERNS:
+            case PERCENTAGE_SYMBOL:
+            case POSITIVE_SIGN:
+            case ROUNDING_MODE:
+            case PRECISION:
+            case TEXT_FORMAT_PATTERN:
+            case TIME_FORMAT_PATTERN:
+            case TIME_PARSE_PATTERNS:
+            case TWO_DIGIT_YEAR:
+            case WIDTH:
+                type = null; // TODO properties not yet supported
+                break;
             default:
+                if(property.startsWith("color-")) {
+                    break;
+                }
                 throw new Error("Unknown property \"" + property + "\"");
         }
         if ((type === Number && Number.isNaN(value)) ||
