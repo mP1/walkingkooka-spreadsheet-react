@@ -8,6 +8,13 @@ const BACKGROUND_COLOR_VALUE2 = "#456";
 const COLOR = "color";
 const COLOR_VALUE = "#789";
 
+function textStyle() {
+    return TextStyle.fromJson({
+        "background-color": BACKGROUND_COLOR_VALUE,
+        "color": COLOR_VALUE,
+    });
+}
+
 test("create without text fails", () => {
     expect(() => new TextStyle(null)).toThrow("Missing styles");
 });
@@ -330,6 +337,38 @@ test("toCss border-xxx-width, margin-xxx, padding-xxx none/mixed", () => {
             paddingRight: "2px",
             paddingBottom: "0",
         });
+});
+
+// equals...............................................................................................................
+
+test("equals undefined false", () => {
+    const t = textStyle();
+    expect(t.equals()).toBe(false);
+});
+
+test("equals null false", () => {
+    const t = textStyle();
+    expect(t.equals(null)).toBe(false);
+});
+
+test("equals self true", () => {
+    const t = textStyle();
+    expect(t.equals(t)).toBe(true);
+});
+
+test("equals different false", () => {
+    const t = textStyle();
+    expect(t.equals(TextStyle.EMPTY.set("width", "1px"))).toBe(false);
+});
+
+test("equals different false", () => {
+    const t = textStyle();
+    expect(t.equals(t.set("width", "1px"))).toBe(false);
+});
+
+test("equals self true", () => {
+    const t = textStyle();
+    expect(t.equals(textStyle())).toBe(true);
 });
 
 // toString.............................................................................................................
