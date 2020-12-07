@@ -153,7 +153,15 @@ export default class TextStyle {
         textNodeVisitor.visitTextStyle(this);
     }
 
+    equals(other) {
+        return this === other || (other instanceof TextStyle && toJsonString(this) === toJsonString(other));
+    }
+
     toString() {
         return JSON.stringify(this.toJson());
     }
+}
+
+function toJsonString(textStyle) {
+    return JSON.stringify(textStyle.toJson());
 }
