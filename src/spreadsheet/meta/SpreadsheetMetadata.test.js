@@ -92,10 +92,10 @@ test("setSpreadsheetName different name", () => {
 // get..................................................................................................................
 
 test("get property present without defaults", () => {
-    const propertyName = "creator";
-    const propertyValue = "user1@example.com";
+    const propertyName = "spreadsheet-id";
+    const propertyValue = "1234";
 
-    const metadata = new SpreadsheetMetadata({"creator": propertyValue});
+    const metadata = new SpreadsheetMetadata({"spreadsheet-id": propertyValue});
     expect(metadata.get(propertyName)).toEqual(propertyValue);
 })
 
@@ -105,26 +105,26 @@ test("get property missing without defaults", () => {
 })
 
 test("get property missing but defaulted", () => {
-    const propertyName = "creator";
-    const propertyValue = "user1@example.com";
+    const propertyName = "spreadsheet-id";
+    const propertyValue = "1234";
 
-    const metadata = new SpreadsheetMetadata({_defaults: {"creator": propertyValue}});
+    const metadata = SpreadsheetMetadata.fromJson({_defaults: {"spreadsheet-id": propertyValue}});
     expect(metadata.get(propertyName)).toEqual(propertyValue);
 })
 
 // set..................................................................................................................
 
 test("set property null fails", () => {
-    expect(() => SpreadsheetMetadata.EMPTY.set(null, "user1@example.com")).toThrow("Missing property");
+    expect(() => SpreadsheetMetadata.EMPTY.set(null, "1234")).toThrow("Missing property");
 })
 
 test("set value null fail", () => {
-    expect(() => SpreadsheetMetadata.EMPTY.set("creator", null)).toThrow("Missing value");
+    expect(() => SpreadsheetMetadata.EMPTY.set("spreadsheet-id", null)).toThrow("Missing value");
 })
 
 test("set property same", () => {
     const name = new SpreadsheetName("spreadsheet-name-123");
-    const metadata = new SpreadsheetMetadata({"spreadsheet-name": name.toJson()});
+    const metadata = new SpreadsheetMetadata({"spreadsheet-name": name});
     expect(metadata).toEqual(metadata.set("spreadsheet-name", name));
 })
 
@@ -173,7 +173,7 @@ test("get edit-cell missing", () => {
 });
 
 test("get edit-cell", () => {
-    expect(new SpreadsheetMetadata({
+    expect(SpreadsheetMetadata.fromJson({
         "edit-cell": "B97"
     }).editCell()).toEqual(SpreadsheetCellReference.parse("B97"));
 });
@@ -190,7 +190,7 @@ test("set edit-cell", () => {
 test("get spreadsheet-id", () => {
     const id = "123ABC";
 
-    expect(new SpreadsheetMetadata({
+    expect(SpreadsheetMetadata.fromJson({
         "spreadsheet-id": id
     }).spreadsheetId()).toEqual(id);
 })
@@ -200,7 +200,7 @@ test("get spreadsheet-id", () => {
 test("get spreadsheet-name", () => {
     const name = "spreadsheet-name-123";
 
-    expect(new SpreadsheetMetadata({
+    expect(SpreadsheetMetadata.fromJson({
         "spreadsheet-name": name
     }).spreadsheetName()).toEqual(SpreadsheetName.parse(name));
 })
@@ -232,7 +232,7 @@ test("get viewport-cell missing", () => {
 });
 
 test("get viewport-cell", () => {
-    expect(new SpreadsheetMetadata({
+    expect(SpreadsheetMetadata.fromJson({
         "viewport-cell": "B97"
     }).viewportCell()).toEqual(SpreadsheetCellReference.parse("B97"));
 });
@@ -247,7 +247,7 @@ test("set viewport-cell", () => {
 // viewportCoordinates.............................................................................................................
 
 test("get viewport-coordinates", () => {
-    expect(new SpreadsheetMetadata({
+    expect(SpreadsheetMetadata.fromJson({
         "viewport-coordinates": "123.5,400"
     }).viewportCoordinates()).toEqual(SpreadsheetCoordinates.parse("123.5,400"));
 })
@@ -283,12 +283,12 @@ test("all setters & getters", () => {
 // defaults..............................................................................................................
 
 test("defaults", () => {
-    const propertyValue = "user1@example.com";
-    const defaultJson = {"creator": propertyValue};
+    const propertyValue = "1234";
+    const defaultJson = {"spreadsheet-name": propertyValue};
 
-    const metadata = new SpreadsheetMetadata({_defaults: defaultJson});
+    const metadata = SpreadsheetMetadata.fromJson({_defaults: defaultJson});
     const defaultMetadata = metadata.defaults();
-    expect(defaultMetadata).toEqual(new SpreadsheetMetadata(defaultJson));
+    expect(defaultMetadata).toEqual(SpreadsheetMetadata.fromJson(defaultJson));
 })
 
 test("set defaults missing fails", () => {
@@ -306,29 +306,29 @@ test("set defaults EMPTY", () => {
 })
 
 test("set defaults same", () => {
-    const metadata = new SpreadsheetMetadata({});
+    const metadata = SpreadsheetMetadata.fromJson({});
     const same = metadata.setDefaults(SpreadsheetMetadata.EMPTY);
     expect(same).toEqual(metadata);
 })
 
 test("set defaults same 2", () => {
-    const defaultMetadata = new SpreadsheetMetadata({"creator": "user1@example.com"});
-    const withDefaults = new SpreadsheetMetadata({_defaults: defaultMetadata.toJson()})
+    const defaultMetadata = SpreadsheetMetadata.fromJson({"spreadsheet-id": "123"});
+    const withDefaults = SpreadsheetMetadata.fromJson({_defaults: defaultMetadata.toJson()})
     const same = withDefaults.setDefaults(defaultMetadata);
     expect(same).toEqual(withDefaults);
 })
 
 test("set defaults different", () => {
-    const firstValue = "user1@example.com";
-    const withDefaults = new SpreadsheetMetadata({_defaults: {"creator": firstValue}});
+    const firstValue = "1";
+    const withDefaults = SpreadsheetMetadata.fromJson({_defaults: {"spreadsheet-id": firstValue}});
 
-    const differentValue = "different@example.com";
-    const different = new SpreadsheetMetadata({_defaults: {"creator": differentValue}});
+    const differentValue = "2";
+    const different = SpreadsheetMetadata.fromJson({_defaults: {"spreadsheet-id": differentValue}});
 
     const withDifferent = withDefaults.setDefaults(different);
     expect(different).not.toEqual(withDefaults);
 
-    const propertyName = "creator";
+    const propertyName = "spreadsheet-id";
     expect(withDefaults.get(propertyName)).toEqual(firstValue);
     expect(withDifferent.get(propertyName)).toEqual(differentValue);
 })
@@ -340,11 +340,81 @@ test("isEmpty EMPTY", () => {
 });
 
 test("isEmpty empty 2", () => {
-    expect(new SpreadsheetMetadata({}).isEmpty()).toEqual(true);
+    expect(SpreadsheetMetadata.fromJson({}).isEmpty()).toEqual(true);
 });
 
 test("isEmpty not empty", () => {
-    expect(new SpreadsheetMetadata({"spreadsheetId": "1"}).isEmpty()).toEqual(false);
+    expect(SpreadsheetMetadata.fromJson({"spreadsheet-id": "1"}).isEmpty()).toEqual(false);
+});
+
+// equals...............................................................................................................
+
+test("equals undefined false", () => {
+    expect(SpreadsheetMetadata.EMPTY.equals()).toEqual(false);
+});
+
+test("equals null false", () => {
+    expect(SpreadsheetMetadata.EMPTY.equals(null)).toEqual(false);
+});
+
+test("equals different property values", () => {
+    expect(SpreadsheetMetadata.fromJson({
+        "spreadsheet-id": "111",
+    }).equals(SpreadsheetMetadata.fromJson({
+        "spreadsheet-id": "222",
+    }))).toEqual(false);
+});
+
+test("equals different property values", () => {
+    expect(SpreadsheetMetadata.fromJson({
+        "spreadsheet-id": "111",
+        "spreadsheet-name": "Spreadsheet-name-567",
+    }).equals(SpreadsheetMetadata.fromJson({
+        "spreadsheet-id": "222",
+        "spreadsheet-name": "different-Spreadsheet-name",
+    }))).toEqual(false);
+});
+
+test("equals different property values with defaults", () => {
+    expect(SpreadsheetMetadata.fromJson({
+        "spreadsheet-id": "111",
+        "_defaults": {
+            "spreadsheet-name": "Spreadsheet-name-567",
+        }
+    }).equals(SpreadsheetMetadata.fromJson({
+        "spreadsheet-id": "222",
+        "_defaults": {
+            "spreadsheet-name": "different-Spreadsheet-name",
+        }
+    }))).toEqual(false);
+});
+
+test("equals self true", () => {
+    expect(SpreadsheetMetadata.EMPTY.equals(SpreadsheetMetadata.EMPTY)).toEqual(true);
+});
+
+test("equals same property values", () => {
+    expect(SpreadsheetMetadata.fromJson({
+        "spreadsheet-id": "1234",
+        "spreadsheet-name": "Spreadsheet-name-567",
+    }).equals(SpreadsheetMetadata.fromJson({
+        "spreadsheet-id": "1234",
+        "spreadsheet-name": "Spreadsheet-name-567",
+    }))).toEqual(true);
+});
+
+test("equals same property values with defaults", () => {
+    expect(SpreadsheetMetadata.fromJson({
+        "spreadsheet-id": "111",
+        "_defaults": {
+            "spreadsheet-name": "Spreadsheet-name-567",
+        }
+    }).equals(SpreadsheetMetadata.fromJson({
+        "spreadsheet-id": "111",
+        "_defaults": {
+            "spreadsheet-name": "Spreadsheet-name-567",
+        }
+    }))).toEqual(true);
 });
 
 // helpers..............................................................................................................
@@ -363,7 +433,6 @@ function checkSpreadsheetName(metadata, name) {
 
 // checks toJson and toString
 function checkJson(metadata, json) {
-    expect(metadata.toObject()).toEqual(json);
     expect(metadata.toJson()).toStrictEqual(json);
     expect(metadata.toString()).toBe(JSON.stringify(json));
 }
