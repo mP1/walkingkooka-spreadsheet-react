@@ -55,6 +55,13 @@ export default class SpreadsheetCoordinates {
         return this.toString();
     }
 
+    equals(other) {
+        return this === other ||
+            (other instanceof SpreadsheetCoordinates &&
+                this.x() === other.x() &&
+                this.y() === other.y());
+    }
+
     toString() {
         return doubleToString(this.x()) + SEPARATOR + doubleToString(this.y());
     }
