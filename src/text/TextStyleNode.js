@@ -1,6 +1,7 @@
 import TextNode, {STYLE} from "./TextNode";
 import TextStyle from "./TextStyle";
 import React from "react";
+import Equality from "../Equality.js";
 
 /**
  * Holds some styles that are applied to many child text nodes.
@@ -52,5 +53,12 @@ export default class TextStyleNode extends TextNode {
                 {this.children().map(c => c.render())}
             </div>
         );
+    }
+
+    equals(other) {
+        return this === other ||
+            (other instanceof TextStyleNode &&
+                this.styles().equals(other.styles()) &&
+                Equality.safeEquals(this.children(), other.children()));
     }
 }
