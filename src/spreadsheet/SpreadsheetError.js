@@ -25,6 +25,12 @@ export default class SpreadsheetError {
         return this.message();
     }
 
+    equals(other) {
+        return this === other ||
+            (other instanceof SpreadsheetError &&
+                this.message() === other.message());
+    }
+
     toString() {
         return this.message();
     }
