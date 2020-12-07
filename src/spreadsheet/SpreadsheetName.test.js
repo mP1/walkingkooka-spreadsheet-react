@@ -25,6 +25,33 @@ test("json", () => {
     check(spreadsheetName, value);
 });
 
+// equals...............................................................................................................
+
+test("equals undefined false", () => {
+    const spreadsheetName = new SpreadsheetName(value);
+    expect(spreadsheetName.equals()).toBe(false);
+});
+
+test("equals null false", () => {
+    const spreadsheetName = new SpreadsheetName(value);
+    expect(spreadsheetName.equals(null)).toBe(false);
+});
+
+test("equals self true", () => {
+    const spreadsheetName = new SpreadsheetName(value);
+    expect(spreadsheetName.equals(spreadsheetName)).toBe(true);
+});
+
+test("equals different false", () => {
+    const spreadsheetName = new SpreadsheetName(value);
+    expect(spreadsheetName.equals(new SpreadsheetName("different"))).toBe(false);
+});
+
+test("equals self true", () => {
+    const spreadsheetName = new SpreadsheetName(value);
+    expect(spreadsheetName.equals(new SpreadsheetName(value))).toBe(true);
+});
+
 // helpers..............................................................................................................
 
 function check(spreadsheetName, value) {
