@@ -1,5 +1,6 @@
 import SpreadsheetName from "../SpreadsheetName";
 
+import Equality from "../../Equality.js";
 import TextStyle from "../../text/TextStyle";
 import SpreadsheetCoordinates from "../SpreadsheetCoordinates";
 import SpreadsheetCellReference from "../reference/SpreadsheetCellReference";
@@ -13,34 +14,18 @@ const STYLE = "style";
 const VIEWPORT_CELL = "viewport-cell";
 const VIEWPORT_COORDINATES = "viewport-coordinates";
 
-function createEmpty() {
-    const empty = new SpreadsheetMetadata({});
-    empty.defaultSpreadsheetMetadata = empty;
-    return empty;
-}
-
-/**
- * Makes a new defensive copy using the provided json and replaces the existing defaults.
- */
-function createWithDefaults(json, defaultSpreadsheetMetadata) {
-    const copy = new SpreadsheetMetadata(json);
-
-    if (defaultSpreadsheetMetadata.json) {
-        copy.json[DEFAULTS] = defaultSpreadsheetMetadata.toJson();
-    }
-    copy.defaultSpreadsheetMetadata = defaultSpreadsheetMetadata;
-    return copy;
-}
-
 /**
  * Creates a new SpreadsheetMetadata and sets or replaces the new property/value pair.
  */
-function copyAndSet(json, property, value) {
-    const copy = new SpreadsheetMetadata(json);
-    copy.json[property] = value.toJson ?
-        value.toJson() :
-        value;
-    return copy;
+function copyAndSet(properties,
+                    property,
+                    value) {
+    const copy = Object.assign({}, properties);
+
+    if (!(DEFAULTS === property && value.isEmpty())) {
+        copy[property] = value;
+    }
+    return new SpreadsheetMetadata(copy);
 }
 
 /**
@@ -48,7 +33,7 @@ function copyAndSet(json, property, value) {
  */
 export default class SpreadsheetMetadata {
 
-    static EMPTY = createEmpty();
+    static EMPTY = new SpreadsheetMetadata({});
 
     static fromJson(json) {
         if (!json) {
@@ -57,49 +42,88 @@ export default class SpreadsheetMetadata {
         if (typeof json !== "object") {
             throw new Error("Expected Object json got " + json);
         }
-        return new SpreadsheetMetadata(json);
+
+        // check properties
+        const properties = {};
+        for (const [key, value] of Object.entries(json)) {
+            let unmarshaller;
+
+            switch (key) {
+                case DEFAULTS:
+                    unmarshaller = SpreadsheetMetadata.fromJson;
+                    break;
+                case EDIT_CELL:
+                    unmarshaller = SpreadsheetCellReference.fromJson;
+                    break;
+                case SPREADSHEET_ID:
+                    unmarshaller = null;
+                    break;
+                case SPREADSHEET_NAME:
+                    unmarshaller = SpreadsheetName.fromJson;
+                    break;
+                case STYLE:
+                    unmarshaller = TextStyle.fromJson;
+                    break;
+                case VIEWPORT_CELL:
+                    unmarshaller = SpreadsheetCellReference.fromJson;
+                    break;
+                case VIEWPORT_COORDINATES:
+                    unmarshaller = SpreadsheetCoordinates.fromJson;
+                    break;
+                default:
+                    throw new Error("Unknown property \"" + key + "\"");
+            }
+            properties[key] = (unmarshaller && unmarshaller(value)) || value;
+        }
+
+        return new SpreadsheetMetadata(properties);
     }
 
-    constructor(json) {
-        this.json = Object.assign({}, json) || {} // defensive copy
+    constructor(properties) {
+        this.properties = properties;
     }
 
     /**
      * Returns true if this is empty without any values.
      */
     isEmpty() {
-        return Object.keys(this.json).length === 0;
+        return Object.keys(this.properties).length === 0;
     }
 
-    getOrFail(property, factory) {
-        const value = this.get(property, factory);
-        if(!value) {
+    getOrFail(property) {
+        const value = this.get(property);
+        if(typeof value === "undefined") {
             throw new Error("Missing \"" + property + "\" " + this);
         }
         return value;
     }
 
     /**
-     * General purpose getter
+     * General purpose getter with support for checking
      */
-    get(property, factory) {
-        let json = this.json;
-        var value;
+    get(property) {
+        if (!property) {
+            throw new Error("Missing property");
+        }
+        if (typeof property !== "string") {
+            throw new Error("Expected string property but got " + property);
+        }
 
-        do {
-            value = json[property];
-            if (value) {
-                break;
+        var value = this.properties[property];
+
+        if (typeof value === "undefined") {
+            const defaults = this.properties[DEFAULTS];
+            if(defaults) {
+                value = defaults.get(property);
             }
-            json = json[DEFAULTS];
-        } while (json);
+        }
 
-        return value && factory ?
-            factory(value) :
-            value;
+        return value;
     }
 
-    // TODO introduce value validation.
+    /**
+     * Would be setter that returns a new SpreadsheetMetadata if the new value is different from the previous.
+     */
     set(property, value) {
         if (!property) {
             throw new Error("Missing property");
@@ -110,6 +134,9 @@ export default class SpreadsheetMetadata {
 
         let type;
         switch (property) {
+            case DEFAULTS:
+                type = SpreadsheetMetadata;
+                break;
             case EDIT_CELL:
                 type = SpreadsheetCellReference;
                 break;
@@ -133,9 +160,9 @@ export default class SpreadsheetMetadata {
             throw new Error("Expected " + type + " property " + property + " with value " + value);
         }
 
-        return value === this.get(property) ?
+        return (Equality.safeEquals(value, this.get(property))) ?
             this :
-            copyAndSet(this.json, property, value);
+            copyAndSet(this.properties, property, value);
     }
 
     /**
@@ -152,12 +179,7 @@ export default class SpreadsheetMetadata {
      </pre>
      */
     defaults() {
-        if (!this.defaultSpreadsheetMetadata) {
-            let defaultsJson = this.json[DEFAULTS];
-            this.defaultSpreadsheetMetadata = (defaultsJson && new SpreadsheetMetadata(defaultsJson)) || SpreadsheetMetadata.EMPTY;
-        }
-
-        return this.defaultSpreadsheetMetadata;
+        return this.get(DEFAULTS) || SpreadsheetMetadata.EMPTY;
     }
 
     setDefaults(defaultSpreadsheetMetadata) {
@@ -167,13 +189,11 @@ export default class SpreadsheetMetadata {
         if (!(defaultSpreadsheetMetadata instanceof SpreadsheetMetadata)) {
             throw new Error("Expected SpreadsheetMetadata got " + defaultSpreadsheetMetadata);
         }
-        return this.defaults() === defaultSpreadsheetMetadata ?
-            this :
-            createWithDefaults(this.json, defaultSpreadsheetMetadata);
+        return this.set(DEFAULTS, defaultSpreadsheetMetadata);
     }
 
     editCell() {
-        return this.get(EDIT_CELL, SpreadsheetCellReference.fromJson);
+        return this.get(EDIT_CELL);
     }
 
     setEditCell(cell) {
@@ -185,7 +205,7 @@ export default class SpreadsheetMetadata {
     }
 
     spreadsheetName() {
-        return this.get(SPREADSHEET_NAME, SpreadsheetName.fromJson);
+        return this.get(SPREADSHEET_NAME);
     }
 
     setSpreadsheetName(name) {
@@ -215,23 +235,46 @@ export default class SpreadsheetMetadata {
     setViewportCoordinates(coords) {
         return this.set(VIEWPORT_COORDINATES, coords);
     }
-    
-    /**
-     * Returns an Object representing this instance. Useful when posting to a server. Should probably never be necessary
-     * but is available.
-     */
-    toObject() {
-        return Object.assign({}, this.json);
-    }
 
     /**
      * Returns this metadata as a JSON object. This must be JSON.stringify for use in JSON calls
      */
     toJson() {
-        return Object.assign({}, this.json);
+        const json = {};
+
+        for (const [key, value] of Object.entries(this.properties)) {
+            json[key] = (value.toJson && value.toJson()) || value;
+        }
+
+        return json;
+    }
+
+    equals(other) {
+        return this === other || (other instanceof SpreadsheetMetadata && equals0(this, other));
     }
 
     toString() {
-        return JSON.stringify(this.json);
+        return JSON.stringify(this.toJson());
     }
+}
+
+/**
+ * Tests all entries in both SpreadsheetMetadata for equality.
+ */
+function equals0(metadata, other) {
+    var equals = false;
+
+    const keys = Object.keys(metadata.properties);
+    if (keys.length === Object.keys(other.properties).length) {
+        equals = true;
+
+        for (const key of keys) {
+            equals = Equality.safeEquals(metadata.get(key), other.get(key));
+            if (!equals) {
+                break;
+            }
+        }
+    }
+
+    return equals;
 }
