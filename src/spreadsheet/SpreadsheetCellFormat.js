@@ -27,6 +27,12 @@ export default class SpreadsheetCellFormat {
         return this.pattern();
     }
 
+    equals(other) {
+        return this === other ||
+            (other instanceof SpreadsheetCellFormat &&
+                this.pattern() === other.pattern());
+    }
+
     toString() {
         return this.pattern();
     }
