@@ -67,9 +67,25 @@ export default class SpreadsheetFormula {
         return json;
     }
 
+    equals(other) {
+        return this === other ||
+            (other instanceof SpreadsheetFormula &&
+                equals0(this, other));
+    }
+
     toString() {
         return JSON.stringify(this.toJson());
     }
+}
+
+function equals0(formula, other) {
+    return formula.text() == other.text() &&
+        safeEquals(formula.value(), other.value()) &&
+        safeEquals(formula.error(), other.error());
+}
+
+function safeEquals(left, right) {
+    return (left.equals && left.equal(right) || left === right);
 }
 
 function checkText(text) {
