@@ -96,41 +96,41 @@ test("json", () => {
 // equals...............................................................................................................
 
 test("equals undefined false", () => {
-    expect(viewport().equals()).toBe(false);
+    expect(viewport().equals()).toBeFalse();
 });
 
 test("equals null false", () => {
-    expect(viewport().equals(null)).toBe(false);
+    expect(viewport().equals(null)).toBeFalse();
 });
 
 test("equals different type false", () => {
-    expect(viewport().equals("different")).toBe(false);
+    expect(viewport().equals("different")).toBeFalse();
 });
 
 test("equals self true", () => {
     const b = viewport();
-    expect(b.equals(b)).toBe(true);
+    expect(b.equals(b)).toBeTrue();
 });
 
 test("equals different width false", () => {
     const b = viewport();
-    expect(b.equals(new SpreadsheetViewport(reference(), width() + 1, height()))).toBe(false);
+    expect(b.equals(new SpreadsheetViewport(reference(), width() + 1, height()))).toBeFalse();
 });
 
 test("equals different height false", () => {
     const v = viewport();
-    expect(v.equals(new SpreadsheetViewport(reference(), width(), height() + 1))).toBe(false);
+    expect(v.equals(new SpreadsheetViewport(reference(), width(), height() + 1))).toBeFalse();
 });
 
 test("equals equivalent true", () => {
-    expect(viewport().equals(viewport())).toBe(true);
+    expect(viewport().equals(viewport())).toBeTrue();
 });
 
 test("equals equivalent true #2", () => {
     const viewport = new SpreadsheetViewport(SpreadsheetCellReference.parse("Z9"), 1, 2);
     const viewport2 = new SpreadsheetViewport(SpreadsheetCellReference.parse("Z9"), 1, 2);
 
-    expect(viewport.equals(viewport2)).toBe(true);
+    expect(viewport.equals(viewport2)).toBeTrue();
 });
 
 // helpers..............................................................................................................

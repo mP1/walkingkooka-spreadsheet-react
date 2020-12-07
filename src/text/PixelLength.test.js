@@ -28,28 +28,28 @@ test("create", () => {
 
 test("equals undefined false", () => {
     const l = length();
-    expect(l.equals()).toBe(false);
+    expect(l.equals()).toBeFalse();
 });
 
 test("equals null false", () => {
     const l = length();
-    expect(l.equals(null)).toBe(false);
+    expect(l.equals(null)).toBeFalse();
 });
 
 test("equals self true", () => {
     const l = length();
-    expect(l.equals(l)).toBe(true);
+    expect(l.equals(l)).toBeTrue();
 });
 
 test("equals different false", () => {
     const l = length();
-    expect(l.equals(PixelLength.parse("2px"))).toBe(false);
+    expect(l.equals(PixelLength.parse("2px"))).toBeFalse();
 });
 
 test("equals equivalent true", () => {
     const value = 2;
     const l = new PixelLength(value);
-    expect(l.equals(new PixelLength(value))).toBe(true);
+    expect(l.equals(new PixelLength(value))).toBeTrue();
 });
 
 // helpers..............................................................................................................

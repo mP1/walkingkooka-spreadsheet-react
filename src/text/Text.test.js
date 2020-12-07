@@ -48,28 +48,28 @@ test("toJson", () => {
 
 test("equals undefined false", () => {
     const t = text();
-    expect(t.equals()).toBe(false);
+    expect(t.equals()).toBeFalse();
 });
 
 test("equals null false", () => {
     const t = text();
-    expect(t.equals(null)).toBe(false);
+    expect(t.equals(null)).toBeFalse();
 });
 
 test("equals self true", () => {
     const t = text();
-    expect(t.equals(t)).toBe(true);
+    expect(t.equals(t)).toBeTrue();
 });
 
 test("equals different false", () => {
     const t = text();
-    expect(t.equals(new Text("different-text"))).toBe(false);
+    expect(t.equals(new Text("different-text"))).toBeFalse();
 });
 
 test("equals equivalent true", () => {
     const value = "text-2";
     const t = new Text(value);
-    expect(t.equals(new Text(value))).toBe(true);
+    expect(t.equals(new Text(value))).toBeTrue();
 });
 
 // helpers..............................................................................................................
