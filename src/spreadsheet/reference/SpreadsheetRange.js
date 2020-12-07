@@ -60,6 +60,10 @@ export default class SpreadsheetRange extends SpreadsheetRectangle{
         return this.begin() + ":" + this.end();
     }
 
+    equals(other) {
+        return this === other || (other instanceof SpreadsheetRange && this.begin().equals(other.begin()) && this.end().equals(other.end()));
+    }
+
     toString() {
         return this.toJson();
     }
