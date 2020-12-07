@@ -39,33 +39,33 @@ test("toJson", () => {
 
 test("equals undefined false", () => {
     const p = placeholder();
-    expect(p.equals()).toBe(false);
+    expect(p.equals()).toBeFalse();
 });
 
 test("equals null false", () => {
     const p = placeholder();
-    expect(p.equals(null)).toBe(false);
+    expect(p.equals(null)).toBeFalse();
 });
 
 test("equals self true", () => {
     const p = placeholder();
-    expect(p.equals(p)).toBe(true);
+    expect(p.equals(p)).toBeTrue();
 });
 
 test("equals different false", () => {
     const p = placeholder();
-    expect(p.equals(new TextPlaceholderNode("different"))).toBe(false);
+    expect(p.equals(new TextPlaceholderNode("different"))).toBeFalse();
 });
 
 test("equals equivalent true", () => {
     const p = placeholder();
-    expect(p.equals(placeholder())).toBe(true);
+    expect(p.equals(placeholder())).toBeTrue();
 });
 
 test("equals equivalent true #2", () => {
     const value = "placeholder-2";
     const p = new TextPlaceholderNode(value);
-    expect(p.equals(new TextPlaceholderNode(value))).toBe(true);
+    expect(p.equals(new TextPlaceholderNode(value))).toBeTrue();
 });
 
 // helpers..............................................................................................................

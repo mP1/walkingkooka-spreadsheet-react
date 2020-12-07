@@ -25,7 +25,7 @@ test("listeners dispatch", () => {
         fired = true;
     })
     listeners.dispatch(value);
-    expect(fired).toBe(true);
+    expect(fired).toBeTrue();
 });
 
 test("listeners remove", () => {
@@ -85,5 +85,5 @@ test("listeners dispatch after remove", () => {
     expect(listeners.listeners).toStrictEqual([added]);
 
     listeners.dispatch(value);
-    expect(fired).toBe(true);
+    expect(fired).toBeTrue();
 });

@@ -33,38 +33,38 @@ test("json", () => {
 
 test("equals undefined false", () => {
     const e = error();
-    expect(e.equals()).toBe(false);
+    expect(e.equals()).toBeFalse();
 });
 
 test("equals null false", () => {
     const e = error();
-    expect(e.equals(null)).toBe(false);
+    expect(e.equals(null)).toBeFalse();
 });
 
 test("equals different type false", () => {
     const e = error();
-    expect(e.equals("different")).toBe(false);
+    expect(e.equals("different")).toBeFalse();
 });
 
 test("equals self true", () => {
     const e = error();
-    expect(e.equals(e)).toBe(true);
+    expect(e.equals(e)).toBeTrue();
 });
 
 test("equals different false", () => {
     const e = error();
-    expect(e.equals(new SpreadsheetError("different"))).toBe(false);
+    expect(e.equals(new SpreadsheetError("different"))).toBeFalse();
 });
 
 test("equals equivalent true", () => {
     const e = error();
-    expect(e.equals(e)).toBe(true);
+    expect(e.equals(e)).toBeTrue();
 });
 
 test("equals equivalent true #2", () => {
     const message = "different";
     const e = new SpreadsheetError(message);
-    expect(e.equals(new SpreadsheetError(message))).toBe(true);
+    expect(e.equals(new SpreadsheetError(message))).toBeTrue();
 });
 
 // helpers..............................................................................................................

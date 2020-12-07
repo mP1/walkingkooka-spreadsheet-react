@@ -41,37 +41,37 @@ test("fromJson wrong token count fails", () => {
 
 test("equals undefined false", () => {
     const range = SpreadsheetRange.fromJson("A1:B2");
-    expect(range.equals()).toBe(false);
+    expect(range.equals()).toBeFalse();
 });
 
 test("equals null false", () => {
     const range = SpreadsheetRange.fromJson("A1:B2");
-    expect(range.equals(null)).toBe(false);
+    expect(range.equals(null)).toBeFalse();
 });
 
 test("equals different type false", () => {
     const range = SpreadsheetRange.fromJson("A1:B2");
-    expect(range.equals("different")).toBe(false);
+    expect(range.equals("different")).toBeFalse();
 });
 
 test("equals self true", () => {
     const range = SpreadsheetRange.fromJson("A1:B2");
-    expect(range.equals(range)).toBe(true);
+    expect(range.equals(range)).toBeTrue();
 });
 
 test("equals different false", () => {
     const range = SpreadsheetRange.fromJson("A1:B2");
-    expect(range.equals(SpreadsheetRange.fromJson("C3:D4"))).toBe(false);
+    expect(range.equals(SpreadsheetRange.fromJson("C3:D4"))).toBeFalse();
 });
 
 test("equals equivalent true", () => {
     const range = SpreadsheetRange.fromJson("A1:B2");
-    expect(range.equals(SpreadsheetRange.fromJson("A1:B2"))).toBe(true);
+    expect(range.equals(SpreadsheetRange.fromJson("A1:B2"))).toBeTrue();
 });
 
 test("equals equivalent true #2", () => {
     const range = SpreadsheetRange.fromJson("C3:D4");
-    expect(range.equals(SpreadsheetRange.fromJson("C3:D4"))).toBe(true);
+    expect(range.equals(SpreadsheetRange.fromJson("C3:D4"))).toBeTrue();
 });
 
 // helpers..............................................................................................................

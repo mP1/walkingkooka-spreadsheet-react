@@ -88,44 +88,44 @@ test("from json", () => {
 
 test("equals undefined false", () => {
     const c = coordinates();
-    expect(c.equals()).toBe(false);
+    expect(c.equals()).toBeFalse();
 });
 
 test("equals null false", () => {
     const c = coordinates();
-    expect(c.equals(null)).toBe(false);
+    expect(c.equals(null)).toBeFalse();
 });
 
 test("equals different type false", () => {
     const c = coordinates();
-    expect(c.equals("different")).toBe(false);
+    expect(c.equals("different")).toBeFalse();
 });
 
 test("equals self true", () => {
     const c = coordinates();
-    expect(c.equals(c)).toBe(true);
+    expect(c.equals(c)).toBeTrue();
 });
 
 test("equals different x false", () => {
     const c = coordinates();
-    expect(c.equals(new SpreadsheetCoordinates(x() + 1, y()))).toBe(false);
+    expect(c.equals(new SpreadsheetCoordinates(x() + 1, y()))).toBeFalse();
 });
 
 test("equals different y false", () => {
     const c = coordinates();
-    expect(c.equals(new SpreadsheetCoordinates(x(), y() + 1))).toBe(false);
+    expect(c.equals(new SpreadsheetCoordinates(x(), y() + 1))).toBeFalse();
 });
 
 test("equals equivalent true", () => {
     const c = coordinates();
-    expect(c.equals(coordinates())).toBe(true);
+    expect(c.equals(coordinates())).toBeTrue();
 });
 
 test("equals equivalent true #2", () => {
     const x = 1;
     const y = 2;
     const c = new SpreadsheetCoordinates(x, y);
-    expect(c.equals(new SpreadsheetCoordinates(x, y))).toBe(true);
+    expect(c.equals(new SpreadsheetCoordinates(x, y))).toBeTrue();
 });
 
 // helpers..............................................................................................................

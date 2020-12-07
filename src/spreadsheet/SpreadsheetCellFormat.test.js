@@ -34,38 +34,38 @@ test("json", () => {
 
 test("equals undefined false", () => {
     const f = cellFormat();
-    expect(f.equals()).toBe(false);
+    expect(f.equals()).toBeFalse();
 });
 
 test("equals null false", () => {
     const f = cellFormat();
-    expect(f.equals(null)).toBe(false);
+    expect(f.equals(null)).toBeFalse();
 });
 
 test("equals different type false", () => {
     const f = cellFormat();
-    expect(f.equals("different")).toBe(false);
+    expect(f.equals("different")).toBeFalse();
 });
 
 test("equals self true", () => {
     const f = cellFormat();
-    expect(f.equals(f)).toBe(true);
+    expect(f.equals(f)).toBeTrue();
 });
 
 test("equals different false", () => {
     const f = cellFormat();
-    expect(f.equals(new SpreadsheetError("different"))).toBe(false);
+    expect(f.equals(new SpreadsheetError("different"))).toBeFalse();
 });
 
 test("equals equivalent true", () => {
     const f = cellFormat();
-    expect(f.equals(f)).toBe(true);
+    expect(f.equals(f)).toBeTrue();
 });
 
 test("equals equivalent true #2", () => {
     const format = "#";
     const f = new SpreadsheetCellFormat(format);
-    expect(f.equals(new SpreadsheetCellFormat(format))).toBe(true);
+    expect(f.equals(new SpreadsheetCellFormat(format))).toBeTrue();
 });
 
 // helpers..............................................................................................................

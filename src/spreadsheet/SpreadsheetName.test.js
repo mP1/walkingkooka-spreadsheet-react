@@ -29,27 +29,27 @@ test("json", () => {
 
 test("equals undefined false", () => {
     const spreadsheetName = new SpreadsheetName(value);
-    expect(spreadsheetName.equals()).toBe(false);
+    expect(spreadsheetName.equals()).toBeFalse();
 });
 
 test("equals null false", () => {
     const spreadsheetName = new SpreadsheetName(value);
-    expect(spreadsheetName.equals(null)).toBe(false);
+    expect(spreadsheetName.equals(null)).toBeFalse();
 });
 
 test("equals self true", () => {
     const spreadsheetName = new SpreadsheetName(value);
-    expect(spreadsheetName.equals(spreadsheetName)).toBe(true);
+    expect(spreadsheetName.equals(spreadsheetName)).toBeTrue();
 });
 
 test("equals different false", () => {
     const spreadsheetName = new SpreadsheetName(value);
-    expect(spreadsheetName.equals(new SpreadsheetName("different"))).toBe(false);
+    expect(spreadsheetName.equals(new SpreadsheetName("different"))).toBeFalse();
 });
 
 test("equals self true", () => {
     const spreadsheetName = new SpreadsheetName(value);
-    expect(spreadsheetName.equals(new SpreadsheetName(value))).toBe(true);
+    expect(spreadsheetName.equals(new SpreadsheetName(value))).toBeTrue();
 });
 
 // helpers..............................................................................................................

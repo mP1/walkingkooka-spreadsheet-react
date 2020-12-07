@@ -343,32 +343,32 @@ test("toCss border-xxx-width, margin-xxx, padding-xxx none/mixed", () => {
 
 test("equals undefined false", () => {
     const t = textStyle();
-    expect(t.equals()).toBe(false);
+    expect(t.equals()).toBeFalse();
 });
 
 test("equals null false", () => {
     const t = textStyle();
-    expect(t.equals(null)).toBe(false);
+    expect(t.equals(null)).toBeFalse();
 });
 
 test("equals self true", () => {
     const t = textStyle();
-    expect(t.equals(t)).toBe(true);
+    expect(t.equals(t)).toBeTrue();
 });
 
 test("equals different false", () => {
     const t = textStyle();
-    expect(t.equals(TextStyle.EMPTY.set("width", "1px"))).toBe(false);
+    expect(t.equals(TextStyle.EMPTY.set("width", "1px"))).toBeFalse();
 });
 
 test("equals different false", () => {
     const t = textStyle();
-    expect(t.equals(t.set("width", "1px"))).toBe(false);
+    expect(t.equals(t.set("width", "1px"))).toBeFalse();
 });
 
 test("equals self true", () => {
     const t = textStyle();
-    expect(t.equals(textStyle())).toBe(true);
+    expect(t.equals(textStyle())).toBeTrue();
 });
 
 // toString.............................................................................................................
