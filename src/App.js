@@ -472,15 +472,19 @@ export default class App extends React.Component {
     }
 
     /**
-     * Updates the state and saves the metadata.
+     * If the new metadata is different call the save service otherwise skip.
      */
     saveSpreadsheetMetadata(metadata) {
-        console.log("saveSpreadsheetMetadata", metadata);
+        if (metadata.equals(this.spreadsheetMetadata())) {
+            console.log("saveSpreadsheetMetadata unchanged, save skipped", metadata);
+        } else {
+            console.log("saveSpreadsheetMetadata", metadata);
 
-        this.messenger.send(this.spreadsheetApiUrl(), {
-            method: "POST",
-            body: JSON.stringify(metadata.toJson())
-        });
+            this.messenger.send(this.spreadsheetApiUrl(), {
+                method: "POST",
+                body: JSON.stringify(metadata.toJson())
+            });
+        }
     }
 
     spreadsheetMetadataListeners = new Listeners();
