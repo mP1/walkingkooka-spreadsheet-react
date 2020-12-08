@@ -207,7 +207,7 @@ export default class App extends React.Component {
     onCellBoxViewportRangeUpdate(cellBox) {
         console.log("onCellBoxViewportRangeUpdate " + cellBox);
 
-        this.messenger.send(this.spreadsheetApiUrl() + "/viewport/" + cellBox.viewport(),
+        this.messenger.send(this.spreadsheetMetadataApiUrl() + "/viewport/" + cellBox.viewport(),
             {
                 method: "GET"
             });
@@ -255,7 +255,7 @@ export default class App extends React.Component {
      * Returns a URL with the spreadsheet id and ONLY the provided cell selection.
      */
     spreadsheetCellApiUrl(selection) {
-        return this.spreadsheetApiUrl() + "/cell/" + selection;
+        return this.spreadsheetMetadataApiUrl() + "/cell/" + selection;
     }
 
     /**
@@ -380,8 +380,18 @@ export default class App extends React.Component {
 
     // SpreadsheetMetadata..............................................................................................
 
-    spreadsheetApiUrl(metadata) {
-        return "/api/spreadsheet/" + (metadata || this.spreadsheetMetadata()).spreadsheetId();
+    /**
+     * Uses the provided spreadsheetid or falls back to the current {@Link SpreadsheetMetadata} spreadsheet id
+     */
+    spreadsheetMetadataApiUrl(spreadsheetId) {
+        const id = spreadsheetId || this.spreadsheetMetadata().spreadsheetId();
+        if (!id) {
+            throw new Error("Missing spreadsheetId parameter and current SpreadsheetMetadata.spreadsheetId");
+        }
+        if (typeof id !== "string") {
+            throw new Error("Expected string spreadsheetId got " + id);
+        }
+        return "/api/spreadsheet/" + id;
     }
 
     spreadsheetMetadata() {
@@ -397,7 +407,7 @@ export default class App extends React.Component {
         } else {
             console.log("saveSpreadsheetMetadata", metadata);
 
-            this.messenger.send(this.spreadsheetApiUrl(), {
+            this.messenger.send(this.spreadsheetMetadataApiUrl(), {
                 method: "POST",
                 body: JSON.stringify(metadata.toJson())
             });
