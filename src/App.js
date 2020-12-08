@@ -222,7 +222,7 @@ export default class App extends React.Component {
 
         const evaluation = this.state.spreadsheetEngineEvaluation || SpreadsheetEngineEvaluation.COMPUTE_IF_NECESSARY;
 
-        this.messenger.send(this.spreadsheetCellUrl(selection) + "/" + evaluation,
+        this.messenger.send(this.spreadsheetCellApiUrl(selection) + "/" + evaluation,
             {
                 method: "GET"
             });
@@ -239,7 +239,7 @@ export default class App extends React.Component {
         } else {
             console.log("saveSpreadsheetCell", cell);
 
-            this.messenger.send(this.spreadsheetCellUrl(cell.reference()),
+            this.messenger.send(this.spreadsheetCellApiUrl(cell.reference()),
                 {
                     method: "POST",
                     body: JSON.stringify(new SpreadsheetDelta([cell],
@@ -254,7 +254,7 @@ export default class App extends React.Component {
     /**
      * Returns a URL with the spreadsheet id and ONLY the provided cell selection.
      */
-    spreadsheetCellUrl(selection) {
+    spreadsheetCellApiUrl(selection) {
         return this.spreadsheetApiUrl() + "/cell/" + selection;
     }
 
