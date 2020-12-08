@@ -6,12 +6,10 @@ import SpreadsheetViewportWidget from "./widget/SpreadsheetViewportWidget.js";
 import SpreadsheetFormulaWidget from "./spreadsheet/SpreadsheetFormulaWidget.js";
 import SpreadsheetMetadata from "./spreadsheet/meta/SpreadsheetMetadata.js";
 import SpreadsheetMessenger from "./util/SpreadsheetMessenger.js";
-import Listeners from "./util/Listeners";
 
 import Divider from '@material-ui/core/Divider';
 import SpreadsheetCellBox from "./spreadsheet/reference/SpreadsheetCellBox";
 import SpreadsheetCoordinates from "./spreadsheet/SpreadsheetCoordinates";
-import SpreadsheetViewport from "./spreadsheet/reference/SpreadsheetViewport";
 import SpreadsheetRange from "./spreadsheet/reference/SpreadsheetRange";
 import SpreadsheetDelta from "./spreadsheet/engine/SpreadsheetDelta";
 import SpreadsheetEngineEvaluation from "./spreadsheet/engine/SpreadsheetEngineEvaluation";
@@ -21,6 +19,7 @@ import ImmutableMap from "./util/ImmutableMap";
 import SpreadsheetCell from "./spreadsheet/SpreadsheetCell";
 import SpreadsheetFormula from "./spreadsheet/SpreadsheetFormula";
 import TextStyle from "./text/TextStyle.js";
+import SpreadsheetNameWidget from "./spreadsheet/SpreadsheetNameWidget.js";
 
 export default class App extends React.Component {
     constructor(props) {
@@ -32,58 +31,35 @@ export default class App extends React.Component {
             cells: ImmutableMap.EMPTY,
             columnWidths: ImmutableMap.EMPTY,
             rowHeights: ImmutableMap.EMPTY,
-            viewportDimensions: {
-                width: 0,
-                height: 0,
-            }, // required so changes will trigger viewport cell reload...
             windowDimensions: {
                 width: window.innerWidth,
                 height: window.innerHeight,
             },
         }
 
-        const handleSpreadsheetCellBox = (json) => {
-            this.spreadsheetCellBoxListeners.dispatch(SpreadsheetCellBox.fromJson(json));
-        }
-
-        const handleSpreadsheetCoordinates = (json) => {
-            this.spreadsheetCoordinatesListeners.dispatch(SpreadsheetCoordinates.fromJson(json));
-        }
-
         const handleSpreadsheetDelta = (json) => {
-            this.spreadsheetDeltaListeners.dispatch(SpreadsheetDelta.fromJson(json));
-        }
-
-        const handleSpreadsheetMetadata = (json) => {
-            this.spreadsheetMetadataListeners.dispatch(SpreadsheetMetadata.fromJson(json));
-        }
-
-        const handleSpreadsheetRange = (json) => {
-            this.spreadsheetRangeListeners.dispatch(SpreadsheetRange.fromJson(json));
+            const delta = SpreadsheetDelta.fromJson(json);
+            const state = this.state;
+            this.setState({
+                cells: state.cells.set(delta.referenceToCellMap()),
+                columnWidths: state.columnWidths.set(delta.maxColumnWidths()),
+                rowHeights: state.rowHeights.set(delta.maxRowHeights()),
+            });
         }
 
         // the names must match the Class.getSimpleName in walkingkooka-spreadsheet
         this.messenger = new SpreadsheetMessenger({
-            "SpreadsheetCellBox": handleSpreadsheetCellBox,
-            "SpreadsheetCoordinates": handleSpreadsheetCoordinates,
+            "SpreadsheetCellBox": json => this.onCellBoxViewportRangeUpdate(SpreadsheetCellBox.fromJson(json)),
+            "SpreadsheetCoordinates": json => this.setState({viewportCoordinates: SpreadsheetCoordinates.fromJson(json)}),
             "SpreadsheetDeltaNonWindowed": handleSpreadsheetDelta,
             "SpreadsheetDeltaWindowed": handleSpreadsheetDelta,
-            "SpreadsheetMetadataNonEmpty": handleSpreadsheetMetadata,
-            "SpreadsheetRange": handleSpreadsheetRange,
+            "SpreadsheetMetadataNonEmpty": json => this.setState({spreadsheetMetadata: SpreadsheetMetadata.fromJson(json)}),
+            "SpreadsheetRange": json => this.setState({viewportRange: SpreadsheetRange.fromJson(json)}),
         });
+
         this.messenger.setWebWorker(false); // TODO test webworker mode
 
-        this.spreadsheetDeltaListeners.add(this.onSpreadsheetDeltaSetState.bind(this));
-        this.spreadsheetDeltaListeners.add(this.onSpreadsheetDeltaViewportChange.bind(this));
-
-        this.spreadsheetMetadataListeners.add(this.onSpreadsheetMetadataSetState.bind(this));
-        this.spreadsheetMetadataListeners.add(this.onSpreadsheetMetadataEditCell.bind(this));
-        this.spreadsheetMetadataListeners.add(this.onSpreadsheetMetadataViewport.bind(this));
-        this.spreadsheetCellBoxListeners.add(this.onCellBoxViewportRangeUpdate.bind(this));
-
-        this.spreadsheetRangeListeners.add(this.onSpreadsheetRangeSetState.bind(this));
-        this.spreadsheetRangeListeners.add(this.loadSpreadsheetCellOrRange.bind(this));
-
+        this.spreadsheetName = React.createRef();
         this.formula = React.createRef();
         this.viewport = React.createRef();
     }
@@ -110,92 +86,110 @@ export default class App extends React.Component {
      * Computes and returns the cell viewport dimensions. This should be called whenever the window or header size changes.
      */
     componentDidUpdate(prevProps, prevState, snapshot) {
+        console.log("componentDidUpdate", "prevState", prevState, "state", this.state);
+
+        this.onSpreadsheetViewport(prevState);
+        this.onSpreadsheetFormula();
+        this.onSpreadsheetMetadataSpreadsheetName();
+    }
+
+    /**
+     * Update the viewport after computing the viewport metrics.
+     */
+    onSpreadsheetViewport(prevState) {
+        const state = this.state;
+
+        const metadata = state.spreadsheetMetadata;
+        const viewportCell = metadata.viewportCell();
+        const viewportCoordinates = metadata.viewportCoordinates();
+        const windowDimensions = state.windowDimensions;
+        const aboveViewportDimensions = state.aboveViewportDimensions;
+
         const viewport = this.viewport.current;
 
-        if (viewport) {
-            const state = this.state;
+        if (viewportCell && viewportCoordinates && windowDimensions && aboveViewportDimensions && viewport) {
+            viewport.setState({
+                home: viewportCell,
+                cells: state.cells,
+                columnWidths: state.columnWidths,
+                rowHeights: state.rowHeights,
+                editCell: metadata.editCell(),
+                defaultStyle: metadata.style(),
+            });
+            const previous = viewport.state.dimensions;
+            const width = windowDimensions.width;
+            const height = windowDimensions.height - aboveViewportDimensions.height;
 
-            const windowDimensions = state.windowDimensions;
-            const aboveViewportDimensions = state.aboveViewportDimensions;
-
-            if (windowDimensions && aboveViewportDimensions) {
-                const previous = viewport.state.dimensions;
-                const width = windowDimensions.width;
-                const height = windowDimensions.height - aboveViewportDimensions.height;
-
-                if (previous.width !== width || previous.height !== height) {
-                    this.setState({
-                        viewportDimensions: {
-                            width: width,
-                            height: height,
-                        },
-                    });
-                    viewport.setState({
-                        dimensions: {
-                            width: width,
-                            height: height,
-                        }
-                    });
-
-                    const metadata = state.spreadsheetMetadata;
-                    const viewportCell = metadata.viewportCell();
-                    const viewportCoordinates = metadata.viewportCoordinates();
-
-                    if (viewportCell && viewportCoordinates) {
-                        const previousMetadata = prevState.spreadsheetMetadata;
-                        const previousViewportCell = previousMetadata && previousMetadata.viewportCell();
-
-                        if ((width > previous.width || height > previous.height) && (viewportCell.equals(previousViewportCell) || !previousViewportCell)) {
-                            this.spreadsheetCellBoxListeners.dispatch(
-                                new SpreadsheetCellBox(viewportCell,
-                                    viewportCoordinates.x(),
-                                    viewportCoordinates.y(),
-                                    width,
-                                    height)
-                            );
-                        }
+            if (previous.width !== width || previous.height !== height) {
+                viewport.setState({
+                    dimensions: {
+                        width: width,
+                        height: height,
                     }
+                });
+
+                const previousMetadata = prevState.spreadsheetMetadata;
+                const previousViewportCell = previousMetadata && previousMetadata.viewportCell();
+
+                if ((width > previous.width || height > previous.height) && (viewportCell.equals(previousViewportCell) || !previousViewportCell)) {
+                    this.onCellBoxViewportRangeUpdate(
+                        new SpreadsheetCellBox(viewportCell,
+                            viewportCoordinates.x(),
+                            viewportCoordinates.y(),
+                            width,
+                            height)
+                    );
                 }
             }
         }
     }
 
-    // state............................................................................................................
-
     /**
-     * Merge the new cells, columnWidths, rowHeights with the old in state.
+     * Updates the state of the formula widget so it matches the metadata editCell
      */
-    onSpreadsheetDeltaSetState(delta) {
-        console.log("onSpreadsheetDeltaSetState", delta);
+    onSpreadsheetFormula() {
+        const metadata = this.state.spreadsheetMetadata;
+        const formula = this.formula.current;
 
-        this.setState({
-            cells: this.state.cells.set(delta.referenceToCellMap()),
-            columnWidths: this.state.columnWidths.set(delta.maxColumnWidths()),
-            rowHeights: this.state.rowHeights.set(delta.maxRowHeights()),
-        });
-    }
+        console.log("onSpreadsheetFormula", "formula", formula.current, "metadata", metadata);
 
-    onSpreadsheetMetadataSetState(metadata) {
-        this.setState({"spreadsheetMetadata": metadata});
-    }
+        if (formula) {
+            const reference = metadata.editCell();
+            if (reference) {
+                const cell = this.getCellOrEmpty(reference);
+                formula.setValue = this.cellToFormulaTextSetter(cell);
 
-    /**
-     * Update the viewport widget with the new cells, columnWidth & rowHeight from the delta.
-     */
-    onSpreadsheetDeltaViewportChange(delta) {
-        console.log("onSpreadsheetDeltaViewportChange", delta);
+                const formulaText = this.cellToFormulaText(cell);
 
-        const viewport = this.viewport.current;
-        if (viewport) {
-            viewport.setState({
-                cells: this.state.cells.set(delta.referenceToCellMap()),
-                columnWidths: this.state.columnWidths.set(delta.maxColumnWidths()),
-                rowHeights: this.state.rowHeights.set(delta.maxRowHeights()),
-            });
+                console.log("onSpreadsheetFormula " + reference + " formula text=" + formulaText);
 
+                formula.setState({
+                    value: formulaText,
+                    reference: reference,
+                });
+            }
         }
     }
 
+    /**
+     * Updates the SpreadsheetNameWidget whenever metadata is updated.
+     */
+    onSpreadsheetMetadataSpreadsheetName() {
+        const metadata = this.state.spreadsheetMetadata;
+        const spreadsheetName = this.spreadsheetName.current;
+        const name = metadata.spreadsheetName();
+
+        if (spreadsheetName && name) {
+            console.log("onSpreadsheetMetadataSpreadsheetName updated from metadata to ", metadata.name);
+
+            spreadsheetName.setState({
+                value: name,
+            });
+        } else {
+            console.log("onSpreadsheetMetadataSpreadsheetName widget not updated", "spreadsheetName", spreadsheetName.current, "metadata", metadata);
+        }
+    }
+    
     /**
      * Returns the viewport dimensions of the area allocated to the cells.
      */
@@ -208,96 +202,15 @@ export default class App extends React.Component {
     }
 
     /**
-     * Factory that creates a {@link SpreadsheetViewport} with the given home cell and also computes the actual dimensions.
-     */
-    spreadsheetViewport(homeCellReference) {
-        const {width, height} = this.viewportDimensions();
-
-        return new SpreadsheetViewport(homeCellReference, width, height);
-    }
-
-    // event updates....................................................................................................
-
-    /**
-     * Updates the state of the formula widget so it matches the metadata editCell
-     */
-    onSpreadsheetMetadataEditCell(metadata) {
-        console.log("onSpreadsheetMetadataEditCell", metadata, "formula", this.formula.current);
-
-        const formula = this.formula.current;
-        if (formula) {
-            const reference = metadata.editCell();
-            if (reference) {
-                const cell = this.getCellOrEmpty(reference);
-                formula.setValue = this.cellToFormulaTextSetter(cell);
-
-                const formulaText = this.cellToFormulaText(cell);
-
-                console.log("onSpreadsheetMetadataEditCell " + reference + " formula text=" + formulaText);
-
-                formula.setState({
-                    value: formulaText,
-                    reference: reference,
-                });
-            }
-        }
-    }
-
-    /**
-     * Fires a new {@link SpreadsheetCellBox} which should trigger a redraw.
-     */
-    onSpreadsheetMetadataViewport(metadata) {
-        console.log("onSpreadsheetMetadataViewport", metadata);
-
-        const viewportCell = metadata.viewportCell();
-        const viewportCoordinates = metadata.viewportCoordinates();
-
-        this.setState({
-            viewportCell: viewportCell,
-            viewportCoordinates: viewportCoordinates,
-        });
-
-        const viewport = this.viewport.current;
-        if (viewport) {
-            viewport.setState({
-                home: viewportCell,
-                editCell: metadata.editCell(),
-                defaultStyle: metadata.style(),
-            });
-
-            const dimensions = this.viewportDimensions();
-            this.spreadsheetCellBoxListeners.dispatch(
-                new SpreadsheetCellBox(viewportCell,
-                    viewportCoordinates.x(),
-                    viewportCoordinates.y(),
-                    dimensions.width,
-                    dimensions.height)
-            );
-        }
-    }
-
-    /**
      * Accepts {@link SpreadsheetCellBox} and requests the {@link SpreadsheetRange} that fill the content.
      */
     onCellBoxViewportRangeUpdate(cellBox) {
         console.log("onCellBoxViewportRangeUpdate " + cellBox);
 
-        // always make request
-        this.messenger.send(this.spreadsheetApiUrl() + "/viewport/" + this.spreadsheetViewport(cellBox.reference()),
+        this.messenger.send(this.spreadsheetApiUrl() + "/viewport/" + cellBox.viewport(),
             {
                 method: "GET"
             });
-    }
-
-    /**
-     * Saves the new range in the state for later usage as the window parameter.
-     */
-    onSpreadsheetRangeSetState(range) {
-        console.log("onSpreadsheetRangeSetState " + range);
-
-        this.setState({
-            viewportRange: range,
-        });
     }
 
     /**
@@ -388,12 +301,14 @@ export default class App extends React.Component {
      * Renders the basic spreadsheet layout.
      */
     render() {
-        console.log("render");
+        const state = this.state;
+        console.log("render", state);
 
         const metadata = this.spreadsheetMetadata();
-        const style = metadata.style();
 
-        const state = this.state;
+        const spreadsheetName = metadata.spreadsheetName();
+
+        const style = metadata.style();
         const {cells, columnWidths, rowHeights} = state;
 
         const viewportDimensions = this.viewportDimensions();
@@ -408,7 +323,13 @@ export default class App extends React.Component {
             <WindowResizer dimensions={this.onWindowResized.bind(this)}>
                 <SpreadsheetBox key={"above-viewport"}
                                 dimensions={this.onAboveViewportResize.bind(this)}>
-                    <SpreadsheetAppBarTop app={this}/>
+                    <SpreadsheetAppBarTop>
+                        <SpreadsheetNameWidget ref={this.spreadsheetName}
+                                               key={spreadsheetName}
+                                               value={spreadsheetName}
+                                               setValue={this.saveSpreadsheetName.bind(this)}
+                        />
+                    </SpreadsheetAppBarTop>
                     <Divider/>
                     <SpreadsheetFormulaWidget ref={this.formula}
                                               key={[editCellReference, formulaText]}
@@ -457,18 +378,6 @@ export default class App extends React.Component {
         });
     }
 
-    // SpreadsheetCellBox...............................................................................................
-
-    spreadsheetCellBoxListeners = new Listeners();
-
-    // SpreadsheetCoordinates...........................................................................................
-
-    spreadsheetCoordinatesListeners = new Listeners();
-
-    // SpreadsheetDelta.................................................................................................
-
-    spreadsheetDeltaListeners = new Listeners();
-
     // SpreadsheetMetadata..............................................................................................
 
     spreadsheetApiUrl(metadata) {
@@ -495,11 +404,9 @@ export default class App extends React.Component {
         }
     }
 
-    spreadsheetMetadataListeners = new Listeners();
-
-    // SpreadsheetRange.................................................................................................
-
-    spreadsheetRangeListeners = new Listeners();
+    saveSpreadsheetName(name) {
+        this.saveSpreadsheetMetadata(this.state.spreadsheetMetadata.setSpreadsheetName(name));
+    }
 
     // toString.........................................................................................................
 

@@ -3,6 +3,7 @@
  * This is used to locate the origin of the viewportCoordinates and the dimensions of the cell there.
  */
 import SpreadsheetCellReference from "./SpreadsheetCellReference";
+import SpreadsheetViewport from "./SpreadsheetViewport.js";
 
 export default class SpreadsheetCellBox {
 
@@ -80,6 +81,10 @@ export default class SpreadsheetCellBox {
 
     height() {
         return this.heightValue;
+    }
+
+    viewport() {
+        return new SpreadsheetViewport(this.reference(), this.width(), this.height());
     }
 
     toJson() {
