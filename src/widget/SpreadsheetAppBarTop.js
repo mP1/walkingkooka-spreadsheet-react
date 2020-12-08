@@ -5,11 +5,9 @@ import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import IconButton from '@material-ui/core/IconButton';
 import MenuIcon from '@material-ui/icons/Menu';
-import SpreadsheetNameWidget from '../spreadsheet/SpreadsheetNameWidget.js';
-import PropTypes from "prop-types";
 
 /**
- * An header that displays a menu, followed by an editable spreadsheet name
+ * An header that displays a menu, followed by an any children which will include the spreadsheet name.
  */
 export default class SpreadsheetAppBarTop extends React.Component {
 
@@ -27,7 +25,6 @@ export default class SpreadsheetAppBarTop extends React.Component {
 
     constructor(props) {
         super(props);
-        this.app = props.app;
     }
 
     render() {
@@ -39,12 +36,8 @@ export default class SpreadsheetAppBarTop extends React.Component {
                             aria-label="menu">
                     <MenuIcon/>
                 </IconButton>
-                <SpreadsheetNameWidget app={this.app}/>
+                {this.props.children}
             </Toolbar>
         </AppBar>);
     }
-}
-
-SpreadsheetAppBarTop.propTypes = {
-    app: PropTypes.object.isRequired,
 }
