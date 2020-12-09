@@ -18,15 +18,23 @@ export default class SpreadsheetRange extends SpreadsheetRectangle{
             throw new Error("Expected string got " + text);
         }
 
-        let tokens = text.split(":");
-        if (2 !== tokens.length) {
-            throw new Error("Expected 2 tokens got " + text);
+        var range;
+        const tokens = text.split(":");
+        switch (tokens.length) {
+            case 1:
+                const cell = SpreadsheetCellReference.fromJson(tokens[0]);
+                range = new SpreadsheetRange(cell, cell);
+                break;
+            case 2:
+                range = new SpreadsheetRange(
+                    SpreadsheetCellReference.fromJson(tokens[0]),
+                    SpreadsheetCellReference.fromJson(tokens[1]));
+                break;
+            default:
+                throw new Error("Expected 1 or 2 tokens got " + text);
         }
 
-        return new SpreadsheetRange(
-            SpreadsheetCellReference.fromJson(tokens[0]),
-            SpreadsheetCellReference.fromJson(tokens[1])
-        );
+        return range;
     }
 
     constructor(begin, end) {
@@ -57,7 +65,11 @@ export default class SpreadsheetRange extends SpreadsheetRectangle{
     }
 
     toJson() {
-        return this.begin() + ":" + this.end();
+        const begin = this.begin();
+        const end = this.end();
+        return begin.equals(end) ?
+            begin.toJson() :
+            begin.toJson() + ":" + end.toJson();
     }
 
     equals(other) {
