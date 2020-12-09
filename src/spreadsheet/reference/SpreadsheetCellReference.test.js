@@ -48,22 +48,79 @@ test("create BC987", () => {
         "$BC$987");
 });
 
+// parse.............................................................................................................
+
+test("parse null fails", () => {
+    expect(() => SpreadsheetCellReference.parse(null)).toThrow("Missing text");
+});
+
+test("parse A2", () => {
+    check(SpreadsheetCellReference.parse("A2"),
+        SpreadsheetColumnReference.parse("A"),
+        SpreadsheetRowReference.parse("2"),
+        "A2");
+});
+
+test("parse $C3", () => {
+    check(SpreadsheetCellReference.parse("$C3"),
+        SpreadsheetColumnReference.parse("$C"),
+        SpreadsheetRowReference.parse("3"),
+        "C$3");
+});
+
+test("parse E$4", () => {
+    check(SpreadsheetCellReference.parse("E$4"),
+        SpreadsheetColumnReference.parse("E"),
+        SpreadsheetRowReference.parse("$4"),
+        "E$4");
+});
+
+test("parse $G$6", () => {
+    check(SpreadsheetCellReference.parse("$G$6"),
+        SpreadsheetColumnReference.parse("$G"),
+        SpreadsheetRowReference.parse("$6"),
+        "$G$6");
+});
+
+test("parse $i$8 lowercased", () => {
+    check(SpreadsheetCellReference.parse("$i$8"),
+        SpreadsheetColumnReference.parse("$i"),
+        SpreadsheetRowReference.parse("$8"),
+        "$I$8");
+});
+
+// fromJson.............................................................................................................
+
 test("fromJson null fails", () => {
     expect(() => SpreadsheetCellReference.fromJson(null)).toThrow("Missing text");
 });
 
-test("fromJson A1", () => {
-    check(SpreadsheetCellReference.fromJson("A1"),
-        column(),
-        row(),
-        "A1");
+test("fromJson A2", () => {
+    check(SpreadsheetCellReference.fromJson("A2"),
+        SpreadsheetColumnReference.parse("A"),
+        SpreadsheetRowReference.parse("2"),
+        "A2");
 });
 
-test("fromJson $A$1", () => {
-    check(SpreadsheetCellReference.fromJson("$A$1"),
-        SpreadsheetColumnReference.parse("$A"),
-        SpreadsheetRowReference.parse("$1"),
-        "$A$1");
+test("fromJson $C3", () => {
+    check(SpreadsheetCellReference.fromJson("$C3"),
+        SpreadsheetColumnReference.parse("$C"),
+        SpreadsheetRowReference.parse("3"),
+        "C$3");
+});
+
+test("fromJson E$4", () => {
+    check(SpreadsheetCellReference.fromJson("E$4"),
+        SpreadsheetColumnReference.parse("E"),
+        SpreadsheetRowReference.parse("$4"),
+        "E$4");
+});
+
+test("fromJson $G$6", () => {
+    check(SpreadsheetCellReference.fromJson("$G$6"),
+        SpreadsheetColumnReference.parse("$G"),
+        SpreadsheetRowReference.parse("$6"),
+        "$G$6");
 });
 
 // setColumn............................................................................................................

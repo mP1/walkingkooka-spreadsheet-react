@@ -33,11 +33,11 @@ export default class SpreadsheetColumnReference extends SpreadsheetColumnOrRowRe
 
         var value = 0;
         for (var i = startIndex; i < text.length; i++) {
-            var c = text.charAt(i);
+            const c = text.charAt(i).toUpperCase();
             if (c < 'A' || c > 'Z') {
-                throw new Error("Expected letter between 'A' to 'Z' at " + i + " got " + text);
+                throw new Error("Expected letter between 'A' to 'Z' or 'a' to 'z' at " + i + " got " + text);
             }
-            value = value * RADIX + text.charCodeAt(i) - A + 1;
+            value = value * RADIX + c.charCodeAt(0) - A + 1;
         }
         if (value > SpreadsheetColumnReference.MAX) {
             throw new Error("Invalid value > " + SpreadsheetColumnReference.MAX + " got " + value);
