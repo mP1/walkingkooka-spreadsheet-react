@@ -90,7 +90,7 @@ export default class SpreadsheetMessenger {
                 .then(response => {
                     const statusCode = response.status;
                     const statusText = response.statusText;
-                    switch (statusCode / 100) {
+                    switch (Math.floor(statusCode / 100)) {
                         case 1:
                             throw new Error("1xx " + statusCode + "=" + statusText);
                         case 2:
