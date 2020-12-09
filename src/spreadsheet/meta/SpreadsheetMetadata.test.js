@@ -487,11 +487,7 @@ test("equals same property values with defaults", () => {
 // helpers..............................................................................................................
 
 function checkSpreadsheetId(metadata, id) {
-    if (id) {
-        expect(metadata.spreadsheetId()).toBe(id);
-    } else {
-        expect(() => metadata.spreadsheetId()).toThrow("Missing \"spreadsheet-id\" " + metadata.toString());
-    }
+    expect(metadata.spreadsheetId()).toBe(id);
 }
 
 function checkSpreadsheetName(metadata, name) {

@@ -296,7 +296,7 @@ export default class SpreadsheetMetadata {
     }
 
     spreadsheetId() {
-        return this.getOrFail(SPREADSHEET_ID);
+        return this.get(SPREADSHEET_ID);
     }
 
     spreadsheetName() {
