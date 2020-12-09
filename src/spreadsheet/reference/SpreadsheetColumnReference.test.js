@@ -52,6 +52,36 @@ test("new ABSOLUTE", () => {
         "$B");
 });
 
+// parse...............................................................................................................
+
+test("parse upper case", () => {
+    check(SpreadsheetColumnReference.parse("A"),
+        0,
+        SpreadsheetReferenceKind.RELATIVE,
+        "A");
+});
+
+test("parse upper case absolute", () => {
+    check(SpreadsheetColumnReference.parse("$B"),
+        1,
+        SpreadsheetReferenceKind.ABSOLUTE,
+        "$B");
+});
+
+test("parse lower case", () => {
+    check(SpreadsheetColumnReference.parse("c"),
+        2,
+        SpreadsheetReferenceKind.RELATIVE,
+        "C");
+});
+
+test("parse lower case absolute", () => {
+    check(SpreadsheetColumnReference.parse("$d"),
+        3,
+        SpreadsheetReferenceKind.ABSOLUTE,
+        "$D");
+});
+
 // setKind..............................................................................................................
 
 test("set missing kind fails", () => {
