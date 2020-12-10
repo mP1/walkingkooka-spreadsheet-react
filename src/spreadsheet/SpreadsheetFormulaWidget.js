@@ -22,12 +22,19 @@ export default class SpreadsheetFormulaWidget extends React.Component {
         this.initialValue = initialValue;
         this.setValue = props.setValue;
         this.textField = React.createRef();
+        this.input = React.createRef();
+    }
+
+    focus() {
+        giveFocus(this.input.current, "giving focus");
     }
 
     render() {
         const state = this.state;
         const {reference, value} = state;
         const setValue = this.setValue;
+
+        console.log("render " + (reference ? reference : "disabled") + " formula: \"" + (value || "") + "\"");
 
         // disable if setValue is unavailable
         return (
@@ -43,8 +50,22 @@ export default class SpreadsheetFormulaWidget extends React.Component {
                                padding: "2px",
                            }
                        }}
+                       inputRef={this.input}
             />
         );
+    }
+
+    /**
+     * If the reference changed give focus to the textField.
+     */
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        const widget = this.input.current;
+        const reference = this.state.reference;
+        const previous = prevState.reference;
+
+        if (reference && !reference.equals(previous)) {
+            giveFocus(widget, "formula getting focus, reference changed from " + previous + " to " + reference);
+        }
     }
 
     // KEY HANDLING.....................................................................................................
@@ -87,4 +108,13 @@ export default class SpreadsheetFormulaWidget extends React.Component {
 SpreadsheetFormulaWidget.propTypes = {
     value: PropTypes.string.isRequired,
     setValue: PropTypes.func, // missing indicates disabled
+}
+
+function giveFocus(widget, message) {
+    if (widget) {
+        setTimeout(() => {
+            console.log(message);
+            widget.focus()
+        }, 10);
+    }
 }

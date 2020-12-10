@@ -489,7 +489,14 @@ class App extends React.Component {
      */
     editCell(reference) {
         console.log("setEditCell " + reference);
-        this.saveSpreadsheetMetadata(this.spreadsheetMetadata().setEditCell(reference));
+
+        const metadata = this.spreadsheetMetadata();
+        if (reference.equals(metadata.editCell())) {
+            const formula = this.formula.current;
+            formula && formula.focus();
+        } else {
+            this.saveSpreadsheetMetadata(metadata.setEditCell(reference));
+        }
     }
 
     // SpreadsheetFormula...............................................................................................
