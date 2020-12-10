@@ -74,8 +74,6 @@ class App extends React.Component {
         this.spreadsheetName = React.createRef();
         this.formula = React.createRef();
         this.viewport = React.createRef();
-
-        this.stop = 0; // DELETE
     }
 
     // app lifecycle....................................................................................................
