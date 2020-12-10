@@ -189,6 +189,10 @@ test("set value null fail", () => {
     expect(() => SpreadsheetMetadata.EMPTY.set("spreadsheet-id", null)).toThrow("Missing value");
 })
 
+test("set invalid value fail", () => {
+    expect(() => SpreadsheetMetadata.EMPTY.set("spreadsheet-id", 123)).toThrow("Expected string property spreadsheet-id with value 123");
+});
+
 test("set property same", () => {
     const name = new SpreadsheetName("spreadsheet-name-123");
     const metadata = new SpreadsheetMetadata({"spreadsheet-name": name});
