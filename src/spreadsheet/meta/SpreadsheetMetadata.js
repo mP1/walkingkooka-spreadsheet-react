@@ -58,6 +58,16 @@ function copyAndSet(properties,
 }
 
 /**
+ * Creates a new SpreadsheetMetadata removing the given property.
+ */
+function copyAndRemove(properties,
+                       property) {
+    const copy = Object.assign({}, properties);
+    delete copy[property];
+    return new SpreadsheetMetadata(copy);
+}
+
+/**
  * Immutable SpreadsheetMetadata, with getters and would be setters.
  */
 export default class SpreadsheetMetadata {
@@ -269,6 +279,65 @@ export default class SpreadsheetMetadata {
     }
 
     /**
+     * Would be remover that returns a new SpreadsheetMetadata if the removed value was already absent.
+     */
+    remove(property) {
+        if (!property) {
+            throw new Error("Missing property");
+        }
+        if (typeof property !== "string") {
+            throw new Error("Expected string property got " + property);
+        }
+
+        switch (property) {
+            case CREATOR:
+            case CREATE_DATE_TIME:
+            case CURRENCY_SYMBOL:
+            case DATE_FORMAT_PATTERN:
+            case DATE_PARSE_PATTERNS:
+            case DATETIME_OFFSET:
+            case DATETIME_FORMAT_PATTERN:
+            case DATETIME_PARSE_PATTERNS:
+            case DECIMAL_SEPARATOR:
+            case DEFAULTS:
+            case EDIT_CELL:
+            case EXPONENT_SYMBOL:
+            case EDIT_RANGE:
+            case EXPRESSION_NUMBER_KIND:
+            case GROUPING_SEPARATOR:
+            case LOCALE:
+            case MODIFIED_BY:
+            case MODIFIED_DATE_TIME:
+            case NEGATIVE_SIGN:
+            case NUMBER_FORMAT_PATTERN:
+            case NUMBER_PARSE_PATTERNS:
+            case PERCENTAGE_SYMBOL:
+            case POSITIVE_SIGN:
+            case ROUNDING_MODE:
+            case PRECISION:
+            case SPREADSHEET_ID:
+            case SPREADSHEET_NAME:
+            case STYLE:
+            case TEXT_FORMAT_PATTERN:
+            case TIME_FORMAT_PATTERN:
+            case TIME_PARSE_PATTERNS:
+            case TWO_DIGIT_YEAR:
+            case VIEWPORT_CELL:
+            case VIEWPORT_COORDINATES:
+            case WIDTH:
+                break;
+            default:
+                if(property.startsWith("color-")) {
+                    break;
+                }
+                throw new Error("Unknown property \"" + property + "\"");
+        }
+        return (typeof this.get(property)==="undefined") ?
+            this :
+            copyAndRemove(this.properties, property);
+    }
+
+    /**
      * Returns the SpreadsheetMetadata which will supply defaults.
      * <pre>
      * {
@@ -301,6 +370,10 @@ export default class SpreadsheetMetadata {
 
     setEditCell(cell) {
         return this.set(EDIT_CELL, cell);
+    }
+
+    removeEditCell() {
+        return this.remove(EDIT_CELL);
     }
 
     spreadsheetId() {
