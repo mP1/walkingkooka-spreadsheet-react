@@ -404,7 +404,7 @@ class App extends React.Component {
                 formula.setState({
                     value: null,
                     reference: null,
-                })
+                });
             }
         }
 
