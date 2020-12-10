@@ -194,27 +194,30 @@ export default class SpreadsheetMetadata {
             throw new Error("Missing value");
         }
 
-        let type;
+        let expectedClass;
+        let expectedTypeOf;
+
         switch (property) {
             case DEFAULTS:
-                type = SpreadsheetMetadata;
+                expectedClass = SpreadsheetMetadata;
                 break;
             case EDIT_CELL:
-                type = SpreadsheetCellReference;
+                expectedClass = SpreadsheetCellReference;
                 break;
             case SPREADSHEET_ID:
+                expectedTypeOf = "string";
                 break;
             case SPREADSHEET_NAME:
-                type = SpreadsheetName;
+                expectedClass = SpreadsheetName;
                 break;
             case STYLE:
-                type = TextStyle;
+                expectedClass = TextStyle;
                 break;
             case VIEWPORT_CELL:
-                type = SpreadsheetCellReference;
+                expectedClass = SpreadsheetCellReference;
                 break;
             case VIEWPORT_COORDINATES:
-                type = SpreadsheetCoordinates;
+                expectedClass = SpreadsheetCoordinates;
                 break;
             case CREATOR:
             case CREATE_DATE_TIME:
@@ -244,17 +247,20 @@ export default class SpreadsheetMetadata {
             case TIME_PARSE_PATTERNS:
             case TWO_DIGIT_YEAR:
             case WIDTH:
-                type = null; // TODO properties not yet supported
+                expectedClass = null; // TODO properties not yet supported
                 break;
             default:
-                if(property.startsWith("color-")) {
+                if (property.startsWith("color-")) {
                     break;
                 }
                 throw new Error("Unknown property \"" + property + "\"");
         }
-        if ((type === Number && Number.isNaN(value)) ||
-            (typeof value === "function" && !(value instanceof type))) {
-            throw new Error("Expected " + type + " property " + property + " with value " + value);
+        if ((expectedTypeOf && typeof (value) !== expectedTypeOf)) {
+            throw new Error("Expected " + expectedTypeOf + " property " + property + " with value " + value);
+        }
+        if ((expectedClass === Number && Number.isNaN(value)) ||
+            (typeof value === "function" && !(value instanceof expectedClass))) {
+            throw new Error("Expected " + expectedClass + " property " + property + " with value " + value);
         }
 
         return (Equality.safeEquals(value, this.get(property))) ?
