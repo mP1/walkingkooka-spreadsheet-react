@@ -244,6 +244,57 @@ test("set spreadsheet-id", () => {
     });
 });
 
+// set..................................................................................................................
+
+test("remove property missing fails", () => {
+    expect(() => SpreadsheetMetadata.EMPTY.remove()).toThrow("Missing property");
+});
+
+test("remove property invalid fails", () => {
+    expect(() => SpreadsheetMetadata.EMPTY.remove(123)).toThrow("Expected string property got 123");
+});
+
+test("remove property unknown fails", () => {
+    expect(() => SpreadsheetMetadata.EMPTY.remove("!unknown")).toThrow("Unknown property \"!unknown\"");
+});
+
+test("remove absent property", () => {
+    const metadata = SpreadsheetMetadata.EMPTY;
+    expect(metadata).toEqual(metadata.remove("spreadsheet-id"));
+});
+
+test("remove absent property #2", () => {
+    const metadata = SpreadsheetMetadata.EMPTY
+        .setSpreadsheetName(new SpreadsheetName("spredsheet-name-123"));
+    expect(metadata).toEqual(metadata.remove("spreadsheet-id"));
+});
+
+test("remove property", () => {
+    const editCell = SpreadsheetCellReference.parse("Z9");
+    const metadata = SpreadsheetMetadata.EMPTY.setEditCell(editCell);
+    const removed = metadata.removeEditCell();
+
+    expect(metadata).not.toEqual(removed);
+
+    checkJson(metadata, {
+        "edit-cell": "Z9",
+    });
+    checkJson(removed,
+        {});
+});
+
+test("remove property #2", () => {
+    const withSpreadsheetName = SpreadsheetMetadata.EMPTY
+        .setSpreadsheetName(new SpreadsheetName("spreadsheet-name-123"));
+
+    const editCell = SpreadsheetCellReference.parse("Z9");
+    const metadata = withSpreadsheetName.setEditCell(editCell);
+    const removed = metadata.removeEditCell();
+
+    expect(metadata).not.toEqual(removed);
+    expect(withSpreadsheetName).toEqual(removed);
+});
+
 // edit-cell............................................................................................................
 
 test("get edit-cell missing", () => {
@@ -359,6 +410,17 @@ test("all setters & getters", () => {
     expect(metadata.style()).toEqual(style);
     expect(metadata.viewportCell()).toEqual(viewportCell);
     expect(metadata.viewportCoordinates()).toEqual(coords);
+});
+
+test("all setters & removers", () => {
+    const editCell = SpreadsheetCellReference.parse("Z99");
+
+    const metadata = SpreadsheetMetadata.EMPTY
+        .setEditCell(editCell)
+        .removeEditCell();
+
+    expect(metadata.editCell()).toBeUndefined();
+    expect(metadata.isEmpty()).toBeTrue();
 });
 
 // defaults..............................................................................................................
