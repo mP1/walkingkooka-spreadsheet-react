@@ -94,6 +94,9 @@ export default class SpreadsheetMessenger {
                         case 1:
                             throw new Error("1xx " + statusCode + "=" + statusText);
                         case 2:
+                            if(204 === statusCode) {
+                                throw new Error(statusCode + "=" + statusText + " for " + url);
+                            }
                             responseBuilder.statusCode = statusCode;
                             responseBuilder.statusText = statusText;
                             responseBuilder.headers = response.headers;
