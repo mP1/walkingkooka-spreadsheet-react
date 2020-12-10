@@ -202,6 +202,8 @@ export default class SpreadsheetMetadata {
             case EDIT_CELL:
                 type = SpreadsheetCellReference;
                 break;
+            case SPREADSHEET_ID:
+                break;
             case SPREADSHEET_NAME:
                 type = SpreadsheetName;
                 break;
