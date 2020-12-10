@@ -23,8 +23,8 @@ export default class HistoryHash {
 function parse0(pathname) {
     // turn empty string tokens into undefined
     // eslint-disable-next-line no-unused-vars
-    const [slash, spreadsheetId, spreadsheetName, cellReference, action] = pathname.split("/")
-        .map(s => s === "" ? undefined : s);
+    const [slash, spreadsheetId, spreadsheetName, cellReference, action] = pathname.split("/") // lgtm[js/unused-local-variable]
+        .map(s => s === "" ? undefined : s); // lgtm [js/unused-local-variable]
     return {
         spreadsheetId: spreadsheetId,
         spreadsheetName: spreadsheetName,
