@@ -233,6 +233,13 @@ test("set property different", () => {
         });
 })
 
+test("set spreadsheet-id", () => {
+    const metadata = SpreadsheetMetadata.EMPTY.set("spreadsheet-id", "123");
+    checkJson(metadata, {
+        "spreadsheet-id": "123",
+    });
+});
+
 // edit-cell............................................................................................................
 
 test("get edit-cell missing", () => {
