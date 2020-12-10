@@ -37,23 +37,20 @@ export default class App extends React.Component {
             },
         }
 
-        const handleSpreadsheetDelta = (json) => {
-            const delta = SpreadsheetDelta.fromJson(json);
-            const state = this.state;
-            this.setState({
-                cells: state.cells.set(delta.referenceToCellMap()),
-                columnWidths: state.columnWidths.set(delta.maxColumnWidths()),
-                rowHeights: state.rowHeights.set(delta.maxRowHeights()),
-            });
-        }
-
         // the names must match the Class.getSimpleName in walkingkooka-spreadsheet
         this.messenger = new SpreadsheetMessenger({
             "SpreadsheetCellBox": json => this.onCellBoxViewportRangeUpdate(SpreadsheetCellBox.fromJson(json)),
             "SpreadsheetCoordinates": json => this.setState({viewportCoordinates: SpreadsheetCoordinates.fromJson(json)}),
-            "SpreadsheetDeltaNonWindowed": handleSpreadsheetDelta,
-            "SpreadsheetDeltaWindowed": handleSpreadsheetDelta,
-            "SpreadsheetMetadataNonEmpty": json => this.setState({spreadsheetMetadata: SpreadsheetMetadata.fromJson(json)}),
+            "SpreadsheetDelta": json => {
+                const delta = SpreadsheetDelta.fromJson(json);
+                const state = this.state;
+                this.setState({
+                    cells: state.cells.set(delta.referenceToCellMap()),
+                    columnWidths: state.columnWidths.set(delta.maxColumnWidths()),
+                    rowHeights: state.rowHeights.set(delta.maxRowHeights()),
+                });
+            },
+            "SpreadsheetMetadata": json => this.setState({spreadsheetMetadata: SpreadsheetMetadata.fromJson(json)}),
             "SpreadsheetRange": json => this.setState({viewportRange: SpreadsheetRange.fromJson(json)}),
         });
 
