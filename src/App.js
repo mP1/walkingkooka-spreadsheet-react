@@ -1,4 +1,5 @@
 import React from 'react';
+import {withRouter} from "react-router";
 import './App.css';
 
 import SpreadsheetAppBarTop from "./widget/SpreadsheetAppBarTop.js";
@@ -20,10 +21,21 @@ import SpreadsheetCell from "./spreadsheet/SpreadsheetCell";
 import SpreadsheetFormula from "./spreadsheet/SpreadsheetFormula";
 import TextStyle from "./text/TextStyle.js";
 import SpreadsheetNameWidget from "./spreadsheet/SpreadsheetNameWidget.js";
+import Equality from "./Equality.js";
+import SpreadsheetName from "./spreadsheet/SpreadsheetName.js";
+import SpreadsheetCellReference from "./spreadsheet/reference/SpreadsheetCellReference.js";
+import HistoryHash from "./util/HistoryHash.js";
 
-export default class App extends React.Component {
+/**
+ * History token noting that a cell formula is being edited.
+ */
+const FORMULA_EDIT_HASH = "formula";
+
+class App extends React.Component {
     constructor(props) {
         super(props);
+
+        this.history = props.history;
 
         this.state = {
             spreadsheetEngineEvaluation: SpreadsheetEngineEvaluation.COMPUTE_IF_NECESSARY,
@@ -50,7 +62,10 @@ export default class App extends React.Component {
                     rowHeights: state.rowHeights.set(delta.maxRowHeights()),
                 });
             },
-            "SpreadsheetMetadata": json => this.setState({spreadsheetMetadata: SpreadsheetMetadata.fromJson(json)}),
+            "SpreadsheetMetadata": json => this.setState({
+                createEmptySpreadsheet: false, // cancel any wait for a create, this stops history/state checks from failing and creating again and again
+                spreadsheetMetadata: SpreadsheetMetadata.fromJson(json)
+            }),
             "SpreadsheetRange": json => this.setState({viewportRange: SpreadsheetRange.fromJson(json)}),
         });
 
@@ -59,6 +74,8 @@ export default class App extends React.Component {
         this.spreadsheetName = React.createRef();
         this.formula = React.createRef();
         this.viewport = React.createRef();
+
+        this.stop = 0; // DELETE
     }
 
     // app lifecycle....................................................................................................
@@ -67,27 +84,248 @@ export default class App extends React.Component {
      * Makes a request which returns some basic default metadata, and without cells the spreadsheet will be empty.
      */
     createEmptySpreadsheet() {
+        console.log("createEmptySpreadsheet");
+
+        this.setState({
+           createEmptySpreadsheet: true,
+        });
+
         this.messenger.send("/api/spreadsheet",
             {
                 method: "POST"
             });
     }
 
+    // history lifecycle................................................................................................
+
+    /**
+     * Fired whenever the browser hash changes.
+     */
+    onHistoryChange(location) {
+        const pathname = location.pathname;
+        console.log("onHistoryChange " + pathname, location);
+
+        this.historyHashVerify(pathname);
+    }
+
+    currentHistoryHashVerify() {
+        const location = this.history.location;
+        const pathname = location.pathname;
+        console.log("currentHistoryHashVerify " + pathname, "location", location, "state", this.state);
+
+        this.historyHashVerify(pathname);
+    }
+
+    historyHashVerify(pathname) {
+        // wait until sizes are known then check hash against state.
+        if(this.mounted) {
+            const state = this.state;
+            const metadata = state.spreadsheetMetadata;
+            const createEmptySpreadsheet = state.createEmptySpreadsheet;
+
+            const {spreadsheetId, spreadsheetName, cellReference, action} = HistoryHash.parse(pathname);
+            console.log("historyHashVerify " + pathname, "spreadsheetId", spreadsheetId, "spreadsheetName", spreadsheetName, "cell", cellReference, "action", action, "metadata", metadata, "createEmptySpreadsheet", createEmptySpreadsheet);
+
+            // each method returns true if no history/state change happened allowing the next method to execute
+            !createEmptySpreadsheet &&
+            this.historySpreadsheetIdCreateEmptyOrLoadOrNothing(spreadsheetId, metadata) &&
+            this.historySpreadsheetNameDifferentUpdateHistory(spreadsheetName, metadata) &&
+            this.historyCellActionUpdate(cellReference, action, metadata);
+        }
+    }
+
+    /**
+     * Tests if the given spreadsheetId is different from the existing, creating or loading an existing new spreadsheet and return false.
+     * The history is not changed.
+     */
+    historySpreadsheetIdCreateEmptyOrLoadOrNothing(spreadsheetId, metadata) {
+        // if already loading dont check if hash matches state
+        const previous = metadata.spreadsheetId();
+        const same = Equality.safeEquals(spreadsheetId, previous);
+
+        if(same) {
+            if(!previous) {
+                console.log("history hash spreadsheetId missing creating initial empty spreadsheet");
+                this.createEmptySpreadsheet();
+            }
+        } else {
+            console.log("history hash spreadsheetId changed from " + previous + " to " + spreadsheetId);
+
+            // load the spreadsheet with $spreadsheetId or create a new spreadsheet if missing.
+            if(spreadsheetId) {
+                this.loadSpreadsheetMetadata(spreadsheetId);
+            } else {
+                this.createEmptySpreadsheet();
+            }
+        }
+
+        return same;
+    }
+
+    /**
+     * If the history spreadsheet name is invalid/different from SpreadsheetMetadata update the history and return false.
+     */
+    historySpreadsheetNameDifferentUpdateHistory(hashName, metadata) {
+        var hashSpreadsheetName;
+        try {
+            hashSpreadsheetName = new SpreadsheetName(hashName);
+        } catch (invalidName) {
+        }
+
+        const metadataSpreadsheetName = metadata.spreadsheetName();
+        const same = Equality.safeEquals(hashSpreadsheetName, metadataSpreadsheetName);
+        if (!same) {
+            // update url to match actual SpreadsheetMetadata.spreadsheetName
+            this.historyPush([metadata.spreadsheetId(), metadataSpreadsheetName],
+                "History hash updating from " + hashName + " to match state " + metadataSpreadsheetName);
+        }
+        return same;
+    }
+
+    /**
+     * If the cell is invalid reset the history hash to $spreadsheetId / $spreadsheetName.
+     * When the cell reference is valid, verify the action, if either changed update the history to $spreadsheetId / $spreadsheetName / $cell / $action
+     */
+    historyCellActionUpdate(cell, action, metadata) {
+        var clearHistoryCellAction = true; // only leave if both are valid.
+
+        if (cell && action) {
+            // cell and action present validate the combination.
+            try {
+                const hashSpreadsheetCellReference = SpreadsheetCellReference.parse(cell);
+
+                switch (action) {
+                    case FORMULA_EDIT_HASH:
+                        // state does not match hash, update state.
+                        const metadataEditCell = metadata.editCell();
+                        if (!Equality.safeEquals(cell, metadataEditCell)) {
+                            this.setState({
+                                spreadsheetMetadata: metadata.setEditCell(hashSpreadsheetCellReference),
+                            });
+                        }
+                        clearHistoryCellAction = false;
+                        break;
+                    default:
+                        // invalid action update history clearing cell/action.
+                        clearHistoryCellAction = true;
+                        break;
+                }
+            } catch (invalidCellReference) {
+            }
+        }
+
+        if(clearHistoryCellAction) {
+            if(metadata.editCell()) {
+                console.log("History hash invalid clearing editCell", metadata);
+
+                this.setState({
+                    spreadsheetMetadata: metadata.removeEditCell(),
+                });
+            }
+
+            this.historyPush([metadata.spreadsheetId(), metadata.spreadsheetName()],
+                "Invalid hash cell reference or action, clearing cell/action (" + cell + "/" + action + ")");
+        }
+    }
+
+    /**
+     * If the location is new log the message and push the history token.
+     */
+    historyPush(tokens, message) {
+        // find the first undefined and ignore following tokens.
+        for(var i = 0; i < tokens.length; i++) {
+            if(!tokens[i]) {
+                tokens = tokens.slice(0, i);
+                break;
+            }
+        }
+
+        const location = HistoryHash.concat(tokens);
+        if (!message) {
+            throw new Error("Missing message");
+        }
+        if (typeof message !== "string") {
+            throw new Error("Expected String message got " + message);
+        }
+
+        const history = this.history;
+        if (history.location.pathname !== location) {
+            console.log(message);
+            this.history.push(location);
+        }
+    }
+
     // component lifecycle..............................................................................................
 
     componentDidMount() {
-        this.createEmptySpreadsheet(); // TODO add logic to allow selecting: create empty, prompt to load and more.
+        console.log("App mounted");
+        this.mounted = true;
+        this.history.listen(this.onHistoryChange.bind(this));
+        this.currentHistoryHashVerify();
+    }
+
+    componentWillUnmount() {
+        console.log("App unmounted");
+        this.mounted = false;
+        // TODO history.unlisten
     }
 
     /**
      * Computes and returns the cell viewport dimensions. This should be called whenever the window or header size changes.
      */
     componentDidUpdate(prevProps, prevState, snapshot) {
-        console.log("componentDidUpdate", "prevState", prevState, "state", this.state);
+        const state = this.state;
+        console.log("componentDidUpdate", "prevState", prevState, "state", state);
 
+        const hash = {};
+        this.onSpreadsheetMetadataSpreadsheetId(prevState, hash);
+        this.onSpreadsheetMetadataSpreadsheetName(hash);
         this.onSpreadsheetViewport(prevState);
-        this.onSpreadsheetFormula();
-        this.onSpreadsheetMetadataSpreadsheetName();
+        this.onSpreadsheetFormula(hash);
+
+        const {spreadsheetId, spreadsheetName, cellReference, action} = hash;
+        this.historyPush([spreadsheetId, spreadsheetName, cellReference, action], "state updated");
+    }
+
+    /**
+     * If spreadsheet id changed clear caches related to the previous spreadsheet.
+     */
+    onSpreadsheetMetadataSpreadsheetId(prevState, hash) {
+        const previous = prevState.spreadsheetMetadata.spreadsheetId();
+        const current = this.state.spreadsheetMetadata.spreadsheetId();
+
+        if (!Equality.safeEquals(current, previous)) {
+            console.log("spreadsheetId changed from " + previous + " to " + current + " clearing state cell, columnWidths, rowHeight (caches)");
+            this.setState({
+                createEmptySpreadsheet: false,
+                spreadsheetEngineEvaluation: SpreadsheetEngineEvaluation.COMPUTE_IF_NECESSARY,
+                cells: ImmutableMap.EMPTY,
+                columnWidths: ImmutableMap.EMPTY,
+                rowHeights: ImmutableMap.EMPTY,
+            });
+        }
+        hash.spreadsheetId = current;
+    }
+
+    /**
+     * Updates the SpreadsheetNameWidget whenever metadata is updated.
+     */
+    onSpreadsheetMetadataSpreadsheetName(hash) {
+        const metadata = this.state.spreadsheetMetadata;
+        const widget = this.spreadsheetName.current;
+        const name = metadata.spreadsheetName();
+
+        if (widget && name) {
+            console.log("onSpreadsheetMetadataSpreadsheetName updated from " + widget.state.value + " to ", metadata);
+
+            widget.setState({
+                value: name,
+            });
+        } else {
+            console.log("onSpreadsheetMetadataSpreadsheetName widget not updated", "widget", widget.current, "state.metadata", metadata);
+        }
+
+        hash.spreadsheetName = name;
     }
 
     /**
@@ -144,14 +382,14 @@ export default class App extends React.Component {
     /**
      * Updates the state of the formula widget so it matches the metadata editCell
      */
-    onSpreadsheetFormula() {
+    onSpreadsheetFormula(hash) {
         const metadata = this.state.spreadsheetMetadata;
         const formula = this.formula.current;
+        const reference = metadata.editCell();
 
         console.log("onSpreadsheetFormula", "formula", formula.current, "metadata", metadata);
 
         if (formula) {
-            const reference = metadata.editCell();
             if (reference) {
                 const cell = this.getCellOrEmpty(reference);
                 formula.setValue = this.cellToFormulaTextSetter(cell);
@@ -164,29 +402,20 @@ export default class App extends React.Component {
                     value: formulaText,
                     reference: reference,
                 });
+            } else {
+                formula.setState({
+                    value: null,
+                    reference: null,
+                })
             }
         }
-    }
 
-    /**
-     * Updates the SpreadsheetNameWidget whenever metadata is updated.
-     */
-    onSpreadsheetMetadataSpreadsheetName() {
-        const metadata = this.state.spreadsheetMetadata;
-        const widget = this.spreadsheetName.current;
-        const name = metadata.spreadsheetName();
-
-        if (widget && name) {
-            console.log("onSpreadsheetMetadataSpreadsheetName updated from " + widget.state.value + " to ", metadata);
-
-            widget.setState({
-                value: name,
-            });
-        } else {
-            console.log("onSpreadsheetMetadataSpreadsheetName widget not updated", "widget", widget.current, "state.metadata", metadata);
+        if(reference) {
+            hash.cellReference = reference;
+            hash.action = FORMULA_EDIT_HASH;
         }
     }
-    
+
     /**
      * Returns the viewport dimensions of the area allocated to the cells.
      */
@@ -395,6 +624,18 @@ export default class App extends React.Component {
     }
 
     /**
+     * Loads the spreadsheet metadata with the given spreadsheet id.
+     */
+    // TODO handle unknown spreadsheet id
+    loadSpreadsheetMetadata(id) {
+        console.log("loadSpreadsheetMetadata " + id);
+
+        this.messenger.send(this.spreadsheetMetadataApiUrl(id), {
+            method: "GET",
+        });
+    }
+
+    /**
      * If the new metadata is different call the save service otherwise skip.
      */
     saveSpreadsheetMetadata(metadata) {
@@ -420,3 +661,5 @@ export default class App extends React.Component {
         return this.spreadsheetMetadata().toString();
     }
 }
+
+export default withRouter(App);
