@@ -315,7 +315,6 @@ export default class App extends React.Component {
         const editCell = editCellReference && this.getCellOrEmpty(editCellReference);
 
         const formulaText = this.cellToFormulaText(editCell);
-
         return (
             <WindowResizer dimensions={this.onWindowResized.bind(this)}>
                 <SpreadsheetBox key={"above-viewport"}
