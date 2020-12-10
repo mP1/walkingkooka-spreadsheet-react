@@ -173,17 +173,17 @@ export default class App extends React.Component {
      */
     onSpreadsheetMetadataSpreadsheetName() {
         const metadata = this.state.spreadsheetMetadata;
-        const spreadsheetName = this.spreadsheetName.current;
+        const widget = this.spreadsheetName.current;
         const name = metadata.spreadsheetName();
 
-        if (spreadsheetName && name) {
-            console.log("onSpreadsheetMetadataSpreadsheetName updated from metadata to ", metadata.name);
+        if (widget && name) {
+            console.log("onSpreadsheetMetadataSpreadsheetName updated from " + widget.state.value + " to ", metadata);
 
-            spreadsheetName.setState({
+            widget.setState({
                 value: name,
             });
         } else {
-            console.log("onSpreadsheetMetadataSpreadsheetName widget not updated", "spreadsheetName", spreadsheetName.current, "metadata", metadata);
+            console.log("onSpreadsheetMetadataSpreadsheetName widget not updated", "widget", widget.current, "state.metadata", metadata);
         }
     }
     
