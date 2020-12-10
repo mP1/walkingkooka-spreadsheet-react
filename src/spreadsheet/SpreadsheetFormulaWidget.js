@@ -3,7 +3,7 @@ import TextField from '@material-ui/core/TextField';
 import PropTypes from "prop-types";
 
 /**
- * A widget that supports editing formula text.
+ * A widget that supports editing formula text. The widget is disabled when state.reference is falsey.
  * An falsey value will disable the text box used to edit the formula text.
  * ENTER calls the setter, ESCAPE reloads the initial value(text).
  */
@@ -29,14 +29,12 @@ export default class SpreadsheetFormulaWidget extends React.Component {
         const {reference, value} = state;
         const setValue = this.setValue;
 
-        console.log("SpreadsheetFormulaWidget.render reference=" + reference + " value=" + value, "setValue", setValue);
-
         // disable if setValue is unavailable
         return (
             <TextField ref={this.textField}
                        key={[reference, value, setValue]}
                        defaultValue={value}
-                       disabled={!setValue}
+                       disabled={!reference}
                        fullWidth={true}
                        onKeyDown={this.onKeyDown.bind(this)}
                        placeholder={(reference && reference.toString()) || ""}
