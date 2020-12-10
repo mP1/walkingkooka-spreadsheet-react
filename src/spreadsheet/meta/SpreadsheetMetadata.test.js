@@ -329,6 +329,7 @@ test("set viewport-coordinates", () => {
 // set..................................................................................................................
 
 test("all setters & getters", () => {
+    const editCell = SpreadsheetCellReference.parse("Z99");
     const name = new SpreadsheetName("Spreadsheet-name-123");
     const style = TextStyle.EMPTY
         .set("width", PixelLength.parse("123px"));
@@ -336,11 +337,13 @@ test("all setters & getters", () => {
     const viewportCell = SpreadsheetCellReference.parse("A99");
 
     const metadata = SpreadsheetMetadata.EMPTY
+        .setEditCell(editCell)
         .setSpreadsheetName(name)
         .setStyle(style)
         .setViewportCell(viewportCell)
         .setViewportCoordinates(coords);
 
+    expect(metadata.editCell()).toEqual(editCell);
     expect(metadata.spreadsheetName()).toEqual(name);
     expect(metadata.style()).toEqual(style);
     expect(metadata.viewportCell()).toEqual(viewportCell);
