@@ -100,7 +100,7 @@ export default class SpreadsheetMessenger {
                                     throw new Error(statusCode + "=" + statusText);
                                 }
                                 // eslint-disable-next-line no-unused-vars
-                                const [method, type, actualMessage] = components;
+                                const [method, type, actualMessage] = components; // lgtm [js/unused-local-variable]
                                 throw new Error("Unknown " + type + " in " + url);
                             }
                             responseBuilder.statusCode = statusCode;

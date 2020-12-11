@@ -56,7 +56,7 @@ class App extends React.Component {
             "SpreadsheetDelta": json => {
                 const delta = SpreadsheetDelta.fromJson(json);
                 const state = this.state;
-                this.setState({
+                this.setState({ // lgtm [js/react/inconsistent-state-update]
                     cells: state.cells.set(delta.referenceToCellMap()),
                     columnWidths: state.columnWidths.set(delta.maxColumnWidths()),
                     rowHeights: state.rowHeights.set(delta.maxRowHeights()),
