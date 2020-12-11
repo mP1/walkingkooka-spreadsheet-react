@@ -95,6 +95,34 @@ class App extends React.Component {
             });
     }
 
+    /**
+     * Updates the editability of the spreadsheet name, which also includes updating the history.
+     */
+    editSpreadsheetName(mode) {
+        const widget = this.spreadsheetName.current;
+        widget && widget.edit(mode);
+
+        const metadata = this.spreadsheetMetadata();
+        const spreadsheetId = metadata.spreadsheetId();
+        const spreadsheetName = metadata.spreadsheetName();
+
+        var message;
+        const hash = [spreadsheetId, spreadsheetName];
+        if (mode) {
+            hash.push("name", "edit");
+            message = "History hash updated, begin edit spreadsheet name";
+        } else {
+            message = "History hash updated, stop edit spreadsheet name";
+        }
+
+        this.historyPush(hash, message);
+
+        // stop editing cell if an edit was happening.
+        if(mode) {
+            this.editCell()
+        }
+    }
+
     // history lifecycle................................................................................................
 
     /**
@@ -119,21 +147,39 @@ class App extends React.Component {
         this.historyHashVerify(pathname);
     }
 
+    /**
+     * Verifies the hash pathname against the state
+     */
     historyHashVerify(pathname) {
         // wait until sizes are known then check hash against state.
-        if(this.mounted) {
+        if (this.mounted) {
             const state = this.state;
             const metadata = state.spreadsheetMetadata;
             const createEmptySpreadsheet = state.createEmptySpreadsheet;
 
-            const {spreadsheetId, spreadsheetName, cellReference, action} = HistoryHash.parse(pathname);
-            console.log("historyHashVerify " + pathname, "spreadsheetId", spreadsheetId, "spreadsheetName", spreadsheetName, "cell", cellReference, "action", action, "metadata", metadata, "createEmptySpreadsheet", createEmptySpreadsheet);
+            console.log("historyHashVerify " + pathname);
 
-            // each method returns true if no history/state change happened allowing the next method to execute
-            !createEmptySpreadsheet &&
-            this.historySpreadsheetIdCreateEmptyOrLoadOrNothing(spreadsheetId, metadata) &&
-            this.historySpreadsheetNameDifferentUpdateHistory(spreadsheetName, metadata) &&
-            this.historyCellActionUpdate(cellReference, action, metadata);
+            if (!createEmptySpreadsheet) {
+                const hash = HistoryHash.parse(pathname);
+                const spreadsheetId = hash.spreadsheetId;
+                if (this.historySpreadsheetIdCreateEmptyOrLoadOrNothing(spreadsheetId, metadata)) {
+                    const spreadsheetName = hash.spreadsheetName;
+                    if (this.historySpreadsheetNameDifferentUpdateHistory(spreadsheetName, metadata)) {
+                        const target = hash.target;
+                        switch (target) {
+                            case "cell":
+                                this.historyCellAction(hash, metadata);
+                                break;
+                            case "name":
+                                this.historySpreadsheetNameAction(hash, metadata);
+                                break;
+                            default:
+                                target && this.historyUnknownTarget(hash, metadata);
+                                break;
+                        }
+                    }
+                }
+            }
         }
     }
 
@@ -189,19 +235,20 @@ class App extends React.Component {
      * If the cell is invalid reset the history hash to $spreadsheetId / $spreadsheetName.
      * When the cell reference is valid, verify the action, if either changed update the history to $spreadsheetId / $spreadsheetName / $cell / $action
      */
-    historyCellActionUpdate(cell, action, metadata) {
+    historyCellAction(hash, metadata) {
+        const {cellReference, action} = hash;
         var clearHistoryCellAction = true; // only leave if both are valid.
 
-        if (cell && action) {
-            // cell and action present validate the combination.
+        if (cellReference && action) {
+            // cellReference and action present validate the combination.
             try {
-                const hashSpreadsheetCellReference = SpreadsheetCellReference.parse(cell);
+                const hashSpreadsheetCellReference = SpreadsheetCellReference.parse(cellReference);
 
                 switch (action) {
                     case FORMULA_EDIT_HASH:
                         // state does not match hash, update state.
                         const metadataEditCell = metadata.editCell();
-                        if (!Equality.safeEquals(cell, metadataEditCell)) {
+                        if (!Equality.safeEquals(cellReference, metadataEditCell)) {
                             this.setState({
                                 spreadsheetMetadata: metadata.setEditCell(hashSpreadsheetCellReference),
                             });
@@ -209,7 +256,7 @@ class App extends React.Component {
                         clearHistoryCellAction = false;
                         break;
                     default:
-                        // invalid action update history clearing cell/action.
+                        // invalid action update history clearing cellReference/action.
                         clearHistoryCellAction = true;
                         break;
                 }
@@ -225,8 +272,31 @@ class App extends React.Component {
             }
 
             this.historyPush([metadata.spreadsheetId(), metadata.spreadsheetName()],
-                "Invalid cell reference or action, clearing cell/action (" + cell + "/" + action + ")");
+                "Invalid cell reference or action, clearing cell/action (" + cellReference + "/" + action + ")");
         }
+    }
+
+    /**
+     * Handles any actions in the hash directly related to the spreadsheet name.
+     */
+    historySpreadsheetNameAction(hash, metadata) {
+        const action = hash.action;
+        switch (action) {
+            case "edit":
+                this.editSpreadsheetName(true);
+                break;
+            default:
+                this.editSpreadsheetName(false);
+                break;
+        }
+    }
+
+    /**
+     * The history hash contains an unknown target remove the target and following from the history hash.
+     */
+    historyUnknownTarget(hash, metadata) {
+        const {spreadsheetId, spreadsheetName} = hash;
+        this.historyPush([spreadsheetId, spreadsheetName], "History hash invalid target and parameters");
     }
 
     /**
@@ -274,7 +344,7 @@ class App extends React.Component {
     }
 
     /**
-     * Computes and returns the cell viewport dimensions. This should be called whenever the window or header size changes.
+     * Reads the state and verifies each component with a special case remembering if the spreadsheet name is being edited.
      */
     componentDidUpdate(prevProps, prevState, snapshot) {
         const state = this.state;
@@ -285,6 +355,17 @@ class App extends React.Component {
         this.onSpreadsheetMetadataSpreadsheetName(hash);
         this.onSpreadsheetViewport(prevState);
         this.onSpreadsheetFormula(hash);
+
+        // special case restore /name/edit if spreadsheet name is being edited.
+        if(hash.length >= 2) {
+            const spreadsheetNameWidget = this.spreadsheetName.current;
+            if(spreadsheetNameWidget && spreadsheetNameWidget.isEdit()) {
+                hash.length = 2;
+                hash.push("name", "edit");
+
+
+            }
+        }
 
         this.historyPush(hash, "State updated from ", prevState, "to", state);
     }
@@ -488,17 +569,24 @@ class App extends React.Component {
     }
 
     /**
-     * This is called whenever a cell is clicked or selected for editing.
+     * This is called whenever a cell is clicked or selected for editing and may be used to stop editing a cell.
      */
     editCell(reference) {
-        console.log("setEditCell " + reference);
+        console.log("editCell " + reference);
 
         const metadata = this.spreadsheetMetadata();
-        if (reference.equals(metadata.editCell())) {
-            const formula = this.formula.current;
-            formula && formula.focus();
+        const metadataEditCell = metadata.editCell();
+
+        if (Equality.safeEquals(reference, metadataEditCell)) {
+            if (reference) {
+                // focus cell again
+                const formula = this.formula.current;
+                formula && formula.focus();
+            }
         } else {
-            this.saveSpreadsheetMetadata(metadata.setEditCell(reference));
+            this.saveSpreadsheetMetadata(reference ?
+                metadata.setEditCell(reference) :
+                metadata.removeEditCell());
         }
     }
 
@@ -563,6 +651,7 @@ class App extends React.Component {
                                                key={spreadsheetName}
                                                value={spreadsheetName}
                                                setValue={this.saveSpreadsheetName.bind(this)}
+                                               setEdit={this.editSpreadsheetName.bind(this)}
                         />
                     </SpreadsheetAppBarTop>
                     <Divider/>
@@ -570,7 +659,8 @@ class App extends React.Component {
                                               key={[editCellReference, formulaText]}
                                               reference={editCellReference}
                                               value={formulaText}
-                                              setValue={editCellReference && this.cellToFormulaTextSetter(editCell)}/>
+                                              setValue={editCellReference && this.cellToFormulaTextSetter(editCell)}
+                    />
                     <Divider/>
                 </SpreadsheetBox>
                 <SpreadsheetViewportWidget key={[viewportDimensions, cells, columnWidths, rowHeights, style, viewportCell, editCell]}

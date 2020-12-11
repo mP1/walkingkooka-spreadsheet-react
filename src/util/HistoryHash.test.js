@@ -100,6 +100,16 @@ test("parse spreadsheetId/spreadsheetname/target/cell/cell-reference/action/extr
         });
 });
 
+test("parse spreadsheetId/spreadsheetname/name/edit", () => {
+    expect(HistoryHash.parse("/1/spreadsheet-name-2/name/edit"))
+        .toStrictEqual({
+            spreadsheetId: "1",
+            spreadsheetName: "spreadsheet-name-2",
+            target: "name",
+            action: "edit",
+        });
+});
+
 test("parse spreadsheetId/spreadsheetname/unknown/unknown", () => {
     expect(HistoryHash.parse("/1/spreadsheet-name-2/unknown-3/unknown-4"))
         .toStrictEqual({
