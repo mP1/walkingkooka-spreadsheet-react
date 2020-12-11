@@ -24,8 +24,12 @@ export default function textNodeJsonSupportFromJson(json) {
     if (typeof type !== "string") {
         throw new Error("Expected String type got " + JSON.stringify(json));
     }
-    if (!value) {
-        throw new Error("Missing value got " + JSON.stringify(json));
+    switch(typeof value) {
+        case "undefined":
+        case "null":
+            throw new Error("Missing value got " + JSON.stringify(json));
+        default:
+            break;
     }
 
     switch (type) {
