@@ -25,8 +25,7 @@ test("parse slash", () => {
         .toStrictEqual({
             spreadsheetId: undefined,
             spreadsheetName: undefined,
-            cellReference: undefined,
-            action: undefined,
+            target: undefined,
         });
 });
 
@@ -35,8 +34,7 @@ test("parse spreadsheetId", () => {
         .toStrictEqual({
             spreadsheetId: "123",
             spreadsheetName: undefined,
-            cellReference: undefined,
-            action: undefined,
+            target: undefined,
         });
 });
 
@@ -45,8 +43,7 @@ test("parse spreadsheetId/spreadsheetname", () => {
         .toStrictEqual({
             spreadsheetId: "1",
             spreadsheetName: "spreadsheet-name-2",
-            cellReference: undefined,
-            action: undefined,
+            target: undefined,
         });
 });
 
@@ -55,58 +52,60 @@ test("parse spreadsheetId/spreadsheetname/", () => {
         .toStrictEqual({
             spreadsheetId: "1",
             spreadsheetName: "spreadsheet-name-2",
+            target: undefined,
+        });
+});
+
+test("parse spreadsheetId/spreadsheetname/cell", () => {
+    expect(HistoryHash.parse("/1/spreadsheet-name-2/cell/"))
+        .toStrictEqual({
+            spreadsheetId: "1",
+            spreadsheetName: "spreadsheet-name-2",
+            target: "cell",
             cellReference: undefined,
             action: undefined,
         });
 });
 
-test("parse spreadsheetId/spreadsheetname/cell", () => {
-    expect(HistoryHash.parse("/1/spreadsheet-name-2/cell-3"))
+test("parse spreadsheetId/spreadsheetname/cell/cell-reference", () => {
+    expect(HistoryHash.parse("/1/spreadsheet-name-2/cell/cell-4/"))
         .toStrictEqual({
             spreadsheetId: "1",
             spreadsheetName: "spreadsheet-name-2",
-            cellReference: "cell-3",
+            target: "cell",
+            cellReference: "cell-4",
             action: undefined,
         });
 });
 
-test("parse spreadsheetId/spreadsheetname/cell/", () => {
-    expect(HistoryHash.parse("/1/spreadsheet-name-2/cell-3/"))
+test("parse spreadsheetId/spreadsheetname/cell/cell-reference/action", () => {
+    expect(HistoryHash.parse("/1/spreadsheet-name-2/cell/cell-4/action-5"))
         .toStrictEqual({
             spreadsheetId: "1",
             spreadsheetName: "spreadsheet-name-2",
-            cellReference: "cell-3",
-            action: undefined,
+            target: "cell",
+            cellReference: "cell-4",
+            action: "action-5",
         });
 });
 
-test("parse spreadsheetId/spreadsheetname/cell/action", () => {
-    expect(HistoryHash.parse("/1/spreadsheet-name-2/cell-3/action-4"))
+test("parse spreadsheetId/spreadsheetname/target/cell/cell-reference/action/extra", () => {
+    expect(HistoryHash.parse("/1/spreadsheet-name-2/cell/cell-4/action-5/extra-6"))
         .toStrictEqual({
             spreadsheetId: "1",
             spreadsheetName: "spreadsheet-name-2",
-            cellReference: "cell-3",
-            action: "action-4",
+            target: "cell",
+            cellReference: "cell-4",
+            action: "action-5",
         });
 });
 
-test("parse spreadsheetId/spreadsheetname/cell/action/", () => {
-    expect(HistoryHash.parse("/1/spreadsheet-name-2/cell-3/action-4/"))
+test("parse spreadsheetId/spreadsheetname/unknown/unknown", () => {
+    expect(HistoryHash.parse("/1/spreadsheet-name-2/unknown-3/unknown-4"))
         .toStrictEqual({
             spreadsheetId: "1",
             spreadsheetName: "spreadsheet-name-2",
-            cellReference: "cell-3",
-            action: "action-4",
-        });
-});
-
-test("parse spreadsheetId/spreadsheetname/cell/action/extra ignored", () => {
-    expect(HistoryHash.parse("/1/spreadsheet-name-2/cell-3/action-4/extra-5"))
-        .toStrictEqual({
-            spreadsheetId: "1",
-            spreadsheetName: "spreadsheet-name-2",
-            cellReference: "cell-3",
-            action: "action-4",
+            target: "unknown-3",
         });
 });
 
@@ -148,16 +147,21 @@ test("concat tokens spreadsheet-id, spreadsheet-name", () => {
 });
 
 test("concat tokens spreadsheet-id, spreadsheet-name, cell", () => {
-    expect(HistoryHash.concat(["spreadsheet-1", new SpreadsheetName("spreadsheet-name-2"), SpreadsheetCellReference.parse("C3")]))
-        .toStrictEqual("/spreadsheet-1/spreadsheet-name-2/C3");
+    expect(HistoryHash.concat(["spreadsheet-1", new SpreadsheetName("spreadsheet-name-2"), "cell"]))
+        .toStrictEqual("/spreadsheet-1/spreadsheet-name-2/cell");
 });
 
-test("concat tokens spreadsheet-id, spreadsheet-name, cell, action", () => {
-    expect(HistoryHash.concat(["spreadsheet-1", new SpreadsheetName("spreadsheet-name-2"), SpreadsheetCellReference.parse("C3"), "edit-4"]))
-        .toStrictEqual("/spreadsheet-1/spreadsheet-name-2/C3/edit-4");
+test("concat tokens spreadsheet-id, spreadsheet-name, cell, cell-reference", () => {
+    expect(HistoryHash.concat(["spreadsheet-1", new SpreadsheetName("spreadsheet-name-2"), "cell", SpreadsheetCellReference.parse("D4")]))
+        .toStrictEqual("/spreadsheet-1/spreadsheet-name-2/cell/D4");
 });
 
-test("concat tokens spreadsheet-id, spreadsheet-name, cell, action, extra", () => {
-    expect(HistoryHash.concat(["spreadsheet-1", new SpreadsheetName("spreadsheet-name-2"), SpreadsheetCellReference.parse("C3"), "edit-4", "extra-5"]))
-        .toStrictEqual("/spreadsheet-1/spreadsheet-name-2/C3/edit-4/extra-5");
+test("concat tokens spreadsheet-id, spreadsheet-name, cell, cell-reference, action", () => {
+    expect(HistoryHash.concat(["spreadsheet-1", new SpreadsheetName("spreadsheet-name-2"), "cell", SpreadsheetCellReference.parse("D4"), "edit-5"]))
+        .toStrictEqual("/spreadsheet-1/spreadsheet-name-2/cell/D4/edit-5");
+});
+
+test("concat tokens spreadsheet-id, spreadsheet-name, cell, cell-reference, action, extra", () => {
+    expect(HistoryHash.concat(["spreadsheet-1", new SpreadsheetName("spreadsheet-name-2"), "cell", SpreadsheetCellReference.parse("D4"), "edit-5", "extra-6"]))
+        .toStrictEqual("/spreadsheet-1/spreadsheet-name-2/cell/D4/edit-5/extra-6");
 });
