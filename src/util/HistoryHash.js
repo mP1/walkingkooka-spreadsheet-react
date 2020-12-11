@@ -22,13 +22,27 @@ export default class HistoryHash {
 
 function parse0(pathname) {
     // turn empty string tokens into undefined
-    // eslint-disable-next-line no-unused-vars
-    const [slash, spreadsheetId, spreadsheetName, cellReference, action] = pathname.split("/") // lgtm[js/unused-local-variable]
-        .map(s => s === "" ? undefined : s); // lgtm [js/unused-local-variable]
-    return {
-        spreadsheetId: spreadsheetId,
-        spreadsheetName: spreadsheetName,
-        cellReference: cellReference,
-        action: action,
+    const components = pathname.split("/")
+        .map(s => s === "" ? undefined : s);
+    const target = components[3];
+
+    // 0 holds leading slash
+    var result = {
+        spreadsheetId: components[1],
+        spreadsheetName: components[2],
+        target: target,
     }
+
+    switch(target) {
+        case "cell":
+            result = Object.assign(result, {
+                cellReference: components[4],
+                action: components[5],
+            });
+            break;
+        default:
+            break;
+    }
+
+    return result;
 }

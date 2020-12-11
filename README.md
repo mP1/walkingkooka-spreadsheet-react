@@ -38,3 +38,12 @@ See the section about [deployment](https://facebook.github.io/create-react-app/d
 
 During development this assumes that a http server is available on `https://localhost:12345/walkingkooka-walkingkooka-spreadsheet-webworker.js`
 serving the javascript engine.
+
+
+## History hash format
+
+Components within a hash that begin with dollar sign '$' represent a variable of some sort related to the context. Other
+components are actual literals.
+
+- $spreadsheet-id / $spreadsheet name viewing spreadsheet with nothing selected for editing
+- $spreadsheet-id / $spreadsheet name / cell / $cell-reference / formula editing the formula belonging to a cell. 

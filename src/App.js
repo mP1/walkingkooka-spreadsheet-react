@@ -275,14 +275,13 @@ class App extends React.Component {
         const state = this.state;
         console.log("componentDidUpdate", "prevState", prevState, "state", state);
 
-        const hash = {};
+        const hash = []; // spreadsheet-id / spreadsheet-name / cell / cell-reference / formula
         this.onSpreadsheetMetadataSpreadsheetId(prevState, hash);
         this.onSpreadsheetMetadataSpreadsheetName(hash);
         this.onSpreadsheetViewport(prevState);
         this.onSpreadsheetFormula(hash);
 
-        const {spreadsheetId, spreadsheetName, cellReference, action} = hash;
-        this.historyPush([spreadsheetId, spreadsheetName, cellReference, action], "state updated");
+        this.historyPush(hash, "state updated");
     }
 
     /**
@@ -302,7 +301,7 @@ class App extends React.Component {
                 rowHeights: ImmutableMap.EMPTY,
             });
         }
-        hash.spreadsheetId = current;
+        hash[0] = current; // spreadsheetId
     }
 
     /**
@@ -323,7 +322,7 @@ class App extends React.Component {
             console.log("onSpreadsheetMetadataSpreadsheetName widget not updated", "widget", widget.current, "state.metadata", metadata);
         }
 
-        hash.spreadsheetName = name;
+        hash[1] = name; // spreadsheetId/spreadsheetName
     }
 
     /**
@@ -408,9 +407,10 @@ class App extends React.Component {
             }
         }
 
-        if(reference) {
-            hash.cellReference = reference;
-            hash.action = FORMULA_EDIT_HASH;
+        if (reference) {
+            hash[2] = "cell";
+            hash[3] = reference;
+            hash[4] = FORMULA_EDIT_HASH;
         }
     }
 
