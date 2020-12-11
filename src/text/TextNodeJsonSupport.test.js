@@ -34,6 +34,11 @@ test("textNodeJsonSupportFromJson unknown type fails", () => {
     );
 });
 
+test("textNodeJsonSupportFromJson Text empty string", () => {
+    const text = new Text("");
+    expect(textNodeJsonSupportFromJson({type: "text", value: text.value()})).toStrictEqual(text);
+});
+
 test("textNodeJsonSupportFromJson Text", () => {
     const text = new Text("text-123");
     expect(textNodeJsonSupportFromJson({type: "text", value: text.value()})).toStrictEqual(text);
