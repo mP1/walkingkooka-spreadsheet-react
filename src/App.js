@@ -286,7 +286,7 @@ class App extends React.Component {
         this.onSpreadsheetViewport(prevState);
         this.onSpreadsheetFormula(hash);
 
-        this.historyPush(hash, "State updated", state);
+        this.historyPush(hash, "State updated from ", prevState, "to", state);
     }
 
     /**
