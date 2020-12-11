@@ -231,7 +231,7 @@ class App extends React.Component {
     /**
      * If the location is new log the message and push the history token.
      */
-    historyPush(tokens, message) {
+    historyPush(tokens, message, ...messageParameters) {
         // find the first undefined and ignore following tokens.
         for(var i = 0; i < tokens.length; i++) {
             if(!tokens[i]) {
@@ -250,7 +250,7 @@ class App extends React.Component {
 
         const history = this.history;
         if (history.location.pathname !== location) {
-            console.log("History hash: " + message);
+            console.log("History hash: " + message, ...messageParameters);
             this.history.push(location);
         }
     }
@@ -283,7 +283,7 @@ class App extends React.Component {
         this.onSpreadsheetViewport(prevState);
         this.onSpreadsheetFormula(hash);
 
-        this.historyPush(hash, "State updated");
+        this.historyPush(hash, "State updated", state);
     }
 
     /**
