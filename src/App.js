@@ -175,7 +175,7 @@ class App extends React.Component {
         if (!same) {
             // update url to match actual SpreadsheetMetadata.spreadsheetName
             this.historyPush([metadata.spreadsheetId(), metadataSpreadsheetName],
-                "History hash updating from " + hashName + " to match state " + metadataSpreadsheetName);
+                "Updating from " + hashName + " to match state " + metadataSpreadsheetName);
         }
         return same;
     }
@@ -214,15 +214,13 @@ class App extends React.Component {
 
         if(clearHistoryCellAction) {
             if(metadata.editCell()) {
-                console.log("History hash invalid clearing editCell", metadata);
-
                 this.setState({
                     spreadsheetMetadata: metadata.removeEditCell(),
                 });
             }
 
             this.historyPush([metadata.spreadsheetId(), metadata.spreadsheetName()],
-                "Invalid hash cell reference or action, clearing cell/action (" + cell + "/" + action + ")");
+                "Invalid cell reference or action, clearing cell/action (" + cell + "/" + action + ")");
         }
     }
 
@@ -248,7 +246,7 @@ class App extends React.Component {
 
         const history = this.history;
         if (history.location.pathname !== location) {
-            console.log(message);
+            console.log("History hash: " + message);
             this.history.push(location);
         }
     }
@@ -281,7 +279,7 @@ class App extends React.Component {
         this.onSpreadsheetViewport(prevState);
         this.onSpreadsheetFormula(hash);
 
-        this.historyPush(hash, "state updated");
+        this.historyPush(hash, "State updated");
     }
 
     /**
