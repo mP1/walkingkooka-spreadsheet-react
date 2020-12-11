@@ -98,9 +98,8 @@ class App extends React.Component {
     /**
      * Updates the editability of the spreadsheet name, which also includes updating the history.
      */
-    editSpreadsheetName(mode) {
-        const widget = this.spreadsheetName.current;
-        widget && widget.edit(mode);
+    editSpreadsheetNameAndUpdateHistory(mode) {
+        this.editSpreadsheetName(mode)
 
         const metadata = this.spreadsheetMetadata();
         const spreadsheetId = metadata.spreadsheetId();
@@ -116,6 +115,14 @@ class App extends React.Component {
         }
 
         this.historyPush(hash, message);
+    }
+
+    /**
+     * Updates the editability of the spreadsheet name, without updating the history.
+     */
+    editSpreadsheetName(mode) {
+        const widget = this.spreadsheetName.current;
+        widget && widget.edit(mode);
 
         // stop editing cell if an edit was happening.
         if(mode) {
@@ -174,7 +181,12 @@ class App extends React.Component {
                                 this.historySpreadsheetNameAction(hash, metadata);
                                 break;
                             default:
-                                target && this.historyUnknownTarget(hash, metadata);
+                                if(target) {
+                                    this.historyUnknownTarget(hash, metadata);
+                                    break;
+                                }
+                                this.editSpreadsheetName();
+                                this.editCell();
                                 break;
                         }
                     }
@@ -587,6 +599,10 @@ class App extends React.Component {
             this.saveSpreadsheetMetadata(reference ?
                 metadata.setEditCell(reference) :
                 metadata.removeEditCell());
+
+            if(reference) {
+                this.editSpreadsheetName(); // stop editing spreadsheet name
+            }
         }
     }
 
@@ -651,7 +667,7 @@ class App extends React.Component {
                                                key={spreadsheetName}
                                                value={spreadsheetName}
                                                setValue={this.saveSpreadsheetName.bind(this)}
-                                               setEdit={this.editSpreadsheetName.bind(this)}
+                                               setEdit={this.editSpreadsheetNameAndUpdateHistory.bind(this)}
                         />
                     </SpreadsheetAppBarTop>
                     <Divider/>
