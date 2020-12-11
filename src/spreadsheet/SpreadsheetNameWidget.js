@@ -12,10 +12,29 @@ export default class SpreadsheetNameWidget extends React.Component {
     constructor(props) {
         super(props);
 
-        this.state = {value: props.value};
+        this.state = {
+            value: props.value
+        };
         this.setValue = props.setValue;
+        this.setEdit = props.setEdit;
 
         this.textField = React.createRef();
+    }
+
+    /**
+     * Updates the widget mode between edit/view.
+     */
+    edit(mode) {
+        const widget = this.textField.current;
+        widget && widget.edit(mode);
+    }
+
+    /**
+     * Returns true if the name is being edited.
+     */
+    isEdit() {
+        const widget = this.textField.current;
+        return widget && widget.state.edit;
     }
 
     render() {
@@ -26,11 +45,13 @@ export default class SpreadsheetNameWidget extends React.Component {
         return <SpreadsheetButtonTextField ref={this.textField}
                                            key={name}
                                            value={name}
-                                           setValue={v => this.setValue(new SpreadsheetName(v))}/>
+                                           setValue={v => this.setValue(new SpreadsheetName(v))}
+                                           setEdit={e => this.setEdit(e)}/>
     }
 }
 
 SpreadsheetNameWidget.propTypes = {
     value: PropTypes.object, // might be absent
     setValue: PropTypes.func.isRequired,
+    setEdit: PropTypes.func.isRequired,
 }

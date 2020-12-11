@@ -40,6 +40,11 @@ function parse0(pathname) {
                 action: components[5],
             });
             break;
+        case "name":
+            result = Object.assign(result, {
+                action: components[4], // only option is edit
+            });
+            break;
         default:
             break;
     }

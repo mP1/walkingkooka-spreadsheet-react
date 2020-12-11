@@ -15,12 +15,13 @@ export default class SpreadsheetButtonTextField extends React.Component {
     constructor(props) {
         super(props);
         this.state = {
-            edit: false,
+            edit: props.edit,
             value: props.value
         };
         this.setValue = props.setValue;
+        this.setEdit = props.setEdit;
 
-        this.ref = React.createRef();
+        this.textField = React.createRef();
     }
 
     componentDidMount() {
@@ -31,12 +32,20 @@ export default class SpreadsheetButtonTextField extends React.Component {
         document.removeEventListener('mousedown', (event) => this.handleClickOutside(event));
     }
 
+    edit(mode) {
+        this.setState({
+            edit: mode,
+        })
+    }
+
     /**
      * Abort editing if the user clicked outside
      */
     handleClickOutside(event) {
-        if (this.ref && this.ref.current && !this.ref.current.contains(event.target)) {
-            this.stopEditing(event);
+        const widget = this.textField.current;
+        if (widget && !widget.contains(event.target)) {
+            event.preventDefault();
+            this.setEdit(false);
         }
     }
 
@@ -49,7 +58,7 @@ export default class SpreadsheetButtonTextField extends React.Component {
     // VIEW ............................................................................................................
 
     handleButtonClick(event) {
-        this.setState({edit: true});
+        this.setEdit(true);
     }
 
     renderButtonClickToEdit() {
@@ -73,25 +82,20 @@ export default class SpreadsheetButtonTextField extends React.Component {
 
     // ignore any value in the TextField and display the button with the original value
     handleEscapeKey(event) {
-        this.stopEditing(event);
+        event.preventDefault();
+        this.setEdit(false);
     }
 
     // update the value and fire an event with the updated value
     handleEnterKey(event) {
-        this.stopEditing(event);
         const value = event.target.value;
         this.setValue(value);
         this.setState({"value": value});
     }
 
-    stopEditing(event) {
-        event.preventDefault();
-        this.setState({edit: false});
-    }
-
     renderEditTextField() {
         return (<TextField
-            ref={this.ref}
+            ref={this.textField}
             fullWidth={true}
             onKeyDown={(event) => this.handleKeyDown(event)}
             defaultValue={this.state.value}
@@ -102,4 +106,5 @@ export default class SpreadsheetButtonTextField extends React.Component {
 SpreadsheetButtonTextField.propTypes = {
     value: PropTypes.string.isRequired,
     setValue: PropTypes.func.isRequired,
+    setEdit: PropTypes.func.isRequired,
 }
