@@ -38,6 +38,7 @@ class App extends React.Component {
         this.history = props.history;
 
         this.state = {
+            createEmptySpreadsheet: false,
             spreadsheetEngineEvaluation: SpreadsheetEngineEvaluation.COMPUTE_IF_NECESSARY,
             spreadsheetMetadata: SpreadsheetMetadata.EMPTY,
             cells: ImmutableMap.EMPTY,
