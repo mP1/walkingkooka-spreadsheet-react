@@ -61,8 +61,12 @@ export default class SpreadsheetButtonTextField extends React.Component {
         this.setEdit(true);
     }
 
+    // material design UI buttons are text-transform: uppercased.
     renderButtonClickToEdit() {
-        return (<Button onClick={() => this.handleButtonClick()}>{this.state.value}</Button>);
+        return (<Button
+            onClick={() => this.handleButtonClick()}
+            style={{textTransform: "none"}}
+        >{this.state.value}</Button>);
     }
 
     // EDIT ............................................................................................................
