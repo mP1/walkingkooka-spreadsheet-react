@@ -101,9 +101,13 @@ class App extends React.Component {
      */
     onHistoryChange(location) {
         const pathname = location.pathname;
-        console.log("onHistoryChange " + pathname, location);
+        const historyLocation = this.history.location;
+        const currentPathname = historyLocation.pathname;
+        if (currentPathname !== pathname) {
+            console.log("onHistoryChange from " + currentPathname + " to " + pathname, historyLocation);
 
-        this.historyHashVerify(pathname);
+            this.historyHashVerify(pathname);
+        }
     }
 
     currentHistoryHashVerify() {
