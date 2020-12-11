@@ -251,8 +251,10 @@ class App extends React.Component {
 
         const history = this.history;
         if (history.location.pathname !== location) {
-            console.log("History hash: " + message, ...messageParameters);
+            console.log("History push " + location + ": " + message, ...messageParameters);
             this.history.push(location);
+        } else {
+            console.log("History push unchanged " + history.location.pathname + " new " + location);
         }
     }
 
