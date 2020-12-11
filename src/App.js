@@ -311,13 +311,13 @@ class App extends React.Component {
         const name = metadata.spreadsheetName();
 
         if (widget && name) {
-            console.log("onSpreadsheetMetadataSpreadsheetName updated from " + widget.state.value + " to ", metadata);
+            console.log("onSpreadsheetMetadataSpreadsheetName updated from " + widget.state.value + " to ", name);
 
             widget.setState({
                 value: name,
             });
         } else {
-            console.log("onSpreadsheetMetadataSpreadsheetName widget not updated", "widget", widget.current, "state.metadata", metadata);
+            console.log("onSpreadsheetMetadataSpreadsheetName widget not updated", "widget", widget.current, "name", name);
         }
 
         hash[1] = name; // spreadsheetId/spreadsheetName
