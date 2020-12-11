@@ -119,7 +119,7 @@ class App extends React.Component {
 
         // stop editing cell if an edit was happening.
         if(mode) {
-            this.editCell()
+            this.editCell();
         }
     }
 
