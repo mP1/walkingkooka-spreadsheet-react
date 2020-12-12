@@ -294,7 +294,10 @@ test("render empty style, text & defaultStyle EMPTY", () => {
         format(),
         new Text(text))
         .render(TextStyle.EMPTY, c))
-        .toStrictEqual(<TableCell key={ref} onClick={c} style={{boxSizing: "border-box"}}>{text}</TableCell>);
+        .toStrictEqual(<TableCell key={ref}
+                                  id="cell-A99"
+                                  onClick={c}
+                                  style={{boxSizing: "border-box"}}>{text}</TableCell>);
 });
 
 test("render empty style, text & defaultStyle EMPTY 2", () => {
@@ -308,7 +311,10 @@ test("render empty style, text & defaultStyle EMPTY 2", () => {
         format(),
         new Text(text))
         .render(TextStyle.EMPTY, c))
-        .toStrictEqual(<TableCell key={ref} onClick={c} style={{boxSizing: "border-box"}}>{text}</TableCell>);
+        .toStrictEqual(<TableCell key={ref}
+                                  id="cell-B123"
+                                  onClick={c}
+                                  style={{boxSizing: "border-box"}}>{text}</TableCell>);
 });
 
 test("render empty style, text & defaultStyle width&height", () => {
@@ -326,7 +332,10 @@ test("render empty style, text & defaultStyle width&height", () => {
                 .set("width", "100px")
                 .set("height", "50px"),
             c))
-        .toStrictEqual(<TableCell key={r} onClick={c} style={{boxSizing: "border-box", width: "100px", height: "50px"}}>{text}</TableCell>);
+        .toStrictEqual(<TableCell key={r}
+                                  id="cell-A99"
+                                  onClick={c}
+                                  style={{boxSizing: "border-box", width: "100px", height: "50px"}}>{text}</TableCell>);
 });
 
 test("render style=width&height, text & defaultStyle=empty", () => {
@@ -342,7 +351,10 @@ test("render style=width&height, text & defaultStyle=empty", () => {
         format(),
         new Text(text))
         .render(TextStyle.EMPTY, c))
-        .toStrictEqual(<TableCell key={r} onClick={c} style={{boxSizing: "border-box", width: "100px", height: "50px"}}>{text}</TableCell>);
+        .toStrictEqual(<TableCell key={r}
+                                  id="cell-A99"
+                                  onClick={c}
+                                  style={{boxSizing: "border-box", width: "100px", height: "50px"}}>{text}</TableCell>);
 });
 
 test("render style=height, text & defaultStyle=width", () => {
@@ -359,7 +371,10 @@ test("render style=height, text & defaultStyle=width", () => {
         .render(TextStyle.EMPTY
             .set("width", "100px"),
             c))
-        .toStrictEqual(<TableCell key={r} onClick={c} style={{boxSizing: "border-box", width: "100px", height: "50px"}}>{text}</TableCell>);
+        .toStrictEqual(<TableCell key={r}
+                                  id="cell-A99"
+                                  onClick={c}
+                                  style={{boxSizing: "border-box", width: "100px", height: "50px"}}>{text}</TableCell>);
 });
 
 test("render style=width&height, text & defaultStyle=width", () => {
@@ -377,7 +392,8 @@ test("render style=width&height, text & defaultStyle=width", () => {
         .render(TextStyle.EMPTY
                 .set("width", "99px"),
             c))
-        .toStrictEqual(<TableCell key={r} onClick={c}
+        .toStrictEqual(<TableCell id="cell-A99"
+                                  key={r} onClick={c}
                                   style={{boxSizing: "border-box", width: "100px", height: "50px"}}>{text}</TableCell>);
 });
 

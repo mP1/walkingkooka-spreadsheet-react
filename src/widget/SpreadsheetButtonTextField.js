@@ -18,6 +18,7 @@ export default class SpreadsheetButtonTextField extends React.Component {
             edit: props.edit,
             value: props.value
         };
+        this.id = props.id;
         this.setValue = props.setValue;
         this.setEdit = props.setEdit;
 
@@ -64,6 +65,7 @@ export default class SpreadsheetButtonTextField extends React.Component {
     // material design UI buttons are text-transform: uppercased.
     renderButtonClickToEdit() {
         return (<Button
+            id={this.id}
             onClick={() => this.handleButtonClick()}
             style={{textTransform: "none"}}
         >{this.state.value}</Button>);
@@ -100,6 +102,7 @@ export default class SpreadsheetButtonTextField extends React.Component {
     renderEditTextField() {
         return (<TextField
             ref={this.textField}
+            id={this.id}
             fullWidth={true}
             onKeyDown={(event) => this.handleKeyDown(event)}
             defaultValue={this.state.value}
@@ -108,6 +111,7 @@ export default class SpreadsheetButtonTextField extends React.Component {
 }
 
 SpreadsheetButtonTextField.propTypes = {
+    id: PropTypes.string.isRequired,
     value: PropTypes.string.isRequired,
     setValue: PropTypes.func.isRequired,
     setEdit: PropTypes.func.isRequired,
