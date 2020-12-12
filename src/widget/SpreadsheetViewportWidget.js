@@ -12,6 +12,7 @@ import SpreadsheetCell from "../spreadsheet/SpreadsheetCell";
 import SpreadsheetFormula from "../spreadsheet/SpreadsheetFormula";
 import TextStyle from "../text/TextStyle";
 import Text from "../text/Text";
+import SpreadsheetColumnReference from "../spreadsheet/reference/SpreadsheetColumnReference.js";
 
 const headerCell = {
     minWidth: "4ex",
@@ -110,7 +111,7 @@ export default class SpreadsheetViewportWidget extends React.Component {
         const editCellColumn = editCell && editCell.column();
 
         let headers = [];
-        headers.push(<TableCell key={"all"} style={headerCell}></TableCell>);
+        headers.push(<TableCell key={"all"} id={"select-all-cells"} style={headerCell}></TableCell>); // TODO add select all support
 
         let x = 0;
         let column = home.column();
@@ -172,7 +173,7 @@ export default class SpreadsheetViewportWidget extends React.Component {
             }
 
             tableRows.push(
-                <TableRow key={row}>
+                <TableRow key={row} id={"row-" + row}>
                     {
                         tableCells
                     }
@@ -191,6 +192,7 @@ export default class SpreadsheetViewportWidget extends React.Component {
      */
     headerCell(reference, highlighted) {
         return <TableCell key={reference}
+                          id={(reference instanceof SpreadsheetColumnReference ? "column-" : "row-") + "" + reference}
                           style={highlighted ? headerCellSelected : headerCell}>{reference.toString()}</TableCell>
     }
 

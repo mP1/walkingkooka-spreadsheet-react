@@ -159,7 +159,10 @@ export default class SpreadsheetCell {
         const css = style.toCss();
         css.boxSizing = "border-box";
 
-        return <TableCell key={this.reference()}
+        const reference = this.reference();
+
+        return <TableCell key={reference}
+                          id={"cell-" + reference}
                           onClick={onClick}
                           style={css}>{formatted}</TableCell>;
     }
