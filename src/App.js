@@ -75,6 +75,8 @@ class App extends React.Component {
         this.spreadsheetName = React.createRef();
         this.formula = React.createRef();
         this.viewport = React.createRef();
+
+        document.title = "Empty spreadsheet";
     }
 
     // app lifecycle....................................................................................................
@@ -416,6 +418,7 @@ class App extends React.Component {
             widget.setState({
                 value: name,
             });
+            document.title = name.toString();
         } else {
             console.log("onSpreadsheetMetadataSpreadsheetName widget not updated", "widget", widget.current, "name: " + name);
         }
