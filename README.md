@@ -48,3 +48,13 @@ components are actual literals.
 - $spreadsheet-id / $spreadsheet name  viewing spreadsheet with nothing selected for editing
 - $spreadsheet-id / $spreadsheet name / name / edit  editing the spreadsheet name
 - $spreadsheet-id / $spreadsheet name / cellReference / $cellReference-reference / formula  editing the formula belonging to a cellReference. 
+
+
+
+## Cypress Integration testing
+
+Integration tests are available using the popular [Cypress testing tool](https://www.cypress.io/)
+
+```bash
+cypress open
+```
