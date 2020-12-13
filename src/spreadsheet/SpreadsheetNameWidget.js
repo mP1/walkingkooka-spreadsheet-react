@@ -45,6 +45,7 @@ export default class SpreadsheetNameWidget extends React.Component {
         return <SpreadsheetButtonTextField ref={this.textField}
                                            key={name}
                                            id={"spreadsheet-name"}
+                                           className={"spreadsheet-name"}
                                            value={name}
                                            setValue={v => this.setValue(new SpreadsheetName(v))}
                                            setEdit={e => this.setEdit(e)}/>
