@@ -99,7 +99,7 @@ class App extends React.Component {
      * Updates the editability of the spreadsheet name, which also includes updating the history.
      */
     editSpreadsheetNameAndUpdateHistory(mode) {
-        this.editSpreadsheetName(mode)
+        this.editSpreadsheetName(mode);
 
         const metadata = this.spreadsheetMetadata();
         const spreadsheetId = metadata.spreadsheetId();
