@@ -66,6 +66,7 @@ export default class SpreadsheetButtonTextField extends React.Component {
     renderButtonClickToEdit() {
         return (<Button
             id={this.id}
+            className={this.props.className}
             onClick={() => this.handleButtonClick()}
             style={{textTransform: "none"}}
         >{this.state.value}</Button>);
@@ -103,6 +104,7 @@ export default class SpreadsheetButtonTextField extends React.Component {
         return (<TextField
             ref={this.textField}
             id={this.id}
+            className={this.props.className}
             fullWidth={true}
             onKeyDown={(event) => this.handleKeyDown(event)}
             defaultValue={this.state.value}

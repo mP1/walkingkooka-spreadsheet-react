@@ -13,6 +13,7 @@ import SpreadsheetFormula from "../spreadsheet/SpreadsheetFormula";
 import TextStyle from "../text/TextStyle";
 import Text from "../text/Text";
 import SpreadsheetColumnReference from "../spreadsheet/reference/SpreadsheetColumnReference.js";
+import './SpreadsheetViewportWidget.css';
 
 const headerCell = {
     minWidth: "4ex",
@@ -191,8 +192,11 @@ export default class SpreadsheetViewportWidget extends React.Component {
      * Creates a TABLE CELL which will be the column or row header.
      */
     headerCell(reference, highlighted) {
+        const column = reference instanceof SpreadsheetColumnReference;
+
         return <TableCell key={reference}
-                          id={(reference instanceof SpreadsheetColumnReference ? "column-" : "row-") + "" + reference}
+                          id={(column ? "column-" : "row-") + "" + reference}
+                          className={(column ? "column" : "row") + (highlighted ? " selected": "")}
                           style={highlighted ? headerCellSelected : headerCell}>{reference.toString()}</TableCell>
     }
 

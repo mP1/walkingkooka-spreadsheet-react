@@ -7,6 +7,7 @@ import TextNode from "../text/TextNode";
 import TableCell from "@material-ui/core/TableCell";
 import React from "react";
 import Equality from "../Equality.js";
+import "./SpreadsheetCell.css";
 
 /**
  * Represents a spreadsheet cell only reference and formula are required.
@@ -163,6 +164,7 @@ export default class SpreadsheetCell {
 
         return <TableCell key={reference}
                           id={"cell-" + reference}
+                          className={"cell"}
                           onClick={onClick}
                           style={css}>{formatted}</TableCell>;
     }
