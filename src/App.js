@@ -2,7 +2,7 @@ import React from 'react';
 import {withRouter} from "react-router";
 import './App.css';
 
-import SpreadsheetAppBarTop from "./widget/SpreadsheetAppBarTop.js";
+import SpreadsheetAppBar from "./widget/SpreadsheetAppBar.js";
 import SpreadsheetViewportWidget from "./widget/SpreadsheetViewportWidget.js";
 import SpreadsheetFormulaWidget from "./spreadsheet/SpreadsheetFormulaWidget.js";
 import SpreadsheetMetadata from "./spreadsheet/meta/SpreadsheetMetadata.js";
@@ -667,14 +667,14 @@ class App extends React.Component {
                 <SpreadsheetBox ref={this.aboveViewport}
                                 key={"above-viewport"}
                                 dimensions={this.onAboveViewportResize.bind(this)}>
-                    <SpreadsheetAppBarTop>
+                    <SpreadsheetAppBar>
                         <SpreadsheetNameWidget ref={this.spreadsheetName}
                                                key={spreadsheetName}
                                                value={spreadsheetName}
                                                setValue={this.saveSpreadsheetName.bind(this)}
                                                setEdit={this.editSpreadsheetNameAndUpdateHistory.bind(this)}
                         />
-                    </SpreadsheetAppBarTop>
+                    </SpreadsheetAppBar>
                     <Divider/>
                     <SpreadsheetFormulaWidget ref={this.formula}
                                               key={[editCellReference, formulaText]}
