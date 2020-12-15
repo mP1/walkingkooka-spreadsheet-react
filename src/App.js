@@ -2,13 +2,14 @@ import React from 'react';
 import {withRouter} from "react-router";
 import './App.css';
 
+import {withStyles} from '@material-ui/core/styles';
+import Divider from '@material-ui/core/Divider';
+
 import SpreadsheetAppBar from "./widget/SpreadsheetAppBar.js";
 import SpreadsheetViewportWidget from "./widget/SpreadsheetViewportWidget.js";
 import SpreadsheetFormulaWidget from "./spreadsheet/SpreadsheetFormulaWidget.js";
 import SpreadsheetMetadata from "./spreadsheet/meta/SpreadsheetMetadata.js";
 import SpreadsheetMessenger from "./util/SpreadsheetMessenger.js";
-
-import Divider from '@material-ui/core/Divider';
 import SpreadsheetCellBox from "./spreadsheet/reference/SpreadsheetCellBox";
 import SpreadsheetCoordinates from "./spreadsheet/SpreadsheetCoordinates";
 import SpreadsheetRange from "./spreadsheet/reference/SpreadsheetRange";
@@ -25,11 +26,25 @@ import Equality from "./Equality.js";
 import SpreadsheetName from "./spreadsheet/SpreadsheetName.js";
 import SpreadsheetCellReference from "./spreadsheet/reference/SpreadsheetCellReference.js";
 import HistoryHash from "./util/HistoryHash.js";
+import SpreadsheetDrawerWidget from "./spreadsheet/SpreadsheetDrawerWidget.js";
+import SpreadsheetContainerWidget from "./widget/SpreadsheetContainerWidget.js";
+
+
+/**
+ * The width of the drawer in pixels holding settings and tools.
+ */
+const DRAWER_WIDTH = 400;
 
 /**
  * History token noting that a cell formula is being edited.
  */
 const FORMULA_EDIT_HASH = "formula";
+
+const useStyles = theme => ({
+    header: {
+        zIndex: theme.zIndex.drawer + 1, // forces drawer to not overlap application header
+    },
+});
 
 class App extends React.Component {
     constructor(props) {
@@ -39,6 +54,7 @@ class App extends React.Component {
 
         this.state = {
             createEmptySpreadsheet: false,
+            settingsAndToolsDrawer: false, // initially the drawer on the right is "hidden" (false)
             spreadsheetEngineEvaluation: SpreadsheetEngineEvaluation.COMPUTE_IF_NECESSARY,
             spreadsheetMetadata: SpreadsheetMetadata.EMPTY,
             cells: ImmutableMap.EMPTY,
@@ -72,9 +88,11 @@ class App extends React.Component {
 
         this.messenger.setWebWorker(false); // TODO test webworker mode
 
+        this.settingsAndToolsDrawer = React.createRef();
         this.aboveViewport = React.createRef();
         this.spreadsheetName = React.createRef();
         this.formula = React.createRef();
+        this.formulaContainer = React.createRef(); // a container that includes the formula text box. Will include other related tools
         this.viewport = React.createRef();
 
         document.title = "Empty spreadsheet";
@@ -383,6 +401,10 @@ class App extends React.Component {
         }
 
         this.historyPush(hash, "State updated from ", prevState, "to", state);
+
+        if (this.settingsAndToolsDrawer.current) {
+            this.settingsAndToolsDrawer.current.setState({open: state.settingsAndToolsDrawer});
+        }
     }
 
     /**
@@ -489,14 +511,23 @@ class App extends React.Component {
         console.log("onSpreadsheetFormula", "formula", formula.current, "metadata", metadata);
 
         if (formula) {
+            const width = this.appBarWidth();
+            this.formulaContainer.current.setState({
+                style: {
+                    margin: 0,
+                    border: 0,
+                    padding: 0,
+                    width: width,
+                }
+            });
+
             if (reference) {
                 const cell = this.getCellOrEmpty(reference);
                 formula.setValue = this.cellToFormulaTextSetter(cell);
 
                 const formulaText = this.cellToFormulaText(cell);
 
-                console.log("onSpreadsheetFormula " + reference + " formula text=" + formulaText);
-
+                console.log("onSpreadsheetFormula " + reference + " formula text=" + formulaText + " width: " + width);
                 formula.setState({
                     value: formulaText,
                     reference: reference,
@@ -639,14 +670,38 @@ class App extends React.Component {
         return this.state.cells.get(reference) || new SpreadsheetCell(reference, new SpreadsheetFormula(""), TextStyle.EMPTY);
     }
 
+    // drawer...........................................................................................................
+
+    /**
+     * Toggles the drawer.
+     */
+    settingsAndToolsDrawerToggle() {
+        this.showSettingsAndToolsDrawer(!this.state.settingsAndToolsDrawer);
+    }
+
+    /**
+     * Shows or hides the drawer on the right which holds a variety of settings and context aware tools.
+     */
+    showSettingsAndToolsDrawer(show) {
+        console.log("showSettingsAndToolsDrawer " + show);
+
+        this.setState({
+            settingsAndToolsDrawer: show,
+        });
+    }
+
     // rendering........................................................................................................
 
     /**
      * Renders the basic spreadsheet layout.
      */
     render() {
+        const {classes} = this.props;
+
         const state = this.state;
         console.log("render", state);
+
+        const settingsAndToolsDrawer = state.settingsAndToolsDrawer;
 
         const metadata = this.spreadsheetMetadata();
 
@@ -661,13 +716,16 @@ class App extends React.Component {
         const editCellReference = metadata.editCell(); // SpreadsheetCellReference: may be undefined,
         const editCell = editCellReference && this.getCellOrEmpty(editCellReference);
 
+        const appBarWidth = this.appBarWidth();
         const formulaText = this.cellToFormulaText(editCell);
         return (
             <WindowResizer dimensions={this.onWindowResized.bind(this)}>
                 <SpreadsheetBox ref={this.aboveViewport}
-                                key={"above-viewport"}
-                                dimensions={this.onAboveViewportResize.bind(this)}>
-                    <SpreadsheetAppBar>
+                                key={{windowDimensions: state.windowDimensions}}
+                                dimensions={this.onAboveViewportResize.bind(this)}
+                                className={classes.header}
+                    >
+                    <SpreadsheetAppBar menuClickListener={this.settingsAndToolsDrawerToggle.bind(this)}>
                         <SpreadsheetNameWidget ref={this.spreadsheetName}
                                                key={spreadsheetName}
                                                value={spreadsheetName}
@@ -675,13 +733,21 @@ class App extends React.Component {
                                                setEdit={this.editSpreadsheetNameAndUpdateHistory.bind(this)}
                         />
                     </SpreadsheetAppBar>
-                    <Divider/>
-                    <SpreadsheetFormulaWidget ref={this.formula}
-                                              key={[editCellReference, formulaText]}
-                                              reference={editCellReference}
-                                              value={formulaText}
-                                              setValue={editCellReference && this.cellToFormulaTextSetter(editCell)}
-                    />
+                    <SpreadsheetContainerWidget
+                        ref={this.formulaContainer}
+                        style={{
+                        margin: 0,
+                        border: 0,
+                        padding: 0,
+                        width: appBarWidth + "px",
+                    }}>
+                        <SpreadsheetFormulaWidget ref={this.formula}
+                                                  key={[editCellReference, formulaText]}
+                                                  reference={editCellReference}
+                                                  value={formulaText}
+                                                  setValue={editCellReference && this.cellToFormulaTextSetter(editCell)}
+                        />
+                    </SpreadsheetContainerWidget>
                     <Divider/>
                 </SpreadsheetBox>
                 <SpreadsheetViewportWidget key={[viewportDimensions, cells, columnWidths, rowHeights, style, viewportCell, editCell]}
@@ -694,6 +760,11 @@ class App extends React.Component {
                                            home={viewportCell}
                                            editCell={editCell}
                                            editCellSetter={this.editCell.bind(this)}
+                />
+                <SpreadsheetDrawerWidget ref={this.settingsAndToolsDrawer}
+                                         open={settingsAndToolsDrawer}
+                                         onClose={this.showSettingsAndToolsDrawer.bind(this)}
+                                         width={DRAWER_WIDTH}
                 />
             </WindowResizer>
         );
@@ -724,6 +795,18 @@ class App extends React.Component {
         this.setState({
             aboveViewportDimensions: dimensions,
         });
+    }
+
+    /**
+     * Computes the visible width of the app bar less if the settings/tool drawer if it is visible.
+     */
+    appBarWidth() {
+        const state = this.state;
+        const aboveViewportDimensions = state.aboveViewportDimensions;
+
+        return aboveViewportDimensions ?
+            (aboveViewportDimensions.width -  (state.settingsAndToolsDrawer ? DRAWER_WIDTH : 0)) + "px" :
+            "";
     }
 
     // SpreadsheetMetadata..............................................................................................
@@ -785,4 +868,4 @@ class App extends React.Component {
     }
 }
 
-export default withRouter(App);
+export default withRouter(withStyles(useStyles)(App));

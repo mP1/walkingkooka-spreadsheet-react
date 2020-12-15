@@ -117,6 +117,18 @@ context("General app usage", () => {
 
     cellTextCheck("#cell-F6", "6.");
   });
+
+  it("Toggle(Show and hide) drawer", () => {
+    settingsToolDrawerToggle();
+
+    settingsToolDrawer()
+        .should('be.visible');
+
+    settingsToolDrawerToggle();
+
+    settingsToolDrawer()
+        .should('be.not.visible');
+  });
 });
 
 // helpers..............................................................................................................
@@ -177,6 +189,23 @@ function cellTextCheck(cellReference, text) {
       .should("have.text", text);
 }
 
-function reactRenderWait() {
-  cy.wait(50);
+/**
+ * Fetches the icon that when clicked toggles the drawer
+ */
+function settingsToolDrawerToggle() {
+  reactRenderWait();
+  cy.get("#settings-tools-icon")
+      .click();
+}
+
+/**
+ * The drawer that appears on the right containing settings, tools and more.
+ */
+function settingsToolDrawer() {
+  reactRenderWait();
+  return cy.get("#settings-tools-drawer > DIV"); // the #settings-tool-drawer remains 1000x0 while the DIV child has an actual height
+}
+
+function reactRenderWait(period) {
+  cy.wait(period || 50);
 }
