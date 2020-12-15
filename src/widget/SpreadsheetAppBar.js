@@ -9,7 +9,7 @@ import MenuIcon from '@material-ui/icons/Menu';
 /**
  * An header that displays a menu, followed by an any children which will include the spreadsheet name.
  */
-export default class SpreadsheetAppBarTop extends React.Component {
+export default class SpreadsheetAppBar extends React.Component {
 
     static classes = makeStyles((theme) => ({
         root: {
@@ -31,7 +31,7 @@ export default class SpreadsheetAppBarTop extends React.Component {
         return (<AppBar position="static">
             <Toolbar>
                 <IconButton edge="start"
-                            className={SpreadsheetAppBarTop.classes.menuButton}
+                            className={SpreadsheetAppBar.classes.menuButton}
                             color="inherit"
                             aria-label="menu">
                     <MenuIcon/>
