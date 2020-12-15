@@ -72,6 +72,7 @@ class App extends React.Component {
 
         this.messenger.setWebWorker(false); // TODO test webworker mode
 
+        this.aboveViewport = React.createRef();
         this.spreadsheetName = React.createRef();
         this.formula = React.createRef();
         this.viewport = React.createRef();
@@ -663,7 +664,8 @@ class App extends React.Component {
         const formulaText = this.cellToFormulaText(editCell);
         return (
             <WindowResizer dimensions={this.onWindowResized.bind(this)}>
-                <SpreadsheetBox key={"above-viewport"}
+                <SpreadsheetBox ref={this.aboveViewport}
+                                key={"above-viewport"}
                                 dimensions={this.onAboveViewportResize.bind(this)}>
                     <SpreadsheetAppBarTop>
                         <SpreadsheetNameWidget ref={this.spreadsheetName}
@@ -709,6 +711,8 @@ class App extends React.Component {
         this.setState({
             windowDimensions: dimensions,
         });
+
+        this.aboveViewport.current.fireResize();
     }
 
     /**

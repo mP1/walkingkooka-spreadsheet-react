@@ -10,14 +10,23 @@ export default class SpreadsheetBox extends React.Component {
         super(props);
         this.children = props.children;
         this.dimensions = props.dimensions;
+        this.element = React.createRef();
     }
 
     componentDidMount() {
-        const element = this.element;
+        this.fireResize();
+    }
+
+    fireResize() {
+        const element = this.element.current;
+        const width = (element && element.offsetWidth) | 0;
+        const height = (element && element.offsetHeight) | 0;
+
+        console.log("fireResize width: " + width + ", height: " + height);
 
         this.dimensions({
-            width: (element && element.offsetWidth) | 0,
-            height: (element && element.offsetHeight) | 0
+            width: width,
+            height: height,
         });
     }
 
@@ -25,7 +34,7 @@ export default class SpreadsheetBox extends React.Component {
         return (
             <div
                 style={{width: "100%", margin: 0, border: 0, padding: 0}}
-                ref={element => this.element = element}
+                ref={this.element}
             >
                 {this.children}
             </div>
