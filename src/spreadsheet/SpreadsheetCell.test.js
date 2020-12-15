@@ -297,6 +297,7 @@ test("render empty style, text & defaultStyle EMPTY", () => {
         .toStrictEqual(<TableCell key={ref}
                                   id="cell-A99"
                                   onClick={c}
+                                  className={"cell"}
                                   style={{boxSizing: "border-box"}}>{text}</TableCell>);
 });
 
@@ -314,6 +315,7 @@ test("render empty style, text & defaultStyle EMPTY 2", () => {
         .toStrictEqual(<TableCell key={ref}
                                   id="cell-B123"
                                   onClick={c}
+                                  className={"cell"}
                                   style={{boxSizing: "border-box"}}>{text}</TableCell>);
 });
 
@@ -335,6 +337,7 @@ test("render empty style, text & defaultStyle width&height", () => {
         .toStrictEqual(<TableCell key={r}
                                   id="cell-A99"
                                   onClick={c}
+                                  className={"cell"}
                                   style={{boxSizing: "border-box", width: "100px", height: "50px"}}>{text}</TableCell>);
 });
 
@@ -354,6 +357,7 @@ test("render style=width&height, text & defaultStyle=empty", () => {
         .toStrictEqual(<TableCell key={r}
                                   id="cell-A99"
                                   onClick={c}
+                                  className={"cell"}
                                   style={{boxSizing: "border-box", width: "100px", height: "50px"}}>{text}</TableCell>);
 });
 
@@ -374,6 +378,7 @@ test("render style=height, text & defaultStyle=width", () => {
         .toStrictEqual(<TableCell key={r}
                                   id="cell-A99"
                                   onClick={c}
+                                  className={"cell"}
                                   style={{boxSizing: "border-box", width: "100px", height: "50px"}}>{text}</TableCell>);
 });
 
@@ -394,6 +399,7 @@ test("render style=width&height, text & defaultStyle=width", () => {
             c))
         .toStrictEqual(<TableCell id="cell-A99"
                                   key={r} onClick={c}
+                                  className={"cell"}
                                   style={{boxSizing: "border-box", width: "100px", height: "50px"}}>{text}</TableCell>);
 });
 
