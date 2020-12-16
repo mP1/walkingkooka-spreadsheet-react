@@ -224,7 +224,12 @@ class App extends React.Component {
                                         break;
                                     }
                                     cell = true;
-                                    valid = this.historyCellAction(historyHashTokens.shift(), historyHashTokens.shift(), metadata);
+                                    const cellReference = historyHashTokens.shift();
+                                    const action = historyHashTokens.shift();
+                                    valid = this.historyCellAction(cellReference, action, metadata);
+                                    if(valid) {
+                                        verifiedHistoryHashTokens.push(target, cellReference, action);
+                                    }
                                     break;
                                 case "name":
                                     // name after cell is a fail.
