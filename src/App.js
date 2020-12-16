@@ -201,7 +201,7 @@ class App extends React.Component {
                                 this.historyCellAction(hash.shift(), hash.shift(), metadata);
                                 break;
                             case "name":
-                                this.historySpreadsheetNameAction(hash.shift(), metadata);
+                                this.historySpreadsheetNameAction(hash.shift());
                                 break;
                             default:
                                 if(target) {
@@ -313,7 +313,7 @@ class App extends React.Component {
     /**
      * Handles any actions in the hash directly related to the spreadsheet name.
      */
-    historySpreadsheetNameAction(action, metadata) {
+    historySpreadsheetNameAction(action) {
         switch (action) {
             case "edit":
                 this.editSpreadsheetName(true);
