@@ -140,6 +140,8 @@ context("General app usage", () => {
     cellTextCheck("#cell-F6", "6.");
   });
 
+  // DRAWER ............................................................................................................
+
   it("Toggle(Show and hide) drawer", () => {
     settingsToolDrawerToggle();
 
@@ -150,6 +152,101 @@ context("General app usage", () => {
 
     settingsToolDrawer()
         .should('be.not.visible');
+  });
+
+  it("Show drawer by editing history hash", () => {
+    reactRenderWait();
+
+    cy.window()
+        .then(function (win) {
+          var hash = win.location.hash;
+          win.location.hash = hash + "/";
+        });
+
+    reactRenderWait();
+    settingsToolDrawer()
+        .should('be.visible');
+  });
+
+  it("Hide drawer by editing history hash", () => {
+    settingsToolDrawerToggle();
+    reactRenderWait();
+
+    cy.window()
+        .then(function (win) {
+          var hash = win.location.hash;
+          win.location.hash = hash.substring(0, hash.length - 1);
+        });
+
+    reactRenderWait();
+    settingsToolDrawer()
+        .should('be.not.visible');
+  });
+
+  it("Toggle show drawer history hash", () => {
+    reactRenderWait();
+
+    cy.window()
+        .then(function (win) {
+          var hash = win.location.hash;
+
+          settingsToolDrawerToggle();
+
+          reactRenderWait();
+          cy.hash()
+              .should("eq", hash + "/");
+        });
+  });
+
+  it("Toggle show then hide drawer history hash", () => {
+    reactRenderWait();
+
+    cy.window()
+        .then(function (win) {
+          var hash = win.location.hash;
+
+          settingsToolDrawerToggle();
+          settingsToolDrawerToggle();
+
+          reactRenderWait();
+          cy.hash()
+              .should("eq", hash);
+        });
+  });
+
+  it("Edit spreadsheet name, then toggle show drawer history hash", () => {
+    spreadsheetName();
+
+    reactRenderWait();
+
+    cy.window()
+        .then(function (win) {
+          var hash = win.location.hash;
+
+          settingsToolDrawerToggle();
+
+          reactRenderWait();
+          cy.hash()
+              .should("eq", hash + "/");
+        });
+  });
+
+  it("Edit cell, then toggle show drawer history hash", () => {
+    cy.get("#cell-F6")
+        .click();
+
+    reactRenderWait();
+
+    cy.window()
+        .then(function (win) {
+          var hash = win.location.hash;
+
+          settingsToolDrawerToggle();
+
+          reactRenderWait();
+          cy.hash()
+              .should("eq", hash + "/");
+        });
   });
 });
 

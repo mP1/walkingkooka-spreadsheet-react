@@ -188,29 +188,74 @@ class App extends React.Component {
             console.log("historyHashVerify " + pathname);
 
             if (!createEmptySpreadsheet) {
-                const hash = HistoryHash.tokenize(pathname);
-                const spreadsheetId = hash.shift();
+                const historyHashTokens = HistoryHash.tokenize(pathname);
+                const spreadsheetId = historyHashTokens.shift();
                 if (this.historySpreadsheetIdCreateEmptyOrLoadOrNothing(spreadsheetId, metadata)) {
 
-                    const spreadsheetName = hash.shift();
+                    const spreadsheetName = historyHashTokens.shift();
                     if (this.historySpreadsheetNameDifferentUpdateHistory(spreadsheetId, spreadsheetName, metadata)) {
 
-                        const target = hash.shift();
-                        switch (target) {
-                            case "cell":
-                                this.historyCellAction(hash.shift(), hash.shift(), metadata);
+                        var verifiedHistoryHashTokens = [spreadsheetId, spreadsheetName];
+                        var valid = true;
+                        var cell = false;
+                        var name = false;
+                        var closeDrawer = true;
+                        const duplicate = [];
+
+                        while (valid && historyHashTokens.length > 0) {
+                            const target = historyHashTokens.shift();
+                            if (duplicate.includes(target)) {
+                                valid = this.historyUnknownTarget(metadata); // returns false, which will stop editcell, edit name and close drawer
                                 break;
-                            case "name":
-                                this.historySpreadsheetNameAction(hash.shift());
-                                break;
-                            default:
-                                if(target) {
-                                    this.historyUnknownTarget(metadata);
+                            }
+                            duplicate.push(target);
+
+                            switch (target) {
+                                case "":
+                                    this.settingsAndToolsDrawerOpen(true);
+                                    verifiedHistoryHashTokens.push("");
+                                    closeDrawer = false;
+                                    valid = true;
                                     break;
-                                }
-                                this.editSpreadsheetName();
-                                this.editCell();
-                                break;
+                                case "cell":
+                                    // cell after name is a fail
+                                    if (name) {
+                                        valid = this.historyUnknownTarget(metadata); // returns false, which will stop editcell, edit name and close drawer
+                                        break;
+                                    }
+                                    cell = true;
+                                    valid = this.historyCellAction(historyHashTokens.shift(), historyHashTokens.shift(), metadata);
+                                    break;
+                                case "name":
+                                    // name after cell is a fail.
+                                    if (cell) {
+                                        valid = this.historyUnknownTarget(metadata); // returns false, which will stop editcell, edit name and close drawer
+                                        break;
+                                    }
+                                    valid = this.historySpreadsheetNameAction(historyHashTokens.shift());
+                                    break;
+                                default:
+                                    valid = this.historyUnknownTarget(metadata);
+                                    break;
+                            }
+                        }
+
+                        if (!cell || !valid) {
+                            this.editCell(); // clear any edit cell
+                            if(metadata.editCell()) {
+                                this.setState({
+                                    spreadsheetMetadata: metadata.removeEditCell(),
+                                });
+                            }
+                        }
+                        if (!name || !valid) {
+                            this.editSpreadsheetName();
+                        }
+                        if (!valid || closeDrawer) {
+                            this.settingsAndToolsDrawerOpen(false, metadata);
+                        }
+                        if (valid) {
+                            this.historyPush(verifiedHistoryHashTokens, "Verified history hash", pathname);
                         }
                     }
                 }
@@ -298,30 +343,31 @@ class App extends React.Component {
             }
         }
 
-        if(clearHistoryCellAction) {
-            if(metadata.editCell()) {
-                this.setState({
-                    spreadsheetMetadata: metadata.removeEditCell(),
-                });
-            }
-
+        if (clearHistoryCellAction) {
             this.historyPush([metadata.spreadsheetId(), metadata.spreadsheetName()],
                 "Invalid cell reference or action, clearing cell/action (" + cellReference + "/" + action + ")");
         }
+
+        return !clearHistoryCellAction;
     }
 
     /**
      * Handles any actions in the hash directly related to the spreadsheet name.
      */
     historySpreadsheetNameAction(action) {
+        var pass;
+
         switch (action) {
             case "edit":
                 this.editSpreadsheetName(true);
+                pass = true;
                 break;
             default:
                 this.editSpreadsheetName(false);
+                pass = false;
                 break;
         }
+        return pass;
     }
 
     /**
@@ -329,21 +375,13 @@ class App extends React.Component {
      */
     historyUnknownTarget(metadata) {
         this.historyPush([metadata.spreadsheetId(), metadata.spreadsheetName()], "History hash invalid target and parameters");
+        return false;
     }
 
     /**
      * If the location is new log the message and push the history token.
      */
     historyPush(tokens, message, ...messageParameters) {
-        // find the first undefined and ignore following tokens.
-        for(var i = 0; i < tokens.length; i++) {
-            if(!tokens[i]) {
-                tokens = tokens.slice(0, i);
-                break;
-            }
-        }
-
-        const location = HistoryHash.concat(tokens);
         if (!message) {
             throw new Error("Missing message");
         }
@@ -352,6 +390,7 @@ class App extends React.Component {
         }
 
         const history = this.history;
+        const location = HistoryHash.join(tokens);
         if (history.location.pathname !== location) {
             console.log("History push " + location + ": " + message, ...messageParameters);
             this.history.push(location);
@@ -394,16 +433,17 @@ class App extends React.Component {
             if(spreadsheetNameWidget && spreadsheetNameWidget.isEdit()) {
                 hash.length = 2;
                 hash.push("name", "edit");
-
-
             }
         }
 
-        this.historyPush(hash, "State updated from ", prevState, "to", state);
-
-        if (this.settingsAndToolsDrawer.current) {
-            this.settingsAndToolsDrawer.current.setState({open: state.settingsAndToolsDrawer});
+        const open = state.settingsAndToolsDrawer;
+        if(open) {
+            hash.push(""); // append !
         }
+        const settingsAndToolsDrawer = this.settingsAndToolsDrawer.current;
+        settingsAndToolsDrawer && settingsAndToolsDrawer.setState({open: open});
+
+        this.historyPush(hash, "State updated from ", prevState, "to", state);
     }
 
     /**
@@ -672,24 +712,34 @@ class App extends React.Component {
     // drawer...........................................................................................................
 
     /**
-     * Toggles the drawer.
-     */
-    settingsAndToolsDrawerToggle() {
-        this.showSettingsAndToolsDrawer(!this.state.settingsAndToolsDrawer);
-    }
-
-    /**
      * Shows or hides the drawer on the right which holds a variety of settings and context aware tools.
      */
-    showSettingsAndToolsDrawer(show) {
-        console.log("showSettingsAndToolsDrawer " + show);
+    settingsAndToolsDrawerOpen(open) {
+        console.log("settingsAndToolsDrawerOpen " + open);
 
         this.setState({
-            settingsAndToolsDrawer: show,
+            settingsAndToolsDrawer: open,
         });
     }
 
-    // rendering........................................................................................................
+    /**
+     * Toggles the drawer and updates the history
+     */
+    settingsAndToolsDrawerToggleAndUpdateHistory() {
+        this.settingsAndToolsDrawerOpenAndUpdateHistory(!this.state.settingsAndToolsDrawer);
+    }
+
+    /**
+     * Shows or hides the drawer and updates the history hash.
+     */
+    settingsAndToolsDrawerOpenAndUpdateHistory(open) {
+        this.settingsAndToolsDrawerOpen(open);
+
+        const metadata = this.state.spreadsheetMetadata;
+        this.historyPush([metadata.spreadsheetId(), metadata.spreadsheetName(), open ? "" : null], "settingsAndToolsDrawer " + (open ? "opened" : "closed"));
+    }
+
+// rendering........................................................................................................
 
     /**
      * Renders the basic spreadsheet layout.
@@ -724,7 +774,7 @@ class App extends React.Component {
                                 dimensions={this.onAboveViewportResize.bind(this)}
                                 className={classes.header}
                     >
-                    <SpreadsheetAppBar menuClickListener={this.settingsAndToolsDrawerToggle.bind(this)}>
+                    <SpreadsheetAppBar menuClickListener={this.settingsAndToolsDrawerToggleAndUpdateHistory.bind(this)}>
                         <SpreadsheetNameWidget ref={this.spreadsheetName}
                                                key={spreadsheetName}
                                                value={spreadsheetName}
@@ -762,7 +812,7 @@ class App extends React.Component {
                 />
                 <SpreadsheetDrawerWidget ref={this.settingsAndToolsDrawer}
                                          open={settingsAndToolsDrawer}
-                                         onClose={this.showSettingsAndToolsDrawer.bind(this)}
+                                         onClose={this.settingsAndToolsDrawerOpenAndUpdateHistory.bind(this)}
                                          width={DRAWER_WIDTH}
                 />
             </WindowResizer>

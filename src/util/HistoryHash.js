@@ -8,17 +8,22 @@ export default class HistoryHash {
             split(pathname) :
             [];
     }
-
-    static concat(tokens) {
+    static join(tokens) {
         if (!tokens) {
             throw new Error("Missing tokens");
         }
-        tokens.forEach(e => {
-            if (!e) {
-                throw new Error("Invalid tokens contains missing token " + tokens.join());
+        var s = "";
+        for(var i = 0; i < tokens.length; i++) {
+            const token = tokens[i];
+
+            // stop joining if a undefined/null token is found.
+            if (!token && token !== "") {
+                break;
             }
-        })
-        return "/" + tokens.join("/");
+            s = s + "/" + token;
+        }
+
+        return s === "" ? "/" : s;
     }
 }
 
