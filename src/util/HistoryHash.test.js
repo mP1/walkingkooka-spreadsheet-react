@@ -5,118 +5,107 @@ import SpreadsheetCellReference from "../spreadsheet/reference/SpreadsheetCellRe
 
 // parse..................................................................................................................
 
-test("parse undefined", () => {
-    expect(HistoryHash.parse())
-        .toStrictEqual({});
+test("tokenize undefined", () => {
+    expect(HistoryHash.tokenize())
+        .toStrictEqual([]);
 });
 
-test("parse empty", () => {
-    expect(HistoryHash.parse(""))
-        .toStrictEqual({});
+test("tokenize empty", () => {
+    expect(HistoryHash.tokenize(""))
+        .toStrictEqual([]);
 });
 
-test("parse missing leading slash", () => {
-    expect(HistoryHash.parse("spreadsheet1/spreadsheet-name-2"))
-        .toStrictEqual({});
+test("tokenize missing leading slash", () => {
+    expect(HistoryHash.tokenize("spreadsheet1/spreadsheet-name-2"))
+        .toStrictEqual([]);
 });
 
-test("parse slash", () => {
-    expect(HistoryHash.parse("/"))
-        .toStrictEqual({
-            spreadsheetId: undefined,
-            spreadsheetName: undefined,
-            target: undefined,
-        });
+test("tokenize slash", () => {
+    expect(HistoryHash.tokenize("/"))
+        .toStrictEqual([""]);
 });
 
-test("parse spreadsheetId", () => {
-    expect(HistoryHash.parse("/123"))
-        .toStrictEqual({
-            spreadsheetId: "123",
-            spreadsheetName: undefined,
-            target: undefined,
-        });
+test("tokenize /spreadsheetId", () => {
+    expect(HistoryHash.tokenize("/123"))
+        .toStrictEqual(["123"]);
 });
 
-test("parse spreadsheetId/spreadsheetname", () => {
-    expect(HistoryHash.parse("/1/spreadsheet-name-2"))
-        .toStrictEqual({
-            spreadsheetId: "1",
-            spreadsheetName: "spreadsheet-name-2",
-            target: undefined,
-        });
+test("tokenize /spreadsheetId/spreadsheetname", () => {
+    expect(HistoryHash.tokenize("/1/spreadsheet-name-2"))
+        .toStrictEqual(["1",
+            "spreadsheet-name-2"]);
 });
 
-test("parse spreadsheetId/spreadsheetname/", () => {
-    expect(HistoryHash.parse("/1/spreadsheet-name-2/"))
-        .toStrictEqual({
-            spreadsheetId: "1",
-            spreadsheetName: "spreadsheet-name-2",
-            target: undefined,
-        });
+test("tokenize /spreadsheetId/spreadsheetname/", () => {
+    expect(HistoryHash.tokenize("/1/spreadsheet-name-2/"))
+        .toStrictEqual(["1",
+            "spreadsheet-name-2",
+            ""]);
 });
 
-test("parse spreadsheetId/spreadsheetname/cell", () => {
-    expect(HistoryHash.parse("/1/spreadsheet-name-2/cell/"))
-        .toStrictEqual({
-            spreadsheetId: "1",
-            spreadsheetName: "spreadsheet-name-2",
-            target: "cell",
-            cellReference: undefined,
-            action: undefined,
-        });
+test("tokenize /spreadsheetId/spreadsheetname/cell", () => {
+    expect(HistoryHash.tokenize("/1/spreadsheet-name-2/cell"))
+        .toStrictEqual(["1", "spreadsheet-name-2", "cell"]);
 });
 
-test("parse spreadsheetId/spreadsheetname/cell/cell-reference", () => {
-    expect(HistoryHash.parse("/1/spreadsheet-name-2/cell/cell-4/"))
-        .toStrictEqual({
-            spreadsheetId: "1",
-            spreadsheetName: "spreadsheet-name-2",
-            target: "cell",
-            cellReference: "cell-4",
-            action: undefined,
-        });
+test("tokenize /spreadsheetId/spreadsheetname/cell/", () => {
+    expect(HistoryHash.tokenize("/1/spreadsheet-name-2/cell/"))
+        .toStrictEqual(["1",
+            "spreadsheet-name-2",
+            "cell",
+            ""]);
 });
 
-test("parse spreadsheetId/spreadsheetname/cell/cell-reference/action", () => {
-    expect(HistoryHash.parse("/1/spreadsheet-name-2/cell/cell-4/action-5"))
-        .toStrictEqual({
-            spreadsheetId: "1",
-            spreadsheetName: "spreadsheet-name-2",
-            target: "cell",
-            cellReference: "cell-4",
-            action: "action-5",
-        });
+test("tokenize /spreadsheetId/spreadsheetname/cell/cell-reference", () => {
+    expect(HistoryHash.tokenize("/1/spreadsheet-name-2/cell/cell-reference"))
+        .toStrictEqual(["1",
+            "spreadsheet-name-2",
+            "cell",
+            "cell-reference"]);
 });
 
-test("parse spreadsheetId/spreadsheetname/target/cell/cell-reference/action/extra", () => {
-    expect(HistoryHash.parse("/1/spreadsheet-name-2/cell/cell-4/action-5/extra-6"))
-        .toStrictEqual({
-            spreadsheetId: "1",
-            spreadsheetName: "spreadsheet-name-2",
-            target: "cell",
-            cellReference: "cell-4",
-            action: "action-5",
-        });
+test("tokenize /spreadsheetId/spreadsheetname/cell/cell-reference/", () => {
+    expect(HistoryHash.tokenize("/1/spreadsheet-name-2/cell/cell-reference/"))
+        .toStrictEqual(["1",
+            "spreadsheet-name-2",
+            "cell",
+            "cell-reference",
+            ""]);
 });
 
-test("parse spreadsheetId/spreadsheetname/name/edit", () => {
-    expect(HistoryHash.parse("/1/spreadsheet-name-2/name/edit"))
-        .toStrictEqual({
-            spreadsheetId: "1",
-            spreadsheetName: "spreadsheet-name-2",
-            target: "name",
-            action: "edit",
-        });
+test("tokenize /spreadsheetId/spreadsheetname/cell/cell-reference/action", () => {
+    expect(HistoryHash.tokenize("/1/spreadsheet-name-2/cell/cell-4/action-5"))
+        .toStrictEqual(["1",
+            "spreadsheet-name-2",
+            "cell",
+            "cell-4",
+            "action-5"]);
 });
 
-test("parse spreadsheetId/spreadsheetname/unknown/unknown", () => {
-    expect(HistoryHash.parse("/1/spreadsheet-name-2/unknown-3/unknown-4"))
-        .toStrictEqual({
-            spreadsheetId: "1",
-            spreadsheetName: "spreadsheet-name-2",
-            target: "unknown-3",
-        });
+test("tokenize /spreadsheetId/spreadsheetname/target/cell/cell-reference/action/extra", () => {
+    expect(HistoryHash.tokenize("/1/spreadsheet-name-2/cell/cell-4/action-5/extra-6"))
+        .toStrictEqual(["1",
+            "spreadsheet-name-2",
+            "cell",
+            "cell-4",
+            "action-5",
+            "extra-6"]);
+});
+
+test("tokenize /spreadsheetId/spreadsheetname/name/edit", () => {
+    expect(HistoryHash.tokenize("/1/spreadsheet-name-2/name/edit"))
+        .toStrictEqual(["1",
+            "spreadsheet-name-2",
+            "name",
+            "edit"]);
+});
+
+test("tokenize /spreadsheetId/spreadsheetname/unknown/unknown", () => {
+    expect(HistoryHash.tokenize("/1/spreadsheet-name-2/unknown-3/unknown-4"))
+        .toStrictEqual(["1",
+            "spreadsheet-name-2",
+            "unknown-3",
+            "unknown-4"]);
 });
 
 // parse..................................................................................................................
