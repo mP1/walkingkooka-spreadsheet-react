@@ -110,57 +110,65 @@ test("tokenize /spreadsheetId/spreadsheetname/unknown/unknown", () => {
 
 // parse..................................................................................................................
 
-test("concat undefined tokens fails", () => {
-    expect(() => HistoryHash.concat()).toThrow("Missing tokens");
+test("join undefined tokens fails", () => {
+    expect(() => HistoryHash.join()).toThrow("Missing tokens");
 });
 
-test("concat null tokens fails", () => {
-    expect(() => HistoryHash.concat()).toThrow("Missing tokens");
+test("join null tokens fails", () => {
+    expect(() => HistoryHash.join()).toThrow("Missing tokens");
 });
 
-test("concat tokens contains undefined fails", () => {
-    expect(() => HistoryHash.concat([undefined])).toThrow("Invalid tokens contains missing token ");
-});
-
-test("concat tokens contains null fails", () => {
-    expect(() => HistoryHash.concat([null])).toThrow("Invalid tokens contains missing token ");
-});
-
-test("concat tokens contains invalid fails", () => {
-    expect(() => HistoryHash.concat(["valid-1", null])).toThrow("Invalid tokens contains missing token ");
-});
-
-test("concat tokens empty", () => {
-    expect(HistoryHash.concat([]))
+test("join tokens empty", () => {
+    expect(HistoryHash.join([]))
         .toStrictEqual("/");
 });
 
-test("concat tokens spreadsheet-id", () => {
-    expect(HistoryHash.concat(["spreadsheet-1"]))
+test("join tokens spreadsheet-id", () => {
+    expect(HistoryHash.join(["spreadsheet-1"]))
         .toStrictEqual("/spreadsheet-1");
 });
 
-test("concat tokens spreadsheet-id, spreadsheet-name", () => {
-    expect(HistoryHash.concat(["spreadsheet-1", new SpreadsheetName("spreadsheet-name-2")]))
+test("join tokens spreadsheet-id, spreadsheet-name", () => {
+    expect(HistoryHash.join(["spreadsheet-1", new SpreadsheetName("spreadsheet-name-2")]))
         .toStrictEqual("/spreadsheet-1/spreadsheet-name-2");
 });
 
-test("concat tokens spreadsheet-id, spreadsheet-name, cell", () => {
-    expect(HistoryHash.concat(["spreadsheet-1", new SpreadsheetName("spreadsheet-name-2"), "cell"]))
+test("join tokens spreadsheet-id, spreadsheet-name, undefined, ignored", () => {
+    expect(HistoryHash.join(["spreadsheet-1", new SpreadsheetName("spreadsheet-name-2"), undefined, "ignored"]))
+        .toStrictEqual("/spreadsheet-1/spreadsheet-name-2");
+});
+
+test("join tokens spreadsheet-id, spreadsheet-name, null, ignored", () => {
+    expect(HistoryHash.join(["spreadsheet-1", new SpreadsheetName("spreadsheet-name-2"), null, "ignored"]))
+        .toStrictEqual("/spreadsheet-1/spreadsheet-name-2");
+});
+
+test("join tokens spreadsheet-id, spreadsheet-name, empty", () => {
+    expect(HistoryHash.join(["spreadsheet-1", new SpreadsheetName("spreadsheet-name-2"), ""]))
+        .toStrictEqual("/spreadsheet-1/spreadsheet-name-2/");
+});
+
+test("join tokens spreadsheet-id, spreadsheet-name, cell", () => {
+    expect(HistoryHash.join(["spreadsheet-1", new SpreadsheetName("spreadsheet-name-2"), "cell"]))
         .toStrictEqual("/spreadsheet-1/spreadsheet-name-2/cell");
 });
 
-test("concat tokens spreadsheet-id, spreadsheet-name, cell, cell-reference", () => {
-    expect(HistoryHash.concat(["spreadsheet-1", new SpreadsheetName("spreadsheet-name-2"), "cell", SpreadsheetCellReference.parse("D4")]))
+test("join tokens spreadsheet-id, spreadsheet-name, cell, cell-reference", () => {
+    expect(HistoryHash.join(["spreadsheet-1", new SpreadsheetName("spreadsheet-name-2"), "cell", SpreadsheetCellReference.parse("D4")]))
         .toStrictEqual("/spreadsheet-1/spreadsheet-name-2/cell/D4");
 });
 
-test("concat tokens spreadsheet-id, spreadsheet-name, cell, cell-reference, action", () => {
-    expect(HistoryHash.concat(["spreadsheet-1", new SpreadsheetName("spreadsheet-name-2"), "cell", SpreadsheetCellReference.parse("D4"), "edit-5"]))
+test("join tokens spreadsheet-id, spreadsheet-name, cell, cell-reference, action", () => {
+    expect(HistoryHash.join(["spreadsheet-1", new SpreadsheetName("spreadsheet-name-2"), "cell", SpreadsheetCellReference.parse("D4"), "edit-5"]))
         .toStrictEqual("/spreadsheet-1/spreadsheet-name-2/cell/D4/edit-5");
 });
 
-test("concat tokens spreadsheet-id, spreadsheet-name, cell, cell-reference, action, extra", () => {
-    expect(HistoryHash.concat(["spreadsheet-1", new SpreadsheetName("spreadsheet-name-2"), "cell", SpreadsheetCellReference.parse("D4"), "edit-5", "extra-6"]))
+test("join tokens spreadsheet-id, spreadsheet-name, cell, cell-reference, action, extra", () => {
+    expect(HistoryHash.join(["spreadsheet-1", new SpreadsheetName("spreadsheet-name-2"), "cell", SpreadsheetCellReference.parse("D4"), "edit-5", "extra-6"]))
         .toStrictEqual("/spreadsheet-1/spreadsheet-name-2/cell/D4/edit-5/extra-6");
+});
+
+test("join tokens spreadsheet-id, spreadsheet-name, cell, cell-reference, action, empty", () => {
+    expect(HistoryHash.join(["spreadsheet-1", new SpreadsheetName("spreadsheet-name-2"), "cell", SpreadsheetCellReference.parse("D4"), "edit-5", ""]))
+        .toStrictEqual("/spreadsheet-1/spreadsheet-name-2/cell/D4/edit-5/");
 });
