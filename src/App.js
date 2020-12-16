@@ -390,12 +390,12 @@ class App extends React.Component {
         }
 
         const history = this.history;
-        const location = HistoryHash.join(tokens);
-        if (history.location.pathname !== location) {
-            console.log("History push " + location + ": " + message, ...messageParameters);
-            this.history.push(location);
+        const pathname = HistoryHash.join(tokens);
+        if (history.location.pathname !== pathname) {
+            console.log("History push \"" + pathname + "\": " + message, ...messageParameters);
+            this.history.push(pathname);
         } else {
-            console.log("History push unchanged " + history.location.pathname + " new " + location);
+            console.log("History push unchanged \"" + history.location.pathname + "\" new \"" + pathname + "\"");
         }
     }
 
