@@ -100,6 +100,33 @@ context("General app usage", () => {
     cellTextCheck("#cell-D4", "16.");
   });
 
+  it("Update hash cell reference", () => {
+    reactRenderWait();
+
+    cy.get("#cell-C3")
+        .click();
+
+    formulaText()
+        .type("1+2+3")
+        .type("{enter}");
+
+    cy.window()
+        .then(function (win) {
+          var hash = win.location.hash;
+          win.location.hash = hash.replace("/cell/C3/formula", "/cell/D4/formula");
+        });
+
+    reactRenderWait();
+
+    formulaText()
+        .type("4+5")
+        .type("{enter}");
+
+    cellTextCheck("#cell-D4", "9.");
+  });
+
+  // create/load spreadsheet............................................................................................
+
   it("Create new empty spreadsheet", () => {
     hashEnter("/");
 
