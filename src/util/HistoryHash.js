@@ -1,10 +1,12 @@
 export default class HistoryHash {
 
     /**
-     * Parses the components within the given pathname without verifying whether they are actually valid.
+     * Tokenizes the pathname into components, no attempt is made to validate any individual token.
      */
-    static parse(pathname) {
-        return (pathname && pathname.startsWith("/") && parse0(pathname)) || {};
+    static tokenize(pathname) {
+        return pathname && pathname.startsWith("/") ?
+            split(pathname) :
+            [];
     }
 
     static concat(tokens) {
@@ -20,34 +22,8 @@ export default class HistoryHash {
     }
 }
 
-function parse0(pathname) {
-    // turn empty string tokens into undefined
-    const components = pathname.split("/")
-        .map(s => s === "" ? undefined : s);
-    const target = components[3];
-
-    // 0 holds leading slash
-    var result = {
-        spreadsheetId: components[1],
-        spreadsheetName: components[2],
-        target: target,
-    }
-
-    switch(target) {
-        case "cell":
-            result = Object.assign(result, {
-                cellReference: components[4],
-                action: components[5],
-            });
-            break;
-        case "name":
-            result = Object.assign(result, {
-                action: components[4], // only option is edit
-            });
-            break;
-        default:
-            break;
-    }
-
-    return result;
+function split(pathname) {
+    const components = pathname.split("/");
+    components.shift();
+    return components;
 }

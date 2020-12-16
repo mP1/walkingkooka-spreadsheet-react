@@ -188,22 +188,24 @@ class App extends React.Component {
             console.log("historyHashVerify " + pathname);
 
             if (!createEmptySpreadsheet) {
-                const hash = HistoryHash.parse(pathname);
-                const spreadsheetId = hash.spreadsheetId;
+                const hash = HistoryHash.tokenize(pathname);
+                const spreadsheetId = hash.shift();
                 if (this.historySpreadsheetIdCreateEmptyOrLoadOrNothing(spreadsheetId, metadata)) {
-                    const spreadsheetName = hash.spreadsheetName;
-                    if (this.historySpreadsheetNameDifferentUpdateHistory(spreadsheetName, metadata)) {
-                        const target = hash.target;
+
+                    const spreadsheetName = hash.shift();
+                    if (this.historySpreadsheetNameDifferentUpdateHistory(spreadsheetId, spreadsheetName, metadata)) {
+
+                        const target = hash.shift();
                         switch (target) {
                             case "cell":
-                                this.historyCellAction(hash, metadata);
+                                this.historyCellAction(hash.shift(), hash.shift(), metadata);
                                 break;
                             case "name":
-                                this.historySpreadsheetNameAction(hash, metadata);
+                                this.historySpreadsheetNameAction(hash.shift(), metadata);
                                 break;
                             default:
                                 if(target) {
-                                    this.historyUnknownTarget(hash, metadata);
+                                    this.historyUnknownTarget(metadata);
                                     break;
                                 }
                                 this.editSpreadsheetName();
@@ -247,7 +249,7 @@ class App extends React.Component {
     /**
      * If the history spreadsheet name is invalid/different from SpreadsheetMetadata update the history and return false.
      */
-    historySpreadsheetNameDifferentUpdateHistory(hashName, metadata) {
+    historySpreadsheetNameDifferentUpdateHistory(spreadsheetId, hashName, metadata) {
         var hashSpreadsheetName;
         try {
             hashSpreadsheetName = new SpreadsheetName(hashName);
@@ -258,7 +260,7 @@ class App extends React.Component {
         const same = Equality.safeEquals(hashSpreadsheetName, metadataSpreadsheetName);
         if (!same) {
             // update url to match actual SpreadsheetMetadata.spreadsheetName
-            this.historyPush([metadata.spreadsheetId(), metadataSpreadsheetName],
+            this.historyPush([spreadsheetId, metadataSpreadsheetName],
                 "Updating from " + hashName + " to match state " + metadataSpreadsheetName);
         }
         return same;
@@ -268,8 +270,7 @@ class App extends React.Component {
      * If the cell is invalid reset the history hash to $spreadsheetId / $spreadsheetName.
      * When the cell reference is valid, verify the action, if either changed update the history to $spreadsheetId / $spreadsheetName / $cell / $action
      */
-    historyCellAction(hash, metadata) {
-        const {cellReference, action} = hash;
+    historyCellAction(cellReference, action, metadata) {
         var clearHistoryCellAction = true; // only leave if both are valid.
 
         if (cellReference && action) {
@@ -312,8 +313,7 @@ class App extends React.Component {
     /**
      * Handles any actions in the hash directly related to the spreadsheet name.
      */
-    historySpreadsheetNameAction(hash, metadata) {
-        const action = hash.action;
+    historySpreadsheetNameAction(action, metadata) {
         switch (action) {
             case "edit":
                 this.editSpreadsheetName(true);
@@ -327,9 +327,8 @@ class App extends React.Component {
     /**
      * The history hash contains an unknown target remove the target and following from the history hash.
      */
-    historyUnknownTarget(hash, metadata) {
-        const {spreadsheetId, spreadsheetName} = hash;
-        this.historyPush([spreadsheetId, spreadsheetName], "History hash invalid target and parameters");
+    historyUnknownTarget(metadata) {
+        this.historyPush([metadata.spreadsheetId(), metadata.spreadsheetName()], "History hash invalid target and parameters");
     }
 
     /**
