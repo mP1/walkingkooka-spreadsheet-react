@@ -15,6 +15,18 @@ context("General app usage", () => {
     checkEmptySpreadsheet();
   });
 
+  // INVALID TARGET. ...................................................................................................
+
+  it("Enter history hash invalid target", () => {
+    invalidHashUpdateRejected("/!invalid-target");
+  });
+
+  // SPREADSHEET NAME ...................................................................................................
+
+  it("Enter history hash with invalid spreadsheet name action", () => {
+    invalidHashUpdateRejected("/name/!invalid-name-action");
+  });
+
   it("Edit spreadsheet name", () => {
     spreadsheetName()
         .click();
@@ -37,6 +49,16 @@ context("General app usage", () => {
     // verify hash and title updated to include $updateSpreadsheetName
     title().should("eq", updatedSpreadsheetName.toString());
     hash().should('match', /.*\/SpreadsheetName234/) // => true
+  });
+
+  // CELL ................................................................................................................
+
+  it("Enter history hash with invalid reference", () => {
+    invalidHashUpdateRejected("/cell/!invalid-cell-reference");
+  });
+
+  it("Enter history hash with valid reference but invalid action", () => {
+    invalidHashUpdateRejected("/cell/A1/!invalid-cell-action");
   });
 
   it("Edit cell formula", () => {
@@ -132,6 +154,25 @@ context("General app usage", () => {
 });
 
 // helpers..............................................................................................................
+
+/**
+ * Updates the url hash by appending the parameter (which should result in an invalid hash) and then verifies the previous
+ * hash is restored.
+ */
+function invalidHashUpdateRejected(hashAppend) {
+  reactRenderWait();
+
+  cy.window()
+      .then(function (win) {
+        var hash = win.location.hash;
+
+        // updated hash should be rejected.
+        win.location.hash = hash + hashAppend;
+
+        cy.hash()
+            .should("eq", hash);
+      });
+}
 
 /**
  * Checks that the spreadsheet is completely empty.
