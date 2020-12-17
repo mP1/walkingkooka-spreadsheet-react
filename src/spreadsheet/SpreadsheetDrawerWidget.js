@@ -1,24 +1,60 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import {withStyles} from "@material-ui/core/styles";
+
+import Accordion from '@material-ui/core/Accordion';
+import AccordionDetails from '@material-ui/core/AccordionDetails';
+import AccordionSummary from '@material-ui/core/AccordionSummary';
 import Drawer from "@material-ui/core/Drawer";
-import Toolbar from "@material-ui/core/Toolbar";
+import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import Paper from '@material-ui/core/Paper';
+import Table from '@material-ui/core/Table';
+import TableBody from '@material-ui/core/TableBody';
+import TableCell from '@material-ui/core/TableCell';
+import TableContainer from '@material-ui/core/TableContainer';
+import TableRow from '@material-ui/core/TableRow';
+import Typography from '@material-ui/core/Typography';
 
 /**
  * The drawer appears holds all general settings and tools for a spreadsheet sheet.
  */
-export default class SpreadsheetDrawerWidget extends React.Component {
+const useStyles = theme => ({
+    root: {
+        width: '100%',
+    },
+    heading: {
+        fontSize: theme.typography.pxToRem(13),
+        fontWeight: 700,
+    },
+    secondaryHeading: {
+        fontSize: theme.typography.pxToRem(12),
+        color: theme.palette.text.secondary,
+    },
+    label: {
+        fontSize: theme.typography.pxToRem(12),
+        fontWeight: 700,
+    },
+    value: {
+        fontSize: theme.typography.pxToRem(12),
+    },
+});
+
+class SpreadsheetDrawerWidget extends React.Component {
 
     constructor(props) {
         super(props);
 
         this.state = {
-            open: props.open
+            open: props.open,
+            spreadsheetMetadata: props.spreadsheetMetadata,
         };
         this.onClose = props.onClose;
         this.width = props.width;
     }
 
     render() {
+        const {classes} = this.props;
+
         return <Drawer id={"settings-tools-drawer"}
                        anchor={"right"}
                        variant={"persistent"}
@@ -26,10 +62,111 @@ export default class SpreadsheetDrawerWidget extends React.Component {
                        modal={false}
                        onClose={this.onClose}
         >
-            <Toolbar />
-            <div style={{margin: 0, border: 0, padding: 0, width: this.width + "px"}}>
+            <div className={classes.root}
+                 style={{margin: 0, border: 0, padding: 0, width: this.width + "px"}}>
+                {[
+                    this.metadata(classes),
+                ]}
             </div>
         </Drawer>;
+    }
+
+    // https://material-ui.com/components/accordion/
+
+    /**
+     * Displays the following spreadsheet metadata.
+     * <ul>
+     * <li>spreadsheet-id</li>
+     * <li>creator</li>
+     * <li>create date time</li>
+     * <li>modified by</li>
+     * <li>modified date time</li>
+     * <ul>
+     */
+    // TODO Introduce a service to return the display data, formatted etc.
+    metadata(classes) {
+        const metadata = this.state.spreadsheetMetadata;
+
+        const id = metadata.spreadsheetId();
+        const creator = metadata.get("creator");
+        const createDateTime = metadata.get("create-date-time");
+        const modifiedBy = metadata.get("modified-by");
+        const modifiedDateTime = metadata.get("modified-date-time");
+
+        const rows = [
+            this.metadataRow("Spreadsheet Id", "spreadsheet-metadata-id", id),
+            this.metadataRow("Creator", "spreadsheet-metadata-creator", creator),
+            this.metadataRow("Create Date/Time", "spreadsheet-metadata-create-date-time", createDateTime),
+            this.metadataRow("Modified by", "spreadsheet-metadata-modified-by", modifiedBy),
+            this.metadataRow("Modified Date/Time", "spreadsheet-metadata-modified-date-time", modifiedDateTime),
+        ];
+
+        // TODO table area-label
+        return this.accordion("metadata",
+            true,
+            () => {
+            },
+            classes,
+            "Spreadsheet Metadata",
+            "",
+            [
+                <TableContainer key={rows}
+                                component={Paper}>
+                    <Table className={classes.table}
+                           size={"small"}
+                           aria-label="Readonly Spreadsheet Metadata">
+                        <TableBody>
+                            {
+                                rows.map(r => this.renderRow(r, classes))
+                            }
+                        </TableBody>
+                    </Table>
+                </TableContainer>
+            ]
+        );
+    }
+
+    metadataRow(label, id, value) {
+        return {
+            label: label,
+            id: id,
+            value: value,
+        }
+    }
+
+    renderRow(row, classes) {
+        const {label, id, value} = row;
+
+        // hover = highlight under mouse over
+        return (
+        <TableRow key={row}
+                  hover={true}>
+            <TableCell className={classes.label}>{label}</TableCell>
+            <TableCell id={id}
+                       className={classes.value}>{value}</TableCell>
+        </TableRow>);
+    }
+
+    /**
+     * Creates the accordion container so all sections in the drawer have a common look and feel and history hash management.
+     */
+    // TODO pass onChange to update history hash
+    // TODO AccordionSummary aria-control
+    accordion(id, expanded, onChange, classes, heading, secondaryHeading, children) {
+        return <Accordion id={id}
+                          expanded={expanded}
+                          onChange={onChange}>
+            <AccordionSummary
+                expandIcon={<ExpandMoreIcon/>}
+                id={id + "-icon"}
+            >
+                <Typography className={classes.heading}>{heading}</Typography>
+                <Typography className={classes.secondaryHeading}>{secondaryHeading}</Typography>
+            </AccordionSummary>
+            <AccordionDetails>
+                {children}
+            </AccordionDetails>
+        </Accordion>;
     }
 }
 
@@ -38,3 +175,5 @@ SpreadsheetDrawerWidget.propTypes = {
     onClose: PropTypes.func.isRequired, // fired when the drawer is closed
     width: PropTypes.number.isRequired, // the width includes px of the drawer
 }
+
+export default withStyles(useStyles)(SpreadsheetDrawerWidget);

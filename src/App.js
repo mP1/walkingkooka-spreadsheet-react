@@ -431,6 +431,7 @@ class App extends React.Component {
         this.onSpreadsheetMetadataSpreadsheetName(hash);
         this.onSpreadsheetViewport(prevState);
         this.onSpreadsheetFormula(hash);
+        this.onSpreadsheetDrawer(hash);
 
         // special case restore /name/edit if spreadsheet name is being edited.
         if(hash.length >= 2) {
@@ -744,7 +745,20 @@ class App extends React.Component {
         this.historyPush([metadata.spreadsheetId(), metadata.spreadsheetName(), open ? "" : null], "settingsAndToolsDrawer " + (open ? "opened" : "closed"));
     }
 
-// rendering........................................................................................................
+    /**
+     * Handles updates to the state and hash.
+     */
+    onSpreadsheetDrawer(hash) {
+        const widget = this.settingsAndToolsDrawer.current;
+        if (widget) {
+            const state = this.state;
+            widget.setState({
+                spreadsheetMetadata: state.spreadsheetMetadata,
+            });
+        }
+    }
+
+    // rendering........................................................................................................
 
     /**
      * Renders the basic spreadsheet layout.
@@ -819,6 +833,7 @@ class App extends React.Component {
                                          open={settingsAndToolsDrawer}
                                          onClose={this.settingsAndToolsDrawerOpenAndUpdateHistory.bind(this)}
                                          width={DRAWER_WIDTH}
+                                         spreadsheetMetadata={metadata}
                 />
             </WindowResizer>
         );
