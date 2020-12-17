@@ -64,7 +64,7 @@ class App extends React.Component {
                 width: window.innerWidth,
                 height: window.innerHeight,
             },
-        }
+        };
 
         // the names must match the Class.getSimpleName in walkingkooka-spreadsheet
         this.messenger = new SpreadsheetMessenger({
