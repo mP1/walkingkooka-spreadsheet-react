@@ -8,7 +8,6 @@ import PropTypes from "prop-types";
  * When ENTER is pressed the setValue handler is invoked with the new text value.
  * When either ENTER or ESC are pressed the component returns to be disabled and only viewable.
  */
-// TODO stop Button capitalizing spreadsheet name
 export default class SpreadsheetButtonTextField extends React.Component {
 
     constructor(props) {
