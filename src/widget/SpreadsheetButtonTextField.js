@@ -9,7 +9,6 @@ import PropTypes from "prop-types";
  * When either ENTER or ESC are pressed the component returns to be disabled and only viewable.
  */
 // TODO stop Button capitalizing spreadsheet name
-// TODO make button & textfields have the same padding/margin etc
 export default class SpreadsheetButtonTextField extends React.Component {
 
     constructor(props) {
@@ -101,14 +100,14 @@ export default class SpreadsheetButtonTextField extends React.Component {
     }
 
     renderEditTextField() {
-        return (<TextField
-            ref={this.textField}
-            id={this.id}
-            className={this.props.className}
-            fullWidth={true}
-            onKeyDown={(event) => this.handleKeyDown(event)}
-            defaultValue={this.state.value}
-            autoFocus/>);
+        return (<TextField ref={this.textField}
+                           id={this.id}
+                           className={this.props.className}
+                           fullWidth={true}
+                           margin={"none"}
+                           onKeyDown={(event) => this.handleKeyDown(event)}
+                           defaultValue={this.state.value}
+                           autoFocus/>);
     }
 }
 
