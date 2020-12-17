@@ -26,7 +26,6 @@ export default function textNodeJsonSupportFromJson(json) {
     }
     switch(typeof value) {
         case "undefined":
-        case "null":
             throw new Error("Missing value got " + JSON.stringify(json));
         default:
             break;
