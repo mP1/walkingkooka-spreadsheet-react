@@ -1,3 +1,5 @@
+import Color from "../../color/Color.js";
+
 export default class SpreadsheetText {
 
     static fromJson(json) {
@@ -13,6 +15,9 @@ export default class SpreadsheetText {
     }
 
     constructor(color, text) {
+        if (typeof color !== "undefined" && !(color instanceof Color)) {
+            throw new Error("Expected Color color got " + color);
+        }
         if (!text) {
             throw new Error("Missing text");
         }
@@ -38,7 +43,7 @@ export default class SpreadsheetText {
 
         const color = this.color();
         if (color) {
-            json.color = color;
+            json.color = color.toJson();
         }
 
         return json;
