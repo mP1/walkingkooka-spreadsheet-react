@@ -37,7 +37,7 @@ test("create color & text", () => {
         t);
 });
 
-// json
+// fromJson.............................................................................................................
 
 test("fromJson undefined fails", () => {
     expect(() => SpreadsheetText.fromJson(undefined)).toThrow("Missing json");
@@ -85,7 +85,7 @@ test("toJson without color and text", () => {
     });
 });
 
-test("fromJson with color and text", () => {
+test("toJson with color and text", () => {
     const c = color();
     const t = text();
 
@@ -128,7 +128,7 @@ test("equals different color false", () => {
         .toBeFalse();
 });
 
-test("equals different width false", () => {
+test("equals different text false", () => {
     expect(spreadsheetText()
         .equals(new SpreadsheetText(color(), "different")))
         .toBeFalse();
