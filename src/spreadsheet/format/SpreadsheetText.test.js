@@ -1,7 +1,8 @@
+import Color from "../../color/Color.js";
 import SpreadsheetText from "./SpreadsheetText";
 
 function color() {
-    return "#123456";
+    return Color.parse("#123456");
 }
 
 function text() {
@@ -11,6 +12,11 @@ function text() {
 function spreadsheetText() {
     return new SpreadsheetText(color(), text());
 }
+
+test("create invalid color type fails", () => {
+    const color = 123;
+    expect(() => new SpreadsheetText(color, text())).toThrow("Expected Color color got " + color);
+});
 
 test("create without text fails", () => {
     expect(() => new SpreadsheetText(color(), text()).toThrow("Missing text"));
@@ -91,7 +97,7 @@ test("toJson with color and text", () => {
 
     expect(new SpreadsheetText(c, t)
         .toJson()).toStrictEqual({
-        color: c,
+        color: c.toJson(),
         text: t,
     });
 });
@@ -124,7 +130,7 @@ test("equals self true", () => {
 
 test("equals different color false", () => {
     expect(spreadsheetText()
-        .equals(new SpreadsheetText("#98765", text())))
+        .equals(new SpreadsheetText(Color.parse("#987654"), text())))
         .toBeFalse();
 });
 
