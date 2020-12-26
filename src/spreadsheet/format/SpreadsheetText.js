@@ -18,7 +18,7 @@ export default class SpreadsheetText {
         if (typeof color !== "undefined" && !(color instanceof Color)) {
             throw new Error("Expected Color color got " + color);
         }
-        if (!text) {
+        if (!text && text !== "") {
             throw new Error("Missing text");
         }
         if (typeof text !== "string") {
