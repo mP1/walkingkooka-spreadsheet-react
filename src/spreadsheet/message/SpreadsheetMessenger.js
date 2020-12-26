@@ -1,4 +1,4 @@
-import timeoutPromise from "./FetchTimeoutPromise";
+import timeoutPromise from "./FetchTimeoutPromise.js";
 
 // default timeout if timeout property in parameters is missing
 const DEFAULT_TIMEOUT = 30 * 1000;
