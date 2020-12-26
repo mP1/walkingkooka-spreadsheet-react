@@ -25,7 +25,7 @@ import SpreadsheetNameWidget from "./spreadsheet/SpreadsheetNameWidget.js";
 import Equality from "./Equality.js";
 import SpreadsheetName from "./spreadsheet/SpreadsheetName.js";
 import SpreadsheetCellReference from "./spreadsheet/reference/SpreadsheetCellReference.js";
-import HistoryHash from "./util/HistoryHash.js";
+import HistoryHash from "./spreadsheet/history/HistoryHash.js";
 import SpreadsheetDrawerWidget from "./spreadsheet/SpreadsheetDrawerWidget.js";
 import SpreadsheetContainerWidget from "./widget/SpreadsheetContainerWidget.js";
 
