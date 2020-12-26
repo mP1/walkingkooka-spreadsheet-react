@@ -3,6 +3,7 @@ import timeoutPromise from "./FetchTimeoutPromise.js";
 // default timeout if timeout property in parameters is missing
 const DEFAULT_TIMEOUT = 30 * 1000;
 
+var transactionId = 0;
 /**
  * The preferred way to make requests to a server. This class supports talking to a real server using fetch(HTTP) or a webworker using messages.
  */
@@ -51,7 +52,8 @@ export default class SpreadsheetMessenger {
 
         const headers = Object.assign({
             "Accept-Charset": "UTF-8",
-            "Content-Type": "application/json"
+            "Content-Type": "application/json",
+            "X-Transaction-ID": "" + transactionId++,
         }, parameters.headers);
 
         const parametersWithDefaults = Object.assign({},
