@@ -19,7 +19,7 @@ test("create invalid color type fails", () => {
 });
 
 test("create without text fails", () => {
-    expect(() => new SpreadsheetText(color(), text()).toThrow("Missing text"));
+    expect(() => new SpreadsheetText(color()).toThrow("Missing text"));
 });
 
 test("create invalid text type fails", () => {
