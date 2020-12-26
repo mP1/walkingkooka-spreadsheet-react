@@ -1,6 +1,6 @@
 import HistoryHash from "./HistoryHash.js";
-import SpreadsheetName from "../spreadsheet/SpreadsheetName.js";
-import SpreadsheetCellReference from "../spreadsheet/reference/SpreadsheetCellReference.js";
+import SpreadsheetName from "../SpreadsheetName.js";
+import SpreadsheetCellReference from "../reference/SpreadsheetCellReference.js";
 
 
 // parse..................................................................................................................
