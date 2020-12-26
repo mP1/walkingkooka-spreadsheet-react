@@ -43,6 +43,14 @@ test("create color & text", () => {
         t);
 });
 
+test("create color & empty text", () => {
+    const c = color();
+    const t = "";
+    check(new SpreadsheetText(c, t),
+        c,
+        t);
+});
+
 // fromJson.............................................................................................................
 
 test("fromJson undefined fails", () => {
