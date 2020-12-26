@@ -3,15 +3,27 @@ import timeoutPromise from "./FetchTimeoutPromise.js";
 // default timeout if timeout property in parameters is missing
 const DEFAULT_TIMEOUT = 30 * 1000;
 
+/**
+ * Request/response fetch/message header
+ */
+const TRANSACTION_ID_HEADER = "X-Transaction-ID";
+
+/**
+ * Allocates a new unique id for each request/message and is used by WebWorkers to match responses to request.
+ */
 var transactionId = 0;
+
+/**
+ * Hash of transaction ids holding the response/error
+ */
+var transactionIdToHandlers = {};
+
 /**
  * The preferred way to make requests to a server. This class supports talking to a real server using fetch(HTTP) or a webworker using messages.
  */
 export default class SpreadsheetMessenger {
 
-    constructor(handlers) {
-        this.handlers = handlers;
-
+    constructor() {
         this.onMessage.bind();
     }
 
@@ -36,7 +48,7 @@ export default class SpreadsheetMessenger {
         this.webworker && this.webworker.removeEventListener('message', this.onMessage);
     }
 
-    send(url, parameters) {
+    send(url, parameters, response, error) {
         if (!url) {
             throw new Error("Missing url");
         }
@@ -49,11 +61,23 @@ export default class SpreadsheetMessenger {
         if (typeof parameters !== "object") {
             throw new Error("Expected object parameters got " + parameters);
         }
-
+        if (!response) {
+            throw new Error("Missing response");
+        }
+        if (typeof response !== "function") {
+            throw new Error("Expected function response got " + response);
+        }
+        if (!error) {
+            throw new Error("Missing error");
+        }
+        if (error && typeof error !== "function") {
+            throw new Error("Expected function error got " + error);
+        }
+        const transactionIdHeader = transactionId++;
         const headers = Object.assign({
             "Accept-Charset": "UTF-8",
             "Content-Type": "application/json",
-            "X-Transaction-ID": "" + transactionId++,
+            "X-Transaction-ID": "" + transactionIdHeader,
         }, parameters.headers);
 
         const parametersWithDefaults = Object.assign({},
@@ -63,16 +87,21 @@ export default class SpreadsheetMessenger {
             });
 
         if (this.webworker) {
-            this.postMessage(url, parametersWithDefaults);
+            this.postMessage(url, parametersWithDefaults, transactionIdHeader, response, error);
         } else {
-            this.doFetch(url, parametersWithDefaults);
+            this.browserFetch(url, parametersWithDefaults, response, error);
         }
     }
 
     /**
      * Constructs a request and posts a message to the webworker. Eventually that webworker will post a response back.
      */
-    postMessage(url, parameters) {
+    postMessage(url, parameters, transactionIdHeader, response, error) {
+        transactionIdToHandlers[transactionIdHeader] = {
+            response: response,
+            error: error,
+        };
+
         this.webworker.postMessage({
             version: "HTTP/1.0",
             method: parameters.methods,
@@ -82,8 +111,11 @@ export default class SpreadsheetMessenger {
         });
     }
 
-    doFetch(url, parameters) {
-        console.log("doFetch \"" + url + "\"", parameters);
+    /**
+     * Uses the browser's fetch object to make a request to a server.
+     */
+    browserFetch(url, parameters, response, error) {
+        console.log("browserFetch \"" + url + "\"", parameters);
 
         let responseBuilder = {};
 
@@ -121,8 +153,8 @@ export default class SpreadsheetMessenger {
                     }
                 })
                 .then(json => {
-                    responseBuilder.json = json;
-                    this.dispatch(responseBuilder);
+                    console.log("response " + responseBuilder.statusCode + " " + responseBuilder.statusText, json)
+                    response(json);
                 })
                 .catch((e) => {
                     error("fetch failed, using " + url + " with " + JSON.stringify(parameters) + "\n" + e);
@@ -130,31 +162,25 @@ export default class SpreadsheetMessenger {
     }
 
     /**
-     * Receives a message back from the webworker and passing the actual JSON response to dispatch for actual processing.
+     * Receives a message back from the webworker, uses the transaction id header to locate the previously saved handlers and then dispatches.
      */
+    // TODO add timeout support & cleanup
     onMessage(response) {
-        this.dispatch(response.data);
-    }
+        const body = response.data;
 
-    /**
-     * Examines the "X-Content-Type-Name" header and dispatches to the required handler.
-     */
-    dispatch(response) {
-        console.log("dispatching response", response);
+        const transactionId = response.headers.get(TRANSACTION_ID_HEADER);
+        if(transactionId) {
+            const handlers = this.transactionIdToHandlers[transactionId];
+            if(handlers) {
+                delete this.transactionIdToHandlers[transactionId];
 
-        const body = response.json;
-        const typeName = response.headers.get("X-Content-Type-Name");
-        if(typeName) {
-            const handler = this.handlers[typeName];
-            if(handler) {
-                handler(body);
+                handlers.response(body);
             } else {
-                error("response contains unknown X-Content-TypeName\n" + JSON.stringify(response));
+                error("missing handler for " + TRANSACTION_ID_HEADER + "e\n" + JSON.stringify(response));
             }
         } else {
-            error("response headers missing header X-Content-TypeName\n" + JSON.stringify(response));
+            error("response missing " + TRANSACTION_ID_HEADER + "e\n" + JSON.stringify(response));
         }
-
     }
 }
 
