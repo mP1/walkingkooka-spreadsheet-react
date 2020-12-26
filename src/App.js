@@ -9,7 +9,7 @@ import SpreadsheetAppBar from "./widget/SpreadsheetAppBar.js";
 import SpreadsheetViewportWidget from "./widget/SpreadsheetViewportWidget.js";
 import SpreadsheetFormulaWidget from "./spreadsheet/SpreadsheetFormulaWidget.js";
 import SpreadsheetMetadata from "./spreadsheet/meta/SpreadsheetMetadata.js";
-import SpreadsheetMessenger from "./util/SpreadsheetMessenger.js";
+import SpreadsheetMessenger from "./spreadsheet/message/SpreadsheetMessenger.js";
 import SpreadsheetCellBox from "./spreadsheet/reference/SpreadsheetCellBox";
 import SpreadsheetCoordinates from "./spreadsheet/SpreadsheetCoordinates";
 import SpreadsheetRange from "./spreadsheet/reference/SpreadsheetRange";
