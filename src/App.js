@@ -11,7 +11,6 @@ import SpreadsheetFormulaWidget from "./spreadsheet/SpreadsheetFormulaWidget.js"
 import SpreadsheetMetadata from "./spreadsheet/meta/SpreadsheetMetadata.js";
 import SpreadsheetMessenger from "./spreadsheet/message/SpreadsheetMessenger.js";
 import SpreadsheetCellBox from "./spreadsheet/reference/SpreadsheetCellBox";
-import SpreadsheetCoordinates from "./spreadsheet/SpreadsheetCoordinates";
 import SpreadsheetRange from "./spreadsheet/reference/SpreadsheetRange";
 import SpreadsheetDelta from "./spreadsheet/engine/SpreadsheetDelta";
 import SpreadsheetEngineEvaluation from "./spreadsheet/engine/SpreadsheetEngineEvaluation";
@@ -28,6 +27,7 @@ import SpreadsheetCellReference from "./spreadsheet/reference/SpreadsheetCellRef
 import HistoryHash from "./spreadsheet/history/HistoryHash.js";
 import SpreadsheetDrawerWidget from "./spreadsheet/SpreadsheetDrawerWidget.js";
 import SpreadsheetContainerWidget from "./widget/SpreadsheetContainerWidget.js";
+import SpreadsheetCoordinates from "./spreadsheet/SpreadsheetCoordinates.js";
 
 
 /**
@@ -67,25 +67,7 @@ class App extends React.Component {
         };
 
         // the names must match the Class.getSimpleName in walkingkooka-spreadsheet
-        this.messenger = new SpreadsheetMessenger({
-            "SpreadsheetCellBox": json => this.onCellBoxViewportRangeUpdate(SpreadsheetCellBox.fromJson(json)),
-            "SpreadsheetCoordinates": json => this.setState({viewportCoordinates: SpreadsheetCoordinates.fromJson(json)}),
-            "SpreadsheetDelta": json => {
-                const delta = SpreadsheetDelta.fromJson(json);
-                const state = this.state;
-                this.setState({ // lgtm [js/react/inconsistent-state-update]
-                    cells: state.cells.set(delta.referenceToCellMap()),
-                    columnWidths: state.columnWidths.set(delta.maxColumnWidths()),
-                    rowHeights: state.rowHeights.set(delta.maxRowHeights()),
-                });
-            },
-            "SpreadsheetMetadata": json => this.setState({
-                createEmptySpreadsheet: false, // cancel any wait for a create, this stops history/state checks from failing and creating again and again
-                spreadsheetMetadata: SpreadsheetMetadata.fromJson(json)
-            }),
-            "SpreadsheetRange": json => this.setState({viewportRange: SpreadsheetRange.fromJson(json)}),
-        });
-
+        this.messenger = new SpreadsheetMessenger();
         this.messenger.setWebWorker(false); // TODO test webworker mode
 
         this.settingsAndToolsDrawer = React.createRef();
@@ -99,22 +81,6 @@ class App extends React.Component {
     }
 
     // app lifecycle....................................................................................................
-
-    /**
-     * Makes a request which returns some basic default metadata, and without cells the spreadsheet will be empty.
-     */
-    createEmptySpreadsheet() {
-        console.log("createEmptySpreadsheet");
-
-        this.setState({
-           createEmptySpreadsheet: true,
-        });
-
-        this.messenger.send("/api/spreadsheet",
-            {
-                method: "POST"
-            });
-    }
 
     /**
      * Updates the editability of the spreadsheet name, which also includes updating the history.
@@ -592,6 +558,16 @@ class App extends React.Component {
         }
     }
 
+    // COORDINATES......................................................................................................
+
+    onSpreadsheetCoordinates(json) {
+        this.setState({
+            viewportCoordinates: SpreadsheetCoordinates.fromJson(json),
+        });
+    }
+
+    // VIEWPORT ........................................................................................................
+
     /**
      * Returns the viewport dimensions of the area allocated to the cells.
      */
@@ -609,11 +585,29 @@ class App extends React.Component {
     onCellBoxViewportRangeUpdate(cellBox) {
         console.log("onCellBoxViewportRangeUpdate " + cellBox);
 
-        this.messenger.send(this.spreadsheetMetadataApiUrl() + "/viewport/" + cellBox.viewport(),
+        this.messenger.send(
+            this.spreadsheetMetadataApiUrl() + "/viewport/" + cellBox.viewport(),
             {
                 method: "GET"
-            });
+            },
+            this.onSpreadsheetRange.bind(this),
+            error
+        );
     }
+
+    // RANGE............................................................................................................
+
+    /**
+     * Handles a range response which contains the range of cells that fill the viewport for the home cell and dimensions
+     * of the viewport area.
+     */
+    onSpreadsheetRange(json) {
+        this.setState({
+            viewportRange: SpreadsheetRange.fromJson(json),
+        });
+    }
+
+    // CELL.............................................................................................................
 
     /**
      * Accepts the {@link SpreadsheetRange} returned by {@link #spreadsheetViewport} and then loads all the cells in the
@@ -624,10 +618,14 @@ class App extends React.Component {
 
         const evaluation = this.state.spreadsheetEngineEvaluation || SpreadsheetEngineEvaluation.COMPUTE_IF_NECESSARY;
 
-        this.messenger.send(this.spreadsheetCellApiUrl(selection) + "/" + evaluation,
+        this.messenger.send(
+            this.spreadsheetCellApiUrl(selection) + "/" + evaluation,
             {
                 method: "GET"
-            });
+            },
+            this.onSpreadsheetDelta.bind(this),
+            error
+        );
     }
 
     /**
@@ -649,7 +647,10 @@ class App extends React.Component {
                         ImmutableMap.EMPTY,
                         [this.state.viewportRange])
                         .toJson()),
-                });
+                },
+                this.onSpreadsheetDelta.bind(this),
+                error
+            );
         }
     }
 
@@ -658,6 +659,19 @@ class App extends React.Component {
      */
     spreadsheetCellApiUrl(selection) {
         return this.spreadsheetMetadataApiUrl() + "/cell/" + selection;
+    }
+
+    /**
+     * Handles spreadsheet delta responses, resulting from cell saves or loads.
+     */
+    onSpreadsheetDelta(json) {
+        const delta = SpreadsheetDelta.fromJson(json);
+        const state = this.state;
+        this.setState({ // lgtm [js/react/inconsistent-state-update]
+            cells: state.cells.set(delta.referenceToCellMap()),
+            columnWidths: state.columnWidths.set(delta.maxColumnWidths()),
+            rowHeights: state.rowHeights.set(delta.maxRowHeights()),
+        });
     }
 
     /**
@@ -879,6 +893,25 @@ class App extends React.Component {
     }
 
     // SpreadsheetMetadata..............................................................................................
+    /**
+     * Makes a request which returns some basic default metadata, and without cells the spreadsheet will be empty.
+     */
+    createEmptySpreadsheet() {
+        console.log("createEmptySpreadsheet");
+
+        this.setState({
+            createEmptySpreadsheet: true,
+        });
+
+        this.messenger.send(
+            "/api/spreadsheet",
+            {
+                method: "POST"
+            },
+            this.onSpreadsheetMetadata.bind(this),
+            error
+        );
+    }
 
     /**
      * Uses the provided spreadsheetid or falls back to the current {@Link SpreadsheetMetadata} spreadsheet id
@@ -905,9 +938,14 @@ class App extends React.Component {
     loadSpreadsheetMetadata(id) {
         console.log("loadSpreadsheetMetadata " + id);
 
-        this.messenger.send(this.spreadsheetMetadataApiUrl(id), {
-            method: "GET",
-        });
+        this.messenger.send(
+            this.spreadsheetMetadataApiUrl(id),
+            {
+                method: "GET",
+            },
+            this.onSpreadsheetMetadata.bind(this),
+            error
+        );
     }
 
     /**
@@ -919,15 +957,30 @@ class App extends React.Component {
         } else {
             console.log("saveSpreadsheetMetadata", metadata);
 
-            this.messenger.send(this.spreadsheetMetadataApiUrl(), {
-                method: "POST",
-                body: JSON.stringify(metadata.toJson())
-            });
+            this.messenger.send(
+                this.spreadsheetMetadataApiUrl(),
+                {
+                    method: "POST",
+                    body: JSON.stringify(metadata.toJson())
+                },
+                this.onSpreadsheetMetadata.bind(this),
+                error
+            );
         }
     }
 
     saveSpreadsheetName(name) {
         this.saveSpreadsheetMetadata(this.state.spreadsheetMetadata.setSpreadsheetName(name));
+    }
+
+    /**
+     * Handles the response.json which contains a SpreadsheetMetadata.
+     */
+    onSpreadsheetMetadata(json) {
+        this.setState({
+            createEmptySpreadsheet: false, // cancel any wait for a create, this stops history/state checks from failing and creating again and again
+            spreadsheetMetadata: SpreadsheetMetadata.fromJson(json)
+        });
     }
 
     // toString.........................................................................................................
@@ -938,3 +991,7 @@ class App extends React.Component {
 }
 
 export default withRouter(withStyles(useStyles)(App));
+
+function error(message) {
+    alert(message);
+}
