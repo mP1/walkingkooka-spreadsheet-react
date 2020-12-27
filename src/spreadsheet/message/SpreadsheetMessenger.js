@@ -70,7 +70,7 @@ export default class SpreadsheetMessenger {
         if (!error) {
             throw new Error("Missing error");
         }
-        if (error && typeof error !== "function") {
+        if (typeof error !== "function") {
             throw new Error("Expected function error got " + error);
         }
         const transactionIdHeader = transactionId++;
