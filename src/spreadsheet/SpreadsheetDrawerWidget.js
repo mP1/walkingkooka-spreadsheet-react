@@ -153,7 +153,8 @@ class SpreadsheetDrawerWidget extends React.Component {
     // TODO pass onChange to update history hash
     // TODO AccordionSummary aria-control
     accordion(id, expanded, onChange, classes, heading, secondaryHeading, children) {
-        return <Accordion id={id}
+        return <Accordion key={id}
+                          id={id}
                           expanded={expanded}
                           onChange={onChange}>
             <AccordionSummary
