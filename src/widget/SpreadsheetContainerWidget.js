@@ -26,5 +26,5 @@ export default class SpreadsheetContainerWidget extends React.Component {
 
 SpreadsheetContainerWidget.propTypes = {
     style: PropTypes.object.isRequired,
-    children: PropTypes.array.isRequired,
+    children: PropTypes.node.isRequired,
 }
