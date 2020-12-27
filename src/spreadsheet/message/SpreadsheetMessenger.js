@@ -75,6 +75,7 @@ export default class SpreadsheetMessenger {
         }
         const transactionIdHeader = transactionId++;
         const headers = Object.assign({
+            "Accept": "application/json",
             "Accept-Charset": "UTF-8",
             "Content-Type": "application/json",
             "X-Transaction-ID": "" + transactionIdHeader,
