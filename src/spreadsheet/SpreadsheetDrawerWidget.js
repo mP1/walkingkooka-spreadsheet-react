@@ -59,7 +59,7 @@ class SpreadsheetDrawerWidget extends React.Component {
                        anchor={"right"}
                        variant={"persistent"}
                        open={this.state.open}
-                       modal={false}
+                       modal={"false"}
                        onClose={this.onClose}
         >
             <div className={classes.root}
