@@ -87,9 +87,9 @@ class SpreadsheetDrawerWidget extends React.Component {
         const metadata = this.state.spreadsheetMetadata;
 
         const id = metadata.spreadsheetId();
-        const creator = metadata.creator();
+        const creator = textOrEmpty(metadata.creator());
         const createDateTime = "" + metadata.createDateTime(); // TODO format date/time https://github.com/mP1/walkingkooka-spreadsheet-react/issues/351
-        const modifiedBy = metadata.modifiedBy();
+        const modifiedBy = textOrEmpty(metadata.modifiedBy());
         const modifiedDateTime = "" + metadata.modifiedDateTime(); // TODO format date/time https://github.com/mP1/walkingkooka-spreadsheet-react/issues/351
 
         const rows = [
@@ -181,3 +181,7 @@ SpreadsheetDrawerWidget.propTypes = {
 }
 
 export default withStyles(useStyles)(SpreadsheetDrawerWidget);
+
+function textOrEmpty(localDateTime) {
+    return (localDateTime && localDateTime.text()) || "";
+}

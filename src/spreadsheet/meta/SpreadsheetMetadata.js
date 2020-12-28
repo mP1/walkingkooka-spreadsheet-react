@@ -1,5 +1,6 @@
 import SpreadsheetName from "../SpreadsheetName";
 
+import EmailAddress from "../../net/EmailAddress.js";
 import Equality from "../../Equality.js";
 import LocalDateTime from "../../datetime/LocalDateTime.js";
 import TextStyle from "../../text/TextStyle";
@@ -90,7 +91,7 @@ export default class SpreadsheetMetadata {
 
             switch (key) {
                 case CREATOR:
-                    unmarshaller = null;
+                    unmarshaller = EmailAddress.fromJson;
                     break;
                 case CREATE_DATE_TIME:
                     unmarshaller = LocalDateTime.fromJson;
@@ -102,7 +103,7 @@ export default class SpreadsheetMetadata {
                     unmarshaller = SpreadsheetCellReference.fromJson;
                     break;
                 case MODIFIED_BY:
-                    unmarshaller = null;
+                    unmarshaller = EmailAddress.fromJson;
                     break;
                 case MODIFIED_DATE_TIME:
                     unmarshaller = LocalDateTime.fromJson;
