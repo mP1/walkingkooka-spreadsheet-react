@@ -1,3 +1,4 @@
+import EmailAddress from "../../net/EmailAddress.js";
 import SpreadsheetMetadata from "./SpreadsheetMetadata";
 import SpreadsheetName from "../SpreadsheetName";
 import TextStyle from "../../text/TextStyle";
@@ -307,7 +308,7 @@ test("get creator", () => {
     expect(SpreadsheetMetadata.fromJson({
         "creator": "creator@example.com"
     }).creator())
-        .toEqual("creator@example.com");
+        .toEqual(EmailAddress.fromJson("creator@example.com"));
 });
 
 // create-date-time.............................................................................................................
@@ -354,7 +355,7 @@ test("get modified-by", () => {
     expect(SpreadsheetMetadata.fromJson({
         "modified-by": "modified-by@example.com"
     }).modifiedBy())
-        .toEqual("modified-by@example.com");
+        .toEqual(EmailAddress.fromJson("modified-by@example.com"));
 });
 
 // modified-date-time.............................................................................................................
