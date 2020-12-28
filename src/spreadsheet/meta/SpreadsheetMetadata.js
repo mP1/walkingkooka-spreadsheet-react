@@ -72,7 +72,7 @@ export default class SpreadsheetMetadata {
     static VIEWPORT_CELL = "viewport-cell";
     static VIEWPORT_COORDINATES = "viewport-coordinates";
     static WIDTH = "width";
-    
+
     static EMPTY = new SpreadsheetMetadata({});
 
     static fromJson(json) {
@@ -86,7 +86,7 @@ export default class SpreadsheetMetadata {
         // check properties
         const properties = {};
         for (const [key, value] of Object.entries(json)) {
-            let unmarshaller;
+            let typed, unmarshaller;
 
             switch (key) {
                 case SpreadsheetMetadata.CREATOR:
@@ -94,6 +94,10 @@ export default class SpreadsheetMetadata {
                     break;
                 case SpreadsheetMetadata.CREATE_DATE_TIME:
                     unmarshaller = LocalDateTime.fromJson;
+                    break;
+                case SpreadsheetMetadata.CURRENCY_SYMBOL:
+                    checkCurrencySymbol(value);
+                    typed = value;
                     break;
                 case DEFAULTS:
                     unmarshaller = SpreadsheetMetadata.fromJson;
@@ -154,7 +158,9 @@ export default class SpreadsheetMetadata {
                     }
                     throw new Error("Unknown property \"" + key + "\"");
             }
-            properties[key] = (unmarshaller && unmarshaller(value)) || value;
+            properties[key] = (unmarshaller && unmarshaller(value)) ||
+                typed ||
+                value;
         }
 
         return new SpreadsheetMetadata(properties);
@@ -217,6 +223,10 @@ export default class SpreadsheetMetadata {
         let expectedTypeOf;
 
         switch (property) {
+            case SpreadsheetMetadata.CURRENCY_SYMBOL:
+                checkCurrencySymbol(value);
+                expectedTypeOf = "string";
+                break;
             case DEFAULTS:
                 expectedClass = SpreadsheetMetadata;
                 break;
@@ -414,4 +424,10 @@ function equals0(metadata, other) {
     }
 
     return equals;
+}
+
+function checkCurrencySymbol(currencySymbol) {
+    if(typeof currencySymbol !== "string") {
+        throw new Error("Expected string currency got " + currencySymbol);
+    }
 }
