@@ -88,11 +88,23 @@ export default class SpreadsheetMetadata {
             let unmarshaller;
 
             switch (key) {
+                case CREATOR:
+                    unmarshaller = null;
+                    break;
+                case CREATE_DATE_TIME:
+                    unmarshaller = null;
+                    break;
                 case DEFAULTS:
                     unmarshaller = SpreadsheetMetadata.fromJson;
                     break;
                 case EDIT_CELL:
                     unmarshaller = SpreadsheetCellReference.fromJson;
+                    break;
+                case MODIFIED_BY:
+                    unmarshaller = null;
+                    break;
+                case MODIFIED_DATE_TIME:
+                    unmarshaller = null;
                     break;
                 case SPREADSHEET_ID:
                     unmarshaller = null;
@@ -109,8 +121,6 @@ export default class SpreadsheetMetadata {
                 case VIEWPORT_COORDINATES:
                     unmarshaller = SpreadsheetCoordinates.fromJson;
                     break;
-                case CREATOR:
-                case CREATE_DATE_TIME:
                 case CURRENCY_SYMBOL:
                 case DATE_FORMAT_PATTERN:
                 case DATE_PARSE_PATTERNS:
@@ -123,8 +133,6 @@ export default class SpreadsheetMetadata {
                 case EXPRESSION_NUMBER_KIND:
                 case GROUPING_SEPARATOR:
                 case LOCALE:
-                case MODIFIED_BY:
-                case MODIFIED_DATE_TIME:
                 case NEGATIVE_SIGN:
                 case NUMBER_FORMAT_PATTERN:
                 case NUMBER_PARSE_PATTERNS:
@@ -229,8 +237,6 @@ export default class SpreadsheetMetadata {
             case VIEWPORT_COORDINATES:
                 expectedClass = SpreadsheetCoordinates;
                 break;
-            case CREATOR:
-            case CREATE_DATE_TIME:
             case CURRENCY_SYMBOL:
             case DATE_FORMAT_PATTERN:
             case DATE_PARSE_PATTERNS:
@@ -243,8 +249,6 @@ export default class SpreadsheetMetadata {
             case EXPRESSION_NUMBER_KIND:
             case GROUPING_SEPARATOR:
             case LOCALE:
-            case MODIFIED_BY:
-            case MODIFIED_DATE_TIME:
             case NEGATIVE_SIGN:
             case NUMBER_FORMAT_PATTERN:
             case NUMBER_PARSE_PATTERNS:
@@ -259,6 +263,10 @@ export default class SpreadsheetMetadata {
             case WIDTH:
                 expectedClass = null; // TODO properties not yet supported
                 break;
+            // case CREATOR: not writable
+            // case CREATE_DATE_TIME:
+            // case MODIFIED_BY:
+            // case MODIFIED_DATE_TIME:
             default:
                 if (property.startsWith("color-")) {
                     break;
@@ -290,8 +298,6 @@ export default class SpreadsheetMetadata {
         }
 
         switch (property) {
-            case CREATOR:
-            case CREATE_DATE_TIME:
             case CURRENCY_SYMBOL:
             case DATE_FORMAT_PATTERN:
             case DATE_PARSE_PATTERNS:
@@ -306,8 +312,6 @@ export default class SpreadsheetMetadata {
             case EXPRESSION_NUMBER_KIND:
             case GROUPING_SEPARATOR:
             case LOCALE:
-            case MODIFIED_BY:
-            case MODIFIED_DATE_TIME:
             case NEGATIVE_SIGN:
             case NUMBER_FORMAT_PATTERN:
             case NUMBER_PARSE_PATTERNS:
@@ -326,6 +330,10 @@ export default class SpreadsheetMetadata {
             case VIEWPORT_COORDINATES:
             case WIDTH:
                 break;
+            // case CREATOR: not writable(removable)
+            // case CREATE_DATE_TIME:
+            // case MODIFIED_BY:
+            // case MODIFIED_DATE_TIME:
             default:
                 if(property.startsWith("color-")) {
                     break;
@@ -364,8 +372,24 @@ export default class SpreadsheetMetadata {
         return this.set(DEFAULTS, defaultSpreadsheetMetadata);
     }
 
+    creator() {
+        return this.get(CREATOR);
+    }
+
+    createDateTime() {
+        return this.get(CREATE_DATE_TIME);
+    }
+
     editCell() {
         return this.get(EDIT_CELL);
+    }
+
+    modifiedBy() {
+        return this.get(MODIFIED_BY);
+    }
+
+    modifiedDateTime() {
+        return this.get(MODIFIED_DATE_TIME);
     }
 
     setEditCell(cell) {

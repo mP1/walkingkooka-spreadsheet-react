@@ -295,6 +295,34 @@ test("remove property #2", () => {
     expect(withSpreadsheetName).toEqual(removed);
 });
 
+// creator.............................................................................................................
+
+test("get creator missing", () => {
+    expect(SpreadsheetMetadata.EMPTY.creator())
+        .toBeUndefined();
+});
+
+test("get creator", () => {
+    expect(SpreadsheetMetadata.fromJson({
+        "creator": "creator@example.com"
+    }).creator())
+        .toEqual("creator@example.com");
+});
+
+// create-date-time.............................................................................................................
+
+test("get create-date-time missing", () => {
+    expect(SpreadsheetMetadata.EMPTY.createDateTime())
+        .toBeUndefined();
+});
+
+test("get create-date-time", () => {
+    expect(SpreadsheetMetadata.fromJson({
+        "create-date-time": "1999-12-31 12:58:59"
+    }).createDateTime())
+        .toEqual("1999-12-31 12:58:59");
+});
+
 // edit-cell............................................................................................................
 
 test("get edit-cell missing", () => {
@@ -312,6 +340,34 @@ test("set edit-cell", () => {
         {
             "edit-cell": "B98"
         });
+});
+
+// modified.............................................................................................................
+
+test("get modified-by missing", () => {
+    expect(SpreadsheetMetadata.EMPTY.modifiedBy())
+        .toBeUndefined();
+});
+
+test("get modified-by", () => {
+    expect(SpreadsheetMetadata.fromJson({
+        "modified-by": "modified-by@example.com"
+    }).modifiedBy())
+        .toEqual("modified-by@example.com");
+});
+
+// modified-date-time.............................................................................................................
+
+test("get modified-date-time missing", () => {
+    expect(SpreadsheetMetadata.EMPTY.modifiedDateTime())
+        .toBeUndefined();
+});
+
+test("get modified-date-time", () => {
+    expect(SpreadsheetMetadata.fromJson({
+        "modified-date-time": "1999-12-31 12:58:59"
+    }).modifiedDateTime())
+        .toEqual("1999-12-31 12:58:59");
 });
 
 // spreadsheetId.........................................................................................................
