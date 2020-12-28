@@ -71,7 +71,7 @@ class SpreadsheetDrawerWidget extends React.Component {
         </Drawer>;
     }
 
-    // https://material-ui.com/components/accordion/
+    // METADATA.........................................................................................................
 
     /**
      * Displays the following spreadsheet metadata.
@@ -94,11 +94,11 @@ class SpreadsheetDrawerWidget extends React.Component {
         const modifiedDateTime = metadata.get("modified-date-time");
 
         const rows = [
-            this.metadataRow("Spreadsheet Id", "spreadsheet-metadata-id", id),
-            this.metadataRow("Creator", "spreadsheet-metadata-creator", creator),
-            this.metadataRow("Create Date/Time", "spreadsheet-metadata-create-date-time", createDateTime),
-            this.metadataRow("Modified by", "spreadsheet-metadata-modified-by", modifiedBy),
-            this.metadataRow("Modified Date/Time", "spreadsheet-metadata-modified-date-time", modifiedDateTime),
+            this.labelAndTextRow("Spreadsheet Id", "spreadsheet-metadata-id", id),
+            this.labelAndTextRow("Creator", "spreadsheet-metadata-creator", creator),
+            this.labelAndTextRow("Create Date/Time", "spreadsheet-metadata-create-date-time", createDateTime),
+            this.labelAndTextRow("Modified by", "spreadsheet-metadata-modified-by", modifiedBy),
+            this.labelAndTextRow("Modified Date/Time", "spreadsheet-metadata-modified-date-time", modifiedDateTime),
         ];
 
         // TODO table area-label
@@ -117,7 +117,7 @@ class SpreadsheetDrawerWidget extends React.Component {
                            aria-label="Readonly Spreadsheet Metadata">
                         <TableBody>
                             {
-                                rows.map(r => this.renderRow(r, classes))
+                                rows.map(r => this.renderLabelAndTextRow(r, classes))
                             }
                         </TableBody>
                     </Table>
@@ -126,7 +126,7 @@ class SpreadsheetDrawerWidget extends React.Component {
         );
     }
 
-    metadataRow(label, id, value) {
+    labelAndTextRow(label, id, value) {
         return {
             label: label,
             id: id,
@@ -134,7 +134,7 @@ class SpreadsheetDrawerWidget extends React.Component {
         }
     }
 
-    renderRow(row, classes) {
+    renderLabelAndTextRow(row, classes) {
         const {label, id, value} = row;
 
         // hover = highlight under mouse over
@@ -146,6 +146,10 @@ class SpreadsheetDrawerWidget extends React.Component {
                        className={classes.value}>{value}</TableCell>
         </TableRow>);
     }
+
+    // ACCORDION........................................................................................................
+
+    // https://material-ui.com/components/accordion/
 
     /**
      * Creates the accordion container so all sections in the drawer have a common look and feel and history hash management.
