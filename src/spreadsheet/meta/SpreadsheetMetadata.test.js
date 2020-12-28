@@ -4,6 +4,7 @@ import TextStyle from "../../text/TextStyle";
 import SpreadsheetCoordinates from "../SpreadsheetCoordinates";
 import PixelLength from "../../text/PixelLength";
 import SpreadsheetCellReference from "../reference/SpreadsheetCellReference";
+import LocalDateTime from "../../datetime/LocalDateTime.js";
 
 // EMPTY................................................................................................................
 
@@ -320,7 +321,7 @@ test("get create-date-time", () => {
     expect(SpreadsheetMetadata.fromJson({
         "create-date-time": "1999-12-31 12:58:59"
     }).createDateTime())
-        .toEqual("1999-12-31 12:58:59");
+        .toEqual(LocalDateTime.fromJson("1999-12-31 12:58:59"));
 });
 
 // edit-cell............................................................................................................
@@ -367,7 +368,7 @@ test("get modified-date-time", () => {
     expect(SpreadsheetMetadata.fromJson({
         "modified-date-time": "1999-12-31 12:58:59"
     }).modifiedDateTime())
-        .toEqual("1999-12-31 12:58:59");
+        .toEqual(LocalDateTime.fromJson("1999-12-31 12:58:59"));
 });
 
 // spreadsheetId.........................................................................................................
