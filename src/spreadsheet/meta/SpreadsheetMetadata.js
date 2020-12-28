@@ -1,6 +1,7 @@
 import SpreadsheetName from "../SpreadsheetName";
 
 import Equality from "../../Equality.js";
+import LocalDateTime from "../../datetime/LocalDateTime.js";
 import TextStyle from "../../text/TextStyle";
 import SpreadsheetCoordinates from "../SpreadsheetCoordinates";
 import SpreadsheetCellReference from "../reference/SpreadsheetCellReference";
@@ -92,7 +93,7 @@ export default class SpreadsheetMetadata {
                     unmarshaller = null;
                     break;
                 case CREATE_DATE_TIME:
-                    unmarshaller = null;
+                    unmarshaller = LocalDateTime.fromJson;
                     break;
                 case DEFAULTS:
                     unmarshaller = SpreadsheetMetadata.fromJson;
@@ -104,7 +105,7 @@ export default class SpreadsheetMetadata {
                     unmarshaller = null;
                     break;
                 case MODIFIED_DATE_TIME:
-                    unmarshaller = null;
+                    unmarshaller = LocalDateTime.fromJson;
                     break;
                 case SPREADSHEET_ID:
                     unmarshaller = null;

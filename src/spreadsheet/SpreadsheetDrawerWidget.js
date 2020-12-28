@@ -88,9 +88,9 @@ class SpreadsheetDrawerWidget extends React.Component {
 
         const id = metadata.spreadsheetId();
         const creator = metadata.creator();
-        const createDateTime = metadata.createDateTime(); // TODO format date/time https://github.com/mP1/walkingkooka-spreadsheet-react/issues/351
+        const createDateTime = "" + metadata.createDateTime(); // TODO format date/time https://github.com/mP1/walkingkooka-spreadsheet-react/issues/351
         const modifiedBy = metadata.modifiedBy();
-        const modifiedDateTime = metadata.modifiedDateTime(); // TODO format date/time https://github.com/mP1/walkingkooka-spreadsheet-react/issues/351
+        const modifiedDateTime = "" + metadata.modifiedDateTime(); // TODO format date/time https://github.com/mP1/walkingkooka-spreadsheet-react/issues/351
 
         const rows = [
             this.labelAndTextRow("Spreadsheet Id", "spreadsheet-metadata-id", id),
