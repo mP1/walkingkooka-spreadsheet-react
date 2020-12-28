@@ -83,7 +83,6 @@ class SpreadsheetDrawerWidget extends React.Component {
      * <li>modified date time</li>
      * <ul>
      */
-    // TODO Introduce a service to return the display data, formatted etc.
     metadata(classes) {
         const metadata = this.state.spreadsheetMetadata;
 
