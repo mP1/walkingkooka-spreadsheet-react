@@ -391,10 +391,15 @@ function removePropertyFailsTest(propertyName) {
 // all..................................................................................................................
 
 test("all setters & getters", () => {
+    const currencySymbol = "$AUD";
     const dateTimeOffset = 123;
     const dateTimeFormatPattern = SpreadsheetPattern.fromJson("yyyymmddhhmm");
     const dateTimeParsePatterns = SpreadsheetPattern.fromJson("yyyymmddhhmm");
+    const decimalSeparator = Character.fromJson(".");
     const editCell = SpreadsheetCellReference.parse("Z99");
+    const editRange = SpreadsheetRange.parse("A1:B2");
+    const exponentSymbol = Character.fromJson("^");
+    const expressionNumberKind = ExpressionNumberKind.BIG_DECIMAL;
     const groupingSeparator = Character.fromJson(",");
     const locale = Locale.fromJson("EN-NZ");
     const name = new SpreadsheetName("Spreadsheet-name-123");
@@ -405,10 +410,15 @@ test("all setters & getters", () => {
     const viewportCell = SpreadsheetCellReference.parse("A99");
 
     const metadata = SpreadsheetMetadata.EMPTY
+        .set(SpreadsheetMetadata.CURRENCY_SYMBOL, currencySymbol)
         .set(SpreadsheetMetadata.DATETIME_OFFSET, dateTimeOffset)
         .set(SpreadsheetMetadata.DATETIME_FORMAT_PATTERN, dateTimeFormatPattern)
         .set(SpreadsheetMetadata.DATETIME_PARSE_PATTERNS, dateTimeParsePatterns)
+        .set(SpreadsheetMetadata.DECIMAL_SEPARATOR, decimalSeparator)
         .set(SpreadsheetMetadata.EDIT_CELL, editCell)
+        .set(SpreadsheetMetadata.EDIT_RANGE, editRange)
+        .set(SpreadsheetMetadata.EXPONENT_SYMBOL, exponentSymbol)
+        .set(SpreadsheetMetadata.EXPRESSION_NUMBER_KIND, expressionNumberKind)
         .set(SpreadsheetMetadata.GROUPING_SEPARATOR, groupingSeparator)
         .set(SpreadsheetMetadata.LOCALE, locale)
         .set(SpreadsheetMetadata.NEGATIVE_SIGN, negativeSign)
@@ -417,11 +427,17 @@ test("all setters & getters", () => {
         .set(SpreadsheetMetadata.VIEWPORT_CELL, viewportCell)
         .set(SpreadsheetMetadata.VIEWPORT_COORDINATES, coords);
 
+    expect(metadata.get(SpreadsheetMetadata.CURRENCY_SYMBOL)).toEqual(currencySymbol);
     expect(metadata.get(SpreadsheetMetadata.DATETIME_OFFSET)).toEqual(dateTimeOffset);
     expect(metadata.get(SpreadsheetMetadata.DATETIME_FORMAT_PATTERN)).toEqual(dateTimeFormatPattern);
     expect(metadata.get(SpreadsheetMetadata.DATETIME_PARSE_PATTERNS)).toEqual(dateTimeParsePatterns);
+    expect(metadata.get(SpreadsheetMetadata.DECIMAL_SEPARATOR)).toEqual(decimalSeparator);
     expect(metadata.get(SpreadsheetMetadata.EDIT_CELL)).toEqual(editCell);
+    expect(metadata.get(SpreadsheetMetadata.EDIT_RANGE)).toEqual(editRange);
+    expect(metadata.get(SpreadsheetMetadata.EXPONENT_SYMBOL)).toEqual(exponentSymbol);
+    expect(metadata.get(SpreadsheetMetadata.EXPRESSION_NUMBER_KIND)).toEqual(expressionNumberKind);
     expect(metadata.get(SpreadsheetMetadata.GROUPING_SEPARATOR)).toEqual(groupingSeparator);
+    expect(metadata.get(SpreadsheetMetadata.LOCALE)).toEqual(locale);
     expect(metadata.get(SpreadsheetMetadata.NEGATIVE_SIGN)).toEqual(negativeSign);
     expect(metadata.get(SpreadsheetMetadata.SPREADSHEET_NAME)).toEqual(name);
     expect(metadata.get(SpreadsheetMetadata.STYLE)).toEqual(style);
