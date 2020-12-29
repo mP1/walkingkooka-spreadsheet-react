@@ -1,5 +1,5 @@
-import SpreadsheetRange from "./SpreadsheetRange";
 import SpreadsheetCellReference from "./SpreadsheetCellReference";
+import SpreadsheetRange from "./SpreadsheetRange";
 
 function begin() {
     return SpreadsheetCellReference.parse("A1");

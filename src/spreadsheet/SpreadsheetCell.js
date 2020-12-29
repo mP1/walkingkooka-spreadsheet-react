@@ -1,12 +1,12 @@
 import textNodeJsonSupportFromJson from "../text/TextNodeJsonSupport";
+import Equality from "../Equality.js";
+import React from "react";
 import SpreadsheetCellReference from "./reference/SpreadsheetCellReference";
 import SpreadsheetFormula from "./SpreadsheetFormula";
-import TextStyle from "../text/TextStyle";
 import SpreadsheetCellFormat from "./SpreadsheetCellFormat";
-import TextNode from "../text/TextNode";
 import TableCell from "@material-ui/core/TableCell";
-import React from "react";
-import Equality from "../Equality.js";
+import TextNode from "../text/TextNode";
+import TextStyle from "../text/TextStyle";
 import "./SpreadsheetCell.css";
 
 /**

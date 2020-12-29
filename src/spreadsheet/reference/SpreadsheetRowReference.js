@@ -1,5 +1,5 @@
-import SpreadsheetReferenceKind from "./SpreadsheetReferenceKind";
 import SpreadsheetColumnOrRowReference from "./SpreadsheetColumnOrRowReference";
+import SpreadsheetReferenceKind from "./SpreadsheetReferenceKind";
 
 export default class SpreadsheetRowReference extends SpreadsheetColumnOrRowReference {
 

@@ -1,5 +1,5 @@
-import {TEXT} from "./TextNode";
 import TextLeafNode from "./TextLeafNode";
+import TextNode from "./TextNode";
 
 export default class Text extends TextLeafNode {
 
@@ -19,7 +19,7 @@ export default class Text extends TextLeafNode {
     }
 
     typeName() {
-        return TEXT;
+        return TextNode.TEXT;
     }
 
     value() {

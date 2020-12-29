@@ -1,5 +1,5 @@
-import SpreadsheetCellReference from "./SpreadsheetCellReference";
 import SpreadsheetCellBox from "./SpreadsheetCellBox";
+import SpreadsheetCellReference from "./SpreadsheetCellReference";
 
 function reference() {
     return SpreadsheetCellReference.fromJson("A1");

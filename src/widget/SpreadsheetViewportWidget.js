@@ -1,18 +1,18 @@
+import Paper from '@material-ui/core/Paper';
+import PropTypes from "prop-types";
 import React from 'react';
+import SpreadsheetCellReference from "../spreadsheet/reference/SpreadsheetCellReference";
+import SpreadsheetCell from "../spreadsheet/SpreadsheetCell";
+import SpreadsheetColumnReference from "../spreadsheet/reference/SpreadsheetColumnReference.js";
+import SpreadsheetFormula from "../spreadsheet/SpreadsheetFormula";
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
-import Paper from '@material-ui/core/Paper';
-import PropTypes from "prop-types";
-import SpreadsheetCellReference from "../spreadsheet/reference/SpreadsheetCellReference";
-import SpreadsheetCell from "../spreadsheet/SpreadsheetCell";
-import SpreadsheetFormula from "../spreadsheet/SpreadsheetFormula";
-import TextStyle from "../text/TextStyle";
 import Text from "../text/Text";
-import SpreadsheetColumnReference from "../spreadsheet/reference/SpreadsheetColumnReference.js";
+import TextStyle from "../text/TextStyle";
 import './SpreadsheetViewportWidget.css';
 
 const headerCell = {

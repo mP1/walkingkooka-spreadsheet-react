@@ -1,34 +1,32 @@
-import React from 'react';
 import {withRouter} from "react-router";
 import './App.css';
 
 import {withStyles} from '@material-ui/core/styles';
 import Divider from '@material-ui/core/Divider';
-
+import Equality from "./Equality.js";
+import HistoryHash from "./spreadsheet/history/HistoryHash.js";
+import ImmutableMap from "./util/ImmutableMap";
+import React from 'react';
 import SpreadsheetAppBar from "./widget/SpreadsheetAppBar.js";
-import SpreadsheetViewportWidget from "./widget/SpreadsheetViewportWidget.js";
+import SpreadsheetBox from "./widget/SpreadsheetBox";
+import SpreadsheetCell from "./spreadsheet/SpreadsheetCell";
+import SpreadsheetCellBox from "./spreadsheet/reference/SpreadsheetCellBox";
+import SpreadsheetCellReference from "./spreadsheet/reference/SpreadsheetCellReference.js";
+import SpreadsheetContainerWidget from "./widget/SpreadsheetContainerWidget.js";
+import SpreadsheetCoordinates from "./spreadsheet/SpreadsheetCoordinates.js";
+import SpreadsheetDrawerWidget from "./spreadsheet/SpreadsheetDrawerWidget.js";
+import SpreadsheetDelta from "./spreadsheet/engine/SpreadsheetDelta";
+import SpreadsheetEngineEvaluation from "./spreadsheet/engine/SpreadsheetEngineEvaluation";
+import SpreadsheetFormula from "./spreadsheet/SpreadsheetFormula";
 import SpreadsheetFormulaWidget from "./spreadsheet/SpreadsheetFormulaWidget.js";
 import SpreadsheetMetadata from "./spreadsheet/meta/SpreadsheetMetadata.js";
 import SpreadsheetMessenger from "./spreadsheet/message/SpreadsheetMessenger.js";
-import SpreadsheetCellBox from "./spreadsheet/reference/SpreadsheetCellBox";
-import SpreadsheetRange from "./spreadsheet/reference/SpreadsheetRange";
-import SpreadsheetDelta from "./spreadsheet/engine/SpreadsheetDelta";
-import SpreadsheetEngineEvaluation from "./spreadsheet/engine/SpreadsheetEngineEvaluation";
-import SpreadsheetBox from "./widget/SpreadsheetBox";
-import WindowResizer from "./widget/WindowResizer";
-import ImmutableMap from "./util/ImmutableMap";
-import SpreadsheetCell from "./spreadsheet/SpreadsheetCell";
-import SpreadsheetFormula from "./spreadsheet/SpreadsheetFormula";
-import TextStyle from "./text/TextStyle.js";
-import SpreadsheetNameWidget from "./spreadsheet/SpreadsheetNameWidget.js";
-import Equality from "./Equality.js";
 import SpreadsheetName from "./spreadsheet/SpreadsheetName.js";
-import SpreadsheetCellReference from "./spreadsheet/reference/SpreadsheetCellReference.js";
-import HistoryHash from "./spreadsheet/history/HistoryHash.js";
-import SpreadsheetDrawerWidget from "./spreadsheet/SpreadsheetDrawerWidget.js";
-import SpreadsheetContainerWidget from "./widget/SpreadsheetContainerWidget.js";
-import SpreadsheetCoordinates from "./spreadsheet/SpreadsheetCoordinates.js";
-
+import SpreadsheetNameWidget from "./spreadsheet/SpreadsheetNameWidget.js";
+import SpreadsheetRange from "./spreadsheet/reference/SpreadsheetRange";
+import SpreadsheetViewportWidget from "./widget/SpreadsheetViewportWidget.js";
+import TextStyle from "./text/TextStyle.js";
+import WindowResizer from "./widget/WindowResizer";
 
 /**
  * The width of the drawer in pixels holding settings and tools.

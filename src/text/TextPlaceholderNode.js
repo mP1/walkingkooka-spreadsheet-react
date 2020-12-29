@@ -1,5 +1,5 @@
-import {PLACEHOLDER} from "./TextNode";
 import TextLeafNode from "./TextLeafNode";
+import TextNode from "./TextNode";
 
 export default class TextPlaceholderNode extends TextLeafNode {
 
@@ -19,7 +19,7 @@ export default class TextPlaceholderNode extends TextLeafNode {
     }
 
     typeName() {
-        return PLACEHOLDER;
+        return TextNode.PLACEHOLDER;
     }
 
     value() {

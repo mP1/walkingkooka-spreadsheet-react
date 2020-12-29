@@ -1,5 +1,3 @@
-import React from 'react';
-import PropTypes from 'prop-types';
 import {withStyles} from "@material-ui/core/styles";
 
 import Accordion from '@material-ui/core/Accordion';
@@ -8,13 +6,15 @@ import AccordionSummary from '@material-ui/core/AccordionSummary';
 import Drawer from "@material-ui/core/Drawer";
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import Paper from '@material-ui/core/Paper';
+import PropTypes from 'prop-types';
+import React from 'react';
+import SpreadsheetMetadata from "./meta/SpreadsheetMetadata.js";
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableContainer from '@material-ui/core/TableContainer';
 import TableRow from '@material-ui/core/TableRow';
 import Typography from '@material-ui/core/Typography';
-import SpreadsheetMetadata from "./meta/SpreadsheetMetadata.js";
 
 /**
  * The drawer appears holds all general settings and tools for a spreadsheet sheet.

@@ -1,5 +1,5 @@
-import React from 'react';
 import PropTypes from "prop-types";
+import React from 'react';
 
 /**
  * This Box that includes accepts a callback that will receive the width and height of this component when mounted

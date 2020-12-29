@@ -1,9 +1,9 @@
-import TextPlaceholderNode from "./TextPlaceholderNode";
-import TextStyleNode from "./TextStyleNode";
-import TextStyleNameNode from "./TextStyleNameNode";
 import Text from "./Text";
-import {PLACEHOLDER, STYLE, STYLE_NAME, TEXT} from "./TextNode";
+import TextNode from "./TextNode";
+import TextPlaceholderNode from "./TextPlaceholderNode";
 import TextStyle from "./TextStyle";
+import TextStyleNameNode from "./TextStyleNameNode";
+import TextStyleNode from "./TextStyleNode";
 
 /**
  * Parses the provided marshalled JSON form of Text and its sub classes back into instances.
@@ -32,13 +32,13 @@ export default function textNodeJsonSupportFromJson(json) {
     }
 
     switch (type) {
-        case PLACEHOLDER:
+        case TextNode.PLACEHOLDER:
             return new TextPlaceholderNode(value);
-        case STYLE:
+        case TextNode.STYLE:
             return new TextStyleNode(TextStyle.fromJson(value.styles), array(value.children).map(c => textNodeJsonSupportFromJson(c)));
-        case STYLE_NAME:
+        case TextNode.STYLE_NAME:
             return new TextStyleNameNode(value.styleName, array(value.children).map(c => textNodeJsonSupportFromJson(c)));
-        case TEXT:
+        case TextNode.TEXT:
             return new Text(value);
         default:
             throw new Error("Unexpected type name \"" + type + "\" in " + JSON.stringify(json));

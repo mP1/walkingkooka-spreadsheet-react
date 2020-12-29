@@ -1,9 +1,9 @@
 import Text from "./Text";
+import TextNodeVisitor from "./TextNodeVisitor";
 import TextPlaceholderNode from "./TextPlaceholderNode";
 import TextStyle from "./TextStyle";
 import TextStyleNameNode from "./TextStyleNameNode";
 import TextStyleNode from "./TextStyleNode";
-import TextNodeVisitor from "./TextNodeVisitor";
 
 test("accept missing node fails", () => {
     expect(() => new TextNodeVisitor().accept()).toThrow("Missing node");

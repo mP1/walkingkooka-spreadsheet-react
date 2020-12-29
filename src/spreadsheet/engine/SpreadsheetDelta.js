@@ -1,15 +1,12 @@
-import SpreadsheetCell from "../SpreadsheetCell";
-import SpreadsheetRange from "../reference/SpreadsheetRange";
-import SpreadsheetColumnReference from "../reference/SpreadsheetColumnReference";
-import SpreadsheetRowReference from "../reference/SpreadsheetRowReference";
-import ImmutableMap from "../../util/ImmutableMap";
 import Equality from "../../Equality.js";
+import ImmutableMap from "../../util/ImmutableMap";
+import SpreadsheetCell from "../SpreadsheetCell";
+import SpreadsheetColumnReference from "../reference/SpreadsheetColumnReference";
+import SpreadsheetRange from "../reference/SpreadsheetRange";
+import SpreadsheetRowReference from "../reference/SpreadsheetRowReference";
 
 /**
  * A function used by fromJson to verify number column widths and row heights
- * @param value
- * @returns {number}
- * @constructor
  */
 const NUMBER = (value) => {
     if(typeof value !== 'number') {
