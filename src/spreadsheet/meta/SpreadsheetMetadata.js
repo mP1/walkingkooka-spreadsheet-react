@@ -152,6 +152,10 @@ export default class SpreadsheetMetadata {
                 case SpreadsheetMetadata.NUMBER_PARSE_PATTERNS:
                     unmarshaller = SpreadsheetPattern.fromJson;
                     break;
+                case SpreadsheetMetadata.PERCENTAGE_SYMBOL:
+                case SpreadsheetMetadata.POSITIVE_SIGN:
+                    unmarshaller = Character.fromJson;
+                    break;
                 case SpreadsheetMetadata.SPREADSHEET_ID:
                     unmarshaller = null;
                     break;
@@ -167,8 +171,6 @@ export default class SpreadsheetMetadata {
                 case SpreadsheetMetadata.VIEWPORT_COORDINATES:
                     unmarshaller = SpreadsheetCoordinates.fromJson;
                     break;
-                case SpreadsheetMetadata.PERCENTAGE_SYMBOL:
-                case SpreadsheetMetadata.POSITIVE_SIGN:
                 case SpreadsheetMetadata.ROUNDING_MODE:
                 case SpreadsheetMetadata.PRECISION:
                 case SpreadsheetMetadata.TEXT_FORMAT_PATTERN:
@@ -307,6 +309,10 @@ export default class SpreadsheetMetadata {
             case SpreadsheetMetadata.NUMBER_PARSE_PATTERNS:
                 expectedClass = SpreadsheetPattern;
                 break;
+            case SpreadsheetMetadata.PERCENTAGE_SYMBOL:
+            case SpreadsheetMetadata.POSITIVE_SIGN:
+                expectedClass = Character;
+                break;
             case SpreadsheetMetadata.SPREADSHEET_ID:
                 setFails(property);
                 break;
@@ -322,8 +328,6 @@ export default class SpreadsheetMetadata {
             case SpreadsheetMetadata.VIEWPORT_COORDINATES:
                 expectedClass = SpreadsheetCoordinates;
                 break;
-            case SpreadsheetMetadata.PERCENTAGE_SYMBOL:
-            case SpreadsheetMetadata.POSITIVE_SIGN:
             case SpreadsheetMetadata.ROUNDING_MODE:
             case SpreadsheetMetadata.PRECISION:
             case SpreadsheetMetadata.TEXT_FORMAT_PATTERN:
