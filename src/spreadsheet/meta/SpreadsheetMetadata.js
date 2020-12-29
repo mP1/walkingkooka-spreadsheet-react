@@ -3,6 +3,7 @@ import EmailAddress from "../../net/EmailAddress.js";
 import Equality from "../../Equality.js";
 import ExpressionNumberKind from "../../math/ExpressionNumberKind.js";
 import LocalDateTime from "../../datetime/LocalDateTime.js";
+import Locale from "../../util/Locale.js";
 import SpreadsheetCoordinates from "../SpreadsheetCoordinates";
 import SpreadsheetCellReference from "../reference/SpreadsheetCellReference";
 import SpreadsheetName from "../SpreadsheetName";
@@ -135,6 +136,9 @@ export default class SpreadsheetMetadata {
                 case SpreadsheetMetadata.GROUPING_SEPARATOR:
                     unmarshaller = Character.fromJson;
                     break;
+                case SpreadsheetMetadata.LOCALE:
+                    unmarshaller = Locale.fromJson;
+                    break;
                 case SpreadsheetMetadata.MODIFIED_BY:
                     unmarshaller = EmailAddress.fromJson;
                     break;
@@ -156,7 +160,6 @@ export default class SpreadsheetMetadata {
                 case SpreadsheetMetadata.VIEWPORT_COORDINATES:
                     unmarshaller = SpreadsheetCoordinates.fromJson;
                     break;
-                case SpreadsheetMetadata.LOCALE:
                 case SpreadsheetMetadata.NEGATIVE_SIGN:
                 case SpreadsheetMetadata.NUMBER_FORMAT_PATTERN:
                 case SpreadsheetMetadata.NUMBER_PARSE_PATTERNS:
@@ -284,6 +287,9 @@ export default class SpreadsheetMetadata {
             case SpreadsheetMetadata.GROUPING_SEPARATOR:
                 expectedClass = Character;
                 break;
+            case SpreadsheetMetadata.LOCALE:
+                expectedClass = Locale;
+                break;
             case SpreadsheetMetadata.MODIFIED_DATE_TIME:
                 setFails(property);
                 break;
@@ -305,7 +311,6 @@ export default class SpreadsheetMetadata {
             case SpreadsheetMetadata.VIEWPORT_COORDINATES:
                 expectedClass = SpreadsheetCoordinates;
                 break;
-            case SpreadsheetMetadata.LOCALE:
             case SpreadsheetMetadata.NEGATIVE_SIGN:
             case SpreadsheetMetadata.NUMBER_FORMAT_PATTERN:
             case SpreadsheetMetadata.NUMBER_PARSE_PATTERNS:

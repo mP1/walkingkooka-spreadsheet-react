@@ -2,6 +2,7 @@ import Character from "../../Character.js";
 import EmailAddress from "../../net/EmailAddress.js";
 import ExpressionNumberKind from "../../math/ExpressionNumberKind.js";
 import LocalDateTime from "../../datetime/LocalDateTime.js";
+import Locale from "../../util/Locale.js";
 import PixelLength from "../../text/PixelLength";
 import SpreadsheetCellReference from "../reference/SpreadsheetCellReference";
 import SpreadsheetCoordinates from "../SpreadsheetCoordinates";
@@ -285,6 +286,8 @@ getSetPropertyTest(SpreadsheetMetadata.EXPRESSION_NUMBER_KIND, ExpressionNumberK
 
 getSetPropertyTest(SpreadsheetMetadata.GROUPING_SEPARATOR, Character.fromJson(","));
 
+getSetPropertyTest(SpreadsheetMetadata.LOCALE, Locale.fromJson("EN-AU"));
+
 getPropertyTest(SpreadsheetMetadata.MODIFIED_BY, EmailAddress.fromJson("creator@example.com"));
 
 getPropertyTest(SpreadsheetMetadata.MODIFIED_DATE_TIME, LocalDateTime.fromJson("1999-12-31 12:58:59"));
@@ -391,6 +394,7 @@ test("all setters & getters", () => {
     const dateTimeParsePatterns = SpreadsheetPattern.fromJson("yyyymmddhhmm");
     const editCell = SpreadsheetCellReference.parse("Z99");
     const groupingSeparator = Character.fromJson(",");
+    const locale = Locale.fromJson("EN-NZ");
     const name = new SpreadsheetName("Spreadsheet-name-123");
     const style = TextStyle.EMPTY
         .set("width", PixelLength.parse("123px"));
@@ -403,6 +407,7 @@ test("all setters & getters", () => {
         .set(SpreadsheetMetadata.DATETIME_PARSE_PATTERNS, dateTimeParsePatterns)
         .set(SpreadsheetMetadata.EDIT_CELL, editCell)
         .set(SpreadsheetMetadata.GROUPING_SEPARATOR, groupingSeparator)
+        .set(SpreadsheetMetadata.LOCALE, locale)
         .set(SpreadsheetMetadata.SPREADSHEET_NAME, name)
         .set(SpreadsheetMetadata.STYLE, style)
         .set(SpreadsheetMetadata.VIEWPORT_CELL, viewportCell)
