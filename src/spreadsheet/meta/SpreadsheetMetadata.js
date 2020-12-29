@@ -1,6 +1,7 @@
 import Character from "../../Character.js";
 import EmailAddress from "../../net/EmailAddress.js";
 import Equality from "../../Equality.js";
+import ExpressionNumberKind from "../../math/ExpressionNumberKind.js";
 import LocalDateTime from "../../datetime/LocalDateTime.js";
 import SpreadsheetCoordinates from "../SpreadsheetCoordinates";
 import SpreadsheetCellReference from "../reference/SpreadsheetCellReference";
@@ -128,6 +129,9 @@ export default class SpreadsheetMetadata {
                 case SpreadsheetMetadata.EXPONENT_SYMBOL:
                     unmarshaller = Character.fromJson;
                     break;
+                case SpreadsheetMetadata.EXPRESSION_NUMBER_KIND:
+                    unmarshaller = ExpressionNumberKind.fromJson;
+                    break;
                 case SpreadsheetMetadata.MODIFIED_BY:
                     unmarshaller = EmailAddress.fromJson;
                     break;
@@ -149,7 +153,6 @@ export default class SpreadsheetMetadata {
                 case SpreadsheetMetadata.VIEWPORT_COORDINATES:
                     unmarshaller = SpreadsheetCoordinates.fromJson;
                     break;
-                case SpreadsheetMetadata.EXPRESSION_NUMBER_KIND:
                 case SpreadsheetMetadata.GROUPING_SEPARATOR:
                 case SpreadsheetMetadata.LOCALE:
                 case SpreadsheetMetadata.NEGATIVE_SIGN:
@@ -273,6 +276,9 @@ export default class SpreadsheetMetadata {
             case SpreadsheetMetadata.EXPONENT_SYMBOL:
                 expectedClass = Character;
                 break;
+            case SpreadsheetMetadata.EXPRESSION_NUMBER_KIND:
+                expectedClass = ExpressionNumberKind;
+                break;
             case SpreadsheetMetadata.MODIFIED_DATE_TIME:
                 setFails(property);
                 break;
@@ -294,7 +300,6 @@ export default class SpreadsheetMetadata {
             case SpreadsheetMetadata.VIEWPORT_COORDINATES:
                 expectedClass = SpreadsheetCoordinates;
                 break;
-            case SpreadsheetMetadata.EXPRESSION_NUMBER_KIND:
             case SpreadsheetMetadata.GROUPING_SEPARATOR:
             case SpreadsheetMetadata.LOCALE:
             case SpreadsheetMetadata.NEGATIVE_SIGN:
