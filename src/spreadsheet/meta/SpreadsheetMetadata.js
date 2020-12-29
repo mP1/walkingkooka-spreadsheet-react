@@ -248,7 +248,6 @@ export default class SpreadsheetMetadata {
             case SpreadsheetMetadata.VIEWPORT_COORDINATES:
                 expectedClass = SpreadsheetCoordinates;
                 break;
-            case SpreadsheetMetadata.CURRENCY_SYMBOL:
             case SpreadsheetMetadata.DATE_FORMAT_PATTERN:
             case SpreadsheetMetadata.DATE_PARSE_PATTERNS:
             case SpreadsheetMetadata.DATETIME_OFFSET:
