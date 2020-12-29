@@ -1,6 +1,6 @@
-import TextNode, {STYLE_NAME} from "./TextNode";
-import TextStyle from "./TextStyle";
 import Equality from "../Equality.js";
+import TextNode from "./TextNode";
+import TextStyle from "./TextStyle";
 
 export default class TextStyleNameNode extends TextNode {
 
@@ -23,7 +23,7 @@ export default class TextStyleNameNode extends TextNode {
     }
 
     typeName() {
-        return STYLE_NAME;
+        return TextNode.STYLE_NAME;
     }
 
     value() {

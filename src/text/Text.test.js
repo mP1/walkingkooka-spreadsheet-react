@@ -1,7 +1,7 @@
+import textNodeJsonSupportFromJson from "./TextNodeJsonSupport";
+import React from "react";
 import Text from "./Text";
 import TextStyle from "./TextStyle";
-import React from "react";
-import textNodeJsonSupportFromJson from "./TextNodeJsonSupport";
 
 const textValue = "text-123-abc";
 

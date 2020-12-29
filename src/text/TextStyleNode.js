@@ -1,7 +1,7 @@
-import TextNode, {STYLE} from "./TextNode";
-import TextStyle from "./TextStyle";
-import React from "react";
 import Equality from "../Equality.js";
+import React from "react";
+import TextNode from "./TextNode";
+import TextStyle from "./TextStyle";
 
 /**
  * Holds some styles that are applied to many child text nodes.
@@ -26,7 +26,7 @@ export default class TextStyleNode extends TextNode {
     }
 
     typeName() {
-        return STYLE;
+        return TextNode.STYLE;
     }
 
     value() {

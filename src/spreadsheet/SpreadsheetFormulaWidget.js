@@ -1,6 +1,6 @@
+import PropTypes from "prop-types";
 import React from 'react';
 import TextField from '@material-ui/core/TextField';
-import PropTypes from "prop-types";
 
 /**
  * A widget that supports editing formula text. The widget is disabled when state.reference is falsey.

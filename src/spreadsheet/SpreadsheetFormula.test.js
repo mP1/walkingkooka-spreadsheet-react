@@ -1,5 +1,5 @@
-import SpreadsheetFormula from "./SpreadsheetFormula";
 import SpreadsheetError from "./SpreadsheetError";
+import SpreadsheetFormula from "./SpreadsheetFormula";
 
 const text = "###-123-abc";
 const value = 1.5;

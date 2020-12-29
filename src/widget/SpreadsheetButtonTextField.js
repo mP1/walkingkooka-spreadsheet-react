@@ -1,7 +1,7 @@
-import React from 'react';
 import Button from '@material-ui/core/Button';
-import TextField from '@material-ui/core/TextField';
 import PropTypes from "prop-types";
+import React from 'react';
+import TextField from '@material-ui/core/TextField';
 
 /**
  * A component that is initially a button and when clicked turns into a TextField with the value ready to edit.

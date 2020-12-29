@@ -2,8 +2,8 @@
  * Holds a cell reference. Note the reference is not validated in anyway.
  */
 import SpreadsheetColumnReference from "./SpreadsheetColumnReference";
-import SpreadsheetRowReference from "./SpreadsheetRowReference";
 import SpreadsheetReferenceKind from "./SpreadsheetReferenceKind";
+import SpreadsheetRowReference from "./SpreadsheetRowReference";
 
 function checkColumn(column) {
     if (!column) {

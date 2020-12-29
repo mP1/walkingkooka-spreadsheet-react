@@ -1,11 +1,11 @@
 import SpreadsheetCell from "./SpreadsheetCell";
+import SpreadsheetCellFormat from "./SpreadsheetCellFormat";
 import SpreadsheetCellReference from "./reference/SpreadsheetCellReference";
 import SpreadsheetFormula from "./SpreadsheetFormula";
-import SpreadsheetCellFormat from "./SpreadsheetCellFormat";
-import TextStyle from "../text/TextStyle";
-import Text from "../text/Text";
 import React from "react";
 import TableCell from "@material-ui/core/TableCell";
+import Text from "../text/Text";
+import TextStyle from "../text/TextStyle";
 
 function cell() {
     return new SpreadsheetCell(reference(),

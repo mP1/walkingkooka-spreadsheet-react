@@ -1,9 +1,9 @@
-export const TEXT = "text";
-export const STYLE = "text-style-node";
-export const PLACEHOLDER = "text-placeholder";
-export const STYLE_NAME = "text-styleName";
-
 export default class TextNode {
+
+    static TEXT = "text";
+    static STYLE = "text-style-node";
+    static PLACEHOLDER = "text-placeholder";
+    static STYLE_NAME = "text-styleName";
 
     // eslint-disable-next-line no-useless-constructor
     constructor() {

@@ -1,5 +1,5 @@
-import SpreadsheetError from "./SpreadsheetError";
 import Equality from "../Equality.js";
+import SpreadsheetError from "./SpreadsheetError";
 
 /**
  * Represents a formula.

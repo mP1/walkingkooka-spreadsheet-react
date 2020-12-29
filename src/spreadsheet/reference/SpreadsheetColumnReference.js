@@ -1,5 +1,5 @@
-import SpreadsheetReferenceKind from "./SpreadsheetReferenceKind";
 import SpreadsheetColumnOrRowReference from "./SpreadsheetColumnOrRowReference";
+import SpreadsheetReferenceKind from "./SpreadsheetReferenceKind";
 
 const RADIX = 26;
 const A = 65;
