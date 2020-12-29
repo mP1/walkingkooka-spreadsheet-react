@@ -132,6 +132,9 @@ export default class SpreadsheetMetadata {
                 case SpreadsheetMetadata.EXPRESSION_NUMBER_KIND:
                     unmarshaller = ExpressionNumberKind.fromJson;
                     break;
+                case SpreadsheetMetadata.GROUPING_SEPARATOR:
+                    unmarshaller = Character.fromJson;
+                    break;
                 case SpreadsheetMetadata.MODIFIED_BY:
                     unmarshaller = EmailAddress.fromJson;
                     break;
@@ -153,7 +156,6 @@ export default class SpreadsheetMetadata {
                 case SpreadsheetMetadata.VIEWPORT_COORDINATES:
                     unmarshaller = SpreadsheetCoordinates.fromJson;
                     break;
-                case SpreadsheetMetadata.GROUPING_SEPARATOR:
                 case SpreadsheetMetadata.LOCALE:
                 case SpreadsheetMetadata.NEGATIVE_SIGN:
                 case SpreadsheetMetadata.NUMBER_FORMAT_PATTERN:
@@ -279,6 +281,9 @@ export default class SpreadsheetMetadata {
             case SpreadsheetMetadata.EXPRESSION_NUMBER_KIND:
                 expectedClass = ExpressionNumberKind;
                 break;
+            case SpreadsheetMetadata.GROUPING_SEPARATOR:
+                expectedClass = Character;
+                break;
             case SpreadsheetMetadata.MODIFIED_DATE_TIME:
                 setFails(property);
                 break;
@@ -300,7 +305,6 @@ export default class SpreadsheetMetadata {
             case SpreadsheetMetadata.VIEWPORT_COORDINATES:
                 expectedClass = SpreadsheetCoordinates;
                 break;
-            case SpreadsheetMetadata.GROUPING_SEPARATOR:
             case SpreadsheetMetadata.LOCALE:
             case SpreadsheetMetadata.NEGATIVE_SIGN:
             case SpreadsheetMetadata.NUMBER_FORMAT_PATTERN:
