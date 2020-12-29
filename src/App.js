@@ -211,11 +211,6 @@ class App extends React.Component {
 
                         if(!cell || !valid){
                             this.editCell(); // clear any edit cell
-                            if(metadata.get(SpreadsheetMetadata.EDIT_CELL)){
-                                this.setState({
-                                    spreadsheetMetadata: metadata.remove(SpreadsheetMetadata.EDIT_CELL),
-                                });
-                            }
                         }
                         if(!name || !valid){
                             this.editSpreadsheetName();
