@@ -14,6 +14,7 @@ import TableCell from '@material-ui/core/TableCell';
 import TableContainer from '@material-ui/core/TableContainer';
 import TableRow from '@material-ui/core/TableRow';
 import Typography from '@material-ui/core/Typography';
+import SpreadsheetMetadata from "./meta/SpreadsheetMetadata.js";
 
 /**
  * The drawer appears holds all general settings and tools for a spreadsheet sheet.
@@ -86,11 +87,11 @@ class SpreadsheetDrawerWidget extends React.Component {
     metadata(classes) {
         const metadata = this.state.spreadsheetMetadata;
 
-        const id = metadata.spreadsheetId();
-        const creator = textOrEmpty(metadata.creator());
-        const createDateTime = "" + metadata.createDateTime(); // TODO format date/time https://github.com/mP1/walkingkooka-spreadsheet-react/issues/351
-        const modifiedBy = textOrEmpty(metadata.modifiedBy());
-        const modifiedDateTime = "" + metadata.modifiedDateTime(); // TODO format date/time https://github.com/mP1/walkingkooka-spreadsheet-react/issues/351
+        const id = metadata.get(SpreadsheetMetadata.SPREADSHEET_ID);
+        const creator = textOrEmpty(metadata.get(SpreadsheetMetadata.CREATOR));
+        const createDateTime = "" + metadata.get(SpreadsheetMetadata.CREATE_DATE_TIME); // TODO format date/time https://github.com/mP1/walkingkooka-spreadsheet-react/issues/351
+        const modifiedBy = textOrEmpty(metadata.get(SpreadsheetMetadata.MODIFIED_BY));
+        const modifiedDateTime = "" + metadata.get(SpreadsheetMetadata.MODIFIED_DATE_TIME); // TODO format date/time https://github.com/mP1/walkingkooka-spreadsheet-react/issues/351
 
         const rows = [
             this.labelAndTextRow("Spreadsheet Id", "spreadsheet-metadata-id", id),

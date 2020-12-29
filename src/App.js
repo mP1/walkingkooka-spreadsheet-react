@@ -89,8 +89,8 @@ class App extends React.Component {
         this.editSpreadsheetName(mode);
 
         const metadata = this.spreadsheetMetadata();
-        const spreadsheetId = metadata.spreadsheetId();
-        const spreadsheetName = metadata.spreadsheetName();
+        const spreadsheetId = metadata.get(SpreadsheetMetadata.SPREADSHEET_ID);
+        const spreadsheetName = metadata.get(SpreadsheetMetadata.SPREADSHEET_NAME);
 
         var message;
         const hash = [spreadsheetId, spreadsheetName];
@@ -213,9 +213,9 @@ class App extends React.Component {
 
                         if (!cell || !valid) {
                             this.editCell(); // clear any edit cell
-                            if(metadata.editCell()) {
+                            if(metadata.get(SpreadsheetMetadata.EDIT_CELL)) {
                                 this.setState({
-                                    spreadsheetMetadata: metadata.removeEditCell(),
+                                    spreadsheetMetadata: metadata.remove(SpreadsheetMetadata.EDIT_CELL),
                                 });
                             }
                         }
@@ -240,7 +240,7 @@ class App extends React.Component {
      */
     historySpreadsheetIdCreateEmptyOrLoadOrNothing(spreadsheetId, metadata) {
         // if already loading dont check if hash matches state
-        const previous = metadata.spreadsheetId();
+        const previous = metadata.get(SpreadsheetMetadata.SPREADSHEET_ID);
         const same = Equality.safeEquals(spreadsheetId, previous);
 
         if(same) {
@@ -272,7 +272,7 @@ class App extends React.Component {
         } catch (invalidName) {
         }
 
-        const metadataSpreadsheetName = metadata.spreadsheetName();
+        const metadataSpreadsheetName = metadata.get(SpreadsheetMetadata.SPREADSHEET_NAME);
         const same = Equality.safeEquals(hashSpreadsheetName, metadataSpreadsheetName);
         if (!same) {
             // update url to match actual SpreadsheetMetadata.spreadsheetName
@@ -297,10 +297,10 @@ class App extends React.Component {
                 switch (action) {
                     case FORMULA_EDIT_HASH:
                         // state does not match hash, update state.
-                        const metadataEditCell = metadata.editCell();
+                        const metadataEditCell = metadata.get(SpreadsheetMetadata.EDIT_CELL);
                         if (!Equality.safeEquals(cellReference, metadataEditCell)) {
                             this.setState({
-                                spreadsheetMetadata: metadata.setEditCell(hashSpreadsheetCellReference),
+                                spreadsheetMetadata: metadata.set(SpreadsheetMetadata.EDIT_CELL, hashSpreadsheetCellReference),
                             });
                         }
                         clearHistoryCellAction = false;
@@ -315,7 +315,11 @@ class App extends React.Component {
         }
 
         if (clearHistoryCellAction) {
-            this.historyPush([metadata.spreadsheetId(), metadata.spreadsheetName()],
+            this.historyPush(
+                [
+                    metadata.get(SpreadsheetMetadata.SPREADSHEET_ID),
+                    metadata.get(SpreadsheetMetadata.SPREADSHEET_NAME)
+                ],
                 "Invalid cell reference or action, clearing cell/action (" + cellReference + "/" + action + ")");
         }
 
@@ -345,7 +349,7 @@ class App extends React.Component {
      * The history hash contains an unknown target remove the target and following from the history hash.
      */
     historyUnknownTarget(metadata) {
-        this.historyPush([metadata.spreadsheetId(), metadata.spreadsheetName()], "History hash invalid target and parameters");
+        this.historyPush([metadata.get(SpreadsheetMetadata.SPREADSHEET_ID), metadata.get(SpreadsheetMetadata.SPREADSHEET_NAME)], "History hash invalid target and parameters");
         return false;
     }
 
@@ -422,8 +426,8 @@ class App extends React.Component {
      * If spreadsheet id changed clear caches related to the previous spreadsheet.
      */
     onSpreadsheetMetadataSpreadsheetId(prevState, hash) {
-        const previous = prevState.spreadsheetMetadata.spreadsheetId();
-        const current = this.state.spreadsheetMetadata.spreadsheetId();
+        const previous = prevState.spreadsheetMetadata.get(SpreadsheetMetadata.SPREADSHEET_ID);
+        const current = this.state.spreadsheetMetadata.get(SpreadsheetMetadata.SPREADSHEET_ID);
 
         if (!Equality.safeEquals(current, previous)) {
             console.log("spreadsheetId changed from " + previous + " to " + current + " clearing state cell, columnWidths, rowHeight (caches)");
@@ -444,7 +448,7 @@ class App extends React.Component {
     onSpreadsheetMetadataSpreadsheetName(hash) {
         const metadata = this.state.spreadsheetMetadata;
         const widget = this.spreadsheetName.current;
-        const name = metadata.spreadsheetName();
+        const name = metadata.get(SpreadsheetMetadata.SPREADSHEET_NAME);
 
         if (widget && !Equality.safeEquals(name, widget.state.value)) {
             console.log("onSpreadsheetMetadataSpreadsheetName updated from " + widget.state.value + " to " + name);
@@ -467,8 +471,8 @@ class App extends React.Component {
         const state = this.state;
 
         const metadata = state.spreadsheetMetadata;
-        const viewportCell = metadata.viewportCell();
-        const viewportCoordinates = metadata.viewportCoordinates();
+        const viewportCell = metadata.get(SpreadsheetMetadata.VIEWPORT_CELL);
+        const viewportCoordinates = metadata.get(SpreadsheetMetadata.VIEWPORT_COORDINATES);
         const windowDimensions = state.windowDimensions;
         const aboveViewportDimensions = state.aboveViewportDimensions;
 
@@ -480,8 +484,8 @@ class App extends React.Component {
                 cells: state.cells,
                 columnWidths: state.columnWidths,
                 rowHeights: state.rowHeights,
-                editCell: metadata.editCell(),
-                defaultStyle: metadata.style(),
+                editCell: metadata.get(SpreadsheetMetadata.EDIT_CELL),
+                defaultStyle: metadata.get(SpreadsheetMetadata.STYLE),
             });
             const previous = viewport.state.dimensions;
             const width = windowDimensions.width;
@@ -496,7 +500,7 @@ class App extends React.Component {
                 });
 
                 const previousMetadata = prevState.spreadsheetMetadata;
-                const previousViewportCell = previousMetadata && previousMetadata.viewportCell();
+                const previousViewportCell = previousMetadata && previousMetadata.get(SpreadsheetMetadata.VIEWPORT_CELL);
 
                 if ((width > previous.width || height > previous.height) && (viewportCell.equals(previousViewportCell) || !previousViewportCell)) {
                     this.onCellBoxViewportRangeUpdate(
@@ -517,7 +521,7 @@ class App extends React.Component {
     onSpreadsheetFormula(hash) {
         const metadata = this.state.spreadsheetMetadata;
         const formula = this.formula.current;
-        const reference = metadata.editCell();
+        const reference = metadata.get(SpreadsheetMetadata.EDIT_CELL);
 
         console.log("onSpreadsheetFormula", "formula", formula.current, "metadata", metadata);
 
@@ -681,7 +685,7 @@ class App extends React.Component {
         console.log("editCell " + reference);
 
         const metadata = this.spreadsheetMetadata();
-        const metadataEditCell = metadata.editCell();
+        const metadataEditCell = metadata.get(SpreadsheetMetadata.EDIT_CELL);
 
         if (Equality.safeEquals(reference, metadataEditCell)) {
             if (reference) {
@@ -691,8 +695,8 @@ class App extends React.Component {
             }
         } else {
             this.saveSpreadsheetMetadata(reference ?
-                metadata.setEditCell(reference) :
-                metadata.removeEditCell());
+                metadata.set(SpreadsheetMetadata.EDIT_CELL, reference) :
+                metadata.remove(SpreadsheetMetadata.EDIT_CELL));
 
             if(reference) {
                 this.editSpreadsheetName(); // stop editing spreadsheet name
@@ -756,7 +760,7 @@ class App extends React.Component {
         this.settingsAndToolsDrawerOpen(open);
 
         const metadata = this.state.spreadsheetMetadata;
-        this.historyPush([metadata.spreadsheetId(), metadata.spreadsheetName(), open ? "" : null], "settingsAndToolsDrawer " + (open ? "opened" : "closed"));
+        this.historyPush([metadata.get(SpreadsheetMetadata.SPREADSHEET_ID), metadata.get(SpreadsheetMetadata.SPREADSHEET_NAME), open ? "" : null], "settingsAndToolsDrawer " + (open ? "opened" : "closed"));
     }
 
     /**
@@ -787,15 +791,15 @@ class App extends React.Component {
 
         const metadata = this.spreadsheetMetadata();
 
-        const spreadsheetName = metadata.spreadsheetName();
+        const spreadsheetName = metadata.get(SpreadsheetMetadata.SPREADSHEET_NAME);
 
-        const style = metadata.style();
+        const style = metadata.get(SpreadsheetMetadata.STYLE);
         const {cells, columnWidths, rowHeights} = state;
 
         const viewportDimensions = this.viewportDimensions();
-        const viewportCell = metadata.viewportCell();
+        const viewportCell = metadata.get(SpreadsheetMetadata.VIEWPORT_CELL);
 
-        const editCellReference = metadata.editCell(); // SpreadsheetCellReference: may be undefined,
+        const editCellReference = metadata.get(SpreadsheetMetadata.EDIT_CELL); // SpreadsheetCellReference: may be undefined,
         const editCell = editCellReference && this.getCellOrEmpty(editCellReference);
 
         const appBarWidth = this.appBarWidth();
@@ -917,7 +921,7 @@ class App extends React.Component {
      * Uses the provided spreadsheetid or falls back to the current {@Link SpreadsheetMetadata} spreadsheet id
      */
     spreadsheetMetadataApiUrl(spreadsheetId) {
-        const id = spreadsheetId || this.spreadsheetMetadata().spreadsheetId();
+        const id = spreadsheetId || this.spreadsheetMetadata().get(SpreadsheetMetadata.SPREADSHEET_ID);
         if (!id) {
             throw new Error("Missing spreadsheetId parameter and current SpreadsheetMetadata.spreadsheetId");
         }
@@ -970,7 +974,7 @@ class App extends React.Component {
     }
 
     saveSpreadsheetName(name) {
-        this.saveSpreadsheetMetadata(this.state.spreadsheetMetadata.setSpreadsheetName(name));
+        this.saveSpreadsheetMetadata(this.state.spreadsheetMetadata.set(SpreadsheetMetadata.SPREADSHEET_NAME, name));
     }
 
     /**

@@ -130,7 +130,7 @@ test("setSpreadsheetName same", () => {
     const json = {"spreadsheet-name": name.toJson()};
 
     const metadata = SpreadsheetMetadata.fromJson(json);
-    const same = metadata.setSpreadsheetName(name);
+    const same = metadata.set(SpreadsheetMetadata.SPREADSHEET_NAME, name);
     expect(metadata).toEqual(same);
 
     checkJson(metadata, json);
@@ -145,7 +145,7 @@ test("setSpreadsheetName different name", () => {
     const metadata = SpreadsheetMetadata.fromJson(json);
 
     const newName = new SpreadsheetName("new-spreadsheet-name-222");
-    const updated = metadata.setSpreadsheetName(newName);
+    const updated = metadata.set(SpreadsheetMetadata.SPREADSHEET_NAME, newName);
     expect(metadata == updated).toBeFalsy();
 
     checkSpreadsheetId(updated, id);
@@ -267,14 +267,14 @@ test("remove absent property", () => {
 
 test("remove absent property #2", () => {
     const metadata = SpreadsheetMetadata.EMPTY
-        .setSpreadsheetName(new SpreadsheetName("spredsheet-name-123"));
+        .set(SpreadsheetMetadata.SPREADSHEET_NAME, new SpreadsheetName("spreadsheet-name-123"));
     expect(metadata).toEqual(metadata.remove("spreadsheet-id"));
 });
 
 test("remove property", () => {
     const editCell = SpreadsheetCellReference.parse("Z9");
-    const metadata = SpreadsheetMetadata.EMPTY.setEditCell(editCell);
-    const removed = metadata.removeEditCell();
+    const metadata = SpreadsheetMetadata.EMPTY.set(SpreadsheetMetadata.EDIT_CELL, editCell);
+    const removed = metadata.remove(SpreadsheetMetadata.EDIT_CELL);
 
     expect(metadata).not.toEqual(removed);
 
@@ -287,11 +287,11 @@ test("remove property", () => {
 
 test("remove property #2", () => {
     const withSpreadsheetName = SpreadsheetMetadata.EMPTY
-        .setSpreadsheetName(new SpreadsheetName("spreadsheet-name-123"));
+        .set(SpreadsheetMetadata.SPREADSHEET_NAME, new SpreadsheetName("spreadsheet-name-123"));
 
     const editCell = SpreadsheetCellReference.parse("Z9");
-    const metadata = withSpreadsheetName.setEditCell(editCell);
-    const removed = metadata.removeEditCell();
+    const metadata = withSpreadsheetName.set(SpreadsheetMetadata.EDIT_CELL, editCell);
+    const removed = metadata.remove(SpreadsheetMetadata.EDIT_CELL);
 
     expect(metadata).not.toEqual(removed);
     expect(withSpreadsheetName).toEqual(removed);
@@ -300,45 +300,53 @@ test("remove property #2", () => {
 // creator.............................................................................................................
 
 test("get creator missing", () => {
-    expect(SpreadsheetMetadata.EMPTY.creator())
+    expect(SpreadsheetMetadata.EMPTY.get(SpreadsheetMetadata.CREATOR))
         .toBeUndefined();
 });
 
 test("get creator", () => {
     expect(SpreadsheetMetadata.fromJson({
         "creator": "creator@example.com"
-    }).creator())
+    }).get(SpreadsheetMetadata.CREATOR))
         .toEqual(EmailAddress.fromJson("creator@example.com"));
 });
 
 // create-date-time.............................................................................................................
 
 test("get create-date-time missing", () => {
-    expect(SpreadsheetMetadata.EMPTY.createDateTime())
-        .toBeUndefined();
+    expect(SpreadsheetMetadata.EMPTY
+        .get(SpreadsheetMetadata.CREATE_DATE_TIME)
+    ).toBeUndefined();
 });
 
 test("get create-date-time", () => {
     expect(SpreadsheetMetadata.fromJson({
         "create-date-time": "1999-12-31 12:58:59"
-    }).createDateTime())
-        .toEqual(LocalDateTime.fromJson("1999-12-31 12:58:59"));
+    }
+    ).get(SpreadsheetMetadata.CREATE_DATE_TIME)
+    ).toEqual(LocalDateTime.fromJson("1999-12-31 12:58:59"));
 });
 
 // edit-cell............................................................................................................
 
 test("get edit-cell missing", () => {
-    expect(SpreadsheetMetadata.EMPTY.editCell()).toBeUndefined();
+    expect(SpreadsheetMetadata.EMPTY
+        .get(SpreadsheetMetadata.EDIT_CELL)
+    ).toBeUndefined();
 });
 
 test("get edit-cell", () => {
     expect(SpreadsheetMetadata.fromJson({
         "edit-cell": "B97"
-    }).editCell()).toEqual(SpreadsheetCellReference.parse("B97"));
+    }
+    ).get(SpreadsheetMetadata.EDIT_CELL)
+    ).toEqual(SpreadsheetCellReference.parse("B97"));
 });
 
 test("set edit-cell", () => {
-    checkJson(SpreadsheetMetadata.EMPTY.setEditCell(SpreadsheetCellReference.parse("B98")),
+    checkJson(SpreadsheetMetadata.EMPTY
+            .set(SpreadsheetMetadata.EDIT_CELL,
+                SpreadsheetCellReference.parse("B98")),
         {
             "edit-cell": "B98"
         });
@@ -347,29 +355,32 @@ test("set edit-cell", () => {
 // modified.............................................................................................................
 
 test("get modified-by missing", () => {
-    expect(SpreadsheetMetadata.EMPTY.modifiedBy())
-        .toBeUndefined();
+    expect(SpreadsheetMetadata.EMPTY
+        .get(SpreadsheetMetadata.MODIFIED_BY)
+    ).toBeUndefined();
 });
 
 test("get modified-by", () => {
     expect(SpreadsheetMetadata.fromJson({
         "modified-by": "modified-by@example.com"
-    }).modifiedBy())
-        .toEqual(EmailAddress.fromJson("modified-by@example.com"));
+    }
+    ).get(SpreadsheetMetadata.MODIFIED_BY)
+    ).toEqual(EmailAddress.fromJson("modified-by@example.com"));
 });
 
 // modified-date-time.............................................................................................................
 
 test("get modified-date-time missing", () => {
-    expect(SpreadsheetMetadata.EMPTY.modifiedDateTime())
-        .toBeUndefined();
+    expect(SpreadsheetMetadata.EMPTY
+        .get(SpreadsheetMetadata.MODIFIED_DATE_TIME)
+    ).toBeUndefined();
 });
 
 test("get modified-date-time", () => {
     expect(SpreadsheetMetadata.fromJson({
         "modified-date-time": "1999-12-31 12:58:59"
-    }).modifiedDateTime())
-        .toEqual(LocalDateTime.fromJson("1999-12-31 12:58:59"));
+    }).get(SpreadsheetMetadata.MODIFIED_DATE_TIME)
+    ).toEqual(LocalDateTime.fromJson("1999-12-31 12:58:59"));
 });
 
 // spreadsheetId.........................................................................................................
@@ -379,7 +390,8 @@ test("get spreadsheet-id", () => {
 
     expect(SpreadsheetMetadata.fromJson({
         "spreadsheet-id": id
-    }).spreadsheetId()).toEqual(id);
+    }).get(SpreadsheetMetadata.SPREADSHEET_ID)
+    ).toEqual(id);
 })
 
 // spreadsheet-name.....................................................................................................
@@ -389,13 +401,15 @@ test("get spreadsheet-name", () => {
 
     expect(SpreadsheetMetadata.fromJson({
         "spreadsheet-name": name
-    }).spreadsheetName()).toEqual(SpreadsheetName.parse(name));
+    }).get(SpreadsheetMetadata.SPREADSHEET_NAME)
+    ).toEqual(SpreadsheetName.parse(name));
 })
 
 test("set spreadsheet-name", () => {
     const name = SpreadsheetName.parse("spreadsheet-name-123");
 
-    checkJson(SpreadsheetMetadata.EMPTY.setSpreadsheetName(name),
+    checkJson(SpreadsheetMetadata.EMPTY
+            .set(SpreadsheetMetadata.SPREADSHEET_NAME, name),
         {
             "spreadsheet-name": name.value()
         });
@@ -404,7 +418,10 @@ test("set spreadsheet-name", () => {
 // setStyle.............................................................................................................
 
 test("set style", () => {
-    checkJson(SpreadsheetMetadata.EMPTY.setStyle(TextStyle.EMPTY.set("width", "50px")),
+    checkJson(SpreadsheetMetadata.EMPTY
+            .set(SpreadsheetMetadata.STYLE,
+                TextStyle.EMPTY.set("width", "50px")
+            ),
         {
             "style": {
                 "width": "50px"
@@ -415,17 +432,22 @@ test("set style", () => {
 // viewport-cell............................................................................................................
 
 test("get viewport-cell missing", () => {
-    expect(SpreadsheetMetadata.EMPTY.viewportCell()).toBeUndefined();
+    expect(SpreadsheetMetadata.EMPTY
+        .get(SpreadsheetMetadata.VIEWPORT_CELL)
+    ).toBeUndefined();
 });
 
 test("get viewport-cell", () => {
     expect(SpreadsheetMetadata.fromJson({
         "viewport-cell": "B97"
-    }).viewportCell()).toEqual(SpreadsheetCellReference.parse("B97"));
+    }
+    ).get(SpreadsheetMetadata.VIEWPORT_CELL)
+    ).toEqual(SpreadsheetCellReference.parse("B97"));
 });
 
 test("set viewport-cell", () => {
-    checkJson(SpreadsheetMetadata.EMPTY.setViewportCell(SpreadsheetCellReference.parse("B98")),
+    checkJson(SpreadsheetMetadata.EMPTY
+            .set(SpreadsheetMetadata.VIEWPORT_CELL, SpreadsheetCellReference.parse("B98")),
         {
             "viewport-cell": "B98"
         });
@@ -436,11 +458,14 @@ test("set viewport-cell", () => {
 test("get viewport-coordinates", () => {
     expect(SpreadsheetMetadata.fromJson({
         "viewport-coordinates": "123.5,400"
-    }).viewportCoordinates()).toEqual(SpreadsheetCoordinates.parse("123.5,400"));
+    })
+        .get(SpreadsheetMetadata.VIEWPORT_COORDINATES)
+    ).toEqual(SpreadsheetCoordinates.parse("123.5,400"));
 })
 
 test("set viewport-coordinates", () => {
-    checkJson(SpreadsheetMetadata.EMPTY.setViewportCoordinates(SpreadsheetCoordinates.parse("123.5,400")),
+    checkJson(SpreadsheetMetadata.EMPTY
+            .set(SpreadsheetMetadata.VIEWPORT_COORDINATES, SpreadsheetCoordinates.parse("123.5,400")),
         {
             "viewport-coordinates": "123.5,400"
         });
@@ -457,27 +482,27 @@ test("all setters & getters", () => {
     const viewportCell = SpreadsheetCellReference.parse("A99");
 
     const metadata = SpreadsheetMetadata.EMPTY
-        .setEditCell(editCell)
-        .setSpreadsheetName(name)
-        .setStyle(style)
-        .setViewportCell(viewportCell)
-        .setViewportCoordinates(coords);
+        .set(SpreadsheetMetadata.EDIT_CELL, editCell)
+        .set(SpreadsheetMetadata.SPREADSHEET_NAME, name)
+        .set(SpreadsheetMetadata.STYLE, style)
+        .set(SpreadsheetMetadata.VIEWPORT_CELL, viewportCell)
+        .set(SpreadsheetMetadata.VIEWPORT_COORDINATES, coords);
 
-    expect(metadata.editCell()).toEqual(editCell);
-    expect(metadata.spreadsheetName()).toEqual(name);
-    expect(metadata.style()).toEqual(style);
-    expect(metadata.viewportCell()).toEqual(viewportCell);
-    expect(metadata.viewportCoordinates()).toEqual(coords);
+    expect(metadata.get(SpreadsheetMetadata.EDIT_CELL)).toEqual(editCell);
+    expect(metadata.get(SpreadsheetMetadata.SPREADSHEET_NAME)).toEqual(name);
+    expect(metadata.get(SpreadsheetMetadata.STYLE)).toEqual(style);
+    expect(metadata.get(SpreadsheetMetadata.VIEWPORT_CELL)).toEqual(viewportCell);
+    expect(metadata.get(SpreadsheetMetadata.VIEWPORT_COORDINATES)).toEqual(coords);
 });
 
 test("all setters & removers", () => {
     const editCell = SpreadsheetCellReference.parse("Z99");
 
     const metadata = SpreadsheetMetadata.EMPTY
-        .setEditCell(editCell)
-        .removeEditCell();
+        .set(SpreadsheetMetadata.EDIT_CELL, editCell)
+        .remove(SpreadsheetMetadata.EDIT_CELL);
 
-    expect(metadata.editCell()).toBeUndefined();
+    expect(metadata.get(SpreadsheetMetadata.EDIT_CELL)).toBeUndefined();
     expect(metadata.isEmpty()).toBeTrue();
 });
 
@@ -621,11 +646,11 @@ test("equals same property values with defaults", () => {
 // helpers..............................................................................................................
 
 function checkSpreadsheetId(metadata, id) {
-    expect(metadata.spreadsheetId()).toBe(id);
+    expect(metadata.get(SpreadsheetMetadata.SPREADSHEET_ID)).toBe(id);
 }
 
 function checkSpreadsheetName(metadata, name) {
-    expect(metadata.spreadsheetName()).toStrictEqual(name);
+    expect(metadata.get(SpreadsheetMetadata.SPREADSHEET_NAME)).toStrictEqual(name);
 }
 
 // checks toJson and toString

@@ -1,49 +1,13 @@
-import SpreadsheetName from "../SpreadsheetName";
-
 import EmailAddress from "../../net/EmailAddress.js";
 import Equality from "../../Equality.js";
 import LocalDateTime from "../../datetime/LocalDateTime.js";
-import TextStyle from "../../text/TextStyle";
 import SpreadsheetCoordinates from "../SpreadsheetCoordinates";
 import SpreadsheetCellReference from "../reference/SpreadsheetCellReference";
+import SpreadsheetName from "../SpreadsheetName";
+import TextStyle from "../../text/TextStyle";
 
 // these constants should match the constants in walkingkooka-spreadsheet/walkingkooka.spreadsheet.meta.SpreadsheetMetadataPropertyName.java
 const DEFAULTS = "_defaults";
-const EDIT_CELL = "edit-cell";
-const SPREADSHEET_ID = "spreadsheet-id";
-const SPREADSHEET_NAME = "spreadsheet-name";
-const STYLE = "style";
-const VIEWPORT_CELL = "viewport-cell";
-const VIEWPORT_COORDINATES = "viewport-coordinates";
-
-const CREATOR = "creator";
-const CREATE_DATE_TIME = "create-date-time";
-const CURRENCY_SYMBOL = "currency-symbol";
-const DATE_FORMAT_PATTERN = "date-format-pattern";
-const DATE_PARSE_PATTERNS = "date-parse-patterns";
-const DATETIME_OFFSET = "date-time-offset";
-const DATETIME_FORMAT_PATTERN = "date-time-format-pattern";
-const DATETIME_PARSE_PATTERNS = "date-time-parse-patterns";
-const DECIMAL_SEPARATOR = "decimal-separator";
-const EXPONENT_SYMBOL = "exponent-symbol";
-const EDIT_RANGE = "edit-range";
-const EXPRESSION_NUMBER_KIND = "expression-number-kind";
-const GROUPING_SEPARATOR = "grouping-separator";
-const LOCALE = "locale";
-const MODIFIED_BY = "modified-by";
-const MODIFIED_DATE_TIME = "modified-date-time";
-const NEGATIVE_SIGN = "negative-sign";
-const NUMBER_FORMAT_PATTERN = "number-format-pattern";
-const NUMBER_PARSE_PATTERNS = "number-parse-patterns";
-const PERCENTAGE_SYMBOL = "percentage-symbol";
-const POSITIVE_SIGN = "positive-sign";
-const ROUNDING_MODE = "rounding-mode";
-const PRECISION = "precision";
-const TEXT_FORMAT_PATTERN = "text-format-pattern";
-const TIME_FORMAT_PATTERN = "time-format-pattern";
-const TIME_PARSE_PATTERNS = "time-parse-patterns";
-const TWO_DIGIT_YEAR = "two-digit-year";
-const WIDTH = "width";
 
 /**
  * Creates a new SpreadsheetMetadata and sets or replaces the new property/value pair.
@@ -74,6 +38,41 @@ function copyAndRemove(properties,
  */
 export default class SpreadsheetMetadata {
 
+    static CREATOR = "creator";
+    static CREATE_DATE_TIME = "create-date-time";
+    static CURRENCY_SYMBOL = "currency-symbol";
+    static DATE_FORMAT_PATTERN = "date-format-pattern";
+    static DATE_PARSE_PATTERNS = "date-parse-patterns";
+    static DATETIME_OFFSET = "date-time-offset";
+    static DATETIME_FORMAT_PATTERN = "date-time-format-pattern";
+    static DATETIME_PARSE_PATTERNS = "date-time-parse-patterns";
+    static DECIMAL_SEPARATOR = "decimal-separator";
+    static EXPONENT_SYMBOL = "exponent-symbol";
+    static EDIT_CELL = "edit-cell";
+    static EDIT_RANGE = "edit-range";
+    static EXPRESSION_NUMBER_KIND = "expression-number-kind";
+    static GROUPING_SEPARATOR = "grouping-separator";
+    static LOCALE = "locale";
+    static MODIFIED_BY = "modified-by";
+    static MODIFIED_DATE_TIME = "modified-date-time";
+    static NEGATIVE_SIGN = "negative-sign";
+    static NUMBER_FORMAT_PATTERN = "number-format-pattern";
+    static NUMBER_PARSE_PATTERNS = "number-parse-patterns";
+    static PERCENTAGE_SYMBOL = "percentage-symbol";
+    static POSITIVE_SIGN = "positive-sign";
+    static ROUNDING_MODE = "rounding-mode";
+    static PRECISION = "precision";
+    static SPREADSHEET_ID = "spreadsheet-id";
+    static SPREADSHEET_NAME = "spreadsheet-name";
+    static STYLE = "style";
+    static TEXT_FORMAT_PATTERN = "text-format-pattern";
+    static TIME_FORMAT_PATTERN = "time-format-pattern";
+    static TIME_PARSE_PATTERNS = "time-parse-patterns";
+    static TWO_DIGIT_YEAR = "two-digit-year";
+    static VIEWPORT_CELL = "viewport-cell";
+    static VIEWPORT_COORDINATES = "viewport-coordinates";
+    static WIDTH = "width";
+    
     static EMPTY = new SpreadsheetMetadata({});
 
     static fromJson(json) {
@@ -90,63 +89,63 @@ export default class SpreadsheetMetadata {
             let unmarshaller;
 
             switch (key) {
-                case CREATOR:
+                case SpreadsheetMetadata.CREATOR:
                     unmarshaller = EmailAddress.fromJson;
                     break;
-                case CREATE_DATE_TIME:
+                case SpreadsheetMetadata.CREATE_DATE_TIME:
                     unmarshaller = LocalDateTime.fromJson;
                     break;
                 case DEFAULTS:
                     unmarshaller = SpreadsheetMetadata.fromJson;
                     break;
-                case EDIT_CELL:
+                case SpreadsheetMetadata.EDIT_CELL:
                     unmarshaller = SpreadsheetCellReference.fromJson;
                     break;
-                case MODIFIED_BY:
+                case SpreadsheetMetadata.MODIFIED_BY:
                     unmarshaller = EmailAddress.fromJson;
                     break;
-                case MODIFIED_DATE_TIME:
+                case SpreadsheetMetadata.MODIFIED_DATE_TIME:
                     unmarshaller = LocalDateTime.fromJson;
                     break;
-                case SPREADSHEET_ID:
+                case SpreadsheetMetadata.SPREADSHEET_ID:
                     unmarshaller = null;
                     break;
-                case SPREADSHEET_NAME:
+                case SpreadsheetMetadata.SPREADSHEET_NAME:
                     unmarshaller = SpreadsheetName.fromJson;
                     break;
-                case STYLE:
+                case SpreadsheetMetadata.STYLE:
                     unmarshaller = TextStyle.fromJson;
                     break;
-                case VIEWPORT_CELL:
+                case SpreadsheetMetadata.VIEWPORT_CELL:
                     unmarshaller = SpreadsheetCellReference.fromJson;
                     break;
-                case VIEWPORT_COORDINATES:
+                case SpreadsheetMetadata.VIEWPORT_COORDINATES:
                     unmarshaller = SpreadsheetCoordinates.fromJson;
                     break;
-                case CURRENCY_SYMBOL:
-                case DATE_FORMAT_PATTERN:
-                case DATE_PARSE_PATTERNS:
-                case DATETIME_OFFSET:
-                case DATETIME_FORMAT_PATTERN:
-                case DATETIME_PARSE_PATTERNS:
-                case DECIMAL_SEPARATOR:
-                case EXPONENT_SYMBOL:
-                case EDIT_RANGE:
-                case EXPRESSION_NUMBER_KIND:
-                case GROUPING_SEPARATOR:
-                case LOCALE:
-                case NEGATIVE_SIGN:
-                case NUMBER_FORMAT_PATTERN:
-                case NUMBER_PARSE_PATTERNS:
-                case PERCENTAGE_SYMBOL:
-                case POSITIVE_SIGN:
-                case ROUNDING_MODE:
-                case PRECISION:
-                case TEXT_FORMAT_PATTERN:
-                case TIME_FORMAT_PATTERN:
-                case TIME_PARSE_PATTERNS:
-                case TWO_DIGIT_YEAR:
-                case WIDTH:
+                case SpreadsheetMetadata.CURRENCY_SYMBOL:
+                case SpreadsheetMetadata.DATE_FORMAT_PATTERN:
+                case SpreadsheetMetadata.DATE_PARSE_PATTERNS:
+                case SpreadsheetMetadata.DATETIME_OFFSET:
+                case SpreadsheetMetadata.DATETIME_FORMAT_PATTERN:
+                case SpreadsheetMetadata.DATETIME_PARSE_PATTERNS:
+                case SpreadsheetMetadata.DECIMAL_SEPARATOR:
+                case SpreadsheetMetadata.EXPONENT_SYMBOL:
+                case SpreadsheetMetadata.EDIT_RANGE:
+                case SpreadsheetMetadata.EXPRESSION_NUMBER_KIND:
+                case SpreadsheetMetadata.GROUPING_SEPARATOR:
+                case SpreadsheetMetadata.LOCALE:
+                case SpreadsheetMetadata.NEGATIVE_SIGN:
+                case SpreadsheetMetadata.NUMBER_FORMAT_PATTERN:
+                case SpreadsheetMetadata.NUMBER_PARSE_PATTERNS:
+                case SpreadsheetMetadata.PERCENTAGE_SYMBOL:
+                case SpreadsheetMetadata.POSITIVE_SIGN:
+                case SpreadsheetMetadata.ROUNDING_MODE:
+                case SpreadsheetMetadata.PRECISION:
+                case SpreadsheetMetadata.TEXT_FORMAT_PATTERN:
+                case SpreadsheetMetadata.TIME_FORMAT_PATTERN:
+                case SpreadsheetMetadata.TIME_PARSE_PATTERNS:
+                case SpreadsheetMetadata.TWO_DIGIT_YEAR:
+                case SpreadsheetMetadata.WIDTH:
                     unmarshaller = null; // TODO types not yet implemented
                     break;
                 default:
@@ -221,54 +220,54 @@ export default class SpreadsheetMetadata {
             case DEFAULTS:
                 expectedClass = SpreadsheetMetadata;
                 break;
-            case EDIT_CELL:
+            case SpreadsheetMetadata.EDIT_CELL:
                 expectedClass = SpreadsheetCellReference;
                 break;
-            case SPREADSHEET_ID:
+            case SpreadsheetMetadata.SPREADSHEET_ID:
                 expectedTypeOf = "string";
                 break;
-            case SPREADSHEET_NAME:
+            case SpreadsheetMetadata.SPREADSHEET_NAME:
                 expectedClass = SpreadsheetName;
                 break;
-            case STYLE:
+            case SpreadsheetMetadata.STYLE:
                 expectedClass = TextStyle;
                 break;
-            case VIEWPORT_CELL:
+            case SpreadsheetMetadata.VIEWPORT_CELL:
                 expectedClass = SpreadsheetCellReference;
                 break;
-            case VIEWPORT_COORDINATES:
+            case SpreadsheetMetadata.VIEWPORT_COORDINATES:
                 expectedClass = SpreadsheetCoordinates;
                 break;
-            case CURRENCY_SYMBOL:
-            case DATE_FORMAT_PATTERN:
-            case DATE_PARSE_PATTERNS:
-            case DATETIME_OFFSET:
-            case DATETIME_FORMAT_PATTERN:
-            case DATETIME_PARSE_PATTERNS:
-            case DECIMAL_SEPARATOR:
-            case EXPONENT_SYMBOL:
-            case EDIT_RANGE:
-            case EXPRESSION_NUMBER_KIND:
-            case GROUPING_SEPARATOR:
-            case LOCALE:
-            case NEGATIVE_SIGN:
-            case NUMBER_FORMAT_PATTERN:
-            case NUMBER_PARSE_PATTERNS:
-            case PERCENTAGE_SYMBOL:
-            case POSITIVE_SIGN:
-            case ROUNDING_MODE:
-            case PRECISION:
-            case TEXT_FORMAT_PATTERN:
-            case TIME_FORMAT_PATTERN:
-            case TIME_PARSE_PATTERNS:
-            case TWO_DIGIT_YEAR:
-            case WIDTH:
+            case SpreadsheetMetadata.CURRENCY_SYMBOL:
+            case SpreadsheetMetadata.DATE_FORMAT_PATTERN:
+            case SpreadsheetMetadata.DATE_PARSE_PATTERNS:
+            case SpreadsheetMetadata.DATETIME_OFFSET:
+            case SpreadsheetMetadata.DATETIME_FORMAT_PATTERN:
+            case SpreadsheetMetadata.DATETIME_PARSE_PATTERNS:
+            case SpreadsheetMetadata.DECIMAL_SEPARATOR:
+            case SpreadsheetMetadata.EXPONENT_SYMBOL:
+            case SpreadsheetMetadata.EDIT_RANGE:
+            case SpreadsheetMetadata.EXPRESSION_NUMBER_KIND:
+            case SpreadsheetMetadata.GROUPING_SEPARATOR:
+            case SpreadsheetMetadata.LOCALE:
+            case SpreadsheetMetadata.NEGATIVE_SIGN:
+            case SpreadsheetMetadata.NUMBER_FORMAT_PATTERN:
+            case SpreadsheetMetadata.NUMBER_PARSE_PATTERNS:
+            case SpreadsheetMetadata.PERCENTAGE_SYMBOL:
+            case SpreadsheetMetadata.POSITIVE_SIGN:
+            case SpreadsheetMetadata.ROUNDING_MODE:
+            case SpreadsheetMetadata.PRECISION:
+            case SpreadsheetMetadata.TEXT_FORMAT_PATTERN:
+            case SpreadsheetMetadata.TIME_FORMAT_PATTERN:
+            case SpreadsheetMetadata.TIME_PARSE_PATTERNS:
+            case SpreadsheetMetadata.TWO_DIGIT_YEAR:
+            case SpreadsheetMetadata.WIDTH:
                 expectedClass = null; // TODO properties not yet supported
                 break;
-            // case CREATOR: not writable
-            // case CREATE_DATE_TIME:
-            // case MODIFIED_BY:
-            // case MODIFIED_DATE_TIME:
+            // case SpreadsheetMetadata.CREATOR: not writable
+            // case SpreadsheetMetadata.CREATE_DATE_TIME:
+            // case SpreadsheetMetadata.MODIFIED_BY:
+            // case SpreadsheetMetadata.MODIFIED_DATE_TIME:
             default:
                 if (property.startsWith("color-")) {
                     break;
@@ -300,42 +299,42 @@ export default class SpreadsheetMetadata {
         }
 
         switch (property) {
-            case CURRENCY_SYMBOL:
-            case DATE_FORMAT_PATTERN:
-            case DATE_PARSE_PATTERNS:
-            case DATETIME_OFFSET:
-            case DATETIME_FORMAT_PATTERN:
-            case DATETIME_PARSE_PATTERNS:
-            case DECIMAL_SEPARATOR:
-            case DEFAULTS:
-            case EDIT_CELL:
-            case EXPONENT_SYMBOL:
-            case EDIT_RANGE:
-            case EXPRESSION_NUMBER_KIND:
-            case GROUPING_SEPARATOR:
-            case LOCALE:
-            case NEGATIVE_SIGN:
-            case NUMBER_FORMAT_PATTERN:
-            case NUMBER_PARSE_PATTERNS:
-            case PERCENTAGE_SYMBOL:
-            case POSITIVE_SIGN:
-            case ROUNDING_MODE:
-            case PRECISION:
-            case SPREADSHEET_ID:
-            case SPREADSHEET_NAME:
-            case STYLE:
-            case TEXT_FORMAT_PATTERN:
-            case TIME_FORMAT_PATTERN:
-            case TIME_PARSE_PATTERNS:
-            case TWO_DIGIT_YEAR:
-            case VIEWPORT_CELL:
-            case VIEWPORT_COORDINATES:
-            case WIDTH:
+            case SpreadsheetMetadata.CURRENCY_SYMBOL:
+            case SpreadsheetMetadata.DATE_FORMAT_PATTERN:
+            case SpreadsheetMetadata.DATE_PARSE_PATTERNS:
+            case SpreadsheetMetadata.DATETIME_OFFSET:
+            case SpreadsheetMetadata.DATETIME_FORMAT_PATTERN:
+            case SpreadsheetMetadata.DATETIME_PARSE_PATTERNS:
+            case SpreadsheetMetadata.DECIMAL_SEPARATOR:
+            case SpreadsheetMetadata.DEFAULTS:
+            case SpreadsheetMetadata.EDIT_CELL:
+            case SpreadsheetMetadata.EXPONENT_SYMBOL:
+            case SpreadsheetMetadata.EDIT_RANGE:
+            case SpreadsheetMetadata.EXPRESSION_NUMBER_KIND:
+            case SpreadsheetMetadata.GROUPING_SEPARATOR:
+            case SpreadsheetMetadata.LOCALE:
+            case SpreadsheetMetadata.NEGATIVE_SIGN:
+            case SpreadsheetMetadata.NUMBER_FORMAT_PATTERN:
+            case SpreadsheetMetadata.NUMBER_PARSE_PATTERNS:
+            case SpreadsheetMetadata.PERCENTAGE_SYMBOL:
+            case SpreadsheetMetadata.POSITIVE_SIGN:
+            case SpreadsheetMetadata.ROUNDING_MODE:
+            case SpreadsheetMetadata.PRECISION:
+            case SpreadsheetMetadata.SPREADSHEET_ID:
+            case SpreadsheetMetadata.SPREADSHEET_NAME:
+            case SpreadsheetMetadata.STYLE:
+            case SpreadsheetMetadata.TEXT_FORMAT_PATTERN:
+            case SpreadsheetMetadata.TIME_FORMAT_PATTERN:
+            case SpreadsheetMetadata.TIME_PARSE_PATTERNS:
+            case SpreadsheetMetadata.TWO_DIGIT_YEAR:
+            case SpreadsheetMetadata.VIEWPORT_CELL:
+            case SpreadsheetMetadata.VIEWPORT_COORDINATES:
+            case SpreadsheetMetadata.WIDTH:
                 break;
-            // case CREATOR: not writable(removable)
-            // case CREATE_DATE_TIME:
-            // case MODIFIED_BY:
-            // case MODIFIED_DATE_TIME:
+            // case SpreadsheetMetadata.CREATOR: not writable(removable)
+            // case SpreadsheetMetadata.CREATE_DATE_TIME:
+            // case SpreadsheetMetadata.MODIFIED_BY:
+            // case SpreadsheetMetadata.MODIFIED_DATE_TIME:
             default:
                 if(property.startsWith("color-")) {
                     break;
@@ -372,70 +371,6 @@ export default class SpreadsheetMetadata {
             throw new Error("Expected SpreadsheetMetadata got " + defaultSpreadsheetMetadata);
         }
         return this.set(DEFAULTS, defaultSpreadsheetMetadata);
-    }
-
-    creator() {
-        return this.get(CREATOR);
-    }
-
-    createDateTime() {
-        return this.get(CREATE_DATE_TIME);
-    }
-
-    editCell() {
-        return this.get(EDIT_CELL);
-    }
-
-    modifiedBy() {
-        return this.get(MODIFIED_BY);
-    }
-
-    modifiedDateTime() {
-        return this.get(MODIFIED_DATE_TIME);
-    }
-
-    setEditCell(cell) {
-        return this.set(EDIT_CELL, cell);
-    }
-
-    removeEditCell() {
-        return this.remove(EDIT_CELL);
-    }
-
-    spreadsheetId() {
-        return this.get(SPREADSHEET_ID);
-    }
-
-    spreadsheetName() {
-        return this.get(SPREADSHEET_NAME);
-    }
-
-    setSpreadsheetName(name) {
-        return this.set(SPREADSHEET_NAME, name);
-    }
-
-    style() {
-        return this.get(STYLE, TextStyle.fromJson);
-    }
-
-    setStyle(style) {
-        return this.set(STYLE, style);
-    }
-
-    viewportCell() {
-        return this.get(VIEWPORT_CELL, SpreadsheetCellReference.fromJson);
-    }
-
-    setViewportCell(cell) {
-        return this.set(VIEWPORT_CELL, cell);
-    }
-    
-    viewportCoordinates() {
-        return this.get(VIEWPORT_COORDINATES, SpreadsheetCoordinates.fromJson);
-    }
-
-    setViewportCoordinates(coords) {
-        return this.set(VIEWPORT_COORDINATES, coords);
     }
 
     /**
