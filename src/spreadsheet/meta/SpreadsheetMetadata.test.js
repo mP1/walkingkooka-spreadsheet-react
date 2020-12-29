@@ -262,13 +262,13 @@ test("remove property unknown fails", () => {
 
 test("remove absent property", () => {
     const metadata = SpreadsheetMetadata.EMPTY;
-    expect(metadata).toEqual(metadata.remove("spreadsheet-id"));
+    expect(metadata).toEqual(metadata.remove(SpreadsheetMetadata.EDIT_CELL));
 });
 
 test("remove absent property #2", () => {
     const metadata = SpreadsheetMetadata.EMPTY
         .set(SpreadsheetMetadata.SPREADSHEET_NAME, new SpreadsheetName("spreadsheet-name-123"));
-    expect(metadata).toEqual(metadata.remove("spreadsheet-id"));
+    expect(metadata).toEqual(metadata.remove(SpreadsheetMetadata.EDIT_CELL));
 });
 
 test("remove property", () => {
@@ -311,6 +311,8 @@ test("get creator", () => {
         .toEqual(EmailAddress.fromJson("creator@example.com"));
 });
 
+test("remove creator fails", removeUnsupportedFails(SpreadsheetMetadata.CREATOR));
+
 // create-date-time.............................................................................................................
 
 test("get create-date-time missing", () => {
@@ -326,6 +328,8 @@ test("get create-date-time", () => {
     ).get(SpreadsheetMetadata.CREATE_DATE_TIME)
     ).toEqual(LocalDateTime.fromJson("1999-12-31 12:58:59"));
 });
+
+test("remove create-date-time fails", removeUnsupportedFails(SpreadsheetMetadata.CREATE_DATE_TIME));
 
 // currency-symbol......................................................................................................
 
@@ -350,6 +354,8 @@ test("set currency-symbol", () => {
             "currency-symbol": currencySymbol,
         });
 });
+
+test("remove currency-symbol fails", removeUnsupportedFails(SpreadsheetMetadata.CURRENCY_SYMBOL));
 
 // edit-cell............................................................................................................
 
@@ -392,6 +398,8 @@ test("get modified-by", () => {
     ).toEqual(EmailAddress.fromJson("modified-by@example.com"));
 });
 
+test("remove modified-by fails", removeUnsupportedFails(SpreadsheetMetadata.MODIFIED_BY));
+
 // modified-date-time.............................................................................................................
 
 test("get modified-date-time missing", () => {
@@ -407,6 +415,8 @@ test("get modified-date-time", () => {
     ).toEqual(LocalDateTime.fromJson("1999-12-31 12:58:59"));
 });
 
+test("remove modified-date-time fails", removeUnsupportedFails(SpreadsheetMetadata.MODIFIED_DATE_TIME));
+
 // spreadsheetId.........................................................................................................
 
 test("get spreadsheet-id", () => {
@@ -417,6 +427,8 @@ test("get spreadsheet-id", () => {
     }).get(SpreadsheetMetadata.SPREADSHEET_ID)
     ).toEqual(id);
 })
+
+test("remove spreadsheet-id fails", removeUnsupportedFails(SpreadsheetMetadata.SPREADSHEET_ID));
 
 // spreadsheet-name.....................................................................................................
 
@@ -439,6 +451,8 @@ test("set spreadsheet-name", () => {
         });
 })
 
+test("remove spreadsheet-name fails", removeUnsupportedFails(SpreadsheetMetadata.SPREADSHEET_NAME));
+
 // setStyle.............................................................................................................
 
 test("set style", () => {
@@ -452,6 +466,8 @@ test("set style", () => {
             }
         });
 })
+
+test("remove style fails", removeUnsupportedFails(SpreadsheetMetadata.STYLE));
 
 // viewport-cell............................................................................................................
 
@@ -681,4 +697,10 @@ function checkSpreadsheetName(metadata, name) {
 function checkJson(metadata, json) {
     expect(metadata.toJson()).toStrictEqual(json);
     expect(metadata.toString()).toBe(JSON.stringify(json));
+}
+
+function removeUnsupportedFails(property) {
+    return () => {
+        expect(() => SpreadsheetMetadata.EMPTY.remove(property)).toThrow("Property \"" + property + "\" cannot be removed, {}");
+    }
 }
