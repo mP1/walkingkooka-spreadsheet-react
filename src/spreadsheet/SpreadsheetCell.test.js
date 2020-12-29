@@ -373,7 +373,7 @@ test("render style=height, text & defaultStyle=width", () => {
         format(),
         new Text(text))
         .render(TextStyle.EMPTY
-            .set("width", "100px"),
+                .set("width", "100px"),
             c))
         .toStrictEqual(<TableCell key={r}
                                   id="cell-A99"
@@ -502,18 +502,18 @@ function check(cell, reference, formula, style, format, formatted, json) {
 
     expect(cell.style()).toStrictEqual(style);
 
-    if (style) {
+    if(style){
         expect(cell.style()).toBeInstanceOf(TextStyle);
     }
 
     expect(cell.format()).toStrictEqual(format);
 
-    if (format) {
+    if(format){
         expect(cell.format()).toBeInstanceOf(SpreadsheetCellFormat);
     }
 
     expect(cell.formatted()).toStrictEqual(formatted);
-    if (formatted) {
+    if(formatted){
         expect(cell.formatted()).toBeInstanceOf(Text);
     }
 

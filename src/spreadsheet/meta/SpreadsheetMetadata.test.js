@@ -288,9 +288,9 @@ test("get create-date-time missing", () => {
 
 test("get create-date-time", () => {
     expect(SpreadsheetMetadata.fromJson({
-        "create-date-time": "1999-12-31 12:58:59"
-    }
-    ).get(SpreadsheetMetadata.CREATE_DATE_TIME)
+            "create-date-time": "1999-12-31 12:58:59"
+        }
+        ).get(SpreadsheetMetadata.CREATE_DATE_TIME)
     ).toEqual(LocalDateTime.fromJson("1999-12-31 12:58:59"));
 });
 
@@ -332,9 +332,9 @@ test("get edit-cell missing", () => {
 
 test("get edit-cell", () => {
     expect(SpreadsheetMetadata.fromJson({
-        "edit-cell": "B97"
-    }
-    ).get(SpreadsheetMetadata.EDIT_CELL)
+            "edit-cell": "B97"
+        }
+        ).get(SpreadsheetMetadata.EDIT_CELL)
     ).toEqual(SpreadsheetCellReference.parse("B97"));
 });
 
@@ -357,9 +357,9 @@ test("get modified-by missing", () => {
 
 test("get modified-by", () => {
     expect(SpreadsheetMetadata.fromJson({
-        "modified-by": "modified-by@example.com"
-    }
-    ).get(SpreadsheetMetadata.MODIFIED_BY)
+            "modified-by": "modified-by@example.com"
+        }
+        ).get(SpreadsheetMetadata.MODIFIED_BY)
     ).toEqual(EmailAddress.fromJson("modified-by@example.com"));
 });
 
@@ -375,8 +375,8 @@ test("get modified-date-time missing", () => {
 
 test("get modified-date-time", () => {
     expect(SpreadsheetMetadata.fromJson({
-        "modified-date-time": "1999-12-31 12:58:59"
-    }).get(SpreadsheetMetadata.MODIFIED_DATE_TIME)
+            "modified-date-time": "1999-12-31 12:58:59"
+        }).get(SpreadsheetMetadata.MODIFIED_DATE_TIME)
     ).toEqual(LocalDateTime.fromJson("1999-12-31 12:58:59"));
 });
 
@@ -388,8 +388,8 @@ test("get spreadsheet-id", () => {
     const id = "123ABC";
 
     expect(SpreadsheetMetadata.fromJson({
-        "spreadsheet-id": id
-    }).get(SpreadsheetMetadata.SPREADSHEET_ID)
+            "spreadsheet-id": id
+        }).get(SpreadsheetMetadata.SPREADSHEET_ID)
     ).toEqual(id);
 })
 
@@ -401,8 +401,8 @@ test("get spreadsheet-name", () => {
     const name = "spreadsheet-name-123";
 
     expect(SpreadsheetMetadata.fromJson({
-        "spreadsheet-name": name
-    }).get(SpreadsheetMetadata.SPREADSHEET_NAME)
+            "spreadsheet-name": name
+        }).get(SpreadsheetMetadata.SPREADSHEET_NAME)
     ).toEqual(SpreadsheetName.parse(name));
 })
 
@@ -444,9 +444,9 @@ test("get viewport-cell missing", () => {
 
 test("get viewport-cell", () => {
     expect(SpreadsheetMetadata.fromJson({
-        "viewport-cell": "B97"
-    }
-    ).get(SpreadsheetMetadata.VIEWPORT_CELL)
+            "viewport-cell": "B97"
+        }
+        ).get(SpreadsheetMetadata.VIEWPORT_CELL)
     ).toEqual(SpreadsheetCellReference.parse("B97"));
 });
 
@@ -464,9 +464,9 @@ test("remove viewport-coordinates fails", removeUnsupportedFails(SpreadsheetMeta
 
 test("get viewport-coordinates", () => {
     expect(SpreadsheetMetadata.fromJson({
-        "viewport-coordinates": "123.5,400"
-    })
-        .get(SpreadsheetMetadata.VIEWPORT_COORDINATES)
+            "viewport-coordinates": "123.5,400"
+        })
+            .get(SpreadsheetMetadata.VIEWPORT_COORDINATES)
     ).toEqual(SpreadsheetCoordinates.parse("123.5,400"));
 })
 

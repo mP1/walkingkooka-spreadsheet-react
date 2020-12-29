@@ -31,14 +31,14 @@ export default class TextStyleNameNode extends TextNode {
             styleName: this.styleName()
         }
         const children = this.children();
-        if (children && children.length > 0) {
+        if(children && children.length > 0){
             value.children = children.map(c => c.toJson());
         }
         return value;
     }
 
     accept(textNodeVisitor) {
-        if (textNodeVisitor.startVisitTextStyleNameNode(this)) {
+        if(textNodeVisitor.startVisitTextStyleNameNode(this)){
             textNodeVisitor.acceptChildren(this.children());
         }
         textNodeVisitor.endVisitTextStyleNameNode(this);

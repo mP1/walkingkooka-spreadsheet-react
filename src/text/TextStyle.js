@@ -38,10 +38,10 @@ export default class TextStyle {
     }
 
     constructor(styles) {
-        if (!styles) {
+        if(!styles){
             throw new Error("Missing styles");
         }
-        if (typeof styles !== "object") {
+        if(typeof styles !== "object"){
             throw new Error("Styles expected object got " + styles);
         }
         this.styles = Object.assign({}, styles);
@@ -82,10 +82,10 @@ export default class TextStyle {
      * Merges this style with the entries from the given, this means properties in other will replace any that exist in this.
      */
     merge(style) {
-        if (!style) {
+        if(!style){
             throw new Error("Missing style");
         }
-        if (!(style instanceof TextStyle)) {
+        if(!(style instanceof TextStyle)){
             throw new Error("Expected TextStyle style got " + style);
         }
 
@@ -109,7 +109,7 @@ export default class TextStyle {
     toCss() {
         const css = {};
 
-        for (const [key, value] of Object.entries(this.styles)) {
+        for(const [key, value] of Object.entries(this.styles)) {
             const components = key.split("-");
             const first = components.shift();
 
@@ -121,11 +121,11 @@ export default class TextStyle {
                     .join("");
 
             var value2;
-            switch (first) {
+            switch(first) {
                 case "border":
                 case "margin":
                 case "padding":
-                    if (value === "none") {
+                    if(value === "none"){
                         value2 = "0";
                         break;
                     }

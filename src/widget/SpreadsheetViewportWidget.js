@@ -37,7 +37,7 @@ const headerCellSelected = Object.assign({},
     {
         backgroundColor: "#444", // TODO take colours from theme
         color: "#bbb",
-     },
+    },
 );
 
 /**
@@ -85,21 +85,21 @@ export default class SpreadsheetViewportWidget extends React.Component {
                                    overflow: "hidden",
                                    borderRadius: 0, // cancel paper rounding.
                                }}>
-                    <Table>
-                        <TableHead>
-                            <TableRow>
-                                {
-                                    this.headers()
-                                }
-                            </TableRow>
-                        </TableHead>
-                        <TableBody>
-                            {
-                                this.body()
-                            }
-                        </TableBody>
-                    </Table>
-                </TableContainer>;
+            <Table>
+                <TableHead>
+                    <TableRow>
+                        {
+                            this.headers()
+                        }
+                    </TableRow>
+                </TableHead>
+                <TableBody>
+                    {
+                        this.body()
+                    }
+                </TableBody>
+            </Table>
+        </TableContainer>;
     }
 
     /**
@@ -117,7 +117,7 @@ export default class SpreadsheetViewportWidget extends React.Component {
         let x = 0;
         let column = home.column();
 
-        while (x < viewportWidth) {
+        while(x < viewportWidth) {
             headers.push(
                 this.headerCell(column, column.equals(editCellColumn))
             );
@@ -150,7 +150,7 @@ export default class SpreadsheetViewportWidget extends React.Component {
 
         const editCellSetter = this.editCellSetter;
 
-        while (y < viewportHeight) {
+        while(y < viewportHeight) {
 
             const tableCells = [];
             let x = 0;
@@ -159,11 +159,11 @@ export default class SpreadsheetViewportWidget extends React.Component {
             tableCells.push(this.headerCell(row, row.equals(editCellRow)));
 
             // reference, formula, style, format, formatted
-            while (x < viewportWidth) {
+            while(x < viewportWidth) {
                 const cellReference = new SpreadsheetCellReference(column, row);
                 const cell = cells.get(cellReference) || this.emptyCell(cellReference);
 
-                if(cells.get(cellReference)) {
+                if(cells.get(cellReference)){
                     console.log("SpreadsheetViewportWidget cell " + cellReference, cellReference, cell);
                 }
 
@@ -196,7 +196,7 @@ export default class SpreadsheetViewportWidget extends React.Component {
 
         return <TableCell key={reference}
                           id={(column ? "column-" : "row-") + "" + reference}
-                          className={(column ? "column" : "row") + (highlighted ? " selected": "")}
+                          className={(column ? "column" : "row") + (highlighted ? " selected" : "")}
                           style={highlighted ? headerCellSelected : headerCell}>{reference.toString()}</TableCell>
     }
 

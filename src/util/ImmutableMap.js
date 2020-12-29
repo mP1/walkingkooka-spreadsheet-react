@@ -17,27 +17,27 @@ export default class ImmutableMap {
      * Transforms the json into a {@link ImmutableMap} using the keyParser to validate keys and valueUnmarshaller to unmarshall values.
      */
     static fromJson(json, keyParser, valueUnmarshaller) {
-        if (!json) {
+        if(!json){
             throw new Error("Missing json");
         }
-        if (typeof json !== "object") {
+        if(typeof json !== "object"){
             throw new Error("Expected object json got " + json);
         }
-        if (!keyParser) {
+        if(!keyParser){
             throw new Error("Missing key parser");
         }
-        if (typeof keyParser !== "function") {
+        if(typeof keyParser !== "function"){
             throw new Error("Expected function key parser got " + keyParser);
         }
-        if (!valueUnmarshaller) {
+        if(!valueUnmarshaller){
             throw new Error("Missing valueUnmarshaller");
         }
-        if (typeof valueUnmarshaller !== "function") {
+        if(typeof valueUnmarshaller !== "function"){
             throw new Error("Expected function valueUnmarshaller got " + valueUnmarshaller);
         }
 
         const map = new Map();
-        for (const [key, value] of Object.entries(json)) {
+        for(const [key, value] of Object.entries(json)) {
             keyParser(key);
             map.set(key, valueUnmarshaller(value));
         }
@@ -49,10 +49,10 @@ export default class ImmutableMap {
      * Creates a new {@link ImmutableMap}
      */
     constructor(map) {
-        if (!map) {
+        if(!map){
             throw new Error("Missing map");
         }
-        if (!(map instanceof Map)) {
+        if(!(map instanceof Map)){
             throw new Error("Expected Map map got " + map);
         }
 
@@ -85,10 +85,10 @@ export default class ImmutableMap {
      * in the new will replace those in the old.
      */
     set(map) {
-        if (!map) {
+        if(!map){
             throw new Error("Missing map");
         }
-        if (!(map instanceof ImmutableMap)) {
+        if(!(map instanceof ImmutableMap)){
             throw new Error("Expected ImmutableMap map got " + map);
         }
 
@@ -111,7 +111,7 @@ export default class ImmutableMap {
      */
     toJson() {
         let json = {};
-        for (const [key, value] of this.map.entries()) {
+        for(const [key, value] of this.map.entries()) {
             json[key.toString()] = (value.toJson && value.toJson()) || value;
         }
         return json;
@@ -140,10 +140,10 @@ function equals0(map, other) {
 function equals1(map, other) {
     var result = true;
 
-    for (const [key, value] of map.entries()) {
+    for(const [key, value] of map.entries()) {
         const otherValue = other.get(key);
         result = (value && value.equals && value.equals(otherValue)) || value === otherValue;
-        if (!result) {
+        if(!result){
             break;
         }
     }

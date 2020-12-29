@@ -31,12 +31,12 @@ export default class SpreadsheetCell {
      * </pre>
      */
     static fromJson(json) {
-        if (!json) {
+        if(!json){
             throw new Error("Missing json");
         }
 
         const keys = Object.keys(json);
-        switch (keys.length) {
+        switch(keys.length) {
             case 0:
                 throw new Error("Missing reference");
             case 1:
@@ -54,25 +54,25 @@ export default class SpreadsheetCell {
     }
 
     constructor(reference, formula, style, format, formatted) {
-        if (!reference) {
+        if(!reference){
             throw new Error("Missing reference");
         }
-        if (!(reference instanceof SpreadsheetCellReference)) {
+        if(!(reference instanceof SpreadsheetCellReference)){
             throw new Error("Expected SpreadsheetCellReference reference got " + reference);
         }
         checkFormula(formula);
 
-        if (!style) {
+        if(!style){
             throw new Error("Missing style");
         }
-        if (!(style instanceof TextStyle)) {
+        if(!(style instanceof TextStyle)){
             throw new Error("Expected TextStyle style got " + style);
         }
 
-        if (format && !(format instanceof SpreadsheetCellFormat)) {
+        if(format && !(format instanceof SpreadsheetCellFormat)){
             throw new Error("Expected SpreadsheetCellFormat format got " + format);
         }
-        if (formatted && !(formatted instanceof TextNode)) {
+        if(formatted && !(formatted instanceof TextNode)){
             throw new Error("Expected TextNode formatted got " + formatted);
         }
 
@@ -98,7 +98,7 @@ export default class SpreadsheetCell {
         checkFormula(formula);
 
         return this.formula() === formula ?
-            this:
+            this :
             new SpreadsheetCell(this.reference(), formula, this.style(), this.format(), this.formatted());
     }
 
@@ -121,15 +121,15 @@ export default class SpreadsheetCell {
             formula: formulaValue.toJson()
         };
 
-        if (!styleValue.isEmpty()) {
+        if(!styleValue.isEmpty()){
             json2.style = styleValue.toJson();
         }
 
-        if (formatValue) {
+        if(formatValue){
             json2.format = formatValue.toJson();
         }
 
-        if (formattedValue) {
+        if(formattedValue){
             json2.formatted = formattedValue.toJson();
         }
 
@@ -142,16 +142,16 @@ export default class SpreadsheetCell {
      * Renders a TableCell with the formatted content. The default style will typically come from {@link SpreadsheetMetadata}.
      */
     render(defaultStyle, onClick) {
-        if (!defaultStyle) {
+        if(!defaultStyle){
             throw new Error("Missing defaultStyle");
         }
-        if (!(defaultStyle instanceof TextStyle)) {
+        if(!(defaultStyle instanceof TextStyle)){
             throw new Error("Expected TextStyle defaultStyle got " + defaultStyle);
         }
-        if (!onClick) {
+        if(!onClick){
             throw new Error("Missing onClick");
         }
-        if (typeof onClick !== "function") {
+        if(typeof onClick !== "function"){
             throw new Error("Expected function onClick got " + onClick);
         }
 
@@ -186,10 +186,10 @@ export default class SpreadsheetCell {
 }
 
 function checkFormula(formula) {
-    if (!formula) {
+    if(!formula){
         throw new Error("Missing formula");
     }
-    if (!(formula instanceof SpreadsheetFormula)) {
+    if(!(formula instanceof SpreadsheetFormula)){
         throw new Error("Expected SpreadsheetFormula formula got " + formula);
     }
 }

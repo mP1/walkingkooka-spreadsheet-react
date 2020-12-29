@@ -42,7 +42,7 @@ export default class SpreadsheetButtonTextField extends React.Component {
      */
     handleClickOutside(event) {
         const widget = this.textField.current;
-        if (widget && !widget.contains(event.target)) {
+        if(widget && !widget.contains(event.target)){
             event.preventDefault();
             this.setEdit(false);
         }
@@ -73,7 +73,7 @@ export default class SpreadsheetButtonTextField extends React.Component {
     // EDIT ............................................................................................................
 
     handleKeyDown(event) {
-        switch (event.key) {
+        switch(event.key) {
             case "Escape":
                 this.handleEscapeKey(event);
                 break;

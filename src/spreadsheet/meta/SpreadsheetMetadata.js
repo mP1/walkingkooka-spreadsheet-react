@@ -17,7 +17,7 @@ function copyAndSet(properties,
                     value) {
     const copy = Object.assign({}, properties);
 
-    if (!(DEFAULTS === property && value.isEmpty())) {
+    if(!(DEFAULTS === property && value.isEmpty())){
         copy[property] = value;
     }
     return new SpreadsheetMetadata(copy);
@@ -76,19 +76,19 @@ export default class SpreadsheetMetadata {
     static EMPTY = new SpreadsheetMetadata({});
 
     static fromJson(json) {
-        if (!json) {
+        if(!json){
             throw new Error("Missing json");
         }
-        if (typeof json !== "object") {
+        if(typeof json !== "object"){
             throw new Error("Expected Object json got " + json);
         }
 
         // check properties
         const properties = {};
-        for (const [key, value] of Object.entries(json)) {
+        for(const [key, value] of Object.entries(json)) {
             let typed, unmarshaller;
 
-            switch (key) {
+            switch(key) {
                 case SpreadsheetMetadata.CREATOR:
                     unmarshaller = EmailAddress.fromJson;
                     break;
@@ -153,7 +153,7 @@ export default class SpreadsheetMetadata {
                     unmarshaller = null; // TODO types not yet implemented
                     break;
                 default:
-                    if(key.startsWith("color-")) {
+                    if(key.startsWith("color-")){
                         break;
                     }
                     throw new Error("Unknown property \"" + key + "\"");
@@ -179,7 +179,7 @@ export default class SpreadsheetMetadata {
 
     getOrFail(property) {
         const value = this.get(property);
-        if(typeof value === "undefined") {
+        if(typeof value === "undefined"){
             throw new Error("Missing \"" + property + "\" " + this);
         }
         return value;
@@ -189,18 +189,18 @@ export default class SpreadsheetMetadata {
      * General purpose getter with support for checking
      */
     get(property) {
-        if (!property) {
+        if(!property){
             throw new Error("Missing property");
         }
-        if (typeof property !== "string") {
+        if(typeof property !== "string"){
             throw new Error("Expected string property but got " + property);
         }
 
         var value = this.properties[property];
 
-        if (typeof value === "undefined") {
+        if(typeof value === "undefined"){
             const defaults = this.properties[DEFAULTS];
-            if(defaults) {
+            if(defaults){
                 value = defaults.get(property);
             }
         }
@@ -212,17 +212,17 @@ export default class SpreadsheetMetadata {
      * Would be setter that returns a new SpreadsheetMetadata if the new value is different from the previous.
      */
     set(property, value) {
-        if (!property) {
+        if(!property){
             throw new Error("Missing property");
         }
-        if (!value) {
+        if(!value){
             throw new Error("Missing value");
         }
 
         let expectedClass;
         let expectedTypeOf;
 
-        switch (property) {
+        switch(property) {
             case SpreadsheetMetadata.CURRENCY_SYMBOL:
                 checkCurrencySymbol(value);
                 expectedTypeOf = "string";
@@ -278,16 +278,16 @@ export default class SpreadsheetMetadata {
             // case SpreadsheetMetadata.MODIFIED_BY:
             // case SpreadsheetMetadata.MODIFIED_DATE_TIME:
             default:
-                if (property.startsWith("color-")) {
+                if(property.startsWith("color-")){
                     break;
                 }
                 throw new Error("Unknown property \"" + property + "\"");
         }
-        if ((expectedTypeOf && typeof (value) !== expectedTypeOf)) {
+        if((expectedTypeOf && typeof (value) !== expectedTypeOf)){
             throw new Error("Expected " + expectedTypeOf + " property " + property + " with value " + value);
         }
-        if ((expectedClass === Number && Number.isNaN(value)) ||
-            (typeof value === "function" && !(value instanceof expectedClass))) {
+        if((expectedClass === Number && Number.isNaN(value)) ||
+            (typeof value === "function" && !(value instanceof expectedClass))){
             throw new Error("Expected " + expectedClass + " property " + property + " with value " + value);
         }
 
@@ -300,14 +300,14 @@ export default class SpreadsheetMetadata {
      * Would be remover that returns a new SpreadsheetMetadata if the removed value was already absent.
      */
     remove(property) {
-        if (!property) {
+        if(!property){
             throw new Error("Missing property");
         }
-        if (typeof property !== "string") {
+        if(typeof property !== "string"){
             throw new Error("Expected string property got " + property);
         }
 
-        switch (property) {
+        switch(property) {
             case SpreadsheetMetadata.EDIT_CELL:
             case SpreadsheetMetadata.EDIT_RANGE:
                 break;
@@ -346,12 +346,12 @@ export default class SpreadsheetMetadata {
             case SpreadsheetMetadata.WIDTH:
                 throw new Error("Property \"" + property + "\" cannot be removed, " + this);
             default:
-                if(property.startsWith("color-")) {
+                if(property.startsWith("color-")){
                     break;
                 }
                 throw new Error("Unknown property \"" + property + "\"");
         }
-        return (typeof this.get(property)==="undefined") ?
+        return (typeof this.get(property) === "undefined") ?
             this :
             copyAndRemove(this.properties, property);
     }
@@ -374,10 +374,10 @@ export default class SpreadsheetMetadata {
     }
 
     setDefaults(defaultSpreadsheetMetadata) {
-        if (!defaultSpreadsheetMetadata) {
+        if(!defaultSpreadsheetMetadata){
             throw new Error("Missing SpreadsheetMetadata");
         }
-        if (!(defaultSpreadsheetMetadata instanceof SpreadsheetMetadata)) {
+        if(!(defaultSpreadsheetMetadata instanceof SpreadsheetMetadata)){
             throw new Error("Expected SpreadsheetMetadata got " + defaultSpreadsheetMetadata);
         }
         return this.set(DEFAULTS, defaultSpreadsheetMetadata);
@@ -389,7 +389,7 @@ export default class SpreadsheetMetadata {
     toJson() {
         const json = {};
 
-        for (const [key, value] of Object.entries(this.properties)) {
+        for(const [key, value] of Object.entries(this.properties)) {
             json[key] = (value.toJson && value.toJson()) || value;
         }
 
@@ -412,12 +412,12 @@ function equals0(metadata, other) {
     var equals = false;
 
     const keys = Object.keys(metadata.properties);
-    if (keys.length === Object.keys(other.properties).length) {
+    if(keys.length === Object.keys(other.properties).length){
         equals = true;
 
-        for (const key of keys) {
+        for(const key of keys) {
             equals = Equality.safeEquals(metadata.get(key), other.get(key));
-            if (!equals) {
+            if(!equals){
                 break;
             }
         }
@@ -427,7 +427,7 @@ function equals0(metadata, other) {
 }
 
 function checkCurrencySymbol(currencySymbol) {
-    if(typeof currencySymbol !== "string") {
+    if(typeof currencySymbol !== "string"){
         throw new Error("Expected string currency got " + currencySymbol);
     }
 }

@@ -46,7 +46,9 @@ test("safeEquals equals true", () => {
 test("safeEquals equals implements equals false", () => {
     const right = 1;
     const left = {
-        equals: function() { return false},
+        equals: function() {
+            return false
+        },
     }
     expect(Equality.safeEquals(left, right)).toBeFalse();
 });
@@ -54,7 +56,7 @@ test("safeEquals equals implements equals false", () => {
 test("safeEquals equals implements equals true", () => {
     const right = 1;
     const left = {
-        equals: function () {
+        equals: function() {
             return true
         },
     }
@@ -109,7 +111,7 @@ test("safeEquals equals array same implement equals true", () => {
     const rightElement = 1;
 
     const left = [{
-        equals: function (e) {
+        equals: function(e) {
             return e === rightElement
         },
     }];

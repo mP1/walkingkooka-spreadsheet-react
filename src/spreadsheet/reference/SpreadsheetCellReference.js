@@ -6,19 +6,19 @@ import SpreadsheetReferenceKind from "./SpreadsheetReferenceKind";
 import SpreadsheetRowReference from "./SpreadsheetRowReference";
 
 function checkColumn(column) {
-    if (!column) {
+    if(!column){
         throw new Error("Missing column");
     }
-    if (!(column instanceof SpreadsheetColumnReference)) {
+    if(!(column instanceof SpreadsheetColumnReference)){
         throw new Error("Expected SpreadsheetColumnReference column got " + column);
     }
 }
 
 function checkRow(row) {
-    if (!row) {
+    if(!row){
         throw new Error("Missing row");
     }
-    if (!(row instanceof SpreadsheetRowReference)) {
+    if(!(row instanceof SpreadsheetRowReference)){
         throw new Error("Expected SpreadsheetRowReference row got " + row);
     }
 }
@@ -30,15 +30,15 @@ export default class SpreadsheetCellReference {
     }
 
     static parse(text) {
-        if (!text) {
+        if(!text){
             throw new Error("Missing text");
         }
-        if (typeof text !== "string") {
+        if(typeof text !== "string"){
             throw new Error("Expected string got " + text);
         }
 
-        for (var i = 1; i < text.length; i++) {
-            switch (text.charAt(i)) {
+        for(var i = 1; i < text.length; i++) {
+            switch(text.charAt(i)) {
                 case '$':
                 case '0':
                 case '1':

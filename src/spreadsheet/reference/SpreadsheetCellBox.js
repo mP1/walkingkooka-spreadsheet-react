@@ -8,7 +8,7 @@ import SpreadsheetViewport from "./SpreadsheetViewport.js";
 export default class SpreadsheetCellBox {
 
     static fromJson(json) {
-        if (!json) {
+        if(!json){
             throw new Error("Missing json");
         }
 
@@ -22,42 +22,42 @@ export default class SpreadsheetCellBox {
     }
 
     constructor(reference, x, y, width, height) {
-        if (!reference) {
+        if(!reference){
             throw new Error("Missing reference");
         }
-        if (!(reference instanceof SpreadsheetCellReference)) {
+        if(!(reference instanceof SpreadsheetCellReference)){
             throw new Error("Expected SpreadsheetCellReference reference got " + reference);
         }
         this.referenceValue = reference;
 
-        if (typeof (x) !== "number") {
+        if(typeof (x) !== "number"){
             throw new Error("Expected number x got " + x);
         }
-        if (x < 0) {
+        if(x < 0){
             throw new Error("Expected x >= 0 got " + x);
         }
         this.xValue = x;
 
-        if (typeof (y) !== "number") {
+        if(typeof (y) !== "number"){
             throw new Error("Expected number y got " + y);
         }
-        if (y < 0) {
+        if(y < 0){
             throw new Error("Expected y >= 0 got " + y);
         }
         this.yValue = y;
 
-        if (typeof (width) !== "number") {
+        if(typeof (width) !== "number"){
             throw new Error("Expected number width got " + width);
         }
-        if (width < 0) {
+        if(width < 0){
             throw new Error("Expected width >= 0 got " + width);
         }
         this.widthValue = width;
 
-        if (typeof (height) !== "number") {
+        if(typeof (height) !== "number"){
             throw new Error("Expected number height got " + height);
         }
-        if (height < 0) {
+        if(height < 0){
             throw new Error("Expected height >= 0 got " + height);
         }
         this.heightValue = height;

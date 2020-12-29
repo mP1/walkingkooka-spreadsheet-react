@@ -64,7 +64,7 @@ export default class SpreadsheetFormulaWidget extends React.Component {
         const reference = this.state.reference;
         const previous = prevState.reference;
 
-        if (reference && !reference.equals(previous)) {
+        if(reference && !reference.equals(previous)){
             giveFocus(widget, "formula getting focus, reference changed from " + previous + " to " + reference);
         }
     }
@@ -75,7 +75,7 @@ export default class SpreadsheetFormulaWidget extends React.Component {
      * ESCAPE reloads the initial formula, ENTER saves the cell with the current formula text.
      */
     onKeyDown(event) {
-        switch (event.key) {
+        switch(event.key) {
             case "Escape":
                 this.onEscapeKey(event);
                 break;
@@ -83,7 +83,7 @@ export default class SpreadsheetFormulaWidget extends React.Component {
                 this.onEnterKey(event);
                 break;
             default:
-                // nothing special to do for other keys
+            // nothing special to do for other keys
         }
     }
 
@@ -112,7 +112,7 @@ SpreadsheetFormulaWidget.propTypes = {
 }
 
 function giveFocus(widget, message) {
-    if (widget) {
+    if(widget){
         setTimeout(() => {
             console.log(message);
             widget.focus()

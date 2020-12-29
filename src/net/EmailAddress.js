@@ -9,13 +9,13 @@ export default class EmailAddress {
     }
 
     constructor(text) {
-        if (!text && text !== "") {
+        if(!text && text !== ""){
             throw new Error("Missing text");
         }
-        if (text === "") {
+        if(text === ""){
             throw new Error("Empty text");
         }
-        if (typeof text !== "string") {
+        if(typeof text !== "string"){
             throw new Error("Expected string got " + text);
         }
         this.textValue = text;

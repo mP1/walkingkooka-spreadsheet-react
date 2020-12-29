@@ -31,10 +31,10 @@ export default class SpreadsheetMessenger {
      * To enable offline mode pass the webworker, to make calls to a real server using fetch pass null.
      */
     setWebWorker(webworker) {
-        if(webworker) {
+        if(webworker){
             this.webworker = webworker;
             this.addMessagingSupport();
-        } else {
+        }else {
             this.removeMessagingSupport();
             this.webworker = webworker;
         }
@@ -49,28 +49,28 @@ export default class SpreadsheetMessenger {
     }
 
     send(url, parameters, response, error) {
-        if (!url) {
+        if(!url){
             throw new Error("Missing url");
         }
-        if (typeof url !== "string") {
+        if(typeof url !== "string"){
             throw new Error("Expected String url got " + url);
         }
-        if (!parameters) {
+        if(!parameters){
             throw new Error("Missing parameters");
         }
-        if (typeof parameters !== "object") {
+        if(typeof parameters !== "object"){
             throw new Error("Expected object parameters got " + parameters);
         }
-        if (!response) {
+        if(!response){
             throw new Error("Missing response");
         }
-        if (typeof response !== "function") {
+        if(typeof response !== "function"){
             throw new Error("Expected function response got " + response);
         }
-        if (!error) {
+        if(!error){
             throw new Error("Missing error");
         }
-        if (typeof error !== "function") {
+        if(typeof error !== "function"){
             throw new Error("Expected function error got " + error);
         }
         const transactionIdHeader = transactionId++;
@@ -87,9 +87,9 @@ export default class SpreadsheetMessenger {
                 headers: headers
             });
 
-        if (this.webworker) {
+        if(this.webworker){
             this.postMessage(url, parametersWithDefaults, transactionIdHeader, response, error);
-        } else {
+        }else {
             this.browserFetch(url, parametersWithDefaults, response, error);
         }
     }
@@ -125,13 +125,13 @@ export default class SpreadsheetMessenger {
                 .then(response => {
                     const statusCode = response.status;
                     const statusText = response.statusText;
-                    switch (Math.floor(statusCode / 100)) {
+                    switch(Math.floor(statusCode / 100)) {
                         case 1:
                             throw new Error("1xx " + statusCode + "=" + statusText);
                         case 2:
-                            if(204 === statusCode) {
+                            if(204 === statusCode){
                                 const components = statusText.split(" ");
-                                if(components.length < 3) {
+                                if(components.length < 3){
                                     throw new Error(statusCode + "=" + statusText);
                                 }
                                 // eslint-disable-next-line no-unused-vars
@@ -170,16 +170,16 @@ export default class SpreadsheetMessenger {
         const body = response.data;
 
         const transactionId = response.headers.get(TRANSACTION_ID_HEADER);
-        if(transactionId) {
+        if(transactionId){
             const handlers = this.transactionIdToHandlers[transactionId];
-            if(handlers) {
+            if(handlers){
                 delete this.transactionIdToHandlers[transactionId];
 
                 handlers.response(body);
-            } else {
+            }else {
                 error("missing handler for " + TRANSACTION_ID_HEADER + "e\n" + JSON.stringify(response));
             }
-        } else {
+        }else {
             error("response missing " + TRANSACTION_ID_HEADER + "e\n" + JSON.stringify(response));
         }
     }

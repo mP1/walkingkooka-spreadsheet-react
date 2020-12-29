@@ -92,10 +92,10 @@ class App extends React.Component {
 
         var message;
         const hash = [spreadsheetId, spreadsheetName];
-        if (mode) {
+        if(mode){
             hash.push("name", "edit");
             message = "History hash updated, begin edit spreadsheet name";
-        } else {
+        }else {
             message = "History hash updated, stop edit spreadsheet name";
         }
 
@@ -110,7 +110,7 @@ class App extends React.Component {
         widget && widget.edit(mode);
 
         // stop editing cell if an edit was happening.
-        if(mode) {
+        if(mode){
             this.editCell();
         }
     }
@@ -124,7 +124,7 @@ class App extends React.Component {
         const pathname = location.pathname;
         const historyLocation = this.history.location;
         const currentPathname = historyLocation.pathname;
-        if (currentPathname !== pathname) {
+        if(currentPathname !== pathname){
             console.log("onHistoryChange from " + currentPathname + " to " + pathname, historyLocation);
 
             this.historyHashVerify(pathname);
@@ -144,20 +144,20 @@ class App extends React.Component {
      */
     historyHashVerify(pathname) {
         // wait until sizes are known then check hash against state.
-        if (this.mounted) {
+        if(this.mounted){
             const state = this.state;
             const metadata = state.spreadsheetMetadata;
             const createEmptySpreadsheet = state.createEmptySpreadsheet;
 
             console.log("historyHashVerify " + pathname);
 
-            if (!createEmptySpreadsheet) {
+            if(!createEmptySpreadsheet){
                 const historyHashTokens = HistoryHash.tokenize(pathname);
                 const spreadsheetId = historyHashTokens.shift();
-                if (this.historySpreadsheetIdCreateEmptyOrLoadOrNothing(spreadsheetId, metadata)) {
+                if(this.historySpreadsheetIdCreateEmptyOrLoadOrNothing(spreadsheetId, metadata)){
 
                     const spreadsheetName = historyHashTokens.shift();
-                    if (this.historySpreadsheetNameDifferentUpdateHistory(spreadsheetId, spreadsheetName, metadata)) {
+                    if(this.historySpreadsheetNameDifferentUpdateHistory(spreadsheetId, spreadsheetName, metadata)){
 
                         var verifiedHistoryHashTokens = [spreadsheetId, spreadsheetName];
                         var valid = true;
@@ -166,15 +166,15 @@ class App extends React.Component {
                         var closeDrawer = true;
                         const duplicate = [];
 
-                        while (valid && historyHashTokens.length > 0) {
+                        while(valid && historyHashTokens.length > 0) {
                             const target = historyHashTokens.shift();
-                            if (duplicate.includes(target)) {
+                            if(duplicate.includes(target)){
                                 valid = this.historyUnknownTarget(metadata); // returns false, which will stop editcell, edit name and close drawer
                                 break;
                             }
                             duplicate.push(target);
 
-                            switch (target) {
+                            switch(target) {
                                 case "":
                                     this.settingsAndToolsDrawerOpen(true);
                                     verifiedHistoryHashTokens.push("");
@@ -183,7 +183,7 @@ class App extends React.Component {
                                     break;
                                 case "cell":
                                     // cell after name is a fail
-                                    if (name) {
+                                    if(name){
                                         valid = this.historyUnknownTarget(metadata); // returns false, which will stop editcell, edit name and close drawer
                                         break;
                                     }
@@ -191,13 +191,13 @@ class App extends React.Component {
                                     const cellReference = historyHashTokens.shift();
                                     const action = historyHashTokens.shift();
                                     valid = this.historyCellAction(cellReference, action, metadata);
-                                    if(valid) {
+                                    if(valid){
                                         verifiedHistoryHashTokens.push(target, cellReference, action);
                                     }
                                     break;
                                 case "name":
                                     // name after cell is a fail.
-                                    if (cell) {
+                                    if(cell){
                                         valid = this.historyUnknownTarget(metadata); // returns false, which will stop editcell, edit name and close drawer
                                         break;
                                     }
@@ -209,21 +209,21 @@ class App extends React.Component {
                             }
                         }
 
-                        if (!cell || !valid) {
+                        if(!cell || !valid){
                             this.editCell(); // clear any edit cell
-                            if(metadata.get(SpreadsheetMetadata.EDIT_CELL)) {
+                            if(metadata.get(SpreadsheetMetadata.EDIT_CELL)){
                                 this.setState({
                                     spreadsheetMetadata: metadata.remove(SpreadsheetMetadata.EDIT_CELL),
                                 });
                             }
                         }
-                        if (!name || !valid) {
+                        if(!name || !valid){
                             this.editSpreadsheetName();
                         }
-                        if (!valid || closeDrawer) {
+                        if(!valid || closeDrawer){
                             this.settingsAndToolsDrawerOpen(false, metadata);
                         }
-                        if (valid) {
+                        if(valid){
                             this.historyPush(verifiedHistoryHashTokens, "Verified history hash", pathname);
                         }
                     }
@@ -241,18 +241,18 @@ class App extends React.Component {
         const previous = metadata.get(SpreadsheetMetadata.SPREADSHEET_ID);
         const same = Equality.safeEquals(spreadsheetId, previous);
 
-        if(same) {
-            if(!previous) {
+        if(same){
+            if(!previous){
                 console.log("history hash spreadsheetId missing creating initial empty spreadsheet");
                 this.createEmptySpreadsheet();
             }
-        } else {
+        }else {
             console.log("history hash spreadsheetId changed from " + previous + " to " + spreadsheetId);
 
             // load the spreadsheet with $spreadsheetId or create a new spreadsheet if missing.
-            if(spreadsheetId) {
+            if(spreadsheetId){
                 this.loadSpreadsheetMetadata(spreadsheetId);
-            } else {
+            }else {
                 this.createEmptySpreadsheet();
             }
         }
@@ -267,12 +267,12 @@ class App extends React.Component {
         var hashSpreadsheetName;
         try {
             hashSpreadsheetName = new SpreadsheetName(hashName);
-        } catch (invalidName) {
+        } catch(invalidName) {
         }
 
         const metadataSpreadsheetName = metadata.get(SpreadsheetMetadata.SPREADSHEET_NAME);
         const same = Equality.safeEquals(hashSpreadsheetName, metadataSpreadsheetName);
-        if (!same) {
+        if(!same){
             // update url to match actual SpreadsheetMetadata.spreadsheetName
             this.historyPush([spreadsheetId, metadataSpreadsheetName],
                 "Updating from " + hashName + " to match state " + metadataSpreadsheetName);
@@ -287,16 +287,16 @@ class App extends React.Component {
     historyCellAction(cellReference, action, metadata) {
         var clearHistoryCellAction = true; // only leave if both are valid.
 
-        if (cellReference && action) {
+        if(cellReference && action){
             // cellReference and action present validate the combination.
             try {
                 const hashSpreadsheetCellReference = SpreadsheetCellReference.parse(cellReference);
 
-                switch (action) {
+                switch(action) {
                     case FORMULA_EDIT_HASH:
                         // state does not match hash, update state.
                         const metadataEditCell = metadata.get(SpreadsheetMetadata.EDIT_CELL);
-                        if (!Equality.safeEquals(cellReference, metadataEditCell)) {
+                        if(!Equality.safeEquals(cellReference, metadataEditCell)){
                             this.setState({
                                 spreadsheetMetadata: metadata.set(SpreadsheetMetadata.EDIT_CELL, hashSpreadsheetCellReference),
                             });
@@ -308,11 +308,11 @@ class App extends React.Component {
                         clearHistoryCellAction = true;
                         break;
                 }
-            } catch (invalidCellReference) {
+            } catch(invalidCellReference) {
             }
         }
 
-        if (clearHistoryCellAction) {
+        if(clearHistoryCellAction){
             this.historyPush(
                 [
                     metadata.get(SpreadsheetMetadata.SPREADSHEET_ID),
@@ -330,7 +330,7 @@ class App extends React.Component {
     historySpreadsheetNameAction(action) {
         var pass;
 
-        switch (action) {
+        switch(action) {
             case "edit":
                 this.editSpreadsheetName(true);
                 pass = true;
@@ -355,19 +355,19 @@ class App extends React.Component {
      * If the location is new log the message and push the history token.
      */
     historyPush(tokens, message, ...messageParameters) {
-        if (!message) {
+        if(!message){
             throw new Error("Missing message");
         }
-        if (typeof message !== "string") {
+        if(typeof message !== "string"){
             throw new Error("Expected String message got " + message);
         }
 
         const history = this.history;
         const pathname = HistoryHash.join(tokens);
-        if (history.location.pathname !== pathname) {
+        if(history.location.pathname !== pathname){
             console.log("History push \"" + pathname + "\": " + message, ...messageParameters);
             this.history.push(pathname);
-        } else {
+        }else {
             console.log("History push unchanged \"" + history.location.pathname + "\" new \"" + pathname + "\"");
         }
     }
@@ -402,16 +402,16 @@ class App extends React.Component {
         this.onSpreadsheetDrawer(hash);
 
         // special case restore /name/edit if spreadsheet name is being edited.
-        if(hash.length >= 2) {
+        if(hash.length >= 2){
             const spreadsheetNameWidget = this.spreadsheetName.current;
-            if(spreadsheetNameWidget && spreadsheetNameWidget.isEdit()) {
+            if(spreadsheetNameWidget && spreadsheetNameWidget.isEdit()){
                 hash.length = 2;
                 hash.push("name", "edit");
             }
         }
 
         const open = state.settingsAndToolsDrawer;
-        if(open) {
+        if(open){
             hash.push(""); // append !
         }
         const settingsAndToolsDrawer = this.settingsAndToolsDrawer.current;
@@ -427,7 +427,7 @@ class App extends React.Component {
         const previous = prevState.spreadsheetMetadata.get(SpreadsheetMetadata.SPREADSHEET_ID);
         const current = this.state.spreadsheetMetadata.get(SpreadsheetMetadata.SPREADSHEET_ID);
 
-        if (!Equality.safeEquals(current, previous)) {
+        if(!Equality.safeEquals(current, previous)){
             console.log("spreadsheetId changed from " + previous + " to " + current + " clearing state cell, columnWidths, rowHeight (caches)");
             this.setState({
                 createEmptySpreadsheet: false,
@@ -448,14 +448,14 @@ class App extends React.Component {
         const widget = this.spreadsheetName.current;
         const name = metadata.get(SpreadsheetMetadata.SPREADSHEET_NAME);
 
-        if (widget && !Equality.safeEquals(name, widget.state.value)) {
+        if(widget && !Equality.safeEquals(name, widget.state.value)){
             console.log("onSpreadsheetMetadataSpreadsheetName updated from " + widget.state.value + " to " + name);
 
             widget.setState({
                 value: name,
             });
             document.title = name.toString();
-        } else {
+        }else {
             console.log("onSpreadsheetMetadataSpreadsheetName widget not updated", "widget", widget.current, "name: " + name);
         }
 
@@ -476,7 +476,7 @@ class App extends React.Component {
 
         const viewport = this.viewport.current;
 
-        if (viewportCell && viewportCoordinates && windowDimensions && aboveViewportDimensions && viewport) {
+        if(viewportCell && viewportCoordinates && windowDimensions && aboveViewportDimensions && viewport){
             viewport.setState({
                 home: viewportCell,
                 cells: state.cells,
@@ -489,7 +489,7 @@ class App extends React.Component {
             const width = windowDimensions.width;
             const height = windowDimensions.height - aboveViewportDimensions.height;
 
-            if (previous.width !== width || previous.height !== height) {
+            if(previous.width !== width || previous.height !== height){
                 viewport.setState({
                     dimensions: {
                         width: width,
@@ -500,7 +500,7 @@ class App extends React.Component {
                 const previousMetadata = prevState.spreadsheetMetadata;
                 const previousViewportCell = previousMetadata && previousMetadata.get(SpreadsheetMetadata.VIEWPORT_CELL);
 
-                if ((width > previous.width || height > previous.height) && (viewportCell.equals(previousViewportCell) || !previousViewportCell)) {
+                if((width > previous.width || height > previous.height) && (viewportCell.equals(previousViewportCell) || !previousViewportCell)){
                     this.onCellBoxViewportRangeUpdate(
                         new SpreadsheetCellBox(viewportCell,
                             viewportCoordinates.x(),
@@ -523,7 +523,7 @@ class App extends React.Component {
 
         console.log("onSpreadsheetFormula", "formula", formula.current, "metadata", metadata);
 
-        if (formula) {
+        if(formula){
             const width = this.appBarWidth();
             this.formulaContainer.current.setState({
                 style: {
@@ -534,7 +534,7 @@ class App extends React.Component {
                 }
             });
 
-            if (reference) {
+            if(reference){
                 const cell = this.getCellOrEmpty(reference);
                 formula.setValue = this.cellToFormulaTextSetter(cell);
 
@@ -545,7 +545,7 @@ class App extends React.Component {
                     value: formulaText,
                     reference: reference,
                 });
-            } else {
+            }else {
                 formula.setState({
                     value: null,
                     reference: null,
@@ -553,7 +553,7 @@ class App extends React.Component {
             }
         }
 
-        if (reference) {
+        if(reference){
             hash[2] = "cell";
             hash[3] = reference;
             hash[4] = FORMULA_EDIT_HASH;
@@ -636,9 +636,9 @@ class App extends React.Component {
     saveSpreadsheetCell(cell) {
         const reference = cell.reference();
 
-        if (cell.equals(this.state.cells.get(reference))) {
+        if(cell.equals(this.state.cells.get(reference))){
             console.log("saveSpreadsheetCell cell unchanged save skipped", cell);
-        } else {
+        }else {
             console.log("saveSpreadsheetCell", cell);
 
             this.messenger.send(this.spreadsheetCellApiUrl(cell.reference()),
@@ -685,18 +685,18 @@ class App extends React.Component {
         const metadata = this.spreadsheetMetadata();
         const metadataEditCell = metadata.get(SpreadsheetMetadata.EDIT_CELL);
 
-        if (Equality.safeEquals(reference, metadataEditCell)) {
-            if (reference) {
+        if(Equality.safeEquals(reference, metadataEditCell)){
+            if(reference){
                 // focus cell again
                 const formula = this.formula.current;
                 formula && formula.focus();
             }
-        } else {
+        }else {
             this.saveSpreadsheetMetadata(reference ?
                 metadata.set(SpreadsheetMetadata.EDIT_CELL, reference) :
                 metadata.remove(SpreadsheetMetadata.EDIT_CELL));
 
-            if(reference) {
+            if(reference){
                 this.editSpreadsheetName(); // stop editing spreadsheet name
             }
         }
@@ -717,7 +717,7 @@ class App extends React.Component {
     cellToFormulaTextSetter(cell) {
         var setter;
 
-        if (cell) {
+        if(cell){
             const formula = cell.formula();
             setter = (text) => this.saveSpreadsheetCell(cell.setFormula(formula.setText(text)));
         }
@@ -766,7 +766,7 @@ class App extends React.Component {
      */
     onSpreadsheetDrawer(hash) {
         const widget = this.settingsAndToolsDrawer.current;
-        if (widget) {
+        if(widget){
             const state = this.state;
             widget.setState({
                 spreadsheetMetadata: state.spreadsheetMetadata,
@@ -808,7 +808,7 @@ class App extends React.Component {
                                 key={{windowDimensions: state.windowDimensions}}
                                 dimensions={this.onAboveViewportResize.bind(this)}
                                 className={classes.header}
-                    >
+                >
                     <SpreadsheetAppBar menuClickListener={this.settingsAndToolsDrawerToggleAndUpdateHistory.bind(this)}>
                         <SpreadsheetNameWidget ref={this.spreadsheetName}
                                                key={spreadsheetName}
@@ -820,11 +820,11 @@ class App extends React.Component {
                     <SpreadsheetContainerWidget
                         ref={this.formulaContainer}
                         style={{
-                        margin: 0,
-                        border: 0,
-                        padding: 0,
-                        width: appBarWidth + "px",
-                    }}>
+                            margin: 0,
+                            border: 0,
+                            padding: 0,
+                            width: appBarWidth + "px",
+                        }}>
                         <SpreadsheetFormulaWidget ref={this.formula}
                                                   key={[editCellReference, formulaText]}
                                                   reference={editCellReference}
@@ -834,16 +834,17 @@ class App extends React.Component {
                     </SpreadsheetContainerWidget>
                     <Divider/>
                 </SpreadsheetBox>
-                <SpreadsheetViewportWidget key={[viewportDimensions, cells, columnWidths, rowHeights, style, viewportCell, editCell]}
-                                           ref={this.viewport}
-                                           dimensions={viewportDimensions}
-                                           cells={cells}
-                                           columnWidths={columnWidths}
-                                           rowHeights={rowHeights}
-                                           defaultStyle={style}
-                                           home={viewportCell}
-                                           editCell={editCell}
-                                           editCellSetter={this.editCell.bind(this)}
+                <SpreadsheetViewportWidget
+                    key={[viewportDimensions, cells, columnWidths, rowHeights, style, viewportCell, editCell]}
+                    ref={this.viewport}
+                    dimensions={viewportDimensions}
+                    cells={cells}
+                    columnWidths={columnWidths}
+                    rowHeights={rowHeights}
+                    defaultStyle={style}
+                    home={viewportCell}
+                    editCell={editCell}
+                    editCellSetter={this.editCell.bind(this)}
                 />
                 <SpreadsheetDrawerWidget ref={this.settingsAndToolsDrawer}
                                          open={settingsAndToolsDrawer}
@@ -890,7 +891,7 @@ class App extends React.Component {
         const aboveViewportDimensions = state.aboveViewportDimensions;
 
         return aboveViewportDimensions ?
-            (aboveViewportDimensions.width -  (state.settingsAndToolsDrawer ? DRAWER_WIDTH : 0)) + "px" :
+            (aboveViewportDimensions.width - (state.settingsAndToolsDrawer ? DRAWER_WIDTH : 0)) + "px" :
             "";
     }
 
@@ -920,10 +921,10 @@ class App extends React.Component {
      */
     spreadsheetMetadataApiUrl(spreadsheetId) {
         const id = spreadsheetId || this.spreadsheetMetadata().get(SpreadsheetMetadata.SPREADSHEET_ID);
-        if (!id) {
+        if(!id){
             throw new Error("Missing spreadsheetId parameter and current SpreadsheetMetadata.spreadsheetId");
         }
-        if (typeof id !== "string") {
+        if(typeof id !== "string"){
             throw new Error("Expected string spreadsheetId got " + id);
         }
         return "/api/spreadsheet/" + id;
@@ -954,9 +955,9 @@ class App extends React.Component {
      * If the new metadata is different call the save service otherwise skip.
      */
     saveSpreadsheetMetadata(metadata) {
-        if (metadata.equals(this.spreadsheetMetadata())) {
+        if(metadata.equals(this.spreadsheetMetadata())){
             console.log("saveSpreadsheetMetadata unchanged, save skipped", metadata);
-        } else {
+        }else {
             console.log("saveSpreadsheetMetadata", metadata);
 
             this.messenger.send(

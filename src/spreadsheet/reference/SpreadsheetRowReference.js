@@ -10,32 +10,32 @@ export default class SpreadsheetRowReference extends SpreadsheetColumnOrRowRefer
     }
 
     static parse(text) {
-        if (!text) {
+        if(!text){
             throw new Error("Missing text");
         }
-        if (typeof text !== "string") {
+        if(typeof text !== "string"){
             throw new Error("Expected string got " + text);
         }
 
         let kind;
         let startIndex;
 
-        if (text.startsWith("$")) {
+        if(text.startsWith("$")){
             kind = SpreadsheetReferenceKind.ABSOLUTE;
             startIndex = 1;
-        } else {
+        }else {
             kind = SpreadsheetReferenceKind.RELATIVE;
             startIndex = 0;
         }
         const value = Number(text.substring(startIndex));
-        if (!value) {
+        if(!value){
             throw new Error("Missing row got " + text);
         }
-        if (value > SpreadsheetRowReference.MAX) {
+        if(value > SpreadsheetRowReference.MAX){
             throw new Error("Invalid value > " + SpreadsheetRowReference.MAX + " got " + value);
         }
 
-        return new SpreadsheetRowReference(value -1, kind);
+        return new SpreadsheetRowReference(value - 1, kind);
     }
 
     // eslint-disable-next-line no-useless-constructor
@@ -48,6 +48,6 @@ export default class SpreadsheetRowReference extends SpreadsheetColumnOrRowRefer
     }
 
     toString() {
-        return this.kind().prefix() + (1+this.value());
+        return this.kind().prefix() + (1 + this.value());
     }
 }
