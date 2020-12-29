@@ -123,41 +123,6 @@ test("from json all properties", () => {
     });
 });
 
-// setSpreadsheetName...................................................................................................
-
-test("setSpreadsheetName same", () => {
-    const name = new SpreadsheetName("old-spreadsheet-name-111");
-    const json = {"spreadsheet-name": name.toJson()};
-
-    const metadata = SpreadsheetMetadata.fromJson(json);
-    const same = metadata.set(SpreadsheetMetadata.SPREADSHEET_NAME, name);
-    expect(metadata).toEqual(same);
-
-    checkJson(metadata, json);
-    checkSpreadsheetName(metadata, name);
-})
-
-test("setSpreadsheetName different name", () => {
-    const id = "123f";
-    const name = new SpreadsheetName("old-spreadsheet-name-111");
-    const json = {"spreadsheet-name": name.toJson(), "spreadsheet-id": id};
-
-    const metadata = SpreadsheetMetadata.fromJson(json);
-
-    const newName = new SpreadsheetName("new-spreadsheet-name-222");
-    const updated = metadata.set(SpreadsheetMetadata.SPREADSHEET_NAME, newName);
-    expect(metadata == updated).toBeFalsy();
-
-    checkSpreadsheetId(updated, id);
-    checkSpreadsheetName(updated, newName);
-    checkJson(updated, {"spreadsheet-name": newName.toJson(), "spreadsheet-id": id});
-
-    // original should be unmodified
-    checkJson(metadata, json);
-    checkSpreadsheetId(metadata, id);
-    checkSpreadsheetName(metadata, name);
-})
-
 // get..................................................................................................................
 
 test("get property present without defaults", () => {
