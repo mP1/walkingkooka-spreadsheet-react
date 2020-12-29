@@ -225,6 +225,12 @@ export default class SpreadsheetMetadata {
         let expectedTypeOf;
 
         switch(property) {
+            case SpreadsheetMetadata.CREATE_DATE_TIME:
+                setFails(property);
+                break;
+            case SpreadsheetMetadata.CREATOR:
+                setFails(property);
+                break;
             case SpreadsheetMetadata.CURRENCY_SYMBOL:
                 checkCurrencySymbol(value);
                 expectedTypeOf = "string";
@@ -238,8 +244,14 @@ export default class SpreadsheetMetadata {
             case SpreadsheetMetadata.EDIT_CELL:
                 expectedClass = SpreadsheetCellReference;
                 break;
+            case SpreadsheetMetadata.MODIFIED_DATE_TIME:
+                setFails(property);
+                break;
+            case SpreadsheetMetadata.MODIFIED_BY:
+                setFails(property);
+                break;
             case SpreadsheetMetadata.SPREADSHEET_ID:
-                expectedTypeOf = "string";
+                setFails(property);
                 break;
             case SpreadsheetMetadata.SPREADSHEET_NAME:
                 expectedClass = SpreadsheetName;
@@ -277,10 +289,6 @@ export default class SpreadsheetMetadata {
             case SpreadsheetMetadata.WIDTH:
                 expectedClass = null; // TODO properties not yet supported
                 break;
-            // case SpreadsheetMetadata.CREATOR: not writable
-            // case SpreadsheetMetadata.CREATE_DATE_TIME:
-            // case SpreadsheetMetadata.MODIFIED_BY:
-            // case SpreadsheetMetadata.MODIFIED_DATE_TIME:
             default:
                 if(property.startsWith("color-")){
                     break;
@@ -434,4 +442,8 @@ function checkCurrencySymbol(currencySymbol) {
     if(typeof currencySymbol !== "string"){
         throw new Error("Expected string currency got " + currencySymbol);
     }
+}
+
+function setFails(propertyName) {
+    throw new Error("set \"" + propertyName + "\" is not allowed");
 }

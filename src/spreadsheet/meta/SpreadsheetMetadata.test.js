@@ -158,10 +158,6 @@ test("set value null fail", () => {
 })
 
 test("set invalid value fail", () => {
-    expect(() => SpreadsheetMetadata.EMPTY.set("spreadsheet-id", 123)).toThrow("Expected string property spreadsheet-id got 123");
-});
-
-test("set invalid value fail", () => {
     expect(() => SpreadsheetMetadata.EMPTY.set(SpreadsheetMetadata.DATE_FORMAT_PATTERN, 123)).toThrow("Expected SpreadsheetPattern property date-format-pattern got 123");
 });
 
@@ -208,13 +204,6 @@ test("set property different", () => {
             "spreadsheet-name": propertyValue2.toJson()
         });
 })
-
-test("set spreadsheet-id", () => {
-    const metadata = SpreadsheetMetadata.EMPTY.set("spreadsheet-id", "123");
-    checkJson(metadata, {
-        "spreadsheet-id": "123",
-    });
-});
 
 // remove...............................................................................................................
 
@@ -267,252 +256,117 @@ test("remove property #2", () => {
     expect(withSpreadsheetName).toEqual(removed);
 });
 
-// creator.............................................................................................................
+// properties...........................................................................................................
 
-test("get creator missing", () => {
-    expect(SpreadsheetMetadata.EMPTY.get(SpreadsheetMetadata.CREATOR))
-        .toBeUndefined();
-});
+getPropertyTest(SpreadsheetMetadata.CREATE_DATE_TIME, LocalDateTime.fromJson("1999-12-31 12:58:59"));
 
-test("get creator", () => {
-    expect(SpreadsheetMetadata.fromJson({
-        "creator": "creator@example.com"
-    }).get(SpreadsheetMetadata.CREATOR))
-        .toEqual(EmailAddress.fromJson("creator@example.com"));
-});
+getPropertyTest(SpreadsheetMetadata.CREATOR, EmailAddress.fromJson("creator@example.com"));
 
-test("remove creator fails", removeUnsupportedFails(SpreadsheetMetadata.CREATOR));
+getSetPropertyTest(SpreadsheetMetadata.CURRENCY_SYMBOL, "AUD");
 
-// create-date-time.............................................................................................................
+getSetPropertyTest(SpreadsheetMetadata.DATE_FORMAT_PATTERN, SpreadsheetPattern.fromJson("YYYY-MM-DD"));
 
-test("get create-date-time missing", () => {
-    expect(SpreadsheetMetadata.EMPTY
-        .get(SpreadsheetMetadata.CREATE_DATE_TIME)
-    ).toBeUndefined();
-});
+getSetRemovePropertyTest(SpreadsheetMetadata.EDIT_CELL, SpreadsheetCellReference.parse("B97"));
 
-test("get create-date-time", () => {
-    expect(SpreadsheetMetadata.fromJson({
-            "create-date-time": "1999-12-31 12:58:59"
+getPropertyTest(SpreadsheetMetadata.MODIFIED_BY, EmailAddress.fromJson("creator@example.com"));
+
+getPropertyTest(SpreadsheetMetadata.MODIFIED_DATE_TIME, LocalDateTime.fromJson("1999-12-31 12:58:59"));
+
+getPropertyTest(SpreadsheetMetadata.SPREADSHEET_ID, "123");
+
+getSetPropertyTest(SpreadsheetMetadata.SPREADSHEET_NAME, SpreadsheetName.fromJson("spreadsheet-name-123"));
+
+getSetPropertyTest(SpreadsheetMetadata.STYLE, TextStyle.EMPTY.set("width", "50px"));
+
+getSetPropertyTest(SpreadsheetMetadata.VIEWPORT_CELL, SpreadsheetCellReference.parse("B2"));
+
+getSetPropertyTest(SpreadsheetMetadata.VIEWPORT_COORDINATES, SpreadsheetCoordinates.parse("123.5,400"));
+
+function getPropertyTest(propertyName, propertyValue) {
+    getPropertyTest0(propertyName, propertyValue);
+
+    test("set " + propertyName + " fails",
+        () => {
+            expect(() => SpreadsheetMetadata.EMPTY.set(propertyName, propertyValue))
+                .toThrow("set \"" + propertyName + "\" is not allowed");
         }
-        ).get(SpreadsheetMetadata.CREATE_DATE_TIME)
-    ).toEqual(LocalDateTime.fromJson("1999-12-31 12:58:59"));
-});
+    );
 
-test("remove create-date-time fails", removeUnsupportedFails(SpreadsheetMetadata.CREATE_DATE_TIME));
+    removePropertyFailsTest(propertyName);
+}
 
-// currency-symbol......................................................................................................
+function getSetPropertyTest(propertyName, propertyValue) {
+    getPropertyTest0(propertyName, propertyValue);
+    setPropertyTest(propertyName, propertyValue);
+    removePropertyFailsTest(propertyName);
+}
 
-test("get currency-symbol missing", () => {
-    expect(SpreadsheetMetadata.EMPTY
-        .get(SpreadsheetMetadata.CURRENCY_SYMBOL))
-        .toBeUndefined();
-});
+function getSetRemovePropertyTest(propertyName, propertyValue) {
+    getPropertyTest0(propertyName, propertyValue);
+    setPropertyTest(propertyName, propertyValue);
 
-test("get currency-symbol", () => {
-    expect(SpreadsheetMetadata.fromJson({
-            "currency-symbol": "AUD"
-        }).get(SpreadsheetMetadata.CURRENCY_SYMBOL)
-    ).toEqual("AUD");
-});
+    test("remove " + propertyName,
+        () => {
+            const json = {};
+            json[propertyName] = (propertyValue.toJson && propertyValue.toJson()) || propertyValue;
 
-test("set currency-symbol", () => {
-    const currencySymbol = "AUD";
-    checkJson(SpreadsheetMetadata.EMPTY
-            .set(SpreadsheetMetadata.CURRENCY_SYMBOL, currencySymbol),
-        {
-            "currency-symbol": currencySymbol,
-        });
-});
-
-test("remove currency-symbol fails", removeUnsupportedFails(SpreadsheetMetadata.CURRENCY_SYMBOL));
-
-// date-format-pattern......................................................................................................
-
-test("get date-format-pattern missing", () => {
-    expect(SpreadsheetMetadata.EMPTY
-        .get(SpreadsheetMetadata.DATE_FORMAT_PATTERN))
-        .toBeUndefined();
-});
-
-test("get date-format-pattern", () => {
-    const dateFormatPattern = "ddmmyyyy";
-    expect(SpreadsheetMetadata.fromJson({
-            "date-format-pattern": dateFormatPattern
-        }).get(SpreadsheetMetadata.DATE_FORMAT_PATTERN)
-    ).toEqual(SpreadsheetPattern.fromJson(dateFormatPattern));
-});
-
-test("set date-format-pattern", () => {
-    const dateFormatPattern = "ddmmyyyy";
-    checkJson(SpreadsheetMetadata.EMPTY
-            .set(SpreadsheetMetadata.DATE_FORMAT_PATTERN, SpreadsheetPattern.fromJson(dateFormatPattern)),
-        {
-            "date-format-pattern": dateFormatPattern,
-        });
-});
-
-test("remove date-format-pattern fails", removeUnsupportedFails(SpreadsheetMetadata.DATE_FORMAT_PATTERN));
-
-// edit-cell............................................................................................................
-
-test("get edit-cell missing", () => {
-    expect(SpreadsheetMetadata.EMPTY
-        .get(SpreadsheetMetadata.EDIT_CELL)
-    ).toBeUndefined();
-});
-
-test("get edit-cell", () => {
-    expect(SpreadsheetMetadata.fromJson({
-            "edit-cell": "B97"
+            expect(SpreadsheetMetadata.fromJson(json)
+                .remove(propertyName)
+            ).toEqual(SpreadsheetMetadata.EMPTY);
         }
-        ).get(SpreadsheetMetadata.EDIT_CELL)
-    ).toEqual(SpreadsheetCellReference.parse("B97"));
-});
+    );
+}
 
-test("set edit-cell", () => {
-    checkJson(SpreadsheetMetadata.EMPTY
-            .set(SpreadsheetMetadata.EDIT_CELL,
-                SpreadsheetCellReference.parse("B98")),
-        {
-            "edit-cell": "B98"
-        });
-});
+function getPropertyTest0(propertyName, propertyValue) {
+    test("get " + propertyName + " missing", () => {
+        expect(SpreadsheetMetadata.EMPTY
+            .get(propertyName))
+            .toBeUndefined();
+    });
 
-// modified.............................................................................................................
+    test("get " + propertyName, () => {
+        const json = {};
+        json[propertyName] = (propertyValue.toJson && propertyValue.toJson()) || propertyValue;
 
-test("get modified-by missing", () => {
-    expect(SpreadsheetMetadata.EMPTY
-        .get(SpreadsheetMetadata.MODIFIED_BY)
-    ).toBeUndefined();
-});
+        expect(SpreadsheetMetadata.fromJson(json)
+            .get(propertyName)
+        ).toEqual(propertyValue);
+    });
+};
 
-test("get modified-by", () => {
-    expect(SpreadsheetMetadata.fromJson({
-            "modified-by": "modified-by@example.com"
+function setPropertyTest(propertyName, propertyValue) {
+    test("set " + propertyName + " missing", () => {
+        expect(SpreadsheetMetadata.EMPTY
+            .get(propertyName))
+            .toBeUndefined();
+    });
+
+    test("set " + propertyName, () => {
+        const metadata = SpreadsheetMetadata.EMPTY
+            .set(propertyName, propertyValue);
+
+        const json = {};
+        json[propertyName] = (propertyValue.toJson && propertyValue.toJson()) || propertyValue;
+
+        expect(SpreadsheetMetadata.fromJson(json)
+            .get(propertyName)
+        ).toEqual(propertyValue);
+
+        expect(metadata.toJson()).toEqual(json);
+    });
+};
+
+function removePropertyFailsTest(propertyName) {
+    test("remove " + propertyName,
+        () => {
+            expect(() => SpreadsheetMetadata.EMPTY
+                .remove(propertyName))
+                .toThrow("Property \"" + propertyName + "\" cannot be removed, {}")
         }
-        ).get(SpreadsheetMetadata.MODIFIED_BY)
-    ).toEqual(EmailAddress.fromJson("modified-by@example.com"));
-});
+    );
+}
 
-test("remove modified-by fails", removeUnsupportedFails(SpreadsheetMetadata.MODIFIED_BY));
-
-// modified-date-time.............................................................................................................
-
-test("get modified-date-time missing", () => {
-    expect(SpreadsheetMetadata.EMPTY
-        .get(SpreadsheetMetadata.MODIFIED_DATE_TIME)
-    ).toBeUndefined();
-});
-
-test("get modified-date-time", () => {
-    expect(SpreadsheetMetadata.fromJson({
-            "modified-date-time": "1999-12-31 12:58:59"
-        }).get(SpreadsheetMetadata.MODIFIED_DATE_TIME)
-    ).toEqual(LocalDateTime.fromJson("1999-12-31 12:58:59"));
-});
-
-test("remove modified-date-time fails", removeUnsupportedFails(SpreadsheetMetadata.MODIFIED_DATE_TIME));
-
-// spreadsheetId.........................................................................................................
-
-test("get spreadsheet-id", () => {
-    const id = "123ABC";
-
-    expect(SpreadsheetMetadata.fromJson({
-            "spreadsheet-id": id
-        }).get(SpreadsheetMetadata.SPREADSHEET_ID)
-    ).toEqual(id);
-})
-
-test("remove spreadsheet-id fails", removeUnsupportedFails(SpreadsheetMetadata.SPREADSHEET_ID));
-
-// spreadsheet-name.....................................................................................................
-
-test("get spreadsheet-name", () => {
-    const name = "spreadsheet-name-123";
-
-    expect(SpreadsheetMetadata.fromJson({
-            "spreadsheet-name": name
-        }).get(SpreadsheetMetadata.SPREADSHEET_NAME)
-    ).toEqual(SpreadsheetName.parse(name));
-})
-
-test("set spreadsheet-name", () => {
-    const name = SpreadsheetName.parse("spreadsheet-name-123");
-
-    checkJson(SpreadsheetMetadata.EMPTY
-            .set(SpreadsheetMetadata.SPREADSHEET_NAME, name),
-        {
-            "spreadsheet-name": name.value()
-        });
-})
-
-test("remove spreadsheet-name fails", removeUnsupportedFails(SpreadsheetMetadata.SPREADSHEET_NAME));
-
-// setStyle.............................................................................................................
-
-test("set style", () => {
-    checkJson(SpreadsheetMetadata.EMPTY
-            .set(SpreadsheetMetadata.STYLE,
-                TextStyle.EMPTY.set("width", "50px")
-            ),
-        {
-            "style": {
-                "width": "50px"
-            }
-        });
-})
-
-test("remove style fails", removeUnsupportedFails(SpreadsheetMetadata.STYLE));
-
-// viewport-cell............................................................................................................
-
-test("get viewport-cell missing", () => {
-    expect(SpreadsheetMetadata.EMPTY
-        .get(SpreadsheetMetadata.VIEWPORT_CELL)
-    ).toBeUndefined();
-});
-
-test("get viewport-cell", () => {
-    expect(SpreadsheetMetadata.fromJson({
-            "viewport-cell": "B97"
-        }
-        ).get(SpreadsheetMetadata.VIEWPORT_CELL)
-    ).toEqual(SpreadsheetCellReference.parse("B97"));
-});
-
-test("set viewport-cell", () => {
-    checkJson(SpreadsheetMetadata.EMPTY
-            .set(SpreadsheetMetadata.VIEWPORT_CELL, SpreadsheetCellReference.parse("B98")),
-        {
-            "viewport-cell": "B98"
-        });
-});
-
-test("remove viewport-coordinates fails", removeUnsupportedFails(SpreadsheetMetadata.VIEWPORT_CELL));
-
-// viewportCoordinates.............................................................................................................
-
-test("get viewport-coordinates", () => {
-    expect(SpreadsheetMetadata.fromJson({
-            "viewport-coordinates": "123.5,400"
-        })
-            .get(SpreadsheetMetadata.VIEWPORT_COORDINATES)
-    ).toEqual(SpreadsheetCoordinates.parse("123.5,400"));
-})
-
-test("set viewport-coordinates", () => {
-    checkJson(SpreadsheetMetadata.EMPTY
-            .set(SpreadsheetMetadata.VIEWPORT_COORDINATES, SpreadsheetCoordinates.parse("123.5,400")),
-        {
-            "viewport-coordinates": "123.5,400"
-        });
-})
-
-test("remove viewport-coordinates fails", removeUnsupportedFails(SpreadsheetMetadata.VIEWPORT_COORDINATES));
-
-// set..................................................................................................................
+// all..................................................................................................................
 
 test("all setters & getters", () => {
     const editCell = SpreadsheetCellReference.parse("Z99");
@@ -698,10 +552,4 @@ function checkSpreadsheetName(metadata, name) {
 function checkJson(metadata, json) {
     expect(metadata.toJson()).toStrictEqual(json);
     expect(metadata.toString()).toBe(JSON.stringify(json));
-}
-
-function removeUnsupportedFails(property) {
-    return () => {
-        expect(() => SpreadsheetMetadata.EMPTY.remove(property)).toThrow("Property \"" + property + "\" cannot be removed, {}");
-    }
 }
