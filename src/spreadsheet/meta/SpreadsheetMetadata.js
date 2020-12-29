@@ -121,6 +121,9 @@ export default class SpreadsheetMetadata {
                 case SpreadsheetMetadata.EDIT_CELL:
                     unmarshaller = SpreadsheetCellReference.fromJson;
                     break;
+                case SpreadsheetMetadata.EXPONENT_SYMBOL:
+                    unmarshaller = Character.fromJson;
+                    break;
                 case SpreadsheetMetadata.MODIFIED_BY:
                     unmarshaller = EmailAddress.fromJson;
                     break;
@@ -142,7 +145,6 @@ export default class SpreadsheetMetadata {
                 case SpreadsheetMetadata.VIEWPORT_COORDINATES:
                     unmarshaller = SpreadsheetCoordinates.fromJson;
                     break;
-                case SpreadsheetMetadata.EXPONENT_SYMBOL:
                 case SpreadsheetMetadata.EDIT_RANGE:
                 case SpreadsheetMetadata.EXPRESSION_NUMBER_KIND:
                 case SpreadsheetMetadata.GROUPING_SEPARATOR:
@@ -262,6 +264,9 @@ export default class SpreadsheetMetadata {
             case SpreadsheetMetadata.EDIT_CELL:
                 expectedClass = SpreadsheetCellReference;
                 break;
+            case SpreadsheetMetadata.EXPONENT_SYMBOL:
+                expectedClass = Character;
+                break;
             case SpreadsheetMetadata.MODIFIED_DATE_TIME:
                 setFails(property);
                 break;
@@ -283,7 +288,6 @@ export default class SpreadsheetMetadata {
             case SpreadsheetMetadata.VIEWPORT_COORDINATES:
                 expectedClass = SpreadsheetCoordinates;
                 break;
-            case SpreadsheetMetadata.EXPONENT_SYMBOL:
             case SpreadsheetMetadata.EDIT_RANGE:
             case SpreadsheetMetadata.EXPRESSION_NUMBER_KIND:
             case SpreadsheetMetadata.GROUPING_SEPARATOR:
