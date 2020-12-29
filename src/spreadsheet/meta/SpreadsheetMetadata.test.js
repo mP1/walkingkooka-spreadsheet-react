@@ -327,6 +327,30 @@ test("get create-date-time", () => {
     ).toEqual(LocalDateTime.fromJson("1999-12-31 12:58:59"));
 });
 
+// currency-symbol......................................................................................................
+
+test("get currency-symbol missing", () => {
+    expect(SpreadsheetMetadata.EMPTY
+        .get(SpreadsheetMetadata.CURRENCY_SYMBOL))
+        .toBeUndefined();
+});
+
+test("get currency-symbol", () => {
+    expect(SpreadsheetMetadata.fromJson({
+            "currency-symbol": "AUD"
+        }).get(SpreadsheetMetadata.CURRENCY_SYMBOL)
+    ).toEqual("AUD");
+});
+
+test("set currency-symbol", () => {
+    const currencySymbol = "AUD";
+    checkJson(SpreadsheetMetadata.EMPTY
+            .set(SpreadsheetMetadata.CURRENCY_SYMBOL, currencySymbol),
+        {
+            "currency-symbol": currencySymbol,
+        });
+});
+
 // edit-cell............................................................................................................
 
 test("get edit-cell missing", () => {
