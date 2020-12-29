@@ -288,11 +288,11 @@ export default class SpreadsheetMetadata {
                 throw new Error("Unknown property \"" + property + "\"");
         }
         if((expectedTypeOf && typeof (value) !== expectedTypeOf)){
-            throw new Error("Expected " + expectedTypeOf + " property " + property + " with value " + value);
+            throw new Error("Expected " + expectedTypeOf + " property " + property + " got " + value);
         }
         if((expectedClass === Number && Number.isNaN(value)) ||
-            (typeof value === "function" && !(value instanceof expectedClass))){
-            throw new Error("Expected " + expectedClass + " property " + property + " with value " + value);
+            (typeof expectedClass === "function" && !(value instanceof expectedClass))){
+            throw new Error("Expected " + expectedClass.name + " property " + property + " got " + value);
         }
 
         return (Equality.safeEquals(value, this.get(property))) ?

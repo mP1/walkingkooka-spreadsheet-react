@@ -158,7 +158,11 @@ test("set value null fail", () => {
 })
 
 test("set invalid value fail", () => {
-    expect(() => SpreadsheetMetadata.EMPTY.set("spreadsheet-id", 123)).toThrow("Expected string property spreadsheet-id with value 123");
+    expect(() => SpreadsheetMetadata.EMPTY.set("spreadsheet-id", 123)).toThrow("Expected string property spreadsheet-id got 123");
+});
+
+test("set invalid value fail", () => {
+    expect(() => SpreadsheetMetadata.EMPTY.set(SpreadsheetMetadata.DATE_FORMAT_PATTERN, 123)).toThrow("Expected SpreadsheetPattern property date-format-pattern got 123");
 });
 
 test("set property same", () => {
