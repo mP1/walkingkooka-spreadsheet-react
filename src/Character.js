@@ -19,7 +19,7 @@ export default class Character {
         }
         const length = text.length;
         if(length !== 1){
-            throw new Error("Expected string with length " + length + " got \"" + text + "\"");
+            throw new Error("Expected string with length=1 got " + length + " \"" + text + "\"");
         }
         this.textValue = text;
     }

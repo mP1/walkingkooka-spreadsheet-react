@@ -19,7 +19,7 @@ test("create with non string text fails", () => {
 });
 
 test("create text length !+ 1 fails", () => {
-    expect(() => new Character("abc")).toThrow("Expected string with length 3 got \"abc\"");
+    expect(() => new Character("abc")).toThrow("Expected string with length=1 got 3 \"abc\"");
 });
 
 test("create", () => {
