@@ -1,3 +1,4 @@
+import Character from "../../Character.js";
 import EmailAddress from "../../net/EmailAddress.js";
 import Equality from "../../Equality.js";
 import LocalDateTime from "../../datetime/LocalDateTime.js";
@@ -114,6 +115,9 @@ export default class SpreadsheetMetadata {
                 case DEFAULTS:
                     unmarshaller = SpreadsheetMetadata.fromJson;
                     break;
+                case SpreadsheetMetadata.DECIMAL_SEPARATOR:
+                    unmarshaller = Character.fromJson;
+                    break;
                 case SpreadsheetMetadata.EDIT_CELL:
                     unmarshaller = SpreadsheetCellReference.fromJson;
                     break;
@@ -138,7 +142,6 @@ export default class SpreadsheetMetadata {
                 case SpreadsheetMetadata.VIEWPORT_COORDINATES:
                     unmarshaller = SpreadsheetCoordinates.fromJson;
                     break;
-                case SpreadsheetMetadata.DECIMAL_SEPARATOR:
                 case SpreadsheetMetadata.EXPONENT_SYMBOL:
                 case SpreadsheetMetadata.EDIT_RANGE:
                 case SpreadsheetMetadata.EXPRESSION_NUMBER_KIND:
@@ -253,6 +256,9 @@ export default class SpreadsheetMetadata {
             case SpreadsheetMetadata.DATETIME_PARSE_PATTERNS:
                 expectedClass = SpreadsheetPattern;
                 break;
+            case SpreadsheetMetadata.DECIMAL_SEPARATOR:
+                expectedClass = Character;
+                break;
             case SpreadsheetMetadata.EDIT_CELL:
                 expectedClass = SpreadsheetCellReference;
                 break;
@@ -277,7 +283,6 @@ export default class SpreadsheetMetadata {
             case SpreadsheetMetadata.VIEWPORT_COORDINATES:
                 expectedClass = SpreadsheetCoordinates;
                 break;
-            case SpreadsheetMetadata.DECIMAL_SEPARATOR:
             case SpreadsheetMetadata.EXPONENT_SYMBOL:
             case SpreadsheetMetadata.EDIT_RANGE:
             case SpreadsheetMetadata.EXPRESSION_NUMBER_KIND:

@@ -1,3 +1,4 @@
+import Character from "../../Character.js";
 import EmailAddress from "../../net/EmailAddress.js";
 import LocalDateTime from "../../datetime/LocalDateTime.js";
 import PixelLength from "../../text/PixelLength";
@@ -5,8 +6,8 @@ import SpreadsheetCellReference from "../reference/SpreadsheetCellReference";
 import SpreadsheetCoordinates from "../SpreadsheetCoordinates";
 import SpreadsheetMetadata from "./SpreadsheetMetadata";
 import SpreadsheetName from "../SpreadsheetName";
-import TextStyle from "../../text/TextStyle";
 import SpreadsheetPattern from "../format/SpreadsheetPattern.js";
+import TextStyle from "../../text/TextStyle";
 
 // EMPTY................................................................................................................
 
@@ -269,6 +270,8 @@ getSetPropertyTest(SpreadsheetMetadata.DATE_FORMAT_PATTERN, SpreadsheetPattern.f
 getSetPropertyTest(SpreadsheetMetadata.DATE_PARSE_PATTERNS, SpreadsheetPattern.fromJson("YYYY-MM-DD"));
 
 getSetPropertyTest(SpreadsheetMetadata.DATETIME_OFFSET, 1234);
+
+getSetPropertyTest(SpreadsheetMetadata.DECIMAL_SEPARATOR, Character.fromJson(","));
 
 getSetRemovePropertyTest(SpreadsheetMetadata.EDIT_CELL, SpreadsheetCellReference.parse("B97"));
 
