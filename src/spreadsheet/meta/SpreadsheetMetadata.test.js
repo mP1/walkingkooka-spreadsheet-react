@@ -298,6 +298,10 @@ getSetPropertyTest(SpreadsheetMetadata.NUMBER_FORMAT_PATTERN, SpreadsheetPattern
 
 getSetPropertyTest(SpreadsheetMetadata.NUMBER_PARSE_PATTERNS, SpreadsheetPattern.fromJson("#.##"));
 
+getSetPropertyTest(SpreadsheetMetadata.PERCENTAGE_SYMBOL, Character.fromJson("%"));
+
+getSetPropertyTest(SpreadsheetMetadata.POSITIVE_SIGN, Character.fromJson("+"));
+
 getPropertyTest(SpreadsheetMetadata.SPREADSHEET_ID, "123");
 
 getSetPropertyTest(SpreadsheetMetadata.SPREADSHEET_NAME, SpreadsheetName.fromJson("spreadsheet-name-123"));
@@ -407,9 +411,11 @@ test("all setters & getters", () => {
     const groupingSeparator = Character.fromJson(",");
     const locale = Locale.fromJson("EN-NZ");
     const name = new SpreadsheetName("Spreadsheet-name-123");
+    const negativeSign = Character.fromJson("-");
     const numberFormatPattern = SpreadsheetPattern.fromJson("#.##");
     const numberParsePatterns = SpreadsheetPattern.fromJson("#.##");
-    const negativeSign = Character.fromJson("-");
+    const percentSymbol = Character.fromJson("%");
+    const positiveSign = Character.fromJson("+");
     const style = TextStyle.EMPTY
         .set("width", PixelLength.parse("123px"));
     const coords = new SpreadsheetCoordinates(12, 34);
@@ -430,6 +436,8 @@ test("all setters & getters", () => {
         .set(SpreadsheetMetadata.NEGATIVE_SIGN, negativeSign)
         .set(SpreadsheetMetadata.NUMBER_FORMAT_PATTERN, numberFormatPattern)
         .set(SpreadsheetMetadata.NUMBER_PARSE_PATTERNS, numberParsePatterns)
+        .set(SpreadsheetMetadata.PERCENTAGE_SYMBOL, percentSymbol)
+        .set(SpreadsheetMetadata.POSITIVE_SIGN, positiveSign)
         .set(SpreadsheetMetadata.SPREADSHEET_NAME, name)
         .set(SpreadsheetMetadata.STYLE, style)
         .set(SpreadsheetMetadata.VIEWPORT_CELL, viewportCell)
@@ -449,6 +457,8 @@ test("all setters & getters", () => {
     expect(metadata.get(SpreadsheetMetadata.NEGATIVE_SIGN)).toEqual(negativeSign);
     expect(metadata.get(SpreadsheetMetadata.NUMBER_FORMAT_PATTERN)).toEqual(numberFormatPattern);
     expect(metadata.get(SpreadsheetMetadata.NUMBER_PARSE_PATTERNS)).toEqual(numberParsePatterns);
+    expect(metadata.get(SpreadsheetMetadata.PERCENTAGE_SYMBOL)).toEqual(percentSymbol);
+    expect(metadata.get(SpreadsheetMetadata.POSITIVE_SIGN)).toEqual(positiveSign);
     expect(metadata.get(SpreadsheetMetadata.SPREADSHEET_NAME)).toEqual(name);
     expect(metadata.get(SpreadsheetMetadata.STYLE)).toEqual(style);
     expect(metadata.get(SpreadsheetMetadata.VIEWPORT_CELL)).toEqual(viewportCell);
