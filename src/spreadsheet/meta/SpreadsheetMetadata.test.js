@@ -283,6 +283,8 @@ getSetPropertyTest(SpreadsheetMetadata.EXPONENT_SYMBOL, Character.fromJson(","))
 
 getSetPropertyTest(SpreadsheetMetadata.EXPRESSION_NUMBER_KIND, ExpressionNumberKind.BIG_DECIMAL);
 
+getSetPropertyTest(SpreadsheetMetadata.GROUPING_SEPARATOR, Character.fromJson(","));
+
 getPropertyTest(SpreadsheetMetadata.MODIFIED_BY, EmailAddress.fromJson("creator@example.com"));
 
 getPropertyTest(SpreadsheetMetadata.MODIFIED_DATE_TIME, LocalDateTime.fromJson("1999-12-31 12:58:59"));
@@ -388,6 +390,7 @@ test("all setters & getters", () => {
     const dateTimeFormatPattern = SpreadsheetPattern.fromJson("yyyymmddhhmm");
     const dateTimeParsePatterns = SpreadsheetPattern.fromJson("yyyymmddhhmm");
     const editCell = SpreadsheetCellReference.parse("Z99");
+    const groupingSeparator = Character.fromJson(",");
     const name = new SpreadsheetName("Spreadsheet-name-123");
     const style = TextStyle.EMPTY
         .set("width", PixelLength.parse("123px"));
@@ -399,6 +402,7 @@ test("all setters & getters", () => {
         .set(SpreadsheetMetadata.DATETIME_FORMAT_PATTERN, dateTimeFormatPattern)
         .set(SpreadsheetMetadata.DATETIME_PARSE_PATTERNS, dateTimeParsePatterns)
         .set(SpreadsheetMetadata.EDIT_CELL, editCell)
+        .set(SpreadsheetMetadata.GROUPING_SEPARATOR, groupingSeparator)
         .set(SpreadsheetMetadata.SPREADSHEET_NAME, name)
         .set(SpreadsheetMetadata.STYLE, style)
         .set(SpreadsheetMetadata.VIEWPORT_CELL, viewportCell)
@@ -408,6 +412,7 @@ test("all setters & getters", () => {
     expect(metadata.get(SpreadsheetMetadata.DATETIME_FORMAT_PATTERN)).toEqual(dateTimeFormatPattern);
     expect(metadata.get(SpreadsheetMetadata.DATETIME_PARSE_PATTERNS)).toEqual(dateTimeParsePatterns);
     expect(metadata.get(SpreadsheetMetadata.EDIT_CELL)).toEqual(editCell);
+    expect(metadata.get(SpreadsheetMetadata.GROUPING_SEPARATOR)).toEqual(groupingSeparator);
     expect(metadata.get(SpreadsheetMetadata.SPREADSHEET_NAME)).toEqual(name);
     expect(metadata.get(SpreadsheetMetadata.STYLE)).toEqual(style);
     expect(metadata.get(SpreadsheetMetadata.VIEWPORT_CELL)).toEqual(viewportCell);
