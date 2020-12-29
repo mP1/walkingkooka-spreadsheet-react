@@ -292,6 +292,8 @@ getPropertyTest(SpreadsheetMetadata.MODIFIED_BY, EmailAddress.fromJson("creator@
 
 getPropertyTest(SpreadsheetMetadata.MODIFIED_DATE_TIME, LocalDateTime.fromJson("1999-12-31 12:58:59"));
 
+getSetPropertyTest(SpreadsheetMetadata.NEGATIVE_SIGN, Character.fromJson("-"));
+
 getPropertyTest(SpreadsheetMetadata.SPREADSHEET_ID, "123");
 
 getSetPropertyTest(SpreadsheetMetadata.SPREADSHEET_NAME, SpreadsheetName.fromJson("spreadsheet-name-123"));
@@ -396,6 +398,7 @@ test("all setters & getters", () => {
     const groupingSeparator = Character.fromJson(",");
     const locale = Locale.fromJson("EN-NZ");
     const name = new SpreadsheetName("Spreadsheet-name-123");
+    const negativeSign = Character.fromJson("-");
     const style = TextStyle.EMPTY
         .set("width", PixelLength.parse("123px"));
     const coords = new SpreadsheetCoordinates(12, 34);
@@ -408,6 +411,7 @@ test("all setters & getters", () => {
         .set(SpreadsheetMetadata.EDIT_CELL, editCell)
         .set(SpreadsheetMetadata.GROUPING_SEPARATOR, groupingSeparator)
         .set(SpreadsheetMetadata.LOCALE, locale)
+        .set(SpreadsheetMetadata.NEGATIVE_SIGN, negativeSign)
         .set(SpreadsheetMetadata.SPREADSHEET_NAME, name)
         .set(SpreadsheetMetadata.STYLE, style)
         .set(SpreadsheetMetadata.VIEWPORT_CELL, viewportCell)
@@ -418,6 +422,7 @@ test("all setters & getters", () => {
     expect(metadata.get(SpreadsheetMetadata.DATETIME_PARSE_PATTERNS)).toEqual(dateTimeParsePatterns);
     expect(metadata.get(SpreadsheetMetadata.EDIT_CELL)).toEqual(editCell);
     expect(metadata.get(SpreadsheetMetadata.GROUPING_SEPARATOR)).toEqual(groupingSeparator);
+    expect(metadata.get(SpreadsheetMetadata.NEGATIVE_SIGN)).toEqual(negativeSign);
     expect(metadata.get(SpreadsheetMetadata.SPREADSHEET_NAME)).toEqual(name);
     expect(metadata.get(SpreadsheetMetadata.STYLE)).toEqual(style);
     expect(metadata.get(SpreadsheetMetadata.VIEWPORT_CELL)).toEqual(viewportCell);
