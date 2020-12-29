@@ -7,6 +7,7 @@ import SpreadsheetCoordinates from "../SpreadsheetCoordinates";
 import SpreadsheetMetadata from "./SpreadsheetMetadata";
 import SpreadsheetName from "../SpreadsheetName";
 import SpreadsheetPattern from "../format/SpreadsheetPattern.js";
+import SpreadsheetRange from "../reference/SpreadsheetRange.js";
 import TextStyle from "../../text/TextStyle";
 
 // EMPTY................................................................................................................
@@ -274,6 +275,8 @@ getSetPropertyTest(SpreadsheetMetadata.DATETIME_OFFSET, 1234);
 getSetPropertyTest(SpreadsheetMetadata.DECIMAL_SEPARATOR, Character.fromJson(","));
 
 getSetRemovePropertyTest(SpreadsheetMetadata.EDIT_CELL, SpreadsheetCellReference.parse("B97"));
+
+getSetRemovePropertyTest(SpreadsheetMetadata.EDIT_RANGE, SpreadsheetRange.parse("A1:B2"));
 
 getSetPropertyTest(SpreadsheetMetadata.EXPONENT_SYMBOL, Character.fromJson(","));
 
