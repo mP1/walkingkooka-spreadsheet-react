@@ -1,5 +1,6 @@
 import Character from "../../Character.js";
 import EmailAddress from "../../net/EmailAddress.js";
+import ExpressionNumberKind from "../../math/ExpressionNumberKind.js";
 import LocalDateTime from "../../datetime/LocalDateTime.js";
 import PixelLength from "../../text/PixelLength";
 import SpreadsheetCellReference from "../reference/SpreadsheetCellReference";
@@ -279,6 +280,8 @@ getSetRemovePropertyTest(SpreadsheetMetadata.EDIT_CELL, SpreadsheetCellReference
 getSetRemovePropertyTest(SpreadsheetMetadata.EDIT_RANGE, SpreadsheetRange.parse("A1:B2"));
 
 getSetPropertyTest(SpreadsheetMetadata.EXPONENT_SYMBOL, Character.fromJson(","));
+
+getSetPropertyTest(SpreadsheetMetadata.EXPRESSION_NUMBER_KIND, ExpressionNumberKind.BIG_DECIMAL);
 
 getPropertyTest(SpreadsheetMetadata.MODIFIED_BY, EmailAddress.fromJson("creator@example.com"));
 
