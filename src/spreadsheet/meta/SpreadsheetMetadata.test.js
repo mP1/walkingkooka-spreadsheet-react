@@ -6,6 +6,7 @@ import SpreadsheetCoordinates from "../SpreadsheetCoordinates";
 import SpreadsheetMetadata from "./SpreadsheetMetadata";
 import SpreadsheetName from "../SpreadsheetName";
 import TextStyle from "../../text/TextStyle";
+import SpreadsheetPattern from "../format/SpreadsheetPattern.js";
 
 // EMPTY................................................................................................................
 
@@ -321,6 +322,33 @@ test("set currency-symbol", () => {
 });
 
 test("remove currency-symbol fails", removeUnsupportedFails(SpreadsheetMetadata.CURRENCY_SYMBOL));
+
+// date-format-pattern......................................................................................................
+
+test("get date-format-pattern missing", () => {
+    expect(SpreadsheetMetadata.EMPTY
+        .get(SpreadsheetMetadata.DATE_FORMAT_PATTERN))
+        .toBeUndefined();
+});
+
+test("get date-format-pattern", () => {
+    const dateFormatPattern = "ddmmyyyy";
+    expect(SpreadsheetMetadata.fromJson({
+            "date-format-pattern": dateFormatPattern
+        }).get(SpreadsheetMetadata.DATE_FORMAT_PATTERN)
+    ).toEqual(SpreadsheetPattern.fromJson(dateFormatPattern));
+});
+
+test("set date-format-pattern", () => {
+    const dateFormatPattern = "ddmmyyyy";
+    checkJson(SpreadsheetMetadata.EMPTY
+            .set(SpreadsheetMetadata.DATE_FORMAT_PATTERN, SpreadsheetPattern.fromJson(dateFormatPattern)),
+        {
+            "date-format-pattern": dateFormatPattern,
+        });
+});
+
+test("remove date-format-pattern fails", removeUnsupportedFails(SpreadsheetMetadata.DATE_FORMAT_PATTERN));
 
 // edit-cell............................................................................................................
 

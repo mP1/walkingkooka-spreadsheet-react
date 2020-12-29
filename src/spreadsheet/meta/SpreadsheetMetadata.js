@@ -4,6 +4,7 @@ import LocalDateTime from "../../datetime/LocalDateTime.js";
 import SpreadsheetCoordinates from "../SpreadsheetCoordinates";
 import SpreadsheetCellReference from "../reference/SpreadsheetCellReference";
 import SpreadsheetName from "../SpreadsheetName";
+import SpreadsheetPattern from "../format/SpreadsheetPattern.js";
 import TextStyle from "../../text/TextStyle";
 
 // these constants should match the constants in walkingkooka-spreadsheet/walkingkooka.spreadsheet.meta.SpreadsheetMetadataPropertyName.java
@@ -99,6 +100,9 @@ export default class SpreadsheetMetadata {
                     checkCurrencySymbol(value);
                     typed = value;
                     break;
+                case SpreadsheetMetadata.DATE_FORMAT_PATTERN:
+                    unmarshaller = SpreadsheetPattern.fromJson;
+                    break;
                 case DEFAULTS:
                     unmarshaller = SpreadsheetMetadata.fromJson;
                     break;
@@ -126,7 +130,6 @@ export default class SpreadsheetMetadata {
                 case SpreadsheetMetadata.VIEWPORT_COORDINATES:
                     unmarshaller = SpreadsheetCoordinates.fromJson;
                     break;
-                case SpreadsheetMetadata.DATE_FORMAT_PATTERN:
                 case SpreadsheetMetadata.DATE_PARSE_PATTERNS:
                 case SpreadsheetMetadata.DATETIME_OFFSET:
                 case SpreadsheetMetadata.DATETIME_FORMAT_PATTERN:
@@ -229,6 +232,9 @@ export default class SpreadsheetMetadata {
             case DEFAULTS:
                 expectedClass = SpreadsheetMetadata;
                 break;
+            case SpreadsheetMetadata.DATE_FORMAT_PATTERN:
+                expectedClass = SpreadsheetPattern;
+                break;
             case SpreadsheetMetadata.EDIT_CELL:
                 expectedClass = SpreadsheetCellReference;
                 break;
@@ -247,7 +253,6 @@ export default class SpreadsheetMetadata {
             case SpreadsheetMetadata.VIEWPORT_COORDINATES:
                 expectedClass = SpreadsheetCoordinates;
                 break;
-            case SpreadsheetMetadata.DATE_FORMAT_PATTERN:
             case SpreadsheetMetadata.DATE_PARSE_PATTERNS:
             case SpreadsheetMetadata.DATETIME_OFFSET:
             case SpreadsheetMetadata.DATETIME_FORMAT_PATTERN:
