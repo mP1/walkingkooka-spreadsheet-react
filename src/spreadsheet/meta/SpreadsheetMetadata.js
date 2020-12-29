@@ -94,11 +94,11 @@ export default class SpreadsheetMetadata {
             let typed, unmarshaller;
 
             switch(key) {
-                case SpreadsheetMetadata.CREATOR:
-                    unmarshaller = EmailAddress.fromJson;
-                    break;
                 case SpreadsheetMetadata.CREATE_DATE_TIME:
                     unmarshaller = LocalDateTime.fromJson;
+                    break;
+                case SpreadsheetMetadata.CREATOR:
+                    unmarshaller = EmailAddress.fromJson;
                     break;
                 case SpreadsheetMetadata.CURRENCY_SYMBOL:
                     checkCurrencySymbol(value);
@@ -139,14 +139,14 @@ export default class SpreadsheetMetadata {
                 case SpreadsheetMetadata.LOCALE:
                     unmarshaller = Locale.fromJson;
                     break;
-                case SpreadsheetMetadata.NEGATIVE_SIGN:
-                    unmarshaller = Character.fromJson;
-                    break;
                 case SpreadsheetMetadata.MODIFIED_BY:
                     unmarshaller = EmailAddress.fromJson;
                     break;
                 case SpreadsheetMetadata.MODIFIED_DATE_TIME:
                     unmarshaller = LocalDateTime.fromJson;
+                    break;
+                case SpreadsheetMetadata.NEGATIVE_SIGN:
+                    unmarshaller = Character.fromJson;
                     break;
                 case SpreadsheetMetadata.SPREADSHEET_ID:
                     unmarshaller = null;
