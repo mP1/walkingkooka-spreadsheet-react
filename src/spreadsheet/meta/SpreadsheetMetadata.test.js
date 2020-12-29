@@ -374,6 +374,8 @@ function removePropertyFailsTest(propertyName) {
 
 test("all setters & getters", () => {
     const dateTimeOffset = 123;
+    const dateTimeFormatPattern = SpreadsheetPattern.fromJson("yyyymmddhhmm");
+    const dateTimeParsePatterns = SpreadsheetPattern.fromJson("yyyymmddhhmm");
     const editCell = SpreadsheetCellReference.parse("Z99");
     const name = new SpreadsheetName("Spreadsheet-name-123");
     const style = TextStyle.EMPTY
@@ -383,6 +385,8 @@ test("all setters & getters", () => {
 
     const metadata = SpreadsheetMetadata.EMPTY
         .set(SpreadsheetMetadata.DATETIME_OFFSET, dateTimeOffset)
+        .set(SpreadsheetMetadata.DATETIME_FORMAT_PATTERN, dateTimeFormatPattern)
+        .set(SpreadsheetMetadata.DATETIME_PARSE_PATTERNS, dateTimeParsePatterns)
         .set(SpreadsheetMetadata.EDIT_CELL, editCell)
         .set(SpreadsheetMetadata.SPREADSHEET_NAME, name)
         .set(SpreadsheetMetadata.STYLE, style)
@@ -390,6 +394,8 @@ test("all setters & getters", () => {
         .set(SpreadsheetMetadata.VIEWPORT_COORDINATES, coords);
 
     expect(metadata.get(SpreadsheetMetadata.DATETIME_OFFSET)).toEqual(dateTimeOffset);
+    expect(metadata.get(SpreadsheetMetadata.DATETIME_FORMAT_PATTERN)).toEqual(dateTimeFormatPattern);
+    expect(metadata.get(SpreadsheetMetadata.DATETIME_PARSE_PATTERNS)).toEqual(dateTimeParsePatterns);
     expect(metadata.get(SpreadsheetMetadata.EDIT_CELL)).toEqual(editCell);
     expect(metadata.get(SpreadsheetMetadata.SPREADSHEET_NAME)).toEqual(name);
     expect(metadata.get(SpreadsheetMetadata.STYLE)).toEqual(style);

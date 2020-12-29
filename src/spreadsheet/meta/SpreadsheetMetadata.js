@@ -107,6 +107,10 @@ export default class SpreadsheetMetadata {
                 case SpreadsheetMetadata.DATETIME_OFFSET:
                     typed = value;
                     break;
+                case SpreadsheetMetadata.DATETIME_FORMAT_PATTERN:
+                case SpreadsheetMetadata.DATETIME_PARSE_PATTERNS:
+                    unmarshaller = SpreadsheetPattern.fromJson;
+                    break;
                 case DEFAULTS:
                     unmarshaller = SpreadsheetMetadata.fromJson;
                     break;
@@ -134,8 +138,6 @@ export default class SpreadsheetMetadata {
                 case SpreadsheetMetadata.VIEWPORT_COORDINATES:
                     unmarshaller = SpreadsheetCoordinates.fromJson;
                     break;
-                case SpreadsheetMetadata.DATETIME_FORMAT_PATTERN:
-                case SpreadsheetMetadata.DATETIME_PARSE_PATTERNS:
                 case SpreadsheetMetadata.DECIMAL_SEPARATOR:
                 case SpreadsheetMetadata.EXPONENT_SYMBOL:
                 case SpreadsheetMetadata.EDIT_RANGE:
@@ -247,6 +249,10 @@ export default class SpreadsheetMetadata {
             case SpreadsheetMetadata.DATETIME_OFFSET:
                 expectedTypeOf = "number";
                 break;
+            case SpreadsheetMetadata.DATETIME_FORMAT_PATTERN:
+            case SpreadsheetMetadata.DATETIME_PARSE_PATTERNS:
+                expectedClass = SpreadsheetPattern;
+                break;
             case SpreadsheetMetadata.EDIT_CELL:
                 expectedClass = SpreadsheetCellReference;
                 break;
@@ -271,8 +277,6 @@ export default class SpreadsheetMetadata {
             case SpreadsheetMetadata.VIEWPORT_COORDINATES:
                 expectedClass = SpreadsheetCoordinates;
                 break;
-            case SpreadsheetMetadata.DATETIME_FORMAT_PATTERN:
-            case SpreadsheetMetadata.DATETIME_PARSE_PATTERNS:
             case SpreadsheetMetadata.DECIMAL_SEPARATOR:
             case SpreadsheetMetadata.EXPONENT_SYMBOL:
             case SpreadsheetMetadata.EDIT_RANGE:
