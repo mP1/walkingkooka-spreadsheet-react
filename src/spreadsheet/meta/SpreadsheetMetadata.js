@@ -139,6 +139,9 @@ export default class SpreadsheetMetadata {
                 case SpreadsheetMetadata.LOCALE:
                     unmarshaller = Locale.fromJson;
                     break;
+                case SpreadsheetMetadata.NEGATIVE_SIGN:
+                    unmarshaller = Character.fromJson;
+                    break;
                 case SpreadsheetMetadata.MODIFIED_BY:
                     unmarshaller = EmailAddress.fromJson;
                     break;
@@ -160,7 +163,6 @@ export default class SpreadsheetMetadata {
                 case SpreadsheetMetadata.VIEWPORT_COORDINATES:
                     unmarshaller = SpreadsheetCoordinates.fromJson;
                     break;
-                case SpreadsheetMetadata.NEGATIVE_SIGN:
                 case SpreadsheetMetadata.NUMBER_FORMAT_PATTERN:
                 case SpreadsheetMetadata.NUMBER_PARSE_PATTERNS:
                 case SpreadsheetMetadata.PERCENTAGE_SYMBOL:
@@ -296,6 +298,9 @@ export default class SpreadsheetMetadata {
             case SpreadsheetMetadata.MODIFIED_BY:
                 setFails(property);
                 break;
+            case SpreadsheetMetadata.NEGATIVE_SIGN:
+                expectedClass = Character;
+                break;
             case SpreadsheetMetadata.SPREADSHEET_ID:
                 setFails(property);
                 break;
@@ -311,7 +316,6 @@ export default class SpreadsheetMetadata {
             case SpreadsheetMetadata.VIEWPORT_COORDINATES:
                 expectedClass = SpreadsheetCoordinates;
                 break;
-            case SpreadsheetMetadata.NEGATIVE_SIGN:
             case SpreadsheetMetadata.NUMBER_FORMAT_PATTERN:
             case SpreadsheetMetadata.NUMBER_PARSE_PATTERNS:
             case SpreadsheetMetadata.PERCENTAGE_SYMBOL:
