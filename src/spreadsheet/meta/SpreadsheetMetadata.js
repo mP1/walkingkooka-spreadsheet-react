@@ -6,6 +6,7 @@ import SpreadsheetCoordinates from "../SpreadsheetCoordinates";
 import SpreadsheetCellReference from "../reference/SpreadsheetCellReference";
 import SpreadsheetName from "../SpreadsheetName";
 import SpreadsheetPattern from "../format/SpreadsheetPattern.js";
+import SpreadsheetRange from "../reference/SpreadsheetRange.js";
 import TextStyle from "../../text/TextStyle";
 
 // these constants should match the constants in walkingkooka-spreadsheet/walkingkooka.spreadsheet.meta.SpreadsheetMetadataPropertyName.java
@@ -121,6 +122,9 @@ export default class SpreadsheetMetadata {
                 case SpreadsheetMetadata.EDIT_CELL:
                     unmarshaller = SpreadsheetCellReference.fromJson;
                     break;
+                case SpreadsheetMetadata.EDIT_RANGE:
+                    unmarshaller = SpreadsheetRange.fromJson;
+                    break;
                 case SpreadsheetMetadata.EXPONENT_SYMBOL:
                     unmarshaller = Character.fromJson;
                     break;
@@ -145,7 +149,6 @@ export default class SpreadsheetMetadata {
                 case SpreadsheetMetadata.VIEWPORT_COORDINATES:
                     unmarshaller = SpreadsheetCoordinates.fromJson;
                     break;
-                case SpreadsheetMetadata.EDIT_RANGE:
                 case SpreadsheetMetadata.EXPRESSION_NUMBER_KIND:
                 case SpreadsheetMetadata.GROUPING_SEPARATOR:
                 case SpreadsheetMetadata.LOCALE:
@@ -264,6 +267,9 @@ export default class SpreadsheetMetadata {
             case SpreadsheetMetadata.EDIT_CELL:
                 expectedClass = SpreadsheetCellReference;
                 break;
+            case SpreadsheetMetadata.EDIT_RANGE:
+                expectedClass = SpreadsheetRange;
+                break;
             case SpreadsheetMetadata.EXPONENT_SYMBOL:
                 expectedClass = Character;
                 break;
@@ -288,7 +294,6 @@ export default class SpreadsheetMetadata {
             case SpreadsheetMetadata.VIEWPORT_COORDINATES:
                 expectedClass = SpreadsheetCoordinates;
                 break;
-            case SpreadsheetMetadata.EDIT_RANGE:
             case SpreadsheetMetadata.EXPRESSION_NUMBER_KIND:
             case SpreadsheetMetadata.GROUPING_SEPARATOR:
             case SpreadsheetMetadata.LOCALE:
