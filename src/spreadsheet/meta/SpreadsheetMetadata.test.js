@@ -493,6 +493,8 @@ test("set viewport-cell", () => {
         });
 });
 
+test("remove viewport-coordinates fails", removeUnsupportedFails(SpreadsheetMetadata.VIEWPORT_CELL));
+
 // viewportCoordinates.............................................................................................................
 
 test("get viewport-coordinates", () => {
@@ -510,6 +512,8 @@ test("set viewport-coordinates", () => {
             "viewport-coordinates": "123.5,400"
         });
 })
+
+test("remove viewport-coordinates fails", removeUnsupportedFails(SpreadsheetMetadata.VIEWPORT_COORDINATES));
 
 // set..................................................................................................................
 

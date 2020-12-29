@@ -308,10 +308,10 @@ export default class SpreadsheetMetadata {
         }
 
         switch (property) {
-            case SpreadsheetMetadata.DEFAULTS:
             case SpreadsheetMetadata.EDIT_CELL:
             case SpreadsheetMetadata.EDIT_RANGE:
                 break;
+            case SpreadsheetMetadata.DEFAULTS:
             case SpreadsheetMetadata.CREATOR:
             case SpreadsheetMetadata.CREATE_DATE_TIME:
             case SpreadsheetMetadata.CURRENCY_SYMBOL:
