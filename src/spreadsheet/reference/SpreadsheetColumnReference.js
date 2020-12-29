@@ -13,37 +13,37 @@ export default class SpreadsheetColumnReference extends SpreadsheetColumnOrRowRe
     }
 
     static parse(text) {
-        if (!text) {
+        if(!text){
             throw new Error("Missing text");
         }
-        if (typeof text !== "string") {
+        if(typeof text !== "string"){
             throw new Error("Expected string got " + text);
         }
 
         let kind;
         let startIndex;
 
-        if (text.startsWith("$")) {
+        if(text.startsWith("$")){
             kind = SpreadsheetReferenceKind.ABSOLUTE;
             startIndex = 1;
-        } else {
+        }else {
             kind = SpreadsheetReferenceKind.RELATIVE;
             startIndex = 0;
         }
 
         var value = 0;
-        for (var i = startIndex; i < text.length; i++) {
+        for(var i = startIndex; i < text.length; i++) {
             const c = text.charAt(i).toUpperCase();
-            if (c < 'A' || c > 'Z') {
+            if(c < 'A' || c > 'Z'){
                 throw new Error("Expected letter between 'A' to 'Z' or 'a' to 'z' at " + i + " got " + text);
             }
             value = value * RADIX + c.charCodeAt(0) - A + 1;
         }
-        if (value > SpreadsheetColumnReference.MAX) {
+        if(value > SpreadsheetColumnReference.MAX){
             throw new Error("Invalid value > " + SpreadsheetColumnReference.MAX + " got " + value);
         }
 
-        return new SpreadsheetColumnReference(value -1, kind);
+        return new SpreadsheetColumnReference(value - 1, kind);
     }
 
     // eslint-disable-next-line no-useless-constructor
@@ -64,7 +64,7 @@ function toString0(value) {
     let s = "";
 
     const v = Math.floor(value / RADIX);
-    if (v > 0) {
+    if(v > 0){
         s = s + toString0(v - 1);
     }
     return s + String.fromCharCode(value % RADIX + A);

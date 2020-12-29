@@ -9,14 +9,14 @@ export default class TextNodeVisitor {
     }
 
     accept(node) {
-        if (!node) {
+        if(!node){
             throw new Error("Missing node");
         }
-        if (!(node instanceof TextNode)) {
+        if(!(node instanceof TextNode)){
             throw new Error("Expected TextNode node got " + node);
         }
 
-        if (this.startVisitTextNode(node)) {
+        if(this.startVisitTextNode(node)){
             node.accept(this);
         }
         this.endVisitTextNode(node);

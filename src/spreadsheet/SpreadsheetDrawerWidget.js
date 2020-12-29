@@ -139,12 +139,12 @@ class SpreadsheetDrawerWidget extends React.Component {
 
         // hover = highlight under mouse over
         return (
-        <TableRow key={label}
-                  hover={true}>
-            <TableCell className={classes.label}>{label}</TableCell>
-            <TableCell id={id}
-                       className={classes.value}>{value}</TableCell>
-        </TableRow>);
+            <TableRow key={label}
+                      hover={true}>
+                <TableCell className={classes.label}>{label}</TableCell>
+                <TableCell id={id}
+                           className={classes.value}>{value}</TableCell>
+            </TableRow>);
     }
 
     // ACCORDION........................................................................................................

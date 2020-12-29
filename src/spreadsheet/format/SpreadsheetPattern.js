@@ -16,10 +16,10 @@ export default class SpreadsheetPattern {
     }
 
     constructor(pattern) {
-        if (!pattern && pattern !== "") {
+        if(!pattern && pattern !== ""){
             throw new Error("Missing pattern");
         }
-        if (typeof pattern !== "string") {
+        if(typeof pattern !== "string"){
             throw new Error("Expected string pattern got " + pattern);
         }
 

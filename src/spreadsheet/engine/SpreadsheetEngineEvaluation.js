@@ -1,18 +1,18 @@
 export default class SpreadsheetEngineEvaluation {
 
     static valueOf(text) {
-        if (!text) {
+        if(!text){
             throw new Error("Missing text");
         }
-        if (typeof text !== "string") {
+        if(typeof text !== "string"){
             throw new Error("Expected string text got " + text);
         }
 
         const values = SpreadsheetEngineEvaluation.values();
 
-        for (var i = 0; i < values.length; i++) {
+        for(var i = 0; i < values.length; i++) {
             const possible = values[i];
-            if (possible.value === text) {
+            if(possible.value === text){
                 return possible;
             }
         }

@@ -10,18 +10,18 @@ import TextStyleNode from "./TextStyleNode";
  * To avoid circular references this is not placed on TextNode
  */
 export default function textNodeJsonSupportFromJson(json) {
-    if (!json) {
+    if(!json){
         throw new Error("Missing json");
     }
-    if (typeof json !== "object") {
+    if(typeof json !== "object"){
         throw new Error("Expected object json got " + json);
     }
 
     const {type, value} = json;
-    if (!type) {
+    if(!type){
         throw new Error("Missing type got " + JSON.stringify(json));
     }
-    if (typeof type !== "string") {
+    if(typeof type !== "string"){
         throw new Error("Expected String type got " + JSON.stringify(json));
     }
     switch(typeof value) {
@@ -31,7 +31,7 @@ export default function textNodeJsonSupportFromJson(json) {
             break;
     }
 
-    switch (type) {
+    switch(type) {
         case TextNode.PLACEHOLDER:
             return new TextPlaceholderNode(value);
         case TextNode.STYLE:

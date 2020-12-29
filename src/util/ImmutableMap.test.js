@@ -178,7 +178,7 @@ test("fromJson missing key parser fails", () => {
 });
 
 test("fromJson invalid key parser fails", () => {
-    expect(() => ImmutableMap.fromJson({},"!invalid")).toThrow("Expected function key parser got !invalid");
+    expect(() => ImmutableMap.fromJson({}, "!invalid")).toThrow("Expected function key parser got !invalid");
 });
 
 test("fromJson missing value unmarshaller fails", () => {
@@ -186,7 +186,7 @@ test("fromJson missing value unmarshaller fails", () => {
 });
 
 test("fromJson invalid value unmarshaller fails", () => {
-    expect(() => ImmutableMap.fromJson({},() => false, "!invalid")).toThrow("Expected function valueUnmarshaller got !invalid");
+    expect(() => ImmutableMap.fromJson({}, () => false, "!invalid")).toThrow("Expected function valueUnmarshaller got !invalid");
 });
 
 test("fromJson empty", () => {

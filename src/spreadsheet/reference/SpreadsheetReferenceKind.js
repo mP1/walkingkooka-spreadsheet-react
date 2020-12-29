@@ -4,11 +4,11 @@ export default class SpreadsheetReferenceKind {
     static RELATIVE = new SpreadsheetReferenceKind("RELATIVE");
 
     static of(text) {
-        if (!text) {
+        if(!text){
             throw new Error("Missing text");
         }
 
-        switch (text) {
+        switch(text) {
             case "ABSOLUTE":
                 return SpreadsheetReferenceKind.ABSOLUTE;
             case "RELATIVE":

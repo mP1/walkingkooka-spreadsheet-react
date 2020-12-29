@@ -13,12 +13,12 @@ export default class Equality {
 function equalsArray(left, right) {
     var equals = Array.isArray(right);
 
-    if (equals) {
+    if(equals){
         const length = left.length;
         equals = length === right.length;
 
-        if (equals) {
-            for (var i = 0; equals && i < length; i++) {
+        if(equals){
+            for(var i = 0; equals && i < length; i++) {
                 equals = Equality.safeEquals(left[i], right[i]);
             }
         }

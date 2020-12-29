@@ -11,14 +11,14 @@ export default class SpreadsheetCoordinates {
     }
 
     static parse(text) {
-        if (!text) {
+        if(!text){
             throw new Error("Missing text");
         }
-        if (typeof text !== "string") {
+        if(typeof text !== "string"){
             throw new Error("Expected string got " + text);
         }
         let tokens = text.split(SEPARATOR);
-        if (2 !== tokens.length) {
+        if(2 !== tokens.length){
             throw new Error("Expected 2 tokens got " + text);
         }
 
@@ -26,18 +26,18 @@ export default class SpreadsheetCoordinates {
     }
 
     constructor(x, y) {
-        if (typeof (x) !== "number") {
+        if(typeof (x) !== "number"){
             throw new Error("Expected number x got " + x);
         }
-        if (x < 0) {
+        if(x < 0){
             throw new Error("Expected x >= 0 got " + x);
         }
         this.xValue = x;
 
-        if (typeof (y) !== "number") {
+        if(typeof (y) !== "number"){
             throw new Error("Expected number y got " + y);
         }
-        if (y < 0) {
+        if(y < 0){
             throw new Error("Expected y >= 0 got " + y);
         }
         this.yValue = y;

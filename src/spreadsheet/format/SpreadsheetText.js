@@ -3,10 +3,10 @@ import Color from "../../color/Color.js";
 export default class SpreadsheetText {
 
     static fromJson(json) {
-        if (!json) {
+        if(!json){
             throw new Error("Missing json");
         }
-        if (typeof json !== "object") {
+        if(typeof json !== "object"){
             throw new Error("Expected object got " + json);
         }
 
@@ -15,13 +15,13 @@ export default class SpreadsheetText {
     }
 
     constructor(color, text) {
-        if (typeof color !== "undefined" && !(color instanceof Color)) {
+        if(typeof color !== "undefined" && !(color instanceof Color)){
             throw new Error("Expected Color color got " + color);
         }
-        if (!text && text !== "") {
+        if(!text && text !== ""){
             throw new Error("Missing text");
         }
-        if (typeof text !== "string") {
+        if(typeof text !== "string"){
             throw new Error("Expected string text got " + text);
         }
         this.colorValue = color;
@@ -42,7 +42,7 @@ export default class SpreadsheetText {
         }
 
         const color = this.color();
-        if (color) {
+        if(color){
             json.color = color.toJson();
         }
 

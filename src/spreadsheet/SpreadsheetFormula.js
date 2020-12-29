@@ -7,7 +7,7 @@ import SpreadsheetError from "./SpreadsheetError";
 export default class SpreadsheetFormula {
 
     static fromJson(json) {
-        if(!json) {
+        if(!json){
             throw new Error("Missing json");
         }
 
@@ -17,11 +17,11 @@ export default class SpreadsheetFormula {
 
     constructor(text, value, error) {
         checkText(text);
-        if (error) {
-            if (value) {
+        if(error){
+            if(value){
                 throw new Error("Expected either value or error but got both " + value + " " + error);
             }
-            if (!(error instanceof SpreadsheetError)) {
+            if(!(error instanceof SpreadsheetError)){
                 throw new Error("Expected SpreadsheetError got " + error);
             }
         }
@@ -56,12 +56,12 @@ export default class SpreadsheetFormula {
         };
 
         let value = this.valueValue;
-        if (value) {
+        if(value){
             json.value = value;
         }
 
         let error = this.spreadsheetError;
-        if (error) {
+        if(error){
             json.error = error.toJson();
         }
 
@@ -86,10 +86,10 @@ function equals0(formula, other) {
 }
 
 function checkText(text) {
-    if (!text && "" !== text) {
+    if(!text && "" !== text){
         throw new Error("Missing text");
     }
-    if (typeof text !== "string") {
+    if(typeof text !== "string"){
         throw new Error("Expected string text got " + text);
     }
 }

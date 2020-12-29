@@ -5,18 +5,18 @@ export default class SpreadsheetColumnOrRowReference {
     constructor(value, kind) {
         const max = this.max();
 
-        if (typeof value !== "number") {
+        if(typeof value !== "number"){
             throw new Error("Expected number value got " + value);
         }
-        if (value < 0 || value >= max) {
+        if(value < 0 || value >= max){
             throw new Error("Invalid value not between 0 and " + max + " got " + value);
         }
         this.valueValue = value;
 
-        if (!kind) {
+        if(!kind){
             throw new Error("Missing kind");
         }
-        if (!(kind instanceof SpreadsheetReferenceKind)) {
+        if(!(kind instanceof SpreadsheetReferenceKind)){
             throw new Error("Expected SpreadsheetReferenceKind kind got " + kind);
         }
         this.kindValue = kind;
@@ -36,7 +36,7 @@ export default class SpreadsheetColumnOrRowReference {
     }
 
     add(delta) {
-        if (typeof delta !== "number") {
+        if(typeof delta !== "number"){
             throw new Error("Expected number delta got " + delta);
         }
         return this.setValue(this.value() + delta);

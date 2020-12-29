@@ -9,10 +9,10 @@ export default class TextPlaceholderNode extends TextLeafNode {
 
     constructor(placeholder) {
         super();
-        if (!placeholder) {
+        if(!placeholder){
             throw new Error("Missing text");
         }
-        if (typeof placeholder !== "string") {
+        if(typeof placeholder !== "string"){
             throw new Error("Expected string got " + placeholder);
         }
         this.placeholder = placeholder;

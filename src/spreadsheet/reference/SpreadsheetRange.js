@@ -4,23 +4,23 @@ import SpreadsheetRectangle from "./SpreadsheetRectangle";
 /**
  * A range is marked by two cell references.
  */
-export default class SpreadsheetRange extends SpreadsheetRectangle{
+export default class SpreadsheetRange extends SpreadsheetRectangle {
 
     static fromJson(json) {
         return SpreadsheetRange.parse(json);
     }
 
     static parse(text) {
-        if (!text) {
+        if(!text){
             throw new Error("Missing text");
         }
-        if (typeof text !== "string") {
+        if(typeof text !== "string"){
             throw new Error("Expected string got " + text);
         }
 
         var range;
         const tokens = text.split(":");
-        switch (tokens.length) {
+        switch(tokens.length) {
             case 1:
                 const cell = SpreadsheetCellReference.fromJson(tokens[0]);
                 range = new SpreadsheetRange(cell, cell);
@@ -39,18 +39,18 @@ export default class SpreadsheetRange extends SpreadsheetRectangle{
 
     constructor(begin, end) {
         super();
-        if (!begin) {
+        if(!begin){
             throw new Error("Missing begin");
         }
-        if (!(begin instanceof SpreadsheetCellReference)) {
+        if(!(begin instanceof SpreadsheetCellReference)){
             throw new Error("Expected SpreadsheetCellReference begin got " + begin);
         }
         this.beginValue = begin;
 
-        if (!end) {
+        if(!end){
             throw new Error("Missing end");
         }
-        if (!(end instanceof SpreadsheetCellReference)) {
+        if(!(end instanceof SpreadsheetCellReference)){
             throw new Error("Expected SpreadsheetCellReference end got " + end);
         }
         this.endValue = end;

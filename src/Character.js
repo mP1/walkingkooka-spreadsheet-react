@@ -8,17 +8,17 @@ export default class Character {
     }
 
     constructor(text) {
-        if (!text && text !== "") {
+        if(!text && text !== ""){
             throw new Error("Missing text");
         }
-        if (text === "") {
+        if(text === ""){
             throw new Error("Empty text");
         }
-        if (typeof text !== "string") {
+        if(typeof text !== "string"){
             throw new Error("Expected string got " + text);
         }
         const length = text.length;
-        if (length !== 1) {
+        if(length !== 1){
             throw new Error("Expected string with length " + length + " got \"" + text + "\"");
         }
         this.textValue = text;

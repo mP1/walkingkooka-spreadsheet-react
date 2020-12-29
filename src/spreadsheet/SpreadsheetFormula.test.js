@@ -94,7 +94,7 @@ function check(spreadsheetFormula, text, value, error, json) {
     expect(spreadsheetFormula.value()).toStrictEqual(value);
 
     expect(spreadsheetFormula.error()).toStrictEqual(error);
-    if (error) {
+    if(error){
         expect(spreadsheetFormula.error()).toBeInstanceOf(SpreadsheetError);
     }
 

@@ -16,7 +16,9 @@ test("accept non node fails", () => {
 test("accept visitTextNode returns false/skip", () => {
     const visitor = new TextNodeVisitor();
     visitor.startVisitTextNode = (n) => false;
-    visitor.visitNode = (n) => {throw new Error("UnsupportedOperationException " + n)};
+    visitor.visitNode = (n) => {
+        throw new Error("UnsupportedOperationException " + n)
+    };
     visitor.accept(new Text("Text node 123"));
 });
 
@@ -37,7 +39,7 @@ test("accept Text", () => {
         visited.push("endVisitTextNode");
         visited.push(n);
     };
-    
+
     const node = new Text("Text node 123");
     visitor.accept(node);
 
@@ -61,7 +63,7 @@ test("accept TextPlaceholder", () => {
         visited.push("endVisitTextNode");
         visited.push(n);
     };
-    
+
     const node = new TextPlaceholderNode("placeholder-123");
     visitor.accept(node);
 

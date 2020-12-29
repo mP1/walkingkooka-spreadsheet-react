@@ -33,8 +33,8 @@ function cells() {
 
 function maxColumnWidths() {
     return ImmutableMap.fromJson({
-        "A": 100,
-    },
+            "A": 100,
+        },
         SpreadsheetColumnReference.parse,
         (v) => v);
 }

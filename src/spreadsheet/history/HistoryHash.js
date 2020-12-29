@@ -8,8 +8,9 @@ export default class HistoryHash {
             split(pathname) :
             [];
     }
+
     static join(tokens) {
-        if (!tokens) {
+        if(!tokens){
             throw new Error("Missing tokens");
         }
         var s = "";
@@ -17,7 +18,7 @@ export default class HistoryHash {
             const token = tokens[i];
 
             // stop joining if a undefined/null token is found.
-            if (!token && token !== "") {
+            if(!token && token !== ""){
                 break;
             }
             s = s + "/" + token;

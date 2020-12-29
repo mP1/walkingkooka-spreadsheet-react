@@ -10,18 +10,18 @@ export default class PixelLength extends Length {
     }
 
     static parse(text) {
-        if (!text) {
+        if(!text){
             throw new Error("Missing text");
         }
-        if (typeof text !== "string") {
+        if(typeof text !== "string"){
             throw new Error("Expected string got " + text);
         }
-        if (!(text.endsWith("px"))) {
+        if(!(text.endsWith("px"))){
             throw new Error("Expected string ending with \"px\" got " + text);
         }
 
         const value = Number(text.substring(0, text.length - 2));
-        if (Number.isNaN(value)) {
+        if(Number.isNaN(value)){
             throw new Error("Expected number \"px\" got " + text);
         }
         return new PixelLength(value);
