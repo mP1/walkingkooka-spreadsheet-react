@@ -266,6 +266,8 @@ getSetPropertyTest(SpreadsheetMetadata.CURRENCY_SYMBOL, "AUD");
 
 getSetPropertyTest(SpreadsheetMetadata.DATE_FORMAT_PATTERN, SpreadsheetPattern.fromJson("YYYY-MM-DD"));
 
+getSetPropertyTest(SpreadsheetMetadata.DATE_PARSE_PATTERNS, SpreadsheetPattern.fromJson("YYYY-MM-DD"));
+
 getSetRemovePropertyTest(SpreadsheetMetadata.EDIT_CELL, SpreadsheetCellReference.parse("B97"));
 
 getPropertyTest(SpreadsheetMetadata.MODIFIED_BY, EmailAddress.fromJson("creator@example.com"));

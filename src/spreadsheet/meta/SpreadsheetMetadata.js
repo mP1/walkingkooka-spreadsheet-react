@@ -101,6 +101,7 @@ export default class SpreadsheetMetadata {
                     typed = value;
                     break;
                 case SpreadsheetMetadata.DATE_FORMAT_PATTERN:
+                case SpreadsheetMetadata.DATE_PARSE_PATTERNS:
                     unmarshaller = SpreadsheetPattern.fromJson;
                     break;
                 case DEFAULTS:
@@ -130,7 +131,6 @@ export default class SpreadsheetMetadata {
                 case SpreadsheetMetadata.VIEWPORT_COORDINATES:
                     unmarshaller = SpreadsheetCoordinates.fromJson;
                     break;
-                case SpreadsheetMetadata.DATE_PARSE_PATTERNS:
                 case SpreadsheetMetadata.DATETIME_OFFSET:
                 case SpreadsheetMetadata.DATETIME_FORMAT_PATTERN:
                 case SpreadsheetMetadata.DATETIME_PARSE_PATTERNS:
@@ -239,6 +239,7 @@ export default class SpreadsheetMetadata {
                 expectedClass = SpreadsheetMetadata;
                 break;
             case SpreadsheetMetadata.DATE_FORMAT_PATTERN:
+            case SpreadsheetMetadata.DATE_PARSE_PATTERNS:
                 expectedClass = SpreadsheetPattern;
                 break;
             case SpreadsheetMetadata.EDIT_CELL:
@@ -265,7 +266,6 @@ export default class SpreadsheetMetadata {
             case SpreadsheetMetadata.VIEWPORT_COORDINATES:
                 expectedClass = SpreadsheetCoordinates;
                 break;
-            case SpreadsheetMetadata.DATE_PARSE_PATTERNS:
             case SpreadsheetMetadata.DATETIME_OFFSET:
             case SpreadsheetMetadata.DATETIME_FORMAT_PATTERN:
             case SpreadsheetMetadata.DATETIME_PARSE_PATTERNS:
