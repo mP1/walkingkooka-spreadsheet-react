@@ -37,7 +37,7 @@
   },
   "proxy": "http://localhost:12345/",
   "devDependencies": {
-    "cypress": "^6.1.0",
+    "cypress": "^6.2.0",
     "jest-extended": "^0.11.5"
   }
 }
