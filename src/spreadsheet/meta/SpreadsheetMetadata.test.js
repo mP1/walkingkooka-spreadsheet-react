@@ -4,6 +4,7 @@ import ExpressionNumberKind from "../../math/ExpressionNumberKind.js";
 import LocalDateTime from "../../datetime/LocalDateTime.js";
 import Locale from "../../util/Locale.js";
 import PixelLength from "../../text/PixelLength";
+import RoundingMode from "../../math/RoundingMode.js";
 import SpreadsheetCellReference from "../reference/SpreadsheetCellReference";
 import SpreadsheetCoordinates from "../SpreadsheetCoordinates";
 import SpreadsheetMetadata from "./SpreadsheetMetadata";
@@ -312,6 +313,8 @@ test("set precision -1 fails", () => {
     expect(() => SpreadsheetMetadata.EMPTY.set(SpreadsheetMetadata.PRECISION, -1)).toThrow("Expected number precision > 0 got -1");
 });
 
+getSetPropertyTest(SpreadsheetMetadata.ROUNDING_MODE, RoundingMode.CEILING);
+
 getPropertyTest(SpreadsheetMetadata.SPREADSHEET_ID, "123");
 
 getSetPropertyTest(SpreadsheetMetadata.SPREADSHEET_NAME, SpreadsheetName.fromJson("spreadsheet-name-123"));
@@ -427,6 +430,7 @@ test("all setters & getters", () => {
     const percentSymbol = Character.fromJson("%");
     const positiveSign = Character.fromJson("+");
     const precision = 1;
+    const roundingMode = RoundingMode.FLOOR;
     const style = TextStyle.EMPTY
         .set("width", PixelLength.parse("123px"));
     const coords = new SpreadsheetCoordinates(12, 34);
@@ -450,6 +454,7 @@ test("all setters & getters", () => {
         .set(SpreadsheetMetadata.PERCENTAGE_SYMBOL, percentSymbol)
         .set(SpreadsheetMetadata.POSITIVE_SIGN, positiveSign)
         .set(SpreadsheetMetadata.PRECISION, precision)
+        .set(SpreadsheetMetadata.ROUNDING_MODE, roundingMode)
         .set(SpreadsheetMetadata.SPREADSHEET_NAME, name)
         .set(SpreadsheetMetadata.STYLE, style)
         .set(SpreadsheetMetadata.VIEWPORT_CELL, viewportCell)
@@ -472,6 +477,7 @@ test("all setters & getters", () => {
     expect(metadata.get(SpreadsheetMetadata.PERCENTAGE_SYMBOL)).toEqual(percentSymbol);
     expect(metadata.get(SpreadsheetMetadata.POSITIVE_SIGN)).toEqual(positiveSign);
     expect(metadata.get(SpreadsheetMetadata.PRECISION)).toEqual(precision);
+    expect(metadata.get(SpreadsheetMetadata.ROUNDING_MODE)).toEqual(roundingMode);
     expect(metadata.get(SpreadsheetMetadata.SPREADSHEET_NAME)).toEqual(name);
     expect(metadata.get(SpreadsheetMetadata.STYLE)).toEqual(style);
     expect(metadata.get(SpreadsheetMetadata.VIEWPORT_CELL)).toEqual(viewportCell);
