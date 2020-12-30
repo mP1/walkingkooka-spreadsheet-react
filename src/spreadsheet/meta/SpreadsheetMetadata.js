@@ -178,13 +178,16 @@ export default class SpreadsheetMetadata {
                 case SpreadsheetMetadata.TIME_PARSE_PATTERNS:
                     unmarshaller = SpreadsheetPattern.fromJson;
                     break;
+                case SpreadsheetMetadata.TWO_DIGIT_YEAR:
+                    checkTwoDigitYear(value);
+                    typed = value;
+                    break;
                 case SpreadsheetMetadata.VIEWPORT_CELL:
                     unmarshaller = SpreadsheetCellReference.fromJson;
                     break;
                 case SpreadsheetMetadata.VIEWPORT_COORDINATES:
                     unmarshaller = SpreadsheetCoordinates.fromJson;
                     break;
-                case SpreadsheetMetadata.TWO_DIGIT_YEAR:
                 case SpreadsheetMetadata.WIDTH:
                     unmarshaller = null; // TODO types not yet implemented
                     break;
@@ -342,13 +345,16 @@ export default class SpreadsheetMetadata {
             case SpreadsheetMetadata.TIME_PARSE_PATTERNS:
                 expectedClass = SpreadsheetPattern;
                 break;
+            case SpreadsheetMetadata.TWO_DIGIT_YEAR:
+                checkTwoDigitYear(value);
+                expectedTypeOf = "number";
+                break;
             case SpreadsheetMetadata.VIEWPORT_CELL:
                 expectedClass = SpreadsheetCellReference;
                 break;
             case SpreadsheetMetadata.VIEWPORT_COORDINATES:
                 expectedClass = SpreadsheetCoordinates;
                 break;
-            case SpreadsheetMetadata.TWO_DIGIT_YEAR:
             case SpreadsheetMetadata.WIDTH:
                 expectedClass = null; // TODO properties not yet supported
                 break;
@@ -513,6 +519,15 @@ function checkPrecision(precision) {
     }
     if(precision <= 0){
         throw new Error("Expected number precision > 0 got " + precision);
+    }
+}
+
+function checkTwoDigitYear(twoDigitYear) {
+    if(typeof twoDigitYear !== "number"){
+        throw new Error("Expected number twoDigitYear got " + twoDigitYear);
+    }
+    if(twoDigitYear < 0 || twoDigitYear > 99){
+        throw new Error("Expected number twoDigitYear >= 0 and <= 99 got " + twoDigitYear);
     }
 }
 
