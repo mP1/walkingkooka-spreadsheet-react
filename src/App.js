@@ -31,7 +31,7 @@ import WindowResizer from "./widget/WindowResizer";
 /**
  * The width of the drawer in pixels holding settings and tools.
  */
-const DRAWER_WIDTH = 400;
+const DRAWER_WIDTH = 500;
 
 /**
  * History token noting that a cell formula is being edited.
