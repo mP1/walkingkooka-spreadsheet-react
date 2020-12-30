@@ -189,7 +189,9 @@ export default class SpreadsheetMetadata {
                     unmarshaller = SpreadsheetCoordinates.fromJson;
                     break;
                 case SpreadsheetMetadata.WIDTH:
-                    unmarshaller = null; // TODO types not yet implemented
+                    checkWidth(value);
+                    typed = value;
+                    break;
                     break;
                 default:
                     if(key.startsWith("color-")){
@@ -356,7 +358,8 @@ export default class SpreadsheetMetadata {
                 expectedClass = SpreadsheetCoordinates;
                 break;
             case SpreadsheetMetadata.WIDTH:
-                expectedClass = null; // TODO properties not yet supported
+                checkWidth(value);
+                expectedTypeOf = "number";
                 break;
             default:
                 if(property.startsWith("color-")){
@@ -528,6 +531,15 @@ function checkTwoDigitYear(twoDigitYear) {
     }
     if(twoDigitYear < 0 || twoDigitYear > 99){
         throw new Error("Expected number twoDigitYear >= 0 and <= 99 got " + twoDigitYear);
+    }
+}
+
+function checkWidth(width) {
+    if(typeof width !== "number"){
+        throw new Error("Expected number width got " + width);
+    }
+    if(width <= 0){
+        throw new Error("Expected number width > 0 got " + width);
     }
 }
 
