@@ -158,7 +158,7 @@ test("set property null fails", () => {
 })
 
 test("set value null fail", () => {
-    expect(() => SpreadsheetMetadata.EMPTY.set("spreadsheet-id", null)).toThrow("Missing value");
+    expect(() => SpreadsheetMetadata.EMPTY.set("spreadsheet-id", null)).toThrow("Property \"spreadsheet-id\" missing value");
 })
 
 test("set invalid value fail", () => {

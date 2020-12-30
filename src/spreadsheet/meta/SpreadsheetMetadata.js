@@ -247,7 +247,7 @@ export default class SpreadsheetMetadata {
             throw new Error("Missing property");
         }
         if(!value && value !== 0 && value !== ""){
-            throw new Error("Missing value");
+            throw new Error("Property \"" + property + "\" missing value");
         }
 
         let expectedClass;
