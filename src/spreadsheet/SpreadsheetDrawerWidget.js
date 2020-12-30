@@ -34,9 +34,12 @@ const useStyles = theme => ({
     label: {
         fontSize: theme.typography.pxToRem(12),
         fontWeight: 700,
+        width: "150px",
+        verticalAlign: "top",
     },
     value: {
         fontSize: theme.typography.pxToRem(12),
+        verticalAlign: "top",
     },
 });
 
@@ -68,17 +71,17 @@ class SpreadsheetDrawerWidget extends React.Component {
             ]);
 
         return <Drawer id={"settings-tools-drawer"}
-                    anchor={"right"}
-                    variant={"persistent"}
-                    open={this.state.open}
-                    modal={"false"}
-                    onClose={this.onClose}
-            >
-                    <div className={classes.root}
-                         style={{margin: 0, border: 0, padding: 0, width: this.width + "px"}}>
-                        {children}
-                    </div>
-             </Drawer>;
+                       anchor={"right"}
+                       variant={"persistent"}
+                       open={this.state.open}
+                       modal={"false"}
+                       onClose={this.onClose}
+        >
+            <div className={classes.root}
+                 style={{margin: 0, border: 0, padding: 0, width: this.width + "px"}}>
+                {children}
+            </div>
+        </Drawer>;
     }
 
     // METADATA.........................................................................................................
@@ -117,20 +120,8 @@ class SpreadsheetDrawerWidget extends React.Component {
             classes,
             "Spreadsheet Metadata",
             "",
-            [
-                <TableContainer key={rows}
-                                component={Paper}>
-                    <Table className={classes.table}
-                           size={"small"}
-                           aria-label="Readonly Spreadsheet Metadata">
-                        <TableBody>
-                            {
-                                rows.map(r => this.renderLabelAndTextRow(r, classes))
-                            }
-                        </TableBody>
-                    </Table>
-                </TableContainer>
-            ]
+            "Readonly Spreadsheet Metadata",
+            rows,
         );
     }
 
@@ -152,7 +143,7 @@ class SpreadsheetDrawerWidget extends React.Component {
         // all ids are prefixed with "spreadsheet-"
         const rows = [
             this.labelAndTextRow("Locale", "spreadsheet-locale", locale),
-            this.labelAndTextRow("Text Format Pattern", "spreadsheet-text-format-pattern", textFormatPattern),
+            this.labelAndTextRow("Format", "spreadsheet-text-format-pattern", textFormatPattern),
         ];
 
         return this.accordion("spreadsheet-text",
@@ -162,20 +153,8 @@ class SpreadsheetDrawerWidget extends React.Component {
             classes,
             "Text",
             "",
-            [
-                <TableContainer key={rows}
-                                component={Paper}>
-                    <Table className={classes.table}
-                           size={"small"}
-                           aria-label="Text">
-                        <TableBody>
-                            {
-                                rows.map(r => this.renderLabelAndTextRow(r, classes))
-                            }
-                        </TableBody>
-                    </Table>
-                </TableContainer>
-            ]
+            "Text",
+            rows,
         );
     }
 
@@ -209,35 +188,24 @@ class SpreadsheetDrawerWidget extends React.Component {
             this.labelAndTextRow("Date Time Offset", "spreadsheet-date-time-offset", dateTimeOffset), // 1900 or 1904 date system
             this.labelAndTextRow("Two Digit Year", "spreadsheet-two-digit-year", twoDigitYear),
 
-            this.labelAndTextRow("Date Format Pattern", "spreadsheet-date-format-pattern", dateFormatPattern),
-            this.labelAndTextRow("Date Parse Pattern(s)", "spreadsheet-date-parse-patterns", dateParsePatterns),
-            this.labelAndTextRow("Date/Time Format Pattern", "spreadsheet-date-time-format-pattern", dateTimeFormatPattern),
-            this.labelAndTextRow("Date/Time Parse Pattern(s)", "spreadsheet-date-time-parse-patterns", dateTimeParsePatterns),
-            this.labelAndTextRow("Time Format Pattern", "spreadsheet-time-format-pattern", timeFormatPattern),
-            this.labelAndTextRow("Time Parse Pattern(s)", "spreadsheet-time-parse-patterns", timeParsePatterns),
+            this.labelAndTextRow("Date Format", "spreadsheet-date-format-pattern", dateFormatPattern),
+            this.labelAndTextRow("Date Parse", "spreadsheet-date-parse-patterns", dateParsePatterns),
+            this.labelAndTextRow("Date/Time Format", "spreadsheet-date-time-format-pattern", dateTimeFormatPattern),
+            this.labelAndTextRow("Date/Time Parse", "spreadsheet-date-time-parse-patterns", dateTimeParsePatterns),
+            this.labelAndTextRow("Time Format", "spreadsheet-time-format-pattern", timeFormatPattern),
+            this.labelAndTextRow("Time Parse", "spreadsheet-time-parse-patterns", timeParsePatterns),
         ];
 
-        return this.accordion("spreadsheet-date-time",
+        return this.accordion(
+            "spreadsheet-date-time",
             true,
             () => {
             },
             classes,
-            "Date/Time settings",
+            "Date/Time",
             "",
-            [
-                <TableContainer key={rows}
-                                component={Paper}>
-                    <Table className={classes.table}
-                           size={"small"}
-                           aria-label="Spreadsheet Date/Time Settings">
-                        <TableBody>
-                            {
-                                rows.map(r => this.renderLabelAndTextRow(r, classes))
-                            }
-                        </TableBody>
-                    </Table>
-                </TableContainer>
-            ]
+            "Spreadsheet Date/Time",
+            rows
         );
     }
 
@@ -279,39 +247,27 @@ class SpreadsheetDrawerWidget extends React.Component {
             this.labelAndTextRow("Expression Number Kind", "spreadsheet-exponent-number-kind", expressionNumberKind),
             this.labelAndTextRow("Precision", "spreadsheet-precision", precision),
             this.labelAndTextRow("Rounding mode", "spreadsheet-rounding-mode", roundingMode),
-
             this.labelAndTextRow("Currency", "spreadsheet-currency", currency),
             this.labelAndTextRow("Decimal separator", "spreadsheet-decimal-separator", decimalSeparator),
             this.labelAndTextRow("Exponent separator", "spreadsheet-exponent-separator", exponentSeparator),
             this.labelAndTextRow("Grouping symbol", "spreadsheet-grouping-symbol", groupingSymbol),
             this.labelAndTextRow("Negative sign", "spreadsheet-negative-sign", negativeSign),
-            this.labelAndTextRow("Number Format Pattern", "spreadsheet-number-format-pattern", numberFormatPattern),
-            this.labelAndTextRow("Number Parse Pattern(s)", "spreadsheet-number-parse-patterns", numberParsePatterns),
             this.labelAndTextRow("Percent symbol", "spreadsheet-percent-symbol", percentSymbol),
             this.labelAndTextRow("Positive sign", "spreadsheet-positive-sign", positiveSign),
+            this.labelAndTextRow("Format", "spreadsheet-number-format-pattern", numberFormatPattern),
+            this.labelAndTextRow("Parse", "spreadsheet-number-parse-patterns", numberParsePatterns),
         ];
 
-        return this.accordion("spreadsheet-number",
+        return this.accordion(
+            "spreadsheet-number",
             true,
             () => {
             },
             classes,
-            "Number settings",
+            "Number",
             "",
-            [
-                <TableContainer key={rows}
-                                component={Paper}>
-                    <Table className={classes.table}
-                           size={"small"}
-                           aria-label="Spreadsheet Number Settings">
-                        <TableBody>
-                            {
-                                rows.map(r => this.renderLabelAndTextRow(r, classes))
-                            }
-                        </TableBody>
-                    </Table>
-                </TableContainer>
-            ]
+            "Spreadsheet Number Settings",
+            rows,
         );
     }
 
@@ -338,20 +294,8 @@ class SpreadsheetDrawerWidget extends React.Component {
             classes,
             "Default style(s)",
             "",
-            [
-                <TableContainer key={rows}
-                                component={Paper}>
-                    <Table className={classes.table}
-                           size={"small"}
-                           aria-label="Spreadsheet default Style(s)">
-                        <TableBody>
-                            {
-                                rows.map(r => this.renderLabelAndTextRow(r, classes))
-                            }
-                        </TableBody>
-                    </Table>
-                </TableContainer>
-            ]
+            "Spreadsheet default Style(s)",
+            rows,
         );
     }
 
@@ -385,7 +329,14 @@ class SpreadsheetDrawerWidget extends React.Component {
      */
     // TODO pass onChange to update history hash
     // TODO AccordionSummary aria-control
-    accordion(id, expanded, onChange, classes, heading, secondaryHeading, children) {
+    accordion(id,
+              expanded,
+              onChange,
+              classes,
+              heading,
+              secondaryHeading,
+              tableAriaLabel,
+              rows) {
         return <Accordion key={id}
                           id={id}
                           expanded={expanded}
@@ -398,7 +349,18 @@ class SpreadsheetDrawerWidget extends React.Component {
                 <Typography className={classes.secondaryHeading}>{secondaryHeading}</Typography>
             </AccordionSummary>
             <AccordionDetails>
-                {children}
+                <TableContainer key={rows}
+                                component={Paper}>
+                    <Table className={classes.table}
+                           size={"small"}
+                           aria-label="{tableAriaLabel}">
+                        <TableBody>
+                            {
+                                rows.map(r => this.renderLabelAndTextRow(r, classes))
+                            }
+                        </TableBody>
+                    </Table>
+                </TableContainer>
             </AccordionDetails>
         </Accordion>;
     }
