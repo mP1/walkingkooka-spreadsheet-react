@@ -275,6 +275,21 @@ context("General app usage", () => {
                     .should("eq", hash + "/");
             });
     });
+
+    it("Show drawer check creator-date-time/modified-date-time", () => {
+        settingsToolDrawerToggle();
+
+        settingsToolDrawer()
+            .should('be.visible');
+
+        const year = new Date().getFullYear();
+
+        cy.get("#spreadsheet-metadata-create-date-time")
+            .contains(year);
+
+        cy.get("#spreadsheet-metadata-modified-date-time")
+            .contains(year);
+    });
 });
 
 // helpers..............................................................................................................

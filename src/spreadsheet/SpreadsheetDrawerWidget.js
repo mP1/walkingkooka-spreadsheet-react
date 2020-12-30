@@ -4,10 +4,15 @@ import Accordion from '@material-ui/core/Accordion';
 import AccordionDetails from '@material-ui/core/AccordionDetails';
 import AccordionSummary from '@material-ui/core/AccordionSummary';
 import Drawer from "@material-ui/core/Drawer";
+import Equality from "../Equality.js";
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import FormatRequest from "./server/format/FormatRequest.js";
+import MultiFormatRequest from "./server/format/MultiFormatRequest.js";
+import MultiFormatResponse from "./server/format/MultiFormatResponse.js";
 import Paper from '@material-ui/core/Paper';
 import PropTypes from 'prop-types';
 import React from 'react';
+import SpreadsheetLocaleDefaultDateTimeFormat from "./server/format/SpreadsheetLocaleDefaultDateTimeFormat.js";
 import SpreadsheetMetadata from "./meta/SpreadsheetMetadata.js";
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -51,9 +56,59 @@ class SpreadsheetDrawerWidget extends React.Component {
         this.state = {
             open: props.open,
             spreadsheetMetadata: props.spreadsheetMetadata,
+            createDateTimeFormatted: "",
+            modifiedDateTimeFormatted: "",
         };
         this.onClose = props.onClose;
         this.width = props.width;
+
+        this.formatCreateDateTimeModifiedDateTime = props.formatCreateDateTimeModifiedDateTime;
+    }
+
+    /**
+     * If the create-date-time or modified-date-time changed send a format request.
+     */
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        const state = this.state;
+        console.log("componentDidUpdate", "prevState", prevState, "state", state);
+
+        const metadata = state.spreadsheetMetadata;
+        const createDateTime = metadata.get(SpreadsheetMetadata.CREATE_DATE_TIME);
+        const modifiedDateTime = metadata.get(SpreadsheetMetadata.MODIFIED_DATE_TIME);
+
+        const previousMetadata = prevState.spreadsheetMetadata;
+
+        // initiate requests to fetch create & modified date time.......................................................
+        if(!Equality.safeEquals(createDateTime, previousMetadata.get(SpreadsheetMetadata.CREATE_DATE_TIME)) ||
+            !Equality.safeEquals(modifiedDateTime, previousMetadata.get(SpreadsheetMetadata.MODIFIED_DATE_TIME))
+        ){
+            const formatRequests = [];
+            formatRequests.push(new FormatRequest(createDateTime, SpreadsheetLocaleDefaultDateTimeFormat.INSTANCE));
+            formatRequests.push(new FormatRequest(modifiedDateTime, SpreadsheetLocaleDefaultDateTimeFormat.INSTANCE));
+
+            this.sendFormatCreateDateTimeModifiedDateTime(new MultiFormatRequest(formatRequests));
+        }
+    }
+
+    /**
+     * Make a request to the server to format the createDateTime & modifiedDateTime
+     */
+    sendFormatCreateDateTimeModifiedDateTime(request) {
+        this.formatCreateDateTimeModifiedDateTime(request, this.setFormattedCreateDateTimeAndModifiedDateTime.bind(this)); // TODO handle server format errors
+    }
+
+    /**
+     * This method should be called by the formatRequest handler when it receives the formatted date/times.
+     */
+    setFormattedCreateDateTimeAndModifiedDateTime(multiFormatResponse) {
+        console.log("setFormattedCreateDateTimeAndModifiedDateTime", multiFormatResponse);
+
+        const [createDateTime, modifiedDateTime] = MultiFormatResponse.fromJson(multiFormatResponse).responses();
+
+        this.setState({
+            createDateTimeFormatted: createDateTime, // already strings
+            modifiedDateTimeFormatted: modifiedDateTime,
+        });
     }
 
     render() {
@@ -97,13 +152,16 @@ class SpreadsheetDrawerWidget extends React.Component {
      * <ul>
      */
     metadata(classes) {
-        const metadata = this.state.spreadsheetMetadata;
+        const state = this.state;
+        const metadata = state.spreadsheetMetadata;
+
+        // createDateTimeFormatted & modifiedDateTimeFormatted will be updated by the server response.
 
         const id = metadata.get(SpreadsheetMetadata.SPREADSHEET_ID);
         const creator = textOrEmpty(metadata.get(SpreadsheetMetadata.CREATOR));
-        const createDateTime = "" + metadata.get(SpreadsheetMetadata.CREATE_DATE_TIME); // TODO format date/time https://github.com/mP1/walkingkooka-spreadsheet-react/issues/351
+        const createDateTime = "" + state.createDateTimeFormatted;
         const modifiedBy = textOrEmpty(metadata.get(SpreadsheetMetadata.MODIFIED_BY));
-        const modifiedDateTime = "" + metadata.get(SpreadsheetMetadata.MODIFIED_DATE_TIME); // TODO format date/time https://github.com/mP1/walkingkooka-spreadsheet-react/issues/351
+        const modifiedDateTime = "" + state.modifiedDateTimeFormatted;
 
         const rows = [
             this.labelAndTextRow("Spreadsheet Id", "spreadsheet-metadata-id", id),
@@ -370,6 +428,7 @@ SpreadsheetDrawerWidget.propTypes = {
     open: PropTypes.bool.isRequired, // open=true shows the drawer
     onClose: PropTypes.func.isRequired, // fired when the drawer is closed
     width: PropTypes.number.isRequired, // the width includes px of the drawer
+    formatCreateDateTimeModifiedDateTime: PropTypes.func.isRequired, // required to format date/times, parameters: MultiFormatRequest, successHandler => MultiFormatResponse
 }
 
 export default withStyles(useStyles)(SpreadsheetDrawerWidget);
