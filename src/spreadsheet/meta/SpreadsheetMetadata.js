@@ -173,15 +173,17 @@ export default class SpreadsheetMetadata {
                 case SpreadsheetMetadata.STYLE:
                     unmarshaller = TextStyle.fromJson;
                     break;
+                case SpreadsheetMetadata.TEXT_FORMAT_PATTERN:
+                case SpreadsheetMetadata.TIME_FORMAT_PATTERN:
+                case SpreadsheetMetadata.TIME_PARSE_PATTERNS:
+                    unmarshaller = SpreadsheetPattern.fromJson;
+                    break;
                 case SpreadsheetMetadata.VIEWPORT_CELL:
                     unmarshaller = SpreadsheetCellReference.fromJson;
                     break;
                 case SpreadsheetMetadata.VIEWPORT_COORDINATES:
                     unmarshaller = SpreadsheetCoordinates.fromJson;
                     break;
-                case SpreadsheetMetadata.TEXT_FORMAT_PATTERN:
-                case SpreadsheetMetadata.TIME_FORMAT_PATTERN:
-                case SpreadsheetMetadata.TIME_PARSE_PATTERNS:
                 case SpreadsheetMetadata.TWO_DIGIT_YEAR:
                 case SpreadsheetMetadata.WIDTH:
                     unmarshaller = null; // TODO types not yet implemented
@@ -335,15 +337,17 @@ export default class SpreadsheetMetadata {
             case SpreadsheetMetadata.STYLE:
                 expectedClass = TextStyle;
                 break;
+            case SpreadsheetMetadata.TEXT_FORMAT_PATTERN:
+            case SpreadsheetMetadata.TIME_FORMAT_PATTERN:
+            case SpreadsheetMetadata.TIME_PARSE_PATTERNS:
+                expectedClass = SpreadsheetPattern;
+                break;
             case SpreadsheetMetadata.VIEWPORT_CELL:
                 expectedClass = SpreadsheetCellReference;
                 break;
             case SpreadsheetMetadata.VIEWPORT_COORDINATES:
                 expectedClass = SpreadsheetCoordinates;
                 break;
-            case SpreadsheetMetadata.TEXT_FORMAT_PATTERN:
-            case SpreadsheetMetadata.TIME_FORMAT_PATTERN:
-            case SpreadsheetMetadata.TIME_PARSE_PATTERNS:
             case SpreadsheetMetadata.TWO_DIGIT_YEAR:
             case SpreadsheetMetadata.WIDTH:
                 expectedClass = null; // TODO properties not yet supported
