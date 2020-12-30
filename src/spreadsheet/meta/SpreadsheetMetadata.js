@@ -4,6 +4,7 @@ import Equality from "../../Equality.js";
 import ExpressionNumberKind from "../../math/ExpressionNumberKind.js";
 import LocalDateTime from "../../datetime/LocalDateTime.js";
 import Locale from "../../util/Locale.js";
+import RoundingMode from "../../math/RoundingMode.js";
 import SpreadsheetCoordinates from "../SpreadsheetCoordinates";
 import SpreadsheetCellReference from "../reference/SpreadsheetCellReference";
 import SpreadsheetName from "../SpreadsheetName";
@@ -163,6 +164,9 @@ export default class SpreadsheetMetadata {
                 case SpreadsheetMetadata.SPREADSHEET_ID:
                     unmarshaller = null;
                     break;
+                case SpreadsheetMetadata.ROUNDING_MODE:
+                    unmarshaller = RoundingMode.fromJson;
+                    break;
                 case SpreadsheetMetadata.SPREADSHEET_NAME:
                     unmarshaller = SpreadsheetName.fromJson;
                     break;
@@ -175,7 +179,6 @@ export default class SpreadsheetMetadata {
                 case SpreadsheetMetadata.VIEWPORT_COORDINATES:
                     unmarshaller = SpreadsheetCoordinates.fromJson;
                     break;
-                case SpreadsheetMetadata.ROUNDING_MODE:
                 case SpreadsheetMetadata.TEXT_FORMAT_PATTERN:
                 case SpreadsheetMetadata.TIME_FORMAT_PATTERN:
                 case SpreadsheetMetadata.TIME_PARSE_PATTERNS:
@@ -320,6 +323,9 @@ export default class SpreadsheetMetadata {
                 checkPrecision(value);
                 expectedTypeOf = "number";
                 break;
+            case SpreadsheetMetadata.ROUNDING_MODE:
+                expectedClass = RoundingMode;
+                break;
             case SpreadsheetMetadata.SPREADSHEET_ID:
                 setFails(property);
                 break;
@@ -335,7 +341,6 @@ export default class SpreadsheetMetadata {
             case SpreadsheetMetadata.VIEWPORT_COORDINATES:
                 expectedClass = SpreadsheetCoordinates;
                 break;
-            case SpreadsheetMetadata.ROUNDING_MODE:
             case SpreadsheetMetadata.TEXT_FORMAT_PATTERN:
             case SpreadsheetMetadata.TIME_FORMAT_PATTERN:
             case SpreadsheetMetadata.TIME_PARSE_PATTERNS:
