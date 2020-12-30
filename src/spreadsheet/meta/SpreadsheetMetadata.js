@@ -192,7 +192,6 @@ export default class SpreadsheetMetadata {
                     checkWidth(value);
                     typed = value;
                     break;
-                    break;
                 default:
                     if(key.startsWith("color-")){
                         break;
