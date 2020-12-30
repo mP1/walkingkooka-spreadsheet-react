@@ -156,6 +156,10 @@ export default class SpreadsheetMetadata {
                 case SpreadsheetMetadata.POSITIVE_SIGN:
                     unmarshaller = Character.fromJson;
                     break;
+                case SpreadsheetMetadata.PRECISION:
+                    checkPrecision(value);
+                    typed = value;
+                    break;
                 case SpreadsheetMetadata.SPREADSHEET_ID:
                     unmarshaller = null;
                     break;
@@ -172,7 +176,6 @@ export default class SpreadsheetMetadata {
                     unmarshaller = SpreadsheetCoordinates.fromJson;
                     break;
                 case SpreadsheetMetadata.ROUNDING_MODE:
-                case SpreadsheetMetadata.PRECISION:
                 case SpreadsheetMetadata.TEXT_FORMAT_PATTERN:
                 case SpreadsheetMetadata.TIME_FORMAT_PATTERN:
                 case SpreadsheetMetadata.TIME_PARSE_PATTERNS:
@@ -243,7 +246,7 @@ export default class SpreadsheetMetadata {
         if(!property){
             throw new Error("Missing property");
         }
-        if(!value){
+        if(!value && value !== 0 && value !== ""){
             throw new Error("Missing value");
         }
 
@@ -313,6 +316,10 @@ export default class SpreadsheetMetadata {
             case SpreadsheetMetadata.POSITIVE_SIGN:
                 expectedClass = Character;
                 break;
+            case SpreadsheetMetadata.PRECISION:
+                checkPrecision(value);
+                expectedTypeOf = "number";
+                break;
             case SpreadsheetMetadata.SPREADSHEET_ID:
                 setFails(property);
                 break;
@@ -329,7 +336,6 @@ export default class SpreadsheetMetadata {
                 expectedClass = SpreadsheetCoordinates;
                 break;
             case SpreadsheetMetadata.ROUNDING_MODE:
-            case SpreadsheetMetadata.PRECISION:
             case SpreadsheetMetadata.TEXT_FORMAT_PATTERN:
             case SpreadsheetMetadata.TIME_FORMAT_PATTERN:
             case SpreadsheetMetadata.TIME_PARSE_PATTERNS:
@@ -489,6 +495,15 @@ function equals0(metadata, other) {
 function checkCurrencySymbol(currencySymbol) {
     if(typeof currencySymbol !== "string"){
         throw new Error("Expected string currency got " + currencySymbol);
+    }
+}
+
+function checkPrecision(precision) {
+    if(typeof precision !== "number"){
+        throw new Error("Expected number precision got " + precision);
+    }
+    if(precision <= 0){
+        throw new Error("Expected number precision > 0 got " + precision);
     }
 }
 
