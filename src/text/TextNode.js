@@ -1,4 +1,6 @@
-export default class TextNode {
+import SystemObject from "../SystemObject.js";
+
+export default class TextNode extends SystemObject {
 
     static TEXT = "text";
     static STYLE = "text-style-node";
@@ -7,6 +9,7 @@ export default class TextNode {
 
     // eslint-disable-next-line no-useless-constructor
     constructor() {
+        super();
     }
 
     /**
@@ -17,6 +20,10 @@ export default class TextNode {
             type: this.typeName(),
             value: this.value()
         };
+    }
+
+    toJsonWithType() {
+        return this.toJson();
     }
 
     toString() {

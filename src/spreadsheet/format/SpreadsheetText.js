@@ -1,6 +1,9 @@
 import Color from "../../color/Color.js";
+import SystemObject from "../../SystemObject.js";
 
-export default class SpreadsheetText {
+const TYPE_NAME = "spreadsheet-text";
+
+export default class SpreadsheetText extends SystemObject {
 
     static fromJson(json) {
         if(!json){
@@ -15,6 +18,7 @@ export default class SpreadsheetText {
     }
 
     constructor(color, text) {
+        super();
         if(typeof color !== "undefined" && !(color instanceof Color)){
             throw new Error("Expected Color color got " + color);
         }
@@ -49,6 +53,10 @@ export default class SpreadsheetText {
         return json;
     }
 
+    typeName() {
+        return TYPE_NAME;
+    }
+
     equals(other) {
         return this === other ||
             (other instanceof SpreadsheetText &&
@@ -60,3 +68,5 @@ export default class SpreadsheetText {
         return this.toJson();
     }
 }
+
+SpreadsheetText.register(TYPE_NAME, SpreadsheetText.fromJson);

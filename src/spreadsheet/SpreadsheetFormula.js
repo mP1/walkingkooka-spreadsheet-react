@@ -1,10 +1,12 @@
 import Equality from "../Equality.js";
 import SpreadsheetError from "./SpreadsheetError";
+import SystemObject from "../SystemObject.js";
 
+const TYPE_NAME = "spreadsheet-formula";
 /**
  * Represents a formula.
  */
-export default class SpreadsheetFormula {
+export default class SpreadsheetFormula extends SystemObject {
 
     static fromJson(json) {
         if(!json){
@@ -16,6 +18,7 @@ export default class SpreadsheetFormula {
     }
 
     constructor(text, value, error) {
+        super();
         checkText(text);
         if(error){
             if(value){
@@ -68,6 +71,10 @@ export default class SpreadsheetFormula {
         return json;
     }
 
+    typeName() {
+        return TYPE_NAME;
+    }
+
     equals(other) {
         return this === other ||
             (other instanceof SpreadsheetFormula &&
@@ -93,3 +100,5 @@ function checkText(text) {
         throw new Error("Expected string text got " + text);
     }
 }
+
+SystemObject.register(TYPE_NAME, SpreadsheetFormula.fromJson);

@@ -2,6 +2,7 @@
  * Used to create a new instance and then the given style and value.
  */
 import PixelLength from "./PixelLength";
+import SystemObject from "../SystemObject.js";
 
 function copyAndSet(styles, style, value) {
     let copy = new TextStyle(styles);
@@ -25,11 +26,13 @@ function fromPixel(text) {
     return text && PixelLength.parse(text);
 }
 
+const TYPE_NAME = "text-style";
+
 /**
  * Holds many style properties and values.
  */
 // TODO validate style and value.
-export default class TextStyle {
+export default class TextStyle extends SystemObject {
 
     static EMPTY = new TextStyle({});
 
@@ -38,6 +41,7 @@ export default class TextStyle {
     }
 
     constructor(styles) {
+        super();
         if(!styles){
             throw new Error("Missing styles");
         }
@@ -149,6 +153,10 @@ export default class TextStyle {
         return Object.assign({}, this.styles);
     }
 
+    typeName() {
+        return TYPE_NAME;
+    }
+
     accept(textNodeVisitor) {
         textNodeVisitor.visitTextStyle(this);
     }
@@ -165,3 +173,5 @@ export default class TextStyle {
 function toJsonString(textStyle) {
     return JSON.stringify(textStyle.toJson());
 }
+
+SystemObject.register(TYPE_NAME, TextStyle.fromJson);

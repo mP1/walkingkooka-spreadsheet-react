@@ -4,15 +4,18 @@ import React from "react";
 import SpreadsheetCellReference from "./reference/SpreadsheetCellReference";
 import SpreadsheetFormula from "./SpreadsheetFormula";
 import SpreadsheetCellFormat from "./SpreadsheetCellFormat";
+import SystemObject from "../SystemObject.js";
 import TableCell from "@material-ui/core/TableCell";
 import TextNode from "../text/TextNode";
 import TextStyle from "../text/TextStyle";
 import "./SpreadsheetCell.css";
 
+const TYPE_NAME = "spreadsheet-cell";
+
 /**
  * Represents a spreadsheet cell only reference and formula are required.
  */
-export default class SpreadsheetCell {
+export default class SpreadsheetCell extends SystemObject {
 
     /**
      * <pre>
@@ -54,6 +57,7 @@ export default class SpreadsheetCell {
     }
 
     constructor(reference, formula, style, format, formatted) {
+        super();
         if(!reference){
             throw new Error("Missing reference");
         }
@@ -138,6 +142,10 @@ export default class SpreadsheetCell {
         return json;
     }
 
+    typeName() {
+        return TYPE_NAME;
+    }
+
     /**
      * Renders a TableCell with the formatted content. The default style will typically come from {@link SpreadsheetMetadata}.
      */
@@ -193,3 +201,5 @@ function checkFormula(formula) {
         throw new Error("Expected SpreadsheetFormula formula got " + formula);
     }
 }
+
+SystemObject.register(TYPE_NAME, SpreadsheetCell.fromJson)

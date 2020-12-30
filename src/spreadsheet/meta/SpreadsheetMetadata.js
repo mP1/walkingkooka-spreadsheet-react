@@ -11,6 +11,7 @@ import SpreadsheetName from "../SpreadsheetName";
 import SpreadsheetPattern from "../format/SpreadsheetPattern.js";
 import SpreadsheetRange from "../reference/SpreadsheetRange.js";
 import TextStyle from "../../text/TextStyle";
+import SystemObject from "../../SystemObject.js";
 
 // these constants should match the constants in walkingkooka-spreadsheet/walkingkooka.spreadsheet.meta.SpreadsheetMetadataPropertyName.java
 const DEFAULTS = "_defaults";
@@ -39,10 +40,12 @@ function copyAndRemove(properties,
     return new SpreadsheetMetadata(copy);
 }
 
+const TYPE_NAME = "spreadsheet-metadata";
+
 /**
  * Immutable SpreadsheetMetadata, with getters and would be setters.
  */
-export default class SpreadsheetMetadata {
+export default class SpreadsheetMetadata extends SystemObject {
 
     static CREATOR = "creator";
     static CREATE_DATE_TIME = "create-date-time";
@@ -207,6 +210,7 @@ export default class SpreadsheetMetadata {
     }
 
     constructor(properties) {
+        super();
         this.properties = properties;
     }
 
@@ -479,6 +483,10 @@ export default class SpreadsheetMetadata {
         return json;
     }
 
+    typeName() {
+        return TYPE_NAME;
+    }
+
     equals(other) {
         return this === other || (other instanceof SpreadsheetMetadata && equals0(this, other));
     }
@@ -545,3 +553,5 @@ function checkWidth(width) {
 function setFails(propertyName) {
     throw new Error("set \"" + propertyName + "\" is not allowed");
 }
+
+SystemObject.register(TYPE_NAME, SpreadsheetMetadata.fromJson);

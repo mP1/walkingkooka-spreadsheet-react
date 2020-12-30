@@ -25,6 +25,10 @@ export default class LocalDateTime {
         return this.textValue;
     }
 
+    typeName() {
+        return "local-datetime";
+    }
+
     toJson() {
         return this.text();
     }

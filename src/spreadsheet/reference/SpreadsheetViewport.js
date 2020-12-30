@@ -3,8 +3,10 @@
  */
 import SpreadsheetCellReference from "./SpreadsheetCellReference";
 import SpreadsheetRectangle from "./SpreadsheetRectangle";
+import SystemObject from "../../SystemObject.js";
 
 const SEPARATOR = ":";
+const TYPE_NAME = "spreadsheet-viewport";
 
 export default class SpreadsheetViewport extends SpreadsheetRectangle {
 
@@ -76,6 +78,10 @@ export default class SpreadsheetViewport extends SpreadsheetRectangle {
         return this.reference() + SEPARATOR + this.width() + SEPARATOR + this.height();
     }
 
+    typeName() {
+        return TYPE_NAME;
+    }
+
     equals(other) {
         return this === other ||
             (other instanceof SpreadsheetViewport &&
@@ -88,3 +94,5 @@ export default class SpreadsheetViewport extends SpreadsheetRectangle {
         return this.toJson();
     }
 }
+
+SystemObject.register(TYPE_NAME, SpreadsheetViewport.fromJson);

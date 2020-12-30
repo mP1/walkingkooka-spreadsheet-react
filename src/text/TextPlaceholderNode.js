@@ -1,3 +1,4 @@
+import SystemObject from "../SystemObject.js";
 import TextLeafNode from "./TextLeafNode";
 import TextNode from "./TextNode";
 
@@ -40,3 +41,5 @@ export default class TextPlaceholderNode extends TextLeafNode {
                 this.value() === other.value());
     }
 }
+
+SystemObject.register(TextNode.PLACEHOLDER, TextPlaceholderNode.fromJson);

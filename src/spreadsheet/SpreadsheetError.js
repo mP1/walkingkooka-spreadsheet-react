@@ -1,13 +1,18 @@
 /**
  * Holds an error within processing of a spreadsheet cell.
  */
-export default class SpreadsheetError {
+import SystemObject from "../SystemObject.js";
+
+const TYPE_NAME = "spreadsheet-error";
+
+export default class SpreadsheetError extends SystemObject {
 
     static fromJson(message) {
         return message && new SpreadsheetError(message);
     }
 
     constructor(message) {
+        super();
         if(!message){
             throw new Error("Missing message");
         }
@@ -25,6 +30,10 @@ export default class SpreadsheetError {
         return this.message();
     }
 
+    typeName() {
+        return TYPE_NAME;
+    }
+
     equals(other) {
         return this === other ||
             (other instanceof SpreadsheetError &&
@@ -35,3 +44,5 @@ export default class SpreadsheetError {
         return this.message();
     }
 }
+
+SystemObject.register(TYPE_NAME, SpreadsheetError.fromJson);

@@ -1,8 +1,10 @@
 import SpreadsheetReferenceKind from "./SpreadsheetReferenceKind";
+import SystemObject from "../../SystemObject.js";
 
-export default class SpreadsheetColumnOrRowReference {
+export default class SpreadsheetColumnOrRowReference extends SystemObject {
 
     constructor(value, kind) {
+        super();
         const max = this.max();
 
         if(typeof value !== "number"){

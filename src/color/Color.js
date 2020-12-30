@@ -1,4 +1,8 @@
-export default class Color {
+import SystemObject from "../SystemObject.js";
+
+const TYPE_NAME = "color";
+
+export default class Color extends SystemObject {
 
     static fromJson(text) {
         return Color.parse(text);
@@ -9,6 +13,7 @@ export default class Color {
     }
 
     constructor(text) {
+        super();
         if(!text){
             throw new Error("Missing text");
         }
@@ -29,6 +34,10 @@ export default class Color {
         return this.text();
     }
 
+    typeName() {
+        return TYPE_NAME;
+    }
+
     equals(other) {
         return this === other ||
             (other instanceof Color &&
@@ -39,3 +48,5 @@ export default class Color {
         return this.toJson();
     }
 }
+
+SystemObject.register(TYPE_NAME, Color.fromJson);

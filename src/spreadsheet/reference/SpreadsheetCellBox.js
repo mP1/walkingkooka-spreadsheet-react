@@ -4,8 +4,11 @@
  */
 import SpreadsheetCellReference from "./SpreadsheetCellReference";
 import SpreadsheetViewport from "./SpreadsheetViewport.js";
+import SystemObject from "../../SystemObject.js";
 
-export default class SpreadsheetCellBox {
+const TYPE_NAME = "spreadsheet-cell-box";
+
+export default class SpreadsheetCellBox extends SystemObject {
 
     static fromJson(json) {
         if(!json){
@@ -22,6 +25,7 @@ export default class SpreadsheetCellBox {
     }
 
     constructor(reference, x, y, width, height) {
+        super();
         if(!reference){
             throw new Error("Missing reference");
         }
@@ -97,6 +101,10 @@ export default class SpreadsheetCellBox {
         };
     }
 
+    typeName() {
+        return TYPE_NAME;
+    }
+
     equals(other) {
         return this === other ||
             (other instanceof SpreadsheetCellBox &&
@@ -118,3 +126,5 @@ function doubleToString(number) {
         toString.substring(0, toString.length() - 2) :
         toString;
 }
+
+SystemObject.register(TYPE_NAME, SpreadsheetCellBox.fromJson);

@@ -4,6 +4,7 @@ import SpreadsheetCell from "../SpreadsheetCell";
 import SpreadsheetColumnReference from "../reference/SpreadsheetColumnReference";
 import SpreadsheetRange from "../reference/SpreadsheetRange";
 import SpreadsheetRowReference from "../reference/SpreadsheetRowReference";
+import SystemObject from "../../SystemObject.js";
 
 /**
  * A function used by fromJson to verify number column widths and row heights
@@ -15,10 +16,12 @@ const NUMBER = (value) => {
     return value;
 }
 
+const TYPE_NAME = "spreadsheet-delta";
+
 /**
  * Holds cells and window that have been updated following one or more cells being saved/updated
  */
-export default class SpreadsheetDelta {
+export default class SpreadsheetDelta extends SystemObject {
 
     static fromJson(json) {
         if(!json){
@@ -44,6 +47,7 @@ export default class SpreadsheetDelta {
     }
 
     constructor(cells, maxColumnWidths, maxRowHeights, window) {
+        super();
         if(!cells){
             throw new Error("Missing cells");
         }
@@ -157,6 +161,10 @@ export default class SpreadsheetDelta {
         return json;
     }
 
+    typeName() {
+        return TYPE_NAME;
+    }
+
     equals(other) {
         return this === other ||
             (other instanceof SpreadsheetDelta &&
@@ -171,3 +179,5 @@ export default class SpreadsheetDelta {
         return JSON.stringify(this.toJson());
     }
 }
+
+SystemObject.register(TYPE_NAME, SpreadsheetDelta.fromJson);

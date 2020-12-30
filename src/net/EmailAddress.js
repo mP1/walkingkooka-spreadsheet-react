@@ -1,14 +1,19 @@
+import SystemObject from "../SystemObject.js";
+
+const TYPE_NAME = "email";
 /**
  * Holds a java EmailAddress in json form.
  * This assumes various services are used to validate/format this value.
  */
-export default class EmailAddress {
+export default class EmailAddress extends SystemObject {
 
     static fromJson(text) {
         return new EmailAddress(text);
     }
 
     constructor(text) {
+        super();
+
         if(!text && text !== ""){
             throw new Error("Missing text");
         }
@@ -29,6 +34,10 @@ export default class EmailAddress {
         return this.text();
     }
 
+    typeName() {
+        return TYPE_NAME;
+    }
+
     equals(other) {
         return this === other ||
             (other instanceof EmailAddress &&
@@ -39,3 +48,5 @@ export default class EmailAddress {
         return this.text();
     }
 }
+
+SystemObject.register(TYPE_NAME, EmailAddress.fromJson);
