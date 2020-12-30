@@ -331,6 +331,16 @@ getSetPropertyTest(SpreadsheetMetadata.TIME_FORMAT_PATTERN, SpreadsheetPattern.f
 
 getSetPropertyTest(SpreadsheetMetadata.TIME_PARSE_PATTERNS, SpreadsheetPattern.fromJson("HH-MM-SS"));
 
+getSetPropertyTest(SpreadsheetMetadata.TWO_DIGIT_YEAR, 2);
+
+test("set two_digit_year -1 fails", () => {
+    expect(() => SpreadsheetMetadata.EMPTY.set(SpreadsheetMetadata.TWO_DIGIT_YEAR, -1)).toThrow("Expected number twoDigitYear >= 0 and <= 99 got -1");
+});
+
+test("set two_digit_year 100 fails", () => {
+    expect(() => SpreadsheetMetadata.EMPTY.set(SpreadsheetMetadata.TWO_DIGIT_YEAR, 100)).toThrow("Expected number twoDigitYear >= 0 and <= 99 got 100");
+});
+
 getSetPropertyTest(SpreadsheetMetadata.VIEWPORT_CELL, SpreadsheetCellReference.parse("B2"));
 
 getSetPropertyTest(SpreadsheetMetadata.VIEWPORT_COORDINATES, SpreadsheetCoordinates.parse("123.5,400"));
@@ -446,6 +456,7 @@ test("all setters & getters", () => {
     const textFormatPattern = SpreadsheetPattern.fromJson("@@");
     const timeFormatPattern = SpreadsheetPattern.fromJson("hhmm");
     const timeParsePatterns = SpreadsheetPattern.fromJson("hhmmss");
+    const twoDigitYear = 80;
     const coords = new SpreadsheetCoordinates(12, 34);
     const viewportCell = SpreadsheetCellReference.parse("A99");
 
@@ -473,6 +484,7 @@ test("all setters & getters", () => {
         .set(SpreadsheetMetadata.TEXT_FORMAT_PATTERN, textFormatPattern)
         .set(SpreadsheetMetadata.TIME_FORMAT_PATTERN, timeFormatPattern)
         .set(SpreadsheetMetadata.TIME_PARSE_PATTERNS, timeParsePatterns)
+        .set(SpreadsheetMetadata.TWO_DIGIT_YEAR, twoDigitYear)
         .set(SpreadsheetMetadata.VIEWPORT_CELL, viewportCell)
         .set(SpreadsheetMetadata.VIEWPORT_COORDINATES, coords);
 
@@ -499,6 +511,7 @@ test("all setters & getters", () => {
     expect(metadata.get(SpreadsheetMetadata.TEXT_FORMAT_PATTERN)).toEqual(textFormatPattern);
     expect(metadata.get(SpreadsheetMetadata.TIME_FORMAT_PATTERN)).toEqual(timeFormatPattern);
     expect(metadata.get(SpreadsheetMetadata.TIME_PARSE_PATTERNS)).toEqual(timeParsePatterns);
+    expect(metadata.get(SpreadsheetMetadata.TWO_DIGIT_YEAR)).toEqual(twoDigitYear);
     expect(metadata.get(SpreadsheetMetadata.VIEWPORT_CELL)).toEqual(viewportCell);
     expect(metadata.get(SpreadsheetMetadata.VIEWPORT_COORDINATES)).toEqual(coords);
 });
