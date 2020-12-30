@@ -433,6 +433,9 @@ test("all setters & getters", () => {
     const roundingMode = RoundingMode.FLOOR;
     const style = TextStyle.EMPTY
         .set("width", PixelLength.parse("123px"));
+    const textFormatPattern = SpreadsheetPattern.fromJson("@@");
+    const timeFormatPattern = SpreadsheetPattern.fromJson("hhmm");
+    const timeParsePatterns = SpreadsheetPattern.fromJson("hhmmss");
     const coords = new SpreadsheetCoordinates(12, 34);
     const viewportCell = SpreadsheetCellReference.parse("A99");
 
@@ -457,6 +460,9 @@ test("all setters & getters", () => {
         .set(SpreadsheetMetadata.ROUNDING_MODE, roundingMode)
         .set(SpreadsheetMetadata.SPREADSHEET_NAME, name)
         .set(SpreadsheetMetadata.STYLE, style)
+        .set(SpreadsheetMetadata.TEXT_FORMAT_PATTERN, textFormatPattern)
+        .set(SpreadsheetMetadata.TIME_FORMAT_PATTERN, timeFormatPattern)
+        .set(SpreadsheetMetadata.TIME_PARSE_PATTERNS, timeParsePatterns)
         .set(SpreadsheetMetadata.VIEWPORT_CELL, viewportCell)
         .set(SpreadsheetMetadata.VIEWPORT_COORDINATES, coords);
 
@@ -480,6 +486,9 @@ test("all setters & getters", () => {
     expect(metadata.get(SpreadsheetMetadata.ROUNDING_MODE)).toEqual(roundingMode);
     expect(metadata.get(SpreadsheetMetadata.SPREADSHEET_NAME)).toEqual(name);
     expect(metadata.get(SpreadsheetMetadata.STYLE)).toEqual(style);
+    expect(metadata.get(SpreadsheetMetadata.TEXT_FORMAT_PATTERN)).toEqual(textFormatPattern);
+    expect(metadata.get(SpreadsheetMetadata.TIME_FORMAT_PATTERN)).toEqual(timeFormatPattern);
+    expect(metadata.get(SpreadsheetMetadata.TIME_PARSE_PATTERNS)).toEqual(timeParsePatterns);
     expect(metadata.get(SpreadsheetMetadata.VIEWPORT_CELL)).toEqual(viewportCell);
     expect(metadata.get(SpreadsheetMetadata.VIEWPORT_COORDINATES)).toEqual(coords);
 });
