@@ -302,6 +302,16 @@ getSetPropertyTest(SpreadsheetMetadata.PERCENTAGE_SYMBOL, Character.fromJson("%"
 
 getSetPropertyTest(SpreadsheetMetadata.POSITIVE_SIGN, Character.fromJson("+"));
 
+getSetPropertyTest(SpreadsheetMetadata.PRECISION, 2);
+
+test("set precision 0 fails", () => {
+    expect(() => SpreadsheetMetadata.EMPTY.set(SpreadsheetMetadata.PRECISION, 0)).toThrow("Expected number precision > 0 got 0");
+});
+
+test("set precision -1 fails", () => {
+    expect(() => SpreadsheetMetadata.EMPTY.set(SpreadsheetMetadata.PRECISION, -1)).toThrow("Expected number precision > 0 got -1");
+});
+
 getPropertyTest(SpreadsheetMetadata.SPREADSHEET_ID, "123");
 
 getSetPropertyTest(SpreadsheetMetadata.SPREADSHEET_NAME, SpreadsheetName.fromJson("spreadsheet-name-123"));
@@ -416,6 +426,7 @@ test("all setters & getters", () => {
     const numberParsePatterns = SpreadsheetPattern.fromJson("#.##");
     const percentSymbol = Character.fromJson("%");
     const positiveSign = Character.fromJson("+");
+    const precision = 1;
     const style = TextStyle.EMPTY
         .set("width", PixelLength.parse("123px"));
     const coords = new SpreadsheetCoordinates(12, 34);
@@ -438,6 +449,7 @@ test("all setters & getters", () => {
         .set(SpreadsheetMetadata.NUMBER_PARSE_PATTERNS, numberParsePatterns)
         .set(SpreadsheetMetadata.PERCENTAGE_SYMBOL, percentSymbol)
         .set(SpreadsheetMetadata.POSITIVE_SIGN, positiveSign)
+        .set(SpreadsheetMetadata.PRECISION, precision)
         .set(SpreadsheetMetadata.SPREADSHEET_NAME, name)
         .set(SpreadsheetMetadata.STYLE, style)
         .set(SpreadsheetMetadata.VIEWPORT_CELL, viewportCell)
@@ -459,6 +471,7 @@ test("all setters & getters", () => {
     expect(metadata.get(SpreadsheetMetadata.NUMBER_PARSE_PATTERNS)).toEqual(numberParsePatterns);
     expect(metadata.get(SpreadsheetMetadata.PERCENTAGE_SYMBOL)).toEqual(percentSymbol);
     expect(metadata.get(SpreadsheetMetadata.POSITIVE_SIGN)).toEqual(positiveSign);
+    expect(metadata.get(SpreadsheetMetadata.PRECISION)).toEqual(precision);
     expect(metadata.get(SpreadsheetMetadata.SPREADSHEET_NAME)).toEqual(name);
     expect(metadata.get(SpreadsheetMetadata.STYLE)).toEqual(style);
     expect(metadata.get(SpreadsheetMetadata.VIEWPORT_CELL)).toEqual(viewportCell);
