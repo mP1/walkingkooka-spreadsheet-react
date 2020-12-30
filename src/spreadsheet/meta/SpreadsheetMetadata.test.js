@@ -275,6 +275,10 @@ getSetPropertyTest(SpreadsheetMetadata.DATE_PARSE_PATTERNS, SpreadsheetPattern.f
 
 getSetPropertyTest(SpreadsheetMetadata.DATETIME_OFFSET, 1234);
 
+getSetPropertyTest(SpreadsheetMetadata.DATETIME_FORMAT_PATTERN, SpreadsheetPattern.fromJson("YYYY-MM-DD HH-MM"));
+
+getSetPropertyTest(SpreadsheetMetadata.DATETIME_PARSE_PATTERNS, SpreadsheetPattern.fromJson("YYYY-MM-DD HH-MM-SS"));
+
 getSetPropertyTest(SpreadsheetMetadata.DECIMAL_SEPARATOR, Character.fromJson(","));
 
 getSetRemovePropertyTest(SpreadsheetMetadata.EDIT_CELL, SpreadsheetCellReference.parse("B97"));
@@ -320,6 +324,12 @@ getPropertyTest(SpreadsheetMetadata.SPREADSHEET_ID, "123");
 getSetPropertyTest(SpreadsheetMetadata.SPREADSHEET_NAME, SpreadsheetName.fromJson("spreadsheet-name-123"));
 
 getSetPropertyTest(SpreadsheetMetadata.STYLE, TextStyle.EMPTY.set("width", "50px"));
+
+getSetPropertyTest(SpreadsheetMetadata.TEXT_FORMAT_PATTERN, SpreadsheetPattern.fromJson("@@"));
+
+getSetPropertyTest(SpreadsheetMetadata.TIME_FORMAT_PATTERN, SpreadsheetPattern.fromJson("HH-MM"));
+
+getSetPropertyTest(SpreadsheetMetadata.TIME_PARSE_PATTERNS, SpreadsheetPattern.fromJson("HH-MM-SS"));
 
 getSetPropertyTest(SpreadsheetMetadata.VIEWPORT_CELL, SpreadsheetCellReference.parse("B2"));
 
