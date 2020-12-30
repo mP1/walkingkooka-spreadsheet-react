@@ -864,7 +864,8 @@ class App extends React.Component {
             windowDimensions: dimensions,
         });
 
-        this.aboveViewport.current.fireResize();
+        const widget = this.aboveViewport.current;
+        widget && widget.fireResize();
     }
 
     /**
