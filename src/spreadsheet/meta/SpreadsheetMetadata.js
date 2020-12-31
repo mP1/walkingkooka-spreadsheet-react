@@ -8,10 +8,18 @@ import RoundingMode from "../../math/RoundingMode.js";
 import SpreadsheetCoordinates from "../SpreadsheetCoordinates";
 import SpreadsheetCellReference from "../reference/SpreadsheetCellReference";
 import SpreadsheetName from "../SpreadsheetName";
-import SpreadsheetPattern from "../format/SpreadsheetPattern.js";
+import SpreadsheetDateFormatPattern from "../format/SpreadsheetDateFormatPattern.js";
+import SpreadsheetDateParsePatterns from "../format/SpreadsheetDateParsePatterns.js";
+import SpreadsheetDateTimeFormatPattern from "../format/SpreadsheetDateTimeFormatPattern.js";
+import SpreadsheetDateTimeParsePatterns from "../format/SpreadsheetDateTimeParsePatterns.js";
+import SpreadsheetNumberFormatPattern from "../format/SpreadsheetNumberFormatPattern.js";
+import SpreadsheetNumberParsePatterns from "../format/SpreadsheetNumberParsePatterns.js";
 import SpreadsheetRange from "../reference/SpreadsheetRange.js";
-import TextStyle from "../../text/TextStyle";
+import SpreadsheetTextFormatPattern from "../format/SpreadsheetTextFormatPattern.js";
+import SpreadsheetTimeFormatPattern from "../format/SpreadsheetTimeFormatPattern.js";
+import SpreadsheetTimeParsePatterns from "../format/SpreadsheetTimeParsePatterns.js";
 import SystemObject from "../../SystemObject.js";
+import TextStyle from "../../text/TextStyle";
 
 // these constants should match the constants in walkingkooka-spreadsheet/walkingkooka.spreadsheet.meta.SpreadsheetMetadataPropertyName.java
 const DEFAULTS = "_defaults";
@@ -109,15 +117,19 @@ export default class SpreadsheetMetadata extends SystemObject {
                     typed = value;
                     break;
                 case SpreadsheetMetadata.DATE_FORMAT_PATTERN:
+                    unmarshaller = SpreadsheetDateFormatPattern.fromJson;
+                    break;
                 case SpreadsheetMetadata.DATE_PARSE_PATTERNS:
-                    unmarshaller = SpreadsheetPattern.fromJson;
+                    unmarshaller = SpreadsheetDateParsePatterns.fromJson;
                     break;
                 case SpreadsheetMetadata.DATETIME_OFFSET:
                     typed = value;
                     break;
                 case SpreadsheetMetadata.DATETIME_FORMAT_PATTERN:
+                    unmarshaller = SpreadsheetDateTimeFormatPattern.fromJson;
+                    break;
                 case SpreadsheetMetadata.DATETIME_PARSE_PATTERNS:
-                    unmarshaller = SpreadsheetPattern.fromJson;
+                    unmarshaller = SpreadsheetDateTimeParsePatterns.fromJson;
                     break;
                 case DEFAULTS:
                     unmarshaller = SpreadsheetMetadata.fromJson;
@@ -153,8 +165,10 @@ export default class SpreadsheetMetadata extends SystemObject {
                     unmarshaller = Character.fromJson;
                     break;
                 case SpreadsheetMetadata.NUMBER_FORMAT_PATTERN:
+                    unmarshaller = SpreadsheetNumberFormatPattern.fromJson;
+                    break;
                 case SpreadsheetMetadata.NUMBER_PARSE_PATTERNS:
-                    unmarshaller = SpreadsheetPattern.fromJson;
+                    unmarshaller = SpreadsheetNumberParsePatterns.fromJson;
                     break;
                 case SpreadsheetMetadata.PERCENTAGE_SYMBOL:
                 case SpreadsheetMetadata.POSITIVE_SIGN:
@@ -177,9 +191,13 @@ export default class SpreadsheetMetadata extends SystemObject {
                     unmarshaller = TextStyle.fromJson;
                     break;
                 case SpreadsheetMetadata.TEXT_FORMAT_PATTERN:
+                    unmarshaller = SpreadsheetTextFormatPattern.fromJson;
+                    break;
                 case SpreadsheetMetadata.TIME_FORMAT_PATTERN:
+                    unmarshaller = SpreadsheetTimeFormatPattern.fromJson;
+                    break;
                 case SpreadsheetMetadata.TIME_PARSE_PATTERNS:
-                    unmarshaller = SpreadsheetPattern.fromJson;
+                    unmarshaller = SpreadsheetTimeParsePatterns.fromJson;
                     break;
                 case SpreadsheetMetadata.TWO_DIGIT_YEAR:
                     checkTwoDigitYear(value);
@@ -281,15 +299,19 @@ export default class SpreadsheetMetadata extends SystemObject {
                 expectedClass = SpreadsheetMetadata;
                 break;
             case SpreadsheetMetadata.DATE_FORMAT_PATTERN:
+                expectedClass = SpreadsheetDateFormatPattern;
+                break;
             case SpreadsheetMetadata.DATE_PARSE_PATTERNS:
-                expectedClass = SpreadsheetPattern;
+                expectedClass = SpreadsheetDateParsePatterns;
                 break;
             case SpreadsheetMetadata.DATETIME_OFFSET:
                 expectedTypeOf = "number";
                 break;
             case SpreadsheetMetadata.DATETIME_FORMAT_PATTERN:
+                expectedClass = SpreadsheetDateTimeFormatPattern;
+                break;
             case SpreadsheetMetadata.DATETIME_PARSE_PATTERNS:
-                expectedClass = SpreadsheetPattern;
+                expectedClass = SpreadsheetDateTimeParsePatterns;
                 break;
             case SpreadsheetMetadata.DECIMAL_SEPARATOR:
                 expectedClass = Character;
@@ -322,8 +344,10 @@ export default class SpreadsheetMetadata extends SystemObject {
                 expectedClass = Character;
                 break;
             case SpreadsheetMetadata.NUMBER_FORMAT_PATTERN:
+                expectedClass = SpreadsheetNumberFormatPattern;
+                break;
             case SpreadsheetMetadata.NUMBER_PARSE_PATTERNS:
-                expectedClass = SpreadsheetPattern;
+                expectedClass = SpreadsheetNumberParsePatterns;
                 break;
             case SpreadsheetMetadata.PERCENTAGE_SYMBOL:
             case SpreadsheetMetadata.POSITIVE_SIGN:
@@ -346,9 +370,13 @@ export default class SpreadsheetMetadata extends SystemObject {
                 expectedClass = TextStyle;
                 break;
             case SpreadsheetMetadata.TEXT_FORMAT_PATTERN:
+                expectedClass = SpreadsheetTextFormatPattern;
+                break;
             case SpreadsheetMetadata.TIME_FORMAT_PATTERN:
+                expectedClass = SpreadsheetTimeFormatPattern;
+                break;
             case SpreadsheetMetadata.TIME_PARSE_PATTERNS:
-                expectedClass = SpreadsheetPattern;
+                expectedClass = SpreadsheetTimeParsePatterns;
                 break;
             case SpreadsheetMetadata.TWO_DIGIT_YEAR:
                 checkTwoDigitYear(value);
