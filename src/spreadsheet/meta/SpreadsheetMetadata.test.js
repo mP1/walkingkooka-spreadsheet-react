@@ -9,8 +9,17 @@ import SpreadsheetCellReference from "../reference/SpreadsheetCellReference";
 import SpreadsheetCoordinates from "../SpreadsheetCoordinates";
 import SpreadsheetMetadata from "./SpreadsheetMetadata";
 import SpreadsheetName from "../SpreadsheetName";
-import SpreadsheetPattern from "../format/SpreadsheetPattern.js";
+import SpreadsheetDateFormatPattern from "../format/SpreadsheetDateFormatPattern.js";
+import SpreadsheetDateParsePatterns from "../format/SpreadsheetDateParsePatterns.js";
+import SpreadsheetDateTimeFormatPattern from "../format/SpreadsheetDateTimeFormatPattern.js";
+import SpreadsheetDateTimeParsePatterns from "../format/SpreadsheetDateTimeParsePatterns.js";
+import SpreadsheetNumberFormatPattern from "../format/SpreadsheetNumberFormatPattern.js";
+import SpreadsheetNumberParsePatterns from "../format/SpreadsheetNumberParsePatterns.js";
 import SpreadsheetRange from "../reference/SpreadsheetRange.js";
+import SpreadsheetTextFormatPattern from "../format/SpreadsheetTextFormatPattern.js";
+import SpreadsheetTimeFormatPattern from "../format/SpreadsheetTimeFormatPattern.js";
+import SpreadsheetTimeParsePatterns from "../format/SpreadsheetTimeParsePatterns.js";
+
 import TextStyle from "../../text/TextStyle";
 
 // EMPTY................................................................................................................
@@ -163,7 +172,7 @@ test("set value null fail", () => {
 })
 
 test("set invalid value fail", () => {
-    expect(() => SpreadsheetMetadata.EMPTY.set(SpreadsheetMetadata.DATE_FORMAT_PATTERN, 123)).toThrow("Expected SpreadsheetPattern property date-format-pattern got 123");
+    expect(() => SpreadsheetMetadata.EMPTY.set(SpreadsheetMetadata.DATE_FORMAT_PATTERN, 123)).toThrow("Expected SpreadsheetDateFormatPattern property date-format-pattern got 123");
 });
 
 test("set property same", () => {
@@ -269,15 +278,15 @@ getPropertyTest(SpreadsheetMetadata.CREATOR, EmailAddress.fromJson("creator@exam
 
 getSetPropertyTest(SpreadsheetMetadata.CURRENCY_SYMBOL, "AUD");
 
-getSetPropertyTest(SpreadsheetMetadata.DATE_FORMAT_PATTERN, SpreadsheetPattern.fromJson("YYYY-MM-DD"));
+getSetPropertyTest(SpreadsheetMetadata.DATE_FORMAT_PATTERN, SpreadsheetDateFormatPattern.fromJson("YYYY-MM-DD"));
 
-getSetPropertyTest(SpreadsheetMetadata.DATE_PARSE_PATTERNS, SpreadsheetPattern.fromJson("YYYY-MM-DD"));
+getSetPropertyTest(SpreadsheetMetadata.DATE_PARSE_PATTERNS, SpreadsheetDateParsePatterns.fromJson("YYYY-MM-DD"));
 
 getSetPropertyTest(SpreadsheetMetadata.DATETIME_OFFSET, 1234);
 
-getSetPropertyTest(SpreadsheetMetadata.DATETIME_FORMAT_PATTERN, SpreadsheetPattern.fromJson("YYYY-MM-DD HH-MM"));
+getSetPropertyTest(SpreadsheetMetadata.DATETIME_FORMAT_PATTERN, SpreadsheetDateTimeFormatPattern.fromJson("YYYY-MM-DD HH-MM"));
 
-getSetPropertyTest(SpreadsheetMetadata.DATETIME_PARSE_PATTERNS, SpreadsheetPattern.fromJson("YYYY-MM-DD HH-MM-SS"));
+getSetPropertyTest(SpreadsheetMetadata.DATETIME_PARSE_PATTERNS, SpreadsheetDateTimeParsePatterns.fromJson("YYYY-MM-DD HH-MM-SS"));
 
 getSetPropertyTest(SpreadsheetMetadata.DECIMAL_SEPARATOR, Character.fromJson(","));
 
@@ -299,9 +308,9 @@ getPropertyTest(SpreadsheetMetadata.MODIFIED_DATE_TIME, LocalDateTime.fromJson("
 
 getSetPropertyTest(SpreadsheetMetadata.NEGATIVE_SIGN, Character.fromJson("-"));
 
-getSetPropertyTest(SpreadsheetMetadata.NUMBER_FORMAT_PATTERN, SpreadsheetPattern.fromJson("#.#"));
+getSetPropertyTest(SpreadsheetMetadata.NUMBER_FORMAT_PATTERN, SpreadsheetNumberFormatPattern.fromJson("#.#"));
 
-getSetPropertyTest(SpreadsheetMetadata.NUMBER_PARSE_PATTERNS, SpreadsheetPattern.fromJson("#.##"));
+getSetPropertyTest(SpreadsheetMetadata.NUMBER_PARSE_PATTERNS, SpreadsheetNumberParsePatterns.fromJson("#.##"));
 
 getSetPropertyTest(SpreadsheetMetadata.PERCENTAGE_SYMBOL, Character.fromJson("%"));
 
@@ -325,11 +334,11 @@ getSetPropertyTest(SpreadsheetMetadata.SPREADSHEET_NAME, SpreadsheetName.fromJso
 
 getSetPropertyTest(SpreadsheetMetadata.STYLE, TextStyle.EMPTY.set("width", "50px"));
 
-getSetPropertyTest(SpreadsheetMetadata.TEXT_FORMAT_PATTERN, SpreadsheetPattern.fromJson("@@"));
+getSetPropertyTest(SpreadsheetMetadata.TEXT_FORMAT_PATTERN, SpreadsheetTextFormatPattern.fromJson("@@"));
 
-getSetPropertyTest(SpreadsheetMetadata.TIME_FORMAT_PATTERN, SpreadsheetPattern.fromJson("HH-MM"));
+getSetPropertyTest(SpreadsheetMetadata.TIME_FORMAT_PATTERN, SpreadsheetTimeFormatPattern.fromJson("HH-MM"));
 
-getSetPropertyTest(SpreadsheetMetadata.TIME_PARSE_PATTERNS, SpreadsheetPattern.fromJson("HH-MM-SS"));
+getSetPropertyTest(SpreadsheetMetadata.TIME_PARSE_PATTERNS, SpreadsheetTimeParsePatterns.fromJson("HH-MM-SS"));
 
 getSetPropertyTest(SpreadsheetMetadata.TWO_DIGIT_YEAR, 2);
 
@@ -443,9 +452,11 @@ function removePropertyFailsTest(propertyName) {
 
 test("all setters & getters", () => {
     const currencySymbol = "$AUD";
+    const dateFormatPattern = SpreadsheetDateFormatPattern.fromJson("yyyymmdd");
+    const dateParsePatterns = SpreadsheetDateParsePatterns.fromJson("yyyymmdd");
     const dateTimeOffset = 123;
-    const dateTimeFormatPattern = SpreadsheetPattern.fromJson("yyyymmddhhmm");
-    const dateTimeParsePatterns = SpreadsheetPattern.fromJson("yyyymmddhhmm");
+    const dateTimeFormatPattern = SpreadsheetDateTimeFormatPattern.fromJson("yyyymmddhhmm");
+    const dateTimeParsePatterns = SpreadsheetDateTimeParsePatterns.fromJson("yyyymmddhhmm");
     const decimalSeparator = Character.fromJson(".");
     const editCell = SpreadsheetCellReference.parse("Z99");
     const editRange = SpreadsheetRange.parse("A1:B2");
@@ -455,17 +466,17 @@ test("all setters & getters", () => {
     const locale = Locale.fromJson("EN-NZ");
     const name = new SpreadsheetName("Spreadsheet-name-123");
     const negativeSign = Character.fromJson("-");
-    const numberFormatPattern = SpreadsheetPattern.fromJson("#.##");
-    const numberParsePatterns = SpreadsheetPattern.fromJson("#.##");
+    const numberFormatPattern = SpreadsheetNumberFormatPattern.fromJson("#.##");
+    const numberParsePatterns = SpreadsheetNumberParsePatterns.fromJson("#.##");
     const percentSymbol = Character.fromJson("%");
     const positiveSign = Character.fromJson("+");
     const precision = 1;
     const roundingMode = RoundingMode.FLOOR;
     const style = TextStyle.EMPTY
         .set("width", PixelLength.parse("123px"));
-    const textFormatPattern = SpreadsheetPattern.fromJson("@@");
-    const timeFormatPattern = SpreadsheetPattern.fromJson("hhmm");
-    const timeParsePatterns = SpreadsheetPattern.fromJson("hhmmss");
+    const textFormatPattern = SpreadsheetTextFormatPattern.fromJson("@@");
+    const timeFormatPattern = SpreadsheetTimeFormatPattern.fromJson("hhmm");
+    const timeParsePatterns = SpreadsheetTimeParsePatterns.fromJson("hhmmss");
     const twoDigitYear = 80;
     const coords = new SpreadsheetCoordinates(12, 34);
     const viewportCell = SpreadsheetCellReference.parse("A99");
