@@ -1,8 +1,10 @@
 import SpreadsheetColumnOrRowReference from "./SpreadsheetColumnOrRowReference";
 import SpreadsheetReferenceKind from "./SpreadsheetReferenceKind";
+import SystemObject from "../../SystemObject.js";
 
 const RADIX = 26;
 const A = 65;
+const TYPE_NAME = "spreadsheet-column-reference";
 
 export default class SpreadsheetColumnReference extends SpreadsheetColumnOrRowReference {
 
@@ -55,6 +57,10 @@ export default class SpreadsheetColumnReference extends SpreadsheetColumnOrRowRe
         return SpreadsheetColumnReference.MAX;
     }
 
+    typeName() {
+        return TYPE_NAME;
+    }
+
     toString() {
         return this.kind().prefix() + toString0(this.value());
     }
@@ -69,3 +75,5 @@ function toString0(value) {
     }
     return s + String.fromCharCode(value % RADIX + A);
 }
+
+SystemObject.register(TYPE_NAME, SpreadsheetColumnReference.fromJson);

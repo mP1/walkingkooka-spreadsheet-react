@@ -1,6 +1,8 @@
 import SpreadsheetCellReference from "./SpreadsheetCellReference";
 import SpreadsheetRectangle from "./SpreadsheetRectangle";
+import SystemObject from "../../SystemObject.js";
 
+const TYPE_NAME = "spreadsheet-range";
 /**
  * A range is marked by two cell references.
  */
@@ -72,6 +74,10 @@ export default class SpreadsheetRange extends SpreadsheetRectangle {
             begin.toJson() + ":" + end.toJson();
     }
 
+    typeName() {
+        return TYPE_NAME;
+    }
+
     equals(other) {
         return this === other || (other instanceof SpreadsheetRange && this.begin().equals(other.begin()) && this.end().equals(other.end()));
     }
@@ -80,3 +86,5 @@ export default class SpreadsheetRange extends SpreadsheetRectangle {
         return this.toJson();
     }
 }
+
+SystemObject.register(TYPE_NAME, SpreadsheetRange.fromJson);

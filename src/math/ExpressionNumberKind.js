@@ -1,4 +1,8 @@
-export default class ExpressionNumberKind {
+import SystemObject from "../SystemObject.js";
+
+const TYPE_NAME = "expression-number-kind";
+
+export default class ExpressionNumberKind extends SystemObject {
 
     static BIG_DECIMAL = new ExpressionNumberKind("BIG_DECIMAL");
     static DOUBLE = new ExpressionNumberKind("DOUBLE");
@@ -23,6 +27,7 @@ export default class ExpressionNumberKind {
     }
 
     constructor(name) {
+        super();
         this.name = name;
     }
 
@@ -34,7 +39,13 @@ export default class ExpressionNumberKind {
         return this.name;
     }
 
+    typeName() {
+        return TYPE_NAME;
+    }
+
     toString() {
         return this.name;
     }
 }
+
+SystemObject.register(TYPE_NAME, ExpressionNumberKind.fromJson);

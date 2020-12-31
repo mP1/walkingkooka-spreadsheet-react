@@ -4,13 +4,18 @@
  * No methods are available to extract the individual components within the locale.
  * TODO split on underscore, basic character validation etc
  */
-export default class Locale {
+import SystemObject from "../SystemObject.js";
+
+const TYPE_NAME = "locale";
+
+export default class Locale extends SystemObject {
 
     static fromJson(text) {
         return new Locale(text);
     }
 
     constructor(text) {
+        super();
         if(!text && text !== ""){
             throw new Error("Missing text");
         }
@@ -28,6 +33,10 @@ export default class Locale {
         return this.text();
     }
 
+    typeName() {
+        return TYPE_NAME;
+    }
+
     equals(other) {
         return this === other ||
             (other instanceof Locale &&
@@ -38,3 +47,5 @@ export default class Locale {
         return this.text();
     }
 }
+
+SystemObject.register(TYPE_NAME, Locale.fromJson);

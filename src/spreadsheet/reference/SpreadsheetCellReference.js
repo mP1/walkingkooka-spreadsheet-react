@@ -4,6 +4,7 @@
 import SpreadsheetColumnReference from "./SpreadsheetColumnReference";
 import SpreadsheetReferenceKind from "./SpreadsheetReferenceKind";
 import SpreadsheetRowReference from "./SpreadsheetRowReference";
+import SystemObject from "../../SystemObject.js";
 
 function checkColumn(column) {
     if(!column){
@@ -23,7 +24,9 @@ function checkRow(row) {
     }
 }
 
-export default class SpreadsheetCellReference {
+const TYPE_NAME = "spreadsheet-cell-reference";
+
+export default class SpreadsheetCellReference extends SystemObject {
 
     static fromJson(json) {
         return SpreadsheetCellReference.parse(json);
@@ -63,6 +66,7 @@ export default class SpreadsheetCellReference {
     }
 
     constructor(column, row) {
+        super();
         checkColumn(column);
         checkRow(row);
 
@@ -105,6 +109,10 @@ export default class SpreadsheetCellReference {
         return this.toString();
     }
 
+    typeName() {
+        return TYPE_NAME;
+    }
+
     equals(other) {
         return this === other || (other instanceof SpreadsheetCellReference && this.column().equals(other.column()) && this.row().equals(other.row()));
     }
@@ -113,3 +121,5 @@ export default class SpreadsheetCellReference {
         return this.column().toString() + this.row();
     }
 }
+
+SystemObject.register(TYPE_NAME, SpreadsheetCellReference.fromJson);

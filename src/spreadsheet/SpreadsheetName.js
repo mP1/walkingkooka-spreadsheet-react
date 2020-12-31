@@ -1,7 +1,11 @@
 /**
  * Holds a spreadsheet name, no validation is performed on the text
  */
-export default class SpreadsheetName {
+import SystemObject from "../SystemObject.js";
+
+const TYPE_NAME = "spreadsheet-name";
+
+export default class SpreadsheetName extends SystemObject {
 
     static fromJson(value) {
         return SpreadsheetName.parse(value);
@@ -12,6 +16,7 @@ export default class SpreadsheetName {
     }
 
     constructor(value) {
+        super();
         if(!value){
             throw new Error("Missing value");
         }
@@ -29,6 +34,10 @@ export default class SpreadsheetName {
         return this.value();
     }
 
+    typeName() {
+        return TYPE_NAME;
+    }
+
     equals(other) {
         return this === other || (other instanceof SpreadsheetName && this.value() === other.value());
     }
@@ -37,3 +46,5 @@ export default class SpreadsheetName {
         return this.value();
     }
 }
+
+SystemObject.register(TYPE_NAME, SpreadsheetName.fromJson);

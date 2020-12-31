@@ -1,7 +1,11 @@
+import SystemObject from "../SystemObject.js";
+
+const TYPE_NAME = "rounding-mode";
+
 /**
  * Represents instance of the java enum RoundingMode.
  */
-export default class RoundingMode {
+export default class RoundingMode extends SystemObject {
 
     static UP = new RoundingMode("UP");
     static DOWN = new RoundingMode("DOWN");
@@ -44,6 +48,7 @@ export default class RoundingMode {
     }
 
     constructor(name) {
+        super();
         this.name = name;
     }
 
@@ -55,7 +60,13 @@ export default class RoundingMode {
         return this.name;
     }
 
+    typeName() {
+        return TYPE_NAME;
+    }
+
     toString() {
         return this.name;
     }
 }
+
+SystemObject.register(TYPE_NAME, RoundingMode.fromJson);

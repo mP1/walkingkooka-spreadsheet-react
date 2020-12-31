@@ -1,4 +1,7 @@
 import Length from "./Length";
+import SystemObject from "../SystemObject.js";
+
+const TYPE_NAME = "pixel-length";
 
 /**
  * Holds a pixel length value.
@@ -36,6 +39,10 @@ export default class PixelLength extends Length {
         return this.valueValue;
     }
 
+    typeName() {
+        return TYPE_NAME;
+    }
+
     equals(other) {
         return this === other ||
             (other instanceof PixelLength &&
@@ -46,3 +53,5 @@ export default class PixelLength extends Length {
         return this.value() + "px";
     }
 }
+
+SystemObject.register(TYPE_NAME, PixelLength.fromJson);

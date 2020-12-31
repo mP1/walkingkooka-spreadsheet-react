@@ -2,6 +2,7 @@ import Equality from "../Equality.js";
 import TextNode from "./TextNode";
 import TextStyle from "./TextStyle";
 
+// TODO SystemObject.register
 export default class TextStyleNameNode extends TextNode {
 
     constructor(styleName, children) {

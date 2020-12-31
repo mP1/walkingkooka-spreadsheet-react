@@ -1,13 +1,18 @@
 /**
  * Holds a java Character expecting a string of length 1.
  */
-export default class Character {
+import SystemObject from "./SystemObject.js";
+
+const TYPE_NAME = "character";
+
+export default class Character extends SystemObject {
 
     static fromJson(text) {
         return new Character(text);
     }
 
     constructor(text) {
+        super();
         if(!text && text !== ""){
             throw new Error("Missing text");
         }
@@ -32,6 +37,10 @@ export default class Character {
         return this.text();
     }
 
+    typeName() {
+        return TYPE_NAME;
+    }
+
     equals(other) {
         return this === other ||
             (other instanceof Character &&
@@ -42,3 +51,5 @@ export default class Character {
         return this.text();
     }
 }
+
+SystemObject.register(TYPE_NAME, Character.fromJson);
