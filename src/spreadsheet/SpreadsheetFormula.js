@@ -14,7 +14,11 @@ export default class SpreadsheetFormula extends SystemObject {
         }
 
         const {text, value, error} = json;
-        return new SpreadsheetFormula(text, value, SpreadsheetError.fromJson(error));
+        return new SpreadsheetFormula(
+            text,
+            value && SystemObject.fromJsonWithType(value),
+            SpreadsheetError.fromJson(error)
+        );
     }
 
     constructor(text, value, error) {
@@ -58,12 +62,12 @@ export default class SpreadsheetFormula extends SystemObject {
             text: this.textValue
         };
 
-        let value = this.valueValue;
+        let value = this.value();
         if(value){
-            json.value = value;
+            json.value = SystemObject.toJsonWithType(value);
         }
 
-        let error = this.spreadsheetError;
+        let error = this.error();
         if(error){
             json.error = error.toJson();
         }
