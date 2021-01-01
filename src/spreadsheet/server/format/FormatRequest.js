@@ -29,7 +29,7 @@ export default class FormatRequest extends SystemObject {
 
     constructor(value, pattern) {
         super();
-        if(!value && (value !== "" && value !== 0)){
+        if(null == value){
             throw new Error("Missing value");
         }
         if(!pattern){
