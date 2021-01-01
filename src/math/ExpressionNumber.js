@@ -13,7 +13,7 @@ export default class ExpressionNumber extends SystemObject {
 
     constructor(text) {
         super();
-        if(!text && text !== ""){
+        if(null == text){
             throw new Error("Missing text");
         }
         if(text === ""){
