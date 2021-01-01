@@ -48,6 +48,35 @@ export default class SystemObject {
         return unmarshaller(value);
     }
 
+    /**
+     * Unmarshalls the json array using the element factory function.
+     */
+    static fromJsonList(json, element) {
+        if(!json){
+            throw new Error("Missing array");
+        }
+        if(!Array.isArray(json)){
+            throw new Error("Expected array json got " + json);
+        }
+        if(!element){
+            throw new Error("Missing element");
+        }
+        if(typeof element !== "function"){
+            throw new Error("Expected function element got " + element);
+        }
+        return json.map(e => element(e));
+    }
+
+    /**
+     * Unmarshalls a json array where each element has its type set.
+     */
+    static fromJsonListWithType(json) {
+        return SystemObject.fromJsonList(
+            json,
+            SystemObject.fromJsonWithType
+        );
+    }
+
     // eslint-disable-next-line no-useless-constructor
     constructor() {
     }
