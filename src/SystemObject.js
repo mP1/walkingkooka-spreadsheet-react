@@ -1,6 +1,8 @@
 /**
  * Base class for all classes defining some shared members.
  */
+const typeNameToFromJson = new Map();
+
 export default class SystemObject {
 
     /**
@@ -70,4 +72,11 @@ export default class SystemObject {
     }
 }
 
-const typeNameToFromJson = new Map();
+function unmarshallString(json) {
+    if(typeof json !== "string"){
+        throw new Error("Expected string got " + JSON.stringify(json));
+    }
+    return json;
+}
+
+SystemObject.register("string", unmarshallString);
