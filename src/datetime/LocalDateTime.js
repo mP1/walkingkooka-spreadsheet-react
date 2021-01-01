@@ -2,13 +2,16 @@
  * Holds a java LocalDateTime date/time in json form.
  * This assumes various services are used to format this value.
  */
-export default class LocalDateTime {
+import SystemObject from "../SystemObject.js";
+
+export default class LocalDateTime extends SystemObject {
 
     static fromJson(text) {
         return new LocalDateTime(text);
     }
 
     constructor(text) {
+        super();
         if(!text && text !== ""){
             throw new Error("Missing text");
         }
