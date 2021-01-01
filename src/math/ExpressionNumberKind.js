@@ -1,4 +1,5 @@
 import SystemObject from "../SystemObject.js";
+import ExpressionNumber from "./ExpressionNumber.js";
 
 const TYPE_NAME = "expression-number-kind";
 
@@ -49,3 +50,4 @@ export default class ExpressionNumberKind extends SystemObject {
 }
 
 SystemObject.register(TYPE_NAME, ExpressionNumberKind.fromJson);
+ExpressionNumber.fromJson("0"); // force registering of ExpressionNumber
