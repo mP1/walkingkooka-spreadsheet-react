@@ -78,7 +78,7 @@ export default class SystemObject {
     }
 
     static toJsonWithType(value) {
-        if(!value && (value !== "" || value !== 0)){
+        if(null == value){
             throw new Error("Missing value");
         }
 

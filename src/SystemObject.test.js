@@ -213,7 +213,7 @@ test("toJsonWithType", () => {
         });
 });
 
-// toJsonWithType.......................................................................................................
+// static toJsonWithType................................................................................................
 
 test("static toJsonWithType with undefined fails", () => {
     expect(
@@ -251,6 +251,19 @@ test("static toJsonWithType SystemObject #2", () => {
     );
 });
 
+test("static toJsonWithType empty string", () => {
+    const string = "";
+
+    expect(
+        SystemObject.toJsonWithType(string)
+    ).toStrictEqual(
+        {
+            type: "string",
+            value: string,
+        }
+    );
+});
+
 test("static toJsonWithType string", () => {
     const string = "ABC123";
 
@@ -260,6 +273,19 @@ test("static toJsonWithType string", () => {
         {
             type: "string",
             value: string,
+        }
+    );
+});
+
+test("static toJsonWithType zero number", () => {
+    const number = 0;
+
+    expect(
+        SystemObject.toJsonWithType(number)
+    ).toStrictEqual(
+        {
+            type: "double",
+            value: number,
         }
     );
 });
