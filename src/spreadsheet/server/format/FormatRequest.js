@@ -52,7 +52,7 @@ export default class FormatRequest extends SystemObject {
 
     toJson() {
         return {
-            value: this.value().toJsonWithType(),
+            value: SystemObject.toJsonWithType(this.value()),
             pattern: this.pattern().toJsonWithType(),
         };
     }
