@@ -21,7 +21,7 @@ export default class MultiFormatRequest extends SystemObject {
             throw new Error("Expected array requests got " + requests);
         }
         requests.forEach(r => {
-            if(!r instanceof FormatRequest){
+            if(!(r instanceof FormatRequest)){
                 throw new Error("Expected only FormatRequest requests got " + r);
             }
         });
