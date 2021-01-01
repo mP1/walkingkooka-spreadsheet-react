@@ -1,9 +1,9 @@
 import SpreadsheetParsePatterns from "./SpreadsheetParsePatterns.js";
 import SystemObject from "../../SystemObject.js";
 
-const TYPE_NAME = "spreadsheet-number-parse-patterns";
-
 export default class SpreadsheetNumberParsePatterns extends SpreadsheetParsePatterns {
+
+    static TYPE_NAME = "spreadsheet-number-parse-patterns";
 
     static fromJson(pattern) {
         return new SpreadsheetNumberParsePatterns(pattern);
@@ -21,7 +21,7 @@ export default class SpreadsheetNumberParsePatterns extends SpreadsheetParsePatt
     }
 
     typeName() {
-        return TYPE_NAME;
+        return SpreadsheetNumberParsePatterns.TYPE_NAME;
     }
 
     equals(other) {
@@ -31,4 +31,4 @@ export default class SpreadsheetNumberParsePatterns extends SpreadsheetParsePatt
     }
 }
 
-SystemObject.register(TYPE_NAME, SpreadsheetNumberParsePatterns.fromJson);
+SystemObject.register(SpreadsheetNumberParsePatterns.TYPE_NAME, SpreadsheetNumberParsePatterns.fromJson);

@@ -1,9 +1,9 @@
 import SpreadsheetFormatPattern from "./SpreadsheetFormatPattern.js";
 import SystemObject from "../../SystemObject.js";
 
-const TYPE_NAME = "spreadsheet-date-format-pattern";
-
 export default class SpreadsheetDateFormatPattern extends SpreadsheetFormatPattern {
+
+    static TYPE_NAME = "spreadsheet-date-format-pattern";
 
     static fromJson(pattern) {
         return new SpreadsheetDateFormatPattern(pattern);
@@ -21,7 +21,7 @@ export default class SpreadsheetDateFormatPattern extends SpreadsheetFormatPatte
     }
 
     typeName() {
-        return TYPE_NAME;
+        return SpreadsheetDateFormatPattern.TYPE_NAME;
     }
 
     equals(other) {
@@ -31,4 +31,4 @@ export default class SpreadsheetDateFormatPattern extends SpreadsheetFormatPatte
     }
 }
 
-SystemObject.register(TYPE_NAME, SpreadsheetDateFormatPattern.fromJson);
+SystemObject.register(SpreadsheetDateFormatPattern.TYPE_NAME, SpreadsheetDateFormatPattern.fromJson);

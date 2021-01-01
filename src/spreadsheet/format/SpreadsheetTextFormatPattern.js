@@ -1,9 +1,9 @@
 import SpreadsheetFormatPattern from "./SpreadsheetFormatPattern.js";
 import SystemObject from "../../SystemObject.js";
 
-const TYPE_NAME="spreadsheet-text-format-pattern";
-
 export default class SpreadsheetTextFormatPattern extends SpreadsheetFormatPattern {
+
+    static TYPE_NAME = "spreadsheet-text-format-pattern";
 
     static fromJson(pattern) {
         return new SpreadsheetTextFormatPattern(pattern);
@@ -21,7 +21,7 @@ export default class SpreadsheetTextFormatPattern extends SpreadsheetFormatPatte
     }
 
     typeName() {
-        return TYPE_NAME;
+        return SpreadsheetTextFormatPattern.TYPE_NAME;
     }
 
     equals(other) {
@@ -31,4 +31,4 @@ export default class SpreadsheetTextFormatPattern extends SpreadsheetFormatPatte
     }
 }
 
-SystemObject.register(TYPE_NAME, SpreadsheetTextFormatPattern.fromJson);
+SystemObject.register(SpreadsheetTextFormatPattern.TYPE_NAME, SpreadsheetTextFormatPattern.fromJson);
