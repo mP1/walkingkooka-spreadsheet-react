@@ -77,6 +77,45 @@ export default class SystemObject {
         );
     }
 
+    static toJsonWithType(value) {
+        if(!value && (value !== "" || value !== 0)){
+            throw new Error("Missing value");
+        }
+
+        let json;
+
+        if(value instanceof SystemObject){
+            json = value.toJsonWithType();
+        }else {
+            const type = typeof value;
+            switch(type) {
+                case "boolean":
+                    json = {
+                        type: "boolean",
+                        value: value,
+                    };
+                    break;
+                case "string":
+                    json = {
+                        type: "string",
+                        value: value,
+                    };
+                    break;
+                case "number":
+                    json = {
+                        type: "double",
+                        value: value,
+                    };
+                    break;
+                case "object":
+                case "function":
+                    throw new Error("Unsupported type " + value);
+            }
+        }
+
+        return json;
+    }
+
     // eslint-disable-next-line no-useless-constructor
     constructor() {
     }

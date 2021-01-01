@@ -197,3 +197,67 @@ test("toJsonWithType", () => {
             value: character.toJson(),
         });
 });
+
+// toJsonWithType.......................................................................................................
+
+test("static toJsonWithType with undefined fails", () => {
+    expect(
+        () => SystemObject.toJsonWithType(undefined)
+    ).toThrow("Missing value");
+});
+
+test("static toJsonWithType with null fails", () => {
+    expect(
+        () => SystemObject.toJsonWithType(null)
+    ).toThrow("Missing value");
+});
+
+test("static toJsonWithType SystemObject", () => {
+    const character = new Character("A");
+    expect(
+        SystemObject.toJsonWithType(character)
+    ).toStrictEqual(
+        {
+            type: character.typeName(),
+            value: character.toJson(),
+        }
+    );
+});
+
+test("static toJsonWithType SystemObject #2", () => {
+    const localDateTime = LocalDateTime.fromJson("2000-12-31 12:58:59")
+    expect(
+        SystemObject.toJsonWithType(localDateTime)
+    ).toStrictEqual(
+        {
+            type: localDateTime.typeName(),
+            value: localDateTime.toJson(),
+        }
+    );
+});
+
+test("static toJsonWithType string", () => {
+    const string = "ABC123";
+
+    expect(
+        SystemObject.toJsonWithType(string)
+    ).toStrictEqual(
+        {
+            type: "string",
+            value: string,
+        }
+    );
+});
+
+test("static toJsonWithType number", () => {
+    const number = 123.5;
+
+    expect(
+        SystemObject.toJsonWithType(number)
+    ).toStrictEqual(
+        {
+            type: "double",
+            value: number,
+        }
+    );
+});
