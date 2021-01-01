@@ -124,6 +124,23 @@ test("toJson", () => {
         });
 });
 
+// toJsonWithType.......................................................................................................
+
+test("toJson", () => {
+    const v = value();
+    const p = pattern();
+
+    expect(new FormatRequest(v, p)
+        .toJsonWithType())
+        .toStrictEqual({
+            type: "spreadsheet-format-request",
+            value: {
+                value: v.toJsonWithType(),
+                pattern: p.toJsonWithType(),
+            }
+        });
+});
+
 // equals...............................................................................................................
 
 test("equals undefined false", () => {

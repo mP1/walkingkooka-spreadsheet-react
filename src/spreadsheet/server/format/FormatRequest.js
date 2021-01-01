@@ -2,6 +2,8 @@ import Equality from "../../../Equality.js";
 import SpreadsheetPattern from "../../format/SpreadsheetPattern.js";
 import SystemObject from "../../../SystemObject.js";
 
+const TYPE_NAME = "spreadsheet-format-request";
+
 export default class FormatRequest extends SystemObject {
 
     static fromJson(json) {
@@ -55,6 +57,10 @@ export default class FormatRequest extends SystemObject {
         };
     }
 
+    typeName() {
+        return TYPE_NAME;
+    }
+
     equals(other) {
         return this === other ||
             (other instanceof FormatRequest &&
@@ -67,3 +73,5 @@ export default class FormatRequest extends SystemObject {
         return this.toJson();
     }
 }
+
+SystemObject.register(TYPE_NAME, FormatRequest.fromJson);
