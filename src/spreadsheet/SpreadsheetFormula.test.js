@@ -1,5 +1,6 @@
 import SpreadsheetError from "./SpreadsheetError";
 import SpreadsheetFormula from "./SpreadsheetFormula";
+import SystemObject from "../SystemObject.js";
 
 const text = "###-123-abc";
 const value = 1.5;
@@ -24,7 +25,16 @@ test("create text empty", () => {
 });
 
 test("create text, value", () => {
-    check(new SpreadsheetFormula(text, value), text, value, undefined, {text: text, value: value})
+    check(
+        new SpreadsheetFormula(text, value),
+        text,
+        value,
+        undefined,
+        {
+            text: text,
+            value: SystemObject.toJsonWithType(value)
+        }
+    );
 });
 
 test("create text, error", () => {
@@ -69,20 +79,46 @@ test("fromJson null", () => {
 test("json only text", () => {
     const spreadsheetFormula = new SpreadsheetFormula(text);
 
-    check(spreadsheetFormula, text, undefined, undefined, {text: text});
+    check(
+        spreadsheetFormula,
+        text,
+        undefined,
+        undefined,
+        {
+            text: text
+        }
+    );
 });
 
 test("json text & value", () => {
     const spreadsheetFormula = new SpreadsheetFormula(text, value);
 
-    check(spreadsheetFormula, text, value, undefined, {text: text, value: value});
+    check(
+        spreadsheetFormula,
+        text,
+        value,
+        undefined,
+        {
+            text: text,
+            value: SystemObject.toJsonWithType(value),
+        }
+    );
 });
 
 test("json text & error", () => {
     const error = new SpreadsheetError("Error message #1");
     const spreadsheetFormula = new SpreadsheetFormula(text, undefined, error);
 
-    check(spreadsheetFormula, text, undefined, error, {text: text, error: error.toJson()});
+    check(
+        spreadsheetFormula,
+        text,
+        undefined,
+        error,
+        {
+            text: text,
+            error: error.toJson()
+        }
+    );
 });
 
 // helpers..............................................................................................................
