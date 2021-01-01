@@ -17,7 +17,7 @@ export default class SpreadsheetFormula extends SystemObject {
         return new SpreadsheetFormula(
             text,
             null != value ? SystemObject.fromJsonWithType(value) : value,
-            SpreadsheetError.fromJson(error)
+            null != error ? SpreadsheetError.fromJson(error) : error
         );
     }
 

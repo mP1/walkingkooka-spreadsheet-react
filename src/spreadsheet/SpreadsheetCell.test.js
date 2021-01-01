@@ -1,11 +1,12 @@
-import SpreadsheetCell from "./SpreadsheetCell";
+import React from "react";
+import SpreadsheetCell from "./SpreadsheetCell.js";
 import SpreadsheetCellFormat from "./SpreadsheetCellFormat";
 import SpreadsheetCellReference from "./reference/SpreadsheetCellReference";
 import SpreadsheetFormula from "./SpreadsheetFormula";
-import React from "react";
 import TableCell from "@material-ui/core/TableCell";
 import Text from "../text/Text";
 import TextStyle from "../text/TextStyle";
+import systemObjectTesting from "../SystemObjectTesting.js";
 
 function cell() {
     return new SpreadsheetCell(reference(),
@@ -38,6 +39,28 @@ function formatted() {
 function onClick() {
     return true;
 }
+
+systemObjectTesting(
+    cell(),
+    new SpreadsheetCell(
+        SpreadsheetCellReference.parse("Z99"),
+        formula(),
+        style(),
+        format(),
+        new Text("different")
+    ),
+    SpreadsheetCell.fromJson,
+    "Missing json",
+    "spreadsheet-cell",
+    {
+        "A99": {
+            formula: formula().toJson(),
+            format: format().toJson(),
+            formatted: formatted().toJson(),
+            style: style().toJson(),
+        }
+    }
+);
 
 // constructor(reference, formula, style, format, formatted) {
 
@@ -176,10 +199,6 @@ test("create ABSOLUTE reference, formula, style, format, formatted", () => {
 });
 
 // fromJson.............................................................................................................
-
-test("fromJson null fails", () => {
-    expect(() => SpreadsheetCell.fromJson(null)).toThrow("Missing json");
-});
 
 test("fromJson missing style", () => {
     const r = SpreadsheetCellReference.parse("$B$78");
@@ -404,26 +423,6 @@ test("render style=width&height, text & defaultStyle=width", () => {
 });
 
 // equals...............................................................................................................
-
-test("equals undefined false", () => {
-    const c = cell();
-    expect(c.equals()).toBeFalse();
-});
-
-test("equals null false", () => {
-    const c = cell();
-    expect(c.equals(null)).toBeFalse();
-});
-
-test("equals different type false", () => {
-    const c = cell();
-    expect(c.equals("different")).toBeFalse();
-});
-
-test("equals self true", () => {
-    const c = cell();
-    expect(c.equals(c)).toBeTrue();
-});
 
 test("equals different reference false", () => {
     const c = cell();

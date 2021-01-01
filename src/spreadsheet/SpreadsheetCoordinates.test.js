@@ -1,4 +1,5 @@
 import SpreadsheetCoordinates from "./SpreadsheetCoordinates";
+import systemObjectTesting from "../SystemObjectTesting.js";
 
 function x() {
     return 200;
@@ -11,6 +12,17 @@ function y() {
 function coordinates() {
     return new SpreadsheetCoordinates(x(), y());
 }
+
+systemObjectTesting(
+    coordinates(),
+    new SpreadsheetCoordinates(1, 2),
+    SpreadsheetCoordinates.fromJson,
+    "Missing text",
+    "spreadsheet-coordinates",
+    "200,400"
+);
+
+// create...............................................................................................................
 
 // x
 
@@ -85,26 +97,6 @@ test("from json", () => {
 });
 
 // equals...............................................................................................................
-
-test("equals undefined false", () => {
-    const c = coordinates();
-    expect(c.equals()).toBeFalse();
-});
-
-test("equals null false", () => {
-    const c = coordinates();
-    expect(c.equals(null)).toBeFalse();
-});
-
-test("equals different type false", () => {
-    const c = coordinates();
-    expect(c.equals("different")).toBeFalse();
-});
-
-test("equals self true", () => {
-    const c = coordinates();
-    expect(c.equals(c)).toBeTrue();
-});
 
 test("equals different x false", () => {
     const c = coordinates();

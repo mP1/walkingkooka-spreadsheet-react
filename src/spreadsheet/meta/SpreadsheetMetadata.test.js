@@ -19,8 +19,25 @@ import SpreadsheetRange from "../reference/SpreadsheetRange.js";
 import SpreadsheetTextFormatPattern from "../format/SpreadsheetTextFormatPattern.js";
 import SpreadsheetTimeFormatPattern from "../format/SpreadsheetTimeFormatPattern.js";
 import SpreadsheetTimeParsePatterns from "../format/SpreadsheetTimeParsePatterns.js";
-
 import TextStyle from "../../text/TextStyle";
+import systemObjectTesting from "../../SystemObjectTesting.js";
+
+systemObjectTesting(
+    new SpreadsheetMetadata(
+        {
+            "spreadsheet-id": "ABC123",
+            "spreadsheet-name": SpreadsheetName.fromJson("spreadsheet-name-123"),
+        }
+    ),
+    SpreadsheetMetadata.EMPTY,
+    SpreadsheetMetadata.fromJson,
+    "Missing json",
+    "spreadsheet-metadata",
+    {
+        "spreadsheet-id": "ABC123",
+        "spreadsheet-name": "spreadsheet-name-123",
+    }
+);
 
 // EMPTY................................................................................................................
 
@@ -34,15 +51,7 @@ test("Empty", () => {
 
 // fromJson.............................................................................................................
 
-test("from json missing fails", () => {
-    expect(() => SpreadsheetMetadata.fromJson()).toThrow("Missing json");
-});
-
-test("from json invalid fails", () => {
-    expect(() => SpreadsheetMetadata.fromJson("!invalid")).toThrow("Expected Object json got !invalid");
-});
-
-test("from json", () => {
+test("from json empty", () => {
     const json = {};
 
     const metadata = SpreadsheetMetadata.fromJson(json);
@@ -619,14 +628,6 @@ test("isEmpty not empty", () => {
 });
 
 // equals...............................................................................................................
-
-test("equals undefined false", () => {
-    expect(SpreadsheetMetadata.EMPTY.equals()).toEqual(false);
-});
-
-test("equals null false", () => {
-    expect(SpreadsheetMetadata.EMPTY.equals(null)).toEqual(false);
-});
 
 test("equals different property values", () => {
     expect(SpreadsheetMetadata.fromJson({

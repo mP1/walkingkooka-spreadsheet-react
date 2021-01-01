@@ -1,6 +1,7 @@
 import FormatRequest from "./FormatRequest.js";
 import LocalDateTime from "../../../datetime/LocalDateTime.js";
 import SpreadsheetDateFormatPattern from "../../format/SpreadsheetDateFormatPattern.js";
+import systemObjectTesting from "../../../SystemObjectTesting.js";
 
 function value() {
     return LocalDateTime.fromJson("2000/12/31 12:58:59");
@@ -13,6 +14,23 @@ function pattern() {
 function formatRequest() {
     return new FormatRequest(value(), pattern());
 }
+
+systemObjectTesting(
+    formatRequest(),
+    new FormatRequest(
+        LocalDateTime.fromJson("1999-12-31 12:58:59"),
+        SpreadsheetDateFormatPattern.fromJson("HH-MM-SS YYYY-MM-DD")
+    ),
+    FormatRequest.fromJson,
+    "Missing json",
+    "spreadsheet-format-request",
+    {
+        value: value().toJsonWithType(),
+        pattern: pattern().toJsonWithType(),
+    }
+);
+
+// create ..............................................................................................................
 
 test("create missing undefined value fails", () => {
     expect(
@@ -71,41 +89,19 @@ test("create number 0 value & pattern", () => {
 
 // fromJson.............................................................................................................
 
-test("fromJson undefined fails", () => {
-    expect(() => FormatRequest.fromJson(undefined)).toThrow("Missing json");
-});
-
-test("fromJson null fails", () => {
-    expect(() => FormatRequest.fromJson(null)).toThrow("Missing json");
-});
-
-test("fromJson non object fails", () => {
-    expect(() => FormatRequest.fromJson("invalid!")).toThrow("Expected object got invalid!");
-});
-
-test("fromJson", () => {
-    const v = value();
-    const p = pattern();
-
-    const formatRequest = FormatRequest.fromJson({
-        value: v.toJsonWithType(),
-        pattern: p.toJsonWithType(),
-    });
-
-    check(formatRequest, v, p);
-});
-
 test("fromJson string value", () => {
     const v = "string-123";
     const p = pattern();
 
-    const formatRequest = FormatRequest.fromJson({
-        value: {
-            type: "string",
-            value: v,
-        },
-        pattern: p.toJsonWithType(),
-    });
+    const formatRequest = FormatRequest.fromJson(
+        {
+            value: {
+                type: "string",
+                value: v,
+            },
+            pattern: p.toJsonWithType(),
+        }
+    );
 
     check(formatRequest, v, p);
 });
@@ -118,10 +114,12 @@ test("toJson", () => {
 
     expect(new FormatRequest(v, p)
         .toJson())
-        .toStrictEqual({
-            value: v.toJsonWithType(),
-            pattern: p.toJsonWithType(),
-        });
+        .toStrictEqual(
+            {
+                value: v.toJsonWithType(),
+                pattern: p.toJsonWithType(),
+            }
+        );
 });
 
 // toJsonWithType.......................................................................................................
@@ -142,30 +140,6 @@ test("toJson", () => {
 });
 
 // equals...............................................................................................................
-
-test("equals undefined false", () => {
-    expect(formatRequest()
-        .equals())
-        .toBeFalse();
-});
-
-test("equals null false", () => {
-    expect(formatRequest()
-        .equals(null))
-        .toBeFalse();
-});
-
-test("equals different type false", () => {
-    expect(formatRequest()
-        .equals("different"))
-        .toBeFalse();
-});
-
-test("equals self true", () => {
-    const f = formatRequest();
-    expect(f.equals(f))
-        .toBeTrue();
-});
 
 test("equals different value false", () => {
     expect(formatRequest()

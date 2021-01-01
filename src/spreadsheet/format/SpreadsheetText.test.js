@@ -1,5 +1,6 @@
 import Color from "../../color/Color.js";
 import SpreadsheetText from "./SpreadsheetText";
+import systemObjectTesting from "../../SystemObjectTesting.js";
 
 function color() {
     return Color.parse("#123456");
@@ -12,6 +13,20 @@ function text() {
 function spreadsheetText() {
     return new SpreadsheetText(color(), text());
 }
+
+systemObjectTesting(
+    spreadsheetText(),
+    new SpreadsheetText(undefined, "different"),
+    SpreadsheetText.fromJson,
+    "Missing json",
+    "spreadsheet-text",
+    {
+        "color": "#123456",
+        "text": "Hello"
+    }
+);
+
+// create...............................................................................................................
 
 test("create invalid color type fails", () => {
     const color = 123;
@@ -52,14 +67,6 @@ test("create color & empty text", () => {
 });
 
 // fromJson.............................................................................................................
-
-test("fromJson undefined fails", () => {
-    expect(() => SpreadsheetText.fromJson(undefined)).toThrow("Missing json");
-});
-
-test("fromJson null fails", () => {
-    expect(() => SpreadsheetText.fromJson(null)).toThrow("Missing json");
-});
 
 test("fromJson non object fails", () => {
     expect(() => SpreadsheetText.fromJson("invalid!")).toThrow("Expected object got invalid!");
@@ -111,24 +118,6 @@ test("toJson with color and text", () => {
 });
 
 // equals...............................................................................................................
-
-test("equals undefined false", () => {
-    expect(spreadsheetText()
-        .equals())
-        .toBeFalse();
-});
-
-test("equals null false", () => {
-    expect(spreadsheetText()
-        .equals(null))
-        .toBeFalse();
-});
-
-test("equals different type false", () => {
-    expect(spreadsheetText()
-        .equals("different"))
-        .toBeFalse();
-});
 
 test("equals self true", () => {
     const t = spreadsheetText();

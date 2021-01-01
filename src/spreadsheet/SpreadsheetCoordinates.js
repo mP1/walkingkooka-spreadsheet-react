@@ -1,10 +1,12 @@
+import SystemObject from "../SystemObject.js";
+
+const SEPARATOR = ",";
+const TYPE_NAME = "spreadsheet-coordinates";
+
 /**
  * Coordinates within a spreadsheet.
  */
-
-const SEPARATOR = ",";
-
-export default class SpreadsheetCoordinates {
+export default class SpreadsheetCoordinates extends SystemObject {
 
     static fromJson(json) {
         return SpreadsheetCoordinates.parse(json);
@@ -26,6 +28,8 @@ export default class SpreadsheetCoordinates {
     }
 
     constructor(x, y) {
+        super();
+
         if(typeof (x) !== "number"){
             throw new Error("Expected number x got " + x);
         }
@@ -55,6 +59,10 @@ export default class SpreadsheetCoordinates {
         return this.toString();
     }
 
+    typeName() {
+        return TYPE_NAME;
+    }
+
     equals(other) {
         return this === other ||
             (other instanceof SpreadsheetCoordinates &&
@@ -73,3 +81,5 @@ function doubleToString(number) {
         toString.substring(0, toString.length() - 2) :
         toString;
 }
+
+SystemObject.register(TYPE_NAME, SpreadsheetCoordinates.fromJson);

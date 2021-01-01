@@ -1,4 +1,14 @@
 import ExpressionNumberKind from "./ExpressionNumberKind";
+import systemObjectTesting from "../SystemObjectTesting.js";
+
+systemObjectTesting(
+    ExpressionNumberKind.BIG_DECIMAL,
+    ExpressionNumberKind.DOUBLE,
+    ExpressionNumberKind.fromJson,
+    "Missing name",
+    "expression-number-kind",
+    "BIG_DECIMAL"
+);
 
 test("of missing name fails", () => {
     expect(() => ExpressionNumberKind.of().toThrow("Missing name"));
@@ -16,31 +26,15 @@ test("of DOUBLE", () => {
     expect(ExpressionNumberKind.of("DOUBLE")).toStrictEqual(ExpressionNumberKind.DOUBLE);
 });
 
-test("fromJson", () => {
+test("fromJson DOUBLE", () => {
     expect(ExpressionNumberKind.fromJson("DOUBLE")).toStrictEqual(ExpressionNumberKind.DOUBLE);
 });
 
-test("toJson", () => {
+test("toJson DOUBLE", () => {
     expect(ExpressionNumberKind.of("DOUBLE").toJson()).toStrictEqual("DOUBLE");
 });
 
 // equals................................................................................................................
-
-test("equals undefined false", () => {
-    expect(ExpressionNumberKind.of("DOUBLE").equals()).toStrictEqual(false);
-});
-
-test("equals null false", () => {
-    expect(ExpressionNumberKind.of("DOUBLE").equals(null)).toStrictEqual(false);
-});
-
-test("equals invalid false", () => {
-    expect(ExpressionNumberKind.of("DOUBLE").equals("!invalid")).toStrictEqual(false);
-});
-
-test("equals different false", () => {
-    expect(ExpressionNumberKind.DOUBLE.equals(ExpressionNumberKind.BIG_DECIMAL)).toStrictEqual(false);
-});
 
 test("equals DOUBLE true", () => {
     expect(ExpressionNumberKind.BIG_DECIMAL.equals(ExpressionNumberKind.BIG_DECIMAL)).toStrictEqual(true);

@@ -1,10 +1,22 @@
 import EmailAddress from "./EmailAddress";
+import systemObjectTesting from "../SystemObjectTesting.js";
 
 const text = "user@example.com";
 
 function emailAddress() {
     return new EmailAddress(text);
 }
+
+systemObjectTesting(
+    emailAddress(),
+    new EmailAddress("different@example.com"),
+    EmailAddress.fromJson,
+    "Missing text",
+    "email",
+    text
+);
+
+// create...............................................................................................................
 
 test("create without text fails", () => {
     expect(() => new EmailAddress(null)).toThrow("Missing text");
@@ -25,14 +37,6 @@ test("create", () => {
 
 // fromJson.............................................................................................................
 
-test("fromJson undefined", () => {
-    expect(() => EmailAddress.fromJson()).toThrow("Missing text");
-});
-
-test("fromJson null", () => {
-    expect(() => EmailAddress.fromJson(null)).toThrow("Missing text");
-});
-
 test("fromJson empty string", () => {
     expect(() => EmailAddress.fromJson(null)).toThrow("Missing text");
 });
@@ -42,35 +46,7 @@ test("fromJson string", () => {
     check(EmailAddress.fromJson(text), text);
 });
 
-// toJson...............................................................................................................
-
-test("json", () => {
-    const emailAddress = new EmailAddress(text);
-
-    check(emailAddress, text);
-});
-
 // equals...............................................................................................................
-
-test("equals undefined false", () => {
-    const e = emailAddress();
-    expect(e.equals()).toBeFalse();
-});
-
-test("equals null false", () => {
-    const e = emailAddress();
-    expect(e.equals(null)).toBeFalse();
-});
-
-test("equals different type false", () => {
-    const e = emailAddress();
-    expect(e.equals("different")).toBeFalse();
-});
-
-test("equals self true", () => {
-    const e = emailAddress();
-    expect(e.equals(e)).toBeTrue();
-});
 
 test("equals different false", () => {
     const e = emailAddress();

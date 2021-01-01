@@ -1,5 +1,6 @@
 import SpreadsheetCellReference from "./SpreadsheetCellReference";
 import SpreadsheetRange from "./SpreadsheetRange";
+import systemObjectTesting from "../../SystemObjectTesting.js";
 
 function begin() {
     return SpreadsheetCellReference.parse("A1");
@@ -8,6 +9,17 @@ function begin() {
 function end() {
     return SpreadsheetCellReference.parse("B2");
 }
+
+systemObjectTesting(
+    new SpreadsheetRange(begin(), end()),
+    new SpreadsheetRange(SpreadsheetCellReference.parse("Z9"), SpreadsheetCellReference.parse("Z99")),
+    SpreadsheetRange.fromJson,
+    "Missing text",
+    "spreadsheet-range",
+    "A1:B2"
+);
+
+// create...............................................................................................................
 
 test("create without begin fails", () => {
     expect(() => new SpreadsheetRange(null, end())).toThrow("Missing begin");
@@ -111,10 +123,6 @@ test("parse lowercase:lowercase/absolute", () => {
 
 // fromJson.............................................................................................................
 
-test("fromJson null fails", () => {
-    expect(() => SpreadsheetRange.fromJson(null)).toThrow("Missing text");
-});
-
 test("fromJson wrong token count fails", () => {
     expect(() => SpreadsheetRange.fromJson("A1:B2:C3")).toThrow("Expected 1 or 2 tokens got A1:B2:C3");
 });
@@ -147,21 +155,6 @@ test("fromJson range lowercase", () => {
 });
 
 // equals...............................................................................................................
-
-test("equals undefined false", () => {
-    const range = SpreadsheetRange.fromJson("A1:B2");
-    expect(range.equals()).toBeFalse();
-});
-
-test("equals null false", () => {
-    const range = SpreadsheetRange.fromJson("A1:B2");
-    expect(range.equals(null)).toBeFalse();
-});
-
-test("equals different type false", () => {
-    const range = SpreadsheetRange.fromJson("A1:B2");
-    expect(range.equals("different")).toBeFalse();
-});
 
 test("equals self true", () => {
     const range = SpreadsheetRange.fromJson("A1:B2");
