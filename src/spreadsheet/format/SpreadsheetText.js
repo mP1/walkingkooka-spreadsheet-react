@@ -14,7 +14,8 @@ export default class SpreadsheetText extends SystemObject {
         }
 
         const {color, text} = json;
-        return new SpreadsheetText(color, text);
+        return new SpreadsheetText(color ? Color.fromJson(color) : color,
+            text);
     }
 
     constructor(color, text) {

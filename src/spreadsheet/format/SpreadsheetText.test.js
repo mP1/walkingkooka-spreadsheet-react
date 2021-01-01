@@ -80,7 +80,7 @@ test("fromJson with color and text", () => {
     const t = text();
 
     const spreadsheetText = SpreadsheetText.fromJson({
-        color: c,
+        color: c.toJson(),
         text: t,
     })
 
