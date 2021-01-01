@@ -1,6 +1,7 @@
 import FormatRequest from "./FormatRequest.js";
 import LocalDateTime from "../../../datetime/LocalDateTime.js";
 import SpreadsheetDateFormatPattern from "../../format/SpreadsheetDateFormatPattern.js";
+import SystemObject from "../../../SystemObject.js";
 import systemObjectTesting from "../../../SystemObjectTesting.js";
 
 function value() {
@@ -117,6 +118,20 @@ test("toJson", () => {
         .toStrictEqual(
             {
                 value: v.toJsonWithType(),
+                pattern: p.toJsonWithType(),
+            }
+        );
+});
+
+test("toJson string value", () => {
+    const v = "string-123";
+    const p = pattern();
+
+    expect(new FormatRequest(v, p)
+        .toJson())
+        .toStrictEqual(
+            {
+                value: SystemObject.toJsonWithType(v),
                 pattern: p.toJsonWithType(),
             }
         );
