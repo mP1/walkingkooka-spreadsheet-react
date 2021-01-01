@@ -2,11 +2,11 @@ export default function spreadsheetPatternTesting(newInstance, fromJson, parse) 
 
     function pattern() {
         return "Hello";
-    }
+    };
 
     const spreadsheetPattern = function() {
         return newInstance(pattern());
-    }
+    };
 
     test("create without pattern fails", () => {
         expect(() => newInstance().toThrow("Missing pattern"));
