@@ -4,6 +4,8 @@
  */
 import SystemObject from "../SystemObject.js";
 
+const TYPE_NAME = "local-datetime";
+
 export default class LocalDateTime extends SystemObject {
 
     static fromJson(text) {
@@ -29,7 +31,7 @@ export default class LocalDateTime extends SystemObject {
     }
 
     typeName() {
-        return "local-datetime";
+        return TYPE_NAME;
     }
 
     toJson() {
@@ -46,3 +48,5 @@ export default class LocalDateTime extends SystemObject {
         return this.text();
     }
 }
+
+SystemObject.register(TYPE_NAME, LocalDateTime.fromJson);
