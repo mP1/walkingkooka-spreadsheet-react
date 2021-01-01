@@ -1,9 +1,9 @@
 import SpreadsheetParsePatterns from "./SpreadsheetParsePatterns.js";
 import SystemObject from "../../SystemObject.js";
 
-const TYPE_NAME = "spreadsheet-time-parse-patterns";
-
 export default class SpreadsheetTimeParsePatterns extends SpreadsheetParsePatterns {
+
+    static TYPE_NAME = "spreadsheet-time-parse-patterns";
 
     static fromJson(pattern) {
         return new SpreadsheetTimeParsePatterns(pattern);
@@ -21,7 +21,7 @@ export default class SpreadsheetTimeParsePatterns extends SpreadsheetParsePatter
     }
 
     typeName() {
-        return TYPE_NAME;
+        return SpreadsheetTimeParsePatterns.TYPE_NAME;
     }
 
     equals(other) {
@@ -31,4 +31,4 @@ export default class SpreadsheetTimeParsePatterns extends SpreadsheetParsePatter
     }
 }
 
-SystemObject.register(TYPE_NAME, SpreadsheetTimeParsePatterns.fromJson);
+SystemObject.register(SpreadsheetTimeParsePatterns.TYPE_NAME, SpreadsheetTimeParsePatterns.fromJson);

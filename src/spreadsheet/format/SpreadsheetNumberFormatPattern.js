@@ -1,9 +1,9 @@
 import SpreadsheetFormatPattern from "./SpreadsheetFormatPattern.js";
 import SystemObject from "../../SystemObject.js";
 
-const TYPE_NAME = "spreadsheet-number-format-pattern";
-
 export default class SpreadsheetNumberFormatPattern extends SpreadsheetFormatPattern {
+
+    static TYPE_NAME = "spreadsheet-number-format-pattern";
 
     static fromJson(pattern) {
         return new SpreadsheetNumberFormatPattern(pattern);
@@ -21,7 +21,7 @@ export default class SpreadsheetNumberFormatPattern extends SpreadsheetFormatPat
     }
 
     typeName() {
-        return TYPE_NAME;
+        return SpreadsheetNumberFormatPattern.TYPE_NAME;
     }
 
     equals(other) {
@@ -31,4 +31,4 @@ export default class SpreadsheetNumberFormatPattern extends SpreadsheetFormatPat
     }
 }
 
-SystemObject.register(TYPE_NAME, SpreadsheetNumberFormatPattern.fromJson);
+SystemObject.register(SpreadsheetNumberFormatPattern.TYPE_NAME, SpreadsheetNumberFormatPattern.fromJson);

@@ -1,9 +1,9 @@
 import SpreadsheetParsePatterns from "./SpreadsheetParsePatterns.js";
 import SystemObject from "../../SystemObject.js";
 
-const TYPE_NAME = "spreadsheet-date-parse-patterns";
-
 export default class SpreadsheetDateParsePatterns extends SpreadsheetParsePatterns {
+
+    static TYPE_NAME = "spreadsheet-date-parse-patterns";
 
     static fromJson(pattern) {
         return new SpreadsheetDateParsePatterns(pattern);
@@ -21,7 +21,7 @@ export default class SpreadsheetDateParsePatterns extends SpreadsheetParsePatter
     }
 
     typeName() {
-        return TYPE_NAME;
+        return SpreadsheetDateParsePatterns.TYPE_NAME;
     }
 
     equals(other) {
@@ -31,4 +31,4 @@ export default class SpreadsheetDateParsePatterns extends SpreadsheetParsePatter
     }
 }
 
-SystemObject.register(TYPE_NAME, SpreadsheetDateParsePatterns.fromJson);
+SystemObject.register(SpreadsheetDateParsePatterns.TYPE_NAME, SpreadsheetDateParsePatterns.fromJson);
