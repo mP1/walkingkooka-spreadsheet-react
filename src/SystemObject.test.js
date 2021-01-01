@@ -66,14 +66,29 @@ test("fromJsonWithType missing type fails", () => {
     ).toThrow("Missing type got [object Object]");
 });
 
+test("fromJsonWithType double", () => {
+    const double = 1.5;
+    expect(
+        SystemObject.fromJsonWithType(
+            {
+                type: "double",
+                value: double,
+            }
+        )
+    ).toStrictEqual(double);
+});
+
 test("fromJsonWithType string", () => {
     const string = "ABC123";
-    expect(SystemObject.fromJsonWithType({
-        type: "string",
-        value: string,
-    }))
-        .toStrictEqual(string);
-})
+    expect(
+        SystemObject.fromJsonWithType(
+            {
+                type: "string",
+                value: string,
+            }
+        )
+    ).toStrictEqual(string);
+});
 
 test("fromJsonWithType", () => {
     const character = new Character("A");

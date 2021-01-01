@@ -140,6 +140,15 @@ export default class SystemObject {
     }
 }
 
+function unmarshallDouble(json) {
+    if(typeof json !== "number"){
+        throw new Error("Expected number got " + JSON.stringify(json));
+    }
+    return json;
+}
+
+SystemObject.register("double", unmarshallDouble);
+
 function unmarshallString(json) {
     if(typeof json !== "string"){
         throw new Error("Expected string got " + JSON.stringify(json));
