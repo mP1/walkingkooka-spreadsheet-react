@@ -1,11 +1,20 @@
 import FormatRequest from "./FormatRequest.js";
 import MultiFormatRequest from "./MultiFormatRequest.js";
 import SpreadsheetDateFormatPattern from "../../format/SpreadsheetDateFormatPattern.js";
+import systemObjectTesting from "../../../SystemObjectTesting.js";
+
+function request1() {
+    return request("2000/1/1 1:1:1", "yyyy-mm-dd hh-mm");
+}
+
+function request2() {
+    return request("2000/2/2 2:2:2", "yyyy-mm-dd hh-mm");
+}
 
 function requests() {
     return [
-        request("2000/1/1 1:1:1", "yyyy-mm-dd hh-mm"),
-        request("2000/2/2 2:2:2", "yyyy-mm-dd hh-mm"),
+        request1(),
+        request2(),
     ];
 }
 
@@ -21,6 +30,22 @@ function multi() {
         requests()
     );
 }
+
+systemObjectTesting(
+    multi(),
+    new MultiFormatRequest(
+        [
+            request("1970/1/1 12:00:00", "d-m-y")
+        ]
+    ),
+    MultiFormatRequest.fromJson,
+    "Missing array",
+    "spreadsheet-multi-format-request",
+    [
+        request1().toJsonWithType(),
+        request2().toJsonWithType()
+    ]
+);
 
 // create...............................................................................................................
 
@@ -53,24 +78,6 @@ test("create empty array", () => {
 });
 
 // fromJson.............................................................................................................
-
-test("fromJson undefined fails", () => {
-    expect(
-        () => MultiFormatRequest.fromJson(undefined)
-    ).toThrow("Missing array");
-});
-
-test("fromJson null fails", () => {
-    expect(
-        () => MultiFormatRequest.fromJson(null)
-    ).toThrow("Missing array");
-});
-
-test("fromJson non array fails", () => {
-    expect(
-        () => MultiFormatRequest.fromJson("invalid!")
-    ).toThrow("Expected array json got invalid!");
-});
 
 test("fromJson", () => {
     const r = request("2000/1/1 1:1:1", "yyyy-mm-dd hh-mm");
@@ -138,44 +145,6 @@ test("toJson #2", () => {
                 r2.toJsonWithType(),
             ]
         );
-});
-
-// equals...............................................................................................................
-
-test("equals undefined false", () => {
-    expect(multi()
-        .equals())
-        .toBeFalse();
-});
-
-test("equals null false", () => {
-    expect(multi()
-        .equals(null))
-        .toBeFalse();
-});
-
-test("equals different type false", () => {
-    expect(multi()
-        .equals("different"))
-        .toBeFalse();
-});
-
-test("equals self true", () => {
-    const f = multi();
-    expect(f.equals(f))
-        .toBeTrue();
-});
-
-test("equals different request false", () => {
-    expect(multi()
-        .equals(
-            new MultiFormatRequest(
-                [
-                    request("1999-12-31 12:58:59", "yy-mm-dd")
-                ]
-            )
-        )
-    ).toBeFalse();
 });
 
 // helpers..............................................................................................................

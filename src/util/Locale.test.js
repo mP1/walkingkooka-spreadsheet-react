@@ -1,10 +1,18 @@
 import Locale from "./Locale";
+import systemObjectTesting from "../SystemObjectTesting.js";
 
 const text = "EN-AU";
 
-function locale() {
-    return new Locale(text);
-}
+systemObjectTesting(
+    new Locale(text),
+    new Locale("EN-NZ"),
+    Locale.fromJson,
+    "Missing text",
+    "locale",
+    text
+);
+
+// create...............................................................................................................
 
 test("create without text fails", () => {
     expect(() => new Locale(null)).toThrow("Missing text");
@@ -31,14 +39,6 @@ test("create empty", () => {
 
 // fromJson.............................................................................................................
 
-test("fromJson undefined", () => {
-    expect(() => Locale.fromJson()).toThrow("Missing text");
-});
-
-test("fromJson null", () => {
-    expect(() => Locale.fromJson(null)).toThrow("Missing text");
-});
-
 test("fromJson empty string", () => {
     expect(() => Locale.fromJson(null)).toThrow("Missing text");
 });
@@ -48,45 +48,7 @@ test("fromJson string", () => {
     check(Locale.fromJson(text), text);
 });
 
-// toJson...............................................................................................................
-
-test("json", () => {
-    const locale = new Locale(text);
-
-    check(locale, text);
-});
-
 // equals...............................................................................................................
-
-test("equals undefined false", () => {
-    const e = locale();
-    expect(e.equals()).toBeFalse();
-});
-
-test("equals null false", () => {
-    const e = locale();
-    expect(e.equals(null)).toBeFalse();
-});
-
-test("equals different type false", () => {
-    const e = locale();
-    expect(e.equals("different")).toBeFalse();
-});
-
-test("equals self true", () => {
-    const e = locale();
-    expect(e.equals(e)).toBeTrue();
-});
-
-test("equals different false", () => {
-    const e = locale();
-    expect(e.equals(new Locale("different"))).toBeFalse();
-});
-
-test("equals equivalent true", () => {
-    const e = locale();
-    expect(e.equals(e)).toBeTrue();
-});
 
 test("equals equivalent true #2", () => {
     const text = "different@example.com";

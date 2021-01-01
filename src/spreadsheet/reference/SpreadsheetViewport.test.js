@@ -1,5 +1,6 @@
 import SpreadsheetCellReference from "./SpreadsheetCellReference";
 import SpreadsheetViewport from "./SpreadsheetViewport";
+import systemObjectTesting from "../../SystemObjectTesting.js";
 
 function reference() {
     return SpreadsheetCellReference.fromJson("A1");
@@ -17,7 +18,16 @@ function viewport() {
     return new SpreadsheetViewport(reference(), width(), height());
 }
 
-// reference
+systemObjectTesting(
+    viewport(),
+    new SpreadsheetViewport(SpreadsheetCellReference.fromJson("Z99"), 9, 99),
+    SpreadsheetViewport.fromJson,
+    "Missing text",
+    "spreadsheet-viewport",
+    "A1:100:20"
+);
+
+// create...............................................................................................................
 
 test("create without reference fails", () => {
     expect(() => new SpreadsheetViewport(null, width(), height())).toThrow("Missing reference");

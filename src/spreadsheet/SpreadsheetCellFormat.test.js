@@ -1,11 +1,23 @@
 import SpreadsheetCellFormat from "./SpreadsheetCellFormat";
 import SpreadsheetError from "./SpreadsheetError.js";
+import systemObjectTesting from "../SystemObjectTesting.js";
 
 const pattern = "###-123-abc";
 
 function cellFormat() {
     return new SpreadsheetCellFormat(pattern);
 }
+
+systemObjectTesting(
+    cellFormat(),
+    new SpreadsheetCellFormat("###"),
+    SpreadsheetCellFormat.fromJson,
+    "Missing pattern",
+    "spreadsheet-cell-format",
+    pattern
+);
+
+// create...............................................................................................................
 
 test("create without pattern fails", () => {
     expect(() => new SpreadsheetCellFormat(null)).toThrow("Missing pattern");
@@ -20,47 +32,7 @@ test("create", () => {
     expect(spreadsheetCellFormat.pattern()).toBe(pattern);
 });
 
-test("fromJson null", () => {
-    expect(SpreadsheetCellFormat.fromJson(null)).toBeNull();
-});
-
-test("json", () => {
-    const spreadsheetCellFormat = new SpreadsheetCellFormat(pattern);
-
-    check(spreadsheetCellFormat, pattern);
-});
-
 // equals...............................................................................................................
-
-test("equals undefined false", () => {
-    const f = cellFormat();
-    expect(f.equals()).toBeFalse();
-});
-
-test("equals null false", () => {
-    const f = cellFormat();
-    expect(f.equals(null)).toBeFalse();
-});
-
-test("equals different type false", () => {
-    const f = cellFormat();
-    expect(f.equals("different")).toBeFalse();
-});
-
-test("equals self true", () => {
-    const f = cellFormat();
-    expect(f.equals(f)).toBeTrue();
-});
-
-test("equals different false", () => {
-    const f = cellFormat();
-    expect(f.equals(new SpreadsheetError("different"))).toBeFalse();
-});
-
-test("equals equivalent true", () => {
-    const f = cellFormat();
-    expect(f.equals(f)).toBeTrue();
-});
 
 test("equals equivalent true #2", () => {
     const format = "#";

@@ -1,10 +1,22 @@
 import ExpressionNumber from "./ExpressionNumber";
+import systemObjectTesting from "../SystemObjectTesting.js";
 
 const text = "1.5";
 
 function expressionNumber() {
     return new ExpressionNumber(text);
 }
+
+systemObjectTesting(
+    expressionNumber(),
+    new ExpressionNumber("999"),
+    ExpressionNumber.fromJson,
+    "Missing text",
+    "expression-number",
+    text
+);
+
+// create...............................................................................................................
 
 test("create without text fails", () => {
     expect(() => new ExpressionNumber(null)).toThrow("Missing text");
@@ -25,14 +37,6 @@ test("create", () => {
 
 // fromJson.............................................................................................................
 
-test("fromJson undefined", () => {
-    expect(() => ExpressionNumber.fromJson()).toThrow("Missing text");
-});
-
-test("fromJson null", () => {
-    expect(() => ExpressionNumber.fromJson(null)).toThrow("Missing text");
-});
-
 test("fromJson empty string", () => {
     expect(() => ExpressionNumber.fromJson(null)).toThrow("Missing text");
 });
@@ -42,45 +46,7 @@ test("fromJson string", () => {
     check(ExpressionNumber.fromJson(text), text);
 });
 
-// toJson...............................................................................................................
-
-test("json", () => {
-    const expressionNumber = new ExpressionNumber(text);
-
-    check(expressionNumber, text);
-});
-
 // equals...............................................................................................................
-
-test("equals undefined false", () => {
-    const e = expressionNumber();
-    expect(e.equals()).toBeFalse();
-});
-
-test("equals null false", () => {
-    const e = expressionNumber();
-    expect(e.equals(null)).toBeFalse();
-});
-
-test("equals different type false", () => {
-    const e = expressionNumber();
-    expect(e.equals("different")).toBeFalse();
-});
-
-test("equals self true", () => {
-    const e = expressionNumber();
-    expect(e.equals(e)).toBeTrue();
-});
-
-test("equals different false", () => {
-    const e = expressionNumber();
-    expect(e.equals(new ExpressionNumber("different"))).toBeFalse();
-});
-
-test("equals equivalent true", () => {
-    const e = expressionNumber();
-    expect(e.equals(e)).toBeTrue();
-});
 
 test("equals equivalent true #2", () => {
     const text = "different";

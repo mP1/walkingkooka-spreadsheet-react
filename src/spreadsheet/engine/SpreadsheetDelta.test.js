@@ -4,6 +4,7 @@ import SpreadsheetColumnReference from "../reference/SpreadsheetColumnReference"
 import SpreadsheetDelta from "./SpreadsheetDelta";
 import SpreadsheetRange from "../reference/SpreadsheetRange";
 import SpreadsheetRowReference from "../reference/SpreadsheetRowReference";
+import systemObjectTesting from "../../SystemObjectTesting.js";
 
 function a1() {
     return SpreadsheetCell.fromJson({
@@ -59,6 +60,51 @@ const windowJson = "A1:B2,C3:D4";
 function delta() {
     return new SpreadsheetDelta(cells(), maxColumnWidths(), maxRowHeights(), window());
 }
+
+systemObjectTesting(
+    delta(),
+    new SpreadsheetDelta(
+        [
+            SpreadsheetCell.fromJson({
+                "Z9": {
+                    formula: {
+                        text: "99",
+                        error: "Different custom error #9"
+                    }
+                }
+            })
+        ],
+        maxColumnWidths(),
+        maxRowHeights(),
+        window()
+    ),
+    SpreadsheetDelta.fromJson,
+    "Missing json",
+    "spreadsheet-delta",
+    {
+        "cells": {
+            "A1": {
+                "formula": {
+                    "error": "Custom error #1",
+                    "text": "1+2"
+                }
+            },
+            "B2": {
+                "formula": {
+                    "error": "Custom error #2",
+                    "text": "3+4"
+                }
+            }
+        },
+        "maxColumnWidths": {
+            "A": 100
+        },
+        "maxRowHeights": {
+            "1": 20
+        },
+        "window": "A1:B2,C3:D4"
+    }
+);
 
 // tests................................................................................................................
 
@@ -287,9 +333,6 @@ test("toJson all properties", () => {
 });
 
 // fromJson.............................................................................................................
-test("fromJson null fails", () => {
-    expect(() => SpreadsheetDelta.fromJson(null)).toThrow("Missing json");
-});
 
 test("fromJson empty", () => {
     const c = [];
@@ -375,18 +418,6 @@ test("fromJson all properties", () => {
 
 // equals...............................................................................................................
 
-test("equals undefined false", () => {
-    expect(delta().equals()).toBeFalse();
-});
-
-test("equals null false", () => {
-    expect(delta().equals(null)).toBeFalse();
-});
-
-test("equals different type false", () => {
-    expect(delta().equals("!different")).toBeFalse();
-});
-
 test("equals different cells false", () => {
     const c = cells();
     const mcw = maxColumnWidths();
@@ -446,11 +477,6 @@ test("equals different window false", () => {
             new SpreadsheetDelta(c, mcw, mrh, [])
         )
     ).toBeFalse();
-});
-
-test("equals self true", () => {
-    const d = delta();
-    expect(d.equals(d)).toBeTrue();
 });
 
 test("equals equivalent true", () => {

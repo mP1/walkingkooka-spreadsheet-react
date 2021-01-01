@@ -1,6 +1,16 @@
 import SpreadsheetColumnReference from "./SpreadsheetColumnReference";
 import SpreadsheetReferenceKind from "./SpreadsheetReferenceKind";
 import SpreadsheetRowReference from "./SpreadsheetRowReference";
+import systemObjectTesting from "../../SystemObjectTesting.js";
+
+systemObjectTesting(
+    new SpreadsheetColumnReference(0, SpreadsheetReferenceKind.ABSOLUTE),
+    new SpreadsheetColumnReference(9, SpreadsheetReferenceKind.RELATIVE),
+    SpreadsheetColumnReference.fromJson,
+    "Missing text",
+    "spreadsheet-column-reference",
+    "$A"
+);
 
 test("parse missing text fails", () => {
     expect(() => SpreadsheetColumnReference.parse()).toThrow("Missing text");
@@ -187,18 +197,6 @@ test("toJson C", () => {
 });
 
 // equals................................................................................................................
-
-test("equals undefined false", () => {
-    expect(SpreadsheetColumnReference.parse("C").equals()).toStrictEqual(false);
-});
-
-test("equals null false", () => {
-    expect(SpreadsheetColumnReference.parse("D").equals(null)).toStrictEqual(false);
-});
-
-test("equals invalid false", () => {
-    expect(SpreadsheetColumnReference.parse("E").equals("!invalid")).toStrictEqual(false);
-});
 
 test("equals SpreadsheetColumnReference false", () => {
     const kind = SpreadsheetReferenceKind.ABSOLUTE;

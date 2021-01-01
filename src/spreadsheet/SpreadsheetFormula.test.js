@@ -1,9 +1,27 @@
 import SpreadsheetError from "./SpreadsheetError";
 import SpreadsheetFormula from "./SpreadsheetFormula";
 import SystemObject from "../SystemObject.js";
+import systemObjectTesting from "../SystemObjectTesting.js";
 
 const text = "###-123-abc";
 const value = 1.5;
+
+systemObjectTesting(
+    new SpreadsheetFormula(text, value),
+    new SpreadsheetFormula("99+99"),
+    SpreadsheetFormula.fromJson,
+    "Missing json",
+    "spreadsheet-formula",
+    {
+        text: text,
+        value: {
+            type: "double",
+            value: 1.5
+        }
+    }
+);
+
+// create...............................................................................................................
 
 test("create without text fails", () => {
     expect(() => new SpreadsheetFormula(null)).toThrow("Missing text");
@@ -71,10 +89,6 @@ test("setText empty string", () => {
 });
 
 // json.................................................................................................................
-
-test("fromJson null", () => {
-    expect(() => SpreadsheetFormula.fromJson(null)).toThrow("Missing json");
-});
 
 test("json only text", () => {
     const spreadsheetFormula = new SpreadsheetFormula(text);

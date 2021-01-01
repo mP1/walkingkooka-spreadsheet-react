@@ -1,10 +1,22 @@
 import LocalDateTime from "./LocalDateTime";
+import systemObjectTesting from "../SystemObjectTesting.js";
 
 const text = "1999-12-31 12:58:59";
 
 function localDateTime() {
     return new LocalDateTime(text);
 }
+
+systemObjectTesting(
+    localDateTime(),
+    new LocalDateTime("2000-1-1 1:01:01"),
+    LocalDateTime.fromJson,
+    "Missing text",
+    "local-datetime",
+    text
+);
+
+// create...............................................................................................................
 
 test("create without text fails", () => {
     expect(() => new LocalDateTime(null)).toThrow("Missing text");
@@ -25,14 +37,6 @@ test("create", () => {
 
 // fromJson.............................................................................................................
 
-test("fromJson undefined", () => {
-    expect(() => LocalDateTime.fromJson()).toThrow("Missing text");
-});
-
-test("fromJson null", () => {
-    expect(() => LocalDateTime.fromJson(null)).toThrow("Missing text");
-});
-
 test("fromJson empty string", () => {
     expect(() => LocalDateTime.fromJson(null)).toThrow("Missing text");
 });
@@ -42,45 +46,7 @@ test("fromJson string", () => {
     check(LocalDateTime.fromJson(text), text);
 });
 
-// toJson...............................................................................................................
-
-test("json", () => {
-    const localDateTime = new LocalDateTime(text);
-
-    check(localDateTime, text);
-});
-
 // equals...............................................................................................................
-
-test("equals undefined false", () => {
-    const e = localDateTime();
-    expect(e.equals()).toBeFalse();
-});
-
-test("equals null false", () => {
-    const e = localDateTime();
-    expect(e.equals(null)).toBeFalse();
-});
-
-test("equals different type false", () => {
-    const e = localDateTime();
-    expect(e.equals("different")).toBeFalse();
-});
-
-test("equals self true", () => {
-    const e = localDateTime();
-    expect(e.equals(e)).toBeTrue();
-});
-
-test("equals different false", () => {
-    const e = localDateTime();
-    expect(e.equals(new LocalDateTime("different"))).toBeFalse();
-});
-
-test("equals equivalent true", () => {
-    const e = localDateTime();
-    expect(e.equals(e)).toBeTrue();
-});
 
 test("equals equivalent true #2", () => {
     const text = "different";

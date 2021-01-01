@@ -1,6 +1,7 @@
 import SpreadsheetCellReference from "./SpreadsheetCellReference";
 import SpreadsheetColumnReference from "./SpreadsheetColumnReference";
 import SpreadsheetRowReference from "./SpreadsheetRowReference";
+import systemObjectTesting from "../../SystemObjectTesting.js";
 
 function column() {
     return SpreadsheetColumnReference.parse("A");
@@ -9,6 +10,20 @@ function column() {
 function row() {
     return SpreadsheetRowReference.parse("1");
 };
+
+systemObjectTesting(
+    new SpreadsheetCellReference(column(), row()),
+    new SpreadsheetCellReference(
+        SpreadsheetColumnReference.parse("Z"),
+        SpreadsheetRowReference.parse("9")
+    ),
+    SpreadsheetCellReference.fromJson,
+    "Missing text",
+    "spreadsheet-cell-reference",
+    "A1"
+);
+
+// create...............................................................................................................
 
 test("create without column fails", () => {
     expect(() => new SpreadsheetCellReference(null)).toThrow("Missing column");
@@ -90,10 +105,6 @@ test("parse $i$8 lowercased", () => {
 });
 
 // fromJson.............................................................................................................
-
-test("fromJson null fails", () => {
-    expect(() => SpreadsheetCellReference.fromJson(null)).toThrow("Missing text");
-});
 
 test("fromJson A2", () => {
     check(SpreadsheetCellReference.fromJson("A2"),
@@ -198,18 +209,6 @@ test("toRelative absolute2", () => {
 });
 
 // equals................................................................................................................
-
-test("equals undefined false", () => {
-    expect(SpreadsheetCellReference.parse("A1").equals()).toStrictEqual(false);
-});
-
-test("equals null false", () => {
-    expect(SpreadsheetCellReference.parse("B2").equals(null)).toStrictEqual(false);
-});
-
-test("equals invalid false", () => {
-    expect(SpreadsheetCellReference.parse("C3").equals("!invalid")).toStrictEqual(false);
-});
 
 test("equals different column false", () => {
     expect(SpreadsheetCellReference.parse("D4").equals(SpreadsheetCellReference.parse("E4"))).toStrictEqual(false);

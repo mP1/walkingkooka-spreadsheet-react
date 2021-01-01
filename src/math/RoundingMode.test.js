@@ -1,4 +1,15 @@
 import RoundingMode from "./RoundingMode";
+import systemObjectTesting from "../SystemObjectTesting.js";
+import ExpressionNumberKind from "./ExpressionNumberKind.js";
+
+systemObjectTesting(
+    RoundingMode.UP,
+    RoundingMode.DON,
+    RoundingMode.fromJson,
+    "Missing name",
+    "rounding-mode",
+    "UP"
+);
 
 test("of missing name fails", () => {
     expect(() => RoundingMode.of().toThrow("Missing name"));
@@ -23,31 +34,7 @@ function ofAndCheck(name, roundingMode) {
     });
 }
 
-test("fromJson", () => {
-    expect(RoundingMode.fromJson("DOWN")).toStrictEqual(RoundingMode.DOWN);
-});
-
-test("toJson", () => {
-    expect(RoundingMode.of("DOWN").toJson()).toStrictEqual("DOWN");
-});
-
 // equals................................................................................................................
-
-test("equals undefined false", () => {
-    expect(RoundingMode.of("DOWN").equals()).toStrictEqual(false);
-});
-
-test("equals null false", () => {
-    expect(RoundingMode.of("DOWN").equals(null)).toStrictEqual(false);
-});
-
-test("equals invalid false", () => {
-    expect(RoundingMode.of("DOWN").equals("!invalid")).toStrictEqual(false);
-});
-
-test("equals different false", () => {
-    expect(RoundingMode.DOWN.equals(RoundingMode.UP)).toStrictEqual(false);
-});
 
 test("equals DOWN true", () => {
     expect(RoundingMode.UP.equals(RoundingMode.UP)).toStrictEqual(true);

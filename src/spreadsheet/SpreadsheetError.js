@@ -8,7 +8,7 @@ const TYPE_NAME = "spreadsheet-error";
 export default class SpreadsheetError extends SystemObject {
 
     static fromJson(message) {
-        return message && new SpreadsheetError(message);
+        return new SpreadsheetError(message);
     }
 
     constructor(message) {

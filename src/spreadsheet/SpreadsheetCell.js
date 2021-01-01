@@ -49,7 +49,7 @@ export default class SpreadsheetCell extends SystemObject {
                 return new SpreadsheetCell(SpreadsheetCellReference.fromJson(reference),
                     SpreadsheetFormula.fromJson(formula),
                     (style && TextStyle.fromJson(style)) || TextStyle.EMPTY,
-                    format && SpreadsheetCellFormat.fromJson(format),
+                    format != null ? SpreadsheetCellFormat.fromJson(format) : format,
                     formatted && textNodeJsonSupportFromJson(formatted));
             default:
                 throw new Error("Expected only reference got " + JSON.stringify(json));

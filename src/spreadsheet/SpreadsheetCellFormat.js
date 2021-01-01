@@ -8,9 +8,7 @@ const TYPE_NAME = "spreadsheet-cell-format";
 export default class SpreadsheetCellFormat extends SystemObject {
 
     static fromJson(pattern) {
-        return pattern ?
-            new SpreadsheetCellFormat(pattern) :
-            null;
+        return new SpreadsheetCellFormat(pattern);
     }
 
     constructor(pattern) {

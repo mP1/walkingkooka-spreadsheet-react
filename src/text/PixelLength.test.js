@@ -1,8 +1,18 @@
 import PixelLength from "./PixelLength";
+import systemObjectTesting from "../SystemObjectTesting.js";
 
 function length() {
     return PixelLength.parse("1px");
 }
+
+systemObjectTesting(
+    length(),
+    new PixelLength("999px"),
+    PixelLength.fromJson,
+    "Missing text",
+    "pixel-length",
+    "1px"
+);
 
 test("parse null fails", () => {
     expect(() => PixelLength.parse(null)).toThrow("Missing text");
@@ -25,26 +35,6 @@ test("create", () => {
 });
 
 // equals...............................................................................................................
-
-test("equals undefined false", () => {
-    const l = length();
-    expect(l.equals()).toBeFalse();
-});
-
-test("equals null false", () => {
-    const l = length();
-    expect(l.equals(null)).toBeFalse();
-});
-
-test("equals self true", () => {
-    const l = length();
-    expect(l.equals(l)).toBeTrue();
-});
-
-test("equals different false", () => {
-    const l = length();
-    expect(l.equals(PixelLength.parse("2px"))).toBeFalse();
-});
 
 test("equals equivalent true", () => {
     const value = 2;

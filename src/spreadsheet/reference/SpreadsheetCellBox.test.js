@@ -1,5 +1,6 @@
 import SpreadsheetCellBox from "./SpreadsheetCellBox";
 import SpreadsheetCellReference from "./SpreadsheetCellReference";
+import systemObjectTesting from "../../SystemObjectTesting.js";
 
 function reference() {
     return SpreadsheetCellReference.fromJson("A1");
@@ -25,7 +26,22 @@ function box() {
     return new SpreadsheetCellBox(reference(), x(), y(), width(), height());
 }
 
-// reference
+systemObjectTesting(
+    box(),
+    new SpreadsheetCellBox(SpreadsheetCellReference.parse("Z99"), 9, 9, 9, 9),
+    SpreadsheetCellBox.fromJson,
+    "Missing json",
+    "spreadsheet-cell-box",
+    {
+        "reference": "A1",
+        "x": 200,
+        "y": 400,
+        "width": 100,
+        "height": 20,
+    }
+);
+
+// create...............................................................................................................
 
 test("create without reference fails", () => {
     expect(() => new SpreadsheetCellBox(null, x(), y(), width(), height())).toThrow("Missing reference");
@@ -124,12 +140,6 @@ test("create invalid height value fails2", () => {
     expect(() => new SpreadsheetCellBox(reference(), x(), y(), width(), height)).toThrow("Expected height >= 0 got " + height);
 });
 
-// json
-
-test("fromJson null fails", () => {
-    expect(() => SpreadsheetCellBox.fromJson(null)).toThrow("Missing json");
-});
-
 test("new", () => {
     check(new SpreadsheetCellBox(reference(), x(), y(), width(), height()),
         reference(),
@@ -171,40 +181,7 @@ test("new 0 height", () => {
         height);
 });
 
-test("from json", () => {
-    const box = SpreadsheetCellBox.fromJson({
-        "reference": reference().toJson(),
-        "x": x(),
-        "y": y(),
-        "width": width(),
-        "height": height()
-    });
-    check(box,
-        reference(),
-        x(),
-        y(),
-        width(),
-        height());
-});
-
 // equals...............................................................................................................
-
-test("equals undefined false", () => {
-    expect(box().equals()).toBeFalse();
-});
-
-test("equals null false", () => {
-    expect(box().equals(null)).toBeFalse();
-});
-
-test("equals different type false", () => {
-    expect(box().equals("different")).toBeFalse();
-});
-
-test("equals self true", () => {
-    const b = box();
-    expect(b.equals(b)).toBeTrue();
-});
 
 test("equals different reference false", () => {
     const b = box();
