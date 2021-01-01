@@ -105,6 +105,22 @@ test("json text & value", () => {
     );
 });
 
+test("json text & empty string value", () => {
+    const value = "";
+    const spreadsheetFormula = new SpreadsheetFormula(text, value);
+
+    check(
+        spreadsheetFormula,
+        text,
+        value,
+        undefined,
+        {
+            text: text,
+            value: SystemObject.toJsonWithType(value),
+        }
+    );
+});
+
 test("json text & error", () => {
     const error = new SpreadsheetError("Error message #1");
     const spreadsheetFormula = new SpreadsheetFormula(text, undefined, error);

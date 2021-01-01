@@ -16,7 +16,7 @@ export default class SpreadsheetFormula extends SystemObject {
         const {text, value, error} = json;
         return new SpreadsheetFormula(
             text,
-            value && SystemObject.fromJsonWithType(value),
+            null != value ? SystemObject.fromJsonWithType(value) : value,
             SpreadsheetError.fromJson(error)
         );
     }
@@ -25,7 +25,7 @@ export default class SpreadsheetFormula extends SystemObject {
         super();
         checkText(text);
         if(error){
-            if(value){
+            if(null != value){
                 throw new Error("Expected either value or error but got both " + value + " " + error);
             }
             if(!(error instanceof SpreadsheetError)){
@@ -63,7 +63,7 @@ export default class SpreadsheetFormula extends SystemObject {
         };
 
         let value = this.value();
-        if(value){
+        if(null != value){
             json.value = SystemObject.toJsonWithType(value);
         }
 
