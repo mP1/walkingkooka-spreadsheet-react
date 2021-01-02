@@ -7,274 +7,274 @@ const CELL = ".cell";
 
 context("General app usage", () => {
 
-  beforeEach(() => {
-    cy.visit('/')
-  })
+    beforeEach(() => {
+        cy.visit('/')
+    })
 
-  it("Initial empty spreadsheet", () => {
-    checkEmptySpreadsheet();
-  });
+    it("Initial empty spreadsheet", () => {
+        checkEmptySpreadsheet();
+    });
 
-  // INVALID TARGET. ...................................................................................................
+    // INVALID TARGET. ...................................................................................................
 
-  it("Enter history hash invalid target", () => {
-    invalidHashUpdateRejected("/!invalid-target");
-  });
+    it("Enter history hash invalid target", () => {
+        invalidHashUpdateRejected("/!invalid-target");
+    });
 
-  // SPREADSHEET NAME ...................................................................................................
+    // SPREADSHEET NAME ...................................................................................................
 
-  it("Enter history hash with invalid spreadsheet name action", () => {
-    invalidHashUpdateRejected("/name/!invalid-name-action");
-  });
+    it("Enter history hash with invalid spreadsheet name action", () => {
+        invalidHashUpdateRejected("/name/!invalid-name-action");
+    });
 
-  it("Edit spreadsheet name", () => {
-    spreadsheetName()
-        .click();
+    it("Edit spreadsheet name", () => {
+        spreadsheetName()
+            .click();
 
-    hash().should('match', /.*\/.*\/name\/edit/) // => true
+        hash().should('match', /.*\/.*\/name\/edit/) // => true
 
-    const updatedSpreadsheetName = "SpreadsheetName234"; // easier to use in regex below
+        const updatedSpreadsheetName = "SpreadsheetName234"; // easier to use in regex below
 
-    // type the new name in
-    spreadsheetName()
-        .type("{selectall}")
-        .type(updatedSpreadsheetName)
-        .type("{enter}");
+        // type the new name in
+        spreadsheetName()
+            .type("{selectall}")
+            .type(updatedSpreadsheetName)
+            .type("{enter}");
 
-    reactRenderWait();
+        reactRenderWait();
 
-    spreadsheetName()
-        .should("have.text", updatedSpreadsheetName);
+        spreadsheetName()
+            .should("have.text", updatedSpreadsheetName);
 
-    // verify hash and title updated to include $updateSpreadsheetName
-    title().should("eq", updatedSpreadsheetName.toString());
-    hash().should('match', /.*\/SpreadsheetName234/) // => true
-  });
+        // verify hash and title updated to include $updateSpreadsheetName
+        title().should("eq", updatedSpreadsheetName.toString());
+        hash().should('match', /.*\/SpreadsheetName234/) // => true
+    });
 
-  // CELL ................................................................................................................
+    // CELL ................................................................................................................
 
-  it("Enter history hash with invalid reference", () => {
-    invalidHashUpdateRejected("/cell/!invalid-cell-reference");
-  });
+    it("Enter history hash with invalid reference", () => {
+        invalidHashUpdateRejected("/cell/!invalid-cell-reference");
+    });
 
-  it("Enter history hash with valid reference but invalid action", () => {
-    invalidHashUpdateRejected("/cell/A1/!invalid-cell-action");
-  });
+    it("Enter history hash with valid reference but invalid action", () => {
+        invalidHashUpdateRejected("/cell/A1/!invalid-cell-action");
+    });
 
-  it("Edit cell formula", () => {
-    reactRenderWait();
+    it("Edit cell formula", () => {
+        reactRenderWait();
 
-    cy.get("#cell-B2")
-        .click();
+        cy.get("#cell-B2")
+            .click();
 
-    hash().should('match', /.*\/Untitled\/cell\/B2\/formula/) // => true
+        hash().should('match', /.*\/Untitled\/cell\/B2\/formula/) // => true
 
-    formulaText()
-        .type("1+2+3")
-        .type("{enter}");
+        formulaText()
+            .type("1+2+3")
+            .type("{enter}");
 
-    reactRenderWait();
+        reactRenderWait();
 
-    cellTextCheck("#cell-B2", "6.");
-  });
+        cellTextCheck("#cell-B2", "6.");
+    });
 
-  it("Enter cell with reference", () => {
-    reactRenderWait();
+    it("Enter cell with reference", () => {
+        reactRenderWait();
 
-    cy.get("#cell-C3")
-        .click();
+        cy.get("#cell-C3")
+            .click();
 
-    formulaText()
-        .type("1+2+3")
-        .type("{enter}");
+        formulaText()
+            .type("1+2+3")
+            .type("{enter}");
 
-    cy.get("#cell-D4")
-        .click();
+        cy.get("#cell-D4")
+            .click();
 
-    formulaText()
-        .type("C3+10")
-        .type("{enter}");
+        formulaText()
+            .type("C3+10")
+            .type("{enter}");
 
-    reactRenderWait();
+        reactRenderWait();
 
-    cellTextCheck("#cell-D4", "16.");
-  });
+        cellTextCheck("#cell-D4", "16.");
+    });
 
-  it("Update hash cell reference", () => {
-    reactRenderWait();
+    it("Update hash cell reference", () => {
+        reactRenderWait();
 
-    cy.get("#cell-C3")
-        .click();
+        cy.get("#cell-C3")
+            .click();
 
-    formulaText()
-        .type("1+2+3")
-        .type("{enter}");
+        formulaText()
+            .type("1+2+3")
+            .type("{enter}");
 
-    cy.window()
-        .then(function (win) {
-          var hash = win.location.hash;
-          win.location.hash = hash.replace("/cell/C3/formula", "/cell/D4/formula");
-        });
+        cy.window()
+            .then(function(win) {
+                var hash = win.location.hash;
+                win.location.hash = hash.replace("/cell/C3/formula", "/cell/D4/formula");
+            });
 
-    reactRenderWait();
+        reactRenderWait();
 
-    formulaText()
-        .type("4+5")
-        .type("{enter}");
+        formulaText()
+            .type("4+5")
+            .type("{enter}");
 
-    cellTextCheck("#cell-D4", "9.");
-  });
+        cellTextCheck("#cell-D4", "9.");
+    });
 
-  // create/load spreadsheet............................................................................................
+    // create/load spreadsheet............................................................................................
 
-  it("Create new empty spreadsheet", () => {
-    hashEnter("/");
+    it("Create new empty spreadsheet", () => {
+        hashEnter("/");
 
-    checkEmptySpreadsheet();
-  });
+        checkEmptySpreadsheet();
+    });
 
-  it("Update then create new empty spreadsheet", () => {
-    reactRenderWait();
+    it("Update then create new empty spreadsheet", () => {
+        reactRenderWait();
 
-    cy.get("#cell-E5")
-        .click();
+        cy.get("#cell-E5")
+            .click();
 
-    formulaText()
-        .type("1+2+3")
-        .type("{enter}");
+        formulaText()
+            .type("1+2+3")
+            .type("{enter}");
 
-    hashEnter("/");
+        hashEnter("/");
 
-    hash().should('match', /.*\/Untitled/) // => true
+        hash().should('match', /.*\/Untitled/) // => true
 
-    checkEmptySpreadsheet();
-  });
+        checkEmptySpreadsheet();
+    });
 
-  it("Update then create new empty spreadsheet then reload non empty", () => {
-    reactRenderWait();
+    it("Update then create new empty spreadsheet then reload non empty", () => {
+        reactRenderWait();
 
-    cy.get("#cell-F6")
-        .click();
+        cy.get("#cell-F6")
+            .click();
 
-    formulaText()
-        .type("1+2+3")
-        .type("{enter}");
+        formulaText()
+            .type("1+2+3")
+            .type("{enter}");
 
 
-    hashEnter("/");
-    cy.go('back');
+        hashEnter("/");
+        cy.go('back');
 
-    cellTextCheck("#cell-F6", "6.");
-  });
+        cellTextCheck("#cell-F6", "6.");
+    });
 
-  // DRAWER ............................................................................................................
+    // DRAWER ............................................................................................................
 
-  it("Toggle(Show and hide) drawer", () => {
-    settingsToolDrawerToggle();
+    it("Toggle(Show and hide) drawer", () => {
+        settingsToolDrawerToggle();
 
-    settingsToolDrawer()
-        .should('be.visible');
+        settingsToolDrawer()
+            .should('be.visible');
 
-    settingsToolDrawerToggle();
+        settingsToolDrawerToggle();
 
-    settingsToolDrawer()
-        .should('be.not.visible');
-  });
+        settingsToolDrawer()
+            .should('be.not.visible');
+    });
 
-  it("Show drawer by editing history hash", () => {
-    reactRenderWait();
+    it("Show drawer by editing history hash", () => {
+        reactRenderWait();
 
-    cy.window()
-        .then(function (win) {
-          var hash = win.location.hash;
-          win.location.hash = hash + "/";
-        });
+        cy.window()
+            .then(function(win) {
+                var hash = win.location.hash;
+                win.location.hash = hash + "/";
+            });
 
-    reactRenderWait();
-    settingsToolDrawer()
-        .should('be.visible');
-  });
+        reactRenderWait();
+        settingsToolDrawer()
+            .should('be.visible');
+    });
 
-  it("Hide drawer by editing history hash", () => {
-    settingsToolDrawerToggle();
-    reactRenderWait();
+    it("Hide drawer by editing history hash", () => {
+        settingsToolDrawerToggle();
+        reactRenderWait();
 
-    cy.window()
-        .then(function (win) {
-          var hash = win.location.hash;
-          win.location.hash = hash.substring(0, hash.length - 1);
-        });
+        cy.window()
+            .then(function(win) {
+                var hash = win.location.hash;
+                win.location.hash = hash.substring(0, hash.length - 1);
+            });
 
-    reactRenderWait();
-    settingsToolDrawer()
-        .should('be.not.visible');
-  });
+        reactRenderWait();
+        settingsToolDrawer()
+            .should('be.not.visible');
+    });
 
-  it("Toggle show drawer history hash", () => {
-    reactRenderWait();
+    it("Toggle show drawer history hash", () => {
+        reactRenderWait();
 
-    cy.window()
-        .then(function (win) {
-          var hash = win.location.hash;
+        cy.window()
+            .then(function(win) {
+                var hash = win.location.hash;
 
-          settingsToolDrawerToggle();
+                settingsToolDrawerToggle();
 
-          reactRenderWait();
-          cy.hash()
-              .should("eq", hash + "/");
-        });
-  });
+                reactRenderWait();
+                cy.hash()
+                    .should("eq", hash + "/");
+            });
+    });
 
-  it("Toggle show then hide drawer history hash", () => {
-    reactRenderWait();
+    it("Toggle show then hide drawer history hash", () => {
+        reactRenderWait();
 
-    cy.window()
-        .then(function (win) {
-          var hash = win.location.hash;
+        cy.window()
+            .then(function(win) {
+                var hash = win.location.hash;
 
-          settingsToolDrawerToggle();
-          settingsToolDrawerToggle();
+                settingsToolDrawerToggle();
+                settingsToolDrawerToggle();
 
-          reactRenderWait();
-          cy.hash()
-              .should("eq", hash);
-        });
-  });
+                reactRenderWait();
+                cy.hash()
+                    .should("eq", hash);
+            });
+    });
 
-  it("Edit spreadsheet name, then toggle show drawer history hash", () => {
-    spreadsheetName();
+    it("Edit spreadsheet name, then toggle show drawer history hash", () => {
+        spreadsheetName();
 
-    reactRenderWait();
+        reactRenderWait();
 
-    cy.window()
-        .then(function (win) {
-          var hash = win.location.hash;
+        cy.window()
+            .then(function(win) {
+                var hash = win.location.hash;
 
-          settingsToolDrawerToggle();
+                settingsToolDrawerToggle();
 
-          reactRenderWait();
-          cy.hash()
-              .should("eq", hash + "/");
-        });
-  });
+                reactRenderWait();
+                cy.hash()
+                    .should("eq", hash + "/");
+            });
+    });
 
-  it("Edit cell, then toggle show drawer history hash", () => {
-    cy.get("#cell-F6")
-        .click();
+    it("Edit cell, then toggle show drawer history hash", () => {
+        cy.get("#cell-F6")
+            .click();
 
-    reactRenderWait();
+        reactRenderWait();
 
-    cy.window()
-        .then(function (win) {
-          var hash = win.location.hash;
+        cy.window()
+            .then(function(win) {
+                var hash = win.location.hash;
 
-          settingsToolDrawerToggle();
+                settingsToolDrawerToggle();
 
-          reactRenderWait();
-          cy.hash()
-              .should("eq", hash + "/");
-        });
-  });
+                reactRenderWait();
+                cy.hash()
+                    .should("eq", hash + "/");
+            });
+    });
 });
 
 // helpers..............................................................................................................
@@ -284,93 +284,93 @@ context("General app usage", () => {
  * hash is restored.
  */
 function invalidHashUpdateRejected(hashAppend) {
-  reactRenderWait();
+    reactRenderWait();
 
-  cy.window()
-      .then(function (win) {
-        var hash = win.location.hash;
+    cy.window()
+        .then(function(win) {
+            var hash = win.location.hash;
 
-        // updated hash should be rejected.
-        win.location.hash = hash + hashAppend;
+            // updated hash should be rejected.
+            win.location.hash = hash + hashAppend;
 
-        cy.hash()
-            .should("eq", hash);
-      });
+            cy.hash()
+                .should("eq", hash);
+        });
 }
 
 /**
  * Checks that the spreadsheet is completely empty.
  */
 function checkEmptySpreadsheet() {
-  hash().should('match', /.*\/Untitled/) // => true
+    hash().should('match', /.*\/Untitled/) // => true
 
-  // Verify spreadsheet name is "Untitled"
-  spreadsheetName()
-      .should("have.class", "MuiButton-root")
-      .should("have.text", "Untitled");
+    // Verify spreadsheet name is "Untitled"
+    spreadsheetName()
+        .should("have.class", "MuiButton-root")
+        .should("have.text", "Untitled");
 
-  title().should("eq", "Untitled");
+    title().should("eq", "Untitled");
 
-  // Verify formula is read only and empty
-  formulaText()
-      .should("be.disabled")
-      .should("have.text", "");
+    // Verify formula is read only and empty
+    formulaText()
+        .should("be.disabled")
+        .should("have.text", "");
 
-  cy.get(COLUMN + SELECTED)
-      .should("have.length", 0);
+    cy.get(COLUMN + SELECTED)
+        .should("have.length", 0);
 
-  cy.get(ROW + SELECTED)
-      .should("have.length", 0);
+    cy.get(ROW + SELECTED)
+        .should("have.length", 0);
 
-  cellTextCheck(CELL, "");
+    cellTextCheck(CELL, "");
 }
 
 function title() {
-  return cy.title();
+    return cy.title();
 }
 
 function hashEnter(hash) {
-  cy.window().then(function (win) {
-    win.location.hash = hash;
-  });
+    cy.window().then(function(win) {
+        win.location.hash = hash;
+    });
 }
 
 function hash() {
-  return cy.location().hash();
+    return cy.location().hash();
 }
 
 function spreadsheetName() {
-  reactRenderWait();
-  return cy.get("#spreadsheet-name");
+    reactRenderWait();
+    return cy.get("#spreadsheet-name");
 }
 
 function formulaText() {
-  reactRenderWait();
-  return cy.get("#formula-text");
+    reactRenderWait();
+    return cy.get("#formula-text");
 }
 
 function cellTextCheck(cellReference, text) {
-  cy.get(cellReference)
-      .should("have.text", text);
+    cy.get(cellReference)
+        .should("have.text", text);
 }
 
 /**
  * Fetches the icon that when clicked toggles the drawer
  */
 function settingsToolDrawerToggle() {
-  reactRenderWait();
-  cy.get("#settings-tools-icon")
-      .click();
+    reactRenderWait();
+    cy.get("#settings-tools-icon")
+        .click();
 }
 
 /**
  * The drawer that appears on the right containing settings, tools and more.
  */
 function settingsToolDrawer() {
-  reactRenderWait();
-  return cy.get("#settings-tools-drawer > DIV"); // the #settings-tool-drawer remains 1000x0 while the DIV child has an actual height
+    reactRenderWait();
+    return cy.get("#settings-tools-drawer > DIV"); // the #settings-tool-drawer remains 1000x0 while the DIV child has an actual height
 }
 
 function reactRenderWait(period) {
-  cy.wait(period || 50);
+    cy.wait(period || 50);
 }
