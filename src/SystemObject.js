@@ -38,8 +38,8 @@ export default class SystemObject {
                 result = json;
                 break;
             case "object":
-                if(Array.isArray(json)) {
-                    fromJsonWithTypeFail(json);
+                if(Array.isArray(json)){
+                    jsonWithTypeFail(json);
                 }
                 if(json){
                     const {type, value} = json;
@@ -59,7 +59,7 @@ export default class SystemObject {
                 }
                 break;
             default:
-                fromJsonWithTypeFail(json);
+                jsonWithTypeFail(json);
         }
 
         return result;
@@ -95,38 +95,28 @@ export default class SystemObject {
     }
 
     static toJsonWithType(value) {
-        if(null == value){
-            throw new Error("Missing value");
+        if(Array.isArray(value)){
+            jsonWithTypeFail(value);
         }
-
         let json;
 
         if(value instanceof SystemObject){
             json = value.toJsonWithType();
         }else {
-            const type = typeof value;
-            switch(type) {
-                case "boolean":
-                    json = {
-                        type: "boolean",
-                        value: value,
-                    };
-                    break;
-                case "string":
-                    json = {
-                        type: "string",
-                        value: value,
-                    };
-                    break;
-                case "number":
-                    json = {
-                        type: "double",
-                        value: value,
-                    };
-                    break;
-                case "object":
-                case "function":
-                    throw new Error("Unsupported type " + value);
+            if(!value){
+                json = value;
+            }else {
+                const type = typeof value;
+                switch(type) {
+                    case "boolean":
+                    case "number":
+                    case "string":
+                        json = value;
+                        break;
+                    case "object":
+                    case "function":
+                        throw new Error("Unsupported type " + value);
+                }
             }
         }
 
@@ -157,7 +147,7 @@ export default class SystemObject {
     }
 }
 
-function fromJsonWithTypeFail(json) {
+function jsonWithTypeFail(json) {
     throw new Error("Expected boolean/string/null/number/object got " + json);
 }
 

@@ -14,10 +14,7 @@ systemObjectTesting(
     "spreadsheet-formula",
     {
         text: text,
-        value: {
-            type: "double",
-            value: 1.5
-        }
+        value: 1.5,
     }
 );
 
