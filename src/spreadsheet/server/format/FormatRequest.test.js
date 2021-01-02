@@ -57,13 +57,6 @@ test("create missing null pattern fails", () => {
     ).toThrow("Missing pattern");
 });
 
-test("create invalid pattern type fails", () => {
-    const p = "invalid pattern";
-    expect(
-        () => new FormatRequest(value(), p)
-    ).toThrow("Expected SpreadsheetPattern pattern got " + p);
-});
-
 test("create value & pattern", () => {
     const v = value();
     const p = pattern();
