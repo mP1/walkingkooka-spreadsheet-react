@@ -769,6 +769,23 @@ class App extends React.Component {
         }
     }
 
+    /**
+     * Formats a MultiFormatRequest holding the create-date-time and modified-date-time.
+     */
+    onFormatCreateDateTimeModifiedDateTime(multiFormatRequest, success, errorHandler) {
+        console.log("onFormatCreateDateTimeModifiedDateTime ", multiFormatRequest);
+
+        this.messenger.send(
+            this.spreadsheetMetadataApiUrl() + "/format",
+            {
+                method: "POST",
+                body: JSON.stringify(multiFormatRequest.toJson()),
+            },
+            success,
+            error || errorHandler,
+        );
+    }
+
     // rendering........................................................................................................
 
     /**
@@ -846,6 +863,7 @@ class App extends React.Component {
                                          onClose={this.settingsAndToolsDrawerOpenAndUpdateHistory.bind(this)}
                                          width={DRAWER_WIDTH}
                                          spreadsheetMetadata={metadata}
+                                         formatCreateDateTimeModifiedDateTime={this.onFormatCreateDateTimeModifiedDateTime.bind(this)}
                 />
             </WindowResizer>
         );
