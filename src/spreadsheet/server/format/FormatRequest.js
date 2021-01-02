@@ -1,5 +1,4 @@
 import Equality from "../../../Equality.js";
-import SpreadsheetPattern from "../../format/SpreadsheetPattern.js";
 import SystemObject from "../../../SystemObject.js";
 
 const TYPE_NAME = "spreadsheet-format-request";
