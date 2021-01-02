@@ -54,19 +54,55 @@ test("register invalid unmarshall function fails", () => {
 
 // fromJsonWithType.....................................................................................................
 
-test("fromJsonWithType missing json fails", () => {
-    expect(
-        () => SystemObject.fromJsonWithType()
-    ).toThrow("Missing json");
-});
-
 test("fromJsonWithType missing type fails", () => {
     expect(
         () => SystemObject.fromJsonWithType({value: 1})
     ).toThrow("Missing type got [object Object]");
 });
 
-test("fromJsonWithType double", () => {
+test("fromJsonWithType array fails", () => {
+    expect(
+        () => SystemObject.fromJsonWithType([])
+    ).toThrow("Expected boolean/string/null/number/object got " + []);
+});
+
+test("fromJsonWithType boolean", () => {
+    const boolean = true;
+    expect(
+        SystemObject.fromJsonWithType(
+            boolean
+        )
+    ).toStrictEqual(boolean);
+});
+
+test("fromJsonWithType null", () => {
+    const value = null;
+    expect(
+        SystemObject.fromJsonWithType(
+            value
+        )
+    ).toStrictEqual(value);
+});
+
+test("fromJsonWithType number", () => {
+    const double = 1.5;
+    expect(
+        SystemObject.fromJsonWithType(
+            double
+        )
+    ).toStrictEqual(double);
+});
+
+test("fromJsonWithType string", () => {
+    const string = "A1";
+    expect(
+        SystemObject.fromJsonWithType(
+            string
+        )
+    ).toStrictEqual(string);
+});
+
+test("fromJsonWithType type:double", () => {
     const double = 1.5;
     expect(
         SystemObject.fromJsonWithType(
@@ -78,7 +114,7 @@ test("fromJsonWithType double", () => {
     ).toStrictEqual(double);
 });
 
-test("fromJsonWithType string", () => {
+test("fromJsonWithType type:string", () => {
     const string = "ABC123";
     expect(
         SystemObject.fromJsonWithType(

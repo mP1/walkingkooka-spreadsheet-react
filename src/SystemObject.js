@@ -28,24 +28,41 @@ export default class SystemObject {
      * Unmarshalls the json which has a type and value.
      */
     static fromJsonWithType(json) {
-        if(!json){
-            throw new Error("Missing json");
+        var result;
+
+        const typeType = typeof json;
+        switch(typeType) {
+            case "boolean":
+            case "number":
+            case "string":
+                result = json;
+                break;
+            case "object":
+                if(Array.isArray(json)) {
+                    fromJsonWithTypeFail(json);
+                }
+                if(json){
+                    const {type, value} = json;
+                    if(!type){
+                        throw new Error("Missing type got " + json);
+                    }
+                    if(typeof type !== "string"){
+                        throw new Error("Expected string type got " + type);
+                    }
+                    const unmarshaller = typeNameToFromJson.get(type);
+                    if(!unmarshaller){
+                        throw new Error("Unable to find unmarshaller for " + type);
+                    }
+                    result = unmarshaller(value);
+                }else {
+                    result = null;
+                }
+                break;
+            default:
+                fromJsonWithTypeFail(json);
         }
-        if(typeof json !== "object"){
-            throw new Error("Expected object json got " + json);
-        }
-        const {type, value} = json;
-        if(!type){
-            throw new Error("Missing type got " + json);
-        }
-        if(typeof type !== "string"){
-            throw new Error("Expected string type got " + type);
-        }
-        const unmarshaller = typeNameToFromJson.get(type);
-        if(!unmarshaller){
-            throw new Error("Unable to find unmarshaller for " + type);
-        }
-        return unmarshaller(value);
+
+        return result;
     }
 
     /**
@@ -138,6 +155,10 @@ export default class SystemObject {
             value: this.toJson()
         };
     }
+}
+
+function fromJsonWithTypeFail(json) {
+    throw new Error("Expected boolean/string/null/number/object got " + json);
 }
 
 function unmarshallDouble(json) {
