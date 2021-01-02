@@ -1,5 +1,7 @@
 /// <reference types="cypress" />
 
+import SpreadsheetMetadata from "../../src/spreadsheet/meta/SpreadsheetMetadata.js";
+
 const SELECTED = ".selected";
 const COLUMN = ".column";
 const ROW = ".row";
@@ -290,6 +292,58 @@ context("General app usage", () => {
         cy.get("#spreadsheet-metadata-modified-date-time")
             .contains(year);
     });
+
+    /**
+     * Opens the spreadsheet drawer, types in the given text, and verifies the property.
+     * The button is then clicked and the text field is verified.
+     */
+    function enterSpreadsheetMetadataTextAndCheck(property,
+                                                  text,
+                                                  defaultText) {
+        it("Show drawer check SpreadsheetMetadata." + property, () => {
+            settingsToolDrawerToggle();
+
+            settingsToolDrawer()
+                .should('be.visible');
+
+            const textFieldId = "#spreadsheet-metadata-" + property + "-text";
+            cy.get(textFieldId)
+                .type("{backspace}{backspace}" + text);
+
+            cy.get(textFieldId)
+                .should("have.value", text);
+
+            const buttonId = "#spreadsheet-metadata-" + property + "-button";
+            cy.get(buttonId)
+                .click();
+
+            cy.get(textFieldId)
+                .should("have.value", defaultText);
+        });
+    }
+
+    enterSpreadsheetMetadataTextAndCheck(SpreadsheetMetadata.DECIMAL_SEPARATOR,
+        "d",
+        ".");
+    enterSpreadsheetMetadataTextAndCheck(SpreadsheetMetadata.EXPONENT_SYMBOL,
+        "x",
+        "E");
+
+    enterSpreadsheetMetadataTextAndCheck(SpreadsheetMetadata.GROUPING_SEPARATOR,
+        "g",
+        ",");
+
+    enterSpreadsheetMetadataTextAndCheck(SpreadsheetMetadata.NEGATIVE_SIGN,
+        "n",
+        "-");
+
+    enterSpreadsheetMetadataTextAndCheck(SpreadsheetMetadata.PERCENTAGE_SYMBOL,
+        "p",
+        "%");
+
+    enterSpreadsheetMetadataTextAndCheck(SpreadsheetMetadata.POSITIVE_SIGN,
+        "o",
+        "+");
 });
 
 // helpers..............................................................................................................
