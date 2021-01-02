@@ -115,6 +115,7 @@ export default class SystemObject {
                         break;
                     case "object":
                     case "function":
+                    default:
                         throw new Error("Unsupported type " + value);
                 }
             }
