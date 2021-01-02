@@ -251,23 +251,56 @@ test("toJsonWithType", () => {
 
 // static toJsonWithType................................................................................................
 
-test("static toJsonWithType with undefined fails", () => {
+test("static toJsonWithType array fails", () => {
     expect(
-        () => SystemObject.toJsonWithType(undefined)
-    ).toThrow("Missing value");
+        () => SystemObject.toJsonWithType([])
+    ).toThrow("Expected boolean/string/null/number/object got ");
 });
 
-test("static toJsonWithType with null fails", () => {
+function toJsonWithTypeAndCheck(json, expected) {
     expect(
-        () => SystemObject.toJsonWithType(null)
-    ).toThrow("Missing value");
+        SystemObject.toJsonWithType(json)
+    ).toStrictEqual(
+        expected
+    );
+}
+
+test("static toJsonWithType with undefined", () => {
+    toJsonWithTypeAndCheck(undefined, undefined);
+});
+
+test("static toJsonWithType with null", () => {
+    toJsonWithTypeAndCheck(null, null);
+});
+
+test("static toJsonWithType with true", () => {
+    toJsonWithTypeAndCheck(true, true);
+});
+
+test("static toJsonWithType with false", () => {
+    toJsonWithTypeAndCheck(false, false);
+});
+
+test("static toJsonWithType with number 0", () => {
+    toJsonWithTypeAndCheck(0, 0);
+});
+
+test("static toJsonWithType with number 1.5", () => {
+    toJsonWithTypeAndCheck(1.5, 1.5);
+});
+
+test("static toJsonWithType with empty string", () => {
+    toJsonWithTypeAndCheck("", "");
+});
+
+test("static toJsonWithType with string", () => {
+    toJsonWithTypeAndCheck("abc123", "abc123");
 });
 
 test("static toJsonWithType SystemObject", () => {
     const character = new Character("A");
-    expect(
-        SystemObject.toJsonWithType(character)
-    ).toStrictEqual(
+    toJsonWithTypeAndCheck(
+        character,
         {
             type: character.typeName(),
             value: character.toJson(),
@@ -277,64 +310,12 @@ test("static toJsonWithType SystemObject", () => {
 
 test("static toJsonWithType SystemObject #2", () => {
     const localDateTime = LocalDateTime.fromJson("2000-12-31 12:58:59")
-    expect(
-        SystemObject.toJsonWithType(localDateTime)
-    ).toStrictEqual(
+
+    toJsonWithTypeAndCheck(
+        localDateTime,
         {
             type: localDateTime.typeName(),
             value: localDateTime.toJson(),
-        }
-    );
-});
-
-test("static toJsonWithType empty string", () => {
-    const string = "";
-
-    expect(
-        SystemObject.toJsonWithType(string)
-    ).toStrictEqual(
-        {
-            type: "string",
-            value: string,
-        }
-    );
-});
-
-test("static toJsonWithType string", () => {
-    const string = "ABC123";
-
-    expect(
-        SystemObject.toJsonWithType(string)
-    ).toStrictEqual(
-        {
-            type: "string",
-            value: string,
-        }
-    );
-});
-
-test("static toJsonWithType zero number", () => {
-    const number = 0;
-
-    expect(
-        SystemObject.toJsonWithType(number)
-    ).toStrictEqual(
-        {
-            type: "double",
-            value: number,
-        }
-    );
-});
-
-test("static toJsonWithType number", () => {
-    const number = 123.5;
-
-    expect(
-        SystemObject.toJsonWithType(number)
-    ).toStrictEqual(
-        {
-            type: "double",
-            value: number,
         }
     );
 });
