@@ -401,7 +401,3 @@ SpreadsheetDrawerWidget.propTypes = {
 }
 
 export default withStyles(useStyles)(SpreadsheetDrawerWidget);
-
-function textOrEmpty(localDateTime) {
-    return (localDateTime && localDateTime.text()) || "";
-}
