@@ -782,7 +782,7 @@ class App extends React.Component {
                 body: JSON.stringify(multiFormatRequest.toJson()),
             },
             success,
-            error || errorHandler,
+            errorHandler || error,
         );
     }
 
