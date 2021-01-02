@@ -35,9 +35,6 @@ export default class FormatRequest extends SystemObject {
         if(!pattern){
             throw new Error("Missing pattern");
         }
-        if(!(pattern instanceof SpreadsheetPattern)){
-            throw new Error("Expected SpreadsheetPattern pattern got " + pattern);
-        }
         this.valueValue = value;
         this.patternValue = pattern;
     }
