@@ -152,23 +152,12 @@ class SpreadsheetDrawerWidget extends React.Component {
      * <ul>
      */
     metadata(classes) {
-        const state = this.state;
-        const metadata = state.spreadsheetMetadata;
-
-        // createDateTimeFormatted & modifiedDateTimeFormatted will be updated by the server response.
-
-        const id = metadata.get(SpreadsheetMetadata.SPREADSHEET_ID);
-        const creator = textOrEmpty(metadata.get(SpreadsheetMetadata.CREATOR));
-        const createDateTime = "" + state.createDateTimeFormatted;
-        const modifiedBy = textOrEmpty(metadata.get(SpreadsheetMetadata.MODIFIED_BY));
-        const modifiedDateTime = "" + state.modifiedDateTimeFormatted;
-
         const rows = [
-            this.labelAndTextRow("Spreadsheet Id", "spreadsheet-metadata-id", id),
-            this.labelAndTextRow("Creator", "spreadsheet-metadata-creator", creator),
-            this.labelAndTextRow("Create Date/Time", "spreadsheet-metadata-create-date-time", createDateTime),
-            this.labelAndTextRow("Modified by", "spreadsheet-metadata-modified-by", modifiedBy),
-            this.labelAndTextRow("Modified Date/Time", "spreadsheet-metadata-modified-date-time", modifiedDateTime),
+            this.row("Spreadsheet Id", SpreadsheetMetadata.SPREADSHEET_ID),
+            this.row("Creator", SpreadsheetMetadata.CREATOR),
+            this.row("Create Date/Time", SpreadsheetMetadata.CREATE_DATE_TIME),
+            this.row("Modified by", SpreadsheetMetadata.MODIFIED_BY),
+            this.row("Modified Date/Time", SpreadsheetMetadata.MODIFIED_DATE_TIME),
         ];
 
         return this.accordion("metadata",
@@ -193,15 +182,9 @@ class SpreadsheetDrawerWidget extends React.Component {
      * <ul>
      */
     spreadsheetText(classes) {
-        const metadata = this.state.spreadsheetMetadata;
-
-        const locale = metadata.get(SpreadsheetMetadata.LOCALE);
-        const textFormatPattern = metadata.get(SpreadsheetMetadata.TEXT_FORMAT_PATTERN);
-
-        // all ids are prefixed with "spreadsheet-"
         const rows = [
-            this.labelAndTextRow("Locale", "spreadsheet-locale", locale),
-            this.labelAndTextRow("Format", "spreadsheet-text-format-pattern", textFormatPattern),
+            this.row("Locale", SpreadsheetMetadata.LOCALE),
+            this.row("Format", SpreadsheetMetadata.TEXT_FORMAT_PATTERN),
         ];
 
         return this.accordion("spreadsheet-text",
@@ -230,28 +213,16 @@ class SpreadsheetDrawerWidget extends React.Component {
      * <ul>
      */
     spreadsheetDateTime(classes) {
-        const metadata = this.state.spreadsheetMetadata;
-
-        const dateFormatPattern = metadata.get(SpreadsheetMetadata.DATETIME_FORMAT_PATTERN);
-        const dateParsePatterns = metadata.get(SpreadsheetMetadata.DATE_PARSE_PATTERNS);
-        const dateTimeOffset = metadata.get(SpreadsheetMetadata.DATETIME_OFFSET);
-        const dateTimeFormatPattern = metadata.get(SpreadsheetMetadata.DATETIME_FORMAT_PATTERN);
-        const dateTimeParsePatterns = metadata.get(SpreadsheetMetadata.DATETIME_PARSE_PATTERNS);
-        const timeFormatPattern = metadata.get(SpreadsheetMetadata.TIME_FORMAT_PATTERN);
-        const timeParsePatterns = metadata.get(SpreadsheetMetadata.TIME_PARSE_PATTERNS);
-        const twoDigitYear = metadata.get(SpreadsheetMetadata.TWO_DIGIT_YEAR);
-
-        // all ids are prefixed with "spreadsheet-"
         const rows = [
-            this.labelAndTextRow("Date Time Offset", "spreadsheet-date-time-offset", dateTimeOffset), // 1900 or 1904 date system
-            this.labelAndTextRow("Two Digit Year", "spreadsheet-two-digit-year", twoDigitYear),
+            this.row("Date Time Offset", SpreadsheetMetadata.DATETIME_OFFSET), // 1900 or 1904 date system
+            this.row("Two Digit Year", SpreadsheetMetadata.TWO_DIGIT_YEAR),
 
-            this.labelAndTextRow("Date Format", "spreadsheet-date-format-pattern", dateFormatPattern),
-            this.labelAndTextRow("Date Parse", "spreadsheet-date-parse-patterns", dateParsePatterns),
-            this.labelAndTextRow("Date/Time Format", "spreadsheet-date-time-format-pattern", dateTimeFormatPattern),
-            this.labelAndTextRow("Date/Time Parse", "spreadsheet-date-time-parse-patterns", dateTimeParsePatterns),
-            this.labelAndTextRow("Time Format", "spreadsheet-time-format-pattern", timeFormatPattern),
-            this.labelAndTextRow("Time Parse", "spreadsheet-time-parse-patterns", timeParsePatterns),
+            this.row("Date Format", SpreadsheetMetadata.DATE_FORMAT_PATTERN),
+            this.row("Date Parse", SpreadsheetMetadata.DATE_PARSE_PATTERNS),
+            this.row("Date/Time Format", SpreadsheetMetadata.DATETIME_FORMAT_PATTERN),
+            this.row("Date/Time Parse", SpreadsheetMetadata.DATETIME_PARSE_PATTERNS),
+            this.row("Time Format", SpreadsheetMetadata.TIME_FORMAT_PATTERN),
+            this.row("Time Parse", SpreadsheetMetadata.TIME_PARSE_PATTERNS),
         ];
 
         return this.accordion(
@@ -285,35 +256,19 @@ class SpreadsheetDrawerWidget extends React.Component {
      * <ul>
      */
     spreadsheetNumber(classes) {
-        const metadata = this.state.spreadsheetMetadata;
-
-        const currency = metadata.get(SpreadsheetMetadata.CURRENCY_SYMBOL);
-        const decimalSeparator = metadata.get(SpreadsheetMetadata.DECIMAL_SEPARATOR);
-        const exponentSeparator = metadata.get(SpreadsheetMetadata.EXPONENT_SYMBOL);
-        const expressionNumberKind = metadata.get(SpreadsheetMetadata.EXPRESSION_NUMBER_KIND);
-        const groupingSymbol = metadata.get(SpreadsheetMetadata.GROUPING_SEPARATOR);
-        const negativeSign = metadata.get(SpreadsheetMetadata.NEGATIVE_SIGN);
-        const numberFormatPattern = metadata.get(SpreadsheetMetadata.NUMBER_FORMAT_PATTERN);
-        const numberParsePatterns = metadata.get(SpreadsheetMetadata.NUMBER_PARSE_PATTERNS);
-        const percentSymbol = metadata.get(SpreadsheetMetadata.PERCENTAGE_SYMBOL);
-        const positiveSign = metadata.get(SpreadsheetMetadata.POSITIVE_SIGN);
-        const precision = metadata.get(SpreadsheetMetadata.PRECISION);
-        const roundingMode = metadata.get(SpreadsheetMetadata.ROUNDING_MODE);
-
-        // all ids are prefixed with "spreadsheet-"
         const rows = [
-            this.labelAndTextRow("Expression Number Kind", "spreadsheet-exponent-number-kind", expressionNumberKind),
-            this.labelAndTextRow("Precision", "spreadsheet-precision", precision),
-            this.labelAndTextRow("Rounding mode", "spreadsheet-rounding-mode", roundingMode),
-            this.labelAndTextRow("Currency", "spreadsheet-currency", currency),
-            this.labelAndTextRow("Decimal separator", "spreadsheet-decimal-separator", decimalSeparator),
-            this.labelAndTextRow("Exponent separator", "spreadsheet-exponent-separator", exponentSeparator),
-            this.labelAndTextRow("Grouping symbol", "spreadsheet-grouping-symbol", groupingSymbol),
-            this.labelAndTextRow("Negative sign", "spreadsheet-negative-sign", negativeSign),
-            this.labelAndTextRow("Percent symbol", "spreadsheet-percent-symbol", percentSymbol),
-            this.labelAndTextRow("Positive sign", "spreadsheet-positive-sign", positiveSign),
-            this.labelAndTextRow("Format", "spreadsheet-number-format-pattern", numberFormatPattern),
-            this.labelAndTextRow("Parse", "spreadsheet-number-parse-patterns", numberParsePatterns),
+            this.row("Expression Number Kind", SpreadsheetMetadata.EXPRESSION_NUMBER_KIND),
+            this.row("Precision", SpreadsheetMetadata.PRECISION),
+            this.row("Rounding mode", SpreadsheetMetadata.ROUNDING_MODE),
+            this.row("Currency", SpreadsheetMetadata.CURRENCY_SYMBOL),
+            this.row("Decimal separator", SpreadsheetMetadata.DECIMAL_SEPARATOR),
+            this.row("Exponent separator", SpreadsheetMetadata.EXPONENT_SYMBOL),
+            this.row("Grouping symbol", SpreadsheetMetadata.GROUPING_SEPARATOR),
+            this.row("Negative sign", SpreadsheetMetadata.NEGATIVE_SIGN),
+            this.row("Percent symbol", SpreadsheetMetadata.PERCENTAGE_SYMBOL),
+            this.row("Positive sign", SpreadsheetMetadata.POSITIVE_SIGN),
+            this.row("Format", SpreadsheetMetadata.NUMBER_FORMAT_PATTERN),
+            this.row("Parse", SpreadsheetMetadata.NUMBER_PARSE_PATTERNS),
         ];
 
         return this.accordion(
@@ -336,13 +291,9 @@ class SpreadsheetDrawerWidget extends React.Component {
      * <ul>
      */
     spreadsheetStyle(classes) {
-        const metadata = this.state.spreadsheetMetadata;
-
-        const style = metadata.get(SpreadsheetMetadata.STYLE);
-
         // all ids are prefixed with "spreadsheet-"
         const rows = [
-            this.labelAndTextRow("Style", "spreadsheet-style", style),
+            this.row("Style", SpreadsheetMetadata.STYLE),
         ];
 
         return this.accordion("spreadsheet-default-styles",
@@ -357,16 +308,34 @@ class SpreadsheetDrawerWidget extends React.Component {
         );
     }
 
-    labelAndTextRow(label, id, value) {
+    row(label, property) {
         return {
             label: label,
-            id: id,
-            value: value,
+            property: property,
         }
     }
 
-    renderLabelAndTextRow(row, classes) {
-        const {label, id, value} = row;
+    renderRow(row, classes) {
+        const {label, property} = row;
+
+        const id = "spreadsheet-metadata-" + property;
+
+        const state = this.state;
+        const metadata = state.spreadsheetMetadata;
+        let render;
+
+        switch(property) {
+            case SpreadsheetMetadata.CREATE_DATE_TIME:
+                render = "" + state.createDateTimeFormatted;
+                break;
+            case SpreadsheetMetadata.MODIFIED_DATE_TIME:
+                render = "" + state.modifiedDateTimeFormatted;
+                break;
+            default:
+                const value = metadata.get(property);
+                render = value.render && value.render() || value.toString();
+                break;
+        }
 
         // hover = highlight under mouse over
         return (
@@ -374,7 +343,7 @@ class SpreadsheetDrawerWidget extends React.Component {
                       hover={true}>
                 <TableCell className={classes.label}>{label}</TableCell>
                 <TableCell id={id}
-                           className={classes.value}>{(value.render && value.render()) || value.toString()}</TableCell>
+                           className={classes.value}>{render}</TableCell>
             </TableRow>);
     }
 
@@ -414,7 +383,7 @@ class SpreadsheetDrawerWidget extends React.Component {
                            aria-label="{tableAriaLabel}">
                         <TableBody>
                             {
-                                rows.map(r => this.renderLabelAndTextRow(r, classes))
+                                rows.map(r => this.renderRow(r, classes))
                             }
                         </TableBody>
                     </Table>
