@@ -14,7 +14,7 @@ import SpreadsheetCellBox from "./spreadsheet/reference/SpreadsheetCellBox";
 import SpreadsheetCellReference from "./spreadsheet/reference/SpreadsheetCellReference.js";
 import SpreadsheetContainerWidget from "./widget/SpreadsheetContainerWidget.js";
 import SpreadsheetCoordinates from "./spreadsheet/SpreadsheetCoordinates.js";
-import SpreadsheetDrawerWidget from "./spreadsheet/SpreadsheetDrawerWidget.js";
+import SpreadsheetDrawerWidget from "./spreadsheet/drawer/SpreadsheetDrawerWidget.js";
 import SpreadsheetDelta from "./spreadsheet/engine/SpreadsheetDelta";
 import SpreadsheetEngineEvaluation from "./spreadsheet/engine/SpreadsheetEngineEvaluation";
 import SpreadsheetFormula from "./spreadsheet/SpreadsheetFormula";
