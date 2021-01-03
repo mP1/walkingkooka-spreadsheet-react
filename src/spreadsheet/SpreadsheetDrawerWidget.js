@@ -337,7 +337,7 @@ class SpreadsheetDrawerWidget extends React.Component {
                 const setValue = function(v) {
                     console.log("saving value " + property + "=" + v);
 
-                    this.setState(
+                    this.setState( // lgtm [js/react/inconsistent-state-update]
                         {
                             spreadsheetMetadata: null != v ? metadata.set(property, v) : metadata.remove(property),
                         }
