@@ -29,22 +29,18 @@ const useStyles = theme => ({
         width: '100%',
     },
     heading: {
-        fontSize: theme.typography.pxToRem(13),
         fontWeight: 700,
     },
     secondaryHeading: {
-        fontSize: theme.typography.pxToRem(12),
         color: theme.palette.text.secondary,
     },
     label: {
-        fontSize: theme.typography.pxToRem(12),
         fontWeight: 700,
         width: "150px",
-        verticalAlign: "top",
+        verticalAlign: "middle",
     },
     value: {
-        fontSize: theme.typography.pxToRem(12),
-        verticalAlign: "top",
+        verticalAlign: "middle",
     },
 });
 
