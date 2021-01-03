@@ -150,7 +150,7 @@ test("from json all properties", () => {
 // get..................................................................................................................
 
 test("get property present without defaults", () => {
-    const propertyName = "spreadsheet-id";
+    const propertyName = SpreadsheetMetadata.SPREADSHEET_ID;
     const propertyValue = "1234";
 
     const metadata = new SpreadsheetMetadata({"spreadsheet-id": propertyValue});
@@ -163,7 +163,7 @@ test("get property missing without defaults", () => {
 })
 
 test("get property missing but ignoring default", () => {
-    const propertyName = "spreadsheet-id";
+    const propertyName = SpreadsheetMetadata.SPREADSHEET_ID;
     const propertyValue = "1234";
 
     const metadata = SpreadsheetMetadata.fromJson({_defaults: {"spreadsheet-id": propertyValue}});
@@ -177,7 +177,7 @@ test("set property null fails", () => {
 })
 
 test("set value null fail", () => {
-    expect(() => SpreadsheetMetadata.EMPTY.set("spreadsheet-id", null)).toThrow("Property \"spreadsheet-id\" missing value");
+    expect(() => SpreadsheetMetadata.EMPTY.set(SpreadsheetMetadata.SPREADSHEET_ID, null)).toThrow("Property \"spreadsheet-id\" missing value");
 })
 
 test("set invalid value fail", () => {
@@ -187,7 +187,7 @@ test("set invalid value fail", () => {
 test("set property same", () => {
     const name = new SpreadsheetName("spreadsheet-name-123");
     const metadata = new SpreadsheetMetadata({"spreadsheet-name": name});
-    expect(metadata).toEqual(metadata.set("spreadsheet-name", name));
+    expect(metadata).toEqual(metadata.set(SpreadsheetMetadata.SPREADSHEET_NAME, name));
 })
 
 test("set property replace different value", () => {
@@ -195,7 +195,7 @@ test("set property replace different value", () => {
     const metadata = new SpreadsheetMetadata({"spreadsheet-name": propertyValue.toJson()});
 
     const differentPropertyValue = new SpreadsheetName("different-spreadsheet-name-456");
-    const differentMetadata = metadata.set("spreadsheet-name", differentPropertyValue);
+    const differentMetadata = metadata.set(SpreadsheetMetadata.SPREADSHEET_NAME, differentPropertyValue);
 
     expect(metadata).not.toEqual(differentMetadata);
 
@@ -213,7 +213,7 @@ test("set property different", () => {
     const metadata = new SpreadsheetMetadata({"spreadsheet-id": propertyValue});
 
     const propertyValue2 = new SpreadsheetName("spreadsheet-name-123");
-    const metadata2 = metadata.set("spreadsheet-name", propertyValue2);
+    const metadata2 = metadata.set(SpreadsheetMetadata.SPREADSHEET_NAME, propertyValue2);
 
     expect(metadata).not.toEqual(metadata2);
 
