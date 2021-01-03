@@ -263,7 +263,7 @@ export default class SpreadsheetMetadata extends SystemObject {
         if(!property){
             throw new Error("Missing property");
         }
-        if(!value && value !== 0 && value !== ""){
+        if(null == value){
             throw new Error("Property \"" + property + "\" missing value");
         }
 
