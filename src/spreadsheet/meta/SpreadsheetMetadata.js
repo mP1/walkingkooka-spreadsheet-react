@@ -21,9 +21,6 @@ import SpreadsheetTimeParsePatterns from "../format/SpreadsheetTimeParsePatterns
 import SystemObject from "../../SystemObject.js";
 import TextStyle from "../../text/TextStyle";
 
-// these constants should match the constants in walkingkooka-spreadsheet/walkingkooka.spreadsheet.meta.SpreadsheetMetadataPropertyName.java
-const DEFAULTS = "_defaults";
-
 /**
  * Creates a new SpreadsheetMetadata and sets or replaces the new property/value pair.
  */
@@ -31,10 +28,7 @@ function copyAndSet(properties,
                     property,
                     value) {
     const copy = Object.assign({}, properties);
-
-    if(!(DEFAULTS === property && value.isEmpty())){
-        copy[property] = value;
-    }
+    copy[property] = value;
     return new SpreadsheetMetadata(copy);
 }
 
@@ -51,7 +45,7 @@ function copyAndRemove(properties,
 const TYPE_NAME = "spreadsheet-metadata";
 
 /**
- * Immutable SpreadsheetMetadata, with getters and would be setters.
+ * Immutable SpreadsheetMetadata, with getters and would be setters. Note that getting properties ignores any defaults.
  */
 export default class SpreadsheetMetadata extends SystemObject {
 
@@ -64,6 +58,7 @@ export default class SpreadsheetMetadata extends SystemObject {
     static DATETIME_FORMAT_PATTERN = "date-time-format-pattern";
     static DATETIME_PARSE_PATTERNS = "date-time-parse-patterns";
     static DECIMAL_SEPARATOR = "decimal-separator";
+    static DEFAULTS = "_defaults";
     static EXPONENT_SYMBOL = "exponent-symbol";
     static EDIT_CELL = "edit-cell";
     static EDIT_RANGE = "edit-range";
@@ -131,7 +126,7 @@ export default class SpreadsheetMetadata extends SystemObject {
                 case SpreadsheetMetadata.DATETIME_PARSE_PATTERNS:
                     unmarshaller = SpreadsheetDateTimeParsePatterns.fromJson;
                     break;
-                case DEFAULTS:
+                case SpreadsheetMetadata.DEFAULTS:
                     unmarshaller = SpreadsheetMetadata.fromJson;
                     break;
                 case SpreadsheetMetadata.DECIMAL_SEPARATOR:
@@ -248,7 +243,7 @@ export default class SpreadsheetMetadata extends SystemObject {
     }
 
     /**
-     * General purpose getter with support for checking
+     * General purpose getter which unlike the java version of this class ignores the defaults if the property is missing.
      */
     get(property) {
         if(!property){
@@ -258,16 +253,7 @@ export default class SpreadsheetMetadata extends SystemObject {
             throw new Error("Expected string property but got " + property);
         }
 
-        var value = this.properties[property];
-
-        if(typeof value === "undefined"){
-            const defaults = this.properties[DEFAULTS];
-            if(defaults){
-                value = defaults.get(property);
-            }
-        }
-
-        return value;
+        return this.properties[property];
     }
 
     /**
@@ -295,7 +281,7 @@ export default class SpreadsheetMetadata extends SystemObject {
                 checkCurrencySymbol(value);
                 expectedTypeOf = "string";
                 break;
-            case DEFAULTS:
+            case SpreadsheetMetadata.DEFAULTS:
                 expectedClass = SpreadsheetMetadata;
                 break;
             case SpreadsheetMetadata.DATE_FORMAT_PATTERN:
@@ -426,7 +412,6 @@ export default class SpreadsheetMetadata extends SystemObject {
             case SpreadsheetMetadata.EDIT_CELL:
             case SpreadsheetMetadata.EDIT_RANGE:
                 break;
-            case SpreadsheetMetadata.DEFAULTS:
             case SpreadsheetMetadata.CREATOR:
             case SpreadsheetMetadata.CREATE_DATE_TIME:
             case SpreadsheetMetadata.CURRENCY_SYMBOL:
@@ -436,6 +421,7 @@ export default class SpreadsheetMetadata extends SystemObject {
             case SpreadsheetMetadata.DATETIME_FORMAT_PATTERN:
             case SpreadsheetMetadata.DATETIME_PARSE_PATTERNS:
             case SpreadsheetMetadata.DECIMAL_SEPARATOR:
+            case SpreadsheetMetadata.DEFAULTS:
             case SpreadsheetMetadata.EXPONENT_SYMBOL:
             case SpreadsheetMetadata.EXPRESSION_NUMBER_KIND:
             case SpreadsheetMetadata.GROUPING_SEPARATOR:
@@ -469,33 +455,6 @@ export default class SpreadsheetMetadata extends SystemObject {
         return (typeof this.get(property) === "undefined") ?
             this :
             copyAndRemove(this.properties, property);
-    }
-
-    /**
-     * Returns the SpreadsheetMetadata which will supply defaults.
-     * <pre>
-     * {
-     *   "create-date-time": "2000-01-02T12:58:59",
-     *   "creator": "user@example.com",
-     *   "_defaults": {
-     *     "currency-symbol": "$AUD",
-     *     "locale": "en"
-     *   }
-     * }
-     </pre>
-     */
-    defaults() {
-        return this.get(DEFAULTS) || SpreadsheetMetadata.EMPTY;
-    }
-
-    setDefaults(defaultSpreadsheetMetadata) {
-        if(!defaultSpreadsheetMetadata){
-            throw new Error("Missing SpreadsheetMetadata");
-        }
-        if(!(defaultSpreadsheetMetadata instanceof SpreadsheetMetadata)){
-            throw new Error("Expected SpreadsheetMetadata got " + defaultSpreadsheetMetadata);
-        }
-        return this.set(DEFAULTS, defaultSpreadsheetMetadata);
     }
 
     /**
