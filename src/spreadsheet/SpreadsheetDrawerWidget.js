@@ -333,7 +333,7 @@ class SpreadsheetDrawerWidget extends React.Component {
                 break;
             default:
                 const value = metadata.get(property);
-                render = value.render && value.render() || value.toString();
+                render = value && (value.render && value.render() || value.toString());
                 break;
         }
 
