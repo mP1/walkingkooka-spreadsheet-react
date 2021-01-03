@@ -3,6 +3,7 @@ import {withStyles} from "@material-ui/core/styles";
 import Accordion from '@material-ui/core/Accordion';
 import AccordionDetails from '@material-ui/core/AccordionDetails';
 import AccordionSummary from '@material-ui/core/AccordionSummary';
+import CharacterSpreadsheetDrawerWidget from "../CharacterSpreadsheetDrawerWidget.js";
 import Drawer from "@material-ui/core/Drawer";
 import Equality from "../Equality.js";
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
@@ -59,6 +60,7 @@ class SpreadsheetDrawerWidget extends React.Component {
         this.width = props.width;
 
         this.formatCreateDateTimeModifiedDateTime = props.formatCreateDateTimeModifiedDateTime;
+        this.setSpreadsheetMetadata = props.setSpreadsheetMetadata;
     }
 
     /**
@@ -73,6 +75,10 @@ class SpreadsheetDrawerWidget extends React.Component {
         const modifiedDateTime = metadata.get(SpreadsheetMetadata.MODIFIED_DATE_TIME);
 
         const previousMetadata = prevState.spreadsheetMetadata;
+
+        if(!metadata.equals(prevState)){
+            this.setSpreadsheetMetadata(metadata);
+        }
 
         // initiate requests to fetch create & modified date time.......................................................
         if(!Equality.safeEquals(createDateTime, previousMetadata.get(SpreadsheetMetadata.CREATE_DATE_TIME)) ||
@@ -317,7 +323,6 @@ class SpreadsheetDrawerWidget extends React.Component {
         const id = "spreadsheet-metadata-" + property;
 
         const state = this.state;
-        const metadata = state.spreadsheetMetadata;
         let render;
 
         switch(property) {
@@ -328,8 +333,42 @@ class SpreadsheetDrawerWidget extends React.Component {
                 render = "" + state.modifiedDateTimeFormatted;
                 break;
             default:
+                const metadata = state.spreadsheetMetadata;
+                const setValue = function(v) {
+                    console.log("saving value " + property + "=" + v);
+
+                    this.setState(
+                        {
+                            spreadsheetMetadata: null != v ? metadata.set(property, v) : metadata.remove(property),
+                        }
+                    );
+                }.bind(this);
+
                 const value = metadata.get(property);
-                render = value && (value.render && value.render() || value.toString());
+                const defaultMetadata = metadata.get(SpreadsheetMetadata.DEFAULTS);
+                const defaultValue = defaultMetadata && defaultMetadata.get(property);
+
+                switch(property) {
+                    case SpreadsheetMetadata.DECIMAL_SEPARATOR:
+                    case SpreadsheetMetadata.EXPONENT_SYMBOL:
+                    case SpreadsheetMetadata.GROUPING_SEPARATOR:
+                    case SpreadsheetMetadata.NEGATIVE_SIGN:
+                    case SpreadsheetMetadata.PERCENTAGE_SYMBOL:
+                    case SpreadsheetMetadata.POSITIVE_SIGN:
+                        render = (
+                            <CharacterSpreadsheetDrawerWidget id={id}
+                                                              value={value}
+                                                              defaultValue={defaultValue}
+                                                              setValue={setValue}
+                            />
+                        );
+                        break;
+                    default:
+                        render = (
+                            <span id={id}>{(value && value.toString()) || ""}</span>
+                        );
+                        break;
+                }
                 break;
         }
 
@@ -394,6 +433,8 @@ SpreadsheetDrawerWidget.propTypes = {
     onClose: PropTypes.func.isRequired, // fired when the drawer is closed
     width: PropTypes.number.isRequired, // the width includes px of the drawer
     formatCreateDateTimeModifiedDateTime: PropTypes.func.isRequired, // required to format date/times, parameters: MultiFormatRequest, successHandler => MultiFormatResponse
+    spreadsheetMetadata: PropTypes.instanceOf(SpreadsheetMetadata).isRequired,
+    setSpreadsheetMetadata: PropTypes.func.isRequired, // fired when the SpreadsheetMetadata is updated.
 }
 
 export default withStyles(useStyles)(SpreadsheetDrawerWidget);

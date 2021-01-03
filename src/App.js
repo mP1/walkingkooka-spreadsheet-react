@@ -863,6 +863,7 @@ class App extends React.Component {
                                          onClose={this.settingsAndToolsDrawerOpenAndUpdateHistory.bind(this)}
                                          width={DRAWER_WIDTH}
                                          spreadsheetMetadata={metadata}
+                                         setSpreadsheetMetadata={this.saveSpreadsheetMetadata.bind(this)}
                                          formatCreateDateTimeModifiedDateTime={this.onFormatCreateDateTimeModifiedDateTime.bind(this)}
                 />
             </WindowResizer>
