@@ -409,25 +409,17 @@ export default class SpreadsheetMetadata extends SystemObject {
         }
 
         switch(property) {
-            case SpreadsheetMetadata.EDIT_CELL:
-            case SpreadsheetMetadata.EDIT_RANGE:
-                break;
-            case SpreadsheetMetadata.CREATOR:
-            case SpreadsheetMetadata.CREATE_DATE_TIME:
             case SpreadsheetMetadata.CURRENCY_SYMBOL:
             case SpreadsheetMetadata.DATE_FORMAT_PATTERN:
             case SpreadsheetMetadata.DATE_PARSE_PATTERNS:
-            case SpreadsheetMetadata.DATETIME_OFFSET:
             case SpreadsheetMetadata.DATETIME_FORMAT_PATTERN:
             case SpreadsheetMetadata.DATETIME_PARSE_PATTERNS:
             case SpreadsheetMetadata.DECIMAL_SEPARATOR:
-            case SpreadsheetMetadata.DEFAULTS:
+            case SpreadsheetMetadata.EDIT_CELL:
+            case SpreadsheetMetadata.EDIT_RANGE:
             case SpreadsheetMetadata.EXPONENT_SYMBOL:
             case SpreadsheetMetadata.EXPRESSION_NUMBER_KIND:
             case SpreadsheetMetadata.GROUPING_SEPARATOR:
-            case SpreadsheetMetadata.LOCALE:
-            case SpreadsheetMetadata.MODIFIED_BY:
-            case SpreadsheetMetadata.MODIFIED_DATE_TIME:
             case SpreadsheetMetadata.NEGATIVE_SIGN:
             case SpreadsheetMetadata.NUMBER_FORMAT_PATTERN:
             case SpreadsheetMetadata.NUMBER_PARSE_PATTERNS:
@@ -435,16 +427,24 @@ export default class SpreadsheetMetadata extends SystemObject {
             case SpreadsheetMetadata.POSITIVE_SIGN:
             case SpreadsheetMetadata.ROUNDING_MODE:
             case SpreadsheetMetadata.PRECISION:
-            case SpreadsheetMetadata.SPREADSHEET_ID:
-            case SpreadsheetMetadata.SPREADSHEET_NAME:
-            case SpreadsheetMetadata.STYLE:
             case SpreadsheetMetadata.TEXT_FORMAT_PATTERN:
             case SpreadsheetMetadata.TIME_FORMAT_PATTERN:
             case SpreadsheetMetadata.TIME_PARSE_PATTERNS:
             case SpreadsheetMetadata.TWO_DIGIT_YEAR:
+            case SpreadsheetMetadata.WIDTH:
+                break;
+            case SpreadsheetMetadata.CREATOR:
+            case SpreadsheetMetadata.CREATE_DATE_TIME:
+            case SpreadsheetMetadata.DATETIME_OFFSET:
+            case SpreadsheetMetadata.DEFAULTS:
+            case SpreadsheetMetadata.LOCALE:
+            case SpreadsheetMetadata.MODIFIED_BY:
+            case SpreadsheetMetadata.MODIFIED_DATE_TIME:
+            case SpreadsheetMetadata.SPREADSHEET_ID:
+            case SpreadsheetMetadata.SPREADSHEET_NAME:
+            case SpreadsheetMetadata.STYLE:
             case SpreadsheetMetadata.VIEWPORT_CELL:
             case SpreadsheetMetadata.VIEWPORT_COORDINATES:
-            case SpreadsheetMetadata.WIDTH:
                 throw new Error("Property \"" + property + "\" cannot be removed, " + this);
             default:
                 if(property.startsWith("color-")){

@@ -285,29 +285,29 @@ getPropertyTest(SpreadsheetMetadata.CREATE_DATE_TIME, LocalDateTime.fromJson("19
 
 getPropertyTest(SpreadsheetMetadata.CREATOR, EmailAddress.fromJson("creator@example.com"));
 
-getSetPropertyTest(SpreadsheetMetadata.CURRENCY_SYMBOL, "AUD");
+getSetRemovePropertyTest(SpreadsheetMetadata.CURRENCY_SYMBOL, "AUD");
 
-getSetPropertyTest(SpreadsheetMetadata.DATE_FORMAT_PATTERN, SpreadsheetDateFormatPattern.fromJson("YYYY-MM-DD"));
+getSetRemovePropertyTest(SpreadsheetMetadata.DATE_FORMAT_PATTERN, SpreadsheetDateFormatPattern.fromJson("YYYY-MM-DD"));
 
-getSetPropertyTest(SpreadsheetMetadata.DATE_PARSE_PATTERNS, SpreadsheetDateParsePatterns.fromJson("YYYY-MM-DD"));
+getSetRemovePropertyTest(SpreadsheetMetadata.DATE_PARSE_PATTERNS, SpreadsheetDateParsePatterns.fromJson("YYYY-MM-DD"));
 
 getSetPropertyTest(SpreadsheetMetadata.DATETIME_OFFSET, 1234);
 
-getSetPropertyTest(SpreadsheetMetadata.DATETIME_FORMAT_PATTERN, SpreadsheetDateTimeFormatPattern.fromJson("YYYY-MM-DD HH-MM"));
+getSetRemovePropertyTest(SpreadsheetMetadata.DATETIME_FORMAT_PATTERN, SpreadsheetDateTimeFormatPattern.fromJson("YYYY-MM-DD HH-MM"));
 
-getSetPropertyTest(SpreadsheetMetadata.DATETIME_PARSE_PATTERNS, SpreadsheetDateTimeParsePatterns.fromJson("YYYY-MM-DD HH-MM-SS"));
+getSetRemovePropertyTest(SpreadsheetMetadata.DATETIME_PARSE_PATTERNS, SpreadsheetDateTimeParsePatterns.fromJson("YYYY-MM-DD HH-MM-SS"));
 
-getSetPropertyTest(SpreadsheetMetadata.DECIMAL_SEPARATOR, Character.fromJson(","));
+getSetRemovePropertyTest(SpreadsheetMetadata.DECIMAL_SEPARATOR, Character.fromJson(","));
 
 getSetRemovePropertyTest(SpreadsheetMetadata.EDIT_CELL, SpreadsheetCellReference.parse("B97"));
 
 getSetRemovePropertyTest(SpreadsheetMetadata.EDIT_RANGE, SpreadsheetRange.parse("A1:B2"));
 
-getSetPropertyTest(SpreadsheetMetadata.EXPONENT_SYMBOL, Character.fromJson(","));
+getSetRemovePropertyTest(SpreadsheetMetadata.EXPONENT_SYMBOL, Character.fromJson(","));
 
-getSetPropertyTest(SpreadsheetMetadata.EXPRESSION_NUMBER_KIND, ExpressionNumberKind.BIG_DECIMAL);
+getSetRemovePropertyTest(SpreadsheetMetadata.EXPRESSION_NUMBER_KIND, ExpressionNumberKind.BIG_DECIMAL);
 
-getSetPropertyTest(SpreadsheetMetadata.GROUPING_SEPARATOR, Character.fromJson(","));
+getSetRemovePropertyTest(SpreadsheetMetadata.GROUPING_SEPARATOR, Character.fromJson(","));
 
 getSetPropertyTest(SpreadsheetMetadata.LOCALE, Locale.fromJson("EN-AU"));
 
@@ -315,17 +315,17 @@ getPropertyTest(SpreadsheetMetadata.MODIFIED_BY, EmailAddress.fromJson("creator@
 
 getPropertyTest(SpreadsheetMetadata.MODIFIED_DATE_TIME, LocalDateTime.fromJson("1999-12-31 12:58:59"));
 
-getSetPropertyTest(SpreadsheetMetadata.NEGATIVE_SIGN, Character.fromJson("-"));
+getSetRemovePropertyTest(SpreadsheetMetadata.NEGATIVE_SIGN, Character.fromJson("-"));
 
-getSetPropertyTest(SpreadsheetMetadata.NUMBER_FORMAT_PATTERN, SpreadsheetNumberFormatPattern.fromJson("#.#"));
+getSetRemovePropertyTest(SpreadsheetMetadata.NUMBER_FORMAT_PATTERN, SpreadsheetNumberFormatPattern.fromJson("#.#"));
 
-getSetPropertyTest(SpreadsheetMetadata.NUMBER_PARSE_PATTERNS, SpreadsheetNumberParsePatterns.fromJson("#.##"));
+getSetRemovePropertyTest(SpreadsheetMetadata.NUMBER_PARSE_PATTERNS, SpreadsheetNumberParsePatterns.fromJson("#.##"));
 
-getSetPropertyTest(SpreadsheetMetadata.PERCENTAGE_SYMBOL, Character.fromJson("%"));
+getSetRemovePropertyTest(SpreadsheetMetadata.PERCENTAGE_SYMBOL, Character.fromJson("%"));
 
-getSetPropertyTest(SpreadsheetMetadata.POSITIVE_SIGN, Character.fromJson("+"));
+getSetRemovePropertyTest(SpreadsheetMetadata.POSITIVE_SIGN, Character.fromJson("+"));
 
-getSetPropertyTest(SpreadsheetMetadata.PRECISION, 2);
+getSetRemovePropertyTest(SpreadsheetMetadata.PRECISION, 2);
 
 test("set precision 0 fails", () => {
     expect(() => SpreadsheetMetadata.EMPTY.set(SpreadsheetMetadata.PRECISION, 0)).toThrow("Expected number precision > 0 got 0");
@@ -335,7 +335,7 @@ test("set precision -1 fails", () => {
     expect(() => SpreadsheetMetadata.EMPTY.set(SpreadsheetMetadata.PRECISION, -1)).toThrow("Expected number precision > 0 got -1");
 });
 
-getSetPropertyTest(SpreadsheetMetadata.ROUNDING_MODE, RoundingMode.CEILING);
+getSetRemovePropertyTest(SpreadsheetMetadata.ROUNDING_MODE, RoundingMode.CEILING);
 
 getPropertyTest(SpreadsheetMetadata.SPREADSHEET_ID, "123");
 
@@ -343,13 +343,13 @@ getSetPropertyTest(SpreadsheetMetadata.SPREADSHEET_NAME, SpreadsheetName.fromJso
 
 getSetPropertyTest(SpreadsheetMetadata.STYLE, TextStyle.EMPTY.set("width", "50px"));
 
-getSetPropertyTest(SpreadsheetMetadata.TEXT_FORMAT_PATTERN, SpreadsheetTextFormatPattern.fromJson("@@"));
+getSetRemovePropertyTest(SpreadsheetMetadata.TEXT_FORMAT_PATTERN, SpreadsheetTextFormatPattern.fromJson("@@"));
 
-getSetPropertyTest(SpreadsheetMetadata.TIME_FORMAT_PATTERN, SpreadsheetTimeFormatPattern.fromJson("HH-MM"));
+getSetRemovePropertyTest(SpreadsheetMetadata.TIME_FORMAT_PATTERN, SpreadsheetTimeFormatPattern.fromJson("HH-MM"));
 
-getSetPropertyTest(SpreadsheetMetadata.TIME_PARSE_PATTERNS, SpreadsheetTimeParsePatterns.fromJson("HH-MM-SS"));
+getSetRemovePropertyTest(SpreadsheetMetadata.TIME_PARSE_PATTERNS, SpreadsheetTimeParsePatterns.fromJson("HH-MM-SS"));
 
-getSetPropertyTest(SpreadsheetMetadata.TWO_DIGIT_YEAR, 2);
+getSetRemovePropertyTest(SpreadsheetMetadata.TWO_DIGIT_YEAR, 2);
 
 test("set two_digit_year -1 fails", () => {
     expect(() => SpreadsheetMetadata.EMPTY.set(SpreadsheetMetadata.TWO_DIGIT_YEAR, -1)).toThrow("Expected number twoDigitYear >= 0 and <= 99 got -1");
@@ -363,7 +363,7 @@ getSetPropertyTest(SpreadsheetMetadata.VIEWPORT_CELL, SpreadsheetCellReference.p
 
 getSetPropertyTest(SpreadsheetMetadata.VIEWPORT_COORDINATES, SpreadsheetCoordinates.parse("123.5,400"));
 
-getSetPropertyTest(SpreadsheetMetadata.WIDTH, 2);
+getSetRemovePropertyTest(SpreadsheetMetadata.WIDTH, 2);
 
 test("set width 0 fails", () => {
     expect(() => SpreadsheetMetadata.EMPTY.set(SpreadsheetMetadata.WIDTH, 0)).toThrow("Expected number width > 0 got 0");
