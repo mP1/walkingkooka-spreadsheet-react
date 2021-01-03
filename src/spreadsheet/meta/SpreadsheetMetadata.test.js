@@ -162,12 +162,12 @@ test("get property missing without defaults", () => {
     expect(metadata.get("creator")).toBeUndefined();
 })
 
-test("get property missing but defaulted", () => {
+test("get property missing but ignoring default", () => {
     const propertyName = "spreadsheet-id";
     const propertyValue = "1234";
 
     const metadata = SpreadsheetMetadata.fromJson({_defaults: {"spreadsheet-id": propertyValue}});
-    expect(metadata.get(propertyName)).toEqual(propertyValue);
+    expect(metadata.get(propertyName)).toBeUndefined();
 })
 
 // set..................................................................................................................
@@ -559,59 +559,6 @@ test("all setters & removers", () => {
     expect(metadata.get(SpreadsheetMetadata.EDIT_CELL)).toBeUndefined();
     expect(metadata.isEmpty()).toBeTrue();
 });
-
-// defaults..............................................................................................................
-
-test("defaults", () => {
-    const propertyValue = "1234";
-    const defaultJson = {"spreadsheet-name": propertyValue};
-
-    const metadata = SpreadsheetMetadata.fromJson({_defaults: defaultJson});
-    const defaultMetadata = metadata.defaults();
-    expect(defaultMetadata).toEqual(SpreadsheetMetadata.fromJson(defaultJson));
-})
-
-test("set defaults missing fails", () => {
-    expect(() => SpreadsheetMetadata.EMPTY.setDefaults(null)).toThrow("Missing SpreadsheetMetadata");
-})
-
-test("set defaults wrong type fails", () => {
-    expect(() => SpreadsheetMetadata.EMPTY.setDefaults(1.5)).toThrow("Expected SpreadsheetMetadata got 1.5");
-})
-
-test("set defaults EMPTY", () => {
-    const metadata = SpreadsheetMetadata.EMPTY;
-    const same = metadata.setDefaults(SpreadsheetMetadata.EMPTY);
-    expect(same).toEqual(metadata);
-})
-
-test("set defaults same", () => {
-    const metadata = SpreadsheetMetadata.fromJson({});
-    const same = metadata.setDefaults(SpreadsheetMetadata.EMPTY);
-    expect(same).toEqual(metadata);
-})
-
-test("set defaults same 2", () => {
-    const defaultMetadata = SpreadsheetMetadata.fromJson({"spreadsheet-id": "123"});
-    const withDefaults = SpreadsheetMetadata.fromJson({_defaults: defaultMetadata.toJson()})
-    const same = withDefaults.setDefaults(defaultMetadata);
-    expect(same).toEqual(withDefaults);
-})
-
-test("set defaults different", () => {
-    const firstValue = "1";
-    const withDefaults = SpreadsheetMetadata.fromJson({_defaults: {"spreadsheet-id": firstValue}});
-
-    const differentValue = "2";
-    const different = SpreadsheetMetadata.fromJson({_defaults: {"spreadsheet-id": differentValue}});
-
-    const withDifferent = withDefaults.setDefaults(different);
-    expect(different).not.toEqual(withDefaults);
-
-    const propertyName = "spreadsheet-id";
-    expect(withDefaults.get(propertyName)).toEqual(firstValue);
-    expect(withDifferent.get(propertyName)).toEqual(differentValue);
-})
 
 // isEmpty..............................................................................................................
 
