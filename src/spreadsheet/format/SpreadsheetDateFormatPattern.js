@@ -16,6 +16,7 @@ export default class SpreadsheetDateFormatPattern extends SpreadsheetFormatPatte
         return new SpreadsheetDateFormatPattern(pattern);
     }
 
+    // eslint-disable-next-line no-useless-constructor
     constructor(pattern) {
         super(pattern);
     }

@@ -16,6 +16,7 @@ export default class SpreadsheetTimeFormatPattern extends SpreadsheetFormatPatte
         return new SpreadsheetTimeFormatPattern(pattern);
     }
 
+    // eslint-disable-next-line no-useless-constructor
     constructor(pattern) {
         super(pattern);
     }

@@ -16,6 +16,7 @@ export default class SpreadsheetTimeParsePatterns extends SpreadsheetParsePatter
         return new SpreadsheetTimeParsePatterns(pattern);
     }
 
+    // eslint-disable-next-line no-useless-constructor
     constructor(pattern) {
         super(pattern);
     }
