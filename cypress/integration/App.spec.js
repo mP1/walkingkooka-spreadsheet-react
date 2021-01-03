@@ -66,8 +66,7 @@ context("General app usage", () => {
     it("Edit cell formula", () => {
         reactRenderWait();
 
-        cy.get("#cell-B2")
-            .click();
+        cellClick("B2");
 
         hash().should('match', /.*\/Untitled\/cell\/B2\/formula/) // => true
 
@@ -77,21 +76,19 @@ context("General app usage", () => {
 
         reactRenderWait();
 
-        cellTextCheck("#cell-B2", "6.");
+        cellFormattedTextCheck("B2", "6.");
     });
 
     it("Enter cell with reference", () => {
         reactRenderWait();
 
-        cy.get("#cell-C3")
-            .click();
+        cellClick("C3");
 
         formulaText()
             .type("1+2+3")
             .type("{enter}");
 
-        cy.get("#cell-D4")
-            .click();
+        cellClick("D4");
 
         formulaText()
             .type("C3+10")
@@ -99,14 +96,13 @@ context("General app usage", () => {
 
         reactRenderWait();
 
-        cellTextCheck("#cell-D4", "16.");
+        cellFormattedTextCheck("D4", "16.");
     });
 
     it("Update hash cell reference", () => {
         reactRenderWait();
 
-        cy.get("#cell-C3")
-            .click();
+        cellClick("C3");
 
         formulaText()
             .type("1+2+3")
@@ -124,7 +120,7 @@ context("General app usage", () => {
             .type("4+5")
             .type("{enter}");
 
-        cellTextCheck("#cell-D4", "9.");
+        cellFormattedTextCheck("D4", "9.");
     });
 
     // create/load spreadsheet............................................................................................
@@ -138,8 +134,7 @@ context("General app usage", () => {
     it("Update then create new empty spreadsheet", () => {
         reactRenderWait();
 
-        cy.get("#cell-E5")
-            .click();
+        cellClick("E5");
 
         formulaText()
             .type("1+2+3")
@@ -155,8 +150,7 @@ context("General app usage", () => {
     it("Update then create new empty spreadsheet then reload non empty", () => {
         reactRenderWait();
 
-        cy.get("#cell-F6")
-            .click();
+        cellClick("F6");
 
         formulaText()
             .type("1+2+3")
@@ -166,7 +160,7 @@ context("General app usage", () => {
         hashEnter("/");
         cy.go('back');
 
-        cellTextCheck("#cell-F6", "6.");
+        cellFormattedTextCheck("F6", "6.");
     });
 
     // DRAWER ............................................................................................................
@@ -261,8 +255,7 @@ context("General app usage", () => {
     });
 
     it("Edit cell, then toggle show drawer history hash", () => {
-        cy.get("#cell-F6")
-            .click();
+        cellClick("F6");
 
         reactRenderWait();
 
@@ -391,7 +384,8 @@ function checkEmptySpreadsheet() {
     cy.get(ROW + SELECTED)
         .should("have.length", 0);
 
-    cellTextCheck(CELL, "");
+    cy.get(CELL)
+        .should("have.text", "");
 }
 
 function title() {
@@ -418,9 +412,18 @@ function formulaText() {
     return cy.get("#formula-text");
 }
 
-function cellTextCheck(cellReference, text) {
-    cy.get(cellReference)
+function cellClick(cellReference) {
+    cellGet(cellReference)
+        .click();
+}
+
+function cellFormattedTextCheck(cellReference, text) {
+    cellGet(cellReference)
         .should("have.text", text);
+}
+
+function cellGet(cellReference) {
+    return cy.get("#cell-" + cellReference.toUpperCase());
 }
 
 /**
