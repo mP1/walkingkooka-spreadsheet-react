@@ -3,7 +3,6 @@ import {withStyles} from "@material-ui/core/styles";
 import Accordion from '@material-ui/core/Accordion';
 import AccordionDetails from '@material-ui/core/AccordionDetails';
 import AccordionSummary from '@material-ui/core/AccordionSummary';
-import CharacterSpreadsheetDrawerWidget from "./CharacterSpreadsheetDrawerWidget.js";
 import Drawer from "@material-ui/core/Drawer";
 import Equality from "../../Equality.js";
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
@@ -13,6 +12,7 @@ import MultiFormatResponse from "../server/format/MultiFormatResponse.js";
 import Paper from '@material-ui/core/Paper';
 import PropTypes from 'prop-types';
 import React from 'react';
+import SpreadsheetDrawerWidgetCharacter from "./SpreadsheetDrawerWidgetCharacter.js";
 import SpreadsheetLocaleDefaultDateTimeFormat from "../server/format/SpreadsheetLocaleDefaultDateTimeFormat.js";
 import SpreadsheetMetadata from "../meta/SpreadsheetMetadata.js";
 import Table from '@material-ui/core/Table';
@@ -356,7 +356,7 @@ class SpreadsheetDrawerWidget extends React.Component {
                     case SpreadsheetMetadata.PERCENTAGE_SYMBOL:
                     case SpreadsheetMetadata.POSITIVE_SIGN:
                         render = (
-                            <CharacterSpreadsheetDrawerWidget id={id}
+                            <SpreadsheetDrawerWidgetCharacter id={id}
                                                               value={value}
                                                               defaultValue={defaultValue}
                                                               setValue={setValue}

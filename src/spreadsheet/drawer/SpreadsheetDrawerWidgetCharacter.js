@@ -10,7 +10,7 @@ import TextField from "@material-ui/core/TextField";
 /**
  * A widget which displays a {@link Character} for view or editing. All edits immediately update the spreadsheet.
  */
-export default class CharacterSpreadsheetDrawerWidget extends React.Component {
+export default class SpreadsheetDrawerWidgetCharacter extends React.Component {
 
     constructor(props) {
         super(props);
@@ -167,7 +167,7 @@ export default class CharacterSpreadsheetDrawerWidget extends React.Component {
 }
 
 // value and defaultValue are not required because the SpreadsheetMetadata property may be absent.
-CharacterSpreadsheetDrawerWidget.propTypes = {
+SpreadsheetDrawerWidgetCharacter.propTypes = {
     id: PropTypes.string, // id used by cypress tests
     value: PropTypes.object, // Character: the value being displayed/edited
     defaultValue: PropTypes.object, // Character: this value is set when the default button is clicked.
