@@ -10,6 +10,16 @@ import React from 'react';
  */
 export default class SpreadsheetDrawerWidgetValue extends React.Component {
 
+    // value and defaultValue are not required because the SpreadsheetMetadata property may be absent.
+    static createPropTypes(value) {
+        return {
+            id: PropTypes.string, // id used by cypress tests
+            value: value, // Character: the value being displayed/edited
+            defaultValue: value, // Character: this value is set when the default button is clicked.
+            setValue: PropTypes.func, // if present editing/updates to the value are supported.
+        };
+    }
+
     constructor(props) {
         super(props);
 
