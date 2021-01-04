@@ -484,17 +484,60 @@ export default class SpreadsheetMetadata extends SystemObject {
 }
 
 /**
+ * An array of all properties.
+ */
+const PROPERTIES = [
+    SpreadsheetMetadata.CREATOR,
+    SpreadsheetMetadata.CREATE_DATE_TIME,
+    SpreadsheetMetadata.CURRENCY_SYMBOL,
+    SpreadsheetMetadata.DATE_FORMAT_PATTERN,
+    SpreadsheetMetadata.DATE_PARSE_PATTERNS,
+    SpreadsheetMetadata.DATETIME_OFFSET,
+    SpreadsheetMetadata.DATETIME_FORMAT_PATTERN,
+    SpreadsheetMetadata.DATETIME_PARSE_PATTERNS,
+    SpreadsheetMetadata.DECIMAL_SEPARATOR,
+    SpreadsheetMetadata.DEFAULTS,
+    SpreadsheetMetadata.EXPONENT_SYMBOL,
+    SpreadsheetMetadata.EDIT_CELL,
+    SpreadsheetMetadata.EDIT_RANGE,
+    SpreadsheetMetadata.EXPRESSION_NUMBER_KIND,
+    SpreadsheetMetadata.GROUPING_SEPARATOR,
+    SpreadsheetMetadata.LOCALE,
+    SpreadsheetMetadata.MODIFIED_BY,
+    SpreadsheetMetadata.MODIFIED_DATE_TIME,
+    SpreadsheetMetadata.NEGATIVE_SIGN,
+    SpreadsheetMetadata.NUMBER_FORMAT_PATTERN,
+    SpreadsheetMetadata.NUMBER_PARSE_PATTERNS,
+    SpreadsheetMetadata.PERCENTAGE_SYMBOL,
+    SpreadsheetMetadata.POSITIVE_SIGN,
+    SpreadsheetMetadata.ROUNDING_MODE,
+    SpreadsheetMetadata.PRECISION,
+    SpreadsheetMetadata.SPREADSHEET_ID,
+    SpreadsheetMetadata.SPREADSHEET_NAME,
+    SpreadsheetMetadata.STYLE,
+    SpreadsheetMetadata.TEXT_FORMAT_PATTERN,
+    SpreadsheetMetadata.TIME_FORMAT_PATTERN,
+    SpreadsheetMetadata.TIME_PARSE_PATTERNS,
+    SpreadsheetMetadata.TWO_DIGIT_YEAR,
+    SpreadsheetMetadata.VIEWPORT_CELL,
+    SpreadsheetMetadata.VIEWPORT_COORDINATES,
+    SpreadsheetMetadata.WIDTH,
+];
+
+/**
  * Tests all entries in both SpreadsheetMetadata for equality.
  */
 function equals0(metadata, other) {
     var equals = false;
 
-    const keys = Object.keys(metadata.properties);
-    if(keys.length === Object.keys(other.properties).length){
+    const properties = metadata.properties;
+    const otherProperties = other.properties;
+
+    if(Object.keys(properties).length === Object.keys(otherProperties).length){
         equals = true;
 
-        for(const key of keys) {
-            equals = Equality.safeEquals(metadata.get(key), other.get(key));
+        for(const property of PROPERTIES) {
+            equals = Equality.safeEquals(properties[property], otherProperties[property]);
             if(!equals){
                 break;
             }

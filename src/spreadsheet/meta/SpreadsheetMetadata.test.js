@@ -577,63 +577,134 @@ test("isEmpty not empty", () => {
 // equals...............................................................................................................
 
 test("equals different property values", () => {
-    expect(SpreadsheetMetadata.fromJson({
-        "spreadsheet-id": "111",
-    }).equals(SpreadsheetMetadata.fromJson({
-        "spreadsheet-id": "222",
-    }))).toEqual(false);
+    expect(SpreadsheetMetadata.fromJson(
+        {
+            "spreadsheet-id": "111",
+        }
+    ).equals(SpreadsheetMetadata.fromJson(
+        {
+            "spreadsheet-id": "222",
+        }
+    ))).toEqual(false);
 });
 
 test("equals different property values", () => {
-    expect(SpreadsheetMetadata.fromJson({
-        "spreadsheet-id": "111",
-        "spreadsheet-name": "Spreadsheet-name-567",
-    }).equals(SpreadsheetMetadata.fromJson({
-        "spreadsheet-id": "222",
-        "spreadsheet-name": "different-Spreadsheet-name",
-    }))).toEqual(false);
+    expect(SpreadsheetMetadata.fromJson(
+        {
+            "spreadsheet-id": "111",
+            "spreadsheet-name": "Spreadsheet-name-567",
+        }
+    ).equals(SpreadsheetMetadata.fromJson(
+        {
+            "spreadsheet-id": "222",
+            "spreadsheet-name": "different-Spreadsheet-name",
+        }
+    ))).toEqual(false);
 });
 
 test("equals different property values with defaults", () => {
-    expect(SpreadsheetMetadata.fromJson({
-        "spreadsheet-id": "111",
-        "_defaults": {
-            "spreadsheet-name": "Spreadsheet-name-567",
+    expect(SpreadsheetMetadata.fromJson(
+        {
+            "spreadsheet-id": "111",
+            "_defaults": {
+                "spreadsheet-name": "Spreadsheet-name-567",
+            }
         }
-    }).equals(SpreadsheetMetadata.fromJson({
-        "spreadsheet-id": "222",
-        "_defaults": {
-            "spreadsheet-name": "different-Spreadsheet-name",
+    ).equals(SpreadsheetMetadata.fromJson(
+        {
+            "spreadsheet-id": "222",
+            "_defaults": {
+                "spreadsheet-name": "different-Spreadsheet-name",
+            }
         }
-    }))).toEqual(false);
+    ))).toEqual(false);
 });
 
-test("equals self true", () => {
-    expect(SpreadsheetMetadata.EMPTY.equals(SpreadsheetMetadata.EMPTY)).toEqual(true);
+test("equals EMPTY true", () => {
+    expect(SpreadsheetMetadata.EMPTY.equals(SpreadsheetMetadata.EMPTY))
+        .toEqual(true);
+});
+
+test("equals different properties count less", () => {
+    expect(SpreadsheetMetadata.fromJson(
+        {
+            "spreadsheet-id": "1234",
+        }
+    ).equals(SpreadsheetMetadata.fromJson(
+        {
+            "spreadsheet-id": "1234",
+            "spreadsheet-name": "Spreadsheet-name-567",
+        }
+    ))).toEqual(false);
+});
+
+test("equals different properties count more", () => {
+    expect(SpreadsheetMetadata.fromJson(
+        {
+            "spreadsheet-id": "1234",
+            "spreadsheet-name": "Spreadsheet-name-567",
+        }
+    ).equals(SpreadsheetMetadata.fromJson(
+        {
+            "spreadsheet-id": "1234",
+        }
+    ))).toEqual(false);
+});
+
+test("equals different properties", () => {
+    expect(SpreadsheetMetadata.fromJson(
+        {
+            "spreadsheet-id": "1234",
+        }
+    ).equals(SpreadsheetMetadata.fromJson(
+        {
+            "spreadsheet-name": "Spreadsheet-name-567",
+        }
+    ))).toEqual(false);
+});
+
+test("equals same property different values", () => {
+    expect(SpreadsheetMetadata.fromJson(
+        {
+            "spreadsheet-id": "1234",
+        }
+    ).equals(SpreadsheetMetadata.fromJson(
+        {
+            "spreadsheet-id": "5678",
+        }
+    ))).toEqual(false);
 });
 
 test("equals same property values", () => {
-    expect(SpreadsheetMetadata.fromJson({
-        "spreadsheet-id": "1234",
-        "spreadsheet-name": "Spreadsheet-name-567",
-    }).equals(SpreadsheetMetadata.fromJson({
-        "spreadsheet-id": "1234",
-        "spreadsheet-name": "Spreadsheet-name-567",
-    }))).toEqual(true);
+    expect(SpreadsheetMetadata.fromJson(
+        {
+            "spreadsheet-id": "1234",
+            "spreadsheet-name": "Spreadsheet-name-567",
+        }
+    ).equals(SpreadsheetMetadata.fromJson(
+        {
+            "spreadsheet-id": "1234",
+            "spreadsheet-name": "Spreadsheet-name-567",
+        }
+    ))).toEqual(true);
 });
 
 test("equals same property values with defaults", () => {
-    expect(SpreadsheetMetadata.fromJson({
-        "spreadsheet-id": "111",
-        "_defaults": {
-            "spreadsheet-name": "Spreadsheet-name-567",
+    expect(SpreadsheetMetadata.fromJson(
+        {
+            "spreadsheet-id": "111",
+            "_defaults": {
+                "spreadsheet-name": "Spreadsheet-name-567",
+            }
         }
-    }).equals(SpreadsheetMetadata.fromJson({
-        "spreadsheet-id": "111",
-        "_defaults": {
-            "spreadsheet-name": "Spreadsheet-name-567",
+    ).equals(SpreadsheetMetadata.fromJson(
+        {
+            "spreadsheet-id": "111",
+            "_defaults": {
+                "spreadsheet-name": "Spreadsheet-name-567",
+            }
         }
-    }))).toEqual(true);
+    ))).toEqual(true);
 });
 
 // helpers..............................................................................................................
