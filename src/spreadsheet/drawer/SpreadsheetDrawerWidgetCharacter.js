@@ -1,4 +1,5 @@
 import Character from "../../Character.js";
+import PropTypes from "prop-types";
 import React from 'react';
 import SpreadsheetDrawerWidgetTextField from "./SpreadsheetDrawerWidgetTextField.js";
 import SpreadsheetDrawerWidgetValue from "./SpreadsheetDrawerWidgetValue.js";
@@ -34,4 +35,4 @@ export default class SpreadsheetDrawerWidgetCharacter extends SpreadsheetDrawerW
     }
 }
 
-SpreadsheetDrawerWidgetCharacter.propTypes = SpreadsheetDrawerWidgetValue.propTypes;
+SpreadsheetDrawerWidgetCharacter.propTypes = SpreadsheetDrawerWidgetValue.createPropTypes(PropTypes.instanceOf(Character));
