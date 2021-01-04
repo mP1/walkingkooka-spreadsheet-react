@@ -75,6 +75,7 @@ export default class SpreadsheetDrawerWidgetValue extends React.Component {
                                 <Button id={id + "-button"}
                                         variant="contained"
                                         color="primary"
+                                        size="small"
                                         onClick={this.onSetDefaultValue.bind(this)}>
                                     {defaultValue.toString()}
                                 </Button>

@@ -21,13 +21,12 @@ export default class SpreadsheetDrawerWidgetTextField extends SpreadsheetDrawerW
                           key={id}
                           style={
                               {
-                                  height: "1em",
-                                  margin: 0,
+                                  marginRight: "4px",
                               }
                           }
                           placeholder={placeholder}
                           fullWidth
-                          margin="normal"
+                          margin="none"
                           disabled={false}
                           InputLabelProps={
                               {
