@@ -393,6 +393,7 @@ class App extends React.Component {
         this.stateSpreadsheetMetadataSpreadsheetId(prevState, hash);
         this.stateSpreadsheetMetadataSpreadsheetName(hash);
         this.stateSpreadsheetViewport(prevState);
+        this.stateSpreadsheetViewportRange(prevState);
         this.stateSpreadsheetFormula(hash);
         this.stateSpreadsheetDrawer(hash);
 
@@ -505,6 +506,18 @@ class App extends React.Component {
                     );
                 }
             }
+        }
+    }
+
+    /**
+     * If the range changed, clear the cells and load the viewport cells.
+     */
+    stateSpreadsheetViewportRange(prevState) {
+        const viewportRange = this.state.viewportRange;
+        const previousViewportRange = prevState.viewportRange;
+
+        if(!Equality.safeEquals(viewportRange, previousViewportRange)){
+            this.loadSpreadsheetCellOrRange(viewportRange);
         }
     }
 
