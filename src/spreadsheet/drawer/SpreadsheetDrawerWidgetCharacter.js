@@ -1,6 +1,5 @@
 import Character from "../../Character.js";
 import PropTypes from "prop-types";
-import React from 'react';
 import SpreadsheetDrawerWidgetTextField from "./SpreadsheetDrawerWidgetTextField.js";
 import SpreadsheetDrawerWidgetValue from "./SpreadsheetDrawerWidgetValue.js";
 
