@@ -340,9 +340,9 @@ context("General app usage", () => {
     enterSpreadsheetMetadataTextAndCheck(SpreadsheetMetadata.DECIMAL_SEPARATOR,
         "5/2",
         "d",
-        "5d2", // 5.2 decimal separator now capital D
+        "2d5", // 5.2 decimal separator now capital D
         ".",
-        "5.2",
+        "2.5",
     );
     enterSpreadsheetMetadataTextAndCheck(SpreadsheetMetadata.EXPONENT_SYMBOL,
         null,
