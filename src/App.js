@@ -390,11 +390,11 @@ class App extends React.Component {
         console.log("componentDidUpdate", "prevState", prevState, "state", state);
 
         const hash = []; // spreadsheet-id / spreadsheet-name / cell / cell-reference / formula
-        this.onSpreadsheetMetadataSpreadsheetId(prevState, hash);
-        this.onSpreadsheetMetadataSpreadsheetName(hash);
-        this.onSpreadsheetViewport(prevState);
-        this.onSpreadsheetFormula(hash);
-        this.onSpreadsheetDrawer(hash);
+        this.stateSpreadsheetMetadataSpreadsheetId(prevState, hash);
+        this.stateSpreadsheetMetadataSpreadsheetName(hash);
+        this.stateSpreadsheetViewport(prevState);
+        this.stateSpreadsheetFormula(hash);
+        this.stateSpreadsheetDrawer(hash);
 
         // special case restore /name/edit if spreadsheet name is being edited.
         if(hash.length >= 2){
@@ -418,7 +418,7 @@ class App extends React.Component {
     /**
      * If spreadsheet id changed clear caches related to the previous spreadsheet.
      */
-    onSpreadsheetMetadataSpreadsheetId(prevState, hash) {
+    stateSpreadsheetMetadataSpreadsheetId(prevState, hash) {
         const previous = prevState.spreadsheetMetadata.get(SpreadsheetMetadata.SPREADSHEET_ID);
         const current = this.state.spreadsheetMetadata.get(SpreadsheetMetadata.SPREADSHEET_ID);
 
@@ -438,7 +438,7 @@ class App extends React.Component {
     /**
      * Updates the SpreadsheetNameWidget whenever metadata is updated.
      */
-    onSpreadsheetMetadataSpreadsheetName(hash) {
+    stateSpreadsheetMetadataSpreadsheetName(hash) {
         const metadata = this.state.spreadsheetMetadata;
         const widget = this.spreadsheetName.current;
         const name = metadata.get(SpreadsheetMetadata.SPREADSHEET_NAME);
@@ -460,7 +460,7 @@ class App extends React.Component {
     /**
      * Update the viewport after computing the viewport metrics.
      */
-    onSpreadsheetViewport(prevState) {
+    stateSpreadsheetViewport(prevState) {
         const state = this.state;
 
         const metadata = state.spreadsheetMetadata;
@@ -511,7 +511,7 @@ class App extends React.Component {
     /**
      * Updates the state of the formula widget so it matches the metadata editCell
      */
-    onSpreadsheetFormula(hash) {
+    stateSpreadsheetFormula(hash) {
         const metadata = this.state.spreadsheetMetadata;
         const formula = this.formula.current;
         const reference = metadata.get(SpreadsheetMetadata.EDIT_CELL);
@@ -759,7 +759,7 @@ class App extends React.Component {
     /**
      * Handles updates to the state and hash.
      */
-    onSpreadsheetDrawer(hash) {
+    stateSpreadsheetDrawer(hash) {
         const widget = this.settingsAndToolsDrawer.current;
         if(widget){
             const state = this.state;
