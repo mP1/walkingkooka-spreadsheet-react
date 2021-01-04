@@ -291,13 +291,26 @@ context("General app usage", () => {
      * The button is then clicked and the text field is verified.
      */
     function enterSpreadsheetMetadataTextAndCheck(property,
+                                                  a1Formula,
                                                   text,
-                                                  defaultText) {
-        it("Show drawer check SpreadsheetMetadata." + property, () => {
+                                                  a1CellContent,
+                                                  defaultText,
+                                                  a1CellContentDefault) {
+        it("Show drawer and update SpreadsheetMetadata." + property, () => {
             settingsToolDrawerToggle();
 
             settingsToolDrawer()
                 .should('be.visible');
+
+            const a1 = "A1";
+
+            if(a1Formula){
+                cellClick(a1);
+
+                formulaText()
+                    .type(a1Formula)
+                    .type("{enter}");
+            }
 
             const textFieldId = "#spreadsheet-metadata-" + property + "-text";
             cy.get(textFieldId)
@@ -306,37 +319,69 @@ context("General app usage", () => {
             cy.get(textFieldId)
                 .should("have.value", text);
 
+            if(a1Formula){
+                cellFormattedTextCheck(a1, a1CellContent);
+            }
+
             const buttonId = "#spreadsheet-metadata-" + property + "-button";
             cy.get(buttonId)
                 .click();
 
             cy.get(textFieldId)
                 .should("have.value", defaultText);
+
+            if(a1CellContentDefault){
+                cellClick(a1);
+                cellFormattedTextCheck(a1, a1CellContentDefault);
+            }
         });
     }
 
     enterSpreadsheetMetadataTextAndCheck(SpreadsheetMetadata.DECIMAL_SEPARATOR,
+        "5/2",
         "d",
-        ".");
+        "5d2", // 5.2 decimal separator now capital D
+        ".",
+        "5.2",
+    );
     enterSpreadsheetMetadataTextAndCheck(SpreadsheetMetadata.EXPONENT_SYMBOL,
+        null,
         "x",
-        "E");
+        null,
+        "E",
+        null);
 
     enterSpreadsheetMetadataTextAndCheck(SpreadsheetMetadata.GROUPING_SEPARATOR,
+        "123456",
         "g",
-        ",");
+        "123g456.",
+        ",",
+        "123,456."
+    );
 
     enterSpreadsheetMetadataTextAndCheck(SpreadsheetMetadata.NEGATIVE_SIGN,
+        "2*-4",
         "n",
-        "-");
+        "n8.",
+        "-",
+        "-8.");
 
+    // TODO need to set format pattern which includes percentage
     enterSpreadsheetMetadataTextAndCheck(SpreadsheetMetadata.PERCENTAGE_SYMBOL,
+        null,
         "p",
-        "%");
+        null,
+        "%",
+        null);
 
+    // TODO need to format Exponent
     enterSpreadsheetMetadataTextAndCheck(SpreadsheetMetadata.POSITIVE_SIGN,
+        null,
         "o",
-        "+");
+        null,
+        "+",
+        null,
+    );
 });
 
 // helpers..............................................................................................................
