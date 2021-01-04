@@ -389,6 +389,8 @@ class App extends React.Component {
         const state = this.state;
         console.log("componentDidUpdate", "prevState", prevState, "state", state);
 
+        this.stateSpreadsheetMetadata(prevState.spreadsheetMetadata);
+
         const hash = []; // spreadsheet-id / spreadsheet-name / cell / cell-reference / formula
         this.stateSpreadsheetMetadataSpreadsheetId(prevState, hash);
         this.stateSpreadsheetMetadataSpreadsheetName(hash);
@@ -414,6 +416,23 @@ class App extends React.Component {
         settingsAndToolsDrawer && settingsAndToolsDrawer.setState({open: open});
 
         this.historyPush(hash, "State updated from ", prevState, "to", state);
+    }
+
+    /**
+     * If the important global spreadsheet metadata changed reload the viewport range.
+     */
+    stateSpreadsheetMetadata(previousMetadata) {
+        const state = this.state;
+
+        const metadata = state.spreadsheetMetadata;
+        if(!metadata.isEmpty()){
+            const viewportRange = state.viewportRange;
+            if(viewportRange){
+                if(!metadata.equalsMost(previousMetadata)){
+                    this.loadSpreadsheetCellOrRange(viewportRange);
+                }
+            }
+        }
     }
 
     /**
