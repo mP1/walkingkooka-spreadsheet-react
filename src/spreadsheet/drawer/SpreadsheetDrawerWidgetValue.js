@@ -115,11 +115,3 @@ export default class SpreadsheetDrawerWidgetValue extends React.Component {
         );
     }
 }
-
-// value and defaultValue are not required because the SpreadsheetMetadata property may be absent.
-SpreadsheetDrawerWidgetValue.propTypes = {
-    id: PropTypes.string, // id used by cypress tests
-    value: PropTypes.object, // Character: the value being displayed/edited
-    defaultValue: PropTypes.object, // Character: this value is set when the default button is clicked.
-    setValue: PropTypes.func, // if present editing/updates to the value are supported.
-}
