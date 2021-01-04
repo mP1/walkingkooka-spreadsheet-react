@@ -707,6 +707,133 @@ test("equals same property values with defaults", () => {
     ))).toEqual(true);
 });
 
+// equalsMost...............................................................................................................
+
+test("equalsMost EMPTY true", () => {
+    expect(SpreadsheetMetadata.EMPTY.equalsMost(SpreadsheetMetadata.EMPTY))
+        .toEqual(true);
+});
+
+test("equalsMost same ignoring ignored properties", () => {
+    expect(SpreadsheetMetadata.fromJson(
+        {
+            "spreadsheet-id": "123",
+            "currency-symbol": "AUD",
+        }
+    ).equalsMost(SpreadsheetMetadata.fromJson(
+        {
+            "spreadsheet-id": "456",
+            "currency-symbol": "AUD",
+        }
+    ))).toEqual(true);
+});
+
+test("equalsMost property values different false", () => {
+    expect(SpreadsheetMetadata.fromJson(
+        {
+            "currency-symbol": "AUD",
+        }
+    ).equalsMost(SpreadsheetMetadata.fromJson(
+        {
+            "currency-symbol": "NZD",
+        }
+    ))).toEqual(false);
+});
+
+test("equalsMost property values different false #2", () => {
+    expect(SpreadsheetMetadata.fromJson(
+        {
+            "currency-symbol": "AUD",
+            "decimal-separator": ".",
+        }
+    ).equalsMost(SpreadsheetMetadata.fromJson(
+        {
+            "currency-symbol": "AUD",
+            "decimal-separator": "D",
+        }
+    ))).toEqual(false);
+});
+
+test("equalsMost property values", () => {
+    expect(SpreadsheetMetadata.fromJson(
+        {
+            "currency-symbol": "AUD",
+            "decimal-separator": ".",
+        }
+    ).equalsMost(SpreadsheetMetadata.fromJson(
+        {
+            "currency-symbol": "AUD",
+            "decimal-separator": ".",
+        }
+    ))).toEqual(true);
+});
+
+test("equalsMost with defaults", () => {
+    expect(SpreadsheetMetadata.fromJson(
+        {
+            "spreadsheet-id": "111",
+            "currency-symbol": "AUD",
+            "_defaults": {
+                "decimal-separator": ".",
+                "spreadsheet-name": "Spreadsheet-name-567",
+            }
+        }
+    ).equalsMost(SpreadsheetMetadata.fromJson(
+        {
+            "spreadsheet-id": "111",
+            "currency-symbol": "AUD",
+            "_defaults": {
+                "decimal-separator": ".",
+                "spreadsheet-name": "Spreadsheet-name-567",
+            }
+        }
+    ))).toEqual(true);
+});
+
+test("equalsMost with defaults different", () => {
+    expect(SpreadsheetMetadata.fromJson(
+        {
+            "spreadsheet-id": "111",
+            "currency-symbol": "AUD",
+            "_defaults": {
+                "decimal-separator": ".",
+                "spreadsheet-name": "Spreadsheet-name-567",
+            }
+        }
+    ).equalsMost(SpreadsheetMetadata.fromJson(
+        {
+            "spreadsheet-id": "222",
+            "currency-symbol": "NZD",
+            "_defaults": {
+                "decimal-separator": ".",
+                "spreadsheet-name": "different-Spreadsheet-name",
+            }
+        }
+    ))).toEqual(false);
+});
+
+test("equalsMost with defaults different default", () => {
+    expect(SpreadsheetMetadata.fromJson(
+        {
+            "spreadsheet-id": "111",
+            "currency-symbol": "AUD",
+            "_defaults": {
+                "decimal-separator": ".",
+                "spreadsheet-name": "Spreadsheet-name-567",
+            }
+        }
+    ).equalsMost(SpreadsheetMetadata.fromJson(
+        {
+            "spreadsheet-id": "111",
+            "currency-symbol": "NZD",
+            "_defaults": {
+                "decimal-separator": "D",
+                "spreadsheet-name": "different-Spreadsheet-name",
+            }
+        }
+    ))).toEqual(false);
+});
+
 // helpers..............................................................................................................
 
 function checkSpreadsheetId(metadata, id) {

@@ -475,7 +475,11 @@ export default class SpreadsheetMetadata extends SystemObject {
     }
 
     equals(other) {
-        return this === other || (other instanceof SpreadsheetMetadata && equals0(this, other));
+        return equals0(this, other, PROPERTIES);
+    }
+
+    equalsMost(other) {
+        return equals0(this, other, MOST_PROPERTIES);
     }
 
     toString() {
@@ -525,18 +529,43 @@ const PROPERTIES = [
 ];
 
 /**
- * Tests all entries in both SpreadsheetMetadata for equality.
+ * Used when comparing two metadata ignoring a few properties that are unimportant when deciding if a viewport cells should be reloaded.
  */
-function equals0(metadata, other) {
+const MOST_PROPERTIES = PROPERTIES.filter(p => {
+    var keep;
+    switch(p) {
+        case SpreadsheetMetadata.CREATOR:
+        case SpreadsheetMetadata.CREATE_DATE_TIME:
+        case SpreadsheetMetadata.MODIFIED_BY:
+        case SpreadsheetMetadata.MODIFIED_DATE_TIME:
+        case SpreadsheetMetadata.SPREADSHEET_ID:
+        case SpreadsheetMetadata.SPREADSHEET_NAME:
+            keep = false;
+            break;
+        default:
+            keep = true;
+    }
+    return keep;
+});
+
+function equals0(self, other, required) {
+    return self === other || (other instanceof SpreadsheetMetadata && equals1(self, other, required));
+}
+
+/**
+ * Tests the required entries in both SpreadsheetMetadata for equality.
+ */
+function equals1(metadata, other, required) {
     var equals = false;
 
     const properties = metadata.properties;
     const otherProperties = other.properties;
 
-    if(Object.keys(properties).length === Object.keys(otherProperties).length){
+    // if required === IGNORED_PROPERTIES must test all individual properties...
+    if(required === MOST_PROPERTIES || Object.keys(properties).length === Object.keys(otherProperties).length){
         equals = true;
 
-        for(const property of PROPERTIES) {
+        for(const property of required) {
             equals = Equality.safeEquals(properties[property], otherProperties[property]);
             if(!equals){
                 break;
