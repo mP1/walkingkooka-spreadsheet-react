@@ -294,7 +294,6 @@ context("General app usage", () => {
                                                   a1Formula,
                                                   text,
                                                   a1CellContent,
-                                                  defaultText,
                                                   a1CellContentDefault) {
         it("Show drawer and update SpreadsheetMetadata." + property, () => {
             settingsToolDrawerToggle();
@@ -314,7 +313,8 @@ context("General app usage", () => {
 
             const textFieldId = "#spreadsheet-metadata-" + property + "-text";
             cy.get(textFieldId)
-                .type("{backspace}{backspace}" + text);
+                .type("{backspace}{backspace}" + text)
+                .blur();
 
             cy.get(textFieldId)
                 .should("have.value", text);
@@ -328,7 +328,7 @@ context("General app usage", () => {
                 .click();
 
             cy.get(textFieldId)
-                .should("have.value", defaultText);
+                .should("have.value", "");
 
             if(a1CellContentDefault){
                 cellClick(a1);
@@ -341,21 +341,18 @@ context("General app usage", () => {
         "5/2",
         "d",
         "2d5", // 5.2 decimal separator now capital D
-        ".",
         "2.5",
     );
     enterSpreadsheetMetadataTextAndCheck(SpreadsheetMetadata.EXPONENT_SYMBOL,
         null,
         "x",
         null,
-        "E",
         null);
 
     enterSpreadsheetMetadataTextAndCheck(SpreadsheetMetadata.GROUPING_SEPARATOR,
         "123456",
         "g",
         "123g456.",
-        ",",
         "123,456."
     );
 
@@ -363,7 +360,6 @@ context("General app usage", () => {
         "2*-4",
         "n",
         "n8.",
-        "-",
         "-8.");
 
     // TODO need to set format pattern which includes percentage
@@ -371,7 +367,6 @@ context("General app usage", () => {
         null,
         "p",
         null,
-        "%",
         null);
 
     // TODO need to format Exponent
@@ -379,7 +374,6 @@ context("General app usage", () => {
         null,
         "o",
         null,
-        "+",
         null,
     );
 });

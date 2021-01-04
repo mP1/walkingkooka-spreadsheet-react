@@ -13,6 +13,7 @@ import Paper from '@material-ui/core/Paper';
 import PropTypes from 'prop-types';
 import React from 'react';
 import SpreadsheetDrawerWidgetCharacter from "./SpreadsheetDrawerWidgetCharacter.js";
+import SpreadsheetDrawerWidgetString from "./SpreadsheetDrawerWidgetString.js";
 import SpreadsheetLocaleDefaultDateTimeFormat from "../server/format/SpreadsheetLocaleDefaultDateTimeFormat.js";
 import SpreadsheetMetadata from "../meta/SpreadsheetMetadata.js";
 import Table from '@material-ui/core/Table';
@@ -349,6 +350,15 @@ class SpreadsheetDrawerWidget extends React.Component {
                 const defaultValue = defaultMetadata && defaultMetadata.get(property);
 
                 switch(property) {
+                    case SpreadsheetMetadata.CURRENCY_SYMBOL:
+                        render = (
+                            <SpreadsheetDrawerWidgetString id={id}
+                                                           value={value}
+                                                           defaultValue={defaultValue}
+                                                           setValue={setValue}
+                            />
+                        );
+                        break;
                     case SpreadsheetMetadata.DECIMAL_SEPARATOR:
                     case SpreadsheetMetadata.EXPONENT_SYMBOL:
                     case SpreadsheetMetadata.GROUPING_SEPARATOR:
