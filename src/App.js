@@ -497,7 +497,7 @@ class App extends React.Component {
                 const previousViewportCell = previousMetadata && previousMetadata.get(SpreadsheetMetadata.VIEWPORT_CELL);
 
                 if((width > previous.width || height > previous.height) && (viewportCell.equals(previousViewportCell) || !previousViewportCell)){
-                    this.onCellBoxViewportRangeUpdate(
+                    this.onCellBox(
                         new SpreadsheetCellBox(viewportCell,
                             viewportCoordinates.x(),
                             viewportCoordinates.y(),
@@ -592,7 +592,7 @@ class App extends React.Component {
     /**
      * Accepts {@link SpreadsheetCellBox} and requests the {@link SpreadsheetRange} that fill the content.
      */
-    onCellBoxViewportRangeUpdate(cellBox) {
+    onCellBox(cellBox) {
         console.log("onCellBoxViewportRangeUpdate " + cellBox);
 
         this.messenger.send(
