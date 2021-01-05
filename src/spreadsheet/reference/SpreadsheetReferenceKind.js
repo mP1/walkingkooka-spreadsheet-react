@@ -2,8 +2,8 @@ import SystemObject from "../../SystemObject.js";
 
 export default class SpreadsheetReferenceKind extends SystemObject {
 
-    static ABSOLUTE = new SpreadsheetReferenceKind("ABSOLUTE");
-    static RELATIVE = new SpreadsheetReferenceKind("RELATIVE");
+    static ABSOLUTE = new SpreadsheetReferenceKind("ABSOLUTE", "Absolute");
+    static RELATIVE = new SpreadsheetReferenceKind("RELATIVE", "Relative");
 
     static values() {
         return [
@@ -27,9 +27,14 @@ export default class SpreadsheetReferenceKind extends SystemObject {
         }
     }
 
-    constructor(name) {
+    constructor(name, label) {
         super();
         this.name = name;
+        this.labelValue = label;
+    }
+
+    label() {
+        return this.labelValue;
     }
 
     prefix() {
