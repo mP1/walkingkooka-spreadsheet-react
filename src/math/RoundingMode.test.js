@@ -1,6 +1,5 @@
 import RoundingMode from "./RoundingMode";
 import systemObjectTesting from "../SystemObjectTesting.js";
-import ExpressionNumberKind from "./ExpressionNumberKind.js";
 
 systemObjectTesting(
     RoundingMode.UP,
