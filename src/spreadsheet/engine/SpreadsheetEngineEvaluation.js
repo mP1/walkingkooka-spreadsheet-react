@@ -30,15 +30,20 @@ export default class SpreadsheetEngineEvaluation extends SystemEnum {
         ];
     }
 
-    static CLEAR_VALUE_ERROR_SKIP_EVALUATE = new SpreadsheetEngineEvaluation("CLEAR_VALUE_ERROR_SKIP_EVALUATE");
-    static SKIP_EVALUATE = new SpreadsheetEngineEvaluation("SKIP_EVALUATE");
-    static FORCE_RECOMPUTE = new SpreadsheetEngineEvaluation("FORCE_RECOMPUTE");
-    static COMPUTE_IF_NECESSARY = new SpreadsheetEngineEvaluation("COMPUTE_IF_NECESSARY");
+    static CLEAR_VALUE_ERROR_SKIP_EVALUATE = new SpreadsheetEngineEvaluation("CLEAR_VALUE_ERROR_SKIP_EVALUATE", "Clear value error skip evaludate");
+    static SKIP_EVALUATE = new SpreadsheetEngineEvaluation("SKIP_EVALUATE", "Skip Evaludate");
+    static FORCE_RECOMPUTE = new SpreadsheetEngineEvaluation("FORCE_RECOMPUTE", "Force recompute");
+    static COMPUTE_IF_NECESSARY = new SpreadsheetEngineEvaluation("COMPUTE_IF_NECESSARY", "Compute if necessary");
 
-    constructor(value) {
+    constructor(value, label) {
         super();
         this.value = value;
+        this.labelValue = label;
         Object.freeze(this);
+    }
+
+    label() {
+        return this.labelValue;
     }
 
     toString() {

@@ -8,14 +8,14 @@ const TYPE_NAME = "rounding-mode";
  */
 export default class RoundingMode extends SystemEnum {
 
-    static UP = new RoundingMode("UP");
-    static DOWN = new RoundingMode("DOWN");
-    static CEILING = new RoundingMode("CEILING");
-    static FLOOR = new RoundingMode("FLOOR");
-    static HALF_UP = new RoundingMode("HALF_UP");
-    static HALF_DOWN = new RoundingMode("HALF_DOWN");
-    static HALF_EVEN = new RoundingMode("HALF_EVEN");
-    static UNNECESSARY = new RoundingMode("UNNECESSARY");
+    static UP = new RoundingMode("UP", "Up");
+    static DOWN = new RoundingMode("DOWN", "Down");
+    static CEILING = new RoundingMode("CEILING", "Ceiling");
+    static FLOOR = new RoundingMode("FLOOR", "Floor");
+    static HALF_UP = new RoundingMode("HALF_UP", "½ Up");
+    static HALF_DOWN = new RoundingMode("HALF_DOWN", "½ Down");
+    static HALF_EVEN = new RoundingMode("HALF_EVEN", "½ Even");
+    static UNNECESSARY = new RoundingMode("UNNECESSARY", "Unnecessary");
 
     static values() {
         return [
@@ -61,9 +61,14 @@ export default class RoundingMode extends SystemEnum {
         }
     }
 
-    constructor(name) {
+    constructor(name, label) {
         super();
         this.name = name;
+        this.labelValue = label;
+    }
+
+    label() {
+        return this.labelValue;
     }
 
     equals(other) {
