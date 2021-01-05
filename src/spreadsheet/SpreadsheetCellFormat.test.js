@@ -1,5 +1,4 @@
 import SpreadsheetCellFormat from "./SpreadsheetCellFormat";
-import SpreadsheetError from "./SpreadsheetError.js";
 import systemObjectTesting from "../SystemObjectTesting.js";
 
 const pattern = "###-123-abc";
