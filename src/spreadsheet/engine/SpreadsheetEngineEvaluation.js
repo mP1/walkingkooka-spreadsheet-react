@@ -1,4 +1,6 @@
-export default class SpreadsheetEngineEvaluation {
+import SystemEnum from "../../SystemEnum.js";
+
+export default class SpreadsheetEngineEvaluation extends SystemEnum {
 
     static valueOf(text) {
         if(!text){
@@ -34,6 +36,7 @@ export default class SpreadsheetEngineEvaluation {
     static COMPUTE_IF_NECESSARY = new SpreadsheetEngineEvaluation("COMPUTE_IF_NECESSARY");
 
     constructor(value) {
+        super();
         this.value = value;
         Object.freeze(this);
     }
