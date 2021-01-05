@@ -9,6 +9,13 @@ export default class ExpressionNumberKind extends SystemEnum {
     static BIG_DECIMAL = new ExpressionNumberKind("BIG_DECIMAL", "Big Decimal");
     static DOUBLE = new ExpressionNumberKind("DOUBLE", "Double");
 
+    static values() {
+        return [
+            ExpressionNumberKind.BIG_DECIMAL,
+            ExpressionNumberKind.DOUBLE,
+        ];
+    }
+
     static fromJson(name) {
         return ExpressionNumberKind.of(name);
     }
