@@ -1,5 +1,6 @@
 /// <reference types="cypress" />
 
+import ExpressionNumberKind from "../../src/math/ExpressionNumberKind.js";
 import SpreadsheetMetadata from "../../src/spreadsheet/meta/SpreadsheetMetadata.js";
 
 const SELECTED = ".selected";
@@ -373,6 +374,52 @@ context("General app usage", () => {
     enterSpreadsheetMetadataTextAndCheck(SpreadsheetMetadata.POSITIVE_SIGN,
         null,
         "o",
+        null,
+        null,
+    );
+
+    /**
+     * Opens the spreadsheet drawer, types in the given text, and verifies the property.
+     * The button is then clicked and the text field is verified.
+     */
+    function enterSpreadsheetMetadataSliderAndCheck(property,
+                                                    a1Formula,
+                                                    values,
+                                                    a1CellContents,
+                                                    a1CellContentDefault) {
+        it("Show drawer and update SpreadsheetMetadata." + property, () => {
+            settingsToolDrawerToggle();
+
+            settingsToolDrawer()
+                .should('be.visible');
+
+            const a1 = "A1";
+
+            if(a1Formula){
+                cellClick(a1);
+
+                formulaText()
+                    .type(a1Formula)
+                    .type("{enter}");
+            }
+
+            const sliderId = "#spreadsheet-metadata-" + property + "-slider";
+
+            values.forEach((v, i) => {
+                cy.get(sliderId + " *[data-index=\"" + i + "\"][aria-hidden=\"true\"]")
+                    .should("have.text", v.label())
+                    .click();
+
+                if(a1Formula){
+                    cellFormattedTextCheck(a1, a1CellContents[i]);
+                }
+            });
+        });
+    }
+
+    enterSpreadsheetMetadataSliderAndCheck(SpreadsheetMetadata.EXPRESSION_NUMBER_KIND,
+        null,
+        ExpressionNumberKind.values(),
         null,
         null,
     );

@@ -6,6 +6,7 @@ import AccordionSummary from '@material-ui/core/AccordionSummary';
 import Drawer from "@material-ui/core/Drawer";
 import Equality from "../../Equality.js";
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import ExpressionNumberKind from "../../math/ExpressionNumberKind.js";
 import FormatRequest from "../server/format/FormatRequest.js";
 import MultiFormatRequest from "../server/format/MultiFormatRequest.js";
 import MultiFormatResponse from "../server/format/MultiFormatResponse.js";
@@ -13,6 +14,7 @@ import Paper from '@material-ui/core/Paper';
 import PropTypes from 'prop-types';
 import React from 'react';
 import SpreadsheetDrawerWidgetCharacter from "./SpreadsheetDrawerWidgetCharacter.js";
+import SpreadsheetDrawerWidgetSlider from "./SpreadsheetDrawerWidgetSlider.js";
 import SpreadsheetDrawerWidgetString from "./SpreadsheetDrawerWidgetString.js";
 import SpreadsheetLocaleDefaultDateTimeFormat from "../server/format/SpreadsheetLocaleDefaultDateTimeFormat.js";
 import SpreadsheetMetadata from "../meta/SpreadsheetMetadata.js";
@@ -260,7 +262,7 @@ class SpreadsheetDrawerWidget extends React.Component {
      */
     spreadsheetNumber(classes) {
         const rows = [
-            this.row("Expression Number Kind", SpreadsheetMetadata.EXPRESSION_NUMBER_KIND),
+            this.row("Number kind", SpreadsheetMetadata.EXPRESSION_NUMBER_KIND),
             this.row("Precision", SpreadsheetMetadata.PRECISION),
             this.row("Rounding mode", SpreadsheetMetadata.ROUNDING_MODE),
             this.row("Currency", SpreadsheetMetadata.CURRENCY_SYMBOL),
@@ -374,6 +376,29 @@ class SpreadsheetDrawerWidget extends React.Component {
                                                               setValue={setValue}
                             />
                         );
+                        break;
+                    case SpreadsheetMetadata.EXPRESSION_NUMBER_KIND:
+                        var values;
+                        var style;
+
+                        switch(property) {
+                            case SpreadsheetMetadata.EXPRESSION_NUMBER_KIND:
+                                values = ExpressionNumberKind.values();
+                                style = {
+                                    marginLeft: "2.5em",
+                                    marginRight: "2.5em",
+                                };
+                                break;
+                            default:
+                                break;
+                        }
+                        render = <SpreadsheetDrawerWidgetSlider id={id}
+                                                                style={style}
+                                                                values={values}
+                                                                value={value}
+                                                                defaultValue={defaultValue}
+                                                                defaultValueFormatter={(v) =>  v.label()}
+                                                                setValue={setValue}/>;
                         break;
                     default:
                         render = (
