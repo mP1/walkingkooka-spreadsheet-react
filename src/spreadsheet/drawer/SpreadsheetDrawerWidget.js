@@ -355,6 +355,7 @@ class SpreadsheetDrawerWidget extends React.Component {
                             <SpreadsheetDrawerWidgetString id={id}
                                                            value={value}
                                                            defaultValue={defaultValue}
+                                                           defaultValueFormatter={(s) => s}
                                                            setValue={setValue}
                             />
                         );
@@ -369,6 +370,7 @@ class SpreadsheetDrawerWidget extends React.Component {
                             <SpreadsheetDrawerWidgetCharacter id={id}
                                                               value={value}
                                                               defaultValue={defaultValue}
+                                                              defaultValueFormatter={(s) => s.toString()}
                                                               setValue={setValue}
                             />
                         );

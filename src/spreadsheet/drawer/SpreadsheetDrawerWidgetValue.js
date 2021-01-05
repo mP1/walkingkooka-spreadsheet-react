@@ -16,6 +16,7 @@ export default class SpreadsheetDrawerWidgetValue extends React.Component {
             id: PropTypes.string, // id used by cypress tests
             value: value, // Character: the value being displayed/edited
             defaultValue: value, // Character: this value is set when the default button is clicked.
+            defaultValueFormatter: PropTypes.func, // Used to convert the default value if one is present into text
             setValue: PropTypes.func, // if present editing/updates to the value are supported.
         };
     }
@@ -31,6 +32,7 @@ export default class SpreadsheetDrawerWidgetValue extends React.Component {
         }
         this.initialValue = initialValue; // ESCAPE will reload the default.
         this.defaultValue = props.defaultValue;
+        this.defaultValueFormatter= props.defaultValueFormatter;
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
@@ -77,7 +79,7 @@ export default class SpreadsheetDrawerWidgetValue extends React.Component {
                                         color="primary"
                                         size="small"
                                         onClick={this.onSetDefaultValue.bind(this)}>
-                                    {defaultValue.toString()}
+                                    {this.defaultValueFormatter(defaultValue)}
                                 </Button>
                             }
                         </ListItem>
