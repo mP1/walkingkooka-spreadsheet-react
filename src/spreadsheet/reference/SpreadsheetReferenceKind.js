@@ -1,7 +1,16 @@
-export default class SpreadsheetReferenceKind {
+import SystemObject from "../../SystemObject.js";
+
+export default class SpreadsheetReferenceKind extends SystemObject {
 
     static ABSOLUTE = new SpreadsheetReferenceKind("ABSOLUTE");
     static RELATIVE = new SpreadsheetReferenceKind("RELATIVE");
+
+    static values() {
+        return [
+            SpreadsheetReferenceKind.ABSOLUTE,
+            SpreadsheetReferenceKind.RELATIVE,
+        ];
+    }
 
     static of(text) {
         if(!text){
@@ -19,6 +28,7 @@ export default class SpreadsheetReferenceKind {
     }
 
     constructor(name) {
+        super();
         this.name = name;
     }
 

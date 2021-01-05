@@ -1,9 +1,10 @@
-import SystemObject from "../SystemObject.js";
 import ExpressionNumber from "./ExpressionNumber.js";
+import SystemEnum from "../SystemEnum.js";
+import SystemObject from "../SystemObject.js";
 
 const TYPE_NAME = "expression-number-kind";
 
-export default class ExpressionNumberKind extends SystemObject {
+export default class ExpressionNumberKind extends SystemEnum {
 
     static BIG_DECIMAL = new ExpressionNumberKind("BIG_DECIMAL");
     static DOUBLE = new ExpressionNumberKind("DOUBLE");

@@ -1,3 +1,4 @@
+import SystemEnum from "../SystemEnum.js";
 import SystemObject from "../SystemObject.js";
 
 const TYPE_NAME = "rounding-mode";
@@ -5,7 +6,7 @@ const TYPE_NAME = "rounding-mode";
 /**
  * Represents instance of the java enum RoundingMode.
  */
-export default class RoundingMode extends SystemObject {
+export default class RoundingMode extends SystemEnum {
 
     static UP = new RoundingMode("UP");
     static DOWN = new RoundingMode("DOWN");
@@ -15,6 +16,19 @@ export default class RoundingMode extends SystemObject {
     static HALF_DOWN = new RoundingMode("HALF_DOWN");
     static HALF_EVEN = new RoundingMode("HALF_EVEN");
     static UNNECESSARY = new RoundingMode("UNNECESSARY");
+
+    static values() {
+        return [
+            RoundingMode.UP,
+            RoundingMode.DOWN,
+            RoundingMode.CEILING,
+            RoundingMode.FLOOR,
+            RoundingMode.HALF_UP,
+            RoundingMode.HALF_DOWN,
+            RoundingMode.HALF_EVEN,
+            RoundingMode.UNNECESSARY,
+        ];
+    }
 
     static fromJson(name) {
         return RoundingMode.of(name);
