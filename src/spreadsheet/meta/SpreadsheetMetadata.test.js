@@ -327,12 +327,12 @@ getSetRemovePropertyTest(SpreadsheetMetadata.POSITIVE_SIGN, Character.fromJson("
 
 getSetRemovePropertyTest(SpreadsheetMetadata.PRECISION, 2);
 
-test("set precision 0 fails", () => {
-    expect(() => SpreadsheetMetadata.EMPTY.set(SpreadsheetMetadata.PRECISION, 0)).toThrow("Expected number precision > 0 got 0");
+test("set precision 0 pass", () => {
+    expect(() => SpreadsheetMetadata.EMPTY.set(SpreadsheetMetadata.PRECISION, 0));
 });
 
 test("set precision -1 fails", () => {
-    expect(() => SpreadsheetMetadata.EMPTY.set(SpreadsheetMetadata.PRECISION, -1)).toThrow("Expected number precision > 0 got -1");
+    expect(() => SpreadsheetMetadata.EMPTY.set(SpreadsheetMetadata.PRECISION, -1)).toThrow("Expected number precision >= 0 got -1");
 });
 
 getSetRemovePropertyTest(SpreadsheetMetadata.ROUNDING_MODE, RoundingMode.CEILING);
