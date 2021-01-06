@@ -70,20 +70,6 @@ export default class SpreadsheetDrawerWidgetTextField extends SpreadsheetDrawerW
         throw new Error("Not yet implemented: createValue");
     }
 
-    onKeyDown(e) {
-        switch(e.key) {
-            case "Escape":
-                this.onSetDefaultValue();
-                break;
-            case "Enter":
-                this.setValue(this.state.value);
-                break;
-            default:
-                // nothing special to do for other keys
-                break;
-        }
-    }
-
     /**
      * Handles the setDefault button being clicked, clearing the value, which lets the default be used and also clears the TextField.
      */
