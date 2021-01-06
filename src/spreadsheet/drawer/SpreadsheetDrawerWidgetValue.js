@@ -55,6 +55,7 @@ export default class SpreadsheetDrawerWidgetValue extends React.Component {
 
         console.log("render id=" + id + " value=" + value + " defaultValue=" + defaultValue);
 
+        const defaultButtonId = id + "-default-button";
         return (
             <div>
                 <div>
@@ -74,7 +75,8 @@ export default class SpreadsheetDrawerWidgetValue extends React.Component {
                             {
                                 [
                                     this.renderInput(id, value),
-                                    <Button id={id + "-button"}
+                                    <Button id={defaultButtonId}
+                                            key={defaultButtonId}
                                             variant="contained"
                                             color="primary"
                                             size="small"

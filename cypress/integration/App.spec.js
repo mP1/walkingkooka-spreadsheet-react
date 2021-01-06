@@ -324,7 +324,7 @@ context("General app usage", () => {
                 cellFormattedTextCheck(a1, a1CellContent);
             }
 
-            const buttonId = "#spreadsheet-metadata-" + property + "-button";
+            const buttonId = "#spreadsheet-metadata-" + property + "-default-button";
             cy.get(buttonId)
                 .click();
 
