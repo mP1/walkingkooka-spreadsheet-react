@@ -71,19 +71,24 @@ export default class SpreadsheetDrawerWidgetValue extends React.Component {
                                 }
                             }
                         >
-                            {this.renderInput(id, value)}
                             {
-                                null != defaultValue ?
+                                [
+                                    this.renderInput(id, value),
                                     <Button id={id + "-button"}
                                             variant="contained"
                                             color="primary"
                                             size="small"
                                             onClick={this.onSetDefaultValue.bind(this)}
-                                            style={{textTransform: "none"}}
+                                            style={
+                                                {
+                                                    textTransform: "none",
+                                                    visibility: null == defaultValue ? "hidden": null,
+                                                }
+                                            }
                                     >
                                         {this.defaultValueFormatter(defaultValue)}
-                                    </Button> :
-                                    null
+                                    </Button>
+                                ]
                             }
                         </ListItem>
                     </List>

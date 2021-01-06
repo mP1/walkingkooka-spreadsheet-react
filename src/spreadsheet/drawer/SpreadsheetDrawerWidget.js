@@ -397,7 +397,7 @@ class SpreadsheetDrawerWidget extends React.Component {
                                                                 values={values}
                                                                 value={value}
                                                                 defaultValue={defaultValue}
-                                                                defaultValueFormatter={(v) =>  v.label()}
+                                                                defaultValueFormatter={(v) =>  v && v.label()}
                                                                 setValue={setValue}/>;
                         break;
                     default:
