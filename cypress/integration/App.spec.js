@@ -423,6 +423,93 @@ context("General app usage", () => {
         null,
         null,
     );
+
+    /**
+     * Opens the spreadsheet drawer, selects each value by clicking the slider.
+     * TODO Currently no test is made upon the a1 cell contents.
+     */
+    function enterSpreadsheetMetadataSliderNumberTextFieldAndCheck(property,
+                                                    a1Formula,
+                                                    values,
+                                                    a1CellContents,
+                                                    a1CellContentDefault) {
+        it("Show drawer and update SpreadsheetMetadata." + property, () => {
+            settingsToolDrawerToggle();
+
+            settingsToolDrawer()
+                .should('be.visible');
+
+            const a1 = "A1";
+
+            if(a1Formula){
+                cellClick(a1);
+
+                formulaText()
+                    .type(a1Formula)
+                    .type("{enter}");
+            }
+
+            const sliderId = "#spreadsheet-metadata-" + property + "-slider";
+            const numberTextFieldId = "#spreadsheet-metadata-" + property + "-number-text-field";
+
+            // click on the slider and verify number in TextField was updated
+            values.forEach((v, i) => {
+                cy.get(sliderId + " *[data-index=\"" + i + "\"][aria-hidden=\"true\"]")
+                    .should("have.text", v.text)
+                    .click();
+
+                cy.get(numberTextFieldId)
+                    .should("have.value", v.value)
+                    .click();
+
+                if(a1Formula){
+                    cellFormattedTextCheck(a1, a1CellContents[i]);
+                }
+            });
+
+            // type a number in TextField & verify slider moved.
+            values.forEach((v, i) => {
+                console.log("value=" + JSON.stringify(v) + " i=" + i);
+
+                cy.get(numberTextFieldId)
+                    .type("{selectall}")
+                    .type(v.value)
+                    .type("{enter}")
+                    .click();
+
+                cy.get(sliderId + " *[data-index=\"" + i + "\"][aria-hidden=\"true\"]")
+                    .should("have.class", "MuiSlider-markLabelActive");
+
+                if(a1Formula){
+                    cellFormattedTextCheck(a1, a1CellContents[i]);
+                }
+            });
+        });
+    }
+
+    enterSpreadsheetMetadataSliderNumberTextFieldAndCheck(SpreadsheetMetadata.PRECISION,
+        null,
+        [
+            {
+                value: "0",
+                text: "∞",
+            },
+            {
+                value: "32",
+                text: "32",
+            },
+            {
+                value: "64",
+                text: "64",
+            },
+            {
+                value: "128",
+                text: "128",
+            }
+        ],
+        null,
+        null,
+    );
 });
 
 // helpers..............................................................................................................
