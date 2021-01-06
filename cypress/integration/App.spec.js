@@ -379,8 +379,8 @@ context("General app usage", () => {
     );
 
     /**
-     * Opens the spreadsheet drawer, types in the given text, and verifies the property.
-     * The button is then clicked and the text field is verified.
+     * Opens the spreadsheet drawer, selects each value by clicking the slider.
+     * TODO Currently no test is made upon the a1 cell contents.
      */
     function enterSpreadsheetMetadataSliderAndCheck(property,
                                                     a1Formula,
