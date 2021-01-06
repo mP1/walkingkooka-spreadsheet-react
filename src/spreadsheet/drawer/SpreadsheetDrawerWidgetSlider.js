@@ -34,8 +34,10 @@ export default class SpreadsheetDrawerWidgetSlider extends SpreadsheetDrawerWidg
 
     renderInput(id, value) {
         const {marks} = this;
+        const sliderId = id + "-slider";
 
-        return <Slider id={id + "-slider"}
+        return <Slider id={sliderId}
+                       key={sliderId}
                        defaultValue={this.defaultValueIndex}
                        min={0}
                        max={marks.length - 1}
