@@ -15,6 +15,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import SpreadsheetDrawerWidgetCharacter from "./SpreadsheetDrawerWidgetCharacter.js";
 import SpreadsheetDrawerWidgetSlider from "./SpreadsheetDrawerWidgetSlider.js";
+import SpreadsheetDrawerWidgetSliderWithNumberTextField from "./SpreadsheetDrawerWidgetSliderWithNumberTextField.js";
 import SpreadsheetDrawerWidgetString from "./SpreadsheetDrawerWidgetString.js";
 import SpreadsheetLocaleDefaultDateTimeFormat from "../server/format/SpreadsheetLocaleDefaultDateTimeFormat.js";
 import SpreadsheetMetadata from "../meta/SpreadsheetMetadata.js";
@@ -399,6 +400,55 @@ class SpreadsheetDrawerWidget extends React.Component {
                                                                 defaultValue={defaultValue}
                                                                 defaultValueFormatter={(v) =>  v && v.label()}
                                                                 setValue={setValue}/>;
+                        break;
+                    case SpreadsheetMetadata.PRECISION:
+                        var min;
+                        var max;
+                        var marks;
+                        var style;
+                        var step;
+
+                        switch(property) {
+                            case SpreadsheetMetadata.PRECISION:
+                                min = 0;
+                                max = 128;
+                                marks = [
+                                    {
+                                        value: 0,
+                                        label: "∞",
+                                    },
+                                    {
+                                        value: 32,
+                                        label: "32",
+                                    },
+                                    {
+                                        value: 64,
+                                        label: "64",
+                                    },
+                                    {
+                                        value: 128,
+                                        label: "128",
+                                    },
+                                ];
+                                step = null;
+                                style = {
+                                    marginLeft: "2em",
+                                    marginRight: "2em",
+                                };
+                                break;
+                            default:
+                                break;
+                        }
+                        render = <SpreadsheetDrawerWidgetSliderWithNumberTextField id={id}
+                                                                                   style={style}
+                                                                                   min={min}
+                                                                                   max={max}
+                                                                                   marks={marks}
+                                                                                   step={step}
+                                                                                   value={value}
+                                                                                   defaultValue={defaultValue}
+                                                                                   defaultValueFormatter={(v) =>  v && v.label()}
+                                                                                   setValue={setValue}/>;
                         break;
                     default:
                         render = (
