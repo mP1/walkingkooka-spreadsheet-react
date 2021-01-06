@@ -116,6 +116,23 @@ export default class SpreadsheetDrawerWidgetValue extends React.Component {
     }
 
     /**
+     * Useful event handler for TextFields.
+     */
+    onKeyDown(e) {
+        switch(e.key) {
+            case "Escape":
+                this.onSetDefaultValue();
+                break;
+            case "Enter":
+                this.setValue(this.state.value);
+                break;
+            default:
+                // nothing special to do for other keys
+                break;
+        }
+    }
+
+    /**
      * Accepts the value and updates the state. It is assumed the value is already a value type and not String.
      */
     setValue(value) {
