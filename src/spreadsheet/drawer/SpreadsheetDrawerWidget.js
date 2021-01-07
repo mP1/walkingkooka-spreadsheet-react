@@ -403,6 +403,7 @@ class SpreadsheetDrawerWidget extends React.Component {
                         break;
                     case SpreadsheetMetadata.DATETIME_OFFSET:
                     case SpreadsheetMetadata.PRECISION:
+                    case SpreadsheetMetadata.TWO_DIGIT_YEAR:
                         var min;
                         var max;
                         var marks;
@@ -447,6 +448,29 @@ class SpreadsheetDrawerWidget extends React.Component {
                                     {
                                         value: 128,
                                         label: "128",
+                                    },
+                                ];
+                                step = null;
+                                style = {
+                                    marginLeft: "2em",
+                                    marginRight: "2em",
+                                };
+                                break;
+                            case SpreadsheetMetadata.TWO_DIGIT_YEAR:
+                                min = 0;
+                                max = 99;
+                                marks = [
+                                    {
+                                        value: 20,
+                                        label: "20",
+                                    },
+                                    {
+                                        value: 50,
+                                        label: "50",
+                                    },
+                                    {
+                                        value: 70,
+                                        label: "70",
                                     },
                                 ];
                                 step = null;

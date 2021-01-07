@@ -526,6 +526,26 @@ context("General app usage", () => {
         null,
         null,
     );
+
+    enterSpreadsheetMetadataSliderNumberTextFieldAndCheck(SpreadsheetMetadata.TWO_DIGIT_YEAR,
+        null,
+        [
+            {
+                value: "20",
+                text: "20",
+            },
+            {
+                value: "50",
+                text: "50",
+            },
+            {
+                value: "70",
+                text: "70",
+            },
+        ],
+        null,
+        null,
+    );
 });
 
 // helpers..............................................................................................................
