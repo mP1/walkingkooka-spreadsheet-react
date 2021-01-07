@@ -1,4 +1,3 @@
-import MenuItem from '@material-ui/core/MenuItem';
 import PropTypes from "prop-types";
 import React from 'react';
 import Select from '@material-ui/core/Select';
@@ -80,4 +79,9 @@ SpreadsheetDrawerWidgetDropDownList.propTypes = Object.assign(
     }
 );
 
-SpreadsheetDrawerWidgetDropDownList.propTypes = SpreadsheetDrawerWidgetValue.createPropTypes(PropTypes.instanceOf(SystemEnum));
+SpreadsheetDrawerWidgetDropDownList.propTypes = SpreadsheetDrawerWidgetValue.createPropTypes(
+    PropTypes.instanceOf(SystemEnum),
+    {
+        values: PropTypes.array.isRequired,
+    }
+);

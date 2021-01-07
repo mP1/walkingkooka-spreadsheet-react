@@ -61,4 +61,10 @@ export default class SpreadsheetDrawerWidgetSlider extends SpreadsheetDrawerWidg
     }
 }
 
-SpreadsheetDrawerWidgetSlider.propTypes = SpreadsheetDrawerWidgetValue.createPropTypes(PropTypes.instanceOf(SystemEnum));
+SpreadsheetDrawerWidgetSlider.propTypes = SpreadsheetDrawerWidgetValue.createPropTypes(
+    PropTypes.instanceOf(SystemEnum),
+    {
+        style: PropTypes.object.isRequired,
+        values: PropTypes.array.isRequired,
+    }
+);
