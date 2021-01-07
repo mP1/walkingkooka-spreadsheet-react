@@ -100,12 +100,12 @@ export default class SpreadsheetDrawerWidgetSliderWithNumberTextField extends Sp
     }
 }
 
-SpreadsheetDrawerWidgetSliderWithNumberTextField.propTypes = Object.assign(
-    SpreadsheetDrawerWidgetValue.createPropTypes(PropTypes.number),
+SpreadsheetDrawerWidgetSliderWithNumberTextField.propTypes = SpreadsheetDrawerWidgetValue.createPropTypes(
+    PropTypes.number,
     {
-        min: PropTypes.number,
-        max: PropTypes.number,
-        marks: PropTypes.array,
-        step: PropTypes.object,
+        min: PropTypes.number.isRequired,
+        max: PropTypes.number.isRequired,
+        marks: PropTypes.array.isRequired,
+        step: PropTypes.object, // null is acceptable
     }
 );
