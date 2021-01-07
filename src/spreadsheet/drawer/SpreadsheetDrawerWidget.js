@@ -13,7 +13,9 @@ import MultiFormatResponse from "../server/format/MultiFormatResponse.js";
 import Paper from '@material-ui/core/Paper';
 import PropTypes from 'prop-types';
 import React from 'react';
+import RoundingMode from "../../math/RoundingMode.js";
 import SpreadsheetDrawerWidgetCharacter from "./SpreadsheetDrawerWidgetCharacter.js";
+import SpreadsheetDrawerWidgetDropDownList from "./SpreadsheetDrawerWidgetDropDownList.js";
 import SpreadsheetDrawerWidgetSlider from "./SpreadsheetDrawerWidgetSlider.js";
 import SpreadsheetDrawerWidgetSliderWithNumberTextField from "./SpreadsheetDrawerWidgetSliderWithNumberTextField.js";
 import SpreadsheetDrawerWidgetString from "./SpreadsheetDrawerWidgetString.js";
@@ -522,6 +524,24 @@ class SpreadsheetDrawerWidget extends React.Component {
                                                                                    defaultValue={defaultValue}
                                                                                    defaultValueFormatter={(v) =>  v && v.label()}
                                                                                    setValue={setValue}/>;
+                        break;
+
+                    case SpreadsheetMetadata.ROUNDING_MODE:
+                        var values;
+
+                        switch(property) {
+                            case SpreadsheetMetadata.ROUNDING_MODE:
+                                values = RoundingMode.values();
+                                break;
+                            default:
+                                break;
+                        }
+                        render = <SpreadsheetDrawerWidgetDropDownList id={id}
+                                                                      values={values}
+                                                                      value={value}
+                                                                      defaultValue={defaultValue}
+                                                                      defaultValueFormatter={(v) =>  v && v.label()}
+                                                                      setValue={setValue}/>;
                         break;
                     default:
                         render = (

@@ -1,6 +1,7 @@
 /// <reference types="cypress" />
 
 import ExpressionNumberKind from "../../src/math/ExpressionNumberKind.js";
+import RoundingMode from "../../src/math/RoundingMode.js";
 import SpreadsheetMetadata from "../../src/spreadsheet/meta/SpreadsheetMetadata.js";
 
 const SELECTED = ".selected";
@@ -563,6 +564,55 @@ context("General app usage", () => {
                 text: "20",
             },
         ],
+        null,
+        null,
+    );
+
+    /**
+     * Opens the spreadsheet drawer, selects each value by clicking the drop down list (select).
+     * TODO Currently no test is made upon the a1 cell contents.
+     */
+    function enterSpreadsheetMetadataDropDownListAndCheck(property,
+                                                          a1Formula,
+                                                          values,
+                                                          a1CellContents,
+                                                          a1CellContentDefault) {
+        it("Show drawer and update SpreadsheetMetadata." + property, () => {
+            settingsToolDrawerToggle();
+
+            settingsToolDrawer()
+                .should('be.visible');
+
+            const a1 = "A1";
+
+            if(a1Formula){
+                cellClick(a1);
+
+                formulaText()
+                    .type(a1Formula)
+                    .type("{enter}");
+            }
+
+            const dropDownListId = "#spreadsheet-metadata-" + property + "-drop-down-list";
+
+            values.forEach((v, i) => {
+                cy.get(dropDownListId)
+                    .select(v.toString());
+
+                cy.get(dropDownListId)
+                    .should("have.value", v.toString());
+
+                if(a1Formula){
+                    cellFormattedTextCheck(a1, a1CellContents[i]);
+                }
+            });
+        });
+    }
+
+    enterSpreadsheetMetadataDropDownListAndCheck(
+        SpreadsheetMetadata.ROUNDING_MODE,
+        null,
+        RoundingMode.values(),
         null,
         null,
     );
