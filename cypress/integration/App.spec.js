@@ -546,6 +546,26 @@ context("General app usage", () => {
         null,
         null,
     );
+
+    enterSpreadsheetMetadataSliderNumberTextFieldAndCheck(SpreadsheetMetadata.WIDTH,
+        null,
+        [
+            {
+                value: "1",
+                text: "1",
+            },
+            {
+                value: "10",
+                text: "10",
+            },
+            {
+                value: "20",
+                text: "20",
+            },
+        ],
+        null,
+        null,
+    );
 });
 
 // helpers..............................................................................................................
