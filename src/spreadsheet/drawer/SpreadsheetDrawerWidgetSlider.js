@@ -57,7 +57,6 @@ export default class SpreadsheetDrawerWidgetSlider extends SpreadsheetDrawerWidg
      */
     onSetDefaultValue() {
         console.log("onSetDefaultValue");
-        debugger;
         this.setValue(this.defaultValue);
     }
 }

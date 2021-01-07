@@ -96,7 +96,6 @@ export default class SpreadsheetDrawerWidgetSliderWithNumberTextField extends Sp
      */
     onSetDefaultValue() {
         console.log("onSetDefaultValue");
-        debugger;
         this.setValue(this.defaultValue);
     }
 }
