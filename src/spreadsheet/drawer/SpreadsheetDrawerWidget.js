@@ -406,6 +406,7 @@ class SpreadsheetDrawerWidget extends React.Component {
                     case SpreadsheetMetadata.PRECISION:
                     case SpreadsheetMetadata.TWO_DIGIT_YEAR:
                     case SpreadsheetMetadata.WIDTH:
+                        var numberValue; // DATETIME_OFFSET is a java Long in String form, ugly hack to assume can always be converted to a number
                         var min;
                         var max;
                         var marks;
@@ -413,6 +414,7 @@ class SpreadsheetDrawerWidget extends React.Component {
                         var step;
                         switch(property) {
                             case SpreadsheetMetadata.DATETIME_OFFSET:
+                                numberValue = parseInt(value);
                                 min = -25569;
                                 max = -24107;
                                 marks = [
@@ -432,6 +434,7 @@ class SpreadsheetDrawerWidget extends React.Component {
                                 };
                                 break;
                             case SpreadsheetMetadata.PRECISION:
+                                numberValue = value;
                                 min = 0;
                                 max = 128;
                                 marks = [
@@ -459,6 +462,7 @@ class SpreadsheetDrawerWidget extends React.Component {
                                 };
                                 break;
                             case SpreadsheetMetadata.TWO_DIGIT_YEAR:
+                                numberValue = value;
                                 min = 0;
                                 max = 99;
                                 marks = [
@@ -482,6 +486,7 @@ class SpreadsheetDrawerWidget extends React.Component {
                                 };
                                 break;
                             case SpreadsheetMetadata.WIDTH:
+                                numberValue = value;
                                 min = 0;
                                 max = 20;
                                 marks = [
@@ -513,7 +518,7 @@ class SpreadsheetDrawerWidget extends React.Component {
                                                                                    max={max}
                                                                                    marks={marks}
                                                                                    step={step}
-                                                                                   value={value}
+                                                                                   value={numberValue}
                                                                                    defaultValue={defaultValue}
                                                                                    defaultValueFormatter={(v) =>  v && v.label()}
                                                                                    setValue={setValue}/>;
