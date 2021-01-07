@@ -510,6 +510,22 @@ context("General app usage", () => {
         null,
         null,
     );
+
+    enterSpreadsheetMetadataSliderNumberTextFieldAndCheck(SpreadsheetMetadata.DATETIME_OFFSET,
+        null,
+        [
+            {
+                value: "-25569",
+                text: "1900",
+            },
+            {
+                value: "-24107",
+                text: "1904",
+            },
+        ],
+        null,
+        null,
+    );
 });
 
 // helpers..............................................................................................................
