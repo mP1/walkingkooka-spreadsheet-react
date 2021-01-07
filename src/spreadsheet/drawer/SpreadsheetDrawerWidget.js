@@ -376,7 +376,7 @@ class SpreadsheetDrawerWidget extends React.Component {
                             <SpreadsheetDrawerWidgetCharacter id={id}
                                                               value={value}
                                                               defaultValue={defaultValue}
-                                                              defaultValueFormatter={(s) => s.toString()}
+                                                              defaultValueFormatter={(s) => s ? s.toString() : ""}
                                                               setValue={setValue}
                             />
                         );
@@ -401,7 +401,7 @@ class SpreadsheetDrawerWidget extends React.Component {
                                                                 values={values}
                                                                 value={value}
                                                                 defaultValue={defaultValue}
-                                                                defaultValueFormatter={(v) =>  v && v.label()}
+                                                                defaultValueFormatter={(v) =>  v ? v.label() : ""}
                                                                 setValue={setValue}/>;
                         break;
                     case SpreadsheetMetadata.DATETIME_OFFSET:
@@ -522,7 +522,7 @@ class SpreadsheetDrawerWidget extends React.Component {
                                                                                    step={step}
                                                                                    value={numberValue}
                                                                                    defaultValue={defaultValue}
-                                                                                   defaultValueFormatter={(v) =>  v && v.label()}
+                                                                                   defaultValueFormatter={(v) =>  v ? v.toString() : ""}
                                                                                    setValue={setValue}/>;
                         break;
 
@@ -540,7 +540,7 @@ class SpreadsheetDrawerWidget extends React.Component {
                                                                       values={values}
                                                                       value={value}
                                                                       defaultValue={defaultValue}
-                                                                      defaultValueFormatter={(v) =>  v && v.label()}
+                                                                      defaultValueFormatter={(v) =>  v ? v.label() : ""}
                                                                       setValue={setValue}/>;
                         break;
                     default:
