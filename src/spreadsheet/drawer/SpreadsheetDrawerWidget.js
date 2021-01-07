@@ -191,6 +191,7 @@ class SpreadsheetDrawerWidget extends React.Component {
         const rows = [
             this.row("Locale", SpreadsheetMetadata.LOCALE),
             this.row("Format", SpreadsheetMetadata.TEXT_FORMAT_PATTERN),
+            this.row("Width", SpreadsheetMetadata.WIDTH),
         ];
 
         return this.accordion("spreadsheet-text",
@@ -404,6 +405,7 @@ class SpreadsheetDrawerWidget extends React.Component {
                     case SpreadsheetMetadata.DATETIME_OFFSET:
                     case SpreadsheetMetadata.PRECISION:
                     case SpreadsheetMetadata.TWO_DIGIT_YEAR:
+                    case SpreadsheetMetadata.WIDTH:
                         var min;
                         var max;
                         var marks;
@@ -476,6 +478,29 @@ class SpreadsheetDrawerWidget extends React.Component {
                                 step = null;
                                 style = {
                                     marginLeft: "2em",
+                                    marginRight: "2em",
+                                };
+                                break;
+                            case SpreadsheetMetadata.WIDTH:
+                                min = 0;
+                                max = 20;
+                                marks = [
+                                    {
+                                        value: 1,
+                                        label: "1",
+                                    },
+                                    {
+                                        value: 10,
+                                        label: "10",
+                                    },
+                                    {
+                                        value: 20,
+                                        label: "20",
+                                    },
+                                ];
+                                step = null;
+                                style = {
+                                    marginLeft: 0,
                                     marginRight: "2em",
                                 };
                                 break;
