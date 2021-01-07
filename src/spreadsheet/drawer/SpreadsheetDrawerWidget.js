@@ -401,14 +401,33 @@ class SpreadsheetDrawerWidget extends React.Component {
                                                                 defaultValueFormatter={(v) =>  v && v.label()}
                                                                 setValue={setValue}/>;
                         break;
+                    case SpreadsheetMetadata.DATETIME_OFFSET:
                     case SpreadsheetMetadata.PRECISION:
                         var min;
                         var max;
                         var marks;
                         var style;
                         var step;
-
                         switch(property) {
+                            case SpreadsheetMetadata.DATETIME_OFFSET:
+                                min = -25569;
+                                max = -24107;
+                                marks = [
+                                    {
+                                        value: -25569,
+                                        label: "1900",
+                                    },
+                                    {
+                                        value: -24107,
+                                        label: "1904",
+                                    }
+                                ];
+                                step = null;
+                                style = {
+                                    marginLeft: "1em",
+                                    marginRight: "2em",
+                                };
+                                break;
                             case SpreadsheetMetadata.PRECISION:
                                 min = 0;
                                 max = 128;
