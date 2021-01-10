@@ -3,7 +3,7 @@ import SystemObject from "../../SystemObject.js";
 
 export default class SpreadsheetDateTimeParsePatterns extends SpreadsheetParsePatterns {
 
-    static TYPE_NAME = "spreadsheet-datetime-parse-patterns";
+    static TYPE_NAME = "spreadsheet-date-time-parse-patterns";
 
     static fromJson(pattern) {
         return new SpreadsheetDateTimeParsePatterns(pattern);
