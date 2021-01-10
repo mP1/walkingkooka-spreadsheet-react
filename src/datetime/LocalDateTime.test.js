@@ -12,7 +12,7 @@ systemObjectTesting(
     new LocalDateTime("2000-1-1 1:01:01"),
     LocalDateTime.fromJson,
     "Missing text",
-    "local-datetime",
+    "local-date-time",
     text
 );
 

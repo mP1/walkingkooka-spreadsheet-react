@@ -4,7 +4,7 @@
  */
 import SystemObject from "../SystemObject.js";
 
-const TYPE_NAME = "local-datetime";
+const TYPE_NAME = "local-date-time";
 
 export default class LocalDateTime extends SystemObject {
 
