@@ -12,7 +12,7 @@ systemObjectTesting(
     new EmailAddress("different@example.com"),
     EmailAddress.fromJson,
     "Missing text",
-    "email",
+    "email-address",
     text
 );
 
