@@ -1,6 +1,6 @@
 import SystemObject from "../SystemObject.js";
 
-const TYPE_NAME = "email";
+const TYPE_NAME = "email-address";
 /**
  * Holds a java EmailAddress in json form.
  * This assumes various services are used to validate/format this value.
