@@ -40,6 +40,24 @@ During development this assumes that a http server is available on `https://loca
 serving the javascript engine.
 
 
+
+## Architecture
+This project aims to be as lightweight as possible implementing a true MVC design. Minimal if any business logic is performed 
+in javascript within code belonging to this project. This point is important as the [walking-spreadsheet-server](https://github.com/mP1/walkingkooka-spreadsheet-server) 
+can also be translated into javascript but its does not contain any presentation logic. This project only aims to build
+and display react components or widgets and react to events, which results in payloads to a messaging abstraction. The
+messaging abstraction may be a webworker or a java web server in both case the same project is executed [walkingkooka-spreadsheet-server](https://github.com/mP1/walkingkooka-spreadsheet-server)
+with different extras. Every service required to interact, update or view portions or other spreadsheet like functions
+are performed on the server via messages, each having its own separate rich type.
+
+New support projects will be created to extend the server experience for example a true RDBMs implementation of the various
+Store interface will be implemented and used in the java web server. It would not make sense to offer this in a browser,
+but perhaps a browser based [LocalStorage](https://developer.mozilla.org/en-US/docs/Web/API/Window/localStorage) solution
+may be available for local storage. Constraints, limitations and features of browser vs a real JVM server mean different provides of key interfaces will be 
+created and used appropriate. These have not be documented, projects will be created and are future efforts.
+
+
+
 ## History hash format
 
 Components within a hash that begin with dollar sign '$' represent a variable of some sort related to the context. Other
@@ -52,7 +70,7 @@ components are actual literals.
 
 ## Value types
 
-Some value types particularly those defined in [spreadsheet](https://github.com/mP1/walkingkooka-spreadsheet) and core values 
+Some value types particularly those defined in [walkingkooka-spreadsheet](https://github.com/mP1/walkingkooka-spreadsheet) and core values 
 such as LocalDate have had equivalent but simplified in javascript form. Most include minimal logic and are just containers
 to hold the value often in JSON form useful for communicating with a server to perform some service or computation. Using
 LocalDate as an example, it does NOT contain any date math, formatting or parsing it only holds a type safe String holding the date.
