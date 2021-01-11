@@ -50,6 +50,28 @@ components are actual literals.
 - $spreadsheet-id / $spreadsheet name / cellReference / $cellReference-reference / formula  editing the formula belonging to a cellReference. 
 
 
+## Value types
+
+Some value types particularly those defined in [spreadsheet](https://github.com/mP1/walkingkooka-spreadsheet) and core values 
+such as LocalDate have had equivalent but simplified in javascript form. Most include minimal logic and are just containers
+to hold the value often in JSON form useful for communicating with a server to perform some service or computation. Using
+LocalDate as an example, it does NOT contain any date math, formatting or parsing it only holds a type safe String holding the date.
+One common minimal feature that all value types support are:
+
+- Direct java to javascript class to class mapping.
+- Immutability
+- JSON
+- Type safety
+
+Not all types from the JDK or spreadsheet projects are included. One considered possible option is to translate the java 
+source using the [j2cl-maven-plugin](https://github.com/mP1/j2cl-maven-plugin) into javascript. However this has been
+judged to be non practical because the dependency graph becomes quite large in file count and source code size, reducing
+basically instant turnaround between changing javascript source and viewing the updated browser experience. A type such
+as LocalDate actually require many other supported classes such as Locale, TimeZone, java.text.* and much much more. The 
+footprint for this would require some effort to reduce to a minimal form resulting in something no that different from the
+basic forms found in this project.
+
+
 
 ## Cypress Integration testing
 
