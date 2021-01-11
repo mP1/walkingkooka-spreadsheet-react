@@ -315,7 +315,8 @@ context("General app usage", () => {
 
             const textFieldId = "#spreadsheet-metadata-" + property + "-text";
             cy.get(textFieldId)
-                .type("{backspace}{backspace}" + text)
+                .type("{selectall}")
+                .type(text)
                 .blur();
 
             cy.get(textFieldId)
