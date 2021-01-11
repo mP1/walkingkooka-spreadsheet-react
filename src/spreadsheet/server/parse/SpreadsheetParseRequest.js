@@ -1,6 +1,6 @@
 import SystemObject from "../../../SystemObject.js";
 
-export default class ParserRequest extends SystemObject {
+export default class SpreadsheetParseRequest extends SystemObject {
 
     static TYPE_NAME = "spreadsheet-parse-request";
 
@@ -13,7 +13,7 @@ export default class ParserRequest extends SystemObject {
         }
 
         const {text, parser} = json;
-        return new ParserRequest(text, parser);
+        return new SpreadsheetParseRequest(text, parser);
     }
 
     constructor(text, parser) {
@@ -50,12 +50,12 @@ export default class ParserRequest extends SystemObject {
     }
 
     typeName() {
-        return ParserRequest.TYPE_NAME;
+        return SpreadsheetParseRequest.TYPE_NAME;
     }
 
     equals(other) {
         return this === other ||
-            (other instanceof ParserRequest &&
+            (other instanceof SpreadsheetParseRequest &&
                 this.text() === other.text() &&
                 this.parser() === other.parser()
             );
@@ -66,4 +66,4 @@ export default class ParserRequest extends SystemObject {
     }
 }
 
-SystemObject.register(ParserRequest.TYPE_NAME, ParserRequest.fromJson);
+SystemObject.register(SpreadsheetParseRequest.TYPE_NAME, SpreadsheetParseRequest.fromJson);

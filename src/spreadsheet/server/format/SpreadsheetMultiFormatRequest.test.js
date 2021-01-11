@@ -1,6 +1,6 @@
-import FormatRequest from "./FormatRequest.js";
-import MultiFormatRequest from "./MultiFormatRequest.js";
 import SpreadsheetDateFormatPattern from "../../format/SpreadsheetDateFormatPattern.js";
+import SpreadsheetFormatRequest from "./SpreadsheetFormatRequest.js";
+import SpreadsheetMultiFormatRequest from "./SpreadsheetMultiFormatRequest.js";
 import systemObjectTesting from "../../../SystemObjectTesting.js";
 
 function request1() {
@@ -19,26 +19,26 @@ function requests() {
 }
 
 function request(localDateTime, pattern) {
-    return new FormatRequest(
+    return new SpreadsheetFormatRequest(
         SpreadsheetDateFormatPattern.fromJson(localDateTime),
         SpreadsheetDateFormatPattern.fromJson(pattern)
     );
 }
 
 function multi() {
-    return new MultiFormatRequest(
+    return new SpreadsheetMultiFormatRequest(
         requests()
     );
 }
 
 systemObjectTesting(
     multi(),
-    new MultiFormatRequest(
+    new SpreadsheetMultiFormatRequest(
         [
             request("1970/1/1 12:00:00", "d-m-y")
         ]
     ),
-    MultiFormatRequest.fromJson,
+    SpreadsheetMultiFormatRequest.fromJson,
     "Missing array",
     "spreadsheet-multi-format-request",
     [
@@ -51,20 +51,20 @@ systemObjectTesting(
 
 test("create missing undefined array fails", () => {
     expect(
-        () => new MultiFormatRequest(undefined)
+        () => new SpreadsheetMultiFormatRequest(undefined)
     ).toThrow("Missing requests");
 });
 
 test("create missing null array fails", () => {
     expect(
-        () => new MultiFormatRequest(null)
+        () => new SpreadsheetMultiFormatRequest(null)
     ).toThrow("Missing requests");
 });
 
 test("create", () => {
     const r = requests();
     check(
-        new MultiFormatRequest(r),
+        new SpreadsheetMultiFormatRequest(r),
         r
     );
 });
@@ -72,7 +72,7 @@ test("create", () => {
 test("create empty array", () => {
     const r = [];
     check(
-        new MultiFormatRequest(r),
+        new SpreadsheetMultiFormatRequest(r),
         r
     );
 });
@@ -82,7 +82,7 @@ test("create empty array", () => {
 test("fromJson", () => {
     const r = request("2000/1/1 1:1:1", "yyyy-mm-dd hh-mm");
 
-    const multi = MultiFormatRequest.fromJson(
+    const multi = SpreadsheetMultiFormatRequest.fromJson(
         [
             r.toJsonWithType(),
         ]
@@ -98,7 +98,7 @@ test("fromJson #2", () => {
     const r1 = request("2000/1/1 1:1:1", "yyyy-mm-dd hh-mm");
     const r2 = request("2000/2/2 2:2:2", "yyyy-mm-dd hh-mm");
 
-    const multi = MultiFormatRequest.fromJson(
+    const multi = SpreadsheetMultiFormatRequest.fromJson(
         [
             r1.toJsonWithType(),
             r2.toJsonWithType(),
@@ -119,7 +119,7 @@ test("fromJson #2", () => {
 test("toJson", () => {
     const r = request("2000/1/1 1:1:1", "yyyy-mm-dd hh-mm");
 
-    expect(new MultiFormatRequest(
+    expect(new SpreadsheetMultiFormatRequest(
         [
             r,
         ]
@@ -133,7 +133,7 @@ test("toJson #2", () => {
     const r1 = request("2000/1/1 1:1:1", "yyyy-mm-dd hh-mm");
     const r2 = request("2000/2/2 2:2:2", "yyyy-mm-dd hh-mm");
 
-    expect(new MultiFormatRequest(
+    expect(new SpreadsheetMultiFormatRequest(
         [
             r1,
             r2,

@@ -1,6 +1,6 @@
-import ParseRequest from "./ParseRequest.js";
 import SpreadsheetDateParsePatterns from "../../format/SpreadsheetDateParsePatterns.js";
 import SpreadsheetDateTimeParsePatterns from "../../format/SpreadsheetDateTimeParsePatterns.js";
+import SpreadsheetParseRequest from "./SpreadsheetParseRequest.js";
 import systemObjectTesting from "../../../SystemObjectTesting.js";
 
 function text() {
@@ -12,16 +12,16 @@ function parser() {
 }
 
 function parseRequest() {
-    return new ParseRequest(text(), parser());
+    return new SpreadsheetParseRequest(text(), parser());
 }
 
 systemObjectTesting(
     parseRequest(),
-    new ParseRequest(
+    new SpreadsheetParseRequest(
         "different",
         SpreadsheetDateTimeParsePatterns.TYPE_NAME
     ),
-    ParseRequest.fromJson,
+    SpreadsheetParseRequest.fromJson,
     "Missing json",
     "spreadsheet-parse-request",
     {
@@ -34,56 +34,56 @@ systemObjectTesting(
 
 test("create missing undefined text fails", () => {
     expect(
-        () => new ParseRequest(undefined, parser())
+        () => new SpreadsheetParseRequest(undefined, parser())
     ).toThrow("Missing text");
 });
 
 test("create missing null text fails", () => {
     expect(
-        () => new ParseRequest(null, parser())
+        () => new SpreadsheetParseRequest(null, parser())
     ).toThrow("Missing text");
 });
 
 test("create missing empty text fails", () => {
     expect(
-        () => new ParseRequest("", parser())
+        () => new SpreadsheetParseRequest("", parser())
     ).toThrow("Missing text");
 });
 
 test("create invalid text fails", () => {
     expect(
-        () => new ParseRequest(123, parser())
+        () => new SpreadsheetParseRequest(123, parser())
     ).toThrow("Expected string text got 123");
 });
 
 test("create missing undefined parser fails", () => {
     expect(
-        () => new ParseRequest(text(), undefined)
+        () => new SpreadsheetParseRequest(text(), undefined)
     ).toThrow("Missing parser");
 });
 
 test("create missing null parser fails", () => {
     expect(
-        () => new ParseRequest(text(), null)
+        () => new SpreadsheetParseRequest(text(), null)
     ).toThrow("Missing parser");
 });
 
 test("create missing empty parser fails", () => {
     expect(
-        () => new ParseRequest(text(), "")
+        () => new SpreadsheetParseRequest(text(), "")
     ).toThrow("Missing parser");
 });
 
 test("create invalid parser fails", () => {
     expect(
-        () => new ParseRequest(text(), 123)
+        () => new SpreadsheetParseRequest(text(), 123)
     ).toThrow("Expected string parser got 123");
 });
 
 test("create text & parser", () => {
     const v = text();
     const p = parser();
-    check(new ParseRequest(v, p),
+    check(new SpreadsheetParseRequest(v, p),
         v,
         p);
 });
@@ -92,13 +92,13 @@ test("create text & parser", () => {
 
 test("equals different text false", () => {
     expect(parseRequest()
-        .equals(new ParseRequest("different", parser())))
+        .equals(new SpreadsheetParseRequest("different", parser())))
         .toBeFalse();
 });
 
 test("equals different different false", () => {
     expect(parseRequest()
-        .equals(new ParseRequest(text(), SpreadsheetDateTimeParsePatterns.TYPE_NAME)))
+        .equals(new SpreadsheetParseRequest(text(), SpreadsheetDateTimeParsePatterns.TYPE_NAME)))
         .toBeFalse();
 });
 

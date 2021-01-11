@@ -1,13 +1,13 @@
 import Equality from "../../../Equality.js";
-import FormatRequest from "./FormatRequest.js";
+import SpreadsheetParseRequest from "./SpreadsheetParseRequest.js";
 import SystemObject from "../../../SystemObject.js";
 
-const TYPE_NAME = "spreadsheet-multi-format-request";
+const TYPE_NAME = "spreadsheet-multi-parse-request";
 
-export default class MultiFormatRequest extends SystemObject {
+export default class SpreadsheetMultiParseRequest extends SystemObject {
 
     static fromJson(json) {
-        return new MultiFormatRequest(
+        return new SpreadsheetMultiParseRequest(
             SystemObject.fromJsonListWithType(json),
         );
     }
@@ -21,8 +21,8 @@ export default class MultiFormatRequest extends SystemObject {
             throw new Error("Expected array requests got " + requests);
         }
         requests.forEach(r => {
-            if(!(r instanceof FormatRequest)){
-                throw new Error("Expected only FormatRequest requests got " + r);
+            if(!(r instanceof SpreadsheetParseRequest)){
+                throw new Error("Expected only ParseRequest requests got " + r);
             }
         });
 
@@ -44,7 +44,7 @@ export default class MultiFormatRequest extends SystemObject {
 
     equals(other) {
         return this === other ||
-            (other instanceof MultiFormatRequest &&
+            (other instanceof SpreadsheetMultiParseRequest &&
                 Equality.safeEquals(this.requests(), other.requests())
             );
     }
@@ -54,4 +54,4 @@ export default class MultiFormatRequest extends SystemObject {
     }
 }
 
-SystemObject.register(TYPE_NAME, MultiFormatRequest.fromJson);
+SystemObject.register(TYPE_NAME, SpreadsheetMultiParseRequest.fromJson);

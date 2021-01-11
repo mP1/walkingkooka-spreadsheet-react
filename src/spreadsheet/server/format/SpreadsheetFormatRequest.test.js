@@ -1,6 +1,6 @@
-import FormatRequest from "./FormatRequest.js";
 import LocalDateTime from "../../../datetime/LocalDateTime.js";
 import SpreadsheetDateFormatPattern from "../../format/SpreadsheetDateFormatPattern.js";
+import SpreadsheetFormatRequest from "./SpreadsheetFormatRequest.js";
 import SystemObject from "../../../SystemObject.js";
 import systemObjectTesting from "../../../SystemObjectTesting.js";
 
@@ -13,16 +13,16 @@ function pattern() {
 }
 
 function formatRequest() {
-    return new FormatRequest(value(), pattern());
+    return new SpreadsheetFormatRequest(value(), pattern());
 }
 
 systemObjectTesting(
     formatRequest(),
-    new FormatRequest(
+    new SpreadsheetFormatRequest(
         LocalDateTime.fromJson("1999-12-31 12:58:59"),
         SpreadsheetDateFormatPattern.fromJson("HH-MM-SS YYYY-MM-DD")
     ),
-    FormatRequest.fromJson,
+    SpreadsheetFormatRequest.fromJson,
     "Missing json",
     "spreadsheet-format-request",
     {
@@ -35,32 +35,32 @@ systemObjectTesting(
 
 test("create missing undefined value fails", () => {
     expect(
-        () => new FormatRequest(undefined, pattern())
+        () => new SpreadsheetFormatRequest(undefined, pattern())
     ).toThrow("Missing value");
 });
 
 test("create missing null value fails", () => {
     expect(
-        () => new FormatRequest(null, pattern())
+        () => new SpreadsheetFormatRequest(null, pattern())
     ).toThrow("Missing value");
 });
 
 test("create missing undefined pattern fails", () => {
     expect(
-        () => new FormatRequest(value(), undefined)
+        () => new SpreadsheetFormatRequest(value(), undefined)
     ).toThrow("Missing pattern");
 });
 
 test("create missing null pattern fails", () => {
     expect(
-        () => new FormatRequest(value(), null)
+        () => new SpreadsheetFormatRequest(value(), null)
     ).toThrow("Missing pattern");
 });
 
 test("create value & pattern", () => {
     const v = value();
     const p = pattern();
-    check(new FormatRequest(v, p),
+    check(new SpreadsheetFormatRequest(v, p),
         v,
         p);
 });
@@ -68,7 +68,7 @@ test("create value & pattern", () => {
 test("create empty string value & pattern", () => {
     const v = "";
     const p = pattern();
-    check(new FormatRequest(v, p),
+    check(new SpreadsheetFormatRequest(v, p),
         v,
         p);
 });
@@ -76,7 +76,7 @@ test("create empty string value & pattern", () => {
 test("create number 0 value & pattern", () => {
     const v = 0;
     const p = pattern();
-    check(new FormatRequest(v, p),
+    check(new SpreadsheetFormatRequest(v, p),
         v,
         p);
 });
@@ -87,7 +87,7 @@ test("fromJson string value", () => {
     const v = "string-123";
     const p = pattern();
 
-    const formatRequest = FormatRequest.fromJson(
+    const formatRequest = SpreadsheetFormatRequest.fromJson(
         {
             value: {
                 type: "string",
@@ -106,7 +106,7 @@ test("toJson", () => {
     const v = value();
     const p = pattern();
 
-    expect(new FormatRequest(v, p)
+    expect(new SpreadsheetFormatRequest(v, p)
         .toJson())
         .toStrictEqual(
             {
@@ -120,7 +120,7 @@ test("toJson string value", () => {
     const v = "string-123";
     const p = pattern();
 
-    expect(new FormatRequest(v, p)
+    expect(new SpreadsheetFormatRequest(v, p)
         .toJson())
         .toStrictEqual(
             {
@@ -136,7 +136,7 @@ test("toJson", () => {
     const v = value();
     const p = pattern();
 
-    expect(new FormatRequest(v, p)
+    expect(new SpreadsheetFormatRequest(v, p)
         .toJsonWithType())
         .toStrictEqual({
             type: "spreadsheet-format-request",
@@ -151,13 +151,13 @@ test("toJson", () => {
 
 test("equals different value false", () => {
     expect(formatRequest()
-        .equals(new FormatRequest(LocalDateTime.fromJson("1999-12-31 12:58:59"), pattern())))
+        .equals(new SpreadsheetFormatRequest(LocalDateTime.fromJson("1999-12-31 12:58:59"), pattern())))
         .toBeFalse();
 });
 
 test("equals different pattern false", () => {
     expect(formatRequest()
-        .equals(new FormatRequest(value(), SpreadsheetDateFormatPattern.fromJson("dd/mmm/yyyy"))))
+        .equals(new SpreadsheetFormatRequest(value(), SpreadsheetDateFormatPattern.fromJson("dd/mmm/yyyy"))))
         .toBeFalse();
 });
 

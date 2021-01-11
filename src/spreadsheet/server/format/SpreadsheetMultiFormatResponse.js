@@ -1,12 +1,12 @@
 import Equality from "../../../Equality.js";
 import SystemObject from "../../../SystemObject.js";
 
-const TYPE_NAME = "spreadsheet-multi-parse-response";
+const TYPE_NAME = "spreadsheet-multi-format-response";
 
-export default class MultiParseResponse extends SystemObject {
+export default class SpreadsheetMultiFormatResponse extends SystemObject {
 
     static fromJson(json) {
-        return new MultiParseResponse(
+        return new SpreadsheetMultiFormatResponse(
             SystemObject.fromJsonListWithType(json),
         );
     }
@@ -38,7 +38,7 @@ export default class MultiParseResponse extends SystemObject {
 
     equals(other) {
         return this === other ||
-            (other instanceof MultiParseResponse &&
+            (other instanceof SpreadsheetMultiFormatResponse &&
                 Equality.safeEquals(this.responses(), other.responses())
             );
     }
@@ -48,4 +48,4 @@ export default class MultiParseResponse extends SystemObject {
     }
 }
 
-SystemObject.register(TYPE_NAME, MultiParseResponse.fromJson);
+SystemObject.register(TYPE_NAME, SpreadsheetMultiFormatResponse.fromJson);
