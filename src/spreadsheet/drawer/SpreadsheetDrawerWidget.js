@@ -7,9 +7,6 @@ import Drawer from "@material-ui/core/Drawer";
 import Equality from "../../Equality.js";
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import ExpressionNumberKind from "../../math/ExpressionNumberKind.js";
-import FormatRequest from "../server/format/FormatRequest.js";
-import MultiFormatRequest from "../server/format/MultiFormatRequest.js";
-import MultiFormatResponse from "../server/format/MultiFormatResponse.js";
 import Paper from '@material-ui/core/Paper';
 import PropTypes from 'prop-types';
 import React from 'react';
@@ -19,8 +16,11 @@ import SpreadsheetDrawerWidgetDropDownList from "./SpreadsheetDrawerWidgetDropDo
 import SpreadsheetDrawerWidgetSlider from "./SpreadsheetDrawerWidgetSlider.js";
 import SpreadsheetDrawerWidgetSliderWithNumberTextField from "./SpreadsheetDrawerWidgetSliderWithNumberTextField.js";
 import SpreadsheetDrawerWidgetString from "./SpreadsheetDrawerWidgetString.js";
+import SpreadsheetFormatRequest from "../server/format/SpreadsheetFormatRequest.js";
 import SpreadsheetLocaleDefaultDateTimeFormat from "../server/format/SpreadsheetLocaleDefaultDateTimeFormat.js";
 import SpreadsheetMetadata from "../meta/SpreadsheetMetadata.js";
+import SpreadsheetMultiFormatRequest from "../server/format/SpreadsheetMultiFormatRequest.js";
+import SpreadsheetMultiFormatResponse from "../server/format/SpreadsheetMultiFormatResponse.js";
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -91,10 +91,10 @@ class SpreadsheetDrawerWidget extends React.Component {
             !Equality.safeEquals(modifiedDateTime, previousMetadata.get(SpreadsheetMetadata.MODIFIED_DATE_TIME))
         ){
             const formatRequests = [];
-            formatRequests.push(new FormatRequest(createDateTime, SpreadsheetLocaleDefaultDateTimeFormat.INSTANCE));
-            formatRequests.push(new FormatRequest(modifiedDateTime, SpreadsheetLocaleDefaultDateTimeFormat.INSTANCE));
+            formatRequests.push(new SpreadsheetFormatRequest(createDateTime, SpreadsheetLocaleDefaultDateTimeFormat.INSTANCE));
+            formatRequests.push(new SpreadsheetFormatRequest(modifiedDateTime, SpreadsheetLocaleDefaultDateTimeFormat.INSTANCE));
 
-            this.sendFormatCreateDateTimeModifiedDateTime(new MultiFormatRequest(formatRequests));
+            this.sendFormatCreateDateTimeModifiedDateTime(new SpreadsheetMultiFormatRequest(formatRequests));
         }
     }
 
@@ -111,7 +111,7 @@ class SpreadsheetDrawerWidget extends React.Component {
     setFormattedCreateDateTimeAndModifiedDateTime(multiFormatResponse) {
         console.log("setFormattedCreateDateTimeAndModifiedDateTime", multiFormatResponse);
 
-        const [createDateTime, modifiedDateTime] = MultiFormatResponse.fromJson(multiFormatResponse).responses();
+        const [createDateTime, modifiedDateTime] = SpreadsheetMultiFormatResponse.fromJson(multiFormatResponse).responses();
 
         this.setState({
             createDateTimeFormatted: createDateTime, // already strings
@@ -612,7 +612,7 @@ SpreadsheetDrawerWidget.propTypes = {
     open: PropTypes.bool.isRequired, // open=true shows the drawer
     onClose: PropTypes.func.isRequired, // fired when the drawer is closed
     width: PropTypes.number.isRequired, // the width includes px of the drawer
-    formatCreateDateTimeModifiedDateTime: PropTypes.func.isRequired, // required to format date/times, parameters: MultiFormatRequest, successHandler => MultiFormatResponse
+    formatCreateDateTimeModifiedDateTime: PropTypes.func.isRequired, // required to format date/times, parameters: SpreadsheetMultiFormatRequest, successHandler => SpreadsheetMultiFormatResponse
     spreadsheetMetadata: PropTypes.instanceOf(SpreadsheetMetadata).isRequired,
     setSpreadsheetMetadata: PropTypes.func.isRequired, // fired when the SpreadsheetMetadata is updated.
 }

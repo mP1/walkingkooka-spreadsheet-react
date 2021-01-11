@@ -802,7 +802,7 @@ class App extends React.Component {
     }
 
     /**
-     * Formats a MultiFormatRequest holding the create-date-time and modified-date-time.
+     * Formats a SpreadsheetMultiFormatRequest holding the create-date-time and modified-date-time.
      */
     onFormatCreateDateTimeModifiedDateTime(multiFormatRequest, success, errorHandler) {
         console.log("onFormatCreateDateTimeModifiedDateTime ", multiFormatRequest);

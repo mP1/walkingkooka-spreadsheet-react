@@ -3,7 +3,7 @@ import SystemObject from "../../../SystemObject.js";
 
 const TYPE_NAME = "spreadsheet-format-request";
 
-export default class FormatRequest extends SystemObject {
+export default class SpreadsheetFormatRequest extends SystemObject {
 
     static fromJson(json) {
         if(!json){
@@ -20,7 +20,7 @@ export default class FormatRequest extends SystemObject {
         if(!pattern){
             throw new Error("Missing json.pattern");
         }
-        return new FormatRequest(
+        return new SpreadsheetFormatRequest(
             SystemObject.fromJsonWithType(value),
             SystemObject.fromJsonWithType(pattern),
         );
@@ -59,7 +59,7 @@ export default class FormatRequest extends SystemObject {
 
     equals(other) {
         return this === other ||
-            (other instanceof FormatRequest &&
+            (other instanceof SpreadsheetFormatRequest &&
                 Equality.safeEquals(this.value(), other.value()) &&
                 Equality.safeEquals(this.pattern(), other.pattern())
             );
@@ -70,4 +70,4 @@ export default class FormatRequest extends SystemObject {
     }
 }
 
-SystemObject.register(TYPE_NAME, FormatRequest.fromJson);
+SystemObject.register(TYPE_NAME, SpreadsheetFormatRequest.fromJson);

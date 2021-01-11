@@ -1,7 +1,7 @@
-import MultiParseRequest from "./MultiParseRequest.js";
-import ParseRequest from "./ParseRequest.js";
 import SpreadsheetDateParsePatterns from "../../format/SpreadsheetDateParsePatterns.js";
 import SpreadsheetDateTimeParsePatterns from "../../format/SpreadsheetDateTimeParsePatterns.js";
+import SpreadsheetMultiParseRequest from "./SpreadsheetMultiParseRequest.js";
+import SpreadsheetParseRequest from "./SpreadsheetParseRequest.js";
 import systemObjectTesting from "../../../SystemObjectTesting.js";
 
 function request1() {
@@ -20,23 +20,23 @@ function requests() {
 }
 
 function request(localDateTime, parser) {
-    return new ParseRequest(localDateTime, parser);
+    return new SpreadsheetParseRequest(localDateTime, parser);
 }
 
 function multi() {
-    return new MultiParseRequest(
+    return new SpreadsheetMultiParseRequest(
         requests()
     );
 }
 
 systemObjectTesting(
     multi(),
-    new MultiParseRequest(
+    new SpreadsheetMultiParseRequest(
         [
             request("12:00:00", SpreadsheetDateTimeParsePatterns.TYPE_NAME)
         ]
     ),
-    MultiParseRequest.fromJson,
+    SpreadsheetMultiParseRequest.fromJson,
     "Missing array",
     "spreadsheet-multi-parse-request",
     [
@@ -49,20 +49,20 @@ systemObjectTesting(
 
 test("create missing undefined array fails", () => {
     expect(
-        () => new MultiParseRequest(undefined)
+        () => new SpreadsheetMultiParseRequest(undefined)
     ).toThrow("Missing requests");
 });
 
 test("create missing null array fails", () => {
     expect(
-        () => new MultiParseRequest(null)
+        () => new SpreadsheetMultiParseRequest(null)
     ).toThrow("Missing requests");
 });
 
 test("create", () => {
     const r = requests();
     check(
-        new MultiParseRequest(r),
+        new SpreadsheetMultiParseRequest(r),
         r
     );
 });
@@ -70,7 +70,7 @@ test("create", () => {
 test("create empty array", () => {
     const r = [];
     check(
-        new MultiParseRequest(r),
+        new SpreadsheetMultiParseRequest(r),
         r
     );
 });
