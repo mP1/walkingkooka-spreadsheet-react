@@ -346,6 +346,14 @@ context("General app usage", () => {
         "0.001", // TODO verify date was reformatted.
         "0.001",
     );
+
+    enterSpreadsheetMetadataTextAndCheck(SpreadsheetMetadata.DATE_PARSE_PATTERNS,
+        "31/12/1999",
+        "yyyy/mm/dd",
+        "0.001", // TODO verify date was reformatted.
+        "0.001",
+    );
+
     enterSpreadsheetMetadataTextAndCheck(SpreadsheetMetadata.DECIMAL_SEPARATOR,
         "5/2",
         "d",

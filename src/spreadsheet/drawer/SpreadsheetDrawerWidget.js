@@ -16,6 +16,7 @@ import SpreadsheetDrawerWidgetDropDownList from "./SpreadsheetDrawerWidgetDropDo
 import SpreadsheetDrawerWidgetSlider from "./SpreadsheetDrawerWidgetSlider.js";
 import SpreadsheetDrawerWidgetSliderWithNumberTextField from "./SpreadsheetDrawerWidgetSliderWithNumberTextField.js";
 import SpreadsheetDrawerWidgetSpreadsheetDateFormatPattern from "./SpreadsheetDrawerWidgetSpreadsheetDateFormatPattern.js";
+import SpreadsheetDrawerWidgetSpreadsheetDateParsePatterns from "./SpreadsheetDrawerWidgetSpreadsheetDateParsePatterns.js";
 import SpreadsheetDrawerWidgetString from "./SpreadsheetDrawerWidgetString.js";
 import SpreadsheetFormatRequest from "../server/format/SpreadsheetFormatRequest.js";
 import SpreadsheetLocaleDefaultDateTimeFormat from "../server/format/SpreadsheetLocaleDefaultDateTimeFormat.js";
@@ -374,6 +375,14 @@ class SpreadsheetDrawerWidget extends React.Component {
                                                                                       defaultValueFormatter={(v) =>  v ? v.toString() : ""}
                                                                                       setValue={setValue}
                             />;
+                        break;
+                    case SpreadsheetMetadata.DATE_PARSE_PATTERNS:
+                        render = <SpreadsheetDrawerWidgetSpreadsheetDateParsePatterns id={id}
+                                                                                      value={value}
+                                                                                      defaultValue={defaultValue}
+                                                                                      defaultValueFormatter={(v) =>  v ? v.toString() : ""}
+                                                                                      setValue={setValue}
+                        />;
                         break;
                     case SpreadsheetMetadata.DECIMAL_SEPARATOR:
                     case SpreadsheetMetadata.EXPONENT_SYMBOL:
