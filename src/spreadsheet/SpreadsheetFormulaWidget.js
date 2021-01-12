@@ -40,7 +40,7 @@ export default class SpreadsheetFormulaWidget extends React.Component {
         return (
             <TextField ref={this.textField}
                        key={[reference, value, setValue]}
-                       id={"formula-text"}
+                       id={"formula-TextField"}
                        defaultValue={value}
                        disabled={!reference}
                        fullWidth={true}
