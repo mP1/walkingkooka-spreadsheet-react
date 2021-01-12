@@ -46,6 +46,8 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableRow from '@material-ui/core/TableRow';
 import Typography from '@material-ui/core/Typography';
 
+const DEFAULT_VALUE_FORMATTER_TOSTRING = (v) => v ? v.toString() : "";
+
 /**
  * The drawer appears holds all general settings and tools for a spreadsheet sheet.
  */
@@ -388,7 +390,7 @@ class SpreadsheetDrawerWidget extends React.Component {
                         render = <SpreadsheetDrawerWidgetSpreadsheetDateFormatPattern id={id}
                                                                                       value={value}
                                                                                       defaultValue={defaultValue}
-                                                                                      defaultValueFormatter={(v) =>  v ? v.toString() : ""}
+                                                                                      defaultValueFormatter={DEFAULT_VALUE_FORMATTER_TOSTRING}
                                                                                       setValue={setValue}
                             />;
                         break;
@@ -396,7 +398,7 @@ class SpreadsheetDrawerWidget extends React.Component {
                         render = <SpreadsheetDrawerWidgetSpreadsheetDateParsePatterns id={id}
                                                                                       value={value}
                                                                                       defaultValue={defaultValue}
-                                                                                      defaultValueFormatter={(v) =>  v ? v.toString() : ""}
+                                                                                      defaultValueFormatter={DEFAULT_VALUE_FORMATTER_TOSTRING}
                                                                                       setValue={setValue}
                         />;
                         break;
@@ -404,7 +406,7 @@ class SpreadsheetDrawerWidget extends React.Component {
                         render = <SpreadsheetDrawerWidgetSpreadsheetDateTimeFormatPattern id={id}
                                                                                           value={value}
                                                                                           defaultValue={defaultValue}
-                                                                                          defaultValueFormatter={(v) => v ? v.toString() : ""}
+                                                                                          defaultValueFormatter={DEFAULT_VALUE_FORMATTER_TOSTRING}
                                                                                           setValue={setValue}
                         />;
                         break;
@@ -412,7 +414,7 @@ class SpreadsheetDrawerWidget extends React.Component {
                         render = <SpreadsheetDrawerWidgetSpreadsheetDateTimeParsePatterns id={id}
                                                                                           value={value}
                                                                                           defaultValue={defaultValue}
-                                                                                          defaultValueFormatter={(v) => v ? v.toString() : ""}
+                                                                                          defaultValueFormatter={DEFAULT_VALUE_FORMATTER_TOSTRING}
                                                                                           setValue={setValue}
                         />;
                         break;
@@ -426,7 +428,7 @@ class SpreadsheetDrawerWidget extends React.Component {
                             <SpreadsheetDrawerWidgetCharacter id={id}
                                                               value={value}
                                                               defaultValue={defaultValue}
-                                                              defaultValueFormatter={(s) => s ? s.toString() : ""}
+                                                              defaultValueFormatter={DEFAULT_VALUE_FORMATTER_TOSTRING}
                                                               setValue={setValue}
                             />
                         );
@@ -572,14 +574,14 @@ class SpreadsheetDrawerWidget extends React.Component {
                                                                                    step={step}
                                                                                    value={numberValue}
                                                                                    defaultValue={defaultValue}
-                                                                                   defaultValueFormatter={(v) =>  v ? v.toString() : ""}
+                                                                                   defaultValueFormatter={DEFAULT_VALUE_FORMATTER_TOSTRING}
                                                                                    setValue={setValue}/>;
                         break;
                     case SpreadsheetMetadata.NUMBER_FORMAT_PATTERN:
                         render = <SpreadsheetDrawerWidgetSpreadsheetNumberFormatPattern id={id}
                                                                                         value={value}
                                                                                         defaultValue={defaultValue}
-                                                                                        defaultValueFormatter={(v) => v ? v.toString() : ""}
+                                                                                        defaultValueFormatter={DEFAULT_VALUE_FORMATTER_TOSTRING}
                                                                                         setValue={setValue}
                         />;
                         break;
@@ -587,7 +589,7 @@ class SpreadsheetDrawerWidget extends React.Component {
                         render = <SpreadsheetDrawerWidgetSpreadsheetNumberParsePatterns id={id}
                                                                                         value={value}
                                                                                         defaultValue={defaultValue}
-                                                                                        defaultValueFormatter={(v) => v ? v.toString() : ""}
+                                                                                        defaultValueFormatter={DEFAULT_VALUE_FORMATTER_TOSTRING}
                                                                                         setValue={setValue}
                         />;
                         break;
@@ -612,7 +614,7 @@ class SpreadsheetDrawerWidget extends React.Component {
                         render = <SpreadsheetDrawerWidgetSpreadsheetTextFormatPattern id={id}
                                                                                       value={value}
                                                                                       defaultValue={defaultValue}
-                                                                                      defaultValueFormatter={(v) => v ? v.toString() : ""}
+                                                                                      defaultValueFormatter={DEFAULT_VALUE_FORMATTER_TOSTRING}
                                                                                       setValue={setValue}
                         />;
                         break;
@@ -620,7 +622,7 @@ class SpreadsheetDrawerWidget extends React.Component {
                         render = <SpreadsheetDrawerWidgetSpreadsheetTimeFormatPattern id={id}
                                                                                       value={value}
                                                                                       defaultValue={defaultValue}
-                                                                                      defaultValueFormatter={(v) => v ? v.toString() : ""}
+                                                                                      defaultValueFormatter={DEFAULT_VALUE_FORMATTER_TOSTRING}
                                                                                       setValue={setValue}
                         />;
                         break;
@@ -628,7 +630,7 @@ class SpreadsheetDrawerWidget extends React.Component {
                         render = <SpreadsheetDrawerWidgetSpreadsheetTimeParsePatterns id={id}
                                                                                       value={value}
                                                                                       defaultValue={defaultValue}
-                                                                                      defaultValueFormatter={(v) => v ? v.toString() : ""}
+                                                                                      defaultValueFormatter={DEFAULT_VALUE_FORMATTER_TOSTRING}
                                                                                       setValue={setValue}
                         />;
                         break;
