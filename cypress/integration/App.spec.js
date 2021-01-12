@@ -415,6 +415,13 @@ context("General app usage", () => {
         "",
     );
 
+    enterSpreadsheetMetadataTextAndCheck(SpreadsheetMetadata.TIME_PARSE_PATTERNS,
+        "12:58:59", // formula parsing fails on time
+        "hh:mm:ss",
+        "", // TODO enter formula using new pattern
+        "",
+    );
+
     /**
      * Opens the spreadsheet drawer, selects each value by clicking the slider.
      * TODO Currently no test is made upon the a1 cell contents.
