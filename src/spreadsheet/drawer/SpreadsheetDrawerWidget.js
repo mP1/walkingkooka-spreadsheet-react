@@ -46,6 +46,7 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableRow from '@material-ui/core/TableRow';
 import Typography from '@material-ui/core/Typography';
 
+const DEFAULT_VALUE_FORMATTER_LABEL = (v) => v ? v.label() : "";
 const DEFAULT_VALUE_FORMATTER_TOSTRING = (v) => v ? v.toString() : "";
 
 /**
@@ -453,7 +454,7 @@ class SpreadsheetDrawerWidget extends React.Component {
                                                                 values={values}
                                                                 value={value}
                                                                 defaultValue={defaultValue}
-                                                                defaultValueFormatter={(v) =>  v ? v.label() : ""}
+                                                                defaultValueFormatter={DEFAULT_VALUE_FORMATTER_LABEL}
                                                                 setValue={setValue}/>;
                         break;
                     case SpreadsheetMetadata.DATETIME_OFFSET:
@@ -607,7 +608,7 @@ class SpreadsheetDrawerWidget extends React.Component {
                                                                       values={values}
                                                                       value={value}
                                                                       defaultValue={defaultValue}
-                                                                      defaultValueFormatter={(v) =>  v ? v.label() : ""}
+                                                                      defaultValueFormatter={DEFAULT_VALUE_FORMATTER_LABEL}
                                                                       setValue={setValue}/>;
                         break;
                     case SpreadsheetMetadata.TEXT_FORMAT_PATTERN:
