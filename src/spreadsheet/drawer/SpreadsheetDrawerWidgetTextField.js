@@ -17,7 +17,7 @@ export default class SpreadsheetDrawerWidgetTextField extends SpreadsheetDrawerW
         const maxLength = this.maxLength();
 
         return <TextField inputRef={this.inputField}
-                          id={id + "-text"}
+                          id={id + "-TextField"}
                           key={id}
                           style={
                               {

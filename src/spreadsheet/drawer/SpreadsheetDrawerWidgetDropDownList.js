@@ -21,7 +21,7 @@ export default class SpreadsheetDrawerWidgetDropDownList extends SpreadsheetDraw
     }
 
     renderInput(id, value) {
-        const dropDownListId = id + "-drop-down-list";
+        const dropDownListId = id + "-DropDownList";
 
         return <Select id={dropDownListId}
                        key={dropDownListId}

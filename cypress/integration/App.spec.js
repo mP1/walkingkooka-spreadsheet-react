@@ -313,7 +313,7 @@ context("General app usage", () => {
                     .type("{enter}");
             }
 
-            const textFieldId = "#spreadsheet-metadata-" + property + "-text";
+            const textFieldId = "#spreadsheet-metadata-" + property + "-TextField";
             cy.get(textFieldId)
                 .type("{selectall}")
                 .type(text)
@@ -468,7 +468,7 @@ context("General app usage", () => {
                     .type("{enter}");
             }
 
-            const sliderId = "#spreadsheet-metadata-" + property + "-slider";
+            const sliderId = "#spreadsheet-metadata-" + property + "-Slider";
 
             values.forEach((v, i) => {
                 cy.get(sliderId + " *[data-index=\"" + i + "\"][aria-hidden=\"true\"]")
@@ -514,8 +514,8 @@ context("General app usage", () => {
                     .type("{enter}");
             }
 
-            const sliderId = "#spreadsheet-metadata-" + property + "-slider";
-            const numberTextFieldId = "#spreadsheet-metadata-" + property + "-number-text-field";
+            const sliderId = "#spreadsheet-metadata-" + property + "-Slider";
+            const numberTextFieldId = "#spreadsheet-metadata-" + property + "-NumberTextField";
 
             // click on the slider and verify number in TextField was updated
             values.forEach((v, i) => {
@@ -657,7 +657,7 @@ context("General app usage", () => {
                     .type("{enter}");
             }
 
-            const dropDownListId = "#spreadsheet-metadata-" + property + "-drop-down-list";
+            const dropDownListId = "#spreadsheet-metadata-" + property + "-DropDownList";
 
             values.forEach((v, i) => {
                 cy.get(dropDownListId)
@@ -752,7 +752,7 @@ function spreadsheetName() {
 
 function formulaText() {
     reactRenderWait();
-    return cy.get("#formula-text");
+    return cy.get("#formula-TextField");
 }
 
 function cellClick(cellReference) {

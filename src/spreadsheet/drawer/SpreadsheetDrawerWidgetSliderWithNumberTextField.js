@@ -23,8 +23,8 @@ export default class SpreadsheetDrawerWidgetSliderWithNumberTextField extends Sp
     renderInput(id, value) {
         const {min, max, marks, step} = this;
 
-        const sliderId = id + "-slider";
-        const numberTextFieldId = id + "-number-text-field";
+        const sliderId = id + "-Slider";
+        const numberTextFieldId = id + "-NumberTextField";
 
         return [
             <Slider id={sliderId}
