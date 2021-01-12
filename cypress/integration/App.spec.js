@@ -354,6 +354,13 @@ context("General app usage", () => {
         "0.001",
     );
 
+    enterSpreadsheetMetadataTextAndCheck(SpreadsheetMetadata.DATETIME_FORMAT_PATTERN,
+        "31/12/1999 12:58:59",
+        "yyyy/mm/dd hh:mm:ss",
+        "", // TODO verify date/time was reformatted. formula entry currently results in a formula parsing exception
+        "",
+    );
+
     enterSpreadsheetMetadataTextAndCheck(SpreadsheetMetadata.DECIMAL_SEPARATOR,
         "5/2",
         "d",
