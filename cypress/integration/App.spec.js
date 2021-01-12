@@ -422,6 +422,13 @@ context("General app usage", () => {
         null,
     );
 
+    enterSpreadsheetMetadataTextAndCheck(SpreadsheetMetadata.TEXT_FORMAT_PATTERN,
+        "\"Hello 123\"",
+        "@@",
+        "Hello 123Hello 123",
+        "Hello 123",
+    );
+
     enterSpreadsheetMetadataTextAndCheck(SpreadsheetMetadata.TIME_FORMAT_PATTERN,
         "12:58:59", // formula parsing fails on time
         "hh:mm:ss",
