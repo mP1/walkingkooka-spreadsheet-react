@@ -21,6 +21,8 @@ import SpreadsheetDrawerWidgetSpreadsheetDateParsePatterns
     from "./SpreadsheetDrawerWidgetSpreadsheetDateParsePatterns.js";
 import SpreadsheetDrawerWidgetSpreadsheetDateTimeFormatPattern
     from "./SpreadsheetDrawerWidgetSpreadsheetDateTimeFormatPattern.js";
+import SpreadsheetDrawerWidgetSpreadsheetDateTimeParsePatterns
+    from "./SpreadsheetDrawerWidgetSpreadsheetDateTimeParsePatterns.js";
 import SpreadsheetDrawerWidgetString from "./SpreadsheetDrawerWidgetString.js";
 import SpreadsheetFormatRequest from "../server/format/SpreadsheetFormatRequest.js";
 import SpreadsheetLocaleDefaultDateTimeFormat from "../server/format/SpreadsheetLocaleDefaultDateTimeFormat.js";
@@ -390,6 +392,14 @@ class SpreadsheetDrawerWidget extends React.Component {
                         break;
                     case SpreadsheetMetadata.DATETIME_FORMAT_PATTERN:
                         render = <SpreadsheetDrawerWidgetSpreadsheetDateTimeFormatPattern id={id}
+                                                                                          value={value}
+                                                                                          defaultValue={defaultValue}
+                                                                                          defaultValueFormatter={(v) => v ? v.toString() : ""}
+                                                                                          setValue={setValue}
+                        />;
+                        break;
+                    case SpreadsheetMetadata.DATETIME_PARSE_PATTERNS:
+                        render = <SpreadsheetDrawerWidgetSpreadsheetDateTimeParsePatterns id={id}
                                                                                           value={value}
                                                                                           defaultValue={defaultValue}
                                                                                           defaultValueFormatter={(v) => v ? v.toString() : ""}
