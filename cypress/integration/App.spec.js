@@ -393,6 +393,13 @@ context("General app usage", () => {
         "n8.",
         "-8.");
 
+    enterSpreadsheetMetadataTextAndCheck(SpreadsheetMetadata.NUMBER_FORMAT_PATTERN,
+        "123.5", // formula parsing fails on time
+        "###.000",
+        "123.500", // TODO verify number was reformatted.
+        "123.5",
+    );
+
     // TODO need to set format pattern which includes percentage
     enterSpreadsheetMetadataTextAndCheck(SpreadsheetMetadata.PERCENTAGE_SYMBOL,
         null,
