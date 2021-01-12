@@ -394,9 +394,16 @@ context("General app usage", () => {
         "-8.");
 
     enterSpreadsheetMetadataTextAndCheck(SpreadsheetMetadata.NUMBER_FORMAT_PATTERN,
-        "123.5", // formula parsing fails on time
+        "123.5",
         "###.000",
         "123.500", // TODO verify number was reformatted.
+        "123.5",
+    );
+
+    enterSpreadsheetMetadataTextAndCheck(SpreadsheetMetadata.NUMBER_PARSE_PATTERNS,
+        "123.5",
+        "###.000",
+        "123.5", // TODO verify number entry compat with pattern
         "123.5",
     );
 
