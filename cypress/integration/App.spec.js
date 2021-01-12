@@ -295,6 +295,7 @@ context("General app usage", () => {
     function enterSpreadsheetMetadataTextAndCheck(property,
                                                   a1Formula,
                                                   text,
+                                                  defaultText,
                                                   a1CellContent,
                                                   a1CellContentDefault) {
         it("Show drawer and update SpreadsheetMetadata." + property, () => {
@@ -328,6 +329,7 @@ context("General app usage", () => {
 
             const buttonId = "#spreadsheet-metadata-" + property + "-default-button";
             cy.get(buttonId)
+                .should("have.text", defaultText)
                 .click();
 
             cy.get(textFieldId)
@@ -343,6 +345,7 @@ context("General app usage", () => {
     enterSpreadsheetMetadataTextAndCheck(SpreadsheetMetadata.DATE_FORMAT_PATTERN,
         "31/12/1999",
         "yyyy/mm/dd",
+        "Default",
         "0.001", // TODO verify date was reformatted.
         "0.001",
     );
@@ -350,6 +353,7 @@ context("General app usage", () => {
     enterSpreadsheetMetadataTextAndCheck(SpreadsheetMetadata.DATE_PARSE_PATTERNS,
         "31/12/1999",
         "yyyy/mm/dd",
+        "Default",
         "0.001", // TODO verify date was reformatted.
         "0.001",
     );
@@ -357,6 +361,7 @@ context("General app usage", () => {
     enterSpreadsheetMetadataTextAndCheck(SpreadsheetMetadata.DATETIME_FORMAT_PATTERN,
         "31/12/1999 12:58:59",
         "yyyy/mm/dd hh:mm:ss",
+        "Default",
         "", // TODO verify date/time was reformatted. formula entry currently results in a formula parsing exception
         "",
     );
@@ -364,6 +369,7 @@ context("General app usage", () => {
     enterSpreadsheetMetadataTextAndCheck(SpreadsheetMetadata.DATETIME_PARSE_PATTERNS,
         "31/12/1999 12:58:59",
         "yyyy/mm/dd hh:mm:ss",
+        "Default",
         "", // TODO enter formula and verify date/time was parsed correctly. formula entry currently results in a formula parsing exception
         "",
     );
@@ -371,18 +377,21 @@ context("General app usage", () => {
     enterSpreadsheetMetadataTextAndCheck(SpreadsheetMetadata.DECIMAL_SEPARATOR,
         "5/2",
         "d",
+        ".",
         "2d5", // 5.2 decimal separator now capital D
         "2.5",
     );
     enterSpreadsheetMetadataTextAndCheck(SpreadsheetMetadata.EXPONENT_SYMBOL,
         null,
         "x",
+        "E",
         null,
         null);
 
     enterSpreadsheetMetadataTextAndCheck(SpreadsheetMetadata.GROUPING_SEPARATOR,
         "123456",
         "g",
+        ",",
         "123g456.",
         "123,456."
     );
@@ -390,12 +399,14 @@ context("General app usage", () => {
     enterSpreadsheetMetadataTextAndCheck(SpreadsheetMetadata.NEGATIVE_SIGN,
         "2*-4",
         "n",
+        "-",
         "n8.",
         "-8.");
 
     enterSpreadsheetMetadataTextAndCheck(SpreadsheetMetadata.NUMBER_FORMAT_PATTERN,
         "123.5",
         "###.000",
+        "Default",
         "123.500", // TODO verify number was reformatted.
         "123.5",
     );
@@ -403,6 +414,7 @@ context("General app usage", () => {
     enterSpreadsheetMetadataTextAndCheck(SpreadsheetMetadata.NUMBER_PARSE_PATTERNS,
         "123.5",
         "###.000",
+        "Default",
         "123.5", // TODO verify number entry compat with pattern
         "123.5",
     );
@@ -411,6 +423,7 @@ context("General app usage", () => {
     enterSpreadsheetMetadataTextAndCheck(SpreadsheetMetadata.PERCENTAGE_SYMBOL,
         null,
         "p",
+        "%",
         null,
         null);
 
@@ -418,6 +431,7 @@ context("General app usage", () => {
     enterSpreadsheetMetadataTextAndCheck(SpreadsheetMetadata.POSITIVE_SIGN,
         null,
         "o",
+        "+",
         null,
         null,
     );
@@ -425,6 +439,7 @@ context("General app usage", () => {
     enterSpreadsheetMetadataTextAndCheck(SpreadsheetMetadata.TEXT_FORMAT_PATTERN,
         "\"Hello 123\"",
         "@@",
+        "Default",
         "Hello 123Hello 123",
         "Hello 123",
     );
@@ -432,6 +447,7 @@ context("General app usage", () => {
     enterSpreadsheetMetadataTextAndCheck(SpreadsheetMetadata.TIME_FORMAT_PATTERN,
         "12:58:59", // formula parsing fails on time
         "hh:mm:ss",
+        "Default",
         "", // TODO verify time was reformatted.
         "",
     );
@@ -439,6 +455,7 @@ context("General app usage", () => {
     enterSpreadsheetMetadataTextAndCheck(SpreadsheetMetadata.TIME_PARSE_PATTERNS,
         "12:58:59", // formula parsing fails on time
         "hh:mm:ss",
+        "Default",
         "", // TODO enter formula using new pattern
         "",
     );

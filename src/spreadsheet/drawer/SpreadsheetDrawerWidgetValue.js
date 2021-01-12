@@ -4,6 +4,7 @@ import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import PropTypes from "prop-types";
 import React from 'react';
+import Tooltip from '@material-ui/core/Tooltip';
 
 /**
  * A base class that calls a renderInput method during a render adding a button to set the default value to the right.
@@ -19,6 +20,7 @@ export default class SpreadsheetDrawerWidgetValue extends React.Component {
                 defaultValue: valueType, // Character: this value is set when the default button is clicked.
                 defaultValueFormatter: PropTypes.func.isRequired, // Used to convert the default value if one is present into text
                 setValue: PropTypes.func.isRequired, // if present editing/updates to the value are supported.
+                defaultButtonTooltip: PropTypes.bool.isRequired, // when true a tooltip will appear over the default button.
             },
             extraProps
         );
@@ -36,6 +38,7 @@ export default class SpreadsheetDrawerWidgetValue extends React.Component {
         this.initialValue = initialValue; // ESCAPE will reload the default.
         this.defaultValue = props.defaultValue;
         this.defaultValueFormatter= props.defaultValueFormatter;
+        this.defaultButtonTooltip = props.defaultButtonTooltip;
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
@@ -58,7 +61,6 @@ export default class SpreadsheetDrawerWidgetValue extends React.Component {
 
         console.log("render id=" + id + " value=" + value + " defaultValue=" + defaultValue);
 
-        const defaultButtonId = id + "-default-button";
         return (
             <div>
                 <div>
@@ -78,26 +80,7 @@ export default class SpreadsheetDrawerWidgetValue extends React.Component {
                             {
                                 [
                                     this.renderInput(id, value),
-                                    <Button id={defaultButtonId}
-                                            key={defaultButtonId}
-                                            variant="contained"
-                                            color="primary"
-                                            size="small"
-                                            onClick={this.onSetDefaultValue.bind(this)}
-                                            style={
-                                                {
-                                                    maxWidth: "64px",
-                                                    overflowX: "hidden",
-                                                    overflowY: "hidden",
-                                                    textOverflow: "ellipsis",
-                                                    textTransform: "none",
-                                                    visibility: null == defaultValue ? "hidden": null,
-                                                    whiteSpace: "nowrap",
-                                                }
-                                            }
-                                    >
-                                        {this.defaultValueFormatter(defaultValue)}
-                                    </Button>
+                                    this.renderDefaultButton(id + "-default-button", defaultValue),
                                 ]
                             }
                         </ListItem>
@@ -112,6 +95,36 @@ export default class SpreadsheetDrawerWidgetValue extends React.Component {
      */
     renderInput(id, value) {
         throw new Error("renderInput not overridden");
+    }
+
+    renderDefaultButton(id, value) {
+        const defaultButtonTooltip = this.defaultButtonTooltip;
+        const text = this.defaultValueFormatter(value);
+
+        const button = <Button id={id}
+                               key={id}
+                               variant="contained"
+                               color="primary"
+                               size="small"
+                               onClick={this.onSetDefaultValue.bind(this)}
+                               style={
+                                   {
+                                       maxWidth: "64px",
+                                       overflowX: "hidden",
+                                       overflowY: "hidden",
+                                       textOverflow: "ellipsis",
+                                       textTransform: "none",
+                                       visibility: null == value ? "hidden" : null,
+                                       whiteSpace: "nowrap",
+                                   }
+                               }
+        >
+            {defaultButtonTooltip ? "Default" : text}
+        </Button>;
+
+        return defaultButtonTooltip ?
+            <Tooltip key={id + "-Tooltip"} title={text}>{button}</Tooltip> :
+            button;
     }
 
     /**
