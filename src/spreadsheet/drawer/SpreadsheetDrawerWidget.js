@@ -61,7 +61,7 @@ const useStyles = theme => ({
     },
     label: {
         fontWeight: 700,
-        width: "150px",
+        width: "125px",
         verticalAlign: "middle",
     },
     value: {

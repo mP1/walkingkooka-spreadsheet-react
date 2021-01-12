@@ -86,8 +86,13 @@ export default class SpreadsheetDrawerWidgetValue extends React.Component {
                                             onClick={this.onSetDefaultValue.bind(this)}
                                             style={
                                                 {
+                                                    maxWidth: "64px",
+                                                    overflowX: "hidden",
+                                                    overflowY: "hidden",
+                                                    textOverflow: "ellipsis",
                                                     textTransform: "none",
                                                     visibility: null == defaultValue ? "hidden": null,
+                                                    whiteSpace: "nowrap",
                                                 }
                                             }
                                     >
