@@ -24,6 +24,8 @@ import SpreadsheetDrawerWidgetSpreadsheetDateTimeFormatPattern
 import SpreadsheetDrawerWidgetSpreadsheetDateTimeParsePatterns
     from "./SpreadsheetDrawerWidgetSpreadsheetDateTimeParsePatterns.js";
 import SpreadsheetDrawerWidgetString from "./SpreadsheetDrawerWidgetString.js";
+import SpreadsheetDrawerWidgetSpreadsheetTimeFormatPattern
+    from "./SpreadsheetDrawerWidgetSpreadsheetTimeFormatPattern.js";
 import SpreadsheetFormatRequest from "../server/format/SpreadsheetFormatRequest.js";
 import SpreadsheetLocaleDefaultDateTimeFormat from "../server/format/SpreadsheetLocaleDefaultDateTimeFormat.js";
 import SpreadsheetMetadata from "../meta/SpreadsheetMetadata.js";
@@ -582,6 +584,14 @@ class SpreadsheetDrawerWidget extends React.Component {
                                                                       defaultValue={defaultValue}
                                                                       defaultValueFormatter={(v) =>  v ? v.label() : ""}
                                                                       setValue={setValue}/>;
+                        break;
+                    case SpreadsheetMetadata.TIME_FORMAT_PATTERN:
+                        render = <SpreadsheetDrawerWidgetSpreadsheetTimeFormatPattern id={id}
+                                                                                      value={value}
+                                                                                      defaultValue={defaultValue}
+                                                                                      defaultValueFormatter={(v) => v ? v.toString() : ""}
+                                                                                      setValue={setValue}
+                        />;
                         break;
                     default:
                         render = (
