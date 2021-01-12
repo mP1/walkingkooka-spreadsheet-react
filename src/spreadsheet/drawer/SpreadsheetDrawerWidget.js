@@ -383,6 +383,7 @@ class SpreadsheetDrawerWidget extends React.Component {
                                                            value={value}
                                                            defaultValue={defaultValue}
                                                            defaultValueFormatter={(s) => s}
+                                                           defaultButtonTooltip={false}
                                                            setValue={setValue}
                             />
                         );
@@ -392,6 +393,7 @@ class SpreadsheetDrawerWidget extends React.Component {
                                                                                       value={value}
                                                                                       defaultValue={defaultValue}
                                                                                       defaultValueFormatter={DEFAULT_VALUE_FORMATTER_TOSTRING}
+                                                                                      defaultButtonTooltip={true}
                                                                                       setValue={setValue}
                             />;
                         break;
@@ -400,6 +402,7 @@ class SpreadsheetDrawerWidget extends React.Component {
                                                                                       value={value}
                                                                                       defaultValue={defaultValue}
                                                                                       defaultValueFormatter={DEFAULT_VALUE_FORMATTER_TOSTRING}
+                                                                                      defaultButtonTooltip={true}
                                                                                       setValue={setValue}
                         />;
                         break;
@@ -408,6 +411,7 @@ class SpreadsheetDrawerWidget extends React.Component {
                                                                                           value={value}
                                                                                           defaultValue={defaultValue}
                                                                                           defaultValueFormatter={DEFAULT_VALUE_FORMATTER_TOSTRING}
+                                                                                          defaultButtonTooltip={true}
                                                                                           setValue={setValue}
                         />;
                         break;
@@ -416,6 +420,7 @@ class SpreadsheetDrawerWidget extends React.Component {
                                                                                           value={value}
                                                                                           defaultValue={defaultValue}
                                                                                           defaultValueFormatter={DEFAULT_VALUE_FORMATTER_TOSTRING}
+                                                                                          defaultButtonTooltip={true}
                                                                                           setValue={setValue}
                         />;
                         break;
@@ -430,6 +435,7 @@ class SpreadsheetDrawerWidget extends React.Component {
                                                               value={value}
                                                               defaultValue={defaultValue}
                                                               defaultValueFormatter={DEFAULT_VALUE_FORMATTER_TOSTRING}
+                                                              defaultButtonTooltip={false}
                                                               setValue={setValue}
                             />
                         );
@@ -455,7 +461,9 @@ class SpreadsheetDrawerWidget extends React.Component {
                                                                 value={value}
                                                                 defaultValue={defaultValue}
                                                                 defaultValueFormatter={DEFAULT_VALUE_FORMATTER_LABEL}
-                                                                setValue={setValue}/>;
+                                                                defaultButtonTooltip={false}
+                                                                setValue={setValue}
+                        />;
                         break;
                     case SpreadsheetMetadata.DATETIME_OFFSET:
                     case SpreadsheetMetadata.PRECISION:
@@ -576,13 +584,16 @@ class SpreadsheetDrawerWidget extends React.Component {
                                                                                    value={numberValue}
                                                                                    defaultValue={defaultValue}
                                                                                    defaultValueFormatter={DEFAULT_VALUE_FORMATTER_TOSTRING}
-                                                                                   setValue={setValue}/>;
+                                                                                   defaultButtonTooltip={false}
+                                                                                   setValue={setValue}
+                        />;
                         break;
                     case SpreadsheetMetadata.NUMBER_FORMAT_PATTERN:
                         render = <SpreadsheetDrawerWidgetSpreadsheetNumberFormatPattern id={id}
                                                                                         value={value}
                                                                                         defaultValue={defaultValue}
                                                                                         defaultValueFormatter={DEFAULT_VALUE_FORMATTER_TOSTRING}
+                                                                                        defaultButtonTooltip={true}
                                                                                         setValue={setValue}
                         />;
                         break;
@@ -591,6 +602,7 @@ class SpreadsheetDrawerWidget extends React.Component {
                                                                                         value={value}
                                                                                         defaultValue={defaultValue}
                                                                                         defaultValueFormatter={DEFAULT_VALUE_FORMATTER_TOSTRING}
+                                                                                        defaultButtonTooltip={true}
                                                                                         setValue={setValue}
                         />;
                         break;
@@ -609,13 +621,16 @@ class SpreadsheetDrawerWidget extends React.Component {
                                                                       value={value}
                                                                       defaultValue={defaultValue}
                                                                       defaultValueFormatter={DEFAULT_VALUE_FORMATTER_LABEL}
-                                                                      setValue={setValue}/>;
+                                                                      defaultButtonTooltip={false}
+                                                                      setValue={setValue}
+                        />;
                         break;
                     case SpreadsheetMetadata.TEXT_FORMAT_PATTERN:
                         render = <SpreadsheetDrawerWidgetSpreadsheetTextFormatPattern id={id}
                                                                                       value={value}
                                                                                       defaultValue={defaultValue}
                                                                                       defaultValueFormatter={DEFAULT_VALUE_FORMATTER_TOSTRING}
+                                                                                      defaultButtonTooltip={true}
                                                                                       setValue={setValue}
                         />;
                         break;
@@ -624,6 +639,7 @@ class SpreadsheetDrawerWidget extends React.Component {
                                                                                       value={value}
                                                                                       defaultValue={defaultValue}
                                                                                       defaultValueFormatter={DEFAULT_VALUE_FORMATTER_TOSTRING}
+                                                                                      defaultButtonTooltip={true}
                                                                                       setValue={setValue}
                         />;
                         break;
@@ -632,6 +648,7 @@ class SpreadsheetDrawerWidget extends React.Component {
                                                                                       value={value}
                                                                                       defaultValue={defaultValue}
                                                                                       defaultValueFormatter={DEFAULT_VALUE_FORMATTER_TOSTRING}
+                                                                                      defaultButtonTooltip={true}
                                                                                       setValue={setValue}
                         />;
                         break;
