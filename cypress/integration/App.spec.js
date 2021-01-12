@@ -408,6 +408,13 @@ context("General app usage", () => {
         null,
     );
 
+    enterSpreadsheetMetadataTextAndCheck(SpreadsheetMetadata.TIME_FORMAT_PATTERN,
+        "12:58:59", // formula parsing fails on time
+        "hh:mm:ss",
+        "", // TODO verify time was reformatted.
+        "",
+    );
+
     /**
      * Opens the spreadsheet drawer, selects each value by clicking the slider.
      * TODO Currently no test is made upon the a1 cell contents.
