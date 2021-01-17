@@ -91,6 +91,18 @@ basic forms found in this project.
 
 
 
+## Formulas
+
+Formulas are the content entered for each individual cell and may be text, date, date-time, time or a numeric value or an expression.
+All parsing and resolution of reference and function is performed by [walkingkooka-spreadsheet](https://github.com/mP1/walkingkooka-spreadsheet).
+
+- Parsing / tokenizing a formula into a [Expression](https://github.com/mP1/walkingkooka-tree/tree/master/src/main/java/walkingkooka/tree/expression) has been completed.
+- Formulas or expression may be executed honouring spreadsheet and cell localisation and pattern selection.  
+- Tokenizing of dates, date-times, time and numbers into individual components to support localised entry needs to be done [TODO](https://github.com/mP1/walkingkooka-spreadsheet/issues).
+- Interactive auto-complete of function names [TODO](https://github.com/mP1/walkingkooka-spreadsheet-react/issues/556)
+
+
+
 ## Cypress Integration testing
 
 Integration tests are available using the popular [Cypress testing tool](https://www.cypress.io/)
