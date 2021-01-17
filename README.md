@@ -103,6 +103,16 @@ All parsing and resolution of reference and function is performed by [walkingkoo
 
 
 
+## Navigation
+
+- Support APIs on the server exists to jump to any cell.
+- Adding a smart text box to support navigation using a cell reference or label, APIs are available to resolve labels to cell references. [TODO](https://github.com/mP1/walkingkooka-spreadsheet-react/issues/557)
+- Scrollbars to pan horizontally and vertically have not been added to the UI. [TODO](https://github.com/mP1/walkingkooka-spreadsheet-react/issues/324)
+- APIs are available to compute the exact cell range for any given home (top left) cell and screen dimensions to fill the display in a single API request.
+- Keyboard navigation and range selection [TODO](https://github.com/mP1/walkingkooka-spreadsheet-react/issues/315)
+
+
+
 ## Cypress Integration testing
 
 Integration tests are available using the popular [Cypress testing tool](https://www.cypress.io/)
