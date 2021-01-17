@@ -113,6 +113,16 @@ All parsing and resolution of reference and function is performed by [walkingkoo
 
 
 
+## Editing
+
+- Label management [TODO](https://github.com/mP1/walkingkooka-spreadsheet-react/issues/560)
+- Expressions already support cell reference and labels.
+- Range selection [TODO](https://github.com/mP1/walkingkooka-spreadsheet-react/issues/561)
+- Cut, copy, paste cell content including formula, styling etc [TODO](https://github.com/mP1/walkingkooka-spreadsheet-react/issues/562)
+- Spreadsheet and cell style editor [TODO](https://github.com/mP1/walkingkooka-spreadsheet-react/issues/563)
+
+
+
 ## Cypress Integration testing
 
 Integration tests are available using the popular [Cypress testing tool](https://www.cypress.io/)
