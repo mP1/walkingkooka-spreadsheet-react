@@ -81,6 +81,7 @@ export default class SpreadsheetMetadata extends SystemObject {
     static TIME_FORMAT_PATTERN = "time-format-pattern";
     static TIME_PARSE_PATTERNS = "time-parse-patterns";
     static TWO_DIGIT_YEAR = "two-digit-year";
+    static VALUE_SEPARATOR = "value-separator";
     static VIEWPORT_CELL = "viewport-cell";
     static VIEWPORT_COORDINATES = "viewport-coordinates";
     static WIDTH = "width";
@@ -197,6 +198,9 @@ export default class SpreadsheetMetadata extends SystemObject {
                 case SpreadsheetMetadata.TWO_DIGIT_YEAR:
                     checkTwoDigitYear(value);
                     typed = value;
+                    break;
+                case SpreadsheetMetadata.VALUE_SEPARATOR:
+                    unmarshaller = Character.fromJson;
                     break;
                 case SpreadsheetMetadata.VIEWPORT_CELL:
                     unmarshaller = SpreadsheetCellReference.fromJson;
@@ -368,6 +372,9 @@ export default class SpreadsheetMetadata extends SystemObject {
                 checkTwoDigitYear(value);
                 expectedTypeOf = "number";
                 break;
+            case SpreadsheetMetadata.VALUE_SEPARATOR:
+                expectedClass = Character;
+                break;
             case SpreadsheetMetadata.VIEWPORT_CELL:
                 expectedClass = SpreadsheetCellReference;
                 break;
@@ -431,6 +438,7 @@ export default class SpreadsheetMetadata extends SystemObject {
             case SpreadsheetMetadata.TIME_FORMAT_PATTERN:
             case SpreadsheetMetadata.TIME_PARSE_PATTERNS:
             case SpreadsheetMetadata.TWO_DIGIT_YEAR:
+            case SpreadsheetMetadata.VALUE_SEPARATOR:
             case SpreadsheetMetadata.WIDTH:
                 break;
             case SpreadsheetMetadata.CREATOR:
@@ -523,6 +531,7 @@ const PROPERTIES = [
     SpreadsheetMetadata.TIME_FORMAT_PATTERN,
     SpreadsheetMetadata.TIME_PARSE_PATTERNS,
     SpreadsheetMetadata.TWO_DIGIT_YEAR,
+    SpreadsheetMetadata.VALUE_SEPARATOR,
     SpreadsheetMetadata.VIEWPORT_CELL,
     SpreadsheetMetadata.VIEWPORT_COORDINATES,
     SpreadsheetMetadata.WIDTH,
