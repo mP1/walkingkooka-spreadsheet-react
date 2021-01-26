@@ -436,8 +436,24 @@ context("General app usage", () => {
         null,
     );
 
+    enterSpreadsheetMetadataTextAndCheck(SpreadsheetMetadata.VALUE_SEPARATOR,
+        "5/2",
+        ",",
+        ",",
+        "2.5",
+        "2.5",
+    );
+
     enterSpreadsheetMetadataTextAndCheck(SpreadsheetMetadata.TEXT_FORMAT_PATTERN,
         "\"Hello 123\"",
+        "@@",
+        "Default",
+        "Hello 123Hello 123",
+        "Hello 123",
+    );
+
+    enterSpreadsheetMetadataTextAndCheck(SpreadsheetMetadata.TEXT_FORMAT_PATTERN,
+        "'Hello",
         "@@",
         "Default",
         "Hello 123Hello 123",

@@ -359,6 +359,8 @@ test("set two_digit_year 100 fails", () => {
     expect(() => SpreadsheetMetadata.EMPTY.set(SpreadsheetMetadata.TWO_DIGIT_YEAR, 100)).toThrow("Expected number twoDigitYear >= 0 and <= 99 got 100");
 });
 
+getSetRemovePropertyTest(SpreadsheetMetadata.VALUE_SEPARATOR, Character.fromJson(";"));
+
 getSetPropertyTest(SpreadsheetMetadata.VIEWPORT_CELL, SpreadsheetCellReference.parse("B2"));
 
 getSetPropertyTest(SpreadsheetMetadata.VIEWPORT_COORDINATES, SpreadsheetCoordinates.parse("123.5,400"));
@@ -487,6 +489,7 @@ test("all setters & getters", () => {
     const timeFormatPattern = SpreadsheetTimeFormatPattern.fromJson("hhmm");
     const timeParsePatterns = SpreadsheetTimeParsePatterns.fromJson("hhmmss");
     const twoDigitYear = 80;
+    const valueSeparator = Character.fromJson(",");
     const coords = new SpreadsheetCoordinates(12, 34);
     const viewportCell = SpreadsheetCellReference.parse("A99");
     const width = 1;
@@ -516,6 +519,7 @@ test("all setters & getters", () => {
         .set(SpreadsheetMetadata.TIME_FORMAT_PATTERN, timeFormatPattern)
         .set(SpreadsheetMetadata.TIME_PARSE_PATTERNS, timeParsePatterns)
         .set(SpreadsheetMetadata.TWO_DIGIT_YEAR, twoDigitYear)
+        .set(SpreadsheetMetadata.VALUE_SEPARATOR, valueSeparator)
         .set(SpreadsheetMetadata.VIEWPORT_CELL, viewportCell)
         .set(SpreadsheetMetadata.VIEWPORT_COORDINATES, coords)
         .set(SpreadsheetMetadata.WIDTH, width);
@@ -544,6 +548,7 @@ test("all setters & getters", () => {
     expect(metadata.get(SpreadsheetMetadata.TIME_FORMAT_PATTERN)).toEqual(timeFormatPattern);
     expect(metadata.get(SpreadsheetMetadata.TIME_PARSE_PATTERNS)).toEqual(timeParsePatterns);
     expect(metadata.get(SpreadsheetMetadata.TWO_DIGIT_YEAR)).toEqual(twoDigitYear);
+    expect(metadata.get(SpreadsheetMetadata.VALUE_SEPARATOR)).toEqual(valueSeparator);
     expect(metadata.get(SpreadsheetMetadata.VIEWPORT_CELL)).toEqual(viewportCell);
     expect(metadata.get(SpreadsheetMetadata.VIEWPORT_COORDINATES)).toEqual(coords);
     expect(metadata.get(SpreadsheetMetadata.WIDTH)).toEqual(width);

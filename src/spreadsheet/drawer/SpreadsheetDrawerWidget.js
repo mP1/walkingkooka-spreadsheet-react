@@ -283,6 +283,7 @@ class SpreadsheetDrawerWidget extends React.Component {
      * <li>positive-sign (char)</li>
      * <li>precision (int) (DECIMAL32, DECIMAL64, DECIMAL128, UNLIMITED)</li>
      * <li>rounding-mode (RoundingMode) (CEILING, DOWN, FLOOR, HALF_DOWN, HALF_EVEN, HALF_UP, UNNECESSARY, UP)</li>
+     * <li>value-separator (char)</li>
      * <ul>
      */
     spreadsheetNumber(classes) {
@@ -299,6 +300,7 @@ class SpreadsheetDrawerWidget extends React.Component {
             this.row("Positive sign", SpreadsheetMetadata.POSITIVE_SIGN),
             this.row("Format", SpreadsheetMetadata.NUMBER_FORMAT_PATTERN),
             this.row("Parse", SpreadsheetMetadata.NUMBER_PARSE_PATTERNS),
+            this.row("Value separator", SpreadsheetMetadata.VALUE_SEPARATOR),
         ];
 
         return this.accordion(
@@ -430,6 +432,7 @@ class SpreadsheetDrawerWidget extends React.Component {
                     case SpreadsheetMetadata.NEGATIVE_SIGN:
                     case SpreadsheetMetadata.PERCENTAGE_SYMBOL:
                     case SpreadsheetMetadata.POSITIVE_SIGN:
+                    case SpreadsheetMetadata.VALUE_SEPARATOR:
                         render = (
                             <SpreadsheetDrawerWidgetCharacter id={id}
                                                               value={value}
