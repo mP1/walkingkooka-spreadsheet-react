@@ -453,7 +453,7 @@ context("General app usage", () => {
     );
 
     enterSpreadsheetMetadataTextAndCheck(SpreadsheetMetadata.TEXT_FORMAT_PATTERN,
-        "'Hello",
+        "'Hello 123",
         "@@",
         "Default",
         "Hello 123Hello 123",
