@@ -28,6 +28,10 @@ test("create with non string fails", () => {
     expect(() => new SpreadsheetFormula(1.5)).toThrow("Expected string text got 1.5");
 });
 
+test("create with invalid length string fails", () => {
+    expect(() => new SpreadsheetFormula("x".repeat(8192))).toThrow("Invalid text length 8192 >= 8192");
+});
+
 test("create text", () => {
     const spreadsheetFormula = new SpreadsheetFormula(text);
     expect(spreadsheetFormula.text()).toBe(text);

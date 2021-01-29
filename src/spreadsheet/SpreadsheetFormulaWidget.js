@@ -47,6 +47,7 @@ export default class SpreadsheetFormulaWidget extends React.Component {
                        onKeyDown={this.onKeyDown.bind(this)}
                        placeholder={(reference && reference.toString()) || ""}
                        inputProps={{
+                           maxLength: 8192,
                            style: {
                                padding: "2px",
                            }
