@@ -73,7 +73,7 @@ context("General app usage", () => {
         hash().should('match', /.*\/Untitled\/cell\/B2\/formula/) // => true
 
         formulaText()
-            .type("1+2+3")
+            .type("=1+2+3")
             .type("{enter}");
 
         reactRenderWait();
@@ -87,13 +87,13 @@ context("General app usage", () => {
         cellClick("C3");
 
         formulaText()
-            .type("1+2+3")
+            .type("=1+2+3")
             .type("{enter}");
 
         cellClick("D4");
 
         formulaText()
-            .type("C3+10")
+            .type("=C3+10")
             .type("{enter}");
 
         reactRenderWait();
@@ -107,7 +107,7 @@ context("General app usage", () => {
         cellClick("C3");
 
         formulaText()
-            .type("1+2+3")
+            .type("=1+2+3")
             .type("{enter}");
 
         cy.window()
@@ -119,7 +119,7 @@ context("General app usage", () => {
         reactRenderWait();
 
         formulaText()
-            .type("4+5")
+            .type("=4+5")
             .type("{enter}");
 
         cellFormattedTextCheck("D4", "9.");
@@ -139,7 +139,7 @@ context("General app usage", () => {
         cellClick("E5");
 
         formulaText()
-            .type("1+2+3")
+            .type("=1+2+3")
             .type("{enter}");
 
         hashEnter("/");
@@ -155,7 +155,7 @@ context("General app usage", () => {
         cellClick("F6");
 
         formulaText()
-            .type("1+2+3")
+            .type("=1+2+3")
             .type("{enter}");
 
 
@@ -375,7 +375,7 @@ context("General app usage", () => {
     );
 
     enterSpreadsheetMetadataTextAndCheck(SpreadsheetMetadata.DECIMAL_SEPARATOR,
-        "5/2",
+        "=5/2",
         "d",
         ".",
         "2d5", // 5.2 decimal separator now capital D
@@ -397,7 +397,7 @@ context("General app usage", () => {
     );
 
     enterSpreadsheetMetadataTextAndCheck(SpreadsheetMetadata.NEGATIVE_SIGN,
-        "2*-4",
+        "=2*-4",
         "n",
         "-",
         "n8.",
@@ -437,7 +437,7 @@ context("General app usage", () => {
     );
 
     enterSpreadsheetMetadataTextAndCheck(SpreadsheetMetadata.VALUE_SEPARATOR,
-        "5/2",
+        "=5/2",
         ",",
         ",",
         "2.5",
@@ -445,7 +445,7 @@ context("General app usage", () => {
     );
 
     enterSpreadsheetMetadataTextAndCheck(SpreadsheetMetadata.TEXT_FORMAT_PATTERN,
-        "\"Hello 123\"",
+        "=\"Hello 123\"",
         "@@",
         "Default",
         "Hello 123Hello 123",
