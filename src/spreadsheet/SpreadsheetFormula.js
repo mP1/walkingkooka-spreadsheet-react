@@ -103,6 +103,10 @@ function checkText(text) {
     if(typeof text !== "string"){
         throw new Error("Expected string text got " + text);
     }
+    const length = text.length;
+    if(length >= 8192){
+        throw new Error("Invalid text length " + length + " >= 8192");
+    }
 }
 
 SystemObject.register(TYPE_NAME, SpreadsheetFormula.fromJson);
