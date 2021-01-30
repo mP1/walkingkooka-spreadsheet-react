@@ -469,11 +469,11 @@ context("General app usage", () => {
     );
 
     enterSpreadsheetMetadataTextAndCheck(SpreadsheetMetadata.TIME_PARSE_PATTERNS,
-        "12:58:59", // formula parsing fails on time
-        "hh:mm:ss",
+        "12::58::59.000",
+        "hh::mm::ss.000",
         "Default",
-        "", // TODO enter formula using new pattern
-        "",
+        "12:58:59",
+        "12:58:59",
     );
 
     /**
