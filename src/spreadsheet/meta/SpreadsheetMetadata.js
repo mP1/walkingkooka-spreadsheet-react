@@ -2,7 +2,9 @@ import Character from "../../Character.js";
 import EmailAddress from "../../net/EmailAddress.js";
 import Equality from "../../Equality.js";
 import ExpressionNumberKind from "../../math/ExpressionNumberKind.js";
+import LocalDate from "../../datetime/LocalDate.js";
 import LocalDateTime from "../../datetime/LocalDateTime.js";
+import LocalTime from "../../datetime/LocalTime.js";
 import Locale from "../../util/Locale.js";
 import RoundingMode from "../../math/RoundingMode.js";
 import SpreadsheetCoordinates from "../SpreadsheetCoordinates";
@@ -623,3 +625,11 @@ function setFails(propertyName) {
 }
 
 SystemObject.register(TYPE_NAME, SpreadsheetMetadata.fromJson);
+
+// force each class to call SystemObject.register
+// eslint-disable-next-line no-unused-expressions
+LocalDate.prototype;
+// eslint-disable-next-line no-unused-expressions
+LocalDateTime.prototype;
+// eslint-disable-next-line no-unused-expressions
+LocalTime.prototype;
