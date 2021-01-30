@@ -367,11 +367,11 @@ context("General app usage", () => {
     );
 
     enterSpreadsheetMetadataTextAndCheck(SpreadsheetMetadata.DATETIME_PARSE_PATTERNS,
-        "31/12/1999 12:58:59",
-        "yyyy/mm/dd hh:mm:ss",
+        "1999/12/31 12:58",
+        "yyyy/mm/dd hh:mm",
         "Default",
-        "", // TODO enter formula and verify date/time was parsed correctly. formula entry currently results in a formula parsing exception
-        "",
+        "Friday, 31 December 1999 at 12:58:00",
+        "Friday, 31 December 1999 at 12:58:00",
     );
 
     enterSpreadsheetMetadataTextAndCheck(SpreadsheetMetadata.DECIMAL_SEPARATOR,
