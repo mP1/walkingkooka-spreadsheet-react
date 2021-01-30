@@ -351,11 +351,11 @@ context("General app usage", () => {
     );
 
     enterSpreadsheetMetadataTextAndCheck(SpreadsheetMetadata.DATE_PARSE_PATTERNS,
-        "31/12/1999",
-        "yyyy/mm/dd",
+        "1999:12:31",
+        "yyyy:mm:dd",
         "Default",
-        "0.001", // TODO verify date was reformatted.
-        "0.001",
+        "Friday, 31 December 1999",
+        "Friday, 31 December 1999",
     );
 
     enterSpreadsheetMetadataTextAndCheck(SpreadsheetMetadata.DATETIME_FORMAT_PATTERN,
