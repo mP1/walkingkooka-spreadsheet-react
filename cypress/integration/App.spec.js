@@ -346,8 +346,8 @@ context("General app usage", () => {
         "31/12/1999",
         "yyyy/mm/dd",
         "Default",
-        "0.001", // TODO verify date was reformatted.
-        "0.001",
+        "1999/12/31",
+        "Friday, 31 December 1999",
     );
 
     enterSpreadsheetMetadataTextAndCheck(SpreadsheetMetadata.DATE_PARSE_PATTERNS,
