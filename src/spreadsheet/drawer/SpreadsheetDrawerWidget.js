@@ -237,6 +237,7 @@ class SpreadsheetDrawerWidget extends React.Component {
      * <li>date-time-offset (1900/1904)</li>
      * <li>date-time-format-pattern (pattern)</li>
      * <li>date-time-parse-patterns (pattern)</li>
+     * <li>default-year</li>
      * <li>time-format-pattern (pattern)</li>
      * <li>time-parse-patterns (pattern)</li>
      * <li>two-digit-year (int 0-99)</li>
@@ -245,6 +246,7 @@ class SpreadsheetDrawerWidget extends React.Component {
     spreadsheetDateTime(classes) {
         const rows = [
             this.row("Date Time Offset", SpreadsheetMetadata.DATETIME_OFFSET), // 1900 or 1904 date system
+            this.row("Default Year", SpreadsheetMetadata.DEFAULT_YEAR),
             this.row("Two Digit Year", SpreadsheetMetadata.TWO_DIGIT_YEAR),
 
             this.row("Date Format", SpreadsheetMetadata.DATE_FORMAT_PATTERN),
@@ -469,6 +471,7 @@ class SpreadsheetDrawerWidget extends React.Component {
                         />;
                         break;
                     case SpreadsheetMetadata.DATETIME_OFFSET:
+                    case SpreadsheetMetadata.DEFAULT_YEAR:
                     case SpreadsheetMetadata.PRECISION:
                     case SpreadsheetMetadata.TWO_DIGIT_YEAR:
                     case SpreadsheetMetadata.WIDTH:
@@ -491,6 +494,26 @@ class SpreadsheetDrawerWidget extends React.Component {
                                     {
                                         value: -24107,
                                         label: "1904",
+                                    }
+                                ];
+                                step = null;
+                                style = {
+                                    marginLeft: "1em",
+                                    marginRight: "2em",
+                                };
+                                break;
+                            case SpreadsheetMetadata.DEFAULT_YEAR:
+                                numberValue = value;
+                                min = 1900;
+                                max = 2020;
+                                marks = [
+                                    {
+                                        value: 1900,
+                                        label: "1900",
+                                    },
+                                    {
+                                        value: 2000,
+                                        label: "2000",
                                     }
                                 ];
                                 step = null;
