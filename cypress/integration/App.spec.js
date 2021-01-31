@@ -537,6 +537,28 @@ context("General app usage", () => {
             settingsToolDrawer()
                 .should('be.visible');
 
+            if(SpreadsheetMetadata.DEFAULT_YEAR == property) {
+                const dateParsePatternsId =  "#spreadsheet-metadata-" + SpreadsheetMetadata.DATE_PARSE_PATTERNS + "-TextField";
+                cy.get(dateParsePatternsId)
+                    .type("{selectall}")
+                    .type("dd:mm")
+                    .type("{enter}")
+                    .blur();
+
+                const dateFormatPatternId =  "#spreadsheet-metadata-" + SpreadsheetMetadata.DATE_FORMAT_PATTERN + "-TextField";
+                cy.get(dateFormatPatternId)
+                    .type("{selectall}")
+                    .type("yyyy/mm/dd")
+                    .type("{enter}")
+                    .blur();
+
+                cy.get(dateFormatPatternId)
+                    .type("{selectall}")
+                    .type("yyyy/mm/dd")
+                    .type("{enter}")
+                    .blur();
+            }
+
             const a1 = "A1";
 
             if(a1Formula){
@@ -622,6 +644,18 @@ context("General app usage", () => {
             },
         ],
         null,
+        null,
+    );
+
+    enterSpreadsheetMetadataSliderNumberTextFieldAndCheck(SpreadsheetMetadata.DEFAULT_YEAR,
+        "31:12",
+        [
+            {
+                value: "1900",
+                text: "1900",
+            }
+        ],
+        ["1900/12/31"],
         null,
     );
 

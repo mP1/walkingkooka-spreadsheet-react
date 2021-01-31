@@ -61,6 +61,7 @@ export default class SpreadsheetMetadata extends SystemObject {
     static DATETIME_PARSE_PATTERNS = "date-time-parse-patterns";
     static DECIMAL_SEPARATOR = "decimal-separator";
     static DEFAULTS = "_defaults";
+    static DEFAULT_YEAR = "default-year";
     static EXPONENT_SYMBOL = "exponent-symbol";
     static EDIT_CELL = "edit-cell";
     static EDIT_RANGE = "edit-range";
@@ -134,6 +135,9 @@ export default class SpreadsheetMetadata extends SystemObject {
                     break;
                 case SpreadsheetMetadata.DECIMAL_SEPARATOR:
                     unmarshaller = Character.fromJson;
+                    break;
+                case SpreadsheetMetadata.DEFAULT_YEAR:
+                    typed = value;
                     break;
                 case SpreadsheetMetadata.EDIT_CELL:
                     unmarshaller = SpreadsheetCellReference.fromJson;
@@ -308,6 +312,9 @@ export default class SpreadsheetMetadata extends SystemObject {
             case SpreadsheetMetadata.DECIMAL_SEPARATOR:
                 expectedClass = Character;
                 break;
+            case SpreadsheetMetadata.DEFAULT_YEAR:
+                expectedTypeOf = "number";
+                break;
             case SpreadsheetMetadata.EDIT_CELL:
                 expectedClass = SpreadsheetCellReference;
                 break;
@@ -424,6 +431,7 @@ export default class SpreadsheetMetadata extends SystemObject {
             case SpreadsheetMetadata.DATETIME_FORMAT_PATTERN:
             case SpreadsheetMetadata.DATETIME_PARSE_PATTERNS:
             case SpreadsheetMetadata.DECIMAL_SEPARATOR:
+            case SpreadsheetMetadata.DEFAULT_YEAR:
             case SpreadsheetMetadata.EDIT_CELL:
             case SpreadsheetMetadata.EDIT_RANGE:
             case SpreadsheetMetadata.EXPONENT_SYMBOL:
@@ -511,6 +519,7 @@ const PROPERTIES = [
     SpreadsheetMetadata.DATETIME_PARSE_PATTERNS,
     SpreadsheetMetadata.DECIMAL_SEPARATOR,
     SpreadsheetMetadata.DEFAULTS,
+    SpreadsheetMetadata.DEFAULT_YEAR,
     SpreadsheetMetadata.EXPONENT_SYMBOL,
     SpreadsheetMetadata.EDIT_CELL,
     SpreadsheetMetadata.EDIT_RANGE,

@@ -299,6 +299,8 @@ getSetRemovePropertyTest(SpreadsheetMetadata.DATETIME_PARSE_PATTERNS, Spreadshee
 
 getSetRemovePropertyTest(SpreadsheetMetadata.DECIMAL_SEPARATOR, Character.fromJson(","));
 
+getSetRemovePropertyTest(SpreadsheetMetadata.DEFAULT_YEAR, 1902);
+
 getSetRemovePropertyTest(SpreadsheetMetadata.EDIT_CELL, SpreadsheetCellReference.parse("B97"));
 
 getSetRemovePropertyTest(SpreadsheetMetadata.EDIT_RANGE, SpreadsheetRange.parse("A1:B2"));
@@ -469,6 +471,7 @@ test("all setters & getters", () => {
     const dateTimeFormatPattern = SpreadsheetDateTimeFormatPattern.fromJson("yyyymmddhhmm");
     const dateTimeParsePatterns = SpreadsheetDateTimeParsePatterns.fromJson("yyyymmddhhmm");
     const decimalSeparator = Character.fromJson(".");
+    const defaultYear = 1987;
     const editCell = SpreadsheetCellReference.parse("Z99");
     const editRange = SpreadsheetRange.parse("A1:B2");
     const exponentSymbol = Character.fromJson("^");
@@ -500,6 +503,7 @@ test("all setters & getters", () => {
         .set(SpreadsheetMetadata.DATETIME_FORMAT_PATTERN, dateTimeFormatPattern)
         .set(SpreadsheetMetadata.DATETIME_PARSE_PATTERNS, dateTimeParsePatterns)
         .set(SpreadsheetMetadata.DECIMAL_SEPARATOR, decimalSeparator)
+        .set(SpreadsheetMetadata.DEFAULT_YEAR, defaultYear)
         .set(SpreadsheetMetadata.EDIT_CELL, editCell)
         .set(SpreadsheetMetadata.EDIT_RANGE, editRange)
         .set(SpreadsheetMetadata.EXPONENT_SYMBOL, exponentSymbol)
@@ -529,6 +533,7 @@ test("all setters & getters", () => {
     expect(metadata.get(SpreadsheetMetadata.DATETIME_FORMAT_PATTERN)).toEqual(dateTimeFormatPattern);
     expect(metadata.get(SpreadsheetMetadata.DATETIME_PARSE_PATTERNS)).toEqual(dateTimeParsePatterns);
     expect(metadata.get(SpreadsheetMetadata.DECIMAL_SEPARATOR)).toEqual(decimalSeparator);
+    expect(metadata.get(SpreadsheetMetadata.DEFAULT_YEAR)).toEqual(defaultYear);
     expect(metadata.get(SpreadsheetMetadata.EDIT_CELL)).toEqual(editCell);
     expect(metadata.get(SpreadsheetMetadata.EDIT_RANGE)).toEqual(editRange);
     expect(metadata.get(SpreadsheetMetadata.EXPONENT_SYMBOL)).toEqual(exponentSymbol);
