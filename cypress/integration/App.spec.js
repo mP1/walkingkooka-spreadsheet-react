@@ -537,26 +537,47 @@ context("General app usage", () => {
             settingsToolDrawer()
                 .should('be.visible');
 
-            if(SpreadsheetMetadata.DEFAULT_YEAR == property) {
-                const dateParsePatternsId =  "#spreadsheet-metadata-" + SpreadsheetMetadata.DATE_PARSE_PATTERNS + "-TextField";
-                cy.get(dateParsePatternsId)
-                    .type("{selectall}")
-                    .type("dd:mm")
-                    .type("{enter}")
-                    .blur();
+            const dateParsePatternsId = "#spreadsheet-metadata-" + SpreadsheetMetadata.DATE_PARSE_PATTERNS + "-TextField";
+            const dateFormatPatternId = "#spreadsheet-metadata-" + SpreadsheetMetadata.DATE_FORMAT_PATTERN + "-TextField";
+            switch(property) {
+                case SpreadsheetMetadata.DEFAULT_YEAR:
+                    cy.get(dateParsePatternsId)
+                        .type("{selectall}")
+                        .type("dd:mm")
+                        .type("{enter}")
+                        .blur();
+                    cy.get(dateFormatPatternId)
+                        .type("{selectall}")
+                        .type("yyyy/mm/dd")
+                        .type("{enter}")
+                        .blur();
 
-                const dateFormatPatternId =  "#spreadsheet-metadata-" + SpreadsheetMetadata.DATE_FORMAT_PATTERN + "-TextField";
-                cy.get(dateFormatPatternId)
-                    .type("{selectall}")
-                    .type("yyyy/mm/dd")
-                    .type("{enter}")
-                    .blur();
+                    cy.get(dateFormatPatternId)
+                        .type("{selectall}")
+                        .type("yyyy/mm/dd")
+                        .type("{enter}")
+                        .blur();
+                    break;
+                case SpreadsheetMetadata.TWO_DIGIT_YEAR:
+                    cy.get(dateParsePatternsId)
+                        .type("{selectall}")
+                        .type("yy/mm/dd")
+                        .type("{enter}")
+                        .blur();
+                    cy.get(dateFormatPatternId)
+                        .type("{selectall}")
+                        .type("yyyy/mm/dd")
+                        .type("{enter}")
+                        .blur();
 
-                cy.get(dateFormatPatternId)
-                    .type("{selectall}")
-                    .type("yyyy/mm/dd")
-                    .type("{enter}")
-                    .blur();
+                    cy.get(dateFormatPatternId)
+                        .type("{selectall}")
+                        .type("yyyy/mm/dd")
+                        .type("{enter}")
+                        .blur();
+                    break;
+                default:
+                    break;
             }
 
             const a1 = "A1";
@@ -660,22 +681,18 @@ context("General app usage", () => {
     );
 
     enterSpreadsheetMetadataSliderNumberTextFieldAndCheck(SpreadsheetMetadata.TWO_DIGIT_YEAR,
-        null,
+        "30/12/31",
         [
             {
                 value: "20",
                 text: "20",
             },
             {
-                value: "50",
+                value: "50", // TODO https://github.com/mP1/walkingkooka-spreadsheet-react/issues/594 Updating two-digit-year doesnt refresh cells
                 text: "50",
             },
-            {
-                value: "70",
-                text: "70",
-            },
         ],
-        null,
+        ["1930/12/31", "1930/12/31"],
         null,
     );
 
