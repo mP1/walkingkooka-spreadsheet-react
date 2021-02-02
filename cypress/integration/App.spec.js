@@ -674,9 +674,13 @@ context("General app usage", () => {
             {
                 value: "1900",
                 text: "1900",
+            },
+            {
+                value: "2000",
+                text: "2000",
             }
         ],
-        ["1900/12/31"],
+        ["1900/12/31", "2000/12/31"],
         null,
     );
 
@@ -688,11 +692,11 @@ context("General app usage", () => {
                 text: "20",
             },
             {
-                value: "50", // TODO https://github.com/mP1/walkingkooka-spreadsheet-react/issues/594 Updating two-digit-year doesnt refresh cells
+                value: "50",
                 text: "50",
             },
         ],
-        ["1930/12/31", "1930/12/31"],
+        ["1930/12/31", "2030/12/31"],
         null,
     );
 
