@@ -429,7 +429,7 @@ class App extends React.Component {
             const viewportRange = state.viewportRange;
             if(viewportRange){
                 if(!metadata.equalsMost(previousMetadata)){
-                    this.loadSpreadsheetCellOrRange(viewportRange);
+                    this.loadSpreadsheetCellOrRange(viewportRange, SpreadsheetEngineEvaluation.FORCE_RECOMPUTE);
                 }
             }
         }
@@ -642,13 +642,14 @@ class App extends React.Component {
      * Accepts the {@link SpreadsheetRange} returned by {@link #spreadsheetViewport} and then loads all the cells in the
      * range
      */
-    loadSpreadsheetCellOrRange(selection) {
-        console.log("loadSpreadsheetCellOrRange " + selection);
+    loadSpreadsheetCellOrRange(selection, evaluation) {
+        const evaluation0 = evaluation || this.state.spreadsheetEngineEvaluation || SpreadsheetEngineEvaluation.COMPUTE_IF_NECESSARY;
 
-        const evaluation = this.state.spreadsheetEngineEvaluation || SpreadsheetEngineEvaluation.COMPUTE_IF_NECESSARY;
+        console.log("loadSpreadsheetCellOrRange " + selection + " " + evaluation0);
+
 
         this.messenger.send(
-            this.spreadsheetCellApiUrl(selection) + "/" + evaluation,
+            this.spreadsheetCellApiUrl(selection) + "/" + evaluation0,
             {
                 method: "GET"
             },
