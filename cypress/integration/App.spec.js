@@ -376,9 +376,9 @@ context("General app usage", () => {
 
     enterSpreadsheetMetadataTextAndCheck(SpreadsheetMetadata.DECIMAL_SEPARATOR,
         "=5/2",
-        "d",
+        "*",
         ".",
-        "2d5", // 5.2 decimal separator now capital D
+        "2*5", // 5.2 decimal separator now capital D
         "2.5",
     );
     enterSpreadsheetMetadataTextAndCheck(SpreadsheetMetadata.EXPONENT_SYMBOL,
@@ -390,17 +390,17 @@ context("General app usage", () => {
 
     enterSpreadsheetMetadataTextAndCheck(SpreadsheetMetadata.GROUPING_SEPARATOR,
         "123456",
-        "g",
+        "*",
         ",",
-        "123g456.",
+        "123*456.",
         "123,456."
     );
 
     enterSpreadsheetMetadataTextAndCheck(SpreadsheetMetadata.NEGATIVE_SIGN,
         "=2*-4",
-        "n",
+        "*",
         "-",
-        "n8.",
+        "*8.",
         "-8.");
 
     enterSpreadsheetMetadataTextAndCheck(SpreadsheetMetadata.NUMBER_FORMAT_PATTERN,
@@ -422,7 +422,7 @@ context("General app usage", () => {
     // TODO need to set format pattern which includes percentage
     enterSpreadsheetMetadataTextAndCheck(SpreadsheetMetadata.PERCENTAGE_SYMBOL,
         null,
-        "p",
+        "*",
         "%",
         null,
         null);
@@ -430,7 +430,7 @@ context("General app usage", () => {
     // TODO need to format Exponent
     enterSpreadsheetMetadataTextAndCheck(SpreadsheetMetadata.POSITIVE_SIGN,
         null,
-        "o",
+        "*",
         "+",
         null,
         null,
@@ -438,7 +438,7 @@ context("General app usage", () => {
 
     enterSpreadsheetMetadataTextAndCheck(SpreadsheetMetadata.VALUE_SEPARATOR,
         "=5/2",
-        ",",
+        "*",
         ",",
         "2.5",
         "2.5",
