@@ -310,7 +310,7 @@ export default class SpreadsheetMetadata extends SystemObject {
                 expectedClass = SpreadsheetDateTimeParsePatterns;
                 break;
             case SpreadsheetMetadata.DECIMAL_SEPARATOR:
-                expectedClass = Character;
+                checkCharacter(value);
                 break;
             case SpreadsheetMetadata.DEFAULT_YEAR:
                 expectedTypeOf = "number";
@@ -328,7 +328,7 @@ export default class SpreadsheetMetadata extends SystemObject {
                 expectedClass = ExpressionNumberKind;
                 break;
             case SpreadsheetMetadata.GROUPING_SEPARATOR:
-                expectedClass = Character;
+                checkCharacter(value);
                 break;
             case SpreadsheetMetadata.LOCALE:
                 expectedClass = Locale;
@@ -340,7 +340,7 @@ export default class SpreadsheetMetadata extends SystemObject {
                 setFails(property);
                 break;
             case SpreadsheetMetadata.NEGATIVE_SIGN:
-                expectedClass = Character;
+                checkCharacter(value);
                 break;
             case SpreadsheetMetadata.NUMBER_FORMAT_PATTERN:
                 expectedClass = SpreadsheetNumberFormatPattern;
@@ -350,7 +350,7 @@ export default class SpreadsheetMetadata extends SystemObject {
                 break;
             case SpreadsheetMetadata.PERCENTAGE_SYMBOL:
             case SpreadsheetMetadata.POSITIVE_SIGN:
-                expectedClass = Character;
+                checkCharacter(value);
                 break;
             case SpreadsheetMetadata.PRECISION:
                 checkPrecision(value);
@@ -382,7 +382,7 @@ export default class SpreadsheetMetadata extends SystemObject {
                 expectedTypeOf = "number";
                 break;
             case SpreadsheetMetadata.VALUE_SEPARATOR:
-                expectedClass = Character;
+                checkCharacter(value);
                 break;
             case SpreadsheetMetadata.VIEWPORT_CELL:
                 expectedClass = SpreadsheetCellReference;
@@ -594,6 +594,12 @@ function equals1(metadata, other, required) {
     }
 
     return equals;
+}
+
+function checkCharacter(character) {
+    if(!character instanceof Character || "!\"#$%&'()*+,-./:;<=>?@[\\]^_`{|}~".indexOf(character.text()) === -1){
+        throw new Error("Expected symbol got " + character);
+    }
 }
 
 function checkCurrencySymbol(currencySymbol) {

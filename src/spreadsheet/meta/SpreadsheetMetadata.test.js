@@ -299,6 +299,10 @@ getSetRemovePropertyTest(SpreadsheetMetadata.DATETIME_PARSE_PATTERNS, Spreadshee
 
 getSetRemovePropertyTest(SpreadsheetMetadata.DECIMAL_SEPARATOR, Character.fromJson(","));
 
+test("set decimal separator invalid character fails", () => {
+    expect(() => SpreadsheetMetadata.EMPTY.set(SpreadsheetMetadata.DECIMAL_SEPARATOR, new Character('a'))).toThrow("Expected symbol got a");
+});
+
 getSetRemovePropertyTest(SpreadsheetMetadata.DEFAULT_YEAR, 1902);
 
 getSetRemovePropertyTest(SpreadsheetMetadata.EDIT_CELL, SpreadsheetCellReference.parse("B97"));
