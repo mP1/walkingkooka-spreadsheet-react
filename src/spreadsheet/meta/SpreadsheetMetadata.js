@@ -597,7 +597,7 @@ function equals1(metadata, other, required) {
 }
 
 function checkCharacter(character) {
-    if(!character instanceof Character || "!\"#$%&'()*+,-./:;<=>?@[\\]^_`{|}~".indexOf(character.text()) === -1){
+    if(!(character instanceof Character) || "!\"#$%&'()*+,-./:;<=>?@[\\]^_`{|}~".indexOf(character.text()) === -1){
         throw new Error("Expected symbol got " + character);
     }
 }
