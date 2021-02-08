@@ -602,6 +602,7 @@ class SpreadsheetDrawerWidget extends React.Component {
                             default:
                                 break;
                         }
+                        // DATE_TIME_OFFSET defaultValue also requires string -> number
                         render = <SpreadsheetDrawerWidgetSliderWithNumberTextField id={id}
                                                                                    style={style}
                                                                                    min={min}
@@ -609,7 +610,7 @@ class SpreadsheetDrawerWidget extends React.Component {
                                                                                    marks={marks}
                                                                                    step={step}
                                                                                    value={numberValue}
-                                                                                   defaultValue={defaultValue}
+                                                                                   defaultValue={typeof defaultValue === "string" ? parseInt(defaultValue) : defaultValue}
                                                                                    defaultValueFormatter={DEFAULT_VALUE_FORMATTER_TOSTRING}
                                                                                    defaultButtonTooltip={false}
                                                                                    setValue={setValue}
