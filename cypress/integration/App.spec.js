@@ -327,6 +327,8 @@ context("General app usage", () => {
                 cellFormattedTextCheck(a1, a1CellContent);
             }
 
+            cy.wait(10); // need time for UI to settle
+
             const buttonId = "#spreadsheet-metadata-" + property + "-default-button";
             cy.get(buttonId)
                 .should("have.text", defaultText)
@@ -474,6 +476,80 @@ context("General app usage", () => {
         "Default",
         "12:58:59",
         "12:58:59",
+    );
+
+    /**
+     * Updates 2 properties with initial text values, then sets the first to the second text, which should cause
+     * the second to gain the former first text.
+     */
+    function enterSpreadsheetTextPropertySwapCheck(property1,
+                                                   text1,
+                                                   property2,
+                                                   text2) {
+        it("Show drawer and update SpreadsheetMetadata." + property1 + "=" + text1 + " & " + property2 + "=" + text2 + " causing value swap", () => {
+            settingsToolDrawerToggle();
+
+            settingsToolDrawer()
+                .should('be.visible');
+
+            const textFieldId1 = "#spreadsheet-metadata-" + property1 + "-TextField";
+            cy.get(textFieldId1)
+                .type("{selectall}")
+                .type(text1)
+                .blur();
+
+            cy.get(textFieldId1)
+                .should("have.value", text1);
+
+            const textFieldId2 = "#spreadsheet-metadata-" + property2 + "-TextField";
+            cy.get(textFieldId2)
+                .type("{selectall}")
+                .type(text2)
+                .blur();
+
+            cy.get(textFieldId2)
+                .should("have.value", text2);
+
+            // set property1 with text2, this should force property2 to have text1
+            cy.get(textFieldId1)
+                .type("{selectall}")
+                .type(text2)
+                .blur();
+
+            cy.get(textFieldId1)
+                .should("have.value", text2);
+
+            cy.get(textFieldId2)
+                .should("have.value", text1);
+        });
+    }
+
+    enterSpreadsheetTextPropertySwapCheck(
+        SpreadsheetMetadata.DECIMAL_SEPARATOR,
+        '.',
+        SpreadsheetMetadata.GROUPING_SEPARATOR,
+        ','
+    );
+
+    enterSpreadsheetTextPropertySwapCheck(
+        SpreadsheetMetadata.NEGATIVE_SIGN,
+        '-',
+        SpreadsheetMetadata.PERCENTAGE_SYMBOL,
+        '%'
+    );
+
+    enterSpreadsheetTextPropertySwapCheck(
+        SpreadsheetMetadata.NEGATIVE_SIGN,
+        '-',
+        SpreadsheetMetadata.POSITIVE_SIGN,
+        '+'
+    );
+
+    enterSpreadsheetTextPropertySwapCheck(
+        SpreadsheetMetadata.DECIMAL_SEPARATOR,
+        '-',
+        SpreadsheetMetadata.POSITIVE_SIGN,
+        '+'
     );
 
     /**

@@ -24,17 +24,6 @@ import SystemObject from "../../SystemObject.js";
 import TextStyle from "../../text/TextStyle";
 
 /**
- * Creates a new SpreadsheetMetadata and sets or replaces the new property/value pair.
- */
-function copyAndSet(properties,
-                    property,
-                    value) {
-    const copy = Object.assign({}, properties);
-    copy[property] = value;
-    return new SpreadsheetMetadata(copy);
-}
-
-/**
  * Creates a new SpreadsheetMetadata removing the given property.
  */
 function copyAndRemove(properties,
@@ -638,6 +627,65 @@ function checkWidth(width) {
 function setFails(propertyName) {
     throw new Error("set \"" + propertyName + "\" is not allowed");
 }
+
+/**
+ * Creates a new SpreadsheetMetadata and sets or replaces the new property/value pair.
+ */
+function copyAndSet(properties,
+                    property,
+                    value) {
+    const copy = Object.assign({}, properties);
+
+    switch(property) {
+        case SpreadsheetMetadata.DECIMAL_SEPARATOR:
+        case SpreadsheetMetadata.GROUPING_SEPARATOR:
+        case SpreadsheetMetadata.NEGATIVE_SIGN:
+        case SpreadsheetMetadata.PERCENTAGE_SYMBOL:
+        case SpreadsheetMetadata.POSITIVE_SIGN:
+        case SpreadsheetMetadata.VALUE_SEPARATOR:
+            const previous = properties[property];
+
+            // try and find another property with the same value
+            for(const i in SWAPPABLE_PROPERTIES) {
+                const possible = SWAPPABLE_PROPERTIES[i];
+                if(property === possible){
+                    continue;
+                }
+                // found another property with $value, swap is necessary
+                if(value.equals(copy[possible])){
+                    if(!previous) {
+                        if(!(isGroupingSeparatorOrValueSeparator(property) && isGroupingSeparatorOrValueSeparator(possible))){
+                            throw new Error("Cannot set " + property + "=" + value + " duplicate of " + possible);
+                        }
+                    } else {
+                        copy[possible] = previous;
+                    }
+                }
+            }
+            break;
+        default:
+            break;
+    }
+
+    copy[property] = value;
+
+    return new SpreadsheetMetadata(copy);
+}
+
+function isGroupingSeparatorOrValueSeparator(property) {
+    return SpreadsheetMetadata.GROUPING_SEPARATOR === property || SpreadsheetMetadata.VALUE_SEPARATOR === property;
+}
+
+const SWAPPABLE_PROPERTIES = [
+    SpreadsheetMetadata.DECIMAL_SEPARATOR,
+    SpreadsheetMetadata.GROUPING_SEPARATOR,
+    SpreadsheetMetadata.NEGATIVE_SIGN,
+    SpreadsheetMetadata.PERCENTAGE_SYMBOL,
+    SpreadsheetMetadata.POSITIVE_SIGN,
+    SpreadsheetMetadata.VALUE_SEPARATOR,
+];
+
+// json.................................................................................................................
 
 SystemObject.register(TYPE_NAME, SpreadsheetMetadata.fromJson);
 

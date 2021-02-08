@@ -437,6 +437,7 @@ class SpreadsheetDrawerWidget extends React.Component {
                     case SpreadsheetMetadata.VALUE_SEPARATOR:
                         render = (
                             <SpreadsheetDrawerWidgetCharacter id={id}
+                                                              key={[id,value]}
                                                               value={value}
                                                               defaultValue={defaultValue}
                                                               defaultValueFormatter={DEFAULT_VALUE_FORMATTER_TOSTRING}

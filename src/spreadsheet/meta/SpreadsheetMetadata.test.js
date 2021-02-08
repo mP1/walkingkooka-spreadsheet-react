@@ -226,7 +226,192 @@ test("set property different", () => {
             "spreadsheet-id": propertyValue,
             "spreadsheet-name": propertyValue2.toJson()
         });
-})
+});
+
+test("set property empty new character", () => {
+    const metadata = SpreadsheetMetadata.EMPTY;
+    const comma = new Character('.');
+    const metadata2 = metadata.set(SpreadsheetMetadata.DECIMAL_SEPARATOR, comma);
+    expect(metadata).not.toEqual(metadata2);
+
+    checkJson(metadata, {});
+    checkJson(
+        metadata2,
+        {
+            "decimal-separator": comma.toJson(),
+        }
+    );
+});
+
+test("set property new character duplicate fails", () => {
+    const comma = new Character(',');
+    const metadata = new SpreadsheetMetadata({
+        "decimal-separator": comma,
+    });
+
+    expect(() => metadata.set(SpreadsheetMetadata.GROUPING_SEPARATOR, comma)).toThrow("Cannot set grouping-separator=, duplicate of decimal-separator");
+});
+
+test("set property new character duplicate fails #2", () => {
+    const comma = new Character(',');
+    const metadata = new SpreadsheetMetadata({
+        "decimal-separator": comma,
+    });
+
+    expect(() => metadata.set(SpreadsheetMetadata.POSITIVE_SIGN, comma)).toThrow("Cannot set positive-sign=, duplicate of decimal-separator");
+});
+
+test("set property new character", () => {
+    const json = {
+        "currency": "$AUD",
+    };
+    const metadata = new SpreadsheetMetadata(json);
+
+    const comma = new Character(',');
+    const metadata2 = metadata.set(SpreadsheetMetadata.DECIMAL_SEPARATOR, comma);
+
+    expect(metadata).not.toEqual(metadata2);
+
+    checkJson(metadata, json);
+    checkJson(
+        metadata2,
+        {
+            "currency": "$AUD",
+            "decimal-separator": comma.toJson(),
+        }
+    );
+});
+
+test("set property replace character", () => {
+    const dot = new Character('.');
+    const comma = new Character(',');
+
+    const metadata = new SpreadsheetMetadata({
+        "decimal-separator": dot,
+    });
+    const metadata2 = metadata.set(SpreadsheetMetadata.DECIMAL_SEPARATOR, comma);
+    expect(metadata).not.toEqual(metadata2);
+
+    checkJson(
+        metadata,
+        {
+            "decimal-separator": dot.toJson(),
+        }
+    );
+    checkJson(
+        metadata2,
+        {
+            "decimal-separator": comma.toJson(),
+        }
+    );
+});
+
+test("set property duplicate dont swap character", () => {
+    const comma = new Character('.');
+
+    const metadata = new SpreadsheetMetadata({
+        "grouping-separator": comma,
+    });
+    const metadata2 = metadata.set(SpreadsheetMetadata.VALUE_SEPARATOR, comma);
+    expect(metadata).not.toEqual(metadata2);
+
+    checkJson(
+        metadata,
+        {
+            "grouping-separator": comma.toJson(),
+        }
+    );
+    checkJson(
+        metadata2,
+        {
+            "grouping-separator": comma.toJson(),
+            "value-separator": comma.toJson(),
+        }
+    );
+});
+
+test("set property character swap", () => {
+    const dot = new Character('.');
+    const comma = new Character(',');
+
+    const metadata = new SpreadsheetMetadata({
+        "decimal-separator": dot,
+        "grouping-separator": comma,
+    });
+
+    const metadata2 = metadata.set(SpreadsheetMetadata.DECIMAL_SEPARATOR, comma);
+    expect(metadata).not.toEqual(metadata2);
+
+    checkJson(
+        metadata,
+        {
+            "decimal-separator": dot.toJson(),
+            "grouping-separator": comma.toJson(),
+        }
+    );
+    checkJson(
+        metadata2,
+        {
+            "decimal-separator": comma.toJson(),
+            "grouping-separator": dot.toJson(), // swap!
+        });
+});
+
+test("set property character swap 2", () => {
+    const dot = new Character('.');
+    const comma = new Character(',');
+    const percent = new Character('%');
+
+    const metadata = new SpreadsheetMetadata({
+        "decimal-separator": dot,
+        "grouping-separator": comma,
+        "percentage-symbol": percent,
+    });
+    const metadata2 = metadata.set(SpreadsheetMetadata.DECIMAL_SEPARATOR, comma);
+    expect(metadata).not.toEqual(metadata2);
+
+    checkJson(metadata, {
+        "decimal-separator": dot.toJson(),
+        "grouping-separator": comma.toJson(),
+        "percentage-symbol": percent.toJson(),
+    });
+    checkJson(metadata2,
+        {
+            "decimal-separator": comma.toJson(),
+            "grouping-separator": dot.toJson(), // swap!
+            "percentage-symbol": percent.toJson(),
+        });
+});
+
+test("set property character swap 3", () => {
+    const dot = new Character('.');
+    const comma = new Character(',');
+    const percent = new Character('%');
+
+    const metadata = new SpreadsheetMetadata({
+        "decimal-separator": dot,
+        "grouping-separator": comma,
+        "percentage-symbol": percent,
+    });
+    const metadata2 = metadata.set(SpreadsheetMetadata.DECIMAL_SEPARATOR, percent);
+    expect(metadata).not.toEqual(metadata2);
+
+    checkJson(
+        metadata,
+        {
+            "decimal-separator": dot.toJson(),
+            "grouping-separator": comma.toJson(),
+            "percentage-symbol": percent.toJson(),
+        }
+    );
+    checkJson(
+        metadata2,
+        {
+            "decimal-separator": percent.toJson(),
+            "grouping-separator": comma.toJson(),
+            "percentage-symbol": dot.toJson(), // swap
+        });
+});
 
 // remove...............................................................................................................
 
