@@ -13,12 +13,13 @@ export default class SpreadsheetDrawerWidgetTextField extends SpreadsheetDrawerW
     }
 
     renderInput(id, value) {
+        const textFieldId = id + "-TextField";
         const placeholder = this.placeholder();
         const maxLength = this.maxLength();
 
         return <TextField inputRef={this.inputField}
-                          id={id + "-TextField"}
-                          key={id}
+                          id={textFieldId}
+                          key={textFieldId}
                           style={
                               {
                                   marginRight: "4px",
