@@ -164,7 +164,9 @@ export default class SpreadsheetCell extends SystemObject {
         }
 
         const style = defaultStyle.merge(this.style());
-        const formatted = this.formatted().render(); // formatted may be String or DIV, react will do the correct thing.
+
+        const formatted = this.formatted();
+        const formattedRender = formatted ? formatted.render() : "";
         const css = style.toCss();
         css.boxSizing = "border-box";
 
@@ -174,7 +176,7 @@ export default class SpreadsheetCell extends SystemObject {
                           id={"cell-" + reference}
                           className={"cell"}
                           onClick={onClick}
-                          style={css}>{formatted}</TableCell>;
+                          style={css}>{formattedRender}</TableCell>;
     }
 
     equals(other) {
