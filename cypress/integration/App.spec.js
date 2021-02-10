@@ -344,7 +344,8 @@ context("General app usage", () => {
         });
     }
 
-    enterSpreadsheetMetadataTextAndCheck(SpreadsheetMetadata.DATE_FORMAT_PATTERN,
+    enterSpreadsheetMetadataTextAndCheck(
+        SpreadsheetMetadata.DATE_FORMAT_PATTERN,
         "31/12/1999",
         "yyyy/mm/dd",
         "Default",
@@ -352,7 +353,8 @@ context("General app usage", () => {
         "Friday, 31 December 1999",
     );
 
-    enterSpreadsheetMetadataTextAndCheck(SpreadsheetMetadata.DATE_PARSE_PATTERNS,
+    enterSpreadsheetMetadataTextAndCheck(
+        SpreadsheetMetadata.DATE_PARSE_PATTERNS,
         "1999:12:31",
         "yyyy:mm:dd",
         "Default",
@@ -360,7 +362,8 @@ context("General app usage", () => {
         "Friday, 31 December 1999",
     );
 
-    enterSpreadsheetMetadataTextAndCheck(SpreadsheetMetadata.DATETIME_FORMAT_PATTERN,
+    enterSpreadsheetMetadataTextAndCheck(
+        SpreadsheetMetadata.DATETIME_FORMAT_PATTERN,
         "31/12/1999, 12:58",
         "hh:mm yyyy/mm/dd",
         "Default",
@@ -368,7 +371,8 @@ context("General app usage", () => {
         "Friday, 31 December 1999 at 12:58:00",
     );
 
-    enterSpreadsheetMetadataTextAndCheck(SpreadsheetMetadata.DATETIME_PARSE_PATTERNS,
+    enterSpreadsheetMetadataTextAndCheck(
+        SpreadsheetMetadata.DATETIME_PARSE_PATTERNS,
         "1999/12/31 12:58",
         "yyyy/mm/dd hh:mm",
         "Default",
@@ -376,21 +380,24 @@ context("General app usage", () => {
         "Friday, 31 December 1999 at 12:58:00",
     );
 
-    enterSpreadsheetMetadataTextAndCheck(SpreadsheetMetadata.DECIMAL_SEPARATOR,
+    enterSpreadsheetMetadataTextAndCheck(
+        SpreadsheetMetadata.DECIMAL_SEPARATOR,
         "=5/2",
         "*",
         ".",
-        "2*5", // 5.2 decimal separator now capital D
+        "2*5",
         "2.5",
     );
-    enterSpreadsheetMetadataTextAndCheck(SpreadsheetMetadata.EXPONENT_SYMBOL,
+    enterSpreadsheetMetadataTextAndCheck(
+        SpreadsheetMetadata.EXPONENT_SYMBOL,
         null,
         "x",
         "E",
         null,
         null);
 
-    enterSpreadsheetMetadataTextAndCheck(SpreadsheetMetadata.GROUPING_SEPARATOR,
+    enterSpreadsheetMetadataTextAndCheck(
+        SpreadsheetMetadata.GROUPING_SEPARATOR,
         "123456",
         "*",
         ",",
@@ -398,39 +405,45 @@ context("General app usage", () => {
         "123,456."
     );
 
-    enterSpreadsheetMetadataTextAndCheck(SpreadsheetMetadata.NEGATIVE_SIGN,
+    enterSpreadsheetMetadataTextAndCheck(
+        SpreadsheetMetadata.NEGATIVE_SIGN,
         "=2*-4",
         "*",
         "-",
         "*8.",
         "-8.");
 
-    enterSpreadsheetMetadataTextAndCheck(SpreadsheetMetadata.NUMBER_FORMAT_PATTERN,
+    enterSpreadsheetMetadataTextAndCheck(
+        SpreadsheetMetadata.NUMBER_FORMAT_PATTERN,
         "123.5",
         "###.000",
         "Default",
-        "123.500", // TODO verify number was reformatted.
+        "123.500",
         "123.5",
     );
 
-    enterSpreadsheetMetadataTextAndCheck(SpreadsheetMetadata.NUMBER_PARSE_PATTERNS,
+    enterSpreadsheetMetadataTextAndCheck(
+        SpreadsheetMetadata.NUMBER_PARSE_PATTERNS,
         "123.5",
         "###.000",
         "Default",
-        "123.5", // TODO verify number entry compat with pattern
+        "123.5",
         "123.5",
     );
 
     // TODO need to set format pattern which includes percentage
-    enterSpreadsheetMetadataTextAndCheck(SpreadsheetMetadata.PERCENTAGE_SYMBOL,
+    enterSpreadsheetMetadataTextAndCheck(
+        SpreadsheetMetadata.PERCENTAGE_SYMBOL,
         null,
         "*",
         "%",
         null,
-        null);
+        null
+    );
 
     // TODO need to format Exponent
-    enterSpreadsheetMetadataTextAndCheck(SpreadsheetMetadata.POSITIVE_SIGN,
+    enterSpreadsheetMetadataTextAndCheck(
+        SpreadsheetMetadata.POSITIVE_SIGN,
         null,
         "*",
         "+",
@@ -438,7 +451,8 @@ context("General app usage", () => {
         null,
     );
 
-    enterSpreadsheetMetadataTextAndCheck(SpreadsheetMetadata.VALUE_SEPARATOR,
+    enterSpreadsheetMetadataTextAndCheck(
+        SpreadsheetMetadata.VALUE_SEPARATOR,
         "=5/2",
         "*",
         ",",
@@ -446,7 +460,8 @@ context("General app usage", () => {
         "2.5",
     );
 
-    enterSpreadsheetMetadataTextAndCheck(SpreadsheetMetadata.TEXT_FORMAT_PATTERN,
+    enterSpreadsheetMetadataTextAndCheck(
+        SpreadsheetMetadata.TEXT_FORMAT_PATTERN,
         "=\"Hello 123\"",
         "@@",
         "Default",
@@ -454,7 +469,8 @@ context("General app usage", () => {
         "Hello 123",
     );
 
-    enterSpreadsheetMetadataTextAndCheck(SpreadsheetMetadata.TEXT_FORMAT_PATTERN,
+    enterSpreadsheetMetadataTextAndCheck(
+        SpreadsheetMetadata.TEXT_FORMAT_PATTERN,
         "'Hello 123",
         "@@",
         "Default",
@@ -462,7 +478,8 @@ context("General app usage", () => {
         "Hello 123",
     );
 
-    enterSpreadsheetMetadataTextAndCheck(SpreadsheetMetadata.TIME_FORMAT_PATTERN,
+    enterSpreadsheetMetadataTextAndCheck(
+        SpreadsheetMetadata.TIME_FORMAT_PATTERN,
         "12:58",
         "hh::mm::",
         "Default",
@@ -470,7 +487,8 @@ context("General app usage", () => {
         "12:58:00",
     );
 
-    enterSpreadsheetMetadataTextAndCheck(SpreadsheetMetadata.TIME_PARSE_PATTERNS,
+    enterSpreadsheetMetadataTextAndCheck(
+        SpreadsheetMetadata.TIME_PARSE_PATTERNS,
         "12::58::59.000",
         "hh::mm::ss.000",
         "Default",
@@ -591,7 +609,8 @@ context("General app usage", () => {
         });
     }
 
-    enterSpreadsheetMetadataSliderAndCheck(SpreadsheetMetadata.EXPRESSION_NUMBER_KIND,
+    enterSpreadsheetMetadataSliderAndCheck(
+        SpreadsheetMetadata.EXPRESSION_NUMBER_KIND,
         null,
         ExpressionNumberKind.values(),
         null,
@@ -704,7 +723,8 @@ context("General app usage", () => {
         });
     }
 
-    enterSpreadsheetMetadataSliderNumberTextFieldAndCheck(SpreadsheetMetadata.PRECISION,
+    enterSpreadsheetMetadataSliderNumberTextFieldAndCheck(
+        SpreadsheetMetadata.PRECISION,
         null,
         [
             {
@@ -728,7 +748,8 @@ context("General app usage", () => {
         null,
     );
 
-    enterSpreadsheetMetadataSliderNumberTextFieldAndCheck(SpreadsheetMetadata.DATETIME_OFFSET,
+    enterSpreadsheetMetadataSliderNumberTextFieldAndCheck(
+        SpreadsheetMetadata.DATETIME_OFFSET,
         null,
         [
             {
@@ -744,7 +765,8 @@ context("General app usage", () => {
         null,
     );
 
-    enterSpreadsheetMetadataSliderNumberTextFieldAndCheck(SpreadsheetMetadata.DEFAULT_YEAR,
+    enterSpreadsheetMetadataSliderNumberTextFieldAndCheck(
+        SpreadsheetMetadata.DEFAULT_YEAR,
         "31:12",
         [
             {
@@ -760,7 +782,8 @@ context("General app usage", () => {
         null,
     );
 
-    enterSpreadsheetMetadataSliderNumberTextFieldAndCheck(SpreadsheetMetadata.TWO_DIGIT_YEAR,
+    enterSpreadsheetMetadataSliderNumberTextFieldAndCheck(
+        SpreadsheetMetadata.TWO_DIGIT_YEAR,
         "30/12/31",
         [
             {
@@ -776,7 +799,8 @@ context("General app usage", () => {
         null,
     );
 
-    enterSpreadsheetMetadataSliderNumberTextFieldAndCheck(SpreadsheetMetadata.WIDTH,
+    enterSpreadsheetMetadataSliderNumberTextFieldAndCheck(
+        SpreadsheetMetadata.WIDTH,
         null,
         [
             {
