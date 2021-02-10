@@ -296,6 +296,7 @@ context("General app usage", () => {
                                                   a1Formula,
                                                   text,
                                                   defaultText,
+                                                  updatedA1Formula,
                                                   a1CellContent,
                                                   a1CellContentDefault) {
         it("Show drawer and update SpreadsheetMetadata." + property, () => {
@@ -323,6 +324,11 @@ context("General app usage", () => {
             cy.get(textFieldId)
                 .should("have.value", text);
 
+            if(updatedA1Formula) {
+                formulaText()
+                    .should("have.value", updatedA1Formula)
+            }
+
             if(a1Formula){
                 cellFormattedTextCheck(a1, a1CellContent);
             }
@@ -337,6 +343,11 @@ context("General app usage", () => {
             cy.get(textFieldId)
                 .should("have.value", "");
 
+            if(a1Formula) {
+                formulaText()
+                    .should("have.value", a1Formula)
+            }
+
             if(a1CellContentDefault){
                 cellClick(a1);
                 cellFormattedTextCheck(a1, a1CellContentDefault);
@@ -349,6 +360,7 @@ context("General app usage", () => {
         "31/12/1999",
         "yyyy/mm/dd",
         "Default",
+        "31/12/1999",
         "1999/12/31",
         "Friday, 31 December 1999",
     );
@@ -358,6 +370,7 @@ context("General app usage", () => {
         "1999:12:31",
         "yyyy:mm:dd",
         "Default",
+        "1999:12:31",
         "Friday, 31 December 1999",
         "Friday, 31 December 1999",
     );
@@ -367,6 +380,7 @@ context("General app usage", () => {
         "31/12/1999, 12:58",
         "hh:mm yyyy/mm/dd",
         "Default",
+        "31/12/1999, 12:58",
         "12:58 1999/12/31",
         "Friday, 31 December 1999 at 12:58:00",
     );
@@ -376,15 +390,17 @@ context("General app usage", () => {
         "1999/12/31 12:58",
         "yyyy/mm/dd hh:mm",
         "Default",
+        "1999/12/31 12:58",
         "Friday, 31 December 1999 at 12:58:00",
         "Friday, 31 December 1999 at 12:58:00",
     );
 
     enterSpreadsheetMetadataTextAndCheck(
         SpreadsheetMetadata.DECIMAL_SEPARATOR,
-        "=5/2",
+        "=2.5",
         "*",
         ".",
+        "=2*5",
         "2*5",
         "2.5",
     );
@@ -394,6 +410,7 @@ context("General app usage", () => {
         "x",
         "E",
         null,
+        null,
         null);
 
     enterSpreadsheetMetadataTextAndCheck(
@@ -401,6 +418,7 @@ context("General app usage", () => {
         "123456",
         "*",
         ",",
+        "123456",
         "123*456.",
         "123,456."
     );
@@ -410,6 +428,7 @@ context("General app usage", () => {
         "=2*-4",
         "*",
         "-",
+        "=2*-4",
         "*8.",
         "-8.");
 
@@ -418,6 +437,7 @@ context("General app usage", () => {
         "123.5",
         "###.000",
         "Default",
+        "123.5",
         "123.500",
         "123.5",
     );
@@ -429,6 +449,7 @@ context("General app usage", () => {
         "Default",
         "123.5",
         "123.5",
+        "123.5",
     );
 
     // TODO need to set format pattern which includes percentage
@@ -438,17 +459,19 @@ context("General app usage", () => {
         "*",
         "%",
         null,
+        null,
         null
     );
 
     // TODO need to format Exponent
     enterSpreadsheetMetadataTextAndCheck(
         SpreadsheetMetadata.POSITIVE_SIGN,
-        null,
+        "+1.5",
         "*",
         "+",
-        null,
-        null,
+        "*1.5",
+        "1.5",
+        "1.5",
     );
 
     enterSpreadsheetMetadataTextAndCheck(
@@ -456,6 +479,7 @@ context("General app usage", () => {
         "=5/2",
         "*",
         ",",
+        "=5/2",
         "2.5",
         "2.5",
     );
@@ -465,6 +489,7 @@ context("General app usage", () => {
         "=\"Hello 123\"",
         "@@",
         "Default",
+        "=\"Hello 123\"",
         "Hello 123Hello 123",
         "Hello 123",
     );
@@ -474,6 +499,7 @@ context("General app usage", () => {
         "'Hello 123",
         "@@",
         "Default",
+        "'Hello 123",
         "Hello 123Hello 123",
         "Hello 123",
     );
@@ -483,6 +509,7 @@ context("General app usage", () => {
         "12:58",
         "hh::mm::",
         "Default",
+        "12:58",
         "12::58::",
         "12:58:00",
     );
@@ -492,6 +519,7 @@ context("General app usage", () => {
         "12::58::59.000",
         "hh::mm::ss.000",
         "Default",
+        "12::58::59.000",
         "12:58:59",
         "12:58:59",
     );
