@@ -625,8 +625,9 @@ context("General app usage", () => {
 
             const sliderId = "#spreadsheet-metadata-" + property + "-Slider";
 
+            // the first slow of a Slider is reserved for "Default".
             values.forEach((v, i) => {
-                cy.get(sliderId + " *[data-index=\"" + i + "\"][aria-hidden=\"true\"]")
+                cy.get(sliderId + " *[data-index=\"" + (1+i) + "\"][aria-hidden=\"true\"]")
                     .should("have.text", v.label())
                     .click();
 
