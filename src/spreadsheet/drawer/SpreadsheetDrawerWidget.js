@@ -484,7 +484,7 @@ class SpreadsheetDrawerWidget extends React.Component {
                         var step;
                         switch(property) {
                             case SpreadsheetMetadata.DATETIME_OFFSET:
-                                numberValue = parseInt(value);
+                                numberValue = typeof value == "string" ? parseInt(value) : value;
                                 min = -25569;
                                 max = -24107;
                                 marks = [
