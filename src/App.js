@@ -614,7 +614,7 @@ class App extends React.Component {
     onCellBox(cellBox) {
         console.log("onCellBoxViewportRangeUpdate " + cellBox);
 
-        this.messenger.send(
+        this.send(
             this.spreadsheetMetadataApiUrl() + "/viewport/" + cellBox.viewport(),
             {
                 method: "GET"
@@ -648,7 +648,7 @@ class App extends React.Component {
         console.log("loadSpreadsheetCellOrRange " + selection + " " + evaluation0);
 
 
-        this.messenger.send(
+        this.send(
             this.spreadsheetCellApiUrl(selection) + "/" + evaluation0,
             {
                 method: "GET"
@@ -669,7 +669,7 @@ class App extends React.Component {
         }else {
             console.log("saveSpreadsheetCell", cell);
 
-            this.messenger.send(this.spreadsheetCellApiUrl(cell.reference()),
+            this.send(this.spreadsheetCellApiUrl(cell.reference()),
                 {
                     method: "POST",
                     body: JSON.stringify(new SpreadsheetDelta([cell],
@@ -808,7 +808,7 @@ class App extends React.Component {
     onFormatCreateDateTimeModifiedDateTime(multiFormatRequest, success, errorHandler) {
         console.log("onFormatCreateDateTimeModifiedDateTime ", multiFormatRequest);
 
-        this.messenger.send(
+        this.send(
             this.spreadsheetMetadataApiUrl() + "/format",
             {
                 method: "POST",
@@ -954,7 +954,7 @@ class App extends React.Component {
             createEmptySpreadsheet: true,
         });
 
-        this.messenger.send(
+        this.send(
             "/api/spreadsheet",
             {
                 method: "POST"
@@ -989,7 +989,7 @@ class App extends React.Component {
     loadSpreadsheetMetadata(id) {
         console.log("loadSpreadsheetMetadata " + id);
 
-        this.messenger.send(
+        this.send(
             this.spreadsheetMetadataApiUrl(id),
             {
                 method: "GET",
@@ -1008,7 +1008,7 @@ class App extends React.Component {
         }else {
             console.log("saveSpreadsheetMetadata", metadata);
 
-            this.messenger.send(
+            this.send(
                 this.spreadsheetMetadataApiUrl(),
                 {
                     method: "POST",
@@ -1032,6 +1032,20 @@ class App extends React.Component {
             createEmptySpreadsheet: false, // cancel any wait for a create, this stops history/state checks from failing and creating again and again
             spreadsheetMetadata: SpreadsheetMetadata.fromJson(json)
         });
+    }
+
+    // messenger........................................................................................................
+
+    /**
+     * Centralises calls to messenger.send. This may be used to add a default error.
+     */
+    send(url, parameters, response, error) {
+       this.messenger.send(
+           url,
+           parameters,
+           response,
+           error,
+       )
     }
 
     // toString.........................................................................................................
