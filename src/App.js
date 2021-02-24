@@ -23,6 +23,8 @@ import SpreadsheetMetadata from "./spreadsheet/meta/SpreadsheetMetadata.js";
 import SpreadsheetMessenger from "./spreadsheet/message/SpreadsheetMessenger.js";
 import SpreadsheetName from "./spreadsheet/SpreadsheetName.js";
 import SpreadsheetNameWidget from "./spreadsheet/SpreadsheetNameWidget.js";
+import SpreadsheetNotification from "./spreadsheet/notification/SpreadsheetNotification.js";
+import SpreadsheetNotificationWidget from "./spreadsheet/notification/SpreadsheetNotificationWidget.js";
 import SpreadsheetRange from "./spreadsheet/reference/SpreadsheetRange";
 import SpreadsheetViewportWidget from "./widget/SpreadsheetViewportWidget.js";
 import TextStyle from "./text/TextStyle.js";
@@ -68,6 +70,7 @@ class App extends React.Component {
         this.messenger = new SpreadsheetMessenger();
         this.messenger.setWebWorker(false); // TODO test webworker mode
 
+        this.notification = React.createRef();
         this.settingsAndToolsDrawer = React.createRef();
         this.aboveViewport = React.createRef();
         this.spreadsheetName = React.createRef();
@@ -414,6 +417,13 @@ class App extends React.Component {
         }
         const settingsAndToolsDrawer = this.settingsAndToolsDrawer.current;
         settingsAndToolsDrawer && settingsAndToolsDrawer.setState({open: open});
+
+        // sync notifications
+        this.notification.current.setState(
+            {
+                notification: state.notification
+            }
+        );
 
         this.historyPush(hash, "State updated from ", prevState, "to", state);
     }
@@ -849,6 +859,10 @@ class App extends React.Component {
         const formulaText = this.cellToFormulaText(editCell);
         return (
             <WindowResizer dimensions={this.onWindowResized.bind(this)}>
+                <SpreadsheetNotificationWidget ref={this.notification}
+                                               key="notification"
+                                               notification={this.state.notification}
+                                               onClose={this.onNotificationClose.bind(this)} />
                 <SpreadsheetBox ref={this.aboveViewport}
                                 key={{windowDimensions: state.windowDimensions}}
                                 dimensions={this.onAboveViewportResize.bind(this)}
@@ -901,6 +915,19 @@ class App extends React.Component {
                 />
             </WindowResizer>
         );
+    }
+
+    // Notifications....................................................................................................
+
+    stateNotifications(notification) {
+        console.log("saveNotifications ", this.state.notification);
+        this.setState({
+            notification: notification,
+        });
+    }
+
+    onNotificationClose() {
+        this.stateNotifications();
     }
 
     // resizing.........................................................................................................
@@ -1030,6 +1057,7 @@ class App extends React.Component {
     onSpreadsheetMetadata(json) {
         this.setState({
             createEmptySpreadsheet: false, // cancel any wait for a create, this stops history/state checks from failing and creating again and again
+            notification: SpreadsheetNotification.success("Spreadsheet metadata saved"),
             spreadsheetMetadata: SpreadsheetMetadata.fromJson(json)
         });
     }
@@ -1044,8 +1072,12 @@ class App extends React.Component {
            url,
            parameters,
            response,
-           error,
+           error || this.onSendError,
        )
+    }
+
+    onSendError(error) {
+        this.stateNotifications(Notification.error(error));
     }
 
     // toString.........................................................................................................
