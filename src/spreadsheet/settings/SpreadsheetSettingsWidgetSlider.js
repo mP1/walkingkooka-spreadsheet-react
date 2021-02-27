@@ -1,7 +1,7 @@
 import Equality from "../../Equality.js";
 import React from 'react';
 import Slider from "@material-ui/core/Slider";
-import SpreadsheetDrawerWidgetValue from "./SpreadsheetDrawerWidgetValue.js";
+import SpreadsheetSettingsWidgetValue from "./SpreadsheetSettingsWidgetValue.js";
 import PropTypes from "prop-types";
 import SystemEnum from "../../SystemEnum.js";
 
@@ -10,7 +10,7 @@ import SystemEnum from "../../SystemEnum.js";
  * Note the marks and values for the slider will have the first slot reserved for the "Default" value. Clicking
  * default will result in setValue being called with null.
  */
-export default class SpreadsheetDrawerWidgetSlider extends SpreadsheetDrawerWidgetValue {
+export default class SpreadsheetSettingsWidgetSlider extends SpreadsheetSettingsWidgetValue {
 
     constructor(props) {
         super(props);
@@ -67,7 +67,7 @@ export default class SpreadsheetDrawerWidgetSlider extends SpreadsheetDrawerWidg
     }
 }
 
-SpreadsheetDrawerWidgetSlider.propTypes = SpreadsheetDrawerWidgetValue.createPropTypes(
+SpreadsheetSettingsWidgetSlider.propTypes = SpreadsheetSettingsWidgetValue.createPropTypes(
     PropTypes.instanceOf(SystemEnum),
     {
         style: PropTypes.object.isRequired,

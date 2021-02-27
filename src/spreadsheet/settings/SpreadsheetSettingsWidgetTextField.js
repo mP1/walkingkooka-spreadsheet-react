@@ -1,11 +1,11 @@
 import React from 'react';
-import SpreadsheetDrawerWidgetValue from "./SpreadsheetDrawerWidgetValue.js";
+import SpreadsheetSettingsWidgetValue from "./SpreadsheetSettingsWidgetValue.js";
 import TextField from "@material-ui/core/TextField";
 
 /**
  * A widget which displays a value for editing using a TextField. Edits are immediately applies upon blur.
  */
-export default class SpreadsheetDrawerWidgetTextField extends SpreadsheetDrawerWidgetValue {
+export default class SpreadsheetSettingsWidgetTextField extends SpreadsheetSettingsWidgetValue {
 
     constructor(props) {
         super(props);

@@ -1,12 +1,12 @@
 import PropTypes from "prop-types";
 import SpreadsheetNumberFormatPattern from "../format/SpreadsheetNumberFormatPattern.js";
-import SpreadsheetDrawerWidgetTextField from "./SpreadsheetDrawerWidgetTextField.js";
-import SpreadsheetDrawerWidgetValue from "./SpreadsheetDrawerWidgetValue.js";
+import SpreadsheetSettingsWidgetTextField from "./SpreadsheetSettingsWidgetTextField.js";
+import SpreadsheetSettingsWidgetValue from "./SpreadsheetSettingsWidgetValue.js";
 
 /**
  * A widget which accepts a String and creates an unvalidated {@link SpreadsheetNumberFormatPattern}.
  */
-export default class SpreadsheetDrawerWidgetSpreadsheetNumberFormatPattern extends SpreadsheetDrawerWidgetTextField {
+export default class SpreadsheetSettingsWidgetSpreadsheetNumberFormatPattern extends SpreadsheetSettingsWidgetTextField {
 
     constructor(props) {
         super(props);
@@ -34,4 +34,4 @@ export default class SpreadsheetDrawerWidgetSpreadsheetNumberFormatPattern exten
     }
 }
 
-SpreadsheetDrawerWidgetSpreadsheetNumberFormatPattern.propTypes = SpreadsheetDrawerWidgetValue.createPropTypes(PropTypes.instanceOf(SpreadsheetNumberFormatPattern));
+SpreadsheetSettingsWidgetSpreadsheetNumberFormatPattern.propTypes = SpreadsheetSettingsWidgetValue.createPropTypes(PropTypes.instanceOf(SpreadsheetNumberFormatPattern));

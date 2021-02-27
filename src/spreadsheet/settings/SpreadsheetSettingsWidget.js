@@ -11,34 +11,35 @@ import Paper from '@material-ui/core/Paper';
 import PropTypes from 'prop-types';
 import React from 'react';
 import RoundingMode from "../../math/RoundingMode.js";
-import SpreadsheetDrawerWidgetCharacter from "./SpreadsheetDrawerWidgetCharacter.js";
-import SpreadsheetDrawerWidgetDropDownList from "./SpreadsheetDrawerWidgetDropDownList.js";
-import SpreadsheetDrawerWidgetSlider from "./SpreadsheetDrawerWidgetSlider.js";
-import SpreadsheetDrawerWidgetSliderWithNumberTextField from "./SpreadsheetDrawerWidgetSliderWithNumberTextField.js";
-import SpreadsheetDrawerWidgetSpreadsheetDateFormatPattern
-    from "./SpreadsheetDrawerWidgetSpreadsheetDateFormatPattern.js";
-import SpreadsheetDrawerWidgetSpreadsheetDateParsePatterns
-    from "./SpreadsheetDrawerWidgetSpreadsheetDateParsePatterns.js";
-import SpreadsheetDrawerWidgetSpreadsheetDateTimeFormatPattern
-    from "./SpreadsheetDrawerWidgetSpreadsheetDateTimeFormatPattern.js";
-import SpreadsheetDrawerWidgetSpreadsheetDateTimeParsePatterns
-    from "./SpreadsheetDrawerWidgetSpreadsheetDateTimeParsePatterns.js";
-import SpreadsheetDrawerWidgetSpreadsheetNumberFormatPattern
-    from "./SpreadsheetDrawerWidgetSpreadsheetNumberFormatPattern.js";
-import SpreadsheetDrawerWidgetSpreadsheetNumberParsePatterns
-    from "./SpreadsheetDrawerWidgetSpreadsheetNumberParsePatterns.js";
-import SpreadsheetDrawerWidgetString from "./SpreadsheetDrawerWidgetString.js";
-import SpreadsheetDrawerWidgetSpreadsheetTextFormatPattern
-    from "./SpreadsheetDrawerWidgetSpreadsheetTextFormatPattern.js";
-import SpreadsheetDrawerWidgetSpreadsheetTimeFormatPattern
-    from "./SpreadsheetDrawerWidgetSpreadsheetTimeFormatPattern.js";
-import SpreadsheetDrawerWidgetSpreadsheetTimeParsePatterns
-    from "./SpreadsheetDrawerWidgetSpreadsheetTimeParsePatterns.js";
 import SpreadsheetFormatRequest from "../server/format/SpreadsheetFormatRequest.js";
 import SpreadsheetLocaleDefaultDateTimeFormat from "../server/format/SpreadsheetLocaleDefaultDateTimeFormat.js";
 import SpreadsheetMetadata from "../meta/SpreadsheetMetadata.js";
 import SpreadsheetMultiFormatRequest from "../server/format/SpreadsheetMultiFormatRequest.js";
 import SpreadsheetMultiFormatResponse from "../server/format/SpreadsheetMultiFormatResponse.js";
+import SpreadsheetSettingsWidgetCharacter from "./SpreadsheetSettingsWidgetCharacter.js";
+import SpreadsheetSettingsWidgetDropDownList from "./SpreadsheetSettingsWidgetDropDownList.js";
+import SpreadsheetSettingsWidgetSlider from "./SpreadsheetSettingsWidgetSlider.js";
+import SpreadsheetSettingsWidgetSliderWithNumberTextField
+    from "./SpreadsheetSettingsWidgetSliderWithNumberTextField.js";
+import SpreadsheetSettingsWidgetSpreadsheetDateFormatPattern
+    from "./SpreadsheetSettingsWidgetSpreadsheetDateFormatPattern.js";
+import SpreadsheetSettingsWidgetSpreadsheetDateParsePatterns
+    from "./SpreadsheetSettingsWidgetSpreadsheetDateParsePatterns.js";
+import SpreadsheetSettingsWidgetSpreadsheetDateTimeFormatPattern
+    from "./SpreadsheetSettingsWidgetSpreadsheetDateTimeFormatPattern.js";
+import SpreadsheetSettingsWidgetSpreadsheetDateTimeParsePatterns
+    from "./SpreadsheetSettingsWidgetSpreadsheetDateTimeParsePatterns.js";
+import SpreadsheetSettingsWidgetSpreadsheetNumberFormatPattern
+    from "./SpreadsheetSettingsWidgetSpreadsheetNumberFormatPattern.js";
+import SpreadsheetSettingsWidgetSpreadsheetNumberParsePatterns
+    from "./SpreadsheetSettingsWidgetSpreadsheetNumberParsePatterns.js";
+import SpreadsheetSettingsWidgetSpreadsheetTextFormatPattern
+    from "./SpreadsheetSettingsWidgetSpreadsheetTextFormatPattern.js";
+import SpreadsheetSettingsWidgetSpreadsheetTimeFormatPattern
+    from "./SpreadsheetSettingsWidgetSpreadsheetTimeFormatPattern.js";
+import SpreadsheetSettingsWidgetSpreadsheetTimeParsePatterns
+    from "./SpreadsheetSettingsWidgetSpreadsheetTimeParsePatterns.js";
+import SpreadsheetSettingsWidgetString from "./SpreadsheetSettingsWidgetString.js";
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -50,7 +51,7 @@ const DEFAULT_VALUE_FORMATTER_LABEL = (v) => v ? v.label() : "";
 const DEFAULT_VALUE_FORMATTER_TOSTRING = (v) => v ? v.toString() : "";
 
 /**
- * The drawer appears holds all general settings and tools for a spreadsheet sheet.
+ * The settings appears holds all general settings and tools for a spreadsheet sheet.
  */
 const useStyles = theme => ({
     root: {
@@ -72,7 +73,7 @@ const useStyles = theme => ({
     },
 });
 
-class SpreadsheetDrawerWidget extends React.Component {
+class SpreadsheetSettingsWidget extends React.Component {
 
     constructor(props) {
         super(props);
@@ -154,7 +155,7 @@ class SpreadsheetDrawerWidget extends React.Component {
                 this.spreadsheetStyle(classes)
             ]);
 
-        return <Drawer id={"settings-tools-drawer"}
+        return <Drawer id={"settings"}
                        anchor={"right"}
                        variant={"persistent"}
                        open={this.state.open}
@@ -383,49 +384,49 @@ class SpreadsheetDrawerWidget extends React.Component {
                 switch(property) {
                     case SpreadsheetMetadata.CURRENCY_SYMBOL:
                         render = (
-                            <SpreadsheetDrawerWidgetString id={id}
-                                                           value={value}
-                                                           defaultValue={defaultValue}
-                                                           defaultValueFormatter={(s) => s}
-                                                           defaultButtonTooltip={false}
-                                                           setValue={setValue}
+                            <SpreadsheetSettingsWidgetString id={id}
+                                                             value={value}
+                                                             defaultValue={defaultValue}
+                                                             defaultValueFormatter={(s) => s}
+                                                             defaultButtonTooltip={false}
+                                                             setValue={setValue}
                             />
                         );
                         break;
                     case SpreadsheetMetadata.DATE_FORMAT_PATTERN:
-                        render = <SpreadsheetDrawerWidgetSpreadsheetDateFormatPattern id={id}
-                                                                                      value={value}
-                                                                                      defaultValue={defaultValue}
-                                                                                      defaultValueFormatter={DEFAULT_VALUE_FORMATTER_TOSTRING}
-                                                                                      defaultButtonTooltip={true}
-                                                                                      setValue={setValue}
+                        render = <SpreadsheetSettingsWidgetSpreadsheetDateFormatPattern id={id}
+                                                                                        value={value}
+                                                                                        defaultValue={defaultValue}
+                                                                                        defaultValueFormatter={DEFAULT_VALUE_FORMATTER_TOSTRING}
+                                                                                        defaultButtonTooltip={true}
+                                                                                        setValue={setValue}
                             />;
                         break;
                     case SpreadsheetMetadata.DATE_PARSE_PATTERNS:
-                        render = <SpreadsheetDrawerWidgetSpreadsheetDateParsePatterns id={id}
-                                                                                      value={value}
-                                                                                      defaultValue={defaultValue}
-                                                                                      defaultValueFormatter={DEFAULT_VALUE_FORMATTER_TOSTRING}
-                                                                                      defaultButtonTooltip={true}
-                                                                                      setValue={setValue}
+                        render = <SpreadsheetSettingsWidgetSpreadsheetDateParsePatterns id={id}
+                                                                                        value={value}
+                                                                                        defaultValue={defaultValue}
+                                                                                        defaultValueFormatter={DEFAULT_VALUE_FORMATTER_TOSTRING}
+                                                                                        defaultButtonTooltip={true}
+                                                                                        setValue={setValue}
                         />;
                         break;
                     case SpreadsheetMetadata.DATETIME_FORMAT_PATTERN:
-                        render = <SpreadsheetDrawerWidgetSpreadsheetDateTimeFormatPattern id={id}
-                                                                                          value={value}
-                                                                                          defaultValue={defaultValue}
-                                                                                          defaultValueFormatter={DEFAULT_VALUE_FORMATTER_TOSTRING}
-                                                                                          defaultButtonTooltip={true}
-                                                                                          setValue={setValue}
+                        render = <SpreadsheetSettingsWidgetSpreadsheetDateTimeFormatPattern id={id}
+                                                                                            value={value}
+                                                                                            defaultValue={defaultValue}
+                                                                                            defaultValueFormatter={DEFAULT_VALUE_FORMATTER_TOSTRING}
+                                                                                            defaultButtonTooltip={true}
+                                                                                            setValue={setValue}
                         />;
                         break;
                     case SpreadsheetMetadata.DATETIME_PARSE_PATTERNS:
-                        render = <SpreadsheetDrawerWidgetSpreadsheetDateTimeParsePatterns id={id}
-                                                                                          value={value}
-                                                                                          defaultValue={defaultValue}
-                                                                                          defaultValueFormatter={DEFAULT_VALUE_FORMATTER_TOSTRING}
-                                                                                          defaultButtonTooltip={true}
-                                                                                          setValue={setValue}
+                        render = <SpreadsheetSettingsWidgetSpreadsheetDateTimeParsePatterns id={id}
+                                                                                            value={value}
+                                                                                            defaultValue={defaultValue}
+                                                                                            defaultValueFormatter={DEFAULT_VALUE_FORMATTER_TOSTRING}
+                                                                                            defaultButtonTooltip={true}
+                                                                                            setValue={setValue}
                         />;
                         break;
                     case SpreadsheetMetadata.DECIMAL_SEPARATOR:
@@ -436,13 +437,13 @@ class SpreadsheetDrawerWidget extends React.Component {
                     case SpreadsheetMetadata.POSITIVE_SIGN:
                     case SpreadsheetMetadata.VALUE_SEPARATOR:
                         render = (
-                            <SpreadsheetDrawerWidgetCharacter id={id}
-                                                              key={[id,value]}
-                                                              value={value}
-                                                              defaultValue={defaultValue}
-                                                              defaultValueFormatter={DEFAULT_VALUE_FORMATTER_TOSTRING}
-                                                              defaultButtonTooltip={false}
-                                                              setValue={setValue}
+                            <SpreadsheetSettingsWidgetCharacter id={id}
+                                                                key={[id,value]}
+                                                                value={value}
+                                                                defaultValue={defaultValue}
+                                                                defaultValueFormatter={DEFAULT_VALUE_FORMATTER_TOSTRING}
+                                                                defaultButtonTooltip={false}
+                                                                setValue={setValue}
                             />
                         );
                         break;
@@ -461,14 +462,14 @@ class SpreadsheetDrawerWidget extends React.Component {
                             default:
                                 break;
                         }
-                        render = <SpreadsheetDrawerWidgetSlider id={id}
-                                                                style={style}
-                                                                values={values}
-                                                                value={value}
-                                                                defaultValue={defaultValue}
-                                                                defaultValueFormatter={DEFAULT_VALUE_FORMATTER_LABEL}
-                                                                defaultButtonTooltip={false}
-                                                                setValue={setValue}
+                        render = <SpreadsheetSettingsWidgetSlider id={id}
+                                                                  style={style}
+                                                                  values={values}
+                                                                  value={value}
+                                                                  defaultValue={defaultValue}
+                                                                  defaultValueFormatter={DEFAULT_VALUE_FORMATTER_LABEL}
+                                                                  defaultButtonTooltip={false}
+                                                                  setValue={setValue}
                         />;
                         break;
                     case SpreadsheetMetadata.DATETIME_OFFSET:
@@ -603,35 +604,35 @@ class SpreadsheetDrawerWidget extends React.Component {
                                 break;
                         }
                         // DATE_TIME_OFFSET defaultValue also requires string -> number
-                        render = <SpreadsheetDrawerWidgetSliderWithNumberTextField id={id}
-                                                                                   style={style}
-                                                                                   min={min}
-                                                                                   max={max}
-                                                                                   marks={marks}
-                                                                                   step={step}
-                                                                                   value={numberValue}
-                                                                                   defaultValue={typeof defaultValue === "string" ? parseInt(defaultValue) : defaultValue}
-                                                                                   defaultValueFormatter={DEFAULT_VALUE_FORMATTER_TOSTRING}
-                                                                                   defaultButtonTooltip={false}
-                                                                                   setValue={setValue}
+                        render = <SpreadsheetSettingsWidgetSliderWithNumberTextField id={id}
+                                                                                     style={style}
+                                                                                     min={min}
+                                                                                     max={max}
+                                                                                     marks={marks}
+                                                                                     step={step}
+                                                                                     value={numberValue}
+                                                                                     defaultValue={typeof defaultValue === "string" ? parseInt(defaultValue) : defaultValue}
+                                                                                     defaultValueFormatter={DEFAULT_VALUE_FORMATTER_TOSTRING}
+                                                                                     defaultButtonTooltip={false}
+                                                                                     setValue={setValue}
                         />;
                         break;
                     case SpreadsheetMetadata.NUMBER_FORMAT_PATTERN:
-                        render = <SpreadsheetDrawerWidgetSpreadsheetNumberFormatPattern id={id}
-                                                                                        value={value}
-                                                                                        defaultValue={defaultValue}
-                                                                                        defaultValueFormatter={DEFAULT_VALUE_FORMATTER_TOSTRING}
-                                                                                        defaultButtonTooltip={true}
-                                                                                        setValue={setValue}
+                        render = <SpreadsheetSettingsWidgetSpreadsheetNumberFormatPattern id={id}
+                                                                                          value={value}
+                                                                                          defaultValue={defaultValue}
+                                                                                          defaultValueFormatter={DEFAULT_VALUE_FORMATTER_TOSTRING}
+                                                                                          defaultButtonTooltip={true}
+                                                                                          setValue={setValue}
                         />;
                         break;
                     case SpreadsheetMetadata.NUMBER_PARSE_PATTERNS:
-                        render = <SpreadsheetDrawerWidgetSpreadsheetNumberParsePatterns id={id}
-                                                                                        value={value}
-                                                                                        defaultValue={defaultValue}
-                                                                                        defaultValueFormatter={DEFAULT_VALUE_FORMATTER_TOSTRING}
-                                                                                        defaultButtonTooltip={true}
-                                                                                        setValue={setValue}
+                        render = <SpreadsheetSettingsWidgetSpreadsheetNumberParsePatterns id={id}
+                                                                                          value={value}
+                                                                                          defaultValue={defaultValue}
+                                                                                          defaultValueFormatter={DEFAULT_VALUE_FORMATTER_TOSTRING}
+                                                                                          defaultButtonTooltip={true}
+                                                                                          setValue={setValue}
                         />;
                         break;
                     case SpreadsheetMetadata.ROUNDING_MODE:
@@ -644,40 +645,40 @@ class SpreadsheetDrawerWidget extends React.Component {
                             default:
                                 break;
                         }
-                        render = <SpreadsheetDrawerWidgetDropDownList id={id}
-                                                                      values={values}
-                                                                      value={value}
-                                                                      defaultValue={defaultValue}
-                                                                      defaultValueFormatter={DEFAULT_VALUE_FORMATTER_LABEL}
-                                                                      defaultButtonTooltip={false}
-                                                                      setValue={setValue}
+                        render = <SpreadsheetSettingsWidgetDropDownList id={id}
+                                                                        values={values}
+                                                                        value={value}
+                                                                        defaultValue={defaultValue}
+                                                                        defaultValueFormatter={DEFAULT_VALUE_FORMATTER_LABEL}
+                                                                        defaultButtonTooltip={false}
+                                                                        setValue={setValue}
                         />;
                         break;
                     case SpreadsheetMetadata.TEXT_FORMAT_PATTERN:
-                        render = <SpreadsheetDrawerWidgetSpreadsheetTextFormatPattern id={id}
-                                                                                      value={value}
-                                                                                      defaultValue={defaultValue}
-                                                                                      defaultValueFormatter={DEFAULT_VALUE_FORMATTER_TOSTRING}
-                                                                                      defaultButtonTooltip={true}
-                                                                                      setValue={setValue}
+                        render = <SpreadsheetSettingsWidgetSpreadsheetTextFormatPattern id={id}
+                                                                                        value={value}
+                                                                                        defaultValue={defaultValue}
+                                                                                        defaultValueFormatter={DEFAULT_VALUE_FORMATTER_TOSTRING}
+                                                                                        defaultButtonTooltip={true}
+                                                                                        setValue={setValue}
                         />;
                         break;
                     case SpreadsheetMetadata.TIME_FORMAT_PATTERN:
-                        render = <SpreadsheetDrawerWidgetSpreadsheetTimeFormatPattern id={id}
-                                                                                      value={value}
-                                                                                      defaultValue={defaultValue}
-                                                                                      defaultValueFormatter={DEFAULT_VALUE_FORMATTER_TOSTRING}
-                                                                                      defaultButtonTooltip={true}
-                                                                                      setValue={setValue}
+                        render = <SpreadsheetSettingsWidgetSpreadsheetTimeFormatPattern id={id}
+                                                                                        value={value}
+                                                                                        defaultValue={defaultValue}
+                                                                                        defaultValueFormatter={DEFAULT_VALUE_FORMATTER_TOSTRING}
+                                                                                        defaultButtonTooltip={true}
+                                                                                        setValue={setValue}
                         />;
                         break;
                     case SpreadsheetMetadata.TIME_PARSE_PATTERNS:
-                        render = <SpreadsheetDrawerWidgetSpreadsheetTimeParsePatterns id={id}
-                                                                                      value={value}
-                                                                                      defaultValue={defaultValue}
-                                                                                      defaultValueFormatter={DEFAULT_VALUE_FORMATTER_TOSTRING}
-                                                                                      defaultButtonTooltip={true}
-                                                                                      setValue={setValue}
+                        render = <SpreadsheetSettingsWidgetSpreadsheetTimeParsePatterns id={id}
+                                                                                        value={value}
+                                                                                        defaultValue={defaultValue}
+                                                                                        defaultValueFormatter={DEFAULT_VALUE_FORMATTER_TOSTRING}
+                                                                                        defaultButtonTooltip={true}
+                                                                                        setValue={setValue}
                         />;
                         break;
                     default:
@@ -704,7 +705,7 @@ class SpreadsheetDrawerWidget extends React.Component {
     // https://material-ui.com/components/accordion/
 
     /**
-     * Creates the accordion container so all sections in the drawer have a common look and feel and history hash management.
+     * Creates the accordion container so all sections in the settings have a common look and feel and history hash management.
      */
     // TODO pass onChange to update history hash
     // TODO AccordionSummary aria-control
@@ -745,13 +746,13 @@ class SpreadsheetDrawerWidget extends React.Component {
     }
 }
 
-SpreadsheetDrawerWidget.propTypes = {
-    open: PropTypes.bool.isRequired, // open=true shows the drawer
-    onClose: PropTypes.func.isRequired, // fired when the drawer is closed
-    width: PropTypes.number.isRequired, // the width includes px of the drawer
+SpreadsheetSettingsWidget.propTypes = {
+    open: PropTypes.bool.isRequired, // open=true shows the settings
+    onClose: PropTypes.func.isRequired, // fired when the settings is closed
+    width: PropTypes.number.isRequired, // the width includes px of the settings
     formatCreateDateTimeModifiedDateTime: PropTypes.func.isRequired, // required to format date/times, parameters: SpreadsheetMultiFormatRequest, successHandler => SpreadsheetMultiFormatResponse
     spreadsheetMetadata: PropTypes.instanceOf(SpreadsheetMetadata).isRequired,
     setSpreadsheetMetadata: PropTypes.func.isRequired, // fired when the SpreadsheetMetadata is updated.
 }
 
-export default withStyles(useStyles)(SpreadsheetDrawerWidget);
+export default withStyles(useStyles)(SpreadsheetSettingsWidget);

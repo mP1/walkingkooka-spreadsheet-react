@@ -1,13 +1,13 @@
 import PropTypes from "prop-types";
 import React from 'react';
 import Slider from "@material-ui/core/Slider";
-import SpreadsheetDrawerWidgetValue from "./SpreadsheetDrawerWidgetValue.js";
+import SpreadsheetSettingsWidgetValue from "./SpreadsheetSettingsWidgetValue.js";
 import TextField from "@material-ui/core/TextField";
 
 /**
  * Shows a slider with min/max along with a text box which accepts only numbers
  */
-export default class SpreadsheetDrawerWidgetSliderWithNumberTextField extends SpreadsheetDrawerWidgetValue {
+export default class SpreadsheetSettingsWidgetSliderWithNumberTextField extends SpreadsheetSettingsWidgetValue {
 
     constructor(props) {
         super(props);
@@ -100,7 +100,7 @@ export default class SpreadsheetDrawerWidgetSliderWithNumberTextField extends Sp
     }
 }
 
-SpreadsheetDrawerWidgetSliderWithNumberTextField.propTypes = SpreadsheetDrawerWidgetValue.createPropTypes(
+SpreadsheetSettingsWidgetSliderWithNumberTextField.propTypes = SpreadsheetSettingsWidgetValue.createPropTypes(
     PropTypes.number,
     {
         min: PropTypes.number.isRequired,
