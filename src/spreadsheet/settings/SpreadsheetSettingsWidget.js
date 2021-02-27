@@ -183,7 +183,7 @@ class SpreadsheetSettingsWidget extends React.Component {
      */
     metadata(classes) {
         const rows = [
-            this.row("Spreadsheet Id", SpreadsheetMetadata.SPREADSHEET_ID),
+            this.row("Id", SpreadsheetMetadata.SPREADSHEET_ID),
             this.row("Creator", SpreadsheetMetadata.CREATOR),
             this.row("Create Date/Time", SpreadsheetMetadata.CREATE_DATE_TIME),
             this.row("Modified by", SpreadsheetMetadata.MODIFIED_BY),
@@ -195,7 +195,7 @@ class SpreadsheetSettingsWidget extends React.Component {
             () => {
             },
             classes,
-            "Spreadsheet Metadata",
+            "Metadata",
             "",
             "Readonly Spreadsheet Metadata",
             rows,
