@@ -36,9 +36,24 @@ import WindowResizer from "./widget/WindowResizer";
 const SETTINGS_WIDTH = 500;
 
 /**
+ * History token for cell related actions.
+ */
+const HASH_CELL = "cell";
+
+/**
  * History token noting that a cell formula is being edited.
  */
-const FORMULA_EDIT_HASH = "formula";
+const HASH_FORMULA_EDIT = "formula";
+
+/**
+ * History token used for spreadsheet name actions.
+ */
+const HASH_NAME = "name";
+
+/**
+ * History token when editing the spreadsheet name actions.
+ */
+const HASH_EDIT = "edit";
 
 const useStyles = theme => ({
     header: {
@@ -96,7 +111,7 @@ class App extends React.Component {
         var message;
         const hash = [spreadsheetId, spreadsheetName];
         if(mode){
-            hash.push("name", "edit");
+            hash.push(HASH_NAME, HASH_EDIT);
             message = "History hash updated, begin edit spreadsheet name";
         }else {
             message = "History hash updated, stop edit spreadsheet name";
@@ -184,7 +199,7 @@ class App extends React.Component {
                                     closeSettings = false;
                                     valid = true;
                                     break;
-                                case "cell":
+                                case HASH_CELL:
                                     // cell after name is a fail
                                     if(name){
                                         valid = this.historyUnknownTarget(metadata); // returns false, which will stop editcell, edit name and close settings
@@ -198,7 +213,7 @@ class App extends React.Component {
                                         verifiedHistoryHashTokens.push(target, cellReference, action);
                                     }
                                     break;
-                                case "name":
+                                case HASH_NAME:
                                     // name after cell is a fail.
                                     if(cell){
                                         valid = this.historyUnknownTarget(metadata); // returns false, which will stop editcell, edit name and close settings
@@ -291,7 +306,7 @@ class App extends React.Component {
                 const hashSpreadsheetCellReference = SpreadsheetCellReference.parse(cellReference);
 
                 switch(action) {
-                    case FORMULA_EDIT_HASH:
+                    case HASH_FORMULA_EDIT:
                         // state does not match hash, update state.
                         const metadataEditCell = metadata.get(SpreadsheetMetadata.EDIT_CELL);
                         if(!Equality.safeEquals(cellReference, metadataEditCell)){
@@ -329,7 +344,7 @@ class App extends React.Component {
         var pass;
 
         switch(action) {
-            case "edit":
+            case HASH_EDIT:
                 this.editSpreadsheetName(true);
                 pass = true;
                 break;
@@ -407,7 +422,7 @@ class App extends React.Component {
             const spreadsheetNameWidget = this.spreadsheetName.current;
             if(spreadsheetNameWidget && spreadsheetNameWidget.isEdit()){
                 hash.length = 2;
-                hash.push("name", "edit");
+                hash.push(HASH_NAME, HASH_EDIT);
             }
         }
 
@@ -591,9 +606,9 @@ class App extends React.Component {
         }
 
         if(reference){
-            hash[2] = "cell";
+            hash[2] = HASH_CELL;
             hash[3] = reference;
-            hash[4] = FORMULA_EDIT_HASH;
+            hash[4] = HASH_FORMULA_EDIT;
         }
     }
 
