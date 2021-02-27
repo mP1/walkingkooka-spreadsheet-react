@@ -35,7 +35,7 @@ context("General app usage", () => {
         spreadsheetName()
             .click();
 
-        hash().should('match', /.*\/.*\/name\/edit/) // => true
+        hash().should('match', /.*\/.*\/name/) // => true
 
         const updatedSpreadsheetName = "SpreadsheetName234"; // easier to use in regex below
 
