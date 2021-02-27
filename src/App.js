@@ -50,11 +50,6 @@ const HASH_FORMULA_EDIT = "formula";
  */
 const HASH_NAME = "name";
 
-/**
- * History token when editing the spreadsheet name actions.
- */
-const HASH_EDIT = "edit";
-
 const useStyles = theme => ({
     header: {
         zIndex: theme.zIndex.settings + 1, // forces settings to not overlap application header
@@ -111,7 +106,7 @@ class App extends React.Component {
         var message;
         const hash = [spreadsheetId, spreadsheetName];
         if(mode){
-            hash.push(HASH_NAME, HASH_EDIT);
+            hash.push(HASH_NAME);
             message = "History hash updated, begin edit spreadsheet name";
         }else {
             message = "History hash updated, stop edit spreadsheet name";
@@ -219,7 +214,9 @@ class App extends React.Component {
                                         valid = this.historyUnknownTarget(metadata); // returns false, which will stop editcell, edit name and close settings
                                         break;
                                     }
-                                    valid = this.historySpreadsheetNameAction(historyHashTokens.shift());
+                                    historyHashTokens.shift();
+                                    this.editSpreadsheetName(true);
+                                    valid = true;
                                     break;
                                 default:
                                     valid = this.historyUnknownTarget(metadata);
@@ -338,25 +335,6 @@ class App extends React.Component {
     }
 
     /**
-     * Handles any actions in the hash directly related to the spreadsheet name.
-     */
-    historySpreadsheetNameAction(action) {
-        var pass;
-
-        switch(action) {
-            case HASH_EDIT:
-                this.editSpreadsheetName(true);
-                pass = true;
-                break;
-            default:
-                this.editSpreadsheetName(false);
-                pass = false;
-                break;
-        }
-        return pass;
-    }
-
-    /**
      * The history hash contains an unknown target remove the target and following from the history hash.
      */
     historyUnknownTarget(metadata) {
@@ -417,12 +395,12 @@ class App extends React.Component {
         this.stateSpreadsheetFormula(hash);
         this.stateSpreadsheetSettings(hash);
 
-        // special case restore /name/edit if spreadsheet name is being edited.
+        // special case restore /name if spreadsheet name is being edited.
         if(hash.length >= 2){
             const spreadsheetNameWidget = this.spreadsheetName.current;
             if(spreadsheetNameWidget && spreadsheetNameWidget.isEdit()){
                 hash.length = 2;
-                hash.push(HASH_NAME, HASH_EDIT);
+                hash.push(HASH_NAME);
             }
         }
 
