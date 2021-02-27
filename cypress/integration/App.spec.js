@@ -333,7 +333,7 @@ context("General app usage", () => {
                 cellFormattedTextCheck(a1, a1CellContent);
             }
 
-            cy.wait(10); // need time for UI to settle
+            reactRenderWait();
 
             const buttonId = "#spreadsheet-metadata-" + property + "-default-button";
             cy.get(buttonId)
