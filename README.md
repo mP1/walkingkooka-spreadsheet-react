@@ -64,8 +64,10 @@ Components within a hash that begin with dollar sign '$' represent a variable of
 components are actual literals.
 
 - $spreadsheet-id / $spreadsheet name  viewing spreadsheet with nothing selected for editing
-- $spreadsheet-id / $spreadsheet name / name / edit  editing the spreadsheet name
+- $spreadsheet-id / $spreadsheet name / name / editing the spreadsheet name
 - $spreadsheet-id / $spreadsheet name / cellReference / $cellReference-reference / formula  editing the formula belonging to a cellReference. 
+- $spreadsheet-id / $spreadsheet name / settings / open the settings panel
+
 
 
 ## Value types
