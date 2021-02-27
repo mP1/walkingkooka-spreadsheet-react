@@ -165,21 +165,21 @@ context("General app usage", () => {
         cellFormattedTextCheck("F6", "6.");
     });
 
-    // DRAWER ............................................................................................................
+    // SETTINGS.........................................................................................................
 
-    it("Toggle(Show and hide) drawer", () => {
-        settingsToolDrawerToggle();
+    it("Toggle(Show and hide) settings", () => {
+        settingsToggle();
 
-        settingsToolDrawer()
+        settings()
             .should('be.visible');
 
-        settingsToolDrawerToggle();
+        settingsToggle();
 
-        settingsToolDrawer()
+        settings()
             .should('be.not.visible');
     });
 
-    it("Show drawer by editing history hash", () => {
+    it("Show settings by editing history hash", () => {
         reactRenderWait();
 
         cy.window()
@@ -189,12 +189,12 @@ context("General app usage", () => {
             });
 
         reactRenderWait();
-        settingsToolDrawer()
+        settings()
             .should('be.visible');
     });
 
-    it("Hide drawer by editing history hash", () => {
-        settingsToolDrawerToggle();
+    it("Hide settings by editing history hash", () => {
+        settingsToggle();
         reactRenderWait();
 
         cy.window()
@@ -204,18 +204,18 @@ context("General app usage", () => {
             });
 
         reactRenderWait();
-        settingsToolDrawer()
+        settings()
             .should('be.not.visible');
     });
 
-    it("Toggle show drawer history hash", () => {
+    it("Toggle show settings history hash", () => {
         reactRenderWait();
 
         cy.window()
             .then(function(win) {
                 var hash = win.location.hash;
 
-                settingsToolDrawerToggle();
+                settingsToggle();
 
                 reactRenderWait();
                 cy.hash()
@@ -223,15 +223,15 @@ context("General app usage", () => {
             });
     });
 
-    it("Toggle show then hide drawer history hash", () => {
+    it("Toggle show then hide settings history hash", () => {
         reactRenderWait();
 
         cy.window()
             .then(function(win) {
                 var hash = win.location.hash;
 
-                settingsToolDrawerToggle();
-                settingsToolDrawerToggle();
+                settingsToggle();
+                settingsToggle();
 
                 reactRenderWait();
                 cy.hash()
@@ -239,7 +239,7 @@ context("General app usage", () => {
             });
     });
 
-    it("Edit spreadsheet name, then toggle show drawer history hash", () => {
+    it("Edit spreadsheet name, then toggle show settings history hash", () => {
         spreadsheetName();
 
         reactRenderWait();
@@ -248,7 +248,7 @@ context("General app usage", () => {
             .then(function(win) {
                 var hash = win.location.hash;
 
-                settingsToolDrawerToggle();
+                settingsToggle();
 
                 reactRenderWait();
                 cy.hash()
@@ -256,7 +256,7 @@ context("General app usage", () => {
             });
     });
 
-    it("Edit cell, then toggle show drawer history hash", () => {
+    it("Edit cell, then toggle show settings history hash", () => {
         cellClick("F6");
 
         reactRenderWait();
@@ -265,7 +265,7 @@ context("General app usage", () => {
             .then(function(win) {
                 var hash = win.location.hash;
 
-                settingsToolDrawerToggle();
+                settingsToggle();
 
                 reactRenderWait();
                 cy.hash()
@@ -273,10 +273,10 @@ context("General app usage", () => {
             });
     });
 
-    it("Show drawer check creator-date-time/modified-date-time", () => {
-        settingsToolDrawerToggle();
+    it("Show settings check creator-date-time/modified-date-time", () => {
+        settingsToggle();
 
-        settingsToolDrawer()
+        settings()
             .should('be.visible');
 
         const year = new Date().getFullYear();
@@ -289,7 +289,7 @@ context("General app usage", () => {
     });
 
     /**
-     * Opens the spreadsheet drawer, types in the given text, and verifies the property.
+     * Opens the spreadsheet settings, types in the given text, and verifies the property.
      * The button is then clicked and the text field is verified.
      */
     function enterSpreadsheetMetadataTextAndCheck(property,
@@ -299,10 +299,10 @@ context("General app usage", () => {
                                                   updatedA1Formula,
                                                   a1CellContent,
                                                   a1CellContentDefault) {
-        it("Show drawer and update SpreadsheetMetadata." + property, () => {
-            settingsToolDrawerToggle();
+        it("Show settings and update SpreadsheetMetadata." + property, () => {
+            settingsToggle();
 
-            settingsToolDrawer()
+            settings()
                 .should('be.visible');
 
             const a1 = "A1";
@@ -532,10 +532,10 @@ context("General app usage", () => {
                                                    text1,
                                                    property2,
                                                    text2) {
-        it("Show drawer and update SpreadsheetMetadata." + property1 + "=" + text1 + " & " + property2 + "=" + text2 + " causing value swap", () => {
-            settingsToolDrawerToggle();
+        it("Show settings and update SpreadsheetMetadata." + property1 + "=" + text1 + " & " + property2 + "=" + text2 + " causing value swap", () => {
+            settingsToggle();
 
-            settingsToolDrawer()
+            settings()
                 .should('be.visible');
 
             const textFieldId1 = "#spreadsheet-metadata-" + property1 + "-TextField";
@@ -599,7 +599,7 @@ context("General app usage", () => {
     );
 
     /**
-     * Opens the spreadsheet drawer, selects each value by clicking the slider.
+     * Opens the spreadsheet settings, selects each value by clicking the slider.
      * TODO Currently no test is made upon the a1 cell contents.
      */
     function enterSpreadsheetMetadataSliderAndCheck(property,
@@ -607,10 +607,10 @@ context("General app usage", () => {
                                                     values,
                                                     a1CellContents,
                                                     a1CellContentDefault) {
-        it("Show drawer and update SpreadsheetMetadata." + property, () => {
-            settingsToolDrawerToggle();
+        it("Show settings and update SpreadsheetMetadata." + property, () => {
+            settingsToggle();
 
-            settingsToolDrawer()
+            settings()
                 .should('be.visible');
 
             const a1 = "A1";
@@ -647,7 +647,7 @@ context("General app usage", () => {
     );
 
     /**
-     * Opens the spreadsheet drawer, selects each value by clicking the slider.
+     * Opens the spreadsheet settings, selects each value by clicking the slider.
      * TODO Currently no test is made upon the a1 cell contents.
      */
     function enterSpreadsheetMetadataSliderNumberTextFieldAndCheck(property,
@@ -655,10 +655,10 @@ context("General app usage", () => {
                                                     values,
                                                     a1CellContents,
                                                     a1CellContentDefault) {
-        it("Show drawer and update SpreadsheetMetadata." + property, () => {
-            settingsToolDrawerToggle();
+        it("Show settings and update SpreadsheetMetadata." + property, () => {
+            settingsToggle();
 
-            settingsToolDrawer()
+            settings()
                 .should('be.visible');
 
             const dateParsePatternsId = "#spreadsheet-metadata-" + SpreadsheetMetadata.DATE_PARSE_PATTERNS + "-TextField";
@@ -850,7 +850,7 @@ context("General app usage", () => {
     );
 
     /**
-     * Opens the spreadsheet drawer, selects each value by clicking the drop down list (select).
+     * Opens the spreadsheet settings, selects each value by clicking the drop down list (select).
      * TODO Currently no test is made upon the a1 cell contents.
      */
     function enterSpreadsheetMetadataDropDownListAndCheck(property,
@@ -858,10 +858,10 @@ context("General app usage", () => {
                                                           values,
                                                           a1CellContents,
                                                           a1CellContentDefault) {
-        it("Show drawer and update SpreadsheetMetadata." + property, () => {
-            settingsToolDrawerToggle();
+        it("Show settings and update SpreadsheetMetadata." + property, () => {
+            settingsToggle();
 
-            settingsToolDrawer()
+            settings()
                 .should('be.visible');
 
             const a1 = "A1";
@@ -987,20 +987,20 @@ function cellGet(cellReference) {
 }
 
 /**
- * Fetches the icon that when clicked toggles the drawer
+ * Fetches the icon that when clicked toggles the settings
  */
-function settingsToolDrawerToggle() {
+function settingsToggle() {
     reactRenderWait();
-    cy.get("#settings-tools-icon")
+    cy.get("#settings-icon")
         .click();
 }
 
 /**
- * The drawer that appears on the right containing settings, tools and more.
+ * The settings that appears on the right containing settings, tools and more.
  */
-function settingsToolDrawer() {
+function settings() {
     reactRenderWait();
-    return cy.get("#settings-tools-drawer > DIV"); // the #settings-tool-drawer remains 1000x0 while the DIV child has an actual height
+    return cy.get("#settings > DIV"); // the #settings remains 1000x0 while the DIV child has an actual height
 }
 
 function reactRenderWait(period) {

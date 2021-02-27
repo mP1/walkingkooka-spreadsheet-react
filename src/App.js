@@ -14,7 +14,6 @@ import SpreadsheetCellBox from "./spreadsheet/reference/SpreadsheetCellBox";
 import SpreadsheetCellReference from "./spreadsheet/reference/SpreadsheetCellReference.js";
 import SpreadsheetContainerWidget from "./widget/SpreadsheetContainerWidget.js";
 import SpreadsheetCoordinates from "./spreadsheet/SpreadsheetCoordinates.js";
-import SpreadsheetDrawerWidget from "./spreadsheet/drawer/SpreadsheetDrawerWidget.js";
 import SpreadsheetDelta from "./spreadsheet/engine/SpreadsheetDelta";
 import SpreadsheetEngineEvaluation from "./spreadsheet/engine/SpreadsheetEngineEvaluation";
 import SpreadsheetFormula from "./spreadsheet/SpreadsheetFormula";
@@ -26,14 +25,15 @@ import SpreadsheetNameWidget from "./spreadsheet/SpreadsheetNameWidget.js";
 import SpreadsheetNotification from "./spreadsheet/notification/SpreadsheetNotification.js";
 import SpreadsheetNotificationWidget from "./spreadsheet/notification/SpreadsheetNotificationWidget.js";
 import SpreadsheetRange from "./spreadsheet/reference/SpreadsheetRange";
+import SpreadsheetSettingsWidget from "./spreadsheet/settings/SpreadsheetSettingsWidget.js";
 import SpreadsheetViewportWidget from "./widget/SpreadsheetViewportWidget.js";
 import TextStyle from "./text/TextStyle.js";
 import WindowResizer from "./widget/WindowResizer";
 
 /**
- * The width of the drawer in pixels holding settings and tools.
+ * The width of the settings in pixels holding settings and tools.
  */
-const DRAWER_WIDTH = 500;
+const SETTINGS_WIDTH = 500;
 
 /**
  * History token noting that a cell formula is being edited.
@@ -42,7 +42,7 @@ const FORMULA_EDIT_HASH = "formula";
 
 const useStyles = theme => ({
     header: {
-        zIndex: theme.zIndex.drawer + 1, // forces drawer to not overlap application header
+        zIndex: theme.zIndex.settings + 1, // forces settings to not overlap application header
     },
 });
 
@@ -54,7 +54,7 @@ class App extends React.Component {
 
         this.state = {
             createEmptySpreadsheet: false,
-            settingsAndToolsDrawer: false, // initially the drawer on the right is "hidden" (false)
+            settings: false, // initially the settings on the right is "hidden" (false)
             spreadsheetEngineEvaluation: SpreadsheetEngineEvaluation.COMPUTE_IF_NECESSARY,
             spreadsheetMetadata: SpreadsheetMetadata.EMPTY,
             cells: ImmutableMap.EMPTY,
@@ -71,7 +71,7 @@ class App extends React.Component {
         this.messenger.setWebWorker(false); // TODO test webworker mode
 
         this.notification = React.createRef();
-        this.settingsAndToolsDrawer = React.createRef();
+        this.settings = React.createRef();
         this.aboveViewport = React.createRef();
         this.spreadsheetName = React.createRef();
         this.formula = React.createRef();
@@ -166,28 +166,28 @@ class App extends React.Component {
                         var valid = true;
                         var cell = false;
                         var name = false;
-                        var closeDrawer = true;
+                        var closeSettings = true;
                         const duplicate = [];
 
                         while(valid && historyHashTokens.length > 0) {
                             const target = historyHashTokens.shift();
                             if(duplicate.includes(target)){
-                                valid = this.historyUnknownTarget(metadata); // returns false, which will stop editcell, edit name and close drawer
+                                valid = this.historyUnknownTarget(metadata); // returns false, which will stop editcell, edit name and close settings
                                 break;
                             }
                             duplicate.push(target);
 
                             switch(target) {
                                 case "":
-                                    this.settingsAndToolsDrawerOpen(true);
+                                    this.settingsOpen(true);
                                     verifiedHistoryHashTokens.push("");
-                                    closeDrawer = false;
+                                    closeSettings = false;
                                     valid = true;
                                     break;
                                 case "cell":
                                     // cell after name is a fail
                                     if(name){
-                                        valid = this.historyUnknownTarget(metadata); // returns false, which will stop editcell, edit name and close drawer
+                                        valid = this.historyUnknownTarget(metadata); // returns false, which will stop editcell, edit name and close settings
                                         break;
                                     }
                                     cell = true;
@@ -201,7 +201,7 @@ class App extends React.Component {
                                 case "name":
                                     // name after cell is a fail.
                                     if(cell){
-                                        valid = this.historyUnknownTarget(metadata); // returns false, which will stop editcell, edit name and close drawer
+                                        valid = this.historyUnknownTarget(metadata); // returns false, which will stop editcell, edit name and close settings
                                         break;
                                     }
                                     valid = this.historySpreadsheetNameAction(historyHashTokens.shift());
@@ -218,8 +218,8 @@ class App extends React.Component {
                         if(!name || !valid){
                             this.editSpreadsheetName();
                         }
-                        if(!valid || closeDrawer){
-                            this.settingsAndToolsDrawerOpen(false, metadata);
+                        if(!valid || closeSettings){
+                            this.settingsOpen(false, metadata);
                         }
                         if(valid){
                             this.historyPush(verifiedHistoryHashTokens, "Verified history hash", pathname);
@@ -400,7 +400,7 @@ class App extends React.Component {
         this.stateSpreadsheetViewport(prevState);
         this.stateSpreadsheetViewportRange(prevState);
         this.stateSpreadsheetFormula(hash);
-        this.stateSpreadsheetDrawer(hash);
+        this.stateSpreadsheetSettings(hash);
 
         // special case restore /name/edit if spreadsheet name is being edited.
         if(hash.length >= 2){
@@ -411,12 +411,12 @@ class App extends React.Component {
             }
         }
 
-        const open = state.settingsAndToolsDrawer;
+        const open = state.settings;
         if(open){
             hash.push(""); // append !
         }
-        const settingsAndToolsDrawer = this.settingsAndToolsDrawer.current;
-        settingsAndToolsDrawer && settingsAndToolsDrawer.setState({open: open});
+        const settings = this.settings.current;
+        settings && settings.setState({open: open});
 
         // sync notifications
         this.notification.current.setState(
@@ -769,41 +769,41 @@ class App extends React.Component {
         return this.state.cells.get(reference) || new SpreadsheetCell(reference, new SpreadsheetFormula(""), TextStyle.EMPTY);
     }
 
-    // drawer...........................................................................................................
+    // settings...........................................................................................................
 
     /**
-     * Shows or hides the drawer on the right which holds a variety of settings and context aware tools.
+     * Shows or hides the settings on the right which holds a variety of settings and context aware tools.
      */
-    settingsAndToolsDrawerOpen(open) {
-        console.log("settingsAndToolsDrawerOpen " + open);
+    settingsOpen(open) {
+        console.log("settingsOpen " + open);
 
         this.setState({
-            settingsAndToolsDrawer: open,
+            settings: open,
         });
     }
 
     /**
-     * Toggles the drawer and updates the history
+     * Toggles the settings and updates the history
      */
-    settingsAndToolsDrawerToggleAndUpdateHistory() {
-        this.settingsAndToolsDrawerOpenAndUpdateHistory(!this.state.settingsAndToolsDrawer);
+    settingsToggleAndUpdateHistory() {
+        this.settingsOpenAndUpdateHistory(!this.state.settings);
     }
 
     /**
-     * Shows or hides the drawer and updates the history hash.
+     * Shows or hides the settings and updates the history hash.
      */
-    settingsAndToolsDrawerOpenAndUpdateHistory(open) {
-        this.settingsAndToolsDrawerOpen(open);
+    settingsOpenAndUpdateHistory(open) {
+        this.settingsOpen(open);
 
         const metadata = this.state.spreadsheetMetadata;
-        this.historyPush([metadata.get(SpreadsheetMetadata.SPREADSHEET_ID), metadata.get(SpreadsheetMetadata.SPREADSHEET_NAME), open ? "" : null], "settingsAndToolsDrawer " + (open ? "opened" : "closed"));
+        this.historyPush([metadata.get(SpreadsheetMetadata.SPREADSHEET_ID), metadata.get(SpreadsheetMetadata.SPREADSHEET_NAME), open ? "" : null], "settings " + (open ? "opened" : "closed"));
     }
 
     /**
      * Handles updates to the state and hash.
      */
-    stateSpreadsheetDrawer(hash) {
-        const widget = this.settingsAndToolsDrawer.current;
+    stateSpreadsheetSettings(hash) {
+        const widget = this.settings.current;
         if(widget){
             const state = this.state;
             widget.setState({
@@ -840,7 +840,7 @@ class App extends React.Component {
         const state = this.state;
         console.log("render", state);
 
-        const settingsAndToolsDrawer = state.settingsAndToolsDrawer;
+        const settings = state.settings;
 
         const metadata = this.spreadsheetMetadata();
 
@@ -868,7 +868,7 @@ class App extends React.Component {
                                 dimensions={this.onAboveViewportResize.bind(this)}
                                 className={classes.header}
                 >
-                    <SpreadsheetAppBar menuClickListener={this.settingsAndToolsDrawerToggleAndUpdateHistory.bind(this)}>
+                    <SpreadsheetAppBar menuClickListener={this.settingsToggleAndUpdateHistory.bind(this)}>
                         <SpreadsheetNameWidget ref={this.spreadsheetName}
                                                key={spreadsheetName}
                                                value={spreadsheetName}
@@ -905,13 +905,13 @@ class App extends React.Component {
                     editCell={editCell}
                     editCellSetter={this.editCell.bind(this)}
                 />
-                <SpreadsheetDrawerWidget ref={this.settingsAndToolsDrawer}
-                                         open={settingsAndToolsDrawer}
-                                         onClose={this.settingsAndToolsDrawerOpenAndUpdateHistory.bind(this)}
-                                         width={DRAWER_WIDTH}
-                                         spreadsheetMetadata={metadata}
-                                         setSpreadsheetMetadata={this.saveSpreadsheetMetadata.bind(this)}
-                                         formatCreateDateTimeModifiedDateTime={this.onFormatCreateDateTimeModifiedDateTime.bind(this)}
+                <SpreadsheetSettingsWidget ref={this.settings}
+                                           open={settings}
+                                           onClose={this.settingsOpenAndUpdateHistory.bind(this)}
+                                           width={SETTINGS_WIDTH}
+                                           spreadsheetMetadata={metadata}
+                                           setSpreadsheetMetadata={this.saveSpreadsheetMetadata.bind(this)}
+                                           formatCreateDateTimeModifiedDateTime={this.onFormatCreateDateTimeModifiedDateTime.bind(this)}
                 />
             </WindowResizer>
         );
@@ -959,14 +959,14 @@ class App extends React.Component {
     }
 
     /**
-     * Computes the visible width of the app bar less if the settings/tool drawer if it is visible.
+     * Computes the visible width of the app bar less if the settings/tool settings if it is visible.
      */
     appBarWidth() {
         const state = this.state;
         const aboveViewportDimensions = state.aboveViewportDimensions;
 
         return aboveViewportDimensions ?
-            (aboveViewportDimensions.width - (state.settingsAndToolsDrawer ? DRAWER_WIDTH : 0)) + "px" :
+            (aboveViewportDimensions.width - (state.settings ? SETTINGS_WIDTH : 0)) + "px" :
             "";
     }
 

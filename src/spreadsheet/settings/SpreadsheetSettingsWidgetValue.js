@@ -9,7 +9,7 @@ import Tooltip from '@material-ui/core/Tooltip';
 /**
  * A base class that calls a renderInput method during a render adding a button to set the default value to the right.
  */
-export default class SpreadsheetDrawerWidgetValue extends React.Component {
+export default class SpreadsheetSettingsWidgetValue extends React.Component {
 
     // value and defaultValue are not required because the SpreadsheetMetadata property may be absent.
     static createPropTypes(valueType, extraProps) {

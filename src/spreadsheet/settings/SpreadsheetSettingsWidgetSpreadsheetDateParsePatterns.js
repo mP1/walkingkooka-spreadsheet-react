@@ -1,12 +1,12 @@
 import PropTypes from "prop-types";
 import SpreadsheetDateParsePatterns from "../format/SpreadsheetDateParsePatterns.js";
-import SpreadsheetDrawerWidgetTextField from "./SpreadsheetDrawerWidgetTextField.js";
-import SpreadsheetDrawerWidgetValue from "./SpreadsheetDrawerWidgetValue.js";
+import SpreadsheetSettingsWidgetTextField from "./SpreadsheetSettingsWidgetTextField.js";
+import SpreadsheetSettingsWidgetValue from "./SpreadsheetSettingsWidgetValue.js";
 
 /**
  * A widget which accepts a String and creates an unvalidated {@link SpreadsheetDateParsePatterns}.
  */
-export default class SpreadsheetDrawerWidgetSpreadsheetDateParsePatterns extends SpreadsheetDrawerWidgetTextField {
+export default class SpreadsheetSettingsWidgetSpreadsheetDateParsePatterns extends SpreadsheetSettingsWidgetTextField {
 
     constructor(props) {
         super(props);
@@ -34,4 +34,4 @@ export default class SpreadsheetDrawerWidgetSpreadsheetDateParsePatterns extends
     }
 }
 
-SpreadsheetDrawerWidgetSpreadsheetDateParsePatterns.propTypes = SpreadsheetDrawerWidgetValue.createPropTypes(PropTypes.instanceOf(SpreadsheetDateParsePatterns));
+SpreadsheetSettingsWidgetSpreadsheetDateParsePatterns.propTypes = SpreadsheetSettingsWidgetValue.createPropTypes(PropTypes.instanceOf(SpreadsheetDateParsePatterns));

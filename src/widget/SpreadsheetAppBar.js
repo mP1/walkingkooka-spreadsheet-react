@@ -31,7 +31,7 @@ export default class SpreadsheetAppBar extends React.Component {
     render() {
         return (<AppBar position="static">
             <Toolbar>
-                <IconButton id="settings-tools-icon"
+                <IconButton id="settings-icon"
                             edge="start"
                             className={SpreadsheetAppBar.classes.menuButton}
                             color="inherit"

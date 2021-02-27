@@ -1,13 +1,13 @@
 import PropTypes from "prop-types";
 import React from 'react';
 import Select from '@material-ui/core/Select';
-import SpreadsheetDrawerWidgetValue from "./SpreadsheetDrawerWidgetValue.js";
+import SpreadsheetSettingsWidgetValue from "./SpreadsheetSettingsWidgetValue.js";
 import SystemEnum from "../../SystemEnum.js";
 
 /**
  * Shows the enum values using a drop down list. This is preferred because over slider because of too many options.
  */
-export default class SpreadsheetDrawerWidgetDropDownList extends SpreadsheetDrawerWidgetValue {
+export default class SpreadsheetSettingsWidgetDropDownList extends SpreadsheetSettingsWidgetValue {
 
     constructor(props) {
         super(props);
@@ -72,14 +72,14 @@ export default class SpreadsheetDrawerWidgetDropDownList extends SpreadsheetDraw
     }
 }
 
-SpreadsheetDrawerWidgetDropDownList.propTypes = Object.assign(
-    SpreadsheetDrawerWidgetValue.createPropTypes(PropTypes.instanceOf(SystemEnum)),
+SpreadsheetSettingsWidgetDropDownList.propTypes = Object.assign(
+    SpreadsheetSettingsWidgetValue.createPropTypes(PropTypes.instanceOf(SystemEnum)),
     {
         values: PropTypes.arrayOf(SystemEnum),
     }
 );
 
-SpreadsheetDrawerWidgetDropDownList.propTypes = SpreadsheetDrawerWidgetValue.createPropTypes(
+SpreadsheetSettingsWidgetDropDownList.propTypes = SpreadsheetSettingsWidgetValue.createPropTypes(
     PropTypes.instanceOf(SystemEnum),
     {
         values: PropTypes.array.isRequired,

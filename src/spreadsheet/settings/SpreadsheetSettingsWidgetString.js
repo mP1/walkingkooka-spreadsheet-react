@@ -1,11 +1,11 @@
 import PropTypes from "prop-types";
-import SpreadsheetDrawerWidgetTextField from "./SpreadsheetDrawerWidgetTextField.js";
-import SpreadsheetDrawerWidgetValue from "./SpreadsheetDrawerWidgetValue.js";
+import SpreadsheetSettingsWidgetTextField from "./SpreadsheetSettingsWidgetTextField.js";
+import SpreadsheetSettingsWidgetValue from "./SpreadsheetSettingsWidgetValue.js";
 
 /**
  * A widget which displays a {@link String} for editing using a TextField. All edits immediately update the spreadsheet.
  */
-export default class SpreadsheetDrawerWidgetString extends SpreadsheetDrawerWidgetTextField {
+export default class SpreadsheetSettingsWidgetString extends SpreadsheetSettingsWidgetTextField {
 
     constructor(props) {
         super(props);
@@ -24,4 +24,4 @@ export default class SpreadsheetDrawerWidgetString extends SpreadsheetDrawerWidg
     }
 }
 
-SpreadsheetDrawerWidgetString.propTypes = SpreadsheetDrawerWidgetValue.createPropTypes(PropTypes.string);
+SpreadsheetSettingsWidgetString.propTypes = SpreadsheetSettingsWidgetValue.createPropTypes(PropTypes.string);

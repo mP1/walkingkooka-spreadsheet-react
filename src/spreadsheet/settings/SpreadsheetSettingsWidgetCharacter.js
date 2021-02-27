@@ -1,12 +1,12 @@
 import Character from "../../Character.js";
 import PropTypes from "prop-types";
-import SpreadsheetDrawerWidgetTextField from "./SpreadsheetDrawerWidgetTextField.js";
-import SpreadsheetDrawerWidgetValue from "./SpreadsheetDrawerWidgetValue.js";
+import SpreadsheetSettingsWidgetTextField from "./SpreadsheetSettingsWidgetTextField.js";
+import SpreadsheetSettingsWidgetValue from "./SpreadsheetSettingsWidgetValue.js";
 
 /**
  * A widget which displays a {@link Character} for editing using a TextField. All edits immediately update the spreadsheet.
  */
-export default class SpreadsheetDrawerWidgetCharacter extends SpreadsheetDrawerWidgetTextField {
+export default class SpreadsheetSettingsWidgetCharacter extends SpreadsheetSettingsWidgetTextField {
 
     constructor(props) {
         super(props);
@@ -34,4 +34,4 @@ export default class SpreadsheetDrawerWidgetCharacter extends SpreadsheetDrawerW
     }
 }
 
-SpreadsheetDrawerWidgetCharacter.propTypes = SpreadsheetDrawerWidgetValue.createPropTypes(PropTypes.instanceOf(Character));
+SpreadsheetSettingsWidgetCharacter.propTypes = SpreadsheetSettingsWidgetValue.createPropTypes(PropTypes.instanceOf(Character));
