@@ -104,7 +104,7 @@ class SpreadsheetSettingsWidget extends React.Component {
 
         const previousMetadata = prevState.spreadsheetMetadata;
 
-        if(!metadata.equals(prevState)){
+        if(!metadata.equals(previousMetadata)){
             this.setSpreadsheetMetadata(metadata);
         }
 

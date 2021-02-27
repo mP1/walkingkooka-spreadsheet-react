@@ -50,6 +50,11 @@ const HASH_FORMULA_EDIT = "formula";
  */
 const HASH_NAME = "name";
 
+/**
+ * History token used for spreadsheet settings actions.
+ */
+const HASH_SETTINGS = "settings";
+
 const useStyles = theme => ({
     header: {
         zIndex: theme.zIndex.settings + 1, // forces settings to not overlap application header
@@ -64,7 +69,6 @@ class App extends React.Component {
 
         this.state = {
             createEmptySpreadsheet: false,
-            settings: false, // initially the settings on the right is "hidden" (false)
             spreadsheetEngineEvaluation: SpreadsheetEngineEvaluation.COMPUTE_IF_NECESSARY,
             spreadsheetMetadata: SpreadsheetMetadata.EMPTY,
             cells: ImmutableMap.EMPTY,
@@ -176,7 +180,7 @@ class App extends React.Component {
                         var valid = true;
                         var cell = false;
                         var name = false;
-                        var closeSettings = true;
+                        var settings = false; // true=open, false=closed
                         const duplicate = [];
 
                         while(valid && historyHashTokens.length > 0) {
@@ -189,10 +193,6 @@ class App extends React.Component {
 
                             switch(target) {
                                 case "":
-                                    this.settingsOpen(true);
-                                    verifiedHistoryHashTokens.push("");
-                                    closeSettings = false;
-                                    valid = true;
                                     break;
                                 case HASH_CELL:
                                     // cell after name is a fail
@@ -218,6 +218,12 @@ class App extends React.Component {
                                     this.editSpreadsheetName(true);
                                     valid = true;
                                     break;
+                                case HASH_SETTINGS:
+                                    settings = true;
+                                    this.settingsOpenClose(settings);
+                                    valid = true;
+                                    verifiedHistoryHashTokens.push(HASH_SETTINGS);
+                                    break;
                                 default:
                                     valid = this.historyUnknownTarget(metadata);
                                     break;
@@ -230,8 +236,8 @@ class App extends React.Component {
                         if(!name || !valid){
                             this.editSpreadsheetName();
                         }
-                        if(!valid || closeSettings){
-                            this.settingsOpen(false, metadata);
+                        if(!settings || !valid){
+                            this.settingsOpenClose(false);
                         }
                         if(valid){
                             this.historyPush(verifiedHistoryHashTokens, "Verified history hash", pathname);
@@ -393,7 +399,6 @@ class App extends React.Component {
         this.stateSpreadsheetViewport(prevState);
         this.stateSpreadsheetViewportRange(prevState);
         this.stateSpreadsheetFormula(hash);
-        this.stateSpreadsheetSettings(hash);
 
         // special case restore /name if spreadsheet name is being edited.
         if(hash.length >= 2){
@@ -404,12 +409,12 @@ class App extends React.Component {
             }
         }
 
-        const open = state.settings;
-        if(open){
-            hash.push(""); // append !
-        }
         const settings = this.settings.current;
-        settings && settings.setState({open: open});
+        if(settings) {
+            if(settings.state.open){
+                hash.push(HASH_SETTINGS);
+            }
+        }
 
         // sync notifications
         this.notification.current.setState(
@@ -422,7 +427,7 @@ class App extends React.Component {
     }
 
     /**
-     * If the important global spreadsheet metadata changed reload the viewport range.
+     * This method is called whenever the spreadsheet metadata changes.
      */
     stateSpreadsheetMetadata(previousMetadata) {
         const state = this.state;
@@ -436,6 +441,10 @@ class App extends React.Component {
                 }
             }
         }
+
+        this.settingsSetState({
+            spreadsheetMetadata: metadata,
+        });
     }
 
     /**
@@ -771,50 +780,63 @@ class App extends React.Component {
     // settings...........................................................................................................
 
     /**
+     * Tests if the settings is opened.
+     */
+    settingsIsOpen() {
+        const widget = this.settings.current;
+        return widget && widget.state.open;
+    }
+
+    /**
      * Shows or hides the settings on the right which holds a variety of settings and context aware tools.
      */
-    settingsOpen(open) {
-        console.log("settingsOpen " + open);
+    settingsOpenClose(open) {
+        this.settingsSetState({
+            open: open,
+        })
+    }
 
-        this.setState({
-            settings: open,
-        });
+    /**
+     * Updates the settings state in a safe manner, becoming a noop if not available.
+     */
+    settingsSetState(state) {
+        console.log("settingsSetState", state);
+
+        const widget = this.settings.current;
+        if(widget){
+            widget.setState(
+                state
+            );
+        }
     }
 
     /**
      * Toggles the settings and updates the history
      */
     settingsToggleAndUpdateHistory() {
-        this.settingsOpenAndUpdateHistory(!this.state.settings);
+        this.settingsOpenCloseAndUpdateHistory(!this.settingsIsOpen());
     }
 
     /**
      * Shows or hides the settings and updates the history hash.
      */
-    settingsOpenAndUpdateHistory(open) {
-        this.settingsOpen(open);
+    settingsOpenCloseAndUpdateHistory(open) {
+        this.settingsOpenClose(open);
 
         const metadata = this.state.spreadsheetMetadata;
+
+        const tokens = [
+            metadata.get(SpreadsheetMetadata.SPREADSHEET_ID),
+            metadata.get(SpreadsheetMetadata.SPREADSHEET_NAME),
+        ];
+        if(open) {
+            tokens.push(HASH_SETTINGS);
+        }
+
         this.historyPush(
-            [
-                metadata.get(SpreadsheetMetadata.SPREADSHEET_ID),
-                metadata.get(SpreadsheetMetadata.SPREADSHEET_NAME), open ? "" : null
-            ],
+            tokens,
             "settings " + (open ? "opened" : "closed")
         );
-    }
-
-    /**
-     * Handles updates to the state and hash.
-     */
-    stateSpreadsheetSettings(hash) {
-        const widget = this.settings.current;
-        if(widget){
-            const state = this.state;
-            widget.setState({
-                spreadsheetMetadata: state.spreadsheetMetadata,
-            });
-        }
     }
 
     /**
@@ -912,7 +934,7 @@ class App extends React.Component {
                 />
                 <SpreadsheetSettingsWidget ref={this.settings}
                                            open={settings}
-                                           onClose={this.settingsOpenAndUpdateHistory.bind(this)}
+                                           onClose={this.settingsOpenCloseAndUpdateHistory.bind(this)}
                                            width={SETTINGS_WIDTH}
                                            spreadsheetMetadata={metadata}
                                            setSpreadsheetMetadata={this.saveSpreadsheetMetadata.bind(this)}

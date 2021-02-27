@@ -173,10 +173,16 @@ context("General app usage", () => {
         settings()
             .should('be.visible');
 
+        hash()
+            .should('match', /.*\/.*\/settings/) // => true
+
         settingsToggle();
 
         settings()
             .should('be.not.visible');
+
+        hash()
+            .should('not.match', /.*\/.*\/settings/);
     });
 
     it("Show settings by editing history hash", () => {
@@ -185,7 +191,7 @@ context("General app usage", () => {
         cy.window()
             .then(function(win) {
                 var hash = win.location.hash;
-                win.location.hash = hash + "/";
+                win.location.hash = hash + "/settings";
             });
 
         reactRenderWait();
@@ -219,7 +225,7 @@ context("General app usage", () => {
 
                 reactRenderWait();
                 cy.hash()
-                    .should("eq", hash + "/");
+                    .should("eq", hash + "/settings");
             });
     });
 
@@ -252,7 +258,7 @@ context("General app usage", () => {
 
                 reactRenderWait();
                 cy.hash()
-                    .should("eq", hash + "/");
+                    .should("eq", hash + "/settings");
             });
     });
 
@@ -269,7 +275,7 @@ context("General app usage", () => {
 
                 reactRenderWait();
                 cy.hash()
-                    .should("eq", hash + "/");
+                    .should("eq", hash + "/settings");
             });
     });
 
