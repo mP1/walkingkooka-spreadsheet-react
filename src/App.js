@@ -679,7 +679,8 @@ class App extends React.Component {
         }else {
             console.log("saveSpreadsheetCell", cell);
 
-            this.send(this.spreadsheetCellApiUrl(cell.reference()),
+            this.send(
+                this.spreadsheetCellApiUrl(cell.reference()),
                 {
                     method: "POST",
                     body: JSON.stringify(new SpreadsheetDelta([cell],
@@ -766,7 +767,12 @@ class App extends React.Component {
      * Fetches the cell by the given reference or returns an empty {@link SpreadsheetCell}.
      */
     getCellOrEmpty(reference) {
-        return this.state.cells.get(reference) || new SpreadsheetCell(reference, new SpreadsheetFormula(""), TextStyle.EMPTY);
+        return this.state.cells.get(reference) ||
+            new SpreadsheetCell(
+                reference,
+                new SpreadsheetFormula(""),
+                TextStyle.EMPTY
+            );
     }
 
     // settings...........................................................................................................
@@ -796,7 +802,13 @@ class App extends React.Component {
         this.settingsOpen(open);
 
         const metadata = this.state.spreadsheetMetadata;
-        this.historyPush([metadata.get(SpreadsheetMetadata.SPREADSHEET_ID), metadata.get(SpreadsheetMetadata.SPREADSHEET_NAME), open ? "" : null], "settings " + (open ? "opened" : "closed"));
+        this.historyPush(
+            [
+                metadata.get(SpreadsheetMetadata.SPREADSHEET_ID),
+                metadata.get(SpreadsheetMetadata.SPREADSHEET_NAME), open ? "" : null
+            ],
+            "settings " + (open ? "opened" : "closed")
+        );
     }
 
     /**
