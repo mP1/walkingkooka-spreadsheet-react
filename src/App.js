@@ -867,8 +867,6 @@ class App extends React.Component {
         const state = this.state;
         console.log("render", state);
 
-        const settings = state.settings;
-
         const metadata = this.spreadsheetMetadata();
 
         const spreadsheetName = metadata.get(SpreadsheetMetadata.SPREADSHEET_NAME);
@@ -884,6 +882,7 @@ class App extends React.Component {
 
         const appBarWidth = this.appBarWidth();
         const formulaText = this.cellToFormulaText(editCell);
+
         return (
             <WindowResizer dimensions={this.onWindowResized.bind(this)}>
                 <SpreadsheetNotificationWidget ref={this.notification}
@@ -933,7 +932,7 @@ class App extends React.Component {
                     editCellSetter={this.editCell.bind(this)}
                 />
                 <SpreadsheetSettingsWidget ref={this.settings}
-                                           open={settings}
+                                           open={this.settingsIsOpen()}
                                            onClose={this.settingsOpenCloseAndUpdateHistory.bind(this)}
                                            width={SETTINGS_WIDTH}
                                            spreadsheetMetadata={metadata}
