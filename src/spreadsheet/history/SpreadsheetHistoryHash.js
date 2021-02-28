@@ -199,10 +199,13 @@ export default class SpreadsheetHistoryHash {
         const history = this.history;
 
         const currentPathname = history.location.pathname;
-        const updatedPathname = SpreadsheetHistoryHash.merge(currentPathname, replacements);
+        const updatedPathname = SpreadsheetHistoryHash.merge(
+            SpreadsheetHistoryHash.parse(currentPathname),
+            replacements
+        );
         if(currentPathname !== updatedPathname){
             console.log("History push \"" + currentPathname + "\"");
-            this.history.push(updatedPathname);
+            history.push(updatedPathname);
         }else {
             console.log("History push unchanged \"" + currentPathname + "\" new \"" + updatedPathname + "\"");
         }
