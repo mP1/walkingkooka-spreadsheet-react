@@ -180,7 +180,7 @@ class App extends React.Component {
                         var valid = true;
                         var cell = false;
                         var name = false;
-                        var settings = false; // true=open, false=closed
+                        var settingsOpen = false;
                         const duplicate = [];
 
                         while(valid && historyHashTokens.length > 0) {
@@ -219,8 +219,8 @@ class App extends React.Component {
                                     valid = true;
                                     break;
                                 case HASH_SETTINGS:
-                                    settings = true;
-                                    this.settingsOpenClose(settings);
+                                    settingsOpen = true;
+                                    this.settingsOpen(settingsOpen);
                                     valid = true;
                                     verifiedHistoryHashTokens.push(HASH_SETTINGS);
                                     break;
@@ -236,8 +236,8 @@ class App extends React.Component {
                         if(!name || !valid){
                             this.editSpreadsheetName();
                         }
-                        if(!settings || !valid){
-                            this.settingsOpenClose(false);
+                        if(!settingsOpen || !valid){
+                            this.settingsOpen(false);
                         }
                         if(valid){
                             this.historyPush(verifiedHistoryHashTokens, "Verified history hash", pathname);
@@ -442,9 +442,12 @@ class App extends React.Component {
             }
         }
 
-        this.settingsSetState({
+        const settings = this.settings.current;
+        settings && settings.setState(
+            {
             spreadsheetMetadata: metadata,
-        });
+            }
+        );
     }
 
     /**
@@ -777,68 +780,6 @@ class App extends React.Component {
             );
     }
 
-    // settings...........................................................................................................
-
-    /**
-     * Tests if the settings is opened.
-     */
-    settingsIsOpen() {
-        const widget = this.settings.current;
-        return widget && widget.state.open;
-    }
-
-    /**
-     * Shows or hides the settings on the right which holds a variety of settings and context aware tools.
-     */
-    settingsOpenClose(open) {
-        this.settingsSetState({
-            open: open,
-        })
-    }
-
-    /**
-     * Updates the settings state in a safe manner, becoming a noop if not available.
-     */
-    settingsSetState(state) {
-        console.log("settingsSetState", state);
-
-        const widget = this.settings.current;
-        if(widget){
-            widget.setState(
-                state
-            );
-        }
-    }
-
-    /**
-     * Toggles the settings and updates the history
-     */
-    settingsToggleAndUpdateHistory() {
-        this.settingsOpenCloseAndUpdateHistory(!this.settingsIsOpen());
-    }
-
-    /**
-     * Shows or hides the settings and updates the history hash.
-     */
-    settingsOpenCloseAndUpdateHistory(open) {
-        this.settingsOpenClose(open);
-
-        const metadata = this.state.spreadsheetMetadata;
-
-        const tokens = [
-            metadata.get(SpreadsheetMetadata.SPREADSHEET_ID),
-            metadata.get(SpreadsheetMetadata.SPREADSHEET_NAME),
-        ];
-        if(open) {
-            tokens.push(HASH_SETTINGS);
-        }
-
-        this.historyPush(
-            tokens,
-            "settings " + (open ? "opened" : "closed")
-        );
-    }
-
     /**
      * Formats a SpreadsheetMultiFormatRequest holding the create-date-time and modified-date-time.
      */
@@ -894,7 +835,7 @@ class App extends React.Component {
                                 dimensions={this.onAboveViewportResize.bind(this)}
                                 className={classes.header}
                 >
-                    <SpreadsheetAppBar menuClickListener={this.settingsToggleAndUpdateHistory.bind(this)}>
+                    <SpreadsheetAppBar menuClickListener={this.settingsToggle.bind(this)}>
                         <SpreadsheetNameWidget ref={this.spreadsheetName}
                                                key={spreadsheetName}
                                                value={spreadsheetName}
@@ -932,8 +873,7 @@ class App extends React.Component {
                     editCellSetter={this.editCell.bind(this)}
                 />
                 <SpreadsheetSettingsWidget ref={this.settings}
-                                           open={this.settingsIsOpen()}
-                                           onClose={this.settingsOpenCloseAndUpdateHistory.bind(this)}
+                                           history={this.history}
                                            width={SETTINGS_WIDTH}
                                            spreadsheetMetadata={metadata}
                                            setSpreadsheetMetadata={this.saveSpreadsheetMetadata.bind(this)}
@@ -941,6 +881,20 @@ class App extends React.Component {
                 />
             </WindowResizer>
         );
+    }
+
+    // settings.........................................................................................................
+
+    settingsOpen(open) {
+        const widget = this.settings.current;
+        widget && widget.setState({
+            open: open,
+        });
+    }
+
+    settingsToggle() {
+        const widget = this.settings.current;
+        widget && widget.toggle();
     }
 
     // Notifications....................................................................................................
