@@ -189,7 +189,6 @@ class SpreadsheetSettingsWidget extends React.Component {
             if(current != updatedPathname) {
                 history.push(updatedPathname);
             }
-            debugger;
         }
     }
 
