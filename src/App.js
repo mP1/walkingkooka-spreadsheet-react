@@ -841,17 +841,16 @@ class App extends React.Component {
                     </SpreadsheetContainerWidget>
                     <Divider/>
                 </SpreadsheetBox>
-                <SpreadsheetViewportWidget
-                    key={[viewportDimensions, cells, columnWidths, rowHeights, style, viewportCell, editCell]}
-                    ref={this.viewport}
-                    dimensions={viewportDimensions}
-                    cells={cells}
-                    columnWidths={columnWidths}
-                    rowHeights={rowHeights}
-                    defaultStyle={style}
-                    home={viewportCell}
-                    editCell={editCell}
-                    editCellSetter={this.editCell.bind(this)}
+                <SpreadsheetViewportWidget key={[viewportDimensions, cells, columnWidths, rowHeights, style, viewportCell, editCell]}
+                                           ref={this.viewport}
+                                           dimensions={viewportDimensions}
+                                           cells={cells}
+                                           columnWidths={columnWidths}
+                                           rowHeights={rowHeights}
+                                           defaultStyle={style}
+                                           home={viewportCell}
+                                           editCell={editCell}
+                                           editCellSetter={this.editCell.bind(this)}
                 />
                 <SpreadsheetSettingsWidget ref={this.settings}
                                            history={history}
