@@ -3,6 +3,8 @@ import PropTypes from 'prop-types';
 
 import SpreadsheetButtonTextField from '../widget/SpreadsheetButtonTextField.js';
 import SpreadsheetName from "./SpreadsheetName.js";
+import SpreadsheetHistoryHash from "./history/SpreadsheetHistoryHash.js";
+import HistoryHash from "./history/HistoryHash.js";
 
 /**
  * A wrapper that is a bridge between SpreadsheetMetadata's spreadsheet name and a text field.
@@ -11,6 +13,8 @@ export default class SpreadsheetNameWidget extends React.Component {
 
     constructor(props) {
         super(props);
+
+        this.history = props.history;
 
         this.state = {
             value: props.value
@@ -48,12 +52,28 @@ export default class SpreadsheetNameWidget extends React.Component {
                                            className={"spreadsheet-name"}
                                            value={name}
                                            setValue={v => this.setValue(new SpreadsheetName(v))}
-                                           setEdit={e => this.setEdit(e)}/>
+                                           setEdit={this.onTextFieldEdit.bind(this)}/>
+    }
+
+    onTextFieldEdit(e) {
+        const history = this.history;
+        const current = history.location.pathname;
+        const updated = SpreadsheetHistoryHash.merge(
+            SpreadsheetHistoryHash.parse(current),
+            {
+                "name": !this.state.name,
+            }
+        );
+        if(current != updated) {
+            history.push(updated);
+        }
+
+        this.setEdit(e);
     }
 }
 
 SpreadsheetNameWidget.propTypes = {
+    history: PropTypes.instanceOf(HistoryHash).isRequired, // history will provide open
     value: PropTypes.object, // might be absent
     setValue: PropTypes.func.isRequired,
-    setEdit: PropTypes.func.isRequired,
 }
