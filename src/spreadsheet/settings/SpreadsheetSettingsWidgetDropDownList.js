@@ -67,7 +67,6 @@ export default class SpreadsheetSettingsWidgetDropDownList extends SpreadsheetSe
      */
     onSetDefaultValue() {
         console.log("onSetDefaultValue");
-        debugger;
         this.setValue(this.defaultValue);
     }
 }
