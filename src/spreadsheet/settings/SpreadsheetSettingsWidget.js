@@ -7,11 +7,13 @@ import Drawer from "@material-ui/core/Drawer";
 import Equality from "../../Equality.js";
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import ExpressionNumberKind from "../../math/ExpressionNumberKind.js";
+import HistoryHash from "../history/HistoryHash.js";
 import Paper from '@material-ui/core/Paper';
 import PropTypes from 'prop-types';
 import React from 'react';
 import RoundingMode from "../../math/RoundingMode.js";
 import SpreadsheetFormatRequest from "../server/format/SpreadsheetFormatRequest.js";
+import SpreadsheetHistoryHash from "../history/SpreadsheetHistoryHash.js";
 import SpreadsheetLocaleDefaultDateTimeFormat from "../server/format/SpreadsheetLocaleDefaultDateTimeFormat.js";
 import SpreadsheetMetadata from "../meta/SpreadsheetMetadata.js";
 import SpreadsheetMultiFormatRequest from "../server/format/SpreadsheetMultiFormatRequest.js";
@@ -78,12 +80,17 @@ class SpreadsheetSettingsWidget extends React.Component {
     constructor(props) {
         super(props);
 
-        this.state = {
-            open: props.open,
-            spreadsheetMetadata: props.spreadsheetMetadata,
-            createDateTimeFormatted: "",
-            modifiedDateTimeFormatted: "",
-        };
+        this.history = props.history;
+
+        this.state = Object.assign(
+            {
+                spreadsheetMetadata: props.spreadsheetMetadata,
+                createDateTimeFormatted: "",
+                modifiedDateTimeFormatted: "",
+            },
+            this.loadHistoryHash(this.history.location.pathname)
+        );
+
         this.onClose = props.onClose;
         this.width = props.width;
 
@@ -92,11 +99,52 @@ class SpreadsheetSettingsWidget extends React.Component {
     }
 
     /**
+     * Toggles the open/close of the settings by updating the state.open flag.
+     */
+    toggle() {
+        console.log("toggle");
+
+        this.setState({
+           open: this.state ? !this.state.open : true,
+        });
+    }
+
+    componentDidMount() {
+        this.history.listen(this.onHistoryChange.bind(this));
+    }
+
+    /**
+     * If the history changed load the settings history hash tokens and update the state.
+     * @param location
+     */
+    onHistoryChange(location) {
+        const pathname = location.pathname;
+        const historyLocation = this.history.location;
+        const currentPathname = historyLocation.pathname;
+        if(currentPathname !== pathname){
+            this.setState(this.loadHistoryHash(currentPathname));
+        }
+    }
+
+    /**
+     * Loads a state with the open history hash token.
+     */
+    loadHistoryHash(pathname) {
+        const tokens = SpreadsheetHistoryHash.parse(pathname);
+
+        return {
+            open: tokens[SpreadsheetHistoryHash.SETTINGS],
+        };
+    }
+
+    /**
      * If the create-date-time or modified-date-time changed send a format request.
      */
     componentDidUpdate(prevProps, prevState, snapshot) {
         const state = this.state;
         console.log("componentDidUpdate", "prevState", prevState, "state", state);
+
+        this.historyUpdateFromState(prevState);
 
         const metadata = state.spreadsheetMetadata;
         const createDateTime = metadata.get(SpreadsheetMetadata.CREATE_DATE_TIME);
@@ -117,6 +165,31 @@ class SpreadsheetSettingsWidget extends React.Component {
             formatRequests.push(new SpreadsheetFormatRequest(modifiedDateTime, SpreadsheetLocaleDefaultDateTimeFormat.INSTANCE));
 
             this.sendFormatCreateDateTimeModifiedDateTime(new SpreadsheetMultiFormatRequest(formatRequests));
+        }
+    }
+
+    /**
+     * Possibly update the history hash using the current open state.
+     */
+    historyUpdateFromState(prevState) {
+        const openOld = prevState.open;
+        const openNew = !!this.state.open;
+
+        if(openOld != openNew){
+            console.log("historyUpdateFromState settings open: " + openOld + " to " + openNew);
+
+            const history = this.history;
+            const current = history.location.pathname;
+            const updatedPathname = SpreadsheetHistoryHash.merge(
+                SpreadsheetHistoryHash.parse(current),
+                {
+                    settings: openNew,
+                }
+            );
+            if(current != updatedPathname) {
+                history.push(updatedPathname);
+            }
+            debugger;
         }
     }
 
@@ -747,7 +820,7 @@ class SpreadsheetSettingsWidget extends React.Component {
 }
 
 SpreadsheetSettingsWidget.propTypes = {
-    open: PropTypes.bool.isRequired, // open=true shows the settings
+    history: PropTypes.instanceOf(HistoryHash).isRequired, // history will provide open
     onClose: PropTypes.func.isRequired, // fired when the settings is closed
     width: PropTypes.number.isRequired, // the width includes px of the settings
     formatCreateDateTimeModifiedDateTime: PropTypes.func.isRequired, // required to format date/times, parameters: SpreadsheetMultiFormatRequest, successHandler => SpreadsheetMultiFormatResponse
