@@ -824,14 +824,13 @@ class App extends React.Component {
                                                setEdit={this.spreadsheetNameEdit.bind(this)}
                         />
                     </SpreadsheetAppBar>
-                    <SpreadsheetContainerWidget
-                        ref={this.formulaContainer}
-                        style={{
-                            margin: 0,
-                            border: 0,
-                            padding: 0,
-                            width: appBarWidth + "px",
-                        }}>
+                    <SpreadsheetContainerWidget ref={this.formulaContainer}
+                                                style={{
+                                                    margin: 0,
+                                                    border: 0,
+                                                    padding: 0,
+                                                    width: appBarWidth + "px",
+                                                }}>
                         <SpreadsheetFormulaWidget ref={this.formula}
                                                   key={[editCellReference, formulaText]}
                                                   reference={editCellReference}
