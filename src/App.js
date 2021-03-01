@@ -98,31 +98,9 @@ class App extends React.Component {
     // app lifecycle....................................................................................................
 
     /**
-     * Updates the editability of the spreadsheet name, which also includes updating the history.
-     */
-    editSpreadsheetNameAndUpdateHistory(mode) {
-        this.editSpreadsheetName(mode);
-
-        const metadata = this.spreadsheetMetadata();
-        const spreadsheetId = metadata.get(SpreadsheetMetadata.SPREADSHEET_ID);
-        const spreadsheetName = metadata.get(SpreadsheetMetadata.SPREADSHEET_NAME);
-
-        var message;
-        const hash = [spreadsheetId, spreadsheetName];
-        if(mode){
-            hash.push(HASH_NAME);
-            message = "History hash updated, begin edit spreadsheet name";
-        }else {
-            message = "History hash updated, stop edit spreadsheet name";
-        }
-
-        this.historyPush(hash, message);
-    }
-
-    /**
      * Updates the editability of the spreadsheet name, without updating the history.
      */
-    editSpreadsheetName(mode) {
+    spreadsheetNameEdit(mode) {
         const widget = this.spreadsheetName.current;
         widget && widget.edit(mode);
 
@@ -215,7 +193,7 @@ class App extends React.Component {
                                         break;
                                     }
                                     historyHashTokens.shift();
-                                    this.editSpreadsheetName(true);
+                                    this.spreadsheetNameEdit(true);
                                     valid = true;
                                     break;
                                 case HASH_SETTINGS:
@@ -234,7 +212,7 @@ class App extends React.Component {
                             this.editCell(); // clear any edit cell
                         }
                         if(!name || !valid){
-                            this.editSpreadsheetName();
+                            this.spreadsheetNameEdit();
                         }
                         if(!settingsOpen || !valid){
                             this.settingsOpen(false);
@@ -741,7 +719,7 @@ class App extends React.Component {
                 metadata.remove(SpreadsheetMetadata.EDIT_CELL));
 
             if(reference){
-                this.editSpreadsheetName(); // stop editing spreadsheet name
+                this.spreadsheetNameEdit(); // stop editing spreadsheet name
             }
         }
     }
@@ -824,6 +802,8 @@ class App extends React.Component {
         const appBarWidth = this.appBarWidth();
         const formulaText = this.cellToFormulaText(editCell);
 
+        const history = this.history;
+
         return (
             <WindowResizer dimensions={this.onWindowResized.bind(this)}>
                 <SpreadsheetNotificationWidget ref={this.notification}
@@ -838,9 +818,10 @@ class App extends React.Component {
                     <SpreadsheetAppBar menuClickListener={this.settingsToggle.bind(this)}>
                         <SpreadsheetNameWidget ref={this.spreadsheetName}
                                                key={spreadsheetName}
+                                               history={history}
                                                value={spreadsheetName}
                                                setValue={this.saveSpreadsheetName.bind(this)}
-                                               setEdit={this.editSpreadsheetNameAndUpdateHistory.bind(this)}
+                                               setEdit={this.spreadsheetNameEdit.bind(this)}
                         />
                     </SpreadsheetAppBar>
                     <SpreadsheetContainerWidget
@@ -873,7 +854,7 @@ class App extends React.Component {
                     editCellSetter={this.editCell.bind(this)}
                 />
                 <SpreadsheetSettingsWidget ref={this.settings}
-                                           history={this.history}
+                                           history={history}
                                            width={SETTINGS_WIDTH}
                                            spreadsheetMetadata={metadata}
                                            setSpreadsheetMetadata={this.saveSpreadsheetMetadata.bind(this)}
