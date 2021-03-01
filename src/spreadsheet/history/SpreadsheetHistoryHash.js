@@ -51,7 +51,7 @@ export default class SpreadsheetHistoryHash {
                             }
 
                             try {
-                                cell = SpreadsheetCellReference.parse(sourceTokens.shift())
+                                cell = SpreadsheetCellReference.parse(sourceTokens.shift());
                             } catch(invalid) {
                                 valid = false;
                             }
