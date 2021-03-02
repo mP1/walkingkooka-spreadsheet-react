@@ -53,7 +53,10 @@ export default class SpreadsheetViewportWidget extends React.Component {
             columnWidths: props.columnWidths,
             rowHeights: props.rowHeights,
             defaultStyle: props.defaultStyle,
-            dimensions: props.dimensions,
+            dimensions: {
+                width: 0,
+                height: 0,
+            },
             home: props.home,
             editCell: props.editCell,
         }
@@ -220,6 +223,5 @@ export default class SpreadsheetViewportWidget extends React.Component {
 }
 
 SpreadsheetViewportWidget.propTypes = {
-    dimensions: PropTypes.object.isRequired,
     editCellSetter: PropTypes.func.isRequired,
 }
