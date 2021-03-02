@@ -177,7 +177,7 @@ class SpreadsheetSettingsWidget extends React.Component {
         const openOld = prevState.open;
         const openNew = !!this.state.open;
 
-        if(openOld != openNew){
+        if(openOld !== openNew){
             console.log("historyUpdateFromState settings open: " + openOld + " to " + openNew);
 
             const history = this.history;
@@ -188,7 +188,7 @@ class SpreadsheetSettingsWidget extends React.Component {
                     settings: openNew,
                 }
             );
-            if(current != updatedPathname) {
+            if(current !== updatedPathname) {
                 history.push(updatedPathname);
             }
         }
