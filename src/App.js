@@ -31,11 +31,6 @@ import TextStyle from "./text/TextStyle.js";
 import WindowResizer from "./widget/WindowResizer";
 
 /**
- * The width of the settings in pixels holding settings and tools.
- */
-const SETTINGS_WIDTH = 500;
-
-/**
  * History token for cell related actions.
  */
 const HASH_CELL = "cell";
@@ -853,7 +848,6 @@ class App extends React.Component {
                 />
                 <SpreadsheetSettingsWidget ref={this.settings}
                                            history={history}
-                                           width={SETTINGS_WIDTH}
                                            spreadsheetMetadata={metadata}
                                            setSpreadsheetMetadata={this.saveSpreadsheetMetadata.bind(this)}
                                            formatCreateDateTimeModifiedDateTime={this.onFormatCreateDateTimeModifiedDateTime.bind(this)}
@@ -925,7 +919,7 @@ class App extends React.Component {
         const aboveViewportDimensions = state.aboveViewportDimensions;
 
         return aboveViewportDimensions ?
-            (aboveViewportDimensions.width - (state.settings ? SETTINGS_WIDTH : 0)) + "px" :
+            (aboveViewportDimensions.width - (state.settings ? SpreadsheetSettingsWidget.WIDTH : 0)) + "px" :
             "";
     }
 

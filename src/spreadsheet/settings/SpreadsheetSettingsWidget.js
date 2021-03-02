@@ -77,6 +77,11 @@ const useStyles = theme => ({
 
 class SpreadsheetSettingsWidget extends React.Component {
 
+    /**
+     * The width of the settings in pixels holding settings and tools.
+     */
+    static WIDTH = 500;
+
     constructor(props) {
         super(props);
 
@@ -90,8 +95,6 @@ class SpreadsheetSettingsWidget extends React.Component {
             },
             this.loadHistoryHash(this.history.location.pathname)
         );
-
-        this.width = props.width;
 
         this.formatCreateDateTimeModifiedDateTime = props.formatCreateDateTimeModifiedDateTime;
         this.setSpreadsheetMetadata = props.setSpreadsheetMetadata;
@@ -234,7 +237,7 @@ class SpreadsheetSettingsWidget extends React.Component {
                        onClose={this.onClose}
         >
             <div className={classes.root}
-                 style={{margin: 0, border: 0, padding: 0, width: this.width + "px"}}>
+                 style={{margin: 0, border: 0, padding: 0, width: SpreadsheetSettingsWidget.WIDTH + "px"}}>
                 {children}
             </div>
         </Drawer>;
@@ -827,7 +830,6 @@ class SpreadsheetSettingsWidget extends React.Component {
 
 SpreadsheetSettingsWidget.propTypes = {
     history: PropTypes.instanceOf(HistoryHash).isRequired, // history will provide open
-    width: PropTypes.number.isRequired, // the width includes px of the settings
     formatCreateDateTimeModifiedDateTime: PropTypes.func.isRequired, // required to format date/times, parameters: SpreadsheetMultiFormatRequest, successHandler => SpreadsheetMultiFormatResponse
     spreadsheetMetadata: PropTypes.instanceOf(SpreadsheetMetadata).isRequired,
     setSpreadsheetMetadata: PropTypes.func.isRequired, // fired when the SpreadsheetMetadata is updated.
