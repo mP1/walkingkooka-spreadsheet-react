@@ -586,17 +586,6 @@ class App extends React.Component {
     // VIEWPORT ........................................................................................................
 
     /**
-     * Returns the viewport dimensions of the area allocated to the cells.
-     */
-    viewportDimensions() {
-        const viewport = this.viewport.current;
-        return (viewport && viewport.state.dimensions) || {
-            width: 0,
-            height: 0,
-        };
-    }
-
-    /**
      * Accepts {@link SpreadsheetCellBox} and requests the {@link SpreadsheetRange} that fill the content.
      */
     onCellBox(cellBox) {
@@ -788,7 +777,6 @@ class App extends React.Component {
         const style = metadata.get(SpreadsheetMetadata.STYLE);
         const {cells, columnWidths, rowHeights} = state;
 
-        const viewportDimensions = this.viewportDimensions();
         const viewportCell = metadata.get(SpreadsheetMetadata.VIEWPORT_CELL);
 
         const editCellReference = metadata.get(SpreadsheetMetadata.EDIT_CELL); // SpreadsheetCellReference: may be undefined,
@@ -835,9 +823,8 @@ class App extends React.Component {
                     </SpreadsheetContainerWidget>
                     <Divider/>
                 </SpreadsheetBox>
-                <SpreadsheetViewportWidget key={[viewportDimensions, cells, columnWidths, rowHeights, style, viewportCell, editCell]}
+                <SpreadsheetViewportWidget key={[cells, columnWidths, rowHeights, style, viewportCell, editCell]}
                                            ref={this.viewport}
-                                           dimensions={viewportDimensions}
                                            cells={cells}
                                            columnWidths={columnWidths}
                                            rowHeights={rowHeights}
