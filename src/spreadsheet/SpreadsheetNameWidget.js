@@ -64,7 +64,7 @@ export default class SpreadsheetNameWidget extends React.Component {
                 "name": !this.state.name,
             }
         );
-        if(current != updated) {
+        if(current !== updated) {
             history.push(updated);
         }
 
