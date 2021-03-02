@@ -91,7 +91,6 @@ class SpreadsheetSettingsWidget extends React.Component {
             this.loadHistoryHash(this.history.location.pathname)
         );
 
-        this.onClose = props.onClose;
         this.width = props.width;
 
         this.formatCreateDateTimeModifiedDateTime = props.formatCreateDateTimeModifiedDateTime;
@@ -239,6 +238,14 @@ class SpreadsheetSettingsWidget extends React.Component {
                 {children}
             </div>
         </Drawer>;
+    }
+
+    onDrawerClose() {
+        this.setState(
+            {
+                open: false,
+            }
+        )
     }
 
     // METADATA.........................................................................................................
@@ -820,7 +827,6 @@ class SpreadsheetSettingsWidget extends React.Component {
 
 SpreadsheetSettingsWidget.propTypes = {
     history: PropTypes.instanceOf(HistoryHash).isRequired, // history will provide open
-    onClose: PropTypes.func.isRequired, // fired when the settings is closed
     width: PropTypes.number.isRequired, // the width includes px of the settings
     formatCreateDateTimeModifiedDateTime: PropTypes.func.isRequired, // required to format date/times, parameters: SpreadsheetMultiFormatRequest, successHandler => SpreadsheetMultiFormatResponse
     spreadsheetMetadata: PropTypes.instanceOf(SpreadsheetMetadata).isRequired,
