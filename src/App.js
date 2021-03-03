@@ -539,23 +539,13 @@ class App extends React.Component {
         console.log("onSpreadsheetFormula", "formula", formula.current, "metadata", metadata);
 
         if(formula){
-            const width = this.appBarWidth();
-            this.formulaContainer.current.setState({
-                style: {
-                    margin: 0,
-                    border: 0,
-                    padding: 0,
-                    width: width,
-                }
-            });
-
             if(reference){
                 const cell = this.getCellOrEmpty(reference);
                 formula.setValue = this.cellToFormulaTextSetter(cell);
 
                 const formulaText = this.cellToFormulaText(cell);
 
-                console.log("onSpreadsheetFormula " + reference + " formula text=" + formulaText + " width: " + width);
+                console.log("onSpreadsheetFormula " + reference + " formula text=" + formulaText);
                 formula.setState({
                     value: formulaText,
                     reference: reference,
