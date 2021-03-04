@@ -107,7 +107,7 @@ class SpreadsheetSettingsWidget extends React.Component {
         console.log("toggle");
 
         this.setState({
-           open: this.state ? !this.state.open : true,
+            open: this.state ? !this.state.open : true,
         });
     }
 
@@ -116,16 +116,10 @@ class SpreadsheetSettingsWidget extends React.Component {
     }
 
     /**
-     * If the history changed load the settings history hash tokens and update the state.
-     * @param location
+     * Updates the state from the history.
      */
     onHistoryChange(location) {
-        const pathname = location.pathname;
-        const historyLocation = this.history.location;
-        const currentPathname = historyLocation.pathname;
-        if(currentPathname !== pathname){
-            this.setState(this.loadHistoryHash(currentPathname));
-        }
+        this.setState(this.loadHistoryHash(this.history.location.pathname));
     }
 
     /**
@@ -188,7 +182,7 @@ class SpreadsheetSettingsWidget extends React.Component {
                     settings: openNew,
                 }
             );
-            if(current !== updatedPathname) {
+            if(current !== updatedPathname){
                 history.push(updatedPathname);
             }
         }
@@ -482,7 +476,7 @@ class SpreadsheetSettingsWidget extends React.Component {
                                                                                         defaultValueFormatter={DEFAULT_VALUE_FORMATTER_TOSTRING}
                                                                                         defaultButtonTooltip={true}
                                                                                         setValue={setValue}
-                            />;
+                        />;
                         break;
                     case SpreadsheetMetadata.DATE_PARSE_PATTERNS:
                         render = <SpreadsheetSettingsWidgetSpreadsheetDateParsePatterns id={id}
@@ -520,7 +514,7 @@ class SpreadsheetSettingsWidget extends React.Component {
                     case SpreadsheetMetadata.VALUE_SEPARATOR:
                         render = (
                             <SpreadsheetSettingsWidgetCharacter id={id}
-                                                                key={[id,value]}
+                                                                key={[id, value]}
                                                                 value={value}
                                                                 defaultValue={defaultValue}
                                                                 defaultValueFormatter={DEFAULT_VALUE_FORMATTER_TOSTRING}
