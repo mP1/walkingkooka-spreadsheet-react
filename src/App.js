@@ -64,7 +64,6 @@ class App extends React.Component {
 
         this.state = {
             createEmptySpreadsheet: false,
-            spreadsheetEngineEvaluation: SpreadsheetEngineEvaluation.COMPUTE_IF_NECESSARY,
             spreadsheetMetadata: SpreadsheetMetadata.EMPTY,
             cells: ImmutableMap.EMPTY,
             columnWidths: ImmutableMap.EMPTY,
@@ -427,7 +426,6 @@ class App extends React.Component {
             console.log("spreadsheetId changed from " + previous + " to " + current + " clearing state cell, columnWidths, rowHeight (caches)");
             this.setState({
                 createEmptySpreadsheet: false,
-                spreadsheetEngineEvaluation: SpreadsheetEngineEvaluation.COMPUTE_IF_NECESSARY,
                 cells: ImmutableMap.EMPTY,
                 columnWidths: ImmutableMap.EMPTY,
                 rowHeights: ImmutableMap.EMPTY,
@@ -517,7 +515,7 @@ class App extends React.Component {
         const previousViewportRange = prevState.viewportRange;
 
         if(!Equality.safeEquals(viewportRange, previousViewportRange)){
-            this.loadSpreadsheetCellOrRange(viewportRange);
+            this.loadSpreadsheetCellOrRange(viewportRange, SpreadsheetEngineEvaluation.COMPUTE_IF_NECESSARY);
         }
     }
 
@@ -599,17 +597,19 @@ class App extends React.Component {
     // CELL.............................................................................................................
 
     /**
-     * Accepts the {@link SpreadsheetRange} returned by {@link #spreadsheetViewport} and then loads all the cells in the
-     * range
+     * Accepts a cell or range along with an evaluation and makes a call to the server.
      */
     loadSpreadsheetCellOrRange(selection, evaluation) {
-        const evaluation0 = evaluation || this.state.spreadsheetEngineEvaluation || SpreadsheetEngineEvaluation.COMPUTE_IF_NECESSARY;
-
-        console.log("loadSpreadsheetCellOrRange " + selection + " " + evaluation0);
-
+        console.log("loadSpreadsheetCellOrRange " + selection + " " + evaluation);
+        if(!selection){
+            throw new Error("Missing selection");
+        }
+        if(!evaluation){
+            throw new Error("Missing evaluation");
+        }
 
         this.send(
-            this.spreadsheetCellApiUrl(selection) + "/" + evaluation0,
+            this.spreadsheetCellApiUrl(selection) + "/" + evaluation,
             {
                 method: "GET"
             },
