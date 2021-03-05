@@ -389,13 +389,6 @@ class App extends React.Component {
             }
         }
 
-        // sync notifications
-        this.notification.current.setState(
-            {
-                notification: state.notification
-            }
-        );
-
         this.historyPush(hash, "State updated from ", prevState, "to", state);
     }
 
@@ -849,15 +842,18 @@ class App extends React.Component {
 
     // Notifications....................................................................................................
 
-    stateNotifications(notification) {
-        console.log("saveNotifications ", this.state.notification);
-        this.setState({
-            notification: notification,
-        });
+    notificationSave(notification) {
+        console.log("saveNotifications ", notification);
+
+        this.notification.current.setState(
+            {
+                notification: notification
+            }
+        );
     }
 
     onNotificationClose() {
-        this.stateNotifications();
+        this.notificationSave();
     }
 
     // resizing.........................................................................................................
@@ -987,9 +983,10 @@ class App extends React.Component {
     onSpreadsheetMetadata(json) {
         this.setState({
             createEmptySpreadsheet: false, // cancel any wait for a create, this stops history/state checks from failing and creating again and again
-            notification: SpreadsheetNotification.success("Spreadsheet metadata saved"),
             spreadsheetMetadata: SpreadsheetMetadata.fromJson(json)
         });
+
+        this.notificationSave(SpreadsheetNotification.success("Spreadsheet metadata saved"));
     }
 
     // messenger........................................................................................................
@@ -1007,7 +1004,7 @@ class App extends React.Component {
     }
 
     onSendError(error) {
-        this.stateNotifications(Notification.error(error));
+        this.notificationSave(Notification.error(error));
     }
 
     // toString.........................................................................................................
