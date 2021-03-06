@@ -1,3 +1,4 @@
+import ImmutableMap from "../util/ImmutableMap.js";
 import Paper from '@material-ui/core/Paper';
 import PropTypes from "prop-types";
 import React from 'react';
@@ -53,10 +54,7 @@ export default class SpreadsheetViewportWidget extends React.Component {
             columnWidths: props.columnWidths,
             rowHeights: props.rowHeights,
             defaultStyle: props.defaultStyle,
-            dimensions: {
-                width: 0,
-                height: 0,
-            },
+            dimensions: props.dimensions,
             home: props.home,
             editCell: props.editCell,
         }
@@ -223,5 +221,11 @@ export default class SpreadsheetViewportWidget extends React.Component {
 }
 
 SpreadsheetViewportWidget.propTypes = {
+    cells: PropTypes.instanceOf(ImmutableMap).isRequired,
+    columnWidths: PropTypes.instanceOf(ImmutableMap).isRequired,
+    rowHeights: PropTypes.instanceOf(ImmutableMap).isRequired,
+    defaultStyle: PropTypes.instanceOf(TextStyle),
+    dimensions: PropTypes.object,
+    homeCell: PropTypes.instanceOf(SpreadsheetCellReference),
     editCellSetter: PropTypes.func.isRequired,
 }
