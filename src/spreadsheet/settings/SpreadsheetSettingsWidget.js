@@ -168,12 +168,10 @@ class SpreadsheetSettingsWidget extends React.Component {
      * Possibly update the history hash using the current open state.
      */
     historyUpdateFromState(prevState) {
-        const openOld = prevState.open;
+        const openOld = !!prevState.open;
         const openNew = !!this.state.open;
 
         if(openOld !== openNew){
-            console.log("historyUpdateFromState settings open: " + openOld + " to " + openNew);
-
             const history = this.history;
             const current = history.location.pathname;
             const updatedPathname = SpreadsheetHistoryHash.merge(
@@ -182,6 +180,8 @@ class SpreadsheetSettingsWidget extends React.Component {
                     settings: openNew,
                 }
             );
+            console.log("historyUpdateFromState settings open: " + openOld + " to " + openNew + " history " + current + " to " + updatedPathname);
+
             if(current !== updatedPathname){
                 history.push(updatedPathname);
             }
