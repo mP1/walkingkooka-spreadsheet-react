@@ -479,7 +479,10 @@ class App extends React.Component {
                 editCell: metadata.get(SpreadsheetMetadata.EDIT_CELL),
                 defaultStyle: metadata.get(SpreadsheetMetadata.STYLE),
             });
-            const previous = viewport.state.dimensions;
+            const previous = viewport.state.dimensions || {
+                width: 0,
+                height: 0,
+            }
             const width = windowDimensions.width;
             const height = windowDimensions.height - aboveViewportDimensions.height;
 
