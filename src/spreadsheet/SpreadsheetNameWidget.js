@@ -1,10 +1,8 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-
 import SpreadsheetButtonTextField from '../widget/SpreadsheetButtonTextField.js';
-import SpreadsheetName from "./SpreadsheetName.js";
 import SpreadsheetHistoryHash from "./history/SpreadsheetHistoryHash.js";
-import HistoryHash from "./history/HistoryHash.js";
+import SpreadsheetName from "./SpreadsheetName.js";
 
 /**
  * A wrapper that is a bridge between SpreadsheetMetadata's spreadsheet name and a text field.
@@ -106,7 +104,7 @@ export default class SpreadsheetNameWidget extends React.Component {
 }
 
 SpreadsheetNameWidget.propTypes = {
-    history: PropTypes.instanceOf(HistoryHash).isRequired, // history will provide open
+    history: PropTypes.object.isRequired,
     value: PropTypes.object, // might be absent
     setValue: PropTypes.func.isRequired,
 }

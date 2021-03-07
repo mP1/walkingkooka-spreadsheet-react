@@ -1,7 +1,6 @@
 import SpreadsheetCellReference from "../reference/SpreadsheetCellReference.js";
 import SpreadsheetHistoryHash from "./SpreadsheetHistoryHash.js";
 
-
 // parse..................................................................................................................
 
 test("parse undefined", () => {

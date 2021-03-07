@@ -7,7 +7,6 @@ import Drawer from "@material-ui/core/Drawer";
 import Equality from "../../Equality.js";
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import ExpressionNumberKind from "../../math/ExpressionNumberKind.js";
-import HistoryHash from "../history/HistoryHash.js";
 import Paper from '@material-ui/core/Paper';
 import PropTypes from 'prop-types';
 import React from 'react';
@@ -830,7 +829,7 @@ class SpreadsheetSettingsWidget extends React.Component {
 }
 
 SpreadsheetSettingsWidget.propTypes = {
-    history: PropTypes.instanceOf(HistoryHash).isRequired, // history will provide open
+    history: PropTypes.object.isRequired, // history will provide open
     formatCreateDateTimeModifiedDateTime: PropTypes.func.isRequired, // required to format date/times, parameters: SpreadsheetMultiFormatRequest, successHandler => SpreadsheetMultiFormatResponse
     spreadsheetMetadata: PropTypes.instanceOf(SpreadsheetMetadata).isRequired,
     setSpreadsheetMetadata: PropTypes.func.isRequired, // fired when the SpreadsheetMetadata is updated.
