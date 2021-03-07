@@ -104,10 +104,13 @@ class SpreadsheetSettingsWidget extends React.Component {
      * Toggles the open/close of the settings by updating the state.open flag.
      */
     toggle() {
-        console.log("toggle");
+        const state = this.state;
+        const open = state ? !state.open : true;
+
+        console.log("toggle to " + open);
 
         this.setState({
-            open: this.state ? !this.state.open : true,
+            open: open,
         });
     }
 
