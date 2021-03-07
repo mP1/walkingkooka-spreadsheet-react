@@ -24,7 +24,7 @@ import SpreadsheetNotification from "./spreadsheet/notification/SpreadsheetNotif
 import SpreadsheetNotificationWidget from "./spreadsheet/notification/SpreadsheetNotificationWidget.js";
 import SpreadsheetRange from "./spreadsheet/reference/SpreadsheetRange";
 import SpreadsheetSettingsWidget from "./spreadsheet/settings/SpreadsheetSettingsWidget.js";
-import SpreadsheetViewportWidget from "./widget/SpreadsheetViewportWidget.js";
+import SpreadsheetViewportWidget from "./spreadsheet/SpreadsheetViewportWidget.js";
 import TextStyle from "./text/TextStyle.js";
 import WindowResizer from "./widget/WindowResizer";
 
