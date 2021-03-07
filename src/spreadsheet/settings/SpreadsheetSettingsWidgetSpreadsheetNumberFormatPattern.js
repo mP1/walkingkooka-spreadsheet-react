@@ -8,6 +8,7 @@ import SpreadsheetSettingsWidgetValue from "./SpreadsheetSettingsWidgetValue.js"
  */
 export default class SpreadsheetSettingsWidgetSpreadsheetNumberFormatPattern extends SpreadsheetSettingsWidgetTextField {
 
+    // eslint-disable-next-line
     constructor(props) {
         super(props);
     }
