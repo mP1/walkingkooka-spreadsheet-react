@@ -67,90 +67,6 @@ class App extends React.Component {
         document.title = "Empty spreadsheet";
     }
 
-    // history lifecycle................................................................................................
-
-    /**
-     * Fired whenever the browser hash changes.
-     */
-    onHistoryChange(location) {
-        const tokens = SpreadsheetHistoryHash.parse(location.pathname);
-        this.historyUpdateFromState(tokens);
-        this.onHistoryChangeUpdateEditCell(tokens);
-    }
-
-    /**
-     * Updates the history to match the state spreadsheet id and spreadsheet name.
-     */
-    historyUpdateFromState(tokens) {
-        if(this.mounted){
-            const state = this.state;
-            const metadata = state.spreadsheetMetadata;
-            const createEmptySpreadsheet = state.createEmptySpreadsheet;
-
-            if(!createEmptySpreadsheet){
-                var replacements = {};
-
-                const spreadsheetId = tokens[SpreadsheetHistoryHash.SPREADSHEET_ID];
-
-                if(this.historySpreadsheetIdCreateEmptyOrLoadOrNothing(spreadsheetId, metadata)){
-                    replacements[SpreadsheetHistoryHash.SPREADSHEET_ID] = spreadsheetId;
-                    replacements[SpreadsheetHistoryHash.SPREADSHEET_NAME] = metadata.get(SpreadsheetMetadata.SPREADSHEET_NAME);
-                }
-
-                const history = this.history;
-                const current = history.location.pathname;
-                const updatedPathname = SpreadsheetHistoryHash.merge(
-                    tokens,
-                    replacements,
-                );
-                if(current !== updatedPathname){
-                    history.push(updatedPathname);
-                }
-            }
-        }
-    }
-
-    /**
-     * Tests if the given spreadsheetId is different from the existing, creating or loading an existing new spreadsheet and return false.
-     * The history is not changed.
-     */
-    historySpreadsheetIdCreateEmptyOrLoadOrNothing(spreadsheetId, metadata) {
-        // if already loading dont check if hash matches state
-        const previous = metadata.get(SpreadsheetMetadata.SPREADSHEET_ID);
-        const same = Equality.safeEquals(spreadsheetId, previous);
-
-        if(same){
-            if(!previous){
-                console.log("history hash spreadsheetId missing creating initial empty spreadsheet");
-                this.createEmptySpreadsheet();
-            }
-        }else {
-            console.log("history hash spreadsheetId changed from " + previous + " to " + spreadsheetId);
-
-            // load the spreadsheet with $spreadsheetId or create a new spreadsheet if missing.
-            if(spreadsheetId){
-                this.loadSpreadsheetMetadata(spreadsheetId);
-            }else {
-                this.createEmptySpreadsheet();
-            }
-        }
-
-        return same;
-    }
-
-    /**
-     * Update and save the metadata if the history hash cell is different.
-     */
-    onHistoryChangeUpdateEditCell(tokens) {
-        const reference = tokens[SpreadsheetHistoryHash.CELL];
-        const metadata = this.spreadsheetMetadata();
-
-        this.saveSpreadsheetMetadata(reference ?
-            metadata.set(SpreadsheetMetadata.EDIT_CELL, reference) :
-            metadata.remove(SpreadsheetMetadata.EDIT_CELL)
-        );
-    }
-
     // component lifecycle..............................................................................................
 
     componentDidMount() {
@@ -189,7 +105,7 @@ class App extends React.Component {
             SpreadsheetHistoryHash.parse(current),
             hash,
         );
-        if(current !== updatedPathname) {
+        if(current !== updatedPathname){
             history.push(updatedPathname);
         }
     }
@@ -364,98 +280,87 @@ class App extends React.Component {
         });
     }
 
-    // CELL.............................................................................................................
+    // history .........................................................................................................
 
     /**
-     * Accepts a cell or range along with an evaluation and makes a call to the server.
+     * Fired whenever the browser hash changes.
      */
-    loadSpreadsheetCellOrRange(selection, evaluation, onSuccess) {
-        console.log("loadSpreadsheetCellOrRange " + selection + " " + evaluation);
-        if(!selection){
-            throw new Error("Missing selection");
-        }
-        if(!evaluation){
-            throw new Error("Missing evaluation");
-        }
+    onHistoryChange(location) {
+        const tokens = SpreadsheetHistoryHash.parse(location.pathname);
+        this.historyUpdateFromState(tokens);
+        this.onHistoryChangeUpdateEditCell(tokens);
+    }
 
-        const onSpreadsheetDelta = this.onSpreadsheetDelta.bind(this);
+    /**
+     * Updates the history to match the state spreadsheet id and spreadsheet name.
+     */
+    historyUpdateFromState(tokens) {
+        if(this.mounted){
+            const state = this.state;
+            const metadata = state.spreadsheetMetadata;
+            const createEmptySpreadsheet = state.createEmptySpreadsheet;
 
-        this.send(
-            this.spreadsheetCellApiUrl(selection) + "/" + evaluation,
-            {
-                method: "GET"
-            },
-            (json) => {
-                onSpreadsheetDelta(json);
-                if(onSuccess) {
-                    onSuccess(json);
+            if(!createEmptySpreadsheet){
+                var replacements = {};
+
+                const spreadsheetId = tokens[SpreadsheetHistoryHash.SPREADSHEET_ID];
+
+                if(this.historySpreadsheetIdCreateEmptyOrLoadOrNothing(spreadsheetId, metadata)){
+                    replacements[SpreadsheetHistoryHash.SPREADSHEET_ID] = spreadsheetId;
+                    replacements[SpreadsheetHistoryHash.SPREADSHEET_NAME] = metadata.get(SpreadsheetMetadata.SPREADSHEET_NAME);
                 }
-            },
-            error
-        );
-    }
 
-    /**
-     * Saves the given cell. Eventually the returned value will trigger a re-render.
-     */
-    saveSpreadsheetCell(cell) {
-        const reference = cell.reference();
-
-        if(cell.equals(this.state.cells.get(reference))){
-            console.log("saveSpreadsheetCell cell unchanged save skipped", cell);
-        }else {
-            console.log("saveSpreadsheetCell", cell);
-
-            this.send(
-                this.spreadsheetCellApiUrl(cell.reference()),
-                {
-                    method: "POST",
-                    body: JSON.stringify(new SpreadsheetDelta([cell],
-                        ImmutableMap.EMPTY,
-                        ImmutableMap.EMPTY,
-                        [this.state.viewportRange])
-                        .toJson()),
-                },
-                this.onSpreadsheetDelta.bind(this),
-                error
-            );
+                const history = this.history;
+                const current = history.location.pathname;
+                const updatedPathname = SpreadsheetHistoryHash.merge(
+                    tokens,
+                    replacements,
+                );
+                if(current !== updatedPathname){
+                    history.push(updatedPathname);
+                }
+            }
         }
     }
 
     /**
-     * Returns a URL with the spreadsheet id and ONLY the provided cell selection.
+     * Tests if the given spreadsheetId is different from the existing, creating or loading an existing new spreadsheet and return false.
+     * The history is not changed.
      */
-    spreadsheetCellApiUrl(selection) {
-        return this.spreadsheetMetadataApiUrl() + "/cell/" + selection;
+    historySpreadsheetIdCreateEmptyOrLoadOrNothing(spreadsheetId, metadata) {
+        // if already loading dont check if hash matches state
+        const previous = metadata.get(SpreadsheetMetadata.SPREADSHEET_ID);
+        const same = Equality.safeEquals(spreadsheetId, previous);
+
+        if(same){
+            if(!previous){
+                console.log("history hash spreadsheetId missing creating initial empty spreadsheet");
+                this.createEmptySpreadsheet();
+            }
+        }else {
+            console.log("history hash spreadsheetId changed from " + previous + " to " + spreadsheetId);
+
+            // load the spreadsheet with $spreadsheetId or create a new spreadsheet if missing.
+            if(spreadsheetId){
+                this.loadSpreadsheetMetadata(spreadsheetId);
+            }else {
+                this.createEmptySpreadsheet();
+            }
+        }
+
+        return same;
     }
 
     /**
-     * Handles spreadsheet delta responses, resulting from cell saves or loads.
+     * Update and save the metadata if the history hash cell is different.
      */
-    onSpreadsheetDelta(json) {
-        const delta = SpreadsheetDelta.fromJson(json);
-        const state = this.state;
-        this.setState({ // lgtm [js/react/inconsistent-state-update]
-            cells: state.cells.set(delta.referenceToCellMap()),
-            columnWidths: state.columnWidths.set(delta.maxColumnWidths()),
-            rowHeights: state.rowHeights.set(delta.maxRowHeights()),
-        });
-    }
+    onHistoryChangeUpdateEditCell(tokens) {
+        const reference = tokens[SpreadsheetHistoryHash.CELL];
+        const metadata = this.spreadsheetMetadata();
 
-    /**
-     * Formats a SpreadsheetMultiFormatRequest holding the create-date-time and modified-date-time.
-     */
-    onFormatCreateDateTimeModifiedDateTime(multiFormatRequest, success, errorHandler) {
-        console.log("onFormatCreateDateTimeModifiedDateTime ", multiFormatRequest);
-
-        this.send(
-            this.spreadsheetMetadataApiUrl() + "/format",
-            {
-                method: "POST",
-                body: JSON.stringify(multiFormatRequest.toJson()),
-            },
-            success,
-            errorHandler || error,
+        this.saveSpreadsheetMetadata(reference ?
+            metadata.set(SpreadsheetMetadata.EDIT_CELL, reference) :
+            metadata.remove(SpreadsheetMetadata.EDIT_CELL)
         );
     }
 
@@ -479,8 +384,6 @@ class App extends React.Component {
 
         const viewportCell = metadata.get(SpreadsheetMetadata.VIEWPORT_CELL);
 
-        const appBarWidth = this.appBarWidth();
-
         const history = this.history;
 
         return (
@@ -488,7 +391,7 @@ class App extends React.Component {
                 <SpreadsheetNotificationWidget ref={this.notification}
                                                key="notification"
                                                notification={this.state.notification}
-                                               onClose={this.onNotificationClose.bind(this)} />
+                                               onClose={this.onNotificationClose.bind(this)}/>
                 <SpreadsheetBox ref={this.aboveViewport}
                                 key={{windowDimensions: state.windowDimensions}}
                                 dimensions={this.onAboveViewportResize.bind(this)}
@@ -507,7 +410,7 @@ class App extends React.Component {
                                                     margin: 0,
                                                     border: 0,
                                                     padding: 0,
-                                                    width: appBarWidth + "px",
+                                                    width: this.appBarWidth() + "px",
                                                 }}>
                         <SpreadsheetFormulaWidget ref={this.formula}
                                                   key={"spreadsheetFormula"}
@@ -518,7 +421,7 @@ class App extends React.Component {
                     </SpreadsheetContainerWidget>
                     <Divider/>
                 </SpreadsheetBox>
-                <SpreadsheetViewportWidget key={[cells, columnWidths, rowHeights, style, viewportCell/*, editCell*/]}
+                <SpreadsheetViewportWidget key={[cells, columnWidths, rowHeights, style, viewportCell]}
                                            history={history}
                                            ref={this.viewport}
                                            cells={cells}
@@ -552,7 +455,7 @@ class App extends React.Component {
                 const delta = SpreadsheetDelta.fromJson(json);
                 const cell = delta.referenceToCellMap().get(cellReference);
                 var formulaText = "";
-                if(cell) {
+                if(cell){
                     const formula = cell.formula();
                     formulaText = formula.text();
                 }
@@ -603,6 +506,23 @@ class App extends React.Component {
     settingsToggle() {
         const widget = this.settings.current;
         widget && widget.toggle();
+    }
+
+    /**
+     * Formats a SpreadsheetMultiFormatRequest holding the create-date-time and modified-date-time.
+     */
+    onFormatCreateDateTimeModifiedDateTime(multiFormatRequest, success, errorHandler) {
+        console.log("onFormatCreateDateTimeModifiedDateTime ", multiFormatRequest);
+
+        this.send(
+            this.spreadsheetMetadataApiUrl() + "/format",
+            {
+                method: "POST",
+                body: JSON.stringify(multiFormatRequest.toJson()),
+            },
+            success,
+            errorHandler || error,
+        );
     }
 
     // Notifications....................................................................................................
@@ -754,18 +674,94 @@ class App extends React.Component {
         this.notificationSave(SpreadsheetNotification.success("Spreadsheet metadata saved"));
     }
 
+    /**
+     * Accepts a cell or range along with an evaluation and makes a call to the server.
+     */
+    loadSpreadsheetCellOrRange(selection, evaluation, onSuccess) {
+        console.log("loadSpreadsheetCellOrRange " + selection + " " + evaluation);
+        if(!selection){
+            throw new Error("Missing selection");
+        }
+        if(!evaluation){
+            throw new Error("Missing evaluation");
+        }
+
+        const onSpreadsheetDelta = this.onSpreadsheetDelta.bind(this);
+
+        this.send(
+            this.spreadsheetCellApiUrl(selection) + "/" + evaluation,
+            {
+                method: "GET"
+            },
+            (json) => {
+                onSpreadsheetDelta(json);
+                if(onSuccess){
+                    onSuccess(json);
+                }
+            },
+            error
+        );
+    }
+
+    /**
+     * Saves the given cell. Eventually the returned value will trigger a re-render.
+     */
+    saveSpreadsheetCell(cell) {
+        const reference = cell.reference();
+
+        if(cell.equals(this.state.cells.get(reference))){
+            console.log("saveSpreadsheetCell cell unchanged save skipped", cell);
+        }else {
+            console.log("saveSpreadsheetCell", cell);
+
+            this.send(
+                this.spreadsheetCellApiUrl(cell.reference()),
+                {
+                    method: "POST",
+                    body: JSON.stringify(new SpreadsheetDelta([cell],
+                        ImmutableMap.EMPTY,
+                        ImmutableMap.EMPTY,
+                        [this.state.viewportRange])
+                        .toJson()),
+                },
+                this.onSpreadsheetDelta.bind(this),
+                error
+            );
+        }
+    }
+
+    /**
+     * Returns a URL with the spreadsheet id and ONLY the provided cell selection.
+     */
+    spreadsheetCellApiUrl(selection) {
+        return this.spreadsheetMetadataApiUrl() + "/cell/" + selection;
+    }
+
+    /**
+     * Handles spreadsheet delta responses, resulting from cell saves or loads.
+     */
+    onSpreadsheetDelta(json) {
+        const delta = SpreadsheetDelta.fromJson(json);
+        const state = this.state;
+        this.setState({ // lgtm [js/react/inconsistent-state-update]
+            cells: state.cells.set(delta.referenceToCellMap()),
+            columnWidths: state.columnWidths.set(delta.maxColumnWidths()),
+            rowHeights: state.rowHeights.set(delta.maxRowHeights()),
+        });
+    }
+
     // messenger........................................................................................................
 
     /**
      * Centralises calls to messenger.send. This may be used to add a default error.
      */
     send(url, parameters, response, error) {
-       this.messenger.send(
-           url,
-           parameters,
-           response,
-           error || this.onSendError,
-       )
+        this.messenger.send(
+            url,
+            parameters,
+            response,
+            error || this.onSendError,
+        )
     }
 
     onSendError(error) {
