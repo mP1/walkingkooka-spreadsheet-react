@@ -1,5 +1,4 @@
 import Equality from "../Equality.js";
-import HistoryHash from "./history/HistoryHash.js";
 import PropTypes from "prop-types";
 import React from 'react';
 import TextField from '@material-ui/core/TextField';
@@ -162,7 +161,7 @@ export default class SpreadsheetFormulaWidget extends React.Component {
 }
 
 SpreadsheetFormulaWidget.propTypes = {
-    history: PropTypes.instanceOf(HistoryHash).isRequired,
+    history: PropTypes.object.isRequired,
     getValue: PropTypes.func.isRequired,
     setValue: PropTypes.func.isRequired,
 }

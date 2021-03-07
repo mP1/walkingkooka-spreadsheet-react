@@ -1,6 +1,34 @@
-import HistoryHash from "./HistoryHash.js";
 import SpreadsheetCellReference from "../reference/SpreadsheetCellReference.js";
 
+function tokenize(pathname) {
+    return pathname && pathname.startsWith("/") ?
+        split(pathname) :
+        [];
+}
+
+function split(pathname) {
+    const components = pathname.split("/");
+    components.shift();
+    return components;
+}
+
+function join(tokens) {
+    if(!tokens){
+        throw new Error("Missing tokens");
+    }
+    var s = "";
+    for(var i = 0; i < tokens.length; i++) {
+        const token = tokens[i];
+
+        // stop joining if a undefined/null token is found.
+        if(!token && token !== ""){
+            break;
+        }
+        s = s + "/" + token;
+    }
+
+    return s === "" ? "/" : s;
+}
 
 /**
  * A collection of utilities that support history hash.
@@ -18,7 +46,7 @@ export default class SpreadsheetHistoryHash {
      * Parsers the path extracting tokens returning an object with valid tokens. Invalid combination will be removed.
      */
     static parse(pathname) {
-        const sourceTokens = HistoryHash.tokenize(pathname);
+        const sourceTokens = tokenize(pathname);
 
         var valid = true;
 
@@ -185,7 +213,7 @@ export default class SpreadsheetHistoryHash {
             }
         }
 
-        return HistoryHash.join(verified);
+        return join(verified);
     }
 
     constructor(history) {

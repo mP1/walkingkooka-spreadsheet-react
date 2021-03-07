@@ -1,5 +1,4 @@
 import Equality from "../Equality.js";
-import HistoryHash from "./history/HistoryHash.js";
 import ImmutableMap from "../util/ImmutableMap.js";
 import Paper from '@material-ui/core/Paper';
 import PropTypes from "prop-types";
@@ -299,7 +298,7 @@ export default class SpreadsheetViewportWidget extends React.Component {
 }
 
 SpreadsheetViewportWidget.propTypes = {
-    history: PropTypes.instanceOf(HistoryHash).isRequired,
+    history: PropTypes.object.isRequired,
     cells: PropTypes.instanceOf(ImmutableMap).isRequired,
     columnWidths: PropTypes.instanceOf(ImmutableMap).isRequired,
     rowHeights: PropTypes.instanceOf(ImmutableMap).isRequired,
