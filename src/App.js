@@ -286,7 +286,7 @@ class App extends React.Component {
             const previous = viewport.state.dimensions || {
                 width: 0,
                 height: 0,
-            }
+            };
             const width = windowDimensions.width;
             const height = windowDimensions.height - aboveViewportDimensions.height;
 
