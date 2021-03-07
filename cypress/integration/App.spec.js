@@ -317,7 +317,7 @@ context("General app usage", () => {
                 cellClick(a1);
 
                 formulaText()
-                    .type(a1Formula)
+                    .type(a1Formula, {force: true})
                     .type("{enter}");
             }
 
@@ -625,7 +625,7 @@ context("General app usage", () => {
                 cellClick(a1);
 
                 formulaText()
-                    .type(a1Formula)
+                    .type(a1Formula, {force: true})
                     .type("{enter}");
             }
 
@@ -716,7 +716,7 @@ context("General app usage", () => {
                 cellClick(a1);
 
                 formulaText()
-                    .type(a1Formula)
+                    .type(a1Formula, {force: true})
                     .type("{enter}");
             }
 
@@ -876,7 +876,7 @@ context("General app usage", () => {
                 cellClick(a1);
 
                 formulaText()
-                    .type(a1Formula)
+                    .type(a1Formula, {force: true})
                     .type("{enter}");
             }
 
