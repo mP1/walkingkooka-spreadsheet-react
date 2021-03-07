@@ -112,7 +112,11 @@ class SpreadsheetSettingsWidget extends React.Component {
     }
 
     componentDidMount() {
-        this.history.listen(this.onHistoryChange.bind(this));
+        this.historyUnlisten = this.history.listen(this.onHistoryChange.bind(this));
+    }
+
+    componentWillUnmount() {
+        this.historyUnlisten();
     }
 
     /**

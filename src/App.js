@@ -4,23 +4,21 @@ import './App.css';
 import {withStyles} from '@material-ui/core/styles';
 import Divider from '@material-ui/core/Divider';
 import Equality from "./Equality.js";
-import HistoryHash from "./spreadsheet/history/HistoryHash.js";
 import ImmutableMap from "./util/ImmutableMap";
 import React from 'react';
 import SpreadsheetAppBar from "./widget/SpreadsheetAppBar.js";
 import SpreadsheetBox from "./widget/SpreadsheetBox";
 import SpreadsheetCell from "./spreadsheet/SpreadsheetCell";
 import SpreadsheetCellBox from "./spreadsheet/reference/SpreadsheetCellBox";
-import SpreadsheetCellReference from "./spreadsheet/reference/SpreadsheetCellReference.js";
 import SpreadsheetContainerWidget from "./widget/SpreadsheetContainerWidget.js";
 import SpreadsheetCoordinates from "./spreadsheet/SpreadsheetCoordinates.js";
 import SpreadsheetDelta from "./spreadsheet/engine/SpreadsheetDelta";
 import SpreadsheetEngineEvaluation from "./spreadsheet/engine/SpreadsheetEngineEvaluation";
 import SpreadsheetFormula from "./spreadsheet/SpreadsheetFormula";
 import SpreadsheetFormulaWidget from "./spreadsheet/SpreadsheetFormulaWidget.js";
+import SpreadsheetHistoryHash from "./spreadsheet/history/SpreadsheetHistoryHash.js";
 import SpreadsheetMetadata from "./spreadsheet/meta/SpreadsheetMetadata.js";
 import SpreadsheetMessenger from "./spreadsheet/message/SpreadsheetMessenger.js";
-import SpreadsheetName from "./spreadsheet/SpreadsheetName.js";
 import SpreadsheetNameWidget from "./spreadsheet/SpreadsheetNameWidget.js";
 import SpreadsheetNotification from "./spreadsheet/notification/SpreadsheetNotification.js";
 import SpreadsheetNotificationWidget from "./spreadsheet/notification/SpreadsheetNotificationWidget.js";
@@ -29,26 +27,6 @@ import SpreadsheetSettingsWidget from "./spreadsheet/settings/SpreadsheetSetting
 import SpreadsheetViewportWidget from "./widget/SpreadsheetViewportWidget.js";
 import TextStyle from "./text/TextStyle.js";
 import WindowResizer from "./widget/WindowResizer";
-
-/**
- * History token for cell related actions.
- */
-const HASH_CELL = "cell";
-
-/**
- * History token noting that a cell formula is being edited.
- */
-const HASH_FORMULA_EDIT = "formula";
-
-/**
- * History token used for spreadsheet name actions.
- */
-const HASH_NAME = "name";
-
-/**
- * History token used for spreadsheet settings actions.
- */
-const HASH_SETTINGS = "settings";
 
 const useStyles = theme => ({
     header: {
@@ -89,132 +67,44 @@ class App extends React.Component {
         document.title = "Empty spreadsheet";
     }
 
-    // app lifecycle....................................................................................................
-
-    /**
-     * Updates the editability of the spreadsheet name, without updating the history.
-     */
-    spreadsheetNameEdit(mode) {
-        const widget = this.spreadsheetName.current;
-        widget && widget.edit(mode);
-
-        // stop editing cell if an edit was happening.
-        if(mode){
-            this.editCell();
-        }
-    }
-
     // history lifecycle................................................................................................
 
     /**
      * Fired whenever the browser hash changes.
      */
     onHistoryChange(location) {
-        const pathname = location.pathname;
-        const historyLocation = this.history.location;
-        const currentPathname = historyLocation.pathname;
-        if(currentPathname !== pathname){
-            console.log("onHistoryChange from " + currentPathname + " to " + pathname, historyLocation);
-
-            this.historyHashVerify(pathname);
-        }
-    }
-
-    currentHistoryHashVerify() {
-        const location = this.history.location;
-        const pathname = location.pathname;
-        console.log("currentHistoryHashVerify " + pathname, "location", location, "state", this.state);
-
-        this.historyHashVerify(pathname);
+        const tokens = SpreadsheetHistoryHash.parse(location.pathname);
+        this.historyUpdateFromState(tokens);
+        this.onHistoryChangeUpdateEditCell(tokens);
     }
 
     /**
-     * Verifies the hash pathname against the state
+     * Updates the history to match the state spreadsheet id and spreadsheet name.
      */
-    historyHashVerify(pathname) {
-        // wait until sizes are known then check hash against state.
+    historyUpdateFromState(tokens) {
         if(this.mounted){
             const state = this.state;
             const metadata = state.spreadsheetMetadata;
             const createEmptySpreadsheet = state.createEmptySpreadsheet;
 
-            console.log("historyHashVerify " + pathname);
-
             if(!createEmptySpreadsheet){
-                const historyHashTokens = HistoryHash.tokenize(pathname);
-                const spreadsheetId = historyHashTokens.shift();
+                var replacements = {};
+
+                const spreadsheetId = tokens[SpreadsheetHistoryHash.SPREADSHEET_ID];
+
                 if(this.historySpreadsheetIdCreateEmptyOrLoadOrNothing(spreadsheetId, metadata)){
+                    replacements[SpreadsheetHistoryHash.SPREADSHEET_ID] = spreadsheetId;
+                    replacements[SpreadsheetHistoryHash.SPREADSHEET_NAME] = metadata.get(SpreadsheetMetadata.SPREADSHEET_NAME);
+                }
 
-                    const spreadsheetName = historyHashTokens.shift();
-                    if(this.historySpreadsheetNameDifferentUpdateHistory(spreadsheetId, spreadsheetName, metadata)){
-
-                        var verifiedHistoryHashTokens = [spreadsheetId, spreadsheetName];
-                        var valid = true;
-                        var cell = false;
-                        var name = false;
-                        var settingsOpen = false;
-                        const duplicate = [];
-
-                        while(valid && historyHashTokens.length > 0) {
-                            const target = historyHashTokens.shift();
-                            if(duplicate.includes(target)){
-                                valid = this.historyUnknownTarget(metadata); // returns false, which will stop editcell, edit name and close settings
-                                break;
-                            }
-                            duplicate.push(target);
-
-                            switch(target) {
-                                case "":
-                                    break;
-                                case HASH_CELL:
-                                    // cell after name is a fail
-                                    if(name){
-                                        valid = this.historyUnknownTarget(metadata); // returns false, which will stop editcell, edit name and close settings
-                                        break;
-                                    }
-                                    cell = true;
-                                    const cellReference = historyHashTokens.shift();
-                                    const action = historyHashTokens.shift();
-                                    valid = this.historyCellAction(cellReference, action, metadata);
-                                    if(valid){
-                                        verifiedHistoryHashTokens.push(target, cellReference, action);
-                                    }
-                                    break;
-                                case HASH_NAME:
-                                    // name after cell is a fail.
-                                    if(cell){
-                                        valid = this.historyUnknownTarget(metadata); // returns false, which will stop editcell, edit name and close settings
-                                        break;
-                                    }
-                                    historyHashTokens.shift();
-                                    this.spreadsheetNameEdit(true);
-                                    valid = true;
-                                    break;
-                                case HASH_SETTINGS:
-                                    settingsOpen = true;
-                                    this.settingsOpen(settingsOpen);
-                                    valid = true;
-                                    verifiedHistoryHashTokens.push(HASH_SETTINGS);
-                                    break;
-                                default:
-                                    valid = this.historyUnknownTarget(metadata);
-                                    break;
-                            }
-                        }
-
-                        if(!cell || !valid){
-                            this.editCell(); // clear any edit cell
-                        }
-                        if(!name || !valid){
-                            this.spreadsheetNameEdit();
-                        }
-                        if(!settingsOpen || !valid){
-                            this.settingsOpen(false);
-                        }
-                        if(valid){
-                            this.historyPush(verifiedHistoryHashTokens, "Verified history hash", pathname);
-                        }
-                    }
+                const history = this.history;
+                const current = history.location.pathname;
+                const updatedPathname = SpreadsheetHistoryHash.merge(
+                    tokens,
+                    replacements,
+                );
+                if(current !== updatedPathname){
+                    history.push(updatedPathname);
                 }
             }
         }
@@ -249,96 +139,16 @@ class App extends React.Component {
     }
 
     /**
-     * If the history spreadsheet name is invalid/different from SpreadsheetMetadata update the history and return false.
+     * Update and save the metadata if the history hash cell is different.
      */
-    historySpreadsheetNameDifferentUpdateHistory(spreadsheetId, hashName, metadata) {
-        var hashSpreadsheetName;
-        try {
-            hashSpreadsheetName = new SpreadsheetName(hashName);
-        } catch(invalidName) {
-        }
+    onHistoryChangeUpdateEditCell(tokens) {
+        const reference = tokens[SpreadsheetHistoryHash.CELL];
+        const metadata = this.spreadsheetMetadata();
 
-        const metadataSpreadsheetName = metadata.get(SpreadsheetMetadata.SPREADSHEET_NAME);
-        const same = Equality.safeEquals(hashSpreadsheetName, metadataSpreadsheetName);
-        if(!same){
-            // update url to match actual SpreadsheetMetadata.spreadsheetName
-            this.historyPush([spreadsheetId, metadataSpreadsheetName],
-                "Updating from " + hashName + " to match state " + metadataSpreadsheetName);
-        }
-        return same;
-    }
-
-    /**
-     * If the cell is invalid reset the history hash to $spreadsheetId / $spreadsheetName.
-     * When the cell reference is valid, verify the action, if either changed update the history to $spreadsheetId / $spreadsheetName / $cell / $action
-     */
-    historyCellAction(cellReference, action, metadata) {
-        var clearHistoryCellAction = true; // only leave if both are valid.
-
-        if(cellReference && action){
-            // cellReference and action present validate the combination.
-            try {
-                const hashSpreadsheetCellReference = SpreadsheetCellReference.parse(cellReference);
-
-                switch(action) {
-                    case HASH_FORMULA_EDIT:
-                        // state does not match hash, update state.
-                        const metadataEditCell = metadata.get(SpreadsheetMetadata.EDIT_CELL);
-                        if(!Equality.safeEquals(cellReference, metadataEditCell)){
-                            this.setState({
-                                spreadsheetMetadata: metadata.set(SpreadsheetMetadata.EDIT_CELL, hashSpreadsheetCellReference),
-                            });
-                        }
-                        clearHistoryCellAction = false;
-                        break;
-                    default:
-                        // invalid action update history clearing cellReference/action.
-                        clearHistoryCellAction = true;
-                        break;
-                }
-            } catch(invalidCellReference) {
-            }
-        }
-
-        if(clearHistoryCellAction){
-            this.historyPush(
-                [
-                    metadata.get(SpreadsheetMetadata.SPREADSHEET_ID),
-                    metadata.get(SpreadsheetMetadata.SPREADSHEET_NAME)
-                ],
-                "Invalid cell reference or action, clearing cell/action (" + cellReference + "/" + action + ")");
-        }
-
-        return !clearHistoryCellAction;
-    }
-
-    /**
-     * The history hash contains an unknown target remove the target and following from the history hash.
-     */
-    historyUnknownTarget(metadata) {
-        this.historyPush([metadata.get(SpreadsheetMetadata.SPREADSHEET_ID), metadata.get(SpreadsheetMetadata.SPREADSHEET_NAME)], "History hash invalid target and parameters");
-        return false;
-    }
-
-    /**
-     * If the location is new log the message and push the history token.
-     */
-    historyPush(tokens, message, ...messageParameters) {
-        if(!message){
-            throw new Error("Missing message");
-        }
-        if(typeof message !== "string"){
-            throw new Error("Expected String message got " + message);
-        }
-
-        const history = this.history;
-        const pathname = HistoryHash.join(tokens);
-        if(history.location.pathname !== pathname){
-            console.log("History push \"" + pathname + "\": " + message, ...messageParameters);
-            this.history.push(pathname);
-        }else {
-            console.log("History push unchanged \"" + history.location.pathname + "\" new \"" + pathname + "\"");
-        }
+        this.saveSpreadsheetMetadata(reference ?
+            metadata.set(SpreadsheetMetadata.EDIT_CELL, reference) :
+            metadata.remove(SpreadsheetMetadata.EDIT_CELL)
+        );
     }
 
     // component lifecycle..............................................................................................
@@ -346,14 +156,16 @@ class App extends React.Component {
     componentDidMount() {
         console.log("App mounted");
         this.mounted = true;
-        this.history.listen(this.onHistoryChange.bind(this));
-        this.currentHistoryHashVerify();
+
+        const history = this.history;
+        this.historyUnlisten = history.listen(this.onHistoryChange.bind(this));
+        this.historyUpdateFromState(SpreadsheetHistoryHash.parse(history.location.pathname));
     }
 
     componentWillUnmount() {
         console.log("App unmounted");
         this.mounted = false;
-        // TODO history.unlisten
+        this.historyUnlisten();
     }
 
     /**
@@ -365,52 +177,45 @@ class App extends React.Component {
 
         this.stateSpreadsheetMetadata(prevState.spreadsheetMetadata);
 
-        const hash = []; // spreadsheet-id / spreadsheet-name / cell / cell-reference / formula
+        const hash = {};
         this.stateSpreadsheetMetadataSpreadsheetId(prevState, hash);
         this.stateSpreadsheetMetadataSpreadsheetName(hash);
         this.stateSpreadsheetViewport(prevState);
         this.stateSpreadsheetViewportRange(prevState);
-        this.stateSpreadsheetFormula(hash);
 
-        // special case restore /name if spreadsheet name is being edited.
-        if(hash.length >= 2){
-            const spreadsheetNameWidget = this.spreadsheetName.current;
-            if(spreadsheetNameWidget && spreadsheetNameWidget.isEdit()){
-                hash.length = 2;
-                hash.push(HASH_NAME);
-            }
+        const history = this.history;
+        const current = history.location.pathname;
+        const updatedPathname = SpreadsheetHistoryHash.merge(
+            SpreadsheetHistoryHash.parse(current),
+            hash,
+        );
+        if(current !== updatedPathname) {
+            history.push(updatedPathname);
         }
-
-        const settings = this.settings.current;
-        if(settings) {
-            if(settings.state.open){
-                hash.push(HASH_SETTINGS);
-            }
-        }
-
-        this.historyPush(hash, "State updated from ", prevState, "to", state);
     }
 
     /**
-     * This method is called whenever the spreadsheet metadata changes.
+     * If the SpreadsheetMetadata has changed tell the formula and viewport so they can refresh themselves.
      */
     stateSpreadsheetMetadata(previousMetadata) {
         const state = this.state;
 
         const metadata = state.spreadsheetMetadata;
         if(!metadata.isEmpty()){
-            const viewportRange = state.viewportRange;
-            if(viewportRange){
-                if(!metadata.equalsMost(previousMetadata)){
-                    this.loadSpreadsheetCellOrRange(viewportRange, SpreadsheetEngineEvaluation.FORCE_RECOMPUTE);
-                }
+            if(!metadata.equalsMost(previousMetadata)){
+                this.formulaReloadIfEditing();
+
+                const viewport = this.viewport.current;
+                viewport.setState({
+                    cells: state.cells,
+                });
             }
         }
 
         const settings = this.settings.current;
         settings && settings.setState(
             {
-            spreadsheetMetadata: metadata,
+                spreadsheetMetadata: this.state.spreadsheetMetadata,
             }
         );
     }
@@ -431,7 +236,7 @@ class App extends React.Component {
                 rowHeights: ImmutableMap.EMPTY,
             });
         }
-        hash[0] = current; // spreadsheetId
+        hash[SpreadsheetHistoryHash.SPREADSHEET_ID] = current;
     }
 
     /**
@@ -453,7 +258,7 @@ class App extends React.Component {
             console.log("onSpreadsheetMetadataSpreadsheetName widget not updated", "widget", widget.current, "name: " + name);
         }
 
-        hash[1] = name; // spreadsheetId/spreadsheetName
+        hash[SpreadsheetHistoryHash.SPREADSHEET_NAME] = name;
     }
 
     /**
@@ -476,7 +281,6 @@ class App extends React.Component {
                 cells: state.cells,
                 columnWidths: state.columnWidths,
                 rowHeights: state.rowHeights,
-                editCell: metadata.get(SpreadsheetMetadata.EDIT_CELL),
                 defaultStyle: metadata.get(SpreadsheetMetadata.STYLE),
             });
             const previous = viewport.state.dimensions || {
@@ -519,43 +323,6 @@ class App extends React.Component {
 
         if(!Equality.safeEquals(viewportRange, previousViewportRange)){
             this.loadSpreadsheetCellOrRange(viewportRange, SpreadsheetEngineEvaluation.COMPUTE_IF_NECESSARY);
-        }
-    }
-
-    /**
-     * Updates the state of the formula widget so it matches the metadata editCell
-     */
-    stateSpreadsheetFormula(hash) {
-        const metadata = this.state.spreadsheetMetadata;
-        const formula = this.formula.current;
-        const reference = metadata.get(SpreadsheetMetadata.EDIT_CELL);
-
-        console.log("onSpreadsheetFormula", "formula", formula.current, "metadata", metadata);
-
-        if(formula){
-            if(reference){
-                const cell = this.getCellOrEmpty(reference);
-                formula.setValue = this.cellToFormulaTextSetter(cell);
-
-                const formulaText = this.cellToFormulaText(cell);
-
-                console.log("onSpreadsheetFormula " + reference + " formula text=" + formulaText);
-                formula.setState({
-                    value: formulaText,
-                    reference: reference,
-                });
-            }else {
-                formula.setState({
-                    value: null,
-                    reference: null,
-                });
-            }
-        }
-
-        if(reference){
-            hash[2] = HASH_CELL;
-            hash[3] = reference;
-            hash[4] = HASH_FORMULA_EDIT;
         }
     }
 
@@ -602,7 +369,7 @@ class App extends React.Component {
     /**
      * Accepts a cell or range along with an evaluation and makes a call to the server.
      */
-    loadSpreadsheetCellOrRange(selection, evaluation) {
+    loadSpreadsheetCellOrRange(selection, evaluation, onSuccess) {
         console.log("loadSpreadsheetCellOrRange " + selection + " " + evaluation);
         if(!selection){
             throw new Error("Missing selection");
@@ -611,12 +378,19 @@ class App extends React.Component {
             throw new Error("Missing evaluation");
         }
 
+        const onSpreadsheetDelta = this.onSpreadsheetDelta.bind(this);
+
         this.send(
             this.spreadsheetCellApiUrl(selection) + "/" + evaluation,
             {
                 method: "GET"
             },
-            this.onSpreadsheetDelta.bind(this),
+            (json) => {
+                onSpreadsheetDelta(json);
+                if(onSuccess) {
+                    onSuccess(json);
+                }
+            },
             error
         );
     }
@@ -669,66 +443,6 @@ class App extends React.Component {
     }
 
     /**
-     * This is called whenever a cell is clicked or selected for editing and may be used to stop editing a cell.
-     */
-    editCell(reference) {
-        console.log("editCell " + reference);
-
-        const metadata = this.spreadsheetMetadata();
-        const metadataEditCell = metadata.get(SpreadsheetMetadata.EDIT_CELL);
-
-        if(Equality.safeEquals(reference, metadataEditCell)){
-            if(reference){
-                // focus cell again
-                const formula = this.formula.current;
-                formula && formula.focus();
-            }
-        }else {
-            this.saveSpreadsheetMetadata(reference ?
-                metadata.set(SpreadsheetMetadata.EDIT_CELL, reference) :
-                metadata.remove(SpreadsheetMetadata.EDIT_CELL));
-
-            if(reference){
-                this.spreadsheetNameEdit(); // stop editing spreadsheet name
-            }
-        }
-    }
-
-    // SpreadsheetFormula...............................................................................................
-
-    /**
-     * Returns the formula text to be edited or undefined.
-     */
-    cellToFormulaText(cell) {
-        return (cell && cell.formula().text()) || "";
-    }
-
-    /**
-     * Returns a function that updates the value of a {@link SpreadsheetFormula} triggering a cell reload.
-     */
-    cellToFormulaTextSetter(cell) {
-        var setter;
-
-        if(cell){
-            const formula = cell.formula();
-            setter = (text) => this.saveSpreadsheetCell(cell.setFormula(formula.setText(text)));
-        }
-        return setter;
-    }
-
-    /**
-     * Fetches the cell by the given reference or returns an empty {@link SpreadsheetCell}.
-     */
-    getCellOrEmpty(reference) {
-        return this.state.cells.get(reference) ||
-            new SpreadsheetCell(
-                reference,
-                new SpreadsheetFormula(""),
-                TextStyle.EMPTY
-            );
-    }
-
-    /**
      * Formats a SpreadsheetMultiFormatRequest holding the create-date-time and modified-date-time.
      */
     onFormatCreateDateTimeModifiedDateTime(multiFormatRequest, success, errorHandler) {
@@ -765,11 +479,7 @@ class App extends React.Component {
 
         const viewportCell = metadata.get(SpreadsheetMetadata.VIEWPORT_CELL);
 
-        const editCellReference = metadata.get(SpreadsheetMetadata.EDIT_CELL); // SpreadsheetCellReference: may be undefined,
-        const editCell = editCellReference && this.getCellOrEmpty(editCellReference);
-
         const appBarWidth = this.appBarWidth();
-        const formulaText = this.cellToFormulaText(editCell);
 
         const history = this.history;
 
@@ -790,7 +500,6 @@ class App extends React.Component {
                                                history={history}
                                                value={spreadsheetName}
                                                setValue={this.saveSpreadsheetName.bind(this)}
-                                               setEdit={this.spreadsheetNameEdit.bind(this)}
                         />
                     </SpreadsheetAppBar>
                     <SpreadsheetContainerWidget ref={this.formulaContainer}
@@ -801,23 +510,22 @@ class App extends React.Component {
                                                     width: appBarWidth + "px",
                                                 }}>
                         <SpreadsheetFormulaWidget ref={this.formula}
-                                                  key={[editCellReference, formulaText]}
-                                                  reference={editCellReference}
-                                                  value={formulaText}
-                                                  setValue={editCellReference && this.cellToFormulaTextSetter(editCell)}
+                                                  key={"spreadsheetFormula"}
+                                                  history={history}
+                                                  getValue={this.formulaTextLoad.bind(this)}
+                                                  setValue={this.formulaTextSave.bind(this)}
                         />
                     </SpreadsheetContainerWidget>
                     <Divider/>
                 </SpreadsheetBox>
-                <SpreadsheetViewportWidget key={[cells, columnWidths, rowHeights, style, viewportCell, editCell]}
+                <SpreadsheetViewportWidget key={[cells, columnWidths, rowHeights, style, viewportCell/*, editCell*/]}
+                                           history={history}
                                            ref={this.viewport}
                                            cells={cells}
                                            columnWidths={columnWidths}
                                            rowHeights={rowHeights}
                                            defaultStyle={style}
                                            home={viewportCell}
-                                           editCell={editCell}
-                                           editCellSetter={this.editCell.bind(this)}
                 />
                 <SpreadsheetSettingsWidget ref={this.settings}
                                            history={history}
@@ -827,6 +535,60 @@ class App extends React.Component {
                 />
             </WindowResizer>
         );
+    }
+
+    // formula.........................................................................................................
+
+    /**
+     * Accepts a cell reference and eventually sets the formula text on the second call back function.
+     */
+    formulaTextLoad(cellReference, setFormulaText) {
+        console.log("formulaTextLoad " + cellReference + " " + setFormulaText);
+
+        this.loadSpreadsheetCellOrRange(
+            cellReference,
+            SpreadsheetEngineEvaluation.FORCE_RECOMPUTE,
+            (json) => {
+                const delta = SpreadsheetDelta.fromJson(json);
+                const cell = delta.referenceToCellMap().get(cellReference);
+                var formulaText = "";
+                if(cell) {
+                    const formula = cell.formula();
+                    formulaText = formula.text();
+                }
+                setFormulaText(formulaText);
+            }
+        );
+    }
+
+    /**
+     * Saves the given formula text to the given cell reference. This assumes the cell has been previously loaded.
+     */
+    formulaTextSave(cellReference, formulaText) {
+        console.log("formulaTextSave " + cellReference + " " + formulaText);
+
+        const cell = this.getCellOrEmpty(cellReference);
+        const formula = cell.formula();
+        this.saveSpreadsheetCell(cell.setFormula(formula.setText(formulaText)));
+    }
+
+    /**
+     * Fetches the cell by the given reference or returns an empty {@link SpreadsheetCell}.
+     */
+    getCellOrEmpty(reference) {
+        return this.state.cells.get(reference) ||
+            new SpreadsheetCell(
+                reference,
+                new SpreadsheetFormula(""),
+                TextStyle.EMPTY
+            );
+    }
+
+    /**
+     * This is called whenever the spreadsheet metadata is updated and is necessary because properties such as decimal-separator will require the formula text to be reloaded.
+     */
+    formulaReloadIfEditing() {
+        this.formula.current.reloadIfEditing();
     }
 
     // settings.........................................................................................................

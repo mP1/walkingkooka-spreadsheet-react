@@ -1,6 +1,9 @@
+import Equality from "../Equality.js";
+import HistoryHash from "./history/HistoryHash.js";
 import PropTypes from "prop-types";
 import React from 'react';
 import TextField from '@material-ui/core/TextField';
+import SpreadsheetHistoryHash from "./history/SpreadsheetHistoryHash.js";
 
 /**
  * A widget that supports editing formula text. The widget is disabled when state.reference is falsey.
@@ -12,21 +15,87 @@ export default class SpreadsheetFormulaWidget extends React.Component {
     constructor(props) {
         super(props);
 
-        const initialValue = props.value;
-        const reference = props.reference;
-
-        this.state = {
-            value: initialValue,
-            reference: reference,
-        };
-        this.initialValue = initialValue;
+        this.history = props.history;
+        this.getValue = props.getValue;
         this.setValue = props.setValue;
+
         this.textField = React.createRef();
         this.input = React.createRef();
+
+        this.state = {};
     }
 
-    focus() {
-        giveFocus(this.input.current, "giving focus");
+    /**
+     * If the formula is being edited, fetch the formula text and update the displayed text.
+     */
+    reloadIfEditing() {
+        const state = this.state;
+        if(null != state.value){
+            this.reloadFormulaText(state.reference);
+        }
+    }
+
+    componentDidMount() {
+        this.historyUnlisten = this.history.listen(this.onHistoryChange.bind(this));
+    }
+
+    componentWillUnmount() {
+        this.historyUnlisten();
+    }
+
+    /**
+     * If the reference changed load the new formula text and then give focus to the textField.
+     */
+    componentDidUpdate(prevProps, prevState, snapshot) {
+        const state = this.state
+        const reference = state.reference;
+
+        console.log("componentDidUpdate formula reference " + prevState.reference + " to " + reference + " state", state);
+
+        if(!Equality.safeEquals(reference, prevState.reference)){
+            if(state.edit){
+                this.reloadFormulaText(reference);
+            }else {
+                this.setState({
+                    value: null,
+                    giveFocus: false,
+                })
+            }
+        }
+    }
+
+    reloadFormulaText(reference) {
+        console.log("reloadFormulaText " + reference);
+
+        this.getValue(reference, (formulaText) => {
+            console.log("reloadFormulaText latest formulaText for " + reference + " is " + formulaText);
+
+            this.setState({
+                value: formulaText,
+            });
+        });
+    }
+
+    /**
+     * Updates the state from the history hash
+     */
+    onHistoryChange(location) {
+        const pathname = location.pathname;
+        console.log("onHistoryChange from " + pathname + " to " + this.history.location.pathname);
+
+        this.setState(this.loadHistoryHash(pathname));
+    }
+
+    /**
+     * Loads the state cell, edit flag from the history hash.
+     */
+    loadHistoryHash(pathname) {
+        const tokens = SpreadsheetHistoryHash.parse(pathname);
+
+        return {
+            reference: tokens[SpreadsheetHistoryHash.CELL],
+            edit: tokens[SpreadsheetHistoryHash.CELL_FORMULA],
+        };
     }
 
     render() {
@@ -34,15 +103,13 @@ export default class SpreadsheetFormulaWidget extends React.Component {
         const {reference, value} = state;
         const setValue = this.setValue;
 
-        console.log("render " + (reference ? reference : "disabled") + " formula: \"" + (value || "") + "\"");
-
-        // disable if setValue is unavailable
+        console.log("render " + (null == value ? "disabled" : "enabled") + " formula: \"" + (value || "") + "\"");
         return (
             <TextField ref={this.textField}
                        key={[reference, value, setValue]}
                        id={"formula-TextField"}
                        defaultValue={value}
-                       disabled={!reference}
+                       disabled={null == value}
                        fullWidth={true}
                        onKeyDown={this.onKeyDown.bind(this)}
                        placeholder={(reference && reference.toString()) || ""}
@@ -55,19 +122,6 @@ export default class SpreadsheetFormulaWidget extends React.Component {
                        inputRef={this.input}
             />
         );
-    }
-
-    /**
-     * If the reference changed give focus to the textField.
-     */
-    componentDidUpdate(prevProps, prevState, snapshot) {
-        const widget = this.input.current;
-        const reference = this.state.reference;
-        const previous = prevState.reference;
-
-        if(reference && !reference.equals(previous)){
-            giveFocus(widget, "formula getting focus, reference changed from " + previous + " to " + reference);
-        }
     }
 
     // KEY HANDLING.....................................................................................................
@@ -102,21 +156,13 @@ export default class SpreadsheetFormulaWidget extends React.Component {
      */
     onEnterKey(event) {
         const value = event.target.value;
-        this.setValue(value);
+        this.setValue(this.state.reference, value);
         this.setState({"value": value});
     }
 }
 
 SpreadsheetFormulaWidget.propTypes = {
-    value: PropTypes.string.isRequired,
-    setValue: PropTypes.func, // missing indicates disabled
-}
-
-function giveFocus(widget, message) {
-    if(widget){
-        setTimeout(() => {
-            console.log(message);
-            widget.focus()
-        }, 10);
-    }
+    history: PropTypes.instanceOf(HistoryHash).isRequired,
+    getValue: PropTypes.func.isRequired,
+    setValue: PropTypes.func.isRequired,
 }

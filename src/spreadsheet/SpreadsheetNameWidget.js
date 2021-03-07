@@ -25,6 +25,14 @@ export default class SpreadsheetNameWidget extends React.Component {
         this.textField = React.createRef();
     }
 
+    componentDidMount() {
+        this.historyUnlisten = this.history.listen(this.onHistoryChange.bind(this));
+    }
+
+    componentWillUnmount() {
+        this.historyUnlisten();
+    }
+
     /**
      * Updates the widget mode between edit/view.
      */
@@ -51,24 +59,49 @@ export default class SpreadsheetNameWidget extends React.Component {
                                            id={"spreadsheet-name"}
                                            className={"spreadsheet-name"}
                                            value={name}
-                                           setValue={v => this.setValue(new SpreadsheetName(v))}
+                                           setValue={this.onValue.bind(this)}
                                            setEdit={this.onTextFieldEdit.bind(this)}/>
     }
 
+    onValue(v) {
+        this.setValue(new SpreadsheetName(v));
+        this.onTextFieldEdit(false);
+    }
+
     onTextFieldEdit(e) {
+        const newEdit = !this.isEdit();
+
         const history = this.history;
         const current = history.location.pathname;
+        const replacements = {};
+        replacements[SpreadsheetHistoryHash.SPREADSHEET_NAME_EDIT] = newEdit;
+
         const updated = SpreadsheetHistoryHash.merge(
             SpreadsheetHistoryHash.parse(current),
-            {
-                "name": !this.state.name,
-            }
+            replacements
         );
-        if(current !== updated) {
+        console.log("onTextEdit " + e + " from " + current + " to " + updated);
+
+        if(current !== updated){
             history.push(updated);
         }
+    }
 
-        this.setEdit(e);
+    /**
+     * Loads the spreadsheet name edit token and updates the state.
+     */
+    onHistoryChange(location) {
+        console.log("onHistoryChange " + location.pathname);
+        this.edit(this.loadHistoryHash(location.pathname));
+    }
+
+    /**
+     * returns a flag whether the name widget is in edit mode.
+     */
+    loadHistoryHash(pathname) {
+        const tokens = SpreadsheetHistoryHash.parse(pathname);
+        console.log("loadHistoryHash: ", tokens[SpreadsheetHistoryHash.SPREADSHEET_NAME_EDIT]);
+        return !!tokens[SpreadsheetHistoryHash.SPREADSHEET_NAME_EDIT];
     }
 }
 
