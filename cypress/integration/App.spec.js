@@ -9,6 +9,10 @@ const COLUMN = ".column";
 const ROW = ".row";
 const CELL = ".cell";
 
+const FORCE_TRUE = {
+    force: true,
+};
+
 context("General app usage", () => {
 
     beforeEach(() => {
@@ -317,8 +321,8 @@ context("General app usage", () => {
                 cellClick(a1);
 
                 formulaText()
-                    .type(a1Formula, {force: true})
-                    .type("{enter}");
+                    .type(a1Formula, FORCE_TRUE)
+                    .type("{enter}", FORCE_TRUE);
             }
 
             const textFieldId = "#spreadsheet-metadata-" + property + "-TextField";
@@ -625,8 +629,8 @@ context("General app usage", () => {
                 cellClick(a1);
 
                 formulaText()
-                    .type(a1Formula, {force: true})
-                    .type("{enter}");
+                    .type(a1Formula, FORCE_TRUE)
+                    .type("{enter}", FORCE_TRUE);
             }
 
             const sliderId = "#spreadsheet-metadata-" + property + "-Slider";
@@ -716,8 +720,8 @@ context("General app usage", () => {
                 cellClick(a1);
 
                 formulaText()
-                    .type(a1Formula, {force: true})
-                    .type("{enter}");
+                    .type(a1Formula, FORCE_TRUE)
+                    .type("{enter}", FORCE_TRUE);
             }
 
             const sliderId = "#spreadsheet-metadata-" + property + "-Slider";
@@ -876,8 +880,8 @@ context("General app usage", () => {
                 cellClick(a1);
 
                 formulaText()
-                    .type(a1Formula, {force: true})
-                    .type("{enter}");
+                    .type(a1Formula, FORCE_TRUE)
+                    .type("{enter}", FORCE_TRUE);
             }
 
             const dropDownListId = "#spreadsheet-metadata-" + property + "-DropDownList";
