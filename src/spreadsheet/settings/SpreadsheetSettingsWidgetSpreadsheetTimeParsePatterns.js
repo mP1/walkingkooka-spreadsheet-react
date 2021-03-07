@@ -8,6 +8,7 @@ import SpreadsheetTimeParsePatterns from "../format/SpreadsheetTimeParsePatterns
  */
 export default class SpreadsheetSettingsWidgetSpreadsheetTimeParsePatterns extends SpreadsheetSettingsWidgetTextField {
 
+    // eslint-disable-next-line
     constructor(props) {
         super(props);
     }

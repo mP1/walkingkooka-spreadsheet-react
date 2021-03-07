@@ -16,7 +16,7 @@ export default class SpreadsheetNumberParsePatterns extends SpreadsheetParsePatt
         return new SpreadsheetNumberParsePatterns(pattern);
     }
 
-    // eslint-disable-next-line no-useless-constructor
+    // eslint-disable-next-line
     constructor(pattern) {
         super(pattern);
     }
