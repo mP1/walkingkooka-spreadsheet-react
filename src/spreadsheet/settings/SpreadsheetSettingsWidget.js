@@ -110,7 +110,8 @@ class SpreadsheetSettingsWidget extends React.Component {
 
         this.setState({
             open: open,
-            section: null, // always clear
+            section: state.toggleSection, // always clear
+            toggleSection: state.section,
         });
     }
 
@@ -834,6 +835,7 @@ class SpreadsheetSettingsWidget extends React.Component {
 
         this.setState({
             section: stateSectionName,
+            toggleSection: stateSectionName,
         });
     }
 }
