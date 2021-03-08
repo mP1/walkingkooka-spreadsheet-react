@@ -180,11 +180,12 @@ class SpreadsheetSettingsWidget extends React.Component {
         if(openOld !== openNew){
             const history = this.history;
             const current = history.location.pathname;
+            const replacements = {};
+            replacements[SpreadsheetHistoryHash.SETTINGS] = openNew;
+
             const updatedPathname = SpreadsheetHistoryHash.merge(
                 SpreadsheetHistoryHash.parse(current),
-                {
-                    settings: openNew,
-                }
+                replacements
             );
             console.log("historyUpdateFromState settings open: " + openOld + " to " + openNew + " history " + current + " to " + updatedPathname);
 
