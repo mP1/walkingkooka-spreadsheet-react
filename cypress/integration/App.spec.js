@@ -2,6 +2,7 @@
 
 import ExpressionNumberKind from "../../src/math/ExpressionNumberKind.js";
 import RoundingMode from "../../src/math/RoundingMode.js";
+import SpreadsheetHistoryHash from "../../src/spreadsheet/history/SpreadsheetHistoryHash.js";
 import SpreadsheetMetadata from "../../src/spreadsheet/meta/SpreadsheetMetadata.js";
 
 const SELECTED = ".selected";
@@ -311,9 +312,7 @@ context("General app usage", () => {
                                                   a1CellContentDefault) {
         it("Show settings and update SpreadsheetMetadata." + property, () => {
             settingsToggle();
-
-            settings()
-                .should('be.visible');
+            settingsOpenSection(property);
 
             const a1 = "A1";
 
@@ -544,9 +543,7 @@ context("General app usage", () => {
                                                    text2) {
         it("Show settings and update SpreadsheetMetadata." + property1 + "=" + text1 + " & " + property2 + "=" + text2 + " causing value swap", () => {
             settingsToggle();
-
-            settings()
-                .should('be.visible');
+            settingsOpenSection(property1);
 
             const textFieldId1 = "#spreadsheet-metadata-" + property1 + "-TextField";
             cy.get(textFieldId1)
@@ -619,9 +616,7 @@ context("General app usage", () => {
                                                     a1CellContentDefault) {
         it("Show settings and update SpreadsheetMetadata." + property, () => {
             settingsToggle();
-
-            settings()
-                .should('be.visible');
+            settingsOpenSection(property);
 
             const a1 = "A1";
 
@@ -667,9 +662,7 @@ context("General app usage", () => {
                                                                    a1CellContentDefault) {
         it("Show settings and update SpreadsheetMetadata." + property, () => {
             settingsToggle();
-
-            settings()
-                .should('be.visible');
+            settingsOpenSection(property);
 
             const dateParsePatternsId = "#spreadsheet-metadata-" + SpreadsheetMetadata.DATE_PARSE_PATTERNS + "-TextField";
             const dateFormatPatternId = "#spreadsheet-metadata-" + SpreadsheetMetadata.DATE_FORMAT_PATTERN + "-TextField";
@@ -870,9 +863,7 @@ context("General app usage", () => {
                                                           a1CellContentDefault) {
         it("Show settings and update SpreadsheetMetadata." + property, () => {
             settingsToggle();
-
-            settings()
-                .should('be.visible');
+            settingsOpenSection(property);
 
             const a1 = "A1";
 
@@ -1003,6 +994,77 @@ function settingsToggle() {
     reactRenderWait();
     cy.get("#settings-icon")
         .click();
+}
+
+/**
+ * Opens the settings section that includes the given property
+ */
+function settingsOpenSection(property) {
+    settings()
+        .should('be.visible');
+
+    var section = null;
+
+    switch(property) {
+        case SpreadsheetMetadata.SPREADSHEET_ID:
+        case SpreadsheetMetadata.CREATOR:
+        case SpreadsheetMetadata.CREATE_DATE_TIME:
+        case SpreadsheetMetadata.MODIFIED_BY:
+        case SpreadsheetMetadata.MODIFIED_DATE_TIME:
+            section = SpreadsheetHistoryHash.SETTINGS_METADATA;
+            break;
+
+        case SpreadsheetMetadata.LOCALE:
+        case SpreadsheetMetadata.TEXT_FORMAT_PATTERN:
+        case SpreadsheetMetadata.WIDTH:
+            section = SpreadsheetHistoryHash.SETTINGS_TEXT;
+            break;
+
+        case SpreadsheetMetadata.DATETIME_OFFSET:
+        case SpreadsheetMetadata.DEFAULT_YEAR:
+        case SpreadsheetMetadata.TWO_DIGIT_YEAR:
+        case SpreadsheetMetadata.DATE_FORMAT_PATTERN:
+        case SpreadsheetMetadata.DATE_PARSE_PATTERNS:
+        case SpreadsheetMetadata.DATETIME_FORMAT_PATTERN:
+        case SpreadsheetMetadata.DATETIME_PARSE_PATTERNS:
+        case SpreadsheetMetadata.TIME_FORMAT_PATTERN:
+        case SpreadsheetMetadata.TIME_PARSE_PATTERNS:
+            section = SpreadsheetHistoryHash.SETTINGS_DATE_TIME;
+            break;
+
+        case SpreadsheetMetadata.EXPRESSION_NUMBER_KIND:
+        case SpreadsheetMetadata.PRECISION:
+        case SpreadsheetMetadata.ROUNDING_MODE:
+        case SpreadsheetMetadata.CURRENCY_SYMBOL:
+        case SpreadsheetMetadata.DECIMAL_SEPARATOR:
+        case SpreadsheetMetadata.EXPONENT_SYMBOL:
+        case SpreadsheetMetadata.GROUPING_SEPARATOR:
+        case SpreadsheetMetadata.NEGATIVE_SIGN:
+        case SpreadsheetMetadata.PERCENTAGE_SYMBOL:
+        case SpreadsheetMetadata.POSITIVE_SIGN:
+        case SpreadsheetMetadata.NUMBER_FORMAT_PATTERN:
+        case SpreadsheetMetadata.NUMBER_PARSE_PATTERNS:
+        case SpreadsheetMetadata.VALUE_SEPARATOR:
+            section = SpreadsheetHistoryHash.SETTINGS_NUMBER;
+            break;
+
+        case SpreadsheetMetadata.STYLE:
+            section = SpreadsheetHistoryHash.SETTINGS_STYLE;
+            break;
+
+        default:
+            throw new Error("Unknown property: " + property);
+    }
+
+    cy.get("#spreadsheet-" +section + "-expand-more-icon")
+        .click();
+
+    reactRenderWait();
+
+    cy.get("#spreadsheet-" +section + "-content")
+        .should('be.visible');
+
+    hash().should('match', new RegExp(".*\/.*\/settings\/" + section)) // => true
 }
 
 /**
