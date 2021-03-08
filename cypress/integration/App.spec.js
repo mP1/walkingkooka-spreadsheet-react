@@ -250,6 +250,31 @@ context("General app usage", () => {
             });
     });
 
+    it("Toggle show open section then hide settings history hash", () => {
+        reactRenderWait();
+
+        cy.window()
+            .then(function(win) {
+                var hash = win.location.hash;
+
+                settingsToggle(); // open
+
+                settingsOpenSection(SpreadsheetMetadata.TWO_DIGIT_YEAR);
+
+                settingsToggle(); // close
+
+                settingsToggle(); // open
+
+                const section = settingsSectionFromProperty(SpreadsheetMetadata.TWO_DIGIT_YEAR);
+                cy.get("#spreadsheet-" + section + "-content")
+                    .should('be.visible');
+
+                reactRenderWait();
+                cy.hash()
+                    .should("eq", hash + "/settings/" + section);
+            });
+    });
+
     it("Edit spreadsheet name, then toggle show settings history hash", () => {
         spreadsheetName();
 
@@ -1003,6 +1028,20 @@ function settingsOpenSection(property) {
     settings()
         .should('be.visible');
 
+    const section = settingsSectionFromProperty(property);
+
+    cy.get("#spreadsheet-" +section + "-expand-more-icon")
+        .click();
+
+    reactRenderWait();
+
+    cy.get("#spreadsheet-" +section + "-content")
+        .should('be.visible');
+
+    hash().should('match', new RegExp(".*\/.*\/settings\/" + section)) // => true
+}
+
+function settingsSectionFromProperty(property) {
     var section = null;
 
     switch(property) {
@@ -1056,15 +1095,7 @@ function settingsOpenSection(property) {
             throw new Error("Unknown property: " + property);
     }
 
-    cy.get("#spreadsheet-" +section + "-expand-more-icon")
-        .click();
-
-    reactRenderWait();
-
-    cy.get("#spreadsheet-" +section + "-content")
-        .should('be.visible');
-
-    hash().should('match', new RegExp(".*\/.*\/settings\/" + section)) // => true
+    return section;
 }
 
 /**
