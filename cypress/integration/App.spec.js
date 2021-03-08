@@ -334,7 +334,7 @@ context("General app usage", () => {
             cy.get(textFieldId)
                 .should("have.value", text);
 
-            if(updatedA1Formula) {
+            if(updatedA1Formula){
                 formulaText()
                     .should("have.value", updatedA1Formula)
             }
@@ -353,7 +353,7 @@ context("General app usage", () => {
             cy.get(textFieldId)
                 .should("have.value", "");
 
-            if(a1Formula) {
+            if(a1Formula){
                 formulaText()
                     .should("have.value", a1Formula)
             }
@@ -637,7 +637,7 @@ context("General app usage", () => {
 
             // the first slow of a Slider is reserved for "Default".
             values.forEach((v, i) => {
-                cy.get(sliderId + " *[data-index=\"" + (1+i) + "\"][aria-hidden=\"true\"]")
+                cy.get(sliderId + " *[data-index=\"" + (1 + i) + "\"][aria-hidden=\"true\"]")
                     .should("have.text", v.label())
                     .click();
 
@@ -661,10 +661,10 @@ context("General app usage", () => {
      * TODO Currently no test is made upon the a1 cell contents.
      */
     function enterSpreadsheetMetadataSliderNumberTextFieldAndCheck(property,
-                                                    a1Formula,
-                                                    values,
-                                                    a1CellContents,
-                                                    a1CellContentDefault) {
+                                                                   a1Formula,
+                                                                   values,
+                                                                   a1CellContents,
+                                                                   a1CellContentDefault) {
         it("Show settings and update SpreadsheetMetadata." + property, () => {
             settingsToggle();
 
