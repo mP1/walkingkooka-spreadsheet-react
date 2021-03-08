@@ -124,6 +124,77 @@ test("parse /spreadsheet-id/spreadsheet-name/settings", () => {
     );
 });
 
+test("parse /spreadsheet-id/spreadsheet-name/settings/!invalid", () => {
+    parseAndCheck(
+        "/spreadsheet-id-123/spreadsheet-name-456/settings/!invalid",
+        {
+            "spreadsheet-id": "spreadsheet-id-123",
+            "spreadsheet-name": "spreadsheet-name-456",
+            "settings": true,
+        }
+    );
+});
+
+test("parse /spreadsheet-id/spreadsheet-name/settings/metadata", () => {
+    parseAndCheck(
+        "/spreadsheet-id-123/spreadsheet-name-456/settings/metadata",
+        {
+            "spreadsheet-id": "spreadsheet-id-123",
+            "spreadsheet-name": "spreadsheet-name-456",
+            "settings": true,
+            "settings-section": "metadata",
+        }
+    );
+});
+
+test("parse /spreadsheet-id/spreadsheet-name/settings/text", () => {
+    parseAndCheck(
+        "/spreadsheet-id-123/spreadsheet-name-456/settings/text",
+        {
+            "spreadsheet-id": "spreadsheet-id-123",
+            "spreadsheet-name": "spreadsheet-name-456",
+            "settings": true,
+            "settings-section": "text",
+        }
+    );
+});
+
+test("parse /spreadsheet-id/spreadsheet-name/settings/number", () => {
+    parseAndCheck(
+        "/spreadsheet-id-123/spreadsheet-name-456/settings/number",
+        {
+            "spreadsheet-id": "spreadsheet-id-123",
+            "spreadsheet-name": "spreadsheet-name-456",
+            "settings": true,
+            "settings-section": "number",
+        }
+    );
+});
+
+test("parse /spreadsheet-id/spreadsheet-name/settings/date-time", () => {
+    parseAndCheck(
+        "/spreadsheet-id-123/spreadsheet-name-456/settings/date-time",
+        {
+            "spreadsheet-id": "spreadsheet-id-123",
+            "spreadsheet-name": "spreadsheet-name-456",
+            "settings": true,
+            "settings-section": "date-time",
+        }
+    );
+});
+
+test("parse /spreadsheet-id/spreadsheet-name/settings/style", () => {
+    parseAndCheck(
+        "/spreadsheet-id-123/spreadsheet-name-456/settings/style",
+        {
+            "spreadsheet-id": "spreadsheet-id-123",
+            "spreadsheet-name": "spreadsheet-name-456",
+            "settings": true,
+            "settings-section": "style",
+        }
+    );
+});
+
 test("parse /spreadsheet-id/spreadsheet-name/name/settings", () => {
     parseAndCheck(
         "/spreadsheet-id-123/spreadsheet-name-456/name/settings",
@@ -132,6 +203,83 @@ test("parse /spreadsheet-id/spreadsheet-name/name/settings", () => {
             "spreadsheet-name": "spreadsheet-name-456",
             "name": true,
             "settings": true,
+        }
+    );
+});
+
+test("parse /spreadsheet-id/spreadsheet-name/name/settings/!invalid", () => {
+    parseAndCheck(
+        "/spreadsheet-id-123/spreadsheet-name-456/name/settings/!invalid",
+        {
+            "spreadsheet-id": "spreadsheet-id-123",
+            "spreadsheet-name": "spreadsheet-name-456",
+            "name": true,
+            "settings": true,
+        }
+    );
+});
+
+test("parse /spreadsheet-id/spreadsheet-name/name/settings/metadata", () => {
+    parseAndCheck(
+        "/spreadsheet-id-123/spreadsheet-name-456/name/settings/metadata",
+        {
+            "spreadsheet-id": "spreadsheet-id-123",
+            "spreadsheet-name": "spreadsheet-name-456",
+            "name": true,
+            "settings": true,
+            "settings-section": "metadata",
+        }
+    );
+});
+
+test("parse /spreadsheet-id/spreadsheet-name/name/settings/text", () => {
+    parseAndCheck(
+        "/spreadsheet-id-123/spreadsheet-name-456/name/settings/text",
+        {
+            "spreadsheet-id": "spreadsheet-id-123",
+            "spreadsheet-name": "spreadsheet-name-456",
+            "name": true,
+            "settings": true,
+            "settings-section": "text",
+        }
+    );
+});
+
+test("parse /spreadsheet-id/spreadsheet-name/name/settings/number", () => {
+    parseAndCheck(
+        "/spreadsheet-id-123/spreadsheet-name-456/name/settings/number",
+        {
+            "spreadsheet-id": "spreadsheet-id-123",
+            "spreadsheet-name": "spreadsheet-name-456",
+            "name": true,
+            "settings": true,
+            "settings-section": "number",
+        }
+    );
+});
+
+test("parse /spreadsheet-id/spreadsheet-name/name/settings/date-time", () => {
+    parseAndCheck(
+        "/spreadsheet-id-123/spreadsheet-name-456/name/settings/date-time",
+        {
+            "spreadsheet-id": "spreadsheet-id-123",
+            "spreadsheet-name": "spreadsheet-name-456",
+            "name": true,
+            "settings": true,
+            "settings-section": "date-time",
+        }
+    );
+});
+
+test("parse /spreadsheet-id/spreadsheet-name/name/settings/style", () => {
+    parseAndCheck(
+        "/spreadsheet-id-123/spreadsheet-name-456/name/settings/style",
+        {
+            "spreadsheet-id": "spreadsheet-id-123",
+            "spreadsheet-name": "spreadsheet-name-456",
+            "name": true,
+            "settings": true,
+            "settings-section": "style",
         }
     );
 });
@@ -145,6 +293,99 @@ test("parse /spreadsheet-id/spreadsheet-name/cell/B2/formula/settings", () => {
             "cell": SpreadsheetCellReference.parse("B2"),
             "formula": true,
             "settings": true,
+        }
+    );
+});
+
+test("parse /spreadsheet-id/spreadsheet-name/cell/B2/formula/settings/!invalid", () => {
+    parseAndCheck(
+        "/spreadsheet-id-123/spreadsheet-name-456/cell/B2/formula/settings/!invalid",
+        {
+            "spreadsheet-id": "spreadsheet-id-123",
+            "spreadsheet-name": "spreadsheet-name-456",
+            "cell": SpreadsheetCellReference.parse("B2"),
+            "formula": true,
+            "settings": true,
+        }
+    );
+});
+
+test("parse /spreadsheet-id/spreadsheet-name/cell/B2/formula/settings/metadata", () => {
+    parseAndCheck(
+        "/spreadsheet-id-123/spreadsheet-name-456/cell/B2/formula/settings/metadata",
+        {
+            "spreadsheet-id": "spreadsheet-id-123",
+            "spreadsheet-name": "spreadsheet-name-456",
+            "cell": SpreadsheetCellReference.parse("B2"),
+            "formula": true,
+            "settings": true,
+            "settings-section": "metadata",
+        }
+    );
+});
+
+test("parse /spreadsheet-id/spreadsheet-name/cell/B2/formula/settings/text", () => {
+    parseAndCheck(
+        "/spreadsheet-id-123/spreadsheet-name-456/cell/B2/formula/settings/text",
+        {
+            "spreadsheet-id": "spreadsheet-id-123",
+            "spreadsheet-name": "spreadsheet-name-456",
+            "cell": SpreadsheetCellReference.parse("B2"),
+            "formula": true,
+            "settings": true,
+            "settings-section": "text",
+        }
+    );
+});
+
+test("parse /spreadsheet-id/spreadsheet-name/cell/B2/formula/settings/number", () => {
+    parseAndCheck(
+        "/spreadsheet-id-123/spreadsheet-name-456/cell/B2/formula/settings/number",
+        {
+            "spreadsheet-id": "spreadsheet-id-123",
+            "spreadsheet-name": "spreadsheet-name-456",
+            "cell": SpreadsheetCellReference.parse("B2"),
+            "formula": true,
+            "settings": true,
+            "settings-section": "number",
+        }
+    );
+});
+
+test("parse /spreadsheet-id/spreadsheet-name/cell/B2/formula/settings/date-time", () => {
+    parseAndCheck(
+        "/spreadsheet-id-123/spreadsheet-name-456/cell/B2/formula/settings/date-time",
+        {
+            "spreadsheet-id": "spreadsheet-id-123",
+            "spreadsheet-name": "spreadsheet-name-456",
+            "cell": SpreadsheetCellReference.parse("B2"),
+            "formula": true,
+            "settings": true,
+            "settings-section": "date-time",
+        }
+    );
+});
+
+test("parse /spreadsheet-id/spreadsheet-name/cell/B2/formula/settings/style", () => {
+    parseAndCheck(
+        "/spreadsheet-id-123/spreadsheet-name-456/cell/B2/formula/settings/style",
+        {
+            "spreadsheet-id": "spreadsheet-id-123",
+            "spreadsheet-name": "spreadsheet-name-456",
+            "cell": SpreadsheetCellReference.parse("B2"),
+            "formula": true,
+            "settings": true,
+            "settings-section": "style",
+        }
+    );
+});
+
+test("parse /spreadsheet-id/spreadsheet-name/style/metadata/name fails", () => {
+    parseAndCheck(
+        "/spreadsheet-id-123/spreadsheet-name-456/cell/B2/formula/settings/metadata/name",
+        {
+            "spreadsheet-id": "spreadsheet-id-123",
+            "spreadsheet-name": "spreadsheet-name-456",
         }
     );
 });
@@ -376,6 +617,72 @@ test("/spreadsheet-id/spreadsheet-name/settings replaced settings=true", () => {
     );
 });
 
+test("/spreadsheet-id/spreadsheet-name/settings replaced settings=true settings-section=invalid", () => {
+    mergeAndCheck(
+        "/123abc/Untitled456/settings",
+        {
+            "settings": true,
+            "settings-section": "!invalid",
+        },
+        "/123abc/Untitled456/settings"
+    );
+});
+
+test("/spreadsheet-id/spreadsheet-name/settings replaced settings=true settings-section=metadata", () => {
+    mergeAndCheck(
+        "/123abc/Untitled456/settings",
+        {
+            "settings": true,
+            "settings-section": SpreadsheetHistoryHash.SETTINGS_METADATA,
+        },
+        "/123abc/Untitled456/settings/metadata"
+    );
+});
+
+test("/spreadsheet-id/spreadsheet-name/settings replaced settings=true settings-section=text", () => {
+    mergeAndCheck(
+        "/123abc/Untitled456/settings",
+        {
+            "settings": true,
+            "settings-section": SpreadsheetHistoryHash.SETTINGS_TEXT,
+        },
+        "/123abc/Untitled456/settings/text"
+    );
+});
+
+test("/spreadsheet-id/spreadsheet-name/settings replaced settings=true settings-section=number", () => {
+    mergeAndCheck(
+        "/123abc/Untitled456/settings",
+        {
+            "settings": true,
+            "settings-section": SpreadsheetHistoryHash.SETTINGS_NUMBER,
+        },
+        "/123abc/Untitled456/settings/number"
+    );
+});
+
+test("/spreadsheet-id/spreadsheet-name/settings replaced settings=true settings-section=date-time", () => {
+    mergeAndCheck(
+        "/123abc/Untitled456/settings",
+        {
+            "settings": true,
+            "settings-section": SpreadsheetHistoryHash.SETTINGS_DATE_TIME,
+        },
+        "/123abc/Untitled456/settings/date-time"
+    );
+});
+
+test("/spreadsheet-id/spreadsheet-name/settings replaced settings=true settings-section=style", () => {
+    mergeAndCheck(
+        "/123abc/Untitled456/settings",
+        {
+            "settings": true,
+            "settings-section": SpreadsheetHistoryHash.SETTINGS_STYLE,
+        },
+        "/123abc/Untitled456/settings/style"
+    );
+});
+
 test("/spreadsheet-id/spreadsheet-name/settings replaced settings=false", () => {
     mergeAndCheck(
         "/123abc/Untitled456/settings",
@@ -406,6 +713,72 @@ test("/spreadsheet-id/spreadsheet-name/name/settings replaced settings=false", (
     );
 });
 
+test("/spreadsheet-id/spreadsheet-name/name/settings replaced settings=true settings-section=invalid", () => {
+    mergeAndCheck(
+        "/123abc/Untitled456/name/settings",
+        {
+            "settings": true,
+            "settings-section": "invalid"
+        },
+        "/123abc/Untitled456/name/settings"
+    );
+});
+
+test("/spreadsheet-id/spreadsheet-name/name/settings replaced settings=true settings-section=metadata", () => {
+    mergeAndCheck(
+        "/123abc/Untitled456/name/settings",
+        {
+            "settings": true,
+            "settings-section": SpreadsheetHistoryHash.SETTINGS_METADATA,
+        },
+        "/123abc/Untitled456/name/settings/metadata"
+    );
+});
+
+test("/spreadsheet-id/spreadsheet-name/name/settings replaced settings=true settings-section=text", () => {
+    mergeAndCheck(
+        "/123abc/Untitled456/name/settings",
+        {
+            "settings": true,
+            "settings-section": SpreadsheetHistoryHash.SETTINGS_TEXT,
+        },
+        "/123abc/Untitled456/name/settings/text"
+    );
+});
+
+test("/spreadsheet-id/spreadsheet-name/name/settings replaced settings=true settings-section=number", () => {
+    mergeAndCheck(
+        "/123abc/Untitled456/name/settings",
+        {
+            "settings": true,
+            "settings-section": SpreadsheetHistoryHash.SETTINGS_NUMBER,
+        },
+        "/123abc/Untitled456/name/settings/number"
+    );
+});
+
+test("/spreadsheet-id/spreadsheet-name/name/settings replaced settings=true settings-section=date-time", () => {
+    mergeAndCheck(
+        "/123abc/Untitled456/name/settings",
+        {
+            "settings": true,
+            "settings-section": SpreadsheetHistoryHash.SETTINGS_DATE_TIME,
+        },
+        "/123abc/Untitled456/name/settings/date-time"
+    );
+});
+
+test("/spreadsheet-id/spreadsheet-name/name/settings replaced settings=true settings-section=style", () => {
+    mergeAndCheck(
+        "/123abc/Untitled456/name/settings",
+        {
+            "settings": true,
+            "settings-section": SpreadsheetHistoryHash.SETTINGS_STYLE,
+        },
+        "/123abc/Untitled456/name/settings/style"
+    );
+});
+
 test("/spreadsheet-id/spreadsheet-name/cell/A1/formula replaced settings=true", () => {
     mergeAndCheck(
         "/123abc/Untitled456/cell/A1/formula",
@@ -426,11 +799,88 @@ test("/spreadsheet-id/spreadsheet-name/cell/A1/formula/settings replaced setting
     );
 });
 
+test("/spreadsheet-id/spreadsheet-name/cell/A1/formula/settings replaced settings=true settings-section invalid", () => {
+    mergeAndCheck(
+        "/123abc/Untitled456/cell/A1/formula/settings",
+        {
+            "settings": true,
+            "settings-section": "!invalid"
+        },
+        "/123abc/Untitled456/cell/A1/formula/settings"
+    );
+});
+
+test("/spreadsheet-id/spreadsheet-name/cell/A1/formula/settings replaced settings=true settings-section=metadata", () => {
+    mergeAndCheck(
+        "/123abc/Untitled456/cell/A1/formula/settings",
+        {
+            "settings": true,
+            "settings-section": SpreadsheetHistoryHash.SETTINGS_METADATA,
+        },
+        "/123abc/Untitled456/cell/A1/formula/settings/metadata"
+    );
+});
+
+test("/spreadsheet-id/spreadsheet-name/cell/A1/formula/settings replaced settings=true settings-section=text", () => {
+    mergeAndCheck(
+        "/123abc/Untitled456/cell/A1/formula/settings",
+        {
+            "settings": true,
+            "settings-section": SpreadsheetHistoryHash.SETTINGS_TEXT,
+        },
+        "/123abc/Untitled456/cell/A1/formula/settings/text"
+    );
+});
+
+test("/spreadsheet-id/spreadsheet-name/cell/A1/formula/settings replaced settings=true settings-section=number", () => {
+    mergeAndCheck(
+        "/123abc/Untitled456/cell/A1/formula/settings",
+        {
+            "settings": true,
+            "settings-section": SpreadsheetHistoryHash.SETTINGS_NUMBER,
+        },
+        "/123abc/Untitled456/cell/A1/formula/settings/number"
+    );
+});
+
+test("/spreadsheet-id/spreadsheet-name/cell/A1/formula/settings replaced settings=true settings-section=date-time", () => {
+    mergeAndCheck(
+        "/123abc/Untitled456/cell/A1/formula/settings",
+        {
+            "settings": true,
+            "settings-section": SpreadsheetHistoryHash.SETTINGS_DATE_TIME,
+        },
+        "/123abc/Untitled456/cell/A1/formula/settings/date-time"
+    );
+});
+
+test("/spreadsheet-id/spreadsheet-name/cell/A1/formula/settings replaced settings=true settings-section=style", () => {
+    mergeAndCheck(
+        "/123abc/Untitled456/cell/A1/formula/settings",
+        {
+            "settings": true,
+            "settings-section": SpreadsheetHistoryHash.SETTINGS_STYLE,
+        },
+        "/123abc/Untitled456/cell/A1/formula/settings/style"
+    );
+});
+
 test("/spreadsheet-id/spreadsheet-name/cell/A1/formula/settings replaced settings=false", () => {
     mergeAndCheck(
         "/123abc/Untitled456/cell/A1/formula/settings",
         {
             "settings": false,
+        },
+        "/123abc/Untitled456/cell/A1/formula"
+    );
+});
+
+test("/spreadsheet-id/spreadsheet-name/cell/A1/formula/settings replaced settings=false settings-section ignored", () => {
+    mergeAndCheck(
+        "/123abc/Untitled456/cell/A1/formula/settings",
+        {
+            "settings": false,
+            "settings-section": SpreadsheetHistoryHash.SETTINGS_METADATA,
         },
         "/123abc/Untitled456/cell/A1/formula"
     );

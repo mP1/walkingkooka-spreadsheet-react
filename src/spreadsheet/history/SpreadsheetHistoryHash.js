@@ -30,6 +30,24 @@ function join(tokens) {
     return s === "" ? "/" : s;
 }
 
+function isSettingsToken(token) {
+    var valid;
+
+    switch(token) {
+        case SpreadsheetHistoryHash.SETTINGS_METADATA:
+        case SpreadsheetHistoryHash.SETTINGS_TEXT:
+        case SpreadsheetHistoryHash.SETTINGS_NUMBER:
+        case SpreadsheetHistoryHash.SETTINGS_DATE_TIME:
+        case SpreadsheetHistoryHash.SETTINGS_STYLE:
+            valid = true;
+            break;
+        default:
+            valid = false;
+            break;
+    }
+    return valid;
+}
+
 /**
  * A collection of utilities that support history hash.
  */
@@ -41,6 +59,14 @@ export default class SpreadsheetHistoryHash {
     static CELL = "cell";
     static CELL_FORMULA = "formula";
     static SETTINGS = "settings";
+    static SETTINGS_SECTION = "settings-section";
+
+    // these tokens are optional and only one may appear after SETTINGS
+    static SETTINGS_METADATA = "metadata";
+    static SETTINGS_TEXT = "text";
+    static SETTINGS_NUMBER = "number";
+    static SETTINGS_DATE_TIME = "date-time";
+    static SETTINGS_STYLE = "style";
 
     /**
      * Parsers the path extracting tokens returning an object with valid tokens. Invalid combination will be removed.
@@ -56,6 +82,7 @@ export default class SpreadsheetHistoryHash {
         var cell;
         var formula;
         var settings;
+        var settingsSection;
 
         if(null != spreadsheetId){
             spreadsheetName = sourceTokens.shift();
@@ -93,6 +120,13 @@ export default class SpreadsheetHistoryHash {
                             break;
                         case SpreadsheetHistoryHash.SETTINGS:
                             settings = true;
+                            const possibleSection = sourceTokens.shift();
+                            if(null != possibleSection){
+                                if(isSettingsToken(possibleSection)){
+                                    settingsSection = possibleSection;
+                                }
+                            }
+                            valid = true;
                             break;
                         default:
                             valid = false;
@@ -110,21 +144,25 @@ export default class SpreadsheetHistoryHash {
             if(spreadsheetName){
                 destTokens[SpreadsheetHistoryHash.SPREADSHEET_NAME] = spreadsheetName;
 
-                if(cell && !formula) {
+                if(cell && !formula){
                     valid = false;
                 }
                 if(valid){
-                    if(nameEdit) {
+                    if(nameEdit){
                         destTokens[SpreadsheetHistoryHash.SPREADSHEET_NAME_EDIT] = nameEdit;
                     }
-                    if(cell) {
+                    if(cell){
                         destTokens[SpreadsheetHistoryHash.CELL] = cell;
-                        if(formula) {
+                        if(formula){
                             destTokens[SpreadsheetHistoryHash.CELL_FORMULA] = formula;
                         }
                     }
-                    if(settings) {
+                    if(settings){
                         destTokens[SpreadsheetHistoryHash.SETTINGS] = settings;
+
+                        if(settingsSection){
+                            destTokens[SpreadsheetHistoryHash.SETTINGS_SECTION] = settingsSection;
+                        }
                     }
                 }
             }
@@ -144,6 +182,7 @@ export default class SpreadsheetHistoryHash {
         var cell = current[SpreadsheetHistoryHash.CELL];
         var formula = current[SpreadsheetHistoryHash.CELL_FORMULA];
         var settings = current[SpreadsheetHistoryHash.SETTINGS];
+        var settingsSection = current[SpreadsheetHistoryHash.SETTINGS_SECTION];
 
         // try replacing...
         const newSpreadsheetId = replacements[SpreadsheetHistoryHash.SPREADSHEET_ID];
@@ -178,6 +217,10 @@ export default class SpreadsheetHistoryHash {
         const newSettings = replacements[SpreadsheetHistoryHash.SETTINGS];
         if(null != newSettings){
             settings = newSettings;
+            settingsSection = replacements[SpreadsheetHistoryHash.SETTINGS_SECTION];
+            if(settingsSection && !isSettingsToken(settingsSection)){
+                settingsSection = null;
+            }
         }
 
         var valid = true;
@@ -210,6 +253,10 @@ export default class SpreadsheetHistoryHash {
 
             if(!!settings){
                 verified.push(SpreadsheetHistoryHash.SETTINGS);
+
+                if(settingsSection){
+                    verified.push(settingsSection);
+                }
             }
         }
 

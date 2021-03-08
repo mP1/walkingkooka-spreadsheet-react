@@ -110,6 +110,7 @@ class SpreadsheetSettingsWidget extends React.Component {
 
         this.setState({
             open: open,
+            section: null, // always clear
         });
     }
 
@@ -136,6 +137,7 @@ class SpreadsheetSettingsWidget extends React.Component {
 
         return {
             open: tokens[SpreadsheetHistoryHash.SETTINGS],
+            section: tokens[SpreadsheetHistoryHash.SETTINGS_SECTION],
         };
     }
 
@@ -174,20 +176,26 @@ class SpreadsheetSettingsWidget extends React.Component {
      * Possibly update the history hash using the current open state.
      */
     historyUpdateFromState(prevState) {
-        const openOld = !!prevState.open;
-        const openNew = !!this.state.open;
+        const state = this.state;
 
-        if(openOld !== openNew){
+        const openOld = !!prevState.open;
+        const openNew = !!state.open;
+
+        const oldSection = prevState.section;
+        const newSection = state.section;
+
+        if(openOld !== openNew || oldSection !== newSection){
             const history = this.history;
             const current = history.location.pathname;
             const replacements = {};
             replacements[SpreadsheetHistoryHash.SETTINGS] = openNew;
+            replacements[SpreadsheetHistoryHash.SETTINGS_SECTION] = state.section;
 
             const updatedPathname = SpreadsheetHistoryHash.merge(
                 SpreadsheetHistoryHash.parse(current),
                 replacements
             );
-            console.log("historyUpdateFromState settings open: " + openOld + " to " + openNew + " history " + current + " to " + updatedPathname);
+            console.log("historyUpdateFromState settings open: " + openOld + " to " + openNew + " section: " + state.section + " history " + current + " to " + updatedPathname);
 
             if(current !== updatedPathname){
                 history.push(updatedPathname);
@@ -218,16 +226,16 @@ class SpreadsheetSettingsWidget extends React.Component {
 
     render() {
         const {classes} = this.props;
-        const {open, spreadsheetMetadata} = this.state;
+        const {open, section, spreadsheetMetadata} = this.state;
 
         // if metadata is empty skip rendering content.
         const children = (!spreadsheetMetadata.isEmpty() && open &&
             [
-                this.metadata(classes),
-                this.spreadsheetText(classes),
-                this.spreadsheetNumber(classes),
-                this.spreadsheetDateTime(classes),
-                this.spreadsheetStyle(classes)
+                this.metadata(classes, SpreadsheetHistoryHash.SETTINGS_METADATA === section),
+                this.spreadsheetText(classes, SpreadsheetHistoryHash.SETTINGS_TEXT === section),
+                this.spreadsheetNumber(classes, SpreadsheetHistoryHash.SETTINGS_NUMBER === section),
+                this.spreadsheetDateTime(classes, SpreadsheetHistoryHash.SETTINGS_DATE_TIME === section),
+                this.spreadsheetStyle(classes, SpreadsheetHistoryHash.SETTINGS_STYLE === section)
             ]);
 
         return <Drawer id={"settings"}
@@ -273,10 +281,8 @@ class SpreadsheetSettingsWidget extends React.Component {
             this.row("Modified Date/Time", SpreadsheetMetadata.MODIFIED_DATE_TIME),
         ];
 
-        return this.accordion("metadata",
-            true,
-            () => {
-            },
+        return this.accordion(
+            SpreadsheetHistoryHash.SETTINGS_METADATA,
             classes,
             "Metadata",
             "",
@@ -301,10 +307,8 @@ class SpreadsheetSettingsWidget extends React.Component {
             this.row("Width", SpreadsheetMetadata.WIDTH),
         ];
 
-        return this.accordion("spreadsheet-text",
-            true,
-            () => {
-            },
+        return this.accordion(
+            SpreadsheetHistoryHash.SETTINGS_TEXT,
             classes,
             "Text",
             "",
@@ -342,10 +346,7 @@ class SpreadsheetSettingsWidget extends React.Component {
         ];
 
         return this.accordion(
-            "spreadsheet-date-time",
-            true,
-            () => {
-            },
+            SpreadsheetHistoryHash.SETTINGS_DATE_TIME,
             classes,
             "Date/Time",
             "",
@@ -390,10 +391,7 @@ class SpreadsheetSettingsWidget extends React.Component {
         ];
 
         return this.accordion(
-            "spreadsheet-number",
-            true,
-            () => {
-            },
+            SpreadsheetHistoryHash.SETTINGS_NUMBER,
             classes,
             "Number",
             "",
@@ -414,10 +412,8 @@ class SpreadsheetSettingsWidget extends React.Component {
             this.row("Style", SpreadsheetMetadata.STYLE),
         ];
 
-        return this.accordion("spreadsheet-default-styles",
-            true,
-            () => {
-            },
+        return this.accordion(
+            SpreadsheetHistoryHash.SETTINGS_STYLE,
             classes,
             "Default style(s)",
             "",
@@ -790,28 +786,29 @@ class SpreadsheetSettingsWidget extends React.Component {
     /**
      * Creates the accordion container so all sections in the settings have a common look and feel and history hash management.
      */
-    // TODO pass onChange to update history hash
     // TODO AccordionSummary aria-control
-    accordion(id,
-              expanded,
-              onChange,
+    accordion(sectionName,
               classes,
               heading,
               secondaryHeading,
               tableAriaLabel,
               rows) {
+        const id = "spreadsheet-" + sectionName;
+
+        const state = this.state;
+        console.log("accordion: " + id + " sectionName: " + sectionName + " state.section: " + state.section + " expanded: " + (state.section === sectionName), "state", state);
+
         return <Accordion key={id}
                           id={id}
-                          expanded={expanded}
-                          onChange={onChange}>
-            <AccordionSummary
-                expandIcon={<ExpandMoreIcon/>}
-                id={id + "-icon"}
+                          expanded={state.section === sectionName}
+                          onChange={(e, expanded) => this.accordionOnChange(expanded, sectionName)}>
+            <AccordionSummary expandIcon={<ExpandMoreIcon id={id + "-expand-more-icon"}/>}
+                              id={id + "-icon"}
             >
                 <Typography className={classes.heading}>{heading}</Typography>
                 <Typography className={classes.secondaryHeading}>{secondaryHeading}</Typography>
             </AccordionSummary>
-            <AccordionDetails>
+            <AccordionDetails id={id + "-content"}>
                 <TableContainer key={rows}
                                 component={Paper}>
                     <Table className={classes.table}
@@ -826,6 +823,18 @@ class SpreadsheetSettingsWidget extends React.Component {
                 </TableContainer>
             </AccordionDetails>
         </Accordion>;
+    }
+
+    accordionOnChange(expanded, sectionName) {
+        var stateSectionName = expanded ?
+            sectionName :
+            null;
+
+        console.log("accordionOnChange expanded: " + expanded + " sectionName: " + sectionName + " new state.section: " + stateSectionName, "state", this.state);
+
+        this.setState({
+            section: stateSectionName,
+        });
     }
 }
 
