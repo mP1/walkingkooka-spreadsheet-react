@@ -8,6 +8,10 @@ const TYPE_NAME = "rounding-mode";
  */
 export default class RoundingMode extends SystemEnum {
 
+    static valueOf(name) {
+        return SystemEnum.valueOf(name, RoundingMode.values());
+    }
+
     static UP = new RoundingMode("UP", "Up");
     static DOWN = new RoundingMode("DOWN", "Down");
     static CEILING = new RoundingMode("CEILING", "Ceiling");
@@ -62,29 +66,11 @@ export default class RoundingMode extends SystemEnum {
     }
 
     constructor(name, label) {
-        super();
-        this.name = name;
-        this.labelValue = label;
-    }
-
-    label() {
-        return this.labelValue;
-    }
-
-    equals(other) {
-        return this === other;
-    }
-
-    toJson() {
-        return this.name;
+        super(name, label);
     }
 
     typeName() {
         return TYPE_NAME;
-    }
-
-    toString() {
-        return this.name;
     }
 }
 

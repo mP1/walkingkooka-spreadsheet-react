@@ -10,20 +10,20 @@ systemObjectTesting(
     "BIG_DECIMAL"
 );
 
-test("of missing name fails", () => {
-    expect(() => ExpressionNumberKind.of().toThrow("Missing name"));
+test("valueOf missing name fails", () => {
+    expect(() => ExpressionNumberKind.valueOf().toThrow("Missing name"));
 });
 
-test("of invalid name fails", () => {
-    expect(() => ExpressionNumberKind.of("!invalid").toThrow("Unknown name: !invalid"));
+test("valueOf invalid name fails", () => {
+    expect(() => ExpressionNumberKind.valueOf("!invalid").toThrow("Unknown name: !invalid"));
 });
 
-test("of BIG_DECIMAL", () => {
-    expect(ExpressionNumberKind.of("BIG_DECIMAL")).toStrictEqual(ExpressionNumberKind.BIG_DECIMAL);
+test("valueOf BIG_DECIMAL", () => {
+    expect(ExpressionNumberKind.valueOf("BIG_DECIMAL")).toStrictEqual(ExpressionNumberKind.BIG_DECIMAL);
 });
 
-test("of DOUBLE", () => {
-    expect(ExpressionNumberKind.of("DOUBLE")).toStrictEqual(ExpressionNumberKind.DOUBLE);
+test("valueOf DOUBLE", () => {
+    expect(ExpressionNumberKind.valueOf("DOUBLE")).toStrictEqual(ExpressionNumberKind.DOUBLE);
 });
 
 test("fromJson DOUBLE", () => {
@@ -31,7 +31,7 @@ test("fromJson DOUBLE", () => {
 });
 
 test("toJson DOUBLE", () => {
-    expect(ExpressionNumberKind.of("DOUBLE").toJson()).toStrictEqual("DOUBLE");
+    expect(ExpressionNumberKind.valueOf("DOUBLE").toJson()).toStrictEqual("DOUBLE");
 });
 
 // equals................................................................................................................
@@ -47,6 +47,6 @@ test("equals DOUBLE true", () => {
 // toString.............................................................................................................
 
 test("toString", () => {
-    expect(ExpressionNumberKind.of("DOUBLE").toString()).toStrictEqual("DOUBLE");
+    expect(ExpressionNumberKind.valueOf("DOUBLE").toString()).toStrictEqual("DOUBLE");
 });
 

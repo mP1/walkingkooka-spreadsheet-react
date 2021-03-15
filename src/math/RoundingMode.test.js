@@ -3,20 +3,12 @@ import systemObjectTesting from "../SystemObjectTesting.js";
 
 systemObjectTesting(
     RoundingMode.UP,
-    RoundingMode.DON,
+    RoundingMode.DOWN,
     RoundingMode.fromJson,
     "Missing name",
     "rounding-mode",
     "UP"
 );
-
-test("of missing name fails", () => {
-    expect(() => RoundingMode.of().toThrow("Missing name"));
-});
-
-test("of invalid name fails", () => {
-    expect(() => RoundingMode.of("!invalid").toThrow("Unknown name: !invalid"));
-});
 
 ofAndCheck("UP", RoundingMode.UP);
 ofAndCheck("DOWN", RoundingMode.DOWN);
