@@ -9,6 +9,10 @@ export default class ExpressionNumberKind extends SystemEnum {
     static BIG_DECIMAL = new ExpressionNumberKind("BIG_DECIMAL", "Big Decimal");
     static DOUBLE = new ExpressionNumberKind("DOUBLE", "Double");
 
+    static valueOf(name) {
+        return SystemEnum.valueOf(name, ExpressionNumberKind.values());
+    }
+
     static values() {
         return [
             ExpressionNumberKind.BIG_DECIMAL,
@@ -17,48 +21,15 @@ export default class ExpressionNumberKind extends SystemEnum {
     }
 
     static fromJson(name) {
-        return ExpressionNumberKind.of(name);
-    }
-
-    static of(name) {
-        if(!name){
-            throw new Error("Missing name");
-        }
-
-        switch(name) {
-            case "BIG_DECIMAL":
-                return ExpressionNumberKind.BIG_DECIMAL;
-            case "DOUBLE":
-                return ExpressionNumberKind.DOUBLE;
-            default:
-                throw new Error("Unknown name: " + name);
-        }
+        return ExpressionNumberKind.valueOf(name);
     }
 
     constructor(name, label) {
-        super();
-        this.name = name;
-        this.labelValue = label;
-    }
-
-    label() {
-        return this.labelValue;
-    }
-
-    equals(other) {
-        return this === other;
-    }
-
-    toJson() {
-        return this.name;
+        super(name, label);
     }
 
     typeName() {
         return TYPE_NAME;
-    }
-
-    toString() {
-        return this.name;
     }
 }
 

@@ -2,26 +2,14 @@ import SpreadsheetEngineEvaluation from "./SpreadsheetEngineEvaluation";
 
 // tests................................................................................................................
 
-test("valueof missing text fails", () => {
-    expect(() => SpreadsheetEngineEvaluation.valueOf()).toThrow("Missing text");
-});
-
-test("valueof invalid text type fails", () => {
-    expect(() => SpreadsheetEngineEvaluation.valueOf(12.5)).toThrow("Expected string text got 12.5");
-});
-
-test("valueof unknown fails", () => {
-    expect(() => SpreadsheetEngineEvaluation.valueOf("?123")).toThrow("Unknown enum got ?123");
-});
-
-test("valueof CLEAR_VALUE_ERROR_SKIP_EVALUATE", () => {
+test("valueOf CLEAR_VALUE_ERROR_SKIP_EVALUATE", () => {
     const v = SpreadsheetEngineEvaluation.CLEAR_VALUE_ERROR_SKIP_EVALUATE;
-    expect(SpreadsheetEngineEvaluation.valueOf(v.value)).toEqual(v);
+    expect(SpreadsheetEngineEvaluation.valueOf(v.name())).toEqual(v);
 });
 
-test("valueof SKIP_EVALUATE", () => {
+test("valueOf SKIP_EVALUATE", () => {
     const v = SpreadsheetEngineEvaluation.SKIP_EVALUATE;
-    expect(SpreadsheetEngineEvaluation.valueOf(v.value)).toEqual(v);
+    expect(SpreadsheetEngineEvaluation.valueOf(v.name())).toEqual(v);
 });
 
 test("toString CLEAR_VALUE_ERROR_SKIP_EVALUATE", () => {
