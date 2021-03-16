@@ -15,12 +15,12 @@ export default class SpreadsheetEngineEvaluation extends SystemEnum {
         ];
     }
 
-    static CLEAR_VALUE_ERROR_SKIP_EVALUATE = new SpreadsheetEngineEvaluation("CLEAR_VALUE_ERROR_SKIP_EVALUATE", "Clear value error skip evaluate");
-    static SKIP_EVALUATE = new SpreadsheetEngineEvaluation("SKIP_EVALUATE", "Skip Evaluate");
-    static FORCE_RECOMPUTE = new SpreadsheetEngineEvaluation("FORCE_RECOMPUTE", "Force recompute");
-    static COMPUTE_IF_NECESSARY = new SpreadsheetEngineEvaluation("COMPUTE_IF_NECESSARY", "Compute if necessary");
+    static CLEAR_VALUE_ERROR_SKIP_EVALUATE = new SpreadsheetEngineEvaluation("CLEAR_VALUE_ERROR_SKIP_EVALUATE");
+    static SKIP_EVALUATE = new SpreadsheetEngineEvaluation("SKIP_EVALUATE");
+    static FORCE_RECOMPUTE = new SpreadsheetEngineEvaluation("FORCE_RECOMPUTE");
+    static COMPUTE_IF_NECESSARY = new SpreadsheetEngineEvaluation("COMPUTE_IF_NECESSARY");
 
-    constructor(name, label) {
-        super(name, label);
+    constructor(name) {
+        super(name);
     }
 }

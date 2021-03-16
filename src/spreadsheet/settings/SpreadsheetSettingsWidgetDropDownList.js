@@ -36,7 +36,7 @@ export default class SpreadsheetSettingsWidgetDropDownList extends SpreadsheetSe
                 this.defaultValue ? <option aria-label="" value=""/> : undefined
             }
             {
-                this.values.map(v => <option key={v.label()} value={v}>{v.label()}</option>)
+                this.values.map(v => <option key={v.nameCapitalCase()} value={v}>{v.nameCapitalCase()}</option>)
             }
         </Select>;
     }

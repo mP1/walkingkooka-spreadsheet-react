@@ -6,8 +6,8 @@ const TYPE_NAME = "expression-number-kind";
 
 export default class ExpressionNumberKind extends SystemEnum {
 
-    static BIG_DECIMAL = new ExpressionNumberKind("BIG_DECIMAL", "Big Decimal");
-    static DOUBLE = new ExpressionNumberKind("DOUBLE", "Double");
+    static BIG_DECIMAL = new ExpressionNumberKind("BIG_DECIMAL");
+    static DOUBLE = new ExpressionNumberKind("DOUBLE");
 
     static valueOf(name) {
         return SystemEnum.valueOf(name, ExpressionNumberKind.values());
@@ -24,8 +24,8 @@ export default class ExpressionNumberKind extends SystemEnum {
         return ExpressionNumberKind.valueOf(name);
     }
 
-    constructor(name, label) {
-        super(name, label);
+    constructor(name) {
+        super(name);
     }
 
     typeName() {
