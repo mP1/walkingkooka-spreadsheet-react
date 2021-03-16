@@ -689,7 +689,7 @@ class App extends React.Component {
         const onSpreadsheetDelta = this.onSpreadsheetDelta.bind(this);
 
         this.send(
-            this.spreadsheetCellApiUrl(selection) + "/" + evaluation,
+            this.spreadsheetCellApiUrl(selection) + "/" + evaluation.nameKebabCase(),
             {
                 method: "GET"
             },
