@@ -48,7 +48,7 @@ import TableContainer from '@material-ui/core/TableContainer';
 import TableRow from '@material-ui/core/TableRow';
 import Typography from '@material-ui/core/Typography';
 
-const DEFAULT_VALUE_FORMATTER_LABEL = (v) => v ? v.label() : "";
+const DEFAULT_VALUE_FORMATTER_LABEL = (v) => v ? v.nameCapitalCase().replace("Half", "½") : "";
 const DEFAULT_VALUE_FORMATTER_TOSTRING = (v) => v ? v.toString() : "";
 
 /**

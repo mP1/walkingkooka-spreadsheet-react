@@ -658,7 +658,7 @@ context("General app usage", () => {
             // the first slow of a Slider is reserved for "Default".
             values.forEach((v, i) => {
                 cy.get(sliderId + " *[data-index=\"" + (1 + i) + "\"][aria-hidden=\"true\"]")
-                    .should("have.text", v.label())
+                    .should("have.text", v.nameCapitalCase())
                     .click();
 
                 if(a1Formula){

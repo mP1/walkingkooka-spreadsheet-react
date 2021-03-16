@@ -43,6 +43,32 @@ export default class SystemEnum extends SystemObject {
         return this.name().toLowerCase().replace(/_/g, '-');
     }
 
+    /**
+     * Returns the name in capital case case, ie ABC_DEF becomes Abc Def.
+     */
+    nameCapitalCase() {
+        const name = this.name().toLowerCase();
+        var s = "";
+        var previous = "_";
+
+        for (let i = 0; i < name.length; i++) {
+            const c = name.charAt(i);
+            switch(c) {
+                case '_':
+                    s = s + " ";
+                    break;
+                default:
+                    s = s +
+                        ( "_" === previous ?
+                        c.toUpperCase() :
+                        c.toLowerCase());
+                    break;
+            }
+            previous = c;
+        }
+        return s;
+    }
+
     label() {
         return this.labelValue;
     }

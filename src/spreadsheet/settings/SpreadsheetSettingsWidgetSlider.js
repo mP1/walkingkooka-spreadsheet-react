@@ -25,7 +25,7 @@ export default class SpreadsheetSettingsWidgetSlider extends SpreadsheetSettings
 
         props.values.forEach((v, i) => {
             marks.push({
-                label: v.label(),
+                label: v.nameCapitalCase(),
                 value: i + 1,
             });
         });
