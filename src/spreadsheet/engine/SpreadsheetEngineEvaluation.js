@@ -23,8 +23,4 @@ export default class SpreadsheetEngineEvaluation extends SystemEnum {
     constructor(name, label) {
         super(name, label);
     }
-
-    toString() {
-        return this.name().toLowerCase().replace(/_/g, '-');
-    }
 }

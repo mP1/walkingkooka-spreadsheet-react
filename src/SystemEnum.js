@@ -36,6 +36,13 @@ export default class SystemEnum extends SystemObject {
         return this.nameValue;
     }
 
+    /**
+     * Returns the name in kebab case, ie ABC_DEF becomes abc-def.
+     */
+    nameKebabCase() {
+        return this.name().toLowerCase().replace(/_/g, '-');
+    }
+
     label() {
         return this.labelValue;
     }
