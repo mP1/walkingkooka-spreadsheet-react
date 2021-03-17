@@ -13,10 +13,10 @@ test("valueOf SKIP_EVALUATE", () => {
 });
 
 test("toString CLEAR_VALUE_ERROR_SKIP_EVALUATE", () => {
-    expect(SpreadsheetEngineEvaluation.CLEAR_VALUE_ERROR_SKIP_EVALUATE.toString()).toEqual("clear-value-error-skip-evaluate");
+    expect(SpreadsheetEngineEvaluation.CLEAR_VALUE_ERROR_SKIP_EVALUATE.nameKebabCase()).toEqual("clear-value-error-skip-evaluate");
 });
 
 test("toString SKIP_EVALUATE", () => {
-    expect(SpreadsheetEngineEvaluation.SKIP_EVALUATE.toString()).toEqual("skip-evaluate");
+    expect(SpreadsheetEngineEvaluation.SKIP_EVALUATE.nameKebabCase()).toEqual("skip-evaluate");
 });
 
