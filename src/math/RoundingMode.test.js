@@ -10,18 +10,18 @@ systemObjectTesting(
     "UP"
 );
 
-ofAndCheck("UP", RoundingMode.UP);
-ofAndCheck("DOWN", RoundingMode.DOWN);
-ofAndCheck("CEILING", RoundingMode.CEILING);
-ofAndCheck("FLOOR", RoundingMode.FLOOR);
-ofAndCheck("HALF_UP", RoundingMode.HALF_UP);
-ofAndCheck("HALF_DOWN", RoundingMode.HALF_DOWN);
-ofAndCheck("HALF_EVEN", RoundingMode.HALF_EVEN);
-ofAndCheck("UNNECESSARY", RoundingMode.UNNECESSARY);
+valueOfAndCheck("UP", RoundingMode.UP);
+valueOfAndCheck("DOWN", RoundingMode.DOWN);
+valueOfAndCheck("CEILING", RoundingMode.CEILING);
+valueOfAndCheck("FLOOR", RoundingMode.FLOOR);
+valueOfAndCheck("HALF_UP", RoundingMode.HALF_UP);
+valueOfAndCheck("HALF_DOWN", RoundingMode.HALF_DOWN);
+valueOfAndCheck("HALF_EVEN", RoundingMode.HALF_EVEN);
+valueOfAndCheck("UNNECESSARY", RoundingMode.UNNECESSARY);
 
-function ofAndCheck(name, roundingMode) {
-    test("of " + name, () => {
-        expect(RoundingMode.of(name)).toStrictEqual(roundingMode);
+function valueOfAndCheck(name, roundingMode) {
+    test("valueOf " + name, () => {
+        expect(RoundingMode.valueOf(name)).toStrictEqual(roundingMode);
     });
 }
 
@@ -38,6 +38,6 @@ test("equals DOWN true", () => {
 // toString.............................................................................................................
 
 test("toString", () => {
-    expect(RoundingMode.of("DOWN").toString()).toStrictEqual("DOWN");
+    expect(RoundingMode.valueOf("DOWN").name()).toStrictEqual("DOWN");
 });
 

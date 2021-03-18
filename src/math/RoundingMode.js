@@ -3,75 +3,46 @@ import SystemObject from "../SystemObject.js";
 
 const TYPE_NAME = "rounding-mode";
 
-/**
- * Represents instance of the java enum RoundingMode.
- */
 export default class RoundingMode extends SystemEnum {
 
-    static valueOf(name) {
-        return SystemEnum.valueOf(name, RoundingMode.values());
-    }
-
-    static UP = new RoundingMode("UP");
-    static DOWN = new RoundingMode("DOWN");
-    static CEILING = new RoundingMode("CEILING");
-    static FLOOR = new RoundingMode("FLOOR");
-    static HALF_UP = new RoundingMode("HALF_UP");
-    static HALF_DOWN = new RoundingMode("HALF_DOWN");
-    static HALF_EVEN = new RoundingMode("HALF_EVEN");
-    static UNNECESSARY = new RoundingMode("UNNECESSARY");
-
-    static values() {
-        return [
-            RoundingMode.UP,
-            RoundingMode.DOWN,
-            RoundingMode.CEILING,
-            RoundingMode.FLOOR,
-            RoundingMode.HALF_UP,
-            RoundingMode.HALF_DOWN,
-            RoundingMode.HALF_EVEN,
-            RoundingMode.UNNECESSARY,
-        ];
-    }
-
-    static fromJson(name) {
-        return RoundingMode.of(name);
-    }
-
-    static of(name) {
-        if(!name){
-            throw new Error("Missing name");
-        }
-
-        switch(name) {
-            case "UP":
-                return RoundingMode.UP;
-            case "DOWN":
-                return RoundingMode.DOWN;
-            case "CEILING":
-                return RoundingMode.CEILING;
-            case "FLOOR":
-                return RoundingMode.FLOOR;
-            case "HALF_UP":
-                return RoundingMode.HALF_UP;
-            case "HALF_DOWN":
-                return RoundingMode.HALF_DOWN;
-            case "HALF_EVEN":
-                return RoundingMode.HALF_EVEN;
-            case "UNNECESSARY":
-                return RoundingMode.UNNECESSARY;
-            default:
-                throw new Error("Unknown name: " + name);
-        }
-    }
-
-    constructor(name) {
-        super(name);
-    }
-
-    typeName() {
-        return TYPE_NAME;
-    }
+  static UP = new RoundingMode("UP");
+  static DOWN = new RoundingMode("DOWN");
+  static CEILING = new RoundingMode("CEILING");
+  static FLOOR = new RoundingMode("FLOOR");
+  static HALF_UP = new RoundingMode("HALF_UP");
+  static HALF_DOWN = new RoundingMode("HALF_DOWN");
+  static HALF_EVEN = new RoundingMode("HALF_EVEN");
+  static UNNECESSARY = new RoundingMode("UNNECESSARY");
+  
+  static values() {
+    return [
+      RoundingMode.UP,
+      RoundingMode.DOWN,
+      RoundingMode.CEILING,
+      RoundingMode.FLOOR,
+      RoundingMode.HALF_UP,
+      RoundingMode.HALF_DOWN,
+      RoundingMode.HALF_EVEN,
+      RoundingMode.UNNECESSARY
+    ];
+  }
+  
+  static valueOf(name) {
+    return SystemEnum.valueOf(name, RoundingMode.values());
+  }
+  
+  static fromJson(name) {
+    return RoundingMode.valueOf(name);
+  }
+  
+  constructor(name) {
+    super(name);
+  }
+  
+  typeName() {
+    return TYPE_NAME;
+  }
+  
 }
 
 SystemObject.register(TYPE_NAME, RoundingMode.fromJson);
