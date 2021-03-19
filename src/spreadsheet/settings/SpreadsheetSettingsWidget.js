@@ -74,6 +74,13 @@ const useStyles = theme => ({
     },
 });
 
+function metadataPropertyRow(label, property) {
+    return {
+        label: label,
+        metadataProperty: property,
+    };
+}
+
 class SpreadsheetSettingsWidget extends React.Component {
 
     /**
@@ -275,11 +282,11 @@ class SpreadsheetSettingsWidget extends React.Component {
      */
     metadata(classes) {
         const rows = [
-            this.row("Id", SpreadsheetMetadata.SPREADSHEET_ID),
-            this.row("Creator", SpreadsheetMetadata.CREATOR),
-            this.row("Create Date/Time", SpreadsheetMetadata.CREATE_DATE_TIME),
-            this.row("Modified by", SpreadsheetMetadata.MODIFIED_BY),
-            this.row("Modified Date/Time", SpreadsheetMetadata.MODIFIED_DATE_TIME),
+            metadataPropertyRow("Id", SpreadsheetMetadata.SPREADSHEET_ID),
+            metadataPropertyRow("Creator", SpreadsheetMetadata.CREATOR),
+            metadataPropertyRow("Create Date/Time", SpreadsheetMetadata.CREATE_DATE_TIME),
+            metadataPropertyRow("Modified by", SpreadsheetMetadata.MODIFIED_BY),
+            metadataPropertyRow("Modified Date/Time", SpreadsheetMetadata.MODIFIED_DATE_TIME),
         ];
 
         return this.accordion(
@@ -303,9 +310,9 @@ class SpreadsheetSettingsWidget extends React.Component {
      */
     spreadsheetText(classes) {
         const rows = [
-            this.row("Locale", SpreadsheetMetadata.LOCALE),
-            this.row("Format", SpreadsheetMetadata.TEXT_FORMAT_PATTERN),
-            this.row("Width", SpreadsheetMetadata.WIDTH),
+            metadataPropertyRow("Locale", SpreadsheetMetadata.LOCALE),
+            metadataPropertyRow("Format", SpreadsheetMetadata.TEXT_FORMAT_PATTERN),
+            metadataPropertyRow("Width", SpreadsheetMetadata.WIDTH),
         ];
 
         return this.accordion(
@@ -334,16 +341,16 @@ class SpreadsheetSettingsWidget extends React.Component {
      */
     spreadsheetDateTime(classes) {
         const rows = [
-            this.row("Date Time Offset", SpreadsheetMetadata.DATETIME_OFFSET), // 1900 or 1904 date system
-            this.row("Default Year", SpreadsheetMetadata.DEFAULT_YEAR),
-            this.row("Two Digit Year", SpreadsheetMetadata.TWO_DIGIT_YEAR),
+            metadataPropertyRow("Date Time Offset", SpreadsheetMetadata.DATETIME_OFFSET), // 1900 or 1904 date system
+            metadataPropertyRow("Default Year", SpreadsheetMetadata.DEFAULT_YEAR),
+            metadataPropertyRow("Two Digit Year", SpreadsheetMetadata.TWO_DIGIT_YEAR),
 
-            this.row("Date Format", SpreadsheetMetadata.DATE_FORMAT_PATTERN),
-            this.row("Date Parse", SpreadsheetMetadata.DATE_PARSE_PATTERNS),
-            this.row("Date/Time Format", SpreadsheetMetadata.DATETIME_FORMAT_PATTERN),
-            this.row("Date/Time Parse", SpreadsheetMetadata.DATETIME_PARSE_PATTERNS),
-            this.row("Time Format", SpreadsheetMetadata.TIME_FORMAT_PATTERN),
-            this.row("Time Parse", SpreadsheetMetadata.TIME_PARSE_PATTERNS),
+            metadataPropertyRow("Date Format", SpreadsheetMetadata.DATE_FORMAT_PATTERN),
+            metadataPropertyRow("Date Parse", SpreadsheetMetadata.DATE_PARSE_PATTERNS),
+            metadataPropertyRow("Date/Time Format", SpreadsheetMetadata.DATETIME_FORMAT_PATTERN),
+            metadataPropertyRow("Date/Time Parse", SpreadsheetMetadata.DATETIME_PARSE_PATTERNS),
+            metadataPropertyRow("Time Format", SpreadsheetMetadata.TIME_FORMAT_PATTERN),
+            metadataPropertyRow("Time Parse", SpreadsheetMetadata.TIME_PARSE_PATTERNS),
         ];
 
         return this.accordion(
@@ -376,19 +383,19 @@ class SpreadsheetSettingsWidget extends React.Component {
      */
     spreadsheetNumber(classes) {
         const rows = [
-            this.row("Number kind", SpreadsheetMetadata.EXPRESSION_NUMBER_KIND),
-            this.row("Precision", SpreadsheetMetadata.PRECISION),
-            this.row("Rounding mode", SpreadsheetMetadata.ROUNDING_MODE),
-            this.row("Currency", SpreadsheetMetadata.CURRENCY_SYMBOL),
-            this.row("Decimal separator", SpreadsheetMetadata.DECIMAL_SEPARATOR),
-            this.row("Exponent separator", SpreadsheetMetadata.EXPONENT_SYMBOL),
-            this.row("Grouping symbol", SpreadsheetMetadata.GROUPING_SEPARATOR),
-            this.row("Negative sign", SpreadsheetMetadata.NEGATIVE_SIGN),
-            this.row("Percent symbol", SpreadsheetMetadata.PERCENTAGE_SYMBOL),
-            this.row("Positive sign", SpreadsheetMetadata.POSITIVE_SIGN),
-            this.row("Format", SpreadsheetMetadata.NUMBER_FORMAT_PATTERN),
-            this.row("Parse", SpreadsheetMetadata.NUMBER_PARSE_PATTERNS),
-            this.row("Value separator", SpreadsheetMetadata.VALUE_SEPARATOR),
+            metadataPropertyRow("Number kind", SpreadsheetMetadata.EXPRESSION_NUMBER_KIND),
+            metadataPropertyRow("Precision", SpreadsheetMetadata.PRECISION),
+            metadataPropertyRow("Rounding mode", SpreadsheetMetadata.ROUNDING_MODE),
+            metadataPropertyRow("Currency", SpreadsheetMetadata.CURRENCY_SYMBOL),
+            metadataPropertyRow("Decimal separator", SpreadsheetMetadata.DECIMAL_SEPARATOR),
+            metadataPropertyRow("Exponent separator", SpreadsheetMetadata.EXPONENT_SYMBOL),
+            metadataPropertyRow("Grouping symbol", SpreadsheetMetadata.GROUPING_SEPARATOR),
+            metadataPropertyRow("Negative sign", SpreadsheetMetadata.NEGATIVE_SIGN),
+            metadataPropertyRow("Percent symbol", SpreadsheetMetadata.PERCENTAGE_SYMBOL),
+            metadataPropertyRow("Positive sign", SpreadsheetMetadata.POSITIVE_SIGN),
+            metadataPropertyRow("Format", SpreadsheetMetadata.NUMBER_FORMAT_PATTERN),
+            metadataPropertyRow("Parse", SpreadsheetMetadata.NUMBER_PARSE_PATTERNS),
+            metadataPropertyRow("Value separator", SpreadsheetMetadata.VALUE_SEPARATOR),
         ];
 
         return this.accordion(
@@ -410,7 +417,7 @@ class SpreadsheetSettingsWidget extends React.Component {
     spreadsheetStyle(classes) {
         // all ids are prefixed with "spreadsheet-"
         const rows = [
-            this.row("Style", SpreadsheetMetadata.STYLE),
+            metadataPropertyRow("Style", SpreadsheetMetadata.STYLE),
         ];
 
         return this.accordion(
@@ -423,16 +430,12 @@ class SpreadsheetSettingsWidget extends React.Component {
         );
     }
 
-    row(label, property) {
-        return {
-            label: label,
-            property: property,
-        }
+    renderRow(row, classes) {
+        const {label, metadataProperty} = row;
+        return this.renderMetadataPropertyRow(label, metadataProperty, classes);
     }
 
-    renderRow(row, classes) {
-        const {label, property} = row;
-
+    renderMetadataPropertyRow(label, property, classes) {
         const id = "spreadsheet-metadata-" + property;
 
         const state = this.state;
