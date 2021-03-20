@@ -3,10 +3,14 @@ import {withStyles} from "@material-ui/core/styles";
 import Accordion from '@material-ui/core/Accordion';
 import AccordionDetails from '@material-ui/core/AccordionDetails';
 import AccordionSummary from '@material-ui/core/AccordionSummary';
+import Color from "../../color/Color.js";
 import Drawer from "@material-ui/core/Drawer";
 import Equality from "../../Equality.js";
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import ExpressionNumberKind from "../../math/ExpressionNumberKind.js";
+import FontFamily from "../../text/FontFamily.js";
+import lengthFromJson from "../../text/LengthFromJson.js";
+import NoneLength from "../../text/NoneLength.js";
 import Paper from '@material-ui/core/Paper';
 import PropTypes from 'prop-types';
 import React from 'react';
@@ -41,15 +45,18 @@ import SpreadsheetSettingsWidgetSpreadsheetTimeFormatPattern
 import SpreadsheetSettingsWidgetSpreadsheetTimeParsePatterns
     from "./SpreadsheetSettingsWidgetSpreadsheetTimeParsePatterns.js";
 import SpreadsheetSettingsWidgetString from "./SpreadsheetSettingsWidgetString.js";
+import stylePropertyNameToEnum from "../../text/stylePropertyNameToEnum.js";
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
 import TableContainer from '@material-ui/core/TableContainer';
 import TableRow from '@material-ui/core/TableRow';
+import TextStyle from "../../text/TextStyle.js";
 import Typography from '@material-ui/core/Typography';
 
+const DEFAULT_VALUE_FORMATTER_ENUM = (v) => v ? v.nameKebabCase() : "";
 const DEFAULT_VALUE_FORMATTER_LABEL = (v) => v ? v.nameCapitalCase().replace("Half", "½") : "";
-const DEFAULT_VALUE_FORMATTER_TOSTRING = (v) => v ? v.toString() : "";
+const DEFAULT_VALUE_FORMATTER_TOSTRING = (v) => null != v ? v.toString() : "";
 
 /**
  * The settings appears holds all general settings and tools for a spreadsheet sheet.
@@ -236,7 +243,7 @@ class SpreadsheetSettingsWidget extends React.Component {
                 this.spreadsheetText(classes, SpreadsheetHistoryHash.SETTINGS_TEXT === section),
                 this.spreadsheetNumber(classes, SpreadsheetHistoryHash.SETTINGS_NUMBER === section),
                 this.spreadsheetDateTime(classes, SpreadsheetHistoryHash.SETTINGS_DATE_TIME === section),
-                this.spreadsheetStyle(classes, SpreadsheetHistoryHash.SETTINGS_STYLE === section)
+                this.spreadsheetDefaultCellBox(classes, SpreadsheetHistoryHash.SETTINGS_STYLE === section)
             ]);
 
         return <Drawer id={"settings"}
@@ -332,9 +339,24 @@ class SpreadsheetSettingsWidget extends React.Component {
 
     static spreadsheetTextRows() {
         return [
+            TextStyle.COLOR,
+            //TextStyle.DIRECTION,
+            //TextStyle.FONT_FAMILY,
+            //TextStyle.FONT_SIZE,
+            TextStyle.FONT_STYLE,
+            TextStyle.FONT_VARIANT,
+            //TextStyle.FONT_WEIGHT,
+            TextStyle.TEXT_ALIGN,
+            TextStyle.HYPHENS,
+            //TextStyle.LINE_HEIGHT,
+            TextStyle.VERTICAL_ALIGN,
+            //TextStyle.WORD_SPACING,
+            TextStyle.WORD_BREAK,
+            TextStyle.WORD_WRAP,
+            //
             SpreadsheetMetadata.LOCALE,
             SpreadsheetMetadata.TEXT_FORMAT_PATTERN,
-            SpreadsheetMetadata.CELL_CHARACTER_WIDTH
+            SpreadsheetMetadata.CELL_CHARACTER_WIDTH,
         ];
     }
 
@@ -392,25 +414,486 @@ class SpreadsheetSettingsWidget extends React.Component {
         ];
     }
 
-    spreadsheetStyle(classes) {
+    spreadsheetDefaultCellBox(classes) {
         return this.accordion(
             SpreadsheetHistoryHash.SETTINGS_STYLE,
             classes,
-            "Default style(s)",
+            "Default Cell style(s)",
             "",
-            "Spreadsheet default Style(s)",
+            "Default Cell style(s)",
             SpreadsheetSettingsWidget.spreadsheetStyleRows(),
         );
     }
 
     static spreadsheetStyleRows() {
         return [
-            SpreadsheetMetadata.STYLE,
+                TextStyle.BACKGROUND_COLOR,
+                //
+                TextStyle.WIDTH,
+                TextStyle.HEIGHT,
+                //
+                TextStyle.BORDER_LEFT_COLOR,
+                TextStyle.BORDER_LEFT_STYLE,
+                TextStyle.BORDER_LEFT_WIDTH,
+                //
+                TextStyle.BORDER_TOP_COLOR,
+                TextStyle.BORDER_TOP_STYLE,
+                TextStyle.BORDER_TOP_WIDTH,
+                //
+                TextStyle.BORDER_RIGHT_COLOR,
+                TextStyle.BORDER_RIGHT_STYLE,
+                TextStyle.BORDER_RIGHT_WIDTH,
+                //
+                TextStyle.BORDER_BOTTOM_COLOR,
+                TextStyle.BORDER_BOTTOM_STYLE,
+                TextStyle.BORDER_BOTTOM_WIDTH,
+                //
+                TextStyle.PADDING_LEFT,
+                TextStyle.PADDING_TOP,
+                TextStyle.PADDING_RIGHT,
+                TextStyle.PADDING_BOTTOM,
         ];
     }
 
     renderRow(property, classes) {
-        return this.renderMetadataPropertyRow(property, classes);
+        return SpreadsheetMetadata.isProperty(property) ?
+            this.renderMetadataPropertyRow(property, classes) :
+            this.renderDefaultStylePropertyRow(property, classes);
+    }
+
+    /**
+     * Returns a react component for the given property.
+     */
+    renderDefaultStylePropertyRow(property, classes) {
+        const id = "spreadsheet-metadata-style-" + property;
+
+        const state = this.state;
+        const metadata = state.spreadsheetMetadata;
+        const style = metadata.get(SpreadsheetMetadata.STYLE) || TextStyle.EMPTY;
+        const setValue = function(v) {
+            console.log("saving default style property " + property + "=" + v);
+
+            this.setState( // lgtm [js/react/inconsistent-state-update]
+                {
+                    spreadsheetMetadata: metadata.set(
+                        SpreadsheetMetadata.STYLE,
+                        null != v ?
+                            style.set(property, v) :
+                            style.remove(property)
+                    ),
+                }
+            );
+        }.bind(this);
+
+        const value = style.get(property);
+        const defaultValue = this.defaultStyle(metadata).get(property);
+
+        let render;
+
+        switch(property) {
+            case TextStyle.BACKGROUND_COLOR:
+            case TextStyle.BORDER_BOTTOM_COLOR:
+            case TextStyle.BORDER_LEFT_COLOR:
+            case TextStyle.BORDER_RIGHT_COLOR:
+            case TextStyle.BORDER_TOP_COLOR:
+            case TextStyle.COLOR:
+            case TextStyle.OUTLINE_COLOR:
+            case TextStyle.TEXT_DECORATION_COLOR:
+                render = <SpreadsheetSettingsWidgetString id={id}
+                                                          value={value}
+                                                          defaultButtonTooltip={false}
+                                                          defaultValue={defaultValue}
+                                                          defaultValueFormatter={DEFAULT_VALUE_FORMATTER_TOSTRING}
+                                                          setValue={(v) => setValue(!!v ? Color.parse(v) : null)}
+                />;
+                break;
+            default:
+                switch(property) {
+                    case TextStyle.BORDER_BOTTOM_STYLE:
+                    case TextStyle.BORDER_LEFT_STYLE:
+                    case TextStyle.BORDER_RIGHT_STYLE:
+                    case TextStyle.BORDER_TOP_STYLE:
+                    case TextStyle.BORDER_COLLAPSE:
+                    case TextStyle.BORDER_SPACING:
+                    case TextStyle.DIRECTION:
+                    case TextStyle.FONT_KERNING:
+                    case TextStyle.FONT_SIZE:
+                    case TextStyle.FONT_STRETCH:
+                    case TextStyle.FONT_STYLE:
+                    case TextStyle.FONT_VARIANT:
+                    case TextStyle.FONT_WEIGHT:
+                    case TextStyle.HANGING_PUNCTUATION:
+                    case TextStyle.HYPHENS:
+                    case TextStyle.LETTER_SPACING:
+                    case TextStyle.LIST_STYLE_POSITION:
+                    case TextStyle.LIST_STYLE_TYPE:
+                    case TextStyle.OUTLINE_STYLE:
+                    case TextStyle.OUTLINE_WIDTH:
+                    case TextStyle.OVERFLOW_X:
+                    case TextStyle.OVERFLOW_Y:
+                    case TextStyle.TEXT_ALIGN:
+                    case TextStyle.TEXT_DECORATION_LINE:
+                    case TextStyle.TEXT_DECORATION_STYLE:
+                    case TextStyle.TEXT_INDENT:
+                    case TextStyle.TEXT_JUSTIFY:
+                    case TextStyle.TEXT_OVERFLOW:
+                    case TextStyle.TEXT_TRANSFORM:
+                    case TextStyle.TEXT_WRAPPING:
+                    case TextStyle.VERTICAL_ALIGN:
+                    case TextStyle.VISIBILITY:
+                    case TextStyle.WHITE_SPACE:
+                    case TextStyle.WORD_BREAK:
+                    case TextStyle.WORD_SPACING:
+                    case TextStyle.WORD_WRAP:
+                    case TextStyle.WRITING_MODE:
+                        render = <SpreadsheetSettingsWidgetSlider id={id}
+                                                                  style={{
+                                                                      marginLeft: "2.5em",
+                                                                      marginRight: "2.5em",
+                                                                  }}
+                                                                  values={stylePropertyNameToEnum(property)}
+                                                                  value={value}
+                                                                  defaultValue={defaultValue}
+                                                                  defaultValueFormatter={DEFAULT_VALUE_FORMATTER_ENUM}
+                                                                  defaultButtonTooltip={false}
+                                                                  setValue={setValue}
+                        />;
+                        break;
+                    case TextStyle.FONT_FAMILY:
+                        render = <SpreadsheetSettingsWidgetSlider id={id}
+                                                                  style={{
+                                                                      marginLeft: "2.5em",
+                                                                      marginRight: "2.5em",
+                                                                  }}
+                                                                  values={[new FontFamily("Times New Roman")]}
+                                                                  value={value}
+                                                                  defaultValue={defaultValue}
+                                                                  defaultValueFormatter={DEFAULT_VALUE_FORMATTER_TOSTRING}
+                                                                  defaultButtonTooltip={false}
+                                                                  setValue={setValue}
+                        />;
+                        break;
+                    default:
+                        switch(property) {
+                            case TextStyle.BORDER_LEFT_WIDTH:
+                            case TextStyle.BORDER_RIGHT_WIDTH:
+                            case TextStyle.BORDER_BOTTOM_WIDTH:
+                            case TextStyle.BORDER_TOP_WIDTH:
+                            case TextStyle.HEIGHT:
+                            case TextStyle.OUTLINE_OFFSET:
+                            case TextStyle.PADDING_BOTTOM:
+                            case TextStyle.PADDING_LEFT:
+                            case TextStyle.PADDING_RIGHT:
+                            case TextStyle.PADDING_TOP:
+                            case TextStyle.TAB_SIZE:
+                            case TextStyle.TEXT_DECORATION_THICKNESS:
+                            case TextStyle.WIDTH:
+                                let min = 0;
+                                let max = 0;
+                                switch(property) {
+                                    case TextStyle.BORDER_LEFT_WIDTH:
+                                    case TextStyle.BORDER_RIGHT_WIDTH:
+                                    case TextStyle.BORDER_BOTTOM_WIDTH:
+                                    case TextStyle.BORDER_TOP_WIDTH:
+                                        max = 2;
+                                        break;
+                                    case TextStyle.HEIGHT:
+                                        min = 20;
+                                        max = 30;
+                                        break;
+                                    case TextStyle.OUTLINE_OFFSET:
+                                        max = 10;
+                                        break;
+                                    case TextStyle.PADDING_BOTTOM:
+                                    case TextStyle.PADDING_LEFT:
+                                    case TextStyle.PADDING_RIGHT:
+                                    case TextStyle.PADDING_TOP:
+                                        max = 10;
+                                        break;
+                                    case TextStyle.TAB_SIZE:
+                                        max = 10;
+                                        break;
+                                    case TextStyle.TEXT_DECORATION_THICKNESS:
+                                        max = 10;
+                                        break;
+                                    case TextStyle.WIDTH:
+                                        min = 20;
+                                        max = 200;
+                                        break;
+                                    default:
+                                        break;
+                                }
+                                const marks = [
+                                    {
+                                        value: min,
+                                        label: "" + min,
+                                    },
+                                    {
+                                        value: max,
+                                        label: "" + max,
+                                    },
+                                ];
+
+                                render = <SpreadsheetSettingsWidgetSliderWithNumberTextField id={id}
+                                                                                             style={{
+                                                                                                 marginLeft: "1em",
+                                                                                                 marginRight: "1em",
+                                                                                             }}
+                                                                                             min={min}
+                                                                                             max={max}
+                                                                                             marks={marks}
+                                                                                             step={1}
+                                                                                             value={value && value.pixelValue()}
+                                                                                             defaultValue={null != defaultValue && defaultValue.pixelValue()}
+                                                                                             defaultValueFormatter={DEFAULT_VALUE_FORMATTER_TOSTRING}
+                                                                                             defaultButtonTooltip={false}
+                                                                                             setValue={(v) => setValue(isNaN(v) ? NoneLength.INSTANCE : lengthFromJson(v + "px"))}
+                                />;
+                                break;
+                            default:
+                                throw new Error("Invalid default style property " + property);
+                        }
+                        break;
+                }
+        }
+
+        const label = this.textStyleLabel(property);
+        return this.tableRow(id, label, render, classes);
+    }
+
+    /**
+     * Returns a style which may be empty if for the given {@link SpreadsheetMetadata}.
+     */
+    defaultStyle(metadata) {
+        const defaultMetadata = metadata.get(SpreadsheetMetadata.DEFAULTS);
+        var style = TextStyle.EMPTY;
+
+        if(defaultMetadata){
+            style = defaultMetadata.get(SpreadsheetMetadata.STYLE) || TextStyle.EMPTY;
+        }
+
+        return style;
+    }
+
+    textStyleLabel(property) {
+        var label;
+
+        switch(property) {
+            case TextStyle.BACKGROUND_COLOR :
+                label = "Background color";
+                break;
+            case TextStyle.BORDER_BOTTOM_COLOR :
+                label = "Border bottom color";
+                break;
+            case TextStyle.BORDER_BOTTOM_STYLE :
+                label = "Border bottom style";
+                break;
+            case TextStyle.BORDER_BOTTOM_WIDTH :
+                label = "Border bottom width";
+                break;
+            case TextStyle.BORDER_COLLAPSE :
+                label = "Border collapse";
+                break;
+            case TextStyle.BORDER_LEFT_COLOR :
+                label = "Border left color";
+                break;
+            case TextStyle.BORDER_LEFT_STYLE :
+                label = "Border left style";
+                break;
+            case TextStyle.BORDER_LEFT_WIDTH :
+                label = "Border left width";
+                break;
+            case TextStyle.BORDER_RIGHT_COLOR :
+                label = "Border right color";
+                break;
+            case TextStyle.BORDER_RIGHT_STYLE :
+                label = "Border right style";
+                break;
+            case TextStyle.BORDER_RIGHT_WIDTH :
+                label = "Border right width";
+                break;
+            case TextStyle.BORDER_SPACING :
+                label = "Border spacing";
+                break;
+            case TextStyle.BORDER_TOP_COLOR :
+                label = "Border top color";
+                break;
+            case TextStyle.BORDER_TOP_STYLE :
+                label = "Border top style";
+                break;
+            case TextStyle.BORDER_TOP_WIDTH :
+                label = "Border top width";
+                break;
+            case TextStyle.COLOR :
+                label = "Color";
+                break;
+            case TextStyle.DIRECTION :
+                label = "Direction";
+                break;
+            case TextStyle.FONT_FAMILY :
+                label = "Font family";
+                break;
+            case TextStyle.FONT_KERNING :
+                label = "Font kerning";
+                break;
+            case TextStyle.FONT_SIZE :
+                label = "Font size";
+                break;
+            case TextStyle.FONT_STRETCH :
+                label = "Font stretch";
+                break;
+            case TextStyle.FONT_STYLE :
+                label = "Font style";
+                break;
+            case TextStyle.FONT_VARIANT :
+                label = "Font variant";
+                break;
+            case TextStyle.FONT_WEIGHT :
+                label = "Font weight";
+                break;
+            case TextStyle.HANGING_PUNCTUATION :
+                label = "Hanging punctuation";
+                break;
+            case TextStyle.HEIGHT :
+                label = "Height";
+                break;
+            case TextStyle.HYPHENS :
+                label = "Hyphens";
+                break;
+            case TextStyle.LETTER_SPACING :
+                label = "Letter spacing";
+                break;
+            case TextStyle.LINE_HEIGHT :
+                label = "Line height";
+                break;
+            case TextStyle.LIST_STYLE_POSITION :
+                label = "List style position";
+                break;
+            case TextStyle.LIST_STYLE_TYPE :
+                label = "List style type";
+                break;
+            case TextStyle.MARGIN_BOTTOM :
+                label = "Margin bottom";
+                break;
+            case TextStyle.MARGIN_LEFT :
+                label = "Margin left";
+                break;
+            case TextStyle.MARGIN_RIGHT :
+                label = "Margin right";
+                break;
+            case TextStyle.MARGIN_TOP :
+                label = "Margin top";
+                break;
+            case TextStyle.MAX_HEIGHT :
+                label = "Max height";
+                break;
+            case TextStyle.MAX_WIDTH :
+                label = "Max width";
+                break;
+            case TextStyle.MIN_HEIGHT :
+                label = "Min height";
+                break;
+            case TextStyle.MIN_WIDTH :
+                label = "Min width";
+                break;
+            case TextStyle.OPACITY :
+                label = "Opacity";
+                break;
+            case TextStyle.OUTLINE_COLOR :
+                label = "Outline color";
+                break;
+            case TextStyle.OUTLINE_OFFSET :
+                label = "Outline offset";
+                break;
+            case TextStyle.OUTLINE_STYLE :
+                label = "Outline style";
+                break;
+            case TextStyle.OUTLINE_WIDTH :
+                label = "Outline width";
+                break;
+            case TextStyle.OVERFLOW_X :
+                label = "Overflow x";
+                break;
+            case TextStyle.OVERFLOW_Y :
+                label = "Overflow y";
+                break;
+            case TextStyle.PADDING_BOTTOM :
+                label = "Padding bottom";
+                break;
+            case TextStyle.PADDING_LEFT :
+                label = "Padding left";
+                break;
+            case TextStyle.PADDING_RIGHT :
+                label = "Padding right";
+                break;
+            case TextStyle.PADDING_TOP :
+                label = "Padding top";
+                break;
+            case TextStyle.TAB_SIZE :
+                label = "Tab size";
+                break;
+            case TextStyle.TEXT :
+                label = "Text";
+                break;
+            case TextStyle.TEXT_ALIGN :
+                label = "Horizontal align";
+                break;
+            case TextStyle.TEXT_DECORATION_COLOR :
+                label = "Text decoration color";
+                break;
+            case TextStyle.TEXT_DECORATION_LINE :
+                label = "Text decoration line";
+                break;
+            case TextStyle.TEXT_DECORATION_STYLE :
+                label = "Text decoration style";
+                break;
+            case TextStyle.TEXT_DECORATION_THICKNESS :
+                label = "Text decoration thickness";
+                break;
+            case TextStyle.TEXT_INDENT :
+                label = "Indent";
+                break;
+            case TextStyle.TEXT_JUSTIFY :
+                label = "Justify";
+                break;
+            case TextStyle.TEXT_OVERFLOW :
+                label = "Text overflow";
+                break;
+            case TextStyle.TEXT_TRANSFORM :
+                label = "Text transform";
+                break;
+            case TextStyle.TEXT_WRAPPING :
+                label = "Text wrapping";
+                break;
+            case TextStyle.VERTICAL_ALIGN :
+                label = "Vertical align";
+                break;
+            case TextStyle.VISIBILITY :
+                label = "Visibility";
+                break;
+            case TextStyle.WHITE_SPACE :
+                label = "Whitespace";
+                break;
+            case TextStyle.WIDTH :
+                label = "Width";
+                break;
+            case TextStyle.WORD_BREAK :
+                label = "Word break";
+                break;
+            case TextStyle.WORD_SPACING :
+                label = "Word spacing";
+                break;
+            case TextStyle.WORD_WRAP :
+                label = "Word wrap";
+                break;
+            case TextStyle.WRITING_MODE :
+                label = "Writing mode";
+                break;
+            default:
+                throw new Error("Unknown TextStyle property \"" + property + "\"");
+        }
+
+        return label;
     }
 
     renderMetadataPropertyRow(property, classes) {
@@ -736,20 +1219,9 @@ class SpreadsheetSettingsWidget extends React.Component {
         }
 
         const label = this.spreadsheetMetadataPropertyLabel(property);
-        return (
-            <TableRow key={label}
-                      hover={true}>
-                <TableCell className={classes.label}>{label}</TableCell>
-                <TableCell id={id}
-                           className={classes.value}>{render}</TableCell>
-            </TableRow>);
+        return this.tableRow(id, label, render, classes);
     }
 
-    /**
-     *
-     * @param property
-     * @returns {*}
-     */
     spreadsheetMetadataPropertyLabel(property) {
         let label;
 
@@ -855,6 +1327,15 @@ class SpreadsheetSettingsWidget extends React.Component {
         }
 
         return label;
+    }
+
+    tableRow(id, label, value, classes) {
+        return <TableRow key={label}
+                         hover={true}>
+            <TableCell className={classes.label}>{label}</TableCell>
+            <TableCell id={id}
+                       className={classes.value}>{value}</TableCell>
+        </TableRow>;
     }
 
     // ACCORDION........................................................................................................

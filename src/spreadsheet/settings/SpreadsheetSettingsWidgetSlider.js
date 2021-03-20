@@ -18,15 +18,21 @@ export default class SpreadsheetSettingsWidgetSlider extends SpreadsheetSettings
         const values = props.values;
         const marks = [];
 
-        marks.push({
-            label: "Default",
-            value: 0,
-        });
+        const defaultValue = props.defaultValue;
+        const defaultValueOffset = defaultValue ? 1 : 0;
+        this.defaultValueOffset = defaultValueOffset;
+
+        if(defaultValue) {
+            marks.push({
+                label: "Default",
+                value: 0,
+            });
+        }
 
         props.values.forEach((v, i) => {
             marks.push({
                 label: v.nameCapitalCase(),
-                value: i + 1,
+                value: i + defaultValueOffset,
             });
         });
         this.values = values;
@@ -35,9 +41,9 @@ export default class SpreadsheetSettingsWidgetSlider extends SpreadsheetSettings
     }
 
     renderInput(id, value) {
-        const {marks} = this;
+        const {defaultValueOffset, marks} = this;
         const sliderId = id + "-Slider";
-        const sliderValue = this.props.values.findIndex((e) => Equality.safeEquals(e, value)) + 1;
+        const sliderValue = this.props.values.findIndex((e) => Equality.safeEquals(e, value)) + defaultValueOffset;
 
         return <Slider id={sliderId}
                        key={sliderId}
@@ -54,7 +60,7 @@ export default class SpreadsheetSettingsWidgetSlider extends SpreadsheetSettings
     onChange(e, newValue) {
         this.setValue(
             newValue > 0 ?
-                this.values[newValue - 1] :
+                this.values[newValue - this.defaultValueOffset] :
                 null
         );
     }
