@@ -1,12 +1,13 @@
+import lengthFromJson from "../text/LengthFromJson.js";
 import React from "react";
 import SpreadsheetCell from "./SpreadsheetCell.js";
 import SpreadsheetCellFormat from "./SpreadsheetCellFormat";
 import SpreadsheetCellReference from "./reference/SpreadsheetCellReference";
 import SpreadsheetFormula from "./SpreadsheetFormula";
+import systemObjectTesting from "../SystemObjectTesting.js";
 import TableCell from "@material-ui/core/TableCell";
 import Text from "../text/Text";
 import TextStyle from "../text/TextStyle";
-import systemObjectTesting from "../SystemObjectTesting.js";
 
 function cell() {
     return new SpreadsheetCell(reference(),
@@ -25,7 +26,7 @@ function formula() {
 }
 
 function style() {
-    return new TextStyle({"color": "#123"});
+    return TextStyle.fromJson({"color": "#123456"});
 }
 
 function format() {
@@ -350,8 +351,8 @@ test("render empty style, text & defaultStyle width&height", () => {
         new Text(text))
         .render(
             TextStyle.EMPTY
-                .set("width", "100px")
-                .set("height", "50px"),
+                .set("width", lengthFromJson("100px"))
+                .set("height", lengthFromJson("50px")),
             c))
         .toStrictEqual(<TableCell key={r}
                                   id="cell-A99"
@@ -368,8 +369,8 @@ test("render style=width&height, text & defaultStyle=empty", () => {
     expect(new SpreadsheetCell(r,
         formula(),
         TextStyle.EMPTY
-            .set("width", "100px")
-            .set("height", "50px"),
+            .set("width", lengthFromJson("100px"))
+            .set("height", lengthFromJson("50px")),
         format(),
         new Text(text))
         .render(TextStyle.EMPTY, c))
@@ -388,11 +389,11 @@ test("render style=height, text & defaultStyle=width", () => {
     expect(new SpreadsheetCell(r,
         formula(),
         TextStyle.EMPTY
-            .set("height", "50px"),
+            .set("height", lengthFromJson("50px")),
         format(),
         new Text(text))
         .render(TextStyle.EMPTY
-                .set("width", "100px"),
+                .set("width", lengthFromJson("100px")),
             c))
         .toStrictEqual(<TableCell key={r}
                                   id="cell-A99"
@@ -409,12 +410,12 @@ test("render style=width&height, text & defaultStyle=width", () => {
     expect(new SpreadsheetCell(r,
         formula(),
         TextStyle.EMPTY
-            .set("width", "100px")
-            .set("height", "50px"),
+            .set("width", lengthFromJson("100px"))
+            .set("height", lengthFromJson("50px")),
         format(),
         new Text(text))
         .render(TextStyle.EMPTY
-                .set("width", "99px"),
+                .set("width", lengthFromJson("99px")),
             c))
         .toStrictEqual(<TableCell id="cell-A99"
                                   key={r} onClick={c}

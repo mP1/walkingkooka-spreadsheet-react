@@ -1,8 +1,8 @@
 import ImmutableMap from "./ImmutableMap";
+import lengthFromJson from "../text/LengthFromJson.js";
 import SpreadsheetCellReference from "../spreadsheet/reference/SpreadsheetCellReference";
-import TextStyle from "../text/TextStyle";
 import SpreadsheetColumnReference from "../spreadsheet/reference/SpreadsheetColumnReference";
-
+import TextStyle from "../text/TextStyle";
 
 // new..................................................................................................................
 
@@ -238,8 +238,8 @@ test("toJson value missing toJson", () => {
     const a1 = SpreadsheetCellReference.parse("A1");
     const b2 = SpreadsheetCellReference.parse("B2");
 
-    const a1v = TextStyle.EMPTY.set("height", "10px");
-    const b2v = TextStyle.EMPTY.set("width", "100px");
+    const a1v = TextStyle.EMPTY.set("height", lengthFromJson("10px"));
+    const b2v = TextStyle.EMPTY.set("width", lengthFromJson("100px"));
 
     const nativeMap = new Map([[a1.toString(), a1v], [b2.toString(), b2v]]);
     const map = new ImmutableMap(nativeMap);

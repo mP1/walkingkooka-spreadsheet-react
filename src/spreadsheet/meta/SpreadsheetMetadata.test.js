@@ -1,6 +1,7 @@
 import Character from "../../Character.js";
 import EmailAddress from "../../net/EmailAddress.js";
 import ExpressionNumberKind from "../../math/ExpressionNumberKind.js";
+import lengthFromJson from "../../text/LengthFromJson.js";
 import LocalDateTime from "../../datetime/LocalDateTime.js";
 import Locale from "../../util/Locale.js";
 import PixelLength from "../../text/PixelLength";
@@ -19,8 +20,8 @@ import SpreadsheetRange from "../reference/SpreadsheetRange.js";
 import SpreadsheetTextFormatPattern from "../format/SpreadsheetTextFormatPattern.js";
 import SpreadsheetTimeFormatPattern from "../format/SpreadsheetTimeFormatPattern.js";
 import SpreadsheetTimeParsePatterns from "../format/SpreadsheetTimeParsePatterns.js";
-import TextStyle from "../../text/TextStyle";
 import systemObjectTesting from "../../SystemObjectTesting.js";
+import TextStyle from "../../text/TextStyle";
 
 systemObjectTesting(
     new SpreadsheetMetadata(
@@ -532,7 +533,7 @@ getPropertyTest(SpreadsheetMetadata.SPREADSHEET_ID, "123");
 
 getSetPropertyTest(SpreadsheetMetadata.SPREADSHEET_NAME, SpreadsheetName.fromJson("spreadsheet-name-123"));
 
-getSetPropertyTest(SpreadsheetMetadata.STYLE, TextStyle.EMPTY.set("width", "50px"));
+getSetPropertyTest(SpreadsheetMetadata.STYLE, TextStyle.EMPTY.set("width", lengthFromJson("50px")));
 
 getSetRemovePropertyTest(SpreadsheetMetadata.TEXT_FORMAT_PATTERN, SpreadsheetTextFormatPattern.fromJson("@@"));
 
