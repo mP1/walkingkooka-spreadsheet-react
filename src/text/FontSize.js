@@ -8,11 +8,14 @@ const TYPE_NAME = "font-size";
 export default class FontSize extends SystemObject {
 
     static fromJson(value) {
-        if(!value){
+        if(null == value){
             throw new Error("Missing value");
         }
         if(typeof value !== "number"){
             throw new Error("Expected number got " + value);
+        }
+        if(value <= 0) {
+            throw new Error("Expected number > 0 got " + value);
         }
         return new FontSize(value);
     }
