@@ -5,12 +5,14 @@ const TYPE_NAME = "text-decoration-line";
 
 export default class TextDecorationLine extends SystemEnum {
 
+  static NONE = new TextDecorationLine("NONE");
   static UNDERLINE = new TextDecorationLine("UNDERLINE");
   static OVERLINE = new TextDecorationLine("OVERLINE");
   static LINE_THROUGH = new TextDecorationLine("LINE_THROUGH");
   
   static values() {
     return [
+      TextDecorationLine.NONE,
       TextDecorationLine.UNDERLINE,
       TextDecorationLine.OVERLINE,
       TextDecorationLine.LINE_THROUGH
