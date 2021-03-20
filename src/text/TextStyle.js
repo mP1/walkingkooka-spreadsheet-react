@@ -86,8 +86,8 @@ export default class TextStyle extends SystemObject {
     static TAB_SIZE = "tab-size";
     static TEXT = "text";
     static TEXT_ALIGN = "text-align";
-    static TEXT_DECORATION = "text-decoration";
     static TEXT_DECORATION_COLOR = "text-decoration-color";
+    static TEXT_DECORATION_LINE = "text-decoration-line";
     static TEXT_DECORATION_STYLE = "text-decoration-style";
     static TEXT_DIRECTION = "text-direction";
     static TEXT_INDENT = "text-indent";
