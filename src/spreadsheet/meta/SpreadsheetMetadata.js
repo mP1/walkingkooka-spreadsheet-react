@@ -24,6 +24,64 @@ import SystemObject from "../../SystemObject.js";
 import TextStyle from "../../text/TextStyle";
 
 /**
+ * Verifies the given property is a known property.
+ */
+function checkProperty(property) {
+    if(!property){
+        throw new Error("Missing property");
+    }
+    if(typeof property !== "string"){
+        throw new Error("Expected string property got " + property);
+    }
+
+    switch(property) {
+        case SpreadsheetMetadata.CREATE_DATE_TIME:
+        case SpreadsheetMetadata.CREATOR:
+        case SpreadsheetMetadata.CURRENCY_SYMBOL:
+        case SpreadsheetMetadata.DATE_FORMAT_PATTERN:
+        case SpreadsheetMetadata.DATE_PARSE_PATTERNS:
+        case SpreadsheetMetadata.DATETIME_OFFSET:
+        case SpreadsheetMetadata.DATETIME_FORMAT_PATTERN:
+        case SpreadsheetMetadata.DATETIME_PARSE_PATTERNS:
+        case SpreadsheetMetadata.DEFAULTS:
+        case SpreadsheetMetadata.DECIMAL_SEPARATOR:
+        case SpreadsheetMetadata.DEFAULT_YEAR:
+        case SpreadsheetMetadata.EDIT_CELL:
+        case SpreadsheetMetadata.EDIT_RANGE:
+        case SpreadsheetMetadata.EXPONENT_SYMBOL:
+        case SpreadsheetMetadata.EXPRESSION_NUMBER_KIND:
+        case SpreadsheetMetadata.GROUPING_SEPARATOR:
+        case SpreadsheetMetadata.LOCALE:
+        case SpreadsheetMetadata.MODIFIED_BY:
+        case SpreadsheetMetadata.MODIFIED_DATE_TIME:
+        case SpreadsheetMetadata.NEGATIVE_SIGN:
+        case SpreadsheetMetadata.NUMBER_FORMAT_PATTERN:
+        case SpreadsheetMetadata.NUMBER_PARSE_PATTERNS:
+        case SpreadsheetMetadata.PERCENTAGE_SYMBOL:
+        case SpreadsheetMetadata.POSITIVE_SIGN:
+        case SpreadsheetMetadata.PRECISION:
+        case SpreadsheetMetadata.SPREADSHEET_ID:
+        case SpreadsheetMetadata.ROUNDING_MODE:
+        case SpreadsheetMetadata.SPREADSHEET_NAME:
+        case SpreadsheetMetadata.STYLE:
+        case SpreadsheetMetadata.TEXT_FORMAT_PATTERN:
+        case SpreadsheetMetadata.TIME_FORMAT_PATTERN:
+        case SpreadsheetMetadata.TIME_PARSE_PATTERNS:
+        case SpreadsheetMetadata.TWO_DIGIT_YEAR:
+        case SpreadsheetMetadata.VALUE_SEPARATOR:
+        case SpreadsheetMetadata.VIEWPORT_CELL:
+        case SpreadsheetMetadata.VIEWPORT_COORDINATES:
+        case SpreadsheetMetadata.WIDTH:
+            break;
+        default:
+            if(property.startsWith("color-")){
+                break;
+            }
+            throw new Error("Unknown property \"" + property + "\"");
+    }
+}
+
+/**
  * Creates a new SpreadsheetMetadata removing the given property.
  */
 function copyAndRemove(properties,
@@ -245,13 +303,7 @@ export default class SpreadsheetMetadata extends SystemObject {
      * General purpose getter which unlike the java version of this class ignores the defaults if the property is missing.
      */
     get(property) {
-        if(!property){
-            throw new Error("Missing property");
-        }
-        if(typeof property !== "string"){
-            throw new Error("Expected string property but got " + property);
-        }
-
+        checkProperty(property);
         return this.properties[property];
     }
 
@@ -259,9 +311,7 @@ export default class SpreadsheetMetadata extends SystemObject {
      * Would be setter that returns a new SpreadsheetMetadata if the new value is different from the previous.
      */
     set(property, value) {
-        if(!property){
-            throw new Error("Missing property");
-        }
+        checkProperty(property);
         if(null == value){
             throw new Error("Property \"" + property + "\" missing value");
         }
@@ -406,12 +456,7 @@ export default class SpreadsheetMetadata extends SystemObject {
      * Would be remover that returns a new SpreadsheetMetadata if the removed value was already absent.
      */
     remove(property) {
-        if(!property){
-            throw new Error("Missing property");
-        }
-        if(typeof property !== "string"){
-            throw new Error("Expected string property got " + property);
-        }
+        checkProperty(property);
 
         switch(property) {
             case SpreadsheetMetadata.CURRENCY_SYMBOL:
@@ -653,11 +698,11 @@ function copyAndSet(properties,
                 }
                 // found another property with $value, swap is necessary
                 if(value.equals(copy[possible])){
-                    if(!previous) {
+                    if(!previous){
                         if(!(isGroupingSeparatorOrValueSeparator(property) && isGroupingSeparatorOrValueSeparator(possible))){
                             throw new Error("Cannot set " + property + "=" + value + " duplicate of " + possible);
                         }
-                    } else {
+                    }else {
                         copy[possible] = previous;
                     }
                 }
