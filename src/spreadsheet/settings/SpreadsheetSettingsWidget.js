@@ -465,6 +465,15 @@ class SpreadsheetSettingsWidget extends React.Component {
                 const defaultValue = defaultMetadata && defaultMetadata.get(property);
 
                 switch(property) {
+                    case SpreadsheetMetadata.SPREADSHEET_ID:
+                    case SpreadsheetMetadata.CREATOR:
+                    case SpreadsheetMetadata.MODIFIED_BY:
+                    case SpreadsheetMetadata.LOCALE:
+                    case SpreadsheetMetadata.STYLE:
+                        render = (
+                            <span id={id}>{value ? value.toString() : ""}</span>
+                        );
+                        break;
                     case SpreadsheetMetadata.CURRENCY_SYMBOL:
                         render = (
                             <SpreadsheetSettingsWidgetString id={id}
@@ -765,10 +774,7 @@ class SpreadsheetSettingsWidget extends React.Component {
                         />;
                         break;
                     default:
-                        render = (
-                            <span id={id}>{(value && value.toString()) || ""}</span>
-                        );
-                        break;
+                        throw new Error("Unknown property " + property);
                 }
                 break;
         }
