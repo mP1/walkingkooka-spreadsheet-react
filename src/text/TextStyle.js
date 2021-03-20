@@ -89,6 +89,7 @@ export default class TextStyle extends SystemObject {
     static TEXT_DECORATION_COLOR = "text-decoration-color";
     static TEXT_DECORATION_LINE = "text-decoration-line";
     static TEXT_DECORATION_STYLE = "text-decoration-style";
+    static TEXT_DECORATION_THICKNESS = "text-decoration-thickness";
     static TEXT_DIRECTION = "text-direction";
     static TEXT_INDENT = "text-indent";
     static TEXT_JUSTIFY = "text-justify";
