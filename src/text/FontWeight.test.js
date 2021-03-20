@@ -20,12 +20,16 @@ test("fromJson null fails", () => {
     expect(() => FontWeight.fromJson(null)).toThrow("Missing value");
 });
 
-test("fromJson empty fails", () => {
-    expect(() => FontWeight.fromJson("")).toThrow("Missing value");
-});
-
 test("fromJson boolean fails", () => {
     expect(() => FontWeight.fromJson(true)).toThrow("Expected number got true");
+});
+
+test("fromJson zero fails", () => {
+    expect(() => FontWeight.fromJson(0)).toThrow("Expected number > 0 got 0");
+});
+
+test("fromJson -1 fails", () => {
+    expect(() => FontWeight.fromJson(-1)).toThrow("Expected number > 0 got -1");
 });
 
 test("fromJson string fails", () => {
