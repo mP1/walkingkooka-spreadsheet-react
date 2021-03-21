@@ -1,26 +1,138 @@
 /**
  * Used to create a new instance and then the given style and value.
  */
+import BorderCollapse from "./BorderCollapse.js";
+import BorderStyle from "./BorderStyle.js";
+import Color from "../color/Color.js";
+import FontFamily from "./FontFamily.js";
+import FontKerning from "./FontKerning.js";
+import FontSize from "./FontSize.js";
+import FontStretch from "./FontStretch.js";
+import FontStyle from "./FontStyle.js";
+import FontVariant from "./FontVariant.js";
+import FontWeight from "./FontWeight.js";
+import HangingPunctuation from "./HangingPunctuation.js";
+import Hyphens from "./Hyphens.js";
+import Length from "./Length.js";
+import LengthFromJson from "./LengthFromJson.js";
+import ListStylePosition from "./ListStylePosition.js";
+import ListStyleType from "./ListStyleType.js";
+import OutlineStyle from "./OutlineStyle.js";
+import Overflow from "./Overflow.js";
 import PixelLength from "./PixelLength";
 import SystemObject from "../SystemObject.js";
+import TextAlign from "./TextAlign.js";
+import TextDirection from "./TextDirection.js";
+import TextDecorationLine from "./TextDecorationLine.js";
+import TextDecorationStyle from "./TextDecorationStyle.js";
+import TextJustify from "./TextJustify.js";
+import TextTransform from "./TextTransform.js";
+import TextWhitespace from "./TextWhitespace.js";
+import TextWrapping from "./TextWrapping.js";
+import VerticalAlign from "./VerticalAlign.js";
+import Visibility from "./Visibility.js";
+import WritingMode from "./WritingMode.js";
+import WordWrap from "./WordWrap.js";
+import WordBreak from "./WordBreak.js";
 
-function copyAndSet(styles, style, value) {
-    let copy = new TextStyle(styles);
-    copy.styles[style] = value;
+function checkProperty(property) {
+    if(!property){
+        throw new Error("Missing property");
+    }
+    if(typeof property !== "string"){
+        throw new Error("Expected string property got " + property);
+    }
+
+    switch(property) {
+        case TextStyle.BACKGROUND_COLOR:
+        case TextStyle.BORDER_BOTTOM_COLOR:
+        case TextStyle.BORDER_BOTTOM_STYLE:
+        case TextStyle.BORDER_BOTTOM_WIDTH:
+        case TextStyle.BORDER_COLLAPSE:
+        case TextStyle.BORDER_LEFT_COLOR:
+        case TextStyle.BORDER_LEFT_STYLE:
+        case TextStyle.BORDER_LEFT_WIDTH:
+        case TextStyle.BORDER_RIGHT_COLOR:
+        case TextStyle.BORDER_RIGHT_STYLE:
+        case TextStyle.BORDER_RIGHT_WIDTH:
+        case TextStyle.BORDER_SPACING:
+        case TextStyle.BORDER_TOP_COLOR:
+        case TextStyle.BORDER_TOP_STYLE:
+        case TextStyle.BORDER_TOP_WIDTH:
+        case TextStyle.COLOR:
+        case TextStyle.FONT_FAMILY:
+        case TextStyle.FONT_KERNING:
+        case TextStyle.FONT_SIZE:
+        case TextStyle.FONT_STRETCH:
+        case TextStyle.FONT_STYLE:
+        case TextStyle.FONT_VARIANT:
+        case TextStyle.FONT_WEIGHT:
+        case TextStyle.HANGING_PUNCTUATION:
+        case TextStyle.HEIGHT:
+        case TextStyle.HYPHENS:
+        case TextStyle.LETTER_SPACING:
+        case TextStyle.LINE_HEIGHT:
+        case TextStyle.LIST_STYLE_POSITION:
+        case TextStyle.LIST_STYLE_TYPE:
+        case TextStyle.MARGIN_BOTTOM:
+        case TextStyle.MARGIN_LEFT:
+        case TextStyle.MARGIN_RIGHT:
+        case TextStyle.MARGIN_TOP:
+        case TextStyle.MAX_HEIGHT:
+        case TextStyle.MAX_WIDTH:
+        case TextStyle.MIN_HEIGHT:
+        case TextStyle.MIN_WIDTH:
+        case TextStyle.OPACITY:
+        case TextStyle.OUTLINE_COLOR:
+        case TextStyle.OUTLINE_OFFSET:
+        case TextStyle.OUTLINE_STYLE:
+        case TextStyle.OUTLINE_WIDTH:
+        case TextStyle.OVERFLOW_X:
+        case TextStyle.OVERFLOW_Y:
+        case TextStyle.PADDING_BOTTOM:
+        case TextStyle.PADDING_LEFT:
+        case TextStyle.PADDING_RIGHT:
+        case TextStyle.PADDING_TOP:
+        case TextStyle.TAB_SIZE:
+        case TextStyle.TEXT:
+        case TextStyle.TEXT_ALIGN:
+        case TextStyle.TEXT_DECORATION_COLOR:
+        case TextStyle.TEXT_DECORATION_LINE:
+        case TextStyle.TEXT_DECORATION_STYLE:
+        case TextStyle.TEXT_DECORATION_THICKNESS:
+        case TextStyle.TEXT_DIRECTION:
+        case TextStyle.TEXT_INDENT:
+        case TextStyle.TEXT_JUSTIFY:
+        case TextStyle.TEXT_OVERFLOW:
+        case TextStyle.TEXT_TRANSFORM:
+        case TextStyle.TEXT_WRAPPING:
+        case TextStyle.VERTICAL_ALIGN:
+        case TextStyle.VISIBILITY:
+        case TextStyle.WHITE_SPACE:
+        case TextStyle.WIDTH:
+        case TextStyle.WORD_BREAK:
+        case TextStyle.WORD_SPACING:
+        case TextStyle.WORD_WRAP:
+        case TextStyle.WRITING_MODE:
+            break;
+        default:
+            throw new Error("Unknown property \"" + property + "\"");
+    }
+}
+
+function copyAndSet(properties, property, value) {
+    let copy = new TextStyle(properties);
+    copy.properties[property] = value;
     return copy;
 }
 
 /**
  * Used to create a new instance and then remove the given style.
  */
-function copyAndRemove(styles, style) {
-    let copy = new TextStyle(styles);
-    delete copy.styles[style];
+function copyAndRemove(properties, property) {
+    let copy = new TextStyle(properties);
+    delete copy.properties[property];
     return copy;
-}
-
-function fromPixel(text) {
-    return text && PixelLength.parse(text);
 }
 
 const TYPE_NAME = "text-style";
@@ -28,7 +140,6 @@ const TYPE_NAME = "text-style";
 /**
  * Holds many style properties and values.
  */
-// TODO validate style and value.
 export default class TextStyle extends SystemObject {
 
     static EMPTY = new TextStyle({});
@@ -106,34 +217,439 @@ export default class TextStyle extends SystemObject {
     static WRITING_MODE = "writing-mode";
 
     static fromJson(json) {
-        return new TextStyle(json);
+        if(!json){
+            throw new Error("Missing json");
+        }
+        if(typeof json !== "object"){
+            throw new Error("Expected Object json got " + json);
+        }
+
+        // check properties
+        const properties = {};
+        for(const [property, value] of Object.entries(json)) {
+            let typed, unmarshaller;
+
+            switch(property) {
+                case TextStyle.BACKGROUND_COLOR:
+                case TextStyle.BORDER_BOTTOM_COLOR:
+                    unmarshaller = Color.fromJson;
+                    break;
+                case TextStyle.BORDER_BOTTOM_STYLE:
+                    unmarshaller = BorderStyle.fromJson;
+                    break;
+                case TextStyle.BORDER_BOTTOM_WIDTH:
+                    unmarshaller = LengthFromJson;
+                    break;
+                case TextStyle.BORDER_COLLAPSE:
+                    unmarshaller = BorderCollapse.fromJson;
+                    break;
+                case TextStyle.BORDER_LEFT_COLOR:
+                    unmarshaller = Color.fromJson;
+                    break;
+                case TextStyle.BORDER_LEFT_STYLE:
+                    unmarshaller = BorderStyle.fromJson;
+                    break;
+                case TextStyle.BORDER_LEFT_WIDTH:
+                    unmarshaller = LengthFromJson;
+                    break;
+                case TextStyle.BORDER_RIGHT_COLOR:
+                    unmarshaller = Color.fromJson;
+                    break;
+                case TextStyle.BORDER_RIGHT_STYLE:
+                    unmarshaller = BorderStyle.fromJson;
+                    break;
+                case TextStyle.BORDER_RIGHT_WIDTH:
+                case TextStyle.BORDER_SPACING:
+                    unmarshaller = LengthFromJson;
+                    break;
+                case TextStyle.BORDER_TOP_COLOR:
+                    unmarshaller = Color.fromJson;
+                    break;
+                case TextStyle.BORDER_TOP_STYLE:
+                    unmarshaller = BorderStyle.fromJson;
+                    break;
+                case TextStyle.BORDER_TOP_WIDTH:
+                    unmarshaller = LengthFromJson;
+                    break;
+                case TextStyle.COLOR:
+                    unmarshaller = Color.fromJson;
+                    break;
+                case TextStyle.FONT_FAMILY:
+                    unmarshaller = FontFamily.fromJson;
+                    break;
+                case TextStyle.FONT_KERNING:
+                    unmarshaller = FontKerning.fromJson;
+                    break;
+                case TextStyle.FONT_SIZE:
+                    unmarshaller = FontSize.fromJson;
+                    break;
+                case TextStyle.FONT_STRETCH:
+                    unmarshaller = FontStretch.fromJson;
+                    break;
+                case TextStyle.FONT_STYLE:
+                    unmarshaller = FontStyle.fromJson;
+                    break;
+                case TextStyle.FONT_VARIANT:
+                    unmarshaller = FontVariant.fromJson;
+                    break;
+                case TextStyle.FONT_WEIGHT:
+                    unmarshaller = FontWeight.fromJson;
+                    break;
+                case TextStyle.HANGING_PUNCTUATION:
+                    unmarshaller = HangingPunctuation.fromJson;
+                    break;
+                case TextStyle.HEIGHT:
+                    unmarshaller = LengthFromJson;
+                    break;
+                case TextStyle.HYPHENS:
+                    unmarshaller = Hyphens.fromJson;
+                    break;
+                case TextStyle.LETTER_SPACING:
+                case TextStyle.LINE_HEIGHT:
+                    unmarshaller = LengthFromJson;
+                    break;
+                case TextStyle.LIST_STYLE_POSITION:
+                    unmarshaller = ListStylePosition.fromJson;
+                    break;
+                case TextStyle.LIST_STYLE_TYPE:
+                    unmarshaller = ListStyleType.fromJson;
+                    break;
+                case TextStyle.MARGIN_BOTTOM:
+                case TextStyle.MARGIN_LEFT:
+                case TextStyle.MARGIN_RIGHT:
+                case TextStyle.MARGIN_TOP:
+                case TextStyle.MAX_HEIGHT:
+                case TextStyle.MAX_WIDTH:
+                case TextStyle.MIN_HEIGHT:
+                case TextStyle.MIN_WIDTH:
+                    unmarshaller = LengthFromJson;
+                    break;
+                case TextStyle.OPACITY:
+                    // Opacity
+                    break;
+                case TextStyle.OUTLINE_COLOR:
+                    unmarshaller = Color.fromJson;
+                    break;
+                case TextStyle.OUTLINE_OFFSET:
+                    unmarshaller = LengthFromJson;
+                    break;
+                case TextStyle.OUTLINE_STYLE:
+                    unmarshaller = OutlineStyle.fromJson;
+                    break;
+                case TextStyle.OUTLINE_WIDTH:
+                    unmarshaller = LengthFromJson;
+                    break;
+                case TextStyle.OVERFLOW_X:
+                case TextStyle.OVERFLOW_Y:
+                    unmarshaller = Overflow.fromJson;
+                    break;
+                case TextStyle.PADDING_BOTTOM:
+                case TextStyle.PADDING_LEFT:
+                case TextStyle.PADDING_RIGHT:
+                case TextStyle.PADDING_TOP:
+                case TextStyle.TAB_SIZE:
+                    unmarshaller = LengthFromJson;
+                    break;
+                case TextStyle.TEXT:
+                    // String
+                    break;
+                case TextStyle.TEXT_ALIGN:
+                    unmarshaller = TextAlign.fromJson;
+                    break;
+                case TextStyle.TEXT_DECORATION_COLOR:
+                    unmarshaller = Color.fromJson;
+                    break;
+                case TextStyle.TEXT_DECORATION_LINE:
+                    unmarshaller = TextDecorationLine.fromJson;
+                    break;
+                case TextStyle.TEXT_DECORATION_STYLE:
+                    unmarshaller = TextDecorationStyle.fromJson;
+                    break;
+                case TextStyle.TEXT_DECORATION_THICKNESS:
+                    unmarshaller = LengthFromJson;
+                    break;
+                case TextStyle.TEXT_DIRECTION:
+                    unmarshaller = TextDirection.fromJson;
+                    break;
+                case TextStyle.TEXT_INDENT:
+                    unmarshaller = LengthFromJson;
+                    break;
+                case TextStyle.TEXT_JUSTIFY:
+                    unmarshaller = TextJustify.fromJson;
+                    break;
+                case TextStyle.TEXT_OVERFLOW:
+                    // TextOverflow
+                    break;
+                case TextStyle.TEXT_TRANSFORM:
+                    unmarshaller = TextTransform.fromJson;
+                    break;
+                case TextStyle.TEXT_WRAPPING:
+                    unmarshaller = TextWrapping.fromJson;
+                    break;
+                case TextStyle.VERTICAL_ALIGN:
+                    unmarshaller = VerticalAlign.fromJson;
+                    break;
+                case TextStyle.VISIBILITY:
+                    unmarshaller = Visibility.fromJson;
+                    break;
+                case TextStyle.WHITE_SPACE:
+                    unmarshaller = TextWhitespace.fromJson;
+                    break;
+                case TextStyle.WIDTH:
+                    unmarshaller = LengthFromJson;
+                    break;
+                case TextStyle.WORD_BREAK:
+                    unmarshaller = WordBreak.fromJson;
+                    break;
+                case TextStyle.WORD_SPACING:
+                    unmarshaller = LengthFromJson;
+                    break;
+                case TextStyle.WORD_WRAP:
+                    unmarshaller = WordWrap.fromJson;
+                    break;
+                case TextStyle.WRITING_MODE:
+                    unmarshaller = WritingMode.fromJson;
+                    break;
+                default:
+                    throw new Error("Unknown property " + property);
+            }
+
+            properties[property] = (unmarshaller && unmarshaller(value)) ||
+                typed ||
+                value;
+        }
+
+        return new TextStyle(properties);
     }
 
-    constructor(styles) {
+    constructor(properties) {
         super();
-        if(!styles){
-            throw new Error("Missing styles");
+        if(!properties){
+            throw new Error("Missing properties");
         }
-        if(typeof styles !== "object"){
-            throw new Error("Styles expected object got " + styles);
+        if(typeof properties !== "object"){
+            throw new Error("Expected object properties got " + properties);
         }
-        this.styles = Object.assign({}, styles);
+        this.properties = Object.assign({}, properties);
     }
 
-    get(style) {
-        return this.styles[style];
+    get(property) {
+        checkProperty(property);
+
+        return this.properties[property];
     }
 
-    set(style, value) {
-        return value === this.get(style) ?
+    set(property, value) {
+        checkProperty(property);
+
+        let expectedClass;
+        let expectedTypeOf;
+
+        switch(property) {
+            case TextStyle.BACKGROUND_COLOR:
+            case TextStyle.BORDER_BOTTOM_COLOR:
+                expectedClass = Color;
+                break;
+            case TextStyle.BORDER_BOTTOM_STYLE:
+                expectedClass = BorderStyle;
+                break;
+            case TextStyle.BORDER_BOTTOM_WIDTH:
+                expectedClass = Length;
+                break;
+            case TextStyle.BORDER_COLLAPSE:
+                expectedClass = BorderCollapse;
+                break;
+            case TextStyle.BORDER_LEFT_COLOR:
+                expectedClass = Color;
+                break;
+            case TextStyle.BORDER_LEFT_STYLE:
+                expectedClass = BorderStyle;
+                break;
+            case TextStyle.BORDER_LEFT_WIDTH:
+                expectedClass = Length;
+                break;
+            case TextStyle.BORDER_RIGHT_COLOR:
+                expectedClass = Color;
+                break;
+            case TextStyle.BORDER_RIGHT_STYLE:
+                expectedClass = BorderStyle;
+                break;
+            case TextStyle.BORDER_RIGHT_WIDTH:
+            case TextStyle.BORDER_SPACING:
+                expectedClass = Length;
+                break;
+            case TextStyle.BORDER_TOP_COLOR:
+                expectedClass = Color;
+                break;
+            case TextStyle.BORDER_TOP_STYLE:
+                expectedClass = BorderStyle;
+                break;
+            case TextStyle.BORDER_TOP_WIDTH:
+                expectedClass = Length;
+                break;
+            case TextStyle.COLOR:
+                expectedClass = Color;
+                break;
+            case TextStyle.FONT_FAMILY:
+                expectedClass = FontFamily;
+                break;
+            case TextStyle.FONT_KERNING:
+                expectedClass = FontKerning;
+                break;
+            case TextStyle.FONT_SIZE:
+                expectedClass = FontSize;
+                break;
+            case TextStyle.FONT_STRETCH:
+                expectedClass = FontStretch;
+                break;
+            case TextStyle.FONT_STYLE:
+                expectedClass = FontStyle;
+                break;
+            case TextStyle.FONT_VARIANT:
+                expectedClass = FontVariant;
+                break;
+            case TextStyle.FONT_WEIGHT:
+                expectedClass = FontWeight;
+                break;
+            case TextStyle.HANGING_PUNCTUATION:
+                expectedClass = HangingPunctuation;
+                break;
+            case TextStyle.HEIGHT:
+                expectedClass = Length;
+                break;
+            case TextStyle.HYPHENS:
+                expectedClass = Hyphens;
+                break;
+            case TextStyle.LETTER_SPACING:
+                expectedClass = Length;
+                break;
+            case TextStyle.LINE_HEIGHT:
+                expectedClass = Length;
+                break;
+            case TextStyle.LIST_STYLE_POSITION:
+                expectedClass = ListStylePosition;
+                break;
+            case TextStyle.LIST_STYLE_TYPE:
+                expectedClass = ListStyleType;
+                break;
+            case TextStyle.MARGIN_BOTTOM:
+            case TextStyle.MARGIN_LEFT:
+            case TextStyle.MARGIN_RIGHT:
+            case TextStyle.MARGIN_TOP:
+            case TextStyle.MAX_HEIGHT:
+            case TextStyle.MAX_WIDTH:
+            case TextStyle.MIN_HEIGHT:
+            case TextStyle.MIN_WIDTH:
+                expectedClass = Length;
+                break;
+            case TextStyle.OPACITY:
+                break;
+            case TextStyle.OUTLINE_COLOR:
+                expectedClass = Color;
+                break;
+            case TextStyle.OUTLINE_OFFSET:
+                expectedClass = Length;
+                break;
+            case TextStyle.OUTLINE_STYLE:
+                expectedClass = OutlineStyle;
+                break;
+            case TextStyle.OUTLINE_WIDTH:
+                expectedClass = Length;
+                break;
+            case TextStyle.OVERFLOW_X:
+            case TextStyle.OVERFLOW_Y:
+                expectedClass = Overflow;
+                break;
+            case TextStyle.PADDING_BOTTOM:
+            case TextStyle.PADDING_LEFT:
+            case TextStyle.PADDING_RIGHT:
+            case TextStyle.PADDING_TOP:
+            case TextStyle.TAB_SIZE:
+                expectedClass = Length;
+                break;
+            case TextStyle.TEXT:
+                expectedTypeOf = "string";
+                break;
+            case TextStyle.TEXT_ALIGN:
+                expectedClass = TextAlign;
+                break;
+            case TextStyle.TEXT_DECORATION_COLOR:
+                expectedClass = Color;
+                break;
+            case TextStyle.TEXT_DECORATION_LINE:
+                expectedClass = TextDecorationLine;
+                break;
+            case TextStyle.TEXT_DECORATION_STYLE:
+                expectedClass = TextDecorationStyle;
+                break;
+            case TextStyle.TEXT_DECORATION_THICKNESS:
+                expectedClass = Length;
+                break;
+            case TextStyle.TEXT_DIRECTION:
+                expectedClass = TextDirection;
+                break;
+            case TextStyle.TEXT_INDENT:
+                expectedClass = Length;
+                break;
+            case TextStyle.TEXT_JUSTIFY:
+                expectedClass = TextJustify;
+                break;
+            case TextStyle.TEXT_OVERFLOW:
+                break;
+            case TextStyle.TEXT_TRANSFORM:
+                expectedClass = TextTransform;
+                break;
+            case TextStyle.TEXT_WRAPPING:
+                expectedClass = TextWrapping;
+                break;
+            case TextStyle.VERTICAL_ALIGN:
+                expectedClass = VerticalAlign;
+                break;
+            case TextStyle.VISIBILITY:
+                expectedClass = Visibility;
+                break;
+            case TextStyle.WHITE_SPACE:
+                expectedClass = TextWhitespace;
+                break;
+            case TextStyle.WIDTH:
+                expectedClass = Length;
+                break;
+            case TextStyle.WORD_BREAK:
+                expectedClass = WordBreak;
+                break;
+            case TextStyle.WORD_SPACING:
+                expectedClass = Length;
+                break;
+            case TextStyle.WORD_WRAP:
+                expectedClass = WordWrap;
+                break;
+            case TextStyle.WRITING_MODE:
+                expectedClass = WritingMode;
+                break;
+            default:
+                throw new Error("Unknown property " + property);
+        }
+
+        if(null == value){
+            throw new Error("Property \"" + property + "\" missing value");
+        }
+        if((expectedTypeOf && typeof (value) !== expectedTypeOf)){
+            throw new Error("Expected " + expectedTypeOf + " property \"" + property + "\" got " + value);
+        }
+        if((expectedClass === Number && Number.isNaN(value)) ||
+            (typeof expectedClass === "function" && !(value instanceof expectedClass))){
+            throw new Error("Expected " + expectedClass.name + " property \"" + property + "\" got " + value);
+        }
+
+        return value === this.get(property) ? // get will complain if property is unknown
             this :
-            copyAndSet(this.styles, style, value);
+            copyAndSet(this.properties, property, value);
     }
 
-    remove(style) {
-        const value = this.get(style);
+    remove(property) {
+        const value = this.get(property); // get will complain if property is unknown
         return value ?
-            copyAndRemove(this.styles, style) :
+            copyAndRemove(this.properties, property) :
             this;
     }
 
@@ -141,14 +657,14 @@ export default class TextStyle extends SystemObject {
      * Returns the width as a number removing the px suffix or undefined if absent.
      */
     width() {
-        return fromPixel(this.get(TextStyle.WIDTH));
+        return this.get(TextStyle.WIDTH);
     }
 
     /**
      * Returns the height as a number removing the px suffix or undefined if absent.
      */
     height() {
-        return fromPixel(this.get(TextStyle.HEIGHT));
+        return this.get(TextStyle.HEIGHT);
     }
 
     /**
@@ -166,24 +682,24 @@ export default class TextStyle extends SystemObject {
             this :
             this.isEmpty() ?
                 style :
-                new TextStyle(Object.assign({}, this.styles, style.styles));
+                new TextStyle(Object.assign({}, this.properties, style.properties));
     }
 
     /**
      * Returns true only if this {@link TextStyle} has no actual entries.
      */
     isEmpty() {
-        return Object.keys(this.styles).length === 0;
+        return Object.keys(this.properties).length === 0;
     }
 
     /**
-     * Produces a JSON object holding the styles with style properties converted from kebab case to camel case.
+     * Produces a JSON object holding the properties with style properties converted from kebab case to camel case.
      */
     toCss() {
         const css = {};
 
-        for(const [key, value] of Object.entries(this.styles)) {
-            const components = key.split("-");
+        for(const [property, value] of Object.entries(this.properties)) {
+            const components = property.split("-");
             const first = components.shift();
 
             const camelCase =
@@ -219,7 +735,13 @@ export default class TextStyle extends SystemObject {
      * Returns this metadata as a JSON. Perfect to perform REST api calls.
      */
     toJson() {
-        return Object.assign({}, this.styles);
+        const json = {};
+
+        for(const [property, value] of Object.entries(this.properties)) {
+            json[property] = (value.toJson && value.toJson()) || value;
+        }
+
+        return json;
     }
 
     typeName() {
@@ -244,3 +766,94 @@ function toJsonString(textStyle) {
 }
 
 SystemObject.register(TYPE_NAME, TextStyle.fromJson);
+
+// force each class to call SystemObject.register
+// eslint-disable-next-line no-unused-expressions
+BorderCollapse.prototype;
+
+// eslint-disable-next-line no-unused-expressions
+BorderStyle.prototype;
+
+// eslint-disable-next-line no-unused-expressions
+FontFamily.prototype;
+
+// eslint-disable-next-line no-unused-expressions
+FontKerning.prototype;
+
+// eslint-disable-next-line no-unused-expressions
+FontSize.prototype;
+
+// eslint-disable-next-line no-unused-expressions
+FontStretch.prototype;
+
+// eslint-disable-next-line no-unused-expressions
+FontStyle.prototype;
+
+// eslint-disable-next-line no-unused-expressions
+FontVariant.prototype;
+
+// eslint-disable-next-line no-unused-expressions
+FontWeight.prototype;
+
+// eslint-disable-next-line no-unused-expressions
+HangingPunctuation.prototype;
+
+// eslint-disable-next-line no-unused-expressions
+Hyphens.prototype;
+
+// eslint-disable-next-line no-unused-expressions
+Length.prototype;
+
+// eslint-disable-next-line no-unused-expressions
+ListStylePosition.prototype;
+
+// eslint-disable-next-line no-unused-expressions
+ListStyleType.prototype;
+
+// eslint-disable-next-line no-unused-expressions
+OutlineStyle.prototype;
+
+// eslint-disable-next-line no-unused-expressions
+Overflow.prototype;
+
+// eslint-disable-next-line no-unused-expressions
+PixelLength.prototype;
+
+// eslint-disable-next-line no-unused-expressions
+TextAlign.prototype;
+
+// eslint-disable-next-line no-unused-expressions
+TextDecorationLine.prototype;
+
+// eslint-disable-next-line no-unused-expressions
+TextDecorationStyle.prototype;
+
+// eslint-disable-next-line no-unused-expressions
+TextDirection.prototype;
+
+// eslint-disable-next-line no-unused-expressions
+TextJustify.prototype;
+
+// eslint-disable-next-line no-unused-expressions
+TextTransform.prototype;
+
+// eslint-disable-next-line no-unused-expressions
+TextWhitespace.prototype;
+
+// eslint-disable-next-line no-unused-expressions
+TextWrapping.prototype;
+
+// eslint-disable-next-line no-unused-expressions
+VerticalAlign.prototype;
+
+// eslint-disable-next-line no-unused-expressions
+Visibility.prototype;
+
+// eslint-disable-next-line no-unused-expressions
+WordBreak.prototype;
+
+// eslint-disable-next-line no-unused-expressions
+WordWrap.prototype;
+
+// eslint-disable-next-line no-unused-expressions
+WritingMode.prototype;
