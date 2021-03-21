@@ -2,7 +2,7 @@ import Length from "./Length";
 import SystemObject from "../SystemObject.js";
 
 const TYPE_NAME = "none-length";
-
+const TEXT = "none";
 /**
  * Holds a none-length value.
  */
@@ -19,8 +19,8 @@ export default class NoneLength extends Length {
         if(typeof text !== "string"){
             throw new Error("Expected string got " + text);
         }
-        if(text !== ("None")){
-            throw new Error("Expected string \"None\" got " + text);
+        if(text !== TEXT){
+            throw new Error("Expected string \"" + TEXT + "\" got " + text);
         }
 
         return NoneLength.INSTANCE;
@@ -36,7 +36,7 @@ export default class NoneLength extends Length {
     }
 
     value() {
-        return "None";
+        return TEXT;
     }
 
     typeName() {
