@@ -1,5 +1,4 @@
 import Length from "./Length";
-import SystemObject from "../SystemObject.js";
 
 const TYPE_NAME = "none-length";
 const TEXT = "none";
