@@ -1,7 +1,7 @@
 import NoneLength from "./NoneLength.js";
 import PixelLength from "./PixelLength.js";
 
-export default function fromJson(text) {
+export default function lengthFromJson(text) {
     if(!text){
         throw new Error("Missing text");
     }
