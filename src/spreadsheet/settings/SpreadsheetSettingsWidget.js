@@ -450,19 +450,7 @@ class SpreadsheetSettingsWidget extends React.Component {
                 break;
             default:
                 const metadata = state.spreadsheetMetadata;
-                const setValue = function(v) {
-                    console.log("saving metadata property " + property + "=" + v);
-
-                    this.setState( // lgtm [js/react/inconsistent-state-update]
-                        {
-                            spreadsheetMetadata: null != v ? metadata.set(property, v) : metadata.remove(property),
-                        }
-                    );
-                }.bind(this);
-
                 const value = metadata.get(property);
-                const defaultMetadata = metadata.get(SpreadsheetMetadata.DEFAULTS);
-                const defaultValue = defaultMetadata && defaultMetadata.get(property);
 
                 switch(property) {
                     case SpreadsheetMetadata.SPREADSHEET_ID:
@@ -472,282 +460,298 @@ class SpreadsheetSettingsWidget extends React.Component {
                     case SpreadsheetMetadata.STYLE:
                         render = <span id={id}>{value ? value.toString() : ""}</span>;
                         break;
-                    case SpreadsheetMetadata.CURRENCY_SYMBOL:
-                        render = <SpreadsheetSettingsWidgetString id={id}
-                                                             value={value}
-                                                             defaultValue={defaultValue}
-                                                             defaultValueFormatter={(s) => s}
-                                                             defaultButtonTooltip={false}
-                                                             setValue={setValue}
-                        />;
-                        break;
-                    case SpreadsheetMetadata.DATE_FORMAT_PATTERN:
-                        render = <SpreadsheetSettingsWidgetSpreadsheetDateFormatPattern id={id}
-                                                                                        value={value}
-                                                                                        defaultValue={defaultValue}
-                                                                                        defaultValueFormatter={DEFAULT_VALUE_FORMATTER_TOSTRING}
-                                                                                        defaultButtonTooltip={true}
-                                                                                        setValue={setValue}
-                        />;
-                        break;
-                    case SpreadsheetMetadata.DATE_PARSE_PATTERNS:
-                        render = <SpreadsheetSettingsWidgetSpreadsheetDateParsePatterns id={id}
-                                                                                        value={value}
-                                                                                        defaultValue={defaultValue}
-                                                                                        defaultValueFormatter={DEFAULT_VALUE_FORMATTER_TOSTRING}
-                                                                                        defaultButtonTooltip={true}
-                                                                                        setValue={setValue}
-                        />;
-                        break;
-                    case SpreadsheetMetadata.DATETIME_FORMAT_PATTERN:
-                        render = <SpreadsheetSettingsWidgetSpreadsheetDateTimeFormatPattern id={id}
-                                                                                            value={value}
-                                                                                            defaultValue={defaultValue}
-                                                                                            defaultValueFormatter={DEFAULT_VALUE_FORMATTER_TOSTRING}
-                                                                                            defaultButtonTooltip={true}
-                                                                                            setValue={setValue}
-                        />;
-                        break;
-                    case SpreadsheetMetadata.DATETIME_PARSE_PATTERNS:
-                        render = <SpreadsheetSettingsWidgetSpreadsheetDateTimeParsePatterns id={id}
-                                                                                            value={value}
-                                                                                            defaultValue={defaultValue}
-                                                                                            defaultValueFormatter={DEFAULT_VALUE_FORMATTER_TOSTRING}
-                                                                                            defaultButtonTooltip={true}
-                                                                                            setValue={setValue}
-                        />;
-                        break;
-                    case SpreadsheetMetadata.DECIMAL_SEPARATOR:
-                    case SpreadsheetMetadata.EXPONENT_SYMBOL:
-                    case SpreadsheetMetadata.GROUPING_SEPARATOR:
-                    case SpreadsheetMetadata.NEGATIVE_SIGN:
-                    case SpreadsheetMetadata.PERCENTAGE_SYMBOL:
-                    case SpreadsheetMetadata.POSITIVE_SIGN:
-                    case SpreadsheetMetadata.VALUE_SEPARATOR:
-                        render = <SpreadsheetSettingsWidgetCharacter id={id}
-                                                                key={[id, value]}
-                                                                value={value}
-                                                                defaultValue={defaultValue}
-                                                                defaultValueFormatter={DEFAULT_VALUE_FORMATTER_TOSTRING}
-                                                                defaultButtonTooltip={false}
-                                                                setValue={setValue}
-                            />;
-                        break;
-                    case SpreadsheetMetadata.EXPRESSION_NUMBER_KIND:
-                        render = <SpreadsheetSettingsWidgetSlider id={id}
-                                                                  style={{
-                                                                      marginLeft: "2.5em",
-                                                                      marginRight: "2.5em",
-                                                                  }}
-                                                                  values={ExpressionNumberKind.values()}
-                                                                  value={value}
-                                                                  defaultValue={defaultValue}
-                                                                  defaultValueFormatter={DEFAULT_VALUE_FORMATTER_LABEL}
-                                                                  defaultButtonTooltip={false}
-                                                                  setValue={setValue}
-                        />;
-                        break;
-                    case SpreadsheetMetadata.DATETIME_OFFSET:
-                    case SpreadsheetMetadata.DEFAULT_YEAR:
-                    case SpreadsheetMetadata.PRECISION:
-                    case SpreadsheetMetadata.TWO_DIGIT_YEAR:
-                    case SpreadsheetMetadata.WIDTH:
-                        var numberValue; // DATETIME_OFFSET is a java Long in String form, ugly hack to assume can always be converted to a number
-                        var min;
-                        var max;
-                        var marks;
-                        var style;
-                        var step;
+                    default:
+                        const setValue = function(v) {
+                            console.log("saving metadata property " + property + "=" + v);
+
+                            this.setState( // lgtm [js/react/inconsistent-state-update]
+                                {
+                                    spreadsheetMetadata: null != v ? metadata.set(property, v) : metadata.remove(property),
+                                }
+                            );
+                        }.bind(this);
+
+                        const defaultMetadata = metadata.get(SpreadsheetMetadata.DEFAULTS);
+                        const defaultValue = defaultMetadata && defaultMetadata.get(property);
+
                         switch(property) {
+                            case SpreadsheetMetadata.CURRENCY_SYMBOL:
+                                render = <SpreadsheetSettingsWidgetString id={id}
+                                                                          value={value}
+                                                                          defaultValue={defaultValue}
+                                                                          defaultValueFormatter={(s) => s}
+                                                                          defaultButtonTooltip={false}
+                                                                          setValue={setValue}
+                                />;
+                                break;
+                            case SpreadsheetMetadata.DATE_FORMAT_PATTERN:
+                                render = <SpreadsheetSettingsWidgetSpreadsheetDateFormatPattern id={id}
+                                                                                                value={value}
+                                                                                                defaultValue={defaultValue}
+                                                                                                defaultValueFormatter={DEFAULT_VALUE_FORMATTER_TOSTRING}
+                                                                                                defaultButtonTooltip={true}
+                                                                                                setValue={setValue}
+                                />;
+                                break;
+                            case SpreadsheetMetadata.DATE_PARSE_PATTERNS:
+                                render = <SpreadsheetSettingsWidgetSpreadsheetDateParsePatterns id={id}
+                                                                                                value={value}
+                                                                                                defaultValue={defaultValue}
+                                                                                                defaultValueFormatter={DEFAULT_VALUE_FORMATTER_TOSTRING}
+                                                                                                defaultButtonTooltip={true}
+                                                                                                setValue={setValue}
+                                />;
+                                break;
+                            case SpreadsheetMetadata.DATETIME_FORMAT_PATTERN:
+                                render = <SpreadsheetSettingsWidgetSpreadsheetDateTimeFormatPattern id={id}
+                                                                                                    value={value}
+                                                                                                    defaultValue={defaultValue}
+                                                                                                    defaultValueFormatter={DEFAULT_VALUE_FORMATTER_TOSTRING}
+                                                                                                    defaultButtonTooltip={true}
+                                                                                                    setValue={setValue}
+                                />;
+                                break;
+                            case SpreadsheetMetadata.DATETIME_PARSE_PATTERNS:
+                                render = <SpreadsheetSettingsWidgetSpreadsheetDateTimeParsePatterns id={id}
+                                                                                                    value={value}
+                                                                                                    defaultValue={defaultValue}
+                                                                                                    defaultValueFormatter={DEFAULT_VALUE_FORMATTER_TOSTRING}
+                                                                                                    defaultButtonTooltip={true}
+                                                                                                    setValue={setValue}
+                                />;
+                                break;
+                            case SpreadsheetMetadata.DECIMAL_SEPARATOR:
+                            case SpreadsheetMetadata.EXPONENT_SYMBOL:
+                            case SpreadsheetMetadata.GROUPING_SEPARATOR:
+                            case SpreadsheetMetadata.NEGATIVE_SIGN:
+                            case SpreadsheetMetadata.PERCENTAGE_SYMBOL:
+                            case SpreadsheetMetadata.POSITIVE_SIGN:
+                            case SpreadsheetMetadata.VALUE_SEPARATOR:
+                                render = <SpreadsheetSettingsWidgetCharacter id={id}
+                                                                             key={[id, value]}
+                                                                             value={value}
+                                                                             defaultValue={defaultValue}
+                                                                             defaultValueFormatter={DEFAULT_VALUE_FORMATTER_TOSTRING}
+                                                                             defaultButtonTooltip={false}
+                                                                             setValue={setValue}
+                                />;
+                                break;
+                            case SpreadsheetMetadata.EXPRESSION_NUMBER_KIND:
+                                render = <SpreadsheetSettingsWidgetSlider id={id}
+                                                                          style={{
+                                                                              marginLeft: "2.5em",
+                                                                              marginRight: "2.5em",
+                                                                          }}
+                                                                          values={ExpressionNumberKind.values()}
+                                                                          value={value}
+                                                                          defaultValue={defaultValue}
+                                                                          defaultValueFormatter={DEFAULT_VALUE_FORMATTER_LABEL}
+                                                                          defaultButtonTooltip={false}
+                                                                          setValue={setValue}
+                                />;
+                                break;
                             case SpreadsheetMetadata.DATETIME_OFFSET:
-                                numberValue = typeof value == "string" ? parseInt(value) : value;
-                                min = -25569;
-                                max = -24107;
-                                marks = [
-                                    {
-                                        value: -25569,
-                                        label: "1900",
-                                    },
-                                    {
-                                        value: -24107,
-                                        label: "1904",
-                                    }
-                                ];
-                                step = null;
-                                style = {
-                                    marginLeft: "1em",
-                                    marginRight: "2em",
-                                };
-                                break;
                             case SpreadsheetMetadata.DEFAULT_YEAR:
-                                numberValue = value;
-                                min = 1900;
-                                max = 2020;
-                                marks = [
-                                    {
-                                        value: 1900,
-                                        label: "1900",
-                                    },
-                                    {
-                                        value: 2000,
-                                        label: "2000",
-                                    }
-                                ];
-                                step = null;
-                                style = {
-                                    marginLeft: "1em",
-                                    marginRight: "2em",
-                                };
-                                break;
                             case SpreadsheetMetadata.PRECISION:
-                                numberValue = value;
-                                min = 0;
-                                max = 128;
-                                marks = [
-                                    {
-                                        value: 0,
-                                        label: "∞",
-                                    },
-                                    {
-                                        value: 32,
-                                        label: "32",
-                                    },
-                                    {
-                                        value: 64,
-                                        label: "64",
-                                    },
-                                    {
-                                        value: 128,
-                                        label: "128",
-                                    },
-                                ];
-                                step = null;
-                                style = {
-                                    marginLeft: "2em",
-                                    marginRight: "2em",
-                                };
-                                break;
                             case SpreadsheetMetadata.TWO_DIGIT_YEAR:
-                                numberValue = value;
-                                min = 0;
-                                max = 99;
-                                marks = [
-                                    {
-                                        value: 20,
-                                        label: "20",
-                                    },
-                                    {
-                                        value: 50,
-                                        label: "50",
-                                    },
-                                    {
-                                        value: 70,
-                                        label: "70",
-                                    },
-                                ];
-                                step = null;
-                                style = {
-                                    marginLeft: "2em",
-                                    marginRight: "2em",
-                                };
-                                break;
                             case SpreadsheetMetadata.WIDTH:
-                                numberValue = value;
-                                min = 0;
-                                max = 20;
-                                marks = [
-                                    {
-                                        value: 1,
-                                        label: "1",
-                                    },
-                                    {
-                                        value: 10,
-                                        label: "10",
-                                    },
-                                    {
-                                        value: 20,
-                                        label: "20",
-                                    },
-                                ];
-                                step = null;
-                                style = {
-                                    marginLeft: 0,
-                                    marginRight: "2em",
-                                };
+                                var numberValue; // DATETIME_OFFSET is a java Long in String form, ugly hack to assume can always be converted to a number
+                                var min;
+                                var max;
+                                var marks;
+                                var style;
+                                var step;
+                                switch(property) {
+                                    case SpreadsheetMetadata.DATETIME_OFFSET:
+                                        numberValue = typeof value == "string" ? parseInt(value) : value;
+                                        min = -25569;
+                                        max = -24107;
+                                        marks = [
+                                            {
+                                                value: -25569,
+                                                label: "1900",
+                                            },
+                                            {
+                                                value: -24107,
+                                                label: "1904",
+                                            }
+                                        ];
+                                        step = null;
+                                        style = {
+                                            marginLeft: "1em",
+                                            marginRight: "2em",
+                                        };
+                                        break;
+                                    case SpreadsheetMetadata.DEFAULT_YEAR:
+                                        numberValue = value;
+                                        min = 1900;
+                                        max = 2020;
+                                        marks = [
+                                            {
+                                                value: 1900,
+                                                label: "1900",
+                                            },
+                                            {
+                                                value: 2000,
+                                                label: "2000",
+                                            }
+                                        ];
+                                        step = null;
+                                        style = {
+                                            marginLeft: "1em",
+                                            marginRight: "2em",
+                                        };
+                                        break;
+                                    case SpreadsheetMetadata.PRECISION:
+                                        numberValue = value;
+                                        min = 0;
+                                        max = 128;
+                                        marks = [
+                                            {
+                                                value: 0,
+                                                label: "∞",
+                                            },
+                                            {
+                                                value: 32,
+                                                label: "32",
+                                            },
+                                            {
+                                                value: 64,
+                                                label: "64",
+                                            },
+                                            {
+                                                value: 128,
+                                                label: "128",
+                                            },
+                                        ];
+                                        step = null;
+                                        style = {
+                                            marginLeft: "2em",
+                                            marginRight: "2em",
+                                        };
+                                        break;
+                                    case SpreadsheetMetadata.TWO_DIGIT_YEAR:
+                                        numberValue = value;
+                                        min = 0;
+                                        max = 99;
+                                        marks = [
+                                            {
+                                                value: 20,
+                                                label: "20",
+                                            },
+                                            {
+                                                value: 50,
+                                                label: "50",
+                                            },
+                                            {
+                                                value: 70,
+                                                label: "70",
+                                            },
+                                        ];
+                                        step = null;
+                                        style = {
+                                            marginLeft: "2em",
+                                            marginRight: "2em",
+                                        };
+                                        break;
+                                    case SpreadsheetMetadata.WIDTH:
+                                        numberValue = value;
+                                        min = 0;
+                                        max = 20;
+                                        marks = [
+                                            {
+                                                value: 1,
+                                                label: "1",
+                                            },
+                                            {
+                                                value: 10,
+                                                label: "10",
+                                            },
+                                            {
+                                                value: 20,
+                                                label: "20",
+                                            },
+                                        ];
+                                        step = null;
+                                        style = {
+                                            marginLeft: 0,
+                                            marginRight: "2em",
+                                        };
+                                        break;
+                                    default:
+                                        break;
+                                }
+                                render = <SpreadsheetSettingsWidgetSliderWithNumberTextField id={id}
+                                                                                             style={style}
+                                                                                             min={min}
+                                                                                             max={max}
+                                                                                             marks={marks}
+                                                                                             step={step}
+                                                                                             value={numberValue}
+                                                                                             defaultValue={typeof defaultValue === "string" ? parseInt(defaultValue) : defaultValue}
+                                                                                             defaultValueFormatter={DEFAULT_VALUE_FORMATTER_TOSTRING}
+                                                                                             defaultButtonTooltip={false}
+                                                                                             setValue={setValue}
+                                />;
+                                break;
+                            case SpreadsheetMetadata.NUMBER_FORMAT_PATTERN:
+                                render = <SpreadsheetSettingsWidgetSpreadsheetNumberFormatPattern id={id}
+                                                                                                  value={value}
+                                                                                                  defaultValue={defaultValue}
+                                                                                                  defaultValueFormatter={DEFAULT_VALUE_FORMATTER_TOSTRING}
+                                                                                                  defaultButtonTooltip={true}
+                                                                                                  setValue={setValue}
+                                />;
+                                break;
+                            case SpreadsheetMetadata.NUMBER_PARSE_PATTERNS:
+                                render = <SpreadsheetSettingsWidgetSpreadsheetNumberParsePatterns id={id}
+                                                                                                  value={value}
+                                                                                                  defaultValue={defaultValue}
+                                                                                                  defaultValueFormatter={DEFAULT_VALUE_FORMATTER_TOSTRING}
+                                                                                                  defaultButtonTooltip={true}
+                                                                                                  setValue={setValue}
+                                />;
+                                break;
+                            case SpreadsheetMetadata.ROUNDING_MODE:
+                                render = <SpreadsheetSettingsWidgetDropDownList id={id}
+                                                                                values={RoundingMode.values()}
+                                                                                value={value}
+                                                                                defaultValue={defaultValue}
+                                                                                defaultValueFormatter={DEFAULT_VALUE_FORMATTER_LABEL}
+                                                                                defaultButtonTooltip={false}
+                                                                                setValue={setValue}
+                                />;
+                                break;
+                            case SpreadsheetMetadata.TEXT_FORMAT_PATTERN:
+                                render = <SpreadsheetSettingsWidgetSpreadsheetTextFormatPattern id={id}
+                                                                                                value={value}
+                                                                                                defaultValue={defaultValue}
+                                                                                                defaultValueFormatter={DEFAULT_VALUE_FORMATTER_TOSTRING}
+                                                                                                defaultButtonTooltip={true}
+                                                                                                setValue={setValue}
+                                />;
+                                break;
+                            case SpreadsheetMetadata.TIME_FORMAT_PATTERN:
+                                render = <SpreadsheetSettingsWidgetSpreadsheetTimeFormatPattern id={id}
+                                                                                                value={value}
+                                                                                                defaultValue={defaultValue}
+                                                                                                defaultValueFormatter={DEFAULT_VALUE_FORMATTER_TOSTRING}
+                                                                                                defaultButtonTooltip={true}
+                                                                                                setValue={setValue}
+                                />;
+                                break;
+                            case SpreadsheetMetadata.TIME_PARSE_PATTERNS:
+                                render = <SpreadsheetSettingsWidgetSpreadsheetTimeParsePatterns id={id}
+                                                                                                value={value}
+                                                                                                defaultValue={defaultValue}
+                                                                                                defaultValueFormatter={DEFAULT_VALUE_FORMATTER_TOSTRING}
+                                                                                                defaultButtonTooltip={true}
+                                                                                                setValue={setValue}
+                                />;
                                 break;
                             default:
-                                break;
+                                throw new Error("Unknown property " + property);
                         }
-                        render = <SpreadsheetSettingsWidgetSliderWithNumberTextField id={id}
-                                                                                     style={style}
-                                                                                     min={min}
-                                                                                     max={max}
-                                                                                     marks={marks}
-                                                                                     step={step}
-                                                                                     value={numberValue}
-                                                                                     defaultValue={typeof defaultValue === "string" ? parseInt(defaultValue) : defaultValue}
-                                                                                     defaultValueFormatter={DEFAULT_VALUE_FORMATTER_TOSTRING}
-                                                                                     defaultButtonTooltip={false}
-                                                                                     setValue={setValue}
-                        />;
-                        break;
-                    case SpreadsheetMetadata.NUMBER_FORMAT_PATTERN:
-                        render = <SpreadsheetSettingsWidgetSpreadsheetNumberFormatPattern id={id}
-                                                                                          value={value}
-                                                                                          defaultValue={defaultValue}
-                                                                                          defaultValueFormatter={DEFAULT_VALUE_FORMATTER_TOSTRING}
-                                                                                          defaultButtonTooltip={true}
-                                                                                          setValue={setValue}
-                        />;
-                        break;
-                    case SpreadsheetMetadata.NUMBER_PARSE_PATTERNS:
-                        render = <SpreadsheetSettingsWidgetSpreadsheetNumberParsePatterns id={id}
-                                                                                          value={value}
-                                                                                          defaultValue={defaultValue}
-                                                                                          defaultValueFormatter={DEFAULT_VALUE_FORMATTER_TOSTRING}
-                                                                                          defaultButtonTooltip={true}
-                                                                                          setValue={setValue}
-                        />;
-                        break;
-                    case SpreadsheetMetadata.ROUNDING_MODE:
-                        render = <SpreadsheetSettingsWidgetDropDownList id={id}
-                                                                        values={RoundingMode.values()}
-                                                                        value={value}
-                                                                        defaultValue={defaultValue}
-                                                                        defaultValueFormatter={DEFAULT_VALUE_FORMATTER_LABEL}
-                                                                        defaultButtonTooltip={false}
-                                                                        setValue={setValue}
-                        />;
-                        break;
-                    case SpreadsheetMetadata.TEXT_FORMAT_PATTERN:
-                        render = <SpreadsheetSettingsWidgetSpreadsheetTextFormatPattern id={id}
-                                                                                        value={value}
-                                                                                        defaultValue={defaultValue}
-                                                                                        defaultValueFormatter={DEFAULT_VALUE_FORMATTER_TOSTRING}
-                                                                                        defaultButtonTooltip={true}
-                                                                                        setValue={setValue}
-                        />;
-                        break;
-                    case SpreadsheetMetadata.TIME_FORMAT_PATTERN:
-                        render = <SpreadsheetSettingsWidgetSpreadsheetTimeFormatPattern id={id}
-                                                                                        value={value}
-                                                                                        defaultValue={defaultValue}
-                                                                                        defaultValueFormatter={DEFAULT_VALUE_FORMATTER_TOSTRING}
-                                                                                        defaultButtonTooltip={true}
-                                                                                        setValue={setValue}
-                        />;
-                        break;
-                    case SpreadsheetMetadata.TIME_PARSE_PATTERNS:
-                        render = <SpreadsheetSettingsWidgetSpreadsheetTimeParsePatterns id={id}
-                                                                                        value={value}
-                                                                                        defaultValue={defaultValue}
-                                                                                        defaultValueFormatter={DEFAULT_VALUE_FORMATTER_TOSTRING}
-                                                                                        defaultButtonTooltip={true}
-                                                                                        setValue={setValue}
-                        />;
-                        break;
-                    default:
-                        throw new Error("Unknown property " + property);
                 }
                 break;
         }
