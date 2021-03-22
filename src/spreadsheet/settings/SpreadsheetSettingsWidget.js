@@ -451,7 +451,7 @@ class SpreadsheetSettingsWidget extends React.Component {
             default:
                 const metadata = state.spreadsheetMetadata;
                 const setValue = function(v) {
-                    console.log("saving value " + property + "=" + v);
+                    console.log("saving metadata property " + property + "=" + v);
 
                     this.setState( // lgtm [js/react/inconsistent-state-update]
                         {
@@ -470,20 +470,16 @@ class SpreadsheetSettingsWidget extends React.Component {
                     case SpreadsheetMetadata.MODIFIED_BY:
                     case SpreadsheetMetadata.LOCALE:
                     case SpreadsheetMetadata.STYLE:
-                        render = (
-                            <span id={id}>{value ? value.toString() : ""}</span>
-                        );
+                        render = <span id={id}>{value ? value.toString() : ""}</span>;
                         break;
                     case SpreadsheetMetadata.CURRENCY_SYMBOL:
-                        render = (
-                            <SpreadsheetSettingsWidgetString id={id}
+                        render = <SpreadsheetSettingsWidgetString id={id}
                                                              value={value}
                                                              defaultValue={defaultValue}
                                                              defaultValueFormatter={(s) => s}
                                                              defaultButtonTooltip={false}
                                                              setValue={setValue}
-                            />
-                        );
+                        />;
                         break;
                     case SpreadsheetMetadata.DATE_FORMAT_PATTERN:
                         render = <SpreadsheetSettingsWidgetSpreadsheetDateFormatPattern id={id}
@@ -528,35 +524,22 @@ class SpreadsheetSettingsWidget extends React.Component {
                     case SpreadsheetMetadata.PERCENTAGE_SYMBOL:
                     case SpreadsheetMetadata.POSITIVE_SIGN:
                     case SpreadsheetMetadata.VALUE_SEPARATOR:
-                        render = (
-                            <SpreadsheetSettingsWidgetCharacter id={id}
+                        render = <SpreadsheetSettingsWidgetCharacter id={id}
                                                                 key={[id, value]}
                                                                 value={value}
                                                                 defaultValue={defaultValue}
                                                                 defaultValueFormatter={DEFAULT_VALUE_FORMATTER_TOSTRING}
                                                                 defaultButtonTooltip={false}
                                                                 setValue={setValue}
-                            />
-                        );
+                            />;
                         break;
                     case SpreadsheetMetadata.EXPRESSION_NUMBER_KIND:
-                        var values;
-                        var style;
-
-                        switch(property) {
-                            case SpreadsheetMetadata.EXPRESSION_NUMBER_KIND:
-                                values = ExpressionNumberKind.values();
-                                style = {
-                                    marginLeft: "2.5em",
-                                    marginRight: "2.5em",
-                                };
-                                break;
-                            default:
-                                break;
-                        }
                         render = <SpreadsheetSettingsWidgetSlider id={id}
-                                                                  style={style}
-                                                                  values={values}
+                                                                  style={{
+                                                                      marginLeft: "2.5em",
+                                                                      marginRight: "2.5em",
+                                                                  }}
+                                                                  values={ExpressionNumberKind.values()}
                                                                   value={value}
                                                                   defaultValue={defaultValue}
                                                                   defaultValueFormatter={DEFAULT_VALUE_FORMATTER_LABEL}
@@ -695,7 +678,6 @@ class SpreadsheetSettingsWidget extends React.Component {
                             default:
                                 break;
                         }
-                        // DATE_TIME_OFFSET defaultValue also requires string -> number
                         render = <SpreadsheetSettingsWidgetSliderWithNumberTextField id={id}
                                                                                      style={style}
                                                                                      min={min}
@@ -728,17 +710,8 @@ class SpreadsheetSettingsWidget extends React.Component {
                         />;
                         break;
                     case SpreadsheetMetadata.ROUNDING_MODE:
-                        var values;
-
-                        switch(property) {
-                            case SpreadsheetMetadata.ROUNDING_MODE:
-                                values = RoundingMode.values();
-                                break;
-                            default:
-                                break;
-                        }
                         render = <SpreadsheetSettingsWidgetDropDownList id={id}
-                                                                        values={values}
+                                                                        values={RoundingMode.values()}
                                                                         value={value}
                                                                         defaultValue={defaultValue}
                                                                         defaultValueFormatter={DEFAULT_VALUE_FORMATTER_LABEL}
