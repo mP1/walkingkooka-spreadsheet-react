@@ -16,8 +16,12 @@ export default class SpreadsheetSettingsWidgetString extends SpreadsheetSettings
         return;
     }
 
+    size() {
+        return this.props.length;
+    }
+
     maxLength() {
-        return 5;
+        return this.props.maxLength;
     }
 
     createValue(string) {
@@ -25,4 +29,10 @@ export default class SpreadsheetSettingsWidgetString extends SpreadsheetSettings
     }
 }
 
-SpreadsheetSettingsWidgetString.propTypes = SpreadsheetSettingsWidgetValue.createPropTypes(PropTypes.string);
+SpreadsheetSettingsWidgetString.propTypes = SpreadsheetSettingsWidgetValue.createPropTypes(
+    PropTypes.string,
+    {
+        length: PropTypes.number.isRequired,
+        maxLength: PropTypes.number.isRequired,
+    }
+);

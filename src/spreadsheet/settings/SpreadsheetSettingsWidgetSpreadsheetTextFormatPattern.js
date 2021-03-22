@@ -17,6 +17,10 @@ export default class SpreadsheetSettingsWidgetSpreadsheetTextFormatPattern exten
         return "Enter pattern";
     }
 
+    size() {
+        return 20;
+    }
+
     maxLength() {
         return 255;
     }

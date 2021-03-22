@@ -477,6 +477,7 @@ class SpreadsheetSettingsWidget extends React.Component {
                         switch(property) {
                             case SpreadsheetMetadata.CURRENCY_SYMBOL:
                                 render = <SpreadsheetSettingsWidgetString id={id}
+                                                                          maxLength={10}
                                                                           value={value}
                                                                           defaultValue={defaultValue}
                                                                           defaultValueFormatter={(s) => s}

@@ -15,6 +15,7 @@ export default class SpreadsheetSettingsWidgetTextField extends SpreadsheetSetti
     renderInput(id, value) {
         const textFieldId = id + "-TextField";
         const placeholder = this.placeholder();
+        const size = this.size();
         const maxLength = this.maxLength();
 
         return <TextField inputRef={this.inputField}
@@ -37,7 +38,7 @@ export default class SpreadsheetSettingsWidgetTextField extends SpreadsheetSetti
                           defaultValue={value}
                           inputProps={
                               {
-                                  size: maxLength,
+                                  size: size,
                                   maxLength: maxLength,
                               }
                           }
@@ -48,6 +49,10 @@ export default class SpreadsheetSettingsWidgetTextField extends SpreadsheetSetti
 
     placeholder() {
         throw new Error("Not yet implemented: placeholder");
+    }
+
+    size() {
+        throw new Error("Not yet implemented: size");
     }
 
     maxLength() {
