@@ -17,6 +17,10 @@ export default class SpreadsheetSettingsWidgetCharacter extends SpreadsheetSetti
         return "Enter 1 character";
     }
 
+    size() {
+        return 1;
+    }
+
     maxLength() {
         return 1;
     }
