@@ -760,6 +760,55 @@ test("all setters & removers", () => {
     expect(metadata.isEmpty()).toBeTrue();
 });
 
+// effectiveStyle.......................................................................................................
+
+test("effectiveStyle EMPTY", () => {
+    expect(SpreadsheetMetadata.EMPTY.effectiveStyle()).toEqual(TextStyle.EMPTY);
+});
+
+test("effectiveStyle EMPTY default", () => {
+    const style = {
+        "color": "#123456",
+    };
+
+    expect(SpreadsheetMetadata.fromJson({
+        style: style,
+    }).effectiveStyle()).toEqual(TextStyle.fromJson(style));
+});
+
+test("effectiveStyle merged styles", () => {
+    expect(SpreadsheetMetadata.fromJson({
+        style: {
+            "color": "#123456",
+        },
+        "_defaults": {
+            style: {
+                "background-color": "#ffffff",
+            }
+        }
+    }).effectiveStyle()).toEqual(TextStyle.fromJson({
+        "background-color": "#ffffff",
+        "color": "#123456",
+    }));
+});
+
+test("effectiveStyle merged styles and default clash", () => {
+    expect(SpreadsheetMetadata.fromJson({
+        style: {
+            "color": "#123456",
+        },
+        "_defaults": {
+            style: {
+                "background-color": "#ffffff",
+                "color": "#ffffff",
+            }
+        }
+    }).effectiveStyle()).toEqual(TextStyle.fromJson({
+        "background-color": "#ffffff",
+        "color": "#123456",
+    }));
+});
+
 // isEmpty..............................................................................................................
 
 test("isEmpty EMPTY", () => {

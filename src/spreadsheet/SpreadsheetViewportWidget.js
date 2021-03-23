@@ -140,9 +140,9 @@ export default class SpreadsheetViewportWidget extends React.Component {
     render() {
         console.log("SpreadsheetViewportWidget.render", this.state);
 
-        const {dimensions, defaultStyle, home} = this.state;
+        const {dimensions, home} = this.state;
 
-        return (dimensions && defaultStyle && home && this.renderTable()) ||
+        return (dimensions && home && this.renderTable()) ||
             this.emptyTable();
     }
 

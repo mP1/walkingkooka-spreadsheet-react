@@ -510,6 +510,22 @@ export default class SpreadsheetMetadata extends SystemObject {
     }
 
     /**
+     * Returns a {@link TextStyle} that merges the current and default style.
+     */
+    effectiveStyle() {
+        var style = this.get(SpreadsheetMetadata.STYLE);
+        if(!style){
+            style = TextStyle.EMPTY;
+        }
+        const defaultMetadata = this.get(SpreadsheetMetadata.DEFAULTS);
+        if(defaultMetadata){
+            const defaultStyle = defaultMetadata.get(SpreadsheetMetadata.STYLE) || TextStyle.EMPTY;
+            style = defaultStyle.merge(style);
+        }
+        return style;
+    }
+
+    /**
      * Returns this metadata as a JSON object. This must be JSON.stringify for use in JSON calls
      */
     toJson() {

@@ -197,7 +197,7 @@ class App extends React.Component {
                 cells: state.cells,
                 columnWidths: state.columnWidths,
                 rowHeights: state.rowHeights,
-                defaultStyle: metadata.get(SpreadsheetMetadata.STYLE),
+                defaultStyle: metadata.effectiveStyle(),
             });
             const previous = viewport.state.dimensions || {
                 width: 0,
