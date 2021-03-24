@@ -26,10 +26,9 @@ export default class SystemEnum extends SystemObject {
     }
 
     // eslint-disable-next-line no-useless-constructor
-    constructor(name, label) {
+    constructor(name) {
         super();
         this.nameValue = name;
-        this.labelValue = label;
     }
 
     name() {
