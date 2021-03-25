@@ -681,8 +681,7 @@ context("General app usage", () => {
     function enterSettingsSpreadsheetMetadataPropertySliderNumberTextFieldAndCheck(property,
                                                                                    a1Formula,
                                                                                    values,
-                                                                                   a1CellContents,
-                                                                                   a1CellContentDefault) {
+                                                                                   a1CellContents) {
         it("Show settings and update SpreadsheetMetadata." + property, () => {
             settingsToggle();
             settingsOpenSectionSpreadsheetMetadataProperty(property);
