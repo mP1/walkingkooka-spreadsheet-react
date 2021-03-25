@@ -35,6 +35,7 @@ function checkProperty(property) {
     }
 
     switch(property) {
+        case SpreadsheetMetadata.CELL_CHARACTER_WIDTH:
         case SpreadsheetMetadata.CREATE_DATE_TIME:
         case SpreadsheetMetadata.CREATOR:
         case SpreadsheetMetadata.CURRENCY_SYMBOL:
@@ -71,7 +72,6 @@ function checkProperty(property) {
         case SpreadsheetMetadata.VALUE_SEPARATOR:
         case SpreadsheetMetadata.VIEWPORT_CELL:
         case SpreadsheetMetadata.VIEWPORT_COORDINATES:
-        case SpreadsheetMetadata.WIDTH:
             break;
         default:
             if(property.startsWith("color-")){
@@ -98,6 +98,7 @@ const TYPE_NAME = "spreadsheet-metadata";
  */
 export default class SpreadsheetMetadata extends SystemObject {
 
+    static CELL_CHARACTER_WIDTH = "cell-character-width";
     static CREATOR = "creator";
     static CREATE_DATE_TIME = "create-date-time";
     static CURRENCY_SYMBOL = "currency-symbol";
@@ -134,7 +135,6 @@ export default class SpreadsheetMetadata extends SystemObject {
     static VALUE_SEPARATOR = "value-separator";
     static VIEWPORT_CELL = "viewport-cell";
     static VIEWPORT_COORDINATES = "viewport-coordinates";
-    static WIDTH = "width";
 
     static EMPTY = new SpreadsheetMetadata({});
 
@@ -152,6 +152,10 @@ export default class SpreadsheetMetadata extends SystemObject {
             let typed, unmarshaller;
 
             switch(key) {
+                case SpreadsheetMetadata.CELL_CHARACTER_WIDTH:
+                    checkCellCharacterWidth(value);
+                    typed = value;
+                    break;
                 case SpreadsheetMetadata.CREATE_DATE_TIME:
                     unmarshaller = LocalDateTime.fromJson;
                     break;
@@ -261,10 +265,6 @@ export default class SpreadsheetMetadata extends SystemObject {
                 case SpreadsheetMetadata.VIEWPORT_COORDINATES:
                     unmarshaller = SpreadsheetCoordinates.fromJson;
                     break;
-                case SpreadsheetMetadata.WIDTH:
-                    checkWidth(value);
-                    typed = value;
-                    break;
                 default:
                     if(key.startsWith("color-")){
                         break;
@@ -320,6 +320,10 @@ export default class SpreadsheetMetadata extends SystemObject {
         let expectedTypeOf;
 
         switch(property) {
+            case SpreadsheetMetadata.CELL_CHARACTER_WIDTH:
+                checkCellCharacterWidth(value);
+                expectedTypeOf = "number";
+                break;
             case SpreadsheetMetadata.CREATE_DATE_TIME:
                 setFails(property);
                 break;
@@ -429,10 +433,6 @@ export default class SpreadsheetMetadata extends SystemObject {
             case SpreadsheetMetadata.VIEWPORT_COORDINATES:
                 expectedClass = SpreadsheetCoordinates;
                 break;
-            case SpreadsheetMetadata.WIDTH:
-                checkWidth(value);
-                expectedTypeOf = "number";
-                break;
             default:
                 if(property.startsWith("color-")){
                     break;
@@ -459,6 +459,7 @@ export default class SpreadsheetMetadata extends SystemObject {
         checkProperty(property);
 
         switch(property) {
+            case SpreadsheetMetadata.CELL_CHARACTER_WIDTH:
             case SpreadsheetMetadata.CURRENCY_SYMBOL:
             case SpreadsheetMetadata.DATE_FORMAT_PATTERN:
             case SpreadsheetMetadata.DATE_PARSE_PATTERNS:
@@ -483,7 +484,6 @@ export default class SpreadsheetMetadata extends SystemObject {
             case SpreadsheetMetadata.TIME_PARSE_PATTERNS:
             case SpreadsheetMetadata.TWO_DIGIT_YEAR:
             case SpreadsheetMetadata.VALUE_SEPARATOR:
-            case SpreadsheetMetadata.WIDTH:
                 break;
             case SpreadsheetMetadata.CREATOR:
             case SpreadsheetMetadata.CREATE_DATE_TIME:
@@ -559,6 +559,7 @@ export default class SpreadsheetMetadata extends SystemObject {
  * An array of all properties.
  */
 const PROPERTIES = [
+    SpreadsheetMetadata.CELL_CHARACTER_WIDTH,
     SpreadsheetMetadata.CREATOR,
     SpreadsheetMetadata.CREATE_DATE_TIME,
     SpreadsheetMetadata.CURRENCY_SYMBOL,
@@ -595,7 +596,6 @@ const PROPERTIES = [
     SpreadsheetMetadata.VALUE_SEPARATOR,
     SpreadsheetMetadata.VIEWPORT_CELL,
     SpreadsheetMetadata.VIEWPORT_COORDINATES,
-    SpreadsheetMetadata.WIDTH,
 ];
 
 /**
@@ -676,7 +676,7 @@ function checkTwoDigitYear(twoDigitYear) {
     }
 }
 
-function checkWidth(width) {
+function checkCellCharacterWidth(width) {
     if(typeof width !== "number"){
         throw new Error("Expected number width got " + width);
     }

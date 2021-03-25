@@ -292,7 +292,7 @@ class SpreadsheetSettingsWidget extends React.Component {
             [
                 SpreadsheetMetadata.LOCALE,
                 SpreadsheetMetadata.TEXT_FORMAT_PATTERN,
-                SpreadsheetMetadata.WIDTH
+                SpreadsheetMetadata.CELL_CHARACTER_WIDTH
             ],
         );
     }
@@ -476,11 +476,11 @@ class SpreadsheetSettingsWidget extends React.Component {
                                                                           setValue={setValue}
                                 />;
                                 break;
+                            case SpreadsheetMetadata.CELL_CHARACTER_WIDTH:
                             case SpreadsheetMetadata.DATETIME_OFFSET:
                             case SpreadsheetMetadata.DEFAULT_YEAR:
                             case SpreadsheetMetadata.PRECISION:
                             case SpreadsheetMetadata.TWO_DIGIT_YEAR:
-                            case SpreadsheetMetadata.WIDTH:
                                 var numberValue; // DATETIME_OFFSET is a java Long in String form, ugly hack to assume can always be converted to a number
                                 var min;
                                 var max;
@@ -488,6 +488,30 @@ class SpreadsheetSettingsWidget extends React.Component {
                                 var style;
                                 var step;
                                 switch(property) {
+                                    case SpreadsheetMetadata.CELL_CHARACTER_WIDTH:
+                                        numberValue = value;
+                                        min = 0;
+                                        max = 20;
+                                        marks = [
+                                            {
+                                                value: 1,
+                                                label: "1",
+                                            },
+                                            {
+                                                value: 10,
+                                                label: "10",
+                                            },
+                                            {
+                                                value: 20,
+                                                label: "20",
+                                            },
+                                        ];
+                                        step = null;
+                                        style = {
+                                            marginLeft: 0,
+                                            marginRight: "2em",
+                                        };
+                                        break;
                                     case SpreadsheetMetadata.DATETIME_OFFSET:
                                         numberValue = typeof value == "string" ? parseInt(value) : value;
                                         min = -25569;
@@ -577,30 +601,6 @@ class SpreadsheetSettingsWidget extends React.Component {
                                         step = null;
                                         style = {
                                             marginLeft: "2em",
-                                            marginRight: "2em",
-                                        };
-                                        break;
-                                    case SpreadsheetMetadata.WIDTH:
-                                        numberValue = value;
-                                        min = 0;
-                                        max = 20;
-                                        marks = [
-                                            {
-                                                value: 1,
-                                                label: "1",
-                                            },
-                                            {
-                                                value: 10,
-                                                label: "10",
-                                            },
-                                            {
-                                                value: 20,
-                                                label: "20",
-                                            },
-                                        ];
-                                        step = null;
-                                        style = {
-                                            marginLeft: 0,
                                             marginRight: "2em",
                                         };
                                         break;
@@ -701,6 +701,9 @@ class SpreadsheetSettingsWidget extends React.Component {
         let label;
 
         switch(property) {
+            case SpreadsheetMetadata.CELL_CHARACTER_WIDTH :
+                label = "Cell character width";
+                break;
             case SpreadsheetMetadata.CREATOR :
                 label = "Creator";
                 break;
@@ -793,9 +796,6 @@ class SpreadsheetSettingsWidget extends React.Component {
                 break;
             case SpreadsheetMetadata.VALUE_SEPARATOR :
                 label = "Value separator";
-                break;
-            case SpreadsheetMetadata.WIDTH :
-                label = "Width";
                 break;
             default:
                 throw new Error("Unknown property \"" + property + "\"");

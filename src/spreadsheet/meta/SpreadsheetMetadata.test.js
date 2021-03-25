@@ -467,6 +467,16 @@ test("remove property #2", () => {
 
 // properties...........................................................................................................
 
+getSetRemovePropertyTest(SpreadsheetMetadata.CELL_CHARACTER_WIDTH, 2);
+
+test("set cell-character-width 0 fails", () => {
+    expect(() => SpreadsheetMetadata.EMPTY.set(SpreadsheetMetadata.CELL_CHARACTER_WIDTH, 0)).toThrow("Expected number width > 0 got 0");
+});
+
+test("set cell-character-width -1 fails", () => {
+    expect(() => SpreadsheetMetadata.EMPTY.set(SpreadsheetMetadata.CELL_CHARACTER_WIDTH, -1)).toThrow("Expected number width > 0 got -1");
+});
+
 getPropertyTest(SpreadsheetMetadata.CREATE_DATE_TIME, LocalDateTime.fromJson("1999-12-31 12:58:59"));
 
 getPropertyTest(SpreadsheetMetadata.CREATOR, EmailAddress.fromJson("creator@example.com"));
@@ -557,16 +567,6 @@ getSetPropertyTest(SpreadsheetMetadata.VIEWPORT_CELL, SpreadsheetCellReference.p
 
 getSetPropertyTest(SpreadsheetMetadata.VIEWPORT_COORDINATES, SpreadsheetCoordinates.parse("123.5,400"));
 
-getSetRemovePropertyTest(SpreadsheetMetadata.WIDTH, 2);
-
-test("set width 0 fails", () => {
-    expect(() => SpreadsheetMetadata.EMPTY.set(SpreadsheetMetadata.WIDTH, 0)).toThrow("Expected number width > 0 got 0");
-});
-
-test("set width -1 fails", () => {
-    expect(() => SpreadsheetMetadata.EMPTY.set(SpreadsheetMetadata.WIDTH, -1)).toThrow("Expected number width > 0 got -1");
-});
-
 function getPropertyTest(propertyName, propertyValue) {
     getPropertyTest0(propertyName, propertyValue);
 
@@ -654,6 +654,7 @@ function removePropertyFailsTest(propertyName) {
 // all..................................................................................................................
 
 test("all setters & getters", () => {
+    const cellCharacterWidth = 1;
     const currencySymbol = "$AUD";
     const dateFormatPattern = SpreadsheetDateFormatPattern.fromJson("yyyymmdd");
     const dateParsePatterns = SpreadsheetDateParsePatterns.fromJson("yyyymmdd");
@@ -685,9 +686,9 @@ test("all setters & getters", () => {
     const valueSeparator = Character.fromJson(",");
     const coords = new SpreadsheetCoordinates(12, 34);
     const viewportCell = SpreadsheetCellReference.parse("A99");
-    const width = 1;
 
     const metadata = SpreadsheetMetadata.EMPTY
+        .set(SpreadsheetMetadata.WIDTH, cellCharacterWidth)
         .set(SpreadsheetMetadata.CURRENCY_SYMBOL, currencySymbol)
         .set(SpreadsheetMetadata.DATETIME_OFFSET, dateTimeOffset)
         .set(SpreadsheetMetadata.DATETIME_FORMAT_PATTERN, dateTimeFormatPattern)
@@ -715,9 +716,9 @@ test("all setters & getters", () => {
         .set(SpreadsheetMetadata.TWO_DIGIT_YEAR, twoDigitYear)
         .set(SpreadsheetMetadata.VALUE_SEPARATOR, valueSeparator)
         .set(SpreadsheetMetadata.VIEWPORT_CELL, viewportCell)
-        .set(SpreadsheetMetadata.VIEWPORT_COORDINATES, coords)
-        .set(SpreadsheetMetadata.WIDTH, width);
+        .set(SpreadsheetMetadata.VIEWPORT_COORDINATES, coords);
 
+    expect(metadata.get(SpreadsheetMetadata.CELL_CHARACTER_WIDTH)).toEqual(cellCharacterWidth);
     expect(metadata.get(SpreadsheetMetadata.CURRENCY_SYMBOL)).toEqual(currencySymbol);
     expect(metadata.get(SpreadsheetMetadata.DATETIME_OFFSET)).toEqual(dateTimeOffset);
     expect(metadata.get(SpreadsheetMetadata.DATETIME_FORMAT_PATTERN)).toEqual(dateTimeFormatPattern);
@@ -746,7 +747,6 @@ test("all setters & getters", () => {
     expect(metadata.get(SpreadsheetMetadata.VALUE_SEPARATOR)).toEqual(valueSeparator);
     expect(metadata.get(SpreadsheetMetadata.VIEWPORT_CELL)).toEqual(viewportCell);
     expect(metadata.get(SpreadsheetMetadata.VIEWPORT_COORDINATES)).toEqual(coords);
-    expect(metadata.get(SpreadsheetMetadata.WIDTH)).toEqual(width);
 });
 
 test("all setters & removers", () => {

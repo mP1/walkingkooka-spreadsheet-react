@@ -802,6 +802,26 @@ context("General app usage", () => {
     );
 
     enterSettingsSpreadsheetMetadataPropertySliderNumberTextFieldAndCheck(
+        SpreadsheetMetadata.CELL_CHARACTER_WIDTH,
+        null,
+        [
+            {
+                value: "1",
+                text: "1",
+            },
+            {
+                value: "10",
+                text: "10",
+            },
+            {
+                value: "20",
+                text: "20",
+            },
+        ],
+        null
+    );
+
+    enterSettingsSpreadsheetMetadataPropertySliderNumberTextFieldAndCheck(
         SpreadsheetMetadata.DATETIME_OFFSET,
         null,
         [
@@ -847,26 +867,6 @@ context("General app usage", () => {
             },
         ],
         ["1930/12/31", "2030/12/31"]
-    );
-
-    enterSettingsSpreadsheetMetadataPropertySliderNumberTextFieldAndCheck(
-        SpreadsheetMetadata.WIDTH,
-        null,
-        [
-            {
-                value: "1",
-                text: "1",
-            },
-            {
-                value: "10",
-                text: "10",
-            },
-            {
-                value: "20",
-                text: "20",
-            },
-        ],
-        null
     );
 
     /**
@@ -1045,7 +1045,7 @@ function settingsSectionFromSpreadsheetMetadataProperty(property) {
 
         case SpreadsheetMetadata.LOCALE:
         case SpreadsheetMetadata.TEXT_FORMAT_PATTERN:
-        case SpreadsheetMetadata.WIDTH:
+        case SpreadsheetMetadata.CELL_CHARACTER_WIDTH:
             section = SpreadsheetHistoryHash.SETTINGS_TEXT;
             break;
 
