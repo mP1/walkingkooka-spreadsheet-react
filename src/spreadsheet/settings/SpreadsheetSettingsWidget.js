@@ -74,13 +74,6 @@ const useStyles = theme => ({
     },
 });
 
-function metadataPropertyRow(label, property) {
-    return {
-        label: label,
-        metadataProperty: property,
-    };
-}
-
 class SpreadsheetSettingsWidget extends React.Component {
 
     /**
@@ -270,172 +263,104 @@ class SpreadsheetSettingsWidget extends React.Component {
 
     // METADATA.........................................................................................................
 
-    /**
-     * Displays the following spreadsheet metadata.
-     * <ul>
-     * <li>spreadsheet-id</li>
-     * <li>creator</li>
-     * <li>create date time</li>
-     * <li>modified by</li>
-     * <li>modified date time</li>
-     * <ul>
-     */
     metadata(classes) {
-        const rows = [
-            metadataPropertyRow("Id", SpreadsheetMetadata.SPREADSHEET_ID),
-            metadataPropertyRow("Creator", SpreadsheetMetadata.CREATOR),
-            metadataPropertyRow("Create Date/Time", SpreadsheetMetadata.CREATE_DATE_TIME),
-            metadataPropertyRow("Modified by", SpreadsheetMetadata.MODIFIED_BY),
-            metadataPropertyRow("Modified Date/Time", SpreadsheetMetadata.MODIFIED_DATE_TIME),
-        ];
-
         return this.accordion(
             SpreadsheetHistoryHash.SETTINGS_METADATA,
             classes,
             "Metadata",
             "",
             "Readonly Spreadsheet Metadata",
-            rows,
+            [
+                SpreadsheetMetadata.SPREADSHEET_ID,
+                SpreadsheetMetadata.CREATOR,
+                SpreadsheetMetadata.CREATE_DATE_TIME,
+                SpreadsheetMetadata.MODIFIED_BY,
+                SpreadsheetMetadata.MODIFIED_DATE_TIME,
+            ],
         );
     }
 
     // TEXT.............................................................................................................
 
-    /**
-     * Displays the text and locale.
-     * <ul>
-     * <li>locale (Locale) TODO https://github.com/mP1/walkingkooka-spreadsheet-server/issues/124</li>
-     * <li>text-format-pattern (pattern)</li>
-     * <ul>
-     */
     spreadsheetText(classes) {
-        const rows = [
-            metadataPropertyRow("Locale", SpreadsheetMetadata.LOCALE),
-            metadataPropertyRow("Format", SpreadsheetMetadata.TEXT_FORMAT_PATTERN),
-            metadataPropertyRow("Width", SpreadsheetMetadata.WIDTH),
-        ];
-
         return this.accordion(
             SpreadsheetHistoryHash.SETTINGS_TEXT,
             classes,
             "Text",
             "",
             "Text",
-            rows,
+            [
+                SpreadsheetMetadata.LOCALE,
+                SpreadsheetMetadata.TEXT_FORMAT_PATTERN,
+                SpreadsheetMetadata.WIDTH
+            ],
         );
     }
 
-    /**
-     * Displays the following editable spreadsheet date/time settings.
-     * <ul>
-     * <li>date-format-pattern (pattern)</li>
-     * <li>date-parse-patterns (pattern)</li>
-     * <li>date-time-offset (1900/1904)</li>
-     * <li>date-time-format-pattern (pattern)</li>
-     * <li>date-time-parse-patterns (pattern)</li>
-     * <li>default-year</li>
-     * <li>time-format-pattern (pattern)</li>
-     * <li>time-parse-patterns (pattern)</li>
-     * <li>two-digit-year (int 0-99)</li>
-     * <ul>
-     */
     spreadsheetDateTime(classes) {
-        const rows = [
-            metadataPropertyRow("Date Time Offset", SpreadsheetMetadata.DATETIME_OFFSET), // 1900 or 1904 date system
-            metadataPropertyRow("Default Year", SpreadsheetMetadata.DEFAULT_YEAR),
-            metadataPropertyRow("Two Digit Year", SpreadsheetMetadata.TWO_DIGIT_YEAR),
-
-            metadataPropertyRow("Date Format", SpreadsheetMetadata.DATE_FORMAT_PATTERN),
-            metadataPropertyRow("Date Parse", SpreadsheetMetadata.DATE_PARSE_PATTERNS),
-            metadataPropertyRow("Date/Time Format", SpreadsheetMetadata.DATETIME_FORMAT_PATTERN),
-            metadataPropertyRow("Date/Time Parse", SpreadsheetMetadata.DATETIME_PARSE_PATTERNS),
-            metadataPropertyRow("Time Format", SpreadsheetMetadata.TIME_FORMAT_PATTERN),
-            metadataPropertyRow("Time Parse", SpreadsheetMetadata.TIME_PARSE_PATTERNS),
-        ];
-
         return this.accordion(
             SpreadsheetHistoryHash.SETTINGS_DATE_TIME,
             classes,
             "Date/Time",
             "",
             "Spreadsheet Date/Time",
-            rows
+            [
+                SpreadsheetMetadata.DATETIME_OFFSET,
+                SpreadsheetMetadata.DEFAULT_YEAR,
+                SpreadsheetMetadata.TWO_DIGIT_YEAR,
+                SpreadsheetMetadata.DATE_FORMAT_PATTERN,
+                SpreadsheetMetadata.DATE_PARSE_PATTERNS,
+                SpreadsheetMetadata.DATETIME_FORMAT_PATTERN,
+                SpreadsheetMetadata.DATETIME_PARSE_PATTERNS,
+                SpreadsheetMetadata.TIME_FORMAT_PATTERN,
+                SpreadsheetMetadata.TIME_PARSE_PATTERNS
+            ],
         );
     }
 
-    /**
-     * Displays the following editable spreadsheet number settings.
-     * <ul>
-     * <li>currency (String)</li>
-     * <li>decimal-separator (char)</li>
-     * <li>exponent-symbol (char)</li>
-     * <li>expression-number-kind (BIGDECIMAL, DECIMAL)</li>
-     * <li>grouping-symbol (char)</li>
-     * <li>negative-sign (char)</li>
-     * <li>number-format-pattern (pattern)</li>
-     * <li>number-parse-patterns (pattern)</li>
-     * <li>percent-symbol (char)</li>
-     * <li>positive-sign (char)</li>
-     * <li>precision (int) (DECIMAL32, DECIMAL64, DECIMAL128, UNLIMITED)</li>
-     * <li>rounding-mode (RoundingMode) (CEILING, DOWN, FLOOR, HALF_DOWN, HALF_EVEN, HALF_UP, UNNECESSARY, UP)</li>
-     * <li>value-separator (char)</li>
-     * <ul>
-     */
     spreadsheetNumber(classes) {
-        const rows = [
-            metadataPropertyRow("Number kind", SpreadsheetMetadata.EXPRESSION_NUMBER_KIND),
-            metadataPropertyRow("Precision", SpreadsheetMetadata.PRECISION),
-            metadataPropertyRow("Rounding mode", SpreadsheetMetadata.ROUNDING_MODE),
-            metadataPropertyRow("Currency", SpreadsheetMetadata.CURRENCY_SYMBOL),
-            metadataPropertyRow("Decimal separator", SpreadsheetMetadata.DECIMAL_SEPARATOR),
-            metadataPropertyRow("Exponent separator", SpreadsheetMetadata.EXPONENT_SYMBOL),
-            metadataPropertyRow("Grouping symbol", SpreadsheetMetadata.GROUPING_SEPARATOR),
-            metadataPropertyRow("Negative sign", SpreadsheetMetadata.NEGATIVE_SIGN),
-            metadataPropertyRow("Percent symbol", SpreadsheetMetadata.PERCENTAGE_SYMBOL),
-            metadataPropertyRow("Positive sign", SpreadsheetMetadata.POSITIVE_SIGN),
-            metadataPropertyRow("Format", SpreadsheetMetadata.NUMBER_FORMAT_PATTERN),
-            metadataPropertyRow("Parse", SpreadsheetMetadata.NUMBER_PARSE_PATTERNS),
-            metadataPropertyRow("Value separator", SpreadsheetMetadata.VALUE_SEPARATOR),
-        ];
-
         return this.accordion(
             SpreadsheetHistoryHash.SETTINGS_NUMBER,
             classes,
             "Number",
             "",
             "Spreadsheet Number Settings",
-            rows,
+            [
+                SpreadsheetMetadata.EXPRESSION_NUMBER_KIND,
+                SpreadsheetMetadata.PRECISION,
+                SpreadsheetMetadata.ROUNDING_MODE,
+                SpreadsheetMetadata.CURRENCY_SYMBOL,
+                SpreadsheetMetadata.DECIMAL_SEPARATOR,
+                SpreadsheetMetadata.EXPONENT_SYMBOL,
+                SpreadsheetMetadata.GROUPING_SEPARATOR,
+                SpreadsheetMetadata.NEGATIVE_SIGN,
+                SpreadsheetMetadata.PERCENTAGE_SYMBOL,
+                SpreadsheetMetadata.POSITIVE_SIGN,
+                SpreadsheetMetadata.NUMBER_FORMAT_PATTERN,
+                SpreadsheetMetadata.NUMBER_PARSE_PATTERNS,
+                SpreadsheetMetadata.VALUE_SEPARATOR,
+                ]
         );
     }
 
-    /**
-     * Displays the style.
-     * <ul>
-     * <li>style (TextStyle)</li>
-     * <ul>
-     */
     spreadsheetStyle(classes) {
-        // all ids are prefixed with "spreadsheet-"
-        const rows = [
-            metadataPropertyRow("Style", SpreadsheetMetadata.STYLE),
-        ];
-
         return this.accordion(
             SpreadsheetHistoryHash.SETTINGS_STYLE,
             classes,
             "Default style(s)",
             "",
             "Spreadsheet default Style(s)",
-            rows,
+            [
+                SpreadsheetMetadata.STYLE,
+            ],
         );
     }
 
-    renderRow(row, classes) {
-        const {label, metadataProperty} = row;
-        return this.renderMetadataPropertyRow(label, metadataProperty, classes);
+    renderRow(property, classes) {
+        return this.renderMetadataPropertyRow(property, classes);
     }
 
-    renderMetadataPropertyRow(label, property, classes) {
+    renderMetadataPropertyRow(property, classes) {
         const id = "spreadsheet-metadata-" + property;
 
         const state = this.state;
@@ -757,7 +682,7 @@ class SpreadsheetSettingsWidget extends React.Component {
                 break;
         }
 
-        // hover = highlight under mouse over
+        const label = this.spreadsheetMetadataPropertyLabel(property);
         return (
             <TableRow key={label}
                       hover={true}>
@@ -765,6 +690,118 @@ class SpreadsheetSettingsWidget extends React.Component {
                 <TableCell id={id}
                            className={classes.value}>{render}</TableCell>
             </TableRow>);
+    }
+
+    /**
+     *
+     * @param property
+     * @returns {*}
+     */
+    spreadsheetMetadataPropertyLabel(property) {
+        let label;
+
+        switch(property) {
+            case SpreadsheetMetadata.CREATOR :
+                label = "Creator";
+                break;
+            case SpreadsheetMetadata.CREATE_DATE_TIME :
+                label = "Create date/time";
+                break;
+            case SpreadsheetMetadata.CURRENCY_SYMBOL :
+                label = "Currency";
+                break;
+            case SpreadsheetMetadata.DATE_FORMAT_PATTERN :
+                label = "Date format";
+                break;
+            case SpreadsheetMetadata.DATE_PARSE_PATTERNS :
+                label = "Date parse";
+                break;
+            case SpreadsheetMetadata.DATETIME_OFFSET :
+                label = "Date/Time offset";
+                break;
+            case SpreadsheetMetadata.DATETIME_FORMAT_PATTERN :
+                label = "Date/Time format";
+                break;
+            case SpreadsheetMetadata.DATETIME_PARSE_PATTERNS :
+                label = "Date/Time parse";
+                break;
+            case SpreadsheetMetadata.DECIMAL_SEPARATOR :
+                label = "Decimal separator";
+                break;
+            case SpreadsheetMetadata.DEFAULT_YEAR :
+                label = "Default year";
+                break;
+            case SpreadsheetMetadata.EXPONENT_SYMBOL :
+                label = "Exponent Symbol";
+                break;
+            case SpreadsheetMetadata.EXPRESSION_NUMBER_KIND :
+                label = "Number";
+                break;
+            case SpreadsheetMetadata.GROUPING_SEPARATOR :
+                label = "Grouping separator";
+                break;
+            case SpreadsheetMetadata.LOCALE :
+                label = "Locale";
+                break;
+            case SpreadsheetMetadata.MODIFIED_BY :
+                label = "Modified by";
+                break;
+            case SpreadsheetMetadata.MODIFIED_DATE_TIME :
+                label = "Modified date/time";
+                break;
+            case SpreadsheetMetadata.NEGATIVE_SIGN :
+                label = "Negative sign";
+                break;
+            case SpreadsheetMetadata.NUMBER_FORMAT_PATTERN :
+                label = "Number format";
+                break;
+            case SpreadsheetMetadata.NUMBER_PARSE_PATTERNS :
+                label = "Number parse";
+                break;
+            case SpreadsheetMetadata.PERCENTAGE_SYMBOL :
+                label = "Percentage sign";
+                break;
+            case SpreadsheetMetadata.POSITIVE_SIGN :
+                label = "Positive sign";
+                break;
+            case SpreadsheetMetadata.ROUNDING_MODE :
+                label = "Rounding mode";
+                break;
+            case SpreadsheetMetadata.PRECISION :
+                label = "Precision";
+                break;
+            case SpreadsheetMetadata.SPREADSHEET_ID :
+                label = "Id";
+                break;
+            case SpreadsheetMetadata.SPREADSHEET_NAME :
+                label = "Name";
+                break;
+            case SpreadsheetMetadata.STYLE :
+                label = "Style";
+                break;
+            case SpreadsheetMetadata.TEXT_FORMAT_PATTERN :
+                label = "Text format";
+                break;
+            case SpreadsheetMetadata.TIME_FORMAT_PATTERN :
+                label = "Time format";
+                break;
+            case SpreadsheetMetadata.TIME_PARSE_PATTERNS :
+                label = "Time parse";
+                break;
+            case SpreadsheetMetadata.TWO_DIGIT_YEAR :
+                label = "Two digit year";
+                break;
+            case SpreadsheetMetadata.VALUE_SEPARATOR :
+                label = "Value separator";
+                break;
+            case SpreadsheetMetadata.WIDTH :
+                label = "Width";
+                break;
+            default:
+                throw new Error("Unknown property \"" + property + "\"");
+        }
+        
+        return label;
     }
 
     // ACCORDION........................................................................................................
