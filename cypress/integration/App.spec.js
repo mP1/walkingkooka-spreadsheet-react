@@ -778,30 +778,6 @@ context("General app usage", () => {
     }
 
     enterSettingsSpreadsheetMetadataPropertySliderNumberTextFieldAndCheck(
-        SpreadsheetMetadata.PRECISION,
-        null,
-        [
-            {
-                value: "0",
-                text: "∞",
-            },
-            {
-                value: "32",
-                text: "32",
-            },
-            {
-                value: "64",
-                text: "64",
-            },
-            {
-                value: "128",
-                text: "128",
-            }
-        ],
-        null
-    );
-
-    enterSettingsSpreadsheetMetadataPropertySliderNumberTextFieldAndCheck(
         SpreadsheetMetadata.CELL_CHARACTER_WIDTH,
         null,
         [
@@ -851,6 +827,30 @@ context("General app usage", () => {
             }
         ],
         ["1900/12/31", "2000/12/31"]
+    );
+
+    enterSettingsSpreadsheetMetadataPropertySliderNumberTextFieldAndCheck(
+        SpreadsheetMetadata.PRECISION,
+        null,
+        [
+            {
+                value: "0",
+                text: "∞",
+            },
+            {
+                value: "32",
+                text: "32",
+            },
+            {
+                value: "64",
+                text: "64",
+            },
+            {
+                value: "128",
+                text: "128",
+            }
+        ],
+        null
     );
 
     enterSettingsSpreadsheetMetadataPropertySliderNumberTextFieldAndCheck(
