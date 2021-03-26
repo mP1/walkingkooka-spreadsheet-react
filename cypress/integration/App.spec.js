@@ -369,7 +369,7 @@ context("General app usage", () => {
 
             reactRenderWait();
 
-            const buttonId = "#spreadsheet-metadata-" + property + "-default-button";
+            const buttonId = "#spreadsheet-metadata-" + property + "-default-Button";
             cy.get(buttonId)
                 .should("have.text", defaultText)
                 .click();

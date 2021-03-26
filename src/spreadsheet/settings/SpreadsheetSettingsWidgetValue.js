@@ -80,7 +80,7 @@ export default class SpreadsheetSettingsWidgetValue extends React.Component {
                             {
                                 [
                                     this.renderInput(id, value),
-                                    this.renderDefaultButton(id + "-default-button", defaultValue),
+                                    this.renderDefaultButton(id + "-default-Button", defaultValue),
                                 ]
                             }
                         </ListItem>
