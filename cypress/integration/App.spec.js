@@ -2,8 +2,8 @@
 
 import ExpressionNumberKind from "../../src/math/ExpressionNumberKind.js";
 import RoundingMode from "../../src/math/RoundingMode.js";
-import SpreadsheetHistoryHash from "../../src/spreadsheet/history/SpreadsheetHistoryHash.js";
 import SpreadsheetMetadata from "../../src/spreadsheet/meta/SpreadsheetMetadata.js";
+import SpreadsheetSettingsWidget from "../../src/spreadsheet/settings/SpreadsheetSettingsWidget.js";
 
 const SELECTED = ".selected";
 const COLUMN = ".column";
@@ -265,7 +265,7 @@ context("General app usage", () => {
 
                 settingsToggle(); // open
 
-                const section = settingsSectionFromSpreadsheetMetadataProperty(SpreadsheetMetadata.TWO_DIGIT_YEAR);
+                const section = SpreadsheetSettingsWidget.section(SpreadsheetMetadata.TWO_DIGIT_YEAR);
                 cy.get("#spreadsheet-" + section + "-content")
                     .should('be.visible');
 
@@ -1018,7 +1018,7 @@ function settingsOpenSectionSpreadsheetMetadataProperty(property) {
     settings()
         .should('be.visible');
 
-    const section = settingsSectionFromSpreadsheetMetadataProperty(property);
+    const section = SpreadsheetSettingsWidget.section(property);
 
     cy.get("#spreadsheet-" + section + "-expand-more-icon")
         .click();
@@ -1029,63 +1029,6 @@ function settingsOpenSectionSpreadsheetMetadataProperty(property) {
         .should('be.visible');
 
     hash().should('match', new RegExp(".*\/.*\/settings\/" + section)) // => true
-}
-
-function settingsSectionFromSpreadsheetMetadataProperty(property) {
-    var section = null;
-
-    switch(property) {
-        case SpreadsheetMetadata.SPREADSHEET_ID:
-        case SpreadsheetMetadata.CREATOR:
-        case SpreadsheetMetadata.CREATE_DATE_TIME:
-        case SpreadsheetMetadata.MODIFIED_BY:
-        case SpreadsheetMetadata.MODIFIED_DATE_TIME:
-            section = SpreadsheetHistoryHash.SETTINGS_METADATA;
-            break;
-
-        case SpreadsheetMetadata.LOCALE:
-        case SpreadsheetMetadata.TEXT_FORMAT_PATTERN:
-        case SpreadsheetMetadata.CELL_CHARACTER_WIDTH:
-            section = SpreadsheetHistoryHash.SETTINGS_TEXT;
-            break;
-
-        case SpreadsheetMetadata.DATETIME_OFFSET:
-        case SpreadsheetMetadata.DEFAULT_YEAR:
-        case SpreadsheetMetadata.TWO_DIGIT_YEAR:
-        case SpreadsheetMetadata.DATE_FORMAT_PATTERN:
-        case SpreadsheetMetadata.DATE_PARSE_PATTERNS:
-        case SpreadsheetMetadata.DATETIME_FORMAT_PATTERN:
-        case SpreadsheetMetadata.DATETIME_PARSE_PATTERNS:
-        case SpreadsheetMetadata.TIME_FORMAT_PATTERN:
-        case SpreadsheetMetadata.TIME_PARSE_PATTERNS:
-            section = SpreadsheetHistoryHash.SETTINGS_DATE_TIME;
-            break;
-
-        case SpreadsheetMetadata.EXPRESSION_NUMBER_KIND:
-        case SpreadsheetMetadata.PRECISION:
-        case SpreadsheetMetadata.ROUNDING_MODE:
-        case SpreadsheetMetadata.CURRENCY_SYMBOL:
-        case SpreadsheetMetadata.DECIMAL_SEPARATOR:
-        case SpreadsheetMetadata.EXPONENT_SYMBOL:
-        case SpreadsheetMetadata.GROUPING_SEPARATOR:
-        case SpreadsheetMetadata.NEGATIVE_SIGN:
-        case SpreadsheetMetadata.PERCENTAGE_SYMBOL:
-        case SpreadsheetMetadata.POSITIVE_SIGN:
-        case SpreadsheetMetadata.NUMBER_FORMAT_PATTERN:
-        case SpreadsheetMetadata.NUMBER_PARSE_PATTERNS:
-        case SpreadsheetMetadata.VALUE_SEPARATOR:
-            section = SpreadsheetHistoryHash.SETTINGS_NUMBER;
-            break;
-
-        case SpreadsheetMetadata.STYLE:
-            section = SpreadsheetHistoryHash.SETTINGS_STYLE;
-            break;
-
-        default:
-            throw new Error("Unknown property: " + property);
-    }
-
-    return section;
 }
 
 /**
