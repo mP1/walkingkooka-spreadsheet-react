@@ -788,7 +788,7 @@ class SpreadsheetSettingsWidget extends React.Component {
                 label = "Default year";
                 break;
             case SpreadsheetMetadata.EXPONENT_SYMBOL :
-                label = "Exponent Symbol";
+                label = "Exponent symbol";
                 break;
             case SpreadsheetMetadata.EXPRESSION_NUMBER_KIND :
                 label = "Number";
