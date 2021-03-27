@@ -18,8 +18,14 @@ export default class NoneLength extends Length {
         if(typeof text !== "string"){
             throw new Error("Expected string got " + text);
         }
-        if(text !== TEXT){
-            throw new Error("Expected string \"" + TEXT + "\" got " + text);
+
+        switch(text) {
+            case "0":
+            case "0px":
+            case TEXT:
+                break;
+            default:
+                throw new Error("Expected string \"" + TEXT + "\" got " + text);
         }
 
         return NoneLength.INSTANCE;

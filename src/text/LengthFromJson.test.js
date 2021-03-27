@@ -26,6 +26,14 @@ test("fromJson none", () => {
     expect(LengthFromJson("none")).toStrictEqual(NoneLength.INSTANCE);
 });
 
+test("fromJson 0", () => {
+    expect(LengthFromJson("0")).toStrictEqual(NoneLength.INSTANCE);
+});
+
+test("fromJson 0px", () => {
+    expect(LengthFromJson("0px")).toStrictEqual(NoneLength.INSTANCE);
+});
+
 test("fromJson 123px", () => {
     expect(LengthFromJson("123px")).toStrictEqual(new PixelLength(123));
 });
