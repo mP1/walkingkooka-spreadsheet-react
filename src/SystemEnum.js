@@ -68,10 +68,6 @@ export default class SystemEnum extends SystemObject {
         return s;
     }
 
-    label() {
-        return this.labelValue;
-    }
-
     equals(other) {
         return this === other;
     }
