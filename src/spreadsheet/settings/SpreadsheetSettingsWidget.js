@@ -261,6 +261,39 @@ class SpreadsheetSettingsWidget extends React.Component {
         )
     }
 
+    /**
+     * Returns the section for the given property.
+     */
+    static section(property) {
+        var section;
+
+        for(;;) {
+            if(SpreadsheetSettingsWidget.metadataRows().includes(property)) {
+                section = SpreadsheetHistoryHash.SETTINGS_METADATA;
+                break;
+            }
+            if(SpreadsheetSettingsWidget.spreadsheetTextRows().includes(property)) {
+                section = SpreadsheetHistoryHash.SETTINGS_TEXT;
+                break;
+            }
+            if(SpreadsheetSettingsWidget.spreadsheetDateTimeRows().includes(property)) {
+                section = SpreadsheetHistoryHash.SETTINGS_DATE_TIME;
+                break;
+            }
+            if(SpreadsheetSettingsWidget.spreadsheetNumberRows().includes(property)) {
+                section = SpreadsheetHistoryHash.SETTINGS_NUMBER;
+                break;
+            }
+            if(SpreadsheetSettingsWidget.spreadsheetStyleRows().includes(property)) {
+                section = SpreadsheetHistoryHash.SETTINGS_STYLE;
+                break;
+            }
+            throw new Error("Unknown property \"" + property + "\"");
+        }
+
+        return section;
+    }
+
     // METADATA.........................................................................................................
 
     metadata(classes) {
@@ -270,14 +303,18 @@ class SpreadsheetSettingsWidget extends React.Component {
             "Metadata",
             "",
             "Readonly Spreadsheet Metadata",
-            [
-                SpreadsheetMetadata.SPREADSHEET_ID,
-                SpreadsheetMetadata.CREATOR,
-                SpreadsheetMetadata.CREATE_DATE_TIME,
-                SpreadsheetMetadata.MODIFIED_BY,
-                SpreadsheetMetadata.MODIFIED_DATE_TIME,
-            ],
+            SpreadsheetSettingsWidget.metadataRows(),
         );
+    }
+
+    static metadataRows() {
+        return [
+            SpreadsheetMetadata.SPREADSHEET_ID,
+            SpreadsheetMetadata.CREATOR,
+            SpreadsheetMetadata.CREATE_DATE_TIME,
+            SpreadsheetMetadata.MODIFIED_BY,
+            SpreadsheetMetadata.MODIFIED_DATE_TIME,
+        ];
     }
 
     // TEXT.............................................................................................................
@@ -289,12 +326,16 @@ class SpreadsheetSettingsWidget extends React.Component {
             "Text",
             "",
             "Text",
-            [
-                SpreadsheetMetadata.LOCALE,
-                SpreadsheetMetadata.TEXT_FORMAT_PATTERN,
-                SpreadsheetMetadata.CELL_CHARACTER_WIDTH
-            ],
+            SpreadsheetSettingsWidget.spreadsheetTextRows(),
         );
+    }
+
+    static spreadsheetTextRows() {
+        return [
+            SpreadsheetMetadata.LOCALE,
+            SpreadsheetMetadata.TEXT_FORMAT_PATTERN,
+            SpreadsheetMetadata.CELL_CHARACTER_WIDTH
+        ];
     }
 
     spreadsheetDateTime(classes) {
@@ -304,18 +345,22 @@ class SpreadsheetSettingsWidget extends React.Component {
             "Date/Time",
             "",
             "Spreadsheet Date/Time",
-            [
-                SpreadsheetMetadata.DATETIME_OFFSET,
-                SpreadsheetMetadata.DEFAULT_YEAR,
-                SpreadsheetMetadata.TWO_DIGIT_YEAR,
-                SpreadsheetMetadata.DATE_FORMAT_PATTERN,
-                SpreadsheetMetadata.DATE_PARSE_PATTERNS,
-                SpreadsheetMetadata.DATETIME_FORMAT_PATTERN,
-                SpreadsheetMetadata.DATETIME_PARSE_PATTERNS,
-                SpreadsheetMetadata.TIME_FORMAT_PATTERN,
-                SpreadsheetMetadata.TIME_PARSE_PATTERNS
-            ],
+            SpreadsheetSettingsWidget.spreadsheetDateTimeRows(),
         );
+    }
+
+    static spreadsheetDateTimeRows() {
+        return [
+            SpreadsheetMetadata.DATETIME_OFFSET,
+            SpreadsheetMetadata.DEFAULT_YEAR,
+            SpreadsheetMetadata.TWO_DIGIT_YEAR,
+            SpreadsheetMetadata.DATE_FORMAT_PATTERN,
+            SpreadsheetMetadata.DATE_PARSE_PATTERNS,
+            SpreadsheetMetadata.DATETIME_FORMAT_PATTERN,
+            SpreadsheetMetadata.DATETIME_PARSE_PATTERNS,
+            SpreadsheetMetadata.TIME_FORMAT_PATTERN,
+            SpreadsheetMetadata.TIME_PARSE_PATTERNS
+        ];
     }
 
     spreadsheetNumber(classes) {
@@ -325,22 +370,26 @@ class SpreadsheetSettingsWidget extends React.Component {
             "Number",
             "",
             "Spreadsheet Number Settings",
-            [
-                SpreadsheetMetadata.EXPRESSION_NUMBER_KIND,
-                SpreadsheetMetadata.PRECISION,
-                SpreadsheetMetadata.ROUNDING_MODE,
-                SpreadsheetMetadata.CURRENCY_SYMBOL,
-                SpreadsheetMetadata.DECIMAL_SEPARATOR,
-                SpreadsheetMetadata.EXPONENT_SYMBOL,
-                SpreadsheetMetadata.GROUPING_SEPARATOR,
-                SpreadsheetMetadata.NEGATIVE_SIGN,
-                SpreadsheetMetadata.PERCENTAGE_SYMBOL,
-                SpreadsheetMetadata.POSITIVE_SIGN,
-                SpreadsheetMetadata.NUMBER_FORMAT_PATTERN,
-                SpreadsheetMetadata.NUMBER_PARSE_PATTERNS,
-                SpreadsheetMetadata.VALUE_SEPARATOR,
-                ]
+            SpreadsheetSettingsWidget.spreadsheetNumberRows()
         );
+    }
+
+    static spreadsheetNumberRows() {
+        return [
+            SpreadsheetMetadata.EXPRESSION_NUMBER_KIND,
+            SpreadsheetMetadata.PRECISION,
+            SpreadsheetMetadata.ROUNDING_MODE,
+            SpreadsheetMetadata.CURRENCY_SYMBOL,
+            SpreadsheetMetadata.DECIMAL_SEPARATOR,
+            SpreadsheetMetadata.EXPONENT_SYMBOL,
+            SpreadsheetMetadata.GROUPING_SEPARATOR,
+            SpreadsheetMetadata.NEGATIVE_SIGN,
+            SpreadsheetMetadata.PERCENTAGE_SYMBOL,
+            SpreadsheetMetadata.POSITIVE_SIGN,
+            SpreadsheetMetadata.NUMBER_FORMAT_PATTERN,
+            SpreadsheetMetadata.NUMBER_PARSE_PATTERNS,
+            SpreadsheetMetadata.VALUE_SEPARATOR,
+        ];
     }
 
     spreadsheetStyle(classes) {
@@ -350,10 +399,14 @@ class SpreadsheetSettingsWidget extends React.Component {
             "Default style(s)",
             "",
             "Spreadsheet default Style(s)",
-            [
-                SpreadsheetMetadata.STYLE,
-            ],
+            SpreadsheetSettingsWidget.spreadsheetStyleRows(),
         );
+    }
+
+    static spreadsheetStyleRows() {
+        return [
+            SpreadsheetMetadata.STYLE,
+        ];
     }
 
     renderRow(property, classes) {
@@ -800,7 +853,7 @@ class SpreadsheetSettingsWidget extends React.Component {
             default:
                 throw new Error("Unknown property \"" + property + "\"");
         }
-        
+
         return label;
     }
 
