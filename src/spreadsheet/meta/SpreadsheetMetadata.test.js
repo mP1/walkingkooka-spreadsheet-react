@@ -83,6 +83,7 @@ test("from json with spreadsheet-name", () => {
 
 test("from json all properties", () => {
     SpreadsheetMetadata.fromJson({
+        "cell-character-width": 10,
         "color-0": "#000000",
         "color-1": "#000001",
         "color-10": "#00000a",
@@ -144,7 +145,6 @@ test("from json all properties", () => {
         "time-format-pattern": "hh:mm",
         "time-parse-patterns": "hh:mmhh:mm:ss.000",
         "two-digit-year": 31,
-        "width": 10
     });
 });
 
@@ -688,7 +688,7 @@ test("all setters & getters", () => {
     const viewportCell = SpreadsheetCellReference.parse("A99");
 
     const metadata = SpreadsheetMetadata.EMPTY
-        .set(SpreadsheetMetadata.WIDTH, cellCharacterWidth)
+        .set(SpreadsheetMetadata.CELL_CHARACTER_WIDTH, cellCharacterWidth)
         .set(SpreadsheetMetadata.CURRENCY_SYMBOL, currencySymbol)
         .set(SpreadsheetMetadata.DATETIME_OFFSET, dateTimeOffset)
         .set(SpreadsheetMetadata.DATETIME_FORMAT_PATTERN, dateTimeFormatPattern)
