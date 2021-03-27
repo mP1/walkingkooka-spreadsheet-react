@@ -10,7 +10,7 @@ export default function lengthFromJson(text) {
     }
 
     let length;
-    if("none" === text){
+    if("none" === text || "0" == text || "0px" == text){
         length = NoneLength.INSTANCE;
     }else {
         length = PixelLength.fromJson(text);
