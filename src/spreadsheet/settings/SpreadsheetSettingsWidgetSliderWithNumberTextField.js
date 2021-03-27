@@ -27,24 +27,14 @@ export default class SpreadsheetSettingsWidgetSliderWithNumberTextField extends 
         const numberTextFieldId = id + "-NumberTextField";
 
         return [
-            <Slider id={sliderId}
-                    key={sliderId}
-                    defaultValue={this.defaultValueIndex}
-                    min={min}
-                    max={max}
-                    step={step}
-                    marks={marks}
-                    value={value}
-                    onChange={this.onChangeSlider.bind(this)}
-                    style={this.style}/>,
             <TextField id={numberTextFieldId}
                        key={numberTextFieldId}
                        style={
                            {
                                marginRight: "4px",
+                               width: "100px",
                            }
                        }
-                       fullWidth
                        margin="none"
                        disabled={false}
                        InputLabelProps={
@@ -64,7 +54,17 @@ export default class SpreadsheetSettingsWidgetSliderWithNumberTextField extends 
                        onChange={this.onChangeTextField.bind(this)}
                        onBlur={this.onBlur.bind(this)}
                        onKeyDown={this.onKeyDown.bind(this)}
-            />
+            />,
+            <Slider id={sliderId}
+                    key={sliderId}
+                    defaultValue={this.defaultValueIndex}
+                    min={min}
+                    max={max}
+                    step={step}
+                    marks={marks}
+                    value={value}
+                    onChange={this.onChangeSlider.bind(this)}
+                    style={this.style}/>,
         ];
     }
 
