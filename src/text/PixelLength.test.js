@@ -34,6 +34,14 @@ test("create", () => {
     check(PixelLength.parse("123px"), 123);
 });
 
+test("pixelValue 1", () => {
+    expect(new PixelLength(1).pixelValue()).toStrictEqual(1);
+});
+
+test("pixelValue 23", () => {
+    expect(new PixelLength(23).pixelValue()).toStrictEqual(23);
+});
+
 // equals...............................................................................................................
 
 test("equals equivalent true", () => {
