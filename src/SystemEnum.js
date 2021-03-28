@@ -68,6 +68,10 @@ export default class SystemEnum extends SystemObject {
         return s;
     }
 
+    toCssValue() {
+        return this.nameKebabCase();
+    }
+
     equals(other) {
         return this === other;
     }
