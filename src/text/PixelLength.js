@@ -50,7 +50,7 @@ export default class PixelLength extends Length {
     toCssValue() {
         const value = this.value();
         return 0 === value ?
-            "none :" :
+            "0" :
             value + "px";
     }
 

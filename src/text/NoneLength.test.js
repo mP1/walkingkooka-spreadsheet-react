@@ -37,3 +37,7 @@ test("parse 0px", () => {
 test("pixelValue", () => {
     expect(NoneLength.INSTANCE.pixelValue()).toStrictEqual(0);
 });
+
+test("toCssValue", () => {
+    expect(NoneLength.INSTANCE.toCssValue()).toStrictEqual("0");
+});
