@@ -725,7 +725,9 @@ export default class TextStyle extends SystemObject {
                     break;
             }
 
-            css[camelCase] = value2.toString();
+            css[camelCase] = value2.toCssValue ?
+                value2.toCssValue() :
+                value2.toString();
         }
 
         return css;
