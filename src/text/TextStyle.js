@@ -699,17 +699,26 @@ export default class TextStyle extends SystemObject {
         const css = {};
 
         for(const [property, value] of Object.entries(this.properties)) {
-            const components = property.split("-");
-            const first = components.shift();
+            let cssPropertyName;
 
-            const camelCase =
-                first +
-                components.map(c => {
-                    return c.charAt(0).toUpperCase() + c.substring(1);
-                })
-                    .join("");
+            switch(property) {
+                case TextStyle.TEXT_DIRECTION:
+                    cssPropertyName = "direction";
+                    break;
+                default:
+                    const components = property.split("-");
+                    const first = components.shift();
 
-            css[camelCase] = value.toCssValue ?
+                    cssPropertyName =
+                        first +
+                        components.map(c => {
+                            return c.charAt(0).toUpperCase() + c.substring(1);
+                        })
+                            .join("");
+                    break;
+            }
+
+            css[cssPropertyName] = value.toCssValue ?
                 value.toCssValue() :
                 value.toString();
         }

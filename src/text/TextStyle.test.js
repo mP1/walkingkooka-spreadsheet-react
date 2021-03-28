@@ -482,6 +482,15 @@ test("toCss border-left-width", () => {
         });
 });
 
+test("toCss TextDirection.LTR", () => {
+    expect(TextStyle.EMPTY
+        .set(TextStyle.TEXT_DIRECTION, TextDirection.LTR)
+        .toCss())
+        .toEqual({
+            direction: "ltr",
+        });
+});
+
 test("toCss WordWrap.BREAK_NORMAL", () => {
     expect(TextStyle.EMPTY
         .set(TextStyle.WORD_WRAP, WordWrap.BREAK_WORD)
