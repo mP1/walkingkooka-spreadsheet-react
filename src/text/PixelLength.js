@@ -39,6 +39,10 @@ export default class PixelLength extends Length {
         return this.valueValue;
     }
 
+    pixelValue() {
+        return this.value();
+    }
+
     typeName() {
         return TYPE_NAME;
     }

@@ -33,3 +33,7 @@ test("parse 0", () => {
 test("parse 0px", () => {
     expect(NoneLength.fromJson("0px")).toStrictEqual(NoneLength.INSTANCE);
 });
+
+test("pixelValue", () => {
+    expect(NoneLength.INSTANCE.pixelValue()).toStrictEqual(0);
+});

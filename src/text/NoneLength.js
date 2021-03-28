@@ -44,6 +44,10 @@ export default class NoneLength extends Length {
         return TEXT;
     }
 
+    pixelValue() {
+        return 0;
+    }
+
     typeName() {
         return TYPE_NAME;
     }
