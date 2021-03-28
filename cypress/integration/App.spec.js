@@ -277,7 +277,7 @@ context(
                     settingsToggle(); // open
 
                     const section = SpreadsheetSettingsWidget.section(SpreadsheetMetadata.TWO_DIGIT_YEAR);
-                    cy.get("#spreadsheet-" + section + "-content")
+                    cy.get("#settings-spreadsheet-" + section + "-content")
                         .should('be.visible');
 
                     reactRenderWait();
@@ -328,10 +328,10 @@ context(
 
             const year = new Date().getFullYear();
 
-            cy.get("#spreadsheet-metadata-create-date-time")
+            cy.get("#settings-spreadsheet-metadata-create-date-time")
                 .contains(year);
 
-            cy.get("#spreadsheet-metadata-modified-date-time")
+            cy.get("#settings-spreadsheet-metadata-modified-date-time")
                 .contains(year);
         });
 
@@ -360,7 +360,7 @@ context(
                         .type("{enter}", FORCE_TRUE);
                 }
 
-                const textFieldId = "#spreadsheet-metadata-" + property + "-TextField";
+                const textFieldId = "#settings-spreadsheet-metadata-" + property + "-TextField";
                 cy.get(textFieldId)
                     .type("{selectall}")
                     .type(text)
@@ -380,7 +380,7 @@ context(
 
                 reactRenderWait();
 
-                const buttonId = "#spreadsheet-metadata-" + property + "-default-Button";
+                const buttonId = "#settings-spreadsheet-metadata-" + property + "-default-Button";
                 cy.get(buttonId)
                     .should("have.text", defaultText)
                     .click();
@@ -422,7 +422,7 @@ context(
                         .type("{enter}", FORCE_TRUE);
                 }
 
-                const sliderId = "#spreadsheet-metadata-" + property + "-Slider";
+                const sliderId = "#settings-spreadsheet-metadata-" + property + "-Slider";
 
                 // the first slow of a Slider is reserved for "Default".
                 values.forEach((v, i) => {
@@ -448,8 +448,8 @@ context(
                 settingsToggle();
                 settingsOpenSectionSpreadsheetMetadataProperty(property);
 
-                const dateParsePatternsId = "#spreadsheet-metadata-" + SpreadsheetMetadata.DATE_PARSE_PATTERNS + "-TextField";
-                const dateFormatPatternId = "#spreadsheet-metadata-" + SpreadsheetMetadata.DATE_FORMAT_PATTERN + "-TextField";
+                const dateParsePatternsId = "#settings-spreadsheet-metadata-" + SpreadsheetMetadata.DATE_PARSE_PATTERNS + "-TextField";
+                const dateFormatPatternId = "#settings-spreadsheet-metadata-" + SpreadsheetMetadata.DATE_FORMAT_PATTERN + "-TextField";
                 switch(property) {
                     case SpreadsheetMetadata.DEFAULT_YEAR:
                         cy.get(dateParsePatternsId)
@@ -501,8 +501,8 @@ context(
                         .type("{enter}", FORCE_TRUE);
                 }
 
-                const sliderId = "#spreadsheet-metadata-" + property + "-Slider";
-                const numberTextFieldId = "#spreadsheet-metadata-" + property + "-NumberTextField";
+                const sliderId = "#settings-spreadsheet-metadata-" + property + "-Slider";
+                const numberTextFieldId = "#settings-spreadsheet-metadata-" + property + "-NumberTextField";
 
                 // click on the slider and verify number in TextField was updated
                 values.forEach((v, i) => {
@@ -560,7 +560,7 @@ context(
                         .type("{enter}", FORCE_TRUE);
                 }
 
-                const dropDownListId = "#spreadsheet-metadata-" + property + "-DropDownList";
+                const dropDownListId = "#settings-spreadsheet-metadata-" + property + "-DropDownList";
 
                 values.forEach((v, i) => {
                     cy.get(dropDownListId)
@@ -866,7 +866,7 @@ context(
                 settingsToggle();
                 settingsOpenSectionSpreadsheetMetadataProperty(property1);
 
-                const textFieldId1 = "#spreadsheet-metadata-" + property1 + "-TextField";
+                const textFieldId1 = "#settings-spreadsheet-metadata-" + property1 + "-TextField";
                 cy.get(textFieldId1)
                     .type("{selectall}")
                     .type(text1)
@@ -875,7 +875,7 @@ context(
                 cy.get(textFieldId1)
                     .should("have.value", text1);
 
-                const textFieldId2 = "#spreadsheet-metadata-" + property2 + "-TextField";
+                const textFieldId2 = "#settings-spreadsheet-metadata-" + property2 + "-TextField";
                 cy.get(textFieldId2)
                     .type("{selectall}")
                     .type(text2)
@@ -942,7 +942,7 @@ context(
                     .type("'ABC", FORCE_TRUE)
                     .type("{enter}", FORCE_TRUE);
 
-                const textFieldId = "#spreadsheet-metadata-style-" + property + "-TextField";
+                const textFieldId = "#settings-spreadsheet-metadata-style-" + property + "-TextField";
                 const text = "#123456";
 
                 cy.get(textFieldId)
@@ -953,7 +953,7 @@ context(
                 a1StyleCheck(property, "rgb(18, 52, 86)");
 
                 if(defaultColor){
-                    const defaultButtonId = "#spreadsheet-metadata-style-" + property + "-default-Button";
+                    const defaultButtonId = "#settings-spreadsheet-metadata-style-" + property + "-default-Button";
                     cy.get(defaultButtonId)
                         .should("have.text", defaultColor)
                         .click();
@@ -982,7 +982,7 @@ context(
                     .type("'ABC", FORCE_TRUE)
                     .type("{enter}", FORCE_TRUE);
 
-                const sliderId = "#spreadsheet-metadata-style-" + property + "-Slider";
+                const sliderId = "#settings-spreadsheet-metadata-style-" + property + "-Slider";
 
                 // the first slot of a Slider is reserved for "Default".
                 values.forEach((v, i) => {
@@ -1007,7 +1007,7 @@ context(
                 });
 
                 if(defaultValue){
-                    const defaultButtonId = "#spreadsheet-metadata-style-" + property + "-default-Button";
+                    const defaultButtonId = "#settings-spreadsheet-metadata-style-" + property + "-default-Button";
                     cy.get(defaultButtonId)
                         .should("have.text", defaultButtonText)// @see https://github.com/mP1/walkingkooka-spreadsheet-react/issues/695
                         .click();
@@ -1033,8 +1033,8 @@ context(
                     .type("'ABC", FORCE_TRUE)
                     .type("{enter}", FORCE_TRUE);
 
-                const sliderId = "#spreadsheet-metadata-style-" + property + "-Slider";
-                const numberTextFieldId = "#spreadsheet-metadata-style-" + property + "-NumberTextField";
+                const sliderId = "#settings-spreadsheet-metadata-style-" + property + "-Slider";
+                const numberTextFieldId = "#settings-spreadsheet-metadata-style-" + property + "-NumberTextField";
 
                 // type a number in TextField & verify slider moved.
                 const values = [
@@ -1071,7 +1071,7 @@ context(
                 });
 
                 if(null != defaultValue){
-                    const defaultButtonId = "#spreadsheet-metadata-style-" + property + "-default-Button";
+                    const defaultButtonId = "#settings-spreadsheet-metadata-style-" + property + "-default-Button";
                     cy.get(defaultButtonId)
                         .should("have.text", defaultButtonText)
                         .click();
@@ -1392,12 +1392,12 @@ context(
             //.scrollIntoView() // prevents cypress from complaining about content that is longer than the screen height.
             //.should('be.visible');
 
-            cy.get("#spreadsheet-" + section + "-expand-more-icon")
+            cy.get("#settings-spreadsheet-" + section + "-expand-more-icon")
                 .click();
 
             reactRenderWait();
 
-            cy.get("#spreadsheet-" + section + "-content");
+            cy.get("#settings-spreadsheet-" + section + "-content");
             //.should('be.visible');
 
             hash()
