@@ -43,6 +43,13 @@ export default class PixelLength extends Length {
         return TYPE_NAME;
     }
 
+    toCssValue() {
+        const value = this.value();
+        return 0 === value ?
+            "none :" :
+            value + "px";
+    }
+
     equals(other) {
         return this === other ||
             (other instanceof PixelLength &&

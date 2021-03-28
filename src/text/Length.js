@@ -10,6 +10,10 @@ export default class Length extends SystemObject {
         super();
     }
 
+    toCssValue() {
+        throw new Error("Not yet implemented toCssValue()");
+    }
+
     toJson() {
         return this.toString();
     }

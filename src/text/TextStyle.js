@@ -709,25 +709,9 @@ export default class TextStyle extends SystemObject {
                 })
                     .join("");
 
-            var value2;
-            switch(first) {
-                case "border":
-                case "margin":
-                case "padding":
-                    if(value === "none"){
-                        value2 = "0";
-                        break;
-                    }
-                    value2 = value;
-                    break;
-                default:
-                    value2 = value;
-                    break;
-            }
-
-            css[camelCase] = value2.toCssValue ?
-                value2.toCssValue() :
-                value2.toString();
+            css[camelCase] = value.toCssValue ?
+                value.toCssValue() :
+                value.toString();
         }
 
         return css;
