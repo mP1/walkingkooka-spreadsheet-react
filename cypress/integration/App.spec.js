@@ -346,7 +346,7 @@ context(
                                                                  updatedA1Formula,
                                                                  a1CellContent,
                                                                  a1CellContentDefault) {
-            it("Show settings and update SpreadsheetMetadata." + property, () => {
+            it("Settings update SpreadsheetMetadata." + property, () => {
                 settingsToggle();
                 settingsOpenSectionSpreadsheetMetadataProperty(property);
 
@@ -400,247 +400,6 @@ context(
             });
         }
 
-        settingsSpreadsheetMetadataPropertyTextAndCheck(
-            SpreadsheetMetadata.DATE_FORMAT_PATTERN,
-            "31/12/1999",
-            "yyyy/mm/dd",
-            "Default",
-            "31/12/1999",
-            "1999/12/31",
-            "Friday, 31 December 1999",
-        );
-
-        settingsSpreadsheetMetadataPropertyTextAndCheck(
-            SpreadsheetMetadata.DATE_PARSE_PATTERNS,
-            "1999:12:31",
-            "yyyy:mm:dd",
-            "Default",
-            "1999:12:31",
-            "Friday, 31 December 1999",
-            "Friday, 31 December 1999",
-        );
-
-        settingsSpreadsheetMetadataPropertyTextAndCheck(
-            SpreadsheetMetadata.DATETIME_FORMAT_PATTERN,
-            "31/12/1999, 12:58",
-            "hh:mm yyyy/mm/dd",
-            "Default",
-            "31/12/1999, 12:58",
-            "12:58 1999/12/31",
-            "Friday, 31 December 1999 at 12:58:00",
-        );
-
-        settingsSpreadsheetMetadataPropertyTextAndCheck(
-            SpreadsheetMetadata.DATETIME_PARSE_PATTERNS,
-            "1999/12/31 12:58",
-            "yyyy/mm/dd hh:mm",
-            "Default",
-            "1999/12/31 12:58",
-            "Friday, 31 December 1999 at 12:58:00",
-            "Friday, 31 December 1999 at 12:58:00",
-        );
-
-        settingsSpreadsheetMetadataPropertyTextAndCheck(
-            SpreadsheetMetadata.DECIMAL_SEPARATOR,
-            "=2.5",
-            "*",
-            ".",
-            "=2*5",
-            "2*5",
-            "2.5",
-        );
-        settingsSpreadsheetMetadataPropertyTextAndCheck(
-            SpreadsheetMetadata.EXPONENT_SYMBOL,
-            null,
-            "x",
-            "E",
-            null,
-            null,
-            null);
-
-        settingsSpreadsheetMetadataPropertyTextAndCheck(
-            SpreadsheetMetadata.GROUPING_SEPARATOR,
-            "123456",
-            "*",
-            ",",
-            "123456",
-            "123*456.",
-            "123,456."
-        );
-
-        settingsSpreadsheetMetadataPropertyTextAndCheck(
-            SpreadsheetMetadata.NEGATIVE_SIGN,
-            "=2*-4",
-            "*",
-            "-",
-            "=2**4",
-            "*8.",
-            "-8.");
-
-        settingsSpreadsheetMetadataPropertyTextAndCheck(
-            SpreadsheetMetadata.NUMBER_FORMAT_PATTERN,
-            "123.5",
-            "###.000",
-            "Default",
-            "123.5",
-            "123.500",
-            "123.5",
-        );
-
-        settingsSpreadsheetMetadataPropertyTextAndCheck(
-            SpreadsheetMetadata.NUMBER_PARSE_PATTERNS,
-            "123.5",
-            "###.000",
-            "Default",
-            "123.5",
-            "123.5",
-            "123.5",
-        );
-
-        // TODO need to set format pattern which includes percentage
-        settingsSpreadsheetMetadataPropertyTextAndCheck(
-            SpreadsheetMetadata.PERCENTAGE_SYMBOL,
-            null,
-            "*",
-            "%",
-            null,
-            null,
-            null
-        );
-
-        // TODO need to format Exponent
-        settingsSpreadsheetMetadataPropertyTextAndCheck(
-            SpreadsheetMetadata.POSITIVE_SIGN,
-            "+1.5",
-            "*",
-            "+",
-            "*1.5",
-            "1.5",
-            "1.5",
-        );
-
-        settingsSpreadsheetMetadataPropertyTextAndCheck(
-            SpreadsheetMetadata.VALUE_SEPARATOR,
-            "=5/2",
-            "*",
-            ",",
-            "=5/2",
-            "2.5",
-            "2.5",
-        );
-
-        settingsSpreadsheetMetadataPropertyTextAndCheck(
-            SpreadsheetMetadata.TEXT_FORMAT_PATTERN,
-            "=\"Hello 123\"",
-            "@@",
-            "Default",
-            "=\"Hello 123\"",
-            "Hello 123Hello 123",
-            "Hello 123",
-        );
-
-        settingsSpreadsheetMetadataPropertyTextAndCheck(
-            SpreadsheetMetadata.TEXT_FORMAT_PATTERN,
-            "'Hello 123",
-            "@@",
-            "Default",
-            "'Hello 123",
-            "Hello 123Hello 123",
-            "Hello 123",
-        );
-
-        settingsSpreadsheetMetadataPropertyTextAndCheck(
-            SpreadsheetMetadata.TIME_FORMAT_PATTERN,
-            "12:58",
-            "hh::mm::",
-            "Default",
-            "12:58",
-            "12::58::",
-            "12:58:00",
-        );
-
-        settingsSpreadsheetMetadataPropertyTextAndCheck(
-            SpreadsheetMetadata.TIME_PARSE_PATTERNS,
-            "12::58::59.000",
-            "hh::mm::ss.000",
-            "Default",
-            "12::58::59.000",
-            "12:58:59",
-            "12:58:59",
-        );
-
-        /**
-         * Updates 2 properties with initial text values, then sets the first to the second text, which should cause
-         * the second to gain the former first text.
-         */
-        function settingsSpreadsheetMetadataPropertyTextSwapCheck(property1,
-                                                                  text1,
-                                                                  property2,
-                                                                  text2) {
-            it("Show settings and update SpreadsheetMetadata." + property1 + "=" + text1 + " & " + property2 + "=" + text2 + " causing value swap", () => {
-                settingsToggle();
-                settingsOpenSectionSpreadsheetMetadataProperty(property1);
-
-                const textFieldId1 = "#spreadsheet-metadata-" + property1 + "-TextField";
-                cy.get(textFieldId1)
-                    .type("{selectall}")
-                    .type(text1)
-                    .blur();
-
-                cy.get(textFieldId1)
-                    .should("have.value", text1);
-
-                const textFieldId2 = "#spreadsheet-metadata-" + property2 + "-TextField";
-                cy.get(textFieldId2)
-                    .type("{selectall}")
-                    .type(text2)
-                    .blur();
-
-                cy.get(textFieldId2)
-                    .should("have.value", text2);
-
-                // set property1 with text2, this should force property2 to have text1
-                cy.get(textFieldId1)
-                    .type("{selectall}")
-                    .type(text2)
-                    .blur();
-
-                cy.get(textFieldId1)
-                    .should("have.value", text2);
-
-                cy.get(textFieldId2)
-                    .should("have.value", text1);
-            });
-        }
-
-        settingsSpreadsheetMetadataPropertyTextSwapCheck(
-            SpreadsheetMetadata.DECIMAL_SEPARATOR,
-            '.',
-            SpreadsheetMetadata.GROUPING_SEPARATOR,
-            ','
-        );
-
-        settingsSpreadsheetMetadataPropertyTextSwapCheck(
-            SpreadsheetMetadata.NEGATIVE_SIGN,
-            '-',
-            SpreadsheetMetadata.PERCENTAGE_SYMBOL,
-            '%'
-        );
-
-        settingsSpreadsheetMetadataPropertyTextSwapCheck(
-            SpreadsheetMetadata.NEGATIVE_SIGN,
-            '-',
-            SpreadsheetMetadata.POSITIVE_SIGN,
-            '+'
-        );
-
-        settingsSpreadsheetMetadataPropertyTextSwapCheck(
-            SpreadsheetMetadata.DECIMAL_SEPARATOR,
-            '-',
-            SpreadsheetMetadata.POSITIVE_SIGN,
-            '+'
-        );
-
         /**
          * Opens the spreadsheet settings, selects each value by clicking the slider.
          * TODO Currently no test is made upon the a1 cell contents.
@@ -649,7 +408,7 @@ context(
                                                                    a1Formula,
                                                                    values,
                                                                    a1CellContents) {
-            it("Show settings and update SpreadsheetMetadata." + property, () => {
+            it("Settings update SpreadsheetMetadata." + property, () => {
                 settingsToggle();
                 settingsOpenSectionSpreadsheetMetadataProperty(property);
 
@@ -677,14 +436,6 @@ context(
                 });
             });
         }
-
-        settingsSpreadsheetMetadataPropertySliderAndCheck(
-            SpreadsheetMetadata.EXPRESSION_NUMBER_KIND,
-            null,
-            ExpressionNumberKind.values(),
-            null,
-        );
-
         /**
          * Opens the spreadsheet settings, selects each value by clicking the slider.
          * TODO Currently no test is made upon the a1 cell contents.
@@ -693,7 +444,7 @@ context(
                                                                                   a1Formula,
                                                                                   values,
                                                                                   a1CellContents) {
-            it("Show settings and update SpreadsheetMetadata." + property, () => {
+            it("Settings update SpreadsheetMetadata." + property, () => {
                 settingsToggle();
                 settingsOpenSectionSpreadsheetMetadataProperty(property);
 
@@ -787,99 +538,6 @@ context(
                 });
             });
         }
-
-        settingsSpreadsheetMetadataPropertySliderNumberTextFieldAndCheck(
-            SpreadsheetMetadata.CELL_CHARACTER_WIDTH,
-            null,
-            [
-                {
-                    value: "1",
-                    text: "1",
-                },
-                {
-                    value: "10",
-                    text: "10",
-                },
-                {
-                    value: "20",
-                    text: "20",
-                },
-            ],
-            null
-        );
-
-        settingsSpreadsheetMetadataPropertySliderNumberTextFieldAndCheck(
-            SpreadsheetMetadata.DATETIME_OFFSET,
-            null,
-            [
-                {
-                    value: "-25569",
-                    text: "1900",
-                },
-                {
-                    value: "-24107",
-                    text: "1904",
-                },
-            ],
-            null
-        );
-
-        settingsSpreadsheetMetadataPropertySliderNumberTextFieldAndCheck(
-            SpreadsheetMetadata.DEFAULT_YEAR,
-            "31:12",
-            [
-                {
-                    value: "1900",
-                    text: "1900",
-                },
-                {
-                    value: "2000",
-                    text: "2000",
-                }
-            ],
-            ["1900/12/31", "2000/12/31"]
-        );
-
-        settingsSpreadsheetMetadataPropertySliderNumberTextFieldAndCheck(
-            SpreadsheetMetadata.PRECISION,
-            null,
-            [
-                {
-                    value: "0",
-                    text: "∞",
-                },
-                {
-                    value: "32",
-                    text: "32",
-                },
-                {
-                    value: "64",
-                    text: "64",
-                },
-                {
-                    value: "128",
-                    text: "128",
-                }
-            ],
-            null
-        );
-
-        settingsSpreadsheetMetadataPropertySliderNumberTextFieldAndCheck(
-            SpreadsheetMetadata.TWO_DIGIT_YEAR,
-            "30/12/31",
-            [
-                {
-                    value: "20",
-                    text: "20",
-                },
-                {
-                    value: "50",
-                    text: "50",
-                },
-            ],
-            ["1930/12/31", "2030/12/31"]
-        );
-
         /**
          * Opens the spreadsheet settings, selects each value by clicking the drop down list (select).
          * TODO Currently no test is made upon the a1 cell contents.
@@ -888,7 +546,7 @@ context(
                                                                          a1Formula,
                                                                          values,
                                                                          a1CellContents) {
-            it("Show settings and update SpreadsheetMetadata." + property, () => {
+            it("Settings update SpreadsheetMetadata." + property, () => {
                 settingsToggle();
                 settingsOpenSectionSpreadsheetMetadataProperty(property);
 
@@ -918,12 +576,357 @@ context(
             });
         }
 
+        settingsSpreadsheetMetadataPropertySliderNumberTextFieldAndCheck(
+            SpreadsheetMetadata.CELL_CHARACTER_WIDTH,
+            null,
+            [
+                {
+                    value: "1",
+                    text: "1",
+                },
+                {
+                    value: "10",
+                    text: "10",
+                },
+                {
+                    value: "20",
+                    text: "20",
+                },
+            ],
+            null
+        );
+
+        settingsSpreadsheetMetadataPropertyTextAndCheck(
+            SpreadsheetMetadata.DATE_FORMAT_PATTERN,
+            "31/12/1999",
+            "yyyy/mm/dd",
+            "Default",
+            "31/12/1999",
+            "1999/12/31",
+            "Friday, 31 December 1999",
+        );
+
+        settingsSpreadsheetMetadataPropertyTextAndCheck(
+            SpreadsheetMetadata.DATE_PARSE_PATTERNS,
+            "1999:12:31",
+            "yyyy:mm:dd",
+            "Default",
+            "1999:12:31",
+            "Friday, 31 December 1999",
+            "Friday, 31 December 1999",
+        );
+
+        settingsSpreadsheetMetadataPropertyTextAndCheck(
+            SpreadsheetMetadata.DATETIME_FORMAT_PATTERN,
+            "31/12/1999, 12:58",
+            "hh:mm yyyy/mm/dd",
+            "Default",
+            "31/12/1999, 12:58",
+            "12:58 1999/12/31",
+            "Friday, 31 December 1999 at 12:58:00",
+        );
+
+        settingsSpreadsheetMetadataPropertySliderNumberTextFieldAndCheck(
+            SpreadsheetMetadata.DATETIME_OFFSET,
+            null,
+            [
+                {
+                    value: "-25569",
+                    text: "1900",
+                },
+                {
+                    value: "-24107",
+                    text: "1904",
+                },
+            ],
+            null
+        );
+
+        settingsSpreadsheetMetadataPropertyTextAndCheck(
+            SpreadsheetMetadata.DATETIME_PARSE_PATTERNS,
+            "1999/12/31 12:58",
+            "yyyy/mm/dd hh:mm",
+            "Default",
+            "1999/12/31 12:58",
+            "Friday, 31 December 1999 at 12:58:00",
+            "Friday, 31 December 1999 at 12:58:00",
+        );
+
+        settingsSpreadsheetMetadataPropertyTextAndCheck(
+            SpreadsheetMetadata.DECIMAL_SEPARATOR,
+            "=2.5",
+            "*",
+            ".",
+            "=2*5",
+            "2*5",
+            "2.5",
+        );
+
+        settingsSpreadsheetMetadataPropertySliderNumberTextFieldAndCheck(
+            SpreadsheetMetadata.DEFAULT_YEAR,
+            "31:12",
+            [
+                {
+                    value: "1900",
+                    text: "1900",
+                },
+                {
+                    value: "2000",
+                    text: "2000",
+                }
+            ],
+            ["1900/12/31", "2000/12/31"]
+        );
+
+        settingsSpreadsheetMetadataPropertyTextAndCheck(
+            SpreadsheetMetadata.EXPONENT_SYMBOL,
+            null,
+            "x",
+            "E",
+            null,
+            null,
+            null
+        );
+
+        settingsSpreadsheetMetadataPropertySliderAndCheck(
+            SpreadsheetMetadata.EXPRESSION_NUMBER_KIND,
+            null,
+            ExpressionNumberKind.values(),
+            null,
+        );
+
+
+        settingsSpreadsheetMetadataPropertyTextAndCheck(
+            SpreadsheetMetadata.GROUPING_SEPARATOR,
+            "123456",
+            "*",
+            ",",
+            "123456",
+            "123*456.",
+            "123,456."
+        );
+
+        settingsSpreadsheetMetadataPropertyTextAndCheck(
+            SpreadsheetMetadata.NEGATIVE_SIGN,
+            "=2*-4",
+            "*",
+            "-",
+            "=2**4",
+            "*8.",
+            "-8.");
+
+        settingsSpreadsheetMetadataPropertyTextAndCheck(
+            SpreadsheetMetadata.NUMBER_FORMAT_PATTERN,
+            "123.5",
+            "###.000",
+            "Default",
+            "123.5",
+            "123.500",
+            "123.5",
+        );
+
+        settingsSpreadsheetMetadataPropertyTextAndCheck(
+            SpreadsheetMetadata.NUMBER_PARSE_PATTERNS,
+            "123.5",
+            "###.000",
+            "Default",
+            "123.5",
+            "123.5",
+            "123.5",
+        );
+
+        // TODO need to set format pattern which includes percentage
+        settingsSpreadsheetMetadataPropertyTextAndCheck(
+            SpreadsheetMetadata.PERCENTAGE_SYMBOL,
+            null,
+            "*",
+            "%",
+            null,
+            null,
+            null
+        );
+
+        // TODO need to format Exponent
+        settingsSpreadsheetMetadataPropertyTextAndCheck(
+            SpreadsheetMetadata.POSITIVE_SIGN,
+            "+1.5",
+            "*",
+            "+",
+            "*1.5",
+            "1.5",
+            "1.5",
+        );
+
+        settingsSpreadsheetMetadataPropertySliderNumberTextFieldAndCheck(
+            SpreadsheetMetadata.PRECISION,
+            null,
+            [
+                {
+                    value: "0",
+                    text: "∞",
+                },
+                {
+                    value: "32",
+                    text: "32",
+                },
+                {
+                    value: "64",
+                    text: "64",
+                },
+                {
+                    value: "128",
+                    text: "128",
+                }
+            ],
+            null
+        );
+
         settingsSpreadsheetMetadataPropertyDropDownListAndCheck(
             SpreadsheetMetadata.ROUNDING_MODE,
             null,
             RoundingMode.values(),
             null
         );
+
+        settingsSpreadsheetMetadataPropertyTextAndCheck(
+            SpreadsheetMetadata.TEXT_FORMAT_PATTERN,
+            "=\"Hello 123\"",
+            "@@",
+            "Default",
+            "=\"Hello 123\"",
+            "Hello 123Hello 123",
+            "Hello 123",
+        );
+
+        settingsSpreadsheetMetadataPropertyTextAndCheck(
+            SpreadsheetMetadata.TEXT_FORMAT_PATTERN,
+            "'Hello 123",
+            "@@",
+            "Default",
+            "'Hello 123",
+            "Hello 123Hello 123",
+            "Hello 123",
+        );
+
+        settingsSpreadsheetMetadataPropertyTextAndCheck(
+            SpreadsheetMetadata.TIME_FORMAT_PATTERN,
+            "12:58",
+            "hh::mm::",
+            "Default",
+            "12:58",
+            "12::58::",
+            "12:58:00",
+        );
+
+        settingsSpreadsheetMetadataPropertyTextAndCheck(
+            SpreadsheetMetadata.TIME_PARSE_PATTERNS,
+            "12::58::59.000",
+            "hh::mm::ss.000",
+            "Default",
+            "12::58::59.000",
+            "12:58:59",
+            "12:58:59",
+        );
+
+        settingsSpreadsheetMetadataPropertySliderNumberTextFieldAndCheck(
+            SpreadsheetMetadata.TWO_DIGIT_YEAR,
+            "30/12/31",
+            [
+                {
+                    value: "20",
+                    text: "20",
+                },
+                {
+                    value: "50",
+                    text: "50",
+                },
+            ],
+            ["1930/12/31", "2030/12/31"]
+        );
+
+        settingsSpreadsheetMetadataPropertyTextAndCheck(
+            SpreadsheetMetadata.VALUE_SEPARATOR,
+            "=5/2",
+            "*",
+            ",",
+            "=5/2",
+            "2.5",
+            "2.5",
+        );
+
+        /**
+         * Updates 2 properties with initial text values, then sets the first to the second text, which should cause
+         * the second to gain the former first text.
+         */
+        function settingsSpreadsheetMetadataPropertyTextSwapCheck(property1,
+                                                                  text1,
+                                                                  property2,
+                                                                  text2) {
+            it("Settings update SpreadsheetMetadata." + property1 + "=" + text1 + " & " + property2 + "=" + text2 + " causing value swap", () => {
+                settingsToggle();
+                settingsOpenSectionSpreadsheetMetadataProperty(property1);
+
+                const textFieldId1 = "#spreadsheet-metadata-" + property1 + "-TextField";
+                cy.get(textFieldId1)
+                    .type("{selectall}")
+                    .type(text1)
+                    .blur();
+
+                cy.get(textFieldId1)
+                    .should("have.value", text1);
+
+                const textFieldId2 = "#spreadsheet-metadata-" + property2 + "-TextField";
+                cy.get(textFieldId2)
+                    .type("{selectall}")
+                    .type(text2)
+                    .blur();
+
+                cy.get(textFieldId2)
+                    .should("have.value", text2);
+
+                // set property1 with text2, this should force property2 to have text1
+                cy.get(textFieldId1)
+                    .type("{selectall}")
+                    .type(text2)
+                    .blur();
+
+                cy.get(textFieldId1)
+                    .should("have.value", text2);
+
+                cy.get(textFieldId2)
+                    .should("have.value", text1);
+            });
+        }
+
+
+        settingsSpreadsheetMetadataPropertyTextSwapCheck(
+            SpreadsheetMetadata.DECIMAL_SEPARATOR,
+            '.',
+            SpreadsheetMetadata.GROUPING_SEPARATOR,
+            ','
+        );
+
+        settingsSpreadsheetMetadataPropertyTextSwapCheck(
+            SpreadsheetMetadata.NEGATIVE_SIGN,
+            '-',
+            SpreadsheetMetadata.PERCENTAGE_SYMBOL,
+            '%'
+        );
+
+        settingsSpreadsheetMetadataPropertyTextSwapCheck(
+            SpreadsheetMetadata.NEGATIVE_SIGN,
+            '-',
+            SpreadsheetMetadata.POSITIVE_SIGN,
+            '+'
+        );
+
+        settingsSpreadsheetMetadataPropertyTextSwapCheck(
+            SpreadsheetMetadata.DECIMAL_SEPARATOR,
+            '-',
+            SpreadsheetMetadata.POSITIVE_SIGN,
+            '+'
+        );
+
 
 // settings default style...........................................................................................
 
