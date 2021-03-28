@@ -289,7 +289,7 @@ export default class SpreadsheetViewportWidget extends React.Component {
     }
 
     onCellClick(cellReference) {
-        console.log("$onCellClick: " + cellReference);
+        console.log("onCellClick: " + cellReference);
 
         this.setState({
             editCell: cellReference,
