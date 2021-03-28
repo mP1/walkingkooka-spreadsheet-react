@@ -4,6 +4,7 @@
 import BorderCollapse from "./BorderCollapse.js";
 import BorderStyle from "./BorderStyle.js";
 import Color from "../color/Color.js";
+import Direction from "./Direction.js";
 import FontFamily from "./FontFamily.js";
 import FontKerning from "./FontKerning.js";
 import FontSize from "./FontSize.js";
@@ -22,7 +23,6 @@ import Overflow from "./Overflow.js";
 import PixelLength from "./PixelLength";
 import SystemObject from "../SystemObject.js";
 import TextAlign from "./TextAlign.js";
-import TextDirection from "./TextDirection.js";
 import TextDecorationLine from "./TextDecorationLine.js";
 import TextDecorationStyle from "./TextDecorationStyle.js";
 import TextJustify from "./TextJustify.js";
@@ -60,6 +60,7 @@ function checkProperty(property) {
         case TextStyle.BORDER_TOP_STYLE:
         case TextStyle.BORDER_TOP_WIDTH:
         case TextStyle.COLOR:
+        case TextStyle.DIRECTION:
         case TextStyle.FONT_FAMILY:
         case TextStyle.FONT_KERNING:
         case TextStyle.FONT_SIZE:
@@ -100,7 +101,6 @@ function checkProperty(property) {
         case TextStyle.TEXT_DECORATION_LINE:
         case TextStyle.TEXT_DECORATION_STYLE:
         case TextStyle.TEXT_DECORATION_THICKNESS:
-        case TextStyle.TEXT_DIRECTION:
         case TextStyle.TEXT_INDENT:
         case TextStyle.TEXT_JUSTIFY:
         case TextStyle.TEXT_OVERFLOW:
@@ -161,6 +161,7 @@ export default class TextStyle extends SystemObject {
     static BORDER_TOP_STYLE = "border-top-style";
     static BORDER_TOP_WIDTH = "border-top-width";
     static COLOR = "color";
+    static DIRECTION = "direction";
     static FONT_FAMILY = "font-family";
     static FONT_KERNING = "font-kerning";
     static FONT_SIZE = "font-size";
@@ -201,7 +202,6 @@ export default class TextStyle extends SystemObject {
     static TEXT_DECORATION_LINE = "text-decoration-line";
     static TEXT_DECORATION_STYLE = "text-decoration-style";
     static TEXT_DECORATION_THICKNESS = "text-decoration-thickness";
-    static TEXT_DIRECTION = "text-direction";
     static TEXT_INDENT = "text-indent";
     static TEXT_JUSTIFY = "text-justify";
     static TEXT_OVERFLOW = "text-overflow";
@@ -273,6 +273,9 @@ export default class TextStyle extends SystemObject {
                     break;
                 case TextStyle.COLOR:
                     unmarshaller = Color.fromJson;
+                    break;
+                case TextStyle.DIRECTION:
+                    unmarshaller = Direction.fromJson;
                     break;
                 case TextStyle.FONT_FAMILY:
                     unmarshaller = FontFamily.fromJson;
@@ -367,9 +370,6 @@ export default class TextStyle extends SystemObject {
                     break;
                 case TextStyle.TEXT_DECORATION_THICKNESS:
                     unmarshaller = LengthFromJson;
-                    break;
-                case TextStyle.TEXT_DIRECTION:
-                    unmarshaller = TextDirection.fromJson;
                     break;
                 case TextStyle.TEXT_INDENT:
                     unmarshaller = LengthFromJson;
@@ -490,6 +490,9 @@ export default class TextStyle extends SystemObject {
             case TextStyle.COLOR:
                 expectedClass = Color;
                 break;
+            case TextStyle.DIRECTION:
+                expectedClass = Direction;
+                break;
             case TextStyle.FONT_FAMILY:
                 expectedClass = FontFamily;
                 break;
@@ -584,9 +587,6 @@ export default class TextStyle extends SystemObject {
                 break;
             case TextStyle.TEXT_DECORATION_THICKNESS:
                 expectedClass = Length;
-                break;
-            case TextStyle.TEXT_DIRECTION:
-                expectedClass = TextDirection;
                 break;
             case TextStyle.TEXT_INDENT:
                 expectedClass = Length;
@@ -702,9 +702,6 @@ export default class TextStyle extends SystemObject {
             let cssPropertyName;
 
             switch(property) {
-                case TextStyle.TEXT_DIRECTION:
-                    cssPropertyName = "direction";
-                    break;
                 default:
                     const components = property.split("-");
                     const first = components.shift();
@@ -770,6 +767,9 @@ BorderCollapse.prototype;
 BorderStyle.prototype;
 
 // eslint-disable-next-line no-unused-expressions
+Direction.prototype;
+
+// eslint-disable-next-line no-unused-expressions
 FontFamily.prototype;
 
 // eslint-disable-next-line no-unused-expressions
@@ -822,9 +822,6 @@ TextDecorationLine.prototype;
 
 // eslint-disable-next-line no-unused-expressions
 TextDecorationStyle.prototype;
-
-// eslint-disable-next-line no-unused-expressions
-TextDirection.prototype;
 
 // eslint-disable-next-line no-unused-expressions
 TextJustify.prototype;
