@@ -465,7 +465,7 @@ class SpreadsheetSettingsWidget extends React.Component {
      * Returns a react component for the given property.
      */
     renderDefaultStylePropertyRow(property, classes) {
-        const id = "spreadsheet-metadata-style-" + property;
+        const id = "settings-spreadsheet-metadata-style-" + property;
 
         const state = this.state;
         const metadata = state.spreadsheetMetadata;
@@ -897,7 +897,7 @@ class SpreadsheetSettingsWidget extends React.Component {
     }
 
     renderMetadataPropertyRow(property, classes) {
-        const id = "spreadsheet-metadata-" + property;
+        const id = "settings-spreadsheet-metadata-" + property;
 
         const state = this.state;
         let render;
@@ -1352,7 +1352,7 @@ class SpreadsheetSettingsWidget extends React.Component {
               secondaryHeading,
               tableAriaLabel,
               rows) {
-        const id = "spreadsheet-" + sectionName;
+        const id = "settings-spreadsheet-" + sectionName;
 
         const state = this.state;
         console.log("accordion: " + id + " sectionName: " + sectionName + " state.section: " + state.section + " expanded: " + (state.section === sectionName), "state", state);
