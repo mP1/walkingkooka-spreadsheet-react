@@ -17,6 +17,7 @@ export default class SpreadsheetSettingsWidgetValue extends React.Component {
             {
                 id: PropTypes.string, // id used by cypress tests
                 value: valueType, // Character: the value being displayed/edited
+                showDefaultButton: PropTypes.bool.isRequired, // false means the default button will not be shown
                 defaultValue: valueType, // Character: this value is set when the default button is clicked.
                 defaultValueFormatter: PropTypes.func.isRequired, // Used to convert the default value if one is present into text
                 setValue: PropTypes.func.isRequired, // if present editing/updates to the value are supported.
@@ -80,7 +81,7 @@ export default class SpreadsheetSettingsWidgetValue extends React.Component {
                             {
                                 [
                                     this.renderInput(id, value),
-                                    this.renderDefaultButton(id + "-default-Button", defaultValue),
+                                    this.renderDefaultButton(id + "-default-Button", defaultValue), // hide if theres no default button
                                 ]
                             }
                         </ListItem>
@@ -99,7 +100,7 @@ export default class SpreadsheetSettingsWidgetValue extends React.Component {
 
     renderDefaultButton(id, value) {
         const defaultButtonTooltip = this.defaultButtonTooltip;
-        const text = this.defaultValueFormatter(value);
+        const text = null != value && this.defaultValueFormatter(value);
 
         const button = <Button id={id}
                                key={id}
