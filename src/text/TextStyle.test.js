@@ -1,6 +1,7 @@
 import BorderStyle from "./BorderStyle.js";
 import BorderCollapse from "./BorderCollapse.js";
 import Color from "../color/Color.js";
+import Direction from "./Direction.js";
 import FontFamily from "./FontFamily.js";
 import FontKerning from "./FontKerning.js";
 import FontSize from "./FontSize.js";
@@ -20,7 +21,6 @@ import PixelLength from "./PixelLength";
 import TextAlign from "./TextAlign.js";
 import TextDecorationLine from "./TextDecorationLine.js";
 import TextDecorationStyle from "./TextDecorationStyle.js";
-import TextDirection from "./TextDirection.js";
 import TextJustify from "./TextJustify.js";
 import TextStyle from "./TextStyle";
 import TextTransform from "./TextTransform.js";
@@ -213,6 +213,8 @@ getSetRemovePropertyTest(TextStyle.BORDER_TOP_WIDTH, PIXELS10);
 
 getSetRemovePropertyTest(TextStyle.COLOR, COLOR1);
 
+getSetRemovePropertyTest(TextStyle.DIRECTION, Direction.RTL);
+
 getSetRemovePropertyTest(TextStyle.FONT_FAMILY, new FontFamily("Helvetica"));
 getSetRemovePropertyTest(TextStyle.FONT_KERNING, FontKerning.AUTO);
 getSetRemovePropertyTest(TextStyle.FONT_SIZE, new FontSize(1));
@@ -267,7 +269,6 @@ getSetRemovePropertyTest(TextStyle.TEXT_DECORATION_LINE, TextDecorationLine.LINE
 getSetRemovePropertyTest(TextStyle.TEXT_DECORATION_STYLE, TextDecorationStyle.DASHED);
 getSetRemovePropertyTest(TextStyle.TEXT_DECORATION_THICKNESS, PIXELS10);
 
-getSetRemovePropertyTest(TextStyle.TEXT_DIRECTION, TextDirection.RTL);
 getSetRemovePropertyTest(TextStyle.TEXT_INDENT, PIXELS10);
 getSetRemovePropertyTest(TextStyle.TEXT_JUSTIFY, TextJustify.AUTO);
 getSetRemovePropertyTest(TextStyle.TEXT_OVERFLOW, "value123");
@@ -482,9 +483,9 @@ test("toCss border-left-width", () => {
         });
 });
 
-test("toCss TextDirection.LTR", () => {
+test("toCss Direction.LTR", () => {
     expect(TextStyle.EMPTY
-        .set(TextStyle.TEXT_DIRECTION, TextDirection.LTR)
+        .set(TextStyle.DIRECTION, Direction.LTR)
         .toCss())
         .toEqual({
             direction: "ltr",
