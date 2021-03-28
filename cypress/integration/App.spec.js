@@ -913,132 +913,134 @@ context("General app usage", () => {
         RoundingMode.values(),
         null
     );
+
+    // helpers..............................................................................................................
+
+    /**
+     * Updates the url hash by appending the parameter (which should result in an invalid hash) and then verifies the previous
+     * hash is restored.
+     */
+    function invalidHashUpdateRejected(hashAppend) {
+        reactRenderWait();
+
+        cy.window()
+            .then(function(win) {
+                var hash = win.location.hash;
+
+                // updated hash should be rejected.
+                win.location.hash = hash + hashAppend;
+
+                cy.hash()
+                    .should("eq", hash);
+            });
+    }
+
+    /**
+     * Checks that the spreadsheet is completely empty.
+     */
+    function checkEmptySpreadsheet() {
+        hash().should('match', /.*\/Untitled/) // => true
+
+        // Verify spreadsheet name is "Untitled"
+        spreadsheetName()
+            .should("have.class", "MuiButton-root")
+            .should("have.text", "Untitled");
+
+        title().should("eq", "Untitled");
+
+        // Verify formula is read only and empty
+        formulaText()
+            .should("be.disabled")
+            .should("have.text", "");
+
+        cy.get(COLUMN + SELECTED)
+            .should("have.length", 0);
+
+        cy.get(ROW + SELECTED)
+            .should("have.length", 0);
+
+        cy.get(CELL)
+            .should("have.text", "");
+    }
+
+    function title() {
+        return cy.title();
+    }
+
+    function hashEnter(hash) {
+        cy.window().then(function(win) {
+            win.location.hash = hash;
+        });
+    }
+
+    function hash() {
+        return cy.location().hash();
+    }
+
+    function spreadsheetName() {
+        reactRenderWait();
+        return cy.get("#spreadsheet-name");
+    }
+
+    function formulaText() {
+        reactRenderWait();
+        return cy.get("#formula-TextField");
+    }
+
+    function cellClick(cellReference) {
+        cellGet(cellReference)
+            .click();
+    }
+
+    function cellFormattedTextCheck(cellReference, text) {
+        cellGet(cellReference)
+            .should("have.text", text);
+    }
+
+    function cellGet(cellReference) {
+        return cy.get("#cell-" + cellReference.toUpperCase());
+    }
+
+    /**
+     * Fetches the icon that when clicked toggles the settings
+     */
+    function settingsToggle() {
+        reactRenderWait();
+        cy.get("#settings-icon")
+            .click();
+    }
+
+    /**
+     * Opens the settings section that includes the given SpreadsheetMetadata property
+     */
+    function settingsOpenSectionSpreadsheetMetadataProperty(property) {
+        settings()
+            .should('be.visible');
+
+        const section = SpreadsheetSettingsWidget.section(property);
+
+        cy.get("#spreadsheet-" + section + "-expand-more-icon")
+            .click();
+
+        reactRenderWait();
+
+        cy.get("#spreadsheet-" + section + "-content")
+            .should('be.visible');
+
+        hash().should('match', new RegExp(".*\/.*\/settings\/" + section)) // => true
+    }
+
+    /**
+     * The settings that appears on the right containing settings, tools and more.
+     */
+    function settings() {
+        reactRenderWait();
+        return cy.get("#settings > DIV"); // the #settings remains 1000x0 while the DIV child has an actual height
+    }
+
+    function reactRenderWait(period) {
+        cy.wait(period || 50);
+    }
 });
 
-// helpers..............................................................................................................
 
-/**
- * Updates the url hash by appending the parameter (which should result in an invalid hash) and then verifies the previous
- * hash is restored.
- */
-function invalidHashUpdateRejected(hashAppend) {
-    reactRenderWait();
-
-    cy.window()
-        .then(function(win) {
-            var hash = win.location.hash;
-
-            // updated hash should be rejected.
-            win.location.hash = hash + hashAppend;
-
-            cy.hash()
-                .should("eq", hash);
-        });
-}
-
-/**
- * Checks that the spreadsheet is completely empty.
- */
-function checkEmptySpreadsheet() {
-    hash().should('match', /.*\/Untitled/) // => true
-
-    // Verify spreadsheet name is "Untitled"
-    spreadsheetName()
-        .should("have.class", "MuiButton-root")
-        .should("have.text", "Untitled");
-
-    title().should("eq", "Untitled");
-
-    // Verify formula is read only and empty
-    formulaText()
-        .should("be.disabled")
-        .should("have.text", "");
-
-    cy.get(COLUMN + SELECTED)
-        .should("have.length", 0);
-
-    cy.get(ROW + SELECTED)
-        .should("have.length", 0);
-
-    cy.get(CELL)
-        .should("have.text", "");
-}
-
-function title() {
-    return cy.title();
-}
-
-function hashEnter(hash) {
-    cy.window().then(function(win) {
-        win.location.hash = hash;
-    });
-}
-
-function hash() {
-    return cy.location().hash();
-}
-
-function spreadsheetName() {
-    reactRenderWait();
-    return cy.get("#spreadsheet-name");
-}
-
-function formulaText() {
-    reactRenderWait();
-    return cy.get("#formula-TextField");
-}
-
-function cellClick(cellReference) {
-    cellGet(cellReference)
-        .click();
-}
-
-function cellFormattedTextCheck(cellReference, text) {
-    cellGet(cellReference)
-        .should("have.text", text);
-}
-
-function cellGet(cellReference) {
-    return cy.get("#cell-" + cellReference.toUpperCase());
-}
-
-/**
- * Fetches the icon that when clicked toggles the settings
- */
-function settingsToggle() {
-    reactRenderWait();
-    cy.get("#settings-icon")
-        .click();
-}
-
-/**
- * Opens the settings section that includes the given SpreadsheetMetadata property
- */
-function settingsOpenSectionSpreadsheetMetadataProperty(property) {
-    settings()
-        .should('be.visible');
-
-    const section = SpreadsheetSettingsWidget.section(property);
-
-    cy.get("#spreadsheet-" + section + "-expand-more-icon")
-        .click();
-
-    reactRenderWait();
-
-    cy.get("#spreadsheet-" + section + "-content")
-        .should('be.visible');
-
-    hash().should('match', new RegExp(".*\/.*\/settings\/" + section)) // => true
-}
-
-/**
- * The settings that appears on the right containing settings, tools and more.
- */
-function settings() {
-    reactRenderWait();
-    return cy.get("#settings > DIV"); // the #settings remains 1000x0 while the DIV child has an actual height
-}
-
-function reactRenderWait(period) {
-    cy.wait(period || 50);
-}
