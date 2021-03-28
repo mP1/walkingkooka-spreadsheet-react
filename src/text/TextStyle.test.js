@@ -14,7 +14,6 @@ import FontVariant from "./FontVariant.js";
 import FontWeight from "./FontWeight.js";
 import HangingPunctuation from "./HangingPunctuation.js";
 import Hyphens from "./Hyphens.js";
-import {LineStyle} from "@material-ui/icons";
 import ListStylePosition from "./ListStylePosition.js";
 import ListStyleType from "./ListStyleType.js";
 import OutlineStyle from "./OutlineStyle.js";
@@ -480,6 +479,15 @@ test("toCss border-left-width", () => {
         .toCss())
         .toEqual({
             borderLeftWidth: "10px",
+        });
+});
+
+test("toCss WordWrap.BREAK_NORMAL", () => {
+    expect(TextStyle.EMPTY
+        .set(TextStyle.WORD_WRAP, WordWrap.BREAK_WORD)
+        .toCss())
+        .toEqual({
+            wordWrap: "break-word",
         });
 });
 
