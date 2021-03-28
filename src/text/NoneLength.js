@@ -48,6 +48,10 @@ export default class NoneLength extends Length {
         return TYPE_NAME;
     }
 
+    toCssValue() {
+        return "none";
+    }
+
     equals(other) {
         return this === other ||
             (other instanceof NoneLength &&
