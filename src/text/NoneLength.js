@@ -53,7 +53,7 @@ export default class NoneLength extends Length {
     }
 
     toCssValue() {
-        return "none";
+        return "0";
     }
 
     equals(other) {

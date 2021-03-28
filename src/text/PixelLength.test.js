@@ -42,6 +42,18 @@ test("pixelValue 23", () => {
     expect(new PixelLength(23).pixelValue()).toStrictEqual(23);
 });
 
+test("toCssValue 0", () => {
+    expect(new PixelLength(0).toCssValue()).toStrictEqual("0");
+});
+
+test("toCssValue 1", () => {
+    expect(new PixelLength(1).toCssValue()).toStrictEqual("1px");
+});
+
+test("toCssValue 23", () => {
+    expect(new PixelLength(23).toCssValue()).toStrictEqual("23px");
+});
+
 // equals...............................................................................................................
 
 test("equals equivalent true", () => {

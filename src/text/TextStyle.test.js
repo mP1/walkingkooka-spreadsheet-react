@@ -528,18 +528,18 @@ test("toCss border-xxx-width, margin-xxx, padding-xxx none", () => {
         .set("padding-bottom", NONE)
         .toCss())
         .toEqual({
-            borderLeftWidth: "none",
-            borderTopWidth: "none",
-            borderRightWidth: "none",
-            borderBottomWidth: "none",
-            marginLeft: "none",
-            marginTop: "none",
-            marginRight: "none",
-            marginBottom: "none",
-            paddingLeft: "none",
-            paddingTop: "none",
-            paddingRight: "none",
-            paddingBottom: "none",
+            borderLeftWidth: "0",
+            borderTopWidth: "0",
+            borderRightWidth: "0",
+            borderBottomWidth: "0",
+            marginLeft: "0",
+            marginTop: "0",
+            marginRight: "0",
+            marginBottom: "0",
+            paddingLeft: "0",
+            paddingTop: "0",
+            paddingRight: "0",
+            paddingBottom: "0",
         });
 });
 
@@ -559,18 +559,18 @@ test("toCss border-xxx-width, margin-xxx, padding-xxx none/mixed", () => {
         .set("padding-bottom", NONE)
         .toCss())
         .toEqual({
-            borderLeftWidth: "none",
+            borderLeftWidth: "0",
             borderTopWidth: "10px",
             borderRightWidth: "20px",
             borderBottomWidth: "30px",
             marginLeft: "30px",
             marginTop: "20px",
             marginRight: "10px",
-            marginBottom: "none",
+            marginBottom: "0",
             paddingLeft: "10px",
-            paddingTop: "none",
+            paddingTop: "0",
             paddingRight: "20px",
-            paddingBottom: "none",
+            paddingBottom: "0",
         });
 });
 
