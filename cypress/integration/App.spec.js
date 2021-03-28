@@ -328,13 +328,13 @@ context("General app usage", () => {
      * Opens the spreadsheet settings, types in the given text, and verifies the property.
      * The button is then clicked and the text field is verified.
      */
-    function enterSettingsSpreadsheetMetadataPropertyTextAndCheck(property,
-                                                                  a1Formula,
-                                                                  text,
-                                                                  defaultText,
-                                                                  updatedA1Formula,
-                                                                  a1CellContent,
-                                                                  a1CellContentDefault) {
+    function settingsSpreadsheetMetadataPropertyTextAndCheck(property,
+                                                             a1Formula,
+                                                             text,
+                                                             defaultText,
+                                                             updatedA1Formula,
+                                                             a1CellContent,
+                                                             a1CellContentDefault) {
         it("Show settings and update SpreadsheetMetadata." + property, () => {
             settingsToggle();
             settingsOpenSectionSpreadsheetMetadataProperty(property);
@@ -389,7 +389,7 @@ context("General app usage", () => {
         });
     }
 
-    enterSettingsSpreadsheetMetadataPropertyTextAndCheck(
+    settingsSpreadsheetMetadataPropertyTextAndCheck(
         SpreadsheetMetadata.DATE_FORMAT_PATTERN,
         "31/12/1999",
         "yyyy/mm/dd",
@@ -399,7 +399,7 @@ context("General app usage", () => {
         "Friday, 31 December 1999",
     );
 
-    enterSettingsSpreadsheetMetadataPropertyTextAndCheck(
+    settingsSpreadsheetMetadataPropertyTextAndCheck(
         SpreadsheetMetadata.DATE_PARSE_PATTERNS,
         "1999:12:31",
         "yyyy:mm:dd",
@@ -409,7 +409,7 @@ context("General app usage", () => {
         "Friday, 31 December 1999",
     );
 
-    enterSettingsSpreadsheetMetadataPropertyTextAndCheck(
+    settingsSpreadsheetMetadataPropertyTextAndCheck(
         SpreadsheetMetadata.DATETIME_FORMAT_PATTERN,
         "31/12/1999, 12:58",
         "hh:mm yyyy/mm/dd",
@@ -419,7 +419,7 @@ context("General app usage", () => {
         "Friday, 31 December 1999 at 12:58:00",
     );
 
-    enterSettingsSpreadsheetMetadataPropertyTextAndCheck(
+    settingsSpreadsheetMetadataPropertyTextAndCheck(
         SpreadsheetMetadata.DATETIME_PARSE_PATTERNS,
         "1999/12/31 12:58",
         "yyyy/mm/dd hh:mm",
@@ -429,7 +429,7 @@ context("General app usage", () => {
         "Friday, 31 December 1999 at 12:58:00",
     );
 
-    enterSettingsSpreadsheetMetadataPropertyTextAndCheck(
+    settingsSpreadsheetMetadataPropertyTextAndCheck(
         SpreadsheetMetadata.DECIMAL_SEPARATOR,
         "=2.5",
         "*",
@@ -438,7 +438,7 @@ context("General app usage", () => {
         "2*5",
         "2.5",
     );
-    enterSettingsSpreadsheetMetadataPropertyTextAndCheck(
+    settingsSpreadsheetMetadataPropertyTextAndCheck(
         SpreadsheetMetadata.EXPONENT_SYMBOL,
         null,
         "x",
@@ -447,7 +447,7 @@ context("General app usage", () => {
         null,
         null);
 
-    enterSettingsSpreadsheetMetadataPropertyTextAndCheck(
+    settingsSpreadsheetMetadataPropertyTextAndCheck(
         SpreadsheetMetadata.GROUPING_SEPARATOR,
         "123456",
         "*",
@@ -457,7 +457,7 @@ context("General app usage", () => {
         "123,456."
     );
 
-    enterSettingsSpreadsheetMetadataPropertyTextAndCheck(
+    settingsSpreadsheetMetadataPropertyTextAndCheck(
         SpreadsheetMetadata.NEGATIVE_SIGN,
         "=2*-4",
         "*",
@@ -466,7 +466,7 @@ context("General app usage", () => {
         "*8.",
         "-8.");
 
-    enterSettingsSpreadsheetMetadataPropertyTextAndCheck(
+    settingsSpreadsheetMetadataPropertyTextAndCheck(
         SpreadsheetMetadata.NUMBER_FORMAT_PATTERN,
         "123.5",
         "###.000",
@@ -476,7 +476,7 @@ context("General app usage", () => {
         "123.5",
     );
 
-    enterSettingsSpreadsheetMetadataPropertyTextAndCheck(
+    settingsSpreadsheetMetadataPropertyTextAndCheck(
         SpreadsheetMetadata.NUMBER_PARSE_PATTERNS,
         "123.5",
         "###.000",
@@ -487,7 +487,7 @@ context("General app usage", () => {
     );
 
     // TODO need to set format pattern which includes percentage
-    enterSettingsSpreadsheetMetadataPropertyTextAndCheck(
+    settingsSpreadsheetMetadataPropertyTextAndCheck(
         SpreadsheetMetadata.PERCENTAGE_SYMBOL,
         null,
         "*",
@@ -498,7 +498,7 @@ context("General app usage", () => {
     );
 
     // TODO need to format Exponent
-    enterSettingsSpreadsheetMetadataPropertyTextAndCheck(
+    settingsSpreadsheetMetadataPropertyTextAndCheck(
         SpreadsheetMetadata.POSITIVE_SIGN,
         "+1.5",
         "*",
@@ -508,7 +508,7 @@ context("General app usage", () => {
         "1.5",
     );
 
-    enterSettingsSpreadsheetMetadataPropertyTextAndCheck(
+    settingsSpreadsheetMetadataPropertyTextAndCheck(
         SpreadsheetMetadata.VALUE_SEPARATOR,
         "=5/2",
         "*",
@@ -518,7 +518,7 @@ context("General app usage", () => {
         "2.5",
     );
 
-    enterSettingsSpreadsheetMetadataPropertyTextAndCheck(
+    settingsSpreadsheetMetadataPropertyTextAndCheck(
         SpreadsheetMetadata.TEXT_FORMAT_PATTERN,
         "=\"Hello 123\"",
         "@@",
@@ -528,7 +528,7 @@ context("General app usage", () => {
         "Hello 123",
     );
 
-    enterSettingsSpreadsheetMetadataPropertyTextAndCheck(
+    settingsSpreadsheetMetadataPropertyTextAndCheck(
         SpreadsheetMetadata.TEXT_FORMAT_PATTERN,
         "'Hello 123",
         "@@",
@@ -538,7 +538,7 @@ context("General app usage", () => {
         "Hello 123",
     );
 
-    enterSettingsSpreadsheetMetadataPropertyTextAndCheck(
+    settingsSpreadsheetMetadataPropertyTextAndCheck(
         SpreadsheetMetadata.TIME_FORMAT_PATTERN,
         "12:58",
         "hh::mm::",
@@ -548,7 +548,7 @@ context("General app usage", () => {
         "12:58:00",
     );
 
-    enterSettingsSpreadsheetMetadataPropertyTextAndCheck(
+    settingsSpreadsheetMetadataPropertyTextAndCheck(
         SpreadsheetMetadata.TIME_PARSE_PATTERNS,
         "12::58::59.000",
         "hh::mm::ss.000",
@@ -562,10 +562,10 @@ context("General app usage", () => {
      * Updates 2 properties with initial text values, then sets the first to the second text, which should cause
      * the second to gain the former first text.
      */
-    function enterSettingsSpreadsheetMetadataPropertyTextSwapCheck(property1,
-                                                                   text1,
-                                                                   property2,
-                                                                   text2) {
+    function settingsSpreadsheetMetadataPropertyTextSwapCheck(property1,
+                                                              text1,
+                                                              property2,
+                                                              text2) {
         it("Show settings and update SpreadsheetMetadata." + property1 + "=" + text1 + " & " + property2 + "=" + text2 + " causing value swap", () => {
             settingsToggle();
             settingsOpenSectionSpreadsheetMetadataProperty(property1);
@@ -602,28 +602,28 @@ context("General app usage", () => {
         });
     }
 
-    enterSettingsSpreadsheetMetadataPropertyTextSwapCheck(
+    settingsSpreadsheetMetadataPropertyTextSwapCheck(
         SpreadsheetMetadata.DECIMAL_SEPARATOR,
         '.',
         SpreadsheetMetadata.GROUPING_SEPARATOR,
         ','
     );
 
-    enterSettingsSpreadsheetMetadataPropertyTextSwapCheck(
+    settingsSpreadsheetMetadataPropertyTextSwapCheck(
         SpreadsheetMetadata.NEGATIVE_SIGN,
         '-',
         SpreadsheetMetadata.PERCENTAGE_SYMBOL,
         '%'
     );
 
-    enterSettingsSpreadsheetMetadataPropertyTextSwapCheck(
+    settingsSpreadsheetMetadataPropertyTextSwapCheck(
         SpreadsheetMetadata.NEGATIVE_SIGN,
         '-',
         SpreadsheetMetadata.POSITIVE_SIGN,
         '+'
     );
 
-    enterSettingsSpreadsheetMetadataPropertyTextSwapCheck(
+    settingsSpreadsheetMetadataPropertyTextSwapCheck(
         SpreadsheetMetadata.DECIMAL_SEPARATOR,
         '-',
         SpreadsheetMetadata.POSITIVE_SIGN,
@@ -634,10 +634,10 @@ context("General app usage", () => {
      * Opens the spreadsheet settings, selects each value by clicking the slider.
      * TODO Currently no test is made upon the a1 cell contents.
      */
-    function enterSettingsSpreadsheetMetadataPropertySliderAndCheck(property,
-                                                                    a1Formula,
-                                                                    values,
-                                                                    a1CellContents) {
+    function settingsSpreadsheetMetadataPropertySliderAndCheck(property,
+                                                               a1Formula,
+                                                               values,
+                                                               a1CellContents) {
         it("Show settings and update SpreadsheetMetadata." + property, () => {
             settingsToggle();
             settingsOpenSectionSpreadsheetMetadataProperty(property);
@@ -667,7 +667,7 @@ context("General app usage", () => {
         });
     }
 
-    enterSettingsSpreadsheetMetadataPropertySliderAndCheck(
+    settingsSpreadsheetMetadataPropertySliderAndCheck(
         SpreadsheetMetadata.EXPRESSION_NUMBER_KIND,
         null,
         ExpressionNumberKind.values(),
@@ -678,10 +678,10 @@ context("General app usage", () => {
      * Opens the spreadsheet settings, selects each value by clicking the slider.
      * TODO Currently no test is made upon the a1 cell contents.
      */
-    function enterSettingsSpreadsheetMetadataPropertySliderNumberTextFieldAndCheck(property,
-                                                                                   a1Formula,
-                                                                                   values,
-                                                                                   a1CellContents) {
+    function settingsSpreadsheetMetadataPropertySliderNumberTextFieldAndCheck(property,
+                                                                              a1Formula,
+                                                                              values,
+                                                                              a1CellContents) {
         it("Show settings and update SpreadsheetMetadata." + property, () => {
             settingsToggle();
             settingsOpenSectionSpreadsheetMetadataProperty(property);
@@ -777,7 +777,7 @@ context("General app usage", () => {
         });
     }
 
-    enterSettingsSpreadsheetMetadataPropertySliderNumberTextFieldAndCheck(
+    settingsSpreadsheetMetadataPropertySliderNumberTextFieldAndCheck(
         SpreadsheetMetadata.CELL_CHARACTER_WIDTH,
         null,
         [
@@ -797,7 +797,7 @@ context("General app usage", () => {
         null
     );
 
-    enterSettingsSpreadsheetMetadataPropertySliderNumberTextFieldAndCheck(
+    settingsSpreadsheetMetadataPropertySliderNumberTextFieldAndCheck(
         SpreadsheetMetadata.DATETIME_OFFSET,
         null,
         [
@@ -813,7 +813,7 @@ context("General app usage", () => {
         null
     );
 
-    enterSettingsSpreadsheetMetadataPropertySliderNumberTextFieldAndCheck(
+    settingsSpreadsheetMetadataPropertySliderNumberTextFieldAndCheck(
         SpreadsheetMetadata.DEFAULT_YEAR,
         "31:12",
         [
@@ -829,7 +829,7 @@ context("General app usage", () => {
         ["1900/12/31", "2000/12/31"]
     );
 
-    enterSettingsSpreadsheetMetadataPropertySliderNumberTextFieldAndCheck(
+    settingsSpreadsheetMetadataPropertySliderNumberTextFieldAndCheck(
         SpreadsheetMetadata.PRECISION,
         null,
         [
@@ -853,7 +853,7 @@ context("General app usage", () => {
         null
     );
 
-    enterSettingsSpreadsheetMetadataPropertySliderNumberTextFieldAndCheck(
+    settingsSpreadsheetMetadataPropertySliderNumberTextFieldAndCheck(
         SpreadsheetMetadata.TWO_DIGIT_YEAR,
         "30/12/31",
         [
@@ -873,10 +873,10 @@ context("General app usage", () => {
      * Opens the spreadsheet settings, selects each value by clicking the drop down list (select).
      * TODO Currently no test is made upon the a1 cell contents.
      */
-    function enterSettingsSpreadsheetMetadataPropertyDropDownListAndCheck(property,
-                                                                          a1Formula,
-                                                                          values,
-                                                                          a1CellContents) {
+    function settingsSpreadsheetMetadataPropertyDropDownListAndCheck(property,
+                                                                     a1Formula,
+                                                                     values,
+                                                                     a1CellContents) {
         it("Show settings and update SpreadsheetMetadata." + property, () => {
             settingsToggle();
             settingsOpenSectionSpreadsheetMetadataProperty(property);
@@ -907,7 +907,7 @@ context("General app usage", () => {
         });
     }
 
-    enterSettingsSpreadsheetMetadataPropertyDropDownListAndCheck(
+    settingsSpreadsheetMetadataPropertyDropDownListAndCheck(
         SpreadsheetMetadata.ROUNDING_MODE,
         null,
         RoundingMode.values(),
