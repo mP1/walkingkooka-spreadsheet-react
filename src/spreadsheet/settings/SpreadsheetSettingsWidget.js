@@ -22,6 +22,7 @@ import SpreadsheetMetadata from "../meta/SpreadsheetMetadata.js";
 import SpreadsheetMultiFormatRequest from "../server/format/SpreadsheetMultiFormatRequest.js";
 import SpreadsheetMultiFormatResponse from "../server/format/SpreadsheetMultiFormatResponse.js";
 import SpreadsheetSettingsWidgetCharacter from "./SpreadsheetSettingsWidgetCharacter.js";
+import SpreadsheetSettingsWidgetColor from "./SpreadsheetSettingsWidgetColor.js";
 import SpreadsheetSettingsWidgetDropDownList from "./SpreadsheetSettingsWidgetDropDownList.js";
 import SpreadsheetSettingsWidgetSlider from "./SpreadsheetSettingsWidgetSlider.js";
 import SpreadsheetSettingsWidgetSliderWithNumberTextField
@@ -104,6 +105,7 @@ class SpreadsheetSettingsWidget extends React.Component {
 
         this.formatCreateDateTimeModifiedDateTime = props.formatCreateDateTimeModifiedDateTime;
         this.setSpreadsheetMetadata = props.setSpreadsheetMetadata;
+        this.setError = props.setError;
     }
 
     /**
@@ -488,6 +490,8 @@ class SpreadsheetSettingsWidget extends React.Component {
         const value = style.get(property);
         const defaultValue = this.defaultStyle(metadata).get(property);
 
+        const setError = this.setError;
+
         let render;
 
         switch(property) {
@@ -499,12 +503,13 @@ class SpreadsheetSettingsWidget extends React.Component {
             case TextStyle.COLOR:
             case TextStyle.OUTLINE_COLOR:
             case TextStyle.TEXT_DECORATION_COLOR:
-                render = <SpreadsheetSettingsWidgetString id={id}
+                render = <SpreadsheetSettingsWidgetColor id={id}
                                                           value={value}
                                                           defaultButtonTooltip={false}
                                                           defaultValue={defaultValue}
                                                           defaultValueFormatter={DEFAULT_VALUE_FORMATTER_TOSTRING}
-                                                          setValue={(v) => setValue(!!v ? Color.parse(v) : null)}
+                                                          setValue={setValue}
+                                                          setError={setError}
                 />;
                 break;
             default:
@@ -1403,6 +1408,7 @@ SpreadsheetSettingsWidget.propTypes = {
     formatCreateDateTimeModifiedDateTime: PropTypes.func.isRequired, // required to format date/times, parameters: SpreadsheetMultiFormatRequest, successHandler => SpreadsheetMultiFormatResponse
     spreadsheetMetadata: PropTypes.instanceOf(SpreadsheetMetadata).isRequired,
     setSpreadsheetMetadata: PropTypes.func.isRequired, // fired when the SpreadsheetMetadata is updated.
+    setError: PropTypes.func.isRequired, // fired whenever an error needs to be displayed
 }
 
 export default withStyles(useStyles)(SpreadsheetSettingsWidget);

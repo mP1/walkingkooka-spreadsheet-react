@@ -943,6 +943,12 @@ context(
                     .type("{enter}", FORCE_TRUE);
 
                 const textFieldId = "#settings-spreadsheet-metadata-style-" + property + "-TextField";
+
+                cy.get(textFieldId)
+                    .type("{selectall}")
+                    .type("!invalid123")
+                    .blur(); // TODO verify alert appears!
+
                 const text = "#123456";
 
                 cy.get(textFieldId)
