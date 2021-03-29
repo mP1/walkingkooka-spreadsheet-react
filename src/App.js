@@ -766,7 +766,7 @@ class App extends React.Component {
     }
 
     onSendError(error) {
-        this.notificationSave(Notification.error(error));
+        this.notificationSave(SpreadsheetNotification.error(error));
     }
 
     // toString.........................................................................................................
