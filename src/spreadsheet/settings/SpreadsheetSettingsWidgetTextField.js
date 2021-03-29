@@ -74,6 +74,24 @@ export default class SpreadsheetSettingsWidgetTextField extends SpreadsheetSetti
     }
 
     /**
+     * Useful event handler for TextFields, the current value of the text field is converted into a value and then
+     * setValue called.
+     */
+    onKeyDown(e) {
+        switch(e.key) {
+            case "Escape":
+                this.onSetDefaultValue();
+                break;
+            case "Enter":
+                this.setValue(this.createValue(e.target.value));
+                break;
+            default:
+                // nothing special to do for other keys
+                break;
+        }
+    }
+
+    /**
      * This is called whenever createValue fails to parse or create a value from the entered string.
      */
     onError(text, errorMessage) {

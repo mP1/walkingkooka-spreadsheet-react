@@ -88,7 +88,29 @@ export default class SpreadsheetSettingsWidgetSliderWithNumberTextField extends 
         const string = e.target.value;
         console.log("onBlur " + string);
 
-        this.setValue(parseInt(string));
+        this.setValue(this.createValue(string));
+    }
+
+    /**
+     * Useful event handler for TextFields, the current value of the text field is converted into a value and then
+     * setValue called.
+     */
+    onKeyDown(e) {
+        switch(e.key) {
+            case "Escape":
+                this.onSetDefaultValue();
+                break;
+            case "Enter":
+                this.setValue(this.createValue(e.target.value));
+                break;
+            default:
+                // nothing special to do for other keys
+                break;
+        }
+    }
+
+    createValue(text) {
+        return parseInt(text);
     }
 
     /**

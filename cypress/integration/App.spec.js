@@ -361,42 +361,72 @@ context(
                 }
 
                 const textFieldId = "#settings-spreadsheet-metadata-" + property + "-TextField";
-                cy.get(textFieldId)
-                    .type("{selectall}")
-                    .type(text)
-                    .blur();
 
-                cy.get(textFieldId)
-                    .should("have.value", text);
+                cy.get(textFieldId).then((input)=> {
+                    // type text and hit ENTER
+                    cy.get(textFieldId)
+                        .type("{selectall}")
+                        .type(text)
+                        .type("{enter}");
 
-                if(updatedA1Formula){
-                    formulaText()
-                        .should("have.value", updatedA1Formula)
-                }
+                    cy.get(textFieldId)
+                        .should("have.value", text);
 
-                if(a1Formula){
-                    cellFormattedTextCheck(a1, a1CellContent);
-                }
+                    if(updatedA1Formula){
+                        formulaText()
+                            .should("have.value", updatedA1Formula)
+                    }
 
-                reactRenderWait();
+                    if(a1Formula){
+                        cellFormattedTextCheck(a1, a1CellContent);
+                    }
 
-                const buttonId = "#settings-spreadsheet-metadata-" + property + "-default-Button";
-                cy.get(buttonId)
-                    .should("have.text", defaultText)
-                    .click();
+                    reactRenderWait();
 
-                cy.get(textFieldId)
-                    .should("have.value", "");
+                    // restore original textField value.
+                    cy.get(textFieldId)
+                        .type("{selectall}")
+                        .type(input.text() + "{enter}");
 
-                if(a1Formula){
-                    formulaText()
-                        .should("have.value", a1Formula)
-                }
+                    // click default button...
+                    const buttonId = "#settings-spreadsheet-metadata-" + property + "-default-Button";
+                    cy.get(buttonId)
+                        .should("have.text", defaultText)
+                        .click();
 
-                if(a1CellContentDefault){
-                    cellClick(a1);
-                    cellFormattedTextCheck(a1, a1CellContentDefault);
-                }
+                    cy.get(textFieldId)
+                        .should("have.value", "");
+
+                    if(a1Formula){
+                        formulaText()
+                            .should("have.value", a1Formula)
+                    }
+
+                    if(a1CellContentDefault){
+                        cellClick(a1);
+                        cellFormattedTextCheck(a1, a1CellContentDefault);
+                    }
+
+                    // type text and blur
+                    cy.get(textFieldId)
+                        .type("{selectall}")
+                        .type(text)
+                        .type("{enter}");
+
+                    cy.get(textFieldId)
+                        .should("have.value", text);
+
+                    if(updatedA1Formula){
+                        formulaText()
+                            .should("have.value", updatedA1Formula)
+                    }
+
+                    if(a1Formula){
+                        cellFormattedTextCheck(a1, a1CellContent);
+                    }
+
+                    reactRenderWait();
+                });
             });
         }
 
@@ -949,14 +979,19 @@ context(
                     .type("!invalid123")
                     .blur(); // TODO verify alert appears!
 
-                const text = "#123456";
-
                 cy.get(textFieldId)
                     .type("{selectall}")
-                    .type(text)
+                    .type("#123456")
                     .blur();
 
                 a1StyleCheck(property, "rgb(18, 52, 86)");
+
+                cy.get(textFieldId)
+                    .type("{selectall}")
+                    .type("#789abc")
+                    .type("{enter}");
+
+                a1StyleCheck(property, "rgb(120, 154, 188)");
 
                 if(defaultColor){
                     const defaultButtonId = "#settings-spreadsheet-metadata-style-" + property + "-default-Button";
