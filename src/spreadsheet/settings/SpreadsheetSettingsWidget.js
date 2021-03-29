@@ -3,7 +3,6 @@ import {withStyles} from "@material-ui/core/styles";
 import Accordion from '@material-ui/core/Accordion';
 import AccordionDetails from '@material-ui/core/AccordionDetails';
 import AccordionSummary from '@material-ui/core/AccordionSummary';
-import Color from "../../color/Color.js";
 import Drawer from "@material-ui/core/Drawer";
 import Equality from "../../Equality.js";
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
