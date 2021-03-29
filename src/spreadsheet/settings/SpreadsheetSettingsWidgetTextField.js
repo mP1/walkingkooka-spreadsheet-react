@@ -66,7 +66,17 @@ export default class SpreadsheetSettingsWidgetTextField extends SpreadsheetSetti
         const string = e.target.value;
         console.log("onBlur " + string);
 
-        this.setValue(this.createValue(string));
+        try {
+            this.setValue(this.createValue(string));
+        } catch (e) {
+            this.onError(string, e);
+        }
+    }
+
+    /**
+     * This is called whenever createValue fails to parse or create a value from the entered string.
+     */
+    onError(text, errorMessage) {
     }
 
     /**

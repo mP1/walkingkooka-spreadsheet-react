@@ -434,6 +434,7 @@ class App extends React.Component {
                                            history={history}
                                            spreadsheetMetadata={metadata}
                                            setSpreadsheetMetadata={this.saveSpreadsheetMetadata.bind(this)}
+                                           setError={(message) => this.notificationSave(SpreadsheetNotification.error(message))}
                                            formatCreateDateTimeModifiedDateTime={this.onFormatCreateDateTimeModifiedDateTime.bind(this)}
                 />
             </WindowResizer>
