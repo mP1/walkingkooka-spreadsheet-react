@@ -23,8 +23,9 @@ var transactionIdToHandlers = {};
  */
 export default class SpreadsheetMessenger {
 
-    constructor() {
+    constructor(error) {
         this.onMessage.bind();
+        this.error = error;
     }
 
     /**
@@ -177,14 +178,10 @@ export default class SpreadsheetMessenger {
 
                 handlers.response(body);
             }else {
-                error("missing handler for " + TRANSACTION_ID_HEADER + "e\n" + JSON.stringify(response));
+                this.error("missing handler for " + TRANSACTION_ID_HEADER + "e\n" + JSON.stringify(response));
             }
         }else {
-            error("response missing " + TRANSACTION_ID_HEADER + "e\n" + JSON.stringify(response));
+            this.error("response missing " + TRANSACTION_ID_HEADER + "e\n" + JSON.stringify(response));
         }
     }
-}
-
-function error(string) {
-    alert(string);
 }
