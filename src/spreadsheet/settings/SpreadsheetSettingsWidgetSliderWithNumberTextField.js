@@ -69,7 +69,7 @@ export default class SpreadsheetSettingsWidgetSliderWithNumberTextField extends 
     }
 
     onChangeSlider(e, newValue) {
-        this.onChange(newValue);
+        this.onChange(newValue || null); // PRECISION = 0 actually means remove and set default.
     }
 
     onChangeTextField(e) {
