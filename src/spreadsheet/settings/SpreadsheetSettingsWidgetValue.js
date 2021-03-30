@@ -32,11 +32,9 @@ export default class SpreadsheetSettingsWidgetValue extends React.Component {
 
         this.id = props.id;
 
-        const initialValue = props.value;
         this.state = {
-            value: initialValue,
+            value: props.value,
         }
-        this.initialValue = initialValue; // ESCAPE will reload the default.
         this.defaultValue = props.defaultValue;
         this.defaultValueFormatter= props.defaultValueFormatter;
         this.defaultButtonTooltip = props.defaultButtonTooltip;
