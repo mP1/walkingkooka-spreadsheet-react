@@ -537,6 +537,10 @@ test("set precision -1 fails", () => {
     expect(() => SpreadsheetMetadata.EMPTY.set(SpreadsheetMetadata.PRECISION, -1)).toThrow("Expected number precision >= 0 got -1");
 });
 
+test("set precision NAN fails", () => {
+    expect(() => SpreadsheetMetadata.EMPTY.set(SpreadsheetMetadata.PRECISION, parseInt(undefined))).toThrow("Expected number precision >= 0 got NaN");
+});
+
 getSetRemovePropertyTest(SpreadsheetMetadata.ROUNDING_MODE, RoundingMode.CEILING);
 
 getPropertyTest(SpreadsheetMetadata.SPREADSHEET_ID, "123");
