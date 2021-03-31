@@ -80,7 +80,7 @@ export default class SpreadsheetSettingsWidgetTextField extends SpreadsheetSetti
     onKeyDown(e) {
         switch(e.key) {
             case "Escape":
-                this.onSetDefaultValue();
+                this.resetValue();
                 break;
             case "Enter":
                 this.setValue(this.createValue(e.target.value));
@@ -89,6 +89,14 @@ export default class SpreadsheetSettingsWidgetTextField extends SpreadsheetSetti
                 // nothing special to do for other keys
                 break;
         }
+    }
+
+    /**
+     * This method reloads the text field whenever
+     */
+    resetValue() {
+        const value = this.state.value;
+        this.inputField.current.value = null != value ? value.toString() : "";
     }
 
     /**

@@ -426,6 +426,15 @@ context(
                     }
 
                     reactRenderWait();
+
+                    // type text and blur
+                    cy.get(textFieldId)
+                        .type("{selectall}")
+                        .type("XYZ")
+                        .type("{Esc}")
+
+                    cy.get(textFieldId)
+                        .should("have.value", text);
                 });
             });
         }
