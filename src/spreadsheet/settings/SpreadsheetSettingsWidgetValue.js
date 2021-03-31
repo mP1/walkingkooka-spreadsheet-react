@@ -47,7 +47,12 @@ export default class SpreadsheetSettingsWidgetValue extends React.Component {
         const value = state.value;
         if(!Equality.safeEquals(prevState.value, value)){
             this.props.setValue(value);
+            this.onStateValueChange(value);
         }
+    }
+
+    onStateValueChange(value) {
+        throw new Error("onStateValueChange not implemented");
     }
 
     /**
