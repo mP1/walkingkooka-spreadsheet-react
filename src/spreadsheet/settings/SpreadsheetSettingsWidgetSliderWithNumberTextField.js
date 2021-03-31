@@ -18,6 +18,9 @@ export default class SpreadsheetSettingsWidgetSliderWithNumberTextField extends 
         this.max = props.max;
         this.marks = props.marks;
         this.step = props.step;
+
+        this.textFieldRef = React.createRef();
+        this.sliderRef = React.createRef();
     }
 
     renderInput(id, value) {
@@ -29,6 +32,7 @@ export default class SpreadsheetSettingsWidgetSliderWithNumberTextField extends 
         return [
             <TextField id={numberTextFieldId}
                        key={numberTextFieldId}
+                       ref={this.textFieldRef}
                        style={
                            {
                                marginRight: "4px",
@@ -56,7 +60,8 @@ export default class SpreadsheetSettingsWidgetSliderWithNumberTextField extends 
                        onKeyDown={this.onKeyDown.bind(this)}
             />,
             <Slider id={sliderId}
-                    key={sliderId}
+                    key={[sliderId, value]} // key requires value to force re-rendering.
+                    ref={this.sliderRef}
                     defaultValue={this.defaultValueIndex}
                     min={min}
                     max={max}
@@ -69,7 +74,7 @@ export default class SpreadsheetSettingsWidgetSliderWithNumberTextField extends 
     }
 
     onChangeSlider(e, newValue) {
-        this.onChange(newValue || null); // PRECISION = 0 actually means remove and set default.
+        this.onChange(newValue);
     }
 
     onChangeTextField(e) {
@@ -78,7 +83,10 @@ export default class SpreadsheetSettingsWidgetSliderWithNumberTextField extends 
 
     onChange(value) {
         console.log("onChange " + value);
-        this.setValue(value);
+        this.setValue(isNaN(value) ? null : value);
+
+        this.textFieldRef.current.value = null !== value ? value : "";
+        this.sliderRef.current.value = value;
     }
 
     /**

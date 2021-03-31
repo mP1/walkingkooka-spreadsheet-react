@@ -541,7 +541,7 @@ context(
                         .click();
 
                     cy.get(numberTextFieldId)
-                        .should("have.value", v.text === "∞" ? "" : v.value) // special case for PRECISION default
+                        .should("have.value", v.value)
                         .click();
 
                     if(a1Formula){

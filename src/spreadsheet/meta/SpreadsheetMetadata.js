@@ -716,7 +716,7 @@ function checkPrecision(precision) {
     if(typeof precision !== "number"){
         throw new Error("Expected number precision got " + precision);
     }
-    if(!(precision > 0)){
+    if(!(precision >= 0)){
         throw new Error("Expected number precision >= 0 got " + precision);
     }
 }
