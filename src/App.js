@@ -53,7 +53,7 @@ class App extends React.Component {
         };
 
         // the names must match the Class.getSimpleName in walkingkooka-spreadsheet
-        this.messenger = new SpreadsheetMessenger();
+        this.messenger = new SpreadsheetMessenger(this.onSendError.bind(this));
         this.messenger.setWebWorker(false); // TODO test webworker mode
 
         this.notification = React.createRef();
@@ -264,7 +264,6 @@ class App extends React.Component {
                 method: "GET"
             },
             this.onSpreadsheetRange.bind(this),
-            error
         );
     }
 
@@ -522,7 +521,7 @@ class App extends React.Component {
                 body: JSON.stringify(multiFormatRequest.toJson()),
             },
             success,
-            errorHandler || error,
+            errorHandler,
         );
     }
 
@@ -598,8 +597,7 @@ class App extends React.Component {
             {
                 method: "POST"
             },
-            this.onSpreadsheetMetadata.bind(this),
-            error
+            this.onSpreadsheetMetadata.bind(this)
         );
     }
 
@@ -633,8 +631,7 @@ class App extends React.Component {
             {
                 method: "GET",
             },
-            this.onSpreadsheetMetadata.bind(this),
-            error
+            this.onSpreadsheetMetadata.bind(this)
         );
     }
 
@@ -653,8 +650,7 @@ class App extends React.Component {
                     method: "POST",
                     body: JSON.stringify(metadata.toJson())
                 },
-                this.onSpreadsheetMetadata.bind(this),
-                error
+                this.onSpreadsheetMetadata.bind(this)
             );
         }
     }
@@ -699,8 +695,7 @@ class App extends React.Component {
                 if(onSuccess){
                     onSuccess(json);
                 }
-            },
-            error
+            }
         );
     }
 
@@ -725,8 +720,7 @@ class App extends React.Component {
                         [this.state.viewportRange])
                         .toJson()),
                 },
-                this.onSpreadsheetDelta.bind(this),
-                error
+                this.onSpreadsheetDelta.bind(this)
             );
         }
     }
@@ -761,7 +755,7 @@ class App extends React.Component {
             url,
             parameters,
             response,
-            error || this.onSendError,
+            error || this.onSendError.bind(this),
         )
     }
 
@@ -777,7 +771,3 @@ class App extends React.Component {
 }
 
 export default withRouter(withStyles(useStyles)(App));
-
-function error(message) {
-    alert(message);
-}
