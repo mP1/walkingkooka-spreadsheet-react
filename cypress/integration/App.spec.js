@@ -411,7 +411,7 @@ context(
                     cy.get(textFieldId)
                         .type("{selectall}")
                         .type(text)
-                        .type("{enter}");
+                        .blur();
 
                     cy.get(textFieldId)
                         .should("have.value", text);
