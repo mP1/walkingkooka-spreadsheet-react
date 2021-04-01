@@ -1398,9 +1398,15 @@ context(
             return cy.get("#formula-TextField");
         }
 
+        /**
+         * Click on the cell and verify it becomes outlined.
+         */
         function cellClick(cellReference) {
             cellGet(cellReference)
-                .click();
+                .click()
+                .should("have.css", "outline-color", "rgb(0, 0, 0)")
+                .should("have.css", "outline-style", "dotted")
+                .should("have.css", "outline-width", "3px");
         }
 
         function cellFormattedTextCheck(cellReference, text) {

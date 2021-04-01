@@ -237,7 +237,13 @@ export default class SpreadsheetViewportWidget extends React.Component {
                     console.log("SpreadsheetViewportWidget cell " + cellReference, cellReference, cell);
                 }
 
-                tableCells.push(cell.render(defaultStyle, () => this.onCellClick(cellReference)));
+                tableCells.push(
+                    cell.render(
+                        defaultStyle,
+                        cellReference.equals(editCell),
+                        () => this.onCellClick(cellReference)
+                    )
+                );
 
                 x = x + (columnWidths.get(row) || defaultColumnWidth);
                 column = column.add(1);
