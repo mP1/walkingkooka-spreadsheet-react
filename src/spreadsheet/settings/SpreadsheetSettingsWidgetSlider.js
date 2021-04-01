@@ -38,6 +38,18 @@ export default class SpreadsheetSettingsWidgetSlider extends SpreadsheetSettings
         this.values = values;
         this.marks = marks;
         this.style = props.style;
+
+        this.sliderRef = React.createRef();
+    }
+
+    /**
+     * Update the Slider value.
+     */
+    onStateValueChange(value) {
+        const slider = this.sliderRef.current;
+        if(slider){
+            slider.value = value;
+        }
     }
 
     renderInput(id, value) {

@@ -18,6 +18,15 @@ export default class SpreadsheetSettingsWidgetDropDownList extends SpreadsheetSe
             open: false,
             value: props.value,
         }
+
+        this.selectRef = React.createRef();
+    }
+
+    onStateValueChange(value) {
+        const select = this.selectRef.current;
+        if(select){
+            select.value = value;
+        }
     }
 
     renderInput(id, value) {

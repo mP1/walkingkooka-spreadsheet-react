@@ -12,6 +12,16 @@ export default class SpreadsheetSettingsWidgetTextField extends SpreadsheetSetti
         this.inputField = React.createRef();
     }
 
+    /**
+     * Update the TextField value.
+     */
+    onStateValueChange(value) {
+        const inputField = this.inputField.current;
+        if(inputField){
+            inputField.value = null != value ? value.toString() : "";
+        }
+    }
+
     renderInput(id, value) {
         const textFieldId = id + "-TextField";
         const placeholder = this.placeholder();

@@ -23,6 +23,10 @@ export default class SpreadsheetSettingsWidgetSliderWithNumberTextField extends 
         this.sliderRef = React.createRef();
     }
 
+    onStateValueChange(value) {
+        this.setSliderAndTextField(value);
+    }
+
     renderInput(id, value) {
         const {min, max, marks, step} = this;
 
@@ -84,9 +88,7 @@ export default class SpreadsheetSettingsWidgetSliderWithNumberTextField extends 
     onChange(value) {
         console.log("onChange " + value);
         this.setValue(isNaN(value) ? null : value);
-
-        this.textFieldRef.current.value = null !== value ? value : "";
-        this.sliderRef.current.value = value;
+        this.setSliderAndTextField(value);
     }
 
     /**
@@ -127,6 +129,14 @@ export default class SpreadsheetSettingsWidgetSliderWithNumberTextField extends 
     onSetDefaultValue() {
         console.log("onSetDefaultValue");
         this.setValue(this.defaultValue);
+    }
+
+    setSliderAndTextField(value) {
+        const textField = this.textFieldRef.current;
+        if(textField){
+            textField.value = null !== value ? value : "";
+            this.sliderRef.current.value = value;
+        }
     }
 }
 
