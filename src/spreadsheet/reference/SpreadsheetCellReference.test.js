@@ -164,6 +164,31 @@ test("setColumn different RELATIVE", () => {
     expect(reference.setColumn(different)).toEqual(new SpreadsheetCellReference(different, r));
 });
 
+// addColumn............................................................................................................
+
+test("addColumn delta 0", () => {
+    const reference = new SpreadsheetCellReference(column(), row());
+    expect(reference.addColumn(0)).toEqual(reference);
+});
+
+test("addColumn delta 1", () => {
+    expect(
+        SpreadsheetCellReference.parse("B2")
+            .addColumn(1)
+    ).toEqual(SpreadsheetCellReference.parse("C2"));
+});
+
+test("addColumn delta -1", () => {
+    expect(
+        SpreadsheetCellReference.parse("B2")
+            .addColumn(-1)
+    ).toEqual(SpreadsheetCellReference.parse("A2"));
+});
+
+test("addColumn delta -10 underflow", () => {
+    expect(() => new SpreadsheetCellReference(column(), row()).setRow()).toThrow("Missing row");
+});
+
 // setRow............................................................................................................
 
 test("setRow missing fails", () => {

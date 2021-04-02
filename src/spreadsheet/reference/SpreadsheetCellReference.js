@@ -86,6 +86,10 @@ export default class SpreadsheetCellReference extends SystemObject {
         return this.columnValue;
     }
 
+    addColumn(delta) {
+        return this.setColumn(this.column().add(delta));
+    }
+
     setRow(row) {
         checkRow(row);
 
