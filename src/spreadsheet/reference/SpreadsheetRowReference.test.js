@@ -20,12 +20,22 @@ test("parse of invalid text fails", () => {
     expect(() => SpreadsheetRowReference.parse(true)).toThrow("Expected string got true");
 });
 
+test("parse MAX fails", () => {
+    expect(() => SpreadsheetRowReference.parse("" + (SpreadsheetRowReference.MAX + 1))).toThrow("Invalid value > 1048576 got 1048577");
+});
+
 test("parse ABSOLUTE", () => {
     expect(SpreadsheetRowReference.parse("$2")).toStrictEqual(new SpreadsheetRowReference(1, SpreadsheetReferenceKind.ABSOLUTE));
 });
 
 test("parse RELATIVE", () => {
     expect(SpreadsheetRowReference.parse("3")).toStrictEqual(new SpreadsheetRowReference(2, SpreadsheetReferenceKind.RELATIVE));
+});
+
+test("parse MAX -1", () => {
+    expect(
+        SpreadsheetRowReference.parse("" + SpreadsheetRowReference.MAX)
+    ).toStrictEqual(new SpreadsheetRowReference(SpreadsheetRowReference.MAX - 1, SpreadsheetReferenceKind.RELATIVE));
 });
 
 test("new < 0 fails", () => {
