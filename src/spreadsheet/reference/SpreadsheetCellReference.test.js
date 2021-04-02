@@ -219,6 +219,35 @@ test("setRow different RELATIVE", () => {
     expect(reference.setRow(different)).toEqual(new SpreadsheetCellReference(c, different));
 });
 
+// addRow............................................................................................................
+
+test("addRow delta 0", () => {
+    const reference = new SpreadsheetCellReference(column(), row());
+    expect(reference.addRow(0)).toEqual(reference);
+});
+
+test("addRow delta 1", () => {
+    expect(
+        SpreadsheetCellReference.parse("B2")
+            .addRow(1)
+    ).toEqual(SpreadsheetCellReference.parse("B3"));
+});
+
+test("addRow delta -1", () => {
+    expect(
+        SpreadsheetCellReference.parse("B3")
+            .addRow(-1)
+    ).toEqual(SpreadsheetCellReference.parse("B2"));
+});
+
+test("addRow delta underflow", () => {
+    expect(() => SpreadsheetCellReference.parse("B2").addRow(-3)).toThrow("Invalid value not between 0 and 1048576 got -2");
+});
+
+test("addRow delta overflow", () => {
+    expect(() => SpreadsheetCellReference.parse("B1048576").addRow(+3)).toThrow("Invalid value not between 0 and 1048576 got 1048578");
+});
+
 // toRelative............................................................................................................
 
 test("toRelative", () => {
