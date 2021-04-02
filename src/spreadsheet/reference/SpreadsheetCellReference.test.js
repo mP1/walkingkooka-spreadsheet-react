@@ -283,6 +283,41 @@ test("addRow delta overflow", () => {
     expect(() => SpreadsheetCellReference.parse("B1048576").addRow(+3)).toThrow("Invalid value not between 0 and 1048576 got 1048578");
 });
 
+// addRowSaturated............................................................................................................
+
+test("addRowSaturated delta 0", () => {
+    const reference = new SpreadsheetCellReference(column(), row());
+    expect(reference.addRowSaturated(0)).toEqual(reference);
+});
+
+test("addRowSaturated delta 1", () => {
+    expect(
+        SpreadsheetCellReference.parse("B2")
+            .addRowSaturated(1)
+    ).toEqual(SpreadsheetCellReference.parse("B3"));
+});
+
+test("addRowSaturated delta -1", () => {
+    expect(
+        SpreadsheetCellReference.parse("B2")
+            .addRowSaturated(-1)
+    ).toEqual(SpreadsheetCellReference.parse("B1"));
+});
+
+test("addRowSaturated delta underflow", () => {
+    expect(
+        SpreadsheetCellReference.parse("B2")
+            .addRowSaturated(-3)
+    ).toEqual(SpreadsheetCellReference.parse("B1"));
+});
+
+test("addRowSaturated delta overflow", () => {
+    expect(
+        SpreadsheetCellReference.parse("B2")
+            .addRowSaturated(SpreadsheetRowReference.MAX)
+    ).toEqual(SpreadsheetCellReference.parse("B" + SpreadsheetRowReference.MAX));
+});
+
 // toRelative............................................................................................................
 
 test("toRelative", () => {

@@ -109,6 +109,10 @@ export default class SpreadsheetCellReference extends SystemObject {
     addRow(delta) {
         return this.setRow(this.row().add(delta));
     }
+
+    addRowSaturated(delta) {
+        return this.setRow(this.row().addSaturated(delta));
+    }
     
     toRelative() {
         return this.setColumn(this.column()
