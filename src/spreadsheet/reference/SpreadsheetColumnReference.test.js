@@ -20,6 +20,10 @@ test("parse of invalid text fails", () => {
     expect(() => SpreadsheetColumnReference.parse(true)).toThrow("Expected string got true");
 });
 
+test("parse greater than MAX fails", () => {
+    expect(() => SpreadsheetColumnReference.parse("XFE")).toThrow("Invalid value > 16384 got 16385");
+});
+
 test("parse ABSOLUTE", () => {
     expect(SpreadsheetColumnReference.parse("$B")).toStrictEqual(new SpreadsheetColumnReference(1, SpreadsheetReferenceKind.ABSOLUTE));
 });
@@ -30,6 +34,10 @@ test("parse RELATIVE", () => {
 
 test("parse RELATIVE AB", () => {
     expect(SpreadsheetColumnReference.parse("AB")).toStrictEqual(new SpreadsheetColumnReference(26 + 1, SpreadsheetReferenceKind.RELATIVE));
+});
+
+test("parse XFD", () => {
+    expect(SpreadsheetColumnReference.parse("XFD")).toStrictEqual(new SpreadsheetColumnReference(16383, SpreadsheetReferenceKind.RELATIVE));
 });
 
 test("new < 0 fails", () => {
