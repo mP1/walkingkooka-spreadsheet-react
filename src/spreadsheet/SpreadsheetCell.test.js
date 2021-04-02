@@ -279,6 +279,8 @@ test("setFormula different", () => {
 
 // render...............................................................................................................
 
+const NOT_EDITING = false;
+
 test("render missing defaultStyle fails", () => {
     expect(() => new SpreadsheetCell(reference(), formula(), style())
         .render())
@@ -299,7 +301,7 @@ test("render missing onClick fails", () => {
 
 test("render invalid onClick fails", () => {
     expect(() => new SpreadsheetCell(reference(), formula(), style())
-        .render(TextStyle.EMPTY, "!invalid"))
+        .render(TextStyle.EMPTY, NOT_EDITING, "!invalid"))
         .toThrow("Expected function onClick got !invalid");
 });
 
@@ -313,7 +315,7 @@ test("render empty style, text & defaultStyle EMPTY", () => {
         TextStyle.EMPTY,
         format(),
         new Text(text))
-        .render(TextStyle.EMPTY, c))
+        .render(TextStyle.EMPTY, NOT_EDITING, c))
         .toStrictEqual(<TableCell key={ref}
                                   id="cell-A99"
                                   onClick={c}
@@ -331,7 +333,7 @@ test("render empty style, text & defaultStyle EMPTY 2", () => {
         TextStyle.EMPTY,
         format(),
         new Text(text))
-        .render(TextStyle.EMPTY, c))
+        .render(TextStyle.EMPTY, NOT_EDITING, c))
         .toStrictEqual(<TableCell key={ref}
                                   id="cell-B123"
                                   onClick={c}
@@ -353,6 +355,7 @@ test("render empty style, text & defaultStyle width&height", () => {
             TextStyle.EMPTY
                 .set("width", lengthFromJson("100px"))
                 .set("height", lengthFromJson("50px")),
+            NOT_EDITING,
             c))
         .toStrictEqual(<TableCell key={r}
                                   id="cell-A99"
@@ -373,7 +376,7 @@ test("render style=width&height, text & defaultStyle=empty", () => {
             .set("height", lengthFromJson("50px")),
         format(),
         new Text(text))
-        .render(TextStyle.EMPTY, c))
+        .render(TextStyle.EMPTY, NOT_EDITING, c))
         .toStrictEqual(<TableCell key={r}
                                   id="cell-A99"
                                   onClick={c}
@@ -394,6 +397,7 @@ test("render style=height, text & defaultStyle=width", () => {
         new Text(text))
         .render(TextStyle.EMPTY
                 .set("width", lengthFromJson("100px")),
+            NOT_EDITING,
             c))
         .toStrictEqual(<TableCell key={r}
                                   id="cell-A99"
@@ -416,6 +420,7 @@ test("render style=width&height, text & defaultStyle=width", () => {
         new Text(text))
         .render(TextStyle.EMPTY
                 .set("width", lengthFromJson("99px")),
+            NOT_EDITING,
             c))
         .toStrictEqual(<TableCell id="cell-A99"
                                   key={r} onClick={c}
