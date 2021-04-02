@@ -150,6 +150,54 @@ test("add non zero value RELATIVE", () => {
     expect(reference.add(delta)).toStrictEqual(new SpreadsheetRowReference(value + delta, kind));
 });
 
+// addSaturated.........................................................................................................
+
+test("addSaturated missing value fails", () => {
+    expect(() => new SpreadsheetRowReference(1, SpreadsheetReferenceKind.RELATIVE).addSaturated()).toThrow("Expected number delta got undefined");
+});
+
+test("addSaturated invalid value fails", () => {
+    expect(() => new SpreadsheetRowReference(1, SpreadsheetReferenceKind.RELATIVE).addSaturated("!invalid")).toThrow("Expected number delta got !invalid");
+});
+
+test("addSaturated same value", () => {
+    const value = 2;
+    const reference = new SpreadsheetRowReference(value, SpreadsheetReferenceKind.ABSOLUTE);
+    expect(reference.addSaturated(0)).toStrictEqual(reference);
+});
+
+test("addSaturated non zero value ABSOLUTE", () => {
+    const kind = SpreadsheetReferenceKind.ABSOLUTE;
+    const value = 2;
+    const delta = 100;
+    const reference = new SpreadsheetRowReference(value, kind);
+    expect(reference.addSaturated(delta)).toStrictEqual(new SpreadsheetRowReference(value + delta, kind));
+});
+
+test("addSaturated non zero value RELATIVE", () => {
+    const kind = SpreadsheetReferenceKind.RELATIVE;
+    const value = 2;
+    const delta = 100;
+    const reference = new SpreadsheetRowReference(value, kind);
+    expect(reference.addSaturated(delta)).toStrictEqual(new SpreadsheetRowReference(value + delta, kind));
+});
+
+test("addSaturated underflow", () => {
+    const kind = SpreadsheetReferenceKind.ABSOLUTE;
+    const value = 2;
+    const delta = -100;
+    const reference = new SpreadsheetRowReference(value, kind);
+    expect(reference.addSaturated(delta)).toStrictEqual(new SpreadsheetRowReference(0, kind));
+});
+
+test("addSaturated overflow", () => {
+    const kind = SpreadsheetReferenceKind.ABSOLUTE;
+    const value = SpreadsheetRowReference.MAX - 2;
+    const delta = +2;
+    const reference = new SpreadsheetRowReference(value, kind);
+    expect(reference.addSaturated(delta)).toStrictEqual(new SpreadsheetRowReference(SpreadsheetRowReference.MAX - 1, kind));
+});
+
 // toJson...............................................................................................................
 
 test("toJson ABSOLUTE", () => {
