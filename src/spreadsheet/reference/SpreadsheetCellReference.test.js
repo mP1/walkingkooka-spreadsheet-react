@@ -186,7 +186,7 @@ test("addColumn delta -1", () => {
 });
 
 test("addColumn delta -10 underflow", () => {
-    expect(() => new SpreadsheetCellReference(column(), row()).setRow()).toThrow("Missing row");
+    expect(() => SpreadsheetCellReference.parse("B2").addColumn(-3)).toThrow("Invalid value not between 0 and 16384 got -2");
 });
 
 // setRow............................................................................................................
