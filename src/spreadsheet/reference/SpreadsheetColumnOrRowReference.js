@@ -44,6 +44,18 @@ export default class SpreadsheetColumnOrRowReference extends SystemObject {
         return this.setValue(this.value() + delta);
     }
 
+    addSaturated(delta) {
+        if(typeof delta !== "number"){
+            throw new Error("Expected number delta got " + delta);
+        }
+        return this.setValue(
+            Math.min(
+                Math.max(this.value() + delta, 0),
+                this.max() -1
+            )
+        );
+    }
+
     value() {
         return this.valueValue;
     }
