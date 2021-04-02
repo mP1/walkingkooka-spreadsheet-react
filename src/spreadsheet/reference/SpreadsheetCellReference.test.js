@@ -189,6 +189,41 @@ test("addColumn delta -10 underflow", () => {
     expect(() => SpreadsheetCellReference.parse("B2").addColumn(-3)).toThrow("Invalid value not between 0 and 16384 got -2");
 });
 
+// addColumnSaturated............................................................................................................
+
+test("addColumnSaturated delta 0", () => {
+    const reference = new SpreadsheetCellReference(column(), row());
+    expect(reference.addColumnSaturated(0)).toEqual(reference);
+});
+
+test("addColumnSaturated delta 1", () => {
+    expect(
+        SpreadsheetCellReference.parse("B2")
+            .addColumnSaturated(1)
+    ).toEqual(SpreadsheetCellReference.parse("C2"));
+});
+
+test("addColumnSaturated delta -1", () => {
+    expect(
+        SpreadsheetCellReference.parse("B2")
+            .addColumnSaturated(-1)
+    ).toEqual(SpreadsheetCellReference.parse("A2"));
+});
+
+test("addColumnSaturated delta underflow", () => {
+    expect(
+        SpreadsheetCellReference.parse("B2")
+            .addColumnSaturated(-3)
+    ).toEqual(SpreadsheetCellReference.parse("A2"));
+});
+
+test("addColumnSaturated delta overflow", () => {
+    expect(
+        SpreadsheetCellReference.parse("B2")
+            .addColumnSaturated(1024 * 1024)
+    ).toEqual(SpreadsheetCellReference.parse("XFD2"));
+});
+
 // setRow............................................................................................................
 
 test("setRow missing fails", () => {
