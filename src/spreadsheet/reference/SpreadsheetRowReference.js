@@ -41,11 +41,6 @@ export default class SpreadsheetRowReference extends SpreadsheetColumnOrRowRefer
         return new SpreadsheetRowReference(value - 1, kind);
     }
 
-    // eslint-disable-next-line no-useless-constructor
-    constructor(value, kind) {
-        super(value, kind);
-    }
-
     max() {
         return SpreadsheetRowReference.MAX;
     }

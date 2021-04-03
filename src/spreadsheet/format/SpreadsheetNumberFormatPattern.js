@@ -16,11 +16,6 @@ export default class SpreadsheetNumberFormatPattern extends SpreadsheetFormatPat
         return new SpreadsheetNumberFormatPattern(pattern);
     }
 
-    // eslint-disable-next-line no-useless-constructor
-    constructor(pattern) {
-        super(pattern);
-    }
-
     typeName() {
         return SpreadsheetNumberFormatPattern.TYPE_NAME;
     }
