@@ -7,11 +7,6 @@ export default class TextNode extends SystemObject {
     static PLACEHOLDER = "text-placeholder";
     static STYLE_NAME = "text-styleName";
 
-    // eslint-disable-next-line no-useless-constructor
-    constructor() {
-        super();
-    }
-
     /**
      * Returns this metadata as a JSON. Perfect to perform REST api calls.
      */

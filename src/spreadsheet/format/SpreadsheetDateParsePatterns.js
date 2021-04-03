@@ -16,11 +16,6 @@ export default class SpreadsheetDateParsePatterns extends SpreadsheetParsePatter
         return new SpreadsheetDateParsePatterns(pattern);
     }
 
-    // eslint-disable-next-line no-useless-constructor
-    constructor(pattern) {
-        super(pattern);
-    }
-
     typeName() {
         return SpreadsheetDateParsePatterns.TYPE_NAME;
     }
