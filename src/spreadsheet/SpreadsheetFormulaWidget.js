@@ -57,7 +57,6 @@ export default class SpreadsheetFormulaWidget extends React.Component {
             }else {
                 this.setState({
                     value: null,
-                    giveFocus: false,
                 })
             }
         }
