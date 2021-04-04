@@ -81,23 +81,35 @@ context(
             invalidHashUpdateRejected("/cell/A1/!invalid-cell-action");
         });
 
+        it("Click viewport cell", () => {
+            reactRenderWait();
+
+            cellClick("B2");
+
+            hash()
+                .should('match', /.*\/Untitled\/cell\/B2/);
+        });
+
         it("Edit cell formula", () => {
             reactRenderWait();
 
             cellClick("B2");
 
-            hash().should('match', /.*\/Untitled\/cell\/B2\/formula/) // => true
+            hash().should('match', /.*\/Untitled\/cell\/B2/)
 
             formulaText()
                 .type("=1+2+3")
                 .type("{enter}");
+
+            hash()
+                .should('match', /.*\/Untitled\/cell\/B2\/formula/);
 
             reactRenderWait();
 
             cellFormattedTextCheck("B2", "6.");
         });
 
-        it("Enter cell with reference", () => {
+        it("Enter cell formula with reference", () => {
             reactRenderWait();
 
             cellClick("C3");
@@ -117,7 +129,7 @@ context(
             cellFormattedTextCheck("D4", "16.");
         });
 
-        it("Update hash cell reference", () => {
+        it("Edit cell formula, update hash cell reference", () => {
             reactRenderWait();
 
             cellClick("C3");
@@ -139,6 +151,38 @@ context(
                 .type("{enter}");
 
             cellFormattedTextCheck("D4", "9.");
+        });
+
+        it("Update hash append cell/reference/formula", () => {
+            reactRenderWait();
+
+            cy.window()
+                .then(function(win) {
+                    var hash = win.location.hash;
+                    win.location.hash = hash + "/cell/D4/formula";
+                });
+
+            reactRenderWait();
+
+            formulaText()
+                .should("have.focus");
+        });
+
+        it("Update hash append formula", () => {
+            reactRenderWait();
+
+            cellClick("C3");
+
+            cy.window()
+                .then(function(win) {
+                    var hash = win.location.hash;
+                    win.location.hash = hash +  "/formula";
+                });
+
+            reactRenderWait();
+
+            formulaText()
+                .should("have.focus");
         });
 
         // create/load spreadsheet............................................................................................
@@ -181,33 +225,44 @@ context(
             cellFormattedTextCheck("F6", "6.");
         });
 
+        it("Select cell should have focus", () => {
+            reactRenderWait();
+
+            cellClick("B2");
+
+            hash()
+                .should('match', /.*\/.*\/cell\/B2/);
+        });
+
         it("Select cell and navigate using arrow keys", () => {
             reactRenderWait();
 
-            cellClick("C3");
+            cellClick("C3")
+                .should('have.focus');
+
             cellGet("C3")
                 .type("{leftarrow}");
 
             hash()
-                .should('match', /.*\/.*\/cell\/B3\/formula/)
+                .should('match', /.*\/.*\/cell\/B3/);
 
             cellGet("B3")
                 .type("{rightarrow}");
 
             hash()
-                .should('match', /.*\/.*\/cell\/C3\/formula/)
+                .should('match', /.*\/.*\/cell\/C3/);
 
             cellGet("C3")
                 .type("{uparrow}");
 
             hash()
-                .should('match', /.*\/.*\/cell\/C2\/formula/)
+                .should('match', /.*\/.*\/cell\/C2/);
 
             cellGet("C2")
                 .type("{downarrow}");
 
             hash()
-                .should('match', /.*\/.*\/cell\/C3\/formula/)
+                .should('match', /.*\/.*\/cell\/C3/);
         });
 
         // SETTINGS.........................................................................................................
@@ -1431,10 +1486,11 @@ context(
          * Click on the cell and verify it becomes outlined.
          */
         function cellClick(cellReference) {
-            cellGet(cellReference)
+            const cell = cellGet(cellReference)
                 .click();
 
             cellOutlined(cellReference);
+            return cell;
         }
 
         function cellOutlined(cellReference) {

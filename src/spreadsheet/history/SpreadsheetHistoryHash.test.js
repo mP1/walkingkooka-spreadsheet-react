@@ -91,12 +91,13 @@ test("parse /spreadsheet-id/spreadsheet-name/cell/!invalid invalid reference", (
     );
 });
 
-test("parse /spreadsheet-id/spreadsheet-name/cell/A1 missing formula", () => {
+test("parse /spreadsheet-id/spreadsheet-name/cell/A1", () => {
     parseAndCheck(
         "/spreadsheet-id-123/spreadsheet-name-456/cell/A1",
         {
             "spreadsheet-id": "spreadsheet-id-123",
             "spreadsheet-name": "spreadsheet-name-456",
+            "cell": SpreadsheetCellReference.parse("A1"),
         }
     );
 });
@@ -551,11 +552,21 @@ test("/spreadsheet-id/spreadsheet-name/cell invalid reference", () => {
     );
 });
 
-test("/spreadsheet-id/spreadsheet-name/cell/A1 missing formula", () => {
+test("/spreadsheet-id/spreadsheet-name/cell/A1", () => {
     mergeAndCheck(
         "/123abc/Untitled456/cell/A1",
         {},
-        "/123abc/Untitled456"
+        "/123abc/Untitled456/cell/A1"
+    );
+});
+
+test("/spreadsheet-id/spreadsheet-name/cell/A1/formula", () => {
+    mergeAndCheck(
+        "/123abc/Untitled456/cell",
+        {
+            "cell": SpreadsheetCellReference.parse("A1"),
+        },
+        "/123abc/Untitled456/cell/A1"
     );
 });
 
@@ -568,6 +579,16 @@ test("/spreadsheet-id/spreadsheet-name/cell/A1/formula", () => {
 });
 
 test("/spreadsheet-id/spreadsheet-name/cell/A1/formula cell replaced", () => {
+    mergeAndCheck(
+        "/123abc/Untitled456/cell/A1",
+        {
+            "cell": SpreadsheetCellReference.parse("B2"),
+        },
+        "/123abc/Untitled456/cell/B2"
+    );
+});
+
+test("/spreadsheet-id/spreadsheet-name/cell/A1/formula cell replaced #2", () => {
     mergeAndCheck(
         "/123abc/Untitled456/cell/A1/formula",
         {
@@ -583,7 +604,7 @@ test("/spreadsheet-id/spreadsheet-name/cell/A1/formula formula false", () => {
         {
             "formula": false,
         },
-        "/123abc/Untitled456"
+        "/123abc/Untitled456/cell/A1"
     );
 });
 
@@ -776,6 +797,26 @@ test("/spreadsheet-id/spreadsheet-name/name/settings replaced settings=true sett
             "settings-section": SpreadsheetHistoryHash.SETTINGS_STYLE,
         },
         "/123abc/Untitled456/name/settings/style"
+    );
+});
+
+test("/spreadsheet-id/spreadsheet-name/cell/A1 replaced settings=true", () => {
+    mergeAndCheck(
+        "/123abc/Untitled456/cell/A1",
+        {
+            "settings": true,
+        },
+        "/123abc/Untitled456/cell/A1/settings"
+    );
+});
+
+test("/spreadsheet-id/spreadsheet-name/cell/A1/settings replaced settings=false", () => {
+    mergeAndCheck(
+        "/123abc/Untitled456/cell/A1/settings",
+        {
+            "settings": false,
+        },
+        "/123abc/Untitled456/cell/A1"
     );
 });
 

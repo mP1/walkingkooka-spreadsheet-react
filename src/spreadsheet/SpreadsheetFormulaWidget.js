@@ -46,18 +46,28 @@ export default class SpreadsheetFormulaWidget extends React.Component {
      * If the reference changed load the new formula text and then give focus to the textField.
      */
     componentDidUpdate(prevProps, prevState, snapshot) {
-        const state = this.state
+        const state = this.state;
         const reference = state.reference;
 
         console.log("componentDidUpdate formula reference " + prevState.reference + " to " + reference + " state", state);
 
+        const textField = this.textField.current;
+        if(textField) {
+            textField.disabled = !state.edit;
+        }
+
         if(!Equality.safeEquals(reference, prevState.reference)){
             if(state.edit){
                 this.reloadFormulaText(reference);
+
+                const tokens = SpreadsheetHistoryHash.parse(this.history.location.pathname);
+                if(!state.focused && tokens[SpreadsheetHistoryHash.CELL_FORMULA]){
+                    this.giveInputFocus();
+                }
             }else {
                 this.setState({
                     value: null,
-                })
+                });
             }
         }
     }
@@ -78,37 +88,60 @@ export default class SpreadsheetFormulaWidget extends React.Component {
      * Updates the state from the history hash
      */
     onHistoryChange(location) {
+        const state = this.state;
+        const history = this.history;
         const pathname = location.pathname;
-        console.log("onHistoryChange from " + pathname + " to " + this.history.location.pathname);
+        console.log("onHistoryChange from " + pathname + " to " + history.location.pathname);
 
-        this.setState(this.loadHistoryHash(pathname));
+        const tokens = SpreadsheetHistoryHash.parse(pathname);
+        const sameCell = Equality.safeEquals(state.reference, tokens.reference);
+        const newEdit = tokens.edit && !state.edit;
+        if(sameCell){
+            if(newEdit){
+                //different cell selected clear formula from being selected.
+                const replacements = {};
+                replacements[SpreadsheetHistoryHash.CELL_FORMULA] = false;
+
+                history.push(SpreadsheetHistoryHash.merge(tokens, replacements));
+            }
+        }
+
+        if(tokens[SpreadsheetHistoryHash.CELL_FORMULA] && !state.focused) {
+            this.giveInputFocus();
+        }
+
+        // if a reference is present the formula text should also be editable.
+        const reference = tokens[SpreadsheetHistoryHash.CELL];
+        const edit = !!reference;
+        this.setState({
+            reference: reference,
+            edit: edit,
+        });
     }
 
-    /**
-     * Loads the state cell, edit flag from the history hash.
-     */
-    loadHistoryHash(pathname) {
-        const tokens = SpreadsheetHistoryHash.parse(pathname);
-
-        return {
-            reference: tokens[SpreadsheetHistoryHash.CELL],
-            edit: tokens[SpreadsheetHistoryHash.CELL_FORMULA],
-        };
+    giveInputFocus() {
+        const input = this.input.current;
+        input && setTimeout(() => {
+            input.focus();
+        }, 10);
     }
 
     render() {
         const state = this.state;
-        const {reference, value} = state;
+        const {reference, edit, value} = state;
         const setValue = this.setValue;
 
-        console.log("render " + (null == value ? "disabled" : "enabled") + " formula: \"" + (value || "") + "\"");
+        console.log("render " + (!edit ? "disabled" : "enabled") + " formula: \"" + (value || "") + "\"", state);
+
         return (
             <TextField ref={this.textField}
                        key={[reference, value, setValue]}
                        id={"formula-TextField"}
                        defaultValue={value}
-                       disabled={null == value}
+                       disabled={!edit}
                        fullWidth={true}
+                       onBlur={this.onBlur.bind(this)}
+                       onFocus={this.onFocus.bind(this)}
                        onKeyDown={this.onKeyDown.bind(this)}
                        placeholder={(reference && reference.toString()) || ""}
                        inputProps={{
@@ -123,6 +156,40 @@ export default class SpreadsheetFormulaWidget extends React.Component {
     }
 
     // KEY HANDLING.....................................................................................................
+
+    /**
+     * Remove the formula portion of history hash
+     */
+    onBlur(event) {
+       this.updateFormulaHash("onBlur", false);
+    }
+
+    /**
+     * Add the formula portion to the history hash
+     */
+    onFocus(event) {
+        this.updateFormulaHash("onFocus", true);
+    }
+
+    updateFormulaHash(eventName, focused) {
+        const history = this.history;
+        const current = history.location.pathname;
+
+        const replacement = {};
+        replacement[SpreadsheetHistoryHash.CELL_FORMULA] = focused;
+
+        const updatedPathname = SpreadsheetHistoryHash.merge(
+            SpreadsheetHistoryHash.parse(current),
+            replacement
+        );
+        console.log(eventName + " current: " + current + " to " + updatedPathname);
+        if(current !== updatedPathname){
+            history.push(updatedPathname);
+        }
+        this.setState({
+            focused: focused,
+        })
+    }
 
     /**
      * ESCAPE reloads the initial formula, ENTER saves the cell with the current formula text.
