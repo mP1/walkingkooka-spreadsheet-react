@@ -330,6 +330,9 @@ export default class SpreadsheetViewportWidget extends React.Component {
             case "ArrowUp":
                 this.saveEditCell(cellReference.addRowSaturated(-1));
                 break;
+            case "Enter":
+                this.giveFormulaTextBoxFocus();
+                break;
             default:
                 // ignore other keys
                 break;
@@ -344,6 +347,21 @@ export default class SpreadsheetViewportWidget extends React.Component {
         this.setState({
             editCell: cellReference,
         });
+    }
+
+    giveFormulaTextBoxFocus() {
+        const history = this.history;
+        const current = history.location.pathname;
+        const replacements = {};
+        replacements[SpreadsheetHistoryHash.CELL_FORMULA] = true;
+
+        const updated = SpreadsheetHistoryHash.merge(
+            SpreadsheetHistoryHash.parse(current),
+            replacements
+        );
+        if(current !== updated){
+            history.push(updated);
+        }
     }
 }
 
