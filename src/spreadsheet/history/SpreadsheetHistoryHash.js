@@ -144,9 +144,6 @@ export default class SpreadsheetHistoryHash {
             if(spreadsheetName){
                 destTokens[SpreadsheetHistoryHash.SPREADSHEET_NAME] = spreadsheetName;
 
-                if(cell && !formula){
-                    valid = false;
-                }
                 if(valid){
                     if(nameEdit){
                         destTokens[SpreadsheetHistoryHash.SPREADSHEET_NAME_EDIT] = nameEdit;
@@ -224,9 +221,6 @@ export default class SpreadsheetHistoryHash {
         }
 
         var valid = true;
-        if(cell && !formula){
-            valid = false;
-        }
 
         // create the resulting verified history token pathname
         const verified = [];

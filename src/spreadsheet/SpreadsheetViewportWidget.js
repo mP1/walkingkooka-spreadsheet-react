@@ -121,10 +121,10 @@ export default class SpreadsheetViewportWidget extends React.Component {
 
             const replacement = {};
             replacement[SpreadsheetHistoryHash.CELL] = editCellNew;
-            replacement[SpreadsheetHistoryHash.CELL_FORMULA] = !!editCellNew;
 
+            const tokens = SpreadsheetHistoryHash.parse(current);
             const updatedPathname = SpreadsheetHistoryHash.merge(
-                SpreadsheetHistoryHash.parse(current),
+                tokens,
                 replacement
             );
             console.log("historyUpdateFromState current: " + current + " to " + updatedPathname);
@@ -132,9 +132,12 @@ export default class SpreadsheetViewportWidget extends React.Component {
                 history.push(updatedPathname);
             }
 
-            const cellElement = document.getElementById("cell-" + editCellNew);
-            if(cellElement) {
-                cellElement.focus();
+            if(!tokens[SpreadsheetHistoryHash.CELL_FORMULA]) {
+                console.log("Missing formula token giving focus to cell...", tokens);
+                const cellElement = document.getElementById("cell-" + editCellNew);
+                if(cellElement) {
+                    cellElement.focus();
+                }
             }
         }
     }
