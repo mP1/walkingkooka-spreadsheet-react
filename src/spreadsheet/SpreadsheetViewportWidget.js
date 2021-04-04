@@ -131,6 +131,11 @@ export default class SpreadsheetViewportWidget extends React.Component {
             if(current !== updatedPathname){
                 history.push(updatedPathname);
             }
+
+            const cellElement = document.getElementById("cell-" + editCellNew);
+            if(cellElement) {
+                cellElement.focus();
+            }
         }
     }
 
@@ -237,11 +242,14 @@ export default class SpreadsheetViewportWidget extends React.Component {
                     console.log("SpreadsheetViewportWidget cell " + cellReference, cellReference, cell);
                 }
 
+                const editing = cellReference.equals(editCell);
+
                 tableCells.push(
                     cell.render(
                         defaultStyle,
-                        cellReference.equals(editCell),
-                        () => this.onCellClick(cellReference)
+                        editing,
+                        () => this.onCellClick(cellReference),
+                        editing ? (event) => this.onCellKeyDown(event, cellReference) : undefined,
                     )
                 );
 
@@ -297,9 +305,42 @@ export default class SpreadsheetViewportWidget extends React.Component {
     onCellClick(cellReference) {
         console.log("onCellClick: " + cellReference);
 
+        this.saveEditCell(cellReference);
+    }
+
+    onCellKeyDown(event, cellReference) {
+        event.preventDefault();
+
+        const key = event.key;
+        console.log("@@onCellKeyDown: " + cellReference + " key: " + key);
+
+        switch(key) {
+            case "ArrowLeft":
+                this.saveEditCell(cellReference.addColumnSaturated(-1));
+                break;
+            case "ArrowDown":
+                this.saveEditCell(cellReference.addRowSaturated(+1));
+                break;
+            case "ArrowRight":
+                this.saveEditCell(cellReference.addColumnSaturated(+1));
+                break;
+            case "ArrowUp":
+                this.saveEditCell(cellReference.addRowSaturated(-1));
+                break;
+            default:
+                // ignore other keys
+                break;
+        }
+    }
+
+    /**
+     * Saves the new edit cell, this should trigger any changes to the viewport including loading new cells
+     * scrolling etc.
+     */
+    saveEditCell(cellReference) {
         this.setState({
             editCell: cellReference,
-        })
+        });
     }
 }
 

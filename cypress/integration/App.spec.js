@@ -181,6 +181,35 @@ context(
             cellFormattedTextCheck("F6", "6.");
         });
 
+        it("Select cell and navigate using arrow keys", () => {
+            reactRenderWait();
+
+            cellClick("C3");
+            cellGet("C3")
+                .type("{leftarrow}");
+
+            hash()
+                .should('match', /.*\/.*\/cell\/B3\/formula/)
+
+            cellGet("B3")
+                .type("{rightarrow}");
+
+            hash()
+                .should('match', /.*\/.*\/cell\/C3\/formula/)
+
+            cellGet("C3")
+                .type("{uparrow}");
+
+            hash()
+                .should('match', /.*\/.*\/cell\/C2\/formula/)
+
+            cellGet("C2")
+                .type("{downarrow}");
+
+            hash()
+                .should('match', /.*\/.*\/cell\/C3\/formula/)
+        });
+
         // SETTINGS.........................................................................................................
 
         it("Toggle(Show and hide) settings", () => {
@@ -1403,7 +1432,13 @@ context(
          */
         function cellClick(cellReference) {
             cellGet(cellReference)
-                .click()
+                .click();
+
+            cellOutlined(cellReference);
+        }
+
+        function cellOutlined(cellReference) {
+            cellGet(cellReference)
                 .should("have.css", "outline-color", "rgb(0, 0, 0)")
                 .should("have.css", "outline-style", "dotted")
                 .should("have.css", "outline-width", "3px");

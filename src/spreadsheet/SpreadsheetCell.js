@@ -149,7 +149,7 @@ export default class SpreadsheetCell extends SystemObject {
     /**
      * Renders a TableCell with the formatted content. The default style will typically come from {@link SpreadsheetMetadata}.
      */
-    render(defaultStyle, edit, onClick) {
+    render(defaultStyle, edit, onClick, onKeyDown) {
         if(!defaultStyle){
             throw new Error("Missing defaultStyle");
         }
@@ -178,6 +178,8 @@ export default class SpreadsheetCell extends SystemObject {
                           id={"cell-" + reference}
                           className={"cell"}
                           onClick={onClick}
+                          onKeyDown={onKeyDown}
+                          tabIndex={edit ? -1 : undefined}
                           style={css}>{formattedRender}</TableCell>;
     }
 
