@@ -1504,7 +1504,7 @@ context(
         }
 
         function reactRenderWait(period) {
-            cy.wait(period || 50);
+            cy.wait(period || 20);
         }
     }
 );
