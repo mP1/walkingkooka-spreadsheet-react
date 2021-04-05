@@ -265,6 +265,24 @@ context(
                 .should('match', /.*\/.*\/cell\/C3/);
         });
 
+        it("Select cell and hit ENTER gives formula text focus", () => {
+            reactRenderWait();
+
+            cellClick("A3")
+                .should('have.focus');
+
+            cellGet("A3")
+                .type("{enter}");
+
+            hash()
+                .should('match', /.*\/.*\/cell\/A3\/formula/);
+
+            reactRenderWait();
+
+            formulaText()
+                .should("have.focus");
+        });
+
         // SETTINGS.........................................................................................................
 
         it("Toggle(Show and hide) settings", () => {
