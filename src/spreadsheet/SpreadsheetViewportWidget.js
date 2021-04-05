@@ -315,7 +315,7 @@ export default class SpreadsheetViewportWidget extends React.Component {
         event.preventDefault();
 
         const key = event.key;
-        console.log("@@onCellKeyDown: " + cellReference + " key: " + key);
+        console.log("onCellKeyDown: " + cellReference + " key: " + key);
 
         switch(key) {
             case "ArrowLeft":
