@@ -283,6 +283,22 @@ context(
                 .should("have.focus");
         });
 
+        it("Select cell and hit ESC loses viewport cell focus", () => {
+            reactRenderWait();
+
+            cellClick("A3")
+                .should('have.focus');
+
+            hash()
+                .should('match', /.*\/.*\/cell\/A3/);
+
+            cellGet("A3")
+                .type("{esc}");
+
+            hash()
+                .should('match', /.*\/.*/);
+        });
+
         // SETTINGS.........................................................................................................
 
         it("Toggle(Show and hide) settings", () => {

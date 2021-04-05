@@ -333,6 +333,9 @@ export default class SpreadsheetViewportWidget extends React.Component {
             case "Enter":
                 this.giveFormulaTextBoxFocus();
                 break;
+            case "Escape":
+                this.blurFormulaTextBox();
+                break;
             default:
                 // ignore other keys
                 break;
@@ -350,16 +353,32 @@ export default class SpreadsheetViewportWidget extends React.Component {
     }
 
     giveFormulaTextBoxFocus() {
+        const replacements = {}
+        replacements[SpreadsheetHistoryHash.CELL_FORMULA] = true;
+
+        this.updateFormulaTextBoxFocus(replacements);
+    }
+
+    blurFormulaTextBox() {
+        const replacements = {}
+        replacements[SpreadsheetHistoryHash.CELL] = null;
+        replacements[SpreadsheetHistoryHash.CELL_FORMULA] = false;
+
+        this.updateFormulaTextBoxFocus(replacements);
+    }
+
+    updateFormulaTextBoxFocus(replacements) {
         const history = this.history;
         const current = history.location.pathname;
-        const replacements = {};
-        replacements[SpreadsheetHistoryHash.CELL_FORMULA] = true;
 
         const updated = SpreadsheetHistoryHash.merge(
             SpreadsheetHistoryHash.parse(current),
             replacements
         );
+        console.log("@@@updateFormulaTextBoxFocus: " + replacements, replacements, "updated", updated);
+
         if(current !== updated){
+            console.log("@@@uhistory.push pdateFormulaTextBoxFocus: " + updated, updated);
             history.push(updated);
         }
     }
