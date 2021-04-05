@@ -618,6 +618,26 @@ test("/spreadsheet-id/spreadsheet-name/cell/A1/formula invalid token", () => {
     );
 });
 
+test("/spreadsheet-id/spreadsheet-name/cell/A1 cell null/deleted", () => {
+    mergeAndCheck(
+        "/123abc/Untitled456/cell/A1",
+        {
+            "cell": null,
+        },
+        "/123abc/Untitled456"
+    );
+});
+
+test("/spreadsheet-id/spreadsheet-name/cell/A2/formula formula null/deleted", () => {
+    mergeAndCheck(
+        "/123abc/Untitled456/cell/A1/formula",
+        {
+            "formula": null,
+        },
+        "/123abc/Untitled456/cell/A1"
+    );
+});
+
 // settings.............................................................................................................
 
 test("/spreadsheet-id/spreadsheet-name/settings", () => {

@@ -182,38 +182,32 @@ export default class SpreadsheetHistoryHash {
         var settingsSection = current[SpreadsheetHistoryHash.SETTINGS_SECTION];
 
         // try replacing...
-        const newSpreadsheetId = replacements[SpreadsheetHistoryHash.SPREADSHEET_ID];
-        if(newSpreadsheetId){
-            spreadsheetId = newSpreadsheetId;
+        if(replacements.hasOwnProperty(SpreadsheetHistoryHash.SPREADSHEET_ID)){
+            spreadsheetId = replacements[SpreadsheetHistoryHash.SPREADSHEET_ID];
         }
 
-        const newSpreadsheetName = replacements[SpreadsheetHistoryHash.SPREADSHEET_NAME];
-        if(newSpreadsheetName){
-            spreadsheetName = newSpreadsheetName;
+        if(replacements.hasOwnProperty(SpreadsheetHistoryHash.SPREADSHEET_NAME)){
+            spreadsheetName = replacements[SpreadsheetHistoryHash.SPREADSHEET_NAME];
         }
 
-        const newSpreadsheetEdit = replacements[SpreadsheetHistoryHash.SPREADSHEET_NAME_EDIT];
-        if(null != newSpreadsheetEdit){
-            nameEdit = !!newSpreadsheetEdit;
-
+        if(replacements.hasOwnProperty(SpreadsheetHistoryHash.SPREADSHEET_NAME_EDIT)){
+            nameEdit = !!replacements[SpreadsheetHistoryHash.SPREADSHEET_NAME_EDIT];
             if(nameEdit){
                 cell = null;
                 formula = null;
             }
         }
 
-        const newCell = replacements[SpreadsheetHistoryHash.CELL];
-        if(newCell){
-            cell = newCell;
-        }
-        const newFormula = replacements[SpreadsheetHistoryHash.CELL_FORMULA];
-        if(null != newFormula){
-            formula = newFormula;
+        if(replacements.hasOwnProperty(SpreadsheetHistoryHash.CELL)){
+            cell = replacements[SpreadsheetHistoryHash.CELL];
         }
 
-        const newSettings = replacements[SpreadsheetHistoryHash.SETTINGS];
-        if(null != newSettings){
-            settings = newSettings;
+        if(replacements.hasOwnProperty(SpreadsheetHistoryHash.CELL_FORMULA)){
+            formula = replacements[SpreadsheetHistoryHash.CELL_FORMULA];
+        }
+
+        if(replacements.hasOwnProperty(SpreadsheetHistoryHash.SETTINGS)){
+            settings = replacements[SpreadsheetHistoryHash.SETTINGS];
             settingsSection = replacements[SpreadsheetHistoryHash.SETTINGS_SECTION];
             if(settingsSection && !isSettingsToken(settingsSection)){
                 settingsSection = null;
