@@ -1,9 +1,10 @@
+import SpreadsheetExpressionReference from "./SpreadsheetExpressionReference.js";
 import SystemObject from "../../SystemObject.js";
 
 const TYPE_NAME = "spreadsheet-label-name";
 const MAX_LENGTH = 255;
 
-export default class SpreadsheetLabelName extends SystemObject {
+export default class SpreadsheetLabelName extends SpreadsheetExpressionReference {
 
     static fromJson(json) {
         return SpreadsheetLabelName.parse(json);

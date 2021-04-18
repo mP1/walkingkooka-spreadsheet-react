@@ -1,12 +1,12 @@
 import SpreadsheetCellReference from "./SpreadsheetCellReference";
-import SpreadsheetRectangle from "./SpreadsheetRectangle";
+import SpreadsheetExpressionReference from "./SpreadsheetExpressionReference.js";
 import SystemObject from "../../SystemObject.js";
 
 const TYPE_NAME = "spreadsheet-range";
 /**
  * A range is marked by two cell references.
  */
-export default class SpreadsheetRange extends SpreadsheetRectangle {
+export default class SpreadsheetRange extends SpreadsheetExpressionReference {
 
     static fromJson(json) {
         return SpreadsheetRange.parse(json);
