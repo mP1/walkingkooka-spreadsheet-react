@@ -2,6 +2,7 @@
  * Holds a cell reference. Note the reference is not validated in anyway.
  */
 import SpreadsheetColumnReference from "./SpreadsheetColumnReference";
+import SpreadsheetExpressionReference from "./SpreadsheetExpressionReference.js";
 import SpreadsheetReferenceKind from "./SpreadsheetReferenceKind";
 import SpreadsheetRowReference from "./SpreadsheetRowReference";
 import SystemObject from "../../SystemObject.js";
@@ -26,7 +27,7 @@ function checkRow(row) {
 
 const TYPE_NAME = "spreadsheet-cell-reference";
 
-export default class SpreadsheetCellReference extends SystemObject {
+export default class SpreadsheetCellReference extends SpreadsheetExpressionReference {
 
     static fromJson(json) {
         return SpreadsheetCellReference.parse(json);
