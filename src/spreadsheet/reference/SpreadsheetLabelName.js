@@ -1,3 +1,4 @@
+import SpreadsheetCellReference from "./SpreadsheetCellReference.js";
 import SpreadsheetExpressionReference from "./SpreadsheetExpressionReference.js";
 import SystemObject from "../../SystemObject.js";
 
@@ -20,6 +21,9 @@ export default class SpreadsheetLabelName extends SpreadsheetExpressionReference
         const length = text.length;
         if(length > MAX_LENGTH){
             throw new Error("Invalid label length " + length + " > " + MAX_LENGTH);
+        }
+        if(SpreadsheetCellReference.isCellReferenceText(text)){
+            throw new Error("Label is a valid cell reference=\"" + text + "\"");
         }
 
         Next:

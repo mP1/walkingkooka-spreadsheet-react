@@ -30,6 +30,10 @@ test("parse invalid part fails", () => {
     expect(() => SpreadsheetLabelName.parse("A!")).toThrow("Invalid character ! at 1");
 });
 
+test("parse cell reference fails", () => {
+    expect(() => SpreadsheetLabelName.parse("A1")).toThrow("Label is a valid cell reference=\"A1\"");
+});
+
 test("parse label", () => {
     const label = SpreadsheetLabelName.parse(NAME);
     expect(label.value()).toStrictEqual(NAME);
