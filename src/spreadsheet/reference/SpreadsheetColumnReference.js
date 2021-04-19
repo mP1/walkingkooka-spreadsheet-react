@@ -2,12 +2,12 @@ import SpreadsheetColumnOrRowReference from "./SpreadsheetColumnOrRowReference";
 import SpreadsheetReferenceKind from "./SpreadsheetReferenceKind";
 import SystemObject from "../../SystemObject.js";
 
-const RADIX = 26;
 const A = 65;
 const TYPE_NAME = "spreadsheet-column-reference";
 
 export default class SpreadsheetColumnReference extends SpreadsheetColumnOrRowReference {
 
+    static RADIX = 26;
     static MAX = 16384;
 
     static fromJson(json) {
@@ -39,7 +39,7 @@ export default class SpreadsheetColumnReference extends SpreadsheetColumnOrRowRe
             if(c < 'A' || c > 'Z'){
                 throw new Error("Expected letter between 'A' to 'Z' or 'a' to 'z' at " + i + " got " + text);
             }
-            value = value * RADIX + c.charCodeAt(0) - A + 1;
+            value = value * SpreadsheetColumnReference.RADIX + c.charCodeAt(0) - A + 1;
         }
         if(value > SpreadsheetColumnReference.MAX){
             throw new Error("Invalid value > " + SpreadsheetColumnReference.MAX + " got " + value);
@@ -64,11 +64,11 @@ export default class SpreadsheetColumnReference extends SpreadsheetColumnOrRowRe
 function toString0(value) {
     let s = "";
 
-    const v = Math.floor(value / RADIX);
+    const v = Math.floor(value / SpreadsheetColumnReference.RADIX);
     if(v > 0){
         s = s + toString0(v - 1);
     }
-    return s + String.fromCharCode(value % RADIX + A);
+    return s + String.fromCharCode(value % SpreadsheetColumnReference.RADIX + A);
 }
 
 SystemObject.register(TYPE_NAME, SpreadsheetColumnReference.fromJson);
