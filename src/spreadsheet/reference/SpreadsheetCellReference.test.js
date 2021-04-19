@@ -23,6 +23,41 @@ systemObjectTesting(
     "A1"
 );
 
+// isCellReferenceText..................................................................................................
+
+test("isCellReferenceText null fails", () => {
+    expect(() => SpreadsheetCellReference.isCellReferenceText(null)).toThrow("Missing text");
+});
+
+test("isCellReferenceText non string fails", () => {
+    expect(() => SpreadsheetCellReference.isCellReferenceText(1.5)).toThrow("Expected string got 1.5");
+});
+
+function testIsCellReferenceText(text, expected) {
+    test("isCellReferenceText \"" + text + "\"", () => {
+        console.log("@isCellReferenceText: " + text + " -> " + SpreadsheetCellReference.isCellReferenceText(text) + " expected: " + expected);
+        expect(
+            SpreadsheetCellReference.isCellReferenceText(text)
+        ).toEqual(expected);
+    });
+}
+
+testIsCellReferenceText("", false);
+testIsCellReferenceText("!", false);
+testIsCellReferenceText("9", false);
+testIsCellReferenceText("A1!", false);
+testIsCellReferenceText("A1", true);
+testIsCellReferenceText("a1", true);
+testIsCellReferenceText("$A1", true);
+testIsCellReferenceText("B12", true);
+testIsCellReferenceText("$B12", true);
+testIsCellReferenceText("C123", true);
+testIsCellReferenceText("$C123", true);
+testIsCellReferenceText("ZZ9", true);
+testIsCellReferenceText("$ZZ9", true);
+testIsCellReferenceText("LABEL", false);
+testIsCellReferenceText("LABEL123", false);
+
 // create...............................................................................................................
 
 test("create without column fails", () => {
