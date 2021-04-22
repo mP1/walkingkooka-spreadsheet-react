@@ -1,4 +1,5 @@
 import SpreadsheetCellReference from "../reference/SpreadsheetCellReference.js";
+import SpreadsheetLabelName from "../reference/SpreadsheetLabelName.js";
 
 function tokenize(pathname) {
     return pathname && pathname.startsWith("/") ?
@@ -58,6 +59,7 @@ export default class SpreadsheetHistoryHash {
     static SPREADSHEET_NAME_EDIT = "name";
     static CELL = "cell";
     static CELL_FORMULA = "formula";
+    static LABEL = "label";
     static SETTINGS = "settings";
     static SETTINGS_SECTION = "settings-section";
 
@@ -81,6 +83,7 @@ export default class SpreadsheetHistoryHash {
         var nameEdit;
         var cell;
         var formula;
+        var label;
         var settings;
         var settingsSection;
 
@@ -118,6 +121,18 @@ export default class SpreadsheetHistoryHash {
                             }
                             formula = true;
                             break;
+                        case SpreadsheetHistoryHash.LABEL:
+                            if(nameEdit || sourceTokens.length === 0){
+                                valid = false;
+                                break;
+                            }
+
+                            try {
+                                label = SpreadsheetLabelName.parse(sourceTokens.shift());
+                            } catch(invalid) {
+                                valid = false;
+                            }
+                            break;
                         case SpreadsheetHistoryHash.SETTINGS:
                             settings = true;
                             const possibleSection = sourceTokens.shift();
@@ -154,6 +169,9 @@ export default class SpreadsheetHistoryHash {
                             destTokens[SpreadsheetHistoryHash.CELL_FORMULA] = formula;
                         }
                     }
+                    if(label){
+                        destTokens[SpreadsheetHistoryHash.LABEL] = label;
+                    }
                     if(settings){
                         destTokens[SpreadsheetHistoryHash.SETTINGS] = settings;
 
@@ -178,6 +196,7 @@ export default class SpreadsheetHistoryHash {
         var nameEdit = current[SpreadsheetHistoryHash.SPREADSHEET_NAME_EDIT];
         var cell = current[SpreadsheetHistoryHash.CELL];
         var formula = current[SpreadsheetHistoryHash.CELL_FORMULA];
+        var label = current[SpreadsheetHistoryHash.LABEL];
         var settings = current[SpreadsheetHistoryHash.SETTINGS];
         var settingsSection = current[SpreadsheetHistoryHash.SETTINGS_SECTION];
 
@@ -195,6 +214,7 @@ export default class SpreadsheetHistoryHash {
             if(nameEdit){
                 cell = null;
                 formula = null;
+                label = null;
             }
         }
 
@@ -204,6 +224,10 @@ export default class SpreadsheetHistoryHash {
 
         if(replacements.hasOwnProperty(SpreadsheetHistoryHash.CELL_FORMULA)){
             formula = replacements[SpreadsheetHistoryHash.CELL_FORMULA];
+        }
+
+        if(replacements.hasOwnProperty(SpreadsheetHistoryHash.LABEL)){
+            cell = replacements[SpreadsheetHistoryHash.LABEL];
         }
 
         if(replacements.hasOwnProperty(SpreadsheetHistoryHash.SETTINGS)){
@@ -237,6 +261,11 @@ export default class SpreadsheetHistoryHash {
 
             if(!!formula){
                 verified.push(SpreadsheetHistoryHash.CELL_FORMULA);
+            }
+
+            if(label){
+                verified.push(SpreadsheetHistoryHash.LABEL);
+                verified.push(label.toString());
             }
 
             if(!!settings){
