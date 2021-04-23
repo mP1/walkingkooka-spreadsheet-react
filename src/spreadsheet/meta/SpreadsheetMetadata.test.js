@@ -173,7 +173,7 @@ test("getIgnoringDefaults missing but ignoring default", () => {
 
 // set..................................................................................................................
 
-test("set property null fails", () => {
+test("set null fails", () => {
     expect(() => SpreadsheetMetadata.EMPTY.set(null, "1234")).toThrow("Missing property");
 })
 
@@ -185,13 +185,13 @@ test("set invalid value fail", () => {
     expect(() => SpreadsheetMetadata.EMPTY.set(SpreadsheetMetadata.DATE_FORMAT_PATTERN, 123)).toThrow("Expected SpreadsheetDateFormatPattern property date-format-pattern got 123");
 });
 
-test("set property same", () => {
+test("set same", () => {
     const name = new SpreadsheetName("spreadsheet-name-123");
     const metadata = new SpreadsheetMetadata({"spreadsheet-name": name});
     expect(metadata).toEqual(metadata.set(SpreadsheetMetadata.SPREADSHEET_NAME, name));
 })
 
-test("set property replace different value", () => {
+test("set replace different value", () => {
     const propertyValue = new SpreadsheetName("spreadsheet-name-123");
     const metadata = new SpreadsheetMetadata({"spreadsheet-name": propertyValue.toJson()});
 
@@ -209,7 +209,7 @@ test("set property replace different value", () => {
         });
 })
 
-test("set property different", () => {
+test("set different", () => {
     const propertyValue = "spreadsheet-id-123";
     const metadata = new SpreadsheetMetadata({"spreadsheet-id": propertyValue});
 
@@ -229,7 +229,7 @@ test("set property different", () => {
         });
 });
 
-test("set property empty new character", () => {
+test("set empty new character", () => {
     const metadata = SpreadsheetMetadata.EMPTY;
     const comma = new Character('.');
     const metadata2 = metadata.set(SpreadsheetMetadata.DECIMAL_SEPARATOR, comma);
@@ -244,7 +244,7 @@ test("set property empty new character", () => {
     );
 });
 
-test("set property new character duplicate fails", () => {
+test("set new character duplicate fails", () => {
     const comma = new Character(',');
     const metadata = new SpreadsheetMetadata({
         "decimal-separator": comma,
@@ -253,7 +253,7 @@ test("set property new character duplicate fails", () => {
     expect(() => metadata.set(SpreadsheetMetadata.GROUPING_SEPARATOR, comma)).toThrow("Cannot set grouping-separator=, duplicate of decimal-separator");
 });
 
-test("set property new character duplicate fails #2", () => {
+test("set new character duplicate fails #2", () => {
     const comma = new Character(',');
     const metadata = new SpreadsheetMetadata({
         "decimal-separator": comma,
@@ -262,7 +262,7 @@ test("set property new character duplicate fails #2", () => {
     expect(() => metadata.set(SpreadsheetMetadata.POSITIVE_SIGN, comma)).toThrow("Cannot set positive-sign=, duplicate of decimal-separator");
 });
 
-test("set property new character", () => {
+test("set new character", () => {
     const json = {
         "currency": "$AUD",
     };
@@ -283,7 +283,7 @@ test("set property new character", () => {
     );
 });
 
-test("set property replace character", () => {
+test("set replace character", () => {
     const dot = new Character('.');
     const comma = new Character(',');
 
@@ -307,7 +307,7 @@ test("set property replace character", () => {
     );
 });
 
-test("set property duplicate dont swap character", () => {
+test("set duplicate dont swap character", () => {
     const comma = new Character('.');
 
     const metadata = new SpreadsheetMetadata({
@@ -331,7 +331,7 @@ test("set property duplicate dont swap character", () => {
     );
 });
 
-test("set property character swap", () => {
+test("set character swap", () => {
     const dot = new Character('.');
     const comma = new Character(',');
 
@@ -358,7 +358,7 @@ test("set property character swap", () => {
         });
 });
 
-test("set property character swap 2", () => {
+test("set character swap 2", () => {
     const dot = new Character('.');
     const comma = new Character(',');
     const percent = new Character('%');
@@ -384,7 +384,7 @@ test("set property character swap 2", () => {
         });
 });
 
-test("set property character swap 3", () => {
+test("set character swap 3", () => {
     const dot = new Character('.');
     const comma = new Character(',');
     const percent = new Character('%');
@@ -416,15 +416,15 @@ test("set property character swap 3", () => {
 
 // remove...............................................................................................................
 
-test("remove property missing fails", () => {
+test("remove missing fails", () => {
     expect(() => SpreadsheetMetadata.EMPTY.remove()).toThrow("Missing property");
 });
 
-test("remove property invalid fails", () => {
+test("remove invalid fails", () => {
     expect(() => SpreadsheetMetadata.EMPTY.remove(123)).toThrow("Expected string property got 123");
 });
 
-test("remove property unknown fails", () => {
+test("remove unknown fails", () => {
     expect(() => SpreadsheetMetadata.EMPTY.remove("!unknown")).toThrow("Unknown property \"!unknown\"");
 });
 
@@ -439,7 +439,7 @@ test("remove absent property #2", () => {
     expect(metadata).toEqual(metadata.remove(SpreadsheetMetadata.EDIT_CELL));
 });
 
-test("remove property", () => {
+test("remove", () => {
     const editCell = SpreadsheetCellReference.parse("Z9");
     const metadata = SpreadsheetMetadata.EMPTY.set(SpreadsheetMetadata.EDIT_CELL, editCell);
     const removed = metadata.remove(SpreadsheetMetadata.EDIT_CELL);
@@ -453,7 +453,7 @@ test("remove property", () => {
         {});
 });
 
-test("remove property #2", () => {
+test("remove #2", () => {
     const withSpreadsheetName = SpreadsheetMetadata.EMPTY
         .set(SpreadsheetMetadata.SPREADSHEET_NAME, new SpreadsheetName("spreadsheet-name-123"));
 
@@ -467,7 +467,7 @@ test("remove property #2", () => {
 
 // properties...........................................................................................................
 
-getSetRemovePropertyTest(SpreadsheetMetadata.CELL_CHARACTER_WIDTH, 2);
+getSetRemoveTest(SpreadsheetMetadata.CELL_CHARACTER_WIDTH, 2);
 
 test("set cell-character-width 0 fails", () => {
     expect(() => SpreadsheetMetadata.EMPTY.set(SpreadsheetMetadata.CELL_CHARACTER_WIDTH, 0)).toThrow("Expected number width > 0 got 0");
@@ -481,53 +481,53 @@ getIgnoringDefaultsTest(SpreadsheetMetadata.CREATE_DATE_TIME, LocalDateTime.from
 
 getIgnoringDefaultsTest(SpreadsheetMetadata.CREATOR, EmailAddress.fromJson("creator@example.com"));
 
-getSetRemovePropertyTest(SpreadsheetMetadata.CURRENCY_SYMBOL, "AUD");
+getSetRemoveTest(SpreadsheetMetadata.CURRENCY_SYMBOL, "AUD");
 
-getSetRemovePropertyTest(SpreadsheetMetadata.DATE_FORMAT_PATTERN, SpreadsheetDateFormatPattern.fromJson("YYYY-MM-DD"));
+getSetRemoveTest(SpreadsheetMetadata.DATE_FORMAT_PATTERN, SpreadsheetDateFormatPattern.fromJson("YYYY-MM-DD"));
 
-getSetRemovePropertyTest(SpreadsheetMetadata.DATE_PARSE_PATTERNS, SpreadsheetDateParsePatterns.fromJson("YYYY-MM-DD"));
+getSetRemoveTest(SpreadsheetMetadata.DATE_PARSE_PATTERNS, SpreadsheetDateParsePatterns.fromJson("YYYY-MM-DD"));
 
-getSetPropertyTest(SpreadsheetMetadata.DATETIME_OFFSET, 1234);
+getSetTest(SpreadsheetMetadata.DATETIME_OFFSET, 1234);
 
-getSetRemovePropertyTest(SpreadsheetMetadata.DATETIME_FORMAT_PATTERN, SpreadsheetDateTimeFormatPattern.fromJson("YYYY-MM-DD HH-MM"));
+getSetRemoveTest(SpreadsheetMetadata.DATETIME_FORMAT_PATTERN, SpreadsheetDateTimeFormatPattern.fromJson("YYYY-MM-DD HH-MM"));
 
-getSetRemovePropertyTest(SpreadsheetMetadata.DATETIME_PARSE_PATTERNS, SpreadsheetDateTimeParsePatterns.fromJson("YYYY-MM-DD HH-MM-SS"));
+getSetRemoveTest(SpreadsheetMetadata.DATETIME_PARSE_PATTERNS, SpreadsheetDateTimeParsePatterns.fromJson("YYYY-MM-DD HH-MM-SS"));
 
-getSetRemovePropertyTest(SpreadsheetMetadata.DECIMAL_SEPARATOR, Character.fromJson(","));
+getSetRemoveTest(SpreadsheetMetadata.DECIMAL_SEPARATOR, Character.fromJson(","));
 
 test("set decimal separator invalid character fails", () => {
     expect(() => SpreadsheetMetadata.EMPTY.set(SpreadsheetMetadata.DECIMAL_SEPARATOR, new Character('a'))).toThrow("Expected symbol got a");
 });
 
-getSetRemovePropertyTest(SpreadsheetMetadata.DEFAULT_YEAR, 1902);
+getSetRemoveTest(SpreadsheetMetadata.DEFAULT_YEAR, 1902);
 
-getSetRemovePropertyTest(SpreadsheetMetadata.EDIT_CELL, SpreadsheetCellReference.parse("B97"));
+getSetRemoveTest(SpreadsheetMetadata.EDIT_CELL, SpreadsheetCellReference.parse("B97"));
 
-getSetRemovePropertyTest(SpreadsheetMetadata.EDIT_RANGE, SpreadsheetRange.parse("A1:B2"));
+getSetRemoveTest(SpreadsheetMetadata.EDIT_RANGE, SpreadsheetRange.parse("A1:B2"));
 
-getSetRemovePropertyTest(SpreadsheetMetadata.EXPONENT_SYMBOL, Character.fromJson(","));
+getSetRemoveTest(SpreadsheetMetadata.EXPONENT_SYMBOL, Character.fromJson(","));
 
-getSetRemovePropertyTest(SpreadsheetMetadata.EXPRESSION_NUMBER_KIND, ExpressionNumberKind.BIG_DECIMAL);
+getSetRemoveTest(SpreadsheetMetadata.EXPRESSION_NUMBER_KIND, ExpressionNumberKind.BIG_DECIMAL);
 
-getSetRemovePropertyTest(SpreadsheetMetadata.GROUPING_SEPARATOR, Character.fromJson(","));
+getSetRemoveTest(SpreadsheetMetadata.GROUPING_SEPARATOR, Character.fromJson(","));
 
-getSetPropertyTest(SpreadsheetMetadata.LOCALE, Locale.fromJson("EN-AU"));
+getSetTest(SpreadsheetMetadata.LOCALE, Locale.fromJson("EN-AU"));
 
 getIgnoringDefaultsTest(SpreadsheetMetadata.MODIFIED_BY, EmailAddress.fromJson("creator@example.com"));
 
 getIgnoringDefaultsTest(SpreadsheetMetadata.MODIFIED_DATE_TIME, LocalDateTime.fromJson("1999-12-31 12:58:59"));
 
-getSetRemovePropertyTest(SpreadsheetMetadata.NEGATIVE_SIGN, Character.fromJson("-"));
+getSetRemoveTest(SpreadsheetMetadata.NEGATIVE_SIGN, Character.fromJson("-"));
 
-getSetRemovePropertyTest(SpreadsheetMetadata.NUMBER_FORMAT_PATTERN, SpreadsheetNumberFormatPattern.fromJson("#.#"));
+getSetRemoveTest(SpreadsheetMetadata.NUMBER_FORMAT_PATTERN, SpreadsheetNumberFormatPattern.fromJson("#.#"));
 
-getSetRemovePropertyTest(SpreadsheetMetadata.NUMBER_PARSE_PATTERNS, SpreadsheetNumberParsePatterns.fromJson("#.##"));
+getSetRemoveTest(SpreadsheetMetadata.NUMBER_PARSE_PATTERNS, SpreadsheetNumberParsePatterns.fromJson("#.##"));
 
-getSetRemovePropertyTest(SpreadsheetMetadata.PERCENTAGE_SYMBOL, Character.fromJson("%"));
+getSetRemoveTest(SpreadsheetMetadata.PERCENTAGE_SYMBOL, Character.fromJson("%"));
 
-getSetRemovePropertyTest(SpreadsheetMetadata.POSITIVE_SIGN, Character.fromJson("+"));
+getSetRemoveTest(SpreadsheetMetadata.POSITIVE_SIGN, Character.fromJson("+"));
 
-getSetRemovePropertyTest(SpreadsheetMetadata.PRECISION, 2);
+getSetRemoveTest(SpreadsheetMetadata.PRECISION, 2);
 
 test("set precision 0 pass", () => {
     expect(() => SpreadsheetMetadata.EMPTY.set(SpreadsheetMetadata.PRECISION, 0));
@@ -541,21 +541,21 @@ test("set precision NAN fails", () => {
     expect(() => SpreadsheetMetadata.EMPTY.set(SpreadsheetMetadata.PRECISION, parseInt(undefined))).toThrow("Expected number precision >= 0 got NaN");
 });
 
-getSetRemovePropertyTest(SpreadsheetMetadata.ROUNDING_MODE, RoundingMode.CEILING);
+getSetRemoveTest(SpreadsheetMetadata.ROUNDING_MODE, RoundingMode.CEILING);
 
 getIgnoringDefaultsTest(SpreadsheetMetadata.SPREADSHEET_ID, "123");
 
-getSetPropertyTest(SpreadsheetMetadata.SPREADSHEET_NAME, SpreadsheetName.fromJson("spreadsheet-name-123"));
+getSetTest(SpreadsheetMetadata.SPREADSHEET_NAME, SpreadsheetName.fromJson("spreadsheet-name-123"));
 
-getSetPropertyTest(SpreadsheetMetadata.STYLE, TextStyle.EMPTY.set("width", lengthFromJson("50px")));
+getSetTest(SpreadsheetMetadata.STYLE, TextStyle.EMPTY.set("width", lengthFromJson("50px")));
 
-getSetRemovePropertyTest(SpreadsheetMetadata.TEXT_FORMAT_PATTERN, SpreadsheetTextFormatPattern.fromJson("@@"));
+getSetRemoveTest(SpreadsheetMetadata.TEXT_FORMAT_PATTERN, SpreadsheetTextFormatPattern.fromJson("@@"));
 
-getSetRemovePropertyTest(SpreadsheetMetadata.TIME_FORMAT_PATTERN, SpreadsheetTimeFormatPattern.fromJson("HH-MM"));
+getSetRemoveTest(SpreadsheetMetadata.TIME_FORMAT_PATTERN, SpreadsheetTimeFormatPattern.fromJson("HH-MM"));
 
-getSetRemovePropertyTest(SpreadsheetMetadata.TIME_PARSE_PATTERNS, SpreadsheetTimeParsePatterns.fromJson("HH-MM-SS"));
+getSetRemoveTest(SpreadsheetMetadata.TIME_PARSE_PATTERNS, SpreadsheetTimeParsePatterns.fromJson("HH-MM-SS"));
 
-getSetRemovePropertyTest(SpreadsheetMetadata.TWO_DIGIT_YEAR, 2);
+getSetRemoveTest(SpreadsheetMetadata.TWO_DIGIT_YEAR, 2);
 
 test("set two_digit_year -1 fails", () => {
     expect(() => SpreadsheetMetadata.EMPTY.set(SpreadsheetMetadata.TWO_DIGIT_YEAR, -1)).toThrow("Expected number twoDigitYear >= 0 and <= 99 got -1");
@@ -565,11 +565,11 @@ test("set two_digit_year 100 fails", () => {
     expect(() => SpreadsheetMetadata.EMPTY.set(SpreadsheetMetadata.TWO_DIGIT_YEAR, 100)).toThrow("Expected number twoDigitYear >= 0 and <= 99 got 100");
 });
 
-getSetRemovePropertyTest(SpreadsheetMetadata.VALUE_SEPARATOR, Character.fromJson(";"));
+getSetRemoveTest(SpreadsheetMetadata.VALUE_SEPARATOR, Character.fromJson(";"));
 
-getSetPropertyTest(SpreadsheetMetadata.VIEWPORT_CELL, SpreadsheetCellReference.parse("B2"));
+getSetTest(SpreadsheetMetadata.VIEWPORT_CELL, SpreadsheetCellReference.parse("B2"));
 
-getSetPropertyTest(SpreadsheetMetadata.VIEWPORT_COORDINATES, SpreadsheetCoordinates.parse("123.5,400"));
+getSetTest(SpreadsheetMetadata.VIEWPORT_COORDINATES, SpreadsheetCoordinates.parse("123.5,400"));
 
 function getIgnoringDefaultsTest(propertyName, propertyValue) {
     getIgnoringDefaultsTest0(propertyName, propertyValue);
@@ -584,13 +584,13 @@ function getIgnoringDefaultsTest(propertyName, propertyValue) {
     removePropertyFailsTest(propertyName);
 }
 
-function getSetPropertyTest(propertyName, propertyValue) {
+function getSetTest(propertyName, propertyValue) {
     getIgnoringDefaultsTest0(propertyName, propertyValue);
     setPropertyTest(propertyName, propertyValue);
     removePropertyFailsTest(propertyName);
 }
 
-function getSetRemovePropertyTest(propertyName, propertyValue) {
+function getSetRemoveTest(propertyName, propertyValue) {
     getIgnoringDefaultsTest0(propertyName, propertyValue);
     setPropertyTest(propertyName, propertyValue);
 
