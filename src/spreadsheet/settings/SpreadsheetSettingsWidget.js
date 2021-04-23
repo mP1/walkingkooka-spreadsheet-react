@@ -160,8 +160,8 @@ class SpreadsheetSettingsWidget extends React.Component {
         this.historyUpdateFromState(prevState);
 
         const metadata = state.spreadsheetMetadata;
-        const createDateTime = metadata.get(SpreadsheetMetadata.CREATE_DATE_TIME);
-        const modifiedDateTime = metadata.get(SpreadsheetMetadata.MODIFIED_DATE_TIME);
+        const createDateTime = metadata.getIgnoringDefaults(SpreadsheetMetadata.CREATE_DATE_TIME);
+        const modifiedDateTime = metadata.getIgnoringDefaults(SpreadsheetMetadata.MODIFIED_DATE_TIME);
 
         const previousMetadata = prevState.spreadsheetMetadata;
 
@@ -170,8 +170,8 @@ class SpreadsheetSettingsWidget extends React.Component {
         }
 
         // initiate requests to fetch create & modified date time.......................................................
-        if(!Equality.safeEquals(createDateTime, previousMetadata.get(SpreadsheetMetadata.CREATE_DATE_TIME)) ||
-            !Equality.safeEquals(modifiedDateTime, previousMetadata.get(SpreadsheetMetadata.MODIFIED_DATE_TIME))
+        if(!Equality.safeEquals(createDateTime, previousMetadata.getIgnoringDefaults(SpreadsheetMetadata.CREATE_DATE_TIME)) ||
+            !Equality.safeEquals(modifiedDateTime, previousMetadata.getIgnoringDefaults(SpreadsheetMetadata.MODIFIED_DATE_TIME))
         ){
             const formatRequests = [];
             formatRequests.push(new SpreadsheetFormatRequest(createDateTime, SpreadsheetLocaleDefaultDateTimeFormat.INSTANCE));
@@ -470,7 +470,7 @@ class SpreadsheetSettingsWidget extends React.Component {
 
         const state = this.state;
         const metadata = state.spreadsheetMetadata;
-        const style = metadata.get(SpreadsheetMetadata.STYLE) || TextStyle.EMPTY;
+        const style = metadata.getIgnoringDefaults(SpreadsheetMetadata.STYLE) || TextStyle.EMPTY;
         const setValue = function(v) {
             console.log("saving default style property " + property + "=" + v);
 
@@ -669,11 +669,11 @@ class SpreadsheetSettingsWidget extends React.Component {
      * Returns a style which may be empty if for the given {@link SpreadsheetMetadata}.
      */
     defaultStyle(metadata) {
-        const defaultMetadata = metadata.get(SpreadsheetMetadata.DEFAULTS);
+        const defaultMetadata = metadata.getIgnoringDefaults(SpreadsheetMetadata.DEFAULTS);
         var style = TextStyle.EMPTY;
 
         if(defaultMetadata){
-            style = defaultMetadata.get(SpreadsheetMetadata.STYLE) || TextStyle.EMPTY;
+            style = defaultMetadata.getIgnoringDefaults(SpreadsheetMetadata.STYLE) || TextStyle.EMPTY;
         }
 
         return style;
@@ -915,7 +915,7 @@ class SpreadsheetSettingsWidget extends React.Component {
                 break;
             default:
                 const metadata = state.spreadsheetMetadata;
-                const value = metadata.get(property);
+                const value = metadata.getIgnoringDefaults(property);
 
                 switch(property) {
                     case SpreadsheetMetadata.SPREADSHEET_ID:
@@ -936,8 +936,8 @@ class SpreadsheetSettingsWidget extends React.Component {
                             );
                         }.bind(this);
 
-                        const defaultMetadata = metadata.get(SpreadsheetMetadata.DEFAULTS);
-                        const defaultValue = defaultMetadata && defaultMetadata.get(property);
+                        const defaultMetadata = metadata.getIgnoringDefaults(SpreadsheetMetadata.DEFAULTS);
+                        const defaultValue = defaultMetadata && defaultMetadata.getIgnoringDefaults(property);
 
                         switch(property) {
                             case SpreadsheetMetadata.CURRENCY_SYMBOL:

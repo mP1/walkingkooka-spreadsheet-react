@@ -140,8 +140,8 @@ class App extends React.Component {
      * If spreadsheet id changed clear caches related to the previous spreadsheet.
      */
     stateSpreadsheetMetadataSpreadsheetId(prevState, hash) {
-        const previous = prevState.spreadsheetMetadata.get(SpreadsheetMetadata.SPREADSHEET_ID);
-        const current = this.state.spreadsheetMetadata.get(SpreadsheetMetadata.SPREADSHEET_ID);
+        const previous = prevState.spreadsheetMetadata.getIgnoringDefaults(SpreadsheetMetadata.SPREADSHEET_ID);
+        const current = this.state.spreadsheetMetadata.getIgnoringDefaults(SpreadsheetMetadata.SPREADSHEET_ID);
 
         if(!Equality.safeEquals(current, previous)){
             console.log("spreadsheetId changed from " + previous + " to " + current + " clearing state cell, columnWidths, rowHeight (caches)");
@@ -161,7 +161,7 @@ class App extends React.Component {
     stateSpreadsheetMetadataSpreadsheetName(hash) {
         const metadata = this.state.spreadsheetMetadata;
         const widget = this.spreadsheetName.current;
-        const name = metadata.get(SpreadsheetMetadata.SPREADSHEET_NAME);
+        const name = metadata.getIgnoringDefaults(SpreadsheetMetadata.SPREADSHEET_NAME);
 
         if(widget && !Equality.safeEquals(name, widget.state.value)){
             console.log("onSpreadsheetMetadataSpreadsheetName updated from " + widget.state.value + " to " + name);
@@ -184,8 +184,8 @@ class App extends React.Component {
         const state = this.state;
 
         const metadata = state.spreadsheetMetadata;
-        const viewportCell = metadata.get(SpreadsheetMetadata.VIEWPORT_CELL);
-        const viewportCoordinates = metadata.get(SpreadsheetMetadata.VIEWPORT_COORDINATES);
+        const viewportCell = metadata.getIgnoringDefaults(SpreadsheetMetadata.VIEWPORT_CELL);
+        const viewportCoordinates = metadata.getIgnoringDefaults(SpreadsheetMetadata.VIEWPORT_COORDINATES);
         const windowDimensions = state.windowDimensions;
         const aboveViewportDimensions = state.aboveViewportDimensions;
 
@@ -215,7 +215,7 @@ class App extends React.Component {
                 });
 
                 const previousMetadata = prevState.spreadsheetMetadata;
-                const previousViewportCell = previousMetadata && previousMetadata.get(SpreadsheetMetadata.VIEWPORT_CELL);
+                const previousViewportCell = previousMetadata && previousMetadata.getIgnoringDefaults(SpreadsheetMetadata.VIEWPORT_CELL);
 
                 if((width > previous.width || height > previous.height) && (viewportCell.equals(previousViewportCell) || !previousViewportCell)){
                     this.onCellBox(
@@ -306,7 +306,7 @@ class App extends React.Component {
 
                 if(this.historySpreadsheetIdCreateEmptyOrLoadOrNothing(spreadsheetId, metadata)){
                     replacements[SpreadsheetHistoryHash.SPREADSHEET_ID] = spreadsheetId;
-                    replacements[SpreadsheetHistoryHash.SPREADSHEET_NAME] = metadata.get(SpreadsheetMetadata.SPREADSHEET_NAME);
+                    replacements[SpreadsheetHistoryHash.SPREADSHEET_NAME] = metadata.getIgnoringDefaults(SpreadsheetMetadata.SPREADSHEET_NAME);
                 }
 
                 const history = this.history;
@@ -328,7 +328,7 @@ class App extends React.Component {
      */
     historySpreadsheetIdCreateEmptyOrLoadOrNothing(spreadsheetId, metadata) {
         // if already loading dont check if hash matches state
-        const previous = metadata.get(SpreadsheetMetadata.SPREADSHEET_ID);
+        const previous = metadata.getIgnoringDefaults(SpreadsheetMetadata.SPREADSHEET_ID);
         const same = Equality.safeEquals(spreadsheetId, previous);
 
         if(same){
@@ -376,12 +376,12 @@ class App extends React.Component {
 
         const metadata = this.spreadsheetMetadata();
 
-        const spreadsheetName = metadata.get(SpreadsheetMetadata.SPREADSHEET_NAME);
+        const spreadsheetName = metadata.getIgnoringDefaults(SpreadsheetMetadata.SPREADSHEET_NAME);
 
-        const style = metadata.get(SpreadsheetMetadata.STYLE);
+        const style = metadata.getIgnoringDefaults(SpreadsheetMetadata.STYLE);
         const {cells, columnWidths, rowHeights} = state;
 
-        const viewportCell = metadata.get(SpreadsheetMetadata.VIEWPORT_CELL);
+        const viewportCell = metadata.getIgnoringDefaults(SpreadsheetMetadata.VIEWPORT_CELL);
 
         const history = this.history;
 
@@ -605,7 +605,7 @@ class App extends React.Component {
      * Uses the provided spreadsheetid or falls back to the current {@Link SpreadsheetMetadata} spreadsheet id
      */
     spreadsheetMetadataApiUrl(spreadsheetId) {
-        const id = spreadsheetId || this.spreadsheetMetadata().get(SpreadsheetMetadata.SPREADSHEET_ID);
+        const id = spreadsheetId || this.spreadsheetMetadata().getIgnoringDefaults(SpreadsheetMetadata.SPREADSHEET_ID);
         if(!id){
             throw new Error("Missing spreadsheetId parameter and current SpreadsheetMetadata.spreadsheetId");
         }
