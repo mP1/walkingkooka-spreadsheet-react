@@ -24,17 +24,17 @@ import SystemObject from "../../SystemObject.js";
 import TextStyle from "../../text/TextStyle";
 
 /**
- * Verifies the given property is a known property.
+ * Verifies the given property name is a known property.
  */
-function checkProperty(property) {
-    if(!property){
+function checkPropertyName(propertyName) {
+    if(!propertyName){
         throw new Error("Missing property");
     }
-    if(typeof property !== "string"){
-        throw new Error("Expected string property got " + property);
+    if(typeof propertyName !== "string"){
+        throw new Error("Expected string property got " + propertyName);
     }
 
-    switch(property) {
+    switch(propertyName) {
         case SpreadsheetMetadata.CELL_CHARACTER_WIDTH:
         case SpreadsheetMetadata.CREATE_DATE_TIME:
         case SpreadsheetMetadata.CREATOR:
@@ -74,10 +74,10 @@ function checkProperty(property) {
         case SpreadsheetMetadata.VIEWPORT_COORDINATES:
             break;
         default:
-            if(property.startsWith("color-")){
+            if(propertyName.startsWith("color-")){
                 break;
             }
-            throw new Error("Unknown property \"" + property + "\"");
+            throw new Error("Unknown property \"" + propertyName + "\"");
     }
 }
 
@@ -345,10 +345,10 @@ export default class SpreadsheetMetadata extends SystemObject {
         return Object.keys(this.properties).length === 0;
     }
 
-    getIgnoringDefaultsOrFail(property) {
-        const value = this.getIgnoringDefaults(property);
+    getIgnoringDefaultsOrFail(propertyName) {
+        const value = this.getIgnoringDefaults(propertyName);
         if(typeof value === "undefined"){
-            throw new Error("Missing \"" + property + "\" " + this);
+            throw new Error("Missing \"" + propertyName + "\" " + this);
         }
         return value;
     }
@@ -356,33 +356,33 @@ export default class SpreadsheetMetadata extends SystemObject {
     /**
      * General purpose getter which unlike the java version of this class ignores the defaults if the property is missing.
      */
-    getIgnoringDefaults(property) {
-        checkProperty(property);
-        return this.properties[property];
+    getIgnoringDefaults(propertyName) {
+        checkPropertyName(propertyName);
+        return this.properties[propertyName];
     }
 
     /**
      * Would be setter that returns a new SpreadsheetMetadata if the new value is different from the previous.
      */
-    set(property, value) {
-        checkProperty(property);
+    set(propertyName, value) {
+        checkPropertyName(propertyName);
         if(null == value){
-            throw new Error("Property \"" + property + "\" missing value");
+            throw new Error("Property \"" + propertyName + "\" missing value");
         }
 
         let expectedClass;
         let expectedTypeOf;
 
-        switch(property) {
+        switch(propertyName) {
             case SpreadsheetMetadata.CELL_CHARACTER_WIDTH:
                 checkCellCharacterWidth(value);
                 expectedTypeOf = "number";
                 break;
             case SpreadsheetMetadata.CREATE_DATE_TIME:
-                setFails(property);
+                setFails(propertyName);
                 break;
             case SpreadsheetMetadata.CREATOR:
-                setFails(property);
+                setFails(propertyName);
                 break;
             case SpreadsheetMetadata.CURRENCY_SYMBOL:
                 checkCurrencySymbol(value);
@@ -431,10 +431,10 @@ export default class SpreadsheetMetadata extends SystemObject {
                 expectedClass = Locale;
                 break;
             case SpreadsheetMetadata.MODIFIED_DATE_TIME:
-                setFails(property);
+                setFails(propertyName);
                 break;
             case SpreadsheetMetadata.MODIFIED_BY:
-                setFails(property);
+                setFails(propertyName);
                 break;
             case SpreadsheetMetadata.NEGATIVE_SIGN:
                 checkCharacter(value);
@@ -457,7 +457,7 @@ export default class SpreadsheetMetadata extends SystemObject {
                 expectedClass = RoundingMode;
                 break;
             case SpreadsheetMetadata.SPREADSHEET_ID:
-                setFails(property);
+                setFails(propertyName);
                 break;
             case SpreadsheetMetadata.SPREADSHEET_NAME:
                 expectedClass = SpreadsheetName;
@@ -488,31 +488,31 @@ export default class SpreadsheetMetadata extends SystemObject {
                 expectedClass = SpreadsheetCoordinates;
                 break;
             default:
-                if(property.startsWith("color-")){
+                if(propertyName.startsWith("color-")){
                     break;
                 }
-                throw new Error("Unknown property \"" + property + "\"");
+                throw new Error("Unknown property \"" + propertyName + "\"");
         }
         if((expectedTypeOf && typeof (value) !== expectedTypeOf)){
-            throw new Error("Expected " + expectedTypeOf + " property " + property + " got " + value);
+            throw new Error("Expected " + expectedTypeOf + " property " + propertyName + " got " + value);
         }
         if((expectedClass === Number && Number.isNaN(value)) ||
             (typeof expectedClass === "function" && !(value instanceof expectedClass))){
-            throw new Error("Expected " + expectedClass.name + " property " + property + " got " + value);
+            throw new Error("Expected " + expectedClass.name + " property " + propertyName + " got " + value);
         }
 
-        return (Equality.safeEquals(value, this.getIgnoringDefaults(property))) ?
+        return (Equality.safeEquals(value, this.getIgnoringDefaults(propertyName))) ?
             this :
-            copyAndSet(this.properties, property, value);
+            copyAndSet(this.properties, propertyName, value);
     }
 
     /**
      * Would be remover that returns a new SpreadsheetMetadata if the removed value was already absent.
      */
-    remove(property) {
-        checkProperty(property);
+    remove(propertyName) {
+        checkPropertyName(propertyName);
 
-        switch(property) {
+        switch(propertyName) {
             case SpreadsheetMetadata.CELL_CHARACTER_WIDTH:
             case SpreadsheetMetadata.CURRENCY_SYMBOL:
             case SpreadsheetMetadata.DATE_FORMAT_PATTERN:
@@ -551,16 +551,16 @@ export default class SpreadsheetMetadata extends SystemObject {
             case SpreadsheetMetadata.STYLE:
             case SpreadsheetMetadata.VIEWPORT_CELL:
             case SpreadsheetMetadata.VIEWPORT_COORDINATES:
-                throw new Error("Property \"" + property + "\" cannot be removed, " + this);
+                throw new Error("Property \"" + propertyName + "\" cannot be removed, " + this);
             default:
-                if(property.startsWith("color-")){
+                if(propertyName.startsWith("color-")){
                     break;
                 }
-                throw new Error("Unknown property \"" + property + "\"");
+                throw new Error("Unknown property \"" + propertyName + "\"");
         }
-        return (typeof this.getIgnoringDefaults(property) === "undefined") ?
+        return (typeof this.getIgnoringDefaults(propertyName) === "undefined") ?
             this :
-            copyAndRemove(this.properties, property);
+            copyAndRemove(this.properties, propertyName);
     }
 
     /**
@@ -597,11 +597,11 @@ export default class SpreadsheetMetadata extends SystemObject {
     }
 
     equals(other) {
-        return equals0(this, other, PROPERTIES);
+        return equals0(this, other, PROPERTY_NAMES);
     }
 
     equalsMost(other) {
-        return equals0(this, other, MOST_PROPERTIES);
+        return equals0(this, other, MOST_PROPERTY_NAMES);
     }
 
     toString() {
@@ -612,7 +612,7 @@ export default class SpreadsheetMetadata extends SystemObject {
 /**
  * An array of all properties.
  */
-const PROPERTIES = [
+const PROPERTY_NAMES = [
     SpreadsheetMetadata.CELL_CHARACTER_WIDTH,
     SpreadsheetMetadata.CREATOR,
     SpreadsheetMetadata.CREATE_DATE_TIME,
@@ -655,7 +655,7 @@ const PROPERTIES = [
 /**
  * Used when comparing two metadata ignoring a few properties that are unimportant when deciding if a viewport cells should be reloaded.
  */
-const MOST_PROPERTIES = PROPERTIES.filter(p => {
+const MOST_PROPERTY_NAMES = PROPERTY_NAMES.filter(p => {
     var keep;
     switch(p) {
         case SpreadsheetMetadata.CREATOR:
@@ -686,7 +686,7 @@ function equals1(metadata, other, required) {
     const otherProperties = other.properties;
 
     // if required === IGNORED_PROPERTIES must test all individual properties...
-    if(required === MOST_PROPERTIES || Object.keys(properties).length === Object.keys(otherProperties).length){
+    if(required === MOST_PROPERTY_NAMES || Object.keys(properties).length === Object.keys(otherProperties).length){
         equals = true;
 
         for(const property of required) {
@@ -747,30 +747,30 @@ function setFails(propertyName) {
  * Creates a new SpreadsheetMetadata and sets or replaces the new property/value pair.
  */
 function copyAndSet(properties,
-                    property,
+                    propertyName,
                     value) {
     const copy = Object.assign({}, properties);
 
-    switch(property) {
+    switch(propertyName) {
         case SpreadsheetMetadata.DECIMAL_SEPARATOR:
         case SpreadsheetMetadata.GROUPING_SEPARATOR:
         case SpreadsheetMetadata.NEGATIVE_SIGN:
         case SpreadsheetMetadata.PERCENTAGE_SYMBOL:
         case SpreadsheetMetadata.POSITIVE_SIGN:
         case SpreadsheetMetadata.VALUE_SEPARATOR:
-            const previous = properties[property];
+            const previous = properties[propertyName];
 
             // try and find another property with the same value
-            for(const i in SWAPPABLE_PROPERTIES) {
-                const possible = SWAPPABLE_PROPERTIES[i];
-                if(property === possible){
+            for(const i in SWAPPABLE_PROPERTY_NAMES) {
+                const possible = SWAPPABLE_PROPERTY_NAMES[i];
+                if(propertyName === possible){
                     continue;
                 }
                 // found another property with $value, swap is necessary
                 if(value.equals(copy[possible])){
                     if(!previous){
-                        if(!(isGroupingSeparatorOrValueSeparator(property) && isGroupingSeparatorOrValueSeparator(possible))){
-                            throw new Error("Cannot set " + property + "=" + value + " duplicate of " + possible);
+                        if(!(isGroupingSeparatorOrValueSeparator(propertyName) && isGroupingSeparatorOrValueSeparator(possible))){
+                            throw new Error("Cannot set " + propertyName + "=" + value + " duplicate of " + possible);
                         }
                     }else {
                         copy[possible] = previous;
@@ -782,7 +782,7 @@ function copyAndSet(properties,
             break;
     }
 
-    copy[property] = value;
+    copy[propertyName] = value;
 
     return new SpreadsheetMetadata(copy);
 }
@@ -791,7 +791,7 @@ function isGroupingSeparatorOrValueSeparator(property) {
     return SpreadsheetMetadata.GROUPING_SEPARATOR === property || SpreadsheetMetadata.VALUE_SEPARATOR === property;
 }
 
-const SWAPPABLE_PROPERTIES = [
+const SWAPPABLE_PROPERTY_NAMES = [
     SpreadsheetMetadata.DECIMAL_SEPARATOR,
     SpreadsheetMetadata.GROUPING_SEPARATOR,
     SpreadsheetMetadata.NEGATIVE_SIGN,
