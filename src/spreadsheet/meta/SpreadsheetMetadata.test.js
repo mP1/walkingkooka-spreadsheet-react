@@ -310,6 +310,110 @@ test("set new character", () => {
     );
 });
 
+test("set character copy default group-separator", () => {
+    const dot = new Character('.');
+    const comma = new Character(',');
+    const percent = new Character('%');
+
+    const metadata = new SpreadsheetMetadata({
+        "decimal-separator": dot,
+        "grouping-separator": comma,
+        "percentage-symbol": percent,
+    });
+    const metadata2 = metadata.set(SpreadsheetMetadata.GROUPING_SEPARATOR, dot);
+    expect(metadata).not.toEqual(metadata2);
+
+    checkJson(
+        metadata,
+        {
+            "decimal-separator": dot.toJson(),
+            "grouping-separator": comma.toJson(),
+            "percentage-symbol": percent.toJson(),
+        }
+    );
+    checkJson(
+        metadata2,
+        {
+            "decimal-separator": comma.toJson(),
+            "grouping-separator": dot.toJson(),
+            "percentage-symbol": percent.toJson(),
+        });
+});
+
+test("set character copy default value-separator", () => {
+    const dot = new Character('.');
+    const comma = new Character(',');
+    const percent = new Character('%');
+
+    const metadata = new SpreadsheetMetadata({
+        "defaults": {
+            "decimal-separator": dot,
+            "percentage-symbol": percent,
+            "value-separator": comma,
+        }
+    });
+    const metadata2 = metadata.set(SpreadsheetMetadata.VALUE_SEPARATOR, dot);
+    expect(metadata).not.toEqual(metadata2);
+
+    checkJson(
+        metadata,
+        {
+            "defaults": {
+                "decimal-separator": dot,
+                "percentage-symbol": percent,
+                "value-separator": comma,
+            },
+        }
+    );
+    checkJson(
+        metadata2,
+        {
+            "defaults": {
+                "decimal-separator": dot,
+                "percentage-symbol": percent,
+                "value-separator": comma,
+            },
+            "value-separator": dot.toJson(),
+        });
+});
+
+test("set character copy default non group-separator/value-separator", () => {
+    const dot = new Character('.');
+    const comma = new Character(',');
+    const percent = new Character('%');
+
+    const metadata = new SpreadsheetMetadata({
+        "defaults": {
+            "decimal-separator": dot.toJson(),
+            "grouping-separator": comma.toJson(),
+            "percentage-symbol": percent.toJson(),
+        }
+    });
+    const metadata2 = metadata.set(SpreadsheetMetadata.PERCENTAGE_SYMBOL, percent);
+    expect(metadata).not.toEqual(metadata2);
+
+    checkJson(
+        metadata,
+        {
+            "defaults": {
+                "decimal-separator": dot.toJson(),
+                "grouping-separator": comma.toJson(),
+                "percentage-symbol": percent.toJson(),
+            },
+        }
+    );
+    checkJson(
+        metadata2,
+        {
+            "defaults": {
+                "decimal-separator": dot.toJson(),
+                "grouping-separator": comma.toJson(),
+                "percentage-symbol": percent.toJson(),
+            },
+            "percentage-symbol": percent.toJson(),
+        });
+});
+
 test("set replace character", () => {
     const dot = new Character('.');
     const comma = new Character(',');
@@ -408,36 +512,6 @@ test("set character swap 2", () => {
             "decimal-separator": comma.toJson(),
             "grouping-separator": dot.toJson(), // swap!
             "percentage-symbol": percent.toJson(),
-        });
-});
-
-test("set character swap 3", () => {
-    const dot = new Character('.');
-    const comma = new Character(',');
-    const percent = new Character('%');
-
-    const metadata = new SpreadsheetMetadata({
-        "decimal-separator": dot,
-        "grouping-separator": comma,
-        "percentage-symbol": percent,
-    });
-    const metadata2 = metadata.set(SpreadsheetMetadata.DECIMAL_SEPARATOR, percent);
-    expect(metadata).not.toEqual(metadata2);
-
-    checkJson(
-        metadata,
-        {
-            "decimal-separator": dot.toJson(),
-            "grouping-separator": comma.toJson(),
-            "percentage-symbol": percent.toJson(),
-        }
-    );
-    checkJson(
-        metadata2,
-        {
-            "decimal-separator": percent.toJson(),
-            "grouping-separator": comma.toJson(),
-            "percentage-symbol": dot.toJson(), // swap
         });
 });
 
