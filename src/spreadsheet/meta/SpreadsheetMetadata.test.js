@@ -148,27 +148,27 @@ test("from json all properties", () => {
     });
 });
 
-// get..................................................................................................................
+// getIgnoringDefaults..................................................................................................................
 
-test("get property present without defaults", () => {
+test("getIgnoringDefaults present without defaults", () => {
     const propertyName = SpreadsheetMetadata.SPREADSHEET_ID;
     const propertyValue = "1234";
 
     const metadata = new SpreadsheetMetadata({"spreadsheet-id": propertyValue});
-    expect(metadata.get(propertyName)).toEqual(propertyValue);
+    expect(metadata.getIgnoringDefaults(propertyName)).toEqual(propertyValue);
 })
 
-test("get property missing without defaults", () => {
+test("getIgnoringDefaults missing without defaults", () => {
     const metadata = new SpreadsheetMetadata({});
-    expect(metadata.get("creator")).toBeUndefined();
+    expect(metadata.getIgnoringDefaults("creator")).toBeUndefined();
 })
 
-test("get property missing but ignoring default", () => {
+test("getIgnoringDefaults missing but ignoring default", () => {
     const propertyName = SpreadsheetMetadata.SPREADSHEET_ID;
     const propertyValue = "1234";
 
     const metadata = SpreadsheetMetadata.fromJson({_defaults: {"spreadsheet-id": propertyValue}});
-    expect(metadata.get(propertyName)).toBeUndefined();
+    expect(metadata.getIgnoringDefaults(propertyName)).toBeUndefined();
 })
 
 // set..................................................................................................................
@@ -477,9 +477,9 @@ test("set cell-character-width -1 fails", () => {
     expect(() => SpreadsheetMetadata.EMPTY.set(SpreadsheetMetadata.CELL_CHARACTER_WIDTH, -1)).toThrow("Expected number width > 0 got -1");
 });
 
-getPropertyTest(SpreadsheetMetadata.CREATE_DATE_TIME, LocalDateTime.fromJson("1999-12-31 12:58:59"));
+getIgnoringDefaultsTest(SpreadsheetMetadata.CREATE_DATE_TIME, LocalDateTime.fromJson("1999-12-31 12:58:59"));
 
-getPropertyTest(SpreadsheetMetadata.CREATOR, EmailAddress.fromJson("creator@example.com"));
+getIgnoringDefaultsTest(SpreadsheetMetadata.CREATOR, EmailAddress.fromJson("creator@example.com"));
 
 getSetRemovePropertyTest(SpreadsheetMetadata.CURRENCY_SYMBOL, "AUD");
 
@@ -513,9 +513,9 @@ getSetRemovePropertyTest(SpreadsheetMetadata.GROUPING_SEPARATOR, Character.fromJ
 
 getSetPropertyTest(SpreadsheetMetadata.LOCALE, Locale.fromJson("EN-AU"));
 
-getPropertyTest(SpreadsheetMetadata.MODIFIED_BY, EmailAddress.fromJson("creator@example.com"));
+getIgnoringDefaultsTest(SpreadsheetMetadata.MODIFIED_BY, EmailAddress.fromJson("creator@example.com"));
 
-getPropertyTest(SpreadsheetMetadata.MODIFIED_DATE_TIME, LocalDateTime.fromJson("1999-12-31 12:58:59"));
+getIgnoringDefaultsTest(SpreadsheetMetadata.MODIFIED_DATE_TIME, LocalDateTime.fromJson("1999-12-31 12:58:59"));
 
 getSetRemovePropertyTest(SpreadsheetMetadata.NEGATIVE_SIGN, Character.fromJson("-"));
 
@@ -543,7 +543,7 @@ test("set precision NAN fails", () => {
 
 getSetRemovePropertyTest(SpreadsheetMetadata.ROUNDING_MODE, RoundingMode.CEILING);
 
-getPropertyTest(SpreadsheetMetadata.SPREADSHEET_ID, "123");
+getIgnoringDefaultsTest(SpreadsheetMetadata.SPREADSHEET_ID, "123");
 
 getSetPropertyTest(SpreadsheetMetadata.SPREADSHEET_NAME, SpreadsheetName.fromJson("spreadsheet-name-123"));
 
@@ -571,8 +571,8 @@ getSetPropertyTest(SpreadsheetMetadata.VIEWPORT_CELL, SpreadsheetCellReference.p
 
 getSetPropertyTest(SpreadsheetMetadata.VIEWPORT_COORDINATES, SpreadsheetCoordinates.parse("123.5,400"));
 
-function getPropertyTest(propertyName, propertyValue) {
-    getPropertyTest0(propertyName, propertyValue);
+function getIgnoringDefaultsTest(propertyName, propertyValue) {
+    getIgnoringDefaultsTest0(propertyName, propertyValue);
 
     test("set " + propertyName + " fails",
         () => {
@@ -585,13 +585,13 @@ function getPropertyTest(propertyName, propertyValue) {
 }
 
 function getSetPropertyTest(propertyName, propertyValue) {
-    getPropertyTest0(propertyName, propertyValue);
+    getIgnoringDefaultsTest0(propertyName, propertyValue);
     setPropertyTest(propertyName, propertyValue);
     removePropertyFailsTest(propertyName);
 }
 
 function getSetRemovePropertyTest(propertyName, propertyValue) {
-    getPropertyTest0(propertyName, propertyValue);
+    getIgnoringDefaultsTest0(propertyName, propertyValue);
     setPropertyTest(propertyName, propertyValue);
 
     test("remove " + propertyName,
@@ -606,19 +606,19 @@ function getSetRemovePropertyTest(propertyName, propertyValue) {
     );
 }
 
-function getPropertyTest0(propertyName, propertyValue) {
-    test("get " + propertyName + " missing", () => {
+function getIgnoringDefaultsTest0(propertyName, propertyValue) {
+    test("getIgnoringDefaults " + propertyName + " missing", () => {
         expect(SpreadsheetMetadata.EMPTY
-            .get(propertyName))
+            .getIgnoringDefaults(propertyName))
             .toBeUndefined();
     });
 
-    test("get " + propertyName, () => {
+    test("getIgnoringDefaults " + propertyName, () => {
         const json = {};
         json[propertyName] = (propertyValue.toJson && propertyValue.toJson()) || propertyValue;
 
         expect(SpreadsheetMetadata.fromJson(json)
-            .get(propertyName)
+            .getIgnoringDefaults(propertyName)
         ).toEqual(propertyValue);
     });
 };
@@ -626,7 +626,7 @@ function getPropertyTest0(propertyName, propertyValue) {
 function setPropertyTest(propertyName, propertyValue) {
     test("set " + propertyName + " missing", () => {
         expect(SpreadsheetMetadata.EMPTY
-            .get(propertyName))
+            .getIgnoringDefaults(propertyName))
             .toBeUndefined();
     });
 
@@ -638,7 +638,7 @@ function setPropertyTest(propertyName, propertyValue) {
         json[propertyName] = (propertyValue.toJson && propertyValue.toJson()) || propertyValue;
 
         expect(SpreadsheetMetadata.fromJson(json)
-            .get(propertyName)
+            .getIgnoringDefaults(propertyName)
         ).toEqual(propertyValue);
 
         expect(metadata.toJson()).toEqual(json);
@@ -722,35 +722,35 @@ test("all setters & getters", () => {
         .set(SpreadsheetMetadata.VIEWPORT_CELL, viewportCell)
         .set(SpreadsheetMetadata.VIEWPORT_COORDINATES, coords);
 
-    expect(metadata.get(SpreadsheetMetadata.CELL_CHARACTER_WIDTH)).toEqual(cellCharacterWidth);
-    expect(metadata.get(SpreadsheetMetadata.CURRENCY_SYMBOL)).toEqual(currencySymbol);
-    expect(metadata.get(SpreadsheetMetadata.DATETIME_OFFSET)).toEqual(dateTimeOffset);
-    expect(metadata.get(SpreadsheetMetadata.DATETIME_FORMAT_PATTERN)).toEqual(dateTimeFormatPattern);
-    expect(metadata.get(SpreadsheetMetadata.DATETIME_PARSE_PATTERNS)).toEqual(dateTimeParsePatterns);
-    expect(metadata.get(SpreadsheetMetadata.DECIMAL_SEPARATOR)).toEqual(decimalSeparator);
-    expect(metadata.get(SpreadsheetMetadata.DEFAULT_YEAR)).toEqual(defaultYear);
-    expect(metadata.get(SpreadsheetMetadata.EDIT_CELL)).toEqual(editCell);
-    expect(metadata.get(SpreadsheetMetadata.EDIT_RANGE)).toEqual(editRange);
-    expect(metadata.get(SpreadsheetMetadata.EXPONENT_SYMBOL)).toEqual(exponentSymbol);
-    expect(metadata.get(SpreadsheetMetadata.EXPRESSION_NUMBER_KIND)).toEqual(expressionNumberKind);
-    expect(metadata.get(SpreadsheetMetadata.GROUPING_SEPARATOR)).toEqual(groupingSeparator);
-    expect(metadata.get(SpreadsheetMetadata.LOCALE)).toEqual(locale);
-    expect(metadata.get(SpreadsheetMetadata.NEGATIVE_SIGN)).toEqual(negativeSign);
-    expect(metadata.get(SpreadsheetMetadata.NUMBER_FORMAT_PATTERN)).toEqual(numberFormatPattern);
-    expect(metadata.get(SpreadsheetMetadata.NUMBER_PARSE_PATTERNS)).toEqual(numberParsePatterns);
-    expect(metadata.get(SpreadsheetMetadata.PERCENTAGE_SYMBOL)).toEqual(percentSymbol);
-    expect(metadata.get(SpreadsheetMetadata.POSITIVE_SIGN)).toEqual(positiveSign);
-    expect(metadata.get(SpreadsheetMetadata.PRECISION)).toEqual(precision);
-    expect(metadata.get(SpreadsheetMetadata.ROUNDING_MODE)).toEqual(roundingMode);
-    expect(metadata.get(SpreadsheetMetadata.SPREADSHEET_NAME)).toEqual(name);
-    expect(metadata.get(SpreadsheetMetadata.STYLE)).toEqual(style);
-    expect(metadata.get(SpreadsheetMetadata.TEXT_FORMAT_PATTERN)).toEqual(textFormatPattern);
-    expect(metadata.get(SpreadsheetMetadata.TIME_FORMAT_PATTERN)).toEqual(timeFormatPattern);
-    expect(metadata.get(SpreadsheetMetadata.TIME_PARSE_PATTERNS)).toEqual(timeParsePatterns);
-    expect(metadata.get(SpreadsheetMetadata.TWO_DIGIT_YEAR)).toEqual(twoDigitYear);
-    expect(metadata.get(SpreadsheetMetadata.VALUE_SEPARATOR)).toEqual(valueSeparator);
-    expect(metadata.get(SpreadsheetMetadata.VIEWPORT_CELL)).toEqual(viewportCell);
-    expect(metadata.get(SpreadsheetMetadata.VIEWPORT_COORDINATES)).toEqual(coords);
+    expect(metadata.getIgnoringDefaults(SpreadsheetMetadata.CELL_CHARACTER_WIDTH)).toEqual(cellCharacterWidth);
+    expect(metadata.getIgnoringDefaults(SpreadsheetMetadata.CURRENCY_SYMBOL)).toEqual(currencySymbol);
+    expect(metadata.getIgnoringDefaults(SpreadsheetMetadata.DATETIME_OFFSET)).toEqual(dateTimeOffset);
+    expect(metadata.getIgnoringDefaults(SpreadsheetMetadata.DATETIME_FORMAT_PATTERN)).toEqual(dateTimeFormatPattern);
+    expect(metadata.getIgnoringDefaults(SpreadsheetMetadata.DATETIME_PARSE_PATTERNS)).toEqual(dateTimeParsePatterns);
+    expect(metadata.getIgnoringDefaults(SpreadsheetMetadata.DECIMAL_SEPARATOR)).toEqual(decimalSeparator);
+    expect(metadata.getIgnoringDefaults(SpreadsheetMetadata.DEFAULT_YEAR)).toEqual(defaultYear);
+    expect(metadata.getIgnoringDefaults(SpreadsheetMetadata.EDIT_CELL)).toEqual(editCell);
+    expect(metadata.getIgnoringDefaults(SpreadsheetMetadata.EDIT_RANGE)).toEqual(editRange);
+    expect(metadata.getIgnoringDefaults(SpreadsheetMetadata.EXPONENT_SYMBOL)).toEqual(exponentSymbol);
+    expect(metadata.getIgnoringDefaults(SpreadsheetMetadata.EXPRESSION_NUMBER_KIND)).toEqual(expressionNumberKind);
+    expect(metadata.getIgnoringDefaults(SpreadsheetMetadata.GROUPING_SEPARATOR)).toEqual(groupingSeparator);
+    expect(metadata.getIgnoringDefaults(SpreadsheetMetadata.LOCALE)).toEqual(locale);
+    expect(metadata.getIgnoringDefaults(SpreadsheetMetadata.NEGATIVE_SIGN)).toEqual(negativeSign);
+    expect(metadata.getIgnoringDefaults(SpreadsheetMetadata.NUMBER_FORMAT_PATTERN)).toEqual(numberFormatPattern);
+    expect(metadata.getIgnoringDefaults(SpreadsheetMetadata.NUMBER_PARSE_PATTERNS)).toEqual(numberParsePatterns);
+    expect(metadata.getIgnoringDefaults(SpreadsheetMetadata.PERCENTAGE_SYMBOL)).toEqual(percentSymbol);
+    expect(metadata.getIgnoringDefaults(SpreadsheetMetadata.POSITIVE_SIGN)).toEqual(positiveSign);
+    expect(metadata.getIgnoringDefaults(SpreadsheetMetadata.PRECISION)).toEqual(precision);
+    expect(metadata.getIgnoringDefaults(SpreadsheetMetadata.ROUNDING_MODE)).toEqual(roundingMode);
+    expect(metadata.getIgnoringDefaults(SpreadsheetMetadata.SPREADSHEET_NAME)).toEqual(name);
+    expect(metadata.getIgnoringDefaults(SpreadsheetMetadata.STYLE)).toEqual(style);
+    expect(metadata.getIgnoringDefaults(SpreadsheetMetadata.TEXT_FORMAT_PATTERN)).toEqual(textFormatPattern);
+    expect(metadata.getIgnoringDefaults(SpreadsheetMetadata.TIME_FORMAT_PATTERN)).toEqual(timeFormatPattern);
+    expect(metadata.getIgnoringDefaults(SpreadsheetMetadata.TIME_PARSE_PATTERNS)).toEqual(timeParsePatterns);
+    expect(metadata.getIgnoringDefaults(SpreadsheetMetadata.TWO_DIGIT_YEAR)).toEqual(twoDigitYear);
+    expect(metadata.getIgnoringDefaults(SpreadsheetMetadata.VALUE_SEPARATOR)).toEqual(valueSeparator);
+    expect(metadata.getIgnoringDefaults(SpreadsheetMetadata.VIEWPORT_CELL)).toEqual(viewportCell);
+    expect(metadata.getIgnoringDefaults(SpreadsheetMetadata.VIEWPORT_COORDINATES)).toEqual(coords);
 });
 
 test("all setters & removers", () => {
@@ -760,7 +760,7 @@ test("all setters & removers", () => {
         .set(SpreadsheetMetadata.EDIT_CELL, editCell)
         .remove(SpreadsheetMetadata.EDIT_CELL);
 
-    expect(metadata.get(SpreadsheetMetadata.EDIT_CELL)).toBeUndefined();
+    expect(metadata.getIgnoringDefaults(SpreadsheetMetadata.EDIT_CELL)).toBeUndefined();
     expect(metadata.isEmpty()).toBeTrue();
 });
 
@@ -1090,11 +1090,11 @@ test("equalsMost with defaults different default", () => {
 // helpers..............................................................................................................
 
 function checkSpreadsheetId(metadata, id) {
-    expect(metadata.get(SpreadsheetMetadata.SPREADSHEET_ID)).toBe(id);
+    expect(metadata.getIgnoringDefaults(SpreadsheetMetadata.SPREADSHEET_ID)).toBe(id);
 }
 
 function checkSpreadsheetName(metadata, name) {
-    expect(metadata.get(SpreadsheetMetadata.SPREADSHEET_NAME)).toStrictEqual(name);
+    expect(metadata.getIgnoringDefaults(SpreadsheetMetadata.SPREADSHEET_NAME)).toStrictEqual(name);
 }
 
 // checks toJson and toString

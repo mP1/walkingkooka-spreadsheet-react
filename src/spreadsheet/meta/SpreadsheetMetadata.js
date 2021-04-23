@@ -345,8 +345,8 @@ export default class SpreadsheetMetadata extends SystemObject {
         return Object.keys(this.properties).length === 0;
     }
 
-    getOrFail(property) {
-        const value = this.get(property);
+    getIgnoringDefaultsOrFail(property) {
+        const value = this.getIgnoringDefaults(property);
         if(typeof value === "undefined"){
             throw new Error("Missing \"" + property + "\" " + this);
         }
@@ -356,7 +356,7 @@ export default class SpreadsheetMetadata extends SystemObject {
     /**
      * General purpose getter which unlike the java version of this class ignores the defaults if the property is missing.
      */
-    get(property) {
+    getIgnoringDefaults(property) {
         checkProperty(property);
         return this.properties[property];
     }
@@ -501,7 +501,7 @@ export default class SpreadsheetMetadata extends SystemObject {
             throw new Error("Expected " + expectedClass.name + " property " + property + " got " + value);
         }
 
-        return (Equality.safeEquals(value, this.get(property))) ?
+        return (Equality.safeEquals(value, this.getIgnoringDefaults(property))) ?
             this :
             copyAndSet(this.properties, property, value);
     }
@@ -558,7 +558,7 @@ export default class SpreadsheetMetadata extends SystemObject {
                 }
                 throw new Error("Unknown property \"" + property + "\"");
         }
-        return (typeof this.get(property) === "undefined") ?
+        return (typeof this.getIgnoringDefaults(property) === "undefined") ?
             this :
             copyAndRemove(this.properties, property);
     }
@@ -567,13 +567,13 @@ export default class SpreadsheetMetadata extends SystemObject {
      * Returns a {@link TextStyle} that merges the current and default style.
      */
     effectiveStyle() {
-        var style = this.get(SpreadsheetMetadata.STYLE);
+        var style = this.getIgnoringDefaults(SpreadsheetMetadata.STYLE);
         if(!style){
             style = TextStyle.EMPTY;
         }
-        const defaultMetadata = this.get(SpreadsheetMetadata.DEFAULTS);
+        const defaultMetadata = this.getIgnoringDefaults(SpreadsheetMetadata.DEFAULTS);
         if(defaultMetadata){
-            const defaultStyle = defaultMetadata.get(SpreadsheetMetadata.STYLE) || TextStyle.EMPTY;
+            const defaultStyle = defaultMetadata.getIgnoringDefaults(SpreadsheetMetadata.STYLE) || TextStyle.EMPTY;
             style = defaultStyle.merge(style);
         }
         return style;
