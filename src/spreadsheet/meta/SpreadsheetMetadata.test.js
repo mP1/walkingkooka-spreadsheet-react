@@ -171,6 +171,33 @@ test("getIgnoringDefaults missing but ignoring default", () => {
     expect(metadata.getIgnoringDefaults(propertyName)).toBeUndefined();
 })
 
+// get..................................................................................................................
+
+test("get null fails", () => {
+    expect(() => SpreadsheetMetadata.EMPTY.get(null)).toThrow("Missing property");
+})
+
+test("get present without defaults", () => {
+    const propertyName = SpreadsheetMetadata.SPREADSHEET_ID;
+    const propertyValue = "1234";
+
+    const metadata = new SpreadsheetMetadata({"spreadsheet-id": propertyValue});
+    expect(metadata.get(propertyName)).toEqual(propertyValue);
+})
+
+test("get missing without defaults", () => {
+    const metadata = new SpreadsheetMetadata({});
+    expect(metadata.get("creator")).toBeUndefined();
+})
+
+test("get from default", () => {
+    const propertyName = SpreadsheetMetadata.SPREADSHEET_ID;
+    const propertyValue = "1234";
+
+    const metadata = SpreadsheetMetadata.fromJson({_defaults: {"spreadsheet-id": propertyValue}});
+    expect(metadata.get(propertyName)).toStrictEqual(propertyValue);
+})
+
 // set..................................................................................................................
 
 test("set null fails", () => {

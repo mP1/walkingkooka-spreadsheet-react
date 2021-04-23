@@ -361,6 +361,15 @@ export default class SpreadsheetMetadata extends SystemObject {
         return this.properties[propertyName];
     }
 
+    get(propertyName) {
+        var value = this.getIgnoringDefaults(propertyName);
+        if(null == value){
+            const defaults = this.properties._defaults;
+            value = defaults && defaults.getIgnoringDefaults(propertyName);
+        }
+        return value;
+    }
+
     /**
      * Would be setter that returns a new SpreadsheetMetadata if the new value is different from the previous.
      */
