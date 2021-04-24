@@ -510,11 +510,86 @@ export default class SpreadsheetMetadata extends SystemObject {
             throw new Error("Expected " + expectedClass.name + " property " + propertyName + " got " + value);
         }
 
-        return (Equality.safeEquals(value, this.getIgnoringDefaults(propertyName))) ?
-            this :
-            copyAndSet(this.properties, propertyName, value);
+        return this.set0(propertyName, value);
     }
 
+    // set and helpers copied from SpreadsheetMetadata.java
+
+    set0(propertyName, value) {
+        var result;
+
+        if(Equality.safeEquals(value, this.get(propertyName))){
+            result = this.setSameValue(propertyName, value);
+        }else {
+            result = this.setDifferentValue(propertyName, value);
+        }
+
+        return result;
+    }
+
+    setSameValue(propertyName, value) {
+        var result = this;
+
+        const properties = this.properties;
+
+        // save value anyway if previousValue was from defaults.
+        if(!properties.hasOwnProperty(propertyName)){
+            const copy = Object.assign(
+                {},
+                properties
+            );
+            copy[propertyName] = value;
+
+            result = new SpreadsheetMetadata(copy);
+        }
+
+        return result;
+    }
+
+    setDifferentValue(propertyName, value) {
+        const previousValue = this.get(propertyName);
+
+        // property is different or new
+        const swapIfDuplicateValue = this.swapIfDuplicateValue(propertyName);
+
+        const copy = Object.assign({}, this.properties);
+        copy[propertyName] = value;
+
+        const groupOrValue = isGroupingSeparatorOrValueSeparator(propertyName);
+
+        if(swapIfDuplicateValue){
+            for(var i = 0; i < SWAPPABLE_PROPERTY_NAMES.length; i++) {
+                const duplicate = SWAPPABLE_PROPERTY_NAMES[i];
+                if(propertyName === duplicate){
+                    continue;
+                }
+                const duplicateIsGroupingOrValue = isGroupingSeparatorOrValueSeparator(duplicate);
+                if(groupOrValue && duplicateIsGroupingOrValue){
+                    continue;
+                }
+
+                const duplicateValue = this.get(duplicate);
+                if(null != duplicateValue){
+                    if(Equality.safeEquals(value, duplicateValue)){
+                        if(null == previousValue){
+                            if(!duplicateIsGroupingOrValue){
+                                reportDuplicateProperty(propertyName, value, duplicate);
+                            }
+                        }else {
+                            copy[duplicate] = previousValue;
+                        }
+                    }
+                }
+            }
+        }
+
+        // update and possibly swap of character properties
+        return new SpreadsheetMetadata(copy);
+    }
+
+    swapIfDuplicateValue(propertyName) {
+        return SWAPPABLE_PROPERTY_NAMES.includes(propertyName);
+    }
     /**
      * Would be remover that returns a new SpreadsheetMetadata if the removed value was already absent.
      */
@@ -752,52 +827,12 @@ function setFails(propertyName) {
     throw new Error("set \"" + propertyName + "\" is not allowed");
 }
 
-/**
- * Creates a new SpreadsheetMetadata and sets or replaces the new property/value pair.
- */
-function copyAndSet(properties,
-                    propertyName,
-                    value) {
-    const copy = Object.assign({}, properties);
-
-    switch(propertyName) {
-        case SpreadsheetMetadata.DECIMAL_SEPARATOR:
-        case SpreadsheetMetadata.GROUPING_SEPARATOR:
-        case SpreadsheetMetadata.NEGATIVE_SIGN:
-        case SpreadsheetMetadata.PERCENTAGE_SYMBOL:
-        case SpreadsheetMetadata.POSITIVE_SIGN:
-        case SpreadsheetMetadata.VALUE_SEPARATOR:
-            const previous = properties[propertyName];
-
-            // try and find another property with the same value
-            for(const i in SWAPPABLE_PROPERTY_NAMES) {
-                const possible = SWAPPABLE_PROPERTY_NAMES[i];
-                if(propertyName === possible){
-                    continue;
-                }
-                // found another property with $value, swap is necessary
-                if(value.equals(copy[possible])){
-                    if(!previous){
-                        if(!(isGroupingSeparatorOrValueSeparator(propertyName) && isGroupingSeparatorOrValueSeparator(possible))){
-                            throw new Error("Cannot set " + propertyName + "=" + value + " duplicate of " + possible);
-                        }
-                    }else {
-                        copy[possible] = previous;
-                    }
-                }
-            }
-            break;
-        default:
-            break;
-    }
-
-    copy[propertyName] = value;
-
-    return new SpreadsheetMetadata(copy);
+function reportDuplicateProperty(property, value, original) {
+    throw new Error("Cannot set " + property + "=" + value + " duplicate of " + original);
 }
 
-function isGroupingSeparatorOrValueSeparator(property) {
-    return SpreadsheetMetadata.GROUPING_SEPARATOR === property || SpreadsheetMetadata.VALUE_SEPARATOR === property;
+function isGroupingSeparatorOrValueSeparator(propertyName) {
+    return SpreadsheetMetadata.GROUPING_SEPARATOR === propertyName || SpreadsheetMetadata.VALUE_SEPARATOR === propertyName;
 }
 
 const SWAPPABLE_PROPERTY_NAMES = [
