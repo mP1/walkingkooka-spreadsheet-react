@@ -1,5 +1,6 @@
 import SpreadsheetCellReference from "../reference/SpreadsheetCellReference.js";
 import SpreadsheetHistoryHash from "./SpreadsheetHistoryHash.js";
+import SpreadsheetLabelName from "../reference/SpreadsheetLabelName.js";
 
 // parse..................................................................................................................
 
@@ -110,6 +111,72 @@ test("parse /spreadsheet-id/spreadsheet-name/cell/A1/formula", () => {
             "spreadsheet-name": "spreadsheet-name-456",
             "cell": SpreadsheetCellReference.parse("A1"),
             "formula": true,
+        }
+    );
+});
+
+test("parse /spreadsheet-id/spreadsheet-name/name/label invalid", () => {
+    parseAndCheck(
+        "/spreadsheet-id-123/spreadsheet-name-456/name/label",
+        {
+            "spreadsheet-id": "spreadsheet-id-123",
+            "spreadsheet-name": "spreadsheet-name-456",
+        }
+    );
+});
+
+test("parse /spreadsheet-id/spreadsheet-name/label missing label-name", () => {
+    parseAndCheck(
+        "/spreadsheet-id-123/spreadsheet-name-456/label",
+        {
+            "spreadsheet-id": "spreadsheet-id-123",
+            "spreadsheet-name": "spreadsheet-name-456",
+        }
+    );
+});
+
+test("parse /spreadsheet-id/spreadsheet-name/label/!invalid invalid label-name", () => {
+    parseAndCheck(
+        "/spreadsheet-id-123/spreadsheet-name-456/label/!invalid",
+        {
+            "spreadsheet-id": "spreadsheet-id-123",
+            "spreadsheet-name": "spreadsheet-name-456",
+        }
+    );
+});
+
+test("parse /spreadsheet-id/spreadsheet-name/label/LABEL123", () => {
+    parseAndCheck(
+        "/spreadsheet-id-123/spreadsheet-name-456/label/LABEL123",
+        {
+            "spreadsheet-id": "spreadsheet-id-123",
+            "spreadsheet-name": "spreadsheet-name-456",
+            "label": SpreadsheetLabelName.parse("LABEL123"),
+        }
+    );
+});
+
+test("parse /spreadsheet-id/spreadsheet-name/cell/A2/label/LABEL123", () => {
+    parseAndCheck(
+        "/spreadsheet-id-123/spreadsheet-name-456/cell/A2/label/LABEL123",
+        {
+            "spreadsheet-id": "spreadsheet-id-123",
+            "spreadsheet-name": "spreadsheet-name-456",
+            "cell": SpreadsheetCellReference.parse("A2"),
+            "label": SpreadsheetLabelName.parse("LABEL123"),
+        }
+    );
+});
+
+test("parse /spreadsheet-id/spreadsheet-name/cell/A2/formula/label/LABEL123", () => {
+    parseAndCheck(
+        "/spreadsheet-id-123/spreadsheet-name-456/cell/A2/formula/label/LABEL123",
+        {
+            "spreadsheet-id": "spreadsheet-id-123",
+            "spreadsheet-name": "spreadsheet-name-456",
+            "cell": SpreadsheetCellReference.parse("A2"),
+            "formula": true,
+            "label": SpreadsheetLabelName.parse("LABEL123"),
         }
     );
 });
@@ -381,6 +448,19 @@ test("parse /spreadsheet-id/spreadsheet-name/cell/B2/formula/settings/style", ()
     );
 });
 
+test("parse /spreadsheet-id/spreadsheet-name/label/LABEL123/settings/style", () => {
+    parseAndCheck(
+        "/spreadsheet-id-123/spreadsheet-name-456/label/LABEL123/settings/style",
+        {
+            "spreadsheet-id": "spreadsheet-id-123",
+            "spreadsheet-name": "spreadsheet-name-456",
+            "label": SpreadsheetLabelName.parse("LABEL123"),
+            "settings": true,
+            "settings-section": "style",
+        }
+    );
+});
+
 test("parse /spreadsheet-id/spreadsheet-name/style/metadata/name fails", () => {
     parseAndCheck(
         "/spreadsheet-id-123/spreadsheet-name-456/cell/B2/formula/settings/metadata/name",
@@ -635,6 +715,40 @@ test("/spreadsheet-id/spreadsheet-name/cell/A2/formula formula null/deleted", ()
             "formula": null,
         },
         "/123abc/Untitled456/cell/A1"
+    );
+});
+
+// label.................................................................................................................
+
+test("/spreadsheet-id/spreadsheet-name/label missing label name", () => {
+    mergeAndCheck(
+        "/123abc/Untitled456/label",
+        {},
+        "/123abc/Untitled456"
+    );
+});
+
+test("/spreadsheet-id/spreadsheet-name/label invalid label name", () => {
+    mergeAndCheck(
+        "/123abc/Untitled456/label/!invalid-label",
+        {},
+        "/123abc/Untitled456"
+    );
+});
+
+test("/spreadsheet-id/spreadsheet-name/label cell-reference", () => {
+    mergeAndCheck(
+        "/123abc/Untitled456/label/A1",
+        {},
+        "/123abc/Untitled456"
+    );
+});
+
+test("/spreadsheet-id/spreadsheet-name/label/LABEL123", () => {
+    mergeAndCheck(
+        "/123abc/Untitled456/label/LABEL123",
+        {},
+        "/123abc/Untitled456/label/LABEL123"
     );
 });
 
