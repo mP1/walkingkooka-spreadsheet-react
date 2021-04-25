@@ -17,6 +17,9 @@ import SpreadsheetEngineEvaluation from "./spreadsheet/engine/SpreadsheetEngineE
 import SpreadsheetFormula from "./spreadsheet/SpreadsheetFormula";
 import SpreadsheetFormulaWidget from "./spreadsheet/SpreadsheetFormulaWidget.js";
 import SpreadsheetHistoryHash from "./spreadsheet/history/SpreadsheetHistoryHash.js";
+import SpreadsheetLabelMapping from "./spreadsheet/reference/SpreadsheetLabelMapping.js";
+import SpreadsheetLabelName from "./spreadsheet/reference/SpreadsheetLabelName.js";
+import SpreadsheetLabelWidget from "./spreadsheet/reference/SpreadsheetLabelWidget.js";
 import SpreadsheetMetadata from "./spreadsheet/meta/SpreadsheetMetadata.js";
 import SpreadsheetMessenger from "./spreadsheet/message/SpreadsheetMessenger.js";
 import SpreadsheetNameWidget from "./spreadsheet/SpreadsheetNameWidget.js";
@@ -375,6 +378,13 @@ class App extends React.Component {
                                                key="notification"
                                                notification={this.state.notification}
                                                onClose={this.onNotificationClose.bind(this)}/>
+                <SpreadsheetLabelWidget key="labelWidget"
+                                        history={history}
+                                        loadLabelMapping={this.labelMappingLoad.bind(this)}
+                                        saveLabelMapping={this.labelMappingSave.bind(this)}
+                                        deleteLabelMapping={this.labelMappingDelete.bind(this)}
+                                        notificationShow={this.notificationShow.bind(this)}
+                />
                 <SpreadsheetBox ref={this.aboveViewport}
                                 key={{windowDimensions: state.windowDimensions}}
                                 dimensions={this.onAboveViewportResize.bind(this)}
@@ -476,6 +486,64 @@ class App extends React.Component {
      */
     formulaReloadIfEditing() {
         this.formula.current.reloadIfEditing();
+    }
+
+    // label............................................................................................................
+
+    /**
+     * Accepts a label and calls the mapping callback with the SpreadsheetLabelMapping.
+     */
+    labelMappingLoad(label, success, failure) {
+        this.send(
+            this.labelUrl(label),
+            {
+                method: "GET",
+            },
+            (json) => success(null != json && SpreadsheetLabelMapping.fromJson(json)),
+            failure,
+        );
+    }
+
+    /**
+     * Saves the given SpreadsheetLabelMapping
+     */
+    labelMappingSave(label, mapping, success, failure) {
+        this.send(
+            this.labelUrl(label),
+            {
+                method: "POST",
+                body: JSON.stringify(mapping.toJson()),
+            },
+            success,
+            failure,
+        );
+    }
+
+    /**
+     * Deletes the given SpreadsheetLabelMapping, and when completed the deleted callback is invoked.
+     */
+    labelMappingDelete(label, success, failure) {
+        this.send(
+            this.labelUrl(label),
+            {
+                method: "DELETE",
+            },
+            success,
+            failure,
+        );
+    }
+
+    /**
+     * Creates an URL for the given label.
+     */
+    labelUrl(label) {
+        if(null == label) {
+            throw new Error("Missing label");
+        }
+        if(!label instanceof SpreadsheetLabelName) {
+            throw new Error("Expected SpreadsheetLabelName label got " + label);
+        }
+        return this.spreadsheetMetadataApiUrl() + "/label/" + label
     }
 
     // settings.........................................................................................................
