@@ -172,21 +172,10 @@ class SpreadsheetSettingsWidget extends SpreadsheetHistoryAwareStateWidget {
         const newSection = state.section;
 
         if(openOld !== openNew || oldSection !== newSection){
-            const history = this.history;
-            const current = history.location.pathname;
             const replacements = {};
             replacements[SpreadsheetHistoryHash.SETTINGS] = openNew;
             replacements[SpreadsheetHistoryHash.SETTINGS_SECTION] = state.section;
-
-            const updatedPathname = SpreadsheetHistoryHash.merge(
-                SpreadsheetHistoryHash.parse(current),
-                replacements
-            );
-            console.log("historyTokensFromState open: " + openOld + " to " + openNew + " section: " + state.section + " history " + current + " to " + updatedPathname);
-
-            if(current !== updatedPathname){
-                history.push(updatedPathname);
-            }
+            SpreadsheetHistoryHash.parseMergeAndPush(this.history, replacements);
         }
     }
 

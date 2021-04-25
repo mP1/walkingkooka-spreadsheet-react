@@ -85,8 +85,7 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetHistoryAwareWid
                 //different cell selected clear formula from being selected.
                 const replacements = {};
                 replacements[SpreadsheetHistoryHash.CELL_FORMULA] = false;
-
-                this.history.push(SpreadsheetHistoryHash.merge(tokens, replacements));
+                SpreadsheetHistoryHash.parseMergeAndPush(this.history, replacements);
             }
         }
 
@@ -156,20 +155,10 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetHistoryAwareWid
     }
 
     updateFormulaHash(eventName, focused) {
-        const history = this.history;
-        const current = history.location.pathname;
-
         const replacement = {};
         replacement[SpreadsheetHistoryHash.CELL_FORMULA] = focused;
+        SpreadsheetHistoryHash.parseMergeAndPush(this.history, replacement);
 
-        const updatedPathname = SpreadsheetHistoryHash.merge(
-            SpreadsheetHistoryHash.parse(current),
-            replacement
-        );
-        console.log(eventName + " current: " + current + " to " + updatedPathname);
-        if(current !== updatedPathname){
-            history.push(updatedPathname);
-        }
         this.setState({
             focused: focused,
         })

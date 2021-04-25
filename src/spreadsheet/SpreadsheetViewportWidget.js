@@ -327,19 +327,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
     }
 
     updateFormulaTextBoxFocus(replacements) {
-        const history = this.history;
-        const current = history.location.pathname;
-
-        const updated = SpreadsheetHistoryHash.merge(
-            SpreadsheetHistoryHash.parse(current),
-            replacements
-        );
-        console.log("updateFormulaTextBoxFocus: " + replacements, replacements, "updated", updated);
-
-        if(current !== updated){
-            console.log("updateFormulaTextBoxFocus: " + updated, updated);
-            history.push(updated);
-        }
+        SpreadsheetHistoryHash.parseMergeAndPush(this.history, replacements);
     }
 }
 
