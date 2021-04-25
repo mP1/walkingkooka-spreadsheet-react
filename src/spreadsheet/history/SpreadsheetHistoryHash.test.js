@@ -752,6 +752,14 @@ test("/spreadsheet-id/spreadsheet-name/label/LABEL123", () => {
     );
 });
 
+test("/spreadsheet-id/spreadsheet-name/cell/A1/label/LABEL123", () => {
+    mergeAndCheck(
+        "/123abc/Untitled456/cell/A1/label/LABEL123",
+        {},
+        "/123abc/Untitled456/cell/A1/label/LABEL123"
+    );
+});
+
 // settings.............................................................................................................
 
 test("/spreadsheet-id/spreadsheet-name/settings", () => {

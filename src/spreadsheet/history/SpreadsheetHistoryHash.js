@@ -227,7 +227,7 @@ export default class SpreadsheetHistoryHash {
         }
 
         if(replacements.hasOwnProperty(SpreadsheetHistoryHash.LABEL)){
-            cell = replacements[SpreadsheetHistoryHash.LABEL];
+            label = replacements[SpreadsheetHistoryHash.LABEL];
         }
 
         if(replacements.hasOwnProperty(SpreadsheetHistoryHash.SETTINGS)){
