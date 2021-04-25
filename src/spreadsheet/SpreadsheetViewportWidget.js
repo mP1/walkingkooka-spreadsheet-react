@@ -71,16 +71,6 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
     }
 
     /**
-     * If the cell being edited was updated update the history.
-     */
-    componentDidUpdate(prevProps, prevState, snapshot) {
-        const state = this.state;
-        console.log("componentDidUpdate", "prevState", prevState, "state", state);
-
-        this.historyTokensFromState(prevState);
-    }
-
-    /**
      * Possibly update the history hash using the current state.editCell
      */
     historyTokensFromState(prevState) {
