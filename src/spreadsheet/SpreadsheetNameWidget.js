@@ -1,18 +1,17 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import SpreadsheetButtonTextField from '../widget/SpreadsheetButtonTextField.js';
+import SpreadsheetHistoryAwareWidget from "./history/SpreadsheetHistoryAwareWidget.js";
 import SpreadsheetHistoryHash from "./history/SpreadsheetHistoryHash.js";
 import SpreadsheetName from "./SpreadsheetName.js";
 
 /**
  * A wrapper that is a bridge between SpreadsheetMetadata's spreadsheet name and a text field.
  */
-export default class SpreadsheetNameWidget extends React.Component {
+export default class SpreadsheetNameWidget extends SpreadsheetHistoryAwareWidget {
 
     constructor(props) {
         super(props);
-
-        this.history = props.history;
 
         this.state = {
             value: props.value
@@ -23,12 +22,8 @@ export default class SpreadsheetNameWidget extends React.Component {
         this.textField = React.createRef();
     }
 
-    componentDidMount() {
-        this.historyUnlisten = this.history.listen(this.onHistoryChange.bind(this));
-    }
-
-    componentWillUnmount() {
-        this.historyUnlisten();
+    onHistoryChange(tokens) {
+        this.edit(!!tokens[SpreadsheetHistoryHash.SPREADSHEET_NAME_EDIT]);
     }
 
     /**
@@ -83,23 +78,6 @@ export default class SpreadsheetNameWidget extends React.Component {
         if(current !== updated){
             history.push(updated);
         }
-    }
-
-    /**
-     * Loads the spreadsheet name edit token and updates the state.
-     */
-    onHistoryChange(location) {
-        console.log("onHistoryChange " + location.pathname);
-        this.edit(this.loadHistoryHash(location.pathname));
-    }
-
-    /**
-     * returns a flag whether the name widget is in edit mode.
-     */
-    loadHistoryHash(pathname) {
-        const tokens = SpreadsheetHistoryHash.parse(pathname);
-        console.log("loadHistoryHash: ", tokens[SpreadsheetHistoryHash.SPREADSHEET_NAME_EDIT]);
-        return !!tokens[SpreadsheetHistoryHash.SPREADSHEET_NAME_EDIT];
     }
 }
 

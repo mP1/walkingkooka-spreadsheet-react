@@ -7,6 +7,7 @@ import SpreadsheetCellReference from "./reference/SpreadsheetCellReference.js";
 import SpreadsheetCell from "./SpreadsheetCell.js";
 import SpreadsheetColumnReference from "./reference/SpreadsheetColumnReference.js";
 import SpreadsheetFormula from "./SpreadsheetFormula.js";
+import SpreadsheetHistoryAwareStateWidget from "./history/SpreadsheetHistoryAwareStateWidget.js";
 import SpreadsheetHistoryHash from "./history/SpreadsheetHistoryHash.js";
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -46,52 +47,24 @@ const headerCellSelected = Object.assign({},
 /**
  * This component holds the cells viewport as well as the column and row controls.
  */
-export default class SpreadsheetViewportWidget extends React.Component {
+export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareStateWidget {
 
     constructor(props) {
         super(props);
-
-        const history = props.history;
-        this.history = history;
-
-        this.state = Object.assign(
-            {
-                cells: props.cells,
-                columnWidths: props.columnWidths,
-                rowHeights: props.rowHeights,
-                defaultStyle: props.defaultStyle,
-                dimensions: props.dimensions,
-                home: props.home,
-            },
-            this.loadHistoryHash(history.location.pathname)
-        );
     }
 
-    componentDidMount() {
-        this.historyUnlisten = this.history.listen(this.onHistoryChange.bind(this));
+    initialStateFromProps(props) {
+        return {
+            cells: props.cells,
+            columnWidths: props.columnWidths,
+            rowHeights: props.rowHeights,
+            defaultStyle: props.defaultStyle,
+            dimensions: props.dimensions,
+            home: props.home,
+        };
     }
 
-    componentWillUnmount() {
-        this.historyUnlisten();
-    }
-
-    /**
-     * If the history changed load the settings history hash tokens and update the state.
-     */
-    onHistoryChange(location) {
-        const pathname = location.pathname;
-        const updated = this.loadHistoryHash(pathname);
-        console.log("onHistoryChange from " + this.history.location.pathname + " to " + pathname, "state", updated);
-
-        this.setState(updated);
-    }
-
-    /**
-     * Loads a state with the history hash token.
-     */
-    loadHistoryHash(pathname) {
-        const tokens = SpreadsheetHistoryHash.parse(pathname);
-
+    stateFromHistoryTokens(tokens) {
         return {
             editCell: tokens[SpreadsheetHistoryHash.CELL],
         };
@@ -104,16 +77,16 @@ export default class SpreadsheetViewportWidget extends React.Component {
         const state = this.state;
         console.log("componentDidUpdate", "prevState", prevState, "state", state);
 
-        this.historyUpdateFromState(prevState);
+        this.historyTokensFromState(prevState);
     }
 
     /**
      * Possibly update the history hash using the current state.editCell
      */
-    historyUpdateFromState(prevState) {
+    historyTokensFromState(prevState) {
         const editCellOld = prevState.editCell;
         const editCellNew = this.state.editCell;
-        console.log("historyUpdateFromState settings editCell: " + editCellOld + " to " + editCellNew);
+        console.log("historyTokensFromState editCell: " + editCellOld + " to " + editCellNew);
 
         if(!Equality.safeEquals(editCellOld, editCellNew)){
             const history = this.history;
@@ -127,7 +100,7 @@ export default class SpreadsheetViewportWidget extends React.Component {
                 tokens,
                 replacement
             );
-            console.log("historyUpdateFromState current: " + current + " to " + updatedPathname);
+            console.log("historyTokensFromState current: " + current + " to " + updatedPathname);
             if(current !== updatedPathname){
                 history.push(updatedPathname);
             }

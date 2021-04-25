@@ -1,20 +1,20 @@
 import Equality from "../Equality.js";
 import PropTypes from "prop-types";
 import React from 'react';
-import TextField from '@material-ui/core/TextField';
+import SpreadsheetHistoryAwareWidget from "./history/SpreadsheetHistoryAwareWidget.js";
 import SpreadsheetHistoryHash from "./history/SpreadsheetHistoryHash.js";
+import TextField from '@material-ui/core/TextField';
 
 /**
  * A widget that supports editing formula text. The widget is disabled when state.reference is falsey.
  * An falsey value will disable the text box used to edit the formula text.
  * ENTER calls the setter, ESCAPE reloads the initial value(text).
  */
-export default class SpreadsheetFormulaWidget extends React.Component {
+export default class SpreadsheetFormulaWidget extends SpreadsheetHistoryAwareWidget {
 
     constructor(props) {
         super(props);
 
-        this.history = props.history;
         this.getValue = props.getValue;
         this.setValue = props.setValue;
 
@@ -32,14 +32,6 @@ export default class SpreadsheetFormulaWidget extends React.Component {
         if(null != state.value){
             this.reloadFormulaText(state.reference);
         }
-    }
-
-    componentDidMount() {
-        this.historyUnlisten = this.history.listen(this.onHistoryChange.bind(this));
-    }
-
-    componentWillUnmount() {
-        this.historyUnlisten();
     }
 
     /**
@@ -84,16 +76,8 @@ export default class SpreadsheetFormulaWidget extends React.Component {
         });
     }
 
-    /**
-     * Updates the state from the history hash
-     */
-    onHistoryChange(location) {
+    onHistoryChange(tokens) {
         const state = this.state;
-        const history = this.history;
-        const pathname = location.pathname;
-        console.log("onHistoryChange from " + pathname + " to " + history.location.pathname);
-
-        const tokens = SpreadsheetHistoryHash.parse(pathname);
         const sameCell = Equality.safeEquals(state.reference, tokens.reference);
         const newEdit = tokens.edit && !state.edit;
         if(sameCell){
@@ -102,7 +86,7 @@ export default class SpreadsheetFormulaWidget extends React.Component {
                 const replacements = {};
                 replacements[SpreadsheetHistoryHash.CELL_FORMULA] = false;
 
-                history.push(SpreadsheetHistoryHash.merge(tokens, replacements));
+                this.history.push(SpreadsheetHistoryHash.merge(tokens, replacements));
             }
         }
 

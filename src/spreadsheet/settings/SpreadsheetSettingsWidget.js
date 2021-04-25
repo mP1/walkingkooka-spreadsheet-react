@@ -15,6 +15,7 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import RoundingMode from "../../math/RoundingMode.js";
 import SpreadsheetFormatRequest from "../server/format/SpreadsheetFormatRequest.js";
+import SpreadsheetHistoryAwareStateWidget from "../history/SpreadsheetHistoryAwareStateWidget.js";
 import SpreadsheetHistoryHash from "../history/SpreadsheetHistoryHash.js";
 import SpreadsheetLocaleDefaultDateTimeFormat from "../server/format/SpreadsheetLocaleDefaultDateTimeFormat.js";
 import SpreadsheetMetadata from "../meta/SpreadsheetMetadata.js";
@@ -81,7 +82,7 @@ const useStyles = theme => ({
     },
 });
 
-class SpreadsheetSettingsWidget extends React.Component {
+class SpreadsheetSettingsWidget extends SpreadsheetHistoryAwareStateWidget {
 
     /**
      * The width of the settings in pixels holding settings and tools.
@@ -91,20 +92,24 @@ class SpreadsheetSettingsWidget extends React.Component {
     constructor(props) {
         super(props);
 
-        this.history = props.history;
-
-        this.state = Object.assign(
-            {
-                spreadsheetMetadata: props.spreadsheetMetadata,
-                createDateTimeFormatted: "",
-                modifiedDateTimeFormatted: "",
-            },
-            this.loadHistoryHash(this.history.location.pathname)
-        );
-
         this.formatCreateDateTimeModifiedDateTime = props.formatCreateDateTimeModifiedDateTime;
         this.setSpreadsheetMetadata = props.setSpreadsheetMetadata;
         this.setError = props.setError;
+    }
+
+    initialStateFromProps(props) {
+        return {
+            spreadsheetMetadata: props.spreadsheetMetadata,
+            createDateTimeFormatted: "",
+            modifiedDateTimeFormatted: "",
+        };
+    }
+
+    stateFromHistoryTokens(tokens) {
+        return {
+            open: tokens[SpreadsheetHistoryHash.SETTINGS],
+            section: tokens[SpreadsheetHistoryHash.SETTINGS_SECTION],
+        };
     }
 
     /**
@@ -123,33 +128,6 @@ class SpreadsheetSettingsWidget extends React.Component {
         });
     }
 
-    componentDidMount() {
-        this.historyUnlisten = this.history.listen(this.onHistoryChange.bind(this));
-    }
-
-    componentWillUnmount() {
-        this.historyUnlisten();
-    }
-
-    /**
-     * Updates the state from the history.
-     */
-    onHistoryChange(location) {
-        this.setState(this.loadHistoryHash(this.history.location.pathname));
-    }
-
-    /**
-     * Loads a state with the open history hash token.
-     */
-    loadHistoryHash(pathname) {
-        const tokens = SpreadsheetHistoryHash.parse(pathname);
-
-        return {
-            open: tokens[SpreadsheetHistoryHash.SETTINGS],
-            section: tokens[SpreadsheetHistoryHash.SETTINGS_SECTION],
-        };
-    }
-
     /**
      * If the create-date-time or modified-date-time changed send a format request.
      */
@@ -157,7 +135,7 @@ class SpreadsheetSettingsWidget extends React.Component {
         const state = this.state;
         console.log("componentDidUpdate", "prevState", prevState, "state", state);
 
-        this.historyUpdateFromState(prevState);
+        this.historyTokensFromState(prevState);
 
         const metadata = state.spreadsheetMetadata;
         const createDateTime = metadata.getIgnoringDefaults(SpreadsheetMetadata.CREATE_DATE_TIME);
@@ -184,7 +162,7 @@ class SpreadsheetSettingsWidget extends React.Component {
     /**
      * Possibly update the history hash using the current open state.
      */
-    historyUpdateFromState(prevState) {
+    historyTokensFromState(prevState) {
         const state = this.state;
 
         const openOld = !!prevState.open;
@@ -204,7 +182,7 @@ class SpreadsheetSettingsWidget extends React.Component {
                 SpreadsheetHistoryHash.parse(current),
                 replacements
             );
-            console.log("historyUpdateFromState settings open: " + openOld + " to " + openNew + " section: " + state.section + " history " + current + " to " + updatedPathname);
+            console.log("historyTokensFromState open: " + openOld + " to " + openNew + " section: " + state.section + " history " + current + " to " + updatedPathname);
 
             if(current !== updatedPathname){
                 history.push(updatedPathname);
