@@ -62,22 +62,9 @@ export default class SpreadsheetNameWidget extends SpreadsheetHistoryAwareWidget
     }
 
     onTextFieldEdit(e) {
-        const newEdit = !this.isEdit();
-
-        const history = this.history;
-        const current = history.location.pathname;
         const replacements = {};
-        replacements[SpreadsheetHistoryHash.SPREADSHEET_NAME_EDIT] = newEdit;
-
-        const updated = SpreadsheetHistoryHash.merge(
-            SpreadsheetHistoryHash.parse(current),
-            replacements
-        );
-        console.log("onTextEdit " + e + " from " + current + " to " + updated);
-
-        if(current !== updated){
-            history.push(updated);
-        }
+        replacements[SpreadsheetHistoryHash.SPREADSHEET_NAME_EDIT] = !this.isEdit();
+        SpreadsheetHistoryHash.parseMergeAndPush(this.history, replacements);
     }
 }
 

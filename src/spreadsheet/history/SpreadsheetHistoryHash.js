@@ -280,26 +280,33 @@ export default class SpreadsheetHistoryHash {
         return join(verified);
     }
 
+    /**
+     * Parses the current history hash, merges the replacements and pushes the new hash.
+     */
+    static parseMergeAndPush(history, replacements) {
+        if(null == history){
+            throw new Error("Missing history");
+        }
+
+        const currentPathname = history.location.pathname;
+        const tokens = SpreadsheetHistoryHash.parse(currentPathname);
+
+        const updatedPathname = SpreadsheetHistoryHash.merge(
+            tokens,
+            replacements
+        );
+        if(currentPathname !== updatedPathname){
+            console.log("parseMergeAndPush history push \"" + currentPathname + "\"");
+            history.push(updatedPathname);
+        }else {
+            console.log("parseMergeAndPush history unchanged \"" + currentPathname + "\" new \"" + updatedPathname + "\"");
+        }
+    }
+
     constructor(history) {
         if(null == history){
             throw new Error("Missing history");
         }
         this.history = history;
-    }
-
-    update(replacements) {
-        const history = this.history;
-
-        const currentPathname = history.location.pathname;
-        const updatedPathname = SpreadsheetHistoryHash.merge(
-            SpreadsheetHistoryHash.parse(currentPathname),
-            replacements
-        );
-        if(currentPathname !== updatedPathname){
-            console.log("History push \"" + currentPathname + "\"");
-            history.push(updatedPathname);
-        }else {
-            console.log("History push unchanged \"" + currentPathname + "\" new \"" + updatedPathname + "\"");
-        }
     }
 }

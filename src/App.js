@@ -99,15 +99,7 @@ class App extends React.Component {
         this.stateSpreadsheetViewport(prevState);
         this.stateSpreadsheetViewportRange(prevState);
 
-        const history = this.history;
-        const current = history.location.pathname;
-        const updatedPathname = SpreadsheetHistoryHash.merge(
-            SpreadsheetHistoryHash.parse(current),
-            hash,
-        );
-        if(current !== updatedPathname){
-            history.push(updatedPathname);
-        }
+        SpreadsheetHistoryHash.parseMergeAndPush(this.history, hash);
     }
 
     /**
@@ -309,15 +301,16 @@ class App extends React.Component {
                     replacements[SpreadsheetHistoryHash.SPREADSHEET_NAME] = metadata.getIgnoringDefaults(SpreadsheetMetadata.SPREADSHEET_NAME);
                 }
 
-                const history = this.history;
-                const current = history.location.pathname;
-                const updatedPathname = SpreadsheetHistoryHash.merge(
-                    tokens,
-                    replacements,
-                );
-                if(current !== updatedPathname){
-                    history.push(updatedPathname);
-                }
+                // const history = this.history;
+                // const current = history.location.pathname;
+                // const updatedPathname = SpreadsheetHistoryHash.merge(
+                //     tokens,
+                //     replacements,
+                // );
+                // if(current !== updatedPathname){
+                //     history.push(updatedPathname);
+                // }
+                SpreadsheetHistoryHash.parseMergeAndPush(this.history, replacements);
             }
         }
     }
