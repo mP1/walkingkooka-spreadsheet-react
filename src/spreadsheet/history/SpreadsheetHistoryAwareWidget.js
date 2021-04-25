@@ -14,9 +14,11 @@ export default class SpreadsheetHistoryAwareWidget extends React.Component {
 
     componentDidMount() {
         this.historyUnlisten = this.history.listen((location) => this.onHistoryChange(SpreadsheetHistoryHash.parse(location.pathname)));
+        this.mounted = true;
     }
 
     componentWillUnmount() {
+        this.mounted = false;
         this.historyUnlisten();
     }
 
