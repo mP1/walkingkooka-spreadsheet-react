@@ -338,10 +338,10 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
             SpreadsheetHistoryHash.parse(current),
             replacements
         );
-        console.log("@@@updateFormulaTextBoxFocus: " + replacements, replacements, "updated", updated);
+        console.log("updateFormulaTextBoxFocus: " + replacements, replacements, "updated", updated);
 
         if(current !== updated){
-            console.log("@@@uhistory.push pdateFormulaTextBoxFocus: " + updated, updated);
+            console.log("updateFormulaTextBoxFocus: " + updated, updated);
             history.push(updated);
         }
     }
