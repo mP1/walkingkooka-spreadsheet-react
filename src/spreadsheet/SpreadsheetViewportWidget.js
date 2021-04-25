@@ -49,10 +49,6 @@ const headerCellSelected = Object.assign({},
  */
 export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareStateWidget {
 
-    constructor(props) {
-        super(props);
-    }
-
     initialStateFromProps(props) {
         return {
             cells: props.cells,
