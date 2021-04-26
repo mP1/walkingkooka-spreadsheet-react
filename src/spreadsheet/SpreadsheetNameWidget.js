@@ -16,9 +16,6 @@ export default class SpreadsheetNameWidget extends SpreadsheetHistoryAwareWidget
         this.state = {
             value: props.value
         };
-        this.setValue = props.setValue;
-        this.setEdit = props.setEdit;
-
         this.textField = React.createRef();
     }
 
@@ -57,7 +54,7 @@ export default class SpreadsheetNameWidget extends SpreadsheetHistoryAwareWidget
     }
 
     onValue(v) {
-        this.setValue(new SpreadsheetName(v));
+        this.props.setValue(new SpreadsheetName(v));
         this.onTextFieldEdit(false);
     }
 
