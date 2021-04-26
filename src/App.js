@@ -301,15 +301,6 @@ class App extends React.Component {
                     replacements[SpreadsheetHistoryHash.SPREADSHEET_NAME] = metadata.getIgnoringDefaults(SpreadsheetMetadata.SPREADSHEET_NAME);
                 }
 
-                // const history = this.history;
-                // const current = history.location.pathname;
-                // const updatedPathname = SpreadsheetHistoryHash.merge(
-                //     tokens,
-                //     replacements,
-                // );
-                // if(current !== updatedPathname){
-                //     history.push(updatedPathname);
-                // }
                 SpreadsheetHistoryHash.parseMergeAndPush(this.history, replacements);
             }
         }
