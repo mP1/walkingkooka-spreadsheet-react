@@ -10,6 +10,12 @@ export default class SpreadsheetHistoryAwareWidget extends React.Component {
     constructor(props) {
         super(props);
         this.history = props.history;
+
+        this.init();
+    }
+
+    init() {
+        throw new Error("Sub classes must override init()");
     }
 
     componentDidMount() {

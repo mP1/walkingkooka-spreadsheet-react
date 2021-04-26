@@ -104,6 +104,10 @@ class SpreadsheetSettingsWidget extends SpreadsheetHistoryAwareStateWidget {
         };
     }
 
+    init() {
+        // nop
+    }
+
     /**
      * Toggles the open/close of the settings by updating the state.open flag.
      */
