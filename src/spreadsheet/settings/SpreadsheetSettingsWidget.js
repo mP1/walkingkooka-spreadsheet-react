@@ -89,14 +89,6 @@ class SpreadsheetSettingsWidget extends SpreadsheetHistoryAwareStateWidget {
      */
     static WIDTH = 500;
 
-    constructor(props) {
-        super(props);
-
-        this.formatCreateDateTimeModifiedDateTime = props.formatCreateDateTimeModifiedDateTime;
-        this.setSpreadsheetMetadata = props.setSpreadsheetMetadata;
-        this.setError = props.setError;
-    }
-
     initialStateFromProps(props) {
         return {
             spreadsheetMetadata: props.spreadsheetMetadata,
@@ -144,7 +136,7 @@ class SpreadsheetSettingsWidget extends SpreadsheetHistoryAwareStateWidget {
         const previousMetadata = prevState.spreadsheetMetadata;
 
         if(!metadata.equals(previousMetadata)){
-            this.setSpreadsheetMetadata(metadata);
+            this.props.setSpreadsheetMetadata(metadata);
         }
 
         // initiate requests to fetch create & modified date time.......................................................
@@ -183,7 +175,10 @@ class SpreadsheetSettingsWidget extends SpreadsheetHistoryAwareStateWidget {
      * Make a request to the server to format the createDateTime & modifiedDateTime
      */
     sendFormatCreateDateTimeModifiedDateTime(request) {
-        this.formatCreateDateTimeModifiedDateTime(request, this.setFormattedCreateDateTimeAndModifiedDateTime.bind(this)); // TODO handle server format errors
+        this.props.formatCreateDateTimeModifiedDateTime(
+            request,
+            this.setFormattedCreateDateTimeAndModifiedDateTime.bind(this)
+        ); // TODO handle server format errors
     }
 
     /**
@@ -456,7 +451,7 @@ class SpreadsheetSettingsWidget extends SpreadsheetHistoryAwareStateWidget {
         const value = style.get(property);
         const defaultValue = this.defaultStyle(metadata).get(property);
 
-        const setError = this.setError;
+        const setError = this.props.setError;
 
         let render;
 
