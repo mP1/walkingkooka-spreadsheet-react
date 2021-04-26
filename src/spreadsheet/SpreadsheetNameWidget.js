@@ -10,11 +10,9 @@ import SpreadsheetName from "./SpreadsheetName.js";
  */
 export default class SpreadsheetNameWidget extends SpreadsheetHistoryAwareWidget {
 
-    constructor(props) {
-        super(props);
-
+    init() {
         this.state = {
-            value: props.value
+            value: this.props.value
         };
         this.textField = React.createRef();
     }

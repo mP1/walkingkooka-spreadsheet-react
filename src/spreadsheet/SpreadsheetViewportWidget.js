@@ -66,6 +66,10 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
         };
     }
 
+    init() {
+        // nop
+    }
+
     /**
      * Possibly update the history hash using the current state.editCell
      */

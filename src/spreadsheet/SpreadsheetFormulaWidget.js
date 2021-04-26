@@ -12,12 +12,9 @@ import TextField from '@material-ui/core/TextField';
  */
 export default class SpreadsheetFormulaWidget extends SpreadsheetHistoryAwareWidget {
 
-    constructor(props) {
-        super(props);
-
+    init() {
         this.textField = React.createRef();
         this.input = React.createRef();
-
         this.state = {};
     }
 
