@@ -15,9 +15,6 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetHistoryAwareWid
     constructor(props) {
         super(props);
 
-        this.getValue = props.getValue;
-        this.setValue = props.setValue;
-
         this.textField = React.createRef();
         this.input = React.createRef();
 
@@ -67,7 +64,7 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetHistoryAwareWid
     reloadFormulaText(reference) {
         console.log("reloadFormulaText " + reference);
 
-        this.getValue(reference, (formulaText) => {
+        this.props.getValue(reference, (formulaText) => {
             console.log("reloadFormulaText latest formulaText for " + reference + " is " + formulaText);
 
             this.setState({
@@ -112,7 +109,7 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetHistoryAwareWid
     render() {
         const state = this.state;
         const {reference, edit, value} = state;
-        const setValue = this.setValue;
+        const setValue = this.props.setValue;
 
         console.log("render " + (!edit ? "disabled" : "enabled") + " formula: \"" + (value || "") + "\"", state);
 
@@ -194,7 +191,7 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetHistoryAwareWid
      */
     onEnterKey(event) {
         const value = event.target.value;
-        this.setValue(this.state.reference, value);
+        this.props.setValue(this.state.reference, value);
         this.setState({"value": value});
     }
 }
