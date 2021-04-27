@@ -647,6 +647,10 @@ class App extends React.Component {
      * Handles the response.json which contains a SpreadsheetMetadata.
      */
     onSpreadsheetMetadata(json) {
+        if(!json) {
+            throw new Error("Unable to load spreadsheet");
+        }
+
         this.setState({
             createEmptySpreadsheet: false, // cancel any wait for a create, this stops history/state checks from failing and creating again and again
             spreadsheetMetadata: SpreadsheetMetadata.fromJson(json)
