@@ -130,20 +130,12 @@ export default class SpreadsheetMessenger {
                         case 1:
                             throw new Error("1xx " + statusCode + "=" + statusText);
                         case 2:
-                            if(204 === statusCode){
-                                const components = statusText.split(" ");
-                                if(components.length < 3){
-                                    throw new Error(statusCode + "=" + statusText);
-                                }
-                                // eslint-disable-next-line no-unused-vars
-                                const [method, type, actualMessage] = components; // lgtm [js/unused-local-variable]
-                                throw new Error("Unknown " + type + " in " + url);
-                            }
                             responseBuilder.statusCode = statusCode;
                             responseBuilder.statusText = statusText;
                             responseBuilder.headers = response.headers;
-
-                            return response.json();
+                            return 204 === statusCode ?
+                                Promise.resolve(null) :
+                                response.json();
                         case 3:
                             throw new Error("Redirect " + statusCode + "=" + statusText);
                         case 4:
