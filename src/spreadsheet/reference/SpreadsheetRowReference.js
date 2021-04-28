@@ -43,10 +43,10 @@ export default class SpreadsheetRowReference extends SpreadsheetColumnOrRowRefer
 
         const value = Number(text.substring(startIndex));
         if(!value){
-            throw new Error("Missing row got " + text);
+            throw new Error("Missing row got " + CharSequences.quoteAndEscape(text));
         }
         if(value > SpreadsheetRowReference.MAX){
-            throw new Error("Invalid value > " + SpreadsheetRowReference.MAX + " got " + value);
+            throw new Error("Invalid value " + value + " > " + SpreadsheetRowReference.MAX);
         }
 
         return new SpreadsheetRowReference(value - 1, kind);
