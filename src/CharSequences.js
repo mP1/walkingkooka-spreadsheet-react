@@ -1,6 +1,7 @@
 /**
  * A variety of general purpose text functions
  */
+import Character from "./Character.js";
 
 function escapeText(text) {
     var s = "";
@@ -51,5 +52,13 @@ export default class CharSequences {
         return null == text ?
             "null" :
             escapeText(text.toString());
+    }
+
+    static quoteAndEscape(text) {
+        return null == text ?
+            "null" :
+            text instanceof Character ?
+                '\'' + escapeText(text.toString()) + '\'' :
+                '"' + escapeText(text.toString()) + '"';
     }
 }
