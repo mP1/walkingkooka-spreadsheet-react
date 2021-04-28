@@ -1,3 +1,4 @@
+import CharSequences from "../../CharSequences.js";
 import SpreadsheetCellReference from "./SpreadsheetCellReference";
 import SpreadsheetExpressionReference from "./SpreadsheetExpressionReference.js";
 import SystemObject from "../../SystemObject.js";
@@ -28,12 +29,30 @@ export default class SpreadsheetRange extends SpreadsheetExpressionReference {
                 range = new SpreadsheetRange(cell, cell);
                 break;
             case 2:
+                const cell2 = SpreadsheetCellReference.fromJson(tokens[0]);
+                let row;
+
+                try {
+                    row = SpreadsheetCellReference.fromJson(tokens[1]);
+                } catch(e) {
+                    // ("Invalid character " + CharSequences.quoteAndEscape(Character.fromJson(c)) + " at " + pos);
+                    const message = e.message;
+                    if(message.startsWith("Invalid character ")){
+                        const at = message.indexOf(" at ");
+                        debugger;
+                        const pos = parseInt(message.substring(at + 4));
+                        throw new Error(message.substring(0, at + 4) + (1 + pos + text.indexOf(":")));
+                    }else {
+                        throw e;
+                    }
+                }
+
                 range = new SpreadsheetRange(
-                    SpreadsheetCellReference.fromJson(tokens[0]),
-                    SpreadsheetCellReference.fromJson(tokens[1]));
+                    cell2,
+                    row);
                 break;
             default:
-                throw new Error("Expected 1 or 2 tokens got " + text);
+                throw new Error("Expected 1 or 2 tokens got " + CharSequences.quoteAndEscape(text));
         }
 
         return range;

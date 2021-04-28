@@ -56,7 +56,7 @@ test("parse empty fails", () => {
 });
 
 test("parse wrong token count fails", () => {
-    expect(() => SpreadsheetRange.parse("A1:B2:C3")).toThrow("Expected 1 or 2 tokens got A1:B2:C3");
+    expect(() => SpreadsheetRange.parse("A1:B2:C3")).toThrow("Expected 1 or 2 tokens got \"A1:B2:C3\"");
 });
 
 test("parse only cell", () => {
@@ -124,7 +124,19 @@ test("parse lowercase:lowercase/absolute", () => {
 // fromJson.............................................................................................................
 
 test("fromJson wrong token count fails", () => {
-    expect(() => SpreadsheetRange.fromJson("A1:B2:C3")).toThrow("Expected 1 or 2 tokens got A1:B2:C3");
+    expect(() => SpreadsheetRange.fromJson("A1:B2:C3")).toThrow("Expected 1 or 2 tokens got \"A1:B2:C3\"");
+});
+
+test("fromJson invalid begin cell fails", () => {
+    expect(() => SpreadsheetRange.fromJson("A!:B2")).toThrow("Invalid character '!' at 1");
+});
+
+test("fromJson invalid end cell fails", () => {
+    expect(() => SpreadsheetRange.fromJson("A1:B!2")).toThrow("Invalid character '!' at 4");
+});
+
+test("fromJson invalid end cell fails #2", () => {
+    expect(() => SpreadsheetRange.fromJson("A1:B2!")).toThrow("Invalid character '!' at 5");
 });
 
 test("fromJson only cell", () => {
