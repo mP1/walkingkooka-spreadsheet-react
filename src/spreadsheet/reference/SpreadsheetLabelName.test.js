@@ -23,11 +23,11 @@ test("parse empty text fails", () => {
 });
 
 test("parse non alpha initial fails", () => {
-    expect(() => SpreadsheetLabelName.parse("1")).toThrow("Invalid character 1 at 0");
+    expect(() => SpreadsheetLabelName.parse("1")).toThrow("Invalid character '1' at 0");
 });
 
 test("parse invalid part fails", () => {
-    expect(() => SpreadsheetLabelName.parse("A!")).toThrow("Invalid character ! at 1");
+    expect(() => SpreadsheetLabelName.parse("A!")).toThrow("Invalid character '!' at 1");
 });
 
 test("parse cell reference fails", () => {
