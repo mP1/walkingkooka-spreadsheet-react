@@ -168,7 +168,7 @@ export default class SpreadsheetCellReference extends SpreadsheetExpressionRefer
             }
         }
 
-        throw new Error("Missing column got " + CharSequences.quoteAndEscape(text));
+        throw new Error("Missing row got " + CharSequences.quoteAndEscape(text));
     }
 
     constructor(column, row) {
