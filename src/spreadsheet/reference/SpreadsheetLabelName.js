@@ -1,6 +1,8 @@
 import SpreadsheetCellReference from "./SpreadsheetCellReference.js";
 import SpreadsheetExpressionReference from "./SpreadsheetExpressionReference.js";
 import SystemObject from "../../SystemObject.js";
+import CharSequences from "../../CharSequences.js";
+import Character from "../../Character.js";
 
 const TYPE_NAME = "spreadsheet-label-name";
 const MAX_LENGTH = 255;
@@ -23,7 +25,7 @@ export default class SpreadsheetLabelName extends SpreadsheetExpressionReference
             throw new Error("Invalid label length " + length + " > " + MAX_LENGTH);
         }
         if(SpreadsheetCellReference.isCellReferenceText(text)){
-            throw new Error("Label is a valid cell reference=\"" + text + "\"");
+            throw new Error("Label is a valid cell reference=" + CharSequences.quoteAndEscape(text));
         }
 
         Next:
@@ -54,7 +56,7 @@ export default class SpreadsheetLabelName extends SpreadsheetExpressionReference
                             break;
                     }
                 }
-                throw new Error("Invalid character " + c + " at " + i);
+                throw new Error("Invalid character " + CharSequences.quoteAndEscape(Character.fromJson(c)) + " at " + i);
             }
 
         return new SpreadsheetLabelName(text);
