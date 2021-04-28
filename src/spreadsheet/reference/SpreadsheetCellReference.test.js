@@ -116,6 +116,14 @@ test("parse invalid column fails #2", () => {
     expect(() => SpreadsheetCellReference.parse("12")).toThrow("Invalid character '1' at 0");
 });
 
+test("parse missing row fails", () => {
+    expect(() => SpreadsheetCellReference.parse("A")).toThrow("Missing row");
+});
+
+test("parse missing row fails #2", () => {
+    expect(() => SpreadsheetCellReference.parse("A$")).toThrow("Missing row");
+});
+
 test("parse invalid row fails", () => {
     expect(() => SpreadsheetCellReference.parse("A!")).toThrow("Invalid character '!' at 1");
 });
