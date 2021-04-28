@@ -20,6 +20,16 @@ test("parse of invalid text fails", () => {
     expect(() => SpreadsheetColumnReference.parse(true)).toThrow("Expected string got true");
 });
 
+test("parse includes invalid character fails", () => {
+    expect(() => SpreadsheetColumnReference.parse("A1"))
+        .toThrow("Expected letter between 'A' to 'Z' or 'a' to 'z' at \"1\" got \"A1\"");
+});
+
+test("parse includes invalid character fails #2", () => {
+    expect(() => SpreadsheetColumnReference.parse("A!"))
+        .toThrow("Expected letter between 'A' to 'Z' or 'a' to 'z' at \"1\" got \"A!\"");
+});
+
 test("parse greater than MAX fails", () => {
     expect(() => SpreadsheetColumnReference.parse("XFE")).toThrow("Invalid value > 16384 got 16385");
 });

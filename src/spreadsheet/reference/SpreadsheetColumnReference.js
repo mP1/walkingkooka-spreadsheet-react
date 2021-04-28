@@ -1,3 +1,4 @@
+import CharSequences from "../../CharSequences.js";
 import SpreadsheetColumnOrRowReference from "./SpreadsheetColumnOrRowReference";
 import SpreadsheetReferenceKind from "./SpreadsheetReferenceKind";
 import SystemObject from "../../SystemObject.js";
@@ -37,7 +38,7 @@ export default class SpreadsheetColumnReference extends SpreadsheetColumnOrRowRe
         for(var i = startIndex; i < text.length; i++) {
             const c = text.charAt(i).toUpperCase();
             if(c < 'A' || c > 'Z'){
-                throw new Error("Expected letter between 'A' to 'Z' or 'a' to 'z' at " + i + " got " + text);
+                throw new Error("Expected letter between 'A' to 'Z' or 'a' to 'z' at " + CharSequences.quoteAndEscape(i) + " got " + CharSequences.quoteAndEscape(text));
             }
             value = value * SpreadsheetColumnReference.RADIX + c.charCodeAt(0) - A + 1;
         }
