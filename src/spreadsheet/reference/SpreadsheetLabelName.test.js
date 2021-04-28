@@ -34,6 +34,12 @@ test("parse cell reference fails", () => {
     expect(() => SpreadsheetLabelName.parse("A1")).toThrow("Label is a valid cell reference=\"A1\"");
 });
 
+test("parse column only", () => {
+    const column = "A";
+    const label = SpreadsheetLabelName.parse(column);
+    expect(label.value()).toStrictEqual(column);
+});
+
 test("parse label", () => {
     const label = SpreadsheetLabelName.parse(NAME);
     expect(label.value()).toStrictEqual(NAME);
