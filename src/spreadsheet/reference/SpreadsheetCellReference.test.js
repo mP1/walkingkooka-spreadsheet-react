@@ -104,6 +104,26 @@ test("parse null fails", () => {
     expect(() => SpreadsheetCellReference.parse(null)).toThrow("Missing text");
 });
 
+test("parse empty fails", () => {
+    expect(() => SpreadsheetCellReference.parse("")).toThrow("Missing text");
+});
+
+test("parse invalid column fails", () => {
+    expect(() => SpreadsheetCellReference.parse("1")).toThrow("Invalid character '1' at 0");
+});
+
+test("parse invalid column fails #2", () => {
+    expect(() => SpreadsheetCellReference.parse("12")).toThrow("Invalid character '1' at 0");
+});
+
+test("parse invalid row fails", () => {
+    expect(() => SpreadsheetCellReference.parse("A!")).toThrow("Invalid character '!' at 1");
+});
+
+test("parse invalid row fails #2", () => {
+    expect(() => SpreadsheetCellReference.parse("A1!")).toThrow("Invalid character '!' at 2");
+});
+
 test("parse A2", () => {
     check(SpreadsheetCellReference.parse("A2"),
         SpreadsheetColumnReference.parse("A"),
@@ -221,7 +241,13 @@ test("addColumn delta -1", () => {
 });
 
 test("addColumn delta -10 underflow", () => {
-    expect(() => SpreadsheetCellReference.parse("B2").addColumn(-3)).toThrow("Invalid value not between 0 and 16384 got -2");
+    expect(() => SpreadsheetCellReference.parse("B2").addColumn(-3))
+        .toThrow("Invalid value not between 0 and 16384 got -2");
+});
+
+test("addColumn delta +10 overflow", () => {
+    expect(() => SpreadsheetCellReference.parse("B2").addColumn(SpreadsheetColumnReference.MAX))
+        .toThrow("Invalid value not between 0 and 16384 got 16385");
 });
 
 // addColumnSaturated............................................................................................................
