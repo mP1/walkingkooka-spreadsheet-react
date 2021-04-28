@@ -2,22 +2,22 @@ import SpreadsheetRange from "./SpreadsheetRange.js";
 import SpreadsheetLabelName from "./SpreadsheetLabelName.js";
 import SpreadsheetCellReference from "./SpreadsheetCellReference.js";
 
-export default function spreadsheetExpressionReferenceFromJson(json) {
-    if(!json){
-        throw new Error("Missing json");
+export default function spreadsheetExpressionReferenceFromJson(text) {
+    if(!text){
+        throw new Error("Missing text");
     }
-    if(typeof json !== "string"){
-        throw new Error("Expected string got " + json);
+    if(typeof text !== "string"){
+        throw new Error("Expected string got " + text);
     }
 
     var reference;
-    if(json.indexOf(":") >= 0) {
-        reference = SpreadsheetRange.fromJson(json);
+    if(text.indexOf(":") >= 0) {
+        reference = SpreadsheetRange.fromJson(text);
     } else {
-        if(SpreadsheetCellReference.isCellReferenceText(json)) {
-            reference = SpreadsheetCellReference.fromJson(json);
+        if(SpreadsheetCellReference.isCellReferenceText(text)) {
+            reference = SpreadsheetCellReference.fromJson(text);
         } else {
-            reference = SpreadsheetLabelName.fromJson(json);
+            reference = SpreadsheetLabelName.fromJson(text);
         }
     }
 
