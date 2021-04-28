@@ -1,11 +1,14 @@
 /**
  * Holds a cell reference. Note the reference is not validated in anyway.
  */
+import Character from "../../Character.js";
+import CharSequences from "../../CharSequences.js";
 import SpreadsheetColumnReference from "./SpreadsheetColumnReference";
 import SpreadsheetExpressionReference from "./SpreadsheetExpressionReference.js";
 import SpreadsheetReferenceKind from "./SpreadsheetReferenceKind";
 import SpreadsheetRowReference from "./SpreadsheetRowReference";
 import SystemObject from "../../SystemObject.js";
+
 
 function checkColumn(column) {
     if(!column){
@@ -42,85 +45,95 @@ function valueFromDigit(c) {
     return digit >= 0 && digit < RADIX ? digit + 1 : -1;
 }
 
+// basically copied from SpreadsheetExpressionReference.java#isCellReferenceText
+function isCellReferenceText0(text, reporter) {
+    if(null == text){
+        throw new Error("Missing text");
+    }
+    if(typeof text !== "string"){
+        throw new Error("Expected string got " + text);
+    }
+
+    var mode = MODE_COLUMN_FIRST; // -1 too long or contains invalid char
+    var columnLength = 0;
+    var column = 0;
+    var row = 0;
+
+    // AB11 max row, max column
+    const length = text.length;
+    for(var i = 0; i < length; i++) {
+        const c = text.charAt(i);
+
+        if(MODE_COLUMN_FIRST === mode){
+            mode = MODE_COLUMN;
+            if("$" === c){
+                continue;
+            }
+            // fall-thru might be column letter
+        }
+
+        // try and consume column letters
+        if(MODE_COLUMN === mode){
+            const digit = valueFromDigit(c);
+
+            if(-1 !== digit){
+                column = column * SpreadsheetColumnReference.RADIX + digit;
+                if(column > SpreadsheetColumnReference.MAX){
+                    mode = reporter(c, i);
+                    break; // column is too big cant be a cell reference.
+                }
+                columnLength++;
+                continue;
+            }
+            if(0 === columnLength){
+                mode = reporter(c, i);
+                break;
+            }
+            mode = MODE_ROW_FIRST;
+        }
+
+        if(MODE_ROW_FIRST === mode){
+            mode = MODE_ROW;
+            if("$" === c){
+                continue;
+            }
+            // fall-thru might be row letter
+        }
+
+        if(MODE_ROW === mode){
+            const digit = parseInt(c, SpreadsheetRowReference.RADIX);
+            if(digit >= 0){
+                row = SpreadsheetRowReference.RADIX * row + digit;
+                if(row >= SpreadsheetRowReference.MAX){
+                    mode = reporter(c, i);
+                    break; // row is too big cant be a cell reference.
+                }
+                continue;
+            }
+            mode = reporter(c, i);
+            break;
+        }
+    }
+
+    // ran out of characters still checking row must be a valid cell reference.
+    return MODE_ROW === mode;
+}
+
+function reportInvalidCharacter(c, pos) {
+    throw new Error("Invalid character " + CharSequences.quoteAndEscape(Character.fromJson(c)) + " at " + pos);
+}
+
 export default class SpreadsheetCellReference extends SpreadsheetExpressionReference {
 
     /**
      * Tests if the text is a valid cell reference. This may be used to test text that can contain either a
      * cell reference or label.
      */
-    // basically copied from SpreadsheetExpressionReference.java#isCellReferenceText
     static isCellReferenceText(text) {
-        if(null == text){
-            throw new Error("Missing text");
-        }
-        if(typeof text !== "string"){
-            throw new Error("Expected string got " + text);
-        }
-
-        var mode = MODE_COLUMN_FIRST; // -1 too long or contains invalid char
-        var columnLength = 0;
-        var column = 0;
-        var row = 0;
-
-        // AB11 max row, max column
-        const length = text.length;
-        for(var i = 0; i < length; i++) {
-            const c = text.charAt(i);
-
-            if(MODE_COLUMN_FIRST === mode){
-                mode = MODE_COLUMN;
-                if("$" === c){
-                    continue;
-                }
-                // fall-thru might be column letter
-            }
-
-            // try and consume column letters
-            if(MODE_COLUMN === mode){
-                const digit = valueFromDigit(c);
-
-                if(-1 !== digit){
-                    column = column * SpreadsheetColumnReference.RADIX + digit;
-                    if(column >= SpreadsheetColumnReference.MAX){
-                        mode = MODE_FAIL;
-                        break; // column is too big cant be a cell reference.
-                    }
-                    columnLength++;
-                    continue;
-                }
-                if(0 === columnLength){
-                    mode = MODE_FAIL;
-                    break;
-                }
-                mode = MODE_ROW_FIRST;
-            }
-
-            if(MODE_ROW_FIRST === mode){
-                mode = MODE_ROW;
-                if("$" === c){
-                    continue;
-                }
-                // fall-thru might be row letter
-            }
-
-
-            if(MODE_ROW === mode){
-                const digit = parseInt(c, SpreadsheetRowReference.RADIX);
-                if(digit >= 0){
-                    row = SpreadsheetRowReference.RADIX * row + digit;
-                    if(row >= SpreadsheetRowReference.MAX){
-                        mode = MODE_FAIL;
-                        break; // row is too big cant be a cell reference.
-                    }
-                    continue;
-                }
-                mode = MODE_FAIL;
-                break;
-            }
-        }
-
-        // ran out of characters still checking row must be a valid cell reference.
-        return MODE_ROW === mode;
+        return isCellReferenceText0(
+            text,
+            () => MODE_FAIL
+        );
     }
 
     static fromJson(json) {
@@ -128,12 +141,10 @@ export default class SpreadsheetCellReference extends SpreadsheetExpressionRefer
     }
 
     static parse(text) {
-        if(!text){
+        if("" === text) {
             throw new Error("Missing text");
         }
-        if(typeof text !== "string"){
-            throw new Error("Expected string got " + text);
-        }
+        isCellReferenceText0(text, reportInvalidCharacter);
 
         for(var i = 1; i < text.length; i++) {
             switch(text.charAt(i)) {
@@ -157,7 +168,7 @@ export default class SpreadsheetCellReference extends SpreadsheetExpressionRefer
             }
         }
 
-        throw new Error("Missing row got " + text);
+        throw new Error("Missing column got " + CharSequences.quoteAndEscape(text));
     }
 
     constructor(column, row) {
