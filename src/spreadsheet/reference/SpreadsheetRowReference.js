@@ -1,3 +1,5 @@
+import Character from "../../Character.js";
+import CharSequences from "../../CharSequences.js";
 import SpreadsheetColumnOrRowReference from "./SpreadsheetColumnOrRowReference";
 import SpreadsheetReferenceKind from "./SpreadsheetReferenceKind";
 import SpreadObject from "../../SystemObject.js";
@@ -30,6 +32,15 @@ export default class SpreadsheetRowReference extends SpreadsheetColumnOrRowRefer
             kind = SpreadsheetReferenceKind.RELATIVE;
             startIndex = 0;
         }
+
+        const length = text.length;
+        for(var i = startIndex; i < length; i++) {
+            const c = text.charAt(i);
+            if(c < '0' || c > '9'){
+                throw new Error("Invalid character " + CharSequences.quoteAndEscape(Character.fromJson(c)) + " at " + i);
+            }
+        }
+
         const value = Number(text.substring(startIndex));
         if(!value){
             throw new Error("Missing row got " + text);

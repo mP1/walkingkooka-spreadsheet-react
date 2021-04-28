@@ -20,6 +20,18 @@ test("parse of invalid text fails", () => {
     expect(() => SpreadsheetRowReference.parse(true)).toThrow("Expected string got true");
 });
 
+test("parse of includes invalid character fails", () => {
+    expect(() => SpreadsheetRowReference.parse("A")).toThrow("Invalid character 'A' at 0");
+});
+
+test("parse of includes invalid character fails #2", () => {
+    expect(() => SpreadsheetRowReference.parse("1A")).toThrow("Invalid character 'A' at 1");
+});
+
+test("parse of includes invalid character fails #3", () => {
+    expect(() => SpreadsheetRowReference.parse("12A")).toThrow("Invalid character 'A' at 2");
+});
+
 test("parse MAX fails", () => {
     expect(() => SpreadsheetRowReference.parse("" + (SpreadsheetRowReference.MAX + 1))).toThrow("Invalid value > 1048576 got 1048577");
 });
