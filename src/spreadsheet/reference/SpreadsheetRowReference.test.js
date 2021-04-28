@@ -33,7 +33,7 @@ test("parse of includes invalid character fails #3", () => {
 });
 
 test("parse MAX fails", () => {
-    expect(() => SpreadsheetRowReference.parse("" + (SpreadsheetRowReference.MAX + 1))).toThrow("Invalid value > 1048576 got 1048577");
+    expect(() => SpreadsheetRowReference.parse("" + (SpreadsheetRowReference.MAX + 1))).toThrow("Invalid value 1048577 > 1048576");
 });
 
 test("parse ABSOLUTE", () => {
