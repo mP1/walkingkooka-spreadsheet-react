@@ -127,8 +127,20 @@ test("fromJson wrong token count fails", () => {
     expect(() => SpreadsheetRange.fromJson("A1:B2:C3")).toThrow("Expected 1 or 2 tokens got \"A1:B2:C3\"");
 });
 
+test("fromJson missing begin cell fails", () => {
+    expect(() => SpreadsheetRange.fromJson(":")).toThrow("Missing begin");
+});
+
+test("fromJson missing begin cell fails #2", () => {
+    expect(() => SpreadsheetRange.fromJson(":B2")).toThrow("Missing begin");
+});
+
 test("fromJson invalid begin cell fails", () => {
     expect(() => SpreadsheetRange.fromJson("A!:B2")).toThrow("Invalid character '!' at 1");
+});
+
+test("fromJson missing end cell fails", () => {
+    expect(() => SpreadsheetRange.fromJson("A1:")).toThrow("Missing end");
 });
 
 test("fromJson invalid end cell fails", () => {
