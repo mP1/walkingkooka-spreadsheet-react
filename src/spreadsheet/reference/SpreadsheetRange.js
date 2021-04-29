@@ -29,11 +29,19 @@ export default class SpreadsheetRange extends SpreadsheetExpressionReference {
                 range = new SpreadsheetRange(cell, cell);
                 break;
             case 2:
-                const cell2 = SpreadsheetCellReference.fromJson(tokens[0]);
-                let row;
+                const beginText = tokens[0];
+                if(!beginText) {
+                    throw new Error("Missing begin");
+                }
+                const beginCell = SpreadsheetCellReference.fromJson(beginText);
+                const endText = tokens[1];
+                if(!endText) {
+                    throw new Error("Missing end");
+                }
 
+                let endCell;
                 try {
-                    row = SpreadsheetCellReference.fromJson(tokens[1]);
+                    endCell = SpreadsheetCellReference.fromJson(endText);
                 } catch(e) {
                     // ("Invalid character " + CharSequences.quoteAndEscape(Character.fromJson(c)) + " at " + pos);
                     const message = e.message;
@@ -48,8 +56,8 @@ export default class SpreadsheetRange extends SpreadsheetExpressionReference {
                 }
 
                 range = new SpreadsheetRange(
-                    cell2,
-                    row);
+                    beginCell,
+                    endCell);
                 break;
             default:
                 throw new Error("Expected 1 or 2 tokens got " + CharSequences.quoteAndEscape(text));
