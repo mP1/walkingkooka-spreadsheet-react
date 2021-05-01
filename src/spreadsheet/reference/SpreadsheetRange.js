@@ -47,7 +47,6 @@ export default class SpreadsheetRange extends SpreadsheetExpressionReference {
                     const message = e.message;
                     if(message.startsWith("Invalid character ")){
                         const at = message.indexOf(" at ");
-                        debugger;
                         const pos = parseInt(message.substring(at + 4));
                         throw new Error(message.substring(0, at + 4) + (1 + pos + text.indexOf(":")));
                     }else {
