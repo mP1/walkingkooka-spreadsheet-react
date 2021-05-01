@@ -156,11 +156,7 @@ context(
         it("Update hash append cell/reference/formula", () => {
             reactRenderWait();
 
-            cy.window()
-                .then(function(win) {
-                    var hash = win.location.hash;
-                    win.location.hash = hash + "/cell/D4/formula";
-                });
+            hashAppend("/cell/D4/formula");
 
             reactRenderWait();
 
@@ -173,11 +169,7 @@ context(
 
             cellClick("C3");
 
-            cy.window()
-                .then(function(win) {
-                    var hash = win.location.hash;
-                    win.location.hash = hash +  "/formula";
-                });
+            hashAppend("/formula");
 
             reactRenderWait();
 
@@ -322,11 +314,7 @@ context(
         it("Show settings by editing history hash", () => {
             reactRenderWait();
 
-            cy.window()
-                .then(function(win) {
-                    var hash = win.location.hash;
-                    win.location.hash = hash + "/settings";
-                });
+            hashAppend("/settings");
 
             reactRenderWait();
             settings()
@@ -1497,13 +1485,27 @@ context(
         }
 
         function hashEnter(hash) {
-            cy.window().then(function(win) {
-                win.location.hash = hash;
-            });
+            cy.window()
+                .then(function(win) {
+                    win.location.hash = hash;
+                });
         }
 
         function hash() {
             return cy.location().hash();
+        }
+
+        function hashAppend(append) {
+            cy.window()
+                .then(function(win) {
+                    const hash = win.location.hash;
+                    const after = hash + append;
+
+                    win.location.hash = after;
+
+                    cy.hash()
+                        .should("eq", after);
+                });
         }
 
         function spreadsheetName() {
