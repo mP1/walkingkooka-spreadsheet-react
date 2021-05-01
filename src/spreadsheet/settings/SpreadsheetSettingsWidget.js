@@ -455,7 +455,7 @@ class SpreadsheetSettingsWidget extends SpreadsheetHistoryAwareStateWidget {
         const value = style.get(property);
         const defaultValue = this.defaultStyle(metadata).get(property);
 
-        const setError = this.props.setError;
+        const notificationShow = this.props.notificationShow;
 
         let render;
 
@@ -474,7 +474,7 @@ class SpreadsheetSettingsWidget extends SpreadsheetHistoryAwareStateWidget {
                                                           defaultValue={defaultValue}
                                                           defaultValueFormatter={DEFAULT_VALUE_FORMATTER_TOSTRING}
                                                           setValue={setValue}
-                                                          setError={setError}
+                                                          notificationShow={notificationShow}
                 />;
                 break;
             default:
@@ -1371,9 +1371,9 @@ class SpreadsheetSettingsWidget extends SpreadsheetHistoryAwareStateWidget {
 SpreadsheetSettingsWidget.propTypes = {
     history: PropTypes.object.isRequired, // history will provide open
     formatCreateDateTimeModifiedDateTime: PropTypes.func.isRequired, // required to format date/times, parameters: SpreadsheetMultiFormatRequest, successHandler => SpreadsheetMultiFormatResponse
+    notificationShow: PropTypes.func.isRequired,
     spreadsheetMetadata: PropTypes.instanceOf(SpreadsheetMetadata).isRequired,
     setSpreadsheetMetadata: PropTypes.func.isRequired, // fired when the SpreadsheetMetadata is updated.
-    setError: PropTypes.func.isRequired, // fired whenever an error needs to be displayed
 }
 
 export default withStyles(useStyles)(SpreadsheetSettingsWidget);

@@ -415,9 +415,9 @@ class App extends React.Component {
                 />
                 <SpreadsheetSettingsWidget ref={this.settings}
                                            history={history}
+                                           notificationShow={this.notificationShow.bind(this)}
                                            spreadsheetMetadata={metadata}
                                            setSpreadsheetMetadata={this.saveSpreadsheetMetadata.bind(this)}
-                                           setError={(message) => this.notificationShow(SpreadsheetNotification.error(message))}
                                            formatCreateDateTimeModifiedDateTime={this.onFormatCreateDateTimeModifiedDateTime.bind(this)}
                 />
             </WindowResizer>
