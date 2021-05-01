@@ -46,6 +46,11 @@ test("create with non SpreadsheetExpressionReference fails", () => {
     expect(() => new SpreadsheetLabelMapping(label(), 1.5)).toThrow("Expected SpreadsheetExpressionReference reference got 1.5");
 });
 
+test("create with same label and reference fails", () => {
+    const l = label();
+    expect(() => new SpreadsheetLabelMapping(l, l)).toThrow("Reference \"Label123\" must be different to label \"Label123\"");
+});
+
 test("create Cell", () => {
     const l = label();
     const r = SpreadsheetCellReference.fromJson("A1")

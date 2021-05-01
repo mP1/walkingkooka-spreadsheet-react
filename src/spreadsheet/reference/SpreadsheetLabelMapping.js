@@ -1,3 +1,4 @@
+import CharSequences from "../../CharSequences.js";
 import SpreadsheetExpressionReference from "./SpreadsheetExpressionReference.js";
 import spreadsheetExpressionReferenceFromJson from "./SpreadsheetExpressionReferenceFromJson.js";
 import SpreadsheetLabelName from "./SpreadsheetLabelName.js";
@@ -43,6 +44,10 @@ export default class SpreadsheetLabelMapping extends SystemObject {
         super();
         checkLabel(label);
         checkReference(reference);
+
+        if(label.equals(reference)) {
+            throw new Error("Reference " + CharSequences.quoteAndEscape(reference.toString()) + " must be different to label " + CharSequences.quoteAndEscape(label.toString()));
+        }
 
         this.labelValue = label;
         this.referenceValue = reference;
