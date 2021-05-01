@@ -417,7 +417,7 @@ class App extends React.Component {
                                            history={history}
                                            spreadsheetMetadata={metadata}
                                            setSpreadsheetMetadata={this.saveSpreadsheetMetadata.bind(this)}
-                                           setError={(message) => this.notificationSave(SpreadsheetNotification.error(message))}
+                                           setError={(message) => this.notificationShow(SpreadsheetNotification.error(message))}
                                            formatCreateDateTimeModifiedDateTime={this.onFormatCreateDateTimeModifiedDateTime.bind(this)}
                 />
             </WindowResizer>
@@ -511,8 +511,8 @@ class App extends React.Component {
 
     // Notifications....................................................................................................
 
-    notificationSave(notification) {
-        console.log("saveNotifications ", notification);
+    notificationShow(notification) {
+        console.log("notificationShow ", notification);
 
         this.notification.current.setState(
             {
@@ -522,7 +522,7 @@ class App extends React.Component {
     }
 
     onNotificationClose() {
-        this.notificationSave();
+        this.notificationShow();
     }
 
     // resizing.........................................................................................................
@@ -656,7 +656,7 @@ class App extends React.Component {
             spreadsheetMetadata: SpreadsheetMetadata.fromJson(json)
         });
 
-        this.notificationSave(SpreadsheetNotification.success("Spreadsheet metadata saved"));
+        this.notificationShow(SpreadsheetNotification.success("Spreadsheet metadata saved"));
     }
 
     /**
@@ -748,7 +748,7 @@ class App extends React.Component {
     }
 
     onSendError(error) {
-        this.notificationSave(SpreadsheetNotification.error(error));
+        this.notificationShow(SpreadsheetNotification.error(error));
     }
 
     // toString.........................................................................................................
