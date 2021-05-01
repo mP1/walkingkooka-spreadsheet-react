@@ -1,5 +1,6 @@
 import Color from "../../color/Color.js";
 import PropTypes from "prop-types";
+import SpreadsheetNotification from "../notification/SpreadsheetNotification.js";
 import SpreadsheetSettingsWidgetTextField from "./SpreadsheetSettingsWidgetTextField.js";
 import SpreadsheetSettingsWidgetValue from "./SpreadsheetSettingsWidgetValue.js";
 
@@ -11,7 +12,6 @@ export default class SpreadsheetSettingsWidgetColor extends SpreadsheetSettingsW
     // eslint-disable-next-line
     constructor(props) {
         super(props);
-        this.setError = props.setError;
     }
 
     placeholder() {
@@ -31,13 +31,13 @@ export default class SpreadsheetSettingsWidgetColor extends SpreadsheetSettingsW
     }
 
     onError(text, errorMessage) {
-        this.setError("Invalid color \"" + text + "\"");
+        this.props.notificationShow(SpreadsheetNotification.error("Invalid color \"" + text + "\""));
     }
 }
 
 SpreadsheetSettingsWidgetColor.propTypes = SpreadsheetSettingsWidgetValue.createPropTypes(
     PropTypes.string,
     {
-        setError: PropTypes.func.isRequired
+        notificationShow: PropTypes.func.isRequired
     }
 );
