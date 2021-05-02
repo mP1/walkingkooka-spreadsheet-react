@@ -76,14 +76,8 @@ class SpreadsheetLabelWidget extends SpreadsheetHistoryAwareStateWidget {
                 // load the mapping for the new $label, the old mapping is lost.
                 this.props.loadLabelMapping(
                     label,
-                    (mapping) => this.onLoad(label, mapping),
-                    (error) => {
-                        this.props.notificationShow(SpreadsheetNotification.error(error));
-                        const state = {};
-                        this.parseLabel("", state);
-                        this.parseReference("", state);
-                        this.setState(state);
-                    }
+                    (mapping) => this.onLoadSuccess(label, mapping),
+                    this.onLoadFailure.bind(this),
                 );
             }
             replacements[SpreadsheetHistoryHash.LABEL] = label;
@@ -97,8 +91,8 @@ class SpreadsheetLabelWidget extends SpreadsheetHistoryAwareStateWidget {
     /**
      * Handles the response of a load label attempt.
      */
-    onLoad(oldLabel, mapping) {
-        console.log("loaded: " + mapping);
+    onLoadSuccess(oldLabel, mapping) {
+        console.log("onLoadSuccess: " + mapping);
 
         const labelValue = mapping ? mapping.label().toString() : oldLabel.toString();
         const referenceValue = mapping ? mapping.reference().toString() : "";
@@ -120,6 +114,14 @@ class SpreadsheetLabelWidget extends SpreadsheetHistoryAwareStateWidget {
         if(referenceWidget){
             referenceWidget.value = referenceValue;
         }
+    }
+
+    onLoadFailure(error) {
+        this.props.notificationShow(SpreadsheetNotification.error(error));
+        const state = {};
+        this.parseLabel("", state);
+        this.parseReference("", state);
+        this.setState(state);
     }
 
     render() {
