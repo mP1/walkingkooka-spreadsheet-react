@@ -540,7 +540,7 @@ class App extends React.Component {
         if(null == label) {
             throw new Error("Missing label");
         }
-        if(!label instanceof SpreadsheetLabelName) {
+        if(!(label instanceof SpreadsheetLabelName)) {
             throw new Error("Expected SpreadsheetLabelName label got " + label);
         }
         return this.spreadsheetMetadataApiUrl() + "/label/" + label
