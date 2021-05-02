@@ -23,6 +23,9 @@ const FORCE_TRUE = {
     force: true,
 };
 
+const LABEL = "Label123";
+const REFERENCE = "B2";
+
 context(
     "General app usage",
     () => {
@@ -70,6 +73,358 @@ context(
             title().should("eq", updatedSpreadsheetName.toString());
             hash().should('match', /.*\/SpreadsheetName234/) // => true
         });
+
+        // LABEL........................................................................................................
+
+        it("Enter history hash with invalid label name", () => {
+            invalidHashUpdateRejected("/label/!invalid-label");
+        });
+
+        it("Enter history hash show label mapping", () => {
+            historyHashLabel();
+
+            labelDialogCheck(
+                "Label: " + LABEL,
+                LABEL,
+                "",
+                "",
+                "Missing text"
+            );
+        });
+
+        // LABEL MAPPING LABEL..........................................................................................
+
+        it("Label mapping edit label empty text", () => {
+            historyHashLabel();
+
+            labelMappingLabelTextField()
+                .type("{selectAll}{backspace}");
+
+            labelDialogCheck(
+                "Label: " + LABEL,
+                "",
+                "Missing text",
+                "",
+                "Missing text"
+            );
+        });
+
+        it("Label mapping edit label invalid text", () => {
+            historyHashLabel();
+
+            const labelText = "!InvalidLabel";
+
+            labelMappingLabelTextField()
+                .type("{selectAll}" + labelText);
+
+            labelDialogCheck(
+                "Label: " + LABEL,
+                labelText,
+                "Invalid character '!' at 0",
+                "",
+                "Missing text"
+            );
+        });
+
+        it("Label mapping edit label invalid text #2", () => {
+            historyHashLabel();
+
+            const labelText = "I!nvalidLabel";
+
+            labelMappingLabelTextField()
+                .type("{selectAll}" + labelText);
+
+            labelDialogCheck(
+                "Label: " + LABEL,
+                labelText,
+                "Invalid character '!' at 1",
+                "",
+                "Missing text"
+            );
+        });
+
+        it("Label mapping edit label text, missing reference ENTER", () => {
+            historyHashLabel();
+
+            const labelText = "Label456";
+
+            labelMappingLabelTextField()
+                .type("{selectAll}" + labelText + "{enter}");
+
+            labelDialogCheck(
+                "Label: " + LABEL,
+                labelText,
+                "",
+                "",
+                "Missing text"
+            );
+        });
+
+        it("Label mapping edit label text, missing reference SAVE", () => {
+            historyHashLabel();
+
+            const labelText = "Label456";
+
+            labelMappingLabelTextField()
+                .type("{selectAll}" + labelText);
+
+            labelMappingLabelSaveButton().click();
+
+            labelDialogCheck(
+                "Label: " + LABEL,
+                labelText,
+                "",
+                "",
+                "Missing text"
+            );
+        });
+
+        // LABEL MAPPING REFERENCE......................................................................................
+
+        it("Label mapping edit reference invalid text", () => {
+            historyHashLabel();
+
+            const referenceText = "!InvalidReference";
+
+            labelMappingReferenceTextField()
+                .type(referenceText);
+
+            labelDialogCheck(
+                "Label: " + LABEL,
+                LABEL,
+                "",
+                referenceText,
+                "Invalid character '!' at 0"
+            );
+        });
+
+        it("Label mapping edit reference invalid text #2", () => {
+            historyHashLabel();
+
+            const referenceText = "A!InvalidReference";
+
+            labelMappingReferenceTextField()
+                .type(referenceText);
+
+            labelDialogCheck(
+                "Label: " + LABEL,
+                LABEL,
+                "",
+                referenceText,
+                "Invalid character '!' at 1"
+            );
+        });
+
+        it("Label mapping edit reference same label", () => {
+            historyHashLabel();
+
+            const referenceText = LABEL;
+
+            labelMappingReferenceTextField()
+                .type(referenceText);
+
+            labelDialogCheck(
+                "Label: " + LABEL,
+                LABEL,
+                "",
+                referenceText,
+                "Reference \"" + LABEL + "\" must be different to label \"" + LABEL + "\""
+            );
+        });
+
+        it("Label mapping edit reference", () => {
+            historyHashLabel();
+
+            const referenceText = REFERENCE;
+            labelMappingReferenceTextField()
+                .type(referenceText);
+
+            labelDialogCheck(
+                "Label: " + LABEL,
+                LABEL,
+                "",
+                referenceText,
+                ""
+            );
+        });
+
+        // special keys and buttons.....................................................................................
+
+        it("Label mapping label TextField ESC", () => {
+            historyHashLabel();
+
+            labelMappingReferenceTextField()
+                .type(REFERENCE);
+
+            labelMappingLabelTextField()
+                .type("{Esc}");
+
+            historyHashLabel();
+
+            labelDialogCheck(
+                "Label: " + LABEL,
+                LABEL,
+                "",
+                "",
+                "Missing text",
+            );
+        });
+
+        it("Label mapping reference TextField ESC", () => {
+            historyHashLabel();
+
+            labelMappingReferenceTextField()
+                .type(REFERENCE + "{Esc}");
+
+            historyHashLabel();
+
+            labelDialogCheck(
+                "Label: " + LABEL,
+                LABEL,
+                "",
+                "",
+                "Missing text",
+            );
+        });
+
+        it("Label mapping edit label/reference label TextField ENTER", () => {
+            historyHashLabel();
+
+            const referenceText = REFERENCE;
+            labelMappingReferenceTextField()
+                .type(referenceText);
+
+            const labelText = "Label456";
+
+            labelMappingLabelTextField()
+                .type("{selectall}" + labelText);
+
+            labelMappingLabelSaveButton().click();
+
+            labelDialogCheck(
+                "Label: " + labelText,
+                labelText,
+                "",
+                referenceText,
+                ""
+            );
+        });
+
+        it("Label mapping edit label/reference reference TextField ENTER", () => {
+            historyHashLabel();
+
+            const referenceText = REFERENCE;
+            labelMappingReferenceTextField()
+                .type(referenceText + "{Enter}");
+
+            labelMappingLabelSaveButton().click();
+
+            labelDialogCheck(
+                "Label: " + LABEL,
+                LABEL,
+                "",
+                referenceText,
+                ""
+            );
+        });
+
+        it("Label mapping edit label/reference click SAVE button", () => {
+            historyHashLabel();
+
+            const referenceText = REFERENCE;
+            labelMappingReferenceTextField()
+                .type(referenceText);
+
+            labelMappingLabelSaveButton()
+                .click();
+
+            labelDialogCheck(
+                "Label: " + LABEL,
+                LABEL,
+                "",
+                referenceText,
+                ""
+            );
+        });
+
+        it("Label mapping edit label/reference click DELETE button", () => {
+            historyHashLabel();
+
+            const referenceText = REFERENCE;
+            labelMappingReferenceTextField()
+                .type(referenceText);
+
+            labelMappingLabelSaveButton()
+                .click();
+
+            historyHashLabel();
+            labelMappingLabelDeleteButton()
+                .click();
+
+            historyHashLabel();
+
+            labelDialogCheck(
+                "Label: " + LABEL,
+                LABEL,
+                "",
+                "",
+                "Missing text"
+            );
+        });
+
+        function historyHashLabel() {
+            reactRenderWait(); // wait for empty spreadsheet
+            hashAppend("/label/" + LABEL);
+        }
+
+        function labelDialogCheck(title,
+                                  labelText,
+                                  labelHelperText,
+                                  referenceText,
+                                  referenceHelperText) {
+            cy.get("#label-mapping-DialogTitle")
+                .contains(title);
+
+            labelMappingLabelTextField()
+                .should("have.value", labelText);
+
+            const labelHelperTextId = "#label-mapping-label-TextField-helper-text";
+            if(labelHelperText){
+                cy.get(labelHelperTextId)
+                    .should("have.text", labelHelperText);
+            } else {
+                cy.get(labelHelperTextId)
+                    .should("not.exist");
+            }
+
+            labelMappingReferenceTextField()
+                .should("have.value", referenceText);
+
+            const referenceHelperTextId = "#label-mapping-reference-TextField-helper-text";
+            if(referenceHelperText){
+                cy.get(referenceHelperTextId)
+                    .should("have.text", referenceHelperText);
+            } else {
+                cy.get(referenceHelperTextId)
+                    .should("not.exist");
+            }
+        }
+
+        function labelMappingLabelTextField() {
+            return cy.get("#label-mapping-label-TextField");
+        }
+
+        function labelMappingReferenceTextField() {
+            return cy.get("#label-mapping-reference-TextField");
+        }
+
+        function labelMappingLabelSaveButton() {
+            return cy.get("#label-mapping-save-Button");
+        }
+
+        function labelMappingLabelDeleteButton() {
+            return cy.get("#label-mapping-delete-Button");
+        }
 
         // CELL ................................................................................................................
 
@@ -1446,6 +1801,8 @@ context(
 
                     // updated hash should be rejected.
                     win.location.hash = hash + hashAppend;
+
+                    reactRenderWait();
 
                     cy.hash()
                         .should("eq", hash);
