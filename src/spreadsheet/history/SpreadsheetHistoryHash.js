@@ -60,6 +60,7 @@ export default class SpreadsheetHistoryHash {
     static CELL = "cell";
     static CELL_FORMULA = "formula";
     static LABEL = "label";
+    static NAVIGATE = "navigate";
     static SETTINGS = "settings";
     static SETTINGS_SECTION = "settings-section";
 
@@ -84,6 +85,7 @@ export default class SpreadsheetHistoryHash {
         var cell;
         var formula;
         var label;
+        var navigate;
         var settings;
         var settingsSection;
 
@@ -133,6 +135,9 @@ export default class SpreadsheetHistoryHash {
                                 valid = false;
                             }
                             break;
+                        case SpreadsheetHistoryHash.NAVIGATE:
+                            navigate = true;
+                            break;
                         case SpreadsheetHistoryHash.SETTINGS:
                             settings = true;
                             const possibleSection = sourceTokens.shift();
@@ -172,6 +177,9 @@ export default class SpreadsheetHistoryHash {
                     if(label){
                         destTokens[SpreadsheetHistoryHash.LABEL] = label;
                     }
+                    if(navigate){
+                        destTokens[SpreadsheetHistoryHash.NAVIGATE] = navigate;
+                    }
                     if(settings){
                         destTokens[SpreadsheetHistoryHash.SETTINGS] = settings;
 
@@ -197,6 +205,7 @@ export default class SpreadsheetHistoryHash {
         var cell = current[SpreadsheetHistoryHash.CELL];
         var formula = current[SpreadsheetHistoryHash.CELL_FORMULA];
         var label = current[SpreadsheetHistoryHash.LABEL];
+        var navigate = current[SpreadsheetHistoryHash.NAVIGATE];
         var settings = current[SpreadsheetHistoryHash.SETTINGS];
         var settingsSection = current[SpreadsheetHistoryHash.SETTINGS_SECTION];
 
@@ -215,6 +224,7 @@ export default class SpreadsheetHistoryHash {
                 cell = null;
                 formula = null;
                 label = null;
+                navigate = null;
             }
         }
 
@@ -228,6 +238,10 @@ export default class SpreadsheetHistoryHash {
 
         if(replacements.hasOwnProperty(SpreadsheetHistoryHash.LABEL)){
             label = replacements[SpreadsheetHistoryHash.LABEL];
+        }
+
+        if(replacements.hasOwnProperty(SpreadsheetHistoryHash.NAVIGATE)){
+            navigate = replacements[SpreadsheetHistoryHash.NAVIGATE];
         }
 
         if(replacements.hasOwnProperty(SpreadsheetHistoryHash.SETTINGS)){
@@ -266,6 +280,10 @@ export default class SpreadsheetHistoryHash {
             if(label){
                 verified.push(SpreadsheetHistoryHash.LABEL);
                 verified.push(label.toString());
+            }
+
+            if(navigate){
+                verified.push(SpreadsheetHistoryHash.NAVIGATE);
             }
 
             if(!!settings){

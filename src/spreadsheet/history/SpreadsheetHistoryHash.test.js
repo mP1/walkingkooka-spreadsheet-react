@@ -181,6 +181,105 @@ test("parse /spreadsheet-id/spreadsheet-name/cell/A2/formula/label/LABEL123", ()
     );
 });
 
+test("parse /spreadsheet-id/spreadsheet-name/navigate", () => {
+    parseAndCheck(
+        "/spreadsheet-id-123/spreadsheet-name-456/navigate",
+        {
+            "spreadsheet-id": "spreadsheet-id-123",
+            "spreadsheet-name": "spreadsheet-name-456",
+            "navigate": true,
+        }
+    );
+});
+
+test("parse /spreadsheet-id/spreadsheet-name/name/navigate", () => {
+    parseAndCheck(
+        "/spreadsheet-id-123/spreadsheet-name-456/name/navigate",
+        {
+            "spreadsheet-id": "spreadsheet-id-123",
+            "spreadsheet-name": "spreadsheet-name-456",
+            "name": true,
+            "navigate": true,
+        }
+    );
+});
+
+test("parse /spreadsheet-id/spreadsheet-name/cell/A3/navigate", () => {
+    parseAndCheck(
+        "/spreadsheet-id-123/spreadsheet-name-456/cell/A3/navigate",
+        {
+            "spreadsheet-id": "spreadsheet-id-123",
+            "spreadsheet-name": "spreadsheet-name-456",
+            "cell": SpreadsheetCellReference.parse("A3"),
+            "navigate": true,
+        }
+    );
+});
+
+test("parse /spreadsheet-id/spreadsheet-name/cell/A3/formula/navigate", () => {
+    parseAndCheck(
+        "/spreadsheet-id-123/spreadsheet-name-456/cell/A3/formula/navigate",
+        {
+            "spreadsheet-id": "spreadsheet-id-123",
+            "spreadsheet-name": "spreadsheet-name-456",
+            "cell": SpreadsheetCellReference.parse("A3"),
+            "formula": true,
+            "navigate": true,
+        }
+    );
+});
+
+test("parse /spreadsheet-id/spreadsheet-name/cell/A3/formula/navigate/settings", () => {
+    parseAndCheck(
+        "/spreadsheet-id-123/spreadsheet-name-456/cell/A3/formula/navigate/settings",
+        {
+            "spreadsheet-id": "spreadsheet-id-123",
+            "spreadsheet-name": "spreadsheet-name-456",
+            "cell": SpreadsheetCellReference.parse("A3"),
+            "formula": true,
+            "navigate": true,
+            "settings": true,
+        }
+    );
+});
+
+test("parse /spreadsheet-id/spreadsheet-name/label/LABEL123/navigate", () => {
+    parseAndCheck(
+        "/spreadsheet-id-123/spreadsheet-name-456/label/LABEL123/navigate",
+        {
+            "spreadsheet-id": "spreadsheet-id-123",
+            "spreadsheet-name": "spreadsheet-name-456",
+            "label": SpreadsheetLabelName.parse("LABEL123"),
+            "navigate": true,
+        }
+    );
+});
+
+test("parse /spreadsheet-id/spreadsheet-name/navigate/settings", () => {
+    parseAndCheck(
+        "/spreadsheet-id-123/spreadsheet-name-456/navigate/settings",
+        {
+            "spreadsheet-id": "spreadsheet-id-123",
+            "spreadsheet-name": "spreadsheet-name-456",
+            "navigate": true,
+            "settings": true,
+        }
+    );
+});
+
+test("parse /spreadsheet-id/spreadsheet-name/navigate/settings/number", () => {
+    parseAndCheck(
+        "/spreadsheet-id-123/spreadsheet-name-456/navigate/settings/number",
+        {
+            "spreadsheet-id": "spreadsheet-id-123",
+            "spreadsheet-name": "spreadsheet-name-456",
+            "navigate": true,
+            "settings": true,
+            "settings-section": "number",
+        }
+    );
+});
+
 test("parse /spreadsheet-id/spreadsheet-name/settings", () => {
     parseAndCheck(
         "/spreadsheet-id-123/spreadsheet-name-456/settings",
@@ -757,6 +856,78 @@ test("/spreadsheet-id/spreadsheet-name/cell/A1/label/LABEL123", () => {
         "/123abc/Untitled456/cell/A1/label/LABEL123",
         {},
         "/123abc/Untitled456/cell/A1/label/LABEL123"
+    );
+});
+
+// navigate.............................................................................................................
+
+test("/spreadsheet-id/spreadsheet-name/navigate", () => {
+    mergeAndCheck(
+        "/123abc/Untitled456/navigate",
+        {},
+        "/123abc/Untitled456/navigate",
+    );
+});
+
+test("/spreadsheet-id/spreadsheet-name/name/navigate", () => {
+    mergeAndCheck(
+        "/123abc/Untitled456/name/navigate",
+        {},
+        "/123abc/Untitled456/name/navigate",
+    );
+});
+
+test("/spreadsheet-id/spreadsheet-name/cell/A1/navigate", () => {
+    mergeAndCheck(
+        "/123abc/Untitled456/cell/A1/navigate",
+        {},
+        "/123abc/Untitled456/cell/A1/navigate",
+    );
+});
+
+test("/spreadsheet-id/spreadsheet-name/label/LABEL123/navigate", () => {
+    mergeAndCheck(
+        "/123abc/Untitled456/label/LABEL123/navigate",
+        {},
+        "/123abc/Untitled456/label/LABEL123/navigate",
+    );
+});
+
+test("/spreadsheet-id/spreadsheet-name/navigate/settings", () => {
+    mergeAndCheck(
+        "/123abc/Untitled456/navigate/settings",
+        {},
+        "/123abc/Untitled456/navigate/settings",
+    );
+});
+
+test("/spreadsheet-id/spreadsheet-name/ replacement navigate=true", () => {
+    mergeAndCheck(
+        "/123abc/Untitled456/",
+        {
+            "navigate": true,
+        },
+        "/123abc/Untitled456/navigate",
+    );
+});
+
+test("/spreadsheet-id/spreadsheet-name/cell/A1 replacement navigate=true", () => {
+    mergeAndCheck(
+        "/123abc/Untitled456/cell/A1",
+        {
+            "navigate": true,
+        },
+        "/123abc/Untitled456/cell/A1/navigate",
+    );
+});
+
+test("/spreadsheet-id/spreadsheet-name/ replacement navigate=false", () => {
+    mergeAndCheck(
+        "/123abc/Untitled456/navigate",
+        {
+            "navigate": false,
+        },
+        "/123abc/Untitled456",
     );
 });
 
