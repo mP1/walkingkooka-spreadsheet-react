@@ -62,7 +62,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
 
     stateFromHistoryTokens(tokens) {
         return {
-            editCell: tokens[SpreadsheetHistoryHash.CELL],
+            cell: tokens[SpreadsheetHistoryHash.CELL],
         };
     }
 
@@ -71,19 +71,19 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
     }
 
     /**
-     * Possibly update the history hash using the current state.editCell
+     * Possibly update the history hash using the current state.cell
      */
     historyTokensFromState(prevState) {
-        const editCellOld = prevState.editCell;
-        const editCellNew = this.state.editCell;
-        console.log("historyTokensFromState editCell: " + editCellOld + " to " + editCellNew);
+        const cellOld = prevState.cell;
+        const cellNew = this.state.cell;
+        console.log("historyTokensFromState cell: " + cellOld + " to " + cellNew);
 
-        if(!Equality.safeEquals(editCellOld, editCellNew)){
+        if(!Equality.safeEquals(cellOld, cellNew)){
             const history = this.history;
             const current = history.location.pathname;
 
             const replacement = {};
-            replacement[SpreadsheetHistoryHash.CELL] = editCellNew;
+            replacement[SpreadsheetHistoryHash.CELL] = cellNew;
 
             const tokens = SpreadsheetHistoryHash.parse(current);
             const updatedPathname = SpreadsheetHistoryHash.merge(
@@ -97,7 +97,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
 
             if(!tokens[SpreadsheetHistoryHash.CELL_FORMULA]) {
                 console.log("Missing formula token giving focus to cell...", tokens);
-                const cellElement = document.getElementById("cell-" + editCellNew);
+                const cellElement = document.getElementById("cell-" + cellNew);
                 if(cellElement) {
                     cellElement.focus();
                 }
@@ -149,10 +149,10 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
      * Returns an array of TableCell, one for each column header.
      */
     headers() {
-        const {columnWidths, dimensions, defaultStyle, home, editCell} = this.state;
+        const {columnWidths, dimensions, defaultStyle, home, cell} = this.state;
         const viewportWidth = dimensions.width;
         const defaultColumnWidth = defaultStyle.width().value();
-        const editCellColumn = editCell && editCell.column();
+        const cellColumn = cell && cell.column();
 
         let headers = [];
         headers.push(<TableCell key={"all"} id={"select-all-cells"} style={headerCell}></TableCell>); // TODO add select all support
@@ -162,7 +162,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
 
         while(x < viewportWidth) {
             headers.push(
-                this.headerCell(column, column.equals(editCellColumn))
+                this.headerCell(column, column.equals(cellColumn))
             );
 
             x = x + (columnWidths.get(column) || defaultColumnWidth);
@@ -176,7 +176,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
      * Render the required TABLE ROW each filled with available or empty TABLE CELL cells.
      */
     body() {
-        const {cells, columnWidths, rowHeights, defaultStyle, dimensions, home, editCell} = this.state;
+        const {cells, columnWidths, rowHeights, defaultStyle, dimensions, home, cell} = this.state;
 
         const defaultColumnWidth = defaultStyle.width().value();
         const defaultRowHeight = defaultStyle.height().value();
@@ -184,7 +184,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
         const viewportWidth = dimensions.width;
         const viewportHeight = dimensions.height;
 
-        const editCellRow = editCell && editCell.row();
+        const cellRow = cell && cell.row();
 
         const tableRows = [];
 
@@ -197,21 +197,21 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
             let x = 0;
             let column = home.column();
 
-            tableCells.push(this.headerCell(row, row.equals(editCellRow)));
+            tableCells.push(this.headerCell(row, row.equals(cellRow)));
 
             // reference, formula, style, format, formatted
             while(x < viewportWidth) {
                 const cellReference = new SpreadsheetCellReference(column, row);
-                const cell = cells.get(cellReference) || this.emptyCell(cellReference);
+                const cellWidget = cells.get(cellReference) || this.emptyCell(cellReference);
 
                 if(cells.get(cellReference)){
-                    console.log("SpreadsheetViewportWidget cell " + cellReference, cellReference, cell);
+                    console.log("SpreadsheetViewportWidget cell " + cellReference, cellReference, cellWidget);
                 }
 
-                const editing = cellReference.equals(editCell);
+                const editing = cellReference.equals(cell);
 
                 tableCells.push(
-                    cell.render(
+                    cellWidget.render(
                         defaultStyle,
                         editing,
                         () => this.onCellClick(cellReference),
@@ -311,7 +311,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
      */
     saveEditCell(cellReference) {
         this.setState({
-            editCell: cellReference,
+            cell: cellReference,
         });
     }
 
