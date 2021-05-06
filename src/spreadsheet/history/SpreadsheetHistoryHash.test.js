@@ -118,6 +118,17 @@ test("parse /spreadsheet-id/spreadsheet-name/cell/A1/formula", () => {
     );
 });
 
+test("parse /spreadsheet-id/spreadsheet-name/cell/Label123", () => {
+    parseAndCheck(
+        "/spreadsheet-id-123/spreadsheet-name-456/cell/Label123",
+        {
+            "spreadsheet-id": "spreadsheet-id-123",
+            "spreadsheet-name": "spreadsheet-name-456",
+            "cell": SpreadsheetLabelName.parse("Label123"),
+        }
+    );
+});
+
 test("parse /spreadsheet-id/spreadsheet-name/name/label invalid", () => {
     parseAndCheck(
         "/spreadsheet-id-123/spreadsheet-name-456/name/label",
@@ -976,6 +987,14 @@ test("/spreadsheet-id/spreadsheet-name/cell/A2/formula replaced name true", () =
             "name": true,
         },
         "/123abc/Untitled456/name"
+    );
+});
+
+test("/spreadsheet-id/spreadsheet-name/cell/LABEL123", () => {
+    mergeAndCheck(
+        "/123abc/Untitled456/cell/LABEL123",
+        {},
+        "/123abc/Untitled456/cell/LABEL123"
     );
 });
 

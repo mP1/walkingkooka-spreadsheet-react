@@ -12,10 +12,12 @@ import SpreadsheetBox from "../widget/SpreadsheetBox.js";
 import SpreadsheetCell from "./SpreadsheetCell.js";
 import SpreadsheetCellBox from "./reference/SpreadsheetCellBox.js";
 import SpreadsheetCellReference from "./reference/SpreadsheetCellReference.js";
+import SpreadsheetCellReferenceOrLabelName from "./reference/SpreadsheetCellReferenceOrLabelName.js";
 import SpreadsheetContainerWidget from "../widget/SpreadsheetContainerWidget.js";
 import SpreadsheetCoordinates from "./SpreadsheetCoordinates.js";
 import SpreadsheetDelta from "./engine/SpreadsheetDelta.js";
 import SpreadsheetEngineEvaluation from "./engine/SpreadsheetEngineEvaluation.js";
+import SpreadsheetExpressionReferenceSimilarities from "./SpreadsheetExpressionReferenceSimilarities.js";
 import SpreadsheetFormula from "./SpreadsheetFormula.js";
 import SpreadsheetFormulaWidget from "./SpreadsheetFormulaWidget.js";
 import SpreadsheetHistoryAwareStateWidget from "./history/SpreadsheetHistoryAwareStateWidget.js";
@@ -328,6 +330,7 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
                                            rowHeights={rowHeights}
                                            defaultStyle={style}
                                            home={viewportCell}
+                                           labelToCell={this.labelToCell.bind(this)}
                                            showError={showError}
                 />
                 <SpreadsheetSettingsWidget ref={this.settings}
@@ -352,7 +355,7 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
         Preconditions.requireInstance(evaluation, SpreadsheetEngineEvaluation, "evaluation");
         Preconditions.optionalFunction(onSuccess, "onSuccess");
 
-        console.log("loadSpreadsheetCellOrRange " + selection + " " + evaluation);
+        console.log("cellOrRangeLoad " + selection + " " + evaluation);
 
         this.messageSend(
             this.spreadsheetCellApiUrl(selection) + "/" + evaluation.nameKebabCase(),
@@ -427,12 +430,29 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
     /**
      * Accepts a cell reference and eventually sets the formula text on the second call back function.
      */
-    formulaTextLoad(cellReference, setFormulaText, onError) {
-        Preconditions.requireInstance(cellReference, SpreadsheetCellReference, "cellReference");
+    formulaTextLoad(cellOrLabel, setFormulaText, onError) {
+        Preconditions.requireInstance(cellOrLabel, SpreadsheetCellReferenceOrLabelName, "cellOrLabel");
         Preconditions.requireFunction(setFormulaText, "setFormulaText");
         Preconditions.requireFunction(onError, "onError");
 
-        console.log("formulaTextLoad " + cellReference + " " + setFormulaText + " " + onError);
+        console.log("formulaTextLoad " + cellOrLabel + " " + setFormulaText + " " + onError);
+
+        if(cellOrLabel instanceof SpreadsheetCellReference) {
+            this.formulaTextLoadCellReference(cellOrLabel, setFormulaText, onError);
+        } else {
+            this.labelToCell(
+                cellOrLabel,
+                (cell) => this.formulaTextLoadCellReference(cell, setFormulaText),
+                this.showError.bind(this),
+            );
+        }
+    }
+
+    /**
+     * This is the final phase of loading formula text for a cell and occurs once the history hash cell is resolved
+     * from a cell or label to a cell.
+     */
+    formulaTextLoadCellReference(cellReference, setFormulaText, onError) {
 
         this.cellOrRangeLoad(
             cellReference,
@@ -445,7 +465,7 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
                     const formula = cell.formula();
                     formulaText = formula.text();
                 }
-                setFormulaText(formulaText);
+                setFormulaText(cellReference, formulaText);
             },
             onError
         );
@@ -530,6 +550,45 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
     labelUrl(label) {
         Preconditions.requireInstance(label, SpreadsheetLabelName, "label");
         return this.spreadsheetMetadataApiUrl() + "/label/" + label
+    }
+
+    /**
+     * Given the {@link SpreadsheetLabelName} returns the target {@link SpreadsheetCellReference}.
+     */
+    labelToCell(label, success, failure) {
+        Preconditions.optionalInstance(label, SpreadsheetLabelName, "label");
+        Preconditions.requireFunction(success, "success");
+        Preconditions.requireFunction(failure, "failure");
+
+        this.messenger.send(
+            this.similaritiesUrl(label.toString(), 1),
+            {
+                method: "GET",
+            },
+            (json) => {
+                if(json) {
+                    const mapping = SpreadsheetExpressionReferenceSimilarities.fromJson(json)
+                        .labels()
+                        .find(m => m.label().equals(label));
+                    if(mapping) {
+                        success(mapping.reference());
+                    } else {
+                        failure("Unknown label " + label);
+                    }
+                }
+            },
+            failure
+        );
+    }
+
+    /**
+     * Returns a URL that may be used to call the cell-reference end point
+     */
+    similaritiesUrl(text, count) {
+        Preconditions.requireText(text, "text");
+        Preconditions.requireNumber(count, "count"); // TODO https://github.com/mP1/walkingkooka-spreadsheet-react/issues/854 Preconditions.requirePositiveNumber
+
+        return this.spreadsheetMetadataApiUrl() + "/cell-reference/" + encodeURI(text) + "?count=" + count;
     }
 
     // messenger........................................................................................................

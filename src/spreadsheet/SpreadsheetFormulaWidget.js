@@ -1,12 +1,13 @@
 import Equality from "../Equality.js";
 import PropTypes from "prop-types";
 import React from 'react';
+import SpreadsheetCellReference from "./reference/SpreadsheetCellReference.js";
 import SpreadsheetHistoryAwareWidget from "./history/SpreadsheetHistoryAwareWidget.js";
 import SpreadsheetHistoryHash from "./history/SpreadsheetHistoryHash.js";
 import TextField from '@material-ui/core/TextField';
 
 /**
- * A widget that supports editing formula text. The widget is disabled when state.reference is falsey.
+ * A widget that supports editing formula text. The widget is disabled when state.cellOrLabel is falsey.
  * An falsey value will disable the text box used to edit the formula text.
  * ENTER calls the setter, ESCAPE reloads the initial value(text).
  */
@@ -24,15 +25,17 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetHistoryAwareWid
     onHistoryChange(tokens) {
         const state = this.state;
 
-        // if a reference is present the formula text should also be editable.
-        const reference = tokens[SpreadsheetHistoryHash.CELL];
+        // if a cellOrLabel is present the formula text should also be editable.
+        const cellOrLabel = tokens[SpreadsheetHistoryHash.CELL];
         const formula = tokens[SpreadsheetHistoryHash.CELL_FORMULA];
-        const edit = !!reference;
+        const edit = !!cellOrLabel;
         const giveFocus = edit && formula && !state.focused && !state.giveFocus;
 
-        if(!Equality.safeEquals(reference, state.reference) || edit != state.edit || giveFocus){
+        // cellOrLabel changed update state
+        if(!Equality.safeEquals(cellOrLabel, state.cellOrLabel) || edit != state.edit || giveFocus){
+            console.log("onHistoryChange: " + cellOrLabel + " newCellOrLabel: " + cellOrLabel + " old: " + state.cellOrLabel);
             this.setState({
-                reference: reference,
+                cellOrLabel: cellOrLabel,
                 edit: edit,
                 giveFocus: giveFocus,
                 reload: false,
@@ -41,20 +44,20 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetHistoryAwareWid
     }
 
     shouldComponentUpdate(nextProps,nextState) {
-        return JSON.stringify(this.state) != JSON.stringify(nextState);
+        return !Equality.safeEquals(this.state, nextState);
     }
 
     /**
-     * If the reference changed load the new formula text and then give focus to the textField.
+     * If the state.cellOrLabel changed load the new formula text and then give focus to the textField.
      */
     componentDidUpdate(prevProps, prevState, snapshot) {
         const state = this.state;
-        const {reference, edit, focused, giveFocus, reload} = state;
+        const {cellOrLabel, edit, focused, giveFocus, reload} = state;
 
-        console.log("componentDidUpdate formula reference " + prevState.reference + " to " + reference + " state", state);
+        console.log("componentDidUpdate formula cell " + prevState.cellOrLabel + " to " + cellOrLabel + " state", state);
 
         const tokens = {};
-        tokens[SpreadsheetHistoryHash.CELL] = reference;
+        tokens[SpreadsheetHistoryHash.CELL] = cellOrLabel;
         tokens[SpreadsheetHistoryHash.CELL_FORMULA] = focused | giveFocus;
         
         // if not formula editing, disable textField
@@ -63,12 +66,14 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetHistoryAwareWid
             textField.disabled = !edit;
         }
 
-        // if different reference
-        if(!Equality.safeEquals(reference, prevState.reference) || reload){
+        // if different cell
+        if(!Equality.safeEquals(cellOrLabel, prevState.cellOrLabel) || reload){
             if(edit){
-                this.reloadFormulaText(reference, giveFocus);
+                this.reloadFormulaText(cellOrLabel, giveFocus);
             }else {
                 this.setState({
+                    cell: null,
+                    cellOrLabel: null,
                     value: null,
                     giveFocus: false,
                 });
@@ -82,15 +87,17 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetHistoryAwareWid
         this.historyParseMergeAndPush(tokens);
     }
 
-    reloadFormulaText(reference, giveFocus) {
-        console.log("reloadFormulaText " + reference + (giveFocus ? "giveFocus" : ""));
+    reloadFormulaText(cellOrLabel, giveFocus) {
+        console.log("reloadFormulaText " + cellOrLabel + (giveFocus ? "giveFocus" : ""));
 
         this.props.getValue(
-            reference,
-            (formulaText) => {
-                console.log("reloadFormulaText latest formulaText for " + reference + " is " + formulaText);
+            cellOrLabel,
+            (cellReference, formulaText) => {
+                console.log("reloadFormulaText latest formulaText for " + cellOrLabel + "/" + cellReference + " is " + formulaText);
 
                 this.setState({
+                    cell: cellReference,
+                    cellOrLabel: cellOrLabel,
                     value: formulaText,
                     reload: false,
                 });
@@ -116,14 +123,13 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetHistoryAwareWid
 
     render() {
         const state = this.state;
-        const {reference, edit, value} = state;
-        const setValue = this.props.setValue;
+        const {cell, edit, value} = state;
 
         console.log("render " + (!edit ? "disabled" : "enabled") + " formula: \"" + (value || "") + "\"", state);
 
         return (
             <TextField ref={this.textField}
-                       key={[reference, value, setValue]}
+                       key={[cell, value]}
                        id={"formula-TextField"}
                        defaultValue={value}
                        disabled={!edit}
@@ -131,7 +137,7 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetHistoryAwareWid
                        onBlur={this.onBlur.bind(this)}
                        onFocus={this.onFocus.bind(this)}
                        onKeyDown={this.onKeyDown.bind(this)}
-                       placeholder={(reference && reference.toString()) || ""}
+                       placeholder={(cell && cell.toString()) || ""}
                        inputProps={{
                            maxLength: 8192,
                            style: {
@@ -201,7 +207,7 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetHistoryAwareWid
      */
     onEnterKey(event) {
         const value = event.target.value;
-        this.props.setValue(this.state.reference, value);
+        this.props.setValue(this.state.cell, value);
         this.setState({"value": value});
     }
 
