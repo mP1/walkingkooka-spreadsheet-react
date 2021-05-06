@@ -16,7 +16,6 @@ import SpreadsheetDateTimeFormatPattern from "../format/SpreadsheetDateTimeForma
 import SpreadsheetDateTimeParsePatterns from "../format/SpreadsheetDateTimeParsePatterns.js";
 import SpreadsheetNumberFormatPattern from "../format/SpreadsheetNumberFormatPattern.js";
 import SpreadsheetNumberParsePatterns from "../format/SpreadsheetNumberParsePatterns.js";
-import SpreadsheetRange from "../reference/SpreadsheetRange.js";
 import SpreadsheetTextFormatPattern from "../format/SpreadsheetTextFormatPattern.js";
 import SpreadsheetTimeFormatPattern from "../format/SpreadsheetTimeFormatPattern.js";
 import SpreadsheetTimeParsePatterns from "../format/SpreadsheetTimeParsePatterns.js";
@@ -796,6 +795,8 @@ test("all setters & getters", () => {
         .set(SpreadsheetMetadata.CELL, cell)
         .set(SpreadsheetMetadata.CELL_CHARACTER_WIDTH, cellCharacterWidth)
         .set(SpreadsheetMetadata.CURRENCY_SYMBOL, currencySymbol)
+        .set(SpreadsheetMetadata.DATE_FORMAT_PATTERN, dateFormatPattern)
+        .set(SpreadsheetMetadata.DATE_PARSE_PATTERNS, dateParsePatterns)
         .set(SpreadsheetMetadata.DATETIME_OFFSET, dateTimeOffset)
         .set(SpreadsheetMetadata.DATETIME_FORMAT_PATTERN, dateTimeFormatPattern)
         .set(SpreadsheetMetadata.DATETIME_PARSE_PATTERNS, dateTimeParsePatterns)
@@ -825,6 +826,8 @@ test("all setters & getters", () => {
     expect(metadata.getIgnoringDefaults(SpreadsheetMetadata.CELL)).toEqual(cell);
     expect(metadata.getIgnoringDefaults(SpreadsheetMetadata.CELL_CHARACTER_WIDTH)).toEqual(cellCharacterWidth);
     expect(metadata.getIgnoringDefaults(SpreadsheetMetadata.CURRENCY_SYMBOL)).toEqual(currencySymbol);
+    expect(metadata.getIgnoringDefaults(SpreadsheetMetadata.DATE_FORMAT_PATTERN)).toEqual(dateFormatPattern);
+    expect(metadata.getIgnoringDefaults(SpreadsheetMetadata.DATE_PARSE_PATTERNS)).toEqual(dateParsePatterns);
     expect(metadata.getIgnoringDefaults(SpreadsheetMetadata.DATETIME_OFFSET)).toEqual(dateTimeOffset);
     expect(metadata.getIgnoringDefaults(SpreadsheetMetadata.DATETIME_FORMAT_PATTERN)).toEqual(dateTimeFormatPattern);
     expect(metadata.getIgnoringDefaults(SpreadsheetMetadata.DATETIME_PARSE_PATTERNS)).toEqual(dateTimeParsePatterns);
