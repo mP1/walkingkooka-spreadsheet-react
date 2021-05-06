@@ -22,6 +22,7 @@ import SpreadsheetTimeFormatPattern from "../format/SpreadsheetTimeFormatPattern
 import SpreadsheetTimeParsePatterns from "../format/SpreadsheetTimeParsePatterns.js";
 import systemObjectTesting from "../../SystemObjectTesting.js";
 import TextStyle from "../../text/TextStyle";
+import SpreadsheetLabelName from "../reference/SpreadsheetLabelName.js";
 
 systemObjectTesting(
     new SpreadsheetMetadata(
@@ -531,24 +532,24 @@ test("remove unknown fails", () => {
 
 test("remove absent property", () => {
     const metadata = SpreadsheetMetadata.EMPTY;
-    expect(metadata).toEqual(metadata.remove(SpreadsheetMetadata.EDIT_CELL));
+    expect(metadata).toEqual(metadata.remove(SpreadsheetMetadata.CELL));
 });
 
 test("remove absent property #2", () => {
     const metadata = SpreadsheetMetadata.EMPTY
         .set(SpreadsheetMetadata.SPREADSHEET_NAME, new SpreadsheetName("spreadsheet-name-123"));
-    expect(metadata).toEqual(metadata.remove(SpreadsheetMetadata.EDIT_CELL));
+    expect(metadata).toEqual(metadata.remove(SpreadsheetMetadata.CELL));
 });
 
 test("remove", () => {
-    const editCell = SpreadsheetCellReference.parse("Z9");
-    const metadata = SpreadsheetMetadata.EMPTY.set(SpreadsheetMetadata.EDIT_CELL, editCell);
-    const removed = metadata.remove(SpreadsheetMetadata.EDIT_CELL);
+    const cell = SpreadsheetCellReference.parse("Z9");
+    const metadata = SpreadsheetMetadata.EMPTY.set(SpreadsheetMetadata.CELL, cell);
+    const removed = metadata.remove(SpreadsheetMetadata.CELL);
 
     expect(metadata).not.toEqual(removed);
 
     checkJson(metadata, {
-        "edit-cell": "Z9",
+        "cell": "Z9",
     });
     checkJson(removed,
         {});
@@ -558,9 +559,9 @@ test("remove #2", () => {
     const withSpreadsheetName = SpreadsheetMetadata.EMPTY
         .set(SpreadsheetMetadata.SPREADSHEET_NAME, new SpreadsheetName("spreadsheet-name-123"));
 
-    const editCell = SpreadsheetCellReference.parse("Z9");
-    const metadata = withSpreadsheetName.set(SpreadsheetMetadata.EDIT_CELL, editCell);
-    const removed = metadata.remove(SpreadsheetMetadata.EDIT_CELL);
+    const cell = SpreadsheetCellReference.parse("Z9");
+    const metadata = withSpreadsheetName.set(SpreadsheetMetadata.CELL, cell);
+    const removed = metadata.remove(SpreadsheetMetadata.CELL);
 
     expect(metadata).not.toEqual(removed);
     expect(withSpreadsheetName).toEqual(removed);
@@ -577,6 +578,10 @@ test("set cell-character-width 0 fails", () => {
 test("set cell-character-width -1 fails", () => {
     expect(() => SpreadsheetMetadata.EMPTY.set(SpreadsheetMetadata.CELL_CHARACTER_WIDTH, -1)).toThrow("Expected number width > 0 got -1");
 });
+
+getSetRemoveTest(SpreadsheetMetadata.CELL, SpreadsheetCellReference.parse("B97"));
+
+getSetRemoveTest(SpreadsheetMetadata.CELL, SpreadsheetLabelName.parse("Label123"));
 
 getIgnoringDefaultsTest(SpreadsheetMetadata.CREATE_DATE_TIME, LocalDateTime.fromJson("1999-12-31 12:58:59"));
 
@@ -601,10 +606,6 @@ test("set decimal separator invalid character fails", () => {
 });
 
 getSetRemoveTest(SpreadsheetMetadata.DEFAULT_YEAR, 1902);
-
-getSetRemoveTest(SpreadsheetMetadata.EDIT_CELL, SpreadsheetCellReference.parse("B97"));
-
-getSetRemoveTest(SpreadsheetMetadata.EDIT_RANGE, SpreadsheetRange.parse("A1:B2"));
 
 getSetRemoveTest(SpreadsheetMetadata.EXPONENT_SYMBOL, Character.fromJson(","));
 
@@ -759,6 +760,7 @@ function removePropertyFailsTest(propertyName) {
 // all..................................................................................................................
 
 test("all setters & getters", () => {
+    const cell = SpreadsheetCellReference.parse("Z99");
     const cellCharacterWidth = 1;
     const currencySymbol = "$AUD";
     const dateFormatPattern = SpreadsheetDateFormatPattern.fromJson("yyyymmdd");
@@ -768,8 +770,6 @@ test("all setters & getters", () => {
     const dateTimeParsePatterns = SpreadsheetDateTimeParsePatterns.fromJson("yyyymmddhhmm");
     const decimalSeparator = Character.fromJson(".");
     const defaultYear = 1987;
-    const editCell = SpreadsheetCellReference.parse("Z99");
-    const editRange = SpreadsheetRange.parse("A1:B2");
     const exponentSymbol = Character.fromJson("^");
     const expressionNumberKind = ExpressionNumberKind.BIG_DECIMAL;
     const groupingSeparator = Character.fromJson(",");
@@ -793,6 +793,7 @@ test("all setters & getters", () => {
     const viewportCell = SpreadsheetCellReference.parse("A99");
 
     const metadata = SpreadsheetMetadata.EMPTY
+        .set(SpreadsheetMetadata.CELL, cell)
         .set(SpreadsheetMetadata.CELL_CHARACTER_WIDTH, cellCharacterWidth)
         .set(SpreadsheetMetadata.CURRENCY_SYMBOL, currencySymbol)
         .set(SpreadsheetMetadata.DATETIME_OFFSET, dateTimeOffset)
@@ -800,8 +801,6 @@ test("all setters & getters", () => {
         .set(SpreadsheetMetadata.DATETIME_PARSE_PATTERNS, dateTimeParsePatterns)
         .set(SpreadsheetMetadata.DECIMAL_SEPARATOR, decimalSeparator)
         .set(SpreadsheetMetadata.DEFAULT_YEAR, defaultYear)
-        .set(SpreadsheetMetadata.EDIT_CELL, editCell)
-        .set(SpreadsheetMetadata.EDIT_RANGE, editRange)
         .set(SpreadsheetMetadata.EXPONENT_SYMBOL, exponentSymbol)
         .set(SpreadsheetMetadata.EXPRESSION_NUMBER_KIND, expressionNumberKind)
         .set(SpreadsheetMetadata.GROUPING_SEPARATOR, groupingSeparator)
@@ -823,6 +822,7 @@ test("all setters & getters", () => {
         .set(SpreadsheetMetadata.VIEWPORT_CELL, viewportCell)
         .set(SpreadsheetMetadata.VIEWPORT_COORDINATES, coords);
 
+    expect(metadata.getIgnoringDefaults(SpreadsheetMetadata.CELL)).toEqual(cell);
     expect(metadata.getIgnoringDefaults(SpreadsheetMetadata.CELL_CHARACTER_WIDTH)).toEqual(cellCharacterWidth);
     expect(metadata.getIgnoringDefaults(SpreadsheetMetadata.CURRENCY_SYMBOL)).toEqual(currencySymbol);
     expect(metadata.getIgnoringDefaults(SpreadsheetMetadata.DATETIME_OFFSET)).toEqual(dateTimeOffset);
@@ -830,8 +830,6 @@ test("all setters & getters", () => {
     expect(metadata.getIgnoringDefaults(SpreadsheetMetadata.DATETIME_PARSE_PATTERNS)).toEqual(dateTimeParsePatterns);
     expect(metadata.getIgnoringDefaults(SpreadsheetMetadata.DECIMAL_SEPARATOR)).toEqual(decimalSeparator);
     expect(metadata.getIgnoringDefaults(SpreadsheetMetadata.DEFAULT_YEAR)).toEqual(defaultYear);
-    expect(metadata.getIgnoringDefaults(SpreadsheetMetadata.EDIT_CELL)).toEqual(editCell);
-    expect(metadata.getIgnoringDefaults(SpreadsheetMetadata.EDIT_RANGE)).toEqual(editRange);
     expect(metadata.getIgnoringDefaults(SpreadsheetMetadata.EXPONENT_SYMBOL)).toEqual(exponentSymbol);
     expect(metadata.getIgnoringDefaults(SpreadsheetMetadata.EXPRESSION_NUMBER_KIND)).toEqual(expressionNumberKind);
     expect(metadata.getIgnoringDefaults(SpreadsheetMetadata.GROUPING_SEPARATOR)).toEqual(groupingSeparator);
@@ -855,13 +853,13 @@ test("all setters & getters", () => {
 });
 
 test("all setters & removers", () => {
-    const editCell = SpreadsheetCellReference.parse("Z99");
+    const cell = SpreadsheetCellReference.parse("Z99");
 
     const metadata = SpreadsheetMetadata.EMPTY
-        .set(SpreadsheetMetadata.EDIT_CELL, editCell)
-        .remove(SpreadsheetMetadata.EDIT_CELL);
+        .set(SpreadsheetMetadata.CELL, cell)
+        .remove(SpreadsheetMetadata.CELL);
 
-    expect(metadata.getIgnoringDefaults(SpreadsheetMetadata.EDIT_CELL)).toBeUndefined();
+    expect(metadata.getIgnoringDefaults(SpreadsheetMetadata.CELL)).toBeUndefined();
     expect(metadata.isEmpty()).toBeTrue();
 });
 

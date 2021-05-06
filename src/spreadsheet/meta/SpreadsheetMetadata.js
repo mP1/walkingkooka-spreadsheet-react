@@ -14,9 +14,10 @@ import SpreadsheetDateFormatPattern from "../format/SpreadsheetDateFormatPattern
 import SpreadsheetDateParsePatterns from "../format/SpreadsheetDateParsePatterns.js";
 import SpreadsheetDateTimeFormatPattern from "../format/SpreadsheetDateTimeFormatPattern.js";
 import SpreadsheetDateTimeParsePatterns from "../format/SpreadsheetDateTimeParsePatterns.js";
+import SpreadsheetExpressionReference from "../reference/SpreadsheetExpressionReference.js";
+import spreadsheetExpressionReferenceFromJson from "../reference/SpreadsheetExpressionReferenceFromJson.js";
 import SpreadsheetNumberFormatPattern from "../format/SpreadsheetNumberFormatPattern.js";
 import SpreadsheetNumberParsePatterns from "../format/SpreadsheetNumberParsePatterns.js";
-import SpreadsheetRange from "../reference/SpreadsheetRange.js";
 import SpreadsheetTextFormatPattern from "../format/SpreadsheetTextFormatPattern.js";
 import SpreadsheetTimeFormatPattern from "../format/SpreadsheetTimeFormatPattern.js";
 import SpreadsheetTimeParsePatterns from "../format/SpreadsheetTimeParsePatterns.js";
@@ -35,6 +36,7 @@ function checkPropertyName(propertyName) {
     }
 
     switch(propertyName) {
+        case SpreadsheetMetadata.CELL:
         case SpreadsheetMetadata.CELL_CHARACTER_WIDTH:
         case SpreadsheetMetadata.CREATE_DATE_TIME:
         case SpreadsheetMetadata.CREATOR:
@@ -47,8 +49,6 @@ function checkPropertyName(propertyName) {
         case SpreadsheetMetadata.DEFAULTS:
         case SpreadsheetMetadata.DECIMAL_SEPARATOR:
         case SpreadsheetMetadata.DEFAULT_YEAR:
-        case SpreadsheetMetadata.EDIT_CELL:
-        case SpreadsheetMetadata.EDIT_RANGE:
         case SpreadsheetMetadata.EXPONENT_SYMBOL:
         case SpreadsheetMetadata.EXPRESSION_NUMBER_KIND:
         case SpreadsheetMetadata.GROUPING_SEPARATOR:
@@ -98,6 +98,7 @@ const TYPE_NAME = "spreadsheet-metadata";
  */
 export default class SpreadsheetMetadata extends SystemObject {
 
+    static CELL = "cell";
     static CELL_CHARACTER_WIDTH = "cell-character-width";
     static CREATOR = "creator";
     static CREATE_DATE_TIME = "create-date-time";
@@ -111,8 +112,6 @@ export default class SpreadsheetMetadata extends SystemObject {
     static DEFAULTS = "_defaults";
     static DEFAULT_YEAR = "default-year";
     static EXPONENT_SYMBOL = "exponent-symbol";
-    static EDIT_CELL = "edit-cell";
-    static EDIT_RANGE = "edit-range";
     static EXPRESSION_NUMBER_KIND = "expression-number-kind";
     static GROUPING_SEPARATOR = "grouping-separator";
     static LOCALE = "locale";
@@ -143,6 +142,7 @@ export default class SpreadsheetMetadata extends SystemObject {
         let is;
 
         switch(property) {
+            case SpreadsheetMetadata.CELL :
             case SpreadsheetMetadata.CELL_CHARACTER_WIDTH :
             case SpreadsheetMetadata.CREATOR :
             case SpreadsheetMetadata.CREATE_DATE_TIME :
@@ -156,8 +156,6 @@ export default class SpreadsheetMetadata extends SystemObject {
             case SpreadsheetMetadata.DEFAULTS :
             case SpreadsheetMetadata.DEFAULT_YEAR :
             case SpreadsheetMetadata.EXPONENT_SYMBOL :
-            case SpreadsheetMetadata.EDIT_CELL :
-            case SpreadsheetMetadata.EDIT_RANGE :
             case SpreadsheetMetadata.EXPRESSION_NUMBER_KIND :
             case SpreadsheetMetadata.GROUPING_SEPARATOR :
             case SpreadsheetMetadata.LOCALE :
@@ -206,6 +204,9 @@ export default class SpreadsheetMetadata extends SystemObject {
             let typed, unmarshaller;
 
             switch(key) {
+                case SpreadsheetMetadata.CELL:
+                    unmarshaller = spreadsheetExpressionReferenceFromJson;
+                    break;
                 case SpreadsheetMetadata.CELL_CHARACTER_WIDTH:
                     checkCellCharacterWidth(value);
                     typed = value;
@@ -243,12 +244,6 @@ export default class SpreadsheetMetadata extends SystemObject {
                     break;
                 case SpreadsheetMetadata.DEFAULT_YEAR:
                     typed = value;
-                    break;
-                case SpreadsheetMetadata.EDIT_CELL:
-                    unmarshaller = SpreadsheetCellReference.fromJson;
-                    break;
-                case SpreadsheetMetadata.EDIT_RANGE:
-                    unmarshaller = SpreadsheetRange.fromJson;
                     break;
                 case SpreadsheetMetadata.EXPONENT_SYMBOL:
                     unmarshaller = Character.fromJson;
@@ -383,6 +378,9 @@ export default class SpreadsheetMetadata extends SystemObject {
         let expectedTypeOf;
 
         switch(propertyName) {
+            case SpreadsheetMetadata.CELL:
+                expectedClass = SpreadsheetExpressionReference;
+                break;
             case SpreadsheetMetadata.CELL_CHARACTER_WIDTH:
                 checkCellCharacterWidth(value);
                 expectedTypeOf = "number";
@@ -420,12 +418,6 @@ export default class SpreadsheetMetadata extends SystemObject {
                 break;
             case SpreadsheetMetadata.DEFAULT_YEAR:
                 expectedTypeOf = "number";
-                break;
-            case SpreadsheetMetadata.EDIT_CELL:
-                expectedClass = SpreadsheetCellReference;
-                break;
-            case SpreadsheetMetadata.EDIT_RANGE:
-                expectedClass = SpreadsheetRange;
                 break;
             case SpreadsheetMetadata.EXPONENT_SYMBOL:
                 expectedClass = Character;
@@ -597,6 +589,7 @@ export default class SpreadsheetMetadata extends SystemObject {
         checkPropertyName(propertyName);
 
         switch(propertyName) {
+            case SpreadsheetMetadata.CELL:
             case SpreadsheetMetadata.CELL_CHARACTER_WIDTH:
             case SpreadsheetMetadata.CURRENCY_SYMBOL:
             case SpreadsheetMetadata.DATE_FORMAT_PATTERN:
@@ -605,8 +598,6 @@ export default class SpreadsheetMetadata extends SystemObject {
             case SpreadsheetMetadata.DATETIME_PARSE_PATTERNS:
             case SpreadsheetMetadata.DECIMAL_SEPARATOR:
             case SpreadsheetMetadata.DEFAULT_YEAR:
-            case SpreadsheetMetadata.EDIT_CELL:
-            case SpreadsheetMetadata.EDIT_RANGE:
             case SpreadsheetMetadata.EXPONENT_SYMBOL:
             case SpreadsheetMetadata.EXPRESSION_NUMBER_KIND:
             case SpreadsheetMetadata.GROUPING_SEPARATOR:
@@ -697,6 +688,7 @@ export default class SpreadsheetMetadata extends SystemObject {
  * An array of all properties.
  */
 const PROPERTY_NAMES = [
+    SpreadsheetMetadata.CELL,
     SpreadsheetMetadata.CELL_CHARACTER_WIDTH,
     SpreadsheetMetadata.CREATOR,
     SpreadsheetMetadata.CREATE_DATE_TIME,
@@ -710,8 +702,6 @@ const PROPERTY_NAMES = [
     SpreadsheetMetadata.DEFAULTS,
     SpreadsheetMetadata.DEFAULT_YEAR,
     SpreadsheetMetadata.EXPONENT_SYMBOL,
-    SpreadsheetMetadata.EDIT_CELL,
-    SpreadsheetMetadata.EDIT_RANGE,
     SpreadsheetMetadata.EXPRESSION_NUMBER_KIND,
     SpreadsheetMetadata.GROUPING_SEPARATOR,
     SpreadsheetMetadata.LOCALE,
