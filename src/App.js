@@ -282,7 +282,7 @@ class App extends React.Component {
     onHistoryChange(location) {
         const tokens = SpreadsheetHistoryHash.parse(location.pathname);
         this.historyUpdateFromState(tokens);
-        this.onHistoryChangeUpdateEditCell(tokens);
+        this.onHistoryChangeUpdateCell(tokens);
     }
 
     /**
@@ -340,13 +340,13 @@ class App extends React.Component {
     /**
      * Update and save the metadata if the history hash cell is different.
      */
-    onHistoryChangeUpdateEditCell(tokens) {
+    onHistoryChangeUpdateCell(tokens) {
         const reference = tokens[SpreadsheetHistoryHash.CELL];
         const metadata = this.spreadsheetMetadata();
 
         this.saveSpreadsheetMetadata(reference ?
-            metadata.set(SpreadsheetMetadata.EDIT_CELL, reference) :
-            metadata.remove(SpreadsheetMetadata.EDIT_CELL)
+            metadata.set(SpreadsheetMetadata.CELL, reference) :
+            metadata.remove(SpreadsheetMetadata.CELL)
         );
     }
 
