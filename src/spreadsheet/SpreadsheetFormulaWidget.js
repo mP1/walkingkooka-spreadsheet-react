@@ -54,16 +54,14 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetHistoryAwareWid
      */
     componentDidUpdate(prevProps, prevState, snapshot) {
         const state = this.state;
-        const {reference, edit, focused} = state;
+        const {reference, edit, focused, giveFocus} = state;
 
         console.log("componentDidUpdate formula reference " + prevState.reference + " to " + reference + " state", state);
 
         const tokens = {};
         tokens[SpreadsheetHistoryHash.CELL] = reference;
         tokens[SpreadsheetHistoryHash.CELL_FORMULA] = focused;
-
-        var giveFocus = state.giveFocus;
-
+        
         // if not formula editing, disable textField
         const textField = this.textField.current;
         if(textField){
@@ -73,22 +71,29 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetHistoryAwareWid
         // if different reference
         if(!Equality.safeEquals(reference, prevState.reference)){
             if(edit){
-                this.reloadFormulaText(reference);
+                this.reloadFormulaText(reference, giveFocus);
             }else {
+                if(giveFocus){
+                    this.giveInputFocus();
+                }
                 this.setState({
                     value: null,
+                    giveFocus: false,
                 });
             }
-        }
-
-        if(giveFocus){
-            this.giveInputFocus();
+        } else {
+            if(giveFocus) {
+                this.giveInputFocus();
+                this.setState({
+                    giveFocus: false,
+                });
+            }
         }
 
         SpreadsheetHistoryHash.parseMergeAndPush(this.history, tokens);
     }
 
-    reloadFormulaText(reference) {
+    reloadFormulaText(reference, giveFocus) {
         console.log("reloadFormulaText " + reference);
 
         this.props.getValue(reference, (formulaText) => {
@@ -96,7 +101,10 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetHistoryAwareWid
 
             this.setState({
                 value: formulaText,
+                giveFocus: false,
             });
+
+            giveFocus && this.giveInputFocus();
         });
     }
 
@@ -105,10 +113,6 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetHistoryAwareWid
         input && setTimeout(() => {
             input.focus();
         }, 10);
-
-        this.setState({
-            giveFocus: false,
-        });
     }
 
     render() {
