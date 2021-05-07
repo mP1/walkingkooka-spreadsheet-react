@@ -79,26 +79,15 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
         console.log("historyTokensFromState cell: " + cellOld + " to " + cellNew);
 
         if(!Equality.safeEquals(cellOld, cellNew)){
-            const history = this.history;
-            const current = history.location.pathname;
-
             const replacement = {};
             replacement[SpreadsheetHistoryHash.CELL] = cellNew;
+            const tokens = SpreadsheetHistoryHash.parseMergeAndPush(this.history, replacement);
 
-            const tokens = SpreadsheetHistoryHash.parse(current);
-            const updatedPathname = SpreadsheetHistoryHash.merge(
-                tokens,
-                replacement
-            );
-            console.log("historyTokensFromState current: " + current + " to " + updatedPathname);
-            if(current !== updatedPathname){
-                history.push(updatedPathname);
-            }
+            if(!tokens[SpreadsheetHistoryHash.CELL_FORMULA]){
+                console.log("Missing " + SpreadsheetHistoryHash.CELL_FORMULA + " token giving focus to cell...", tokens);
 
-            if(!tokens[SpreadsheetHistoryHash.CELL_FORMULA]) {
-                console.log("Missing formula token giving focus to cell...", tokens);
                 const cellElement = document.getElementById("cell-" + cellNew);
-                if(cellElement) {
+                if(cellElement){
                     cellElement.focus();
                 }
             }

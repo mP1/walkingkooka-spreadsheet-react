@@ -13,24 +13,6 @@ function split(pathname) {
     return components;
 }
 
-function join(tokens) {
-    if(!tokens){
-        throw new Error("Missing tokens");
-    }
-    var s = "";
-    for(var i = 0; i < tokens.length; i++) {
-        const token = tokens[i];
-
-        // stop joining if a undefined/null token is found.
-        if(!token && token !== ""){
-            break;
-        }
-        s = s + "/" + token;
-    }
-
-    return s === "" ? "/" : s;
-}
-
 function isSettingsToken(token) {
     var valid;
 
@@ -195,7 +177,7 @@ export default class SpreadsheetHistoryHash {
     }
 
     /**
-     * Merges the tokens from the given current history hash tokens and the updates.
+     * Merges the current tokens with the replacements giving the merged result as another object.
      */
     static merge(current, replacements) {
         // get the current
@@ -295,11 +277,11 @@ export default class SpreadsheetHistoryHash {
             }
         }
 
-        return join(verified);
+        return verified;
     }
 
     /**
-     * Parses the current history hash, merges the replacements and pushes the new hash.
+     * Parses the current history hash, merges the replacements and pushes the new hash and returns the merged tokens.
      */
     static parseMergeAndPush(history, replacements) {
         if(null == history){
@@ -309,17 +291,39 @@ export default class SpreadsheetHistoryHash {
         const currentPathname = history.location.pathname;
         const tokens = SpreadsheetHistoryHash.parse(currentPathname);
 
-        const updatedPathname = SpreadsheetHistoryHash.merge(
+        const merged = SpreadsheetHistoryHash.merge(
             tokens,
             replacements
         );
+        const updatedPathname = SpreadsheetHistoryHash.join(merged);
         if(currentPathname !== updatedPathname){
             console.log("parseMergeAndPush history push \"" + currentPathname + "\"");
             history.push(updatedPathname);
         }else {
             console.log("parseMergeAndPush history unchanged \"" + currentPathname + "\" new \"" + updatedPathname + "\"");
         }
+
+        return merged;
     }
+
+    static join(tokens) {
+        if(!tokens){
+            throw new Error("Missing tokens");
+        }
+        var s = "";
+        for(var i = 0; i < tokens.length; i++) {
+            const token = tokens[i];
+
+            // stop joining if a undefined/null token is found.
+            if(!token && token !== ""){
+                break;
+            }
+            s = s + "/" + token;
+        }
+
+        return s === "" ? "/" : s;
+    }
+
 
     constructor(history) {
         if(null == history){
