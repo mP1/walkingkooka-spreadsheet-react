@@ -73,16 +73,13 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetHistoryAwareWid
             if(edit){
                 this.reloadFormulaText(reference, giveFocus);
             }else {
-                if(giveFocus){
-                    this.giveInputFocus();
-                }
                 this.setState({
                     value: null,
                     giveFocus: false,
                 });
             }
         } else {
-            if(giveFocus) {
+            if(edit && giveFocus) {
                 this.giveInputFocus();
                 this.setState({
                     giveFocus: false,
