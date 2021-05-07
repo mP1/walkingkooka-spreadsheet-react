@@ -1271,6 +1271,8 @@ test("replacements #2", () => {
 // helpers...............................................................................................................
 
 function mergeAndCheck(pathname, replacements, expected) {
-    expect(SpreadsheetHistoryHash.merge(SpreadsheetHistoryHash.parse(pathname), replacements))
+    expect(SpreadsheetHistoryHash.join(
+        SpreadsheetHistoryHash.merge(SpreadsheetHistoryHash.parse(pathname), replacements))
+    )
         .toStrictEqual(expected);
 }
