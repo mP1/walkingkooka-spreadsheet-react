@@ -29,33 +29,63 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetHistoryAwareWid
     }
 
     /**
+     * Attempts to update state from the given tokens.
+     */
+    onHistoryChange(tokens) {
+        const state = this.state;
+
+        // if a reference is present the formula text should also be editable.
+        const reference = tokens[SpreadsheetHistoryHash.CELL];
+        const formula = tokens[SpreadsheetHistoryHash.CELL_FORMULA];
+        const edit = !!reference;
+        const giveFocus = edit && formula && !state.focused && !state.giveFocus;
+
+        if(!Equality.safeEquals(reference, state.reference) || edit != state.edit || giveFocus){
+            this.setState({
+                reference: reference,
+                edit: edit,
+                giveFocus: giveFocus,
+            });
+        }
+    }
+
+    /**
      * If the reference changed load the new formula text and then give focus to the textField.
      */
     componentDidUpdate(prevProps, prevState, snapshot) {
         const state = this.state;
-        const reference = state.reference;
+        const {reference, edit, focused} = state;
 
         console.log("componentDidUpdate formula reference " + prevState.reference + " to " + reference + " state", state);
 
+        const tokens = {};
+        tokens[SpreadsheetHistoryHash.CELL] = reference;
+        tokens[SpreadsheetHistoryHash.CELL_FORMULA] = focused;
+
+        var giveFocus = state.giveFocus;
+
+        // if not formula editing, disable textField
         const textField = this.textField.current;
-        if(textField) {
-            textField.disabled = !state.edit;
+        if(textField){
+            textField.disabled = !edit;
         }
 
+        // if different reference
         if(!Equality.safeEquals(reference, prevState.reference)){
-            if(state.edit){
+            if(edit){
                 this.reloadFormulaText(reference);
-
-                const tokens = SpreadsheetHistoryHash.parse(this.history.location.pathname);
-                if(!state.focused && tokens[SpreadsheetHistoryHash.CELL_FORMULA]){
-                    this.giveInputFocus();
-                }
             }else {
                 this.setState({
                     value: null,
                 });
             }
         }
+
+        if(giveFocus){
+            this.giveInputFocus();
+        }
+
+        SpreadsheetHistoryHash.parseMergeAndPush(this.history, tokens);
     }
 
     reloadFormulaText(reference) {
@@ -70,37 +100,15 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetHistoryAwareWid
         });
     }
 
-    onHistoryChange(tokens) {
-        const state = this.state;
-        const sameCell = Equality.safeEquals(state.reference, tokens.reference);
-        const newEdit = tokens.edit && !state.edit;
-        if(sameCell){
-            if(newEdit){
-                //different cell selected clear formula from being selected.
-                const replacements = {};
-                replacements[SpreadsheetHistoryHash.CELL_FORMULA] = false;
-                SpreadsheetHistoryHash.parseMergeAndPush(this.history, replacements);
-            }
-        }
-
-        if(tokens[SpreadsheetHistoryHash.CELL_FORMULA] && !state.focused) {
-            this.giveInputFocus();
-        }
-
-        // if a reference is present the formula text should also be editable.
-        const reference = tokens[SpreadsheetHistoryHash.CELL];
-        const edit = !!reference;
-        this.setState({
-            reference: reference,
-            edit: edit,
-        });
-    }
-
     giveInputFocus() {
         const input = this.input.current;
         input && setTimeout(() => {
             input.focus();
         }, 10);
+
+        this.setState({
+            giveFocus: false,
+        });
     }
 
     render() {
@@ -149,12 +157,14 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetHistoryAwareWid
     }
 
     updateFormulaHash(eventName, focused) {
+        console.log("@@@" + eventName + " focused: " + focused);
         const replacement = {};
         replacement[SpreadsheetHistoryHash.CELL_FORMULA] = focused;
         SpreadsheetHistoryHash.parseMergeAndPush(this.history, replacement);
 
         this.setState({
             focused: focused,
+            giveFocus: false,
         })
     }
 
