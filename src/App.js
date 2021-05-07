@@ -582,7 +582,8 @@ class App extends React.Component {
     notificationShow(notification) {
         console.log("notificationShow ", notification);
 
-        this.notification.current.setState(
+        const widget = this.notification.current;
+        widget && widget.setState(
             {
                 notification: notification
             }
