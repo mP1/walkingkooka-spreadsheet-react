@@ -39,4 +39,13 @@ export default class Preconditions {
             throw new Error("Expected " + prototype.name + " "  + label + " got " + value);
         }
     }
+
+    /**
+     * Throws an exception if value not the correct type, null is ok.
+     */
+    static requireInstanceOrNull(value, prototype, label) {
+        if(null != value && !(value instanceof prototype)){
+            throw new Error("Expected " + prototype.name + " or nothing "  + label + " got " + value);
+        }
+    }
 }
