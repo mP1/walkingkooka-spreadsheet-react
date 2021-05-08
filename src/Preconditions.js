@@ -30,11 +30,11 @@ export default class Preconditions {
     }
 
     /**
-     * Throws an exception if the value is not a object
+     * Throws an exception if the value is not a object. Note that arrays are not considered objects.
      */
     static requireObject(value, label) {
         Preconditions.requireNonNull(value, label);
-        if(typeof value !== "object"){
+        if(typeof value !== "object" || Array.isArray(value)){
             throw new Error("Expected object " + label + " got " + value);
         }
     }
