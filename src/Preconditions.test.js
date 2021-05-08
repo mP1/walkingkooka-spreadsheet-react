@@ -45,3 +45,46 @@ testThrows("requireNonEmptyText 0", Preconditions.requireNonEmptyText, 0, "Label
 testThrows("requireNonEmptyText object", Preconditions.requireNonEmptyText, {}, "Label123", "Expected string Label123 got [object Object]");
 testThrows("requireNonEmptyText empty string", Preconditions.requireNonEmptyText, "", "Label123", "Expected non empty string Label123");
 testNotThrows("requireNonEmptyText non empty string", Preconditions.requireNonEmptyText, "abc123");
+
+// requireNonNullInstance......................................................................................................
+
+class Test1 {
+
+}
+
+class Test2 extends Test1 {
+}
+
+class Test3 {
+}
+
+class Test4 {
+    toString() {
+        return "Test4!";
+    }
+}
+
+function testRequireNonNullInstanceThrows(title, value, message) {
+    test(title, () => {
+        expect(
+            () => Preconditions.requireNonNullInstance(value, Test1, "Label123")
+        ).toThrow(message);
+    });
+}
+
+function testRequireNonNullInstanceNotThrows(title, value) {
+    test(title, () => {
+        expect(
+            () => Preconditions.requireNonNullInstance(value, Test1,"Label123")
+        ).not
+            .toThrow();
+    });
+}
+
+testRequireNonNullInstanceThrows("requireNonNullInstance undefined",undefined, "Missing Label123");
+testRequireNonNullInstanceThrows("requireNonNullInstance null",  null, "Missing Label123");
+testRequireNonNullInstanceThrows("requireNonNullInstance false",  false, "Expected Test1 Label123 got false");
+testRequireNonNullInstanceThrows("requireNonNullInstance instanceof false",  new Test3(), "Expected Test1 Label123 got " + new Test3());
+testRequireNonNullInstanceThrows("requireNonNullInstance instanceof false",  new Test4(), "Expected Test1 Label123 got Test4!");
+testRequireNonNullInstanceNotThrows("requireNonNullInstance instanceof class",  new Test1());
+testRequireNonNullInstanceNotThrows("requireNonNullInstance instanceof subclass",  new Test2());

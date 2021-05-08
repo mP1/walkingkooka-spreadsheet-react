@@ -28,4 +28,15 @@ export default class Preconditions {
             throw new Error("Expected non empty string " + label);
         }
     }
+
+    /**
+     * Throws an exception if value is null or not the correct type
+     */
+    static requireNonNullInstance(value, prototype, label) {
+        Preconditions.requireNonNull(value, label);
+
+        if(!(value instanceof prototype)){
+            throw new Error("Expected " + prototype.name + " "  + label + " got " + value);
+        }
+    }
 }
