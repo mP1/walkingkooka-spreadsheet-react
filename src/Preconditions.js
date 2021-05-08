@@ -18,4 +18,14 @@ export default class Preconditions {
             throw new Error("Expected string " + label + " got " + value);
         }
     }
+
+    /**
+     * Throws an exception if the text is null or empty
+     */
+    static requireNonEmptyText(value, label) {
+        Preconditions.requireText(value, label);
+        if(!value){
+            throw new Error("Expected non empty string " + label);
+        }
+    }
 }
