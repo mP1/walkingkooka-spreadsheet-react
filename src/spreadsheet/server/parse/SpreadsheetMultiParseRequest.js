@@ -1,4 +1,5 @@
 import Equality from "../../../Equality.js";
+import Preconditions from "../../../Preconditions.js";
 import SpreadsheetParseRequest from "./SpreadsheetParseRequest.js";
 import SystemObject from "../../../SystemObject.js";
 
@@ -14,12 +15,8 @@ export default class SpreadsheetMultiParseRequest extends SystemObject {
 
     constructor(requests) {
         super();
-        if(!requests){
-            throw new Error("Missing requests");
-        }
-        if(!Array.isArray(requests)){
-            throw new Error("Expected array requests got " + requests);
-        }
+        Preconditions.requireArray(requests, "requests");
+
         requests.forEach(r => {
             if(!(r instanceof SpreadsheetParseRequest)){
                 throw new Error("Expected only ParseRequest requests got " + r);

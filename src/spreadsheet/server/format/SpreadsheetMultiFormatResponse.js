@@ -1,4 +1,5 @@
 import Equality from "../../../Equality.js";
+import Preconditions from "../../../Preconditions.js";
 import SystemObject from "../../../SystemObject.js";
 
 const TYPE_NAME = "spreadsheet-multi-format-response";
@@ -13,12 +14,7 @@ export default class SpreadsheetMultiFormatResponse extends SystemObject {
 
     constructor(responses) {
         super();
-        if(!responses){
-            throw new Error("Missing responses");
-        }
-        if(!Array.isArray(responses)){
-            throw new Error("Expected array responses got " + responses);
-        }
+        Preconditions.requireArray(responses, "responses");
 
         this.responsesValue = responses;
     }

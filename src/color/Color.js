@@ -1,3 +1,4 @@
+import Preconditions from "../Preconditions.js";
 import SystemObject from "../SystemObject.js";
 
 const TYPE_NAME = "color";
@@ -14,12 +15,7 @@ export default class Color extends SystemObject {
 
     constructor(text) {
         super();
-        if(!text){
-            throw new Error("Missing text");
-        }
-        if(typeof text !== "string"){
-            throw new Error("Expected string text got " + JSON.stringify(text));
-        }
+        Preconditions.requireText(text, "text");
         if(text.length !== 7){
             throw new Error("Expected string text #rrggbb got " + text);
         }

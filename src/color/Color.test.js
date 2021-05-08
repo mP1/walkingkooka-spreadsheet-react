@@ -43,7 +43,7 @@ test("create", () => {
 // fromJson.............................................................................................................
 
 test("fromJson non string fails", () => {
-    expect(() => Color.fromJson({})).toThrow("Expected string text got {}");
+    expect(() => Color.fromJson({})).toThrow("Expected string text got [object Object]");
 });
 
 // equals...............................................................................................................

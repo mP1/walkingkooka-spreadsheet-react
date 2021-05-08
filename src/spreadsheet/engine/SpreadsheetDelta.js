@@ -1,5 +1,6 @@
 import Equality from "../../Equality.js";
 import ImmutableMap from "../../util/ImmutableMap";
+import Preconditions from "../../Preconditions.js";
 import SpreadsheetCell from "../SpreadsheetCell";
 import SpreadsheetColumnReference from "../reference/SpreadsheetColumnReference";
 import SpreadsheetRange from "../reference/SpreadsheetRange";
@@ -24,9 +25,7 @@ const TYPE_NAME = "spreadsheet-delta";
 export default class SpreadsheetDelta extends SystemObject {
 
     static fromJson(json) {
-        if(!json){
-            throw new Error("Missing json");
-        }
+        Preconditions.requireObject(json, "json");
 
         let cells = [];
         for(const referenceToValues of Object.entries(json.cells || {})) {
@@ -48,12 +47,7 @@ export default class SpreadsheetDelta extends SystemObject {
 
     constructor(cells, maxColumnWidths, maxRowHeights, window) {
         super();
-        if(!cells){
-            throw new Error("Missing cells");
-        }
-        if(!Array.isArray(cells)){
-            throw new Error("Expected array cells got " + cells);
-        }
+        Preconditions.requireArray(cells, "cells");
 
         if(!maxColumnWidths){
             throw new Error("Missing maxColumnWidths");
@@ -69,12 +63,7 @@ export default class SpreadsheetDelta extends SystemObject {
             throw new Error("Expected ImmutableMap maxRowHeights got " + maxRowHeights);
         }
 
-        if(!window){
-            throw new Error("Missing window");
-        }
-        if(!Array.isArray(window)){
-            throw new Error("Expected array window got " + window);
-        }
+        Preconditions.requireArray(window, "window");
 
         this.cellsValue = cells.slice();
         this.maxColumnWidthsValue = maxColumnWidths;

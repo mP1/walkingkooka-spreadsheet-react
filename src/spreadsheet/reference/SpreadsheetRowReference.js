@@ -1,5 +1,6 @@
 import Character from "../../Character.js";
 import CharSequences from "../../CharSequences.js";
+import Preconditions from "../../Preconditions.js";
 import SpreadsheetColumnOrRowReference from "./SpreadsheetColumnOrRowReference";
 import SpreadsheetReferenceKind from "./SpreadsheetReferenceKind";
 import SpreadObject from "../../SystemObject.js";
@@ -15,12 +16,7 @@ export default class SpreadsheetRowReference extends SpreadsheetColumnOrRowRefer
     }
 
     static parse(text) {
-        if(!text){
-            throw new Error("Missing text");
-        }
-        if(typeof text !== "string"){
-            throw new Error("Expected string got " + text);
-        }
+        Preconditions.requireText(text, "text");
 
         let kind;
         let startIndex;

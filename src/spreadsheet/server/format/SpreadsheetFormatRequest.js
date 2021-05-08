@@ -1,4 +1,5 @@
 import Equality from "../../../Equality.js";
+import Preconditions from "../../../Preconditions.js";
 import SystemObject from "../../../SystemObject.js";
 
 const TYPE_NAME = "spreadsheet-format-request";
@@ -6,12 +7,7 @@ const TYPE_NAME = "spreadsheet-format-request";
 export default class SpreadsheetFormatRequest extends SystemObject {
 
     static fromJson(json) {
-        if(!json){
-            throw new Error("Missing json");
-        }
-        if(typeof json !== "object"){
-            throw new Error("Expected object got " + json);
-        }
+        Preconditions.requireObject(json, "json");
 
         const {value, pattern} = json;
         if(!value){
@@ -28,12 +24,8 @@ export default class SpreadsheetFormatRequest extends SystemObject {
 
     constructor(value, pattern) {
         super();
-        if(null == value){
-            throw new Error("Missing value");
-        }
-        if(!pattern){
-            throw new Error("Missing pattern");
-        }
+        Preconditions.requireNonNull(value, "value");
+        Preconditions.requireNonNull(pattern, "pattern");
         this.valueValue = value;
         this.patternValue = pattern;
     }

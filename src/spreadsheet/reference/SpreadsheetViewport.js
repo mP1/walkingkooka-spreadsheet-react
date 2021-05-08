@@ -1,6 +1,7 @@
 /**
  * A pixel rectangle marks a region with one or more cells.
  */
+import Preconditions from "../../Preconditions.js";
 import SpreadsheetCellReference from "./SpreadsheetCellReference";
 import SpreadsheetRectangle from "./SpreadsheetRectangle";
 import SystemObject from "../../SystemObject.js";
@@ -15,12 +16,7 @@ export default class SpreadsheetViewport extends SpreadsheetRectangle {
     }
 
     static parse(text) {
-        if(!text){
-            throw new Error("Missing text");
-        }
-        if(typeof text !== "string"){
-            throw new Error("Expected string got " + text);
-        }
+        Preconditions.requireText(text, "text");
 
         let tokens = text.split(SEPARATOR);
         if(3 !== tokens.length){
@@ -37,25 +33,16 @@ export default class SpreadsheetViewport extends SpreadsheetRectangle {
     constructor(reference, width, height) {
         super();
 
-        if(!reference){
-            throw new Error("Missing reference");
-        }
-        if(!(reference instanceof SpreadsheetCellReference)){
-            throw new Error("Expected SpreadsheetCellReference reference got " + reference);
-        }
+        Preconditions.requireNonNullInstance(reference, SpreadsheetCellReference, "reference");
         this.referenceValue = reference.toRelative();
 
-        if(typeof (width) !== "number"){
-            throw new Error("Expected number width got " + width);
-        }
+        Preconditions.requireNumber(width, "width");
         if(width <= 0){
             throw new Error("Expected width > 0 got " + width);
         }
         this.widthValue = width;
 
-        if(typeof (height) !== "number"){
-            throw new Error("Expected number height got " + height);
-        }
+        Preconditions.requireNumber(height, "height");
         if(height <= 0){
             throw new Error("Expected height > 0 got " + height);
         }

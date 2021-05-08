@@ -1,5 +1,6 @@
 import textNodeJsonSupportFromJson from "../text/TextNodeJsonSupport";
 import Equality from "../Equality.js";
+import Preconditions from "../Preconditions.js";
 import React from "react";
 import SpreadsheetCellReference from "./reference/SpreadsheetCellReference";
 import SpreadsheetFormula from "./SpreadsheetFormula";
@@ -34,9 +35,7 @@ export default class SpreadsheetCell extends SystemObject {
      * </pre>
      */
     static fromJson(json) {
-        if(!json){
-            throw new Error("Missing json");
-        }
+        Preconditions.requireNonNull(json, "json");
 
         const keys = Object.keys(json);
         switch(keys.length) {
@@ -58,27 +57,11 @@ export default class SpreadsheetCell extends SystemObject {
 
     constructor(reference, formula, style, format, formatted) {
         super();
-        if(!reference){
-            throw new Error("Missing reference");
-        }
-        if(!(reference instanceof SpreadsheetCellReference)){
-            throw new Error("Expected SpreadsheetCellReference reference got " + reference);
-        }
-        checkFormula(formula);
-
-        if(!style){
-            throw new Error("Missing style");
-        }
-        if(!(style instanceof TextStyle)){
-            throw new Error("Expected TextStyle style got " + style);
-        }
-
-        if(format && !(format instanceof SpreadsheetCellFormat)){
-            throw new Error("Expected SpreadsheetCellFormat format got " + format);
-        }
-        if(formatted && !(formatted instanceof TextNode)){
-            throw new Error("Expected TextNode formatted got " + formatted);
-        }
+        Preconditions.requireNonNullInstance(reference, SpreadsheetCellReference, "reference");
+        Preconditions.requireNonNullInstance(formula, SpreadsheetFormula, "formula");
+        Preconditions.requireNonNullInstance(style, TextStyle, "style");
+        Preconditions.requireInstanceOrNull(format, SpreadsheetCellFormat, "format");
+        Preconditions.requireInstanceOrNull(formatted, TextNode, "formatted");
 
         this.referenceValue = reference.toRelative();
         this.formulaValue = formula;
@@ -99,7 +82,7 @@ export default class SpreadsheetCell extends SystemObject {
      * Would be setter that returns a {@link SpreadsheetCell} with the given {@link SpreadsheetFormula}.
      */
     setFormula(formula) {
-        checkFormula(formula);
+        Preconditions.requireNonNullInstance(formula, SpreadsheetFormula, "formula");
 
         return this.formula() === formula ?
             this :
@@ -150,18 +133,9 @@ export default class SpreadsheetCell extends SystemObject {
      * Renders a TableCell with the formatted content. The default style will typically come from {@link SpreadsheetMetadata}.
      */
     render(defaultStyle, edit, onClick, onKeyDown) {
-        if(!defaultStyle){
-            throw new Error("Missing defaultStyle");
-        }
-        if(!(defaultStyle instanceof TextStyle)){
-            throw new Error("Expected TextStyle defaultStyle got " + defaultStyle);
-        }
-        if(!onClick){
-            throw new Error("Missing onClick");
-        }
-        if(typeof onClick !== "function"){
-            throw new Error("Expected function onClick got " + onClick);
-        }
+        Preconditions.requireNonNullInstance(defaultStyle,TextStyle, "defaultStyle");
+        Preconditions.requireFunction(onClick, "onClick");
+        //Preconditions.requireFunction(onKeyDown, "onKeyDown");
 
         const style = defaultStyle.merge(this.style());
 
@@ -205,15 +179,6 @@ export default class SpreadsheetCell extends SystemObject {
 
     toString() {
         return JSON.stringify(this.toJson());
-    }
-}
-
-function checkFormula(formula) {
-    if(!formula){
-        throw new Error("Missing formula");
-    }
-    if(!(formula instanceof SpreadsheetFormula)){
-        throw new Error("Expected SpreadsheetFormula formula got " + formula);
     }
 }
 

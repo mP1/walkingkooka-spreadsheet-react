@@ -1,4 +1,5 @@
 import Equality from "../Equality.js";
+import Preconditions from "../Preconditions.js";
 import spreadsheetCellReferenceOrLabelNameFromJson from "./reference/SpreadsheetCellReferenceOrLabelNameFromJson.js";
 import SpreadsheetCellReference from "./reference/SpreadsheetCellReference.js";
 import SpreadsheetLabelMapping from "./reference/SpreadsheetLabelMapping.js";
@@ -13,12 +14,7 @@ export default class SpreadsheetExpressionReferenceSimilarities extends SystemOb
     }
 
     static parse(json) {
-        if(!json){
-            throw new Error("Missing json");
-        }
-        if(typeof json !== "object"){
-            throw new Error("Expected object got " + json);
-        }
+        Preconditions.requireObject(json, "json");
 
         const cellReference = json["cell-reference"];
         const labels = json["labels"];
@@ -32,16 +28,8 @@ export default class SpreadsheetExpressionReferenceSimilarities extends SystemOb
     constructor(cellReference, labels) {
         super();
 
-        if(null != cellReference && !(cellReference instanceof SpreadsheetCellReference)){
-            throw new Error("Expected SpreadsheetCellReference cellReference got " + cellReference);
-        }
-
-        if(null == labels){
-            throw new Error("Missing labels");
-        }
-        if(!Array.isArray(labels)){
-            throw new Error("Expected array labels got " + labels);
-        }
+        Preconditions.requireInstanceOrNull(cellReference, SpreadsheetCellReference, "cellReference");
+        Preconditions.requireArray(labels, "labels");
 
         this.cellReferenceValue = cellReference;
         this.labelsValue = [...labels];

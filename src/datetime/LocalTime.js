@@ -2,6 +2,7 @@
  * Holds a java LocalTime time in json form.
  * This assumes various services are used to parse/format/perform computations using this value.
  */
+import Preconditions from "../Preconditions.js";
 import SystemObject from "../SystemObject.js";
 
 const TYPE_NAME = "local-time";
@@ -14,15 +15,7 @@ export default class LocalTime extends SystemObject {
 
     constructor(text) {
         super();
-        if(!text && text !== ""){
-            throw new Error("Missing text");
-        }
-        if(text === ""){
-            throw new Error("Empty text");
-        }
-        if(typeof text !== "string"){
-            throw new Error("Expected string got " + text);
-        }
+        Preconditions.requireNonEmptyText(text, "text");
         this.textValue = text;
     }
 

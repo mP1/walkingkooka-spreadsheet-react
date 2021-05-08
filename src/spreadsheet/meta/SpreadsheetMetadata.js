@@ -6,6 +6,7 @@ import LocalDate from "../../datetime/LocalDate.js";
 import LocalDateTime from "../../datetime/LocalDateTime.js";
 import LocalTime from "../../datetime/LocalTime.js";
 import Locale from "../../util/Locale.js";
+import Preconditions from "../../Preconditions.js";
 import RoundingMode from "../../math/RoundingMode.js";
 import SpreadsheetCoordinates from "../SpreadsheetCoordinates";
 import SpreadsheetCellReference from "../reference/SpreadsheetCellReference";
@@ -28,12 +29,7 @@ import TextStyle from "../../text/TextStyle";
  * Verifies the given property name is a known property.
  */
 function checkPropertyName(propertyName) {
-    if(!propertyName){
-        throw new Error("Missing property");
-    }
-    if(typeof propertyName !== "string"){
-        throw new Error("Expected string property got " + propertyName);
-    }
+    Preconditions.requireText(propertyName, "propertyName");
 
     switch(propertyName) {
         case SpreadsheetMetadata.CELL:
@@ -77,7 +73,7 @@ function checkPropertyName(propertyName) {
             if(propertyName.startsWith("color-")){
                 break;
             }
-            throw new Error("Unknown property \"" + propertyName + "\"");
+            throw new Error("Unknown propertyName \"" + propertyName + "\"");
     }
 }
 
@@ -191,12 +187,7 @@ export default class SpreadsheetMetadata extends SystemObject {
     static EMPTY = new SpreadsheetMetadata({});
 
     static fromJson(json) {
-        if(!json){
-            throw new Error("Missing json");
-        }
-        if(typeof json !== "object"){
-            throw new Error("Expected Object json got " + json);
-        }
+        Preconditions.requireObject(json, "json");
 
         // check properties
         const properties = {};

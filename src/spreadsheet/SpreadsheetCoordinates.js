@@ -1,3 +1,4 @@
+import Preconditions from "../Preconditions.js";
 import SystemObject from "../SystemObject.js";
 
 const SEPARATOR = ",";
@@ -13,12 +14,7 @@ export default class SpreadsheetCoordinates extends SystemObject {
     }
 
     static parse(text) {
-        if(!text){
-            throw new Error("Missing text");
-        }
-        if(typeof text !== "string"){
-            throw new Error("Expected string got " + text);
-        }
+        Preconditions.requireNonEmptyText(text, "text");
         let tokens = text.split(SEPARATOR);
         if(2 !== tokens.length){
             throw new Error("Expected 2 tokens got " + text);

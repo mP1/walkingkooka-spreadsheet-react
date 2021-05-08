@@ -19,7 +19,7 @@ test("create without value fails", () => {
 });
 
 test("create with non string fails", () => {
-    expect(() => new SpreadsheetName(1.5)).toThrow("Expected string got 1.5");
+    expect(() => new SpreadsheetName(1.5)).toThrow("Expected string value got 1.5");
 });
 
 test("create", () => {

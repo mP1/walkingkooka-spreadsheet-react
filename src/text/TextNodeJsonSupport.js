@@ -1,3 +1,4 @@
+import Preconditions from "../Preconditions.js";
 import Text from "./Text";
 import TextNode from "./TextNode";
 import TextPlaceholderNode from "./TextPlaceholderNode";
@@ -10,12 +11,7 @@ import TextStyleNode from "./TextStyleNode";
  * To avoid circular references this is not placed on TextNode
  */
 export default function textNodeJsonSupportFromJson(json) {
-    if(!json){
-        throw new Error("Missing json");
-    }
-    if(typeof json !== "object"){
-        throw new Error("Expected object json got " + json);
-    }
+    Preconditions.requireObject(json, "json");
 
     const {type, value} = json;
     if(!type){

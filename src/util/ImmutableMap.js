@@ -6,6 +6,8 @@
  * <li>toJson tries each toJson for each value during the toJson process.</li>
  * </ul>
  */
+import Preconditions from "../Preconditions.js";
+
 export default class ImmutableMap {
 
     /**
@@ -17,24 +19,9 @@ export default class ImmutableMap {
      * Transforms the json into a {@link ImmutableMap} using the keyParser to validate keys and valueUnmarshaller to unmarshall values.
      */
     static fromJson(json, keyParser, valueUnmarshaller) {
-        if(!json){
-            throw new Error("Missing json");
-        }
-        if(typeof json !== "object"){
-            throw new Error("Expected object json got " + json);
-        }
-        if(!keyParser){
-            throw new Error("Missing key parser");
-        }
-        if(typeof keyParser !== "function"){
-            throw new Error("Expected function key parser got " + keyParser);
-        }
-        if(!valueUnmarshaller){
-            throw new Error("Missing valueUnmarshaller");
-        }
-        if(typeof valueUnmarshaller !== "function"){
-            throw new Error("Expected function valueUnmarshaller got " + valueUnmarshaller);
-        }
+        Preconditions.requireObject(json, "json");
+        Preconditions.requireFunction(keyParser, "keyParser");
+        Preconditions.requireFunction(valueUnmarshaller, "valueUnmarshaller");
 
         const map = new Map();
         for(const [key, value] of Object.entries(json)) {
@@ -49,12 +36,7 @@ export default class ImmutableMap {
      * Creates a new {@link ImmutableMap}
      */
     constructor(map) {
-        if(!map){
-            throw new Error("Missing map");
-        }
-        if(!(map instanceof Map)){
-            throw new Error("Expected Map map got " + map);
-        }
+        Preconditions.requireNonNullInstance(map, Map, "map");
 
         this.map = new Map(map);
     }
@@ -85,12 +67,7 @@ export default class ImmutableMap {
      * in the new will replace those in the old.
      */
     set(map) {
-        if(!map){
-            throw new Error("Missing map");
-        }
-        if(!(map instanceof ImmutableMap)){
-            throw new Error("Expected ImmutableMap map got " + map);
-        }
+        Preconditions.requireNonNullInstance(map, ImmutableMap, "map");
 
         return map.isEmpty() ?
             this :

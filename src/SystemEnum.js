@@ -1,6 +1,7 @@
 /**
  * Base class for all enums.
  */
+import Preconditions from "./Preconditions.js";
 import SystemObject from "./SystemObject.js";
 
 export default class SystemEnum extends SystemObject {
@@ -9,12 +10,7 @@ export default class SystemEnum extends SystemObject {
      * Helper that finds an enum with the given text(name) or throws an Error.
      */
     static valueOf(name, enumValues) {
-        if(!name){
-            throw new Error("Missing name");
-        }
-        if(typeof name !== "string"){
-            throw new Error("Expected string text got " + name);
-        }
+        Preconditions.requireNonEmptyText(name, "name");
 
         for(var i = 0; i < enumValues.length; i++) {
             const possible = enumValues[i];

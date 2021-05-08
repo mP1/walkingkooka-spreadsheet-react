@@ -23,7 +23,7 @@ test("create without pattern fails", () => {
 });
 
 test("create with non string fails", () => {
-    expect(() => new SpreadsheetCellFormat(1.5)).toThrow("Expected string got 1.5");
+    expect(() => new SpreadsheetCellFormat(1.5)).toThrow("Expected string pattern got 1.5");
 });
 
 test("create", () => {

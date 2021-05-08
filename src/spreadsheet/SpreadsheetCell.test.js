@@ -93,11 +93,11 @@ test("create with invalid style fails", () => {
 });
 
 test("create with invalid format fails", () => {
-    expect(() => new SpreadsheetCell(reference(), formula(), style(), 1.5)).toThrow("Expected SpreadsheetCellFormat format got 1.5");
+    expect(() => new SpreadsheetCell(reference(), formula(), style(), 1.5)).toThrow("Expected SpreadsheetCellFormat or nothing format got 1.5");
 });
 
 test("create with invalid formatted fails", () => {
-    expect(() => new SpreadsheetCell(reference(), formula(), style(), format(), 1.5)).toThrow("Expected TextNode formatted got 1.5");
+    expect(() => new SpreadsheetCell(reference(), formula(), style(), format(), 1.5)).toThrow("Expected TextNode or nothing formatted got 1.5");
 });
 
 test("create reference, formula, TextStyle.EMPTY, format, formatted", () => {

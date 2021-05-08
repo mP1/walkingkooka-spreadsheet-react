@@ -51,7 +51,7 @@ systemObjectTesting(
 test("create invalid cell-reference fails", () => {
     const r = true;
     const l = labels();
-    expect(() => new SpreadsheetExpressionReferenceSimilarities(r, l)).toThrow("Expected SpreadsheetCellReference cellReference got true");
+    expect(() => new SpreadsheetExpressionReferenceSimilarities(r, l)).toThrow("Expected SpreadsheetCellReference or nothing cellReference got true");
 });
 
 test("create missing labels fails", () => {

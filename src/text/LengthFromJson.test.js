@@ -7,7 +7,7 @@ test("fromJson null fails", () => {
 });
 
 test("fromJson non string fails", () => {
-    expect(() => LengthFromJson(true)).toThrow("Expected string got true");
+    expect(() => LengthFromJson(true)).toThrow("Expected string text got true");
 });
 
 test("fromJson missing px fails", () => {

@@ -19,7 +19,7 @@ test("parse null fails", () => {
 });
 
 test("parse non string fails", () => {
-    expect(() => PixelLength.parse(true)).toThrow("Expected string got true");
+    expect(() => PixelLength.parse(true)).toThrow("Expected string text got true");
 });
 
 test("parse missing px fails", () => {

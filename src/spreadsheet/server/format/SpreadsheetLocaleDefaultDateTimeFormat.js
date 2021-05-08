@@ -1,3 +1,4 @@
+import Preconditions from "../../../Preconditions.js";
 import SystemObject from "../../../SystemObject.js";
 
 export default class SpreadsheetLocaleDefaultDateTimeFormat extends SystemObject {
@@ -7,9 +8,7 @@ export default class SpreadsheetLocaleDefaultDateTimeFormat extends SystemObject
     static INSTANCE = new SpreadsheetLocaleDefaultDateTimeFormat();
 
     static fromJson(json) {
-        if(!json){
-            throw new Error("Missing json");
-        }
+        Preconditions.requireNonNull(json, "json");
         if(1 !== json){
             throw new Error("Expected number 1 got " + json);
         }

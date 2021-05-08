@@ -21,7 +21,7 @@ test("fromJson null fails", () => {
 });
 
 test("fromJson boolean fails", () => {
-    expect(() => FontWeight.fromJson(true)).toThrow("Expected number got true");
+    expect(() => FontWeight.fromJson(true)).toThrow("Expected number value got true");
 });
 
 test("fromJson zero fails", () => {
@@ -33,7 +33,7 @@ test("fromJson -1 fails", () => {
 });
 
 test("fromJson string fails", () => {
-    expect(() => FontWeight.fromJson("!invalid")).toThrow("Expected number got !invalid");
+    expect(() => FontWeight.fromJson("!invalid")).toThrow("Expected number value got !invalid");
 });
 
 test("create", () => {

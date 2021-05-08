@@ -1,14 +1,10 @@
-import SpreadsheetRange from "./SpreadsheetRange.js";
-import SpreadsheetLabelName from "./SpreadsheetLabelName.js";
+import Preconditions from "../../Preconditions.js";
 import SpreadsheetCellReference from "./SpreadsheetCellReference.js";
+import SpreadsheetLabelName from "./SpreadsheetLabelName.js";
+import SpreadsheetRange from "./SpreadsheetRange.js";
 
 export default function spreadsheetExpressionReferenceFromJson(text) {
-    if(!text){
-        throw new Error("Missing text");
-    }
-    if(typeof text !== "string"){
-        throw new Error("Expected string got " + text);
-    }
+    Preconditions.requireNonEmptyText(text, "text");
 
     var reference;
     if(text.indexOf(":") >= 0) {

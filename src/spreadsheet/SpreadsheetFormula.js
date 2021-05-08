@@ -1,4 +1,5 @@
 import Equality from "../Equality.js";
+import Preconditions from "../Preconditions.js";
 import SpreadsheetError from "./SpreadsheetError";
 import SystemObject from "../SystemObject.js";
 
@@ -9,9 +10,7 @@ const TYPE_NAME = "spreadsheet-formula";
 export default class SpreadsheetFormula extends SystemObject {
 
     static fromJson(json) {
-        if(!json){
-            throw new Error("Missing json");
-        }
+        Preconditions.requireObject(json, "json");
 
         const {text, value, error} = json;
         return new SpreadsheetFormula(
@@ -97,12 +96,7 @@ function equals0(formula, other) {
 }
 
 function checkText(text) {
-    if(!text && "" !== text){
-        throw new Error("Missing text");
-    }
-    if(typeof text !== "string"){
-        throw new Error("Expected string text got " + text);
-    }
+    Preconditions.requireText(text, "text");
     const length = text.length;
     if(length >= 8192){
         throw new Error("Invalid text length " + length + " >= 8192");

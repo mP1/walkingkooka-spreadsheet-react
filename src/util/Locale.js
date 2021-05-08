@@ -4,6 +4,7 @@
  * No methods are available to extract the individual components within the locale.
  * TODO split on underscore, basic character validation etc
  */
+import Preconditions from "../Preconditions.js";
 import SystemObject from "../SystemObject.js";
 
 const TYPE_NAME = "locale";
@@ -16,12 +17,7 @@ export default class Locale extends SystemObject {
 
     constructor(text) {
         super();
-        if(!text && text !== ""){
-            throw new Error("Missing text");
-        }
-        if(typeof text !== "string"){
-            throw new Error("Expected string got " + text);
-        }
+        Preconditions.requireText(text, "text");
         this.textValue = text;
     }
 

@@ -1,4 +1,5 @@
 import MuiAlert from "@material-ui/lab/Alert";
+import Preconditions from "../../Preconditions.js";
 import React from "react";
 import Snackbar from '@material-ui/core/Snackbar';
 
@@ -21,19 +22,8 @@ export default class SpreadsheetNotification {
     }
 
     constructor(text, level) {
-        if(!text && text !== ""){
-            throw new Error("Missing text");
-        }
-        if(typeof text !== "string"){
-            throw new Error("Expected string text got " + text);
-        }
-
-        if(!level && level !== ""){
-            throw new Error("Missing level");
-        }
-        if(typeof level !== "string"){
-            throw new Error("Expected string level got " + level);
-        }
+        Preconditions.requireNonEmptyText(text, "text");
+        Preconditions.requireNonEmptyText(level, "level");
 
         this.textValue = text;
         this.levelValue = level;
@@ -48,12 +38,7 @@ export default class SpreadsheetNotification {
     }
 
     render(onClose) {
-        if(onClose == null){
-            throw new Error("Missing onClose");
-        }
-        if(typeof onClose !== "function"){
-            throw new Error("Expected function onClose got " + onClose);
-        }
+        Preconditions.requireFunction(onClose, "onClose");
 
         var text = this.text();
         var severity = this.level();

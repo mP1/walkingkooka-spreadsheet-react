@@ -1,3 +1,4 @@
+import Preconditions from "../../Preconditions.js";
 import SpreadsheetCellReference from "../reference/SpreadsheetCellReference.js";
 import SpreadsheetLabelName from "../reference/SpreadsheetLabelName.js";
 
@@ -284,9 +285,7 @@ export default class SpreadsheetHistoryHash {
      * Parses the current history hash, merges the replacements and pushes the new hash and returns the merged tokens.
      */
     static parseMergeAndPush(history, replacements) {
-        if(null == history){
-            throw new Error("Missing history");
-        }
+        Preconditions.requireNonNull(history, "history");
 
         const currentPathname = history.location.pathname;
         const tokens = SpreadsheetHistoryHash.parse(currentPathname);
@@ -307,9 +306,8 @@ export default class SpreadsheetHistoryHash {
     }
 
     static join(tokens) {
-        if(!tokens){
-            throw new Error("Missing tokens");
-        }
+        Preconditions.requireArray(tokens, "tokens");
+
         var s = "";
         for(var i = 0; i < tokens.length; i++) {
             const token = tokens[i];
@@ -326,9 +324,7 @@ export default class SpreadsheetHistoryHash {
 
 
     constructor(history) {
-        if(null == history){
-            throw new Error("Missing history");
-        }
+        Preconditions.requireObject(history, "history");
         this.history = history;
     }
 }

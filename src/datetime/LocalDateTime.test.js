@@ -27,7 +27,7 @@ test("create empty text fails", () => {
 });
 
 test("create with non string text fails", () => {
-    expect(() => new LocalDateTime(1.5)).toThrow("Expected string got 1.5");
+    expect(() => new LocalDateTime(1.5)).toThrow("Expected string text got 1.5");
 });
 
 test("create", () => {

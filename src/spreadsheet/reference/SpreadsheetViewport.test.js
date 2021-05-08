@@ -42,7 +42,7 @@ test("create invalid reference type fails", () => {
 
 test("create missing width fails", () => {
     const width = null;
-    expect(() => new SpreadsheetViewport(reference(), width, height())).toThrow("Expected number width got " + width);
+    expect(() => new SpreadsheetViewport(reference(), width, height())).toThrow("Missing width");
 });
 
 test("create invalid width type fails", () => {
@@ -64,7 +64,7 @@ test("create invalid width value fails2", () => {
 
 test("create missing height fails", () => {
     const height = null;
-    expect(() => new SpreadsheetViewport(reference(), width(), height)).toThrow("Expected number height got " + height);
+    expect(() => new SpreadsheetViewport(reference(), width(), height)).toThrow("Missing height");
 });
 
 test("create invalid height type fails", () => {

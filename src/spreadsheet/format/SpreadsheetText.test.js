@@ -30,7 +30,7 @@ systemObjectTesting(
 
 test("create invalid color type fails", () => {
     const color = 123;
-    expect(() => new SpreadsheetText(color, text())).toThrow("Expected Color color got " + color);
+    expect(() => new SpreadsheetText(color, text())).toThrow("Expected Color or nothing color got 123");
 });
 
 test("create without text fails", () => {
@@ -69,7 +69,7 @@ test("create color & empty text", () => {
 // fromJson.............................................................................................................
 
 test("fromJson non object fails", () => {
-    expect(() => SpreadsheetText.fromJson("invalid!")).toThrow("Expected object got invalid!");
+    expect(() => SpreadsheetText.fromJson("invalid!")).toThrow("Expected object json got invalid!");
 });
 
 test("fromJson without color and text", () => {

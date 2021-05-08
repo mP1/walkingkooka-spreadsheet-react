@@ -522,11 +522,11 @@ test("remove missing fails", () => {
 });
 
 test("remove invalid fails", () => {
-    expect(() => SpreadsheetMetadata.EMPTY.remove(123)).toThrow("Expected string property got 123");
+    expect(() => SpreadsheetMetadata.EMPTY.remove(123)).toThrow("Expected string propertyName got 123");
 });
 
 test("remove unknown fails", () => {
-    expect(() => SpreadsheetMetadata.EMPTY.remove("!unknown")).toThrow("Unknown property \"!unknown\"");
+    expect(() => SpreadsheetMetadata.EMPTY.remove("!unknown")).toThrow("Unknown propertyName \"!unknown\"");
 });
 
 test("remove absent property", () => {

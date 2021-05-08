@@ -23,7 +23,7 @@ test("create without message fails", () => {
 });
 
 test("create with non string fails", () => {
-    expect(() => new SpreadsheetError(1.5)).toThrow("Expected string got 1.5");
+    expect(() => new SpreadsheetError(1.5)).toThrow("Expected string message got 1.5");
 });
 
 test("create", () => {

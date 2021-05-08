@@ -1,4 +1,5 @@
 import CharSequences from "../../CharSequences.js";
+import Preconditions from "../../Preconditions.js";
 import SpreadsheetCellReference from "./SpreadsheetCellReference";
 import SpreadsheetExpressionReference from "./SpreadsheetExpressionReference.js";
 import SystemObject from "../../SystemObject.js";
@@ -14,12 +15,7 @@ export default class SpreadsheetRange extends SpreadsheetExpressionReference {
     }
 
     static parse(text) {
-        if(!text){
-            throw new Error("Missing text");
-        }
-        if(typeof text !== "string"){
-            throw new Error("Expected string got " + text);
-        }
+        Preconditions.requireNonEmptyText(text, "text");
 
         var range;
         const tokens = text.split(":");
@@ -67,20 +63,10 @@ export default class SpreadsheetRange extends SpreadsheetExpressionReference {
 
     constructor(begin, end) {
         super();
-        if(!begin){
-            throw new Error("Missing begin");
-        }
-        if(!(begin instanceof SpreadsheetCellReference)){
-            throw new Error("Expected SpreadsheetCellReference begin got " + begin);
-        }
+        Preconditions.requireNonNullInstance(begin, SpreadsheetCellReference, "begin");
         this.beginValue = begin;
 
-        if(!end){
-            throw new Error("Missing end");
-        }
-        if(!(end instanceof SpreadsheetCellReference)){
-            throw new Error("Expected SpreadsheetCellReference end got " + end);
-        }
+        Preconditions.requireNonNullInstance(end, SpreadsheetCellReference, "end");
         this.endValue = end;
     }
 

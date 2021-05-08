@@ -3,30 +3,12 @@
  */
 import Character from "../../Character.js";
 import CharSequences from "../../CharSequences.js";
+import Preconditions from "../../Preconditions.js";
 import SpreadsheetColumnReference from "./SpreadsheetColumnReference";
 import SpreadsheetExpressionReference from "./SpreadsheetExpressionReference.js";
 import SpreadsheetReferenceKind from "./SpreadsheetReferenceKind";
 import SpreadsheetRowReference from "./SpreadsheetRowReference";
 import SystemObject from "../../SystemObject.js";
-
-
-function checkColumn(column) {
-    if(!column){
-        throw new Error("Missing column");
-    }
-    if(!(column instanceof SpreadsheetColumnReference)){
-        throw new Error("Expected SpreadsheetColumnReference column got " + column);
-    }
-}
-
-function checkRow(row) {
-    if(!row){
-        throw new Error("Missing row");
-    }
-    if(!(row instanceof SpreadsheetRowReference)){
-        throw new Error("Expected SpreadsheetRowReference row got " + row);
-    }
-}
 
 const TYPE_NAME = "spreadsheet-cell-reference";
 
@@ -47,12 +29,7 @@ function valueFromDigit(c) {
 
 // basically copied from SpreadsheetExpressionReference.java#isCellReferenceText
 function isCellReferenceText0(text, reporter) {
-    if(null == text){
-        throw new Error("Missing text");
-    }
-    if(typeof text !== "string"){
-        throw new Error("Expected string got " + text);
-    }
+    Preconditions.requireText(text, "text");
 
     var mode = MODE_COLUMN_FIRST; // -1 too long or contains invalid char
     var columnLength = 0;
@@ -141,9 +118,7 @@ export default class SpreadsheetCellReference extends SpreadsheetExpressionRefer
     }
 
     static parse(text) {
-        if("" === text) {
-            throw new Error("Missing text");
-        }
+        Preconditions.requireNonEmptyText(text, "text");
         isCellReferenceText0(text, reportInvalidCharacter);
 
         for(var i = 1; i < text.length; i++) {
@@ -173,15 +148,15 @@ export default class SpreadsheetCellReference extends SpreadsheetExpressionRefer
 
     constructor(column, row) {
         super();
-        checkColumn(column);
-        checkRow(row);
+        Preconditions.requireNonNullInstance(column, SpreadsheetColumnReference, "column");
+        Preconditions.requireNonNullInstance(row, SpreadsheetRowReference, "row");
 
         this.columnValue = column;
         this.rowValue = row;
     }
 
     setColumn(column) {
-        checkColumn(column);
+        Preconditions.requireNonNullInstance(column, SpreadsheetColumnReference, "column");
 
         return this.column() === column ?
             this :
@@ -201,7 +176,7 @@ export default class SpreadsheetCellReference extends SpreadsheetExpressionRefer
     }
 
     setRow(row) {
-        checkRow(row);
+        Preconditions.requireNonNullInstance(row, SpreadsheetRowReference, "row");
 
         return this.row() === row ?
             this :

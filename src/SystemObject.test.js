@@ -33,7 +33,7 @@ test("register missing unmarshall function fails", () => {
     const f = undefined;
     expect(
         () => SystemObject.register(t, f)
-    ).toThrow("Missing function fromJson");
+    ).toThrow("Missing fromJson");
 });
 
 test("register null unmarshall function fails", () => {
@@ -41,7 +41,7 @@ test("register null unmarshall function fails", () => {
     const f = null;
     expect(
         () => SystemObject.register(t, f)
-    ).toThrow("Missing function fromJson");
+    ).toThrow("Missing fromJson");
 });
 
 test("register invalid unmarshall function fails", () => {
@@ -57,7 +57,7 @@ test("register invalid unmarshall function fails", () => {
 test("fromJsonWithType missing type fails", () => {
     expect(
         () => SystemObject.fromJsonWithType({value: 1})
-    ).toThrow("Missing type got [object Object]");
+    ).toThrow("Missing type");
 });
 
 test("fromJsonWithType array fails", () => {
