@@ -1,5 +1,8 @@
 import Preconditions from "./Preconditions.js";
 
+const FUNCTION = function() {
+};
+
 function testThrows(title, f, value, label, message) {
     test(title, () => {
         expect(
@@ -35,7 +38,7 @@ testThrows("requireFunction 0", Preconditions.requireFunction, 0, "Label123", "E
 testThrows("requireFunction empty string", Preconditions.requireFunction, "", "Label123", "Expected function Label123 got ");
 testThrows("requireFunction string", Preconditions.requireFunction, "ABC123", "Label123", "Expected function Label123 got ABC123");
 testThrows("requireFunction object", Preconditions.requireFunction, {}, "Label123", "Expected function Label123 got [object Object]");
-testNotThrows("requireFunction function", Preconditions.requireFunction, function() {});
+testNotThrows("requireFunction function", Preconditions.requireFunction, FUNCTION);
 
 // requireObject.......................................................................................................
 
@@ -45,7 +48,7 @@ testThrows("requireObject false", Preconditions.requireObject, false, "Label123"
 testThrows("requireObject 0", Preconditions.requireObject, 0, "Label123", "Expected object Label123 got 0");
 testThrows("requireObject empty string", Preconditions.requireObject, "", "Label123", "Expected object Label123 got ");
 testThrows("requireObject string", Preconditions.requireObject, "ABC123", "Label123", "Expected object Label123 got ABC123");
-testThrows("requireObject function", Preconditions.requireObject, function() {}, "Label123", "Expected object Label123 got function () {}");
+testThrows("requireObject function", Preconditions.requireObject, FUNCTION, "Label123", "Expected object Label123 got function () {}");
 testNotThrows("requireObject object", Preconditions.requireObject, {});
 
 // requireText.......................................................................................................
