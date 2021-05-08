@@ -2,6 +2,9 @@ import Preconditions from "./Preconditions.js";
 
 const FUNCTION = function() {
 };
+const ARRAY = [
+    1, 2, 3
+]
 
 function testThrows(title, f, value, label, message) {
     test(title, () => {
@@ -27,6 +30,7 @@ testThrows("requireNonNull null", Preconditions.requireNonNull, null, "Label123"
 testNotThrows("requireNonNull empty string", Preconditions.requireNonNull, "");
 testNotThrows("requireNonNull false", Preconditions.requireNonNull, false);
 testNotThrows("requireNonNull 0", Preconditions.requireNonNull, 0);
+testNotThrows("requireNonNull array", Preconditions.requireNonNull, ARRAY);
 testNotThrows("requireNonNull object", Preconditions.requireNonNull, {});
 
 // requireArray.......................................................................................................
@@ -39,7 +43,7 @@ testThrows("requireArray empty string", Preconditions.requireArray, "", "Label12
 testThrows("requireArray string", Preconditions.requireArray, "ABC123", "Label123", "Expected array Label123 got ABC123");
 testThrows("requireArray function", Preconditions.requireArray, FUNCTION, "Label123", "Expected array Label123 got function () {}");
 testThrows("requireArray object", Preconditions.requireArray, {}, "Label123", "Expected array Label123 got [object Object]");
-testNotThrows("requireArray array", Preconditions.requireArray, []);
+testNotThrows("requireArray array", Preconditions.requireArray, ARRAY);
 
 // requireFunction.......................................................................................................
 
@@ -49,6 +53,7 @@ testThrows("requireFunction false", Preconditions.requireFunction, false, "Label
 testThrows("requireFunction 0", Preconditions.requireFunction, 0, "Label123", "Expected function Label123 got 0");
 testThrows("requireFunction empty string", Preconditions.requireFunction, "", "Label123", "Expected function Label123 got ");
 testThrows("requireFunction string", Preconditions.requireFunction, "ABC123", "Label123", "Expected function Label123 got ABC123");
+testThrows("requireFunction array", Preconditions.requireFunction, ARRAY, "Label123", "Expected function Label123 got 1,2,3");
 testThrows("requireFunction object", Preconditions.requireFunction, {}, "Label123", "Expected function Label123 got [object Object]");
 testNotThrows("requireFunction function", Preconditions.requireFunction, FUNCTION);
 
@@ -60,6 +65,7 @@ testThrows("requireObject false", Preconditions.requireObject, false, "Label123"
 testThrows("requireObject 0", Preconditions.requireObject, 0, "Label123", "Expected object Label123 got 0");
 testThrows("requireObject empty string", Preconditions.requireObject, "", "Label123", "Expected object Label123 got ");
 testThrows("requireObject string", Preconditions.requireObject, "ABC123", "Label123", "Expected object Label123 got ABC123");
+testThrows("requireObject array", Preconditions.requireObject, ARRAY, "Label123", "Expected object Label123 got 1,2,3");
 testThrows("requireObject function", Preconditions.requireObject, FUNCTION, "Label123", "Expected object Label123 got function () {}");
 testNotThrows("requireObject object", Preconditions.requireObject, {});
 
@@ -69,6 +75,8 @@ testThrows("requireText undefined", Preconditions.requireText, undefined, "Label
 testThrows("requireText null", Preconditions.requireText, null, "Label123", "Missing Label123");
 testThrows("requireText false", Preconditions.requireText, false, "Label123", "Expected string Label123 got false");
 testThrows("requireText 0", Preconditions.requireText, 0, "Label123", "Expected string Label123 got 0");
+testThrows("requireText array", Preconditions.requireText, ARRAY, "Label123", "Expected string Label123 got 1,2,3");
+testThrows("requireText function", Preconditions.requireText, FUNCTION, "Label123", "Expected string Label123 got function () {}");
 testThrows("requireText object", Preconditions.requireText, {}, "Label123", "Expected string Label123 got [object Object]");
 testNotThrows("requireText empty string", Preconditions.requireText, "");
 testNotThrows("requireText non empty string", Preconditions.requireText, "abc123");
@@ -79,6 +87,8 @@ testThrows("requireNonEmptyText undefined", Preconditions.requireNonEmptyText, u
 testThrows("requireNonEmptyText null", Preconditions.requireNonEmptyText, null, "Label123", "Missing Label123");
 testThrows("requireNonEmptyText false", Preconditions.requireNonEmptyText, false, "Label123", "Expected string Label123 got false");
 testThrows("requireNonEmptyText 0", Preconditions.requireNonEmptyText, 0, "Label123", "Expected string Label123 got 0");
+testThrows("requireNonEmptyText array", Preconditions.requireNonEmptyText, ARRAY, "Label123", "Expected string Label123 got 1,2,3");
+testThrows("requireNonEmptyText function", Preconditions.requireNonEmptyText, FUNCTION, "Label123", "Expected string Label123 got function () {}");
 testThrows("requireNonEmptyText object", Preconditions.requireNonEmptyText, {}, "Label123", "Expected string Label123 got [object Object]");
 testThrows("requireNonEmptyText empty string", Preconditions.requireNonEmptyText, "", "Label123", "Expected non empty string Label123");
 testNotThrows("requireNonEmptyText non empty string", Preconditions.requireNonEmptyText, "abc123");
