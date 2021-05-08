@@ -1,136 +1,176 @@
-import SpreadsheetCoordinates from "./SpreadsheetCoordinates";
 import systemObjectTesting from "../SystemObjectTesting.js";
+import SpreadsheetCellReference from "./reference/SpreadsheetCellReference.js";
+import SpreadsheetExpressionReferenceSimilarities from "./SpreadsheetExpressionReferenceSimilarities.js";
+import SpreadsheetLabelMapping from "./reference/SpreadsheetLabelMapping.js";
 
-function x() {
-    return 200;
+function cellReference() {
+    return SpreadsheetCellReference.fromJson("B2");
 }
 
-function y() {
-    return 400;
+function label1() {
+    return SpreadsheetLabelMapping.fromJson({
+        label: "Label123",
+        reference: "C3",
+    });
 }
 
-function coordinates() {
-    return new SpreadsheetCoordinates(x(), y());
+function label2() {
+    return SpreadsheetLabelMapping.fromJson({
+        label: "Label456",
+        reference: "D4",
+    });
+}
+
+function labels() {
+    return [
+        label1(),
+        label2(),
+    ];
+}
+
+function similarity() {
+    return new SpreadsheetExpressionReferenceSimilarities(cellReference(), labels());
 }
 
 systemObjectTesting(
-    coordinates(),
-    new SpreadsheetCoordinates(1, 2),
-    SpreadsheetCoordinates.fromJson,
-    "Missing text",
-    "spreadsheet-coordinates",
-    "200,400"
+    similarity(),
+    new SpreadsheetExpressionReferenceSimilarities(SpreadsheetCellReference.fromJson("Z99"), labels()),
+    SpreadsheetExpressionReferenceSimilarities.fromJson,
+    "Missing json",
+    "spreadsheet-expression-reference-similarities",
+    {
+        "cell-reference": cellReference().toJson(),
+        "labels": [
+            label1().toJson(),
+            label2().toJson(),
+        ],
+    }
 );
-
 // create...............................................................................................................
 
-// x
-
-test("create missing x fails", () => {
-    const x = null;
-    expect(() => new SpreadsheetCoordinates(x, y())).toThrow("Expected number x got " + x);
+test("create invalid cell-reference fails", () => {
+    const r = true;
+    const l = labels();
+    expect(() => new SpreadsheetExpressionReferenceSimilarities(r, l)).toThrow("Expected SpreadsheetCellReference cellReference got true");
 });
 
-test("create invalid x type fails", () => {
-    const x = "invalid!"
-    expect(() => new SpreadsheetCoordinates(x, y())).toThrow("Expected number x got " + x);
+test("create missing labels fails", () => {
+    const r = cellReference();
+    const l = null;
+    expect(() => new SpreadsheetExpressionReferenceSimilarities(r, l)).toThrow("Missing labels");
 });
 
-test("create invalid x value fails", () => {
-    const x = -1;
-    expect(() => new SpreadsheetCoordinates(x, y())).toThrow("Expected x >= 0 got " + x);
+test("create invalid type labels fails", () => {
+    const r = cellReference();
+    const l = true;
+    expect(() => new SpreadsheetExpressionReferenceSimilarities(r, l)).toThrow("Expected array labels got true");
 });
 
-test("create invalid x value fails2", () => {
-    const x = -123;
-    expect(() => new SpreadsheetCoordinates(x, y())).toThrow("Expected x >= 0 got " + x);
+test("create missing reference", () => {
+    const r = undefined;
+    const l = labels();
+
+    check(new SpreadsheetExpressionReferenceSimilarities(r, l),
+        r,
+        l);
 });
 
-// y
+test("create empty labels", () => {
+    const r = cellReference();
+    const l = [];
 
-test("create missing y fails", () => {
-    const y = null;
-    expect(() => new SpreadsheetCoordinates(x(), y)).toThrow("Expected number y got " + y);
-});
-
-test("create invalid y type fails", () => {
-    const y = "invalid!"
-    expect(() => new SpreadsheetCoordinates(x(), y)).toThrow("Expected number y got " + y);
-});
-
-test("create invalid y value fails", () => {
-    const y = -1;
-    expect(() => new SpreadsheetCoordinates(x(), y)).toThrow("Expected y >= 0 got " + y);
-});
-
-test("create invalid y value fails2", () => {
-    const y = -123;
-    expect(() => new SpreadsheetCoordinates(x(), y)).toThrow("Expected y >= 0 got " + y);
+    check(new SpreadsheetExpressionReferenceSimilarities(r, l),
+        r,
+        l);
 });
 
 // json
 
 test("fromJson null fails", () => {
-    expect(() => SpreadsheetCoordinates.fromJson(null)).toThrow("Missing text");
-});
-
-test("new 0, 0", () => {
-    const x = 0;
-    const y = 0;
-
-    check(new SpreadsheetCoordinates(x, y),
-        x,
-        y);
-});
-
-test("new", () => {
-    check(new SpreadsheetCoordinates(x(), y()),
-        x(),
-        y());
+    expect(() => SpreadsheetExpressionReferenceSimilarities.fromJson(null)).toThrow("Missing json");
 });
 
 test("from json", () => {
-    const coords = SpreadsheetCoordinates.fromJson(x() + "," + y());
-    check(coords,
-        x(),
-        y());
+    const r = cellReference();
+    const l = labels();
+
+    check(SpreadsheetExpressionReferenceSimilarities.fromJson({
+            "cell-reference": r.toJson(),
+            "labels": l.map(l => l.toJson()),
+        }),
+        r,
+        l
+    );
+});
+
+test("from json missing reference", () => {
+    const r = undefined;
+    const l = labels();
+
+    check(SpreadsheetExpressionReferenceSimilarities.fromJson({
+            "labels": l.map(l => l.toJson()),
+        }),
+        r,
+        l
+    );
+});
+
+test("from json missing labels", () => {
+    const r = cellReference();
+    const l = [];
+
+    check(SpreadsheetExpressionReferenceSimilarities.fromJson({
+            "cell-reference": r.toJson(),
+        }),
+        r,
+        l
+    );
+});
+
+test("from json empty labels", () => {
+    const r = cellReference();
+    const l = [];
+
+    check(SpreadsheetExpressionReferenceSimilarities.fromJson({
+            "cell-reference": r.toJson(),
+            "labels": [],
+        }),
+        r,
+        l
+    );
 });
 
 // equals...............................................................................................................
 
-test("equals different x false", () => {
-    const c = coordinates();
-    expect(c.equals(new SpreadsheetCoordinates(x() + 1, y()))).toBeFalse();
+test("equals both missing cell-reference", () => {
+    const r = null;
+    const l = labels();
+
+    expect(new SpreadsheetExpressionReferenceSimilarities(r, l))
+        .toStrictEqual(new SpreadsheetExpressionReferenceSimilarities(r, l));
 });
 
-test("equals different y false", () => {
-    const c = coordinates();
-    expect(c.equals(new SpreadsheetCoordinates(x(), y() + 1))).toBeFalse();
+test("equals missing cell-reference", () => {
+    expect(similarity())
+        .not
+        .toStrictEqual(new SpreadsheetExpressionReferenceSimilarities(null, labels()));
 });
 
-test("equals equivalent true", () => {
-    const c = coordinates();
-    expect(c.equals(coordinates())).toBeTrue();
+test("equals different cell-reference", () => {
+    expect(similarity())
+        .not
+        .toStrictEqual(new SpreadsheetExpressionReferenceSimilarities(SpreadsheetCellReference.fromJson("B99"), labels()));
 });
 
-test("equals equivalent true #2", () => {
-    const x = 1;
-    const y = 2;
-    const c = new SpreadsheetCoordinates(x, y);
-    expect(c.equals(new SpreadsheetCoordinates(x, y))).toBeTrue();
+test("equals different labels", () => {
+    expect(similarity())
+        .not
+        .toStrictEqual(new SpreadsheetExpressionReferenceSimilarities(cellReference(), [label2()]));
 });
 
 // helpers..............................................................................................................
 
-function check(coords, x, y) {
-    expect(coords.x()).toStrictEqual(x);
-    expect(coords.x()).toBeNumber();
-
-    expect(coords.y()).toStrictEqual(y);
-    expect(coords.y()).toBeNumber();
-
-    const json = x + "," + y;
-    expect(coords.toJson()).toStrictEqual(json);
-
-    expect(SpreadsheetCoordinates.fromJson(json)).toStrictEqual(coords);
+function check(similarities, cellReference, labels) {
+    expect(similarities.cellReference()).toStrictEqual(cellReference);
+    expect(similarities.labels()).toStrictEqual(labels);
 }

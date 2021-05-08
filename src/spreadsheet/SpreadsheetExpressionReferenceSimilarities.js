@@ -1,6 +1,9 @@
+import Equality from "../Equality.js";
+import spreadsheetCellReferenceOrLabelNameFromJson from "./reference/SpreadsheetCellReferenceOrLabelNameFromJson.js";
+import SpreadsheetCellReference from "./reference/SpreadsheetCellReference.js";
+import SpreadsheetLabelMapping from "./reference/SpreadsheetLabelMapping.js";
 import SystemObject from "../SystemObject.js";
 
-const SEPARATOR = ",";
 const TYPE_NAME = "spreadsheet-expression-reference-similarities";
 
 export default class SpreadsheetExpressionReferenceSimilarities extends SystemObject {
@@ -9,51 +12,64 @@ export default class SpreadsheetExpressionReferenceSimilarities extends SystemOb
         return SpreadsheetExpressionReferenceSimilarities.parse(json);
     }
 
-    static parse(text) {
-        if(!text){
-            throw new Error("Missing text");
+    static parse(json) {
+        if(!json){
+            throw new Error("Missing json");
         }
-        if(typeof text !== "string"){
-            throw new Error("Expected string got " + text);
-        }
-        let tokens = text.split(SEPARATOR);
-        if(2 !== tokens.length){
-            throw new Error("Expected 2 tokens got " + text);
+        if(typeof json !== "object"){
+            throw new Error("Expected object got " + json);
         }
 
-        return new SpreadsheetExpressionReferenceSimilarities(Number(tokens[0]), Number(tokens[1]));
+        const cellReference = json["cell-reference"];
+        const labels = json["labels"];
+
+        return new SpreadsheetExpressionReferenceSimilarities(
+            cellReference && spreadsheetCellReferenceOrLabelNameFromJson(cellReference),
+            labels ? labels.map(SpreadsheetLabelMapping.fromJson) : []
+        );
     }
 
-    constructor(x, y) {
+    constructor(cellReference, labels) {
         super();
 
-        if(typeof (x) !== "number"){
-            throw new Error("Expected number x got " + x);
+        if(null != cellReference && !(cellReference instanceof SpreadsheetCellReference)){
+            throw new Error("Expected SpreadsheetCellReference cellReference got " + cellReference);
         }
-        if(x < 0){
-            throw new Error("Expected x >= 0 got " + x);
-        }
-        this.xValue = x;
 
-        if(typeof (y) !== "number"){
-            throw new Error("Expected number y got " + y);
+        if(null == labels){
+            throw new Error("Missing labels");
         }
-        if(y < 0){
-            throw new Error("Expected y >= 0 got " + y);
+        if(!Array.isArray(labels)){
+            throw new Error("Expected array labels got " + labels);
         }
-        this.yValue = y;
+
+        this.cellReferenceValue = cellReference;
+        this.labelsValue = [...labels];
     }
 
-    x() {
-        return this.xValue;
+    cellReference() {
+        return this.cellReferenceValue;
     }
 
-    y() {
-        return this.yValue;
+    labels() {
+        return [...this.labelsValue];
     }
 
     toJson() {
-        return this.toString();
+        const json = {
+        };
+
+        const cellReference = this.cellReference();
+        if(cellReference) {
+            json["cell-reference"] = cellReference.toJson();
+        }
+
+        const labels = this.labels();
+        if(labels) {
+            json["labels"] = labels.map(l => l.toJson());
+        }
+
+        return json;
     }
 
     typeName() {
@@ -62,21 +78,21 @@ export default class SpreadsheetExpressionReferenceSimilarities extends SystemOb
 
     equals(other) {
         return this === other ||
-            (other instanceof SpreadsheetExpressionReferenceSimilarities &&
-                this.x() === other.x() &&
-                this.y() === other.y());
+            (
+                other instanceof SpreadsheetExpressionReferenceSimilarities &&
+                Equality.safeEquals(this.cellReference(), other.cellReference()) &&
+                Equality.safeEquals(this.labels(), other.labels())
+            );
     }
 
     toString() {
-        return doubleToString(this.x()) + SEPARATOR + doubleToString(this.y());
-    }
-}
+        const cellReference = this.cellReference();
 
-function doubleToString(number) {
-    const toString = number.toString();
-    return toString.endsWith(".0") ?
-        toString.substring(0, toString.length() - 2) :
-        toString;
+        return (null != cellReference ?
+            cellReference + " " :
+            "") +
+            this.labels().join();
+    }
 }
 
 SystemObject.register(TYPE_NAME, SpreadsheetExpressionReferenceSimilarities.fromJson);
