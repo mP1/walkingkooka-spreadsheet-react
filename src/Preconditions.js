@@ -8,4 +8,14 @@ export default class Preconditions {
             throw new Error("Missing " + label);
         }
     }
+
+    /**
+     * Throws an exception if the value is null or undefined.
+     */
+    static requireText(value, label) {
+        Preconditions.requireNonNull(value, label);
+        if(typeof value !== "string"){
+            throw new Error("Expected string " + label + " got " + value);
+        }
+    }
 }

@@ -1,41 +1,28 @@
 import Preconditions from "./Preconditions.js";
 
-test("requireNonNull undefined", () => {
-    expect(
-        () => Preconditions.requireNonNull(undefined, "Label123")
-    ).toThrow("Missing Label123");
-});
+function testThrows(title, f, value, label, message) {
+    test(title, () => {
+        expect(
+            () => f(value, label)
+        ).toThrow(message);
+    });
+}
 
-test("requireNonNull null", () => {
-    expect(
-        () => Preconditions.requireNonNull(null, "Label123")
-    ).toThrow("Missing Label123");
-});
+function testNotThrows(title, f, value) {
+    test(title, () => {
+        expect(
+            () => f(value, "Label123")
+        ).not
+            .toThrow();
+    });
+}
 
-test("requireNonNull non null", () => {
-    expect(
-        () => Preconditions.requireNonNull({}, "label1")
-    ).not
-        .toThrow();
-});
+// requireNonNull.......................................................................................................
 
-test("requireNonNull empty", () => {
-    expect(
-        () => Preconditions.requireNonNull("", "label1")
-    ).not
-        .toThrow();
-});
+testThrows("requireNonNull undefined", Preconditions.requireNonNull, undefined, "Label123", "Missing Label123");
+testThrows("requireNonNull null", Preconditions.requireNonNull, null, "Label123", "Missing Label123");
+testNotThrows("requireNonNull empty string", Preconditions.requireNonNull, "");
+testNotThrows("requireNonNull false", Preconditions.requireNonNull, false);
+testNotThrows("requireNonNull 0", Preconditions.requireNonNull, 0);
+testNotThrows("requireNonNull object", Preconditions.requireNonNull, {});
 
-test("requireNonNull false", () => {
-    expect(
-        () => Preconditions.requireNonNull(false, "label1")
-    ).not
-        .toThrow();
-});
-
-test("requireNonNull 0", () => {
-    expect(
-        () => Preconditions.requireNonNull(0, "label1")
-    ).not
-        .toThrow();
-});
