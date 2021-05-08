@@ -30,6 +30,16 @@ export default class Preconditions {
     }
 
     /**
+     * Throws an exception if the value is not a number
+     */
+    static requireNumber(value, label) {
+        Preconditions.requireNonNull(value, label);
+        if(typeof value !== "number"){
+            throw new Error("Expected number " + label + " got " + value);
+        }
+    }
+
+    /**
      * Throws an exception if the value is not a object. Note that arrays are not considered objects.
      */
     static requireObject(value, label) {

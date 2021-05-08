@@ -57,6 +57,19 @@ testThrows("requireFunction array", Preconditions.requireFunction, ARRAY, "Label
 testThrows("requireFunction object", Preconditions.requireFunction, {}, "Label123", "Expected function Label123 got [object Object]");
 testNotThrows("requireFunction function", Preconditions.requireFunction, FUNCTION);
 
+// requireNumber.......................................................................................................
+
+testThrows("requireNumber undefined", Preconditions.requireNumber, undefined, "Label123", "Missing Label123");
+testThrows("requireNumber null", Preconditions.requireNumber, null, "Label123", "Missing Label123");
+testThrows("requireNumber false", Preconditions.requireNumber, false, "Label123", "Expected number Label123 got false");
+testThrows("requireNumber empty string", Preconditions.requireNumber, "", "Label123", "Expected number Label123 got ");
+testThrows("requireNumber string", Preconditions.requireNumber, "ABC123", "Label123", "Expected number Label123 got ABC123");
+testThrows("requireNumber function", Preconditions.requireNumber, FUNCTION, "Label123", "Expected number Label123 got function () {}");
+testThrows("requireNumber array", Preconditions.requireNumber, ARRAY, "Label123", "Expected number Label123 got 1,2,3");
+testThrows("requireNumber object", Preconditions.requireNumber, {}, "Label123", "Expected number Label123 got [object Object]");
+testNotThrows("requireNumber number 0", Preconditions.requireNumber, 0);
+testNotThrows("requireNumber number 1", Preconditions.requireNumber, 1);
+
 // requireObject.......................................................................................................
 
 testThrows("requireObject undefined", Preconditions.requireObject, undefined, "Label123", "Missing Label123");
