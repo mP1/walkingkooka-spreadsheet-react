@@ -26,6 +26,17 @@ testNotThrows("requireNonNull false", Preconditions.requireNonNull, false);
 testNotThrows("requireNonNull 0", Preconditions.requireNonNull, 0);
 testNotThrows("requireNonNull object", Preconditions.requireNonNull, {});
 
+// requireFunction.......................................................................................................
+
+testThrows("requireFunction undefined", Preconditions.requireFunction, undefined, "Label123", "Missing Label123");
+testThrows("requireFunction null", Preconditions.requireFunction, null, "Label123", "Missing Label123");
+testThrows("requireFunction false", Preconditions.requireFunction, false, "Label123", "Expected function Label123 got false");
+testThrows("requireFunction 0", Preconditions.requireFunction, 0, "Label123", "Expected function Label123 got 0");
+testThrows("requireFunction empty string", Preconditions.requireFunction, "", "Label123", "Expected function Label123 got ");
+testThrows("requireFunction string", Preconditions.requireFunction, "ABC123", "Label123", "Expected function Label123 got ABC123");
+testThrows("requireFunction object", Preconditions.requireFunction, {}, "Label123", "Expected function Label123 got [object Object]");
+testNotThrows("requireFunction function", Preconditions.requireFunction, function() {});
+
 // requireText.......................................................................................................
 
 testThrows("requireText undefined", Preconditions.requireText, undefined, "Label123", "Missing Label123");
@@ -75,19 +86,19 @@ function testRequireNonNullInstanceThrows(title, value, message) {
 function testRequireNonNullInstanceNotThrows(title, value) {
     test(title, () => {
         expect(
-            () => Preconditions.requireNonNullInstance(value, Test1,"Label123")
+            () => Preconditions.requireNonNullInstance(value, Test1, "Label123")
         ).not
             .toThrow();
     });
 }
 
-testRequireNonNullInstanceThrows("requireNonNullInstance undefined",undefined, "Missing Label123");
-testRequireNonNullInstanceThrows("requireNonNullInstance null",  null, "Missing Label123");
-testRequireNonNullInstanceThrows("requireNonNullInstance false",  false, "Expected Test1 Label123 got false");
-testRequireNonNullInstanceThrows("requireNonNullInstance instanceof false",  new Test3(), "Expected Test1 Label123 got " + new Test3());
-testRequireNonNullInstanceThrows("requireNonNullInstance instanceof false",  new Test4(), "Expected Test1 Label123 got Test4!");
-testRequireNonNullInstanceNotThrows("requireNonNullInstance instanceof class",  new Test1());
-testRequireNonNullInstanceNotThrows("requireNonNullInstance instanceof subclass",  new Test2());
+testRequireNonNullInstanceThrows("requireNonNullInstance undefined", undefined, "Missing Label123");
+testRequireNonNullInstanceThrows("requireNonNullInstance null", null, "Missing Label123");
+testRequireNonNullInstanceThrows("requireNonNullInstance false", false, "Expected Test1 Label123 got false");
+testRequireNonNullInstanceThrows("requireNonNullInstance instanceof false", new Test3(), "Expected Test1 Label123 got " + new Test3());
+testRequireNonNullInstanceThrows("requireNonNullInstance instanceof false", new Test4(), "Expected Test1 Label123 got Test4!");
+testRequireNonNullInstanceNotThrows("requireNonNullInstance instanceof class", new Test1());
+testRequireNonNullInstanceNotThrows("requireNonNullInstance instanceof subclass", new Test2());
 
 // requireNonNullInstance......................................................................................................
 
@@ -102,16 +113,16 @@ function testRequireInstanceOrNullThrows(title, value, message) {
 function testRequireInstanceOrNullNotThrows(title, value) {
     test(title, () => {
         expect(
-            () => Preconditions.requireInstanceOrNull(value, Test1,"Label123")
+            () => Preconditions.requireInstanceOrNull(value, Test1, "Label123")
         ).not
             .toThrow();
     });
 }
 
-testRequireInstanceOrNullNotThrows("requireInstanceOrNull undefined",undefined);
-testRequireInstanceOrNullNotThrows("requireInstanceOrNull null",  null);
-testRequireInstanceOrNullThrows("requireInstanceOrNull false",  false, "Expected Test1 or nothing Label123 got false");
-testRequireInstanceOrNullThrows("requireInstanceOrNull instanceof false",  new Test3(), "Expected Test1 or nothing Label123 got " + new Test3());
-testRequireInstanceOrNullThrows("requireInstanceOrNull instanceof false",  new Test4(), "Expected Test1 or nothing Label123 got Test4!");
-testRequireInstanceOrNullNotThrows("requireInstanceOrNull instanceof class",  new Test1());
-testRequireInstanceOrNullNotThrows("requireInstanceOrNull instanceof subclass",  new Test2());
+testRequireInstanceOrNullNotThrows("requireInstanceOrNull undefined", undefined);
+testRequireInstanceOrNullNotThrows("requireInstanceOrNull null", null);
+testRequireInstanceOrNullThrows("requireInstanceOrNull false", false, "Expected Test1 or nothing Label123 got false");
+testRequireInstanceOrNullThrows("requireInstanceOrNull instanceof false", new Test3(), "Expected Test1 or nothing Label123 got " + new Test3());
+testRequireInstanceOrNullThrows("requireInstanceOrNull instanceof false", new Test4(), "Expected Test1 or nothing Label123 got Test4!");
+testRequireInstanceOrNullNotThrows("requireInstanceOrNull instanceof class", new Test1());
+testRequireInstanceOrNullNotThrows("requireInstanceOrNull instanceof subclass", new Test2());
