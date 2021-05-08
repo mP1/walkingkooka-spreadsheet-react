@@ -10,6 +10,16 @@ export default class Preconditions {
     }
 
     /**
+     * Throws an exception if the value is not a object
+     */
+    static requireArray(value, label) {
+        Preconditions.requireNonNull(value, label);
+        if(!(Array.isArray(value))){
+            throw new Error("Expected array " + label + " got " + value);
+        }
+    }
+
+    /**
      * Throws an exception if the value is not a function
      */
     static requireFunction(value, label) {
