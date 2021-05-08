@@ -146,26 +146,26 @@ test("equals both missing cell-reference", () => {
     const r = null;
     const l = labels();
 
-    expect(new SpreadsheetExpressionReferenceSimilarities(r, l))
-        .toStrictEqual(new SpreadsheetExpressionReferenceSimilarities(r, l));
+    expect(new SpreadsheetExpressionReferenceSimilarities(r, l)
+        .equals(new SpreadsheetExpressionReferenceSimilarities(r, l)))
+        .toBeTrue();
 });
 
 test("equals missing cell-reference", () => {
-    expect(similarity())
-        .not
-        .toStrictEqual(new SpreadsheetExpressionReferenceSimilarities(null, labels()));
+    expect(similarity()
+        .equals(new SpreadsheetExpressionReferenceSimilarities(null, labels()))
+    ).toBeFalse();
 });
 
 test("equals different cell-reference", () => {
-    expect(similarity())
-        .not
-        .toStrictEqual(new SpreadsheetExpressionReferenceSimilarities(SpreadsheetCellReference.fromJson("B99"), labels()));
+    expect(similarity()
+        .equals(new SpreadsheetExpressionReferenceSimilarities(SpreadsheetCellReference.fromJson("B99"), labels()))
+    ).toBeFalse();
 });
 
 test("equals different labels", () => {
-    expect(similarity())
-        .not
-        .toStrictEqual(new SpreadsheetExpressionReferenceSimilarities(cellReference(), [label2()]));
+    expect(similarity().equals(new SpreadsheetExpressionReferenceSimilarities(cellReference(), [label2()])))
+        .toBeFalse();
 });
 
 // helpers..............................................................................................................
