@@ -20,6 +20,16 @@ export default class Preconditions {
     }
 
     /**
+     * Throws an exception if the value is not a object
+     */
+    static requireObject(value, label) {
+        Preconditions.requireNonNull(value, label);
+        if(typeof value !== "object"){
+            throw new Error("Expected object " + label + " got " + value);
+        }
+    }
+
+    /**
      * Throws an exception if the value is null or undefined.
      */
     static requireText(value, label) {
