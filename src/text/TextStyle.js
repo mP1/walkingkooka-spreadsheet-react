@@ -21,6 +21,7 @@ import ListStyleType from "./ListStyleType.js";
 import OutlineStyle from "./OutlineStyle.js";
 import Overflow from "./Overflow.js";
 import PixelLength from "./PixelLength";
+import Preconditions from "../Preconditions.js";
 import SystemObject from "../SystemObject.js";
 import TextAlign from "./TextAlign.js";
 import TextDecorationLine from "./TextDecorationLine.js";
@@ -36,12 +37,7 @@ import WordWrap from "./WordWrap.js";
 import WordBreak from "./WordBreak.js";
 
 function checkProperty(property) {
-    if(!property){
-        throw new Error("Missing property");
-    }
-    if(typeof property !== "string"){
-        throw new Error("Expected string property got " + property);
-    }
+    Preconditions.requireText(property, "property");
 
     switch(property) {
         case TextStyle.BACKGROUND_COLOR:
@@ -217,12 +213,7 @@ export default class TextStyle extends SystemObject {
     static WRITING_MODE = "writing-mode";
 
     static fromJson(json) {
-        if(!json){
-            throw new Error("Missing json");
-        }
-        if(typeof json !== "object"){
-            throw new Error("Expected Object json got " + json);
-        }
+        Preconditions.requireObject(json, "json");
 
         // check properties
         const properties = {};
@@ -671,12 +662,7 @@ export default class TextStyle extends SystemObject {
      * Merges this style with the entries from the given, this means properties in other will replace any that exist in this.
      */
     merge(style) {
-        if(!style){
-            throw new Error("Missing style");
-        }
-        if(!(style instanceof TextStyle)){
-            throw new Error("Expected TextStyle style got " + style);
-        }
+        Preconditions.requireNonNullInstance(style, TextStyle, "style");
 
         return style.isEmpty() ?
             this :

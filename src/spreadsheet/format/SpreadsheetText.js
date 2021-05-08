@@ -1,4 +1,5 @@
 import Color from "../../color/Color.js";
+import Preconditions from "../../Preconditions.js";
 import SystemObject from "../../SystemObject.js";
 
 const TYPE_NAME = "spreadsheet-text";
@@ -6,12 +7,7 @@ const TYPE_NAME = "spreadsheet-text";
 export default class SpreadsheetText extends SystemObject {
 
     static fromJson(json) {
-        if(!json){
-            throw new Error("Missing json");
-        }
-        if(typeof json !== "object"){
-            throw new Error("Expected object got " + json);
-        }
+        Preconditions.requireObject(json, "json");
 
         const {color, text} = json;
         return new SpreadsheetText(color ? Color.fromJson(color) : color,
@@ -20,15 +16,8 @@ export default class SpreadsheetText extends SystemObject {
 
     constructor(color, text) {
         super();
-        if(typeof color !== "undefined" && !(color instanceof Color)){
-            throw new Error("Expected Color color got " + color);
-        }
-        if(!text && text !== ""){
-            throw new Error("Missing text");
-        }
-        if(typeof text !== "string"){
-            throw new Error("Expected string text got " + text);
-        }
+        Preconditions.requireInstanceOrNull(color, Color, "color");
+        Preconditions.requireText(text, "text");
         this.colorValue = color;
         this.textValue = text;
     }

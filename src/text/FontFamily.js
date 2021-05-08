@@ -1,4 +1,5 @@
 import SystemObject from "../SystemObject.js";
+import Preconditions from "../Preconditions.js";
 
 const TYPE_NAME = "font-family";
 
@@ -8,12 +9,7 @@ const TYPE_NAME = "font-family";
 export default class FontFamily extends SystemObject {
 
     static fromJson(name) {
-        if(!name){
-            throw new Error("Missing name");
-        }
-        if(typeof name !== "string"){
-            throw new Error("Expected string got " + name);
-        }
+        Preconditions.requireNonEmptyText(name, "name");
         return new FontFamily(name);
     }
 

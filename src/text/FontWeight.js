@@ -1,3 +1,4 @@
+import Preconditions from "../Preconditions.js";
 import SystemObject from "../SystemObject.js";
 
 const TYPE_NAME = "font-weight";
@@ -8,12 +9,7 @@ const TYPE_NAME = "font-weight";
 export default class FontWeight extends SystemObject {
 
     static fromJson(value) {
-        if(null == value){
-            throw new Error("Missing value");
-        }
-        if(typeof value !== "number"){
-            throw new Error("Expected number got " + value);
-        }
+        Preconditions.requireNumber(value, "value");
         if(value <= 0) {
             throw new Error("Expected number > 0 got " + value);
         }

@@ -9,11 +9,11 @@ function placeholder() {
 }
 
 test("create without text fails", () => {
-    expect(() => new TextPlaceholderNode(null)).toThrow("Missing text");
+    expect(() => new TextPlaceholderNode(null)).toThrow("Missing placeholder");
 });
 
 test("create with non string fails", () => {
-    expect(() => new TextPlaceholderNode(1.5)).toThrow("Expected string got 1.5");
+    expect(() => new TextPlaceholderNode(1.5)).toThrow("Expected string placeholder got 1.5");
 });
 
 test("create", () => {

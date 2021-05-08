@@ -1,6 +1,7 @@
 /**
  * Holds a spreadsheet name, no validation is performed on the text
  */
+import Preconditions from "../Preconditions.js";
 import SystemObject from "../SystemObject.js";
 
 const TYPE_NAME = "spreadsheet-name";
@@ -17,12 +18,7 @@ export default class SpreadsheetName extends SystemObject {
 
     constructor(value) {
         super();
-        if(!value){
-            throw new Error("Missing value");
-        }
-        if(typeof value !== "string"){
-            throw new Error("Expected string got " + value);
-        }
+        Preconditions.requireText(value, "value");
         this.valueValue = value;
     }
 

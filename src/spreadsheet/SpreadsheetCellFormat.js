@@ -1,3 +1,4 @@
+import Preconditions from "../Preconditions.js";
 import SystemObject from "../SystemObject.js";
 
 const TYPE_NAME = "spreadsheet-cell-format";
@@ -13,12 +14,7 @@ export default class SpreadsheetCellFormat extends SystemObject {
 
     constructor(pattern) {
         super();
-        if(!pattern){
-            throw new Error("Missing pattern");
-        }
-        if(typeof pattern !== "string"){
-            throw new Error("Expected string got " + pattern);
-        }
+        Preconditions.requireText(pattern, "pattern");
         this.patternValue = pattern;
     }
 

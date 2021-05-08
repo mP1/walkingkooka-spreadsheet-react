@@ -1,3 +1,4 @@
+import Preconditions from "../../Preconditions.js";
 import SystemObject from "../../SystemObject.js";
 
 export default class SpreadsheetReferenceKind extends SystemObject {
@@ -13,9 +14,7 @@ export default class SpreadsheetReferenceKind extends SystemObject {
     }
 
     static of(text) {
-        if(!text){
-            throw new Error("Missing text");
-        }
+        Preconditions.requireText(text, "text");
 
         switch(text) {
             case "ABSOLUTE":

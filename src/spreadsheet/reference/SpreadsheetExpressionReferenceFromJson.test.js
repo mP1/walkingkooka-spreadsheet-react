@@ -8,7 +8,7 @@ test("fromJson null fails", () => {
 });
 
 test("fromJson true fails", () => {
-    expect(() => SpreadsheetExpressionReferenceFromJson(true)).toThrow("Expected string got true");
+    expect(() => SpreadsheetExpressionReferenceFromJson(true)).toThrow("Expected string text got true");
 });
 
 test("fromJson empty fails", () => {

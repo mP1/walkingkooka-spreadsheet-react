@@ -1,38 +1,17 @@
 import CharSequences from "../../CharSequences.js";
+import Preconditions from "../../Preconditions.js";
 import SpreadsheetExpressionReference from "./SpreadsheetExpressionReference.js";
 import spreadsheetExpressionReferenceFromJson from "./SpreadsheetExpressionReferenceFromJson.js";
 import SpreadsheetLabelName from "./SpreadsheetLabelName.js";
 import SystemObject from "../../SystemObject.js";
-
-function checkLabel(label) {
-    if(!label){
-        throw new Error("Missing label");
-    }
-    if(!(label instanceof SpreadsheetLabelName)){
-        throw new Error("Expected SpreadsheetLabelName label got " + label);
-    }
-}
-
-function checkReference(reference) {
-    if(!reference){
-        throw new Error("Missing reference");
-    }
-    if(!(reference instanceof SpreadsheetExpressionReference)){
-        throw new Error("Expected SpreadsheetExpressionReference reference got " + reference);
-    }
-}
 
 const TYPE_NAME = "spreadsheet-label-mapping";
 
 export default class SpreadsheetLabelMapping extends SystemObject {
 
     static fromJson(json) {
-        if(null == json){
-            throw new Error("Missing json");
-        }
-        if(typeof json !== "object"){
-            throw new Error("Expected object got " + json);
-        }
+        Preconditions.requireObject(json, "json");
+
         const {label, reference} = json;
         return new SpreadsheetLabelMapping(
             SpreadsheetLabelName.fromJson(label),
@@ -42,8 +21,8 @@ export default class SpreadsheetLabelMapping extends SystemObject {
 
     constructor(label, reference) {
         super();
-        checkLabel(label);
-        checkReference(reference);
+        Preconditions.requireNonNullInstance(label, SpreadsheetLabelName, "label");
+        Preconditions.requireNonNullInstance(reference, SpreadsheetExpressionReference, "reference");
 
         if(label.equals(reference)) {
             throw new Error("Reference " + CharSequences.quoteAndEscape(reference.toString()) + " must be different to label " + CharSequences.quoteAndEscape(label.toString()));

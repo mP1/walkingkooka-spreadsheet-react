@@ -14,7 +14,7 @@ test("create without text fails", () => {
 });
 
 test("create with non string fails", () => {
-    expect(() => new Text(1.5)).toThrow("Expected string got 1.5");
+    expect(() => new Text(1.5)).toThrow("Expected string text got 1.5");
 });
 
 test("create empty string", () => {

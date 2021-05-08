@@ -15,7 +15,7 @@ test("parse null fails", () => {
 });
 
 test("parse non string fails", () => {
-    expect(() => NoneLength.parse(true)).toThrow("Expected string got true");
+    expect(() => NoneLength.parse(true)).toThrow("Expected string text got true");
 });
 
 test("parse invalid value fails", () => {

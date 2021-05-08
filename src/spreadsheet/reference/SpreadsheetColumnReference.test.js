@@ -17,7 +17,7 @@ test("parse missing text fails", () => {
 });
 
 test("parse of invalid text fails", () => {
-    expect(() => SpreadsheetColumnReference.parse(true)).toThrow("Expected string got true");
+    expect(() => SpreadsheetColumnReference.parse(true)).toThrow("Expected string text got true");
 });
 
 test("parse includes invalid character fails", () => {
@@ -145,7 +145,7 @@ test("set different kind RELATIVE", () => {
 // setValue..............................................................................................................
 
 test("set missing value fails", () => {
-    expect(() => new SpreadsheetColumnReference(undefined, SpreadsheetReferenceKind.RELATIVE).setValue()).toThrow("Expected number value got undefined");
+    expect(() => new SpreadsheetColumnReference(undefined, SpreadsheetReferenceKind.RELATIVE).setValue()).toThrow("Missing value");
 });
 
 test("set invalid value fails", () => {
@@ -175,7 +175,7 @@ test("set different value RELATIVE", () => {
 // add..............................................................................................................
 
 test("add missing value fails", () => {
-    expect(() => new SpreadsheetColumnReference(1, SpreadsheetReferenceKind.RELATIVE).add()).toThrow("Expected number delta got undefined");
+    expect(() => new SpreadsheetColumnReference(1, SpreadsheetReferenceKind.RELATIVE).add()).toThrow("Missing delta");
 });
 
 test("add invalid value fails", () => {
@@ -207,7 +207,7 @@ test("add non zero value RELATIVE", () => {
 // addSaturated.........................................................................................................
 
 test("addSaturated missing value fails", () => {
-    expect(() => new SpreadsheetColumnReference(1, SpreadsheetReferenceKind.RELATIVE).addSaturated()).toThrow("Expected number delta got undefined");
+    expect(() => new SpreadsheetColumnReference(1, SpreadsheetReferenceKind.RELATIVE).addSaturated()).toThrow("Missing delta");
 });
 
 test("addSaturated invalid value fails", () => {

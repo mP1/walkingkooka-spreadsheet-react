@@ -5,6 +5,7 @@ import {withStyles} from '@material-ui/core/styles';
 import Divider from '@material-ui/core/Divider';
 import Equality from "./Equality.js";
 import ImmutableMap from "./util/ImmutableMap";
+import Preconditions from "./Preconditions.js";
 import React from 'react';
 import SpreadsheetAppBar from "./widget/SpreadsheetAppBar.js";
 import SpreadsheetBox from "./widget/SpreadsheetBox";
@@ -537,12 +538,7 @@ class App extends React.Component {
      * Creates an URL for the given label.
      */
     labelUrl(label) {
-        if(null == label) {
-            throw new Error("Missing label");
-        }
-        if(!(label instanceof SpreadsheetLabelName)) {
-            throw new Error("Expected SpreadsheetLabelName label got " + label);
-        }
+        Preconditions.requireInstanceOrNull(label, SpreadsheetLabelName);
         return this.spreadsheetMetadataApiUrl() + "/label/" + label
     }
 
@@ -733,12 +729,8 @@ class App extends React.Component {
      */
     loadSpreadsheetCellOrRange(selection, evaluation, onSuccess) {
         console.log("loadSpreadsheetCellOrRange " + selection + " " + evaluation);
-        if(!selection){
-            throw new Error("Missing selection");
-        }
-        if(!evaluation){
-            throw new Error("Missing evaluation");
-        }
+        Preconditions.requireNonNull(selection, "selection");
+        Preconditions.requireNonNullInstance(evaluation, SpreadsheetEngineEvaluation, "evaluation");
 
         const onSpreadsheetDelta = this.onSpreadsheetDelta.bind(this);
 

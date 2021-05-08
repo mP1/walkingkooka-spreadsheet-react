@@ -1,6 +1,8 @@
 /**
  * Base class for all classes defining some shared members.
  */
+import Preconditions from "./Preconditions.js";
+
 const typeNameToFromJson = new Map();
 
 export default class SystemObject {
@@ -9,18 +11,9 @@ export default class SystemObject {
      * All classes that support json marshalling and unmarshalling need to register.
      */
     static register(typeName, fromJson) {
-        if(!typeName){
-            throw new Error("Missing typeName");
-        }
-        if(typeof typeName !== "string"){
-            throw new Error("Expected string typeName got " + typeName);
-        }
-        if(!fromJson){
-            throw new Error("Missing function fromJson");
-        }
-        if(typeof fromJson !== "function"){
-            throw new Error("Expected function fromJson got " + fromJson);
-        }
+        Preconditions.requireNonEmptyText(typeName, "typeName");
+        Preconditions.requireFunction(fromJson, "fromJson");
+
         typeNameToFromJson.set(typeName, fromJson);
     }
 
@@ -43,12 +36,8 @@ export default class SystemObject {
                 }
                 if(json){
                     const {type, value} = json;
-                    if(!type){
-                        throw new Error("Missing type got " + json);
-                    }
-                    if(typeof type !== "string"){
-                        throw new Error("Expected string type got " + type);
-                    }
+                    Preconditions.requireNonEmptyText(type, "type");
+
                     const unmarshaller = typeNameToFromJson.get(type);
                     if(!unmarshaller){
                         throw new Error("Unable to find unmarshaller for " + type);
@@ -75,12 +64,7 @@ export default class SystemObject {
         if(!Array.isArray(json)){
             throw new Error("Expected array json got " + json);
         }
-        if(!element){
-            throw new Error("Missing element");
-        }
-        if(typeof element !== "function"){
-            throw new Error("Expected function element got " + element);
-        }
+        Preconditions.requireFunction(element, "element");
         return json.map(e => element(e));
     }
 

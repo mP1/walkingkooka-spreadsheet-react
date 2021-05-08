@@ -7,7 +7,7 @@ test("fromJson null fails", () => {
 });
 
 test("fromJson true fails", () => {
-    expect(() => spreadsheetCellReferenceOrLabelNameFromJson(true)).toThrow("Expected string got true");
+    expect(() => spreadsheetCellReferenceOrLabelNameFromJson(true)).toThrow("Expected string text got true");
 });
 
 test("fromJson empty fails", () => {

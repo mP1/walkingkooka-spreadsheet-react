@@ -1,6 +1,7 @@
 /**
  * Holds an error within processing of a spreadsheet cell.
  */
+import Preconditions from "../Preconditions.js";
 import SystemObject from "../SystemObject.js";
 
 const TYPE_NAME = "spreadsheet-error";
@@ -13,12 +14,7 @@ export default class SpreadsheetError extends SystemObject {
 
     constructor(message) {
         super();
-        if(!message){
-            throw new Error("Missing message");
-        }
-        if(typeof message !== "string"){
-            throw new Error("Expected string got " + message);
-        }
+        Preconditions.requireNonEmptyText(message, "message");
         this.messageValue = message;
     }
 

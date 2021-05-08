@@ -30,7 +30,7 @@ test("isCellReferenceText null fails", () => {
 });
 
 test("isCellReferenceText non string fails", () => {
-    expect(() => SpreadsheetCellReference.isCellReferenceText(1.5)).toThrow("Expected string got 1.5");
+    expect(() => SpreadsheetCellReference.isCellReferenceText(1.5)).toThrow("Expected string text got 1.5");
 });
 
 function testIsCellReferenceText(text, expected) {

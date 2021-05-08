@@ -1,8 +1,9 @@
+import Character from "../../Character.js";
+import CharSequences from "../../CharSequences.js";
+import Preconditions from "../../Preconditions.js";
 import SpreadsheetCellReference from "./SpreadsheetCellReference.js";
 import SpreadsheetExpressionReference from "./SpreadsheetExpressionReference.js";
 import SystemObject from "../../SystemObject.js";
-import CharSequences from "../../CharSequences.js";
-import Character from "../../Character.js";
 
 const TYPE_NAME = "spreadsheet-label-name";
 const MAX_LENGTH = 255;
@@ -14,12 +15,8 @@ export default class SpreadsheetLabelName extends SpreadsheetExpressionReference
     }
 
     static parse(text) {
-        if(!text){
-            throw new Error("Missing text");
-        }
-        if(typeof text !== "string"){
-            throw new Error("Expected string got " + text);
-        }
+        Preconditions.requireNonEmptyText(text, "text");
+
         const length = text.length;
         if(length > MAX_LENGTH){
             throw new Error("Invalid label length " + length + " > " + MAX_LENGTH);

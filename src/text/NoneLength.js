@@ -1,4 +1,5 @@
 import Length from "./Length";
+import Preconditions from "../Preconditions.js";
 
 const TYPE_NAME = "none-length";
 const TEXT = "none";
@@ -12,12 +13,7 @@ export default class NoneLength extends Length {
     }
 
     static parse(text) {
-        if(!text){
-            throw new Error("Missing text");
-        }
-        if(typeof text !== "string"){
-            throw new Error("Expected string got " + text);
-        }
+        Preconditions.requireText(text, "text");
 
         switch(text) {
             case "0":

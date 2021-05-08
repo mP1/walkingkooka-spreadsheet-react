@@ -1,4 +1,5 @@
 import Equality from "../Equality.js";
+import Preconditions from "../Preconditions.js";
 import React from "react";
 import TextNode from "./TextNode";
 import TextStyle from "./TextStyle";
@@ -9,9 +10,7 @@ import TextStyle from "./TextStyle";
 export default class TextStyleNode extends TextNode {
     constructor(styles, children) {
         super();
-        if(!(styles instanceof TextStyle)){
-            throw new Error("styles is not a TextStyle");
-        }
+        Preconditions.requireNonNullInstance(styles, TextStyle, "styles");
 
         this.stylesValue = styles;
         this.childrenValue = children || [];

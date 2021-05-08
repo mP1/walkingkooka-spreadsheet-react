@@ -23,7 +23,7 @@ test("create null text fails", () => {
 });
 
 test("create with non string text fails", () => {
-    expect(() => new Locale(1.5)).toThrow("Expected string got 1.5");
+    expect(() => new Locale(1.5)).toThrow("Expected string text got 1.5");
 });
 
 test("create", () => {

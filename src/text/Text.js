@@ -1,3 +1,4 @@
+import Preconditions from "../Preconditions.js";
 import SystemObject from "../SystemObject.js";
 import TextLeafNode from "./TextLeafNode";
 import TextNode from "./TextNode";
@@ -10,12 +11,7 @@ export default class Text extends TextLeafNode {
 
     constructor(text) {
         super();
-        if(!text && text !== ""){
-            throw new Error("Missing text");
-        }
-        if(typeof text !== "string"){
-            throw new Error("Expected string got " + text);
-        }
+        Preconditions.requireText(text, "text");
         this.text = text;
     }
 

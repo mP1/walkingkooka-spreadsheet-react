@@ -2,6 +2,7 @@
  * Captures the coordinates and dimensions of a rendered {@link SpreadsheetCell}.
  * This is used to locate the origin of the viewportCoordinates and the dimensions of the cell there.
  */
+import Preconditions from "../../Preconditions.js";
 import SpreadsheetCellReference from "./SpreadsheetCellReference";
 import SpreadsheetViewport from "./SpreadsheetViewport.js";
 import SystemObject from "../../SystemObject.js";
@@ -11,9 +12,7 @@ const TYPE_NAME = "spreadsheet-cell-box";
 export default class SpreadsheetCellBox extends SystemObject {
 
     static fromJson(json) {
-        if(!json){
-            throw new Error("Missing json");
-        }
+        Preconditions.requireObject(json, "json");
 
         return new SpreadsheetCellBox(
             SpreadsheetCellReference.fromJson(json.reference),
@@ -26,12 +25,7 @@ export default class SpreadsheetCellBox extends SystemObject {
 
     constructor(reference, x, y, width, height) {
         super();
-        if(!reference){
-            throw new Error("Missing reference");
-        }
-        if(!(reference instanceof SpreadsheetCellReference)){
-            throw new Error("Expected SpreadsheetCellReference reference got " + reference);
-        }
+        Preconditions.requireNonNullInstance(reference, SpreadsheetCellReference, "reference");
         this.referenceValue = reference;
 
         if(typeof (x) !== "number"){

@@ -1,3 +1,4 @@
+import Preconditions from "../../Preconditions.js";
 import timeoutPromise from "./FetchTimeoutPromise.js";
 
 // default timeout if timeout property in parameters is missing
@@ -50,30 +51,11 @@ export default class SpreadsheetMessenger {
     }
 
     send(url, parameters, response, error) {
-        if(!url){
-            throw new Error("Missing url");
-        }
-        if(typeof url !== "string"){
-            throw new Error("Expected String url got " + url);
-        }
-        if(!parameters){
-            throw new Error("Missing parameters");
-        }
-        if(typeof parameters !== "object"){
-            throw new Error("Expected object parameters got " + parameters);
-        }
-        if(!response){
-            throw new Error("Missing response");
-        }
-        if(typeof response !== "function"){
-            throw new Error("Expected function response got " + response);
-        }
-        if(!error){
-            throw new Error("Missing error");
-        }
-        if(typeof error !== "function"){
-            throw new Error("Expected function error got " + error);
-        }
+        Preconditions.requireNonEmptyText(url, "url");
+        Preconditions.requireObject(parameters, "parameters");
+        Preconditions.requireFunction(response, "response");
+        Preconditions.requireFunction(error, "error");
+
         const transactionIdHeader = transactionId++;
         const headers = Object.assign({
             "Accept": "application/json",

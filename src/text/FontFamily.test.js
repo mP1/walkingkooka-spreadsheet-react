@@ -25,7 +25,7 @@ test("fromJson empty fails", () => {
 });
 
 test("fromJson non string fails", () => {
-    expect(() => FontFamily.fromJson(true)).toThrow("Expected string got true");
+    expect(() => FontFamily.fromJson(true)).toThrow("Expected string name got true");
 });
 
 test("create", () => {

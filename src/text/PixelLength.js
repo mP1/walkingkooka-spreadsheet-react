@@ -1,4 +1,5 @@
 import Length from "./Length";
+import Preconditions from "../Preconditions.js";
 import SystemObject from "../SystemObject.js";
 
 const TYPE_NAME = "pixel-length";
@@ -13,12 +14,7 @@ export default class PixelLength extends Length {
     }
 
     static parse(text) {
-        if(!text){
-            throw new Error("Missing text");
-        }
-        if(typeof text !== "string"){
-            throw new Error("Expected string got " + text);
-        }
+        Preconditions.requireText(text, "text");
         if(!(text.endsWith("px"))){
             throw new Error("Expected string ending with \"px\" got " + text);
         }

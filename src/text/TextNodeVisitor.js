@@ -1,6 +1,7 @@
 /**
  * A Visitor for {@link TextNode} and sub classes.
  */
+import Preconditions from "../Preconditions.js";
 import TextNode from "./TextNode";
 
 export default class TextNodeVisitor {
@@ -9,12 +10,7 @@ export default class TextNodeVisitor {
     }
 
     accept(node) {
-        if(!node){
-            throw new Error("Missing node");
-        }
-        if(!(node instanceof TextNode)){
-            throw new Error("Expected TextNode node got " + node);
-        }
+        Preconditions.requireNonNullInstance(node, TextNode, "node");
 
         if(this.startVisitTextNode(node)){
             node.accept(this);
