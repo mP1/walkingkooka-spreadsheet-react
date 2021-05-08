@@ -26,3 +26,12 @@ testNotThrows("requireNonNull false", Preconditions.requireNonNull, false);
 testNotThrows("requireNonNull 0", Preconditions.requireNonNull, 0);
 testNotThrows("requireNonNull object", Preconditions.requireNonNull, {});
 
+// requireText.......................................................................................................
+
+testThrows("requireText undefined", Preconditions.requireText, undefined, "Label123", "Missing Label123");
+testThrows("requireText null", Preconditions.requireText, null, "Label123", "Missing Label123");
+testThrows("requireText false", Preconditions.requireText, false, "Label123", "Expected string Label123 got false");
+testThrows("requireText 0", Preconditions.requireText, 0, "Label123", "Expected string Label123 got 0");
+testThrows("requireText object", Preconditions.requireText, {}, "Label123", "Expected string Label123 got [object Object]");
+testNotThrows("requireText empty string", Preconditions.requireText, "");
+testNotThrows("requireText non empty string", Preconditions.requireText, "abc123");
