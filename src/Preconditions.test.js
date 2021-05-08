@@ -103,7 +103,7 @@ testThrows("requireNonEmptyText 0", Preconditions.requireNonEmptyText, 0, "Label
 testThrows("requireNonEmptyText array", Preconditions.requireNonEmptyText, ARRAY, "Label123", "Expected string Label123 got 1,2,3");
 testThrows("requireNonEmptyText function", Preconditions.requireNonEmptyText, FUNCTION, "Label123", "Expected string Label123 got function () {}");
 testThrows("requireNonEmptyText object", Preconditions.requireNonEmptyText, {}, "Label123", "Expected string Label123 got [object Object]");
-testThrows("requireNonEmptyText empty string", Preconditions.requireNonEmptyText, "", "Label123", "Expected non empty string Label123");
+testThrows("requireNonEmptyText empty string", Preconditions.requireNonEmptyText, "", "Label123", "Missing Label123");
 testNotThrows("requireNonEmptyText non empty string", Preconditions.requireNonEmptyText, "abc123");
 
 // requireNonNullInstance......................................................................................................
