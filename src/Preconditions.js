@@ -10,6 +10,16 @@ export default class Preconditions {
     }
 
     /**
+     * Throws an exception if the value is not a function
+     */
+    static requireFunction(value, label) {
+        Preconditions.requireNonNull(value, label);
+        if(typeof value !== "function"){
+            throw new Error("Expected function " + label + " got " + value);
+        }
+    }
+
+    /**
      * Throws an exception if the value is null or undefined.
      */
     static requireText(value, label) {
