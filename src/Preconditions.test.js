@@ -29,6 +29,18 @@ testNotThrows("requireNonNull false", Preconditions.requireNonNull, false);
 testNotThrows("requireNonNull 0", Preconditions.requireNonNull, 0);
 testNotThrows("requireNonNull object", Preconditions.requireNonNull, {});
 
+// requireArray.......................................................................................................
+
+testThrows("requireArray undefined", Preconditions.requireArray, undefined, "Label123", "Missing Label123");
+testThrows("requireArray null", Preconditions.requireArray, null, "Label123", "Missing Label123");
+testThrows("requireArray false", Preconditions.requireArray, false, "Label123", "Expected array Label123 got false");
+testThrows("requireArray 0", Preconditions.requireArray, 0, "Label123", "Expected array Label123 got 0");
+testThrows("requireArray empty string", Preconditions.requireArray, "", "Label123", "Expected array Label123 got ");
+testThrows("requireArray string", Preconditions.requireArray, "ABC123", "Label123", "Expected array Label123 got ABC123");
+testThrows("requireArray function", Preconditions.requireArray, FUNCTION, "Label123", "Expected array Label123 got function () {}");
+testThrows("requireArray object", Preconditions.requireArray, {}, "Label123", "Expected array Label123 got [object Object]");
+testNotThrows("requireArray array", Preconditions.requireArray, []);
+
 // requireFunction.......................................................................................................
 
 testThrows("requireFunction undefined", Preconditions.requireFunction, undefined, "Label123", "Missing Label123");
