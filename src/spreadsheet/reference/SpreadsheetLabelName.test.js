@@ -15,64 +15,78 @@ systemObjectTesting(
 // parse...............................................................................................................
 
 test("parse null text fails", () => {
-    expect(() => SpreadsheetLabelName.parse(null)).toThrow("Missing text");
+    expect(() => SpreadsheetLabelName.parse(null))
+        .toThrow("Missing text");
 });
 
 test("parse empty text fails", () => {
-    expect(() => SpreadsheetLabelName.parse("")).toThrow("Missing text");
+    expect(() => SpreadsheetLabelName.parse(""))
+        .toThrow("Missing text");
 });
 
 test("parse non alpha initial fails", () => {
-    expect(() => SpreadsheetLabelName.parse("1")).toThrow("Invalid character '1' at 0");
+    expect(() => SpreadsheetLabelName.parse("1"))
+        .toThrow("Invalid character '1' at 0");
 });
 
 test("parse invalid part fails", () => {
-    expect(() => SpreadsheetLabelName.parse("A!")).toThrow("Invalid character '!' at 1");
+    expect(() => SpreadsheetLabelName.parse("A!"))
+        .toThrow("Invalid character '!' at 1");
 });
 
 test("parse cell reference fails", () => {
-    expect(() => SpreadsheetLabelName.parse("A1")).toThrow("Label is a valid cell reference=\"A1\"");
+    expect(() => SpreadsheetLabelName.parse("A1"))
+        .toThrow("Label is a valid cell reference=\"A1\"");
 });
 
 test("parse column only", () => {
     const column = "A";
     const label = SpreadsheetLabelName.parse(column);
-    expect(label.value()).toStrictEqual(column);
+    expect(label.value())
+        .toStrictEqual(column);
 });
 
 test("parse label", () => {
     const label = SpreadsheetLabelName.parse(NAME);
-    expect(label.value()).toStrictEqual(NAME);
+    expect(label.value())
+        .toStrictEqual(NAME);
 });
 
 test("toJson", () => {
     const label = new SpreadsheetLabelName(NAME);
-    expect(label.toJson()).toStrictEqual(NAME);
+    expect(label.toJson())
+        .toStrictEqual(NAME);
 });
 
 test("toString", () => {
     const label = new SpreadsheetLabelName(NAME);
-    expect(label.toString()).toStrictEqual(NAME);
+    expect(label.toString())
+        .toStrictEqual(NAME);
 });
 
 // parse................................................................................................................
 
 test("fromJson Label", () => {
-    expect(SpreadsheetLabelName.parse(NAME).equals(new SpreadsheetLabelName(NAME))).toStrictEqual(true);
+    expect(SpreadsheetLabelName.parse(NAME))
+        .toStrictEqual(new SpreadsheetLabelName(NAME));
 });
 
 // fromJson.............................................................................................................
 
 test("fromJson Label", () => {
-    expect(SpreadsheetLabelName.fromJson(NAME).equals(new SpreadsheetLabelName(NAME))).toStrictEqual(true);
+    expect(SpreadsheetLabelName.fromJson(NAME))
+        .toStrictEqual(new SpreadsheetLabelName(NAME));
 });
 
 // equals................................................................................................................
 
 test("equals different", () => {
-    expect(SpreadsheetLabelName.parse(NAME).equals(SpreadsheetLabelName.parse("Different"))).toStrictEqual(false);
+    expect(SpreadsheetLabelName.parse(NAME))
+        .not
+        .toStrictEqual(SpreadsheetLabelName.parse("Different"));
 });
 
 test("equals", () => {
-    expect(SpreadsheetLabelName.parse(NAME).equals(SpreadsheetLabelName.parse(NAME))).toStrictEqual(true);
+    expect(SpreadsheetLabelName.parse(NAME))
+        .toStrictEqual(SpreadsheetLabelName.parse(NAME));
 });
