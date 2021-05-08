@@ -31,24 +31,29 @@ systemObjectTesting(
 // create...............................................................................................................
 
 test("create without label fails", () => {
-    expect(() => new SpreadsheetLabelMapping(null, reference())).toThrow("Missing label");
+    expect(() => new SpreadsheetLabelMapping(null, reference()))
+        .toThrow("Missing label");
 });
 
 test("create with non SpreadsheetLabelName fails", () => {
-    expect(() => new SpreadsheetLabelMapping(1.5, reference())).toThrow("Expected SpreadsheetLabelName label got 1.5");
+    expect(() => new SpreadsheetLabelMapping(1.5, reference()))
+        .toThrow("Expected SpreadsheetLabelName label got 1.5");
 });
 
 test("create without reference fails", () => {
-    expect(() => new SpreadsheetLabelMapping(label())).toThrow("Missing reference");
+    expect(() => new SpreadsheetLabelMapping(label()))
+        .toThrow("Missing reference");
 });
 
 test("create with non SpreadsheetExpressionReference fails", () => {
-    expect(() => new SpreadsheetLabelMapping(label(), 1.5)).toThrow("Expected SpreadsheetExpressionReference reference got 1.5");
+    expect(() => new SpreadsheetLabelMapping(label(), 1.5))
+        .toThrow("Expected SpreadsheetExpressionReference reference got 1.5");
 });
 
 test("create with same label and reference fails", () => {
     const l = label();
-    expect(() => new SpreadsheetLabelMapping(l, l)).toThrow("Reference \"Label123\" must be different to label \"Label123\"");
+    expect(() => new SpreadsheetLabelMapping(l, l))
+        .toThrow("Reference \"Label123\" must be different to label \"Label123\"");
 });
 
 test("create Cell", () => {
@@ -160,26 +165,33 @@ test("toJson label/range", () => {
 // equals................................................................................................................
 
 test("equals different label false", () => {
-    expect(new SpreadsheetLabelMapping(label(), reference()).equals(new SpreadsheetLabelMapping(new SpreadsheetLabelName("Different"), reference()))).toStrictEqual(false);
+    expect(new SpreadsheetLabelMapping(label(), reference()))
+        .not
+        .toStrictEqual(new SpreadsheetLabelMapping(new SpreadsheetLabelName("Different"), reference()));
 });
 
 test("equals different reference false", () => {
-    expect(new SpreadsheetLabelMapping(label(), reference()).equals(new SpreadsheetLabelMapping(label(), SpreadsheetCellReference.parse("Z99")))).toStrictEqual(false);
+    expect(new SpreadsheetLabelMapping(label(), reference()))
+        .not
+        .toStrictEqual(new SpreadsheetLabelMapping(label(), SpreadsheetCellReference.parse("Z99")));
 });
 
 test("equals label/SpreadsheetCellReference", () => {
     const reference = SpreadsheetCellReference.parse("A1");
-    expect(new SpreadsheetLabelMapping(label(), reference).equals(new SpreadsheetLabelMapping(label(), reference))).toStrictEqual(true);
+    expect(new SpreadsheetLabelMapping(label(), reference))
+        .toStrictEqual(new SpreadsheetLabelMapping(label(), reference));
 });
 
 test("equals label/SpreadsheetLabel", () => {
     const reference = SpreadsheetLabelName.parse("Different");
-    expect(new SpreadsheetLabelMapping(label(), reference).equals(new SpreadsheetLabelMapping(label(), reference))).toStrictEqual(true);
+    expect(new SpreadsheetLabelMapping(label(), reference))
+        .toStrictEqual(new SpreadsheetLabelMapping(label(), reference));
 });
 
 test("equals label/SpreadsheetRange", () => {
     const reference = SpreadsheetRange.parse("A1:B2");
-    expect(new SpreadsheetLabelMapping(label(), reference).equals(new SpreadsheetLabelMapping(label(), reference))).toStrictEqual(true);
+    expect(new SpreadsheetLabelMapping(label(), reference))
+        .toStrictEqual(new SpreadsheetLabelMapping(label(), reference));
 });
 
 // helpers..............................................................................................................
