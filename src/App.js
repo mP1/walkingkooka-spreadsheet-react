@@ -11,6 +11,7 @@ import SpreadsheetAppBar from "./widget/SpreadsheetAppBar.js";
 import SpreadsheetBox from "./widget/SpreadsheetBox";
 import SpreadsheetCell from "./spreadsheet/SpreadsheetCell";
 import SpreadsheetCellBox from "./spreadsheet/reference/SpreadsheetCellBox";
+import SpreadsheetCellReference from "./spreadsheet/reference/SpreadsheetCellReference.js";
 import SpreadsheetContainerWidget from "./widget/SpreadsheetContainerWidget.js";
 import SpreadsheetCoordinates from "./spreadsheet/SpreadsheetCoordinates.js";
 import SpreadsheetDelta from "./spreadsheet/engine/SpreadsheetDelta";
@@ -441,6 +442,9 @@ class App extends React.Component {
      * Accepts a cell reference and eventually sets the formula text on the second call back function.
      */
     formulaTextLoad(cellReference, setFormulaText) {
+        Preconditions.requireNonNullInstance(cellReference, SpreadsheetCellReference, "cellReference");
+        Preconditions.requireFunction(setFormulaText, "setFormulaText");
+
         console.log("formulaTextLoad " + cellReference + " " + setFormulaText);
 
         this.loadSpreadsheetCellOrRange(
@@ -463,6 +467,9 @@ class App extends React.Component {
      * Saves the given formula text to the given cell reference. This assumes the cell has been previously loaded.
      */
     formulaTextSave(cellReference, formulaText) {
+        Preconditions.requireNonNullInstance(cellReference, SpreadsheetCellReference, "cellReference");
+        Preconditions.requireText(formulaText, "formulaText");
+
         console.log("formulaTextSave " + cellReference + " " + formulaText);
 
         const cell = this.getCellOrEmpty(cellReference);
@@ -474,6 +481,8 @@ class App extends React.Component {
      * Fetches the cell by the given reference or returns an empty {@link SpreadsheetCell}.
      */
     getCellOrEmpty(reference) {
+        Preconditions.requireNonNullInstance(reference, SpreadsheetCellReference, "reference");
+
         return this.state.cells.get(reference) ||
             new SpreadsheetCell(
                 reference,
@@ -538,7 +547,7 @@ class App extends React.Component {
      * Creates an URL for the given label.
      */
     labelUrl(label) {
-        Preconditions.requireInstanceOrNull(label, SpreadsheetLabelName);
+        Preconditions.requireNonNullInstance(label, SpreadsheetLabelName, "label");
         return this.spreadsheetMetadataApiUrl() + "/label/" + label
     }
 
@@ -576,6 +585,8 @@ class App extends React.Component {
     // Notifications....................................................................................................
 
     notificationShow(notification) {
+        Preconditions.requireInstanceOrNull(notification, SpreadsheetNotification, "notification");
+
         console.log("notificationShow ", notification);
 
         const widget = this.notification.current;
@@ -688,6 +699,8 @@ class App extends React.Component {
      * If the new metadata is different call the save service otherwise skip.
      */
     saveSpreadsheetMetadata(metadata) {
+        Preconditions.requireNonNullInstance(metadata, SpreadsheetMetadata, "metadata");
+
         if(metadata.equals(this.spreadsheetMetadata())){
             console.log("saveSpreadsheetMetadata unchanged, save skipped", metadata);
         }else {
@@ -752,6 +765,8 @@ class App extends React.Component {
      * Saves the given cell. Eventually the returned value will trigger a re-render.
      */
     saveSpreadsheetCell(cell) {
+        Preconditions.requireNonNullInstance(cell, SpreadsheetCell, "cell");
+
         const reference = cell.reference();
 
         if(cell.equals(this.state.cells.get(reference))){
