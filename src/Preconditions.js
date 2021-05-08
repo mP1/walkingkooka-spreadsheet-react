@@ -65,7 +65,7 @@ export default class Preconditions {
     static requireNonEmptyText(value, label) {
         Preconditions.requireText(value, label);
         if(!value){
-            throw new Error("Expected non empty string " + label);
+            throw new Error("Missing " + label);
         }
     }
 
