@@ -37,6 +37,17 @@ testThrows("requireFunction string", Preconditions.requireFunction, "ABC123", "L
 testThrows("requireFunction object", Preconditions.requireFunction, {}, "Label123", "Expected function Label123 got [object Object]");
 testNotThrows("requireFunction function", Preconditions.requireFunction, function() {});
 
+// requireObject.......................................................................................................
+
+testThrows("requireObject undefined", Preconditions.requireObject, undefined, "Label123", "Missing Label123");
+testThrows("requireObject null", Preconditions.requireObject, null, "Label123", "Missing Label123");
+testThrows("requireObject false", Preconditions.requireObject, false, "Label123", "Expected object Label123 got false");
+testThrows("requireObject 0", Preconditions.requireObject, 0, "Label123", "Expected object Label123 got 0");
+testThrows("requireObject empty string", Preconditions.requireObject, "", "Label123", "Expected object Label123 got ");
+testThrows("requireObject string", Preconditions.requireObject, "ABC123", "Label123", "Expected object Label123 got ABC123");
+testThrows("requireObject function", Preconditions.requireObject, function() {}, "Label123", "Expected object Label123 got function () {}");
+testNotThrows("requireObject object", Preconditions.requireObject, {});
+
 // requireText.......................................................................................................
 
 testThrows("requireText undefined", Preconditions.requireText, undefined, "Label123", "Missing Label123");
