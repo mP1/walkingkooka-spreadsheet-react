@@ -282,7 +282,7 @@ export default class SpreadsheetHistoryHash {
     }
 
     /**
-     * Parses the current history hash, merges the replacements and pushes the new hash and returns the merged tokens.
+     * Parses the current history hash, merges the replacements and pushes the new hash.
      */
     static parseMergeAndPush(history, replacements) {
         Preconditions.requireNonNull(history, "history");
@@ -301,8 +301,6 @@ export default class SpreadsheetHistoryHash {
         }else {
             console.log("parseMergeAndPush history unchanged \"" + currentPathname + "\"");
         }
-
-        return merged;
     }
 
     static join(tokens) {
