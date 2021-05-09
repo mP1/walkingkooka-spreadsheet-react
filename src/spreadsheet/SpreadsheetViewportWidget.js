@@ -63,6 +63,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
     stateFromHistoryTokens(tokens) {
         return {
             cell: tokens[SpreadsheetHistoryHash.CELL],
+            formula: tokens[SpreadsheetHistoryHash.CELL_FORMULA],
         };
     }
 
@@ -71,26 +72,36 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
     }
 
     /**
-     * Possibly update the history hash using the current state.cell
+     * If the history cell changes and formula token is missing give focus.
      */
     historyTokensFromState(prevState) {
+        const state = this.state;
+        const historyTokens = {};
+
         const cellOld = prevState.cell;
-        const cellNew = this.state.cell;
+        const cellNew = state.cell;
         console.log("historyTokensFromState cell: " + cellOld + " to " + cellNew);
 
         if(!Equality.safeEquals(cellOld, cellNew)){
-            const replacement = {};
-            replacement[SpreadsheetHistoryHash.CELL] = cellNew;
-            const tokens = SpreadsheetHistoryHash.parseMergeAndPush(this.history, replacement);
+            historyTokens[SpreadsheetHistoryHash.CELL] = cellNew;
 
-            if(!tokens[SpreadsheetHistoryHash.CELL_FORMULA]){
-                console.log("Missing " + SpreadsheetHistoryHash.CELL_FORMULA + " token giving focus to cell...", tokens);
-
-                const cellElement = document.getElementById("cell-" + cellNew);
-                if(cellElement){
-                    cellElement.focus();
-                }
+            if(!state.formula){
+                console.log("Missing " + SpreadsheetHistoryHash.CELL_FORMULA + " token giving focus to cell...");
+                this.giveFocus(cellNew);
             }
+        }
+
+        if(state.focused) {
+            historyTokens[SpreadsheetHistoryHash.CELL_FORMULA] = null;
+        }
+
+        return historyTokens;
+    }
+
+    giveFocus(cellReference) {
+        const cellElement = document.getElementById("cell-" + cellReference);
+        if(cellElement){
+            cellElement.focus();
         }
     }
 
