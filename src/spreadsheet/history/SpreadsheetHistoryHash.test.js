@@ -739,6 +739,26 @@ test("/spreadsheet-id/spreadsheet-name/cell/A1", () => {
     );
 });
 
+test("/spreadsheet-id/spreadsheet-name/cell/A1 formula false", () => {
+    mergeAndCheck(
+        "/123abc/Untitled456/cell/A1",
+        {
+            "formula": false,
+        },
+        "/123abc/Untitled456/cell/A1"
+    );
+});
+
+test("/spreadsheet-id/spreadsheet-name/cell/A1 formula true", () => {
+    mergeAndCheck(
+        "/123abc/Untitled456/cell/A1",
+        {
+            "formula": true,
+        },
+        "/123abc/Untitled456/cell/A1/formula"
+    );
+});
+
 test("/spreadsheet-id/spreadsheet-name/cell/A1/formula", () => {
     mergeAndCheck(
         "/123abc/Untitled456/cell",
@@ -787,7 +807,7 @@ test("/spreadsheet-id/spreadsheet-name/cell/A1/formula formula false", () => {
     );
 });
 
-test("/spreadsheet-id/spreadsheet-name/cell/A1/formula invalid token", () => {
+test("/spreadsheet-id/spreadsheet-name/cell/A1/formula AND invalid token", () => {
     mergeAndCheck(
         "/123abc/Untitled456/cell/A1/formula/!invalid",
         {

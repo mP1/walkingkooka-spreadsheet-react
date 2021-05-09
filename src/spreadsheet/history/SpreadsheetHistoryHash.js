@@ -211,9 +211,9 @@ export default class SpreadsheetHistoryHash {
             }
         }
 
-        if(replacements.hasOwnProperty(SpreadsheetHistoryHash.CELL)){
-            cell = replacements[SpreadsheetHistoryHash.CELL];
-        }
+        cell = replacements.hasOwnProperty(SpreadsheetHistoryHash.CELL) ?
+            replacements[SpreadsheetHistoryHash.CELL] :
+            current[SpreadsheetHistoryHash.CELL];
 
         if(replacements.hasOwnProperty(SpreadsheetHistoryHash.CELL_FORMULA)){
             formula = replacements[SpreadsheetHistoryHash.CELL_FORMULA];
