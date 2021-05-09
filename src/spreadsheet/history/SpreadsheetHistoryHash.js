@@ -296,10 +296,10 @@ export default class SpreadsheetHistoryHash {
         );
         const updatedPathname = SpreadsheetHistoryHash.join(merged);
         if(currentPathname !== updatedPathname){
-            console.log("parseMergeAndPush history push \"" + currentPathname + "\"");
+            console.log("parseMergeAndPush history changed from \"" + currentPathname + "\" to \"" + updatedPathname + "\"");
             history.push(updatedPathname);
         }else {
-            console.log("parseMergeAndPush history unchanged \"" + currentPathname + "\" new \"" + updatedPathname + "\"");
+            console.log("parseMergeAndPush history unchanged \"" + currentPathname + "\"");
         }
 
         return merged;
