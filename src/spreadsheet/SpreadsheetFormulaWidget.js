@@ -158,7 +158,7 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetHistoryAwareWid
     }
 
     updateFormulaHash(eventName, focused) {
-        console.log("@@@" + eventName + " focused: " + focused);
+        console.log("updateFormulaHash " + eventName + " focused: " + focused);
         const replacement = {};
         replacement[SpreadsheetHistoryHash.CELL_FORMULA] = focused;
         SpreadsheetHistoryHash.parseMergeAndPush(this.history, replacement);
