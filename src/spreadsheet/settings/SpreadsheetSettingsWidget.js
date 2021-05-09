@@ -125,13 +125,23 @@ class SpreadsheetSettingsWidget extends SpreadsheetHistoryAwareStateWidget {
     }
 
     /**
-     * If the create-date-time or modified-date-time changed send a format request.
+     * Translates the state to history tokens and performs some other updates and checks.
      */
-    componentDidUpdate(prevProps, prevState, snapshot) {
+    historyTokensFromState(prevState) {
         const state = this.state;
         console.log("componentDidUpdate", "prevState", prevState, "state", state);
 
-        this.historyTokensFromState(prevState);
+        const openOld = !!prevState.open;
+        const openNew = !!state.open;
+
+        const oldSection = prevState.section;
+        const newSection = state.section;
+
+        const historyTokens = {};
+        if(openOld !== openNew || oldSection !== newSection){
+            historyTokens[SpreadsheetHistoryHash.SETTINGS] = openNew;
+            historyTokens[SpreadsheetHistoryHash.SETTINGS_SECTION] = state.section;
+        }
 
         const metadata = state.spreadsheetMetadata;
         const createDateTime = metadata.getIgnoringDefaults(SpreadsheetMetadata.CREATE_DATE_TIME);
@@ -153,26 +163,8 @@ class SpreadsheetSettingsWidget extends SpreadsheetHistoryAwareStateWidget {
 
             this.sendFormatCreateDateTimeModifiedDateTime(new SpreadsheetMultiFormatRequest(formatRequests));
         }
-    }
 
-    /**
-     * Possibly update the history hash using the current open state.
-     */
-    historyTokensFromState(prevState) {
-        const state = this.state;
-
-        const openOld = !!prevState.open;
-        const openNew = !!state.open;
-
-        const oldSection = prevState.section;
-        const newSection = state.section;
-
-        if(openOld !== openNew || oldSection !== newSection){
-            const replacements = {};
-            replacements[SpreadsheetHistoryHash.SETTINGS] = openNew;
-            replacements[SpreadsheetHistoryHash.SETTINGS_SECTION] = state.section;
-            SpreadsheetHistoryHash.parseMergeAndPush(this.history, replacements);
-        }
+        return historyTokens;
     }
 
     /**

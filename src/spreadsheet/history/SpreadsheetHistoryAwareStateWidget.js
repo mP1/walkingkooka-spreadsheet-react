@@ -40,17 +40,20 @@ export default class SpreadsheetHistoryAwareStateWidget extends SpreadsheetHisto
     }
 
     /**
-     * If the cell being edited was updated update the history.
+     * Handles a state change, invoking {@link #historyTokensFromState} and updating the history hash with the result.
      */
     componentDidUpdate(prevProps, prevState, snapshot) {
         const state = this.state;
         console.log("componentDidUpdate", "prevState", prevState, "state", state);
 
-        this.historyTokensFromState(prevState);
+        SpreadsheetHistoryHash.parseMergeAndPush(
+            this.history,
+            this.historyTokensFromState(prevState),
+        );
     }
 
     /**
-     * Updates history after examining the change in the state.
+     * This method is called when state changes, and should translates the state to history tokens, and update the UI.
      */
     historyTokensFromState(prevState) {
         throw new Error("Sub classes must override historyTokensFromState()");

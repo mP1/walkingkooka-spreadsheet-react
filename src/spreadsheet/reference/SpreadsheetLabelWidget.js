@@ -69,7 +69,7 @@ class SpreadsheetLabelWidget extends SpreadsheetHistoryAwareStateWidget {
     historyTokensFromState(prevState) {
         const state = this.state;
         const {label, open} = state;
-        const replacements = {};
+        const historyTokens = {};
 
         if(open){
             if(null != label && !Equality.safeEquals(prevState.label, label)){
@@ -80,12 +80,12 @@ class SpreadsheetLabelWidget extends SpreadsheetHistoryAwareStateWidget {
                     this.onLoadFailure.bind(this),
                 );
             }
-            replacements[SpreadsheetHistoryHash.LABEL] = label;
+            historyTokens[SpreadsheetHistoryHash.LABEL] = label;
         }else {
-            replacements[SpreadsheetHistoryHash.LABEL] = null; // remove label from hash
+            historyTokens[SpreadsheetHistoryHash.LABEL] = null; // remove label from hash
         }
 
-        SpreadsheetHistoryHash.parseMergeAndPush(this.history, replacements);
+        return historyTokens;
     }
 
     /**
