@@ -88,7 +88,7 @@ export default class SpreadsheetHistoryHash {
                             nameEdit = true;
                             break;
                         case SpreadsheetHistoryHash.CELL:
-                            if(nameEdit || sourceTokens.length === 0){
+                            if(sourceTokens.length === 0){
                                 valid = false;
                                 break;
                             }
@@ -107,7 +107,7 @@ export default class SpreadsheetHistoryHash {
                             formula = true;
                             break;
                         case SpreadsheetHistoryHash.LABEL:
-                            if(nameEdit || sourceTokens.length === 0){
+                            if(sourceTokens.length === 0){
                                 valid = false;
                                 break;
                             }
@@ -213,18 +213,31 @@ export default class SpreadsheetHistoryHash {
 
         if(replacements.hasOwnProperty(SpreadsheetHistoryHash.CELL)) {
             cell = replacements[SpreadsheetHistoryHash.CELL];
+            if(cell) {
+                nameEdit = false;
+            }
         }
 
         if(replacements.hasOwnProperty(SpreadsheetHistoryHash.CELL_FORMULA)){
             formula = replacements[SpreadsheetHistoryHash.CELL_FORMULA];
+            if(formula) {
+                nameEdit = false;
+            }
         }
 
         if(replacements.hasOwnProperty(SpreadsheetHistoryHash.LABEL)){
             label = replacements[SpreadsheetHistoryHash.LABEL];
+
+            if(label) {
+                nameEdit = false;
+            }
         }
 
         if(replacements.hasOwnProperty(SpreadsheetHistoryHash.NAVIGATE)){
             navigate = replacements[SpreadsheetHistoryHash.NAVIGATE];
+            if(navigate) {
+                nameEdit = false;
+            }
         }
 
         if(replacements.hasOwnProperty(SpreadsheetHistoryHash.SETTINGS)){
@@ -235,14 +248,21 @@ export default class SpreadsheetHistoryHash {
             }
         }
 
-        var valid = true;
-
         // create the resulting verified history token pathname
         const verified = [];
+        let valid = false;
+
         if(null != spreadsheetId){
             verified.push(spreadsheetId);
             if(null != spreadsheetName){
                 verified.push(spreadsheetName);
+
+                valid = true;
+                if(nameEdit) {
+                    if(cell || label || navigate) {
+                        valid = false;
+                    }
+                }
             }
         }
 
@@ -296,7 +316,7 @@ export default class SpreadsheetHistoryHash {
         );
         const updatedPathname = SpreadsheetHistoryHash.join(merged);
         if(currentPathname !== updatedPathname){
-            console.log("parseMergeAndPush history changed from \"" + currentPathname + "\" to \"" + updatedPathname + "\"");
+            console.log("parseMergeAndPush history changed from \"" + currentPathname + "\" to \"" + updatedPathname + "\" ", replacements);
             history.push(updatedPathname);
         }else {
             console.log("parseMergeAndPush history unchanged \"" + currentPathname + "\"");

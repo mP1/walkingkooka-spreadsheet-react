@@ -51,10 +51,7 @@ context(
         });
 
         it("Edit spreadsheet name", () => {
-            spreadsheetName()
-                .click();
-
-            hash().should('match', /.*\/.*\/name/) // => true
+            spreadsheetNameClick();
 
             const updatedSpreadsheetName = "SpreadsheetName234"; // easier to use in regex below
 
@@ -81,6 +78,20 @@ context(
         });
 
         it("Enter history hash show label mapping", () => {
+            historyHashLabel();
+
+            labelDialogCheck(
+                "Label: " + LABEL,
+                LABEL,
+                "",
+                "",
+                "Missing text"
+            );
+        });
+
+        it("Enter history hash show label mapping after editing name", () => {
+            spreadsheetNameClick()
+
             historyHashLabel();
 
             labelDialogCheck(
@@ -439,6 +450,15 @@ context(
         it("Click viewport cell", () => {
             reactRenderWait();
 
+            cellClick("B2");
+
+            hash()
+                .should('match', /.*\/Untitled\/cell\/B2/);
+        });
+
+        it("Click viewport cell after editing name", () => {
+            spreadsheetNameClick();
+            
             cellClick("B2");
 
             hash()
@@ -1868,6 +1888,13 @@ context(
         function spreadsheetName() {
             reactRenderWait();
             return cy.get("#spreadsheet-name");
+        }
+
+        function spreadsheetNameClick() {
+            spreadsheetName()
+                .click();
+
+            hash().should('match', /.*\/.*\/name/) // => true
         }
 
         function formulaText() {
