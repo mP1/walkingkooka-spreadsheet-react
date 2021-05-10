@@ -657,9 +657,29 @@ test("/spreadsheet-id/spreadsheet-name/name", () => {
     );
 });
 
-test("/spreadsheet-id/spreadsheet-name/name replaced name edit true", () => {
+test("/spreadsheet-id/spreadsheet-name replaced name=true", () => {
     mergeAndCheck(
         "/123abc/Untitled456",
+        {
+            name: true,
+        },
+        "/123abc/Untitled456/name"
+    );
+});
+
+test("/spreadsheet-id/spreadsheet-name replaced name=false", () => {
+    mergeAndCheck(
+        "/123abc/Untitled456",
+        {
+            name: false,
+        },
+        "/123abc/Untitled456"
+    );
+});
+
+test("/spreadsheet-id/spreadsheet-name/name replaced name edit true", () => {
+    mergeAndCheck(
+        "/123abc/Untitled456/name",
         {
             "name": true,
         },
@@ -669,7 +689,7 @@ test("/spreadsheet-id/spreadsheet-name/name replaced name edit true", () => {
 
 test("/spreadsheet-id/spreadsheet-name/name replaced name edit false", () => {
     mergeAndCheck(
-        "/123abc/Untitled456",
+        "/123abc/Untitled456/name",
         {
             "name": false,
         },
@@ -710,6 +730,67 @@ test("/spreadsheet-id/spreadsheet-name/name/!invalid invalid token", () => {
         "/123abc/Untitled456/name/!invalid",
         {},
         "/123abc/Untitled456"
+    );
+});
+
+test("/spreadsheet-id/spreadsheet-name/name/ replaced cell/A1", () => {
+    mergeAndCheck(
+        "/123abc/Untitled456/name/!invalid",
+        {
+            "cell": SpreadsheetCellReference.parse("A1")
+        },
+        "/123abc/Untitled456/cell/A1"
+    );
+});
+
+test("/spreadsheet-id/spreadsheet-name/name/ replaced cell deleted", () => {
+    mergeAndCheck(
+        "/123abc/Untitled456/name",
+        {
+            "cell": null,
+        },
+        "/123abc/Untitled456/name"
+    );
+});
+
+test("/spreadsheet-id/spreadsheet-name/name/ replaced cell/A1/formula", () => {
+    mergeAndCheck(
+        "/123abc/Untitled456/name",
+        {
+            "cell": SpreadsheetCellReference.parse("A1"),
+            "formula": true,
+        },
+        "/123abc/Untitled456/cell/A1/formula"
+    );
+});
+
+test("/spreadsheet-id/spreadsheet-name/name/ replaced label/LABEL123", () => {
+    mergeAndCheck(
+        "/123abc/Untitled456/name",
+        {
+            "label": SpreadsheetLabelName.parse("LABEL123"),
+        },
+        "/123abc/Untitled456/label/LABEL123"
+    );
+});
+
+test("/spreadsheet-id/spreadsheet-name/name/ replaced label deleted", () => {
+    mergeAndCheck(
+        "/123abc/Untitled456/name",
+        {
+            "label": null,
+        },
+        "/123abc/Untitled456/name"
+    );
+});
+
+test("/spreadsheet-id/spreadsheet-name/name/ replaced navigate", () => {
+    mergeAndCheck(
+        "/123abc/Untitled456/name/!invalid",
+        {
+            "navigate": true,
+        },
+        "/123abc/Untitled456/navigate"
     );
 });
 
@@ -837,6 +918,46 @@ test("/spreadsheet-id/spreadsheet-name/cell/A2/formula formula null/deleted", ()
     );
 });
 
+test("/spreadsheet-id/spreadsheet-name/cell/A2 replaced name false", () => {
+    mergeAndCheck(
+        "/123abc/Untitled456/cell/A2",
+        {
+            "name": false,
+        },
+        "/123abc/Untitled456/cell/A2"
+    );
+});
+
+test("/spreadsheet-id/spreadsheet-name/cell/A2 replaced name true", () => {
+    mergeAndCheck(
+        "/123abc/Untitled456/cell/A2",
+        {
+            "name": true,
+        },
+        "/123abc/Untitled456/name"
+    );
+});
+
+test("/spreadsheet-id/spreadsheet-name/cell/A2/formula replaced name false", () => {
+    mergeAndCheck(
+        "/123abc/Untitled456/cell/A2/formula",
+        {
+            "name": false,
+        },
+        "/123abc/Untitled456/cell/A2/formula"
+    );
+});
+
+test("/spreadsheet-id/spreadsheet-name/cell/A2/formula replaced name true", () => {
+    mergeAndCheck(
+        "/123abc/Untitled456/cell/A2/formula",
+        {
+            "name": true,
+        },
+        "/123abc/Untitled456/name"
+    );
+});
+
 // label.................................................................................................................
 
 test("/spreadsheet-id/spreadsheet-name/label missing label name", () => {
@@ -879,6 +1000,26 @@ test("/spreadsheet-id/spreadsheet-name/cell/A1/label/LABEL123", () => {
     );
 });
 
+test("/spreadsheet-id/spreadsheet-name/label/LABEL123 replaced name=false", () => {
+    mergeAndCheck(
+        "/123abc/Untitled456/label/LABEL123",
+        {
+            name: false,
+        },
+        "/123abc/Untitled456/label/LABEL123"
+    );
+});
+
+test("/spreadsheet-id/spreadsheet-name/label/LABEL123 replaced name=true", () => {
+    mergeAndCheck(
+        "/123abc/Untitled456/label/LABEL123",
+        {
+            name: true,
+        },
+        "/123abc/Untitled456/name"
+    );
+});
+
 // navigate.............................................................................................................
 
 test("/spreadsheet-id/spreadsheet-name/navigate", () => {
@@ -886,14 +1027,6 @@ test("/spreadsheet-id/spreadsheet-name/navigate", () => {
         "/123abc/Untitled456/navigate",
         {},
         "/123abc/Untitled456/navigate",
-    );
-});
-
-test("/spreadsheet-id/spreadsheet-name/name/navigate", () => {
-    mergeAndCheck(
-        "/123abc/Untitled456/name/navigate",
-        {},
-        "/123abc/Untitled456/name/navigate",
     );
 });
 
@@ -948,6 +1081,26 @@ test("/spreadsheet-id/spreadsheet-name/ replacement navigate=false", () => {
             "navigate": false,
         },
         "/123abc/Untitled456",
+    );
+});
+
+test("/spreadsheet-id/spreadsheet-name/navigate replacement name=false", () => {
+    mergeAndCheck(
+        "/123abc/Untitled456/navigate",
+        {
+            "name": false,
+        },
+        "/123abc/Untitled456/navigate",
+    );
+});
+
+test("/spreadsheet-id/spreadsheet-name/navigate replacement name=true", () => {
+    mergeAndCheck(
+        "/123abc/Untitled456/navigate",
+        {
+            "name": true,
+        },
+        "/123abc/Untitled456/name",
     );
 });
 
