@@ -58,6 +58,8 @@ export default class SpreadsheetHistoryHash {
      * Parsers the path extracting tokens returning an object with valid tokens. Invalid combination will be removed.
      */
     static parse(pathname) {
+        Preconditions.requireText(pathname, "pathname");
+
         const sourceTokens = tokenize(pathname);
 
         var valid = true;
@@ -181,6 +183,9 @@ export default class SpreadsheetHistoryHash {
      * Merges the current tokens with the replacements giving the merged result as another object.
      */
     static merge(current, replacements) {
+        Preconditions.requireObject(current, "current");
+        Preconditions.requireObject(replacements, "replacements");
+
         // get the current
         var spreadsheetId = current[SpreadsheetHistoryHash.SPREADSHEET_ID];
         var spreadsheetName = current[SpreadsheetHistoryHash.SPREADSHEET_NAME];
@@ -306,6 +311,7 @@ export default class SpreadsheetHistoryHash {
      */
     static parseMergeAndPush(history, replacements) {
         Preconditions.requireNonNull(history, "history");
+        Preconditions.requireObject(replacements, "replacements");
 
         const currentPathname = history.location.pathname;
         const tokens = SpreadsheetHistoryHash.parse(currentPathname);
