@@ -57,8 +57,9 @@ export default class SpreadsheetHistoryHash {
     /**
      * Parsers the path extracting tokens returning an object with valid tokens. Invalid combination will be removed.
      */
-    static parse(pathname) {
+    static parse(pathname, errors) {
         Preconditions.requireText(pathname, "pathname");
+        Preconditions.requireFunction(errors, "errors");
 
         const sourceTokens = tokenize(pathname);
 
@@ -98,6 +99,7 @@ export default class SpreadsheetHistoryHash {
                             try {
                                 cell = SpreadsheetCellReference.parse(sourceTokens.shift());
                             } catch(invalid) {
+                                errors("Cell: " + invalid.message);
                                 valid = false;
                             }
                             break;
@@ -117,6 +119,7 @@ export default class SpreadsheetHistoryHash {
                             try {
                                 label = SpreadsheetLabelName.parse(sourceTokens.shift());
                             } catch(invalid) {
+                                errors("Label: " + invalid.message);
                                 valid = false;
                             }
                             break;
@@ -309,12 +312,13 @@ export default class SpreadsheetHistoryHash {
     /**
      * Parses the current history hash, merges the replacements and pushes the new hash.
      */
-    static parseMergeAndPush(history, replacements) {
+    static parseMergeAndPush(history, replacements, showErrors) {
         Preconditions.requireNonNull(history, "history");
         Preconditions.requireObject(replacements, "replacements");
+        Preconditions.requireFunction(showErrors, "showErrors");
 
         const currentPathname = history.location.pathname;
-        const tokens = SpreadsheetHistoryHash.parse(currentPathname);
+        const tokens = SpreadsheetHistoryHash.parse(currentPathname, showErrors);
 
         const merged = SpreadsheetHistoryHash.merge(
             tokens,

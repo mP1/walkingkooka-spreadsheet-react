@@ -58,7 +58,7 @@ class App extends React.Component {
         };
 
         // the names must match the Class.getSimpleName in walkingkooka-spreadsheet
-        this.messenger = new SpreadsheetMessenger(this.onSendError.bind(this));
+        this.messenger = new SpreadsheetMessenger(this.showError.bind(this));
         this.messenger.setWebWorker(false); // TODO test webworker mode
 
         this.notification = React.createRef();
@@ -80,7 +80,12 @@ class App extends React.Component {
 
         const history = this.history;
         this.historyUnlisten = history.listen(this.onHistoryChange.bind(this));
-        this.historyUpdateFromState(SpreadsheetHistoryHash.parse(history.location.pathname));
+        this.historyUpdateFromState(
+            SpreadsheetHistoryHash.parse(
+                history.location.pathname,
+                this.showError.bind(this)
+            )
+        );
     }
 
     componentWillUnmount() {
@@ -104,7 +109,11 @@ class App extends React.Component {
         this.stateSpreadsheetViewport(prevState);
         this.stateSpreadsheetViewportRange(prevState);
 
-        SpreadsheetHistoryHash.parseMergeAndPush(this.history, hash);
+        SpreadsheetHistoryHash.parseMergeAndPush(
+            this.history,
+            hash,
+            this.showError.bind(this)
+        );
     }
 
     /**
@@ -282,7 +291,10 @@ class App extends React.Component {
      * Fired whenever the browser hash changes.
      */
     onHistoryChange(location) {
-        const tokens = SpreadsheetHistoryHash.parse(location.pathname);
+        const tokens = SpreadsheetHistoryHash.parse(
+            location.pathname,
+            this.showError.bind(this)
+        );
         this.historyUpdateFromState(tokens);
         this.onHistoryChangeUpdateCell(tokens);
     }
@@ -306,7 +318,11 @@ class App extends React.Component {
                     replacements[SpreadsheetHistoryHash.SPREADSHEET_NAME] = metadata.getIgnoringDefaults(SpreadsheetMetadata.SPREADSHEET_NAME);
                 }
 
-                SpreadsheetHistoryHash.parseMergeAndPush(this.history, replacements);
+                SpreadsheetHistoryHash.parseMergeAndPush(
+                    this.history,
+                    replacements,
+                    this.showError.bind(this)
+                );
             }
         }
     }
@@ -373,6 +389,7 @@ class App extends React.Component {
         const viewportCell = metadata.getIgnoringDefaults(SpreadsheetMetadata.VIEWPORT_CELL);
 
         const history = this.history;
+        const showError = this.showError.bind(this);
 
         return (
             <WindowResizer dimensions={this.onWindowResized.bind(this)}>
@@ -386,6 +403,7 @@ class App extends React.Component {
                                         saveLabelMapping={this.labelMappingSave.bind(this)}
                                         deleteLabelMapping={this.labelMappingDelete.bind(this)}
                                         notificationShow={this.notificationShow.bind(this)}
+                                        showError={showError}
                 />
                 <SpreadsheetBox ref={this.aboveViewport}
                                 key={{windowDimensions: state.windowDimensions}}
@@ -398,6 +416,7 @@ class App extends React.Component {
                                                history={history}
                                                value={spreadsheetName}
                                                setValue={this.saveSpreadsheetName.bind(this)}
+                                               showError={showError}
                         />
                     </SpreadsheetAppBar>
                     <SpreadsheetContainerWidget ref={this.formulaContainer}
@@ -412,6 +431,7 @@ class App extends React.Component {
                                                   history={history}
                                                   getValue={this.formulaTextLoad.bind(this)}
                                                   setValue={this.formulaTextSave.bind(this)}
+                                                  showError={showError}
                         />
                     </SpreadsheetContainerWidget>
                     <Divider/>
@@ -424,6 +444,7 @@ class App extends React.Component {
                                            rowHeights={rowHeights}
                                            defaultStyle={style}
                                            home={viewportCell}
+                                           showError={showError}
                 />
                 <SpreadsheetSettingsWidget ref={this.settings}
                                            history={history}
@@ -431,6 +452,7 @@ class App extends React.Component {
                                            spreadsheetMetadata={metadata}
                                            setSpreadsheetMetadata={this.saveSpreadsheetMetadata.bind(this)}
                                            formatCreateDateTimeModifiedDateTime={this.onFormatCreateDateTimeModifiedDateTime.bind(this)}
+                                           showError={showError}
                 />
             </WindowResizer>
         );
@@ -819,11 +841,11 @@ class App extends React.Component {
             url,
             parameters,
             response,
-            error || this.onSendError.bind(this),
+            error || this.showError.bind(this),
         )
     }
 
-    onSendError(error) {
+    showError(error) {
         this.notificationShow(SpreadsheetNotification.error(error));
     }
 

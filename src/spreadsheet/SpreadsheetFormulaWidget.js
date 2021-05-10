@@ -87,7 +87,7 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetHistoryAwareWid
             }
         }
 
-        SpreadsheetHistoryHash.parseMergeAndPush(this.history, tokens);
+        this.parseMergeAndPush(tokens);
     }
 
     reloadFormulaText(reference, giveFocus) {
@@ -161,7 +161,7 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetHistoryAwareWid
         console.log("updateFormulaHash " + eventName + " focused: " + focused);
         const replacement = {};
         replacement[SpreadsheetHistoryHash.CELL_FORMULA] = focused;
-        SpreadsheetHistoryHash.parseMergeAndPush(this.history, replacement);
+        SpreadsheetHistoryHash.parseMergeAndPush(this.history, replacement, this.props.showError);
 
         this.setState({
             focused: focused,
@@ -208,4 +208,5 @@ SpreadsheetFormulaWidget.propTypes = {
     history: PropTypes.object.isRequired,
     getValue: PropTypes.func.isRequired,
     setValue: PropTypes.func.isRequired,
+    showError: PropTypes.func.isRequired,
 }

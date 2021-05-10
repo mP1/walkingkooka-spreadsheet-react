@@ -59,7 +59,7 @@ export default class SpreadsheetNameWidget extends SpreadsheetHistoryAwareWidget
     onTextFieldEdit(e) {
         const replacements = {};
         replacements[SpreadsheetHistoryHash.SPREADSHEET_NAME_EDIT] = !this.isEdit();
-        SpreadsheetHistoryHash.parseMergeAndPush(this.history, replacements);
+        this.parseMergeAndPush(replacements);
     }
 }
 
@@ -67,4 +67,5 @@ SpreadsheetNameWidget.propTypes = {
     history: PropTypes.object.isRequired,
     value: PropTypes.object, // might be absent
     setValue: PropTypes.func.isRequired,
+    showError: PropTypes.func.isRequired,
 }

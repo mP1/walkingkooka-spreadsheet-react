@@ -316,22 +316,18 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
     }
 
     giveFormulaTextBoxFocus() {
-        const replacements = {}
-        replacements[SpreadsheetHistoryHash.CELL_FORMULA] = true;
+        const tokens = {}
+        tokens[SpreadsheetHistoryHash.CELL_FORMULA] = true;
 
-        this.updateFormulaTextBoxFocus(replacements);
+        this.parseMergeAndPush(tokens);
     }
 
     blurFormulaTextBox() {
-        const replacements = {}
-        replacements[SpreadsheetHistoryHash.CELL] = null;
-        replacements[SpreadsheetHistoryHash.CELL_FORMULA] = false;
+        const tokens = {}
+        tokens[SpreadsheetHistoryHash.CELL] = null;
+        tokens[SpreadsheetHistoryHash.CELL_FORMULA] = false;
 
-        this.updateFormulaTextBoxFocus(replacements);
-    }
-
-    updateFormulaTextBoxFocus(replacements) {
-        SpreadsheetHistoryHash.parseMergeAndPush(this.history, replacements);
+        this.parseMergeAndPush(tokens);
     }
 }
 
@@ -343,4 +339,5 @@ SpreadsheetViewportWidget.propTypes = {
     defaultStyle: PropTypes.instanceOf(TextStyle),
     dimensions: PropTypes.object,
     homeCell: PropTypes.instanceOf(SpreadsheetCellReference),
+    showError: PropTypes.func.isRequired,
 }

@@ -2,6 +2,8 @@ import SpreadsheetCellReference from "../reference/SpreadsheetCellReference.js";
 import SpreadsheetHistoryHash from "./SpreadsheetHistoryHash.js";
 import SpreadsheetLabelName from "../reference/SpreadsheetLabelName.js";
 
+const FUNCTION = (a) =>a;
+
 // parse..................................................................................................................
 
 function parseFails(pathname) {
@@ -88,7 +90,8 @@ test("parse /spreadsheet-id/spreadsheet-name/cell/!invalid invalid reference", (
         {
             "spreadsheet-id": "spreadsheet-id-123",
             "spreadsheet-name": "spreadsheet-name-456",
-        }
+        },
+        "Cell: Invalid character '!' at 0",
     );
 });
 
@@ -141,7 +144,8 @@ test("parse /spreadsheet-id/spreadsheet-name/label/!invalid invalid label-name",
         {
             "spreadsheet-id": "spreadsheet-id-123",
             "spreadsheet-name": "spreadsheet-name-456",
-        }
+        },
+        "Label: Invalid character '!' at 0",
     );
 });
 
@@ -572,9 +576,14 @@ test("parse /spreadsheet-id/spreadsheet-name/style/metadata/name fails", () => {
 
 // helpers...............................................................................................................
 
-function parseAndCheck(pathname, expected) {
-    expect(SpreadsheetHistoryHash.parse(pathname))
+function parseAndCheck(pathname, expected, expectedError) {
+    let errors = [];
+    expect(SpreadsheetHistoryHash.parse(pathname, e => errors.push(e)))
         .toStrictEqual(expected);
+    if(errors.length > 0) {
+        expect([expectedError])
+            .toStrictEqual(errors);
+    }
 }
 
 // merge...............................................................................................................
@@ -1455,7 +1464,7 @@ test("replacements #2", () => {
 
 function parseMergeAndPushHistoryFails(history) {
     test("parseMergeAndPush history: " + history + " fails", () => {
-        expect(() => SpreadsheetHistoryHash.merge(history, {}).toThrow("Expected object history got " + history));
+        expect(() => SpreadsheetHistoryHash.merge(history, {}, FUNCTION).toThrow("Expected object history got " + history));
     });
 }
 
@@ -1464,12 +1473,12 @@ parseMergeAndPushHistoryFails(null);
 parseMergeAndPushHistoryFails(false);
 parseMergeAndPushHistoryFails(1);
 parseMergeAndPushHistoryFails("");
-parseMergeAndPushHistoryFails(SpreadsheetHistoryHash.parse);
+parseMergeAndPushHistoryFails(FUNCTION);
 parseMergeAndPushHistoryFails([]);
 
 function parseMergeAndPushReplacementsFails(replacements) {
     test("parseMergeAndPush replacements: " + replacements + " fails", () => {
-        expect(() => SpreadsheetHistoryHash.parseMergeAndPush({}, replacements).toThrow("Expected object replacements got " + replacements));
+        expect(() => SpreadsheetHistoryHash.parseMergeAndPush({}, replacements, FUNCTION).toThrow("Expected object replacements got " + replacements));
     });
 }
 
@@ -1478,14 +1487,30 @@ parseMergeAndPushReplacementsFails(null);
 parseMergeAndPushReplacementsFails(false);
 parseMergeAndPushReplacementsFails(1);
 parseMergeAndPushReplacementsFails("");
+parseMergeAndPushReplacementsFails({});
 parseMergeAndPushReplacementsFails([]);
-parseMergeAndPushReplacementsFails([]);
+
+function parseMergeAndPushShowErrorsFails(showErrors) {
+    test("parseMergeAndPush showErrors: " + showErrors + " fails", () => {
+        expect(() => SpreadsheetHistoryHash.parseMergeAndPush({}, {}, showErrors).toThrow("Expected object showErrors got " + showErrors));
+    });
+}
+
+parseMergeAndPushShowErrorsFails(undefined);
+parseMergeAndPushShowErrorsFails(null);
+parseMergeAndPushShowErrorsFails(false);
+parseMergeAndPushShowErrorsFails(1);
+parseMergeAndPushShowErrorsFails("");
+parseMergeAndPushShowErrorsFails({});
+parseMergeAndPushShowErrorsFails([]);
 
 // helpers...............................................................................................................
 
 function mergeAndCheck(pathname, replacements, expected) {
     expect(SpreadsheetHistoryHash.join(
-        SpreadsheetHistoryHash.merge(SpreadsheetHistoryHash.parse(pathname), replacements))
-    )
-        .toStrictEqual(expected);
+        SpreadsheetHistoryHash.merge(
+            SpreadsheetHistoryHash.parse(pathname, FUNCTION),
+            replacements)
+        )
+    ).toStrictEqual(expected);
 }
