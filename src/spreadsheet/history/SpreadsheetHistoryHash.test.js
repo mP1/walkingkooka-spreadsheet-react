@@ -4,19 +4,19 @@ import SpreadsheetLabelName from "../reference/SpreadsheetLabelName.js";
 
 // parse..................................................................................................................
 
-test("parse undefined", () => {
-    parseAndCheck(
-        undefined,
-        {}
-    );
-});
+function parseFails(pathname) {
+    test("parse " + pathname + " fails", () => {
+        expect(() => SpreadsheetHistoryHash.parse(pathname).toThrow("Expected string pathname got " + pathname));
+    });
+}
 
-test("parse null", () => {
-    parseAndCheck(
-        null,
-        {}
-    );
-});
+parseFails(undefined);
+parseFails(null);
+parseFails(false);
+parseFails(1);
+parseFails({});
+parseFails(SpreadsheetHistoryHash.parse);
+parseFails([]);
 
 test("parse empty", () => {
     parseAndCheck(
@@ -579,21 +579,33 @@ function parseAndCheck(pathname, expected) {
 
 // merge...............................................................................................................
 
-test("undefined", () => {
-    mergeAndCheck(
-        undefined,
-        {},
-        "/"
-    );
-});
+function mergeCurrentFails(current) {
+    test("merge current: " + current + " fails", () => {
+        expect(() => SpreadsheetHistoryHash.merge(current, {}).toThrow("Expected object current got " + current));
+    });
+}
 
-test("null", () => {
-    mergeAndCheck(
-        null,
-        {},
-        "/"
-    );
-});
+mergeCurrentFails(undefined);
+mergeCurrentFails(null);
+mergeCurrentFails(false);
+mergeCurrentFails(1);
+mergeCurrentFails("");
+mergeCurrentFails(SpreadsheetHistoryHash.parse);
+mergeCurrentFails([]);
+
+function mergeReplacementsFails(replacements) {
+    test("merge replacements: " + replacements + " fails", () => {
+        expect(() => SpreadsheetHistoryHash.merge({}, replacements).toThrow("Expected object replacements got " + replacements));
+    });
+}
+
+mergeReplacementsFails(undefined);
+mergeReplacementsFails(null);
+mergeReplacementsFails(false);
+mergeReplacementsFails(1);
+mergeReplacementsFails("");
+mergeReplacementsFails(SpreadsheetHistoryHash.parse);
+mergeReplacementsFails([]);
 
 test("empty", () => {
     mergeAndCheck(
@@ -1440,6 +1452,34 @@ test("replacements #2", () => {
         "/456def/new-spreadsheet-name-456/cell/B2/formula"
     );
 });
+
+function parseMergeAndPushHistoryFails(history) {
+    test("parseMergeAndPush history: " + history + " fails", () => {
+        expect(() => SpreadsheetHistoryHash.merge(history, {}).toThrow("Expected object history got " + history));
+    });
+}
+
+parseMergeAndPushHistoryFails(undefined);
+parseMergeAndPushHistoryFails(null);
+parseMergeAndPushHistoryFails(false);
+parseMergeAndPushHistoryFails(1);
+parseMergeAndPushHistoryFails("");
+parseMergeAndPushHistoryFails(SpreadsheetHistoryHash.parse);
+parseMergeAndPushHistoryFails([]);
+
+function parseMergeAndPushReplacementsFails(replacements) {
+    test("parseMergeAndPush replacements: " + replacements + " fails", () => {
+        expect(() => SpreadsheetHistoryHash.parseMergeAndPush({}, replacements).toThrow("Expected object replacements got " + replacements));
+    });
+}
+
+parseMergeAndPushReplacementsFails(undefined);
+parseMergeAndPushReplacementsFails(null);
+parseMergeAndPushReplacementsFails(false);
+parseMergeAndPushReplacementsFails(1);
+parseMergeAndPushReplacementsFails("");
+parseMergeAndPushReplacementsFails([]);
+parseMergeAndPushReplacementsFails([]);
 
 // helpers...............................................................................................................
 
