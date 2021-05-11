@@ -19,7 +19,14 @@ export default class SpreadsheetHistoryAwareWidget extends React.Component {
     }
 
     componentDidMount() {
-        this.historyUnlisten = this.history.listen((location) => this.onHistoryChange(SpreadsheetHistoryHash.parse(location.pathname)));
+        this.historyUnlisten = this.history.listen(
+            (location) => this.onHistoryChange(
+                SpreadsheetHistoryHash.parse(
+                    location.pathname,
+                    this.props.showError
+                )
+            )
+        );
         this.mounted = true;
     }
 
@@ -31,8 +38,16 @@ export default class SpreadsheetHistoryAwareWidget extends React.Component {
     onHistoryChange(tokens) {
         throw new Error("Sub classes must override onHistoryChange");
     }
+
+    parseMergeAndPush(tokens) {
+        SpreadsheetHistoryHash.parseMergeAndPush(
+            this.history,
+            tokens,
+            this.props.showError);
+    }
 }
 
 SpreadsheetHistoryAwareWidget.propTypes = {
     history: PropTypes.object.isRequired,
+    showError: PropTypes.func.isRequired,
 }

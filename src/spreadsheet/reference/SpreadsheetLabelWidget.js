@@ -290,7 +290,7 @@ class SpreadsheetLabelWidget extends SpreadsheetHistoryAwareStateWidget {
                         oldLabel,
                         new SpreadsheetLabelMapping(newLabel, reference),
                         this.onSaveCompleted.bind(this),
-                        (message) => this.props.notificationShow(SpreadsheetNotification.error(message))
+                        this.props.showError,
                     );
                 }
             }
@@ -350,6 +350,7 @@ SpreadsheetLabelWidget.propTypes = {
     saveLabelMapping: PropTypes.func.isRequired, // saves the new label mapping
     deleteLabelMapping: PropTypes.func.isRequired, // deletes the selected label
     notificationShow: PropTypes.func.isRequired, // used to display notifications including errors and other messages
+    showError: PropTypes.func.isRequired,
 }
 
 export default withStyles(useStyles)(SpreadsheetLabelWidget);

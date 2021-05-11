@@ -1,6 +1,7 @@
 import PropTypes from "prop-types";
 import SpreadsheetHistoryAwareWidget from "./SpreadsheetHistoryAwareWidget.js";
 import SpreadsheetHistoryHash from "./SpreadsheetHistoryHash.js";
+import SpreadsheetNotification from "../notification/SpreadsheetNotification.js";
 
 /**
  * A React.Component that is also interested in history change events. Some of the basics like registering a history
@@ -14,9 +15,16 @@ export default class SpreadsheetHistoryAwareStateWidget extends SpreadsheetHisto
     }
 
     initializeState() {
+        const props = this.props;
+
         this.state = Object.assign(
-            this.initialStateFromProps(this.props),
-            this.stateFromHistoryTokens(SpreadsheetHistoryHash.parse(this.history.location.pathname))
+            this.initialStateFromProps(props),
+            this.stateFromHistoryTokens(
+                SpreadsheetHistoryHash.parse(
+                    this.history.location.pathname,
+                    props.showError.bind(this),
+                )
+            )
         );
     }
 
@@ -46,10 +54,7 @@ export default class SpreadsheetHistoryAwareStateWidget extends SpreadsheetHisto
         const state = this.state;
         console.log("componentDidUpdate", "prevState", prevState, "state", state);
 
-        SpreadsheetHistoryHash.parseMergeAndPush(
-            this.history,
-            this.historyTokensFromState(prevState),
-        );
+        this.parseMergeAndPush(this.historyTokensFromState(prevState));
     }
 
     /**
@@ -62,4 +67,5 @@ export default class SpreadsheetHistoryAwareStateWidget extends SpreadsheetHisto
 
 SpreadsheetHistoryAwareStateWidget.propTypes = {
     history: PropTypes.object.isRequired,
+    showError: PropTypes.func.isRequired,
 }

@@ -1366,6 +1366,7 @@ SpreadsheetSettingsWidget.propTypes = {
     notificationShow: PropTypes.func.isRequired,
     spreadsheetMetadata: PropTypes.instanceOf(SpreadsheetMetadata).isRequired,
     setSpreadsheetMetadata: PropTypes.func.isRequired, // fired when the SpreadsheetMetadata is updated.
+    showError: PropTypes.func.isRequired,
 }
 
 export default withStyles(useStyles)(SpreadsheetSettingsWidget);
