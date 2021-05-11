@@ -54,7 +54,7 @@ export default class SpreadsheetHistoryAwareStateWidget extends SpreadsheetHisto
         const state = this.state;
         console.log("componentDidUpdate", "prevState", prevState, "state", state);
 
-        this.parseMergeAndPush(this.historyTokensFromState(prevState));
+        this.historyParseMergeAndPush(this.historyTokensFromState(prevState));
     }
 
     /**

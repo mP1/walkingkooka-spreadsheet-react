@@ -319,7 +319,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
         const tokens = {}
         tokens[SpreadsheetHistoryHash.CELL_FORMULA] = true;
 
-        this.parseMergeAndPush(tokens);
+        this.historyParseMergeAndPush(tokens);
     }
 
     blurFormulaTextBox() {
@@ -327,7 +327,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
         tokens[SpreadsheetHistoryHash.CELL] = null;
         tokens[SpreadsheetHistoryHash.CELL_FORMULA] = false;
 
-        this.parseMergeAndPush(tokens);
+        this.historyParseMergeAndPush(tokens);
     }
 }
 

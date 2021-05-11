@@ -39,7 +39,7 @@ export default class SpreadsheetHistoryAwareWidget extends React.Component {
         throw new Error("Sub classes must override onHistoryChange");
     }
 
-    parseMergeAndPush(tokens) {
+    historyParseMergeAndPush(tokens) {
         SpreadsheetHistoryHash.parseMergeAndPush(
             this.history,
             tokens,
