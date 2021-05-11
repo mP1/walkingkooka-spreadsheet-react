@@ -2,13 +2,14 @@ import Character from "../../Character.js";
 import CharSequences from "../../CharSequences.js";
 import Preconditions from "../../Preconditions.js";
 import SpreadsheetCellReference from "./SpreadsheetCellReference.js";
-import SpreadsheetExpressionReference from "./SpreadsheetExpressionReference.js";
+import SpreadsheetCellReferenceOrLabelName from "./SpreadsheetCellReferenceOrLabelName.js";
 import SystemObject from "../../SystemObject.js";
+
 
 const TYPE_NAME = "spreadsheet-label-name";
 const MAX_LENGTH = 255;
 
-export default class SpreadsheetLabelName extends SpreadsheetExpressionReference {
+export default class SpreadsheetLabelName extends SpreadsheetCellReferenceOrLabelName {
 
     static fromJson(json) {
         return SpreadsheetLabelName.parse(json);
