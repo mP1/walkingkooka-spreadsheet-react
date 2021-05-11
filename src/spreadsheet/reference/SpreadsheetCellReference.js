@@ -4,8 +4,8 @@
 import Character from "../../Character.js";
 import CharSequences from "../../CharSequences.js";
 import Preconditions from "../../Preconditions.js";
+import SpreadsheetCellReferenceOrLabelName from "./SpreadsheetCellReferenceOrLabelName.js";
 import SpreadsheetColumnReference from "./SpreadsheetColumnReference";
-import SpreadsheetExpressionReference from "./SpreadsheetExpressionReference.js";
 import SpreadsheetReferenceKind from "./SpreadsheetReferenceKind";
 import SpreadsheetRowReference from "./SpreadsheetRowReference";
 import SystemObject from "../../SystemObject.js";
@@ -100,7 +100,7 @@ function reportInvalidCharacter(c, pos) {
     throw new Error("Invalid character " + CharSequences.quoteAndEscape(Character.fromJson(c)) + " at " + pos);
 }
 
-export default class SpreadsheetCellReference extends SpreadsheetExpressionReference {
+export default class SpreadsheetCellReference extends SpreadsheetCellReferenceOrLabelName {
 
     /**
      * Tests if the text is a valid cell reference. This may be used to test text that can contain either a
