@@ -87,7 +87,7 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetHistoryAwareWid
             }
         }
 
-        this.parseMergeAndPush(tokens);
+        this.historyParseMergeAndPush(tokens);
     }
 
     reloadFormulaText(reference, giveFocus) {
