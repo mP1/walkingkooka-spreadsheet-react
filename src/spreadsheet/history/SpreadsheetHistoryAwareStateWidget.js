@@ -1,7 +1,6 @@
 import PropTypes from "prop-types";
 import SpreadsheetHistoryAwareWidget from "./SpreadsheetHistoryAwareWidget.js";
 import SpreadsheetHistoryHash from "./SpreadsheetHistoryHash.js";
-import SpreadsheetNotification from "../notification/SpreadsheetNotification.js";
 
 /**
  * A React.Component that is also interested in history change events. Some of the basics like registering a history
