@@ -575,13 +575,6 @@ class App extends React.Component {
 
     // settings.........................................................................................................
 
-    settingsOpen(open) {
-        const widget = this.settings.current;
-        widget && widget.setState({
-            open: open,
-        });
-    }
-
     settingsToggle() {
         const widget = this.settings.current;
         widget && widget.toggle();
