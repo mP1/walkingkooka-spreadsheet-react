@@ -19,16 +19,6 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetHistoryAwareWid
     }
 
     /**
-     * If the formula is being edited, fetch the formula text and update the displayed text.
-     */
-    reloadIfEditing() {
-        const state = this.state;
-        if(null != state.value){
-            this.reloadFormulaText(state.reference);
-        }
-    }
-
-    /**
      * Attempts to update state from the given tokens.
      */
     onHistoryChange(tokens) {
@@ -45,8 +35,13 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetHistoryAwareWid
                 reference: reference,
                 edit: edit,
                 giveFocus: giveFocus,
+                reload: false,
             });
         }
+    }
+
+    shouldComponentUpdate(nextProps,nextState) {
+        return JSON.stringify(this.state) != JSON.stringify(nextState);
     }
 
     /**
@@ -54,7 +49,7 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetHistoryAwareWid
      */
     componentDidUpdate(prevProps, prevState, snapshot) {
         const state = this.state;
-        const {reference, edit, focused, giveFocus} = state;
+        const {reference, edit, focused, giveFocus, reload} = state;
 
         console.log("componentDidUpdate formula reference " + prevState.reference + " to " + reference + " state", state);
 
@@ -69,7 +64,7 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetHistoryAwareWid
         }
 
         // if different reference
-        if(!Equality.safeEquals(reference, prevState.reference)){
+        if(!Equality.safeEquals(reference, prevState.reference) || reload){
             if(edit){
                 this.reloadFormulaText(reference, giveFocus);
             }else {
@@ -91,18 +86,29 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetHistoryAwareWid
     }
 
     reloadFormulaText(reference, giveFocus) {
-        console.log("reloadFormulaText " + reference);
+        console.log("reloadFormulaText " + reference + (giveFocus ? "giveFocus" : ""));
 
-        this.props.getValue(reference, (formulaText) => {
-            console.log("reloadFormulaText latest formulaText for " + reference + " is " + formulaText);
+        this.props.getValue(
+            reference,
+            (formulaText) => {
+                console.log("reloadFormulaText latest formulaText for " + reference + " is " + formulaText);
 
-            this.setState({
-                value: formulaText,
-                giveFocus: false,
+                this.setState({
+                    value: formulaText,
+                    giveFocus: false,
+                    reload: false,
+                });
+
+                giveFocus && this.giveInputFocus();
+            },
+            (e) => {
+                this.setState({
+                    giveFocus: false,
+                    reload: false,
+                });
+
+                this.props.showError(e);
             });
-
-            giveFocus && this.giveInputFocus();
-        });
     }
 
     giveInputFocus() {
