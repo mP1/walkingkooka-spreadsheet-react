@@ -123,10 +123,11 @@ class App extends React.Component {
         const state = this.state;
 
         const metadata = state.spreadsheetMetadata;
-        if(!metadata.isEmpty()){
-            if(!metadata.equalsMost(previousMetadata)){
-                this.formulaReloadIfEditing();
-            }
+        if(!(metadata.isEmpty() || metadata.equalsMost(previousMetadata))) {
+            const formula = this.formula.current;
+            formula && formula.setState({
+                reload: true,
+            });
         }
 
         const viewport = this.viewport.current;
@@ -463,11 +464,12 @@ class App extends React.Component {
     /**
      * Accepts a cell reference and eventually sets the formula text on the second call back function.
      */
-    formulaTextLoad(cellReference, setFormulaText) {
+    formulaTextLoad(cellReference, setFormulaText, onError) {
         Preconditions.requireNonNullInstance(cellReference, SpreadsheetCellReference, "cellReference");
         Preconditions.requireFunction(setFormulaText, "setFormulaText");
+        Preconditions.requireFunction(onError, "onError");
 
-        console.log("formulaTextLoad " + cellReference + " " + setFormulaText);
+        console.log("formulaTextLoad " + cellReference + " " + setFormulaText + " " + onError);
 
         this.loadSpreadsheetCellOrRange(
             cellReference,
@@ -481,7 +483,8 @@ class App extends React.Component {
                     formulaText = formula.text();
                 }
                 setFormulaText(formulaText);
-            }
+            },
+            onError
         );
     }
 
@@ -511,13 +514,6 @@ class App extends React.Component {
                 new SpreadsheetFormula(""),
                 TextStyle.EMPTY
             );
-    }
-
-    /**
-     * This is called whenever the spreadsheet metadata is updated and is necessary because properties such as decimal-separator will require the formula text to be reloaded.
-     */
-    formulaReloadIfEditing() {
-        this.formula.current.reloadIfEditing();
     }
 
     // label............................................................................................................
