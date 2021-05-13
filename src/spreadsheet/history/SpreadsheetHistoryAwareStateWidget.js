@@ -1,3 +1,4 @@
+import Equality from "../../Equality.js";
 import PropTypes from "prop-types";
 import SpreadsheetHistoryAwareWidget from "./SpreadsheetHistoryAwareWidget.js";
 import SpreadsheetHistoryHash from "./SpreadsheetHistoryHash.js";
@@ -44,6 +45,13 @@ export default class SpreadsheetHistoryAwareStateWidget extends SpreadsheetHisto
      */
     stateFromHistoryTokens(tokens) {
         throw new Error("Sub classes must override stateFromHistoryTokens");
+    }
+
+    /**
+     * Only perform an update if the state actually changed.
+     */
+    shouldComponentUpdate(nextProps, nextState) {
+        return !Equality.safeEquals(this.state, nextState);
     }
 
     /**
