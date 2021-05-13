@@ -889,7 +889,7 @@ class SpreadsheetSettingsWidget extends SpreadsheetHistoryAwareStateWidget {
 
                             this.setState( // lgtm [js/react/inconsistent-state-update]
                                 {
-                                    spreadsheetMetadata: null != v ? metadata.set(property, v) : metadata.remove(property),
+                                    spreadsheetMetadata: metadata.setOrRemove(property, v),
                                 }
                             );
                         }.bind(this);

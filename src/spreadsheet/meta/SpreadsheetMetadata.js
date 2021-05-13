@@ -357,6 +357,15 @@ export default class SpreadsheetMetadata extends SystemObject {
     }
 
     /**
+     * Tests the value and if its null removes the property otherwise performs a set.
+     */
+    setOrRemove(propertyName, value) {
+        return null == value ?
+            this.remove(propertyName) :
+            this.set(propertyName, value);
+    }
+
+    /**
      * Would be setter that returns a new SpreadsheetMetadata if the new value is different from the previous.
      */
     set(propertyName, value) {
