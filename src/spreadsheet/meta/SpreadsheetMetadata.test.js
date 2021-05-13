@@ -756,6 +756,21 @@ function removePropertyFailsTest(propertyName) {
     );
 }
 
+test("setOrRemove non null", () => {
+    const cell = SpreadsheetCellReference.parse("Z99");
+    const metadata = SpreadsheetMetadata.EMPTY
+        .setOrRemove(SpreadsheetMetadata.CELL, cell);
+    expect(metadata.getIgnoringDefaults(SpreadsheetMetadata.CELL)).toEqual(cell);
+});
+
+test("setOrRemove null", () => {
+    const cell = SpreadsheetCellReference.parse("Z99");
+    const metadata = SpreadsheetMetadata.EMPTY
+        .set(SpreadsheetMetadata.CELL, cell);
+    const metadata2 = metadata.setOrRemove(SpreadsheetMetadata.CELL, null)
+    expect(metadata2.getIgnoringDefaults(SpreadsheetMetadata.CELL)).toBeUndefined();
+});
+
 // all..................................................................................................................
 
 test("all setters & getters", () => {
