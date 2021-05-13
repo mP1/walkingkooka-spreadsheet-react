@@ -63,6 +63,74 @@ test("safeEquals equals implements equals true", () => {
     expect(Equality.safeEquals(left, right)).toBeTrue();
 });
 
+test("safeEquals equals objects true", () => {
+    const left = {
+        "a": 1,
+        "b": {
+            "c": 2,
+        }
+    };
+    const right = {
+        "a": 1,
+        "b": {
+            "c": 2,
+        }
+    };
+    expect(Equality.safeEquals(left, right)).toBeTrue();
+});
+
+test("safeEquals equals objects false", () => {
+    const left = {
+        "a": 1,
+        "b": {
+            "c": 23,
+        }
+    };
+    const right = {
+        "a": 1,
+        "b": {
+            "c": 24,
+        }
+    };
+    expect(Equality.safeEquals(left, right)).toBeFalse();
+});
+
+test("safeEquals equals Map true", () => {
+    const left = new Map();
+    left.set("A", 1);
+    left.set("B", 2);
+
+    const right = new Map();
+    right.set("A", 1);
+    right.set("B", 2);
+
+    expect(Equality.safeEquals(left, right)).toBeTrue();
+});
+
+test("safeEquals equals Map false", () => {
+    const left = new Map();
+    left.set("A", 1);
+    left.set("B", 2);
+
+    const right = new Map();
+    right.set("A", 1);
+    right.set("B", 99);
+
+    expect(Equality.safeEquals(left, right)).toBeFalse();
+});
+
+test("safeEquals equals Map false #2", () => {
+    const left = new Map();
+    left.set("A", 1);
+    left.set("B", 2);
+
+    const right = new Map();
+    right.set("A", 1);
+    right.set("C", 2);
+
+    expect(Equality.safeEquals(left, right)).toBeFalse();
+});
+
 // safeEquals array......................................................................................................
 
 test("safeEquals equals null & empty array false", () => {

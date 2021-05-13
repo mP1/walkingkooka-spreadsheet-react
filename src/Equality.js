@@ -28,5 +28,21 @@ function equalsArray(left, right) {
 }
 
 function equalsObject(left, right) {
-    return (left && left.equals && left.equals(right)) || left === right;
+    return (left && left.equals && left.equals(right)) || jsonStringify(left) === jsonStringify(right);
+}
+
+/**
+ * Special cases Map, because all Maps serialize to the same JSON.stringify representation.
+ */
+function jsonStringify(object) {
+    return JSON.stringify(
+        object,
+        (k, v) => {
+            return v instanceof Map ?
+                JSON.stringify([...v]) :
+                v && v.toJson ?
+                    v.toJson() :
+                    v;
+        }
+    );
 }
