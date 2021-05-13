@@ -126,13 +126,13 @@ class App extends React.Component {
         if(!metadata.isEmpty()){
             if(!metadata.equalsMost(previousMetadata)){
                 this.formulaReloadIfEditing();
-
-                const viewport = this.viewport.current;
-                viewport.setState({
-                    cells: state.cells,
-                });
             }
         }
+
+        const viewport = this.viewport.current;
+        viewport.setState({
+            cells: state.cells,
+        });
 
         const settings = this.settings.current;
         settings && settings.setState(
