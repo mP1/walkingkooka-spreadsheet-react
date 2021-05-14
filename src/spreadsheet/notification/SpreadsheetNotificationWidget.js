@@ -6,9 +6,7 @@ export default class SpreadsheetNotificationWidget extends React.Component {
     constructor(props) {
         super(props);
 
-        this.state = {
-            notification: props.notification,
-        };
+        this.state = {};
         this.onClose = props.onClose;
     }
 
@@ -23,6 +21,5 @@ export default class SpreadsheetNotificationWidget extends React.Component {
 }
 
 SpreadsheetNotificationWidget.propTypes = {
-    notification: PropTypes.object,
     onClose: PropTypes.func.isRequired,
 }

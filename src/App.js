@@ -396,7 +396,6 @@ class App extends React.Component {
             <WindowResizer dimensions={this.onWindowResized.bind(this)}>
                 <SpreadsheetNotificationWidget ref={this.notification}
                                                key="notification"
-                                               notification={this.state.notification}
                                                onClose={this.onNotificationClose.bind(this)}/>
                 <SpreadsheetLabelWidget key="labelWidget"
                                         history={history}
