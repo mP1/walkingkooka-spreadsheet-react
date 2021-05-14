@@ -14,7 +14,7 @@ export default class SpreadsheetColumnOrRowReference extends SystemObject {
         }
         this.valueValue = value;
 
-        Preconditions.requirelInstance(kind, SpreadsheetReferenceKind, "kind");
+        Preconditions.requireInstance(kind, SpreadsheetReferenceKind, "kind");
         this.kindValue = kind;
     }
 

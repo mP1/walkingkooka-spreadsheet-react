@@ -106,7 +106,7 @@ testThrows("requireNonEmptyText object", Preconditions.requireNonEmptyText, {}, 
 testThrows("requireNonEmptyText empty string", Preconditions.requireNonEmptyText, "", "Label123", "Missing Label123");
 testNotThrows("requireNonEmptyText non empty string", Preconditions.requireNonEmptyText, "abc123");
 
-// requirelInstance......................................................................................................
+// requireInstance......................................................................................................
 
 class Test1 {
 
@@ -124,32 +124,32 @@ class Test4 {
     }
 }
 
-function testRequirelInstanceThrows(title, value, message) {
+function testRequireInstanceThrows(title, value, message) {
     test(title, () => {
         expect(
-            () => Preconditions.requirelInstance(value, Test1, "Label123")
+            () => Preconditions.requireInstance(value, Test1, "Label123")
         ).toThrow(message);
     });
 }
 
-function testRequirelInstanceNotThrows(title, value) {
+function testRequireInstanceNotThrows(title, value) {
     test(title, () => {
         expect(
-            () => Preconditions.requirelInstance(value, Test1, "Label123")
+            () => Preconditions.requireInstance(value, Test1, "Label123")
         ).not
             .toThrow();
     });
 }
 
-testRequirelInstanceThrows("requirelInstance undefined", undefined, "Missing Label123");
-testRequirelInstanceThrows("requirelInstance null", null, "Missing Label123");
-testRequirelInstanceThrows("requirelInstance false", false, "Expected Test1 Label123 got false");
-testRequirelInstanceThrows("requirelInstance instanceof false", new Test3(), "Expected Test1 Label123 got " + new Test3());
-testRequirelInstanceThrows("requirelInstance instanceof false", new Test4(), "Expected Test1 Label123 got Test4!");
-testRequirelInstanceNotThrows("requirelInstance instanceof class", new Test1());
-testRequirelInstanceNotThrows("requirelInstance instanceof subclass", new Test2());
+testRequireInstanceThrows("requireInstance undefined", undefined, "Missing Label123");
+testRequireInstanceThrows("requireInstance null", null, "Missing Label123");
+testRequireInstanceThrows("requireInstance false", false, "Expected Test1 Label123 got false");
+testRequireInstanceThrows("requireInstance instanceof false", new Test3(), "Expected Test1 Label123 got " + new Test3());
+testRequireInstanceThrows("requireInstance instanceof false", new Test4(), "Expected Test1 Label123 got Test4!");
+testRequireInstanceNotThrows("requireInstance instanceof class", new Test1());
+testRequireInstanceNotThrows("requireInstance instanceof subclass", new Test2());
 
-// requirelInstance......................................................................................................
+// requireInstance......................................................................................................
 
 function testOptionalInstanceThrows(title, value, message) {
     test(title, () => {

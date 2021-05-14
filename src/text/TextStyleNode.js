@@ -10,7 +10,7 @@ import TextStyle from "./TextStyle";
 export default class TextStyleNode extends TextNode {
     constructor(styles, children) {
         super();
-        Preconditions.requirelInstance(styles, TextStyle, "styles");
+        Preconditions.requireInstance(styles, TextStyle, "styles");
 
         this.stylesValue = styles;
         this.childrenValue = children || [];

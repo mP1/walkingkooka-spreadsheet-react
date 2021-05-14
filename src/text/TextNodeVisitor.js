@@ -10,7 +10,7 @@ export default class TextNodeVisitor {
     }
 
     accept(node) {
-        Preconditions.requirelInstance(node, TextNode, "node");
+        Preconditions.requireInstance(node, TextNode, "node");
 
         if(this.startVisitTextNode(node)){
             node.accept(this);
