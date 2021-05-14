@@ -58,7 +58,7 @@ class App extends React.Component {
         };
 
         // the names must match the Class.getSimpleName in walkingkooka-spreadsheet
-        this.messenger = new SpreadsheetMessenger(this.showError.bind(this));
+        this.messenger = new SpreadsheetMessenger(this.notificationShowError.bind(this));
         this.messenger.setWebWorker(false); // TODO test webworker mode
 
         this.notification = React.createRef();
@@ -83,7 +83,7 @@ class App extends React.Component {
         this.historyUpdateFromState(
             SpreadsheetHistoryHash.parse(
                 history.location.pathname,
-                this.showError.bind(this)
+                this.notificationShowError.bind(this)
             )
         );
     }
@@ -112,7 +112,7 @@ class App extends React.Component {
         SpreadsheetHistoryHash.parseMergeAndPush(
             this.history,
             hash,
-            this.showError.bind(this)
+            this.notificationShowError.bind(this)
         );
     }
 
@@ -294,7 +294,7 @@ class App extends React.Component {
     onHistoryChange(location) {
         const tokens = SpreadsheetHistoryHash.parse(
             location.pathname,
-            this.showError.bind(this)
+            this.notificationShowError.bind(this)
         );
         this.historyUpdateFromState(tokens);
         this.onHistoryChangeUpdateCell(tokens);
@@ -322,7 +322,7 @@ class App extends React.Component {
                 SpreadsheetHistoryHash.parseMergeAndPush(
                     this.history,
                     replacements,
-                    this.showError.bind(this)
+                    this.notificationShowError.bind(this)
                 );
             }
         }
@@ -390,19 +390,21 @@ class App extends React.Component {
         const viewportCell = metadata.getIgnoringDefaults(SpreadsheetMetadata.VIEWPORT_CELL);
 
         const history = this.history;
-        const showError = this.showError.bind(this);
+
+        const notificationShow = this.notificationShow.bind(this);
+        const showError = this.notificationShowError.bind(this);
 
         return (
             <WindowResizer dimensions={this.onWindowResized.bind(this)}>
                 <SpreadsheetNotificationWidget ref={this.notification}
                                                key="notification"
-                                               onClose={this.onNotificationClose.bind(this)}/>
+                />
                 <SpreadsheetLabelWidget key="labelWidget"
                                         history={history}
                                         loadLabelMapping={this.labelMappingLoad.bind(this)}
                                         saveLabelMapping={this.labelMappingSave.bind(this)}
                                         deleteLabelMapping={this.labelMappingDelete.bind(this)}
-                                        notificationShow={this.notificationShow.bind(this)}
+                                        notificationShow={notificationShow}
                                         showError={showError}
                 />
                 <SpreadsheetBox ref={this.aboveViewport}
@@ -448,7 +450,7 @@ class App extends React.Component {
                 />
                 <SpreadsheetSettingsWidget ref={this.settings}
                                            history={history}
-                                           notificationShow={this.notificationShow.bind(this)}
+                                           notificationShow={notificationShow}
                                            spreadsheetMetadata={metadata}
                                            setSpreadsheetMetadata={this.saveSpreadsheetMetadata.bind(this)}
                                            formatCreateDateTimeModifiedDateTime={this.onFormatCreateDateTimeModifiedDateTime.bind(this)}
@@ -607,8 +609,8 @@ class App extends React.Component {
         );
     }
 
-    onNotificationClose() {
-        this.notificationShow();
+    notificationShowError(error) {
+        this.notificationShow(SpreadsheetNotification.error(error));
     }
 
     // resizing.........................................................................................................
@@ -829,12 +831,8 @@ class App extends React.Component {
             url,
             parameters,
             response,
-            error || this.showError.bind(this),
+            error || this.notificationShowError.bind(this),
         )
-    }
-
-    showError(error) {
-        this.notificationShow(SpreadsheetNotification.error(error));
     }
 
     // toString.........................................................................................................

@@ -1,4 +1,3 @@
-import PropTypes from "prop-types";
 import React from 'react';
 
 export default class SpreadsheetNotificationWidget extends React.Component {
@@ -7,7 +6,6 @@ export default class SpreadsheetNotificationWidget extends React.Component {
         super(props);
 
         this.state = {};
-        this.onClose = props.onClose;
     }
 
     componentDidUpdate(prevProps, prevState, snapshot) {
@@ -16,10 +14,12 @@ export default class SpreadsheetNotificationWidget extends React.Component {
 
     render() {
         const notification = this.state.notification;
-        return notification ? notification.render(this.onClose) : null;
+        return notification ? notification.render(this.onClose.bind(this)) : null;
     }
-}
 
-SpreadsheetNotificationWidget.propTypes = {
-    onClose: PropTypes.func.isRequired,
+    onClose() {
+        this.setState({
+            notification: null,
+        });
+    }
 }
