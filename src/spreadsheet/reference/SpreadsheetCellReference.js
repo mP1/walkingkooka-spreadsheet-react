@@ -148,15 +148,15 @@ export default class SpreadsheetCellReference extends SpreadsheetCellReferenceOr
 
     constructor(column, row) {
         super();
-        Preconditions.requireNonNullInstance(column, SpreadsheetColumnReference, "column");
-        Preconditions.requireNonNullInstance(row, SpreadsheetRowReference, "row");
+        Preconditions.requirelInstance(column, SpreadsheetColumnReference, "column");
+        Preconditions.requirelInstance(row, SpreadsheetRowReference, "row");
 
         this.columnValue = column;
         this.rowValue = row;
     }
 
     setColumn(column) {
-        Preconditions.requireNonNullInstance(column, SpreadsheetColumnReference, "column");
+        Preconditions.requirelInstance(column, SpreadsheetColumnReference, "column");
 
         return this.column() === column ?
             this :
@@ -176,7 +176,7 @@ export default class SpreadsheetCellReference extends SpreadsheetCellReferenceOr
     }
 
     setRow(row) {
-        Preconditions.requireNonNullInstance(row, SpreadsheetRowReference, "row");
+        Preconditions.requirelInstance(row, SpreadsheetRowReference, "row");
 
         return this.row() === row ?
             this :

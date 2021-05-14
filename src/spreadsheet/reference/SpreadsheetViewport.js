@@ -33,7 +33,7 @@ export default class SpreadsheetViewport extends SpreadsheetRectangle {
     constructor(reference, width, height) {
         super();
 
-        Preconditions.requireNonNullInstance(reference, SpreadsheetCellReference, "reference");
+        Preconditions.requirelInstance(reference, SpreadsheetCellReference, "reference");
         this.referenceValue = reference.toRelative();
 
         Preconditions.requireNumber(width, "width");

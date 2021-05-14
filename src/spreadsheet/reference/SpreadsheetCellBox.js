@@ -25,7 +25,7 @@ export default class SpreadsheetCellBox extends SystemObject {
 
     constructor(reference, x, y, width, height) {
         super();
-        Preconditions.requireNonNullInstance(reference, SpreadsheetCellReference, "reference");
+        Preconditions.requirelInstance(reference, SpreadsheetCellReference, "reference");
         this.referenceValue = reference;
 
         if(typeof (x) !== "number"){
