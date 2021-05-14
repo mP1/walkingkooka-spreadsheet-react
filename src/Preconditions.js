@@ -34,6 +34,15 @@ export default class Preconditions {
     }
 
     /**
+     * Throws an exception if value not a function or null.
+     */
+    static optionalFunction(value, label) {
+        if(null != value && typeof value !== "function"){
+            reportError("Expected function " + label + " or nothing got " + value);
+        }
+    }
+    
+    /**
      * Throws an exception if the value is not a number
      */
     static requireNumber(value, label) {
