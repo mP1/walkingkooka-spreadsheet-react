@@ -9,7 +9,6 @@ export default class SpreadsheetHistoryAwareWidget extends React.Component {
 
     constructor(props) {
         super(props);
-        this.history = props.history;
 
         this.init();
     }
@@ -19,7 +18,7 @@ export default class SpreadsheetHistoryAwareWidget extends React.Component {
     }
 
     componentDidMount() {
-        this.historyUnlisten = this.history.listen(
+        this.historyUnlisten = this.props.history.listen(
             (location) => this.onHistoryChange(
                 SpreadsheetHistoryHash.parse(
                     location.pathname,
@@ -41,7 +40,7 @@ export default class SpreadsheetHistoryAwareWidget extends React.Component {
 
     historyParseMergeAndPush(tokens) {
         SpreadsheetHistoryHash.parseMergeAndPush(
-            this.history,
+            this.props.history,
             tokens,
             this.props.showError);
     }
