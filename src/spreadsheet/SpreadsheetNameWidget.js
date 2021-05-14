@@ -61,6 +61,10 @@ export default class SpreadsheetNameWidget extends SpreadsheetHistoryAwareWidget
         replacements[SpreadsheetHistoryHash.SPREADSHEET_NAME_EDIT] = !this.isEdit();
         this.historyParseMergeAndPush(replacements);
     }
+
+    showError(message) {
+        this.props.showError(message);
+    }
 }
 
 SpreadsheetNameWidget.propTypes = {

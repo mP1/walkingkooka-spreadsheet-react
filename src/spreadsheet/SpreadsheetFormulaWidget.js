@@ -107,7 +107,7 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetHistoryAwareWid
                     reload: false,
                 });
 
-                this.props.showError(e);
+                this.showError(e);
             });
     }
 
@@ -207,6 +207,10 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetHistoryAwareWid
         const value = event.target.value;
         this.props.setValue(this.state.reference, value);
         this.setState({"value": value});
+    }
+
+    showError(message) {
+        this.props.showError(message);
     }
 }
 
