@@ -28,7 +28,7 @@ export default class SpreadsheetExpressionReferenceSimilarities extends SystemOb
     constructor(cellReference, labels) {
         super();
 
-        Preconditions.requireInstanceOrNull(cellReference, SpreadsheetCellReference, "cellReference");
+        Preconditions.optionalInstance(cellReference, SpreadsheetCellReference, "cellReference");
         Preconditions.requireArray(labels, "labels");
 
         this.cellReferenceValue = cellReference;
