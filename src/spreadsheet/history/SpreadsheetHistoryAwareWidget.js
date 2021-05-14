@@ -22,7 +22,7 @@ export default class SpreadsheetHistoryAwareWidget extends React.Component {
             (location) => this.onHistoryChange(
                 SpreadsheetHistoryHash.parse(
                     location.pathname,
-                    this.props.showError
+                    this.showError.bind(this)
                 )
             )
         );
@@ -42,11 +42,15 @@ export default class SpreadsheetHistoryAwareWidget extends React.Component {
         SpreadsheetHistoryHash.parseMergeAndPush(
             this.props.history,
             tokens,
-            this.props.showError);
+            this.showError.bind(this)
+        );
+    }
+
+    showError(message) {
+        throw new Error("Sub classes must override showError");
     }
 }
 
 SpreadsheetHistoryAwareWidget.propTypes = {
     history: PropTypes.object.isRequired,
-    showError: PropTypes.func.isRequired,
 }

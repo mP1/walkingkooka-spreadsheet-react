@@ -21,8 +21,8 @@ export default class SpreadsheetHistoryAwareStateWidget extends SpreadsheetHisto
             this.initialStateFromProps(props),
             this.stateFromHistoryTokens(
                 SpreadsheetHistoryHash.parse(
-                    this.props.history.location.pathname,
-                    props.showError,
+                    props.history.location.pathname,
+                    this.showError.bind(this),
                 )
             )
         );
@@ -69,6 +69,10 @@ export default class SpreadsheetHistoryAwareStateWidget extends SpreadsheetHisto
      */
     historyTokensFromState(prevState) {
         throw new Error("Sub classes must override historyTokensFromState()");
+    }
+
+    showError(message) {
+        this.props.showError(message);
     }
 }
 
