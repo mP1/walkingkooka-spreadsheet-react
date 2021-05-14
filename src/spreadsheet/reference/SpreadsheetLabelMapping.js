@@ -21,8 +21,8 @@ export default class SpreadsheetLabelMapping extends SystemObject {
 
     constructor(label, reference) {
         super();
-        Preconditions.requireNonNullInstance(label, SpreadsheetLabelName, "label");
-        Preconditions.requireNonNullInstance(reference, SpreadsheetExpressionReference, "reference");
+        Preconditions.requirelInstance(label, SpreadsheetLabelName, "label");
+        Preconditions.requirelInstance(reference, SpreadsheetExpressionReference, "reference");
 
         if(label.equals(reference)) {
             throw new Error("Reference " + CharSequences.quoteAndEscape(reference.toString()) + " must be different to label " + CharSequences.quoteAndEscape(label.toString()));

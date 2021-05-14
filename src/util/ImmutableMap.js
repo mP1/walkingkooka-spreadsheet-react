@@ -36,7 +36,7 @@ export default class ImmutableMap {
      * Creates a new {@link ImmutableMap}
      */
     constructor(map) {
-        Preconditions.requireNonNullInstance(map, Map, "map");
+        Preconditions.requirelInstance(map, Map, "map");
 
         this.map = new Map(map);
     }
@@ -67,7 +67,7 @@ export default class ImmutableMap {
      * in the new will replace those in the old.
      */
     set(map) {
-        Preconditions.requireNonNullInstance(map, ImmutableMap, "map");
+        Preconditions.requirelInstance(map, ImmutableMap, "map");
 
         return map.isEmpty() ?
             this :
