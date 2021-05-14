@@ -1,3 +1,7 @@
+function reportError(message) {
+    throw new Error(message);
+}
+
 export default class Preconditions {
 
     /**
@@ -5,7 +9,7 @@ export default class Preconditions {
      */
     static requireNonNull(value, label) {
         if(null == value){
-            throw new Error("Missing " + label);
+            reportError("Missing " + label);
         }
     }
 
@@ -15,7 +19,7 @@ export default class Preconditions {
     static requireArray(value, label) {
         Preconditions.requireNonNull(value, label);
         if(!(Array.isArray(value))){
-            throw new Error("Expected array " + label + " got " + value);
+            reportError("Expected array " + label + " got " + value);
         }
     }
 
@@ -25,7 +29,7 @@ export default class Preconditions {
     static requireFunction(value, label) {
         Preconditions.requireNonNull(value, label);
         if(typeof value !== "function"){
-            throw new Error("Expected function " + label + " got " + value);
+            reportError("Expected function " + label + " got " + value);
         }
     }
 
@@ -35,7 +39,7 @@ export default class Preconditions {
     static requireNumber(value, label) {
         Preconditions.requireNonNull(value, label);
         if(typeof value !== "number"){
-            throw new Error("Expected number " + label + " got " + value);
+            reportError("Expected number " + label + " got " + value);
         }
     }
 
@@ -45,7 +49,7 @@ export default class Preconditions {
     static requireObject(value, label) {
         Preconditions.requireNonNull(value, label);
         if(typeof value !== "object" || Array.isArray(value)){
-            throw new Error("Expected object " + label + " got " + value);
+            reportError("Expected object " + label + " got " + value);
         }
     }
 
@@ -55,7 +59,7 @@ export default class Preconditions {
     static requireText(value, label) {
         Preconditions.requireNonNull(value, label);
         if(typeof value !== "string"){
-            throw new Error("Expected string " + label + " got " + value);
+            reportError("Expected string " + label + " got " + value);
         }
     }
 
@@ -65,7 +69,7 @@ export default class Preconditions {
     static requireNonEmptyText(value, label) {
         Preconditions.requireText(value, label);
         if(!value){
-            throw new Error("Missing " + label);
+            reportError("Missing " + label);
         }
     }
 
@@ -76,7 +80,7 @@ export default class Preconditions {
         Preconditions.requireNonNull(value, label);
 
         if(!(value instanceof prototype)){
-            throw new Error("Expected " + prototype.name + " "  + label + " got " + value);
+            reportError("Expected " + prototype.name + " "  + label + " got " + value);
         }
     }
 
@@ -85,7 +89,7 @@ export default class Preconditions {
      */
     static requireInstanceOrNull(value, prototype, label) {
         if(null != value && !(value instanceof prototype)){
-            throw new Error("Expected " + prototype.name + " or nothing "  + label + " got " + value);
+            reportError("Expected " + prototype.name + " or nothing "  + label + " got " + value);
         }
     }
 }
