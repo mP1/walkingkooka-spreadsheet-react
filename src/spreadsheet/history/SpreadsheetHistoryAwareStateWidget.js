@@ -21,7 +21,7 @@ export default class SpreadsheetHistoryAwareStateWidget extends SpreadsheetHisto
             this.initialStateFromProps(props),
             this.stateFromHistoryTokens(
                 SpreadsheetHistoryHash.parse(
-                    this.history.location.pathname,
+                    this.props.history.location.pathname,
                     props.showError,
                 )
             )
