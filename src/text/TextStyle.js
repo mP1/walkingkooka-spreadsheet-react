@@ -662,7 +662,7 @@ export default class TextStyle extends SystemObject {
      * Merges this style with the entries from the given, this means properties in other will replace any that exist in this.
      */
     merge(style) {
-        Preconditions.requirelInstance(style, TextStyle, "style");
+        Preconditions.requireInstance(style, TextStyle, "style");
 
         return style.isEmpty() ?
             this :

@@ -63,10 +63,10 @@ export default class SpreadsheetRange extends SpreadsheetExpressionReference {
 
     constructor(begin, end) {
         super();
-        Preconditions.requirelInstance(begin, SpreadsheetCellReference, "begin");
+        Preconditions.requireInstance(begin, SpreadsheetCellReference, "begin");
         this.beginValue = begin;
 
-        Preconditions.requirelInstance(end, SpreadsheetCellReference, "end");
+        Preconditions.requireInstance(end, SpreadsheetCellReference, "end");
         this.endValue = end;
     }
 

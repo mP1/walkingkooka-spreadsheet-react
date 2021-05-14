@@ -76,7 +76,7 @@ export default class Preconditions {
     /**
      * Throws an exception if value is null or not the correct type
      */
-    static requirelInstance(value, prototype, label) {
+    static requireInstance(value, prototype, label) {
         Preconditions.requireNonNull(value, label);
 
         if(!(value instanceof prototype)){

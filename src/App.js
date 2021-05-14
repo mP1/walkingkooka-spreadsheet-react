@@ -466,7 +466,7 @@ class App extends React.Component {
      * Accepts a cell reference and eventually sets the formula text on the second call back function.
      */
     formulaTextLoad(cellReference, setFormulaText, onError) {
-        Preconditions.requirelInstance(cellReference, SpreadsheetCellReference, "cellReference");
+        Preconditions.requireInstance(cellReference, SpreadsheetCellReference, "cellReference");
         Preconditions.requireFunction(setFormulaText, "setFormulaText");
         Preconditions.requireFunction(onError, "onError");
 
@@ -493,7 +493,7 @@ class App extends React.Component {
      * Saves the given formula text to the given cell reference. This assumes the cell has been previously loaded.
      */
     formulaTextSave(cellReference, formulaText) {
-        Preconditions.requirelInstance(cellReference, SpreadsheetCellReference, "cellReference");
+        Preconditions.requireInstance(cellReference, SpreadsheetCellReference, "cellReference");
         Preconditions.requireText(formulaText, "formulaText");
 
         console.log("formulaTextSave " + cellReference + " " + formulaText);
@@ -507,7 +507,7 @@ class App extends React.Component {
      * Fetches the cell by the given reference or returns an empty {@link SpreadsheetCell}.
      */
     getCellOrEmpty(reference) {
-        Preconditions.requirelInstance(reference, SpreadsheetCellReference, "reference");
+        Preconditions.requireInstance(reference, SpreadsheetCellReference, "reference");
 
         return this.state.cells.get(reference) ||
             new SpreadsheetCell(
@@ -566,7 +566,7 @@ class App extends React.Component {
      * Creates an URL for the given label.
      */
     labelUrl(label) {
-        Preconditions.requirelInstance(label, SpreadsheetLabelName, "label");
+        Preconditions.requireInstance(label, SpreadsheetLabelName, "label");
         return this.spreadsheetMetadataApiUrl() + "/label/" + label
     }
 
@@ -711,7 +711,7 @@ class App extends React.Component {
      * If the new metadata is different call the save service otherwise skip.
      */
     saveSpreadsheetMetadata(metadata) {
-        Preconditions.requirelInstance(metadata, SpreadsheetMetadata, "metadata");
+        Preconditions.requireInstance(metadata, SpreadsheetMetadata, "metadata");
 
         if(metadata.equals(this.spreadsheetMetadata())){
             console.log("saveSpreadsheetMetadata unchanged, save skipped", metadata);
@@ -755,7 +755,7 @@ class App extends React.Component {
     loadSpreadsheetCellOrRange(selection, evaluation, onSuccess) {
         console.log("loadSpreadsheetCellOrRange " + selection + " " + evaluation);
         Preconditions.requireNonNull(selection, "selection");
-        Preconditions.requirelInstance(evaluation, SpreadsheetEngineEvaluation, "evaluation");
+        Preconditions.requireInstance(evaluation, SpreadsheetEngineEvaluation, "evaluation");
 
         const onSpreadsheetDelta = this.onSpreadsheetDelta.bind(this);
 
@@ -777,7 +777,7 @@ class App extends React.Component {
      * Saves the given cell. Eventually the returned value will trigger a re-render.
      */
     saveSpreadsheetCell(cell) {
-        Preconditions.requirelInstance(cell, SpreadsheetCell, "cell");
+        Preconditions.requireInstance(cell, SpreadsheetCell, "cell");
 
         const reference = cell.reference();
 

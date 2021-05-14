@@ -57,9 +57,9 @@ export default class SpreadsheetCell extends SystemObject {
 
     constructor(reference, formula, style, format, formatted) {
         super();
-        Preconditions.requirelInstance(reference, SpreadsheetCellReference, "reference");
-        Preconditions.requirelInstance(formula, SpreadsheetFormula, "formula");
-        Preconditions.requirelInstance(style, TextStyle, "style");
+        Preconditions.requireInstance(reference, SpreadsheetCellReference, "reference");
+        Preconditions.requireInstance(formula, SpreadsheetFormula, "formula");
+        Preconditions.requireInstance(style, TextStyle, "style");
         Preconditions.optionalInstance(format, SpreadsheetCellFormat, "format");
         Preconditions.optionalInstance(formatted, TextNode, "formatted");
 
@@ -82,7 +82,7 @@ export default class SpreadsheetCell extends SystemObject {
      * Would be setter that returns a {@link SpreadsheetCell} with the given {@link SpreadsheetFormula}.
      */
     setFormula(formula) {
-        Preconditions.requirelInstance(formula, SpreadsheetFormula, "formula");
+        Preconditions.requireInstance(formula, SpreadsheetFormula, "formula");
 
         return this.formula() === formula ?
             this :
@@ -133,7 +133,7 @@ export default class SpreadsheetCell extends SystemObject {
      * Renders a TableCell with the formatted content. The default style will typically come from {@link SpreadsheetMetadata}.
      */
     render(defaultStyle, edit, onClick, onKeyDown) {
-        Preconditions.requirelInstance(defaultStyle,TextStyle, "defaultStyle");
+        Preconditions.requireInstance(defaultStyle,TextStyle, "defaultStyle");
         Preconditions.requireFunction(onClick, "onClick");
         //Preconditions.requireFunction(onKeyDown, "onKeyDown");
 
