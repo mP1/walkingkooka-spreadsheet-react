@@ -149,7 +149,7 @@ testRequireInstanceThrows("requireInstance instanceof false", new Test4(), "Expe
 testRequireInstanceNotThrows("requireInstance instanceof class", new Test1());
 testRequireInstanceNotThrows("requireInstance instanceof subclass", new Test2());
 
-// requireInstance......................................................................................................
+// optionalInstance......................................................................................................
 
 function testOptionalInstanceThrows(title, value, message) {
     test(title, () => {
@@ -175,3 +175,32 @@ testOptionalInstanceThrows("optionalInstance instanceof false", new Test3(), "Ex
 testOptionalInstanceThrows("optionalInstance instanceof false", new Test4(), "Expected Test1 or nothing Label123 got Test4!");
 testOptionalInstanceNotThrows("optionalInstance instanceof class", new Test1());
 testOptionalInstanceNotThrows("optionalInstance instanceof subclass", new Test2());
+
+// optionalFunction......................................................................................................
+
+function testOptionalFunctionThrows(title, value, message) {
+    test(title, () => {
+        expect(
+            () => Preconditions.optionalFunction(value, "Label123")
+        ).toThrow(message);
+    });
+}
+
+function testOptionalFunctionNotThrows(title, value) {
+    test(title, () => {
+        expect(
+            () => Preconditions.optionalFunction(value, "Label123")
+        ).not
+            .toThrow();
+    });
+}
+
+testOptionalFunctionNotThrows("optionalFunction undefined", undefined);
+testOptionalFunctionNotThrows("optionalFunction null", null);
+testOptionalFunctionThrows("optionalFunction array", ARRAY, "Expected function Label123 or nothing got 1,2,3");
+testOptionalFunctionThrows("optionalFunction false", false, "Expected function Label123 or nothing got false");
+testOptionalFunctionThrows("optionalFunction class", new Test1(), "Expected function Label123 or nothing got [object Object]");
+testOptionalFunctionNotThrows("optionalFunction function", FUNCTION);
+testOptionalFunctionThrows("optionalFunction number", 123, "Expected function Label123 or nothing got 123");
+testOptionalFunctionThrows("optionalFunction object", {}, "Expected function Label123 or nothing got ");
+testOptionalFunctionThrows("optionalFunction string", "abc123", "Expected function Label123 or nothing got abc123");
