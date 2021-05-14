@@ -60,8 +60,8 @@ export default class SpreadsheetCell extends SystemObject {
         Preconditions.requireNonNullInstance(reference, SpreadsheetCellReference, "reference");
         Preconditions.requireNonNullInstance(formula, SpreadsheetFormula, "formula");
         Preconditions.requireNonNullInstance(style, TextStyle, "style");
-        Preconditions.requireInstanceOrNull(format, SpreadsheetCellFormat, "format");
-        Preconditions.requireInstanceOrNull(formatted, TextNode, "formatted");
+        Preconditions.optionalInstance(format, SpreadsheetCellFormat, "format");
+        Preconditions.optionalInstance(formatted, TextNode, "formatted");
 
         this.referenceValue = reference.toRelative();
         this.formulaValue = formula;

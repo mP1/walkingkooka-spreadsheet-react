@@ -87,7 +87,7 @@ export default class Preconditions {
     /**
      * Throws an exception if value not the correct type, null is ok.
      */
-    static requireInstanceOrNull(value, prototype, label) {
+    static optionalInstance(value, prototype, label) {
         if(null != value && !(value instanceof prototype)){
             reportError("Expected " + prototype.name + " or nothing "  + label + " got " + value);
         }

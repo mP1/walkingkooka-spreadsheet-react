@@ -16,7 +16,7 @@ export default class SpreadsheetText extends SystemObject {
 
     constructor(color, text) {
         super();
-        Preconditions.requireInstanceOrNull(color, Color, "color");
+        Preconditions.optionalInstance(color, Color, "color");
         Preconditions.requireText(text, "text");
         this.colorValue = color;
         this.textValue = text;

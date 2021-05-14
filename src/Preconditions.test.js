@@ -151,27 +151,27 @@ testRequireNonNullInstanceNotThrows("requireNonNullInstance instanceof subclass"
 
 // requireNonNullInstance......................................................................................................
 
-function testRequireInstanceOrNullThrows(title, value, message) {
+function testOptionalInstanceThrows(title, value, message) {
     test(title, () => {
         expect(
-            () => Preconditions.requireInstanceOrNull(value, Test1, "Label123")
+            () => Preconditions.optionalInstance(value, Test1, "Label123")
         ).toThrow(message);
     });
 }
 
-function testRequireInstanceOrNullNotThrows(title, value) {
+function testOptionalInstanceNotThrows(title, value) {
     test(title, () => {
         expect(
-            () => Preconditions.requireInstanceOrNull(value, Test1, "Label123")
+            () => Preconditions.optionalInstance(value, Test1, "Label123")
         ).not
             .toThrow();
     });
 }
 
-testRequireInstanceOrNullNotThrows("requireInstanceOrNull undefined", undefined);
-testRequireInstanceOrNullNotThrows("requireInstanceOrNull null", null);
-testRequireInstanceOrNullThrows("requireInstanceOrNull false", false, "Expected Test1 or nothing Label123 got false");
-testRequireInstanceOrNullThrows("requireInstanceOrNull instanceof false", new Test3(), "Expected Test1 or nothing Label123 got " + new Test3());
-testRequireInstanceOrNullThrows("requireInstanceOrNull instanceof false", new Test4(), "Expected Test1 or nothing Label123 got Test4!");
-testRequireInstanceOrNullNotThrows("requireInstanceOrNull instanceof class", new Test1());
-testRequireInstanceOrNullNotThrows("requireInstanceOrNull instanceof subclass", new Test2());
+testOptionalInstanceNotThrows("optionalInstance undefined", undefined);
+testOptionalInstanceNotThrows("optionalInstance null", null);
+testOptionalInstanceThrows("optionalInstance false", false, "Expected Test1 or nothing Label123 got false");
+testOptionalInstanceThrows("optionalInstance instanceof false", new Test3(), "Expected Test1 or nothing Label123 got " + new Test3());
+testOptionalInstanceThrows("optionalInstance instanceof false", new Test4(), "Expected Test1 or nothing Label123 got Test4!");
+testOptionalInstanceNotThrows("optionalInstance instanceof class", new Test1());
+testOptionalInstanceNotThrows("optionalInstance instanceof subclass", new Test2());

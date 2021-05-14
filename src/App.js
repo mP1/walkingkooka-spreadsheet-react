@@ -597,7 +597,7 @@ class App extends React.Component {
     // Notifications....................................................................................................
 
     notificationShow(notification) {
-        Preconditions.requireInstanceOrNull(notification, SpreadsheetNotification, "notification");
+        Preconditions.optionalInstance(notification, SpreadsheetNotification, "notification");
 
         console.log("notificationShow ", notification);
 
