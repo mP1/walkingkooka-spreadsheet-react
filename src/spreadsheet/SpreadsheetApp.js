@@ -587,7 +587,7 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
      * Formats a SpreadsheetMultiFormatRequest holding the create-date-time and modified-date-time.
      */
     settingsFormatCreateDateTimeModifiedDateTime(multiFormatRequest, success, errorHandler) {
-        console.log("onFormatCreateDateTimeModifiedDateTime ", multiFormatRequest);
+        console.log("settingsFormatCreateDateTimeModifiedDateTime ", multiFormatRequest);
 
         this.messageSend(
             this.spreadsheetMetadataApiUrl() + "/format",
