@@ -483,8 +483,6 @@ context(
             hash()
                 .should('match', /.*\/Untitled\/cell\/B2\/formula/);
 
-            reactRenderWait();
-
             cellFormattedTextCheck("B2", "6.");
         });
 
@@ -502,8 +500,6 @@ context(
             formulaText()
                 .type("=C3+10")
                 .type("{enter}");
-
-            reactRenderWait();
 
             cellFormattedTextCheck("D4", "16.");
         });
@@ -537,8 +533,6 @@ context(
 
             hashAppend("/cell/D4/formula");
 
-            reactRenderWait();
-
             formulaText()
                 .should("have.focus");
         });
@@ -549,8 +543,6 @@ context(
             cellClick("C3");
 
             hashAppend("/formula");
-
-            reactRenderWait();
 
             formulaText()
                 .should("have.focus");
@@ -648,8 +640,6 @@ context(
             hash()
                 .should('match', /.*\/.*\/cell\/A3\/formula/);
 
-            reactRenderWait();
-
             formulaText()
                 .should("have.focus");
         });
@@ -696,7 +686,6 @@ context(
 
             hashAppend("/settings");
 
-            reactRenderWait();
             settings()
                 .should('be.visible');
         });
@@ -704,7 +693,6 @@ context(
         it("Hide settings by editing history hash", () => {
             emptySpreadsheetWait();
             settingsToggle();
-            reactRenderWait();
 
             cy.window()
                 .then(function(win) {
@@ -712,7 +700,6 @@ context(
                     win.location.hash = hash.substring(0, hash.length - 1);
                 });
 
-            reactRenderWait();
             settings()
                 .should('be.not.visible');
         });
@@ -848,8 +835,6 @@ context(
                         cellFormattedTextCheck(a1, a1CellContent);
                     }
 
-                    reactRenderWait();
-
                     // restore original textField value.
                     cy.get(textFieldId)
                         .type("{selectall}")
@@ -891,8 +876,6 @@ context(
                     if(a1Formula){
                         cellFormattedTextCheck(a1, a1CellContent);
                     }
-
-                    reactRenderWait();
 
                     // type text and blur
                     cy.get(textFieldId)
@@ -1814,8 +1797,6 @@ context(
 
                     // updated hash should be rejected.
                     win.location.hash = hash + hashAppend;
-
-                    reactRenderWait();
 
                     cy.hash()
                         .should("eq", hash);
