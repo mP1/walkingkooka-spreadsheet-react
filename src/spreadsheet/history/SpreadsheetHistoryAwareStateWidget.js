@@ -78,5 +78,4 @@ export default class SpreadsheetHistoryAwareStateWidget extends SpreadsheetHisto
 
 SpreadsheetHistoryAwareStateWidget.propTypes = {
     history: PropTypes.object.isRequired,
-    showError: PropTypes.func.isRequired,
 }
