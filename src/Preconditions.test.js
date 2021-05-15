@@ -70,6 +70,20 @@ testThrows("requireNumber object", Preconditions.requireNumber, {}, "Label123", 
 testNotThrows("requireNumber number 0", Preconditions.requireNumber, 0);
 testNotThrows("requireNumber number 1", Preconditions.requireNumber, 1);
 
+// requirePositiveNumber.......................................................................................................
+
+testThrows("requirePositiveNumber undefined", Preconditions.requirePositiveNumber, undefined, "Label123", "Missing Label123");
+testThrows("requirePositiveNumber null", Preconditions.requirePositiveNumber, null, "Label123", "Missing Label123");
+testThrows("requirePositiveNumber false", Preconditions.requirePositiveNumber, false, "Label123", "Expected number Label123 got false");
+testThrows("requirePositiveNumber empty string", Preconditions.requirePositiveNumber, "", "Label123", "Expected number Label123 got ");
+testThrows("requirePositiveNumber string", Preconditions.requirePositiveNumber, "ABC123", "Label123", "Expected number Label123 got ABC123");
+testThrows("requirePositiveNumber function", Preconditions.requirePositiveNumber, FUNCTION, "Label123", "Expected number Label123 got function () {}");
+testThrows("requirePositiveNumber array", Preconditions.requirePositiveNumber, ARRAY, "Label123", "Expected number Label123 got 1,2,3");
+testThrows("requirePositiveNumber object", Preconditions.requirePositiveNumber, {}, "Label123", "Expected number Label123 got [object Object]");
+testThrows("requirePositiveNumber number < 0", Preconditions.requirePositiveNumber, -1, "Label123", "Expected number >= 0 Label123 got -1");
+testNotThrows("requirePositiveNumber number 0", Preconditions.requirePositiveNumber, 0);
+testNotThrows("requirePositiveNumber number 1", Preconditions.requirePositiveNumber, 1);
+
 // requireObject.......................................................................................................
 
 testThrows("requireObject undefined", Preconditions.requireObject, undefined, "Label123", "Missing Label123");
