@@ -781,33 +781,25 @@ function checkCharacter(character) {
 }
 
 function checkCurrencySymbol(currencySymbol) {
-    if(typeof currencySymbol !== "string"){
-        throw new Error("Expected string currency got " + currencySymbol);
-    }
+    Preconditions.requireText(currencySymbol, "currencySymbol");
 }
 
 function checkPrecision(precision) {
-    if(typeof precision !== "number"){
-        throw new Error("Expected number precision got " + precision);
-    }
+    Preconditions.requireNumber(precision, "precision");
     if(!(precision >= 0)){
         throw new Error("Expected number precision >= 0 got " + precision);
     }
 }
 
 function checkTwoDigitYear(twoDigitYear) {
-    if(typeof twoDigitYear !== "number"){
-        throw new Error("Expected number twoDigitYear got " + twoDigitYear);
-    }
+    Preconditions.requireNumber(twoDigitYear, "twoDigitYear");
     if(twoDigitYear < 0 || twoDigitYear > 99){
         throw new Error("Expected number twoDigitYear >= 0 and <= 99 got " + twoDigitYear);
     }
 }
 
 function checkCellCharacterWidth(width) {
-    if(typeof width !== "number"){
-        throw new Error("Expected number width got " + width);
-    }
+    Preconditions.requireNumber(width, "cell-character-width");
     if(width <= 0){
         throw new Error("Expected number width > 0 got " + width);
     }
