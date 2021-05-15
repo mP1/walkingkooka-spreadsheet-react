@@ -51,6 +51,7 @@ context(
         });
 
         it("Edit spreadsheet name", () => {
+            emptySpreadsheetWait();
             spreadsheetNameClick();
 
             const updatedSpreadsheetName = "SpreadsheetName234"; // easier to use in regex below
@@ -90,7 +91,9 @@ context(
         });
 
         it("Enter history hash show label mapping after editing name", () => {
-            spreadsheetNameClick()
+            emptySpreadsheetWait();
+
+            spreadsheetNameClick();
 
             historyHashLabel();
 
@@ -384,7 +387,7 @@ context(
         });
 
         function historyHashLabel() {
-            reactRenderWait(); // wait for empty spreadsheet
+            emptySpreadsheetWait();
             hashAppend("/label/" + LABEL);
         }
 
@@ -448,7 +451,7 @@ context(
         });
 
         it("Click viewport cell", () => {
-            reactRenderWait();
+            emptySpreadsheetWait();
 
             cellClick("B2");
 
@@ -457,6 +460,7 @@ context(
         });
 
         it("Click viewport cell after editing name", () => {
+            emptySpreadsheetWait();
             spreadsheetNameClick();
             
             cellClick("B2");
@@ -466,7 +470,7 @@ context(
         });
 
         it("Edit cell formula", () => {
-            reactRenderWait();
+            emptySpreadsheetWait();
 
             cellClick("B2");
 
@@ -485,7 +489,7 @@ context(
         });
 
         it("Enter cell formula with reference", () => {
-            reactRenderWait();
+            emptySpreadsheetWait();
 
             cellClick("C3");
 
@@ -505,7 +509,7 @@ context(
         });
 
         it("Edit cell formula, update hash cell reference", () => {
-            reactRenderWait();
+            emptySpreadsheetWait();
 
             cellClick("C3");
 
@@ -529,7 +533,7 @@ context(
         });
 
         it("Update hash append cell/reference/formula", () => {
-            reactRenderWait();
+            emptySpreadsheetWait();
 
             hashAppend("/cell/D4/formula");
 
@@ -540,7 +544,7 @@ context(
         });
 
         it("Update hash append formula", () => {
-            reactRenderWait();
+            emptySpreadsheetWait();
 
             cellClick("C3");
 
@@ -561,7 +565,7 @@ context(
         });
 
         it("Update then create new empty spreadsheet", () => {
-            reactRenderWait();
+            emptySpreadsheetWait();
 
             cellClick("E5");
 
@@ -577,7 +581,7 @@ context(
         });
 
         it("Update then create new empty spreadsheet then reload non empty", () => {
-            reactRenderWait();
+            emptySpreadsheetWait();
 
             cellClick("F6");
 
@@ -593,7 +597,7 @@ context(
         });
 
         it("Select cell should have focus", () => {
-            reactRenderWait();
+            emptySpreadsheetWait();
 
             cellClick("B2");
 
@@ -602,7 +606,7 @@ context(
         });
 
         it("Select cell and navigate using arrow keys", () => {
-            reactRenderWait();
+            emptySpreadsheetWait();
 
             cellClick("C3")
                 .should('have.focus');
@@ -633,7 +637,7 @@ context(
         });
 
         it("Select cell and hit ENTER gives formula text focus", () => {
-            reactRenderWait();
+            emptySpreadsheetWait();
 
             cellClick("A3")
                 .should('have.focus');
@@ -651,7 +655,7 @@ context(
         });
 
         it("Select cell and hit ESC loses viewport cell focus", () => {
-            reactRenderWait();
+            emptySpreadsheetWait();
 
             cellClick("A3")
                 .should('have.focus');
@@ -669,6 +673,7 @@ context(
         // SETTINGS.........................................................................................................
 
         it("Toggle(Show and hide) settings", () => {
+            emptySpreadsheetWait();
             settingsToggle();
 
             settings()
@@ -687,7 +692,7 @@ context(
         });
 
         it("Show settings by editing history hash", () => {
-            reactRenderWait();
+            emptySpreadsheetWait();
 
             hashAppend("/settings");
 
@@ -697,6 +702,7 @@ context(
         });
 
         it("Hide settings by editing history hash", () => {
+            emptySpreadsheetWait();
             settingsToggle();
             reactRenderWait();
 
@@ -712,38 +718,26 @@ context(
         });
 
         it("Toggle show settings history hash", () => {
-            reactRenderWait();
-
-            cy.window()
-                .then(function(win) {
-                    var hash = win.location.hash;
+            emptySpreadsheetWait();
 
                     settingsToggle();
 
-                    reactRenderWait();
                     cy.hash()
-                        .should("eq", hash + "/settings");
-                });
+                        .should("match", /.*\/Untitled\/settings/);
         });
 
         it("Toggle show then hide settings history hash", () => {
-            reactRenderWait();
-
-            cy.window()
-                .then(function(win) {
-                    var hash = win.location.hash;
+            emptySpreadsheetWait();
 
                     settingsToggle();
                     settingsToggle();
 
-                    reactRenderWait();
                     cy.hash()
-                        .should("eq", hash);
-                });
+                        .should("match", /.*\/Untitled/);
         });
 
         it("Toggle show open section then hide settings history hash", () => {
-            reactRenderWait();
+            emptySpreadsheetWait();
 
             cy.window()
                 .then(function(win) {
@@ -761,47 +755,38 @@ context(
                     cy.get("#settings-spreadsheet-" + section + "-content")
                         .should('be.visible');
 
-                    reactRenderWait();
                     cy.hash()
                         .should("eq", hash + "/settings/" + section);
                 });
         });
 
         it("Edit spreadsheet name, then toggle show settings history hash", () => {
-            spreadsheetName();
+            emptySpreadsheetWait();
+            spreadsheetNameClick();
 
-            reactRenderWait();
+            settingsToggle();
 
-            cy.window()
-                .then(function(win) {
-                    var hash = win.location.hash;
-
-                    settingsToggle();
-
-                    reactRenderWait();
-                    cy.hash()
-                        .should("eq", hash + "/settings");
-                });
+            cy.hash()
+                .should("matches", /.*\/Untitled\/settings/);
         });
 
         it("Edit cell, then toggle show settings history hash", () => {
+            emptySpreadsheetWait();
+
             cellClick("F6");
 
-            reactRenderWait();
+            cy.hash()
+                .should("matches", /.*\/Untitled\/cell\/F6/);
 
-            cy.window()
-                .then(function(win) {
-                    var hash = win.location.hash;
+            settingsToggle();
 
-                    settingsToggle();
-
-                    reactRenderWait();
-                    cy.hash()
-                        .should("eq", hash + "/settings");
-                });
+            cy.hash()
+                .should("matches", /.*\/Untitled\/cell\/F6\/settings/);
         });
 
         it("Show settings check creator-date-time/modified-date-time", () => {
+            emptySpreadsheetWait();
+
             settingsToggle();
 
             settings()
@@ -828,6 +813,7 @@ context(
                                                                  a1CellContent,
                                                                  a1CellContentDefault) {
             it("Settings update SpreadsheetMetadata." + property, () => {
+                emptySpreadsheetWait();
                 settingsToggle();
                 settingsOpenSectionSpreadsheetMetadataProperty(property);
 
@@ -929,6 +915,7 @@ context(
                                                                    values,
                                                                    a1CellContents) {
             it("Settings update SpreadsheetMetadata." + property, () => {
+                emptySpreadsheetWait();
                 settingsToggle();
                 settingsOpenSectionSpreadsheetMetadataProperty(property);
 
@@ -965,6 +952,7 @@ context(
                                                                                   values,
                                                                                   a1CellContents) {
             it("Settings update SpreadsheetMetadata." + property, () => {
+                emptySpreadsheetWait();
                 settingsToggle();
                 settingsOpenSectionSpreadsheetMetadataProperty(property);
 
@@ -1067,6 +1055,7 @@ context(
                                                                          values,
                                                                          a1CellContents) {
             it("Settings update SpreadsheetMetadata." + property, () => {
+                emptySpreadsheetWait();
                 settingsToggle();
                 settingsOpenSectionSpreadsheetMetadataProperty(property);
 
@@ -1383,6 +1372,7 @@ context(
                                                                   property2,
                                                                   text2) {
             it("Settings update SpreadsheetMetadata." + property1 + "=" + text1 + " & " + property2 + "=" + text2 + " causing value swap", () => {
+                emptySpreadsheetWait();
                 settingsToggle();
                 settingsOpenSectionSpreadsheetMetadataProperty(property1);
 
@@ -1452,6 +1442,7 @@ context(
 
         function settingsSpreadsheetMetadataStyleColorAndCheck(property, defaultColor) {
             it("Settings update SpreadsheetMetadata.style." + property, () => {
+                emptySpreadsheetWait();
                 settingsToggle();
                 settingsOpenSectionSpreadsheetMetadataStyleProperty(property);
 
@@ -1503,6 +1494,7 @@ context(
                                                                 defaultValue,
                                                                 defaultButtonText) {
             it("Settings update SpreadsheetMetadata.style." + property, () => {
+                emptySpreadsheetWait();
                 settingsToggle();
                 settingsOpenSectionSpreadsheetMetadataStyleProperty(property);
 
@@ -1554,6 +1546,7 @@ context(
                                                                               defaultValue,
                                                                               defaultButtonText) {
             it("Settings update SpreadsheetMetadata.style." + property, () => {
+                emptySpreadsheetWait();
                 settingsToggle();
                 settingsOpenSectionSpreadsheetMetadataStyleProperty(property);
 
@@ -1813,7 +1806,7 @@ context(
          * hash is restored.
          */
         function invalidHashUpdateRejected(hashAppend) {
-            reactRenderWait();
+            emptySpreadsheetWait();
 
             cy.window()
                 .then(function(win) {
@@ -1894,7 +1887,8 @@ context(
             spreadsheetName()
                 .click();
 
-            hash().should('match', /.*\/.*\/name/) // => true
+            hash()
+                .should('match', /.*\/.*\/name/) // => true
         }
 
         function formulaText() {
@@ -1977,6 +1971,12 @@ context(
         function settings() {
             reactRenderWait();
             return cy.get("#settings > DIV"); // the #settings remains 1000x0 while the DIV child has an actual height
+        }
+
+        function emptySpreadsheetWait() {
+            hash()
+                .should('match', /.*\/Untitled/); // wait for /$id/$name
+
         }
 
         function reactRenderWait(period) {
