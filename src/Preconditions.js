@@ -53,6 +53,16 @@ export default class Preconditions {
     }
 
     /**
+     * Throws an exception if the value is not a positive number
+     */
+    static requirePositiveNumber(value, label) {
+        Preconditions.requireNumber(value, label);
+        if(value < 0){
+            reportError("Expected number >= 0 " + label + " got " + value);
+        }
+    }
+
+    /**
      * Throws an exception if the value is not a object. Note that arrays are not considered objects.
      */
     static requireObject(value, label) {
