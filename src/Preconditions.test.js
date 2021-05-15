@@ -80,7 +80,7 @@ testThrows("requirePositiveNumber string", Preconditions.requirePositiveNumber, 
 testThrows("requirePositiveNumber function", Preconditions.requirePositiveNumber, FUNCTION, "Label123", "Expected number Label123 got function () {}");
 testThrows("requirePositiveNumber array", Preconditions.requirePositiveNumber, ARRAY, "Label123", "Expected number Label123 got 1,2,3");
 testThrows("requirePositiveNumber object", Preconditions.requirePositiveNumber, {}, "Label123", "Expected number Label123 got [object Object]");
-testThrows("requirePositiveNumber number < 0", Preconditions.requirePositiveNumber, -1, "Label123", "Expected number >= 0 Label123 got -1");
+testThrows("requirePositiveNumber number < 0", Preconditions.requirePositiveNumber, -1, "Label123", "Expected number Label123 >= 0 got -1");
 testNotThrows("requirePositiveNumber number 0", Preconditions.requirePositiveNumber, 0);
 testNotThrows("requirePositiveNumber number 1", Preconditions.requirePositiveNumber, 1);
 

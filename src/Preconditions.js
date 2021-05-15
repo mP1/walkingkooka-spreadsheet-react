@@ -58,7 +58,7 @@ export default class Preconditions {
     static requirePositiveNumber(value, label) {
         Preconditions.requireNumber(value, label);
         if(value < 0){
-            reportError("Expected number >= 0 " + label + " got " + value);
+            reportError("Expected number " + label + " >= 0 got " + value);
         }
     }
 
