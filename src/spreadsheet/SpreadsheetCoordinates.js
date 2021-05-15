@@ -26,20 +26,10 @@ export default class SpreadsheetCoordinates extends SystemObject {
     constructor(x, y) {
         super();
 
-        if(typeof (x) !== "number"){
-            throw new Error("Expected number x got " + x);
-        }
-        if(x < 0){
-            throw new Error("Expected x >= 0 got " + x);
-        }
+        Preconditions.requirePositiveNumber(x, "x");
         this.xValue = x;
 
-        if(typeof (y) !== "number"){
-            throw new Error("Expected number y got " + y);
-        }
-        if(y < 0){
-            throw new Error("Expected y >= 0 got " + y);
-        }
+        Preconditions.requirePositiveNumber(y, "y");
         this.yValue = y;
     }
 
