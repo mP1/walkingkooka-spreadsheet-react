@@ -28,7 +28,7 @@ systemObjectTesting(
 
 test("create missing x fails", () => {
     const x = null;
-    expect(() => new SpreadsheetCoordinates(x, y())).toThrow("Expected number x got " + x);
+    expect(() => new SpreadsheetCoordinates(x, y())).toThrow("Missing x");
 });
 
 test("create invalid x type fails", () => {
@@ -38,19 +38,19 @@ test("create invalid x type fails", () => {
 
 test("create invalid x value fails", () => {
     const x = -1;
-    expect(() => new SpreadsheetCoordinates(x, y())).toThrow("Expected x >= 0 got " + x);
+    expect(() => new SpreadsheetCoordinates(x, y())).toThrow("Expected number x >= 0 got " + x);
 });
 
 test("create invalid x value fails2", () => {
     const x = -123;
-    expect(() => new SpreadsheetCoordinates(x, y())).toThrow("Expected x >= 0 got " + x);
+    expect(() => new SpreadsheetCoordinates(x, y())).toThrow("Expected number x >= 0 got " + x);
 });
 
 // y
 
 test("create missing y fails", () => {
     const y = null;
-    expect(() => new SpreadsheetCoordinates(x(), y)).toThrow("Expected number y got " + y);
+    expect(() => new SpreadsheetCoordinates(x(), y)).toThrow("Missing y");
 });
 
 test("create invalid y type fails", () => {
@@ -60,12 +60,12 @@ test("create invalid y type fails", () => {
 
 test("create invalid y value fails", () => {
     const y = -1;
-    expect(() => new SpreadsheetCoordinates(x(), y)).toThrow("Expected y >= 0 got " + y);
+    expect(() => new SpreadsheetCoordinates(x(), y)).toThrow("Expected number y >= 0 got " + y);
 });
 
 test("create invalid y value fails2", () => {
     const y = -123;
-    expect(() => new SpreadsheetCoordinates(x(), y)).toThrow("Expected y >= 0 got " + y);
+    expect(() => new SpreadsheetCoordinates(x(), y)).toThrow("Expected number y >= 0 got " + y);
 });
 
 // json

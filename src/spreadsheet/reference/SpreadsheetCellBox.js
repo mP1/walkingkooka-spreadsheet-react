@@ -29,36 +29,16 @@ export default class SpreadsheetCellBox extends SystemObject {
         Preconditions.requireInstance(reference, SpreadsheetCellReference, "reference");
         this.referenceValue = reference;
 
-        if(typeof (x) !== "number"){
-            throw new Error("Expected number x got " + x);
-        }
-        if(x < 0){
-            throw new Error("Expected x >= 0 got " + x);
-        }
+        Preconditions.requirePositiveNumber(x, "x");
         this.xValue = x;
 
-        if(typeof (y) !== "number"){
-            throw new Error("Expected number y got " + y);
-        }
-        if(y < 0){
-            throw new Error("Expected y >= 0 got " + y);
-        }
+        Preconditions.requirePositiveNumber(y, "y");
         this.yValue = y;
 
-        if(typeof (width) !== "number"){
-            throw new Error("Expected number width got " + width);
-        }
-        if(width < 0){
-            throw new Error("Expected width >= 0 got " + width);
-        }
+        Preconditions.requirePositiveNumber(width, "width");
         this.widthValue = width;
 
-        if(typeof (height) !== "number"){
-            throw new Error("Expected number height got " + height);
-        }
-        if(height < 0){
-            throw new Error("Expected height >= 0 got " + height);
-        }
+        Preconditions.requirePositiveNumber(height, "height");
         this.heightValue = height;
     }
 
