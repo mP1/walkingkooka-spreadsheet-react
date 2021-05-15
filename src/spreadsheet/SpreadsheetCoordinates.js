@@ -5,7 +5,7 @@ const SEPARATOR = ",";
 const TYPE_NAME = "spreadsheet-coordinates";
 
 /**
- * Coordinates within a spreadsheet.
+ * Absolute coordinates used to position or locate the top left corner of a cell within an entire spreadsheet.
  */
 export default class SpreadsheetCoordinates extends SystemObject {
 
