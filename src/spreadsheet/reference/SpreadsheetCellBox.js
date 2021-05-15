@@ -1,6 +1,7 @@
 /**
- * Captures the coordinates and dimensions of a rendered {@link SpreadsheetCell}.
- * This is used to locate the origin of the viewportCoordinates and the dimensions of the cell there.
+ * Captures the coordinates and dimensions of a rendered {@link SpreadsheetCell}. This information is useful to help the
+ * UI compute the origin of the visible {@link walkingkooka.spreadsheet.reference.SpreadsheetRange}.
+ * Note the width and height may be empty when the spreadsheet has no cells and therefore there is no width/height.
  */
 import Preconditions from "../../Preconditions.js";
 import SpreadsheetCellReference from "./SpreadsheetCellReference";
