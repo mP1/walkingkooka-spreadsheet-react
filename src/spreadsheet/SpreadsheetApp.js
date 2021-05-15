@@ -334,7 +334,7 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
                                            notificationShow={notificationShow}
                                            spreadsheetMetadata={metadata}
                                            setSpreadsheetMetadata={this.spreadsheetMetadataSave.bind(this)}
-                                           formatCreateDateTimeModifiedDateTime={this.onFormatCreateDateTimeModifiedDateTime.bind(this)}
+                                           formatCreateDateTimeModifiedDateTime={this.settingsFormatCreateDateTimeModifiedDateTime.bind(this)}
                                            showError={showError}
                 />
             </WindowResizer>
@@ -586,7 +586,7 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
     /**
      * Formats a SpreadsheetMultiFormatRequest holding the create-date-time and modified-date-time.
      */
-    onFormatCreateDateTimeModifiedDateTime(multiFormatRequest, success, errorHandler) {
+    settingsFormatCreateDateTimeModifiedDateTime(multiFormatRequest, success, errorHandler) {
         console.log("onFormatCreateDateTimeModifiedDateTime ", multiFormatRequest);
 
         this.messageSend(
