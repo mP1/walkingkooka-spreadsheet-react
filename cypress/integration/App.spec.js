@@ -771,13 +771,10 @@ context(
                 .should("matches", /.*\/Untitled\/cell\/F6\/settings/);
         });
 
-        it("Show settings check creator-date-time/modified-date-time", () => {
+        it("Settings metadata check creator-date-time/modified-date-time", () => {
             emptySpreadsheetWait();
-
             settingsToggle();
-
-            settings()
-                .should('be.visible');
+            settingsOpenSectionSpreadsheetMetadataProperty(SpreadsheetMetadata.CREATE_DATE_TIME);
 
             const year = new Date().getFullYear();
 
