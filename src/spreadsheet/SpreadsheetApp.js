@@ -242,7 +242,7 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
     stateSpreadsheetViewportRange(prevState) {
         const viewportRange = this.state.viewportRange;
         const previousViewportRange = prevState.viewportRange;
-        console.log("@@@stateSpreadsheetViewportRange: " + viewportRange);
+
         if(viewportRange && !Equality.safeEquals(viewportRange, previousViewportRange)){
             this.cellOrRangeLoad(
                 viewportRange,
@@ -572,7 +572,8 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
      * of the viewport area.
      */
     onSpreadsheetRange(json) {
-        console.log("@@onSpreadsheetRange: " + JSON.stringify(json));
+        console.log("onSpreadsheetRange: ", json);
+
         this.setState({
             viewportRange: SpreadsheetRange.fromJson(json),
         });
@@ -729,7 +730,7 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
      * Accepts {@link SpreadsheetCellBox} and requests the {@link SpreadsheetRange} that fill the content.
      */
     onCellBox(cellBox) {
-        console.log("@@onCellBoxViewportRangeUpdate " + cellBox);
+        console.log("cellBox: ", cellBox);
 
         this.messageSend(
             this.spreadsheetMetadataApiUrl() + "/viewport/" + cellBox.viewport(),
