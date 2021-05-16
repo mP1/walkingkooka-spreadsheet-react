@@ -4,7 +4,6 @@ import Accordion from '@material-ui/core/Accordion';
 import AccordionDetails from '@material-ui/core/AccordionDetails';
 import AccordionSummary from '@material-ui/core/AccordionSummary';
 import Drawer from "@material-ui/core/Drawer";
-import Equality from "../../Equality.js";
 import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
 import ExpressionNumberKind from "../../math/ExpressionNumberKind.js";
 import FontFamily from "../../text/FontFamily.js";
@@ -128,40 +127,40 @@ class SpreadsheetSettingsWidget extends SpreadsheetHistoryAwareStateWidget {
      * Translates the state to history tokens and performs some other updates and checks.
      */
     historyTokensFromState(prevState) {
+        const historyTokens = {};
         const state = this.state;
+
         console.log("componentDidUpdate", "prevState", prevState, "state", state);
 
-        const openOld = !!prevState.open;
         const openNew = !!state.open;
 
         const oldSection = prevState.section;
         const newSection = state.section;
 
-        const historyTokens = {};
-        if(openOld !== openNew || oldSection !== newSection){
-            historyTokens[SpreadsheetHistoryHash.SETTINGS] = openNew;
-            historyTokens[SpreadsheetHistoryHash.SETTINGS_SECTION] = state.section;
-        }
-
         const metadata = state.spreadsheetMetadata;
-        const createDateTime = metadata.getIgnoringDefaults(SpreadsheetMetadata.CREATE_DATE_TIME);
-        const modifiedDateTime = metadata.getIgnoringDefaults(SpreadsheetMetadata.MODIFIED_DATE_TIME);
 
-        const previousMetadata = prevState.spreadsheetMetadata;
+        historyTokens[SpreadsheetHistoryHash.SETTINGS] = openNew;
+        historyTokens[SpreadsheetHistoryHash.SETTINGS_SECTION] = newSection;
 
-        if(!metadata.equals(previousMetadata)){
-            this.props.setSpreadsheetMetadata(metadata);
+        // if now showing metadata load formatted createDateTime/modifiedDateTime
+        if(openNew &&
+            newSection === SpreadsheetHistoryHash.SETTINGS_METADATA &&
+            oldSection !== SpreadsheetHistoryHash.SETTINGS_METADATA
+        ){
+            const createDateTime = metadata.getIgnoringDefaults(SpreadsheetMetadata.CREATE_DATE_TIME);
+            const modifiedDateTime = metadata.getIgnoringDefaults(SpreadsheetMetadata.MODIFIED_DATE_TIME);
+
+            if(createDateTime && modifiedDateTime && !(state.createDateTimeFormatted) && !(state.modifiedDateTimeFormatted)){
+                const formatRequests = [];
+                formatRequests.push(new SpreadsheetFormatRequest(createDateTime, SpreadsheetLocaleDefaultDateTimeFormat.INSTANCE));
+                formatRequests.push(new SpreadsheetFormatRequest(modifiedDateTime, SpreadsheetLocaleDefaultDateTimeFormat.INSTANCE));
+
+                this.metadataFormatCreateDateTimeModifiedDateTime(new SpreadsheetMultiFormatRequest(formatRequests));
+            }
         }
 
-        // initiate requests to fetch create & modified date time.......................................................
-        if(!Equality.safeEquals(createDateTime, previousMetadata.getIgnoringDefaults(SpreadsheetMetadata.CREATE_DATE_TIME)) ||
-            !Equality.safeEquals(modifiedDateTime, previousMetadata.getIgnoringDefaults(SpreadsheetMetadata.MODIFIED_DATE_TIME))
-        ){
-            const formatRequests = [];
-            formatRequests.push(new SpreadsheetFormatRequest(createDateTime, SpreadsheetLocaleDefaultDateTimeFormat.INSTANCE));
-            formatRequests.push(new SpreadsheetFormatRequest(modifiedDateTime, SpreadsheetLocaleDefaultDateTimeFormat.INSTANCE));
-
-            this.sendFormatCreateDateTimeModifiedDateTime(new SpreadsheetMultiFormatRequest(formatRequests));
+        if(!metadata.equals(prevState.spreadsheetMetadata)){
+            this.props.setSpreadsheetMetadata(metadata);
         }
 
         return historyTokens;
@@ -170,7 +169,7 @@ class SpreadsheetSettingsWidget extends SpreadsheetHistoryAwareStateWidget {
     /**
      * Make a request to the server to format the createDateTime & modifiedDateTime
      */
-    sendFormatCreateDateTimeModifiedDateTime(request) {
+    metadataFormatCreateDateTimeModifiedDateTime(request) {
         this.props.formatCreateDateTimeModifiedDateTime(
             request,
             this.setFormattedCreateDateTimeAndModifiedDateTime.bind(this)
