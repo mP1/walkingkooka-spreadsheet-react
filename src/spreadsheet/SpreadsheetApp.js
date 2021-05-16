@@ -211,6 +211,7 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
             const width = windowDimensions.width;
             const height = windowDimensions.height - aboveViewportDimensions.height;
 
+
             if(previous.width !== width || previous.height !== height){
                 viewport.setState({
                     dimensions: {
@@ -218,19 +219,19 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
                         height: height,
                     }
                 });
+            }
 
-                const previousMetadata = prevState.spreadsheetMetadata;
-                const previousViewportCell = previousMetadata && previousMetadata.getIgnoringDefaults(SpreadsheetMetadata.VIEWPORT_CELL);
+            const previousMetadata = prevState.spreadsheetMetadata;
+            const previousViewportCell = previousMetadata && previousMetadata.getIgnoringDefaults(SpreadsheetMetadata.VIEWPORT_CELL);
 
-                if((width > previous.width || height > previous.height) && (viewportCell.equals(previousViewportCell) || !previousViewportCell)){
-                    this.onCellBox(
-                        new SpreadsheetCellBox(viewportCell,
-                            viewportCoordinates.x(),
-                            viewportCoordinates.y(),
-                            width,
-                            height)
-                    );
-                }
+            if((width > previous.width || height > previous.height) || (viewportCell && !viewportCell.equals(previousViewportCell))){
+                this.onCellBox(
+                    new SpreadsheetCellBox(viewportCell,
+                        viewportCoordinates.x(),
+                        viewportCoordinates.y(),
+                        width,
+                        height)
+                );
             }
         }
     }
@@ -241,8 +242,8 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
     stateSpreadsheetViewportRange(prevState) {
         const viewportRange = this.state.viewportRange;
         const previousViewportRange = prevState.viewportRange;
-
-        if(!Equality.safeEquals(viewportRange, previousViewportRange)){
+        console.log("@@@stateSpreadsheetViewportRange: " + viewportRange);
+        if(viewportRange && !Equality.safeEquals(viewportRange, previousViewportRange)){
             this.cellOrRangeLoad(
                 viewportRange,
                 SpreadsheetEngineEvaluation.COMPUTE_IF_NECESSARY,
@@ -571,6 +572,7 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
      * of the viewport area.
      */
     onSpreadsheetRange(json) {
+        console.log("@@onSpreadsheetRange: " + JSON.stringify(json));
         this.setState({
             viewportRange: SpreadsheetRange.fromJson(json),
         });
@@ -610,7 +612,12 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
 
         this.setState({
             creatingEmptySpreadsheet: true,
+            spreadsheetMetadata: SpreadsheetMetadata.EMPTY,
             spreadsheetId: null,
+            viewportRange: null,
+            cells: ImmutableMap.EMPTY,
+            columnWidths: ImmutableMap.EMPTY,
+            rowHeights: ImmutableMap.EMPTY,
         });
 
         this.messageSend(
@@ -706,6 +713,7 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
                     cells: ImmutableMap.EMPTY,
                     columnWidths: ImmutableMap.EMPTY,
                     rowHeights: ImmutableMap.EMPTY,
+                    viewportRange: null, // this will force reloading of all viewport cells
                 }
             );
         } else {
@@ -721,7 +729,7 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
      * Accepts {@link SpreadsheetCellBox} and requests the {@link SpreadsheetRange} that fill the content.
      */
     onCellBox(cellBox) {
-        console.log("onCellBoxViewportRangeUpdate " + cellBox);
+        console.log("@@onCellBoxViewportRangeUpdate " + cellBox);
 
         this.messageSend(
             this.spreadsheetMetadataApiUrl() + "/viewport/" + cellBox.viewport(),

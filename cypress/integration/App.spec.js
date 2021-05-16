@@ -575,17 +575,27 @@ context(
         it("Update then create new empty spreadsheet then reload non empty", () => {
             emptySpreadsheetWait();
 
-            cellClick("F6");
+            cy.window()
+                .then(function(win) {
+                    const nonEmptySpreadsheetHash = win.location.hash;
 
-            formulaText()
-                .type("=1+2+3")
-                .type("{enter}");
+                    cellClick("F6");
+
+                    formulaText()
+                        .type("=1+2+3")
+                        .type("{enter}");
 
 
-            hashEnter("/");
-            cy.go('back');
+                    emptySpreadsheetWait();
 
-            cellFormattedTextCheck("F6", "6.");
+                    // reload previous spreadsheet and verify viewport reloaded
+                    hashEnter(nonEmptySpreadsheetHash);
+
+                    hash()
+                        .should('eq', nonEmptySpreadsheetHash);
+
+                    cellFormattedTextCheck("F6", "6.");
+                });
         });
 
         it("Select cell should have focus", () => {
