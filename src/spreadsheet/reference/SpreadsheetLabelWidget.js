@@ -143,7 +143,7 @@ class SpreadsheetLabelWidget extends SpreadsheetHistoryAwareStateWidget {
         const save = this.onSave.bind(this);
 
         return <Dialog key="Label"
-                       id="label-mapping-Dialog"
+                       id={"label-mapping-Dialog"}
                        open={true}
                        onKeyDown={this.onKeyDown.bind(this)}
                        onClose={close} /*aria-labelledby="form-dialog-title"*/
@@ -151,7 +151,8 @@ class SpreadsheetLabelWidget extends SpreadsheetHistoryAwareStateWidget {
         >
             <DialogTitle id={"label-mapping-DialogTitle"}>
                 {"Label: " + label}
-                <IconButton aria-label="close"
+                <IconButton id={"label-mapping-close-Button"}
+                            aria-label="close"
                             className={classes.closeButton}
                             onClick={close}>
                     <CloseIcon/>

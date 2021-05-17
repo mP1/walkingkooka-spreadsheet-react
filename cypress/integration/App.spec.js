@@ -386,6 +386,16 @@ context(
             );
         });
 
+        it("Label mapping edit close BUTTON", () => {
+            historyHashLabel();
+
+            labelMappingLabelCloseButton()
+                .click();
+
+            hash()
+                .should('match', /.*\/Untitled/);
+        });
+
         function historyHashLabel() {
             emptySpreadsheetWait();
             hashAppend("/label/" + LABEL);
@@ -438,6 +448,10 @@ context(
 
         function labelMappingLabelDeleteButton() {
             return cy.get("#label-mapping-delete-Button");
+        }
+
+        function labelMappingLabelCloseButton() {
+            return cy.get("#label-mapping-close-Button");
         }
 
         // CELL ................................................................................................................
