@@ -35,7 +35,6 @@ test("isCellReferenceText non string fails", () => {
 
 function testIsCellReferenceText(text, expected) {
     test("isCellReferenceText \"" + text + "\"", () => {
-        console.log("@isCellReferenceText: " + text + " -> " + SpreadsheetCellReference.isCellReferenceText(text) + " expected: " + expected);
         expect(
             SpreadsheetCellReference.isCellReferenceText(text)
         ).toEqual(expected);
