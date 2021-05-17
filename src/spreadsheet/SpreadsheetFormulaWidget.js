@@ -55,7 +55,7 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetHistoryAwareWid
 
         const tokens = {};
         tokens[SpreadsheetHistoryHash.CELL] = reference;
-        tokens[SpreadsheetHistoryHash.CELL_FORMULA] = focused;
+        tokens[SpreadsheetHistoryHash.CELL_FORMULA] = focused | giveFocus;
         
         // if not formula editing, disable textField
         const textField = this.textField.current;
@@ -76,9 +76,6 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetHistoryAwareWid
         } else {
             if(edit && giveFocus) {
                 this.giveInputFocus();
-                this.setState({
-                    giveFocus: false,
-                });
             }
         }
 
@@ -95,7 +92,6 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetHistoryAwareWid
 
                 this.setState({
                     value: formulaText,
-                    giveFocus: false,
                     reload: false,
                 });
 
