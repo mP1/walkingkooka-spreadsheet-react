@@ -1,5 +1,6 @@
 import Preconditions from "../../Preconditions.js";
 import SpreadsheetCellReference from "../reference/SpreadsheetCellReference.js";
+import spreadsheetCellReferenceOrLabelNameFromJson from "../reference/SpreadsheetCellReferenceOrLabelNameFromJson.js";
 import SpreadsheetLabelName from "../reference/SpreadsheetLabelName.js";
 
 function tokenize(pathname) {
@@ -97,7 +98,7 @@ export default class SpreadsheetHistoryHash {
                             }
 
                             try {
-                                cell = SpreadsheetCellReference.parse(sourceTokens.shift());
+                                cell = spreadsheetCellReferenceOrLabelNameFromJson(sourceTokens.shift());
                             } catch(invalid) {
                                 errors("Cell: " + invalid.message);
                                 valid = false;
@@ -326,7 +327,7 @@ export default class SpreadsheetHistoryHash {
         );
         const updatedPathname = SpreadsheetHistoryHash.join(merged);
         if(currentPathname !== updatedPathname){
-            console.log("parseMergeAndPush history changed from \"" + currentPathname + "\" to \"" + updatedPathname + "\" ", replacements);
+            console.log("@parseMergeAndPush history changed from \"" + currentPathname + "\" to \"" + updatedPathname + "\" ", replacements);
             history.push(updatedPathname);
         }else {
             console.log("parseMergeAndPush history unchanged \"" + currentPathname + "\"");

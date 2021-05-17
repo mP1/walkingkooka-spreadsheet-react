@@ -1,6 +1,7 @@
 import Equality from "../Equality.js";
 import ImmutableMap from "../util/ImmutableMap.js";
 import Paper from '@material-ui/core/Paper';
+import Preconditions from "../Preconditions.js";
 import PropTypes from "prop-types";
 import React from 'react';
 import SpreadsheetCellReference from "./reference/SpreadsheetCellReference.js";
@@ -9,6 +10,7 @@ import SpreadsheetColumnReference from "./reference/SpreadsheetColumnReference.j
 import SpreadsheetFormula from "./SpreadsheetFormula.js";
 import SpreadsheetHistoryAwareStateWidget from "./history/SpreadsheetHistoryAwareStateWidget.js";
 import SpreadsheetHistoryHash from "./history/SpreadsheetHistoryHash.js";
+import SpreadsheetLabelName from "./reference/SpreadsheetLabelName.js";
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -46,6 +48,10 @@ const headerCellSelected = Object.assign({},
 
 /**
  * This component holds the cells viewport as well as the column and row controls.
+ * <ul>
+ * <ol><b>cell</b>The selected {@link SpreadsheetCellReference}</ol>
+ * <ol><b>cellOrLabel</b>The {@link SpreadsheetCellReference} or {@link SpreadsheetLabelName} present in the history hash</ol>
+ * </ul>
  */
 export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareStateWidget {
 
@@ -61,10 +67,41 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
     }
 
     stateFromHistoryTokens(tokens) {
+        const cellOrLabel = tokens[SpreadsheetHistoryHash.CELL];
+
+        var cell;
+        if(cellOrLabel instanceof SpreadsheetLabelName){
+            this.resolveLabelToCell(cellOrLabel);
+        }
+        if(cellOrLabel instanceof SpreadsheetCellReference) {
+            cell = cellOrLabel;
+        }
+
         return {
-            cell: tokens[SpreadsheetHistoryHash.CELL],
+            cell: cell,
+            cellOrLabel: cellOrLabel,
             formula: tokens[SpreadsheetHistoryHash.CELL_FORMULA],
         };
+    }
+
+    /**
+     * Invokes the labelToCell function to resolve the label to a cell reference.
+     */
+    resolveLabelToCell(label) {
+        const loaded = (cell) => this.setState({
+            cell: cell,
+            cellOrLabel: label,
+        });
+        const failed = () => this.setState({
+            cell: null,
+            cellOrLabel: null,
+        });
+
+        this.props.labelToCell(
+            label,
+            loaded,
+            failed,
+        );
     }
 
     init() {
@@ -78,19 +115,17 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
         const state = this.state;
         const historyTokens = {};
 
-        const cellOld = prevState.cell;
-        const cellNew = state.cell;
-        console.log("historyTokensFromState cell: " + cellOld + " to " + cellNew);
+        const cellOrLabelOld = prevState.cellOrLabel;
+        const cellOrLabelNew = state.cellOrLabel;
 
-        if(!Equality.safeEquals(cellOld, cellNew)){
-            historyTokens[SpreadsheetHistoryHash.CELL] = cellNew;
-
+        if(!Equality.safeEquals(cellOrLabelOld, cellOrLabelNew)){
             if(!state.formula){
                 console.log("Missing " + SpreadsheetHistoryHash.CELL_FORMULA + " token giving focus to cell...");
-                this.giveFocus(cellNew);
+                this.giveFocus(cellOrLabelNew);
             }
         }
 
+        historyTokens[SpreadsheetHistoryHash.CELL] = cellOrLabelNew;
         if(state.focused) {
             historyTokens[SpreadsheetHistoryHash.CELL_FORMULA] = null;
         }
@@ -297,7 +332,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
                 this.giveFormulaTextBoxFocus();
                 break;
             case "Escape":
-                this.blurFormulaTextBox();
+                this.saveEditCell(null);
                 break;
             default:
                 // ignore other keys
@@ -310,8 +345,12 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
      * scrolling etc.
      */
     saveEditCell(cellReference) {
+        Preconditions.optionalInstance(cellReference, SpreadsheetCellReference, "cellReference");
+
         this.setState({
             cell: cellReference,
+            cellOrLabel: cellReference,
+            focused: false,
         });
     }
 
@@ -339,5 +378,6 @@ SpreadsheetViewportWidget.propTypes = {
     defaultStyle: PropTypes.instanceOf(TextStyle),
     dimensions: PropTypes.object,
     homeCell: PropTypes.instanceOf(SpreadsheetCellReference),
+    labelToCell: PropTypes.func.isRequired,
     showError: PropTypes.func.isRequired,
 }

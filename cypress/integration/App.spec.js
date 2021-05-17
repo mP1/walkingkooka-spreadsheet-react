@@ -562,6 +562,57 @@ context(
                 .should("have.focus");
         });
 
+        it("edit cell hash with unknown label", () => {
+            emptySpreadsheetWait();
+
+            hashAppend("/cell/" + LABEL);
+
+            hash()
+                .should('match', /.*\/Untitled/);
+        });
+
+
+        function historyHashLabel() {
+            emptySpreadsheetWait();
+            hashAppend("/label/" + LABEL);
+        }
+
+        it("Edit save label, navigate to label", () => {
+            emptySpreadsheetWait();
+            hash()
+                .should('match', /.*\/Untitled/);
+
+            cy.window()
+                .then(function(win) {
+                    const nonEmptySpreadsheetHash = win.location.hash;
+
+                    // create a new label
+                    hashEnter(nonEmptySpreadsheetHash + "/label/Label456");
+
+                    hash()
+                        .should('match', /.*\/Untitled\/label\/Label456/);
+
+                    labelMappingReferenceTextField()
+                        .type(REFERENCE);
+
+                    labelMappingLabelSaveButton()
+                        .click();
+
+                    labelMappingLabelCloseButton()
+                        .click();
+
+                    // navigate to label's formula
+                    hashEnter(nonEmptySpreadsheetHash + "/cell/Label456/formula");
+                    hash()
+                       .should('match', /.*\/Untitled\/cell\/Label456\/formula/);
+
+                    formulaText()
+                        .type("=4{enter}");
+
+                    cellFormattedTextCheck(REFERENCE, "4.");
+                });
+        });
+
         // create/load spreadsheet............................................................................................
 
         it("Create new empty spreadsheet", () => {
