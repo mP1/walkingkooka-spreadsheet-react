@@ -1,40 +1,41 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import SpreadsheetButtonTextField from '../widget/SpreadsheetButtonTextField.js';
-import SpreadsheetHistoryAwareWidget from "./history/SpreadsheetHistoryAwareWidget.js";
 import SpreadsheetHistoryHash from "./history/SpreadsheetHistoryHash.js";
 import SpreadsheetName from "./SpreadsheetName.js";
+import SpreadsheetHistoryAwareStateWidget from "./history/SpreadsheetHistoryAwareStateWidget.js";
 
 /**
  * A wrapper that is a bridge between SpreadsheetMetadata's spreadsheet name and a text field.
  */
-export default class SpreadsheetNameWidget extends SpreadsheetHistoryAwareWidget {
+export default class SpreadsheetNameWidget extends SpreadsheetHistoryAwareStateWidget {
 
     init() {
-        this.state = {
-            value: this.props.value
-        };
         this.textField = React.createRef();
     }
 
-    onHistoryChange(tokens) {
-        this.edit(!!tokens[SpreadsheetHistoryHash.SPREADSHEET_NAME_EDIT]);
+    initialStateFromProps(props) {
+        return {
+            value: this.props.value
+        };
     }
 
-    /**
-     * Updates the widget mode between edit/view.
-     */
-    edit(mode) {
-        const widget = this.textField.current;
-        widget && widget.edit(mode);
+    stateFromHistoryTokens(tokens) {
+        return {
+            edit: !!tokens[SpreadsheetHistoryHash.SPREADSHEET_NAME_EDIT],
+        };
     }
 
-    /**
-     * Returns true if the name is being edited.
-     */
-    isEdit() {
+    historyTokensFromState(prevState) {
+        const edit = !!this.state.edit;
+
         const widget = this.textField.current;
-        return widget && widget.state.edit;
+        widget && widget.edit(edit);
+
+        const historyTokens = {};
+        historyTokens[SpreadsheetHistoryHash.SPREADSHEET_NAME_EDIT] = edit;
+        console.log("history tokens name edit: " + edit, historyTokens, "state", this.state, "history", this.props.history.location.pathname);
+        return historyTokens;
     }
 
     render() {
@@ -48,7 +49,7 @@ export default class SpreadsheetNameWidget extends SpreadsheetHistoryAwareWidget
                                            className={"spreadsheet-name"}
                                            value={name}
                                            setValue={this.onValue.bind(this)}
-                                           setEdit={this.onTextFieldEdit.bind(this)}/>
+                                           setEdit={() => this.onTextFieldEdit(true)}/>
     }
 
     onValue(v) {
@@ -56,14 +57,10 @@ export default class SpreadsheetNameWidget extends SpreadsheetHistoryAwareWidget
         this.onTextFieldEdit(false);
     }
 
-    onTextFieldEdit(e) {
-        const replacements = {};
-        replacements[SpreadsheetHistoryHash.SPREADSHEET_NAME_EDIT] = !this.isEdit();
-        this.historyParseMergeAndPush(replacements);
-    }
-
-    showError(message) {
-        this.props.showError(message);
+    onTextFieldEdit(newEdit) {
+        this.setState({
+            edit: newEdit,
+        })
     }
 }
 
