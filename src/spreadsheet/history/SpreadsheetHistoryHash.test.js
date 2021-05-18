@@ -129,9 +129,9 @@ test("parse /spreadsheet-id/spreadsheet-name/cell/Label123", () => {
     );
 });
 
-test("parse /spreadsheet-id/spreadsheet-name/name/label invalid", () => {
+test("parse /spreadsheet-id/spreadsheet-name/label invalid", () => {
     parseAndCheck(
-        "/spreadsheet-id-123/spreadsheet-name-456/name/label",
+        "/spreadsheet-id-123/spreadsheet-name-456/label",
         {
             "spreadsheet-id": "spreadsheet-id-123",
             "spreadsheet-name": "spreadsheet-name-456",
@@ -196,13 +196,24 @@ test("parse /spreadsheet-id/spreadsheet-name/cell/A2/formula/label/LABEL123", ()
     );
 });
 
-test("parse /spreadsheet-id/spreadsheet-name/navigate", () => {
+test("parse /spreadsheet-id/spreadsheet-name/name", () => {
     parseAndCheck(
-        "/spreadsheet-id-123/spreadsheet-name-456/navigate",
+        "/spreadsheet-id-123/spreadsheet-name-456/name",
         {
             "spreadsheet-id": "spreadsheet-id-123",
             "spreadsheet-name": "spreadsheet-name-456",
-            "navigate": true,
+            "name": true,
+        }
+    );
+});
+
+test("parse /spreadsheet-id/spreadsheet-name/name/label/Label123", () => {
+    parseAndCheck(
+        "/spreadsheet-id-123/spreadsheet-name-456/name/label/Label123",
+        {
+            "spreadsheet-id": "spreadsheet-id-123",
+            "spreadsheet-name": "spreadsheet-name-456",
+            "label": SpreadsheetLabelName.parse("Label123"),
         }
     );
 });
@@ -213,7 +224,17 @@ test("parse /spreadsheet-id/spreadsheet-name/name/navigate", () => {
         {
             "spreadsheet-id": "spreadsheet-id-123",
             "spreadsheet-name": "spreadsheet-name-456",
-            "name": true,
+            "navigate": true,
+        }
+    );
+});
+
+test("parse /spreadsheet-id/spreadsheet-name/navigate", () => {
+    parseAndCheck(
+        "/spreadsheet-id-123/spreadsheet-name-456/navigate",
+        {
+            "spreadsheet-id": "spreadsheet-id-123",
+            "spreadsheet-name": "spreadsheet-name-456",
             "navigate": true,
         }
     );
@@ -753,7 +774,7 @@ test("/spreadsheet-id/spreadsheet-name/name/cell/A1/formula invalid combo", () =
     mergeAndCheck(
         "/123abc/Untitled456/name/cell/A1/formula",
         {},
-        "/123abc/Untitled456"
+        "/123abc/Untitled456/cell/A1/formula"
     );
 });
 
@@ -818,7 +839,7 @@ test("/spreadsheet-id/spreadsheet-name/name/ replaced label deleted", () => {
 
 test("/spreadsheet-id/spreadsheet-name/name/ replaced navigate", () => {
     mergeAndCheck(
-        "/123abc/Untitled456/name/!invalid",
+        "/123abc/Untitled456/name",
         {
             "navigate": true,
         },

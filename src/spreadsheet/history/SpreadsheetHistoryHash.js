@@ -153,6 +153,9 @@ export default class SpreadsheetHistoryHash {
                 destTokens[SpreadsheetHistoryHash.SPREADSHEET_NAME] = spreadsheetName;
 
                 if(valid){
+                    if(cell || label || navigate) {
+                        nameEdit = false;
+                    }
                     if(nameEdit){
                         destTokens[SpreadsheetHistoryHash.SPREADSHEET_NAME_EDIT] = nameEdit;
                     }
