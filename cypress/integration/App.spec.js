@@ -94,8 +94,17 @@ context(
             emptySpreadsheetWait();
 
             spreadsheetNameClick();
+            spreadsheetName()
+                .type("Lost")
+                .blur();
 
-            historyHashLabel();
+            cy.window()
+                .then(function(win) {
+                    win.location.hash = win.location.hash + "/label/Label123";
+                });
+
+            hash()
+                .should('match', /.*\/Untitled\/label\/Label123/);
 
             labelDialogCheck(
                 "Label: " + LABEL,
@@ -829,7 +838,7 @@ context(
             settingsToggle();
 
             cy.hash()
-                .should("matches", /.*\/Untitled\/settings/);
+                .should("matches", /.*\/Untitled\/name\/settings/);
         });
 
         it("Edit cell, then toggle show settings history hash", () => {

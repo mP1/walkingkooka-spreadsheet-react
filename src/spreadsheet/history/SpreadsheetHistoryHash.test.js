@@ -837,6 +837,16 @@ test("/spreadsheet-id/spreadsheet-name/name/ replaced label deleted", () => {
     );
 });
 
+test("/spreadsheet-id/spreadsheet-name/name/ replaced label added", () => {
+    mergeAndCheck(
+        "/123abc/Untitled456/name",
+        {
+            "label": SpreadsheetLabelName.parse("Label123"),
+        },
+        "/123abc/Untitled456/label/Label123"
+    );
+});
+
 test("/spreadsheet-id/spreadsheet-name/name/ replaced navigate", () => {
     mergeAndCheck(
         "/123abc/Untitled456/name",
