@@ -23,29 +23,10 @@ export default class SpreadsheetButtonTextField extends React.Component {
         this.textField = React.createRef();
     }
 
-    componentDidMount() {
-        document.addEventListener('mousedown', (event) => this.handleClickOutside(event));
-    }
-
-    componentWillUnmount() {
-        document.removeEventListener('mousedown', (event) => this.handleClickOutside(event));
-    }
-
     edit(mode) {
         this.setState({
             edit: mode,
         })
-    }
-
-    /**
-     * Abort editing if the user clicked outside
-     */
-    handleClickOutside(event) {
-        const widget = this.textField.current;
-        if(widget && !widget.contains(event.target)){
-            event.preventDefault();
-            this.setEdit(false);
-        }
     }
 
     render() {
@@ -104,9 +85,14 @@ export default class SpreadsheetButtonTextField extends React.Component {
                            className={this.props.className}
                            fullWidth={true}
                            margin={"none"}
+                           onBlur={this.onBlur.bind(this)}
                            onKeyDown={(event) => this.handleKeyDown(event)}
                            defaultValue={this.state.value}
                            autoFocus/>);
+    }
+
+    onBlur() {
+        this.setEdit(false);
     }
 }
 
