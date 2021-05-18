@@ -34,14 +34,13 @@ Your app is ready to be deployed!
 See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
 
-### walkingkooka-spreadsheet-webworker
+## [walkingkooka-spreadsheet-server](https://github.com/mP1/walkingkooka-spreadsheet-server)
 
-During development this assumes that a http server is available on `https://localhost:12345/walkingkooka-walkingkooka-spreadsheet-webworker.js`
-serving the javascript engine.
-
+Development assumes `npm-start` is running on http://localhost:3000 which include a proxy to [walkingkooka-spreadsheet-server](https://github.com/mP1/walkingkooka-spreadsheet-server).
 
 
 ## Architecture
+
 This project aims to be as lightweight as possible implementing a true MVC design. Minimal if any business logic is performed 
 in javascript within code belonging to this project. This point is important as the [walking-spreadsheet-server](https://github.com/mP1/walkingkooka-spreadsheet-server) 
 can also be translated into javascript but its does not contain any presentation logic. This project only aims to build
@@ -65,8 +64,9 @@ components are actual literals.
 
 - / $spreadsheet-id / $spreadsheet name *view the selected spreadsheet*
 - / $spreadsheet-id / $spreadsheet name / name *editing the spreadsheet name*
-- / $spreadsheet-id / $spreadsheet name / cell / $cell-reference *selects the cell with support for navigation*
-- / $spreadsheet-id / $spreadsheet name / cell / $cell-reference / formula *editing of the cell formula*
+- / $spreadsheet-id / $spreadsheet name / cell / $cell-reference OR $label-name *navigates to the given $cell-reference or $label-name*
+- / $spreadsheet-id / $spreadsheet name / cell / $cell-reference OR $label-name / formula *editing of the cell formula*
+- / $spreadsheet-id / $spreadsheet name / label / $label-name / *creates / edits the give $label-name*  
 - / $spreadsheet-id / $spreadsheet name / settings *open the settings panel*
 - / $spreadsheet-id / $spreadsheet name / settings / $section *open the settings panel and expands the section*
 
@@ -102,29 +102,29 @@ an expression.  All parsing and resolution of reference and function is performe
 [walkingkooka-spreadsheet](https://github.com/mP1/walkingkooka-spreadsheet).
 
 - Parsing & tokenizing a formula into a [Expression](https://github.com/mP1/walkingkooka-tree/tree/master/src/main/java/walkingkooka/tree/expression).
-- Formulas or expression may be executed honouring spreadsheet and cell localisation and pattern selection.  
-- Tokenizing of dates, date-times, time and numbers into individual components to support localised when re-displayed.
+- Formulas or expression may be executed honouring spreadsheet and cell localisation and pattern selection. **DONE**
+- Tokenizing of dates, date-times, time and numbers into individual components to support localised when re-displayed. **DONE**
 - Interactive auto-complete of available function names [TODO](https://github.com/mP1/walkingkooka-spreadsheet-react/issues/556)
 
 
 
 ## Navigation
 
-- Support APIs on the server exists to jump to any cell.
+- Support APIs on the server exists to jump to any cell. **DONE**
 - Adding a smart text box to support navigation using a cell reference or label, APIs are available to resolve labels to cell references. [TODO](https://github.com/mP1/walkingkooka-spreadsheet-react/issues/557)
 - Scrollbars to pan horizontally and vertically have not been added to the UI. [TODO](https://github.com/mP1/walkingkooka-spreadsheet-react/issues/324)
 - APIs are available to compute the exact cell range for any given home (top left) cell and screen dimensions to fill the display in a single API request.
-- Keyboard navigation and range selection
+- Keyboard navigation **DONE** and range selection [TODO](https://github.com/mP1/walkingkooka-spreadsheet-react/issues/561)
 
 
 
 ## Editing
 
-- Label management [TODO](https://github.com/mP1/walkingkooka-spreadsheet-react/issues/560)
-- Expressions already support cell reference and labels.
+- Label management **DONE**
+- Expressions already support cell reference and labels. **DONE**
 - Range selection [TODO](https://github.com/mP1/walkingkooka-spreadsheet-react/issues/561)
 - Cut, copy, paste cell content including formula, styling etc [TODO](https://github.com/mP1/walkingkooka-spreadsheet-react/issues/562)
-- Spreadsheet and cell style editor [TODO](https://github.com/mP1/walkingkooka-spreadsheet-react/issues/563)
+- Spreadsheet **DONE** and cell style editor [TODO](https://github.com/mP1/walkingkooka-spreadsheet-react/issues/563)
 
 
 
