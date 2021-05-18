@@ -1553,4 +1553,17 @@ function mergeAndCheck(pathname, replacements, expected) {
             replacements)
         )
     ).toStrictEqual(expected);
+
+    const pushed = [pathname];
+    const history = {
+        location: {
+            pathname: pathname,
+        },
+        push: function(path) {
+            pushed[0] = "" === path ? "/" : path;
+        },
+    };
+    SpreadsheetHistoryHash.parseMergeAndPush(history, replacements, FUNCTION);
+
+    expect(pushed[0]).toStrictEqual(Object.keys(replacements).length === 0 ? pathname : expected);
 }
