@@ -1,9 +1,8 @@
 import Equality from "../Equality.js";
 import PropTypes from "prop-types";
 import React from 'react';
-import SpreadsheetCellReference from "./reference/SpreadsheetCellReference.js";
-import SpreadsheetHistoryAwareWidget from "./history/SpreadsheetHistoryAwareWidget.js";
 import SpreadsheetHistoryHash from "./history/SpreadsheetHistoryHash.js";
+import SpreadsheetHistoryAwareStateWidget from "./history/SpreadsheetHistoryAwareStateWidget.js";
 import TextField from '@material-ui/core/TextField';
 
 /**
@@ -11,55 +10,52 @@ import TextField from '@material-ui/core/TextField';
  * An falsey value will disable the text box used to edit the formula text.
  * ENTER calls the setter, ESCAPE reloads the initial value(text).
  */
-export default class SpreadsheetFormulaWidget extends SpreadsheetHistoryAwareWidget {
+export default class SpreadsheetFormulaWidget extends SpreadsheetHistoryAwareStateWidget {
 
     init() {
         this.textField = React.createRef();
         this.input = React.createRef();
-        this.state = {};
     }
 
-    /**
-     * Attempts to update state from the given tokens.
-     */
-    onHistoryChange(tokens) {
-        const state = this.state;
+    initialStateFromProps(props) {
+        return {};
+    }
+
+    stateFromHistoryTokens(historyTokens) {
+        const state = this.state || {};
 
         // if a cellOrLabel is present the formula text should also be editable.
-        const cellOrLabel = tokens[SpreadsheetHistoryHash.CELL];
-        const formula = tokens[SpreadsheetHistoryHash.CELL_FORMULA];
+        const cellOrLabel = historyTokens[SpreadsheetHistoryHash.CELL];
+        const formula = historyTokens[SpreadsheetHistoryHash.CELL_FORMULA];
         const edit = !!cellOrLabel;
         const giveFocus = edit && formula && !state.focused && !state.giveFocus;
 
-        // cellOrLabel changed update state
+        var newState = {};
+
         if(!Equality.safeEquals(cellOrLabel, state.cellOrLabel) || edit != state.edit || giveFocus){
-            console.log("onHistoryChange: " + cellOrLabel + " newCellOrLabel: " + cellOrLabel + " old: " + state.cellOrLabel);
-            this.setState({
+            console.log("stateFromHistoryTokens: " + cellOrLabel + " newCellOrLabel: " + cellOrLabel + " old: " + state.cellOrLabel);
+
+            newState = {
                 cellOrLabel: cellOrLabel,
                 edit: edit,
                 giveFocus: giveFocus,
                 reload: false,
-            });
+            };
         }
+
+        return newState;
     }
 
-    shouldComponentUpdate(nextProps,nextState) {
-        return !Equality.safeEquals(this.state, nextState);
-    }
-
-    /**
-     * If the state.cellOrLabel changed load the new formula text and then give focus to the textField.
-     */
-    componentDidUpdate(prevProps, prevState, snapshot) {
+    historyTokensFromState(prevState) {
         const state = this.state;
         const {cellOrLabel, edit, focused, giveFocus, reload} = state;
 
-        console.log("componentDidUpdate formula cell " + prevState.cellOrLabel + " to " + cellOrLabel + " state", state);
+        console.log("historyTokensFromState formula cell " + prevState.cellOrLabel + " to " + cellOrLabel + " state", state);
 
-        const tokens = {};
-        tokens[SpreadsheetHistoryHash.CELL] = cellOrLabel;
-        tokens[SpreadsheetHistoryHash.CELL_FORMULA] = focused | giveFocus;
-        
+        const historyTokens = {};
+        historyTokens[SpreadsheetHistoryHash.CELL] = cellOrLabel;
+        historyTokens[SpreadsheetHistoryHash.CELL_FORMULA] = focused | giveFocus;
+
         // if not formula editing, disable textField
         const textField = this.textField.current;
         if(textField){
@@ -78,13 +74,13 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetHistoryAwareWid
                     giveFocus: false,
                 });
             }
-        } else {
-            if(edit && giveFocus) {
+        }else {
+            if(edit && giveFocus){
                 this.giveInputFocus();
             }
         }
 
-        this.historyParseMergeAndPush(tokens);
+        return historyTokens;
     }
 
     reloadFormulaText(cellOrLabel, giveFocus) {
@@ -155,7 +151,7 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetHistoryAwareWid
      * Remove the formula portion of history hash
      */
     onBlur(event) {
-       this.updateFormulaHash("onBlur", false);
+        this.updateFormulaHash("onBlur", false);
     }
 
     /**
@@ -209,10 +205,6 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetHistoryAwareWid
         const value = event.target.value;
         this.props.setValue(this.state.cell, value);
         this.setState({"value": value});
-    }
-
-    showError(message) {
-        this.props.showError(message);
     }
 }
 
