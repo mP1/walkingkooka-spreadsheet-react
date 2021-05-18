@@ -1,5 +1,4 @@
 import Preconditions from "../../Preconditions.js";
-import SpreadsheetCellReference from "../reference/SpreadsheetCellReference.js";
 import spreadsheetCellReferenceOrLabelNameFromJson from "../reference/SpreadsheetCellReferenceOrLabelNameFromJson.js";
 import SpreadsheetLabelName from "../reference/SpreadsheetLabelName.js";
 
@@ -318,19 +317,22 @@ export default class SpreadsheetHistoryHash {
         Preconditions.requireObject(replacements, "replacements");
         Preconditions.requireFunction(showErrors, "showErrors");
 
-        const currentPathname = history.location.pathname;
-        const tokens = SpreadsheetHistoryHash.parse(currentPathname, showErrors);
+        // empty replacements is a noop.
+        if(Object.keys(replacements).length > 0){
+            const currentPathname = history.location.pathname;
+            const tokens = SpreadsheetHistoryHash.parse(currentPathname, showErrors);
 
-        const merged = SpreadsheetHistoryHash.merge(
-            tokens,
-            replacements
-        );
-        const updatedPathname = SpreadsheetHistoryHash.join(merged);
-        if(currentPathname !== updatedPathname){
-            console.log("parseMergeAndPush history changed from \"" + currentPathname + "\" to \"" + updatedPathname + "\" ", replacements);
-            history.push(updatedPathname);
-        }else {
-            console.log("parseMergeAndPush history unchanged \"" + currentPathname + "\"");
+            const merged = SpreadsheetHistoryHash.merge(
+                tokens,
+                replacements
+            );
+            const updatedPathname = SpreadsheetHistoryHash.join(merged);
+            if(currentPathname !== updatedPathname){
+                console.log("parseMergeAndPush history changed from \"" + currentPathname + "\" to \"" + updatedPathname + "\" ", replacements);
+                history.push(updatedPathname);
+            }else {
+                console.log("parseMergeAndPush history unchanged \"" + currentPathname + "\"");
+            }
         }
     }
 
