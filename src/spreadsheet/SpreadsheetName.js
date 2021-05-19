@@ -18,7 +18,7 @@ export default class SpreadsheetName extends SystemObject {
 
     constructor(value) {
         super();
-        Preconditions.requireText(value, "value");
+        Preconditions.requireNonEmptyText(value, "value");
         this.valueValue = value;
     }
 
