@@ -27,6 +27,7 @@ import SpreadsheetLabelName from "./reference/SpreadsheetLabelName.js";
 import SpreadsheetLabelWidget from "./reference/SpreadsheetLabelWidget.js";
 import SpreadsheetMetadata from "./meta/SpreadsheetMetadata.js";
 import SpreadsheetMessenger from "./message/SpreadsheetMessenger.js";
+import SpreadsheetName from "./SpreadsheetName.js";
 import SpreadsheetNameWidget from "./SpreadsheetNameWidget.js";
 import SpreadsheetNotification from "./notification/SpreadsheetNotification.js";
 import SpreadsheetNotificationWidget from "./notification/SpreadsheetNotificationWidget.js";
@@ -174,6 +175,7 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
             console.log("stateSpreadsheetMetadataSpreadsheetName updated from " + widget.state.value + " to " + name);
 
             widget.setState({
+                loaded: name,
                 value: name,
             });
             document.title = name.toString();
@@ -685,7 +687,7 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
             {
                 method: "POST"
             },
-            (json) => this.onSpreadsheetMetadata(json, true)
+            (json) => this.onSpreadsheetMetadata(SpreadsheetMetadata.fromJson(json), true)
         );
     }
 
@@ -696,8 +698,9 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
     /**
      * Loads the spreadsheet metadata with the given spreadsheet id.
      */
-    // TODO handle unknown spreadsheet id
     spreadsheetMetadataLoad(id) {
+        Preconditions.requireNonNull(id, "id");
+
         console.log("spreadsheetMetadataLoad " + id);
 
         this.messageSend(
@@ -705,18 +708,22 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
             {
                 method: "GET",
             },
-            (json) => this.onSpreadsheetMetadata(json, true)
+            (json) => this.onSpreadsheetMetadata(SpreadsheetMetadata.fromJson(json), true),
+            (e) => this.showError("Unable to load spreadsheet " + id)
         );
     }
 
     /**
      * If the new metadata is different call the save service otherwise skip.
      */
-    spreadsheetMetadataSave(metadata) {
+    spreadsheetMetadataSave(metadata, success, failure) {
         Preconditions.requireInstance(metadata, SpreadsheetMetadata, "metadata");
+        Preconditions.requireFunction(success, "success");
+        Preconditions.requireFunction(failure, "failure");
 
         if(metadata.equals(this.spreadsheetMetadata())){
             console.log("saveSpreadsheetMetadata unchanged, save skipped", metadata);
+            success(metadata);
         }else {
             console.log("saveSpreadsheetMetadata", metadata);
 
@@ -726,13 +733,26 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
                     method: "POST",
                     body: JSON.stringify(metadata.toJson())
                 },
-                (json) => this.onSpreadsheetMetadata(json, false)
+                (json) => {
+                    const loaded = SpreadsheetMetadata.fromJson(json);
+                    success(loaded);
+                    this.onSpreadsheetMetadata(loaded, false);
+                },
+                failure,
             );
         }
     }
 
-    spreadsheetNameSave(name) {
-        this.spreadsheetMetadataSave(this.state.spreadsheetMetadata.set(SpreadsheetMetadata.SPREADSHEET_NAME, name));
+    spreadsheetNameSave(name, success, failure) {
+        Preconditions.requireInstance(name, SpreadsheetName, "spreadsheetName");
+        Preconditions.requireFunction(success, "success");
+        Preconditions.requireFunction(failure, "failure");
+
+        this.spreadsheetMetadataSave(
+            this.state.spreadsheetMetadata.set(SpreadsheetMetadata.SPREADSHEET_NAME, name),
+            (m) => success(m.get(SpreadsheetMetadata.SPREADSHEET_NAME)),
+            failure,
+        );
     }
 
     /**
@@ -753,12 +773,7 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
      * Handles the response.json which contains a SpreadsheetMetadata. The different flag also indicates
      * this is loading a new spreadsheet metadata and some extra state fields should be cleared.
      */
-    onSpreadsheetMetadata(json, different) {
-        if(!json){
-            throw new Error("Unable to load spreadsheet");
-        }
-
-        const metadata = SpreadsheetMetadata.fromJson(json);
+    onSpreadsheetMetadata(metadata, different) {
         const state = {
             spreadsheetId: metadata.getIgnoringDefaults(SpreadsheetMetadata.SPREADSHEET_ID),
             spreadsheetName: metadata.getIgnoringDefaults(SpreadsheetMetadata.SPREADSHEET_NAME),

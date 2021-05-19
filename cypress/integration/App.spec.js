@@ -50,7 +50,67 @@ context(
             invalidHashUpdateRejected("/name/!invalid-name-action");
         });
 
-        it("Edit spreadsheet name", () => {
+        it("Edit spreadsheet name & ESCAPE", () => {
+            emptySpreadsheetWait();
+            spreadsheetNameClick();
+
+            const updatedSpreadsheetName = "SpreadsheetName234"; // easier to use in regex below
+
+            // type the new name in
+            spreadsheetName()
+                .type("{selectall}")
+                .type("UpdatedSpreadsheetName456")
+                .type("{esc}");
+
+            reactRenderWait();
+
+            spreadsheetName()
+                .should("have.text", "Untitled");
+            title()
+                .should("eq", "Untitled");
+            hash()
+                .should('match', /.*\/Untitled/) // => true
+        });
+
+        it("Edit spreadsheet name & blur", () => {
+            emptySpreadsheetWait();
+            spreadsheetNameClick();
+
+            // type the new name in
+            spreadsheetName()
+                .type("{selectall}")
+                .type("UpdatedSpreadsheetName456")
+                .blur();
+
+            reactRenderWait();
+
+            spreadsheetName()
+                .should("have.text", "Untitled");
+            title()
+                .should("eq", "Untitled");
+            hash()
+                .should('match', /.*\/Untitled/) // => true
+        });
+
+        it("Edit spreadsheet name & save empty fails", () => {
+            emptySpreadsheetWait();
+            spreadsheetNameClick();
+
+            // type the new name in
+            spreadsheetName()
+                .type("{selectall}")
+                .type("{backspace}")
+                .type("{enter}");
+
+            reactRenderWait();
+
+            spreadsheetName()
+                .should("have.text", "Untitled");
+            title().should("eq", "Untitled");
+            hash().should('match', /.*\/Untitled/) // => true
+        });
+
+        it("Edit spreadsheet name & save", () => {
             emptySpreadsheetWait();
             spreadsheetNameClick();
 

@@ -160,7 +160,15 @@ class SpreadsheetSettingsWidget extends SpreadsheetHistoryAwareStateWidget {
         }
 
         if(!metadata.equals(prevState.spreadsheetMetadata)){
-            this.props.setSpreadsheetMetadata(metadata);
+            this.props.setSpreadsheetMetadata(
+                metadata,
+                (m) => {
+                    this.setState({
+                        spreadsheetMetadata: m,
+                    });
+                },
+                (e) => this.showError(e),
+            );
         }
 
         return historyTokens;
