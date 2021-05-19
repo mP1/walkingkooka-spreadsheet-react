@@ -404,7 +404,6 @@ test("parse /spreadsheet-id/spreadsheet-name/name/settings", () => {
         {
             "spreadsheet-id": "spreadsheet-id-123",
             "spreadsheet-name": "spreadsheet-name-456",
-            "name": true,
             "settings": true,
         }
     );
@@ -416,7 +415,6 @@ test("parse /spreadsheet-id/spreadsheet-name/name/settings/!invalid", () => {
         {
             "spreadsheet-id": "spreadsheet-id-123",
             "spreadsheet-name": "spreadsheet-name-456",
-            "name": true,
             "settings": true,
         }
     );
@@ -428,7 +426,6 @@ test("parse /spreadsheet-id/spreadsheet-name/name/settings/metadata", () => {
         {
             "spreadsheet-id": "spreadsheet-id-123",
             "spreadsheet-name": "spreadsheet-name-456",
-            "name": true,
             "settings": true,
             "settings-section": "metadata",
         }
@@ -441,7 +438,6 @@ test("parse /spreadsheet-id/spreadsheet-name/name/settings/text", () => {
         {
             "spreadsheet-id": "spreadsheet-id-123",
             "spreadsheet-name": "spreadsheet-name-456",
-            "name": true,
             "settings": true,
             "settings-section": "text",
         }
@@ -454,7 +450,6 @@ test("parse /spreadsheet-id/spreadsheet-name/name/settings/number", () => {
         {
             "spreadsheet-id": "spreadsheet-id-123",
             "spreadsheet-name": "spreadsheet-name-456",
-            "name": true,
             "settings": true,
             "settings-section": "number",
         }
@@ -467,7 +462,6 @@ test("parse /spreadsheet-id/spreadsheet-name/name/settings/date-time", () => {
         {
             "spreadsheet-id": "spreadsheet-id-123",
             "spreadsheet-name": "spreadsheet-name-456",
-            "name": true,
             "settings": true,
             "settings-section": "date-time",
         }
@@ -480,7 +474,6 @@ test("parse /spreadsheet-id/spreadsheet-name/name/settings/style", () => {
         {
             "spreadsheet-id": "spreadsheet-id-123",
             "spreadsheet-name": "spreadsheet-name-456",
-            "name": true,
             "settings": true,
             "settings-section": "style",
         }
@@ -1277,7 +1270,7 @@ test("/spreadsheet-id/spreadsheet-name/name/settings replaced settings=true", ()
         {
             "settings": true,
         },
-        "/123abc/Untitled456/name/settings"
+        "/123abc/Untitled456/settings"
     );
 });
 
@@ -1287,7 +1280,7 @@ test("/spreadsheet-id/spreadsheet-name/name/settings replaced settings=false", (
         {
             "settings": false,
         },
-        "/123abc/Untitled456/name"
+        "/123abc/Untitled456"
     );
 });
 
@@ -1298,7 +1291,7 @@ test("/spreadsheet-id/spreadsheet-name/name/settings replaced settings=true sett
             "settings": true,
             "settings-section": "invalid"
         },
-        "/123abc/Untitled456/name/settings"
+        "/123abc/Untitled456/settings"
     );
 });
 
@@ -1309,7 +1302,7 @@ test("/spreadsheet-id/spreadsheet-name/name/settings replaced settings=true sett
             "settings": true,
             "settings-section": SpreadsheetHistoryHash.SETTINGS_METADATA,
         },
-        "/123abc/Untitled456/name/settings/metadata"
+        "/123abc/Untitled456/settings/metadata"
     );
 });
 
@@ -1320,7 +1313,7 @@ test("/spreadsheet-id/spreadsheet-name/name/settings replaced settings=true sett
             "settings": true,
             "settings-section": SpreadsheetHistoryHash.SETTINGS_TEXT,
         },
-        "/123abc/Untitled456/name/settings/text"
+        "/123abc/Untitled456/settings/text"
     );
 });
 
@@ -1331,7 +1324,7 @@ test("/spreadsheet-id/spreadsheet-name/name/settings replaced settings=true sett
             "settings": true,
             "settings-section": SpreadsheetHistoryHash.SETTINGS_NUMBER,
         },
-        "/123abc/Untitled456/name/settings/number"
+        "/123abc/Untitled456/settings/number"
     );
 });
 
@@ -1342,7 +1335,7 @@ test("/spreadsheet-id/spreadsheet-name/name/settings replaced settings=true sett
             "settings": true,
             "settings-section": SpreadsheetHistoryHash.SETTINGS_DATE_TIME,
         },
-        "/123abc/Untitled456/name/settings/date-time"
+        "/123abc/Untitled456/settings/date-time"
     );
 });
 
@@ -1353,7 +1346,7 @@ test("/spreadsheet-id/spreadsheet-name/name/settings replaced settings=true sett
             "settings": true,
             "settings-section": SpreadsheetHistoryHash.SETTINGS_STYLE,
         },
-        "/123abc/Untitled456/name/settings/style"
+        "/123abc/Untitled456/settings/style"
     );
 });
 

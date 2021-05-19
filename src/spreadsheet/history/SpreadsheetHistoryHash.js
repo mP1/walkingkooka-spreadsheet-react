@@ -153,7 +153,7 @@ export default class SpreadsheetHistoryHash {
                 destTokens[SpreadsheetHistoryHash.SPREADSHEET_NAME] = spreadsheetName;
 
                 if(valid){
-                    if(cell || label || navigate) {
+                    if(cell || label || navigate || settings) {
                         nameEdit = false;
                     }
                     if(nameEdit){
@@ -219,6 +219,7 @@ export default class SpreadsheetHistoryHash {
                 formula = null;
                 label = null;
                 navigate = null;
+                settings = null;
             }
         }
 
@@ -270,7 +271,7 @@ export default class SpreadsheetHistoryHash {
 
                 valid = true;
                 if(nameEdit) {
-                    if(cell || label || navigate) {
+                    if(cell || label || navigate || settings) {
                         valid = false;
                     }
                 }
