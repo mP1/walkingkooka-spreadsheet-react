@@ -1,4 +1,5 @@
 import Button from '@material-ui/core/Button';
+import Equality from "../Equality.js";
 import PropTypes from "prop-types";
 import React from 'react';
 import TextField from '@material-ui/core/TextField';
@@ -27,6 +28,10 @@ export default class SpreadsheetButtonTextField extends React.Component {
         this.setState({
             edit: mode,
         })
+    }
+
+    shouldComponentUpdate(nextProps, nextState) {
+        return !Equality.safeEquals(this.state, nextState);
     }
 
     render() {
