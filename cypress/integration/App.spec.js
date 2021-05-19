@@ -835,6 +835,15 @@ context(
             emptySpreadsheetWait();
             spreadsheetNameClick();
 
+            cy.hash()
+                .should("matches", /.*\/Untitled\/name/);
+
+            spreadsheetName()
+                .blur();
+
+            cy.hash()
+                .should("matches", /.*\/Untitled/);
+
             settingsToggle();
 
             cy.hash()
