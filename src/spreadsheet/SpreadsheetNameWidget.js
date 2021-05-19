@@ -89,7 +89,7 @@ export default class SpreadsheetNameWidget extends SpreadsheetHistoryAwareStateW
                 }
             );
         } catch(e) {
-            this.resetValueAndShowError(e);
+            this.resetValueAndShowError(e.message);
         }
         this.onTextFieldEdit(false);
     }
@@ -98,7 +98,7 @@ export default class SpreadsheetNameWidget extends SpreadsheetHistoryAwareStateW
      * If an invalid spreadsheet name has been entered or saving failures, reload the original {@link SpreadsheetName}.
      */
     resetValueAndShowError(e) {
-        console.log("@resetValueAndShowError" + this.state.loaded);
+        console.log("resetValueAndShowError" + this.state.loaded);
         this.setState({
             value: this.state.loaded,
         });

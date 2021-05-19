@@ -22,6 +22,10 @@ test("create with non string fails", () => {
     expect(() => new SpreadsheetName(1.5)).toThrow("Expected string value got 1.5");
 });
 
+test("create with empty string fails", () => {
+    expect(() => new SpreadsheetName("")).toThrow("Missing value");
+});
+
 test("create", () => {
     const spreadsheetName = new SpreadsheetName(value);
     expect(spreadsheetName.value()).toBe(value);
