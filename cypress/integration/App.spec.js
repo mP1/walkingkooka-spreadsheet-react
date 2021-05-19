@@ -838,7 +838,7 @@ context(
             settingsToggle();
 
             cy.hash()
-                .should("matches", /.*\/Untitled\/name\/settings/);
+                .should("matches", /.*\/Untitled\/settings/);
         });
 
         it("Edit cell, then toggle show settings history hash", () => {
