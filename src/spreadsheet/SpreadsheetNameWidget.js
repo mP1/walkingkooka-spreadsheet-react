@@ -49,7 +49,7 @@ export default class SpreadsheetNameWidget extends SpreadsheetHistoryAwareStateW
                                            className={"spreadsheet-name"}
                                            value={name}
                                            setValue={this.onValue.bind(this)}
-                                           setEdit={() => this.onTextFieldEdit(true)}/>
+                                           setEdit={(edit) => this.onTextFieldEdit(edit)}/>
     }
 
     onValue(v) {
