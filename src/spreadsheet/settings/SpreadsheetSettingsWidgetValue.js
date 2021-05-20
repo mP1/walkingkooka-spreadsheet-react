@@ -40,6 +40,10 @@ export default class SpreadsheetSettingsWidgetValue extends React.Component {
         this.defaultButtonTooltip = props.defaultButtonTooltip;
     }
 
+    shouldComponentUpdate(nextProps, nextState) {
+        return !Equality.safeEquals(this.state, nextState);
+    }
+
     componentDidUpdate(prevProps, prevState, snapshot) {
         const state = this.state;
         console.log("componentDidUpdate", this.id, "prevState", prevState, "state", state);
