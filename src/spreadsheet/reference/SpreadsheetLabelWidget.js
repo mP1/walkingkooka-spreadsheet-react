@@ -125,9 +125,6 @@ class SpreadsheetLabelWidget extends SpreadsheetHistoryAwareStateWidget {
     }
 
     render() {
-        const {label, labelHelper, reference, referenceHelper} = this.state;
-        console.log("render: ", "label:" + label, "labelHelper:" + labelHelper, ", reference:" + reference, "referenceHelper" + referenceHelper)
-
         return this.state.open ?
             this.renderDialog() :
             null;
