@@ -7,14 +7,14 @@ function cellReference() {
     return SpreadsheetCellReference.fromJson("B2");
 }
 
-function label1() {
+function labelMapping1() {
     return SpreadsheetLabelMapping.fromJson({
         label: "Label123",
         reference: "C3",
     });
 }
 
-function label2() {
+function labelMapping2() {
     return SpreadsheetLabelMapping.fromJson({
         label: "Label456",
         reference: "D4",
@@ -23,8 +23,8 @@ function label2() {
 
 function labels() {
     return [
-        label1(),
-        label2(),
+        labelMapping1(),
+        labelMapping2(),
     ];
 }
 
@@ -41,8 +41,8 @@ systemObjectTesting(
     {
         "cell-reference": cellReference().toJson(),
         "labels": [
-            label1().toJson(),
-            label2().toJson(),
+            labelMapping1().toJson(),
+            labelMapping2().toJson(),
         ],
     }
 );
@@ -164,7 +164,7 @@ test("equals different cell-reference", () => {
 });
 
 test("equals different labels", () => {
-    expect(similarity().equals(new SpreadsheetExpressionReferenceSimilarities(cellReference(), [label2()])))
+    expect(similarity().equals(new SpreadsheetExpressionReferenceSimilarities(cellReference(), [labelMapping2()])))
         .toBeFalse();
 });
 
