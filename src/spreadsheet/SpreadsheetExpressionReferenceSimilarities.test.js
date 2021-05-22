@@ -21,7 +21,7 @@ function labelMapping2() {
     });
 }
 
-function labels() {
+function labelsMappings() {
     return [
         labelMapping1(),
         labelMapping2(),
@@ -29,12 +29,12 @@ function labels() {
 }
 
 function similarity() {
-    return new SpreadsheetExpressionReferenceSimilarities(cellReference(), labels());
+    return new SpreadsheetExpressionReferenceSimilarities(cellReference(), labelsMappings());
 }
 
 systemObjectTesting(
     similarity(),
-    new SpreadsheetExpressionReferenceSimilarities(SpreadsheetCellReference.fromJson("Z99"), labels()),
+    new SpreadsheetExpressionReferenceSimilarities(SpreadsheetCellReference.fromJson("Z99"), labelsMappings()),
     SpreadsheetExpressionReferenceSimilarities.fromJson,
     "Missing json",
     "spreadsheet-expression-reference-similarities",
@@ -50,7 +50,7 @@ systemObjectTesting(
 
 test("create invalid cell-reference fails", () => {
     const r = true;
-    const l = labels();
+    const l = labelsMappings();
     expect(() => new SpreadsheetExpressionReferenceSimilarities(r, l)).toThrow("Expected SpreadsheetCellReference or nothing cellReference got true");
 });
 
@@ -68,7 +68,7 @@ test("create invalid type labels fails", () => {
 
 test("create missing reference", () => {
     const r = undefined;
-    const l = labels();
+    const l = labelsMappings();
 
     check(new SpreadsheetExpressionReferenceSimilarities(r, l),
         r,
@@ -92,7 +92,7 @@ test("fromJson null fails", () => {
 
 test("from json", () => {
     const r = cellReference();
-    const l = labels();
+    const l = labelsMappings();
 
     check(SpreadsheetExpressionReferenceSimilarities.fromJson({
             "cell-reference": r.toJson(),
@@ -105,7 +105,7 @@ test("from json", () => {
 
 test("from json missing reference", () => {
     const r = undefined;
-    const l = labels();
+    const l = labelsMappings();
 
     check(SpreadsheetExpressionReferenceSimilarities.fromJson({
             "labels": l.map(l => l.toJson()),
@@ -144,7 +144,7 @@ test("from json empty labels", () => {
 
 test("equals both missing cell-reference", () => {
     const r = null;
-    const l = labels();
+    const l = labelsMappings();
 
     expect(new SpreadsheetExpressionReferenceSimilarities(r, l)
         .equals(new SpreadsheetExpressionReferenceSimilarities(r, l)))
@@ -153,13 +153,13 @@ test("equals both missing cell-reference", () => {
 
 test("equals missing cell-reference", () => {
     expect(similarity()
-        .equals(new SpreadsheetExpressionReferenceSimilarities(null, labels()))
+        .equals(new SpreadsheetExpressionReferenceSimilarities(null, labelsMappings()))
     ).toBeFalse();
 });
 
 test("equals different cell-reference", () => {
     expect(similarity()
-        .equals(new SpreadsheetExpressionReferenceSimilarities(SpreadsheetCellReference.fromJson("B99"), labels()))
+        .equals(new SpreadsheetExpressionReferenceSimilarities(SpreadsheetCellReference.fromJson("B99"), labelsMappings()))
     ).toBeFalse();
 });
 
