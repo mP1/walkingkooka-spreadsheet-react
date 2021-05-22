@@ -117,7 +117,7 @@ class SpreadsheetLabelWidget extends SpreadsheetHistoryAwareStateWidget {
     }
 
     onLoadFailure(error) {
-        this.props.notificationShow(SpreadsheetNotification.error(error));
+        this.props.showError(error);
         const state = {};
         this.parseLabel("", state);
         this.parseReference("", state);
@@ -264,7 +264,7 @@ class SpreadsheetLabelWidget extends SpreadsheetHistoryAwareStateWidget {
         this.props.deleteLabelMapping(
             this.state.label,
             this.onDeleteCompleted.bind(this),
-            (message) => this.props.notificationShow(SpreadsheetNotification.error(message))
+            this.props.showError
         );
     }
 
@@ -294,7 +294,7 @@ class SpreadsheetLabelWidget extends SpreadsheetHistoryAwareStateWidget {
             }
             this.setState(newState);
         } catch(e) {
-            this.props.notificationShow(SpreadsheetNotification.error(e.message));
+            this.props.showError(e.message);
         }
     }
 
