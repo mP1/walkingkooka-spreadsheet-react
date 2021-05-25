@@ -2,21 +2,36 @@ import systemObjectTesting from "../SystemObjectTesting.js";
 import SpreadsheetCellReference from "./reference/SpreadsheetCellReference.js";
 import SpreadsheetExpressionReferenceSimilarities from "./SpreadsheetExpressionReferenceSimilarities.js";
 import SpreadsheetLabelMapping from "./reference/SpreadsheetLabelMapping.js";
+import SpreadsheetLabelName from "./reference/SpreadsheetLabelName.js";
+
+const CELL_REFERENCE_TEXT = "B2";
 
 function cellReference() {
-    return SpreadsheetCellReference.fromJson("B2");
+    return SpreadsheetCellReference.fromJson(CELL_REFERENCE_TEXT);
+}
+
+const LABEL1_TEXT = "Label123";
+
+function label1() {
+    return SpreadsheetLabelName.parse(LABEL1_TEXT);
 }
 
 function labelMapping1() {
     return SpreadsheetLabelMapping.fromJson({
-        label: "Label123",
+        label: label1().toJson(),
         reference: "C3",
     });
 }
 
+const LABEL2_TEXT = "Label456";
+
+function label2() {
+    return SpreadsheetLabelName.parse(LABEL2_TEXT);
+}
+
 function labelMapping2() {
     return SpreadsheetLabelMapping.fromJson({
-        label: "Label456",
+        label: label2().toJson(),
         reference: "D4",
     });
 }
