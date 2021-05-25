@@ -1,7 +1,8 @@
-import Preconditions from "../../Preconditions.js";
-import SystemObject from "../../SystemObject.js";
+import SystemEnum from "../../SystemEnum.js";
 
-export default class SpreadsheetReferenceKind extends SystemObject {
+const TYPE_NAME = "spreadsheet-reference-kind";
+
+export default class SpreadsheetReferenceKind extends SystemEnum {
 
     static ABSOLUTE = new SpreadsheetReferenceKind("ABSOLUTE", "Absolute");
     static RELATIVE = new SpreadsheetReferenceKind("RELATIVE", "Relative");
@@ -13,27 +14,12 @@ export default class SpreadsheetReferenceKind extends SystemObject {
         ];
     }
 
-    static of(text) {
-        Preconditions.requireText(text, "text");
-
-        switch(text) {
-            case "ABSOLUTE":
-                return SpreadsheetReferenceKind.ABSOLUTE;
-            case "RELATIVE":
-                return SpreadsheetReferenceKind.RELATIVE;
-            default:
-                throw new Error("Unknown text: " + text);
-        }
+    static valueOf(name) {
+        return SystemEnum.valueOf(name, SpreadsheetReferenceKind.values());
     }
 
-    constructor(name, label) {
-        super();
-        this.name = name;
-        this.labelValue = label;
-    }
-
-    label() {
-        return this.labelValue;
+    static fromJson(name) {
+        return SpreadsheetReferenceKind.valueOf(name);
     }
 
     prefix() {
@@ -42,15 +28,7 @@ export default class SpreadsheetReferenceKind extends SystemObject {
             "";
     }
 
-    equals(other) {
-        return this === other;
-    }
-
-    toJson() {
-        return this.name;
-    }
-
-    toString() {
-        return this.name;
+    typeName() {
+        return TYPE_NAME;
     }
 }
