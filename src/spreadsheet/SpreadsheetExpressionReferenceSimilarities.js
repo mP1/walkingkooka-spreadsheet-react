@@ -1,8 +1,8 @@
 import Equality from "../Equality.js";
 import Preconditions from "../Preconditions.js";
-import spreadsheetCellReferenceOrLabelNameFromJson from "./reference/SpreadsheetCellReferenceOrLabelNameFromJson.js";
 import SpreadsheetCellReference from "./reference/SpreadsheetCellReference.js";
 import SpreadsheetLabelMapping from "./reference/SpreadsheetLabelMapping.js";
+import SpreadsheetLabelName from "./reference/SpreadsheetLabelName.js";
 import SystemObject from "../SystemObject.js";
 
 const TYPE_NAME = "spreadsheet-expression-reference-similarities";
@@ -17,30 +17,38 @@ export default class SpreadsheetExpressionReferenceSimilarities extends SystemOb
         Preconditions.requireObject(json, "json");
 
         const cellReference = json["cell-reference"];
-        const labels = json["labels"];
+        const label = json["label"];
+        const labelMappings = json["label-mappings"];
 
         return new SpreadsheetExpressionReferenceSimilarities(
-            cellReference && spreadsheetCellReferenceOrLabelNameFromJson(cellReference),
-            labels ? labels.map(SpreadsheetLabelMapping.fromJson) : []
+            cellReference && SpreadsheetCellReference.fromJson(cellReference),
+            label && SpreadsheetLabelName.fromJson(label),
+            labelMappings ? labelMappings.map(SpreadsheetLabelMapping.fromJson) : []
         );
     }
 
-    constructor(cellReference, labels) {
+    constructor(cellReference, label, labelMappings) {
         super();
 
         Preconditions.optionalInstance(cellReference, SpreadsheetCellReference, "cellReference");
-        Preconditions.requireArray(labels, "labels");
+        Preconditions.optionalInstance(label, SpreadsheetLabelName, "label");
+        Preconditions.requireArray(labelMappings, "labelMappings");
 
         this.cellReferenceValue = cellReference;
-        this.labelsValue = [...labels];
+        this.labelValue = label;
+        this.labelMappingsValue = [...labelMappings];
     }
 
     cellReference() {
         return this.cellReferenceValue;
     }
 
-    labels() {
-        return [...this.labelsValue];
+    label() {
+        return this.labelValue;
+    }
+
+    labelMappings() {
+        return [...this.labelMappingsValue];
     }
 
     toJson() {
@@ -52,9 +60,14 @@ export default class SpreadsheetExpressionReferenceSimilarities extends SystemOb
             json["cell-reference"] = cellReference.toJson();
         }
 
-        const labels = this.labels();
-        if(labels) {
-            json["labels"] = labels.map(l => l.toJson());
+        const label = this.label();
+        if(label) {
+            json["label"] = label.toJson();
+        }
+
+        const labelMappings = this.labelMappings();
+        if(labelMappings) {
+            json["label-mappings"] = labelMappings.map(m => m.toJson());
         }
 
         return json;
@@ -69,17 +82,22 @@ export default class SpreadsheetExpressionReferenceSimilarities extends SystemOb
             (
                 other instanceof SpreadsheetExpressionReferenceSimilarities &&
                 Equality.safeEquals(this.cellReference(), other.cellReference()) &&
-                Equality.safeEquals(this.labels(), other.labels())
+                Equality.safeEquals(this.label(), other.label()) &&
+                Equality.safeEquals(this.labelMappings(), other.labelMappings())
             );
     }
 
     toString() {
         const cellReference = this.cellReference();
+        const label = this.label();
 
         return (null != cellReference ?
             cellReference + " " :
             "") +
-            this.labels().join();
+            (null != label ?
+                label + " " :
+                "") +
+            this.labelMappingsValue().join();
     }
 }
 
