@@ -1505,6 +1505,16 @@ test("replacements #2", () => {
     );
 });
 
+test("formula without cell", () => {
+    mergeAndCheck(
+        "/123abc/Untitled456",
+        {
+            "formula": true,
+        },
+        "/123abc/Untitled456"
+    );
+});
+
 function parseMergeAndPushHistoryFails(history) {
     test("parseMergeAndPush history: " + history + " fails", () => {
         expect(() => SpreadsheetHistoryHash.merge(history, {}, FUNCTION).toThrow("Expected object history got " + history));
