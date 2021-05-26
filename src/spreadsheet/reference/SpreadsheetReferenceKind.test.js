@@ -1,20 +1,23 @@
 import SpreadsheetReferenceKind from "./SpreadsheetReferenceKind";
+import systemObjectTesting from "../../SystemObjectTesting.js";
 
-test("of missing text fails", () => {
-    expect(() => SpreadsheetReferenceKind.of().toThrow("Missing text"));
-});
+systemObjectTesting(
+    SpreadsheetReferenceKind.ABSOLUTE,
+    SpreadsheetReferenceKind.RELATIVE,
+    SpreadsheetReferenceKind.fromJson,
+    "Missing name",
+    "spreadsheet-reference-kind",
+    "ABSOLUTE"
+);
 
-test("of invalid text fails", () => {
-    expect(() => SpreadsheetReferenceKind.of("!invalid").toThrow("Unknown text: !invalid"));
-});
+valueOfAndCheck("ABSOLUTE", SpreadsheetReferenceKind.ABSOLUTE);
+valueOfAndCheck("RELATIVE", SpreadsheetReferenceKind.RELATIVE);
 
-test("of ABSOLUTE", () => {
-    expect(SpreadsheetReferenceKind.of("ABSOLUTE")).toStrictEqual(SpreadsheetReferenceKind.ABSOLUTE);
-});
-
-test("of RELATIVE", () => {
-    expect(SpreadsheetReferenceKind.of("RELATIVE")).toStrictEqual(SpreadsheetReferenceKind.RELATIVE);
-});
+function valueOfAndCheck(name, kind) {
+    test("valueOf " + name, () => {
+        expect(SpreadsheetReferenceKind.valueOf(name)).toStrictEqual(kind);
+    });
+}
 
 test("prefix ABSOLUTE", () => {
     expect(SpreadsheetReferenceKind.ABSOLUTE.prefix()).toStrictEqual("$");
@@ -24,30 +27,14 @@ test("prefix RELATIVE", () => {
     expect(SpreadsheetReferenceKind.RELATIVE.prefix()).toStrictEqual("");
 });
 
-test("toJson", () => {
-    expect(SpreadsheetReferenceKind.of("RELATIVE").toJson()).toStrictEqual("RELATIVE");
-});
-
 // equals................................................................................................................
 
-test("equals undefined false", () => {
-    expect(SpreadsheetReferenceKind.of("RELATIVE").equals()).toStrictEqual(false);
-});
-
-test("equals null false", () => {
-    expect(SpreadsheetReferenceKind.of("RELATIVE").equals(null)).toStrictEqual(false);
-});
-
-test("equals invalid false", () => {
-    expect(SpreadsheetReferenceKind.of("RELATIVE").equals("!invalid")).toStrictEqual(false);
-});
-
-test("equals different false", () => {
-    expect(SpreadsheetReferenceKind.RELATIVE.equals(SpreadsheetReferenceKind.ABSOLUTE)).toStrictEqual(false);
-});
-
-test("equals RELATIVE true", () => {
+test("equals ABSOLUTE true", () => {
     expect(SpreadsheetReferenceKind.ABSOLUTE.equals(SpreadsheetReferenceKind.ABSOLUTE)).toStrictEqual(true);
+});
+
+test("equals ABSOLUTE & RELATIVE false", () => {
+    expect(SpreadsheetReferenceKind.ABSOLUTE.equals(SpreadsheetReferenceKind.RELATIVE)).toStrictEqual(false);
 });
 
 test("equals RELATIVE true", () => {
@@ -57,6 +44,6 @@ test("equals RELATIVE true", () => {
 // toString.............................................................................................................
 
 test("toString", () => {
-    expect(SpreadsheetReferenceKind.of("RELATIVE").toString()).toStrictEqual("RELATIVE");
+    expect(SpreadsheetReferenceKind.valueOf("RELATIVE").name()).toStrictEqual("RELATIVE");
 });
 
