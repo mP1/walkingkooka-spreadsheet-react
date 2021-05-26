@@ -570,7 +570,7 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
             (json) => {
                 if(json) {
                     const mapping = SpreadsheetExpressionReferenceSimilarities.fromJson(json)
-                        .labels()
+                        .labelMappings()
                         .find(m => m.label().equals(label));
                     if(mapping) {
                         success(mapping.reference());
