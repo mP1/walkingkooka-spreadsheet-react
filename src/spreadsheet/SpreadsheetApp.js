@@ -437,7 +437,7 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
         Preconditions.requireFunction(setFormulaText, "setFormulaText");
         Preconditions.requireFunction(onError, "onError");
 
-        console.log("formulaTextLoad " + cellOrLabel + " " + setFormulaText + " " + onError);
+        console.log("formulaTextLoad " + cellOrLabel);
 
         if(cellOrLabel instanceof SpreadsheetCellReference) {
             this.formulaTextLoadCellReference(cellOrLabel, setFormulaText, onError);
