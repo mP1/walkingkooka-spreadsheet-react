@@ -288,7 +288,7 @@ export default class SpreadsheetHistoryHash {
                 verified.push(cell.toString());
             }
 
-            if(!!formula){
+            if(cell && !!formula){
                 verified.push(SpreadsheetHistoryHash.CELL_FORMULA);
             }
 
