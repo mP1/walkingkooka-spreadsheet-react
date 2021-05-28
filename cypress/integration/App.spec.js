@@ -465,11 +465,6 @@ context(
                 .should('match', /.*\/Untitled/);
         });
 
-        function historyHashLabel() {
-            emptySpreadsheetWait();
-            hashAppend("/label/" + LABEL);
-        }
-
         function labelDialogCheck(title,
                                   labelText,
                                   labelHelperText,
