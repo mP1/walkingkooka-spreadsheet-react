@@ -3,8 +3,8 @@ import CharSequences from "../../CharSequences.js";
 import Preconditions from "../../Preconditions.js";
 import SpreadsheetCellReference from "./SpreadsheetCellReference.js";
 import SpreadsheetCellReferenceOrLabelName from "./SpreadsheetCellReferenceOrLabelName.js";
+import SpreadsheetLabelMapping from "./SpreadsheetLabelMapping.js";
 import SystemObject from "../../SystemObject.js";
-
 
 const TYPE_NAME = "spreadsheet-label-name";
 const MAX_LENGTH = 255;
@@ -67,6 +67,10 @@ export default class SpreadsheetLabelName extends SpreadsheetCellReferenceOrLabe
 
     value() {
         return this.textValue;
+    }
+
+    mapping(reference) {
+        return new SpreadsheetLabelMapping(this, reference);
     }
 
     toJson() {
