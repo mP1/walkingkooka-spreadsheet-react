@@ -1,5 +1,8 @@
+import SpreadsheetCellReference from "./SpreadsheetCellReference.js";
+import SpreadsheetLabelMapping from "./SpreadsheetLabelMapping.js";
 import SpreadsheetLabelName from "./SpreadsheetLabelName";
 import systemObjectTesting from "../../SystemObjectTesting.js";
+
 
 const NAME = "Label123";
 
@@ -65,6 +68,15 @@ test("fromJson Label", () => {
 
 test("fromJson Label", () => {
     expect(SpreadsheetLabelName.fromJson(NAME).equals(new SpreadsheetLabelName(NAME))).toStrictEqual(true);
+});
+
+// mapping.............................................................................................................
+
+test("mapping", () => {
+    const label = SpreadsheetLabelName.fromJson(NAME);
+    const reference = SpreadsheetCellReference.parse("B99");
+
+    expect(label.mapping(reference)).toStrictEqual(new SpreadsheetLabelMapping(label, reference));
 });
 
 // equals................................................................................................................
