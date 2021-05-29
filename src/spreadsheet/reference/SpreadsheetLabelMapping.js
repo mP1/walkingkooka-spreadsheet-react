@@ -40,6 +40,17 @@ export default class SpreadsheetLabelMapping extends SystemObject {
         return this.referenceValue;
     }
 
+    toSpreadsheetNavigateWidgetOption() {
+        const label = this.label();
+
+        return {
+            text: label.toString(),
+            gotoCellOrLabel: this.reference(),
+            createLabel: null,
+            editLabel: label,
+        }
+    }
+
     toJson() {
         return {
           label: this.label().toJson(),

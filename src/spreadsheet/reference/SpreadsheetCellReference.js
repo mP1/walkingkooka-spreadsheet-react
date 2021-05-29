@@ -202,6 +202,15 @@ export default class SpreadsheetCellReference extends SpreadsheetCellReferenceOr
                 .setKind(SpreadsheetReferenceKind.RELATIVE));
     }
 
+    toSpreadsheetNavigateWidgetOption() {
+        return {
+            text: this.toString(),
+            createLabel: null,
+            editLabel: null,
+            gotoCellOrLabel: this,
+        }
+    }
+
     toJson() {
         return this.toString();
     }

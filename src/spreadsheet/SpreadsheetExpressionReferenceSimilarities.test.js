@@ -173,6 +173,113 @@ test("from json empty label-mappings", () => {
     );
 });
 
+// toSpreadsheetNavigateWidgetOptions...................................................................................
+
+test("toSpreadsheetNavigateWidgetOptions null fails", () => {
+    expect(() => similarity().toSpreadsheetNavigateWidgetOptions(null)).toThrow("Missing query");
+});
+
+test("toSpreadsheetNavigateWidgetOptions query=cell-reference", () => {
+    const r = cellReference();
+
+    expect(new SpreadsheetExpressionReferenceSimilarities(r, null, []).toSpreadsheetNavigateWidgetOptions(CELL_REFERENCE_TEXT))
+        .toStrictEqual([
+            {
+                text: r.toString(),
+                gotoCellOrLabel: r,
+                createLabel: null,
+                editLabel: null,
+            }
+        ]);
+});
+
+test("toSpreadsheetNavigateWidgetOptions query=cell-reference and mappings", () => {
+    const r = SpreadsheetCellReference.parse("Z99");
+    const m = labelMapping1();
+
+    expect(new SpreadsheetExpressionReferenceSimilarities(r, null, [m]).toSpreadsheetNavigateWidgetOptions(r.toString()))
+        .toStrictEqual([
+            {
+                text: r.toString(),
+                gotoCellOrLabel: r,
+                createLabel: null,
+                editLabel: null,
+            },
+            {
+                text: m.label().toString(),
+                gotoCellOrLabel: m.reference(),
+                createLabel: null,
+                editLabel: m.label(),
+            }
+        ]);
+});
+
+test("toSpreadsheetNavigateWidgetOptions query=create label", () => {
+    const createLabel = SpreadsheetLabelName.parse("Label999");
+
+    expect(new SpreadsheetExpressionReferenceSimilarities(null, createLabel, [])
+        .toSpreadsheetNavigateWidgetOptions(createLabel.toString()))
+        .toStrictEqual([
+            {
+                text: createLabel.toString(),
+                gotoCellOrLabel: null,
+                createLabel: createLabel,
+                editLabel: null,
+            }
+        ]);
+});
+
+test("toSpreadsheetNavigateWidgetOptions label without mapping", () => {
+    const createLabel = SpreadsheetLabelName.parse("Label999");
+
+    expect(new SpreadsheetExpressionReferenceSimilarities(null, createLabel, [])
+        .toSpreadsheetNavigateWidgetOptions(createLabel.toString()))
+        .toStrictEqual([
+            {
+                text: createLabel.toString(),
+                gotoCellOrLabel: null,
+                createLabel: createLabel,
+                editLabel: null,
+            }
+        ]);
+});
+
+test("toSpreadsheetNavigateWidgetOptions label with mapping", () => {
+    const m = labelMapping1();
+
+    expect(new SpreadsheetExpressionReferenceSimilarities(null, null, [m]).toSpreadsheetNavigateWidgetOptions(m.label().toString()))
+        .toStrictEqual([
+            {
+                text: m.label().toString(),
+                gotoCellOrLabel: m.reference(),
+                createLabel: null,
+                editLabel: m.label(),
+            }
+        ]);
+});
+
+test("toSpreadsheetNavigateWidgetOptions label without mapping and other mappings", () => {
+    const l1 = label1();
+    const l2 = label2();
+    const r = cellReference();
+
+    expect(new SpreadsheetExpressionReferenceSimilarities(null, label1(), [label2().mapping(r)]).toSpreadsheetNavigateWidgetOptions(l1.toString()))
+        .toStrictEqual([
+            {
+                text: l1.toString(),
+                gotoCellOrLabel: null,
+                createLabel: l1,
+                editLabel: null,
+            },
+            {
+                text: l2.toString(),
+                gotoCellOrLabel: r,
+                createLabel: null,
+                editLabel: l2,
+            },
+        ]);
+});
+
 // equals...............................................................................................................
 
 test("equals both missing cell-reference", () => {

@@ -73,6 +73,19 @@ export default class SpreadsheetLabelName extends SpreadsheetCellReferenceOrLabe
         return new SpreadsheetLabelMapping(this, reference);
     }
 
+    /**
+     * Within a similarities this represents a label which does not exist and should display the CREATE and not EDIT
+     * button.
+     */
+    toSpreadsheetNavigateWidgetOption() {
+        return {
+            text: this.value(),
+            gotoCellOrLabel: null,
+            createLabel: this,
+            editLabel: null,
+        };
+    }
+
     toJson() {
         return this.toString();
     }

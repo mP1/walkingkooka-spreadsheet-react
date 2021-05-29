@@ -400,6 +400,19 @@ test("toRelative absolute2", () => {
     expect(SpreadsheetCellReference.parse("$C3").toRelative()).toEqual(SpreadsheetCellReference.parse("C3"));
 });
 
+// toSpreadsheetNavigateWidgetOption....................................................................................
+
+test("toSpreadsheetNavigateWidgetOption", () => {
+    const cell = SpreadsheetCellReference.parse("B2");
+
+    expect(cell.toSpreadsheetNavigateWidgetOption()).toStrictEqual({
+        text: "B2",
+        createLabel: null,
+        editLabel: null,
+        gotoCellOrLabel: cell,
+    });
+});
+
 // equals................................................................................................................
 
 test("equals different column false", () => {
