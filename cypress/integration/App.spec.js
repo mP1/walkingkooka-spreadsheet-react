@@ -40,17 +40,17 @@ context(
 
         // INVALID TARGET. ...................................................................................................
 
-        it("Enter history hash invalid target", () => {
+        it("Hash invalid rejected", () => {
             hashInvalidRejected("/!invalid-target");
         });
 
         // SPREADSHEET NAME ...................................................................................................
 
-        it("Enter history hash with invalid spreadsheet name action", () => {
+        it("Spreadsheet name hash invalid name", () => {
             hashInvalidRejected("/name/!invalid-name-action");
         });
 
-        it("Edit spreadsheet name & ESCAPE", () => {
+        it("Spreadsheet name edit & ESCAPE, changes lost", () => {
             spreadsheetEmpty();
             spreadsheetNameClick();
 
@@ -70,7 +70,7 @@ context(
                 .should('match', /.*\/Untitled/) // => true
         });
 
-        it("Edit spreadsheet name & blur", () => {
+        it("Spreadsheet name edit & blur changes lost", () => {
             spreadsheetEmpty();
             spreadsheetNameClick();
 
@@ -90,7 +90,7 @@ context(
                 .should('match', /.*\/Untitled/) // => true
         });
 
-        it("Edit spreadsheet name & save empty fails", () => {
+        it("Spreadsheet name clear & save fails", () => {
             spreadsheetEmpty();
             spreadsheetNameClick();
 
@@ -108,7 +108,7 @@ context(
             hash().should('match', /.*\/Untitled/) // => true
         });
 
-        it("Edit spreadsheet name & save", () => {
+        it("Spreadsheet name edit & save", () => {
             spreadsheetEmpty();
             spreadsheetNameClick();
 
@@ -132,11 +132,11 @@ context(
 
         // LABEL........................................................................................................
 
-        it("Enter history hash with invalid label name", () => {
+        it("Label hash with invalid label name", () => {
             hashInvalidRejected("/label/!invalid-label");
         });
 
-        it("Enter history hash show label mapping", () => {
+        it("Enter hash show label mapping", () => {
             spreadsheetEmpty();
             hashLabel();
 
@@ -149,7 +149,7 @@ context(
             );
         });
 
-        it("Enter history hash show label mapping after editing name", () => {
+        it("Label hash show label mapping after editing name", () => {
             spreadsheetEmpty();
 
             spreadsheetNameClick();
@@ -480,6 +480,43 @@ context(
                 .should('match', /.*\/Untitled/);
         });
 
+        it("Label save, navigate to label", () => {
+            spreadsheetEmpty();
+            hash()
+                .should('match', /.*\/Untitled/);
+
+            cy.window()
+                .then(function(win) {
+                    const nonEmptySpreadsheetHash = win.location.hash;
+
+                    // create a new label
+                    hashEnter(nonEmptySpreadsheetHash + "/label/Label456");
+
+                    hash()
+                        .should('match', /.*\/Untitled\/label\/Label456/);
+
+                    labelMappingReferenceTextField()
+                        .type(REFERENCE);
+
+                    labelMappingLabelSaveButton()
+                        .click();
+
+                    labelMappingLabelCloseButton()
+                        .click();
+
+                    // navigate to label's formula
+                    hashEnter(nonEmptySpreadsheetHash + "/cell/Label456/formula");
+                    hash()
+                        .should('match', /.*\/Untitled\/cell\/Label456\/formula/);
+
+                    formulaText()
+                        .type("=4{enter}");
+
+                    cellFormattedTextCheck(REFERENCE, "4.");
+                });
+        });
+
+
         function labelDialogCheck(title,
                                   labelText,
                                   labelHelperText,
@@ -539,15 +576,15 @@ context(
 
         // CELL ................................................................................................................
 
-        it("Enter history hash with invalid reference", () => {
+        it("Cell hash with invalid reference fails", () => {
             hashInvalidRejected("/cell/!invalid-cell-reference");
         });
 
-        it("Enter history hash with valid reference but invalid action", () => {
+        it("Cell hash invalid action fails", () => {
             hashInvalidRejected("/cell/A1/!invalid-cell-action");
         });
 
-        it("Click viewport cell", () => {
+        it("Cell viewport cell click", () => {
             spreadsheetEmpty();
 
             cellClick("B2");
@@ -556,7 +593,7 @@ context(
                 .should('match', /.*\/Untitled\/cell\/B2/);
         });
 
-        it("Click viewport cell after editing name", () => {
+        it("Cell viewport cell click after editing name", () => {
             spreadsheetEmpty();
             spreadsheetNameClick();
             
@@ -566,7 +603,7 @@ context(
                 .should('match', /.*\/Untitled\/cell\/B2/);
         });
 
-        it("Edit cell formula", () => {
+        it("Cell formula edit", () => {
             spreadsheetEmpty();
 
             cellClick("B2");
@@ -583,7 +620,7 @@ context(
             cellFormattedTextCheck("B2", "6.");
         });
 
-        it("Enter cell formula with reference", () => {
+        it("Cell formula edit with reference", () => {
             spreadsheetEmpty();
 
             cellClick("C3");
@@ -601,7 +638,7 @@ context(
             cellFormattedTextCheck("D4", "16.");
         });
 
-        it("Edit cell formula, update hash cell reference", () => {
+        it("Cell formula edit, update hash cell reference", () => {
             spreadsheetEmpty();
 
             cellClick("C3");
@@ -625,7 +662,7 @@ context(
             cellFormattedTextCheck("D4", "9.");
         });
 
-        it("Update hash append cell/reference/formula", () => {
+        it("Cell hash update", () => {
             spreadsheetEmpty();
 
             hashAppend("/cell/D4/formula");
@@ -634,7 +671,7 @@ context(
                 .should("have.focus");
         });
 
-        it("Update hash append formula", () => {
+        it("Cell hash append formula", () => {
             spreadsheetEmpty();
 
             cellClick("C3");
@@ -645,7 +682,7 @@ context(
                 .should("have.focus");
         });
 
-        it("edit cell hash with unknown label", () => {
+        it("Cell hash with unknown label", () => {
             spreadsheetEmpty();
 
             hashAppend("/cell/" + LABEL);
@@ -654,45 +691,81 @@ context(
                 .should('match', /.*\/Untitled/);
         });
 
-        it("Edit save label, navigate to label", () => {
+        it("Cell click should have focus", () => {
             spreadsheetEmpty();
+
+            cellClick("B2");
+
             hash()
-                .should('match', /.*\/Untitled/);
+                .should('match', /.*\/.*\/cell\/B2/);
+        });
 
-            cy.window()
-                .then(function(win) {
-                    const nonEmptySpreadsheetHash = win.location.hash;
+        it("Cell click and navigate using arrow keys", () => {
+            spreadsheetEmpty();
 
-                    // create a new label
-                    hashEnter(nonEmptySpreadsheetHash + "/label/Label456");
+            cellClick("C3")
+                .should('have.focus');
 
-                    hash()
-                        .should('match', /.*\/Untitled\/label\/Label456/);
+            cellGet("C3")
+                .type("{leftarrow}");
 
-                    labelMappingReferenceTextField()
-                        .type(REFERENCE);
+            hash()
+                .should('match', /.*\/.*\/cell\/B3/);
 
-                    labelMappingLabelSaveButton()
-                        .click();
+            cellGet("B3")
+                .type("{rightarrow}");
 
-                    labelMappingLabelCloseButton()
-                        .click();
+            hash()
+                .should('match', /.*\/.*\/cell\/C3/);
 
-                    // navigate to label's formula
-                    hashEnter(nonEmptySpreadsheetHash + "/cell/Label456/formula");
-                    hash()
-                       .should('match', /.*\/Untitled\/cell\/Label456\/formula/);
+            cellGet("C3")
+                .type("{uparrow}");
 
-                    formulaText()
-                        .type("=4{enter}");
+            hash()
+                .should('match', /.*\/.*\/cell\/C2/);
 
-                    cellFormattedTextCheck(REFERENCE, "4.");
-                });
+            cellGet("C2")
+                .type("{downarrow}");
+
+            hash()
+                .should('match', /.*\/.*\/cell\/C3/);
+        });
+
+        it("Cell click and hit ENTER gives formula text focus", () => {
+            spreadsheetEmpty();
+
+            cellClick("A3")
+                .should('have.focus');
+
+            cellGet("A3")
+                .type("{enter}");
+
+            hash()
+                .should('match', /.*\/.*\/cell\/A3\/formula/);
+
+            formulaText()
+                .should("have.focus");
+        });
+
+        it("Cell select and hit ESC loses viewport cell focus", () => {
+            spreadsheetEmpty();
+
+            cellClick("A3")
+                .should('have.focus');
+
+            hash()
+                .should('match', /.*\/.*\/cell\/A3/);
+
+            cellGet("A3")
+                .type("{esc}");
+
+            hash()
+                .should('match', /.*\/.*/);
         });
 
         // navigate.....................................................................................................
 
-        it("Navigate using history hash initial appearance", () => {
+        it("Navigate using hash initial appearance", () => {
             spreadsheetEmpty();
             navigateHistoryHash();
 
@@ -990,13 +1063,13 @@ context(
 
         // create/load spreadsheet............................................................................................
 
-        it("Create new empty spreadsheet", () => {
+        it("Empty spreadsheet create", () => {
             hashEnter("/");
 
             spreadsheetEmptyCheck();
         });
 
-        it("Update then create new empty spreadsheet", () => {
+        it("Empty spreadsheet after editing cell", () => {
             spreadsheetEmpty();
 
             cellClick("E5");
@@ -1012,7 +1085,7 @@ context(
             spreadsheetEmptyCheck();
         });
 
-        it("Update then create new empty spreadsheet then reload non empty", () => {
+        it("Spreadsheet create, edit cell, reload non empty spreadsheet", () => {
             spreadsheetEmpty();
 
             cy.window()
@@ -1038,81 +1111,9 @@ context(
                 });
         });
 
-        it("Select cell should have focus", () => {
-            spreadsheetEmpty();
-
-            cellClick("B2");
-
-            hash()
-                .should('match', /.*\/.*\/cell\/B2/);
-        });
-
-        it("Select cell and navigate using arrow keys", () => {
-            spreadsheetEmpty();
-
-            cellClick("C3")
-                .should('have.focus');
-
-            cellGet("C3")
-                .type("{leftarrow}");
-
-            hash()
-                .should('match', /.*\/.*\/cell\/B3/);
-
-            cellGet("B3")
-                .type("{rightarrow}");
-
-            hash()
-                .should('match', /.*\/.*\/cell\/C3/);
-
-            cellGet("C3")
-                .type("{uparrow}");
-
-            hash()
-                .should('match', /.*\/.*\/cell\/C2/);
-
-            cellGet("C2")
-                .type("{downarrow}");
-
-            hash()
-                .should('match', /.*\/.*\/cell\/C3/);
-        });
-
-        it("Select cell and hit ENTER gives formula text focus", () => {
-            spreadsheetEmpty();
-
-            cellClick("A3")
-                .should('have.focus');
-
-            cellGet("A3")
-                .type("{enter}");
-
-            hash()
-                .should('match', /.*\/.*\/cell\/A3\/formula/);
-
-            formulaText()
-                .should("have.focus");
-        });
-
-        it("Select cell and hit ESC loses viewport cell focus", () => {
-            spreadsheetEmpty();
-
-            cellClick("A3")
-                .should('have.focus');
-
-            hash()
-                .should('match', /.*\/.*\/cell\/A3/);
-
-            cellGet("A3")
-                .type("{esc}");
-
-            hash()
-                .should('match', /.*\/.*/);
-        });
-
         // SETTINGS.........................................................................................................
 
-        it("Toggle(Show and hide) settings", () => {
+        it("Settings toggle(Show and hide)", () => {
             spreadsheetEmpty();
             settingsToggle();
 
@@ -1131,7 +1132,7 @@ context(
                 .should('not.match', /.*\/.*\/settings/);
         });
 
-        it("Show settings by editing history hash", () => {
+        it("Settings hash show settings", () => {
             spreadsheetEmpty();
 
             hashAppend("/settings");
@@ -1140,7 +1141,7 @@ context(
                 .should('be.visible');
         });
 
-        it("Hide settings by editing history hash", () => {
+        it("Settings hash hide settings", () => {
             spreadsheetEmpty();
             settingsToggle();
 
@@ -1154,7 +1155,7 @@ context(
                 .should('be.not.visible');
         });
 
-        it("Toggle show settings history hash", () => {
+        it("Settings toggle hash", () => {
             spreadsheetEmpty();
 
                     settingsToggle();
@@ -1163,7 +1164,7 @@ context(
                         .should("match", /.*\/Untitled\/settings/);
         });
 
-        it("Toggle show then hide settings history hash", () => {
+        it("Settings hash Toggle show then hide", () => {
             spreadsheetEmpty();
 
                     settingsToggle();
@@ -1173,7 +1174,7 @@ context(
                         .should("match", /.*\/Untitled/);
         });
 
-        it("Toggle show open section then hide settings history hash", () => {
+        it("Settings hash Toggle section and hide", () => {
             spreadsheetEmpty();
 
             cy.window()
@@ -1197,7 +1198,7 @@ context(
                 });
         });
 
-        it("Edit spreadsheet name, then toggle show settings history hash", () => {
+        it("Settings show after editing spreadsheet name", () => {
             spreadsheetEmpty();
             spreadsheetNameClick();
 
@@ -1216,7 +1217,7 @@ context(
                 .should("matches", /.*\/Untitled\/settings/);
         });
 
-        it("Edit cell, then toggle show settings history hash", () => {
+        it("Settings open hash after Edit cell", () => {
             spreadsheetEmpty();
 
             cellClick("F6");
