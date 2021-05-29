@@ -54,8 +54,6 @@ context(
             emptySpreadsheetWait();
             spreadsheetNameClick();
 
-            const updatedSpreadsheetName = "SpreadsheetName234"; // easier to use in regex below
-
             // type the new name in
             spreadsheetName()
                 .type("{selectall}")
