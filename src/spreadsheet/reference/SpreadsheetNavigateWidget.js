@@ -1,39 +1,15 @@
 import Autocomplete from '@material-ui/lab/Autocomplete';
 import Button from "@material-ui/core/Button";
-import CloseIcon from '@material-ui/icons/Close';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from "@material-ui/core/DialogActions";
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import IconButton from '@material-ui/core/IconButton';
 import Preconditions from "../../Preconditions.js";
 import PropTypes from 'prop-types';
 import React from 'react';
-import Slide from "@material-ui/core/Slide";
 import SpreadsheetCellReferenceOrLabelName from "./SpreadsheetCellReferenceOrLabelName.js";
+import SpreadsheetDialog from "../../widget/SpreadsheetDialog.js";
 import spreadsheetExpressionReferenceFromJson from "./SpreadsheetExpressionReferenceFromJson.js";
 import SpreadsheetHistoryHash from "../history/SpreadsheetHistoryHash.js";
 import SpreadsheetHistoryAwareStateWidget from "../history/SpreadsheetHistoryAwareStateWidget.js";
 import SpreadsheetLabelName from "./SpreadsheetLabelName.js";
 import TextField from '@material-ui/core/TextField';
-import {withStyles} from "@material-ui/core/styles";
-
-const useStyles = (theme) => ({
-    root: {
-        margin: 0,
-        padding: theme.spacing(2),
-    },
-    closeButton: {
-        position: 'absolute',
-        right: theme.spacing(1),
-        top: theme.spacing(1),
-        color: theme.palette.grey[500],
-    },
-});
-
-const Transition = React.forwardRef(function Transition(props, ref) {
-    return <Slide direction="up" ref={ref} {...props} />;
-});
 
 /**
  * The maximum number of similar matches
@@ -52,7 +28,7 @@ const MAX_COUNT = 10;
  * <li>createLabel The selected unknown {@link SpreadsheetLabelName} for creation</li>
  * </ul>
  */
-class SpreadsheetNavigateWidget extends SpreadsheetHistoryAwareStateWidget {
+export default class SpreadsheetNavigateWidget extends SpreadsheetHistoryAwareStateWidget {
 
     initialStateFromProps(props) {
         return {
@@ -114,88 +90,53 @@ class SpreadsheetNavigateWidget extends SpreadsheetHistoryAwareStateWidget {
         const createLabelDisabled = !createLabel;
         const editLabelDisabled = !editLabel;
 
-        const close = this.close.bind(this);
-
-        return <Dialog key="Navigate"
-                       id="navigate-Dialog"
-                       open={true}
-                       onKeyDownCapture={this.onDialogKeyDown.bind(this)}
-                       onClose={close} /*aria-labelledby="form-dialog-title"*/
-                       TransitionComponent={Transition}
+        return <SpreadsheetDialog id={"navigate-Dialog"}
+                                  open={true}
+                                  onClose={this.close.bind(this)}
         >
-            <DialogTitle id={"navigate-DialogTitle"}>
-                Navigate or Edit
-                <IconButton id={"navigate-Dialog-close-Button"}
-                            aria-label="close"
-                            className={classes.closeButton}
-                            onClick={close}>
-                    <CloseIcon/>
-                </IconButton>
-            </DialogTitle>
-            <DialogContent>
-                <div className={classes.root}>
-                    <Autocomplete
-                        id="navigate-Autocomplete-TextField"
-                        ref={this.autoComplete}
-                        freeSolo={true}
-                        selectOnFocus
-                        clearOnBlur={false}
-                        clearOnEscape={false}
-                        handleHomeEndKeys={true}
-                        options={options}
-                        getOptionLabel={(option) => typeof option == "string" ? option : option.text}
-                        onInputChange={this.onTextFieldChange.bind(this)}
-                        onChange={this.onAutoCompleteValueChange.bind(this)}
-                        noOptionsText={""}
-                        includeInputInList={true}
-                        style={{width: 500}}
-                        renderInput={(params) =>
-                            <TextField
-                                {...params}
-                                variant="outlined"
-                                helperText={queryHelperText}
-                            />
-                        }
+            <span id={"navigate-DialogTitle"}>Navigate or Edit</span>
+            <Autocomplete
+                id="navigate-Autocomplete-TextField"
+                ref={this.autoComplete}
+                freeSolo={true}
+                selectOnFocus
+                clearOnBlur={false}
+                clearOnEscape={false}
+                handleHomeEndKeys={true}
+                options={options}
+                getOptionLabel={(option) => typeof option == "string" ? option : option.text}
+                onInputChange={this.onTextFieldChange.bind(this)}
+                onChange={this.onAutoCompleteValueChange.bind(this)}
+                noOptionsText={""}
+                includeInputInList={true}
+                style={{width: 500}}
+                renderInput={(params) =>
+                    <TextField
+                        {...params}
+                        variant="outlined"
+                        helperText={queryHelperText}
                     />
-                </div>
-            </DialogContent>
-            <DialogActions>
-                <Button id="navigate-gotoCellOrLabel-Button"
-                        disabled={gotoCellOrLabelDisabled}
-                        color="primary"
-                        onClick={this.onGotoCellOrLabelClick.bind(this)}>
-                    Goto
-                </Button>
-                <Button id="navigate-create-link-Button"
-                        disabled={createLabelDisabled}
-                        color="primary"
-                        onClick={this.onCreateLabelClick.bind(this)}>
-                    Create Label
-                </Button>
-                <Button id="navigate-edit-link-Button"
-                        disabled={editLabelDisabled}
-                        color="primary"
-                        onClick={this.onEditLabelClick.bind(this)}>
-                    Edit Label
-                </Button>
-            </DialogActions>
-        </Dialog>
-    }
-
-    /**
-     * Closes the dialog if the ESC key is entered.
-     */
-    onDialogKeyDown(e) {
-        console.log("onDialogKeyDown " + e.key);
-
-        switch(e.key) {
-            case "Escape":
-                this.close();
-                break;
-            default:
-                // nothing special to do for other keys
-                break;
-        }
+                }
+            />
+            <Button id="navigate-gotoCellOrLabel-Button"
+                    disabled={gotoCellOrLabelDisabled}
+                    color="primary"
+                    onClick={this.onGotoCellOrLabelClick.bind(this)}>
+                Goto
+            </Button>
+            <Button id="navigate-create-link-Button"
+                    disabled={createLabelDisabled}
+                    color="primary"
+                    onClick={this.onCreateLabelClick.bind(this)}>
+                Create Label
+            </Button>
+            <Button id="navigate-edit-link-Button"
+                    disabled={editLabelDisabled}
+                    color="primary"
+                    onClick={this.onEditLabelClick.bind(this)}>
+                Edit Label
+            </Button>
+        </SpreadsheetDialog>
     }
 
     /**
@@ -328,5 +269,3 @@ SpreadsheetNavigateWidget.propTypes = {
     notificationShow: PropTypes.func.isRequired, // used to display notifications including errors and other messages
     showError: PropTypes.func.isRequired, // used mostly to display failures around getSimilarities
 }
-
-export default withStyles(useStyles)(SpreadsheetNavigateWidget);

@@ -1,14 +1,8 @@
 import Button from '@material-ui/core/Button';
-import CloseIcon from '@material-ui/icons/Close';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogTitle from '@material-ui/core/DialogTitle';
 import Equality from "../../Equality.js";
-import IconButton from '@material-ui/core/IconButton';
 import PropTypes from 'prop-types';
 import React from 'react';
-import Slide from "@material-ui/core/Slide";
+import SpreadsheetDialog from "../../widget/SpreadsheetDialog.js";
 import spreadsheetExpressionReferenceFromJson from "./SpreadsheetExpressionReferenceFromJson.js";
 import SpreadsheetHistoryHash from "../history/SpreadsheetHistoryHash.js";
 import SpreadsheetHistoryAwareStateWidget from "../history/SpreadsheetHistoryAwareStateWidget.js";
@@ -16,29 +10,11 @@ import SpreadsheetLabelMapping from "./SpreadsheetLabelMapping.js";
 import SpreadsheetLabelName from "./SpreadsheetLabelName.js";
 import SpreadsheetNotification from "../notification/SpreadsheetNotification.js";
 import TextField from '@material-ui/core/TextField';
-import {withStyles} from "@material-ui/core/styles";
-
-const useStyles = (theme) => ({
-    root: {
-        margin: 0,
-        padding: theme.spacing(2),
-    },
-    closeButton: {
-        position: 'absolute',
-        right: theme.spacing(1),
-        top: theme.spacing(1),
-        color: theme.palette.grey[500],
-    },
-});
-
-const Transition = React.forwardRef(function Transition(props, ref) {
-    return <Slide direction="up" ref={ref} {...props} />;
-});
 
 /**
  * A dialog with some text fields to enter the label and reference and buttons to save, delete, cancel the edit.
  */
-class SpreadsheetLabelWidget extends SpreadsheetHistoryAwareStateWidget {
+export default class SpreadsheetLabelWidget extends SpreadsheetHistoryAwareStateWidget {
 
     initialStateFromProps(props) {
         return {
@@ -131,31 +107,16 @@ class SpreadsheetLabelWidget extends SpreadsheetHistoryAwareStateWidget {
     }
 
     renderDialog() {
-        const {classes} = this.props;
         const {label, labelHelper, reference, referenceHelper} = this.state;
-        console.log("render: ", "label:" + label, "labelHelper:" + labelHelper, ", reference:" + reference, "referenceHelper" + referenceHelper)
+        console.log("render: ", "label:" + label, "labelHelper:" + labelHelper, ", reference:" + reference, "referenceHelper" + referenceHelper);
 
-        const close = this.onClose.bind(this);
-        const deleteLabelMapping = this.onDelete.bind(this);
-        const save = this.onSave.bind(this);
-
-        return <Dialog key="Label"
-                       id={"label-mapping-Dialog"}
-                       open={true}
-                       onKeyDown={this.onKeyDown.bind(this)}
-                       onClose={close} /*aria-labelledby="form-dialog-title"*/
-                       TransitionComponent={Transition}
+        return <SpreadsheetDialog id={"label-mapping-Dialog"}
+                                  key={"label-mapping"}
+                                  open={true}
+                                  onClose={this.close.bind(this)}
         >
-            <DialogTitle id={"label-mapping-DialogTitle"}>
-                {"Label: " + label}
-                <IconButton id={"label-mapping-close-Button"}
-                            aria-label="close"
-                            className={classes.closeButton}
-                            onClick={close}>
-                    <CloseIcon/>
-                </IconButton>
-            </DialogTitle>
-            <DialogContent>
+            <span id="label-mapping-DialogTitle">{"Label: " + label}</span>
+            <span>
                 <TextField key={"label"}
                            inputRef={this.label}
                            id="label-mapping-label-TextField"
@@ -179,20 +140,18 @@ class SpreadsheetLabelWidget extends SpreadsheetHistoryAwareStateWidget {
                            helperText={referenceHelper}
                            onChange={this.onReferenceChange.bind(this)}
                 />
-            </DialogContent>
-            <DialogActions>
-                <Button id="label-mapping-save-Button"
-                        onClick={save}
-                        color="primary">
-                    Save
-                </Button>
-                <Button id="label-mapping-delete-Button"
-                        onClick={deleteLabelMapping}
-                        color="primary">
-                    Delete
-                </Button>
-            </DialogActions>
-        </Dialog>
+            </span>
+            <Button id="label-mapping-save-Button"
+                    onClick={this.onSave.bind(this)}
+                    color="primary">
+                Save
+            </Button>
+            <Button id="label-mapping-delete-Button"
+                    onClick={this.onDelete.bind(this)}
+                    color="primary">
+                Delete
+            </Button>
+        </SpreadsheetDialog>
     }
 
     onLabelChange(event) {
@@ -238,11 +197,6 @@ class SpreadsheetLabelWidget extends SpreadsheetHistoryAwareStateWidget {
         }
         state.referenceHelper = message;
         return reference;
-    }
-
-    onClose() {
-        console.log("onClose");
-        this.close();
     }
 
     /**
@@ -321,9 +275,6 @@ class SpreadsheetLabelWidget extends SpreadsheetHistoryAwareStateWidget {
      */
     onKeyDown(e) {
         switch(e.key) {
-            case "Escape":
-                this.onEscape();
-                break;
             case "Enter":
                 this.onEnter();
                 break;
@@ -336,10 +287,6 @@ class SpreadsheetLabelWidget extends SpreadsheetHistoryAwareStateWidget {
     onEnter() {
         this.onSave();
     }
-
-    onEscape() {
-        this.close();
-    }
 }
 
 SpreadsheetLabelWidget.propTypes = {
@@ -350,5 +297,3 @@ SpreadsheetLabelWidget.propTypes = {
     notificationShow: PropTypes.func.isRequired, // used to display notifications including errors and other messages
     showError: PropTypes.func.isRequired,
 }
-
-export default withStyles(useStyles)(SpreadsheetLabelWidget);
