@@ -45,10 +45,16 @@ export default class Preconditions {
     /**
      * Throws an exception if the value is not a number
      */
-    static requireNumber(value, label) {
+    static requireNumber(value, label, lower, upper) {
         Preconditions.requireNonNull(value, label);
         if(typeof value !== "number"){
             reportError("Expected number " + label + " got " + value);
+        }
+        if(lower && value < lower) {
+            reportError("Expected " + label + " " + value + " >= " + lower);
+        }
+        if(upper && value >= upper) {
+            reportError("Expected " + label + " " + value + " < " + upper);
         }
     }
 

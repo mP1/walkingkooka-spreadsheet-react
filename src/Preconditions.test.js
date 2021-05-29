@@ -59,16 +59,42 @@ testNotThrows("requireFunction function", Preconditions.requireFunction, FUNCTIO
 
 // requireNumber.......................................................................................................
 
-testThrows("requireNumber undefined", Preconditions.requireNumber, undefined, "Label123", "Missing Label123");
-testThrows("requireNumber null", Preconditions.requireNumber, null, "Label123", "Missing Label123");
-testThrows("requireNumber false", Preconditions.requireNumber, false, "Label123", "Expected number Label123 got false");
-testThrows("requireNumber empty string", Preconditions.requireNumber, "", "Label123", "Expected number Label123 got ");
-testThrows("requireNumber string", Preconditions.requireNumber, "ABC123", "Label123", "Expected number Label123 got ABC123");
-testThrows("requireNumber function", Preconditions.requireNumber, FUNCTION, "Label123", "Expected number Label123 got function () {}");
-testThrows("requireNumber array", Preconditions.requireNumber, ARRAY, "Label123", "Expected number Label123 got 1,2,3");
-testThrows("requireNumber object", Preconditions.requireNumber, {}, "Label123", "Expected number Label123 got [object Object]");
-testNotThrows("requireNumber number 0", Preconditions.requireNumber, 0);
-testNotThrows("requireNumber number 1", Preconditions.requireNumber, 1);
+function testRequireNumberThrows(title, value, lower, upper, message) {
+    test(title, () => {
+        expect(
+            () => Preconditions.requireNumber(value, "Label123", lower, upper)
+        ).toThrow(message);
+    });
+}
+
+function testRequireNumberNotThrows(title, value, lower, upper) {
+    test(title, () => {
+        expect(
+            () => Preconditions.requireNumber(value, "Label123", lower, upper)
+        ).not
+            .toThrow();
+    });
+}
+
+testRequireNumberThrows("requireNumber undefined",  undefined, null, null, "Missing Label123");
+testRequireNumberThrows("requireNumber null",  null, null, null, "Missing Label123");
+testRequireNumberThrows("requireNumber false",  false, null, null, "Expected number Label123 got false");
+testRequireNumberThrows("requireNumber empty string",  "", null, null, "Expected number Label123 got ");
+testRequireNumberThrows("requireNumber string",  "ABC123", null, null, "Expected number Label123 got ABC123");
+testRequireNumberThrows("requireNumber function",  FUNCTION, null, null, "Expected number Label123 got function () {}");
+testRequireNumberThrows("requireNumber array",  ARRAY, null, null, "Expected number Label123 got 1,2,3");
+testRequireNumberThrows("requireNumber object",  {}, null, null, "Expected number Label123 got [object Object]");
+testRequireNumberThrows("requireNumber number < lower",  1, 2, null, "Expected Label123 1 >= 2");
+testRequireNumberThrows("requireNumber number > upper",  2, null, 2, "Expected Label123 2 < 2");
+testRequireNumberThrows("requireNumber number > upper #2",  3, null, 2, "Expected Label123 3 < 2");
+testRequireNumberNotThrows("requireNumber number 0",  0);
+testRequireNumberNotThrows("requireNumber number 1",  1);
+testRequireNumberNotThrows("requireNumber number 1 lower=1",  1, 1);
+testRequireNumberNotThrows("requireNumber number 2 lower=1",  2, 1);
+testRequireNumberNotThrows("requireNumber number 1 upper=2",  1, null, 2);
+testRequireNumberNotThrows("requireNumber number 2 upper=3",  2, null, 3);
+testRequireNumberNotThrows("requireNumber number 2 lower1, upper=3",  2, 1, 3);
+testRequireNumberNotThrows("requireNumber number 2 lower2, upper=3",  2, 2, 3);
 
 // requirePositiveNumber.......................................................................................................
 
