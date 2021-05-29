@@ -35,23 +35,23 @@ context(
         })
 
         it("Initial empty spreadsheet", () => {
-            checkEmptySpreadsheet();
+            spreadsheetEmptyCheck();
         });
 
         // INVALID TARGET. ...................................................................................................
 
         it("Enter history hash invalid target", () => {
-            invalidHashUpdateRejected("/!invalid-target");
+            hashInvalidRejected("/!invalid-target");
         });
 
         // SPREADSHEET NAME ...................................................................................................
 
         it("Enter history hash with invalid spreadsheet name action", () => {
-            invalidHashUpdateRejected("/name/!invalid-name-action");
+            hashInvalidRejected("/name/!invalid-name-action");
         });
 
         it("Edit spreadsheet name & ESCAPE", () => {
-            emptySpreadsheetWait();
+            spreadsheetEmpty();
             spreadsheetNameClick();
 
             // type the new name in
@@ -60,7 +60,7 @@ context(
                 .type("UpdatedSpreadsheetName456")
                 .type("{esc}");
 
-            reactRenderWait();
+            renderWait();
 
             spreadsheetName()
                 .should("have.text", "Untitled");
@@ -71,7 +71,7 @@ context(
         });
 
         it("Edit spreadsheet name & blur", () => {
-            emptySpreadsheetWait();
+            spreadsheetEmpty();
             spreadsheetNameClick();
 
             // type the new name in
@@ -80,7 +80,7 @@ context(
                 .type("UpdatedSpreadsheetName456")
                 .blur();
 
-            reactRenderWait();
+            renderWait();
 
             spreadsheetName()
                 .should("have.text", "Untitled");
@@ -91,7 +91,7 @@ context(
         });
 
         it("Edit spreadsheet name & save empty fails", () => {
-            emptySpreadsheetWait();
+            spreadsheetEmpty();
             spreadsheetNameClick();
 
             // type the new name in
@@ -100,7 +100,7 @@ context(
                 .type("{backspace}")
                 .type("{enter}");
 
-            reactRenderWait();
+            renderWait();
 
             spreadsheetName()
                 .should("have.text", "Untitled");
@@ -109,7 +109,7 @@ context(
         });
 
         it("Edit spreadsheet name & save", () => {
-            emptySpreadsheetWait();
+            spreadsheetEmpty();
             spreadsheetNameClick();
 
             const updatedSpreadsheetName = "SpreadsheetName234"; // easier to use in regex below
@@ -120,7 +120,7 @@ context(
                 .type(updatedSpreadsheetName)
                 .type("{enter}");
 
-            reactRenderWait();
+            renderWait();
 
             spreadsheetName()
                 .should("have.text", updatedSpreadsheetName);
@@ -133,12 +133,12 @@ context(
         // LABEL........................................................................................................
 
         it("Enter history hash with invalid label name", () => {
-            invalidHashUpdateRejected("/label/!invalid-label");
+            hashInvalidRejected("/label/!invalid-label");
         });
 
         it("Enter history hash show label mapping", () => {
-            emptySpreadsheetWait();
-            historyHashLabel();
+            spreadsheetEmpty();
+            hashLabel();
 
             labelDialogCheck(
                 "Label: " + LABEL,
@@ -150,7 +150,7 @@ context(
         });
 
         it("Enter history hash show label mapping after editing name", () => {
-            emptySpreadsheetWait();
+            spreadsheetEmpty();
 
             spreadsheetNameClick();
             spreadsheetName()
@@ -177,8 +177,8 @@ context(
         // LABEL MAPPING LABEL..........................................................................................
 
         it("Label mapping edit label empty text", () => {
-            emptySpreadsheetWait();
-            historyHashLabel();
+            spreadsheetEmpty();
+            hashLabel();
 
             labelMappingLabelTextField()
                 .type("{selectAll}{backspace}");
@@ -193,8 +193,8 @@ context(
         });
 
         it("Label mapping edit label invalid text", () => {
-            emptySpreadsheetWait();
-            historyHashLabel();
+            spreadsheetEmpty();
+            hashLabel();
 
             const labelText = "!InvalidLabel";
 
@@ -211,8 +211,8 @@ context(
         });
 
         it("Label mapping edit label invalid text #2", () => {
-            emptySpreadsheetWait();
-            historyHashLabel();
+            spreadsheetEmpty();
+            hashLabel();
 
             const labelText = "I!nvalidLabel";
 
@@ -229,8 +229,8 @@ context(
         });
 
         it("Label mapping edit label text, missing reference ENTER", () => {
-            emptySpreadsheetWait();
-            historyHashLabel();
+            spreadsheetEmpty();
+            hashLabel();
 
             const labelText = "Label456";
 
@@ -247,8 +247,8 @@ context(
         });
 
         it("Label mapping edit label text, missing reference SAVE", () => {
-            emptySpreadsheetWait();
-            historyHashLabel();
+            spreadsheetEmpty();
+            hashLabel();
 
             const labelText = "Label456";
 
@@ -269,8 +269,8 @@ context(
         // LABEL MAPPING REFERENCE......................................................................................
 
         it("Label mapping edit reference invalid text", () => {
-            emptySpreadsheetWait();
-            historyHashLabel();
+            spreadsheetEmpty();
+            hashLabel();
 
             const referenceText = "!InvalidReference";
 
@@ -287,8 +287,8 @@ context(
         });
 
         it("Label mapping edit reference invalid text #2", () => {
-            emptySpreadsheetWait();
-            historyHashLabel();
+            spreadsheetEmpty();
+            hashLabel();
 
             const referenceText = "A!InvalidReference";
 
@@ -305,8 +305,8 @@ context(
         });
 
         it("Label mapping edit reference same label", () => {
-            emptySpreadsheetWait();
-            historyHashLabel();
+            spreadsheetEmpty();
+            hashLabel();
 
             const referenceText = LABEL;
 
@@ -323,8 +323,8 @@ context(
         });
 
         it("Label mapping edit reference", () => {
-            emptySpreadsheetWait();
-            historyHashLabel();
+            spreadsheetEmpty();
+            hashLabel();
 
             const referenceText = REFERENCE;
             labelMappingReferenceTextField()
@@ -342,8 +342,8 @@ context(
         // special keys and buttons.....................................................................................
 
         it("Label mapping label TextField ESC", () => {
-            emptySpreadsheetWait();
-            historyHashLabel();
+            spreadsheetEmpty();
+            hashLabel();
 
             labelMappingReferenceTextField()
                 .type(REFERENCE);
@@ -351,7 +351,7 @@ context(
             labelMappingLabelTextField()
                 .type("{Esc}");
 
-            historyHashLabel();
+            hashLabel();
 
             labelDialogCheck(
                 "Label: " + LABEL,
@@ -363,13 +363,13 @@ context(
         });
 
         it("Label mapping reference TextField ESC", () => {
-            emptySpreadsheetWait();
-            historyHashLabel();
+            spreadsheetEmpty();
+            hashLabel();
 
             labelMappingReferenceTextField()
                 .type(REFERENCE + "{Esc}");
 
-            historyHashLabel();
+            hashLabel();
 
             labelDialogCheck(
                 "Label: " + LABEL,
@@ -381,8 +381,8 @@ context(
         });
 
         it("Label mapping edit label/reference label TextField ENTER", () => {
-            emptySpreadsheetWait();
-            historyHashLabel();
+            spreadsheetEmpty();
+            hashLabel();
 
             const referenceText = REFERENCE;
             labelMappingReferenceTextField()
@@ -405,8 +405,8 @@ context(
         });
 
         it("Label mapping edit label/reference reference TextField ENTER", () => {
-            emptySpreadsheetWait();
-            historyHashLabel();
+            spreadsheetEmpty();
+            hashLabel();
 
             const referenceText = REFERENCE;
             labelMappingReferenceTextField()
@@ -424,8 +424,8 @@ context(
         });
 
         it("Label mapping edit label/reference click SAVE button", () => {
-            emptySpreadsheetWait();
-            historyHashLabel();
+            spreadsheetEmpty();
+            hashLabel();
 
             const referenceText = REFERENCE;
             labelMappingReferenceTextField()
@@ -444,8 +444,8 @@ context(
         });
 
         it("Label mapping edit label/reference click DELETE button", () => {
-            emptySpreadsheetWait();
-            historyHashLabel();
+            spreadsheetEmpty();
+            hashLabel();
 
             const referenceText = REFERENCE;
             labelMappingReferenceTextField()
@@ -454,11 +454,11 @@ context(
             labelMappingLabelSaveButton()
                 .click();
 
-            historyHashLabel();
+            hashLabel();
             labelMappingLabelDeleteButton()
                 .click();
 
-            historyHashLabel();
+            hashLabel();
 
             labelDialogCheck(
                 "Label: " + LABEL,
@@ -470,8 +470,8 @@ context(
         });
 
         it("Label mapping edit close BUTTON", () => {
-            emptySpreadsheetWait();
-            historyHashLabel();
+            spreadsheetEmpty();
+            hashLabel();
 
             labelMappingLabelCloseButton()
                 .click();
@@ -533,22 +533,22 @@ context(
             return cy.get("#label-mapping-close-Button");
         }
 
-        function historyHashLabel() {
+        function hashLabel() {
             hashAppend("/label/" + LABEL);
         }
 
         // CELL ................................................................................................................
 
         it("Enter history hash with invalid reference", () => {
-            invalidHashUpdateRejected("/cell/!invalid-cell-reference");
+            hashInvalidRejected("/cell/!invalid-cell-reference");
         });
 
         it("Enter history hash with valid reference but invalid action", () => {
-            invalidHashUpdateRejected("/cell/A1/!invalid-cell-action");
+            hashInvalidRejected("/cell/A1/!invalid-cell-action");
         });
 
         it("Click viewport cell", () => {
-            emptySpreadsheetWait();
+            spreadsheetEmpty();
 
             cellClick("B2");
 
@@ -557,7 +557,7 @@ context(
         });
 
         it("Click viewport cell after editing name", () => {
-            emptySpreadsheetWait();
+            spreadsheetEmpty();
             spreadsheetNameClick();
             
             cellClick("B2");
@@ -567,7 +567,7 @@ context(
         });
 
         it("Edit cell formula", () => {
-            emptySpreadsheetWait();
+            spreadsheetEmpty();
 
             cellClick("B2");
 
@@ -584,7 +584,7 @@ context(
         });
 
         it("Enter cell formula with reference", () => {
-            emptySpreadsheetWait();
+            spreadsheetEmpty();
 
             cellClick("C3");
 
@@ -602,7 +602,7 @@ context(
         });
 
         it("Edit cell formula, update hash cell reference", () => {
-            emptySpreadsheetWait();
+            spreadsheetEmpty();
 
             cellClick("C3");
 
@@ -616,7 +616,7 @@ context(
                     win.location.hash = hash.replace("/cell/C3/formula", "/cell/D4/formula");
                 });
 
-            reactRenderWait();
+            renderWait();
 
             formulaText()
                 .type("=4+5")
@@ -626,7 +626,7 @@ context(
         });
 
         it("Update hash append cell/reference/formula", () => {
-            emptySpreadsheetWait();
+            spreadsheetEmpty();
 
             hashAppend("/cell/D4/formula");
 
@@ -635,7 +635,7 @@ context(
         });
 
         it("Update hash append formula", () => {
-            emptySpreadsheetWait();
+            spreadsheetEmpty();
 
             cellClick("C3");
 
@@ -646,7 +646,7 @@ context(
         });
 
         it("edit cell hash with unknown label", () => {
-            emptySpreadsheetWait();
+            spreadsheetEmpty();
 
             hashAppend("/cell/" + LABEL);
 
@@ -655,7 +655,7 @@ context(
         });
 
         it("Edit save label, navigate to label", () => {
-            emptySpreadsheetWait();
+            spreadsheetEmpty();
             hash()
                 .should('match', /.*\/Untitled/);
 
@@ -693,7 +693,7 @@ context(
         // navigate.....................................................................................................
 
         it("Navigate using history hash initial appearance", () => {
-            emptySpreadsheetWait();
+            spreadsheetEmpty();
             navigateHistoryHash();
 
             navigateDialogTitle()
@@ -711,7 +711,7 @@ context(
         });
 
         it("Navigate and close", () => {
-            emptySpreadsheetWait();
+            spreadsheetEmpty();
             navigateHistoryHash();
 
             navigateDialogClose()
@@ -725,7 +725,7 @@ context(
         });
 
         it("Navigate enter ESC closes", () => {
-            emptySpreadsheetWait();
+            spreadsheetEmpty();
             navigateHistoryHash();
 
             navigateAutocompleteTextField()
@@ -739,7 +739,7 @@ context(
         });
 
         it("Navigate enter invalid cell or label", () => {
-            emptySpreadsheetWait();
+            spreadsheetEmpty();
             navigateHistoryHash();
 
             navigateAutocompleteTextField()
@@ -750,7 +750,7 @@ context(
         });
 
         it("Navigate enter cell and ENTER and click GOTO", () => {
-            emptySpreadsheetWait();
+            spreadsheetEmpty();
             navigateHistoryHash();
 
             navigateAutocompleteTextField()
@@ -772,7 +772,7 @@ context(
         });
 
         it("Navigate enter unknown label and ENTER and click CREATE", () => {
-            emptySpreadsheetWait();
+            spreadsheetEmpty();
             navigateHistoryHash();
 
             navigateAutocompleteTextField()
@@ -794,8 +794,8 @@ context(
         });
 
         it("Navigate enter known label and ENTER and click EDIT", () => {
-            emptySpreadsheetWait();
-            historyHashLabel();
+            spreadsheetEmpty();
+            hashLabel();
 
             labelMappingReferenceTextField()
                 .type("Label123");
@@ -833,7 +833,7 @@ context(
         });
 
         it("Navigate enter cell, select from dropdown ENTER and click EDIT", () => {
-            emptySpreadsheetWait();
+            spreadsheetEmpty();
             navigateHistoryHash();
 
             hash()
@@ -864,8 +864,8 @@ context(
         });
 
         it("Navigate enter known label ENTER and click EDIT", () => {
-            emptySpreadsheetWait();
-            historyHashLabel();
+            spreadsheetEmpty();
+            hashLabel();
 
             labelMappingReferenceTextField()
                 .type("B2");
@@ -900,8 +900,8 @@ context(
         });
 
         it("Navigate enter existing label, select from dropdown ENTER and click GOTO", () => {
-            emptySpreadsheetWait();
-            historyHashLabel();
+            spreadsheetEmpty();
+            hashLabel();
 
             labelMappingReferenceTextField()
                 .type("B2");
@@ -993,11 +993,11 @@ context(
         it("Create new empty spreadsheet", () => {
             hashEnter("/");
 
-            checkEmptySpreadsheet();
+            spreadsheetEmptyCheck();
         });
 
         it("Update then create new empty spreadsheet", () => {
-            emptySpreadsheetWait();
+            spreadsheetEmpty();
 
             cellClick("E5");
 
@@ -1009,11 +1009,11 @@ context(
 
             hash().should('match', /.*\/Untitled/) // => true
 
-            checkEmptySpreadsheet();
+            spreadsheetEmptyCheck();
         });
 
         it("Update then create new empty spreadsheet then reload non empty", () => {
-            emptySpreadsheetWait();
+            spreadsheetEmpty();
 
             cy.window()
                 .then(function(win) {
@@ -1026,7 +1026,7 @@ context(
                         .type("{enter}");
 
 
-                    emptySpreadsheetWait();
+                    spreadsheetEmpty();
 
                     // reload previous spreadsheet and verify viewport reloaded
                     hashEnter(nonEmptySpreadsheetHash);
@@ -1039,7 +1039,7 @@ context(
         });
 
         it("Select cell should have focus", () => {
-            emptySpreadsheetWait();
+            spreadsheetEmpty();
 
             cellClick("B2");
 
@@ -1048,7 +1048,7 @@ context(
         });
 
         it("Select cell and navigate using arrow keys", () => {
-            emptySpreadsheetWait();
+            spreadsheetEmpty();
 
             cellClick("C3")
                 .should('have.focus');
@@ -1079,7 +1079,7 @@ context(
         });
 
         it("Select cell and hit ENTER gives formula text focus", () => {
-            emptySpreadsheetWait();
+            spreadsheetEmpty();
 
             cellClick("A3")
                 .should('have.focus');
@@ -1095,7 +1095,7 @@ context(
         });
 
         it("Select cell and hit ESC loses viewport cell focus", () => {
-            emptySpreadsheetWait();
+            spreadsheetEmpty();
 
             cellClick("A3")
                 .should('have.focus');
@@ -1113,7 +1113,7 @@ context(
         // SETTINGS.........................................................................................................
 
         it("Toggle(Show and hide) settings", () => {
-            emptySpreadsheetWait();
+            spreadsheetEmpty();
             settingsToggle();
 
             settings()
@@ -1132,7 +1132,7 @@ context(
         });
 
         it("Show settings by editing history hash", () => {
-            emptySpreadsheetWait();
+            spreadsheetEmpty();
 
             hashAppend("/settings");
 
@@ -1141,7 +1141,7 @@ context(
         });
 
         it("Hide settings by editing history hash", () => {
-            emptySpreadsheetWait();
+            spreadsheetEmpty();
             settingsToggle();
 
             cy.window()
@@ -1155,7 +1155,7 @@ context(
         });
 
         it("Toggle show settings history hash", () => {
-            emptySpreadsheetWait();
+            spreadsheetEmpty();
 
                     settingsToggle();
 
@@ -1164,7 +1164,7 @@ context(
         });
 
         it("Toggle show then hide settings history hash", () => {
-            emptySpreadsheetWait();
+            spreadsheetEmpty();
 
                     settingsToggle();
                     settingsToggle();
@@ -1174,7 +1174,7 @@ context(
         });
 
         it("Toggle show open section then hide settings history hash", () => {
-            emptySpreadsheetWait();
+            spreadsheetEmpty();
 
             cy.window()
                 .then(function(win) {
@@ -1198,7 +1198,7 @@ context(
         });
 
         it("Edit spreadsheet name, then toggle show settings history hash", () => {
-            emptySpreadsheetWait();
+            spreadsheetEmpty();
             spreadsheetNameClick();
 
             cy.hash()
@@ -1217,7 +1217,7 @@ context(
         });
 
         it("Edit cell, then toggle show settings history hash", () => {
-            emptySpreadsheetWait();
+            spreadsheetEmpty();
 
             cellClick("F6");
 
@@ -1231,7 +1231,7 @@ context(
         });
 
         it("Settings metadata check creator-date-time/modified-date-time", () => {
-            emptySpreadsheetWait();
+            spreadsheetEmpty();
             settingsToggle();
             settingsOpenSectionSpreadsheetMetadataProperty(SpreadsheetMetadata.CREATE_DATE_TIME);
 
@@ -1256,7 +1256,7 @@ context(
                                                                  a1CellContent,
                                                                  a1CellContentDefault) {
             it("Settings update SpreadsheetMetadata." + property, () => {
-                emptySpreadsheetWait();
+                spreadsheetEmpty();
                 settingsToggle();
                 settingsOpenSectionSpreadsheetMetadataProperty(property);
 
@@ -1354,7 +1354,7 @@ context(
                                                                    values,
                                                                    a1CellContents) {
             it("Settings update SpreadsheetMetadata." + property, () => {
-                emptySpreadsheetWait();
+                spreadsheetEmpty();
                 settingsToggle();
                 settingsOpenSectionSpreadsheetMetadataProperty(property);
 
@@ -1391,7 +1391,7 @@ context(
                                                                                   values,
                                                                                   a1CellContents) {
             it("Settings update SpreadsheetMetadata." + property, () => {
-                emptySpreadsheetWait();
+                spreadsheetEmpty();
                 settingsToggle();
                 settingsOpenSectionSpreadsheetMetadataProperty(property);
 
@@ -1494,7 +1494,7 @@ context(
                                                                          values,
                                                                          a1CellContents) {
             it("Settings update SpreadsheetMetadata." + property, () => {
-                emptySpreadsheetWait();
+                spreadsheetEmpty();
                 settingsToggle();
                 settingsOpenSectionSpreadsheetMetadataProperty(property);
 
@@ -1811,7 +1811,7 @@ context(
                                                                   property2,
                                                                   text2) {
             it("Settings update SpreadsheetMetadata." + property1 + "=" + text1 + " & " + property2 + "=" + text2 + " causing value swap", () => {
-                emptySpreadsheetWait();
+                spreadsheetEmpty();
                 settingsToggle();
                 settingsOpenSectionSpreadsheetMetadataProperty(property1);
 
@@ -1876,12 +1876,11 @@ context(
             '+'
         );
 
-
 // settings default style...........................................................................................
 
         function settingsSpreadsheetMetadataStyleColorAndCheck(property, defaultColor) {
             it("Settings update SpreadsheetMetadata.style." + property, () => {
-                emptySpreadsheetWait();
+                spreadsheetEmpty();
                 settingsToggle();
                 settingsOpenSectionSpreadsheetMetadataStyleProperty(property);
 
@@ -1904,14 +1903,14 @@ context(
                     .type("#123456")
                     .blur();
 
-                a1StyleCheck(property, "rgb(18, 52, 86)");
+                cellA1StyleCheck(property, "rgb(18, 52, 86)");
 
                 cy.get(textFieldId)
                     .type("{selectall}")
                     .type("#789abc")
                     .type("{enter}");
 
-                a1StyleCheck(property, "rgb(120, 154, 188)");
+                cellA1StyleCheck(property, "rgb(120, 154, 188)");
 
                 if(defaultColor){
                     const defaultButtonId = "#settings-spreadsheet-metadata-style-" + property + "-default-Button";
@@ -1923,7 +1922,7 @@ context(
                     const green = parseInt(defaultColor.substring(3, 5), 16);
                     const blue = parseInt(defaultColor.substring(5, 7), 16);
 
-                    a1StyleCheck(property, "rgb(" + red + ", " + green + ", " + blue + ")");
+                    cellA1StyleCheck(property, "rgb(" + red + ", " + green + ", " + blue + ")");
                 }
             });
         }
@@ -1933,7 +1932,7 @@ context(
                                                                 defaultValue,
                                                                 defaultButtonText) {
             it("Settings update SpreadsheetMetadata.style." + property, () => {
-                emptySpreadsheetWait();
+                spreadsheetEmpty();
                 settingsToggle();
                 settingsOpenSectionSpreadsheetMetadataStyleProperty(property);
 
@@ -1964,7 +1963,7 @@ context(
                             //.should("have.text", v.nameCapitalCase()) Element is not visible because it has CSS property: 'position: fixed' and its being covered by another element
                             .click(FORCE_TRUE);
 
-                        a1StyleCheck(property, v.toCssValue());
+                        cellA1StyleCheck(property, v.toCssValue());
                     }
                 });
 
@@ -1974,7 +1973,7 @@ context(
                         .should("have.text", defaultButtonText)// @see https://github.com/mP1/walkingkooka-spreadsheet-react/issues/695
                         .click();
 
-                    a1StyleCheck(property, defaultValue.toCssValue());
+                    cellA1StyleCheck(property, defaultValue.toCssValue());
                 }
             })
         }
@@ -1985,7 +1984,7 @@ context(
                                                                               defaultValue,
                                                                               defaultButtonText) {
             it("Settings update SpreadsheetMetadata.style." + property, () => {
-                emptySpreadsheetWait();
+                spreadsheetEmpty();
                 settingsToggle();
                 settingsOpenSectionSpreadsheetMetadataStyleProperty(property);
 
@@ -2028,7 +2027,7 @@ context(
                         case TextStyle.HEIGHT:
                             break;
                         default:
-                            a1StyleCheck(property, v.value + "px");
+                            cellA1StyleCheck(property, v.value + "px");
                             break;
                     }
                 });
@@ -2044,7 +2043,7 @@ context(
                         case TextStyle.HEIGHT:
                             break;
                         default:
-                            a1StyleCheck(property, defaultValue);
+                            cellA1StyleCheck(property, defaultValue);
                             break;
                     }
                 }
@@ -2238,14 +2237,59 @@ context(
             "normal"
         );
 
+        /**
+         * The settings that appears on the right containing settings, tools and more.
+         */
+        function settings() {
+            renderWait();
+            return cy.get("#settings > DIV"); // the #settings remains 1000x0 while the DIV child has an actual height
+        }
+
+        /**
+         * Opens the settings section that includes the given SpreadsheetMetadata property
+         */
+        function settingsOpenSectionSpreadsheetMetadataProperty(property) {
+            settingsOpenSection(SpreadsheetSettingsWidget.section(property));
+        }
+
+        function settingsOpenSectionSpreadsheetMetadataStyleProperty(property) {
+            settingsOpenSection(SpreadsheetSettingsWidget.section(property));
+        }
+
+        function settingsOpenSection(section) {
+            settings();
+            //.scrollIntoView() // prevents cypress from complaining about content that is longer than the screen height.
+            //.should('be.visible');
+
+            cy.get("#settings-spreadsheet-" + section + "-expand-more-icon")
+                .click();
+
+            renderWait();
+
+            cy.get("#settings-spreadsheet-" + section + "-content");
+            //.should('be.visible');
+
+            hash()
+                .should('match', new RegExp(".*\/.*\/settings\/" + section)) // => true
+        }
+
+        /**
+         * Fetches the icon that when clicked toggles the settings
+         */
+        function settingsToggle() {
+            renderWait();
+            cy.get("#settings-icon")
+                .click();
+        }
+
         // helpers..............................................................................................................
 
         /**
          * Updates the url hash by appending the parameter (which should result in an invalid hash) and then verifies the previous
          * hash is restored.
          */
-        function invalidHashUpdateRejected(hashAppend) {
-            emptySpreadsheetWait();
+        function hashInvalidRejected(hashAppend) {
+            spreadsheetEmpty();
 
             cy.window()
                 .then(function(win) {
@@ -2257,34 +2301,6 @@ context(
                     cy.hash()
                         .should("eq", hash);
                 });
-        }
-
-        /**
-         * Checks that the spreadsheet is completely empty.
-         */
-        function checkEmptySpreadsheet() {
-            hash().should('match', /.*\/Untitled/) // => true
-
-            // Verify spreadsheet name is "Untitled"
-            spreadsheetName()
-                .should("have.class", "MuiButton-root")
-                .should("have.text", "Untitled");
-
-            title().should("eq", "Untitled");
-
-            // Verify formula is read only and empty
-            formulaText()
-                .should("be.disabled")
-                .should("have.text", "");
-
-            cy.get(COLUMN + SELECTED)
-                .should("have.length", 0);
-
-            cy.get(ROW + SELECTED)
-                .should("have.length", 0);
-
-            cy.get(CELL)
-                .should("have.text", "");
         }
 
         function title() {
@@ -2316,7 +2332,7 @@ context(
         }
 
         function spreadsheetName() {
-            reactRenderWait();
+            renderWait();
             return cy.get("#spreadsheet-name");
         }
 
@@ -2329,7 +2345,7 @@ context(
         }
 
         function formulaText() {
-            reactRenderWait();
+            renderWait();
             return cy.get("#formula-TextField");
         }
 
@@ -2356,7 +2372,7 @@ context(
                 .should("have.text", text);
         }
 
-        function a1StyleCheck(property, value) {
+        function cellA1StyleCheck(property, value) {
             cellGet("a1")
                 .should('have.css', property, value);
         }
@@ -2365,58 +2381,40 @@ context(
             return cy.get("#cell-" + cellReference.toUpperCase());
         }
 
-        /**
-         * Fetches the icon that when clicked toggles the settings
-         */
-        function settingsToggle() {
-            reactRenderWait();
-            cy.get("#settings-icon")
-                .click();
-        }
-
-        /**
-         * Opens the settings section that includes the given SpreadsheetMetadata property
-         */
-        function settingsOpenSectionSpreadsheetMetadataProperty(property) {
-            settingsOpenSection(SpreadsheetSettingsWidget.section(property));
-        }
-
-        function settingsOpenSectionSpreadsheetMetadataStyleProperty(property) {
-            settingsOpenSection(SpreadsheetSettingsWidget.section(property));
-        }
-
-        function settingsOpenSection(section) {
-            settings();
-            //.scrollIntoView() // prevents cypress from complaining about content that is longer than the screen height.
-            //.should('be.visible');
-
-            cy.get("#settings-spreadsheet-" + section + "-expand-more-icon")
-                .click();
-
-            reactRenderWait();
-
-            cy.get("#settings-spreadsheet-" + section + "-content");
-            //.should('be.visible');
-
-            hash()
-                .should('match', new RegExp(".*\/.*\/settings\/" + section)) // => true
-        }
-
-        /**
-         * The settings that appears on the right containing settings, tools and more.
-         */
-        function settings() {
-            reactRenderWait();
-            return cy.get("#settings > DIV"); // the #settings remains 1000x0 while the DIV child has an actual height
-        }
-
-        function emptySpreadsheetWait() {
+        function spreadsheetEmpty() {
             hash()
                 .should('match', /.*\/Untitled/); // wait for /$id/$name
-
         }
 
-        function reactRenderWait(period) {
+        /**
+         * Checks that the spreadsheet is completely empty.
+         */
+        function spreadsheetEmptyCheck() {
+            hash().should('match', /.*\/Untitled/) // => true
+
+            // Verify spreadsheet name is "Untitled"
+            spreadsheetName()
+                .should("have.class", "MuiButton-root")
+                .should("have.text", "Untitled");
+
+            title().should("eq", "Untitled");
+
+            // Verify formula is read only and empty
+            formulaText()
+                .should("be.disabled")
+                .should("have.text", "");
+
+            cy.get(COLUMN + SELECTED)
+                .should("have.length", 0);
+
+            cy.get(ROW + SELECTED)
+                .should("have.length", 0);
+
+            cy.get(CELL)
+                .should("have.text", "");
+        }
+
+        function renderWait(period) {
             cy.wait(period || 20);
         }
     }
