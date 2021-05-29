@@ -137,6 +137,7 @@ context(
         });
 
         it("Enter history hash show label mapping", () => {
+            emptySpreadsheetWait();
             historyHashLabel();
 
             labelDialogCheck(
@@ -176,6 +177,7 @@ context(
         // LABEL MAPPING LABEL..........................................................................................
 
         it("Label mapping edit label empty text", () => {
+            emptySpreadsheetWait();
             historyHashLabel();
 
             labelMappingLabelTextField()
@@ -191,6 +193,7 @@ context(
         });
 
         it("Label mapping edit label invalid text", () => {
+            emptySpreadsheetWait();
             historyHashLabel();
 
             const labelText = "!InvalidLabel";
@@ -208,6 +211,7 @@ context(
         });
 
         it("Label mapping edit label invalid text #2", () => {
+            emptySpreadsheetWait();
             historyHashLabel();
 
             const labelText = "I!nvalidLabel";
@@ -225,6 +229,7 @@ context(
         });
 
         it("Label mapping edit label text, missing reference ENTER", () => {
+            emptySpreadsheetWait();
             historyHashLabel();
 
             const labelText = "Label456";
@@ -242,6 +247,7 @@ context(
         });
 
         it("Label mapping edit label text, missing reference SAVE", () => {
+            emptySpreadsheetWait();
             historyHashLabel();
 
             const labelText = "Label456";
@@ -263,6 +269,7 @@ context(
         // LABEL MAPPING REFERENCE......................................................................................
 
         it("Label mapping edit reference invalid text", () => {
+            emptySpreadsheetWait();
             historyHashLabel();
 
             const referenceText = "!InvalidReference";
@@ -280,6 +287,7 @@ context(
         });
 
         it("Label mapping edit reference invalid text #2", () => {
+            emptySpreadsheetWait();
             historyHashLabel();
 
             const referenceText = "A!InvalidReference";
@@ -297,6 +305,7 @@ context(
         });
 
         it("Label mapping edit reference same label", () => {
+            emptySpreadsheetWait();
             historyHashLabel();
 
             const referenceText = LABEL;
@@ -314,6 +323,7 @@ context(
         });
 
         it("Label mapping edit reference", () => {
+            emptySpreadsheetWait();
             historyHashLabel();
 
             const referenceText = REFERENCE;
@@ -332,6 +342,7 @@ context(
         // special keys and buttons.....................................................................................
 
         it("Label mapping label TextField ESC", () => {
+            emptySpreadsheetWait();
             historyHashLabel();
 
             labelMappingReferenceTextField()
@@ -352,6 +363,7 @@ context(
         });
 
         it("Label mapping reference TextField ESC", () => {
+            emptySpreadsheetWait();
             historyHashLabel();
 
             labelMappingReferenceTextField()
@@ -369,6 +381,7 @@ context(
         });
 
         it("Label mapping edit label/reference label TextField ENTER", () => {
+            emptySpreadsheetWait();
             historyHashLabel();
 
             const referenceText = REFERENCE;
@@ -392,6 +405,7 @@ context(
         });
 
         it("Label mapping edit label/reference reference TextField ENTER", () => {
+            emptySpreadsheetWait();
             historyHashLabel();
 
             const referenceText = REFERENCE;
@@ -410,6 +424,7 @@ context(
         });
 
         it("Label mapping edit label/reference click SAVE button", () => {
+            emptySpreadsheetWait();
             historyHashLabel();
 
             const referenceText = REFERENCE;
@@ -429,6 +444,7 @@ context(
         });
 
         it("Label mapping edit label/reference click DELETE button", () => {
+            emptySpreadsheetWait();
             historyHashLabel();
 
             const referenceText = REFERENCE;
@@ -454,6 +470,7 @@ context(
         });
 
         it("Label mapping edit close BUTTON", () => {
+            emptySpreadsheetWait();
             historyHashLabel();
 
             labelMappingLabelCloseButton()
@@ -514,6 +531,10 @@ context(
 
         function labelMappingLabelCloseButton() {
             return cy.get("#label-mapping-close-Button");
+        }
+
+        function historyHashLabel() {
+            hashAppend("/label/" + LABEL);
         }
 
         // CELL ................................................................................................................
@@ -632,12 +653,6 @@ context(
             hash()
                 .should('match', /.*\/Untitled/);
         });
-
-
-        function historyHashLabel() {
-            emptySpreadsheetWait();
-            hashAppend("/label/" + LABEL);
-        }
 
         it("Edit save label, navigate to label", () => {
             emptySpreadsheetWait();
@@ -779,6 +794,7 @@ context(
         });
 
         it("Navigate enter known label and ENTER and click EDIT", () => {
+            emptySpreadsheetWait();
             historyHashLabel();
 
             labelMappingReferenceTextField()
@@ -848,6 +864,7 @@ context(
         });
 
         it("Navigate enter known label ENTER and click EDIT", () => {
+            emptySpreadsheetWait();
             historyHashLabel();
 
             labelMappingReferenceTextField()
@@ -883,6 +900,7 @@ context(
         });
 
         it("Navigate enter existing label, select from dropdown ENTER and click GOTO", () => {
+            emptySpreadsheetWait();
             historyHashLabel();
 
             labelMappingReferenceTextField()
