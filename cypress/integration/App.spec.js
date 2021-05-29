@@ -567,7 +567,7 @@ context(
         }
 
         function labelMappingLabelCloseButton() {
-            return cy.get("#label-mapping-close-Button");
+            return cy.get("#label-mapping-Dialog-close-Button");
         }
 
         function hashLabel() {
