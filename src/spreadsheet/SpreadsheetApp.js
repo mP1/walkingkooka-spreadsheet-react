@@ -157,7 +157,7 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
                     this.spreadsheetMetadataLoad(current);
                 }
             } else {
-                this.createEmptySpreadsheet();
+                this.spreadsheetEmptyCreate();
             }
         }
 
@@ -367,7 +367,7 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
         console.log("cellOrRangeLoad " + selection + " " + evaluation);
 
         this.messageSend(
-            this.spreadsheetCellApiUrl(selection) + "/" + evaluation.nameKebabCase(),
+            this.cellUrl(selection) + "/" + evaluation.nameKebabCase(),
             {
                 method: "GET"
             },
@@ -392,7 +392,7 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
             console.log("saveSpreadsheetCell", cell);
 
             this.messageSend(
-                this.spreadsheetCellApiUrl(cell.reference()),
+                this.cellUrl(cell.reference()),
                 {
                     method: "POST",
                     body: JSON.stringify(new SpreadsheetDelta([cell],
@@ -409,7 +409,7 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
     /**
      * Returns a URL with the spreadsheet id and ONLY the provided cell selection.
      */
-    spreadsheetCellApiUrl(selection) {
+    cellUrl(selection) {
         return this.spreadsheetMetadataApiUrl() + "/cell/" + selection;
     }
 
@@ -489,7 +489,7 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
 
         console.log("formulaTextSave " + cellReference + " " + formulaText);
 
-        const cell = this.getCellOrEmpty(cellReference);
+        const cell = this.cellGetOrEmpty(cellReference);
         const formula = cell.formula();
         this.cellSave(cell.setFormula(formula.setText(formulaText)));
     }
@@ -497,7 +497,7 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
     /**
      * Fetches the cell by the given reference or returns an empty {@link SpreadsheetCell}.
      */
-    getCellOrEmpty(reference) {
+    cellGetOrEmpty(reference) {
         Preconditions.requireInstance(reference, SpreadsheetCellReference, "reference");
 
         return this.state.cells.get(reference) ||
@@ -694,8 +694,8 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
     /**
      * Makes a request which returns some basic default metadata, and without cells the spreadsheet will be empty.
      */
-    createEmptySpreadsheet() {
-        console.log("createEmptySpreadsheet");
+    spreadsheetEmptyCreate() {
+        console.log("spreadsheetEmptyCreate");
 
         this.setState({
             creatingEmptySpreadsheet: true,
