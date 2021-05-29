@@ -677,6 +677,301 @@ context(
                 });
         });
 
+        // navigate.....................................................................................................
+
+        it("Navigate using history hash initial appearance", () => {
+            emptySpreadsheetWait();
+            navigateHistoryHash();
+
+            navigateDialogTitle()
+                .contains("Navigate or Edit");
+
+            navigateAutocompleteTextField()
+                .should("have.value", "");
+
+            navigateAutocompleteTextFieldHelper()
+                .should("not.exist");
+
+            navigateGotoCellOrLabelButton(true);
+            navigateCreateLinkButton(true);
+            navigateEditLinkButton(true);
+        });
+
+        it("Navigate and close", () => {
+            emptySpreadsheetWait();
+            navigateHistoryHash();
+
+            navigateDialogClose()
+                .click();
+
+            hash()
+                .should('match', /.*\/Untitled/);
+
+            navigateDialog()
+                .should("not.exist");
+        });
+
+        it("Navigate enter ESC closes", () => {
+            emptySpreadsheetWait();
+            navigateHistoryHash();
+
+            navigateAutocompleteTextField()
+                .type("{Esc}");
+
+            hash()
+                .should('match', /.*\/Untitled/);
+
+            navigateDialog()
+                .should("not.exist");
+        });
+
+        it("Navigate enter invalid cell or label", () => {
+            emptySpreadsheetWait();
+            navigateHistoryHash();
+
+            navigateAutocompleteTextField()
+                .type("!invalid");
+
+            navigateAutocompleteTextFieldHelper()
+                .should("have.text", "Invalid character '!' at 0");
+        });
+
+        it("Navigate enter cell and ENTER and click GOTO", () => {
+            emptySpreadsheetWait();
+            navigateHistoryHash();
+
+            navigateAutocompleteTextField()
+                .type("B2{enter}");
+
+            navigateAutocompleteTextFieldHelper()
+                .should("not.exist");
+
+            navigateAutocompletePopup()
+                .should("not.exist");
+
+            navigateCreateLinkButton(true);
+            navigateEditLinkButton(true);
+            navigateGotoCellOrLabelButton(false)
+                .click();
+
+            hash()
+                .should('match', /.*\/Untitled\/cell\/B2/);
+        });
+
+        it("Navigate enter unknown label and ENTER and click CREATE", () => {
+            emptySpreadsheetWait();
+            navigateHistoryHash();
+
+            navigateAutocompleteTextField()
+                .type("Label123{enter}");
+
+            navigateAutocompleteTextFieldHelper()
+                .should("not.exist");
+
+            navigateAutocompletePopup()
+                .should("not.exist");
+
+            navigateGotoCellOrLabelButton(true);
+            navigateEditLinkButton(true);
+            navigateCreateLinkButton(false)
+                .click();
+
+            hash()
+                .should('match', /.*\/Untitled\/label\/Label123/);
+        });
+
+        it("Navigate enter known label and ENTER and click EDIT", () => {
+            historyHashLabel();
+
+            labelMappingReferenceTextField()
+                .type("Label123");
+
+            labelMappingLabelTextField()
+                .type("B2");
+
+            labelMappingLabelSaveButton()
+                .click();
+
+            labelMappingLabelCloseButton()
+                .click();
+
+            navigateHistoryHash();
+
+            hash()
+                .should('match', /.*\/Untitled\/navigate/);
+
+            navigateAutocompleteTextField()
+                .type("Label123{enter}");
+
+            navigateAutocompleteTextFieldHelper()
+                .should("not.exist");
+
+            navigateAutocompletePopup()
+                .should("not.exist");
+
+            navigateGotoCellOrLabelButton(false);
+            navigateCreateLinkButton(true);
+            navigateEditLinkButton(false)
+                .click();
+
+            hash()
+                .should('match', /.*\/Untitled\/label\/Label123/);
+        });
+
+        it("Navigate enter cell, select from dropdown ENTER and click EDIT", () => {
+            emptySpreadsheetWait();
+            navigateHistoryHash();
+
+            hash()
+                .should('match', /.*\/Untitled\/navigate/);
+
+            navigateAutocompleteTextField()
+                .type("B2");
+
+            navigateAutocompleteTextFieldHelper()
+                .should("not.exist");
+
+            navigateAutocompletePopup()
+                .should("exist");
+
+            navigateAutocompletePopupOption(0)
+                .should("have.text", "B2");
+
+            navigateAutocompleteTextField()
+                .type("{downarrow}{enter}");
+
+            navigateCreateLinkButton(true);
+            navigateEditLinkButton(true);
+            navigateGotoCellOrLabelButton(false)
+                .click();
+
+            hash()
+                .should('match', /.*\/Untitled\/cell\/B2/);
+        });
+
+        it("Navigate enter known label ENTER and click EDIT", () => {
+            historyHashLabel();
+
+            labelMappingReferenceTextField()
+                .type("B2");
+
+            labelMappingLabelSaveButton()
+                .click();
+
+            labelMappingLabelCloseButton()
+                .click();
+
+            navigateHistoryHash();
+
+            hash()
+                .should('match', /.*\/Untitled\/navigate/);
+
+            navigateAutocompleteTextField()
+                .type("Label123{enter}");
+
+            navigateAutocompleteTextFieldHelper()
+                .should("not.exist");
+
+            navigateAutocompletePopup()
+                .should("not.exist");
+
+            navigateGotoCellOrLabelButton(false);
+            navigateCreateLinkButton(true);
+            navigateEditLinkButton(false)
+                .click();
+
+            hash()
+                .should('match', /.*\/Untitled\/label\/Label123/);
+        });
+
+        it("Navigate enter existing label, select from dropdown ENTER and click GOTO", () => {
+            historyHashLabel();
+
+            labelMappingReferenceTextField()
+                .type("B2");
+
+            labelMappingLabelSaveButton()
+                .click();
+
+            labelMappingLabelCloseButton()
+                .click();
+
+            navigateHistoryHash();
+
+            hash()
+                .should('match', /.*\/Untitled\/navigate/);
+
+            navigateAutocompleteTextField()
+                .type("Label");
+
+            navigateAutocompleteTextFieldHelper()
+                .should("not.exist");
+
+            navigateAutocompletePopup()
+                .should("exist");
+
+            navigateAutocompletePopupOption(0)
+                .should("have.text", "Label123");
+
+            navigateAutocompleteTextField()
+                .type("{downarrow}{enter}");
+
+            navigateCreateLinkButton(true);
+            navigateEditLinkButton(false);
+            navigateGotoCellOrLabelButton(false)
+                .click();
+
+            hash()
+                .should('match', /.*\/Untitled\/cell\/B2/);
+        });
+
+        function navigateHistoryHash() {
+            hashAppend("/navigate");
+        }
+
+        function navigateDialog() {
+            return cy.get("#navigate-Dialog");
+        }
+
+        function navigateDialogTitle() {
+            return cy.get("#navigate-DialogTitle");
+        }
+
+        function navigateDialogClose() {
+            return cy.get("#navigate-Dialog-close-Button");
+        }
+
+        function navigateAutocompleteTextField() {
+            return cy.get("#navigate-Autocomplete-TextField");
+        }
+
+        function navigateAutocompleteTextFieldHelper() {
+            return cy.get("#navigate-Autocomplete-TextField-helper-text");
+        }
+
+        function navigateAutocompletePopup() {
+            return cy.get("#navigate-Autocomplete-TextField-popup");
+        }
+
+        function navigateAutocompletePopupOption(nth) {
+            return cy.get("#navigate-Autocomplete-TextField-option-" + nth);
+        }
+
+        function navigateGotoCellOrLabelButton(disabled) {
+            return cy.get("#navigate-gotoCellOrLabel-Button")
+                .should("be." + (disabled ? "disabled" : "enabled"));
+        }
+
+        function navigateCreateLinkButton(disabled) {
+            return cy.get("#navigate-create-link-Button")
+                .should("be." + (disabled ? "disabled" : "enabled"));
+        }
+
+        function navigateEditLinkButton(disabled) {
+            return cy.get("#navigate-edit-link-Button")
+                .should("be." + (disabled ? "disabled" : "enabled"));
+        }
+
         // create/load spreadsheet............................................................................................
 
         it("Create new empty spreadsheet", () => {

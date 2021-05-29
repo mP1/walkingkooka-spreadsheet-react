@@ -79,6 +79,20 @@ test("mapping", () => {
     expect(label.mapping(reference)).toStrictEqual(new SpreadsheetLabelMapping(label, reference));
 });
 
+// toSpreadsheetNavigateWidgetOption....................................................................................
+
+test("toSpreadsheetNavigateWidgetOption", () => {
+    const label = SpreadsheetLabelName.parse("Label123");
+
+    expect(label.toSpreadsheetNavigateWidgetOption())
+        .toStrictEqual({
+            text: label.toString(),
+            createLabel: label,
+            editLabel: null,
+            gotoCellOrLabel: null,
+        });
+});
+
 // equals................................................................................................................
 
 test("equals different", () => {

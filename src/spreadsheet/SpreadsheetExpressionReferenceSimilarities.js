@@ -51,6 +51,26 @@ export default class SpreadsheetExpressionReferenceSimilarities extends SystemOb
         return [...this.labelMappingsValue];
     }
 
+    /**
+     * Creates an array of options for rendering by {@link SpreadsheetNavigateWidget}.
+     */
+    toSpreadsheetNavigateWidgetOptions(query) {
+        Preconditions.requireText(query, "query");
+
+        const options = [];
+
+        const cellReference = this.cellReference();
+        cellReference && options.push(cellReference.toSpreadsheetNavigateWidgetOption());
+
+        const label = this.label();
+        label && options.push(label.toSpreadsheetNavigateWidgetOption());
+
+        this.labelMappings()
+            .forEach(mapping => options.push(mapping.toSpreadsheetNavigateWidgetOption()));
+
+        return options;
+    }
+
     toJson() {
         const json = {
         };

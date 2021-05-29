@@ -29,6 +29,7 @@ import SpreadsheetMetadata from "./meta/SpreadsheetMetadata.js";
 import SpreadsheetMessenger from "./message/SpreadsheetMessenger.js";
 import SpreadsheetName from "./SpreadsheetName.js";
 import SpreadsheetNameWidget from "./SpreadsheetNameWidget.js";
+import SpreadsheetNavigateWidget from "./reference/SpreadsheetNavigateWidget.js";
 import SpreadsheetNotification from "./notification/SpreadsheetNotification.js";
 import SpreadsheetNotificationWidget from "./notification/SpreadsheetNotificationWidget.js";
 import SpreadsheetRange from "./reference/SpreadsheetRange.js";
@@ -284,6 +285,12 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
             <WindowResizer dimensions={this.onWindowResized.bind(this)}>
                 <SpreadsheetNotificationWidget ref={this.notification}
                                                key="notification"
+                />
+                <SpreadsheetNavigateWidget key="navigateWidget"
+                                           history={history}
+                                           getSimilarities={this.similaritiesGet.bind(this)}
+                                           notificationShow={notificationShow}
+                                           showError={showError}
                 />
                 <SpreadsheetLabelWidget key="labelWidget"
                                         history={history}
@@ -583,16 +590,6 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
         );
     }
 
-    /**
-     * Returns a URL that may be used to call the cell-reference end point
-     */
-    similaritiesUrl(text, count) {
-        Preconditions.requireText(text, "text");
-        Preconditions.requireNumber(count, "count"); // TODO https://github.com/mP1/walkingkooka-spreadsheet-react/issues/854 Preconditions.requirePositiveNumber
-
-        return this.spreadsheetMetadataApiUrl() + "/cell-reference/" + encodeURI(text) + "?count=" + count;
-    }
-
     // messenger........................................................................................................
 
     /**
@@ -662,6 +659,34 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
             success,
             errorHandler,
         );
+    }
+
+    // similarities.....................................................................................................
+
+    similaritiesGet(text, count, success, failure) {
+        Preconditions.requireText(text, "text");
+        Preconditions.requirePositiveNumber(count, "count");
+        Preconditions.requireFunction(success, "success");
+        Preconditions.requireFunction(failure, "failure");
+
+        this.messageSend(
+            this.similaritiesUrl(text, count),
+            {
+                method: "GET",
+            },
+            (json) => success(SpreadsheetExpressionReferenceSimilarities.fromJson(json)),
+            failure,
+        );
+    }
+
+    /**
+     * Returns a URL that may be used to call the cell-reference end point
+     */
+    similaritiesUrl(text, count) {
+        Preconditions.requireText(text, "text");
+        Preconditions.requireNumber(count, "count"); // TODO https://github.com/mP1/walkingkooka-spreadsheet-react/issues/854 Preconditions.requirePositiveNumber
+
+        return this.spreadsheetMetadataApiUrl() + "/cell-reference/" + encodeURI(text) + "?count=" + count;
     }
 
     // SpreadsheetMetadata..............................................................................................
