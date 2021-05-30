@@ -168,23 +168,28 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
      * Updates the history tokens name to match the state.
      */
     stateSpreadsheetMetadataSpreadsheetName(hash) {
-        const metadata = this.state.spreadsheetMetadata;
+        const state = this.state;
+        const metadata = state.spreadsheetMetadata;
         const widget = this.spreadsheetName.current;
         const name = metadata.getIgnoringDefaults(SpreadsheetMetadata.SPREADSHEET_NAME);
 
-        if(widget && !Equality.safeEquals(name, widget.state.value)){
-            console.log("stateSpreadsheetMetadataSpreadsheetName updated from " + widget.state.value + " to " + name);
-
+        if(widget){
             widget.setState({
                 loaded: name,
                 value: name,
             });
-            document.title = name.toString();
-        }else {
-            console.log("stateSpreadsheetMetadataSpreadsheetName widget not updated", "widget", widget.current, "name: " + name);
         }
 
+        if(name){
+            document.title = name.toString();
+        }
         hash[SpreadsheetHistoryHash.SPREADSHEET_NAME] = name;
+
+        if(!Equality.safeEquals(name, state.name)){
+            this.setState({
+                spreadsheetName: name,
+            });
+        }
     }
 
     /**
