@@ -1,6 +1,7 @@
 import Preconditions from "../../Preconditions.js";
 import spreadsheetCellReferenceOrLabelNameFromJson from "../reference/SpreadsheetCellReferenceOrLabelNameFromJson.js";
 import SpreadsheetLabelName from "../reference/SpreadsheetLabelName.js";
+import SpreadsheetName from "../SpreadsheetName.js";
 
 function tokenize(pathname) {
     return pathname && pathname.startsWith("/") ?
@@ -76,7 +77,11 @@ export default class SpreadsheetHistoryHash {
         var settingsSection;
 
         if(null != spreadsheetId){
-            spreadsheetName = sourceTokens.shift();
+            try {
+                spreadsheetName = new SpreadsheetName(sourceTokens.shift());
+            } catch (ignore) {
+            }
+
             if(null != spreadsheetName){
 
                 while(sourceTokens.length > 0 && valid) {

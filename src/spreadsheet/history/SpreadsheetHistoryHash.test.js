@@ -1,6 +1,7 @@
 import SpreadsheetCellReference from "../reference/SpreadsheetCellReference.js";
 import SpreadsheetHistoryHash from "./SpreadsheetHistoryHash.js";
 import SpreadsheetLabelName from "../reference/SpreadsheetLabelName.js";
+import SpreadsheetName from "../SpreadsheetName.js";
 
 const FUNCTION = (a) =>a;
 
@@ -48,7 +49,7 @@ test("parse /spreadsheet-id/spreadsheet-name", () => {
         "/spreadsheet-id-123/spreadsheet-name-456",
         {
             "spreadsheet-id": "spreadsheet-id-123",
-            "spreadsheet-name": "spreadsheet-name-456",
+            "spreadsheet-name": new SpreadsheetName("spreadsheet-name-456"),
         }
     );
 });
@@ -58,7 +59,7 @@ test("parse /spreadsheet-id/spreadsheet-name/name", () => {
         "/spreadsheet-id-123/spreadsheet-name-456/name",
         {
             "spreadsheet-id": "spreadsheet-id-123",
-            "spreadsheet-name": "spreadsheet-name-456",
+            "spreadsheet-name": new SpreadsheetName("spreadsheet-name-456"),
             "name": true,
         }
     );
@@ -69,7 +70,7 @@ test("parse /spreadsheet-id/spreadsheet-name/name/cell invalid", () => {
         "/spreadsheet-id-123/spreadsheet-name-456/name/cell",
         {
             "spreadsheet-id": "spreadsheet-id-123",
-            "spreadsheet-name": "spreadsheet-name-456",
+            "spreadsheet-name": new SpreadsheetName("spreadsheet-name-456"),
         }
     );
 });
@@ -79,7 +80,7 @@ test("parse /spreadsheet-id/spreadsheet-name/cell missing reference", () => {
         "/spreadsheet-id-123/spreadsheet-name-456/cell",
         {
             "spreadsheet-id": "spreadsheet-id-123",
-            "spreadsheet-name": "spreadsheet-name-456",
+            "spreadsheet-name": new SpreadsheetName("spreadsheet-name-456"),
         }
     );
 });
@@ -89,7 +90,7 @@ test("parse /spreadsheet-id/spreadsheet-name/cell/!invalid invalid reference", (
         "/spreadsheet-id-123/spreadsheet-name-456/cell/!invalid",
         {
             "spreadsheet-id": "spreadsheet-id-123",
-            "spreadsheet-name": "spreadsheet-name-456",
+            "spreadsheet-name": new SpreadsheetName("spreadsheet-name-456"),
         },
         "Cell: Invalid character '!' at 0",
     );
@@ -100,7 +101,7 @@ test("parse /spreadsheet-id/spreadsheet-name/cell/A1", () => {
         "/spreadsheet-id-123/spreadsheet-name-456/cell/A1",
         {
             "spreadsheet-id": "spreadsheet-id-123",
-            "spreadsheet-name": "spreadsheet-name-456",
+            "spreadsheet-name": new SpreadsheetName("spreadsheet-name-456"),
             "cell": SpreadsheetCellReference.parse("A1"),
         }
     );
@@ -111,7 +112,7 @@ test("parse /spreadsheet-id/spreadsheet-name/cell/A1/formula", () => {
         "/spreadsheet-id-123/spreadsheet-name-456/cell/A1/formula",
         {
             "spreadsheet-id": "spreadsheet-id-123",
-            "spreadsheet-name": "spreadsheet-name-456",
+            "spreadsheet-name": new SpreadsheetName("spreadsheet-name-456"),
             "cell": SpreadsheetCellReference.parse("A1"),
             "formula": true,
         }
@@ -123,7 +124,7 @@ test("parse /spreadsheet-id/spreadsheet-name/cell/Label123", () => {
         "/spreadsheet-id-123/spreadsheet-name-456/cell/Label123",
         {
             "spreadsheet-id": "spreadsheet-id-123",
-            "spreadsheet-name": "spreadsheet-name-456",
+            "spreadsheet-name": new SpreadsheetName("spreadsheet-name-456"),
             "cell": SpreadsheetLabelName.parse("Label123"),
         }
     );
@@ -134,7 +135,7 @@ test("parse /spreadsheet-id/spreadsheet-name/label invalid", () => {
         "/spreadsheet-id-123/spreadsheet-name-456/label",
         {
             "spreadsheet-id": "spreadsheet-id-123",
-            "spreadsheet-name": "spreadsheet-name-456",
+            "spreadsheet-name": new SpreadsheetName("spreadsheet-name-456"),
         }
     );
 });
@@ -144,7 +145,7 @@ test("parse /spreadsheet-id/spreadsheet-name/label missing label-name", () => {
         "/spreadsheet-id-123/spreadsheet-name-456/label",
         {
             "spreadsheet-id": "spreadsheet-id-123",
-            "spreadsheet-name": "spreadsheet-name-456",
+            "spreadsheet-name": new SpreadsheetName("spreadsheet-name-456"),
         }
     );
 });
@@ -154,7 +155,7 @@ test("parse /spreadsheet-id/spreadsheet-name/label/!invalid invalid label-name",
         "/spreadsheet-id-123/spreadsheet-name-456/label/!invalid",
         {
             "spreadsheet-id": "spreadsheet-id-123",
-            "spreadsheet-name": "spreadsheet-name-456",
+            "spreadsheet-name": new SpreadsheetName("spreadsheet-name-456"),
         },
         "Label: Invalid character '!' at 0",
     );
@@ -165,7 +166,7 @@ test("parse /spreadsheet-id/spreadsheet-name/label/LABEL123", () => {
         "/spreadsheet-id-123/spreadsheet-name-456/label/LABEL123",
         {
             "spreadsheet-id": "spreadsheet-id-123",
-            "spreadsheet-name": "spreadsheet-name-456",
+            "spreadsheet-name": new SpreadsheetName("spreadsheet-name-456"),
             "label": SpreadsheetLabelName.parse("LABEL123"),
         }
     );
@@ -176,7 +177,7 @@ test("parse /spreadsheet-id/spreadsheet-name/cell/A2/label/LABEL123", () => {
         "/spreadsheet-id-123/spreadsheet-name-456/cell/A2/label/LABEL123",
         {
             "spreadsheet-id": "spreadsheet-id-123",
-            "spreadsheet-name": "spreadsheet-name-456",
+            "spreadsheet-name": new SpreadsheetName("spreadsheet-name-456"),
             "cell": SpreadsheetCellReference.parse("A2"),
             "label": SpreadsheetLabelName.parse("LABEL123"),
         }
@@ -188,7 +189,7 @@ test("parse /spreadsheet-id/spreadsheet-name/cell/A2/formula/label/LABEL123", ()
         "/spreadsheet-id-123/spreadsheet-name-456/cell/A2/formula/label/LABEL123",
         {
             "spreadsheet-id": "spreadsheet-id-123",
-            "spreadsheet-name": "spreadsheet-name-456",
+            "spreadsheet-name": new SpreadsheetName("spreadsheet-name-456"),
             "cell": SpreadsheetCellReference.parse("A2"),
             "formula": true,
             "label": SpreadsheetLabelName.parse("LABEL123"),
@@ -201,7 +202,7 @@ test("parse /spreadsheet-id/spreadsheet-name/name", () => {
         "/spreadsheet-id-123/spreadsheet-name-456/name",
         {
             "spreadsheet-id": "spreadsheet-id-123",
-            "spreadsheet-name": "spreadsheet-name-456",
+            "spreadsheet-name": new SpreadsheetName("spreadsheet-name-456"),
             "name": true,
         }
     );
@@ -212,7 +213,7 @@ test("parse /spreadsheet-id/spreadsheet-name/name/label/Label123", () => {
         "/spreadsheet-id-123/spreadsheet-name-456/name/label/Label123",
         {
             "spreadsheet-id": "spreadsheet-id-123",
-            "spreadsheet-name": "spreadsheet-name-456",
+            "spreadsheet-name": new SpreadsheetName("spreadsheet-name-456"),
             "label": SpreadsheetLabelName.parse("Label123"),
         }
     );
@@ -223,7 +224,7 @@ test("parse /spreadsheet-id/spreadsheet-name/name/navigate", () => {
         "/spreadsheet-id-123/spreadsheet-name-456/name/navigate",
         {
             "spreadsheet-id": "spreadsheet-id-123",
-            "spreadsheet-name": "spreadsheet-name-456",
+            "spreadsheet-name": new SpreadsheetName("spreadsheet-name-456"),
             "navigate": true,
         }
     );
@@ -234,7 +235,7 @@ test("parse /spreadsheet-id/spreadsheet-name/navigate", () => {
         "/spreadsheet-id-123/spreadsheet-name-456/navigate",
         {
             "spreadsheet-id": "spreadsheet-id-123",
-            "spreadsheet-name": "spreadsheet-name-456",
+            "spreadsheet-name": new SpreadsheetName("spreadsheet-name-456"),
             "navigate": true,
         }
     );
@@ -245,7 +246,7 @@ test("parse /spreadsheet-id/spreadsheet-name/cell/A3/navigate", () => {
         "/spreadsheet-id-123/spreadsheet-name-456/cell/A3/navigate",
         {
             "spreadsheet-id": "spreadsheet-id-123",
-            "spreadsheet-name": "spreadsheet-name-456",
+            "spreadsheet-name": new SpreadsheetName("spreadsheet-name-456"),
             "cell": SpreadsheetCellReference.parse("A3"),
             "navigate": true,
         }
@@ -257,7 +258,7 @@ test("parse /spreadsheet-id/spreadsheet-name/cell/A3/formula/navigate", () => {
         "/spreadsheet-id-123/spreadsheet-name-456/cell/A3/formula/navigate",
         {
             "spreadsheet-id": "spreadsheet-id-123",
-            "spreadsheet-name": "spreadsheet-name-456",
+            "spreadsheet-name": new SpreadsheetName("spreadsheet-name-456"),
             "cell": SpreadsheetCellReference.parse("A3"),
             "formula": true,
             "navigate": true,
@@ -270,7 +271,7 @@ test("parse /spreadsheet-id/spreadsheet-name/cell/A3/formula/navigate/settings",
         "/spreadsheet-id-123/spreadsheet-name-456/cell/A3/formula/navigate/settings",
         {
             "spreadsheet-id": "spreadsheet-id-123",
-            "spreadsheet-name": "spreadsheet-name-456",
+            "spreadsheet-name": new SpreadsheetName("spreadsheet-name-456"),
             "cell": SpreadsheetCellReference.parse("A3"),
             "formula": true,
             "navigate": true,
@@ -284,7 +285,7 @@ test("parse /spreadsheet-id/spreadsheet-name/label/LABEL123/navigate", () => {
         "/spreadsheet-id-123/spreadsheet-name-456/label/LABEL123/navigate",
         {
             "spreadsheet-id": "spreadsheet-id-123",
-            "spreadsheet-name": "spreadsheet-name-456",
+            "spreadsheet-name": new SpreadsheetName("spreadsheet-name-456"),
             "label": SpreadsheetLabelName.parse("LABEL123"),
             "navigate": true,
         }
@@ -296,7 +297,7 @@ test("parse /spreadsheet-id/spreadsheet-name/navigate/settings", () => {
         "/spreadsheet-id-123/spreadsheet-name-456/navigate/settings",
         {
             "spreadsheet-id": "spreadsheet-id-123",
-            "spreadsheet-name": "spreadsheet-name-456",
+            "spreadsheet-name": new SpreadsheetName("spreadsheet-name-456"),
             "navigate": true,
             "settings": true,
         }
@@ -308,7 +309,7 @@ test("parse /spreadsheet-id/spreadsheet-name/navigate/settings/number", () => {
         "/spreadsheet-id-123/spreadsheet-name-456/navigate/settings/number",
         {
             "spreadsheet-id": "spreadsheet-id-123",
-            "spreadsheet-name": "spreadsheet-name-456",
+            "spreadsheet-name": new SpreadsheetName("spreadsheet-name-456"),
             "navigate": true,
             "settings": true,
             "settings-section": "number",
@@ -321,7 +322,7 @@ test("parse /spreadsheet-id/spreadsheet-name/settings", () => {
         "/spreadsheet-id-123/spreadsheet-name-456/settings",
         {
             "spreadsheet-id": "spreadsheet-id-123",
-            "spreadsheet-name": "spreadsheet-name-456",
+            "spreadsheet-name": new SpreadsheetName("spreadsheet-name-456"),
             "settings": true,
         }
     );
@@ -332,7 +333,7 @@ test("parse /spreadsheet-id/spreadsheet-name/settings/!invalid", () => {
         "/spreadsheet-id-123/spreadsheet-name-456/settings/!invalid",
         {
             "spreadsheet-id": "spreadsheet-id-123",
-            "spreadsheet-name": "spreadsheet-name-456",
+            "spreadsheet-name": new SpreadsheetName("spreadsheet-name-456"),
             "settings": true,
         }
     );
@@ -343,7 +344,7 @@ test("parse /spreadsheet-id/spreadsheet-name/settings/metadata", () => {
         "/spreadsheet-id-123/spreadsheet-name-456/settings/metadata",
         {
             "spreadsheet-id": "spreadsheet-id-123",
-            "spreadsheet-name": "spreadsheet-name-456",
+            "spreadsheet-name": new SpreadsheetName("spreadsheet-name-456"),
             "settings": true,
             "settings-section": "metadata",
         }
@@ -355,7 +356,7 @@ test("parse /spreadsheet-id/spreadsheet-name/settings/text", () => {
         "/spreadsheet-id-123/spreadsheet-name-456/settings/text",
         {
             "spreadsheet-id": "spreadsheet-id-123",
-            "spreadsheet-name": "spreadsheet-name-456",
+            "spreadsheet-name": new SpreadsheetName("spreadsheet-name-456"),
             "settings": true,
             "settings-section": "text",
         }
@@ -367,7 +368,7 @@ test("parse /spreadsheet-id/spreadsheet-name/settings/number", () => {
         "/spreadsheet-id-123/spreadsheet-name-456/settings/number",
         {
             "spreadsheet-id": "spreadsheet-id-123",
-            "spreadsheet-name": "spreadsheet-name-456",
+            "spreadsheet-name": new SpreadsheetName("spreadsheet-name-456"),
             "settings": true,
             "settings-section": "number",
         }
@@ -379,7 +380,7 @@ test("parse /spreadsheet-id/spreadsheet-name/settings/date-time", () => {
         "/spreadsheet-id-123/spreadsheet-name-456/settings/date-time",
         {
             "spreadsheet-id": "spreadsheet-id-123",
-            "spreadsheet-name": "spreadsheet-name-456",
+            "spreadsheet-name": new SpreadsheetName("spreadsheet-name-456"),
             "settings": true,
             "settings-section": "date-time",
         }
@@ -391,7 +392,7 @@ test("parse /spreadsheet-id/spreadsheet-name/settings/style", () => {
         "/spreadsheet-id-123/spreadsheet-name-456/settings/style",
         {
             "spreadsheet-id": "spreadsheet-id-123",
-            "spreadsheet-name": "spreadsheet-name-456",
+            "spreadsheet-name": new SpreadsheetName("spreadsheet-name-456"),
             "settings": true,
             "settings-section": "style",
         }
@@ -403,7 +404,7 @@ test("parse /spreadsheet-id/spreadsheet-name/name/settings", () => {
         "/spreadsheet-id-123/spreadsheet-name-456/name/settings",
         {
             "spreadsheet-id": "spreadsheet-id-123",
-            "spreadsheet-name": "spreadsheet-name-456",
+            "spreadsheet-name": new SpreadsheetName("spreadsheet-name-456"),
             "settings": true,
         }
     );
@@ -414,7 +415,7 @@ test("parse /spreadsheet-id/spreadsheet-name/name/settings/!invalid", () => {
         "/spreadsheet-id-123/spreadsheet-name-456/name/settings/!invalid",
         {
             "spreadsheet-id": "spreadsheet-id-123",
-            "spreadsheet-name": "spreadsheet-name-456",
+            "spreadsheet-name": new SpreadsheetName("spreadsheet-name-456"),
             "settings": true,
         }
     );
@@ -425,7 +426,7 @@ test("parse /spreadsheet-id/spreadsheet-name/name/settings/metadata", () => {
         "/spreadsheet-id-123/spreadsheet-name-456/name/settings/metadata",
         {
             "spreadsheet-id": "spreadsheet-id-123",
-            "spreadsheet-name": "spreadsheet-name-456",
+            "spreadsheet-name": new SpreadsheetName("spreadsheet-name-456"),
             "settings": true,
             "settings-section": "metadata",
         }
@@ -437,7 +438,7 @@ test("parse /spreadsheet-id/spreadsheet-name/name/settings/text", () => {
         "/spreadsheet-id-123/spreadsheet-name-456/name/settings/text",
         {
             "spreadsheet-id": "spreadsheet-id-123",
-            "spreadsheet-name": "spreadsheet-name-456",
+            "spreadsheet-name": new SpreadsheetName("spreadsheet-name-456"),
             "settings": true,
             "settings-section": "text",
         }
@@ -449,7 +450,7 @@ test("parse /spreadsheet-id/spreadsheet-name/name/settings/number", () => {
         "/spreadsheet-id-123/spreadsheet-name-456/name/settings/number",
         {
             "spreadsheet-id": "spreadsheet-id-123",
-            "spreadsheet-name": "spreadsheet-name-456",
+            "spreadsheet-name": new SpreadsheetName("spreadsheet-name-456"),
             "settings": true,
             "settings-section": "number",
         }
@@ -461,7 +462,7 @@ test("parse /spreadsheet-id/spreadsheet-name/name/settings/date-time", () => {
         "/spreadsheet-id-123/spreadsheet-name-456/name/settings/date-time",
         {
             "spreadsheet-id": "spreadsheet-id-123",
-            "spreadsheet-name": "spreadsheet-name-456",
+            "spreadsheet-name": new SpreadsheetName("spreadsheet-name-456"),
             "settings": true,
             "settings-section": "date-time",
         }
@@ -473,7 +474,7 @@ test("parse /spreadsheet-id/spreadsheet-name/name/settings/style", () => {
         "/spreadsheet-id-123/spreadsheet-name-456/name/settings/style",
         {
             "spreadsheet-id": "spreadsheet-id-123",
-            "spreadsheet-name": "spreadsheet-name-456",
+            "spreadsheet-name": new SpreadsheetName("spreadsheet-name-456"),
             "settings": true,
             "settings-section": "style",
         }
@@ -485,7 +486,7 @@ test("parse /spreadsheet-id/spreadsheet-name/cell/B2/formula/settings", () => {
         "/spreadsheet-id-123/spreadsheet-name-456/cell/B2/formula/settings",
         {
             "spreadsheet-id": "spreadsheet-id-123",
-            "spreadsheet-name": "spreadsheet-name-456",
+            "spreadsheet-name": new SpreadsheetName("spreadsheet-name-456"),
             "cell": SpreadsheetCellReference.parse("B2"),
             "formula": true,
             "settings": true,
@@ -498,7 +499,7 @@ test("parse /spreadsheet-id/spreadsheet-name/cell/B2/formula/settings/!invalid",
         "/spreadsheet-id-123/spreadsheet-name-456/cell/B2/formula/settings/!invalid",
         {
             "spreadsheet-id": "spreadsheet-id-123",
-            "spreadsheet-name": "spreadsheet-name-456",
+            "spreadsheet-name": new SpreadsheetName("spreadsheet-name-456"),
             "cell": SpreadsheetCellReference.parse("B2"),
             "formula": true,
             "settings": true,
@@ -511,7 +512,7 @@ test("parse /spreadsheet-id/spreadsheet-name/cell/B2/formula/settings/metadata",
         "/spreadsheet-id-123/spreadsheet-name-456/cell/B2/formula/settings/metadata",
         {
             "spreadsheet-id": "spreadsheet-id-123",
-            "spreadsheet-name": "spreadsheet-name-456",
+            "spreadsheet-name": new SpreadsheetName("spreadsheet-name-456"),
             "cell": SpreadsheetCellReference.parse("B2"),
             "formula": true,
             "settings": true,
@@ -525,7 +526,7 @@ test("parse /spreadsheet-id/spreadsheet-name/cell/B2/formula/settings/text", () 
         "/spreadsheet-id-123/spreadsheet-name-456/cell/B2/formula/settings/text",
         {
             "spreadsheet-id": "spreadsheet-id-123",
-            "spreadsheet-name": "spreadsheet-name-456",
+            "spreadsheet-name": new SpreadsheetName("spreadsheet-name-456"),
             "cell": SpreadsheetCellReference.parse("B2"),
             "formula": true,
             "settings": true,
@@ -539,7 +540,7 @@ test("parse /spreadsheet-id/spreadsheet-name/cell/B2/formula/settings/number", (
         "/spreadsheet-id-123/spreadsheet-name-456/cell/B2/formula/settings/number",
         {
             "spreadsheet-id": "spreadsheet-id-123",
-            "spreadsheet-name": "spreadsheet-name-456",
+            "spreadsheet-name": new SpreadsheetName("spreadsheet-name-456"),
             "cell": SpreadsheetCellReference.parse("B2"),
             "formula": true,
             "settings": true,
@@ -553,7 +554,7 @@ test("parse /spreadsheet-id/spreadsheet-name/cell/B2/formula/settings/date-time"
         "/spreadsheet-id-123/spreadsheet-name-456/cell/B2/formula/settings/date-time",
         {
             "spreadsheet-id": "spreadsheet-id-123",
-            "spreadsheet-name": "spreadsheet-name-456",
+            "spreadsheet-name": new SpreadsheetName("spreadsheet-name-456"),
             "cell": SpreadsheetCellReference.parse("B2"),
             "formula": true,
             "settings": true,
@@ -567,7 +568,7 @@ test("parse /spreadsheet-id/spreadsheet-name/cell/B2/formula/settings/style", ()
         "/spreadsheet-id-123/spreadsheet-name-456/cell/B2/formula/settings/style",
         {
             "spreadsheet-id": "spreadsheet-id-123",
-            "spreadsheet-name": "spreadsheet-name-456",
+            "spreadsheet-name": new SpreadsheetName("spreadsheet-name-456"),
             "cell": SpreadsheetCellReference.parse("B2"),
             "formula": true,
             "settings": true,
@@ -581,7 +582,7 @@ test("parse /spreadsheet-id/spreadsheet-name/label/LABEL123/settings/style", () 
         "/spreadsheet-id-123/spreadsheet-name-456/label/LABEL123/settings/style",
         {
             "spreadsheet-id": "spreadsheet-id-123",
-            "spreadsheet-name": "spreadsheet-name-456",
+            "spreadsheet-name": new SpreadsheetName("spreadsheet-name-456"),
             "label": SpreadsheetLabelName.parse("LABEL123"),
             "settings": true,
             "settings-section": "style",
@@ -594,7 +595,7 @@ test("parse /spreadsheet-id/spreadsheet-name/style/metadata/name fails", () => {
         "/spreadsheet-id-123/spreadsheet-name-456/cell/B2/formula/settings/metadata/name",
         {
             "spreadsheet-id": "spreadsheet-id-123",
-            "spreadsheet-name": "spreadsheet-name-456",
+            "spreadsheet-name": new SpreadsheetName("spreadsheet-name-456"),
         }
     );
 });
