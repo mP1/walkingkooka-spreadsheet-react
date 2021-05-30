@@ -68,7 +68,6 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
      */
     initialStateFromProps(props) {
         return {
-            //createEmptySpreadsheet: false,
             creatingEmptySpreadsheet: false,
             spreadsheetMetadata: SpreadsheetMetadata.EMPTY,
             cells: ImmutableMap.EMPTY,
