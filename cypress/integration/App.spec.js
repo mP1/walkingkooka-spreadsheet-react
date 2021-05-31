@@ -34,7 +34,13 @@ context(
             cy.visit('/')
         })
 
-        it("Initial empty spreadsheet", () => {
+        it("Spreadsheet initial empty check", () => {
+            spreadsheetEmptyCheck();
+        });
+
+        it("Spreadsheet create empty", () => {
+            hashEnter("/");
+
             spreadsheetEmptyCheck();
         });
 
@@ -132,11 +138,11 @@ context(
 
         // LABEL........................................................................................................
 
-        it("Label hash with invalid label name", () => {
+        it("Label mapping hash with invalid label name", () => {
             hashInvalidRejected("/label/!invalid-label");
         });
 
-        it("Enter hash show label mapping", () => {
+        it("Label mapping enter hash", () => {
             spreadsheetEmpty();
             hashLabel();
 
@@ -149,7 +155,7 @@ context(
             );
         });
 
-        it("Label hash show label mapping after editing name", () => {
+        it("Label mapping hash show label mapping after editing name", () => {
             spreadsheetEmpty();
 
             spreadsheetNameClick();
@@ -480,7 +486,7 @@ context(
                 .should('match', /.*\/Untitled/);
         });
 
-        it("Label save, navigate to label", () => {
+        it("Label mapping save, navigate to label", () => {
             spreadsheetEmpty();
             hash()
                 .should('match', /.*\/Untitled/);
@@ -1063,13 +1069,13 @@ context(
 
         // create/load spreadsheet............................................................................................
 
-        it("Empty spreadsheet create", () => {
+        it("Spreadsheet create empty", () => {
             hashEnter("/");
 
             spreadsheetEmptyCheck();
         });
 
-        it("Empty spreadsheet after editing cell", () => {
+        it("Spreadsheet create empty after editing cell", () => {
             spreadsheetEmpty();
 
             cellClick("E5");
