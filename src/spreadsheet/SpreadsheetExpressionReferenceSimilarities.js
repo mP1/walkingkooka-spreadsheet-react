@@ -52,7 +52,7 @@ export default class SpreadsheetExpressionReferenceSimilarities extends SystemOb
     }
 
     /**
-     * Creates an array of options for rendering by {@link SpreadsheetNavigateWidget}.
+     * Creates an array of options for rendering by {@link SpreadsheetNavigateModalWidget}.
      */
     toSpreadsheetNavigateWidgetOptions(query) {
         Preconditions.requireText(query, "query");
