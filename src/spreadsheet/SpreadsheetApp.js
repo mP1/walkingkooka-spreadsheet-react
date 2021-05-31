@@ -150,10 +150,10 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
         if(!state.creatingEmptySpreadsheet) {
             console.log("stateSpreadsheetMetadataSpreadsheetId spreadsheetId changed from " + previous + " to " + current);
             if(current) {
-                if(Equality.safeEquals(current, previous)){
-                    this.stateSpreadsheetMetadataSpreadsheetName(historyTokens);
-                } else {
+                if(state.spreadsheetMetadata.isEmpty() || !(Equality.safeEquals(current, previous))){
                     this.spreadsheetMetadataLoad(current);
+                } else {
+                    this.stateSpreadsheetMetadataSpreadsheetName(historyTokens);
                 }
             } else {
                 this.spreadsheetEmptyCreate();
