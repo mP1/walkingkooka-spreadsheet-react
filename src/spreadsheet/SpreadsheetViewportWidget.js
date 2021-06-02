@@ -250,7 +250,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
                         defaultStyle,
                         editing,
                         () => this.onCellClick(cellReference),
-                        editing ? (event) => this.onCellKeyDown(event, cellReference) : undefined,
+                        editing ? (e) => this.onCellKeyDown(e, cellReference) : undefined,
                     )
                 );
 
@@ -309,10 +309,10 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
         this.saveEditCell(cellReference);
     }
 
-    onCellKeyDown(event, cellReference) {
-        event.preventDefault();
+    onCellKeyDown(e, cellReference) {
+        e.preventDefault();
 
-        const key = event.key;
+        const key = e.key;
         console.log("onCellKeyDown: " + cellReference + " key: " + key);
 
         switch(key) {

@@ -154,10 +154,13 @@ export default class SpreadsheetLabelWidget extends SpreadsheetHistoryAwareState
         </SpreadsheetDialog>
     }
 
-    onLabelChange(event) {
+    onLabelChange(e) {
         const state = {};
-        this.parseLabel(event.target.value, state);
-        console.log("onLabelChange " + event.target.value + " " + JSON.stringify(state));
+
+        const value = e.target.value;
+        console.log("onLabelChange " + value + " " + JSON.stringify(state));
+
+        this.parseLabel(value, state);
         this.setState(state);
     }
 
@@ -174,10 +177,12 @@ export default class SpreadsheetLabelWidget extends SpreadsheetHistoryAwareState
         return label;
     }
 
-    onReferenceChange(event) {
+    onReferenceChange(e) {
         const state = {};
-        this.parseReference(event.target.value, state);
-        console.log("onReferenceChange " + event.target.value + " " + JSON.stringify(state));
+
+        const value = e.target.value;
+        console.log("onReferenceChange " + value + " " + JSON.stringify(state));
+        this.parseReference(value, state);
         this.setState(state);
     }
 
