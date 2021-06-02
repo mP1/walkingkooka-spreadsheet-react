@@ -143,13 +143,13 @@ export default class SpreadsheetNavigateAutocompleteWidget extends SpreadsheetHi
      * This is fired whenever the query TextField is updated, resulting in a new search to the server
      * which will eventually update the displayed matches.
      */
-    onTextFieldChange(event, newValueText) {
-        console.log("onTextFieldChange: " + newValueText, event);
+    onTextFieldChange(e, newValueText) {
+        console.log("onTextFieldChange: " + newValueText, e);
 
         this.performSimilarities(newValueText);
     }
 
-    onAutoCompleteValueChange(event, newValueOption) {
+    onAutoCompleteValueChange(e, newValueOption) {
         console.log("onAutoCompleteValueChange: " + newValueOption, newValueOption);
 
         switch(typeof newValueOption) {

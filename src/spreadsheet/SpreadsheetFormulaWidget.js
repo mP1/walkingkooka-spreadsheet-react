@@ -150,14 +150,14 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetHistoryAwareSta
     /**
      * Remove the formula portion of history hash
      */
-    onBlur(event) {
+    onBlur(e) {
         this.updateFormulaHash("onBlur", false);
     }
 
     /**
      * Add the formula portion to the history hash
      */
-    onFocus(event) {
+    onFocus(e) {
         this.updateFormulaHash("onFocus", true);
     }
 
@@ -176,13 +176,13 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetHistoryAwareSta
     /**
      * ESCAPE reloads the initial formula, ENTER saves the cell with the current formula text.
      */
-    onKeyDown(event) {
-        switch(event.key) {
+    onKeyDown(e) {
+        switch(e.key) {
             case "Escape":
-                this.onEscapeKey(event);
+                this.onEscapeKey(e);
                 break;
             case "Enter":
-                this.onEnterKey(event);
+                this.onEnterKey(e);
                 break;
             default:
             // nothing special to do for other keys
@@ -192,7 +192,7 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetHistoryAwareSta
     /**
      * ESCAPE reloads the formula text.
      */
-    onEscapeKey(event) {
+    onEscapeKey(e) {
         this.setState({
             value: this.initialValue,
         })
@@ -201,8 +201,8 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetHistoryAwareSta
     /**
      * ENTER saves the formula content.
      */
-    onEnterKey(event) {
-        const value = event.target.value;
+    onEnterKey(e) {
+        const value = e.target.value;
         this.props.setValue(this.state.cell, value);
         this.setState({"value": value});
     }
