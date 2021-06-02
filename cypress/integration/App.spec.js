@@ -1020,8 +1020,49 @@ context(
                 .should('match', /.*\/Untitled\/cell\/B2/);
         });
 
+        it("Navigate link after cell click", () => {
+            spreadsheetEmpty();
+
+            cellClick("A1");
+
+            navigateLink()
+                .should('have.text', "A1");
+
+            cellClick("A2");
+
+            navigateLink()
+                .should('have.text', "A2");
+        });
+
+        it("Navigate link click after cell click", () => {
+            spreadsheetEmpty();
+
+            cellClick("B1");
+
+            navigateLink()
+                .should('have.text', "B1")
+                .click();
+
+            hash()
+                .should('match', /.*\/Untitled\/cell\/B1\/navigate/);
+
+            navigateAutocompleteTextField()
+                .should("have.value", "")
+                .type("B2{enter}");
+
+            navigateGotoCellOrLabelButton(false)
+                .click();
+
+            hash()
+                .should('match', /.*\/Untitled\/cell\/B2/);
+        });
+
         function navigateHistoryHash() {
             hashAppend("/navigate");
+        }
+
+        function navigateLink() {
+            return cy.get("#navigate-Link");
         }
 
         function navigateDialog() {

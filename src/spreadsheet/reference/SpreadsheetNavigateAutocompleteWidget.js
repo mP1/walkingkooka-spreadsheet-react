@@ -28,7 +28,7 @@ const MAX_COUNT = 10;
  * <li>createLabel The selected unknown {@link SpreadsheetLabelName} for creation</li>
  * </ul>
  */
-export default class SpreadsheetNavigateWidget extends SpreadsheetHistoryAwareStateWidget {
+export default class SpreadsheetNavigateAutocompleteWidget extends SpreadsheetHistoryAwareStateWidget {
 
     initialStateFromProps(props) {
         return {
@@ -263,7 +263,7 @@ export default class SpreadsheetNavigateWidget extends SpreadsheetHistoryAwareSt
     }
 }
 
-SpreadsheetNavigateWidget.propTypes = {
+SpreadsheetNavigateAutocompleteWidget.propTypes = {
     history: PropTypes.object.isRequired,
     getSimilarities: PropTypes.func.isRequired, // performs a search to find similarities to the query text field.
     notificationShow: PropTypes.func.isRequired, // used to display notifications including errors and other messages
