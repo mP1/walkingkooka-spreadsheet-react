@@ -62,13 +62,14 @@ created and used appropriate. These have not be documented, projects will be cre
 Components within a hash that begin with dollar sign '$' represent a variable of some sort related to the context. Other
 components are actual literals.
 
-- / $spreadsheet-id / $spreadsheet name *view the selected spreadsheet*
-- / $spreadsheet-id / $spreadsheet name / name *editing the spreadsheet name*
-- / $spreadsheet-id / $spreadsheet name / cell / $cell-reference OR $label-name *navigates to the given $cell-reference or $label-name*
-- / $spreadsheet-id / $spreadsheet name / cell / $cell-reference OR $label-name / formula *editing of the cell formula*
-- / $spreadsheet-id / $spreadsheet name / label / $label-name / *creates / edits the give $label-name*  
-- / $spreadsheet-id / $spreadsheet name / settings *open the settings panel*
-- / $spreadsheet-id / $spreadsheet name / settings / $section *open the settings panel and expands the section*
+- /$spreadsheet-id/$spreadsheet-name *view the selected spreadsheet*
+- /$spreadsheet-id/$spreadsheet-name/name *editing the spreadsheet name*
+- /$spreadsheet-id/$spreadsheet-name/cell/$cell-reference-OR-label-name *navigates to the given $cell-reference or $label-name*
+- /$spreadsheet-id/$spreadsheet-name/cell/$cell-reference-OR-label-name/formula *editing of the cell formula*
+- /$spreadsheet-id/$spreadsheet-name/label/$label-name / *creates / edits the give $label-name*
+- /$spreadsheet-id/$spreadsheet-name/navigate *displays modal prompt user to enter cell or label with navigation / editing options*
+- /$spreadsheet-id/$spreadsheet-name/settings *open the settings panel*
+- /$spreadsheet-id/$spreadsheet-name/settings/$section *open the settings panel and expands the section*
 
 
 
@@ -111,7 +112,7 @@ an expression.  All parsing and resolution of reference and function is performe
 ## Navigation
 
 - Support APIs on the server exists to jump to any cell. **DONE**
-- Adding a smart text box to support navigation using a cell reference or label, APIs are available to resolve labels to cell references. [TODO](https://github.com/mP1/walkingkooka-spreadsheet-react/issues/557)
+- Adding a smart text box to support navigation using a cell reference or label, APIs are available to resolve labels to cell references. **DONE**
 - Scrollbars to pan horizontally and vertically have not been added to the UI. [TODO](https://github.com/mP1/walkingkooka-spreadsheet-react/issues/324)
 - APIs are available to compute the exact cell range for any given home (top left) cell and screen dimensions to fill the display in a single API request.
 - Keyboard navigation **DONE** and range selection [TODO](https://github.com/mP1/walkingkooka-spreadsheet-react/issues/561)
