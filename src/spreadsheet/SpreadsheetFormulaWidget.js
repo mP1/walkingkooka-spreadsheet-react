@@ -129,7 +129,6 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetHistoryAwareSta
                        id={"formula-TextField"}
                        defaultValue={value}
                        disabled={!edit}
-                       fullWidth={true}
                        onBlur={this.onBlur.bind(this)}
                        onFocus={this.onFocus.bind(this)}
                        onKeyDown={this.onKeyDown.bind(this)}
@@ -137,6 +136,7 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetHistoryAwareSta
                        inputProps={{
                            maxLength: 8192,
                            style: {
+                               minWidth: "500px",
                                padding: "2px",
                            }
                        }}

@@ -13,7 +13,6 @@ import SpreadsheetCell from "./SpreadsheetCell.js";
 import SpreadsheetCellBox from "./reference/SpreadsheetCellBox.js";
 import SpreadsheetCellReference from "./reference/SpreadsheetCellReference.js";
 import SpreadsheetCellReferenceOrLabelName from "./reference/SpreadsheetCellReferenceOrLabelName.js";
-import SpreadsheetContainerWidget from "../widget/SpreadsheetContainerWidget.js";
 import SpreadsheetCoordinates from "./SpreadsheetCoordinates.js";
 import SpreadsheetDelta from "./engine/SpreadsheetDelta.js";
 import SpreadsheetEngineEvaluation from "./engine/SpreadsheetEngineEvaluation.js";
@@ -57,7 +56,6 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
         this.aboveViewport = React.createRef();
         this.spreadsheetName = React.createRef();
         this.formula = React.createRef();
-        this.formulaContainer = React.createRef(); // a container that includes the formula text box. Will include other related tools
         this.viewport = React.createRef();
 
         document.title = "Empty spreadsheet";
@@ -220,7 +218,6 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
             const width = windowDimensions.width;
             const height = windowDimensions.height - aboveViewportDimensions.height;
 
-
             if(previous.width !== width || previous.height !== height){
                 viewport.setState({
                     dimensions: {
@@ -318,21 +315,13 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
                                                showError={showError}
                         />
                     </SpreadsheetAppBar>
-                    <SpreadsheetContainerWidget ref={this.formulaContainer}
-                                                style={{
-                                                    margin: 0,
-                                                    border: 0,
-                                                    padding: 0,
-                                                    width: this.appBarWidth() + "px",
-                                                }}>
-                        <SpreadsheetFormulaWidget ref={this.formula}
-                                                  key={"spreadsheetFormula"}
-                                                  history={history}
-                                                  getValue={this.formulaTextLoad.bind(this)}
-                                                  setValue={this.formulaTextSave.bind(this)}
-                                                  showError={showError}
-                        />
-                    </SpreadsheetContainerWidget>
+                    <SpreadsheetFormulaWidget ref={this.formula}
+                                              key={"spreadsheetFormula"}
+                                              history={history}
+                                              getValue={this.formulaTextLoad.bind(this)}
+                                              setValue={this.formulaTextSave.bind(this)}
+                                              showError={showError}
+                    />
                     <Divider/>
                 </SpreadsheetBox>
                 <SpreadsheetViewportWidget key={[cells, columnWidths, rowHeights, style, viewportCell]}
@@ -870,18 +859,6 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
         this.setState({
             aboveViewportDimensions: dimensions,
         });
-    }
-
-    /**
-     * Computes the visible width of the app bar less if the settings/tool settings if it is visible.
-     */
-    appBarWidth() {
-        const state = this.state;
-        const aboveViewportDimensions = state.aboveViewportDimensions;
-
-        return aboveViewportDimensions ?
-            (aboveViewportDimensions.width - (state.settings ? SpreadsheetSettingsWidget.WIDTH : 0)) + "px" :
-            "";
     }
 
     showError(error) {
