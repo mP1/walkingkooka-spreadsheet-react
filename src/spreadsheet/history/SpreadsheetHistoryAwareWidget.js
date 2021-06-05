@@ -26,12 +26,11 @@ export default class SpreadsheetHistoryAwareWidget extends React.Component {
                 )
             )
         );
-        this.mounted = true;
     }
 
     componentWillUnmount() {
-        this.mounted = false;
         this.historyUnlisten();
+        delete this.historyUnlisten;
     }
 
     onHistoryChange(tokens) {
