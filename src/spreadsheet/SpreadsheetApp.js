@@ -517,7 +517,7 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
             {
                 method: "GET",
             },
-            (json) => success(null != json && SpreadsheetLabelMapping.fromJson(json)),
+            (json) => success(label, null != json ? SpreadsheetLabelMapping.fromJson(json) : null),
             failure,
         );
     }

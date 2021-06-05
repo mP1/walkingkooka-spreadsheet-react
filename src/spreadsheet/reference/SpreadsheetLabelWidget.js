@@ -52,7 +52,7 @@ export default class SpreadsheetLabelWidget extends SpreadsheetHistoryAwareState
                 // load the mapping for the new $label, the old mapping is lost.
                 this.props.loadLabelMapping(
                     label,
-                    (mapping) => this.onLoadSuccess(label, mapping),
+                    (l, m) => this.onLoadSuccess(l, m),
                     this.onLoadFailure.bind(this),
                 );
             }
@@ -67,10 +67,10 @@ export default class SpreadsheetLabelWidget extends SpreadsheetHistoryAwareState
     /**
      * Handles the response of a load label attempt.
      */
-    onLoadSuccess(oldLabel, mapping) {
+    onLoadSuccess(label, mapping) {
         console.log("onLoadSuccess: " + mapping);
 
-        const labelValue = mapping ? mapping.label().toString() : oldLabel.toString();
+        const labelValue = mapping ? mapping.label().toString() : label.toString();
         const referenceValue = mapping ? mapping.reference().toString() : "";
 
         const newState = {
