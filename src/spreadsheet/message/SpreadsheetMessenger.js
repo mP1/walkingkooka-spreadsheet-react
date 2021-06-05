@@ -50,11 +50,11 @@ export default class SpreadsheetMessenger {
         this.webworker && this.webworker.removeEventListener('message', this.onMessage);
     }
 
-    send(url, parameters, response, error) {
+    send(url, parameters, success, failure) {
         Preconditions.requireNonEmptyText(url, "url");
         Preconditions.requireObject(parameters, "parameters");
-        Preconditions.requireFunction(response, "response");
-        Preconditions.requireFunction(error, "error");
+        Preconditions.requireFunction(success, "success");
+        Preconditions.requireFunction(failure, "failure");
 
         const transactionIdHeader = transactionId++;
         const headers = Object.assign({
@@ -71,19 +71,19 @@ export default class SpreadsheetMessenger {
             });
 
         if(this.webworker){
-            this.postMessage(url, parametersWithDefaults, transactionIdHeader, response, error);
+            this.postMessage(url, parametersWithDefaults, transactionIdHeader, success, failure);
         }else {
-            this.browserFetch(url, parametersWithDefaults, response, error);
+            this.browserFetch(url, parametersWithDefaults, success, failure);
         }
     }
 
     /**
      * Constructs a request and posts a message to the webworker. Eventually that webworker will post a response back.
      */
-    postMessage(url, parameters, transactionIdHeader, response, error) {
+    postMessage(url, parameters, transactionIdHeader, success, failure) {
         transactionIdToHandlers[transactionIdHeader] = {
-            response: response,
-            error: error,
+            success: success,
+            failure: failure,
         };
 
         this.webworker.postMessage({
@@ -98,26 +98,26 @@ export default class SpreadsheetMessenger {
     /**
      * Uses the browser's fetch object to make a request to a server.
      */
-    browserFetch(url, parameters, response, error) {
+    browserFetch(url, parameters, success, failure) {
         console.log("browserFetch \"" + url + "\"", parameters);
 
-        let responseBuilder = {};
+        let response = {};
 
         timeoutPromise(parameters.timeout || DEFAULT_TIMEOUT,
             fetch(url, parameters)
-                .then(response => {
-                    const statusCode = response.status;
-                    const statusText = response.statusText;
+                .then(resp => {
+                    const statusCode = resp.status;
+                    const statusText = resp.statusText;
                     switch(Math.floor(statusCode / 100)) {
                         case 1:
                             throw new Error("1xx " + statusCode + "=" + statusText);
                         case 2:
-                            responseBuilder.statusCode = statusCode;
-                            responseBuilder.statusText = statusText;
-                            responseBuilder.headers = response.headers;
+                            response.statusCode = statusCode;
+                            response.statusText = statusText;
+                            response.headers = resp.headers;
                             return 204 === statusCode ?
                                 Promise.resolve(null) :
-                                response.json();
+                                resp.json();
                         case 3:
                             throw new Error("Redirect " + statusCode + "=" + statusText);
                         case 4:
@@ -129,11 +129,11 @@ export default class SpreadsheetMessenger {
                     }
                 })
                 .then(json => {
-                    console.log("response " + responseBuilder.statusCode + " " + responseBuilder.statusText, json)
-                    response(json);
+                    console.log("response " + response.statusCode + " " + response.statusText, json)
+                    success(json);
                 })
                 .catch((e) => {
-                    error("fetch failed, using " + url + " with " + JSON.stringify(parameters) + "\n" + e);
+                    failure("fetch failed, using " + url + " with " + JSON.stringify(parameters) + "\n" + e);
                 }));
     }
 
@@ -150,12 +150,12 @@ export default class SpreadsheetMessenger {
             if(handlers){
                 delete this.transactionIdToHandlers[transactionId];
 
-                handlers.response(body);
+                handlers.success(body);
             }else {
-                this.error("missing handler for " + TRANSACTION_ID_HEADER + "e\n" + JSON.stringify(response));
+                this.error("missing handler for " + TRANSACTION_ID_HEADER + "\n" + JSON.stringify(response));
             }
         }else {
-            this.error("response missing " + TRANSACTION_ID_HEADER + "e\n" + JSON.stringify(response));
+            this.error("response missing " + TRANSACTION_ID_HEADER + "\n" + JSON.stringify(response));
         }
     }
 }
