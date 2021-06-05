@@ -8,6 +8,7 @@ import SpreadsheetHistoryHash from "../history/SpreadsheetHistoryHash.js";
 import SpreadsheetHistoryAwareStateWidget from "../history/SpreadsheetHistoryAwareStateWidget.js";
 import SpreadsheetLabelMapping from "./SpreadsheetLabelMapping.js";
 import SpreadsheetLabelName from "./SpreadsheetLabelName.js";
+import SpreadsheetMessengerCrud from "../message/SpreadsheetMessengerCrud.js";
 import SpreadsheetNotification from "../notification/SpreadsheetNotification.js";
 import TextField from '@material-ui/core/TextField';
 
@@ -50,10 +51,10 @@ export default class SpreadsheetLabelWidget extends SpreadsheetHistoryAwareState
         if(open){
             if(null != label && !Equality.safeEquals(prevState.label, label)){
                 // load the mapping for the new $label, the old mapping is lost.
-                this.props.loadLabelMapping(
+                this.props.messengerCrud.get(
                     label,
-                    (l, m) => this.onLoadSuccess(l, m),
-                    this.onLoadFailure.bind(this),
+                    this.onLabelMappingLoadSuccess.bind(this),
+                    this.onLabelMappingLoadFailure.bind(this)
                 );
             }
             historyTokens[SpreadsheetHistoryHash.LABEL] = label;
@@ -67,8 +68,8 @@ export default class SpreadsheetLabelWidget extends SpreadsheetHistoryAwareState
     /**
      * Handles the response of a load label attempt.
      */
-    onLoadSuccess(label, mapping) {
-        console.log("onLoadSuccess: " + mapping);
+    onLabelMappingLoadSuccess(label, mapping) {
+        console.log("onLabelMappingLoadSuccess: " + mapping);
 
         const labelValue = mapping ? mapping.label().toString() : label.toString();
         const referenceValue = mapping ? mapping.reference().toString() : "";
@@ -92,7 +93,7 @@ export default class SpreadsheetLabelWidget extends SpreadsheetHistoryAwareState
         }
     }
 
-    onLoadFailure(error) {
+    onLabelMappingLoadFailure(error) {
         this.props.showError(error);
         const state = {};
         this.parseLabel("", state);
@@ -126,7 +127,7 @@ export default class SpreadsheetLabelWidget extends SpreadsheetHistoryAwareState
                            fullWidth
                            defaultValue={label}
                            helperText={labelHelper}
-                           onChange={this.onLabelChange.bind(this)}
+                           onChange={this.onLabelTextFieldValueChange.bind(this)}
 
                 />
                 <TextField key="reference"
@@ -138,27 +139,27 @@ export default class SpreadsheetLabelWidget extends SpreadsheetHistoryAwareState
                            fullWidth
                            defaultValue={reference}
                            helperText={referenceHelper}
-                           onChange={this.onReferenceChange.bind(this)}
+                           onChange={this.onReferenceTextFieldValueChange.bind(this)}
                 />
             </span>
             <Button id="label-mapping-save-Button"
-                    onClick={this.onSave.bind(this)}
+                    onClick={this.onSaveButtonClicked.bind(this)}
                     color="primary">
                 Save
             </Button>
             <Button id="label-mapping-delete-Button"
-                    onClick={this.onDelete.bind(this)}
+                    onClick={this.onDeleteButtonClicked.bind(this)}
                     color="primary">
                 Delete
             </Button>
         </SpreadsheetDialog>
     }
 
-    onLabelChange(e) {
+    onLabelTextFieldValueChange(e) {
         const state = {};
 
         const value = e.target.value;
-        console.log("onLabelChange " + value + " " + JSON.stringify(state));
+        console.log("onLabelTextFieldValueChange " + value + " " + JSON.stringify(state));
 
         this.parseLabel(value, state);
         this.setState(state);
@@ -177,11 +178,11 @@ export default class SpreadsheetLabelWidget extends SpreadsheetHistoryAwareState
         return label;
     }
 
-    onReferenceChange(e) {
+    onReferenceTextFieldValueChange(e) {
         const state = {};
 
         const value = e.target.value;
-        console.log("onReferenceChange " + value + " " + JSON.stringify(state));
+        console.log("onReferenceTextFieldValueChange " + value + " " + JSON.stringify(state));
         this.parseReference(value, state);
         this.setState(state);
     }
@@ -219,15 +220,15 @@ export default class SpreadsheetLabelWidget extends SpreadsheetHistoryAwareState
      * When delete completes close this modal. The delete mapping actually uses the old label name,
      * ignoring the label text field.
      */
-    onDelete() {
-        this.props.deleteLabelMapping(
+    onDeleteButtonClicked() {
+        this.props.messengerCrud.delete(
             this.state.label,
-            this.onDeleteCompleted.bind(this),
+            this.onLabelMappingDeleteSuccess.bind(this),
             this.props.showError
         );
     }
 
-    onDeleteCompleted() {
+    onLabelMappingDeleteSuccess() {
         this.props.notificationShow(SpreadsheetNotification.success("Label deleted"));
         this.close();
     }
@@ -235,7 +236,9 @@ export default class SpreadsheetLabelWidget extends SpreadsheetHistoryAwareState
     /**
      * When the SAVE button is clicked save the LabelMapping, which is created using the label and reference textfields.
      */
-    onSave() {
+    onSaveButtonClicked() {
+        const props = this.props;
+
         try {
             const oldLabel = this.state.label;
             const newState = {};
@@ -243,26 +246,24 @@ export default class SpreadsheetLabelWidget extends SpreadsheetHistoryAwareState
             if(newLabel){
                 const reference = this.parseReference(this.reference.current.value, newState);
                 if(reference){
-                    this.props.saveLabelMapping(
+                    props.messengerCrud.post(
                         oldLabel,
                         new SpreadsheetLabelMapping(newLabel, reference),
-                        this.onSaveCompleted.bind(this),
-                        this.props.showError,
+                        this.onLabelMappingSaveSuccess.bind(this),
+                        props.showError
                     );
                 }
             }
             this.setState(newState);
         } catch(e) {
-            this.props.showError(e.message);
+            props.showError(e.message);
         }
     }
 
     /**
      * Updates the state.label, this means future operations will reference this label to save.
      */
-    onSaveCompleted(json) {
-        const mapping = SpreadsheetLabelMapping.fromJson(json);
-
+    onLabelMappingSaveSuccess(label, mapping) {
         this.setState({
             label: mapping.label(),
             reference: mapping.reference(),
@@ -290,15 +291,13 @@ export default class SpreadsheetLabelWidget extends SpreadsheetHistoryAwareState
     }
 
     onEnter() {
-        this.onSave();
+        this.onSaveButtonClicked();
     }
 }
 
 SpreadsheetLabelWidget.propTypes = {
     history: PropTypes.object.isRequired,
-    loadLabelMapping: PropTypes.func.isRequired, // loads the given label returning its corresponding labelMapping
-    saveLabelMapping: PropTypes.func.isRequired, // saves the new label mapping
-    deleteLabelMapping: PropTypes.func.isRequired, // deletes the selected label
+    messengerCrud: PropTypes.instanceOf(SpreadsheetMessengerCrud),
     notificationShow: PropTypes.func.isRequired, // used to display notifications including errors and other messages
     showError: PropTypes.func.isRequired,
 }

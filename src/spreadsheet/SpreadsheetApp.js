@@ -5,6 +5,7 @@ import {withStyles} from '@material-ui/core/styles';
 import Divider from '@material-ui/core/Divider';
 import Equality from "../Equality.js";
 import ImmutableMap from "../util/ImmutableMap.js";
+import ListenerCollection from "../event/ListenerCollection.js";
 import Preconditions from "../Preconditions.js";
 import React from 'react';
 import SpreadsheetAppBar from "../widget/SpreadsheetAppBar.js";
@@ -26,6 +27,7 @@ import SpreadsheetLabelName from "./reference/SpreadsheetLabelName.js";
 import SpreadsheetLabelWidget from "./reference/SpreadsheetLabelWidget.js";
 import SpreadsheetMetadata from "./meta/SpreadsheetMetadata.js";
 import SpreadsheetMessenger from "./message/SpreadsheetMessenger.js";
+import SpreadsheetMessengerCrud from "./message/SpreadsheetMessengerCrud.js";
 import SpreadsheetName from "./SpreadsheetName.js";
 import SpreadsheetNameWidget from "./SpreadsheetNameWidget.js";
 import SpreadsheetNavigateAutocompleteWidget from "./reference/SpreadsheetNavigateAutocompleteWidget.js";
@@ -49,8 +51,11 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
     // init.............................................................................................................
 
     init() {
-        this.messenger = new SpreadsheetMessenger(this.showError.bind(this));
-        this.messenger.setWebWorker(false); // TODO test webworker mode
+        const showError = this.showError.bind(this);
+
+        const messenger = new SpreadsheetMessenger(showError);
+        messenger.setWebWorker(false); // TODO test webworker mode
+        this.messenger = messenger;
 
         this.notification = React.createRef();
         this.settings = React.createRef();
@@ -60,6 +65,13 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
         this.viewport = React.createRef();
 
         document.title = "Empty spreadsheet";
+
+        this.labelMappingCrud = new SpreadsheetMessengerCrud(
+            this.labelUrl.bind(this),
+            messenger,
+            SpreadsheetLabelMapping.fromJson,
+            new ListenerCollection()
+        );
     }
 
     /**
@@ -296,9 +308,7 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
                 />
                 <SpreadsheetLabelWidget key="labelWidget"
                                         history={history}
-                                        loadLabelMapping={this.labelMappingLoad.bind(this)}
-                                        saveLabelMapping={this.labelMappingSave.bind(this)}
-                                        deleteLabelMapping={this.labelMappingDelete.bind(this)}
+                                        messengerCrud={this.labelMappingCrud}
                                         notificationShow={notificationShow}
                                         showError={showError}
                 />
@@ -504,51 +514,6 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
                 new SpreadsheetFormula(""),
                 TextStyle.EMPTY
             );
-    }
-
-    // label............................................................................................................
-
-    /**
-     * Accepts a label and calls the mapping callback with the SpreadsheetLabelMapping.
-     */
-    labelMappingLoad(label, success, failure) {
-        this.messageSend(
-            this.labelUrl(label),
-            {
-                method: "GET",
-            },
-            (json) => success(label, null != json ? SpreadsheetLabelMapping.fromJson(json) : null),
-            failure,
-        );
-    }
-
-    /**
-     * Saves the given SpreadsheetLabelMapping
-     */
-    labelMappingSave(label, mapping, success, failure) {
-        this.messageSend(
-            this.labelUrl(label),
-            {
-                method: "POST",
-                body: JSON.stringify(mapping.toJson()),
-            },
-            success,
-            failure,
-        );
-    }
-
-    /**
-     * Deletes the given SpreadsheetLabelMapping, and when completed the deleted callback is invoked.
-     */
-    labelMappingDelete(label, success, failure) {
-        this.messageSend(
-            this.labelUrl(label),
-            {
-                method: "DELETE",
-            },
-            success,
-            failure,
-        );
     }
 
     /**
