@@ -94,21 +94,21 @@ test("get unknown key", () => {
 
 // set..................................................................................................................
 
-test("set missing map fails", () => {
-    expect(() => ImmutableMap.EMPTY.set()).toThrow("Missing map");
+test("setAll missing map fails", () => {
+    expect(() => ImmutableMap.EMPTY.setAll()).toThrow("Missing map");
 });
 
-test("set invalid map type fails", () => {
-    expect(() => ImmutableMap.EMPTY.set("!invalid")).toThrow("Expected ImmutableMap map got !invalid");
+test("setAll invalid map type fails", () => {
+    expect(() => ImmutableMap.EMPTY.setAll("!invalid")).toThrow("Expected ImmutableMap map got !invalid");
 });
 
-test("set empty map empty map", () => {
+test("setAll empty map empty map", () => {
     const map = ImmutableMap.EMPTY;
-    const after = ImmutableMap.EMPTY.set(map);
+    const after = ImmutableMap.EMPTY.setAll(map);
     expect(after === map).toBeTrue();
 });
 
-test("set empty map not empty map", () => {
+test("setAll empty map not empty map", () => {
     const a1 = SpreadsheetCellReference.parse("A1");
     const b2 = SpreadsheetCellReference.parse("B2");
 
@@ -116,11 +116,11 @@ test("set empty map not empty map", () => {
     const b2v = "B2-value";
 
     const map = new ImmutableMap(new Map([[a1.toString(), a1v], [b2.toString(), b2v]]));
-    const after = ImmutableMap.EMPTY.set(map);
+    const after = ImmutableMap.EMPTY.setAll(map);
     expect(after === map).toBeTrue();
 });
 
-test("set not empty map empty map", () => {
+test("setAll not empty map empty map", () => {
     const a1 = SpreadsheetCellReference.parse("A1");
     const b2 = SpreadsheetCellReference.parse("B2");
 
@@ -128,11 +128,11 @@ test("set not empty map empty map", () => {
     const b2v = "B2-value";
 
     const map = new ImmutableMap(new Map([[a1.toString(), a1v], [b2.toString(), b2v]]));
-    const after = map.set(ImmutableMap.EMPTY);
+    const after = map.setAll(ImmutableMap.EMPTY);
     expect(after === map).toBeTrue();
 });
 
-test("set not empty map different not empty map", () => {
+test("setAll not empty map different not empty map", () => {
     const a1 = SpreadsheetCellReference.parse("A1");
     const b2 = SpreadsheetCellReference.parse("B2");
 
@@ -142,7 +142,7 @@ test("set not empty map different not empty map", () => {
     const map = new ImmutableMap(new Map([[a1.toString(), a1v]]));
     const other = new ImmutableMap(new Map([[b2.toString(), b2v]]));
 
-    const after = map.set(other);
+    const after = map.setAll(other);
 
     expect(after)
         .toStrictEqual(new ImmutableMap(
@@ -152,14 +152,14 @@ test("set not empty map different not empty map", () => {
             ])));
 });
 
-test("set not empty map same not empty map", () => {
+test("setAll not empty map same not empty map", () => {
     const a1 = SpreadsheetCellReference.parse("A1");
     const a1v = "A1-value";
 
     const map = new ImmutableMap(new Map([[a1.toString(), a1v]]));
     const other = new ImmutableMap(new Map([[a1.toString(), a1v]]));
 
-    const after = map.set(other);
+    const after = map.setAll(other);
     expect(after === map).toBeTrue();
 });
 

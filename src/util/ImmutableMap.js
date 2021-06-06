@@ -67,7 +67,7 @@ export default class ImmutableMap {
      * Returns a new {@link ImmutableMap} that combines the entries of this with the new map. Entries with the same key
      * in the new will replace those in the old.
      */
-    set(map) {
+    setAll(map) {
         Preconditions.requireInstance(map, ImmutableMap, "map");
 
         return map.isEmpty() ?

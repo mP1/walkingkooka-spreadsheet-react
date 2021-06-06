@@ -429,9 +429,9 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
         const delta = SpreadsheetDelta.fromJson(json);
         const state = this.state;
         this.setState({ // lgtm [js/react/inconsistent-state-update]
-            cells: state.cells.set(delta.referenceToCellMap()),
-            columnWidths: state.columnWidths.set(delta.maxColumnWidths()),
-            rowHeights: state.rowHeights.set(delta.maxRowHeights()),
+            cells: state.cells.setAll(delta.referenceToCellMap()),
+            columnWidths: state.columnWidths.setAll(delta.maxColumnWidths()),
+            rowHeights: state.rowHeights.setAll(delta.maxRowHeights()),
         });
     }
 
