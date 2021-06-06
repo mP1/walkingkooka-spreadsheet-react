@@ -21,15 +21,15 @@ test("parse of invalid text fails", () => {
 });
 
 test("parse of includes invalid character fails", () => {
-    expect(() => SpreadsheetRowReference.parse("A")).toThrow("Invalid character 'A' at 0");
+    expect(() => SpreadsheetRowReference.parse("A")).toThrow("Invalid character, got 'A' at 0 in \"A\"");
 });
 
 test("parse of includes invalid character fails #2", () => {
-    expect(() => SpreadsheetRowReference.parse("1A")).toThrow("Invalid character 'A' at 1");
+    expect(() => SpreadsheetRowReference.parse("1A")).toThrow("Invalid character, got 'A' at 1 in \"1A\"");
 });
 
 test("parse of includes invalid character fails #3", () => {
-    expect(() => SpreadsheetRowReference.parse("12A")).toThrow("Invalid character 'A' at 2");
+    expect(() => SpreadsheetRowReference.parse("12A")).toThrow("Invalid character, got 'A' at 2 in \"12A\"");
 });
 
 test("parse MAX fails", () => {
