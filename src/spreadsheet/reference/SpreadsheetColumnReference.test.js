@@ -22,12 +22,12 @@ test("parse of invalid text fails", () => {
 
 test("parse includes invalid character fails", () => {
     expect(() => SpreadsheetColumnReference.parse("A1"))
-        .toThrow("Expected letter between 'A' to 'Z' or 'a' to 'z' at \"1\" got \"A1\"");
+        .toThrow("Expected letter between 'A' to 'Z' or 'a' to 'z', got \"1\" at 1 in \"A1\"");
 });
 
 test("parse includes invalid character fails #2", () => {
     expect(() => SpreadsheetColumnReference.parse("A!"))
-        .toThrow("Expected letter between 'A' to 'Z' or 'a' to 'z' at \"1\" got \"A!\"");
+        .toThrow("Expected letter between 'A' to 'Z' or 'a' to 'z', got \"1\" at 1 in \"A!\"");
 });
 
 test("parse greater than MAX fails", () => {
