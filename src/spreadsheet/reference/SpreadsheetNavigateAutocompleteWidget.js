@@ -82,8 +82,6 @@ export default class SpreadsheetNavigateAutocompleteWidget extends SpreadsheetHi
      * Renders a modal dialog, with an auto complete and two action buttons to GOTO and EDIT the selected cell or label.
      */
     renderDialog() {
-        const {classes} = this.props;
-
         const {queryHelperText, options, gotoCellOrLabel, editLabel, createLabel} = this.state;
 
         const gotoCellOrLabelDisabled = !gotoCellOrLabel;
