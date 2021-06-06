@@ -13,9 +13,7 @@ import SystemObject from "../../SystemObject.js";
  * A function used by fromJson to verify number column widths and row heights
  */
 const NUMBER = (value) => {
-    if(typeof value !== 'number'){
-        throw new Error("Expected number value got " + value);
-    }
+    Preconditions.requireNumber(value, "value");
     return value;
 }
 
@@ -59,21 +57,8 @@ export default class SpreadsheetDelta extends SystemObject {
         super();
         Preconditions.requireArray(cells, "cells");
         Preconditions.requireInstance(cellToLabels, ImmutableMap, "cellToLabels");
-
-        if(!maxColumnWidths){
-            throw new Error("Missing maxColumnWidths");
-        }
-        if(!(maxColumnWidths instanceof ImmutableMap)){
-            throw new Error("Expected ImmutableMap maxColumnWidths got " + maxColumnWidths);
-        }
-
-        if(!maxRowHeights){
-            throw new Error("Missing maxRowHeights");
-        }
-        if(!(maxRowHeights instanceof ImmutableMap)){
-            throw new Error("Expected ImmutableMap maxRowHeights got " + maxRowHeights);
-        }
-
+        Preconditions.requireInstance(maxColumnWidths, ImmutableMap, "maxColumnWidths");
+        Preconditions.requireInstance(maxRowHeights, ImmutableMap, "maxRowHeights");
         Preconditions.requireArray(window, "window");
 
         this.cellsValue = cells.slice();
