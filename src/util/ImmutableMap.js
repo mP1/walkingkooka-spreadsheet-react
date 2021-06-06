@@ -6,6 +6,7 @@
  * <li>toJson tries each toJson for each value during the toJson process.</li>
  * </ul>
  */
+import Equality from "../Equality.js";
 import Preconditions from "../Preconditions.js";
 
 export default class ImmutableMap {
@@ -118,8 +119,7 @@ function equals1(map, other) {
     var result = true;
 
     for(const [key, value] of map.entries()) {
-        const otherValue = other.get(key);
-        result = (value && value.equals && value.equals(otherValue)) || value === otherValue;
+        result = Equality.safeEquals(value, other.get(key));
         if(!result){
             break;
         }
