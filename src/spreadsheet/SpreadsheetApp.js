@@ -406,6 +406,7 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
                     body: JSON.stringify(new SpreadsheetDelta([cell],
                         ImmutableMap.EMPTY,
                         ImmutableMap.EMPTY,
+                        ImmutableMap.EMPTY,
                         [this.state.viewportRange])
                         .toJson()),
                 },

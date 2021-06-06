@@ -1,7 +1,9 @@
 import ImmutableMap from "../../util/ImmutableMap";
 import SpreadsheetCell from "../SpreadsheetCell";
+import SpreadsheetCellReference from "../reference/SpreadsheetCellReference.js";
 import SpreadsheetColumnReference from "../reference/SpreadsheetColumnReference";
 import SpreadsheetDelta from "./SpreadsheetDelta";
+import SpreadsheetLabelName from "../reference/SpreadsheetLabelName.js";
 import SpreadsheetRange from "../reference/SpreadsheetRange";
 import SpreadsheetRowReference from "../reference/SpreadsheetRowReference";
 import systemObjectTesting from "../../SystemObjectTesting.js";
@@ -32,6 +34,17 @@ function cells() {
     return [a1(), b2()];
 }
 
+function cellToLabels() {
+    return ImmutableMap.fromJson(
+        {
+            "A1": "Label1,Label2",
+            "B2": "Label3",
+        },
+        SpreadsheetCellReference.parse,
+        (v) => v.split(",").map(l => SpreadsheetLabelName.parse(l))
+    );
+}
+
 function maxColumnWidths() {
     return ImmutableMap.fromJson({
             "A": 100,
@@ -58,7 +71,7 @@ function window() {
 const windowJson = "A1:B2,C3:D4";
 
 function delta() {
-    return new SpreadsheetDelta(cells(), maxColumnWidths(), maxRowHeights(), window());
+    return new SpreadsheetDelta(cells(), cellToLabels(), maxColumnWidths(), maxRowHeights(), window());
 }
 
 systemObjectTesting(
@@ -74,6 +87,7 @@ systemObjectTesting(
                 }
             })
         ],
+        cellToLabels(),
         maxColumnWidths(),
         maxRowHeights(),
         window()
@@ -96,6 +110,10 @@ systemObjectTesting(
                 }
             }
         },
+        "labels": {
+            "A1": "Label1,Label2",
+            "B2": "Label3"
+        },
         "maxColumnWidths": {
             "A": 100
         },
@@ -110,66 +128,94 @@ systemObjectTesting(
 
 test("create without cells fails", () => {
     const c = undefined;
+    const l = cellToLabels();
     const mcw = maxColumnWidths();
     const mrh = maxRowHeights();
     const w = window();
 
-    expect(() => new SpreadsheetDelta(c, mcw, mrh, w)).toThrow("Missing cells");
+    expect(() => new SpreadsheetDelta(c, l, mcw, mrh, w)).toThrow("Missing cells");
 });
 
 test("create with cell non array fails", () => {
     const c = "!invalid";
+    const l = cellToLabels();
     const mcw = maxColumnWidths();
     const mrh = maxRowHeights();
     const w = window();
 
-    expect(() => new SpreadsheetDelta(c, mcw, mrh, w)).toThrow("Expected array cells got !invalid");
+    expect(() => new SpreadsheetDelta(c, l, mcw, mrh, w)).toThrow("Expected array cells got !invalid");
+});
+
+test("create without cellToLabels fails", () => {
+    const c = cells();
+    const l = undefined;
+    const mcw = maxColumnWidths();
+    const mrh = maxRowHeights();
+    const w = window();
+
+    expect(() => new SpreadsheetDelta(c, l, mcw, mrh, w)).toThrow("Missing cellToLabels");
+});
+
+test("create with cellToLabels non object fails", () => {
+    const c = cells();
+    const l = "!invalid"
+    const mcw = maxColumnWidths();
+    const mrh = maxRowHeights();
+    const w = window();
+
+    expect(() => new SpreadsheetDelta(c, l, mcw, mrh, w)).toThrow("Expected ImmutableMap cellToLabels got !invalid");
 });
 
 test("create without maxColumnWidths fails", () => {
     const c = cells();
+    const l = cellToLabels();
     const mcw = undefined;
     const mrh = maxRowHeights();
     const w = window();
 
-    expect(() => new SpreadsheetDelta(c, mcw, mrh, w)).toThrow("Missing maxColumnWidths");
+    expect(() => new SpreadsheetDelta(c, l, mcw, mrh, w)).toThrow("Missing maxColumnWidths");
 });
 
 test("create with maxColumnWidths non object fails", () => {
     const c = cells();
+    const l = cellToLabels();
     const mcw = "!invalid";
     const mrh = maxRowHeights();
     const w = window();
 
-    expect(() => new SpreadsheetDelta(c, mcw, mrh, w)).toThrow("Expected ImmutableMap maxColumnWidths got !invalid");
+    expect(() => new SpreadsheetDelta(c, l, mcw, mrh, w)).toThrow("Expected ImmutableMap maxColumnWidths got !invalid");
 });
 
 test("create without maxRowHeights fails", () => {
     const c = cells();
+    const l = cellToLabels();
     const mcw = maxColumnWidths();
     const mrh = undefined;
     const w = window();
 
-    expect(() => new SpreadsheetDelta(c, mcw, mrh, w)).toThrow("Missing maxRowHeights");
+    expect(() => new SpreadsheetDelta(c, l, mcw, mrh, w)).toThrow("Missing maxRowHeights");
 });
 
 test("create with maxRowHeights non object fails", () => {
     const c = cells();
+    const l = cellToLabels();
     const mcw = maxColumnWidths();
     const mrh = "!invalid";
     const w = window();
 
-    expect(() => new SpreadsheetDelta(c, mcw, mrh, w)).toThrow("Expected ImmutableMap maxRowHeights got !invalid");
+    expect(() => new SpreadsheetDelta(c, l, mcw, mrh, w)).toThrow("Expected ImmutableMap maxRowHeights got !invalid");
 });
 
 test("create", () => {
     const c = cells();
+    const l = cellToLabels();
     const mcw = maxColumnWidths();
     const mrh = maxRowHeights();
     const w = window();
 
-    check(new SpreadsheetDelta(c, mcw, mrh, w),
+    check(new SpreadsheetDelta(c, l, mcw, mrh, w),
         c,
+        l,
         mcw,
         mrh,
         w,
@@ -188,6 +234,10 @@ test("create", () => {
                     }
                 }
             },
+            labels: {
+                "A1": "Label1,Label2",
+                "B2": "Label3"
+            },
             maxColumnWidths: {
                 "A": 100
             },
@@ -200,12 +250,14 @@ test("create", () => {
 
 test("create empty", () => {
     const c = [];
+    const l = ImmutableMap.EMPTY;
     const mcw = ImmutableMap.EMPTY;
     const mrh = ImmutableMap.EMPTY;
     const w = [];
 
-    check(new SpreadsheetDelta(c, mcw, mrh, w),
+    check(new SpreadsheetDelta(c, l, mcw, mrh, w),
         c,
+        l,
         mcw,
         mrh,
         w,
@@ -216,11 +268,12 @@ test("create empty", () => {
 
 test("referenceToCellMap, no cells", () => {
     const c = [];
+    const l = ImmutableMap.EMPTY;
     const mcw = ImmutableMap.EMPTY;
     const mrh = ImmutableMap.EMPTY;
     const w = [];
 
-    expect(new SpreadsheetDelta(c, mcw, mrh, w).referenceToCellMap())
+    expect(new SpreadsheetDelta(c, l, mcw, mrh, w).referenceToCellMap())
         .toStrictEqual(ImmutableMap.EMPTY);
 });
 
@@ -228,11 +281,12 @@ test("referenceToCellMap, 1 cell", () => {
     const cell = a1();
 
     const c = [cell];
+    const l = ImmutableMap.EMPTY;
     const mcw = ImmutableMap.EMPTY;
     const mrh = ImmutableMap.EMPTY;
     const w = [];
 
-    expect(new SpreadsheetDelta(c, mcw, mrh, w).referenceToCellMap())
+    expect(new SpreadsheetDelta(c, l, mcw, mrh, w).referenceToCellMap())
         .toStrictEqual(new ImmutableMap(new Map([
             [cell.reference().toString(), cell]
         ])));
@@ -243,11 +297,12 @@ test("referenceToCellMap, 2 cells", () => {
     const cell2 = b2();
 
     const c = [cell, cell2];
+    const l = ImmutableMap.EMPTY;
     const mcw = ImmutableMap.EMPTY;
     const mrh = ImmutableMap.EMPTY;
     const w = [];
 
-    expect(new SpreadsheetDelta(c, mcw, mrh, w).referenceToCellMap())
+    expect(new SpreadsheetDelta(c, l, mcw, mrh, w).referenceToCellMap())
         .toStrictEqual(new ImmutableMap(new Map([
             [cell.reference().toString(), cell],
             [cell2.reference().toString(), cell2]
@@ -258,11 +313,12 @@ test("referenceToCellMap, 2 cells", () => {
 
 test("toJson only 1 cell", () => {
     const c = [a1()];
+    const l = ImmutableMap.EMPTY;
     const mcw = ImmutableMap.EMPTY;
     const mrh = ImmutableMap.EMPTY;
     const w = [];
 
-    expect(new SpreadsheetDelta(c, mcw, mrh, w).toJson())
+    expect(new SpreadsheetDelta(c, l, mcw, mrh, w).toJson())
         .toStrictEqual({
             cells: {
                 "A1": {
@@ -277,11 +333,12 @@ test("toJson only 1 cell", () => {
 
 test("toJson only 2 cells", () => {
     const c = cells();
+    const l = ImmutableMap.EMPTY;
     const mcw = ImmutableMap.EMPTY;
     const mrh = ImmutableMap.EMPTY;
     const w = [];
 
-    expect(new SpreadsheetDelta(c, mcw, mrh, w).toJson())
+    expect(new SpreadsheetDelta(c, l, mcw, mrh, w).toJson())
         .toStrictEqual({
             "cells": {
                 "A1": {
@@ -302,11 +359,12 @@ test("toJson only 2 cells", () => {
 
 test("toJson all properties", () => {
     const c = cells();
+    const l = cellToLabels();
     const mcw = maxColumnWidths();
     const mrh = maxRowHeights();
     const w = window();
 
-    expect(new SpreadsheetDelta(c, mcw, mrh, w).toJson())
+    expect(new SpreadsheetDelta(c, l, mcw, mrh, w).toJson())
         .toStrictEqual({
             "cells": {
                 "A1": {
@@ -322,6 +380,10 @@ test("toJson all properties", () => {
                     }
                 },
             },
+            labels: {
+                "A1": "Label1,Label2",
+                "B2": "Label3"
+            },
             maxColumnWidths: {
                 "A": 100
             },
@@ -336,15 +398,17 @@ test("toJson all properties", () => {
 
 test("fromJson empty", () => {
     const c = [];
+    const l = ImmutableMap.EMPTY;
     const mcw = ImmutableMap.EMPTY;
     const mrh = ImmutableMap.EMPTY;
     const w = [];
 
-    expect(SpreadsheetDelta.fromJson({})).toStrictEqual(new SpreadsheetDelta(c, mcw, mrh, w));
+    expect(SpreadsheetDelta.fromJson({})).toStrictEqual(new SpreadsheetDelta(c, l, mcw, mrh, w));
 });
 
 test("fromJson 1 cell", () => {
     const c = [a1()];
+    const l = ImmutableMap.EMPTY;
     const mcw = ImmutableMap.EMPTY;
     const mrh = ImmutableMap.EMPTY;
     const w = [];
@@ -358,11 +422,12 @@ test("fromJson 1 cell", () => {
                 }
             }
         }
-    })).toStrictEqual(new SpreadsheetDelta(c, mcw, mrh, w));
+    })).toStrictEqual(new SpreadsheetDelta(c, l, mcw, mrh, w));
 });
 
-test("fromJson 2 cells", () => {
+test("fromJson 2 cells only", () => {
     const c = [a1(), b2()];
+    const l = ImmutableMap.EMPTY;
     const mcw = ImmutableMap.EMPTY;
     const mrh = ImmutableMap.EMPTY;
     const w = [];
@@ -382,11 +447,12 @@ test("fromJson 2 cells", () => {
                 }
             }
         }
-    })).toStrictEqual(new SpreadsheetDelta(c, mcw, mrh, w));
+    })).toStrictEqual(new SpreadsheetDelta(c, l, mcw, mrh, w));
 });
 
 test("fromJson all properties", () => {
     const c = cells();
+    const l = cellToLabels();
     const mcw = maxColumnWidths();
     const mrh = maxRowHeights();
     const w = window();
@@ -405,6 +471,10 @@ test("fromJson all properties", () => {
                     error: "Custom error #2"
                 }
             }
+        },
+        labels: {
+            "A1": "Label1,Label2",
+            "B2": "Label3"
         },
         maxColumnWidths: {
             "A": 100
@@ -413,18 +483,19 @@ test("fromJson all properties", () => {
             "1": 20
         },
         window: windowJson
-    })).toStrictEqual(new SpreadsheetDelta(c, mcw, mrh, w));
+    })).toStrictEqual(new SpreadsheetDelta(c, l, mcw, mrh, w));
 });
 
 // equals...............................................................................................................
 
 test("equals different cells false", () => {
     const c = cells();
+    const l = cellToLabels();
     const mcw = maxColumnWidths();
     const mrh = maxRowHeights();
     const w = window();
 
-    expect(new SpreadsheetDelta(c, mcw, mrh, w)
+    expect(new SpreadsheetDelta(c, l, mcw, mrh, w)
         .equals(
             new SpreadsheetDelta([
                 SpreadsheetCell.fromJson({
@@ -435,46 +506,63 @@ test("equals different cells false", () => {
                         }
                     }
                 })
-            ], mcw, mrh, w)
+            ], l, mcw, mrh, w)
+        )
+    ).toBeFalse();
+});
+
+test("equals different cellToLabels false", () => {
+    const c = cells();
+    const l = cellToLabels();
+    const mcw = maxColumnWidths();
+    const mrh = maxRowHeights();
+    const w = window();
+
+    expect(new SpreadsheetDelta(c, l, mcw, mrh, w)
+        .equals(
+            new SpreadsheetDelta(c, ImmutableMap.EMPTY, mcw, mrh, w)
         )
     ).toBeFalse();
 });
 
 test("equals different maxColumnWidths false", () => {
     const c = cells();
+    const l = cellToLabels();
     const mcw = maxColumnWidths();
     const mrh = maxRowHeights();
     const w = window();
 
-    expect(new SpreadsheetDelta(c, mcw, mrh, w)
+    expect(new SpreadsheetDelta(c, l, mcw, mrh, w)
         .equals(
-            new SpreadsheetDelta(c, ImmutableMap.EMPTY, mrh, w)
+            new SpreadsheetDelta(c, l, ImmutableMap.EMPTY, mrh, w)
         )
     ).toBeFalse();
 });
 
 test("equals different maxRowHeights false", () => {
     const c = cells();
+    const l = cellToLabels();
     const mcw = maxColumnWidths();
     const mrh = maxRowHeights();
     const w = window();
 
-    expect(new SpreadsheetDelta(c, mcw, mrh, w)
+    expect(new SpreadsheetDelta(c, l, mcw, mrh, w)
         .equals(
-            new SpreadsheetDelta(c, mcw, ImmutableMap.EMPTY, w)
+            new SpreadsheetDelta(c, l, mcw, ImmutableMap.EMPTY, w)
         )
     ).toBeFalse();
 });
 
 test("equals different window false", () => {
     const c = cells();
+    const l = cellToLabels();
     const mcw = maxColumnWidths();
     const mrh = maxRowHeights();
     const w = window();
 
-    expect(new SpreadsheetDelta(c, mcw, mrh, w)
+    expect(new SpreadsheetDelta(c, l, mcw, mrh, w)
         .equals(
-            new SpreadsheetDelta(c, mcw, mrh, [])
+            new SpreadsheetDelta(c, l, mcw, mrh, [])
         )
     ).toBeFalse();
 });
@@ -486,8 +574,9 @@ test("equals equivalent true", () => {
 
 // helpers..............................................................................................................
 
-function check(delta, cells, maxColumnWidths, maxRowHeights, window, json) {
+function check(delta, cells, cellToLabels, maxColumnWidths, maxRowHeights, window, json) {
     expect(delta.cells()).toStrictEqual(cells);
+    expect(delta.cellToLabels()).toStrictEqual(cellToLabels);
     expect(delta.maxColumnWidths()).toStrictEqual(maxColumnWidths);
     expect(delta.maxRowHeights()).toStrictEqual(maxRowHeights);
     expect(delta.window()).toStrictEqual(window);
