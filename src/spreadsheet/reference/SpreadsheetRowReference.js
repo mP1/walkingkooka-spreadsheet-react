@@ -33,7 +33,7 @@ export default class SpreadsheetRowReference extends SpreadsheetColumnOrRowRefer
         for(var i = startIndex; i < length; i++) {
             const c = text.charAt(i);
             if(c < '0' || c > '9'){
-                throw new Error("Invalid character " + CharSequences.quoteAndEscape(Character.fromJson(c)) + " at " + i);
+                throw new Error("Invalid character, got " + CharSequences.quoteAndEscape(Character.fromJson(c)) + " at " + i + " in " + CharSequences.quoteAndEscape(text));
             }
         }
 
