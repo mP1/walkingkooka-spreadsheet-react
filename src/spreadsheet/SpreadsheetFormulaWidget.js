@@ -18,7 +18,9 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetHistoryAwareSta
     }
 
     initialStateFromProps(props) {
-        return {};
+        return {
+            edit: false,
+        };
     }
 
     stateFromHistoryTokens(historyTokens) {
@@ -32,7 +34,7 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetHistoryAwareSta
 
         var newState = {};
 
-        if(!Equality.safeEquals(cellOrLabel, state.cellOrLabel) || edit != state.edit || giveFocus){
+        if(!Equality.safeEquals(cellOrLabel, state.cellOrLabel) || edit !== state.edit || giveFocus){
             console.log("stateFromHistoryTokens: " + cellOrLabel + " newCellOrLabel: " + cellOrLabel + " old: " + state.cellOrLabel);
 
             newState = {
@@ -68,6 +70,7 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetHistoryAwareSta
                 this.reloadFormulaText(cellOrLabel, giveFocus);
             }else {
                 this.setState({
+                    edit: false,
                     cell: null,
                     cellOrLabel: null,
                     value: null,
