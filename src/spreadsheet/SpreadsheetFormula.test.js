@@ -62,6 +62,12 @@ test("create text, error", () => {
     check(new SpreadsheetFormula(text, undefined, error), text, undefined, error, {text: text, error: error.toJson()})
 });
 
+// EMPTY.................................................................................................................
+
+test("EMPTY", () => {
+    check(SpreadsheetFormula.EMPTY, "", undefined, undefined, {text: ""})
+});
+
 // text.................................................................................................................
 
 test("text", () => {
