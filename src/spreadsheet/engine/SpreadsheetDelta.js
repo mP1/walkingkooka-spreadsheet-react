@@ -8,6 +8,7 @@ import SpreadsheetLabelName from "../reference/SpreadsheetLabelName.js";
 import SpreadsheetRange from "../reference/SpreadsheetRange";
 import SpreadsheetRowReference from "../reference/SpreadsheetRowReference";
 import SystemObject from "../../SystemObject.js";
+import SpreadsheetCellReferenceOrLabelName from "../reference/SpreadsheetCellReferenceOrLabelName.js";
 
 /**
  * A function used by fromJson to verify number column widths and row heights
@@ -70,6 +71,26 @@ export default class SpreadsheetDelta extends SystemObject {
 
     cells() {
         return this.cellsValue.slice();
+    }
+
+    /**
+     * Returns the {@link SpreadsheetCell} that matches the given cell or label.
+     */
+    cell(cellOrLabel) {
+        Preconditions.requireInstance(cellOrLabel, SpreadsheetCellReferenceOrLabelName, "cellOrLabel");
+
+        var cellReference = cellOrLabel;
+        if(cellOrLabel instanceof SpreadsheetLabelName) {
+            const cellToLabels = this.cellToLabels();
+            for(const [r, labels] of cellToLabels.map.entries()) {
+                if(labels.find(l => l.equals(cellOrLabel))) {
+                    cellReference = r;
+                    break;
+                }
+            }
+        }
+
+        return cellReference && this.referenceToCellMap().get(cellReference);
     }
 
     /**
