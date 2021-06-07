@@ -9,6 +9,11 @@ const TYPE_NAME = "spreadsheet-formula";
  */
 export default class SpreadsheetFormula extends SystemObject {
 
+    /**
+     * A {@link SpreadsheetFormula} with empty text, no value and no error.
+     */
+    static EMPTY = new SpreadsheetFormula("");
+
     static fromJson(json) {
         Preconditions.requireObject(json, "json");
 
