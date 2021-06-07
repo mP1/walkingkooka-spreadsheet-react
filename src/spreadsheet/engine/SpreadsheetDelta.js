@@ -168,7 +168,7 @@ export default class SpreadsheetDelta extends SystemObject {
 
         const cellToLabels = this.cellToLabels();
         if(cellToLabels.size() > 0){
-            const labels = {}
+            const labels = {};
 
             for(const [key, value] of cellToLabels.map.entries()) {
                 labels[key.toString()] = value.join(",");
