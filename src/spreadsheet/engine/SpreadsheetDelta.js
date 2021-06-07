@@ -79,18 +79,29 @@ export default class SpreadsheetDelta extends SystemObject {
     cell(cellOrLabel) {
         Preconditions.requireInstance(cellOrLabel, SpreadsheetCellReferenceOrLabelName, "cellOrLabel");
 
-        var cellReference = cellOrLabel;
-        if(cellOrLabel instanceof SpreadsheetLabelName) {
-            const cellToLabels = this.cellToLabels();
-            for(const [r, labels] of cellToLabels.map.entries()) {
-                if(labels.find(l => l.equals(cellOrLabel))) {
-                    cellReference = r;
-                    break;
-                }
+        const cellReference = cellOrLabel instanceof SpreadsheetLabelName ?
+            this.cellReference(cellOrLabel) :
+            cellOrLabel;
+
+        return cellReference && this.referenceToCellMap().get(cellReference);
+    }
+
+    /**
+     * Returns the {@link SpreadsheetCellReference} for the given {@link SpreadsheetLabelName}.
+     */
+    cellReference(label) {
+        Preconditions.requireInstance(label, SpreadsheetLabelName, "label");
+
+        var cellReference;
+
+        for(const [r, labels] of this.cellToLabels().map.entries()) {
+            if(labels.find(l => l.equals(label))){
+                cellReference = SpreadsheetCellReference.parse(r);
+                break;
             }
         }
 
-        return cellReference && this.referenceToCellMap().get(cellReference);
+        return cellReference;
     }
 
     /**
