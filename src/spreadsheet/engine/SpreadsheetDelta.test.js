@@ -337,7 +337,6 @@ test("cell() with present label", () => {
 });
 
 test("cell() with absent label", () => {
-    const cell = a1();
     expect(delta().cell(SpreadsheetLabelName.parse("Unknown")))
         .toBeUndefined();
 });
