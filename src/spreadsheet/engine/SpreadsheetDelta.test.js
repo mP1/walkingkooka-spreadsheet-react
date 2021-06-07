@@ -309,6 +309,39 @@ test("referenceToCellMap, 2 cells", () => {
         ])));
 });
 
+// cell.................................................................................................................
+
+test("cell() missing cellOrLabel fails", () => {
+    expect(() => delta().cell(undefined)).toThrow("Missing cellOrLabel");
+});
+
+test("cell() invalid cellOrLabel fails", () => {
+    expect(() => delta().cell("!invalid")).toThrow("Expected SpreadsheetCellReferenceOrLabelName cellOrLabel got !invalid");
+});
+
+test("cell() with present cell-reference", () => {
+    const cell = a1();
+    expect(delta().cell(cell.reference()))
+        .toStrictEqual(cell);
+});
+
+test("cell() absent cell-reference", () => {
+    expect(delta().cell(SpreadsheetCellReference.parse("Z99")))
+        .toBeUndefined();
+});
+
+test("cell() with present label", () => {
+    const cell = a1();
+    expect(delta().cell(SpreadsheetLabelName.parse("Label1")))
+        .toStrictEqual(cell);
+});
+
+test("cell() with absent label", () => {
+    const cell = a1();
+    expect(delta().cell(SpreadsheetLabelName.parse("Unknown")))
+        .toBeUndefined();
+});
+
 // toJson...............................................................................................................
 
 test("toJson only 1 cell", () => {
