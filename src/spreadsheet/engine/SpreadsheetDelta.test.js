@@ -342,6 +342,28 @@ test("cell() with absent label", () => {
         .toBeUndefined();
 });
 
+// cellReference........................................................................................................
+
+test("cellReference() missing cellOrLabel fails", () => {
+    expect(() => delta().cellReference(undefined)).toThrow("Missing label");
+});
+
+test("cellReference() invalid cellOrLabel fails", () => {
+    expect(() => delta().cellReference("!invalid")).toThrow("Expected SpreadsheetLabelName label got !invalid");
+});
+
+test("cellReference() with present label", () => {
+    expect(delta()
+        .cellReference(SpreadsheetLabelName.parse("Label1")))
+        .toStrictEqual(a1().reference());
+});
+
+test("cellReference() with absent label", () => {
+    expect(delta()
+        .cellReference(SpreadsheetLabelName.parse("Unknown")))
+        .toBeUndefined();
+});
+
 // toJson...............................................................................................................
 
 test("toJson only 1 cell", () => {
