@@ -19,10 +19,10 @@ export default class ListenerCollection {
     }
 
     /**
-     * Fires all currently registered listeners giving them the supplied value.
+     * Fires all currently registered listeners giving them the supplied params.
      */
-    fire(value) {
-        this.listeners.forEach(l => l(value));
+    fire() {
+        this.listeners.forEach(l => l.apply(this, arguments));
     }
 
     listeners = [];
