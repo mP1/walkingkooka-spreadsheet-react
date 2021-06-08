@@ -4,7 +4,8 @@ import SpreadsheetMessenger from "./SpreadsheetMessenger.js";
 
 /**
  * A wrapper around SpreadsheetMessenger that adds support for the basic CRUD operations and firing
- * the listeners upon success.
+ * the listeners upon success. The url function receives the method and id and must return the target url for the
+ * operation.
  */
 export default class SpreadsheetMessengerCrud {
 
@@ -77,13 +78,15 @@ export default class SpreadsheetMessengerCrud {
      * Shared method by all public methods: get, post, delete, preparing and calling the messenger.
      */
     send(id, parameters, success, failure) {
+        const method = parameters.method;
+
         this.messenger.send(
-            this.url(id),
+            this.url(method, id),
             parameters,
             (json) => {
                 const value = null != json ? this.unmarshall(json) : null;
                 success(id, value);
-                this.listeners.fire(parameters.method, id, value);
+                this.listeners.fire(method, id, value);
             },
             (e) => {
                 failure(e);
