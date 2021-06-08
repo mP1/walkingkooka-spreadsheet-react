@@ -13,7 +13,6 @@ import SpreadsheetBox from "../widget/SpreadsheetBox.js";
 import SpreadsheetCell from "./SpreadsheetCell.js";
 import SpreadsheetCellBox from "./reference/SpreadsheetCellBox.js";
 import SpreadsheetCellReference from "./reference/SpreadsheetCellReference.js";
-import SpreadsheetCellReferenceOrLabelName from "./reference/SpreadsheetCellReferenceOrLabelName.js";
 import SpreadsheetCoordinates from "./SpreadsheetCoordinates.js";
 import SpreadsheetDelta from "./engine/SpreadsheetDelta.js";
 import SpreadsheetEngineEvaluation from "./engine/SpreadsheetEngineEvaluation.js";
@@ -72,6 +71,20 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
             messenger,
             SpreadsheetLabelMapping.fromJson,
             new ListenerCollection()
+        );
+
+        const deltaListenerCollection = new ListenerCollection();
+        deltaListenerCollection.add((method, cellOrLabel, delta)=> {
+            if(delta) {
+                this.onSpreadsheetDelta(delta.toJson());
+            }
+        });
+
+        this.spreadsheetDeltaCrud = new SpreadsheetMessengerCrud(
+            (method, cellOrRange) => this.cellUrl(cellOrRange, method.toUpperCase() === "GET" ? SpreadsheetEngineEvaluation.FORCE_RECOMPUTE : null),
+            messenger,
+            SpreadsheetDelta.fromJson,
+            deltaListenerCollection
         );
     }
 
@@ -334,8 +347,7 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
                     <SpreadsheetFormulaWidget ref={this.formula}
                                               key={"spreadsheetFormula"}
                                               history={history}
-                                              getValue={this.formulaTextLoad.bind(this)}
-                                              setValue={this.formulaTextSave.bind(this)}
+                                              messengerCrud={this.spreadsheetDeltaCrud}
                                               showError={showError}
                     />
                     <Divider/>
@@ -448,66 +460,6 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
         this.setState({
             viewportCoordinates: SpreadsheetCoordinates.fromJson(json),
         });
-    }
-
-    // formula.........................................................................................................
-
-    /**
-     * Accepts a cell reference and eventually sets the formula text on the second call back function.
-     */
-    formulaTextLoad(cellOrLabel, setFormulaText, onError) {
-        Preconditions.requireInstance(cellOrLabel, SpreadsheetCellReferenceOrLabelName, "cellOrLabel");
-        Preconditions.requireFunction(setFormulaText, "setFormulaText");
-        Preconditions.requireFunction(onError, "onError");
-
-        console.log("formulaTextLoad " + cellOrLabel);
-
-        if(cellOrLabel instanceof SpreadsheetCellReference) {
-            this.formulaTextLoadCellReference(cellOrLabel, setFormulaText, onError);
-        } else {
-            this.labelToCell(
-                cellOrLabel,
-                (cell) => this.formulaTextLoadCellReference(cell, setFormulaText),
-                this.showError.bind(this),
-            );
-        }
-    }
-
-    /**
-     * This is the final phase of loading formula text for a cell and occurs once the history hash cell is resolved
-     * from a cell or label to a cell.
-     */
-    formulaTextLoadCellReference(cellReference, setFormulaText, onError) {
-
-        this.cellOrRangeLoad(
-            cellReference,
-            SpreadsheetEngineEvaluation.FORCE_RECOMPUTE,
-            (json) => {
-                const delta = SpreadsheetDelta.fromJson(json);
-                const cell = delta.referenceToCellMap().get(cellReference);
-                var formulaText = "";
-                if(cell){
-                    const formula = cell.formula();
-                    formulaText = formula.text();
-                }
-                setFormulaText(cellReference, formulaText);
-            },
-            onError
-        );
-    }
-
-    /**
-     * Saves the given formula text to the given cell reference. This assumes the cell has been previously loaded.
-     */
-    formulaTextSave(cellReference, formulaText) {
-        Preconditions.requireInstance(cellReference, SpreadsheetCellReference, "cellReference");
-        Preconditions.requireText(formulaText, "formulaText");
-
-        console.log("formulaTextSave " + cellReference + " " + formulaText);
-
-        const cell = this.cellGetOrEmpty(cellReference);
-        const formula = cell.formula();
-        this.cellSave(cell.setFormula(formula.setText(formulaText)));
     }
 
     /**

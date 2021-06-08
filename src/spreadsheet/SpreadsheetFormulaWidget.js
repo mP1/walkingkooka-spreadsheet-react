@@ -1,14 +1,30 @@
+import CharSequences from "../CharSequences.js";
 import Equality from "../Equality.js";
+import ImmutableMap from "../util/ImmutableMap.js";
 import PropTypes from "prop-types";
 import React from 'react';
+import SpreadsheetCell from "./SpreadsheetCell.js";
+import SpreadsheetDelta from "./engine/SpreadsheetDelta.js";
 import SpreadsheetHistoryHash from "./history/SpreadsheetHistoryHash.js";
 import SpreadsheetHistoryAwareStateWidget from "./history/SpreadsheetHistoryAwareStateWidget.js";
+import SpreadsheetFormula from "./SpreadsheetFormula.js";
+import SpreadsheetLabelName from "./reference/SpreadsheetLabelName.js";
+import SpreadsheetMessengerCrud from "./message/SpreadsheetMessengerCrud.js";
 import TextField from '@material-ui/core/TextField';
+import TextStyle from "../text/TextStyle.js";
 
 /**
  * A widget that supports editing formula text. The widget is disabled when state.cellOrLabel is falsey.
  * An falsey value will disable the text box used to edit the formula text.
  * ENTER calls the setter, ESCAPE reloads the initial value(text).
+ * <ul>
+ *     <li>SpreadsheetCell cell: The cell being edited</li>
+ *     <li>SpreadsheetCellOrLabelName cellOrLabel:  A reference of the formula being edited.</li>
+ *     <li>SpreadsheetCellReference cellReference: The cell reference of the cell being edited.</li>
+ *     <li>boolean edit: true indicates the widget is being edited, false it is disabled</li>
+ *     <li>boolean giveFocus: true indicates a one time attempt to give focus to the formula TextField</li>
+ *     <li>boolean reload: true indicates the formula text is being reloaded.</li>
+ * </ul>
  */
 export default class SpreadsheetFormulaWidget extends SpreadsheetHistoryAwareStateWidget {
 
@@ -89,14 +105,20 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetHistoryAwareSta
     reloadFormulaText(cellOrLabel, giveFocus) {
         console.log("reloadFormulaText " + cellOrLabel + (giveFocus ? "giveFocus" : ""));
 
-        this.props.getValue(
+        this.props.messengerCrud.get(
             cellOrLabel,
-            (cellReference, formulaText) => {
-                console.log("reloadFormulaText latest formulaText for " + cellOrLabel + "/" + cellReference + " is " + formulaText);
+            (cellOrLabel, delta) => {
+                const cell = delta.cell(cellOrLabel);
+                const cellReference = cellOrLabel instanceof SpreadsheetLabelName ?
+                    delta.cellReference(cellOrLabel) :
+                    cellOrLabel;
+                const formulaText = cell ? cell.formula().text() : "";
+                console.log("reloadFormulaText latest formulaText for " + cellOrLabel + " is " + CharSequences.quoteAndEscape(formulaText));
 
                 this.setState({
-                    cell: cellReference,
+                    cell: cell,
                     cellOrLabel: cellOrLabel,
+                    cellReference: cellReference,
                     value: formulaText,
                     reload: false,
                 });
@@ -122,20 +144,19 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetHistoryAwareSta
 
     render() {
         const state = this.state;
-        const {cell, edit, value} = state;
+        const {cellOrLabel, edit, value} = state;
 
         console.log("render " + (!edit ? "disabled" : "enabled") + " formula: \"" + (value || "") + "\"", state);
 
         return (
             <TextField ref={this.textField}
-                       key={[cell, value]}
+                       key={[cellOrLabel, value]}
                        id={"formula-TextField"}
                        defaultValue={value}
                        disabled={!edit}
                        onBlur={this.onBlur.bind(this)}
                        onFocus={this.onFocus.bind(this)}
                        onKeyDown={this.onKeyDown.bind(this)}
-                       placeholder={(cell && cell.toString()) || ""}
                        inputProps={{
                            maxLength: 8192,
                            style: {
@@ -198,22 +219,47 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetHistoryAwareSta
     onEscapeKey(e) {
         this.setState({
             value: this.initialValue,
-        })
+        });
     }
 
     /**
      * ENTER saves the formula content.
      */
     onEnterKey(e) {
-        const value = e.target.value;
-        this.props.setValue(this.state.cell, value);
-        this.setState({"value": value});
+        const formulaText = e.target.value;
+
+        const props = this.props;
+        const state = this.state;
+        const {cellOrLabel, cellReference} = state;
+
+        var cell = state.cell;
+        if(cell){
+            const formula = cell.formula();
+            cell = cell.setFormula(formula.setText(formulaText));
+        }else {
+            cell = new SpreadsheetCell(cellReference, new SpreadsheetFormula(formulaText), TextStyle.EMPTY);
+        }
+
+        props.messengerCrud.post(
+            cellOrLabel,
+            new SpreadsheetDelta(
+                [cell],
+                ImmutableMap.EMPTY,
+                ImmutableMap.EMPTY,
+                ImmutableMap.EMPTY,
+                []
+            ),
+            () => {
+            },
+            props.showError,
+        );
+
+        this.setState({"value": formulaText});
     }
 }
 
 SpreadsheetFormulaWidget.propTypes = {
     history: PropTypes.object.isRequired,
-    getValue: PropTypes.func.isRequired,
-    setValue: PropTypes.func.isRequired,
+    messengerCrud: PropTypes.instanceOf(SpreadsheetMessengerCrud),
     showError: PropTypes.func.isRequired,
 }
