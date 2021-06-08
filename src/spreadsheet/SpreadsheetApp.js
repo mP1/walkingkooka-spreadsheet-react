@@ -67,7 +67,7 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
         document.title = "Empty spreadsheet";
 
         this.labelMappingCrud = new SpreadsheetMessengerCrud(
-            this.labelUrl.bind(this),
+            (method, label) => this.labelUrl(label),
             messenger,
             SpreadsheetLabelMapping.fromJson,
             new ListenerCollection()
