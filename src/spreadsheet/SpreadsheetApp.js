@@ -17,6 +17,7 @@ import SpreadsheetCellReferenceOrLabelName from "./reference/SpreadsheetCellRefe
 import SpreadsheetCoordinates from "./SpreadsheetCoordinates.js";
 import SpreadsheetDelta from "./engine/SpreadsheetDelta.js";
 import SpreadsheetEngineEvaluation from "./engine/SpreadsheetEngineEvaluation.js";
+import SpreadsheetExpressionReference from "./reference/SpreadsheetExpressionReference.js";
 import SpreadsheetExpressionReferenceSimilarities from "./SpreadsheetExpressionReferenceSimilarities.js";
 import SpreadsheetFormula from "./SpreadsheetFormula.js";
 import SpreadsheetFormulaWidget from "./SpreadsheetFormulaWidget.js";
@@ -375,7 +376,7 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
         console.log("cellOrRangeLoad " + selection + " " + evaluation);
 
         this.messageSend(
-            this.cellUrl(selection) + "/" + evaluation.nameKebabCase(),
+            this.cellUrl(selection, evaluation),
             {
                 method: "GET"
             },
@@ -418,8 +419,14 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
     /**
      * Returns a URL with the spreadsheet id and ONLY the provided cell selection.
      */
-    cellUrl(selection) {
-        return this.spreadsheetMetadataApiUrl() + "/cell/" + selection;
+    cellUrl(selection, evaluation) {
+        Preconditions.requireInstance(selection, SpreadsheetExpressionReference, "selection");
+        Preconditions.optionalInstance(evaluation, SpreadsheetEngineEvaluation, "evaluation")
+
+        const url = this.spreadsheetMetadataApiUrl() + "/cell/" + selection;
+        return evaluation ?
+            url + "/" + evaluation.nameKebabCase() :
+            url;
     }
 
     /**
