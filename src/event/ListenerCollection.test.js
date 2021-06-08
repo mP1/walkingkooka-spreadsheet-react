@@ -60,6 +60,22 @@ test("fire 1x null event value 1x listener", () => {
     ).toStrictEqual([null]);
 });
 
+test("fire 1x multi parameters 1x listener", () => {
+    const fired = [];
+
+    const l = new ListenerCollection();
+    l.add((p1, p2, p3) => {
+        fired.push(p1);
+        fired.push(p2);
+        fired.push(p3);
+    });
+
+    l.fire(1, 2, 3);
+    expect(
+        fired
+    ).toStrictEqual([1, 2, 3]);
+});
+
 test("fire 1 event 2x listeners", () => {
     const fired = [];
 
