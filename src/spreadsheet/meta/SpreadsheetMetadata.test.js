@@ -833,8 +833,7 @@ test("all setters & getters", () => {
         .set(SpreadsheetMetadata.TIME_PARSE_PATTERNS, timeParsePatterns)
         .set(SpreadsheetMetadata.TWO_DIGIT_YEAR, twoDigitYear)
         .set(SpreadsheetMetadata.VALUE_SEPARATOR, valueSeparator)
-        .set(SpreadsheetMetadata.VIEWPORT_CELL, viewportCell)
-        .set(SpreadsheetMetadata.VIEWPORT_COORDINATES, coords);
+        .set(SpreadsheetMetadata.VIEWPORT_CELL, viewportCell);
 
     expect(metadata.getIgnoringDefaults(SpreadsheetMetadata.CELL)).toEqual(cell);
     expect(metadata.getIgnoringDefaults(SpreadsheetMetadata.CELL_CHARACTER_WIDTH)).toEqual(cellCharacterWidth);
@@ -865,7 +864,6 @@ test("all setters & getters", () => {
     expect(metadata.getIgnoringDefaults(SpreadsheetMetadata.TWO_DIGIT_YEAR)).toEqual(twoDigitYear);
     expect(metadata.getIgnoringDefaults(SpreadsheetMetadata.VALUE_SEPARATOR)).toEqual(valueSeparator);
     expect(metadata.getIgnoringDefaults(SpreadsheetMetadata.VIEWPORT_CELL)).toEqual(viewportCell);
-    expect(metadata.getIgnoringDefaults(SpreadsheetMetadata.VIEWPORT_COORDINATES)).toEqual(coords);
 });
 
 test("all setters & removers", () => {
