@@ -8,7 +8,6 @@ import LocalTime from "../../datetime/LocalTime.js";
 import Locale from "../../util/Locale.js";
 import Preconditions from "../../Preconditions.js";
 import RoundingMode from "../../math/RoundingMode.js";
-import SpreadsheetCoordinates from "../SpreadsheetCoordinates";
 import SpreadsheetCellReference from "../reference/SpreadsheetCellReference";
 import SpreadsheetName from "../SpreadsheetName";
 import SpreadsheetDateFormatPattern from "../format/SpreadsheetDateFormatPattern.js";
@@ -129,7 +128,6 @@ export default class SpreadsheetMetadata extends SystemObject {
     static TWO_DIGIT_YEAR = "two-digit-year";
     static VALUE_SEPARATOR = "value-separator";
     static VIEWPORT_CELL = "viewport-cell";
-    static VIEWPORT_COORDINATES = "viewport-coordinates";
 
     /**
      * Tests if the property name is a valid property.
@@ -173,7 +171,6 @@ export default class SpreadsheetMetadata extends SystemObject {
             case SpreadsheetMetadata.TWO_DIGIT_YEAR :
             case SpreadsheetMetadata.VALUE_SEPARATOR :
             case SpreadsheetMetadata.VIEWPORT_CELL :
-            case SpreadsheetMetadata.VIEWPORT_COORDINATES :
                 is = true;
                 break;
             default:
@@ -301,9 +298,6 @@ export default class SpreadsheetMetadata extends SystemObject {
                     break;
                 case SpreadsheetMetadata.VIEWPORT_CELL:
                     unmarshaller = SpreadsheetCellReference.fromJson;
-                    break;
-                case SpreadsheetMetadata.VIEWPORT_COORDINATES:
-                    unmarshaller = SpreadsheetCoordinates.fromJson;
                     break;
                 default:
                     if(key.startsWith("color-")){
@@ -485,9 +479,6 @@ export default class SpreadsheetMetadata extends SystemObject {
             case SpreadsheetMetadata.VIEWPORT_CELL:
                 expectedClass = SpreadsheetCellReference;
                 break;
-            case SpreadsheetMetadata.VIEWPORT_COORDINATES:
-                expectedClass = SpreadsheetCoordinates;
-                break;
             default:
                 if(propertyName.startsWith("color-")){
                     break;
@@ -625,7 +616,6 @@ export default class SpreadsheetMetadata extends SystemObject {
             case SpreadsheetMetadata.SPREADSHEET_NAME:
             case SpreadsheetMetadata.STYLE:
             case SpreadsheetMetadata.VIEWPORT_CELL:
-            case SpreadsheetMetadata.VIEWPORT_COORDINATES:
                 throw new Error("Property \"" + propertyName + "\" cannot be removed, " + this);
             default:
                 if(propertyName.startsWith("color-")){
@@ -723,7 +713,6 @@ const PROPERTY_NAMES = [
     SpreadsheetMetadata.TWO_DIGIT_YEAR,
     SpreadsheetMetadata.VALUE_SEPARATOR,
     SpreadsheetMetadata.VIEWPORT_CELL,
-    SpreadsheetMetadata.VIEWPORT_COORDINATES,
 ];
 
 /**

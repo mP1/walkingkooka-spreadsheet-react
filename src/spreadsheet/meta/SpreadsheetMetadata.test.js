@@ -670,8 +670,6 @@ getSetRemoveTest(SpreadsheetMetadata.VALUE_SEPARATOR, Character.fromJson(";"));
 
 getSetTest(SpreadsheetMetadata.VIEWPORT_CELL, SpreadsheetCellReference.parse("B2"));
 
-getSetTest(SpreadsheetMetadata.VIEWPORT_COORDINATES, SpreadsheetCoordinates.parse("123.5,400"));
-
 function getIgnoringDefaultsTest(propertyName, propertyValue) {
     getIgnoringDefaultsTest0(propertyName, propertyValue);
 

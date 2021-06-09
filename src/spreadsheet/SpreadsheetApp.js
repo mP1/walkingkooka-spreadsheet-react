@@ -10,15 +10,12 @@ import Preconditions from "../Preconditions.js";
 import React from 'react';
 import SpreadsheetAppBar from "../widget/SpreadsheetAppBar.js";
 import SpreadsheetBox from "../widget/SpreadsheetBox.js";
-import SpreadsheetCell from "./SpreadsheetCell.js";
 import SpreadsheetCellBox from "./reference/SpreadsheetCellBox.js";
-import SpreadsheetCellReference from "./reference/SpreadsheetCellReference.js";
 import SpreadsheetCoordinates from "./SpreadsheetCoordinates.js";
 import SpreadsheetDelta from "./engine/SpreadsheetDelta.js";
 import SpreadsheetEngineEvaluation from "./engine/SpreadsheetEngineEvaluation.js";
 import SpreadsheetExpressionReference from "./reference/SpreadsheetExpressionReference.js";
 import SpreadsheetExpressionReferenceSimilarities from "./SpreadsheetExpressionReferenceSimilarities.js";
-import SpreadsheetFormula from "./SpreadsheetFormula.js";
 import SpreadsheetFormulaWidget from "./SpreadsheetFormulaWidget.js";
 import SpreadsheetHistoryAwareStateWidget from "./history/SpreadsheetHistoryAwareStateWidget.js";
 import SpreadsheetHistoryHash from "./history/SpreadsheetHistoryHash.js";
@@ -37,7 +34,6 @@ import SpreadsheetNotificationWidget from "./notification/SpreadsheetNotificatio
 import SpreadsheetRange from "./reference/SpreadsheetRange.js";
 import SpreadsheetSettingsWidget from "./settings/SpreadsheetSettingsWidget.js";
 import SpreadsheetViewportWidget from "./SpreadsheetViewportWidget.js";
-import TextStyle from "../text/TextStyle.js";
 import WindowResizer from "../widget/WindowResizer.js";
 
 const useStyles = theme => ({
@@ -236,13 +232,12 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
 
         const metadata = state.spreadsheetMetadata;
         const viewportCell = metadata.getIgnoringDefaults(SpreadsheetMetadata.VIEWPORT_CELL);
-        const viewportCoordinates = metadata.getIgnoringDefaults(SpreadsheetMetadata.VIEWPORT_COORDINATES);
         const windowDimensions = state.windowDimensions;
         const aboveViewportDimensions = state.aboveViewportDimensions;
 
         const viewport = this.viewport.current;
 
-        if(viewportCell && viewportCoordinates && windowDimensions && aboveViewportDimensions && viewport){
+        if(viewportCell && windowDimensions && aboveViewportDimensions && viewport){
             viewport.setState({
                 home: viewportCell,
                 cells: state.cells,
@@ -272,8 +267,8 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
             if((width > previous.width || height > previous.height) || (viewportCell && !viewportCell.equals(previousViewportCell))){
                 this.onCellBox(
                     new SpreadsheetCellBox(viewportCell,
-                        viewportCoordinates.x(),
-                        viewportCoordinates.y(),
+                        0, // viewport scroll x-offset
+                        0, // viewport scroll y-offset
                         width,
                         height)
                 );
