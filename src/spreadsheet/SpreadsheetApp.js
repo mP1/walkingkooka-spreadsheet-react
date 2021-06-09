@@ -78,13 +78,6 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
 
         document.title = "Empty spreadsheet";
 
-        this.labelMappingCrud = new SpreadsheetMessengerCrud(
-            (method, label) => this.labelUrl(label),
-            messenger,
-            SpreadsheetLabelMapping.fromJson,
-            new ListenerCollection()
-        );
-
         const deltaListenerCollection = new ListenerCollection();
         deltaListenerCollection.add((method, cellOrLabel, delta)=> {
             if(delta) {
@@ -97,6 +90,13 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
             messenger,
             SpreadsheetDelta.fromJson,
             deltaListenerCollection
+        );
+
+        this.labelMappingCrud = new SpreadsheetMessengerCrud(
+            (method, label) => this.labelUrl(label),
+            messenger,
+            SpreadsheetLabelMapping.fromJson,
+            new ListenerCollection()
         );
     }
 
