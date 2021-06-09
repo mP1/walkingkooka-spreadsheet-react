@@ -3,13 +3,12 @@
  */
 import Preconditions from "../../Preconditions.js";
 import SpreadsheetCellReference from "./SpreadsheetCellReference";
-import SpreadsheetRectangle from "./SpreadsheetRectangle";
 import SystemObject from "../../SystemObject.js";
 
 const SEPARATOR = ":";
 const TYPE_NAME = "spreadsheet-viewport";
 
-export default class SpreadsheetViewport extends SpreadsheetRectangle {
+export default class SpreadsheetViewport extends SystemObject {
 
     static fromJson(json) {
         return SpreadsheetViewport.parse(json);
