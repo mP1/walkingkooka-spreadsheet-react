@@ -446,20 +446,6 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
     }
 
     /**
-     * Fetches the cell by the given reference or returns an empty {@link SpreadsheetCell}.
-     */
-    cellGetOrEmpty(reference) {
-        Preconditions.requireInstance(reference, SpreadsheetCellReference, "reference");
-
-        return this.state.cells.get(reference) ||
-            new SpreadsheetCell(
-                reference,
-                new SpreadsheetFormula(""),
-                TextStyle.EMPTY
-            );
-    }
-
-    /**
      * Creates an URL for the given label.
      */
     labelUrl(label) {
