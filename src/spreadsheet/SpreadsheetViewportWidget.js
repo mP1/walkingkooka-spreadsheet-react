@@ -48,10 +48,6 @@ const headerCellSelected = Object.assign({},
 
 /**
  * This component holds the cells viewport as well as the column and row controls.
- * <ul>
- * <li><b>cell</b>The selected {@link SpreadsheetCellReference}</li>
- * <li><b>cellOrLabel</b>The {@link SpreadsheetCellReference} or {@link SpreadsheetLabelName} present in the history hash</li>
- * </ul>
  */
 export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareStateWidget {
 
