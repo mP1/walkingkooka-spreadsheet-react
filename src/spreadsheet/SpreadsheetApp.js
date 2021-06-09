@@ -412,35 +412,6 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
     }
 
     /**
-     * Saves the given cell. Eventually the returned value will trigger a re-render.
-     */
-    cellSave(cell) {
-        Preconditions.requireInstance(cell, SpreadsheetCell, "cell");
-
-        const reference = cell.reference();
-
-        if(cell.equals(this.state.cells.get(reference))){
-            console.log("saveSpreadsheetCell cell unchanged save skipped", cell);
-        }else {
-            console.log("saveSpreadsheetCell", cell);
-
-            this.messageSend(
-                this.cellUrl(cell.reference()),
-                {
-                    method: "POST",
-                    body: JSON.stringify(new SpreadsheetDelta([cell],
-                        ImmutableMap.EMPTY,
-                        ImmutableMap.EMPTY,
-                        ImmutableMap.EMPTY,
-                        [this.state.viewportRange])
-                        .toJson()),
-                },
-                this.onSpreadsheetDelta.bind(this)
-            );
-        }
-    }
-
-    /**
      * Returns a URL with the spreadsheet id and ONLY the provided cell selection.
      */
     cellUrl(selection, evaluation) {
