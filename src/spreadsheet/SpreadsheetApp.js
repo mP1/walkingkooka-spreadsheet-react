@@ -46,6 +46,18 @@ const useStyles = theme => ({
     },
 });
 
+/**
+ * State
+ * <ul>
+ *      <li>spreadsheetId: The current spreadsheet id</li>
+ *      <li>boolean creatingEmptySpreadsheet: when true indicates a new spreadsheet is being created</li>
+ *      <li>SpreadsheetMetadata spreadsheetMetadata: The current SpreadsheetMetadata</li>
+ *      <li>ImmutableMap SpreadsheetCell cells: a cache of all loaded cells for the viewport</li>
+ *      <li>ImmutableMap int columnWidths: a cache of widths for each column in the viewport</li>
+ *      <li>ImmutableMap int rowHeights: a cache of heights for each row in the viewport</li>
+ *      <li>{} windowDimensions: Holds the width and height of the viewport</li>
+ * </ul>
+ */
 class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
 
     // init.............................................................................................................
