@@ -7,7 +7,6 @@ import Locale from "../../util/Locale.js";
 import PixelLength from "../../text/PixelLength";
 import RoundingMode from "../../math/RoundingMode.js";
 import SpreadsheetCellReference from "../reference/SpreadsheetCellReference";
-import SpreadsheetCoordinates from "../SpreadsheetCoordinates";
 import SpreadsheetMetadata from "./SpreadsheetMetadata";
 import SpreadsheetName from "../SpreadsheetName";
 import SpreadsheetDateFormatPattern from "../format/SpreadsheetDateFormatPattern.js";
@@ -801,7 +800,6 @@ test("all setters & getters", () => {
     const timeParsePatterns = SpreadsheetTimeParsePatterns.fromJson("hhmmss");
     const twoDigitYear = 80;
     const valueSeparator = Character.fromJson(",");
-    const coords = new SpreadsheetCoordinates(12, 34);
     const viewportCell = SpreadsheetCellReference.parse("A99");
 
     const metadata = SpreadsheetMetadata.EMPTY
