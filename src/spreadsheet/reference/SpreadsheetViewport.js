@@ -18,38 +18,47 @@ export default class SpreadsheetViewport extends SystemObject {
         Preconditions.requireText(text, "text");
 
         let tokens = text.split(SEPARATOR);
-        if(3 !== tokens.length){
-            throw new Error("Expected 3 tokens got " + text);
+        if(5 !== tokens.length){
+            throw new Error("Expected 5 tokens got " + text);
         }
 
         return new SpreadsheetViewport(
             SpreadsheetCellReference.parse(tokens[0]),
             Number(tokens[1]),
-            Number(tokens[2])
+            Number(tokens[2]),
+            Number(tokens[3]),
+            Number(tokens[4])
         );
     }
 
-    constructor(reference, width, height) {
+    constructor(reference, xOffset, yOffset, width, height) {
         super();
-
         Preconditions.requireInstance(reference, SpreadsheetCellReference, "reference");
-        this.referenceValue = reference.toRelative();
+        this.referenceValue = reference;
 
-        Preconditions.requireNumber(width, "width");
-        if(width <= 0){
-            throw new Error("Expected width > 0 got " + width);
-        }
+        Preconditions.requireNumber(xOffset, "xOffset");
+        this.xOffsetValue = xOffset;
+
+        Preconditions.requireNumber(yOffset, "yOffset");
+        this.yOffsetValue = yOffset;
+
+        Preconditions.requirePositiveNumber(width, "width");
         this.widthValue = width;
 
-        Preconditions.requireNumber(height, "height");
-        if(height <= 0){
-            throw new Error("Expected height > 0 got " + height);
-        }
+        Preconditions.requirePositiveNumber(height, "height");
         this.heightValue = height;
     }
 
     reference() {
         return this.referenceValue;
+    }
+
+    xOffset() {
+        return this.xOffsetValue;
+    }
+
+    yOffset() {
+        return this.yOffsetValue;
     }
 
     width() {
@@ -61,7 +70,7 @@ export default class SpreadsheetViewport extends SystemObject {
     }
 
     toJson() {
-        return this.reference() + SEPARATOR + this.width() + SEPARATOR + this.height();
+        return this.reference() + SEPARATOR + this.xOffset() + SEPARATOR + this.yOffset() + SEPARATOR + this.width() + SEPARATOR + this.height();
     }
 
     typeName() {
@@ -72,6 +81,8 @@ export default class SpreadsheetViewport extends SystemObject {
         return this === other ||
             (other instanceof SpreadsheetViewport &&
                 this.reference().equals(other.reference()) &&
+                this.xOffset() === other.xOffset() &&
+                this.yOffset() === other.yOffset() &&
                 this.width() === other.width() &&
                 this.height() === other.height());
     }

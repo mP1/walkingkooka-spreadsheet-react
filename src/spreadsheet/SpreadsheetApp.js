@@ -10,7 +10,6 @@ import Preconditions from "../Preconditions.js";
 import React from 'react';
 import SpreadsheetAppBar from "../widget/SpreadsheetAppBar.js";
 import SpreadsheetBox from "../widget/SpreadsheetBox.js";
-import SpreadsheetCellBox from "./reference/SpreadsheetCellBox.js";
 import SpreadsheetCoordinates from "./SpreadsheetCoordinates.js";
 import SpreadsheetDelta from "./engine/SpreadsheetDelta.js";
 import SpreadsheetEngineEvaluation from "./engine/SpreadsheetEngineEvaluation.js";
@@ -265,12 +264,13 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
             const previousViewportCell = previousMetadata && previousMetadata.getIgnoringDefaults(SpreadsheetMetadata.VIEWPORT_CELL);
 
             if((width > previous.width || height > previous.height) || (viewportCell && !viewportCell.equals(previousViewportCell))){
-                this.onCellBox(
-                    new SpreadsheetCellBox(viewportCell,
+                this.onViewport(
+                    viewportCell.viewport(
                         0, // viewport scroll x-offset
                         0, // viewport scroll y-offset
                         width,
-                        height)
+                        height
+                    )
                 );
             }
         }
@@ -713,13 +713,13 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
     // VIEWPORT ........................................................................................................
 
     /**
-     * Accepts {@link SpreadsheetCellBox} and requests the {@link SpreadsheetRange} that fill the content.
+     * Accepts {@link SpreadsheetViewport} and requests the {@link SpreadsheetRange} that fill the content.
      */
-    onCellBox(cellBox) {
-        console.log("cellBox: ", cellBox);
+    onViewport(viewport) {
+        console.log("viewport: ", viewport);
 
         this.messageSend(
-            this.spreadsheetMetadataApiUrl() + "/viewport/" + cellBox.viewport(),
+            this.spreadsheetMetadataApiUrl() + "/viewport/" + viewport,
             {
                 method: "GET"
             },
