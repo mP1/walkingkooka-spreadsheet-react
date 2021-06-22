@@ -59,7 +59,7 @@ export default class SpreadsheetHistoryAwareWidget extends React.Component {
         );
     }
 
-    showError(message) {
+    showError(message, error) {
         throw new Error("Sub classes must override showError");
     }
 }

@@ -179,7 +179,7 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
                         {},
                         () => {
                         },
-                        (e) => this.showError("Unable to load spreadsheet " + id)
+                        (message, error) => this.showError("Unable to load spreadsheet " + id, error)
                     );
                 }
 
@@ -272,7 +272,7 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
         const history = this.props.history;
 
         const notificationShow = this.notificationShow.bind(this);
-        const showError = this.notificationShowError.bind(this);
+        const showError = this.showError.bind(this);
 
         return (
             <WindowResizer dimensions={this.onWindowResized.bind(this)}>
@@ -429,8 +429,9 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
         });
     }
 
-    showError(error) {
-        this.notificationShow(SpreadsheetNotification.error(error));
+    showError(message, error) {
+        this.notificationShow(SpreadsheetNotification.error(message));
+        console.error(message, error);
     }
 
     // toString.........................................................................................................

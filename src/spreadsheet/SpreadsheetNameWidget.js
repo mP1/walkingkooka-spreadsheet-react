@@ -100,8 +100,8 @@ export default class SpreadsheetNameWidget extends SpreadsheetHistoryAwareStateW
                 metadata.get(SpreadsheetMetadata.SPREADSHEET_ID),
                 metadata.set(SpreadsheetMetadata.SPREADSHEET_NAME, new SpreadsheetName(v)),
                 () => {},
-                (e) => {
-                    this.resetValueAndShowError(e);
+                (message, error) => {
+                    this.resetValueAndShowError(message, error);
                 }
             );
         } catch(e) {
@@ -113,15 +113,15 @@ export default class SpreadsheetNameWidget extends SpreadsheetHistoryAwareStateW
     /**
      * If an invalid spreadsheet name has been entered or saving failures, reload the original {@link SpreadsheetName}.
      */
-    resetValueAndShowError(e) {
+    resetValueAndShowError(message, error) {
         const value = this.state.metadata.getIgnoringDefaults(SpreadsheetMetadata.SPREADSHEET_NAME);
         console.log("resetValueAndShowError" + value);
         this.setState({
             //value: this.state.loaded,
             value: value,
         });
-        if(e){
-            this.showError(e);
+        if(message, error){
+            this.showError(message, error);
         }
     }
 

@@ -139,13 +139,13 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetHistoryAwareSta
 
                 giveFocus && this.giveInputFocus();
             },
-            (e) => {
+            (message, error) => {
                 this.setState({
                     giveFocus: false,
                     reload: false,
                 });
 
-                this.showError(e);
+                this.showError(message, error);
             });
     }
 
