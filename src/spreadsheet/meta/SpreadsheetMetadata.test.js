@@ -1071,68 +1071,83 @@ test("equals same property values with defaults", () => {
     ))).toEqual(true);
 });
 
-// equalsMost...............................................................................................................
+// shouldUpdateViewport...............................................................................................................
 
-test("equalsMost EMPTY true", () => {
-    expect(SpreadsheetMetadata.EMPTY.equalsMost(SpreadsheetMetadata.EMPTY))
-        .toEqual(true);
+test("shouldUpdateViewport missing true", () => {
+    expect(SpreadsheetMetadata.EMPTY.shouldUpdateViewport(undefined))
+        .toBeTrue();
 });
 
-test("equalsMost same ignoring ignored properties", () => {
+test("shouldUpdateViewport EMPTY true", () => {
+    expect(SpreadsheetMetadata.EMPTY.shouldUpdateViewport(SpreadsheetMetadata.EMPTY))
+        .toBeFalse();
+});
+
+test("shouldUpdateViewport same ignoring ignored properties", () => {
+    expect(SpreadsheetMetadata.fromJson(
+        {
+            "create-date-time": "123",
+        }
+    ).shouldUpdateViewport(SpreadsheetMetadata.fromJson(
+        {
+            "create-date-time": "456",
+        }
+    ))).toBeFalse();
+});
+
+test("shouldUpdateViewport different ids", () => {
     expect(SpreadsheetMetadata.fromJson(
         {
             "spreadsheet-id": "123",
-            "currency-symbol": "AUD",
         }
-    ).equalsMost(SpreadsheetMetadata.fromJson(
+    ).shouldUpdateViewport(SpreadsheetMetadata.fromJson(
         {
             "spreadsheet-id": "456",
-            "currency-symbol": "AUD",
         }
-    ))).toEqual(true);
+    ))).toBeTrue();
 });
 
-test("equalsMost property values different false", () => {
+test("shouldUpdateViewport property values different true", () => {
     expect(SpreadsheetMetadata.fromJson(
         {
             "currency-symbol": "AUD",
         }
-    ).equalsMost(SpreadsheetMetadata.fromJson(
+    ).shouldUpdateViewport(SpreadsheetMetadata.fromJson(
         {
             "currency-symbol": "NZD",
         }
-    ))).toEqual(false);
+    ))).toBeTrue();
 });
 
-test("equalsMost property values different false #2", () => {
+test("shouldUpdateViewport property values different true #2", () => {
     expect(SpreadsheetMetadata.fromJson(
         {
             "currency-symbol": "AUD",
             "decimal-separator": ".",
         }
-    ).equalsMost(SpreadsheetMetadata.fromJson(
+    ).shouldUpdateViewport(SpreadsheetMetadata.fromJson(
         {
             "currency-symbol": "AUD",
             "decimal-separator": "D",
         }
-    ))).toEqual(false);
+    ))).toBeTrue();
 });
 
-test("equalsMost property values", () => {
+test("shouldUpdateViewport property values", () => {
     expect(SpreadsheetMetadata.fromJson(
         {
             "currency-symbol": "AUD",
             "decimal-separator": ".",
         }
-    ).equalsMost(SpreadsheetMetadata.fromJson(
+    ).shouldUpdateViewport(SpreadsheetMetadata.fromJson(
         {
             "currency-symbol": "AUD",
             "decimal-separator": ".",
         }
-    ))).toEqual(true);
+    ))).toBeFalse();
 });
 
-test("equalsMost with defaults", () => {
+test("shouldUpdateViewport with defaults", () => {
     expect(SpreadsheetMetadata.fromJson(
         {
             "spreadsheet-id": "111",
@@ -1142,7 +1157,7 @@ test("equalsMost with defaults", () => {
                 "spreadsheet-name": "Spreadsheet-name-567",
             }
         }
-    ).equalsMost(SpreadsheetMetadata.fromJson(
+    ).shouldUpdateViewport(SpreadsheetMetadata.fromJson(
         {
             "spreadsheet-id": "111",
             "currency-symbol": "AUD",
@@ -1151,10 +1166,10 @@ test("equalsMost with defaults", () => {
                 "spreadsheet-name": "Spreadsheet-name-567",
             }
         }
-    ))).toEqual(true);
+    ))).toBeFalse();
 });
 
-test("equalsMost with defaults different", () => {
+test("shouldUpdateViewport with defaults different", () => {
     expect(SpreadsheetMetadata.fromJson(
         {
             "spreadsheet-id": "111",
@@ -1164,7 +1179,7 @@ test("equalsMost with defaults different", () => {
                 "spreadsheet-name": "Spreadsheet-name-567",
             }
         }
-    ).equalsMost(SpreadsheetMetadata.fromJson(
+    ).shouldUpdateViewport(SpreadsheetMetadata.fromJson(
         {
             "spreadsheet-id": "222",
             "currency-symbol": "NZD",
@@ -1173,10 +1188,10 @@ test("equalsMost with defaults different", () => {
                 "spreadsheet-name": "different-Spreadsheet-name",
             }
         }
-    ))).toEqual(false);
+    ))).toBeTrue();
 });
 
-test("equalsMost with defaults different default", () => {
+test("shouldUpdateViewport with defaults different default", () => {
     expect(SpreadsheetMetadata.fromJson(
         {
             "spreadsheet-id": "111",
@@ -1186,7 +1201,7 @@ test("equalsMost with defaults different default", () => {
                 "spreadsheet-name": "Spreadsheet-name-567",
             }
         }
-    ).equalsMost(SpreadsheetMetadata.fromJson(
+    ).shouldUpdateViewport(SpreadsheetMetadata.fromJson(
         {
             "spreadsheet-id": "111",
             "currency-symbol": "NZD",
@@ -1195,7 +1210,7 @@ test("equalsMost with defaults different default", () => {
                 "spreadsheet-name": "different-Spreadsheet-name",
             }
         }
-    ))).toEqual(false);
+    ))).toBeTrue();
 });
 
 // helpers..............................................................................................................

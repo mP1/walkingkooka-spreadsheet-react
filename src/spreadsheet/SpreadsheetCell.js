@@ -132,10 +132,10 @@ export default class SpreadsheetCell extends SystemObject {
     /**
      * Renders a TableCell with the formatted content. The default style will typically come from {@link SpreadsheetMetadata}.
      */
-    render(defaultStyle, edit, onClick, onKeyDown) {
+    render(defaultStyle, onClick, onKeyDown) {
         Preconditions.requireInstance(defaultStyle,TextStyle, "defaultStyle");
         Preconditions.requireFunction(onClick, "onClick");
-        //Preconditions.requireFunction(onKeyDown, "onKeyDown");
+        Preconditions.optionalFunction(onKeyDown, "onKeyDown");
 
         const style = defaultStyle.merge(this.style());
 
@@ -144,7 +144,6 @@ export default class SpreadsheetCell extends SystemObject {
         const css = style.toCss();
         css.boxSizing = "border-box";
 
-        edit && this.highlightCell(css);
 
         const reference = this.reference();
 
@@ -153,17 +152,8 @@ export default class SpreadsheetCell extends SystemObject {
                           className={"cell"}
                           onClick={onClick}
                           onKeyDown={onKeyDown}
-                          tabIndex={edit ? -1 : undefined}
+                          tabIndex={0}
                           style={css}>{formattedRender}</TableCell>;
-    }
-
-    /**
-     * Adds an outline styles to the given css.
-     */
-    highlightCell(css) {
-        css.outlineColor="black";
-        css.outlineStyle="dotted";
-        css.outlineWidth="3px";
     }
 
     equals(other) {

@@ -10,6 +10,7 @@ import FontFamily from "../../text/FontFamily.js";
 import lengthFromJson from "../../text/LengthFromJson.js";
 import NoneLength from "../../text/NoneLength.js";
 import Paper from '@material-ui/core/Paper';
+import Preconditions from "../../Preconditions.js";
 import PropTypes from 'prop-types';
 import React from 'react';
 import RoundingMode from "../../math/RoundingMode.js";
@@ -17,6 +18,7 @@ import SpreadsheetFormatRequest from "../server/format/SpreadsheetFormatRequest.
 import SpreadsheetHistoryAwareStateWidget from "../history/SpreadsheetHistoryAwareStateWidget.js";
 import SpreadsheetHistoryHash from "../history/SpreadsheetHistoryHash.js";
 import SpreadsheetLocaleDefaultDateTimeFormat from "../server/format/SpreadsheetLocaleDefaultDateTimeFormat.js";
+import SpreadsheetMessengerCrud from "../message/SpreadsheetMessengerCrud.js";
 import SpreadsheetMetadata from "../meta/SpreadsheetMetadata.js";
 import SpreadsheetMultiFormatRequest from "../server/format/SpreadsheetMultiFormatRequest.js";
 import SpreadsheetMultiFormatResponse from "../server/format/SpreadsheetMultiFormatResponse.js";
@@ -88,12 +90,32 @@ class SpreadsheetSettingsWidget extends SpreadsheetHistoryAwareStateWidget {
      */
     static WIDTH = 500;
 
+    init() {
+    }
+
     initialStateFromProps(props) {
         return {
-            spreadsheetMetadata: props.spreadsheetMetadata,
+            spreadsheetMetadata: null, //props.spreadsheetMetadata,
             createDateTimeFormatted: "",
             modifiedDateTimeFormatted: "",
         };
+    }
+
+    componentDidMount() {
+        super.componentDidMount();
+
+        this.onSpreadsheetMetadataRemover = this.props.spreadsheetMetadataCrud.addListener((method, id, metadata) => {
+            this.setState({
+                spreadsheetMetadata: metadata,
+            });
+        });
+    }
+
+    componentWillUnmount() {
+        super.componentWillUnmount();
+
+        this.onSpreadsheetMetadataRemover && this.onSpreadsheetMetadataRemover();
+        delete this.onSpreadsheetMetadataRemover;
     }
 
     stateFromHistoryTokens(tokens) {
@@ -101,10 +123,6 @@ class SpreadsheetSettingsWidget extends SpreadsheetHistoryAwareStateWidget {
             open: tokens[SpreadsheetHistoryHash.SETTINGS],
             section: tokens[SpreadsheetHistoryHash.SETTINGS_SECTION],
         };
-    }
-
-    init() {
-        // nop
     }
 
     /**
@@ -159,29 +177,41 @@ class SpreadsheetSettingsWidget extends SpreadsheetHistoryAwareStateWidget {
             }
         }
 
-        if(!metadata.equals(prevState.spreadsheetMetadata)){
-            this.props.setSpreadsheetMetadata(
-                metadata,
-                (m) => {
-                    this.setState({
-                        spreadsheetMetadata: m,
-                    });
-                },
-                (e) => this.showError(e),
-            );
+        if(metadata && !metadata.isEmpty() && !(metadata.equals(prevState.spreadsheetMetadata))){
+            this.spreadsheetMetadataSave(metadata);
         }
 
         return historyTokens;
     }
 
     /**
+     * Unconditionally saves the given SpreadsheetMetadata
+     */
+    spreadsheetMetadataSave(metadata) {
+        Preconditions.requireInstance(metadata, SpreadsheetMetadata, "metadata");
+
+        this.props.spreadsheetMetadataCrud.post(
+            metadata.getIgnoringDefaults(SpreadsheetMetadata.SPREADSHEET_ID),
+            metadata,
+            (m) => {
+            },
+            this.props.showError,
+        );
+    }
+
+    /**
      * Make a request to the server to format the createDateTime & modifiedDateTime
      */
     metadataFormatCreateDateTimeModifiedDateTime(request) {
-        this.props.formatCreateDateTimeModifiedDateTime(
-            request,
-            this.setFormattedCreateDateTimeAndModifiedDateTime.bind(this)
-        ); // TODO handle server format errors
+        this.props.spreadsheetMetadataCrud.messenger.send(
+            "/api/spreadsheet/" + this.state.spreadsheetMetadata.getIgnoringDefaults(SpreadsheetMetadata.SPREADSHEET_ID) + "/format",
+            {
+                method: "POST",
+                body: JSON.stringify(request.toJson()),
+            },
+            this.setFormattedCreateDateTimeAndModifiedDateTime.bind(this),
+            this.props.showError,
+        );
     }
 
     /**
@@ -203,7 +233,7 @@ class SpreadsheetSettingsWidget extends SpreadsheetHistoryAwareStateWidget {
         const {open, section, spreadsheetMetadata} = this.state;
 
         // if metadata is empty skip rendering content.
-        const children = (!spreadsheetMetadata.isEmpty() && open &&
+        const children = spreadsheetMetadata && (!spreadsheetMetadata.isEmpty() && open &&
             [
                 this.metadata(classes, SpreadsheetHistoryHash.SETTINGS_METADATA === section),
                 this.spreadsheetText(classes, SpreadsheetHistoryHash.SETTINGS_TEXT === section),
@@ -418,6 +448,7 @@ class SpreadsheetSettingsWidget extends SpreadsheetHistoryAwareStateWidget {
                 TextStyle.PADDING_TOP,
                 TextStyle.PADDING_RIGHT,
                 TextStyle.PADDING_BOTTOM,
+            TextStyle.PADDING_BOTTOM,
         ];
     }
 
@@ -1369,10 +1400,8 @@ class SpreadsheetSettingsWidget extends SpreadsheetHistoryAwareStateWidget {
 
 SpreadsheetSettingsWidget.propTypes = {
     history: PropTypes.object.isRequired, // history will provide open
-    formatCreateDateTimeModifiedDateTime: PropTypes.func.isRequired, // required to format date/times, parameters: SpreadsheetMultiFormatRequest, successHandler => SpreadsheetMultiFormatResponse
+    spreadsheetMetadataCrud: PropTypes.instanceOf(SpreadsheetMessengerCrud).isRequired,
     notificationShow: PropTypes.func.isRequired,
-    spreadsheetMetadata: PropTypes.instanceOf(SpreadsheetMetadata).isRequired,
-    setSpreadsheetMetadata: PropTypes.func.isRequired, // fired when the SpreadsheetMetadata is updated.
     showError: PropTypes.func.isRequired,
 }
 

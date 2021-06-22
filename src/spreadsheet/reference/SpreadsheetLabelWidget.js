@@ -53,6 +53,7 @@ export default class SpreadsheetLabelWidget extends SpreadsheetHistoryAwareState
                 // load the mapping for the new $label, the old mapping is lost.
                 this.props.messengerCrud.get(
                     label,
+                    {},
                     this.onLabelMappingLoadSuccess.bind(this),
                     this.onLabelMappingLoadFailure.bind(this)
                 );
