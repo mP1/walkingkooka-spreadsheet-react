@@ -4,16 +4,13 @@ import './SpreadsheetApp.css';
 import {withStyles} from '@material-ui/core/styles';
 import Divider from '@material-ui/core/Divider';
 import Equality from "../Equality.js";
-import ImmutableMap from "../util/ImmutableMap.js";
 import ListenerCollection from "../event/ListenerCollection.js";
 import Preconditions from "../Preconditions.js";
 import React from 'react';
 import SpreadsheetAppBar from "../widget/SpreadsheetAppBar.js";
 import SpreadsheetBox from "../widget/SpreadsheetBox.js";
-import SpreadsheetCoordinates from "./SpreadsheetCoordinates.js";
 import SpreadsheetDelta from "./engine/SpreadsheetDelta.js";
 import SpreadsheetEngineEvaluation from "./engine/SpreadsheetEngineEvaluation.js";
-import SpreadsheetExpressionReference from "./reference/SpreadsheetExpressionReference.js";
 import SpreadsheetExpressionReferenceSimilarities from "./SpreadsheetExpressionReferenceSimilarities.js";
 import SpreadsheetFormulaWidget from "./SpreadsheetFormulaWidget.js";
 import SpreadsheetHistoryAwareStateWidget from "./history/SpreadsheetHistoryAwareStateWidget.js";
@@ -30,7 +27,6 @@ import SpreadsheetNavigateAutocompleteWidget from "./reference/SpreadsheetNaviga
 import SpreadsheetNavigateLinkWidget from "./reference/SpreadsheetNavigateLinkWidget.js";
 import SpreadsheetNotification from "./notification/SpreadsheetNotification.js";
 import SpreadsheetNotificationWidget from "./notification/SpreadsheetNotificationWidget.js";
-import SpreadsheetRange from "./reference/SpreadsheetRange.js";
 import SpreadsheetSettingsWidget from "./settings/SpreadsheetSettingsWidget.js";
 import SpreadsheetViewportWidget from "./SpreadsheetViewportWidget.js";
 import WindowResizer from "../widget/WindowResizer.js";
@@ -45,11 +41,9 @@ const useStyles = theme => ({
  * State
  * <ul>
  *      <li>spreadsheetId: The current spreadsheet id</li>
+ *      <li>spreadsheetName: The current spreadsheet name</li>
  *      <li>boolean creatingEmptySpreadsheet: when true indicates a new spreadsheet is being created</li>
  *      <li>SpreadsheetMetadata spreadsheetMetadata: The current SpreadsheetMetadata</li>
- *      <li>ImmutableMap SpreadsheetCell cells: a cache of all loaded cells for the viewport</li>
- *      <li>ImmutableMap int columnWidths: a cache of widths for each column in the viewport</li>
- *      <li>ImmutableMap int rowHeights: a cache of heights for each row in the viewport</li>
  *      <li>{} windowDimensions: Holds the width and height of the viewport</li>
  * </ul>
  */
@@ -67,24 +61,20 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
         this.notification = React.createRef();
         this.settings = React.createRef();
         this.aboveViewport = React.createRef();
-        this.spreadsheetName = React.createRef();
         this.formula = React.createRef();
         this.viewport = React.createRef();
 
         document.title = "Empty spreadsheet";
 
-        const deltaListenerCollection = new ListenerCollection();
-        deltaListenerCollection.add((method, cellOrLabel, delta)=> {
-            if(delta) {
-                this.onSpreadsheetDelta(delta.toJson());
-            }
-        });
-
         this.spreadsheetDeltaCrud = new SpreadsheetMessengerCrud(
-            (method, cellOrRange) => this.cellUrl(cellOrRange, method.toUpperCase() === "GET" ? SpreadsheetEngineEvaluation.FORCE_RECOMPUTE : null),
+            (method, cellOrRange, queryStringParameters) => {
+                return this.cellUrl(
+                    cellOrRange,
+                    method.toUpperCase() === "GET" ? SpreadsheetEngineEvaluation.FORCE_RECOMPUTE : null) + SpreadsheetMessengerCrud.toQueryString(queryStringParameters)
+            },
             messenger,
             SpreadsheetDelta.fromJson,
-            deltaListenerCollection
+            new ListenerCollection()
         );
 
         this.labelMappingCrud = new SpreadsheetMessengerCrud(
@@ -93,6 +83,15 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
             SpreadsheetLabelMapping.fromJson,
             new ListenerCollection()
         );
+
+        this.spreadsheetMetadataCrud = new SpreadsheetMessengerCrud(
+            (method, spreadsheetId) => "/api/spreadsheet/" + (spreadsheetId ? spreadsheetId : ""),
+            messenger,
+            SpreadsheetMetadata.fromJson,
+            new ListenerCollection()
+        );
+
+        this.onSpreadsheetMetadataRemover = this.spreadsheetMetadataCrud.addListener(this.onSpreadsheetMetadata.bind(this));
     }
 
     /**
@@ -102,14 +101,46 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
         return {
             creatingEmptySpreadsheet: false,
             spreadsheetMetadata: SpreadsheetMetadata.EMPTY,
-            cells: ImmutableMap.EMPTY,
-            columnWidths: ImmutableMap.EMPTY,
-            rowHeights: ImmutableMap.EMPTY,
             windowDimensions: {
                 width: window.innerWidth,
                 height: window.innerHeight,
             },
         };
+    }
+
+    /**
+     * Returns a URL with the spreadsheet id and ONLY the provided cell selection.
+     */
+    cellUrl(selection, evaluation) {
+        Preconditions.requireNonNull(selection, "selection");
+        Preconditions.optionalInstance(evaluation, SpreadsheetEngineEvaluation, "evaluation")
+
+        const url = this.spreadsheetMetadataApiUrl() + "/cell/" + selection;
+        return evaluation ?
+            url + "/" + evaluation.nameKebabCase() :
+            url;
+    }
+
+    /**
+     * Creates an URL for the given label.
+     */
+    labelUrl(label) {
+        Preconditions.requireInstance(label, SpreadsheetLabelName, "label");
+        return this.spreadsheetMetadataApiUrl() + "/label/" + label
+    }
+
+    /**
+     * Uses the provided spreadsheetid or falls back to the current {@Link SpreadsheetMetadata} spreadsheet id
+     */
+    spreadsheetMetadataApiUrl(spreadsheetId) {
+        const id = spreadsheetId || this.state.spreadsheetMetadata.getIgnoringDefaults(SpreadsheetMetadata.SPREADSHEET_ID);
+        if(!id){
+            throw new Error("Missing spreadsheetId parameter and current SpreadsheetMetadata.spreadsheetId");
+        }
+        if(typeof id !== "string"){
+            throw new Error("Expected string spreadsheetId got " + id);
+        }
+        return "/api/spreadsheet/" + id;
     }
 
     // history..........................................................................................................
@@ -118,132 +149,60 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
      * If the state.id has changed this will trigger a load, while if it is empty this will trigger a create empty.
      */
     stateFromHistoryTokens(tokens) {
-        const id = tokens[SpreadsheetHistoryHash.SPREADSHEET_ID];
-        const name = tokens[SpreadsheetHistoryHash.SPREADSHEET_NAME];
-
         return {
-            spreadsheetId: id,
-            spreadsheetName: name,
+            spreadsheetId: tokens[SpreadsheetHistoryHash.SPREADSHEET_ID],
+            spreadsheetName: tokens[SpreadsheetHistoryHash.SPREADSHEET_NAME],
         };
     }
 
     // state-change.....................................................................................................
 
     /**
-     * This is called when the state changes and returns the history tokens equivalent.
+     * This is called when the state changes and returns the history tokens equivalent. This may involve
+     * creating a new spreadsheet, loading a new id, correcting the name and also updating the viewport dimensions.
      */
     historyTokensFromState(prevState) {
-        this.stateSync(prevState.spreadsheetMetadata);
-
         const historyTokens = {};
 
-        this.stateCreateEmptyOrLoadOrNothing(prevState, historyTokens);
-        this.stateSpreadsheetViewport(prevState);
-        this.stateSpreadsheetViewportRange(prevState);
-
-        return historyTokens;
-    }
-
-    /**
-     * If the SpreadsheetMetadata and cells has changed tell the formula and viewport so they can refresh themselves.
-     */
-    stateSync(previousMetadata) {
+        const previousId = prevState.spreadsheetId;
         const state = this.state;
+        const id = state.spreadsheetId;
 
-        const metadata = state.spreadsheetMetadata;
-        if(!(metadata.isEmpty() || metadata.equalsMost(previousMetadata))){
-            const formula = this.formula.current;
-            formula && formula.setState({
-                reload: true,
-            });
-        }
+        if(!state.creatingEmptySpreadsheet){
+            if(id){
+                const metadata = state.spreadsheetMetadata;
+                if(metadata.isEmpty() || !(Equality.safeEquals(id, previousId))){
+                    console.log("@@@different id creating...");
+                    console.log("stateSpreadsheetMetadataSpreadsheetId spreadsheetId changed from " + previousId + " to " + id);
 
-        const viewport = this.viewport.current;
-        viewport.setState({
-            cells: state.cells,
-        });
-
-        const settings = this.settings.current;
-        settings && settings.setState(
-            {
-                spreadsheetMetadata: metadata,
-            }
-        );
-    }
-
-    /**
-     * Tests whether an empty spreadsheet or updating the id and name of the hash should occur.
-     */
-    stateCreateEmptyOrLoadOrNothing(prevState, historyTokens) {
-        const previous = prevState.spreadsheetId;
-        const state = this.state;
-        const current = state.spreadsheetId;
-
-        if(!state.creatingEmptySpreadsheet) {
-            console.log("stateSpreadsheetMetadataSpreadsheetId spreadsheetId changed from " + previous + " to " + current);
-            if(current) {
-                if(state.spreadsheetMetadata.isEmpty() || !(Equality.safeEquals(current, previous))){
-                    this.spreadsheetMetadataLoad(current);
-                } else {
-                    this.stateSpreadsheetMetadataSpreadsheetName(historyTokens);
+                    this.spreadsheetMetadataCrud.get(
+                        id,
+                        {},
+                        () => {
+                        },
+                        (e) => this.showError("Unable to load spreadsheet " + id)
+                    );
                 }
-            } else {
+
+                const name = metadata.getIgnoringDefaults(SpreadsheetMetadata.SPREADSHEET_NAME);
+                if(name){
+                    document.title = name.toString();
+                }
+                historyTokens[SpreadsheetHistoryHash.SPREADSHEET_NAME] = name;
+            }else {
                 this.spreadsheetEmptyCreate();
             }
         }
 
-        historyTokens[SpreadsheetHistoryHash.SPREADSHEET_ID] = current;
-    }
+        historyTokens[SpreadsheetHistoryHash.SPREADSHEET_ID] = id;
 
-    /**
-     * Updates the history tokens name to match the state.
-     */
-    stateSpreadsheetMetadataSpreadsheetName(hash) {
-        const state = this.state;
-        const metadata = state.spreadsheetMetadata;
-        const widget = this.spreadsheetName.current;
-        const name = metadata.getIgnoringDefaults(SpreadsheetMetadata.SPREADSHEET_NAME);
-
-        if(widget){
-            widget.setState({
-                loaded: name,
-                value: name,
-            });
-        }
-
-        if(name){
-            document.title = name.toString();
-        }
-        hash[SpreadsheetHistoryHash.SPREADSHEET_NAME] = name;
-
-        if(!Equality.safeEquals(name, state.name)){
-            this.setState({
-                spreadsheetName: name,
-            });
-        }
-    }
-
-    /**
-     * Update the viewport after computing the viewport metrics.
-     */
-    stateSpreadsheetViewport(prevState) {
-        const state = this.state;
-
-        const metadata = state.spreadsheetMetadata;
-        const viewportCell = metadata.getIgnoringDefaults(SpreadsheetMetadata.VIEWPORT_CELL);
+        // sync windowDimensions with the viewport widget
         const windowDimensions = state.windowDimensions;
         const aboveViewportDimensions = state.aboveViewportDimensions;
 
         const viewport = this.viewport.current;
 
-        if(viewportCell && windowDimensions && aboveViewportDimensions && viewport){
-            viewport.setState({
-                home: viewportCell,
-                cells: state.cells,
-                columnWidths: state.columnWidths,
-                rowHeights: state.rowHeights,
-                defaultStyle: metadata.effectiveStyle(),
-            });
+        if(windowDimensions && aboveViewportDimensions && viewport){
             const previous = viewport.state.dimensions || {
                 width: 0,
                 height: 0,
@@ -259,36 +218,41 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
                     }
                 });
             }
-
-            const previousMetadata = prevState.spreadsheetMetadata;
-            const previousViewportCell = previousMetadata && previousMetadata.getIgnoringDefaults(SpreadsheetMetadata.VIEWPORT_CELL);
-
-            if((width > previous.width || height > previous.height) || (viewportCell && !viewportCell.equals(previousViewportCell))){
-                this.onViewport(
-                    viewportCell.viewport(
-                        0, // viewport scroll x-offset
-                        0, // viewport scroll y-offset
-                        width,
-                        height
-                    )
-                );
-            }
         }
+
+        return historyTokens;
     }
 
     /**
-     * If the range changed, clear the cells and load the viewport cells.
+     * Makes a request which returns some basic default metadata, and without cells the spreadsheet will be empty.
      */
-    stateSpreadsheetViewportRange(prevState) {
-        const viewportRange = this.state.viewportRange;
-        const previousViewportRange = prevState.viewportRange;
+    spreadsheetEmptyCreate() {
+        console.log("spreadsheetEmptyCreate");
 
-        if(viewportRange && !Equality.safeEquals(viewportRange, previousViewportRange)){
-            this.cellOrRangeLoad(
-                viewportRange,
-                SpreadsheetEngineEvaluation.COMPUTE_IF_NECESSARY,
-            );
-        }
+        this.setState({
+            creatingEmptySpreadsheet: true,
+            spreadsheetMetadata: SpreadsheetMetadata.EMPTY,
+            spreadsheetId: null,
+        });
+
+        this.spreadsheetMetadataCrud.post(
+            null,
+            "",
+            () => {
+            },
+            this.showError.bind(this)
+        );
+    }
+
+    onSpreadsheetMetadata(method, id, metadata) {
+        this.setState({
+            spreadsheetId: metadata.getIgnoringDefaults(SpreadsheetMetadata.SPREADSHEET_ID),
+            spreadsheetName: metadata.getIgnoringDefaults(SpreadsheetMetadata.SPREADSHEET_NAME),
+            creatingEmptySpreadsheet: false,
+            spreadsheetMetadata: metadata,
+        });
+
+        this.notificationShow(SpreadsheetNotification.success("Spreadsheet metadata saved"));
     }
 
     // rendering........................................................................................................
@@ -302,14 +266,9 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
         const state = this.state;
         console.log("render", state);
 
-        const metadata = this.spreadsheetMetadata();
-
-        const spreadsheetName = metadata.getIgnoringDefaults(SpreadsheetMetadata.SPREADSHEET_NAME);
-
-        const style = metadata.getIgnoringDefaults(SpreadsheetMetadata.STYLE);
-        const {cells, columnWidths, rowHeights} = state;
-
-        const viewportCell = metadata.getIgnoringDefaults(SpreadsheetMetadata.VIEWPORT_CELL);
+        const messenger = this.messenger;
+        const spreadsheetDeltaCrud = this.spreadsheetDeltaCrud;
+        const spreadsheetMetadataCrud = this.spreadsheetMetadataCrud;
 
         const history = this.props.history;
 
@@ -339,11 +298,9 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
                                 className={classes.header}
                 >
                     <SpreadsheetAppBar menuClickListener={this.settingsToggle.bind(this)}>
-                        <SpreadsheetNameWidget ref={this.spreadsheetName}
-                                               key={spreadsheetName}
+                        <SpreadsheetNameWidget key={"SpreadsheetName"}
                                                history={history}
-                                               value={spreadsheetName}
-                                               setValue={this.spreadsheetNameSave.bind(this)}
+                                               spreadsheetMetadataCrud={spreadsheetMetadataCrud}
                                                showError={showError}
                         />
                     </SpreadsheetAppBar>
@@ -354,126 +311,26 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
                     <SpreadsheetFormulaWidget ref={this.formula}
                                               key={"spreadsheetFormula"}
                                               history={history}
-                                              messengerCrud={this.spreadsheetDeltaCrud}
+                                              spreadsheetDeltaCrud={spreadsheetDeltaCrud}
                                               showError={showError}
                     />
                     <Divider/>
                 </SpreadsheetBox>
-                <SpreadsheetViewportWidget key={[cells, columnWidths, rowHeights, style, viewportCell]}
+                <SpreadsheetViewportWidget key={"viewport"}
                                            history={history}
                                            ref={this.viewport}
-                                           cells={cells}
-                                           columnWidths={columnWidths}
-                                           rowHeights={rowHeights}
-                                           defaultStyle={style}
-                                           home={viewportCell}
-                                           labelToCell={this.labelToCell.bind(this)}
+                                           messenger={messenger}
+                                           spreadsheetDeltaCrud={spreadsheetDeltaCrud}
+                                           spreadsheetMetadataCrud={spreadsheetMetadataCrud}
                                            showError={showError}
                 />
                 <SpreadsheetSettingsWidget ref={this.settings}
                                            history={history}
+                                           spreadsheetMetadataCrud={spreadsheetMetadataCrud}
                                            notificationShow={notificationShow}
-                                           spreadsheetMetadata={metadata}
-                                           setSpreadsheetMetadata={this.spreadsheetMetadataSave.bind(this)}
-                                           formatCreateDateTimeModifiedDateTime={this.settingsFormatCreateDateTimeModifiedDateTime.bind(this)}
                                            showError={showError}
                 />
             </WindowResizer>
-        );
-    }
-
-    // cell.............................................................................................................
-
-    /**
-     * Accepts a cell or range along with an evaluation and makes a call to the server.
-     */
-    cellOrRangeLoad(selection, evaluation, onSuccess) {
-        Preconditions.requireNonNull(selection, "selection");
-        Preconditions.requireInstance(evaluation, SpreadsheetEngineEvaluation, "evaluation");
-        Preconditions.optionalFunction(onSuccess, "onSuccess");
-
-        console.log("cellOrRangeLoad " + selection + " " + evaluation);
-
-        this.messageSend(
-            this.cellUrl(selection, evaluation),
-            {
-                method: "GET"
-            },
-            (json) => {
-                this.onSpreadsheetDelta(json);
-                onSuccess && onSuccess(json);
-            }
-        );
-    }
-
-    /**
-     * Returns a URL with the spreadsheet id and ONLY the provided cell selection.
-     */
-    cellUrl(selection, evaluation) {
-        Preconditions.requireInstance(selection, SpreadsheetExpressionReference, "selection");
-        Preconditions.optionalInstance(evaluation, SpreadsheetEngineEvaluation, "evaluation")
-
-        const url = this.spreadsheetMetadataApiUrl() + "/cell/" + selection;
-        return evaluation ?
-            url + "/" + evaluation.nameKebabCase() :
-            url;
-    }
-
-    /**
-     * Handles spreadsheet delta responses, resulting from cell saves or loads.
-     */
-    onSpreadsheetDelta(json) {
-        const delta = SpreadsheetDelta.fromJson(json);
-        const state = this.state;
-        this.setState({ // lgtm [js/react/inconsistent-state-update]
-            cells: state.cells.setAll(delta.referenceToCellMap()),
-            columnWidths: state.columnWidths.setAll(delta.maxColumnWidths()),
-            rowHeights: state.rowHeights.setAll(delta.maxRowHeights()),
-        });
-    }
-
-    // COORDINATES......................................................................................................
-
-    onSpreadsheetCoordinates(json) {
-        this.setState({
-            viewportCoordinates: SpreadsheetCoordinates.fromJson(json),
-        });
-    }
-
-    /**
-     * Creates an URL for the given label.
-     */
-    labelUrl(label) {
-        Preconditions.requireInstance(label, SpreadsheetLabelName, "label");
-        return this.spreadsheetMetadataApiUrl() + "/label/" + label
-    }
-
-    /**
-     * Given the {@link SpreadsheetLabelName} returns the target {@link SpreadsheetCellReference}.
-     */
-    labelToCell(label, success, failure) {
-        Preconditions.optionalInstance(label, SpreadsheetLabelName, "label");
-        Preconditions.requireFunction(success, "success");
-        Preconditions.requireFunction(failure, "failure");
-
-        this.messenger.send(
-            this.similaritiesUrl(label.toString(), 1),
-            {
-                method: "GET",
-            },
-            (json) => {
-                if(json) {
-                    const mapping = SpreadsheetExpressionReferenceSimilarities.fromJson(json)
-                        .labelMappings()
-                        .find(m => m.label().equals(label));
-                    if(mapping) {
-                        success(mapping.reference());
-                    } else {
-                        failure("Unknown label " + label);
-                    }
-                }
-            },
-            failure
         );
     }
 
@@ -510,42 +367,11 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
         this.notificationShow(SpreadsheetNotification.error(error));
     }
 
-    // RANGE............................................................................................................
-
-    /**
-     * Handles a range response which contains the range of cells that fill the viewport for the home cell and dimensions
-     * of the viewport area.
-     */
-    onSpreadsheetRange(json) {
-        console.log("onSpreadsheetRange: ", json);
-
-        this.setState({
-            viewportRange: SpreadsheetRange.fromJson(json),
-        });
-    }
-
     // settings.........................................................................................................
 
     settingsToggle() {
         const widget = this.settings.current;
         widget && widget.toggle();
-    }
-
-    /**
-     * Formats a SpreadsheetMultiFormatRequest holding the create-date-time and modified-date-time.
-     */
-    settingsFormatCreateDateTimeModifiedDateTime(multiFormatRequest, success, errorHandler) {
-        console.log("settingsFormatCreateDateTimeModifiedDateTime ", multiFormatRequest);
-
-        this.messageSend(
-            this.spreadsheetMetadataApiUrl() + "/format",
-            {
-                method: "POST",
-                body: JSON.stringify(multiFormatRequest.toJson()),
-            },
-            success,
-            errorHandler,
-        );
     }
 
     // similarities.....................................................................................................
@@ -574,157 +400,6 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
         Preconditions.requireNumber(count, "count"); // TODO https://github.com/mP1/walkingkooka-spreadsheet-react/issues/854 Preconditions.requirePositiveNumber
 
         return this.spreadsheetMetadataApiUrl() + "/cell-reference/" + encodeURI(text) + "?count=" + count;
-    }
-
-    // SpreadsheetMetadata..............................................................................................
-
-    /**
-     * Makes a request which returns some basic default metadata, and without cells the spreadsheet will be empty.
-     */
-    spreadsheetEmptyCreate() {
-        console.log("spreadsheetEmptyCreate");
-
-        this.setState({
-            creatingEmptySpreadsheet: true,
-            spreadsheetMetadata: SpreadsheetMetadata.EMPTY,
-            spreadsheetId: null,
-            viewportRange: null,
-            cells: ImmutableMap.EMPTY,
-            columnWidths: ImmutableMap.EMPTY,
-            rowHeights: ImmutableMap.EMPTY,
-        });
-
-        this.messageSend(
-            "/api/spreadsheet",
-            {
-                method: "POST"
-            },
-            (json) => this.onSpreadsheetMetadata(SpreadsheetMetadata.fromJson(json), true)
-        );
-    }
-
-    spreadsheetMetadata() {
-        return this.state.spreadsheetMetadata;
-    }
-
-    /**
-     * Loads the spreadsheet metadata with the given spreadsheet id.
-     */
-    spreadsheetMetadataLoad(id) {
-        Preconditions.requireNonNull(id, "id");
-
-        console.log("spreadsheetMetadataLoad " + id);
-
-        this.messageSend(
-            this.spreadsheetMetadataApiUrl(id),
-            {
-                method: "GET",
-            },
-            (json) => this.onSpreadsheetMetadata(SpreadsheetMetadata.fromJson(json), true),
-            (e) => this.showError("Unable to load spreadsheet " + id)
-        );
-    }
-
-    /**
-     * If the new metadata is different call the save service otherwise skip.
-     */
-    spreadsheetMetadataSave(metadata, success, failure) {
-        Preconditions.requireInstance(metadata, SpreadsheetMetadata, "metadata");
-        Preconditions.requireFunction(success, "success");
-        Preconditions.requireFunction(failure, "failure");
-
-        if(metadata.equals(this.spreadsheetMetadata())){
-            console.log("saveSpreadsheetMetadata unchanged, save skipped", metadata);
-            success(metadata);
-        }else {
-            console.log("saveSpreadsheetMetadata", metadata);
-
-            this.messageSend(
-                this.spreadsheetMetadataApiUrl(),
-                {
-                    method: "POST",
-                    body: JSON.stringify(metadata.toJson())
-                },
-                (json) => {
-                    const loaded = SpreadsheetMetadata.fromJson(json);
-                    success(loaded);
-                    this.onSpreadsheetMetadata(loaded, false);
-                },
-                failure,
-            );
-        }
-    }
-
-    spreadsheetNameSave(name, success, failure) {
-        Preconditions.requireInstance(name, SpreadsheetName, "spreadsheetName");
-        Preconditions.requireFunction(success, "success");
-        Preconditions.requireFunction(failure, "failure");
-
-        this.spreadsheetMetadataSave(
-            this.state.spreadsheetMetadata.set(SpreadsheetMetadata.SPREADSHEET_NAME, name),
-            (m) => success(m.get(SpreadsheetMetadata.SPREADSHEET_NAME)),
-            failure,
-        );
-    }
-
-    /**
-     * Uses the provided spreadsheetid or falls back to the current {@Link SpreadsheetMetadata} spreadsheet id
-     */
-    spreadsheetMetadataApiUrl(spreadsheetId) {
-        const id = spreadsheetId || this.spreadsheetMetadata().getIgnoringDefaults(SpreadsheetMetadata.SPREADSHEET_ID);
-        if(!id){
-            throw new Error("Missing spreadsheetId parameter and current SpreadsheetMetadata.spreadsheetId");
-        }
-        if(typeof id !== "string"){
-            throw new Error("Expected string spreadsheetId got " + id);
-        }
-        return "/api/spreadsheet/" + id;
-    }
-
-    /**
-     * Handles the response.json which contains a SpreadsheetMetadata. The different flag also indicates
-     * this is loading a new spreadsheet metadata and some extra state fields should be cleared.
-     */
-    onSpreadsheetMetadata(metadata, different) {
-        const state = {
-            spreadsheetId: metadata.getIgnoringDefaults(SpreadsheetMetadata.SPREADSHEET_ID),
-            spreadsheetName: metadata.getIgnoringDefaults(SpreadsheetMetadata.SPREADSHEET_NAME),
-            creatingEmptySpreadsheet: false,
-            spreadsheetMetadata: metadata,
-        }
-
-        if(different){
-            Object.assign(
-                state,
-                {
-                    cells: ImmutableMap.EMPTY,
-                    columnWidths: ImmutableMap.EMPTY,
-                    rowHeights: ImmutableMap.EMPTY,
-                    viewportRange: null, // this will force reloading of all viewport cells
-                }
-            );
-        } else {
-            this.notificationShow(SpreadsheetNotification.success("Spreadsheet metadata saved"));
-        }
-
-        this.setState(state);
-    }
-
-    // VIEWPORT ........................................................................................................
-
-    /**
-     * Accepts {@link SpreadsheetViewport} and requests the {@link SpreadsheetRange} that fill the content.
-     */
-    onViewport(viewport) {
-        console.log("viewport: ", viewport);
-
-        this.messageSend(
-            this.spreadsheetMetadataApiUrl() + "/viewport/" + viewport,
-            {
-                method: "GET"
-            },
-            this.onSpreadsheetRange.bind(this),
-        );
     }
 
     // resizing.........................................................................................................

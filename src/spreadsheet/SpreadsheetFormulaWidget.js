@@ -39,6 +39,19 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetHistoryAwareSta
         };
     }
 
+    componentDidMount() {
+        super.componentDidMount();
+
+        this.onSpreadsheetDeltaRemover = this.props.spreadsheetDeltaCrud.addListener(this.onSpreadsheetDelta.bind(this));
+    }
+
+    componentWillUnmount() {
+        super.componentWillUnmount();
+
+        this.onSpreadsheetDeltaRemover && this.onSpreadsheetDeltaRemover();
+        delete this.onSpreadsheetDeltaRemover;
+    }
+
     stateFromHistoryTokens(historyTokens) {
         const state = this.state || {};
 
@@ -105,8 +118,9 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetHistoryAwareSta
     reloadFormulaText(cellOrLabel, giveFocus) {
         console.log("reloadFormulaText " + cellOrLabel + (giveFocus ? "giveFocus" : ""));
 
-        this.props.messengerCrud.get(
+        this.props.spreadsheetDeltaCrud.get(
             cellOrLabel,
+            {},
             (cellOrLabel, delta) => {
                 const cell = delta.cell(cellOrLabel);
                 const cellReference = cellOrLabel instanceof SpreadsheetLabelName ?
@@ -240,7 +254,7 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetHistoryAwareSta
             cell = new SpreadsheetCell(cellReference, new SpreadsheetFormula(formulaText), TextStyle.EMPTY);
         }
 
-        props.messengerCrud.post(
+        props.spreadsheetDeltaCrud.post(
             cellOrLabel,
             new SpreadsheetDelta(
                 [cell],
@@ -256,10 +270,28 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetHistoryAwareSta
 
         this.setState({"value": formulaText});
     }
+
+    /**
+     * Reload formula text whenever a cell is reloaded.
+     */
+    onSpreadsheetDelta(method, id, delta) {
+        if("GET" === method) {
+            const cellReference = this.state.cellReference;
+            if(cellReference) {
+                const cell = delta.referenceToCellMap().get(cellReference);
+                if(cell) {
+                    this.setState({
+                        value: cell.formula().text(),
+                        reload: false,
+                    });
+                }
+            }
+        }
+    }
 }
 
 SpreadsheetFormulaWidget.propTypes = {
     history: PropTypes.object.isRequired,
-    messengerCrud: PropTypes.instanceOf(SpreadsheetMessengerCrud),
+    spreadsheetDeltaCrud: PropTypes.instanceOf(SpreadsheetMessengerCrud),
     showError: PropTypes.func.isRequired,
 }

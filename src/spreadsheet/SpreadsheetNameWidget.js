@@ -4,14 +4,17 @@ import SpreadsheetButtonTextField from '../widget/SpreadsheetButtonTextField.js'
 import SpreadsheetHistoryHash from "./history/SpreadsheetHistoryHash.js";
 import SpreadsheetHistoryAwareStateWidget from "./history/SpreadsheetHistoryAwareStateWidget.js";
 import SpreadsheetName from "./SpreadsheetName.js";
+import SpreadsheetMessengerCrud from "./message/SpreadsheetMessengerCrud.js";
+import SpreadsheetMetadata from "./meta/SpreadsheetMetadata.js";
 
 /**
  * A wrapper that is a bridge between SpreadsheetMetadata's spreadsheet name and a text field.
  * State<br>
  * <ul>
  * <li>value holds the spreadsheet name as text</li>
- * <li>loaded holds the initial or any loaded value. This value must be valid</li>
+ * // <li>OLD loaded holds the initial or any loaded value. This value must be valid</li>
  * <li>edit true means the name is currently being edited</li>
+ * <li>Holds the original SpreadsheetMetadata including the initial name.</li>
  * </ul>
  */
 export default class SpreadsheetNameWidget extends SpreadsheetHistoryAwareStateWidget {
@@ -21,12 +24,27 @@ export default class SpreadsheetNameWidget extends SpreadsheetHistoryAwareStateW
     }
 
     initialStateFromProps(props) {
-        const value = this.props.value;
+        return {};
+    }
 
-        return {
-            value: value,
-            loaded: value,
-        };
+    componentDidMount() {
+        super.componentDidMount();
+
+        this.spreadsheetMetadataCrudRemover = this.props.spreadsheetMetadataCrud.addListener(this.onSpreadsheetMetadata.bind(this));
+    }
+
+    onSpreadsheetMetadata(method, id, metadata) {
+        this.setState({
+            metadata: metadata,
+            value: metadata.getIgnoringDefaults(SpreadsheetMetadata.SPREADSHEET_NAME),
+        });
+    }
+
+    componentWillUnmount() {
+        super.componentWillUnmount();
+
+        this.spreadsheetMetadataCrudRemover && this.spreadsheetMetadataCrudRemover();
+        delete this.spreadsheetMetadataCrudRemover;
     }
 
     stateFromHistoryTokens(tokens) {
@@ -59,14 +77,14 @@ export default class SpreadsheetNameWidget extends SpreadsheetHistoryAwareStateW
 
     render() {
         const spreadsheetName = this.state.value;
-        const name = (spreadsheetName && spreadsheetName.value()) || "";
+        const value = (spreadsheetName && spreadsheetName.value()) || "";
 
         // TODO add a validator to verify spreadsheetName characters
         return <SpreadsheetButtonTextField ref={this.textField}
-                                           key={name}
+                                           key={value}
                                            id={"spreadsheet-name"}
                                            className={"spreadsheet-name"}
-                                           value={name}
+                                           value={value}
                                            setValue={this.onValue.bind(this)}
                                            setEdit={(edit) => this.onTextFieldEdit(edit)}/>
     }
@@ -76,14 +94,12 @@ export default class SpreadsheetNameWidget extends SpreadsheetHistoryAwareStateW
      */
     onValue(v) {
         try {
-            this.props.setValue(
-                new SpreadsheetName(v),
-                (name) => {
-                    this.setState({
-                        value: name,
-                        loaded: name,
-                    });
-                },
+            const metadata = this.state.metadata;
+
+            this.props.spreadsheetMetadataCrud.post(
+                metadata.get(SpreadsheetMetadata.SPREADSHEET_ID),
+                metadata.set(SpreadsheetMetadata.SPREADSHEET_NAME, new SpreadsheetName(v)),
+                () => {},
                 (e) => {
                     this.resetValueAndShowError(e);
                 }
@@ -98,9 +114,11 @@ export default class SpreadsheetNameWidget extends SpreadsheetHistoryAwareStateW
      * If an invalid spreadsheet name has been entered or saving failures, reload the original {@link SpreadsheetName}.
      */
     resetValueAndShowError(e) {
-        console.log("resetValueAndShowError" + this.state.loaded);
+        const value = this.state.metadata.getIgnoringDefaults(SpreadsheetMetadata.SPREADSHEET_NAME);
+        console.log("resetValueAndShowError" + value);
         this.setState({
-            value: this.state.loaded,
+            //value: this.state.loaded,
+            value: value,
         });
         if(e){
             this.showError(e);
@@ -116,7 +134,6 @@ export default class SpreadsheetNameWidget extends SpreadsheetHistoryAwareStateW
 
 SpreadsheetNameWidget.propTypes = {
     history: PropTypes.object.isRequired,
-    value: PropTypes.object, // might be absent
-    setValue: PropTypes.func.isRequired,
+    spreadsheetMetadataCrud: PropTypes.instanceOf(SpreadsheetMessengerCrud).isRequired,
     showError: PropTypes.func.isRequired,
 }

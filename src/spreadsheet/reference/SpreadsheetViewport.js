@@ -69,6 +69,19 @@ export default class SpreadsheetViewport extends SystemObject {
         return this.heightValue;
     }
 
+    /**
+     * Returns a query parameters map that will be used to load all the cells for the viewport widget.
+     */
+    toQueryStringParameters() {
+        return {
+            home: this.reference(),
+            xOffset: this.xOffset(),
+            yOffset: this.yOffset(),
+            width: this.width(),
+            height: this.height(),
+        };
+    }
+
     toJson() {
         return this.reference() + SEPARATOR + this.xOffset() + SEPARATOR + this.yOffset() + SEPARATOR + this.width() + SEPARATOR + this.height();
     }

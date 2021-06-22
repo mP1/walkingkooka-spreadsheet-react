@@ -715,11 +715,15 @@ context(
             cellGet("C3")
                 .type("{leftarrow}");
 
+            renderWait(50);
+
             hash()
                 .should('match', /.*\/.*\/cell\/B3/);
 
             cellGet("B3")
                 .type("{rightarrow}");
+
+            renderWait(50);
 
             hash()
                 .should('match', /.*\/.*\/cell\/C3/);
@@ -727,12 +731,16 @@ context(
             cellGet("C3")
                 .type("{uparrow}");
 
+            renderWait(50);
+
             hash()
                 .should('match', /.*\/.*\/cell\/C2/);
 
             cellGet("C2")
                 .type("{downarrow}");
 
+            renderWait(50);
+            
             hash()
                 .should('match', /.*\/.*\/cell\/C3/);
         });
@@ -2420,21 +2428,12 @@ context(
         }
 
         /**
-         * Click on the cell and verify it becomes outlined.
+         * Click on the cell and verify it gets focused.
          */
         function cellClick(cellReference) {
             const cell = cellGet(cellReference)
                 .click();
-
-            cellOutlined(cellReference);
-            return cell;
-        }
-
-        function cellOutlined(cellReference) {
-            cellGet(cellReference)
-                .should("have.css", "outline-color", "rgb(0, 0, 0)")
-                .should("have.css", "outline-style", "dotted")
-                .should("have.css", "outline-width", "3px");
+            return cell.should("have.focus");
         }
 
         function cellFormattedTextCheck(cellReference, text) {

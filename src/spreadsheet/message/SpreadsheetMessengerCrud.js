@@ -9,6 +9,18 @@ import SpreadsheetMessenger from "./SpreadsheetMessenger.js";
  */
 export default class SpreadsheetMessengerCrud {
 
+    static toQueryString(parameters) {
+        Preconditions.requireObject(parameters, "parameters");
+
+        return parameters ?
+            "?" +
+            (Object.keys(parameters)
+                    .map(key => key + '=' + parameters[key])
+                    .join('&')
+            ) :
+            "";
+    }
+
     constructor(url,
                 messenger,
                 unmarshall,
@@ -28,14 +40,16 @@ export default class SpreadsheetMessengerCrud {
     /**
      * Accepts an id and attemps to load the value, notifying all listeners on success.
      */
-    get(id, success, failure) {
+    get(id, queryParameters, success, failure) {
         Preconditions.requireNonNull(id, "id");
+        Preconditions.requireObject(queryParameters, "queryParameters");
 
         this.send(
-            id,
+            this.url("GET", id, queryParameters),
             {
                 method: "GET",
             },
+            id,
             success,
             failure,
         );
@@ -48,11 +62,12 @@ export default class SpreadsheetMessengerCrud {
         Preconditions.requireNonNull(value, "value");
 
         this.send(
-            id,
+            this.url("POST", id, {}),
             {
                 method: "POST",
-                body: JSON.stringify(value.toJson()),
+                body: value.toJson ? JSON.stringify(value.toJson()) : value.toString(),
             },
+            id,
             success,
             failure
         );
@@ -65,10 +80,11 @@ export default class SpreadsheetMessengerCrud {
         Preconditions.requireNonNull(id, "id");
 
         this.send(
-            id,
+            this.url("DELETE", id, {}),
             {
                 method: "DELETE",
             },
+            id,
             success,
             failure
         );
@@ -77,11 +93,11 @@ export default class SpreadsheetMessengerCrud {
     /**
      * Shared method by all public methods: get, post, delete, preparing and calling the messenger.
      */
-    send(id, parameters, success, failure) {
+    send(url, parameters, id, success, failure) {
         const method = parameters.method;
 
         this.messenger.send(
-            this.url(method, id),
+            url,
             parameters,
             (json) => {
                 const value = null != json ? this.unmarshall(json) : null;

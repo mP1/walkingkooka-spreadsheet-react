@@ -18,13 +18,27 @@ export default class SpreadsheetHistoryAwareWidget extends React.Component {
     }
 
     componentDidMount() {
-        this.historyUnlisten = this.props.history.listen(
-            (location) => this.onHistoryChange(
-                SpreadsheetHistoryHash.parse(
-                    location.pathname,
+        const history = this.props.history;
+        this.historyUnlisten = history.listen(
+            (location) => {
+                // before firing events, verify the history has is actually valid, if invalid push the fixed
+                const pathname = location.pathname;
+                const tokens = SpreadsheetHistoryHash.parse(
+                    pathname,
                     this.showError.bind(this)
-                )
-            )
+                );
+
+                const merged = SpreadsheetHistoryHash.merge(
+                    tokens,
+                    {}
+                );
+                const updatedPathname = SpreadsheetHistoryHash.join(merged);
+                if(updatedPathname !== history.location.pathname){
+                    history.push(updatedPathname);
+                }
+
+                this.onHistoryChange(tokens);
+            }
         );
     }
 
