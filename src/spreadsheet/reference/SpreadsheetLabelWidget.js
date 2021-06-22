@@ -94,8 +94,8 @@ export default class SpreadsheetLabelWidget extends SpreadsheetHistoryAwareState
         }
     }
 
-    onLabelMappingLoadFailure(error) {
-        this.props.showError(error);
+    onLabelMappingLoadFailure(message, error) {
+        this.props.showError(message, error);
         const state = {};
         this.parseLabel("", state);
         this.parseReference("", state);

@@ -104,9 +104,7 @@ export default class SpreadsheetMessengerCrud {
                 success(id, value);
                 this.listeners.fire(method, id, value);
             },
-            (e) => {
-                failure(e);
-            },
+            failure,
         );
     }
 

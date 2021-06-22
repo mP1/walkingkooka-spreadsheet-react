@@ -133,7 +133,7 @@ export default class SpreadsheetMessenger {
                     success(json);
                 })
                 .catch((e) => {
-                    failure("fetch failed, using " + url + " with " + JSON.stringify(parameters) + "\n" + e);
+                    failure("fetch failed, using " + url + " with " + JSON.stringify(parameters) + "\n" + e, e);
                 }));
     }
 
