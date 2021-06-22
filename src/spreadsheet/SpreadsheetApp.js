@@ -172,7 +172,6 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
             if(id){
                 const metadata = state.spreadsheetMetadata;
                 if(metadata.isEmpty() || !(Equality.safeEquals(id, previousId))){
-                    console.log("@@@different id creating...");
                     console.log("stateSpreadsheetMetadataSpreadsheetId spreadsheetId changed from " + previousId + " to " + id);
 
                     this.spreadsheetMetadataCrud.get(
