@@ -86,7 +86,7 @@ export default class SpreadsheetNameWidget extends SpreadsheetHistoryAwareStateW
                                            className={"spreadsheet-name"}
                                            value={value}
                                            setValue={this.onValue.bind(this)}
-                                           setEdit={(edit) => this.onTextFieldEdit(edit)}/>
+                                           setEdit={this.onTextFieldEdit.bind(this)}/>
     }
 
     /**
@@ -100,9 +100,7 @@ export default class SpreadsheetNameWidget extends SpreadsheetHistoryAwareStateW
                 metadata.get(SpreadsheetMetadata.SPREADSHEET_ID),
                 metadata.set(SpreadsheetMetadata.SPREADSHEET_NAME, new SpreadsheetName(v)),
                 () => {},
-                (message, error) => {
-                    this.resetValueAndShowError(message, error);
-                }
+                this.resetValueAndShowError.bind(this)
             );
         } catch(e) {
             this.resetValueAndShowError(e.message);
@@ -117,10 +115,9 @@ export default class SpreadsheetNameWidget extends SpreadsheetHistoryAwareStateW
         const value = this.state.metadata.getIgnoringDefaults(SpreadsheetMetadata.SPREADSHEET_NAME);
         console.log("resetValueAndShowError" + value);
         this.setState({
-            //value: this.state.loaded,
             value: value,
         });
-        if(message, error){
+        if(message || error){
             this.showError(message, error);
         }
     }
