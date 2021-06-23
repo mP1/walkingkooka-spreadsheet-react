@@ -1,6 +1,6 @@
-import SpreadsheetViewport from "./SpreadsheetViewport";
-import SpreadsheetCellReference from "./SpreadsheetCellReference";
-import systemObjectTesting from "../../SystemObjectTesting.js";
+import SpreadsheetViewport from "./SpreadsheetViewport.js";
+import SpreadsheetCellReference from "./reference/SpreadsheetCellReference.js";
+import systemObjectTesting from "../SystemObjectTesting.js";
 
 function reference() {
     return SpreadsheetCellReference.fromJson("B2");

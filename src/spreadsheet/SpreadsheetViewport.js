@@ -1,9 +1,9 @@
 /**
  * A pixel rectangle marks a region with one or more cells.
  */
-import Preconditions from "../../Preconditions.js";
-import SpreadsheetCellReference from "./SpreadsheetCellReference";
-import SystemObject from "../../SystemObject.js";
+import Preconditions from "../Preconditions.js";
+import SpreadsheetCellReference from "./reference/SpreadsheetCellReference.js";
+import SystemObject from "../SystemObject.js";
 
 const SEPARATOR = ":";
 const TYPE_NAME = "spreadsheet-viewport";
