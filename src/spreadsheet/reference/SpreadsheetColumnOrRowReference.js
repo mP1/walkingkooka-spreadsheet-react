@@ -59,7 +59,7 @@ export default class SpreadsheetColumnOrRowReference extends SystemObject {
     /**
      * May be used to compare a column with another column or row with another row ignoring the kind property.
      */
-    compare(other) {
+    compareTo(other) {
         Preconditions.requireInstance(other, this.constructor, "other");
 
         return this.value() - other.value();
