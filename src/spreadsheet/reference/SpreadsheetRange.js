@@ -78,6 +78,24 @@ export default class SpreadsheetRange extends SpreadsheetExpressionReference {
         return this.endValue;
     }
 
+    /**
+     * Tests if the given {@link SpreadsheetCellReference} is within this range.
+     */
+    test(cellReference) {
+        Preconditions.requireInstance(cellReference, SpreadsheetCellReference, "cellReference");
+
+        const row = cellReference.row();
+        const column = cellReference.column();
+
+        const begin = this.begin();
+        const end = this.end();
+
+        return row.compareTo(begin.row()) >= 0 &&
+            column.compareTo(begin.column()) >= 0 &&
+            row.compareTo(end.row()) <= 0 &&
+            column.compareTo(end.column()) <= 0;
+    }
+
     toJson() {
         const begin = this.begin();
         const end = this.end();
