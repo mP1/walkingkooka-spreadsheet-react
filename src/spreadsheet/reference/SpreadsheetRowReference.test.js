@@ -220,37 +220,37 @@ test("addSaturated overflow", () => {
     expect(reference.addSaturated(delta)).toStrictEqual(new SpreadsheetRowReference(SpreadsheetRowReference.MAX - 1, kind));
 });
 
-// compare..............................................................................................................
+// compareTo..............................................................................................................
 
-test("compare missing fails", () => {
-    expect(() => new SpreadsheetRowReference(1, SpreadsheetReferenceKind.RELATIVE).compare()).toThrow("Missing other");
+test("compareTo missing fails", () => {
+    expect(() => new SpreadsheetRowReference(1, SpreadsheetReferenceKind.RELATIVE).compareTo()).toThrow("Missing other");
 });
 
-test("compare SpreadsheetColumnReference fails", () => {
-    expect(() => new SpreadsheetRowReference(1, SpreadsheetReferenceKind.RELATIVE).compare(new SpreadsheetColumnReference(1, SpreadsheetReferenceKind.RELATIVE))).toThrow("Expected SpreadsheetRowReference other got B");
+test("compareTo SpreadsheetColumnReference fails", () => {
+    expect(() => new SpreadsheetRowReference(1, SpreadsheetReferenceKind.RELATIVE).compareTo(new SpreadsheetColumnReference(1, SpreadsheetReferenceKind.RELATIVE))).toThrow("Expected SpreadsheetRowReference other got B");
 });
 
-test("compare equals", () => {
+test("compareTo equals", () => {
     const value = 123;
     const kind = SpreadsheetReferenceKind.ABSOLUTE;
-    expect(new SpreadsheetRowReference(value, kind).compare(new SpreadsheetRowReference(value, kind))).toStrictEqual(0);
+    expect(new SpreadsheetRowReference(value, kind).compareTo(new SpreadsheetRowReference(value, kind))).toStrictEqual(0);
 });
 
-test("compare equals different kind", () => {
+test("compareTo equals different kind", () => {
     const value = 123;
-    expect(new SpreadsheetRowReference(value, SpreadsheetReferenceKind.ABSOLUTE).compare(new SpreadsheetRowReference(value, SpreadsheetReferenceKind.RELATIVE))).toStrictEqual(0);
+    expect(new SpreadsheetRowReference(value, SpreadsheetReferenceKind.ABSOLUTE).compareTo(new SpreadsheetRowReference(value, SpreadsheetReferenceKind.RELATIVE))).toStrictEqual(0);
 });
 
-test("compare less", () => {
-    const value = 123;
-    const kind = SpreadsheetReferenceKind.ABSOLUTE;
-    expect(new SpreadsheetRowReference(value - 1, kind).compare(new SpreadsheetRowReference(value, kind))).toBeLessThan(0);
-});
-
-test("compare less #2", () => {
+test("compareTo less", () => {
     const value = 123;
     const kind = SpreadsheetReferenceKind.ABSOLUTE;
-    expect(new SpreadsheetRowReference(value - 2, kind).compare(new SpreadsheetRowReference(value, kind))).toBeLessThan(0);
+    expect(new SpreadsheetRowReference(value - 1, kind).compareTo(new SpreadsheetRowReference(value, kind))).toBeLessThan(0);
+});
+
+test("compareTo less #2", () => {
+    const value = 123;
+    const kind = SpreadsheetReferenceKind.ABSOLUTE;
+    expect(new SpreadsheetRowReference(value - 2, kind).compareTo(new SpreadsheetRowReference(value, kind))).toBeLessThan(0);
 });
 
 // toJson...............................................................................................................
