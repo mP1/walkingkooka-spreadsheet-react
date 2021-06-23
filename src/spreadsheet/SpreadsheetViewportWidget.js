@@ -140,10 +140,13 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
             cellOrLabel: label,
             spreadsheetMetadata: this.state.spreadsheetMetadata.set(SpreadsheetMetadata.CELL, cell),
         });
-        const failure = () => this.setState({
-            cell: null,
-            cellOrLabel: null,
-        });
+        const failure = (message, error) => {
+            this.setState({
+                cell: null,
+                cellOrLabel: null,
+            });
+            this.props.showError(message, error);
+        }
 
         this.props.messenger.send(
             this.similaritiesUrl(label.toString(), 1),
