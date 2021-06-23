@@ -252,6 +252,39 @@ test("addSaturated overflow", () => {
     expect(reference.addSaturated(delta)).toStrictEqual(new SpreadsheetColumnReference(SpreadsheetColumnReference.MAX - 1, kind));
 });
 
+// compare..............................................................................................................
+
+test("compare missing fails", () => {
+    expect(() => new SpreadsheetColumnReference(1, SpreadsheetReferenceKind.RELATIVE).compare()).toThrow("Missing other");
+});
+
+test("compare SpreadsheetRowReference fails", () => {
+    expect(() => new SpreadsheetColumnReference(1, SpreadsheetReferenceKind.RELATIVE).compare(new SpreadsheetRowReference(1, SpreadsheetReferenceKind.RELATIVE))).toThrow("Expected SpreadsheetColumnReference other got 2");
+});
+
+test("compare equals", () => {
+    const value = 123;
+    const kind = SpreadsheetReferenceKind.ABSOLUTE;
+    expect(new SpreadsheetColumnReference(value, kind).compare(new SpreadsheetColumnReference(value, kind))).toStrictEqual(0);
+});
+
+test("compare equals different kind", () => {
+    const value = 123;
+    expect(new SpreadsheetColumnReference(value, SpreadsheetReferenceKind.ABSOLUTE).compare(new SpreadsheetColumnReference(value, SpreadsheetReferenceKind.RELATIVE))).toStrictEqual(0);
+});
+
+test("compare less", () => {
+    const value = 123;
+    const kind = SpreadsheetReferenceKind.ABSOLUTE;
+    expect(new SpreadsheetColumnReference(value - 1, kind).compare(new SpreadsheetColumnReference(value, kind))).toBeLessThan(0);
+});
+
+test("compare less #2", () => {
+    const value = 123;
+    const kind = SpreadsheetReferenceKind.ABSOLUTE;
+    expect(new SpreadsheetColumnReference(value - 2, kind).compare(new SpreadsheetColumnReference(value, kind))).toBeLessThan(0);
+});
+
 // toJson...............................................................................................................
 
 test("toJson B", () => {
