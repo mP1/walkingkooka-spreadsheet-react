@@ -21,7 +21,6 @@ import SpreadsheetLabelWidget from "./reference/SpreadsheetLabelWidget.js";
 import SpreadsheetMetadata from "./meta/SpreadsheetMetadata.js";
 import SpreadsheetMessenger from "./message/SpreadsheetMessenger.js";
 import SpreadsheetMessengerCrud from "./message/SpreadsheetMessengerCrud.js";
-import SpreadsheetName from "./SpreadsheetName.js";
 import SpreadsheetNameWidget from "./SpreadsheetNameWidget.js";
 import SpreadsheetNavigateAutocompleteWidget from "./reference/SpreadsheetNavigateAutocompleteWidget.js";
 import SpreadsheetNavigateLinkWidget from "./reference/SpreadsheetNavigateLinkWidget.js";
