@@ -50,7 +50,7 @@ export default class SpreadsheetNavigateLinkWidget extends SpreadsheetHistoryAwa
                          paddingTop: "2px",
                          paddingBottom: "2px",
                      }}>{
-            cell ? cell.toString() : ""
+            cell ? cell.toString() : "Go"
         }</Link>
     }
 }
