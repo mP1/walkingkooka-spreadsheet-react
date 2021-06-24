@@ -747,91 +747,91 @@ SystemObject.register(TYPE_NAME, TextStyle.fromJson);
 
 // force each class to call SystemObject.register
 // eslint-disable-next-line no-unused-expressions
-BorderCollapse.prototype;
+BorderCollapse.prototype; // lgtm
 
 // eslint-disable-next-line no-unused-expressions
-BorderStyle.prototype;
+BorderStyle.prototype; // lgtm
 
 // eslint-disable-next-line no-unused-expressions
-Direction.prototype;
+Direction.prototype; // lgtm
 
 // eslint-disable-next-line no-unused-expressions
-FontFamily.prototype;
+FontFamily.prototype; // lgtm
 
 // eslint-disable-next-line no-unused-expressions
-FontKerning.prototype;
+FontKerning.prototype; // lgtm
 
 // eslint-disable-next-line no-unused-expressions
-FontSize.prototype;
+FontSize.prototype; // lgtm
 
 // eslint-disable-next-line no-unused-expressions
-FontStretch.prototype;
+FontStretch.prototype; // lgtm
 
 // eslint-disable-next-line no-unused-expressions
-FontStyle.prototype;
+FontStyle.prototype; // lgtm
 
 // eslint-disable-next-line no-unused-expressions
-FontVariant.prototype;
+FontVariant.prototype; // lgtm
 
 // eslint-disable-next-line no-unused-expressions
-FontWeight.prototype;
+FontWeight.prototype; // lgtm
 
 // eslint-disable-next-line no-unused-expressions
-HangingPunctuation.prototype;
+HangingPunctuation.prototype; // lgtm
 
 // eslint-disable-next-line no-unused-expressions
-Hyphens.prototype;
+Hyphens.prototype; // lgtm
 
 // eslint-disable-next-line no-unused-expressions
-Length.prototype;
+Length.prototype; // lgtm
 
 // eslint-disable-next-line no-unused-expressions
-ListStylePosition.prototype;
+ListStylePosition.prototype; // lgtm
 
 // eslint-disable-next-line no-unused-expressions
-ListStyleType.prototype;
+ListStyleType.prototype; // lgtm
 
 // eslint-disable-next-line no-unused-expressions
-OutlineStyle.prototype;
+OutlineStyle.prototype; // lgtm
 
 // eslint-disable-next-line no-unused-expressions
-Overflow.prototype;
+Overflow.prototype; // lgtm
 
 // eslint-disable-next-line no-unused-expressions
-PixelLength.prototype;
+PixelLength.prototype; // lgtm
 
 // eslint-disable-next-line no-unused-expressions
-TextAlign.prototype;
+TextAlign.prototype; // lgtm
 
 // eslint-disable-next-line no-unused-expressions
-TextDecorationLine.prototype;
+TextDecorationLine.prototype; // lgtm
 
 // eslint-disable-next-line no-unused-expressions
-TextDecorationStyle.prototype;
+TextDecorationStyle.prototype; // lgtm
 
 // eslint-disable-next-line no-unused-expressions
-TextJustify.prototype;
+TextJustify.prototype; // lgtm
 
 // eslint-disable-next-line no-unused-expressions
-TextTransform.prototype;
+TextTransform.prototype; // lgtm
 
 // eslint-disable-next-line no-unused-expressions
-TextWhitespace.prototype;
+TextWhitespace.prototype; // lgtm
 
 // eslint-disable-next-line no-unused-expressions
-TextWrapping.prototype;
+TextWrapping.prototype; // lgtm
 
 // eslint-disable-next-line no-unused-expressions
-VerticalAlign.prototype;
+VerticalAlign.prototype; // lgtm
 
 // eslint-disable-next-line no-unused-expressions
-Visibility.prototype;
+Visibility.prototype; // lgtm
 
 // eslint-disable-next-line no-unused-expressions
-WordBreak.prototype;
+WordBreak.prototype; // lgtm
 
 // eslint-disable-next-line no-unused-expressions
-WordWrap.prototype;
+WordWrap.prototype; // lgtm
 
 // eslint-disable-next-line no-unused-expressions
-WritingMode.prototype;
+WritingMode.prototype; // lgtm

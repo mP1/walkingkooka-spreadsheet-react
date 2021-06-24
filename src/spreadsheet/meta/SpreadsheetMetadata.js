@@ -823,8 +823,8 @@ SystemObject.register(TYPE_NAME, SpreadsheetMetadata.fromJson);
 
 // force each class to call SystemObject.register
 // eslint-disable-next-line no-unused-expressions
-LocalDate.prototype;
+LocalDate.prototype; // lgtm
 // eslint-disable-next-line no-unused-expressions
-LocalDateTime.prototype;
+LocalDateTime.prototype; // lgtm
 // eslint-disable-next-line no-unused-expressions
-LocalTime.prototype;
+LocalTime.prototype; // lgtm
