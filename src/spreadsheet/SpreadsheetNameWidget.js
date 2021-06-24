@@ -11,10 +11,9 @@ import SpreadsheetMetadata from "./meta/SpreadsheetMetadata.js";
  * A wrapper that is a bridge between SpreadsheetMetadata's spreadsheet name and a text field.
  * State<br>
  * <ul>
- * <li>value holds the spreadsheet name as text</li>
- * // <li>OLD loaded holds the initial or any loaded value. This value must be valid</li>
- * <li>edit true means the name is currently being edited</li>
- * <li>Holds the original SpreadsheetMetadata including the initial name.</li>
+ * <li>String value holds the spreadsheet name as text</li>
+ * <li>boolean edit true means the name is currently being edited</li>
+ * <li>SpreadsheetMetadata metadata: Holds the initial value which is used when reset</li>
  * </ul>
  */
 export default class SpreadsheetNameWidget extends SpreadsheetHistoryAwareStateWidget {
