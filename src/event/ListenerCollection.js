@@ -14,8 +14,8 @@ export default class ListenerCollection {
 
         this.listeners.push(listener);
         return () => {
-            return this.listeners.splice(this.listeners.findIndex(listener), 1);
-        }
+            this.listeners.splice(this.listeners.findIndex(listener), 1);
+        };
     }
 
     /**
