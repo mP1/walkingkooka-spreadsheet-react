@@ -127,7 +127,7 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetHistoryAwareSta
                     delta.cellReference(cellOrLabel) :
                     cellOrLabel;
                 const formulaText = cell ? cell.formula().text() : "";
-                console.log("reloadFormulaText latest formulaText for " + cellOrLabel + " is " + CharSequences.quoteAndEscape(formulaText));
+                console.log("loaded formulaText for " + cellOrLabel + " is " + CharSequences.quoteAndEscape(formulaText));
 
                 this.setState({
                     cell: cell,
@@ -136,6 +136,8 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetHistoryAwareSta
                     value: formulaText,
                     reload: false,
                 });
+
+                this.input.current.value =formulaText;
 
                 giveFocus && this.giveInputFocus();
             },
@@ -158,18 +160,18 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetHistoryAwareSta
 
     render() {
         const state = this.state;
-        const {cellOrLabel, edit, value} = state;
+        const {edit, value} = state;
 
         console.log("render " + (!edit ? "disabled" : "enabled") + " formula: \"" + (value || "") + "\"", state);
 
         return (
             <TextField ref={this.textField}
-                       key={[cellOrLabel, value]}
                        id={"formula-TextField"}
-                       defaultValue={value}
+                       value={value}
                        disabled={!edit}
                        onBlur={this.onBlur.bind(this)}
                        onFocus={this.onFocus.bind(this)}
+                       onChange={this.onChange.bind(this)}
                        onKeyDown={this.onKeyDown.bind(this)}
                        inputProps={{
                            maxLength: 8192,
@@ -189,26 +191,24 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetHistoryAwareSta
      * Remove the formula portion of history hash
      */
     onBlur(e) {
-        this.updateFormulaHash("onBlur", false);
+        this.setStateFocused("onBlur", false);
     }
 
     /**
      * Add the formula portion to the history hash
      */
     onFocus(e) {
-        this.updateFormulaHash("onFocus", true);
+        this.setStateFocused("onFocus", true);
     }
 
-    updateFormulaHash(eventName, focused) {
-        console.log("updateFormulaHash " + eventName + " focused: " + focused);
-        const tokens = {};
-        tokens[SpreadsheetHistoryHash.CELL_FORMULA] = focused;
-        this.historyParseMergeAndPush(tokens);
+    setStateFocused(eventName, focused) {
+        console.log("setStateFocused " + eventName + " focused: " + focused);
 
         this.setState({
             focused: focused,
+            reload: focused,
             giveFocus: false,
-        })
+        });
     }
 
     /**
@@ -240,11 +240,14 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetHistoryAwareSta
      * ENTER saves the formula content.
      */
     onEnterKey(e) {
+        e.preventDefault();
         const formulaText = e.target.value;
 
         const props = this.props;
         const state = this.state;
         const {cellOrLabel, cellReference} = state;
+
+        console.log("saving formula for " + cellOrLabel + " to " + CharSequences.quoteAndEscape(formulaText));
 
         var cell = state.cell;
         if(cell){
@@ -269,6 +272,12 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetHistoryAwareSta
         );
 
         this.setState({"value": formulaText});
+    }
+
+    onChange(e) {
+        this.setState({
+            value: e.target.value,
+        });
     }
 
     /**
