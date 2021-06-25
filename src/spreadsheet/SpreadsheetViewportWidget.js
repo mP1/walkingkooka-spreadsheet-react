@@ -114,24 +114,9 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
     }
 
     stateFromHistoryTokens(tokens) {
-        const cellOrLabel = tokens[SpreadsheetHistoryHash.CELL];
-
-        var cell;
-        if(cellOrLabel instanceof SpreadsheetLabelName){
-            this.resolveLabelToCell(cellOrLabel);
-        }
-        if(cellOrLabel instanceof SpreadsheetCellReference){
-            cell = cellOrLabel;
-        }
-
-        const state = this.state;
-        const metadata = (state && state.spreadsheetMetadata) || SpreadsheetMetadata.EMPTY;
-
         return {
-            cell: cell,
-            cellOrLabel: cellOrLabel,
+            cellOrLabel: tokens[SpreadsheetHistoryHash.CELL],
             formula: tokens[SpreadsheetHistoryHash.CELL_FORMULA],
-            spreadsheetMetadata: cell ? metadata.set(SpreadsheetMetadata.CELL, cell) : metadata.remove(SpreadsheetMetadata.CELL),
         };
     }
 
@@ -201,6 +186,8 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
 
         const viewportTable = this.viewportTable.current;
 
+        let newState = {};
+
         if(viewportTable){
             const viewportCell = metadata.getIgnoringDefaults(SpreadsheetMetadata.VIEWPORT_CELL);
             
@@ -224,11 +211,16 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
 
             const cellOrLabelOld = prevState.cellOrLabel;
             const cellOrLabelNew = state.cellOrLabel;
+            const cellOld = prevState.cell;
+            const cellNew = state.cell;
 
             if(!Equality.safeEquals(cellOrLabelOld, cellOrLabelNew)){
-                if(!state.formula){
-                    console.log("Missing " + SpreadsheetHistoryHash.CELL_FORMULA + " token giving focus to cell..." + cellOrLabelNew);
-                    this.giveFocus(cellOrLabelNew);
+                if(cellOrLabelNew instanceof SpreadsheetLabelName) {
+                    this.resolveLabelToCell(cellOrLabelNew); // eventually updates state.cell
+                } else {
+                    newState = {
+                        cell: cellOrLabelNew,
+                    };
                 }
             }
 
@@ -236,17 +228,28 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
             if(state.focused){
                 historyTokens[SpreadsheetHistoryHash.CELL_FORMULA] = null;
             }
+
+            if(!Equality.safeEquals(cellNew, cellOld)) {
+                if(!state.formula){
+                    console.log("Missing " + SpreadsheetHistoryHash.CELL_FORMULA + " token giving focus to cell..." + cellNew);
+                    this.giveFocus(cellNew);
+                }
+            }
         }
 
         // clear caches if spreadsheet-id changed.
         if(previousMetadata){
             if(!Equality.safeEquals(metadata.getIgnoringDefaults(SpreadsheetMetadata.SPREADSHEET_ID), previousMetadata.getIgnoringDefaults(SpreadsheetMetadata.SPREADSHEET_ID))){
-                this.setState({
+                newState = {
                     cells: ImmutableMap.EMPTY,
                     columnWidths: ImmutableMap.EMPTY,
                     rowHeights: ImmutableMap.EMPTY,
-                });
+                }
             }
+        }
+
+        if(newState) {
+            this.setState(newState);
         }
 
         // save the updated metadata....................................................................................
