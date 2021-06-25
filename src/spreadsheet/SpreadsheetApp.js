@@ -395,7 +395,7 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
      */
     similaritiesUrl(text, count) {
         Preconditions.requireText(text, "text");
-        Preconditions.requireNumber(count, "count"); // TODO https://github.com/mP1/walkingkooka-spreadsheet-react/issues/854 Preconditions.requirePositiveNumber
+        Preconditions.requirePositiveNumber(count, "count");
 
         return this.spreadsheetMetadataApiUrl() + "/cell-reference/" + encodeURI(text) + "?count=" + count;
     }
