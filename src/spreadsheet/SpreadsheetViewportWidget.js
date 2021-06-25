@@ -136,7 +136,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
     }
 
     /**
-     * Invokes the labelToCell function to resolve the label to a cell reference.
+     * Queries the server to resolve a label to a cell reference.
      */
     resolveLabelToCell(label) {
         const props = this.props;
