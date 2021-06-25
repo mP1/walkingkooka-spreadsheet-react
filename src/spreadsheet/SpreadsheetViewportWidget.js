@@ -70,8 +70,9 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
     componentDidMount() {
         super.componentDidMount();
 
-        this.onSpreadsheetDeltaRemover = this.props.spreadsheetDeltaCrud.addListener(this.onSpreadsheetDelta.bind(this));
-        this.onSpreadsheetMetadataRemover = this.props.spreadsheetMetadataCrud.addListener(this.onSpreadsheetMetadata.bind(this));
+        const props = this.props;
+        this.onSpreadsheetDeltaRemover = props.spreadsheetDeltaCrud.addListener(this.onSpreadsheetDelta.bind(this));
+        this.onSpreadsheetMetadataRemover = props.spreadsheetMetadataCrud.addListener(this.onSpreadsheetMetadata.bind(this));
     }
 
     onSpreadsheetDelta(method, id, delta) {
@@ -123,7 +124,8 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
             cell = cellOrLabel;
         }
 
-        const metadata = (this.state && this.state.spreadsheetMetadata) || SpreadsheetMetadata.EMPTY;
+        const state = this.state;
+        const metadata = (state && state.spreadsheetMetadata) || SpreadsheetMetadata.EMPTY;
 
         return {
             cell: cell,
@@ -137,6 +139,8 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
      * Invokes the labelToCell function to resolve the label to a cell reference.
      */
     resolveLabelToCell(label) {
+        const props = this.props;
+
         const success = (cell) => this.setState({
             cell: cell,
             cellOrLabel: label,
@@ -147,10 +151,10 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
                 cell: null,
                 cellOrLabel: null,
             });
-            this.props.showError(message, error);
+            props.showError(message, error);
         }
 
-        this.props.messenger.send(
+        props.messenger.send(
             this.similaritiesUrl(label.toString(), 1),
             {
                 method: "GET",
@@ -189,25 +193,22 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
      * If the history cell changes and formula token is missing give focus.
      */
     historyTokensFromState(prevState) {
-        const state = this.state;
-        const cellOrLabelOld = prevState.cellOrLabel;
-        const cellOrLabelNew = state.cellOrLabel;
+        const historyTokens = {};
 
+        const state = this.state;
         const metadata = state.spreadsheetMetadata;
         const previousMetadata = prevState.spreadsheetMetadata;
-
-        const historyTokens = {};
 
         const viewportTable = this.viewportTable.current;
 
         if(viewportTable){
             const viewportCell = metadata.getIgnoringDefaults(SpreadsheetMetadata.VIEWPORT_CELL);
-            const width = viewportTable.offsetWidth;
-            const height = viewportTable.offsetHeight;
-
-            const prevDimensions = prevState.dimensions;
-
+            
             if(viewportCell){
+                const width = viewportTable.offsetWidth;
+                const height = viewportTable.offsetHeight;
+                const prevDimensions = prevState.dimensions;
+
                 if(metadata.shouldUpdateViewport(previousMetadata) || (width > prevDimensions.width || height > prevDimensions.height)){
                     this.fireViewportResize(
                         new SpreadsheetViewport(
@@ -220,6 +221,9 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
                     );
                 }
             }
+
+            const cellOrLabelOld = prevState.cellOrLabel;
+            const cellOrLabelNew = state.cellOrLabel;
 
             if(!Equality.safeEquals(cellOrLabelOld, cellOrLabelNew)){
                 if(!state.formula){
@@ -260,12 +264,13 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
     }
 
     fireViewportResize(viewport) {
-        this.props.spreadsheetDeltaCrud.get(
+        const props = this.props;
+        props.spreadsheetDeltaCrud.get(
             "*",
             viewport.toQueryStringParameters(),
             () => {
             },
-            this.props.showError
+            props.showError
         );
     }
 
