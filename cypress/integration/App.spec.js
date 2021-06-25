@@ -62,9 +62,7 @@ context(
 
             // type the new name in
             spreadsheetName()
-                .type("{selectall}")
-                .type("UpdatedSpreadsheetName456")
-                .type("{esc}");
+                .type("{selectall}UpdatedSpreadsheetName456{esc}");
 
             renderWait();
 
@@ -82,8 +80,7 @@ context(
 
             // type the new name in
             spreadsheetName()
-                .type("{selectall}")
-                .type("UpdatedSpreadsheetName456")
+                .type("{selectall}UpdatedSpreadsheetName456")
                 .blur();
 
             renderWait();
@@ -102,9 +99,7 @@ context(
 
             // type the new name in
             spreadsheetName()
-                .type("{selectall}")
-                .type("{backspace}")
-                .type("{enter}");
+                .type("{selectall}{backspace}{enter}");
 
             renderWait();
 
@@ -122,9 +117,7 @@ context(
 
             // type the new name in
             spreadsheetName()
-                .type("{selectall}")
-                .type(updatedSpreadsheetName)
-                .type("{enter}");
+                .type("{selectall}" + updatedSpreadsheetName + "{enter}");
 
             renderWait();
 
@@ -617,8 +610,7 @@ context(
             hash().should('match', /.*\/Untitled\/cell\/B2/)
 
             formulaText()
-                .type("=1+2+3")
-                .type("{enter}");
+                .type("=1+2+3{enter}");
 
             hash()
                 .should('match', /.*\/Untitled\/cell\/B2\/formula/);
@@ -632,14 +624,12 @@ context(
             cellClick("C3");
 
             formulaText()
-                .type("=1+2+3")
-                .type("{enter}");
+                .type("=1+2+3{enter}");
 
             cellClick("D4");
 
             formulaText()
-                .type("=C3+10")
-                .type("{enter}");
+                .type("=C3+10{enter}");
 
             cellFormattedTextCheck("D4", "16.");
         });
@@ -650,8 +640,7 @@ context(
             cellClick("C3");
 
             formulaText()
-                .type("=1+2+3")
-                .type("{enter}");
+                .type("=1+2+3{enter}");
 
             cy.window()
                 .then(function(win) {
@@ -662,8 +651,7 @@ context(
             renderWait();
 
             formulaText()
-                .type("=4+5")
-                .type("{enter}");
+                .type("=4+5{enter}");
 
             cellFormattedTextCheck("D4", "9.");
         });
@@ -1130,8 +1118,7 @@ context(
             cellClick("E5");
 
             formulaText()
-                .type("=1+2+3")
-                .type("{enter}");
+                .type("=1+2+3{enter}");
 
             hashEnter("/");
 
@@ -1150,8 +1137,7 @@ context(
                     cellClick("F6");
 
                     formulaText()
-                        .type("=1+2+3")
-                        .type("{enter}");
+                        .type("=1+2+3{enter}");
                     
                     spreadsheetEmpty();
 
@@ -1175,8 +1161,7 @@ context(
                     cellClick("F6");
 
                     formulaText()
-                        .type("=1+2+3")
-                        .type("{enter}");
+                        .type("=1+2+3{enter}");
 
                     // reload previous spreadsheet and verify viewport reloaded
                     hashEnter(nonEmptySpreadsheetHash);
@@ -1344,18 +1329,15 @@ context(
                     cellClick(a1);
 
                     formulaText()
-                        .type(a1Formula, FORCE_TRUE)
-                        .type("{enter}", FORCE_TRUE);
+                        .type(a1Formula + "{enter}", FORCE_TRUE);
                 }
 
                 const textFieldId = "#settings-spreadsheet-metadata-" + property + "-TextField";
 
-                cy.get(textFieldId).then((input)=> {
+                cy.get(textFieldId).then((input) => {
                     // type text and hit ENTER
                     cy.get(textFieldId)
-                        .type("{selectall}")
-                        .type(text)
-                        .type("{enter}");
+                        .type("{selectall}" + text + "{enter}");
 
                     cy.get(textFieldId)
                         .should("have.value", text);
@@ -1371,8 +1353,7 @@ context(
 
                     // restore original textField value.
                     cy.get(textFieldId)
-                        .type("{selectall}")
-                        .type(input.text() + "{enter}");
+                        .type("{selectall}" + input.text() + "{enter}");
 
                     // click default button...
                     const buttonId = "#settings-spreadsheet-metadata-" + property + "-default-Button";
@@ -1395,8 +1376,7 @@ context(
 
                     // type text and blur
                     cy.get(textFieldId)
-                        .type("{selectall}")
-                        .type(text)
+                        .type("{selectall}" + text)
                         .blur();
 
                     cy.get(textFieldId)
@@ -1413,9 +1393,7 @@ context(
 
                     // type text and blur
                     cy.get(textFieldId)
-                        .type("{selectall}")
-                        .type("XYZ")
-                        .type("{Esc}")
+                        .type("{selectall}XYZ{Esc}")
 
                     cy.get(textFieldId)
                         .should("have.value", text);
@@ -1442,8 +1420,7 @@ context(
                     cellClick(a1);
 
                     formulaText()
-                        .type(a1Formula, FORCE_TRUE)
-                        .type("{enter}", FORCE_TRUE);
+                        .type(a1Formula +"{enter}", FORCE_TRUE);
                 }
 
                 const sliderId = "#settings-spreadsheet-metadata-" + property + "-Slider";
@@ -1478,38 +1455,26 @@ context(
                 switch(property) {
                     case SpreadsheetMetadata.DEFAULT_YEAR:
                         cy.get(dateParsePatternsId)
-                            .type("{selectall}")
-                            .type("dd:mm")
-                            .type("{enter}")
+                            .type("{selectall}dd:mm{enter}")
                             .blur();
                         cy.get(dateFormatPatternId)
-                            .type("{selectall}")
-                            .type("yyyy/mm/dd")
-                            .type("{enter}")
+                            .type("{selectall}yyyy/mm/dd{enter}")
                             .blur();
 
                         cy.get(dateFormatPatternId)
-                            .type("{selectall}")
-                            .type("yyyy/mm/dd")
-                            .type("{enter}")
+                            .type("{selectall}yyyy/mm/dd{enter}")
                             .blur();
                         break;
                     case SpreadsheetMetadata.TWO_DIGIT_YEAR:
                         cy.get(dateParsePatternsId)
-                            .type("{selectall}")
-                            .type("yy/mm/dd")
-                            .type("{enter}")
+                            .type("{selectall}yy/mm/dd{enter}")
                             .blur();
                         cy.get(dateFormatPatternId)
-                            .type("{selectall}")
-                            .type("yyyy/mm/dd")
-                            .type("{enter}")
+                            .type("{selectall}yyyy/mm/dd{enter}")
                             .blur();
 
                         cy.get(dateFormatPatternId)
-                            .type("{selectall}")
-                            .type("yyyy/mm/dd")
-                            .type("{enter}")
+                            .type("{selectall}yyyy/mm/dd{enter}")
                             .blur();
                         break;
                     default:
@@ -1522,8 +1487,7 @@ context(
                     cellClick(a1);
 
                     formulaText()
-                        .type(a1Formula, FORCE_TRUE)
-                        .type("{enter}", FORCE_TRUE);
+                        .type(a1Formula +"{enter}", FORCE_TRUE);
                 }
 
                 const sliderId = "#settings-spreadsheet-metadata-" + property + "-Slider";
@@ -1549,9 +1513,7 @@ context(
                     console.log("value=" + JSON.stringify(v) + " i=" + i);
 
                     cy.get(numberTextFieldId)
-                        .type("{selectall}")
-                        .type(v.value)
-                        .type("{enter}")
+                        .type("{selectall}" + v.value+ "{enter}")
                         .click();
 
                     cy.get(sliderId + " *[data-index=\"" + i + "\"][aria-hidden=\"true\"]")
@@ -1582,8 +1544,7 @@ context(
                     cellClick(a1);
 
                     formulaText()
-                        .type(a1Formula, FORCE_TRUE)
-                        .type("{enter}", FORCE_TRUE);
+                        .type(a1Formula +"{enter}", FORCE_TRUE);
                 }
 
                 const dropDownListId = "#settings-spreadsheet-metadata-" + property + "-DropDownList";
@@ -1895,8 +1856,7 @@ context(
 
                 const textFieldId1 = "#settings-spreadsheet-metadata-" + property1 + "-TextField";
                 cy.get(textFieldId1)
-                    .type("{selectall}")
-                    .type(text1)
+                    .type("{selectall}" + text1)
                     .blur();
 
                 cy.get(textFieldId1)
@@ -1904,8 +1864,7 @@ context(
 
                 const textFieldId2 = "#settings-spreadsheet-metadata-" + property2 + "-TextField";
                 cy.get(textFieldId2)
-                    .type("{selectall}")
-                    .type(text2)
+                    .type("{selectall}" + text2)
                     .blur();
 
                 cy.get(textFieldId2)
@@ -1913,8 +1872,7 @@ context(
 
                 // set property1 with text2, this should force property2 to have text1
                 cy.get(textFieldId1)
-                    .type("{selectall}")
-                    .type(text2)
+                    .type("{selectall}" + text2)
                     .blur();
 
                 cy.get(textFieldId1)
@@ -1966,27 +1924,22 @@ context(
 
                 cellClick(a1);
                 formulaText()
-                    .type("'ABC", FORCE_TRUE)
-                    .type("{enter}", FORCE_TRUE);
+                    .type("'ABC"+ "{enter}", FORCE_TRUE);
 
                 const textFieldId = "#settings-spreadsheet-metadata-style-" + property + "-TextField";
 
                 cy.get(textFieldId)
-                    .type("{selectall}")
-                    .type("!invalid123")
+                    .type("{selectall}!invalid123")
                     .blur(); // TODO verify alert appears!
 
                 cy.get(textFieldId)
-                    .type("{selectall}")
-                    .type("#123456")
+                    .type("{selectall}#123456")
                     .blur();
 
                 cellA1StyleCheck(property, "rgb(18, 52, 86)");
 
                 cy.get(textFieldId)
-                    .type("{selectall}")
-                    .type("#789abc")
-                    .type("{enter}");
+                    .type("{selectall}#789abc{enter}");
 
                 cellA1StyleCheck(property, "rgb(120, 154, 188)");
 
@@ -2018,8 +1971,7 @@ context(
 
                 cellClick(a1);
                 formulaText()
-                    .type("'ABC", FORCE_TRUE)
-                    .type("{enter}", FORCE_TRUE);
+                    .type("'ABC{enter}", FORCE_TRUE);
 
                 const sliderId = "#settings-spreadsheet-metadata-style-" + property + "-Slider";
 
@@ -2070,8 +2022,7 @@ context(
 
                 cellClick(a1);
                 formulaText()
-                    .type("'ABC", FORCE_TRUE)
-                    .type("{enter}", FORCE_TRUE);
+                    .type("'ABC{enter}", FORCE_TRUE);
 
                 const sliderId = "#settings-spreadsheet-metadata-style-" + property + "-Slider";
                 const numberTextFieldId = "#settings-spreadsheet-metadata-style-" + property + "-NumberTextField";
@@ -2092,9 +2043,7 @@ context(
                     console.log("value=" + JSON.stringify(v) + " i=" + i);
 
                     cy.get(numberTextFieldId)
-                        .type("{selectall}")
-                        .type(v.value)
-                        .type("{enter}")
+                        .type("{selectall}" + v.value + "{enter}")
                         .click();
 
                     cy.get(sliderId + " *[data-index=\"" + i + "\"][aria-hidden=\"true\"]");
