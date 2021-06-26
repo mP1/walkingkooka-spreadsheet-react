@@ -765,6 +765,96 @@ context(
                 .should('match', /.*\/.*/);
         });
 
+        it("Cell outside viewport", () => {
+            spreadsheetEmpty();
+
+            hashAppend("/cell/T1");
+
+            formulaText()
+                .type("=234{enter}")
+                .blur();
+
+            // viewport should have jumped leaving T1 as the home cell.
+            cellGet("S1")
+                .should('not.exist');
+        });
+
+        it("Cell outside viewport vertical", () => {
+            spreadsheetEmpty();
+
+            hashAppend("/cell/A30");
+
+            formulaText()
+                .click()
+                .type("=234{enter}")
+                .blur();
+
+            // viewport should have jumped leaving A30 as the home cell.
+            cellGet("A29")
+                .should('not.exist');
+        });
+
+        it("Cell outside viewport horiz & vertical", () => {
+            spreadsheetEmpty();
+
+            hashAppend("/cell/T30");
+
+            formulaText()
+                .click()
+                .type("=234{enter}")
+                .blur();
+
+            // viewport should have jumped leaving T30 as the home cell.
+            cellGet("S29")
+                .should('not.exist');
+        });
+
+        it("Cell outside viewport and reload", () => {
+            spreadsheetEmpty();
+
+            hashAppend("/cell/M1");
+
+            formulaText()
+                .click()
+                .type("=123{enter}")
+                .blur();
+
+            hashAppend("/cell/T1");
+
+            formulaText()
+                .click()
+                .type("=234{enter}")
+                .blur();
+
+            hashAppend("/cell/M1");
+
+            cellFormattedTextCheck("M1", "123.");
+            cellFormattedTextCheck("T1", "234.");
+        });
+
+        it("Cell outside viewport horiz & vert and reload", () => {
+            spreadsheetEmpty();
+
+            hashAppend("/cell/M10");
+
+            formulaText()
+                .click()
+                .type("=123{enter}")
+                .blur();
+
+            hashAppend("/cell/T20");
+
+            formulaText()
+                .click()
+                .type("=234{enter}")
+                .blur();
+
+            hashAppend("/cell/M10");
+
+            cellFormattedTextCheck("M10", "123.");
+            cellFormattedTextCheck("T20", "234.");
+        });
+
         // navigate.....................................................................................................
 
         it("Navigate using hash initial appearance", () => {
