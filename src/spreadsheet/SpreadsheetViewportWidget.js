@@ -121,60 +121,6 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
     }
 
     /**
-     * Queries the server to resolve a label to a cell reference.
-     */
-    resolveLabelToCell(label) {
-        const props = this.props;
-
-        const success = (cell) => this.setState({
-            cell: cell,
-            cellOrLabel: label,
-            spreadsheetMetadata: this.state.spreadsheetMetadata.set(SpreadsheetMetadata.CELL, cell),
-        });
-        const failure = (message, error) => {
-            this.setState({
-                cell: null,
-                cellOrLabel: null,
-            });
-            props.showError(message, error);
-        }
-
-        props.messenger.send(
-            this.similaritiesUrl(label.toString(), 1),
-            {
-                method: "GET",
-            },
-            (json) => {
-                if(json){
-                    const mapping = SpreadsheetExpressionReferenceSimilarities.fromJson(json)
-                        .labelMappings()
-                        .find(m => m.label().equals(label));
-                    if(mapping){
-                        success(mapping.reference());
-                    }else {
-                        failure("Unknown label " + label);
-                    }
-                }
-            },
-            failure
-        );
-    }
-
-    /**
-     * Returns a URL that may be used to call the cell-reference end point
-     */
-    similaritiesUrl(text, count) {
-        Preconditions.requireText(text, "text");
-        Preconditions.requirePositiveNumber(count, "count");
-
-        return this.spreadsheetMetadataApiUrl() + "/cell-reference/" + encodeURI(text) + "?count=" + count;
-    }
-
-    spreadsheetMetadataApiUrl() {
-        return "/api/spreadsheet/" + this.state.spreadsheetMetadata.getIgnoringDefaults(SpreadsheetMetadata.SPREADSHEET_ID);
-    }
-
-    /**
      * If the history cell changes and formula token is missing give focus.
      */
     historyTokensFromState(prevState) {
@@ -199,7 +145,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
                 if(metadata.shouldUpdateViewport(previousMetadata) || (width > prevDimensions.width || height > prevDimensions.height)){
                     this.fireViewportResize(
                         new SpreadsheetViewport(
-                            metadata.getIgnoringDefaults(SpreadsheetMetadata.VIEWPORT_CELL),
+                            viewportCell,
                             0,
                             0,
                             width,
@@ -264,6 +210,60 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
         }
 
         return historyTokens;
+    }
+
+    /**
+     * Queries the server to resolve a label to a cell reference.
+     */
+    resolveLabelToCell(label) {
+        const props = this.props;
+
+        const success = (cell) => this.setState({
+            cell: cell,
+            cellOrLabel: label,
+            spreadsheetMetadata: this.state.spreadsheetMetadata.set(SpreadsheetMetadata.CELL, cell),
+        });
+        const failure = (message, error) => {
+            this.setState({
+                cell: null,
+                cellOrLabel: null,
+            });
+            props.showError(message, error);
+        }
+
+        props.messenger.send(
+            this.similaritiesUrl(label.toString(), 1),
+            {
+                method: "GET",
+            },
+            (json) => {
+                if(json){
+                    const mapping = SpreadsheetExpressionReferenceSimilarities.fromJson(json)
+                        .labelMappings()
+                        .find(m => m.label().equals(label));
+                    if(mapping){
+                        success(mapping.reference());
+                    }else {
+                        failure("Unknown label " + label);
+                    }
+                }
+            },
+            failure
+        );
+    }
+
+    /**
+     * Returns a URL that may be used to call the cell-reference end point
+     */
+    similaritiesUrl(text, count) {
+        Preconditions.requireText(text, "text");
+        Preconditions.requirePositiveNumber(count, "count");
+
+        return this.spreadsheetMetadataApiUrl() + "/cell-reference/" + encodeURI(text) + "?count=" + count;
+    }
+
+    spreadsheetMetadataApiUrl() {
+        return "/api/spreadsheet/" + this.state.spreadsheetMetadata.getIgnoringDefaults(SpreadsheetMetadata.SPREADSHEET_ID);
     }
 
     fireViewportResize(viewport) {
