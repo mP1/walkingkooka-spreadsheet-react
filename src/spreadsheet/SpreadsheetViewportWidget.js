@@ -210,7 +210,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
                     cells: ImmutableMap.EMPTY,
                     columnWidths: ImmutableMap.EMPTY,
                     rowHeights: ImmutableMap.EMPTY,
-                }
+                };
             }
         }
 
