@@ -59,6 +59,7 @@ const headerCellSelected = Object.assign({},
  * <li>ImmutableMap rowHeights: A cache of the row heights within the visible viewport</li>
  * <li>object dimensions: Holds the width and height of the viewport in pixels</li>
  * <li>SpreadsheetMetadata metadata: holds the viewport home cell & default style</li>
+ * <li>SpreadsheetRange viewportRange: holds a range of all the cells within the viewport</li>
  * </ul>
  */
 export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareStateWidget {
@@ -78,13 +79,18 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
     onSpreadsheetDelta(method, id, delta) {
         const state = this.state;
 
-        this.setState(
-            { // lgtm [js/react/inconsistent-state-update]
-                cells: state.cells.setAll(delta.referenceToCellMap()),
-                columnWidths: state.columnWidths.setAll(delta.maxColumnWidths()),
-                rowHeights: state.rowHeights.setAll(delta.maxRowHeights()),
-            }
-        );
+        const newState = { // lgtm [js/react/inconsistent-state-update]
+            cells: state.cells.setAll(delta.referenceToCellMap()),
+            columnWidths: state.columnWidths.setAll(delta.maxColumnWidths()),
+            rowHeights: state.rowHeights.setAll(delta.maxRowHeights()),
+        };
+
+        const window = delta.window();
+        if(window.length > 0){
+            newState.viewportRange = window[0]; // update the range of cells being shown in the viewport
+        }
+
+        this.setState(newState);
     }
 
     onSpreadsheetMetadata(method, id, metadata) {
@@ -127,7 +133,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
         const historyTokens = {};
 
         const state = this.state;
-        const metadata = state.spreadsheetMetadata;
+        let metadata = state.spreadsheetMetadata;
         const previousMetadata = prevState.spreadsheetMetadata;
 
         const viewportTable = this.viewportTable.current;
@@ -136,49 +142,63 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
 
         if(viewportTable){
             const viewportCell = metadata.getIgnoringDefaults(SpreadsheetMetadata.VIEWPORT_CELL);
-            
+
             if(viewportCell){
+                const viewportRange = state.viewportRange;
+
+                const cellNew = state.cell;
+
                 const width = viewportTable.offsetWidth;
                 const height = viewportTable.offsetHeight;
                 const prevDimensions = prevState.dimensions;
 
-                if(metadata.shouldUpdateViewport(previousMetadata) || (width > prevDimensions.width || height > prevDimensions.height)){
-                    this.fireViewportResize(
+                const cellNewOutsideViewportRange = viewportRange && cellNew && !viewportRange.test(cellNew);
+
+                // if the newCell is outside viewportRange
+                // or any metadata properties which mean cells require re-rendering
+                // of the viewport width/height increased in size
+                // THEN reload all cells
+                if(cellNewOutsideViewportRange || metadata.shouldUpdateViewport(previousMetadata) || (width > prevDimensions.width || height > prevDimensions.height)){
+                    this.viewportLoadCells(
                         new SpreadsheetViewport(
-                            viewportCell,
+                            //viewportRange && cellNewInsideViewportRange ? viewportCell : cellNew,
+                            cellNewOutsideViewportRange ? cellNew : viewportCell,
                             0,
                             0,
                             width,
                             height
                         )
                     );
+
+                    if(cellNewOutsideViewportRange){
+                        metadata = metadata.set(SpreadsheetMetadata.VIEWPORT_CELL, cellNew);
+                    }
                 }
-            }
 
-            const cellOrLabelOld = prevState.cellOrLabel;
-            const cellOrLabelNew = state.cellOrLabel;
-            const cellOld = prevState.cell;
-            const cellNew = state.cell;
+                const cellOrLabelOld = prevState.cellOrLabel;
+                const cellOrLabelNew = state.cellOrLabel;
+                const cellOld = prevState.cell;
 
-            if(!Equality.safeEquals(cellOrLabelOld, cellOrLabelNew)){
-                if(cellOrLabelNew instanceof SpreadsheetLabelName) {
-                    this.resolveLabelToCell(cellOrLabelNew); // eventually updates state.cell
-                } else {
-                    newState = {
-                        cell: cellOrLabelNew,
-                    };
+                if(!Equality.safeEquals(cellOrLabelOld, cellOrLabelNew)){
+                    if(cellOrLabelNew instanceof SpreadsheetLabelName){
+                        this.resolveLabelToCell(cellOrLabelNew); // eventually updates state.cell
+                    }else {
+                        newState = {
+                            cell: cellOrLabelNew,
+                        };
+                    }
                 }
-            }
 
-            historyTokens[SpreadsheetHistoryHash.CELL] = cellOrLabelNew;
-            if(state.focused){
-                historyTokens[SpreadsheetHistoryHash.CELL_FORMULA] = null;
-            }
+                historyTokens[SpreadsheetHistoryHash.CELL] = cellOrLabelNew;
+                if(state.focused){
+                    historyTokens[SpreadsheetHistoryHash.CELL_FORMULA] = null;
+                }
 
-            if(!Equality.safeEquals(cellNew, cellOld)) {
-                if(!state.formula){
-                    console.log("Missing " + SpreadsheetHistoryHash.CELL_FORMULA + " token giving focus to cell..." + cellNew);
-                    this.giveFocus(cellNew);
+                if(!Equality.safeEquals(cellNew, cellOld)){
+                    if(!state.formula){
+                        console.log("Missing " + SpreadsheetHistoryHash.CELL_FORMULA + " token giving focus to cell..." + cellNew);
+                        this.giveFocus(cellNew);
+                    }
                 }
             }
         }
@@ -194,7 +214,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
             }
         }
 
-        if(newState) {
+        if(newState){
             this.setState(newState);
         }
 
@@ -266,7 +286,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
         return "/api/spreadsheet/" + this.state.spreadsheetMetadata.getIgnoringDefaults(SpreadsheetMetadata.SPREADSHEET_ID);
     }
 
-    fireViewportResize(viewport) {
+    viewportLoadCells(viewport) {
         const props = this.props;
         props.spreadsheetDeltaCrud.get(
             "*",
