@@ -26,6 +26,8 @@ const FORCE_TRUE = {
 const LABEL = "Label123";
 const REFERENCE = "B2";
 
+const FORMULA_TEXT_CLICK_WAIT = 50;
+
 context(
     "General app usage",
     () => {
@@ -509,6 +511,8 @@ context(
                         .should('match', /.*\/Untitled\/cell\/Label456\/formula/);
 
                     formulaText()
+                        .click()
+                        .wait(FORMULA_TEXT_CLICK_WAIT)
                         .type("=4{enter}");
 
                     cellFormattedTextCheck(REFERENCE, "4.");
@@ -610,6 +614,8 @@ context(
             hash().should('match', /.*\/Untitled\/cell\/B2/)
 
             formulaText()
+                .click()
+                .wait(FORMULA_TEXT_CLICK_WAIT)
                 .type("=1+2+3{enter}");
 
             hash()
@@ -624,11 +630,15 @@ context(
             cellClick("C3");
 
             formulaText()
+                .click()
+                .wait(FORMULA_TEXT_CLICK_WAIT)
                 .type("=1+2+3{enter}");
 
             cellClick("D4");
 
             formulaText()
+                .click()
+                .wait(FORMULA_TEXT_CLICK_WAIT)
                 .type("=C3+10{enter}");
 
             cellFormattedTextCheck("D4", "16.");
@@ -640,6 +650,8 @@ context(
             cellClick("C3");
 
             formulaText()
+                .click()
+                .wait(FORMULA_TEXT_CLICK_WAIT)
                 .type("=1+2+3{enter}");
 
             cy.window()
@@ -651,6 +663,8 @@ context(
             renderWait();
 
             formulaText()
+                .click()
+                .wait(FORMULA_TEXT_CLICK_WAIT)
                 .type("=4+5{enter}");
 
             cellFormattedTextCheck("D4", "9.");
@@ -771,6 +785,8 @@ context(
             hashAppend("/cell/T1");
 
             formulaText()
+                .click()
+                .wait(FORMULA_TEXT_CLICK_WAIT)
                 .type("=234{enter}")
                 .blur();
 
@@ -786,6 +802,7 @@ context(
 
             formulaText()
                 .click()
+                .wait(FORMULA_TEXT_CLICK_WAIT)
                 .type("=234{enter}")
                 .blur();
 
@@ -801,6 +818,7 @@ context(
 
             formulaText()
                 .click()
+                .wait(FORMULA_TEXT_CLICK_WAIT)
                 .type("=234{enter}")
                 .blur();
 
@@ -816,6 +834,7 @@ context(
 
             formulaText()
                 .click()
+                .wait(FORMULA_TEXT_CLICK_WAIT)
                 .type("=123{enter}")
                 .blur();
 
@@ -823,6 +842,7 @@ context(
 
             formulaText()
                 .click()
+                .wait(FORMULA_TEXT_CLICK_WAIT)
                 .type("=234{enter}")
                 .blur();
 
@@ -839,6 +859,7 @@ context(
 
             formulaText()
                 .click()
+                .wait(FORMULA_TEXT_CLICK_WAIT)
                 .type("=123{enter}")
                 .blur();
 
@@ -846,6 +867,7 @@ context(
 
             formulaText()
                 .click()
+                .wait(FORMULA_TEXT_CLICK_WAIT)
                 .type("=234{enter}")
                 .blur();
 
@@ -1208,6 +1230,8 @@ context(
             cellClick("E5");
 
             formulaText()
+                .click()
+                .wait(FORMULA_TEXT_CLICK_WAIT)
                 .type("=1+2+3{enter}");
 
             hashEnter("/");
@@ -1227,6 +1251,8 @@ context(
                     cellClick("F6");
 
                     formulaText()
+                        .click()
+                        .wait(FORMULA_TEXT_CLICK_WAIT)
                         .type("=1+2+3{enter}");
                     
                     spreadsheetEmpty();
@@ -1251,6 +1277,8 @@ context(
                     cellClick("F6");
 
                     formulaText()
+                        .click()
+                        .wait(FORMULA_TEXT_CLICK_WAIT)
                         .type("=1+2+3{enter}");
 
                     // reload previous spreadsheet and verify viewport reloaded
@@ -1419,6 +1447,8 @@ context(
                     cellClick(a1);
 
                     formulaText()
+                        .click()
+                        .wait(FORMULA_TEXT_CLICK_WAIT)
                         .type(a1Formula + "{enter}", FORCE_TRUE);
                 }
 
@@ -1510,6 +1540,8 @@ context(
                     cellClick(a1);
 
                     formulaText()
+                        .click()
+                        .wait(FORMULA_TEXT_CLICK_WAIT)
                         .type(a1Formula +"{enter}", FORCE_TRUE);
                 }
 
@@ -1577,6 +1609,8 @@ context(
                     cellClick(a1);
 
                     formulaText()
+                        .click()
+                        .wait(FORMULA_TEXT_CLICK_WAIT)
                         .type(a1Formula +"{enter}", FORCE_TRUE);
                 }
 
@@ -1634,6 +1668,8 @@ context(
                     cellClick(a1);
 
                     formulaText()
+                        .click()
+                        .wait(FORMULA_TEXT_CLICK_WAIT)
                         .type(a1Formula +"{enter}", FORCE_TRUE);
                 }
 
@@ -2013,7 +2049,10 @@ context(
                 const a1 = "A1";
 
                 cellClick(a1);
+
                 formulaText()
+                    .click()
+                    .wait(FORMULA_TEXT_CLICK_WAIT)
                     .type("'ABC"+ "{enter}", FORCE_TRUE);
 
                 const textFieldId = "#settings-spreadsheet-metadata-style-" + property + "-TextField";
@@ -2061,6 +2100,8 @@ context(
 
                 cellClick(a1);
                 formulaText()
+                    .click()
+                    .wait(FORMULA_TEXT_CLICK_WAIT)
                     .type("'ABC{enter}", FORCE_TRUE);
 
                 const sliderId = "#settings-spreadsheet-metadata-style-" + property + "-Slider";
@@ -2112,6 +2153,8 @@ context(
 
                 cellClick(a1);
                 formulaText()
+                    .click()
+                    .wait(FORMULA_TEXT_CLICK_WAIT)
                     .type("'ABC{enter}", FORCE_TRUE);
 
                 const sliderId = "#settings-spreadsheet-metadata-style-" + property + "-Slider";
@@ -2462,7 +2505,6 @@ context(
         }
 
         function formulaText() {
-            renderWait();
             return cy.get("#formula-TextField");
         }
 
