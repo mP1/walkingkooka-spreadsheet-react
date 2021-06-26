@@ -39,7 +39,6 @@ export default class SpreadsheetRange extends SpreadsheetExpressionReference {
                 try {
                     endCell = SpreadsheetCellReference.fromJson(endText);
                 } catch(e) {
-                    // ("Invalid character " + CharSequences.quoteAndEscape(Character.fromJson(c)) + " at " + pos);
                     const message = e.message;
                     if(message.startsWith("Invalid character ")){
                         const at = message.indexOf(" at ");
