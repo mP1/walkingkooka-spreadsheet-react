@@ -214,9 +214,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
             }
         }
 
-        if(newState){
-            this.setState(newState);
-        }
+        this.setState(newState);
 
         // save the updated metadata....................................................................................
         if(!Equality.safeEquals(metadata, previousMetadata)){
