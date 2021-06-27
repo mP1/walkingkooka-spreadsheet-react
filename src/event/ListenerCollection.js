@@ -12,9 +12,11 @@ export default class ListenerCollection {
     add(listener) {
         Preconditions.requireFunction(listener, "listener");
 
-        this.listeners.push(listener);
+        const listeners = this.listeners;
+        listeners.push(listener);
+
         return () => {
-            this.listeners.splice(this.listeners.findIndex(listener), 1);
+            listeners.splice(listeners.findIndex(listener), 1);
         };
     }
 
