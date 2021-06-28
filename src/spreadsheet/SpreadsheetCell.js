@@ -9,6 +9,7 @@ import SystemObject from "../SystemObject.js";
 import TableCell from "@material-ui/core/TableCell";
 import TextNode from "../text/TextNode";
 import TextStyle from "../text/TextStyle";
+import Tooltip from "@material-ui/core/Tooltip";
 import "./SpreadsheetCell.css";
 
 const TYPE_NAME = "spreadsheet-cell";
@@ -132,10 +133,11 @@ export default class SpreadsheetCell extends SystemObject {
     /**
      * Renders a TableCell with the formatted content. The default style will typically come from {@link SpreadsheetMetadata}.
      */
-    render(defaultStyle, onClick, onKeyDown) {
+    render(defaultStyle, onClick, onKeyDown, labels) {
         Preconditions.requireInstance(defaultStyle,TextStyle, "defaultStyle");
         Preconditions.requireFunction(onClick, "onClick");
         Preconditions.optionalFunction(onKeyDown, "onKeyDown");
+        Preconditions.requireArray(labels, "labels");
 
         const style = defaultStyle.merge(this.style());
 
@@ -144,17 +146,30 @@ export default class SpreadsheetCell extends SystemObject {
         const css = style.toCss();
         css.boxSizing = "border-box";
 
-
         const reference = this.reference();
 
-        return <TableCell key={reference}
-                          id={"cell-" + reference}
-                          className={"cell"}
-                          onClick={onClick}
-                          onKeyDown={onKeyDown}
-                          tabIndex={0}
-                          style={css}>{formattedRender}</TableCell>;
+        const tableCell = <TableCell key={reference}
+                                     id={"cell-" + reference}
+                                     className={"cell"}
+                                     onClick={onClick}
+                                     onKeyDown={onKeyDown}
+                                     tabIndex={0}
+                                     style={css}>{formattedRender}</TableCell>;
+
+        // place a tooltip top-center with any labels csv.
+        return labels ?
+            <Tooltip title={labels.map(l => l.value()).join(", ")}
+                     id={"cell-" + reference + "-Tooltip"}
+                     placement={"top"}
+                     >{
+                tableCell
+            }</Tooltip> :
+            tableCell;
     }
+
+// <Tooltip title="Add" placement="top-start">
+// <Button>top-start</Button>
+// </Tooltip>
 
     equals(other) {
         return this === other ||
