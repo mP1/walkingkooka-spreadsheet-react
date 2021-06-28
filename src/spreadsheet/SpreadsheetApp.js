@@ -259,16 +259,19 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
      * Renders the basic spreadsheet layout.
      */
     render() {
-        const {classes} = this.props;
+        const {
+            classes,
+            history
+        } = this.props;
 
-        const state = this.state;
+        const {
+            messenger,
+            spreadsheetDeltaCrud,
+            spreadsheetMetadataCrud,
+            state,
+        } = this;
+
         console.log("render", state);
-
-        const messenger = this.messenger;
-        const spreadsheetDeltaCrud = this.spreadsheetDeltaCrud;
-        const spreadsheetMetadataCrud = this.spreadsheetMetadataCrud;
-
-        const history = this.props.history;
 
         const notificationShow = this.notificationShow.bind(this);
         const showError = this.showError.bind(this);
