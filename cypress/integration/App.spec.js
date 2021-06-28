@@ -519,6 +519,74 @@ context(
                 });
         });
 
+        it("Label mapping save, hover shows tooltip", () => {
+            spreadsheetEmpty();
+            hash()
+                .should('match', /.*\/Untitled/);
+
+            // create a new label
+            hashAppend("/label/HoverLabel");
+
+            labelMappingReferenceTextField()
+                .type("A1");
+
+            labelMappingLabelSaveButton()
+                .click();
+
+            labelMappingLabelCloseButton()
+                .click();
+
+            cy.get("#cell-A1-Tooltip")
+                .should("not.exist");
+
+            cellGet("A1")
+                .trigger("mouseover");
+
+            cy.get("#cell-A1-Tooltip")
+                .should("exist")
+                .should("contain.text", "HoverLabel");
+        });
+
+        it("Label mapping save, hover shows several tooltip", () => {
+            spreadsheetEmpty();
+            hash()
+                .should('match', /.*\/Untitled/);
+
+            // create a new label
+            hashAppend("/label/HoverLabel1");
+
+            labelMappingReferenceTextField()
+                .type("A1");
+
+            labelMappingLabelSaveButton()
+                .click();
+
+            labelMappingLabelCloseButton()
+                .click();
+
+            // create a new label #2
+            hashAppend("/label/HoverLabel2");
+
+            labelMappingReferenceTextField()
+                .type("A1");
+
+            labelMappingLabelSaveButton()
+                .click();
+
+            labelMappingLabelCloseButton()
+                .click();
+
+            cy.get("#cell-A1-Tooltip")
+                .should("not.exist");
+
+            cellGet("A1")
+                .trigger("mouseover");
+
+            cy.get("#cell-A1-Tooltip")
+                .should("exist")
+                .should("contain.text", "HoverLabel1, HoverLabel2");
+        });
+
         it("Label mapping update, refreshes viewport", () => {
             spreadsheetEmpty();
             hash()

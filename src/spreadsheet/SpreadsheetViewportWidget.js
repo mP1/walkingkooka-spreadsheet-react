@@ -60,6 +60,7 @@ const headerCellSelected = Object.assign({},
  * <li>object dimensions: Holds the width and height of the viewport in pixels</li>
  * <li>SpreadsheetMetadata metadata: holds the viewport home cell & default style</li>
  * <li>SpreadsheetRange viewportRange: holds a range of all the cells within the viewport</li>
+ * <li>Immutable cellToLabels: cell to Label lookup</li>
  * </ul>
  */
 export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareStateWidget {
@@ -84,6 +85,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
             cells: state.cells.setAll(delta.referenceToCellMap()),
             columnWidths: state.columnWidths.setAll(delta.maxColumnWidths()),
             rowHeights: state.rowHeights.setAll(delta.maxRowHeights()),
+            cellToLabels: state.cellToLabels.setAll(delta.cellToLabels()),
         };
 
         const window = delta.window();
@@ -145,6 +147,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
             rowHeights: ImmutableMap.EMPTY,
             dimensions: props.dimensions,
             spreadsheetMetadata: SpreadsheetMetadata.EMPTY,
+            cellToLabels: ImmutableMap.EMPTY,
         };
     }
 
@@ -239,6 +242,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
                     cells: ImmutableMap.EMPTY,
                     columnWidths: ImmutableMap.EMPTY,
                     rowHeights: ImmutableMap.EMPTY,
+                    cellToLabels: ImmutableMap.EMPTY,
                 };
             }
         }
@@ -408,7 +412,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
      * Render the required TABLE ROW each filled with available or empty TABLE CELL cells.
      */
     body() {
-        const {cells, columnWidths, rowHeights, spreadsheetMetadata, dimensions} = this.state;
+        const {cells, columnWidths, rowHeights, spreadsheetMetadata, dimensions, cellToLabels} = this.state;
 
         const home = spreadsheetMetadata.getIgnoringDefaults(SpreadsheetMetadata.VIEWPORT_CELL);
         const cell = spreadsheetMetadata.getIgnoringDefaults(SpreadsheetMetadata.CELL);
@@ -446,6 +450,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
                         defaultStyle,
                         () => this.onCellClick(cellReference),
                         editing ? (e) => this.onCellKeyDown(e, cellReference) : undefined,
+                        cellToLabels.get(cellReference) || [],
                     )
                 );
 
