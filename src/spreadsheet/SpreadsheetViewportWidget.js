@@ -73,6 +73,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
 
         const props = this.props;
         this.onSpreadsheetDeltaRemover = props.spreadsheetDeltaCrud.addListener(this.onSpreadsheetDelta.bind(this));
+        this.onSpreadsheetLabelCrudRemover = props.spreadsheetLabelCrud.addListener(this.onSpreadsheetLabel.bind(this));
         this.onSpreadsheetMetadataRemover = props.spreadsheetMetadataCrud.addListener(this.onSpreadsheetMetadata.bind(this));
     }
 
@@ -93,6 +94,31 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
         this.setState(newState);
     }
 
+    /**
+     * If a label was saved o deleted refresh the viewport.
+     */
+    onSpreadsheetLabel(method, id, label) {
+        switch(method) {
+            case "DELETE":
+            case "POST":
+                const viewportTable = this.viewportTable.current;
+                if(viewportTable){
+                    this.viewportLoadCells(
+                        new SpreadsheetViewport(
+                            this.state.spreadsheetMetadata.getIgnoringDefaults(SpreadsheetMetadata.VIEWPORT_CELL),
+                            0,
+                            0,
+                            viewportTable.offsetWidth,
+                            viewportTable.offsetHeight,
+                        )
+                    );
+                }
+                break;
+            default:
+                break;
+        }
+    }
+
     onSpreadsheetMetadata(method, id, metadata) {
         this.setState({
             spreadsheetMetadata: metadata,
@@ -104,6 +130,9 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
 
         this.onSpreadsheetDeltaRemover && this.onSpreadsheetDeltaRemover();
         delete this.onSpreadsheetDeltaRemover;
+
+        this.onSpreadsheetLabelCrudRemover && this.onSpreadsheetLabelCrudRemover();
+        delete this.onSpreadsheetLabelCrudRemover;
 
         this.onSpreadsheetMetadataRemover && this.onSpreadsheetMetadataRemover();
         delete this.onSpreadsheetMetadataRemover;
@@ -542,6 +571,7 @@ SpreadsheetViewportWidget.propTypes = {
     history: PropTypes.object.isRequired,
     messenger: PropTypes.instanceOf(SpreadsheetMessenger),
     spreadsheetDeltaCrud: PropTypes.instanceOf(SpreadsheetMessengerCrud),
+    spreadsheetLabelCrud: PropTypes.instanceOf(SpreadsheetMessengerCrud),
     spreadsheetMetadataCrud: PropTypes.instanceOf(SpreadsheetMessengerCrud),
     showError: PropTypes.func.isRequired,
 }

@@ -519,6 +519,65 @@ context(
                 });
         });
 
+        it("Label mapping update, refreshes viewport", () => {
+            spreadsheetEmpty();
+            hash()
+                .should('match', /.*\/Untitled/);
+
+            cellClick("A1");
+
+            hash().should('match', /.*\/Untitled\/cell\/A1/)
+
+            formulaText()
+                .click()
+                .wait(FORMULA_TEXT_CLICK_WAIT)
+                .type("=11{enter}");
+
+            cellClick("B2");
+
+            hash().should('match', /.*\/Untitled\/cell\/B2/)
+
+            formulaText()
+                .click()
+                .wait(FORMULA_TEXT_CLICK_WAIT)
+                .type("=22{enter}")
+                .blur();
+
+            // create a new label
+            hashAppend("/label/MovingLabel");
+
+            labelMappingReferenceTextField()
+                .type("A1");
+
+            labelMappingLabelSaveButton()
+                .click();
+
+            labelMappingLabelCloseButton()
+                .click();
+
+            cellClick("C3");
+
+            hash().should('match', /.*\/Untitled\/cell\/C3/)
+
+            formulaText()
+                .click()
+                .wait(FORMULA_TEXT_CLICK_WAIT)
+                .type("=4*MovingLabel{enter}")
+                .blur();
+
+            cellFormattedTextCheck("C3", "44."); // 4 * 11
+
+            // update existing label
+            hashAppend("/label/MovingLabel");
+
+            labelMappingReferenceTextField()
+                .type("{selectall}B2{enter}");
+
+            labelMappingLabelSaveButton()
+                .click();
+
+            cellFormattedTextCheck("C3", "88."); // 4 * 22
+        });
 
         function labelDialogCheck(title,
                                   labelText,

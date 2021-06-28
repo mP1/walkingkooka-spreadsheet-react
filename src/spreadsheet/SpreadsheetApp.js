@@ -76,7 +76,7 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
             new ListenerCollection()
         );
 
-        this.labelMappingCrud = new SpreadsheetMessengerCrud(
+        this.spreadsheetLabelCrud = new SpreadsheetMessengerCrud(
             (method, label) => this.labelUrl(label),
             messenger,
             SpreadsheetLabelMapping.fromJson,
@@ -267,6 +267,7 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
         const {
             messenger,
             spreadsheetDeltaCrud,
+            spreadsheetLabelCrud,
             spreadsheetMetadataCrud,
             state,
         } = this;
@@ -289,7 +290,7 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
                 />
                 <SpreadsheetLabelWidget key="labelWidget"
                                         history={history}
-                                        messengerCrud={this.labelMappingCrud}
+                                        spreadsheetLabelCrud={this.spreadsheetLabelCrud}
                                         notificationShow={notificationShow}
                                         showError={showError}
                 />
@@ -322,6 +323,7 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
                                            ref={this.viewport}
                                            messenger={messenger}
                                            spreadsheetDeltaCrud={spreadsheetDeltaCrud}
+                                           spreadsheetLabelCrud={spreadsheetLabelCrud}
                                            spreadsheetMetadataCrud={spreadsheetMetadataCrud}
                                            showError={showError}
                 />
