@@ -51,7 +51,7 @@ export default class SpreadsheetLabelWidget extends SpreadsheetHistoryAwareState
         if(open){
             if(null != label && !Equality.safeEquals(prevState.label, label)){
                 // load the mapping for the new $label, the old mapping is lost.
-                this.props.messengerCrud.get(
+                this.props.spreadsheetLabelCrud.get(
                     label,
                     {},
                     this.onLabelMappingLoadSuccess.bind(this),
@@ -222,7 +222,7 @@ export default class SpreadsheetLabelWidget extends SpreadsheetHistoryAwareState
      * ignoring the label text field.
      */
     onDeleteButtonClicked() {
-        this.props.messengerCrud.delete(
+        this.props.spreadsheetLabelCrud.delete(
             this.state.label,
             this.onLabelMappingDeleteSuccess.bind(this),
             this.props.showError
@@ -247,7 +247,7 @@ export default class SpreadsheetLabelWidget extends SpreadsheetHistoryAwareState
             if(newLabel){
                 const reference = this.parseReference(this.reference.current.value, newState);
                 if(reference){
-                    props.messengerCrud.post(
+                    props.spreadsheetLabelCrud.post(
                         oldLabel,
                         new SpreadsheetLabelMapping(newLabel, reference),
                         this.onLabelMappingSaveSuccess.bind(this),
@@ -298,7 +298,7 @@ export default class SpreadsheetLabelWidget extends SpreadsheetHistoryAwareState
 
 SpreadsheetLabelWidget.propTypes = {
     history: PropTypes.object.isRequired,
-    messengerCrud: PropTypes.instanceOf(SpreadsheetMessengerCrud),
+    spreadsheetLabelCrud: PropTypes.instanceOf(SpreadsheetMessengerCrud),
     notificationShow: PropTypes.func.isRequired, // used to display notifications including errors and other messages
     showError: PropTypes.func.isRequired,
 }
