@@ -1036,6 +1036,27 @@ context(
                 .should("have.value", "");
         });
 
+        it("Navigate auto complete tabbing", () => {
+            spreadsheetEmpty();
+            navigateHistoryHash();
+
+            navigateAutocompleteTextField()
+                .should('have.focus')
+                .type("Hello")
+                .wait(50)
+                .tab();
+
+            navigateCreateLinkButton(false)
+                .should("have.focus")
+                .tab();
+
+            // two keyboard tabs required to tab from CREATE-LINK to CLOSE BUTTON, 1st tab gives focus to dialog box.
+
+            // navigateDialogClose()
+            //     .should("have.focus")
+            //     .tab());
+        });
+
         it("Navigate and close", () => {
             spreadsheetEmpty();
             navigateHistoryHash();
