@@ -150,6 +150,38 @@ context(
             );
         });
 
+        it("Label mapping label text field has focus", () => {
+            spreadsheetEmpty();
+            hashLabel();
+
+            labelMappingLabelTextField()
+                .should("have.focus");
+        });
+
+        it("Label mapping label tabbing", () => {
+            spreadsheetEmpty();
+            hashLabel();
+
+            labelMappingLabelTextField()
+                .should("have.focus")
+                .tab();
+
+            labelMappingReferenceTextField()
+                .should("have.focus")
+                .tab();
+
+            labelMappingLabelSaveButton()
+                .should("have.focus")
+                .tab();
+
+            labelMappingLabelDeleteButton()
+                .should("have.focus")
+                .tab();
+
+            // next tab advances to give focus to entire dialog.
+            // next tab gives focus to close
+        });
+
         it("Label mapping hash show label mapping after editing name", () => {
             spreadsheetEmpty();
 

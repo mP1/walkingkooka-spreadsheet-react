@@ -129,7 +129,7 @@ export default class SpreadsheetLabelWidget extends SpreadsheetHistoryAwareState
                            defaultValue={label}
                            helperText={labelHelper}
                            onChange={this.onLabelTextFieldValueChange.bind(this)}
-
+                           autoFocus
                 />
                 <TextField key="reference"
                            inputRef={this.reference}
