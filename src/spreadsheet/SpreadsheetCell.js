@@ -168,10 +168,6 @@ export default class SpreadsheetCell extends SystemObject {
             tableCell;
     }
 
-// <Tooltip title="Add" placement="top-start">
-// <Button>top-start</Button>
-// </Tooltip>
-
     equals(other) {
         return this === other ||
             (other instanceof SpreadsheetCell &&
