@@ -8,6 +8,8 @@ import systemObjectTesting from "../SystemObjectTesting.js";
 import TableCell from "@material-ui/core/TableCell";
 import Text from "../text/Text";
 import TextStyle from "../text/TextStyle";
+import Tooltip from "@material-ui/core/Tooltip";
+import SpreadsheetLabelName from "./reference/SpreadsheetLabelName.js";
 
 function cell() {
     return new SpreadsheetCell(reference(),
@@ -311,13 +313,14 @@ test("render empty style, text & defaultStyle EMPTY", () => {
     const ref = reference();
     const c = onClick;
     const kd = onKeyDown;
+    const l = [];
 
     expect(new SpreadsheetCell(ref,
         formula(),
         TextStyle.EMPTY,
         format(),
         new Text(text))
-        .render(TextStyle.EMPTY, c, kd))
+        .render(TextStyle.EMPTY, c, kd, l))
         .toEqual(<TableCell key={ref}
                             id="cell-A99"
                             tabIndex={0}
@@ -332,13 +335,14 @@ test("render empty style, text & defaultStyle EMPTY 2", () => {
     const ref = SpreadsheetCellReference.parse("B123");
     const c = onClick;
     const kd = onKeyDown;
+    const l = [];
 
     expect(new SpreadsheetCell(ref,
         formula(),
         TextStyle.EMPTY,
         format(),
         new Text(text))
-        .render(TextStyle.EMPTY, c, kd))
+        .render(TextStyle.EMPTY, c, kd, l))
         .toEqual(<TableCell key={ref}
                             id="cell-B123"
                             tabIndex={0}
@@ -353,6 +357,7 @@ test("render empty style, text & defaultStyle width&height", () => {
     const r = reference();
     const c = onClick;
     const kd = onKeyDown;
+    const l = [];
 
     expect(new SpreadsheetCell(r,
         formula(),
@@ -364,7 +369,8 @@ test("render empty style, text & defaultStyle width&height", () => {
                 .set("width", lengthFromJson("100px"))
                 .set("height", lengthFromJson("50px")),
             c,
-            kd))
+            kd,
+            l))
         .toEqual(<TableCell key={r}
                             id="cell-A99"
                             tabIndex={0}
@@ -379,6 +385,7 @@ test("render style=width&height, text & defaultStyle=empty", () => {
     const r = reference();
     const c = onClick;
     const kd = onKeyDown;
+    const l = [];
 
     expect(new SpreadsheetCell(r,
         formula(),
@@ -387,7 +394,7 @@ test("render style=width&height, text & defaultStyle=empty", () => {
             .set("height", lengthFromJson("50px")),
         format(),
         new Text(text))
-        .render(TextStyle.EMPTY, c, kd))
+        .render(TextStyle.EMPTY, c, kd, l))
         .toEqual(<TableCell key={r}
                             id="cell-A99"
                             tabIndex={0}
@@ -402,6 +409,7 @@ test("render style=height, text & defaultStyle=width", () => {
     const r = reference();
     const c = onClick;
     const kd = onKeyDown;
+    const l = [];
 
     expect(new SpreadsheetCell(r,
         formula(),
@@ -412,7 +420,8 @@ test("render style=height, text & defaultStyle=width", () => {
         .render(TextStyle.EMPTY
                 .set("width", lengthFromJson("100px")),
             c,
-            kd))
+            kd,
+            l))
         .toEqual(<TableCell key={r}
                             id="cell-A99"
                             tabIndex={0}
@@ -427,6 +436,7 @@ test("render style=width&height, text & defaultStyle=width", () => {
     const r = reference();
     const c = onClick;
     const kd = onKeyDown;
+    const l = [];
 
     expect(new SpreadsheetCell(r,
         formula(),
@@ -438,7 +448,8 @@ test("render style=width&height, text & defaultStyle=width", () => {
         .render(TextStyle.EMPTY
                 .set("width", lengthFromJson("99px")),
             c,
-            kd))
+            kd,
+            l))
         .toEqual(<TableCell id="cell-A99"
                             key={r}
                             tabIndex={0}
@@ -446,6 +457,39 @@ test("render style=width&height, text & defaultStyle=width", () => {
                             onKeyDown={kd}
                             className={"cell"}
                             style={{boxSizing: "border-box", width: "100px", height: "50px"}}>{text}</TableCell>);
+});
+
+test("render with labels", () => {
+    const text = "text-abc123";
+    const r = reference();
+    const c = onClick;
+    const kd = onKeyDown;
+    const l = [SpreadsheetLabelName.parse("Label1"), SpreadsheetLabelName.parse("Label2")];
+
+    expect(new SpreadsheetCell(r,
+        formula(),
+        TextStyle.EMPTY
+            .set("width", lengthFromJson("100px"))
+            .set("height", lengthFromJson("50px")),
+        format(),
+        new Text(text))
+        .render(TextStyle.EMPTY
+                .set("width", lengthFromJson("99px")),
+            c,
+            kd,
+            l))
+        .toEqual(<Tooltip key={"cell-" + r + "-Tooltip"}
+                          id={"cell-" + r + "-Tooltip"}
+                          title={"Label1, Label2"}
+                          placement={"top"}>
+            <TableCell id="cell-A99"
+                       key={r}
+                       tabIndex={0}
+                       onClick={c}
+                       onKeyDown={kd}
+                       className={"cell"}
+                       style={{boxSizing: "border-box", width: "100px", height: "50px"}}>{text}</TableCell>
+        </Tooltip>);
 });
 
 // equals...............................................................................................................
