@@ -111,6 +111,7 @@ export default class SpreadsheetNavigateAutocompleteWidget extends SpreadsheetHi
                 renderInput={(params) =>
                     <TextField
                         {...params}
+                        inputRef={(input) => input && input.focus()}
                         variant="outlined"
                         helperText={queryHelperText}
                     />

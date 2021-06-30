@@ -1024,6 +1024,18 @@ context(
             navigateEditLinkButton(true);
         });
 
+        it("Navigate auto complete text field has focus", () => {
+            spreadsheetEmpty();
+            navigateHistoryHash();
+
+            navigateDialogTitle()
+                .contains("Navigate or Edit");
+
+            navigateAutocompleteTextField()
+                .should('have.focus')
+                .should("have.value", "");
+        });
+
         it("Navigate and close", () => {
             spreadsheetEmpty();
             navigateHistoryHash();
