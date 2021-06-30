@@ -157,7 +157,7 @@ export default class SpreadsheetCell extends SystemObject {
                                      style={css}>{formattedRender}</TableCell>;
 
         // place a tooltip top-center with any labels csv.
-        return labels ?
+        return labels.length > 0 ?
             <Tooltip key={"cell-" + reference + "-Tooltip"}
                      id={"cell-" + reference + "-Tooltip"}
                      title={labels.map(l => l.value()).join(", ")}
