@@ -391,7 +391,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
         const cellColumn = cell && cell.column();
 
         let headers = [];
-        headers.push(<TableCell key={"all"} id={"select-all-cells"} style={headerCell}></TableCell>); // TODO add select all support
+        headers.push(<TableCell key={"viewport-all"} id={"select-all-cells"} style={headerCell}></TableCell>); // TODO add select all support
 
         let x = 0;
         let column = home.column();
@@ -459,7 +459,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
             }
 
             tableRows.push(
-                <TableRow key={row} id={"row-" + row}>
+                <TableRow key={"viewport-row-" + row} id={"row-" + row}>
                     {
                         tableCells
                     }
@@ -478,10 +478,11 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
      */
     headerCell(reference, highlighted) {
         const column = reference instanceof SpreadsheetColumnReference;
+        const columnOrRow = column ? "column" : "row";
 
-        return <TableCell key={reference}
-                          id={(column ? "column-" : "row-") + "" + reference}
-                          className={(column ? "column" : "row") + (highlighted ? " selected" : "")}
+        return <TableCell key={"viewport-" + columnOrRow + "-cell-" + reference}
+                          id={(columnOrRow) + "" + reference}
+                          className={(columnOrRow) + (highlighted ? " selected" : "")}
                           style={highlighted ? headerCellSelected : headerCell}>{reference.toString()}</TableCell>
     }
 
