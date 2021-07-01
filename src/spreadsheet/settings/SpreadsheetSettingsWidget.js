@@ -104,11 +104,7 @@ class SpreadsheetSettingsWidget extends SpreadsheetHistoryAwareStateWidget {
     componentDidMount() {
         super.componentDidMount();
 
-        this.onSpreadsheetMetadataRemover = this.props.spreadsheetMetadataCrud.addListener((method, id, metadata) => {
-            this.setState({
-                spreadsheetMetadata: metadata,
-            });
-        });
+        this.onSpreadsheetMetadataRemover = this.props.spreadsheetMetadataCrud.addListener(this.onSpreadsheetMetadata.bind(this));
     }
 
     componentWillUnmount() {
@@ -197,6 +193,12 @@ class SpreadsheetSettingsWidget extends SpreadsheetHistoryAwareStateWidget {
             },
             this.props.showError,
         );
+    }
+
+    onSpreadsheetMetadata(method, id, metadata) {
+        this.setState({
+            spreadsheetMetadata: metadata,
+        });
     }
 
     /**

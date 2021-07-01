@@ -35,7 +35,7 @@ export default class SpreadsheetNameWidget extends SpreadsheetHistoryAwareStateW
     onSpreadsheetMetadata(method, id, metadata) {
         this.setState({
             metadata: metadata,
-            value: metadata.getIgnoringDefaults(SpreadsheetMetadata.SPREADSHEET_NAME),
+            value: metadata && metadata.getIgnoringDefaults(SpreadsheetMetadata.SPREADSHEET_NAME),
         });
     }
 
