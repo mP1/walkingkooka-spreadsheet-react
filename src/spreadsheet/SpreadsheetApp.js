@@ -244,8 +244,8 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
 
     onSpreadsheetMetadata(method, id, metadata) {
         this.setState({
-            spreadsheetId: metadata.getIgnoringDefaults(SpreadsheetMetadata.SPREADSHEET_ID),
-            spreadsheetName: metadata.getIgnoringDefaults(SpreadsheetMetadata.SPREADSHEET_NAME),
+            spreadsheetId: metadata && metadata.getIgnoringDefaults(SpreadsheetMetadata.SPREADSHEET_ID),
+            spreadsheetName: metadata && metadata.getIgnoringDefaults(SpreadsheetMetadata.SPREADSHEET_NAME),
             creatingEmptySpreadsheet: false,
             spreadsheetMetadata: metadata,
         });
