@@ -16,7 +16,10 @@ export default class ListenerCollection {
         listeners.push(listener);
 
         return () => {
-            listeners.splice(listeners.findIndex(listener), 1);
+            const index = listeners.indexOf(listener);
+            if(-1 !== index){
+                listeners.splice(index, 1);
+            }
         };
     }
 
