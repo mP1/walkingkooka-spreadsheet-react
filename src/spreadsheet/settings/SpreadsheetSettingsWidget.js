@@ -173,26 +173,7 @@ class SpreadsheetSettingsWidget extends SpreadsheetHistoryAwareStateWidget {
             }
         }
 
-        if(metadata && !metadata.isEmpty() && !(metadata.equals(prevState.spreadsheetMetadata))){
-            this.spreadsheetMetadataSave(metadata);
-        }
-
         return historyTokens;
-    }
-
-    /**
-     * Unconditionally saves the given SpreadsheetMetadata
-     */
-    spreadsheetMetadataSave(metadata) {
-        Preconditions.requireInstance(metadata, SpreadsheetMetadata, "metadata");
-
-        this.props.spreadsheetMetadataCrud.post(
-            metadata.getIgnoringDefaults(SpreadsheetMetadata.SPREADSHEET_ID),
-            metadata,
-            (m) => {
-            },
-            this.props.showError,
-        );
     }
 
     onSpreadsheetMetadata(method, id, metadata) {
@@ -472,15 +453,13 @@ class SpreadsheetSettingsWidget extends SpreadsheetHistoryAwareStateWidget {
         const setValue = function(v) {
             console.log("saving default style property " + property + "=" + v);
 
-            this.setState( // lgtm [js/react/inconsistent-state-update]
-                {
-                    spreadsheetMetadata: metadata.set(
-                        SpreadsheetMetadata.STYLE,
-                        null != v ?
-                            style.set(property, v) :
-                            style.remove(property)
-                    ),
-                }
+            this.spreadsheetMetadataSave(
+                metadata.set(
+                    SpreadsheetMetadata.STYLE,
+                    null != v ?
+                        style.set(property, v) :
+                        style.remove(property)
+                )
             );
         }.bind(this);
 
@@ -924,15 +903,11 @@ class SpreadsheetSettingsWidget extends SpreadsheetHistoryAwareStateWidget {
                         render = <span id={id}>{value ? value.toString() : ""}</span>;
                         break;
                     default:
-                        const setValue = function(v) {
+                        const setValue = (v) => {
                             console.log("saving metadata property " + property + "=" + v);
 
-                            this.setState( // lgtm [js/react/inconsistent-state-update]
-                                {
-                                    spreadsheetMetadata: metadata.setOrRemove(property, v),
-                                }
-                            );
-                        }.bind(this);
+                            this.spreadsheetMetadataSave(metadata.setOrRemove(property, v));
+                        };
 
                         const defaultMetadata = metadata.getIgnoringDefaults(SpreadsheetMetadata.DEFAULTS);
                         const defaultValue = defaultMetadata && defaultMetadata.getIgnoringDefaults(property);
@@ -1396,6 +1371,25 @@ class SpreadsheetSettingsWidget extends SpreadsheetHistoryAwareStateWidget {
         this.setState({
             section: stateSectionName,
             toggleSection: stateSectionName,
+        });
+    }
+
+    /**
+     * Unconditionally saves the given SpreadsheetMetadata
+     */
+    spreadsheetMetadataSave(metadata) {
+        Preconditions.requireInstance(metadata, SpreadsheetMetadata, "metadata");
+
+        this.props.spreadsheetMetadataCrud.post(
+            metadata.getIgnoringDefaults(SpreadsheetMetadata.SPREADSHEET_ID),
+            metadata,
+            (m) => {
+            },
+            this.props.showError,
+        );
+
+        this.setState({
+            spreadsheetMetadata: metadata,
         });
     }
 }
