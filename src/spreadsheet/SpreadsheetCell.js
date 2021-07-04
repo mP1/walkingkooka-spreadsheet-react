@@ -10,7 +10,6 @@ import TableCell from "@material-ui/core/TableCell";
 import TextNode from "../text/TextNode";
 import TextStyle from "../text/TextStyle";
 import Tooltip from "@material-ui/core/Tooltip";
-import "./SpreadsheetCell.css";
 
 const TYPE_NAME = "spreadsheet-cell";
 
