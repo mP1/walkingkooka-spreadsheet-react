@@ -493,7 +493,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
             new SpreadsheetFormula(""),
             TextStyle.EMPTY,
             undefined,
-            new Text(""));
+            Text.EMPTY);
     }
 
     /**
