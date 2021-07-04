@@ -1,4 +1,3 @@
-import './SpreadsheetViewportWidget.css';
 import Equality from "../Equality.js";
 import ImmutableMap from "../util/ImmutableMap.js";
 import Paper from '@material-ui/core/Paper';
