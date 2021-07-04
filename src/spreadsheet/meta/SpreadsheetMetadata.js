@@ -724,11 +724,13 @@ const PROPERTY_NAMES = [
 const VIEWPORT_SHOULD_UPDATE_PROPERTY_NAMES = PROPERTY_NAMES.filter(p => {
     var keep;
     switch(p) {
+        case SpreadsheetMetadata.CELL:
         case SpreadsheetMetadata.CREATOR:
         case SpreadsheetMetadata.CREATE_DATE_TIME:
         case SpreadsheetMetadata.MODIFIED_BY:
         case SpreadsheetMetadata.MODIFIED_DATE_TIME:
         case SpreadsheetMetadata.SPREADSHEET_NAME:
+        case SpreadsheetMetadata.VIEWPORT_CELL:
             keep = false;
             break;
         default:

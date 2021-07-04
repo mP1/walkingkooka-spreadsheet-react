@@ -1,9 +1,11 @@
+import _ from "lodash";
 import Equality from "../Equality.js";
 import ImmutableMap from "../util/ImmutableMap.js";
 import Paper from '@material-ui/core/Paper';
 import Preconditions from "../Preconditions.js";
 import PropTypes from "prop-types";
 import React from 'react';
+import Slider from "@material-ui/core/Slider";
 import SpreadsheetCellReference from "./reference/SpreadsheetCellReference.js";
 import SpreadsheetCell from "./SpreadsheetCell.js";
 import SpreadsheetColumnReference from "./reference/SpreadsheetColumnReference.js";
@@ -15,6 +17,9 @@ import SpreadsheetLabelName from "./reference/SpreadsheetLabelName.js";
 import SpreadsheetMessenger from "./message/SpreadsheetMessenger.js";
 import SpreadsheetMessengerCrud from "./message/SpreadsheetMessengerCrud.js";
 import SpreadsheetMetadata from "./meta/SpreadsheetMetadata.js";
+import SpreadsheetRange from "./reference/SpreadsheetRange.js";
+import SpreadsheetReferenceKind from "./reference/SpreadsheetReferenceKind.js";
+import SpreadsheetRowReference from "./reference/SpreadsheetRowReference.js";
 import SpreadsheetViewport from "./SpreadsheetViewport.js";
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
@@ -24,6 +29,8 @@ import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
 import Text from "../text/Text.js";
 import TextStyle from "../text/TextStyle.js";
+
+const SCROLL_DEBOUNCE = 100;
 
 const headerCell = {
     minWidth: "4ex",
@@ -57,7 +64,7 @@ const headerCellSelected = Object.assign({},
  * <li>ImmutableMap columnWidths: A cache of the column widths within the visible viewport</li>
  * <li>ImmutableMap rowHeights: A cache of the row heights within the visible viewport</li>
  * <li>object dimensions: Holds the width and height of the viewport in pixels</li>
- * <li>SpreadsheetMetadata metadata: holds the viewport home cell & default style</li>
+ * <li>SpreadsheetMetadata spreadsheetMetadata: holds the viewport home cell & default style</li>
  * <li>SpreadsheetRange viewportRange: holds a range of all the cells within the viewport</li>
  * <li>Immutable cellToLabels: cell to Label lookup</li>
  * </ul>
@@ -65,6 +72,8 @@ const headerCellSelected = Object.assign({},
 export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareStateWidget {
 
     init() {
+        this.horizontalSlider = React.createRef();
+        this.verticalSlider = React.createRef();
         this.viewportTable = React.createRef();
     }
 
@@ -89,9 +98,17 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
 
         const window = delta.window();
         if(window.length > 0){
-            newState.viewportRange = window[0]; // update the range of cells being shown in the viewport
-        }
+            const viewportRange = window[0]; // update the range of cells being shown in the viewport;
 
+            Object.assign(
+                newState,
+                {
+                    viewportRange: viewportRange,
+                    spreadsheetMetadata: state.spreadsheetMetadata.set(SpreadsheetMetadata.VIEWPORT_CELL, viewportRange.begin())
+                }
+            );
+        }
+        
         this.setState(newState);
     }
 
@@ -158,7 +175,8 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
     }
 
     /**
-     * If the history cell changes and formula token is missing give focus.
+     * If the history cell changes and formula token is missing give focus. Also handles refreshing viewport
+     * if cell or range change.
      */
     historyTokensFromState(prevState) {
         const historyTokens = {};
@@ -172,64 +190,99 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
         let newState = {};
 
         if(viewportTable){
-            const viewportCell = metadata.getIgnoringDefaults(SpreadsheetMetadata.VIEWPORT_CELL);
+            const viewportRange = state.viewportRange;
+            const prevViewportRange = prevState.viewportRange;
 
-            if(viewportCell){
-                const viewportRange = state.viewportRange;
+            // if viewport range changed update the scollbar values.
+            if(prevViewportRange && viewportRange){
+                const begin = viewportRange.begin();
+                if(!begin.equals(prevViewportRange.begin())){
+                    this.horizontalSlider.current.value = (begin.column().value());
+                    this.verticalSlider.current.value = (SpreadsheetViewportWidget.toVerticalSliderValue(begin.column().value()));
+                }
+            }
 
-                const cellNew = state.cell;
+            const width = viewportTable.offsetWidth;
+            const height = viewportTable.offsetHeight;
 
-                const width = viewportTable.offsetWidth;
-                const height = viewportTable.offsetHeight;
-                const prevDimensions = prevState.dimensions;
+            const cellOrLabelOld = prevState.cellOrLabel;
+            const cellOrLabelNew = state.cellOrLabel;
 
-                const cellNewOutsideViewportRange = viewportRange && cellNew && !viewportRange.test(cellNew);
+            const cellNew = state.cell;
+            const cellOld = prevState.cell;
 
-                // if the newCell is outside viewportRange
-                // or any metadata properties which mean cells require re-rendering
-                // of the viewport width/height increased in size
-                // THEN reload all cells
-                if(cellNewOutsideViewportRange || metadata.shouldUpdateViewport(previousMetadata) || (width > prevDimensions.width || height > prevDimensions.height)){
-                    this.viewportLoadCells(
-                        new SpreadsheetViewport(
-                            //viewportRange && cellNewInsideViewportRange ? viewportCell : cellNew,
-                            cellNewOutsideViewportRange ? cellNew : viewportCell,
-                            0,
-                            0,
-                            width,
-                            height
-                        )
-                    );
+            for(;;) {
+                const viewportCell = metadata.getIgnoringDefaults(SpreadsheetMetadata.VIEWPORT_CELL);
+                if(viewportCell) {
+                    // some metadata properties changed that will mean formatting of values changed so reload
+                    if(metadata.shouldUpdateViewport(previousMetadata)) {
+                        console.log("Metadata change need to reformat viewport cells", metadata);
 
-                    if(cellNewOutsideViewportRange){
-                        metadata = metadata.set(SpreadsheetMetadata.VIEWPORT_CELL, cellNew);
+                        this.viewportLoadCells(
+                            new SpreadsheetViewport(
+                                viewportCell,
+                                0,
+                                0,
+                                width,
+                                height
+                            )
+                        );
+                        break;
+                    }
+
+                    // if viewport width or height increased reload viewport cells
+                    const prevDimensions = prevState.dimensions;
+                    if(width > prevDimensions.width || height > prevDimensions.height){
+                        console.log("Viewport width/height increased need to reload viewport cells");
+
+                        this.viewportLoadCells(
+                            new SpreadsheetViewport(
+                                viewportCell,
+                                0,
+                                0,
+                                width,
+                                height
+                            )
+                        );
+                        break;
+                    }
+
+                    if(viewportRange && cellNew && !cellNew.equals(cellOld) && !viewportRange.test(cellNew)){
+                        console.log("New cell " + cellNew + " outside" + viewportRange + " scroll to");
+
+                        this.viewportLoadCells(
+                            new SpreadsheetViewport(
+                                cellNew,
+                                0,
+                                0,
+                                width,
+                                height
+                            )
+                        );
                     }
                 }
+                break;
+            }
 
-                const cellOrLabelOld = prevState.cellOrLabel;
-                const cellOrLabelNew = state.cellOrLabel;
-                const cellOld = prevState.cell;
-
-                if(!Equality.safeEquals(cellOrLabelOld, cellOrLabelNew)){
-                    if(cellOrLabelNew instanceof SpreadsheetLabelName){
-                        this.resolveLabelToCell(cellOrLabelNew); // eventually updates state.cell
-                    }else {
-                        newState = {
-                            cell: cellOrLabelNew,
-                        };
-                    }
+            if(!Equality.safeEquals(cellOrLabelOld, cellOrLabelNew)){
+                if(cellOrLabelNew instanceof SpreadsheetLabelName){
+                    this.resolveLabelToCell(cellOrLabelNew); // eventually updates state.cell
+                }else {
+                    newState = {
+                        cell: cellOrLabelNew,
+                    };
                 }
+            }
 
-                historyTokens[SpreadsheetHistoryHash.CELL] = cellOrLabelNew;
-                if(state.focused){
-                    historyTokens[SpreadsheetHistoryHash.CELL_FORMULA] = null;
-                }
+            historyTokens[SpreadsheetHistoryHash.CELL] = cellOrLabelNew;
+            if(state.focused){
+                historyTokens[SpreadsheetHistoryHash.CELL_FORMULA] = null;
+            }
 
-                if(!Equality.safeEquals(cellNew, cellOld)){
-                    if(!state.formula){
-                        console.log("Missing " + SpreadsheetHistoryHash.CELL_FORMULA + " token giving focus to cell..." + cellNew);
-                        this.giveFocus(cellNew);
-                    }
+            if(!Equality.safeEquals(cellNew, cellOld)){
+                if(!state.formula){
+                    console.log("Missing " + SpreadsheetHistoryHash.CELL_FORMULA + " token giving focus to cell..." + cellNew);
+                    this.giveFocus(cellNew);
                 }
             }
         }
@@ -248,15 +301,16 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
 
         this.setState(newState);
 
-        // save the updated metadata....................................................................................
         if(!Equality.safeEquals(metadata, previousMetadata)){
-            this.props.spreadsheetMetadataCrud.post(
-                metadata.getIgnoringDefaults(SpreadsheetMetadata.SPREADSHEET_ID),
-                metadata,
-                () => {
-                },
-                this.props.showError
-            );
+            if(SpreadsheetViewportWidget.m > 0) {
+                this.props.spreadsheetMetadataCrud.post(
+                    metadata.getIgnoringDefaults(SpreadsheetMetadata.SPREADSHEET_ID),
+                    metadata,
+                    () => {
+                    },
+                    this.props.showError
+                );
+            }
         }
 
         return historyTokens;
@@ -341,12 +395,13 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
         const {dimensions, spreadsheetMetadata} = this.state;
         const home = spreadsheetMetadata && spreadsheetMetadata.getIgnoringDefaults(SpreadsheetMetadata.VIEWPORT_CELL);
 
-        return (dimensions && home && this.renderTable()) ||
+        return (dimensions && home && this.renderTable(dimensions, home)) ||
             this.emptyTable();
     }
 
-    renderTable() {
-        const dimensions = this.state.dimensions;
+    renderTable(dimensions, home) {
+        const column = home.column().value();
+        const row = home.row().value();
 
         return <TableContainer key="viewport-TableContainer"
                                ref={this.viewportTable}
@@ -354,7 +409,6 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
                                style={{
                                    width: dimensions.width,
                                    height: dimensions.height,
-                                   minWidth: "100%",
                                    overflow: "hidden",
                                    borderRadius: 0, // cancel paper rounding.
                                }}>
@@ -372,7 +426,102 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
                     }
                 </TableBody>
             </Table>
+            <Slider ref={this.horizontalSlider}
+                    id="viewport-horizontal-Slider"
+                    orientation="horizontal"
+                    aria-labelledby="horizontal-slider"
+                    track={false}
+                    valueLabelDisplay="off"
+                    min={0}
+                    max={SpreadsheetColumnReference.MAX -1}
+                    step={SpreadsheetViewportWidget.SLIDER_STEP}
+                    defaultValue={0}
+                    style={{
+                        position: "absolute",
+                        left: "40px",
+                        bottom: "10px",
+                        width: dimensions.width - 75,
+                    }}
+                    value={column}
+                    onChange={_.debounce((e, newColumn) => {this.onHorizontalSliderChange(newColumn)}, SCROLL_DEBOUNCE)}
+            />
+            <Slider ref={this.verticalSlider}
+                    id="viewport-vertical-Slider"
+                    orientation="vertical"
+                    aria-labelledby="vertical-slider"
+                    track={false}
+                    valueLabelDisplay="off"
+                    min={0}
+                    max={SpreadsheetRowReference.MAX -1}
+                    step={SpreadsheetViewportWidget.SLIDER_STEP}
+                    defaultValue={SpreadsheetViewportWidget.toVerticalSliderValue(0)}
+                    style={{
+                        position: "absolute",
+                        bottom: "25px",
+                        right: "10px",
+                        height: dimensions.height - 60,
+                    }}
+                    value={SpreadsheetViewportWidget.toVerticalSliderValue(row)}
+                    onChange={_.debounce((e, newColumn) => {this.onVerticalSliderChange(newColumn)}, SCROLL_DEBOUNCE)}
+            />
         </TableContainer>;
+    }
+
+    static SLIDER_STEP = 1;
+
+    /**
+     * Normally the vertical slider has the max at the top and min at the bottom, however we wish to have the opposite, lower number rows at the top.
+     */
+    static toVerticalSliderValue(value) {
+        return SpreadsheetRowReference.MAX -1 - value;
+    }
+
+    onHorizontalSliderChange(newColumn) {
+        this.onHorizontalVerticalSliderChange(new SpreadsheetColumnReference(newColumn, SpreadsheetReferenceKind.RELATIVE), null);
+    }
+
+    onVerticalSliderChange(newRow) {
+        this.onHorizontalVerticalSliderChange(null, new SpreadsheetRowReference(1048576 - 1 - newRow, SpreadsheetReferenceKind.RELATIVE));
+    }
+
+    onHorizontalVerticalSliderChange(newColumn, newRow) {
+        const state = this.state;
+
+        const viewportRange = this.state.viewportRange;
+        if(viewportRange) {
+            const begin = viewportRange.begin();
+
+            let topLeft = begin;
+            if(null != newColumn){
+                topLeft = topLeft.setColumn(newColumn);
+            }
+            if(null != newRow){
+                topLeft = topLeft.setRow(newRow);
+            }
+
+            // updating will force a reload of viewport
+            if(!begin.equals(topLeft)){
+                console.log("onHorizontalVerticalSliderChange " + viewportRange + " TO " + new SpreadsheetRange(topLeft, topLeft));
+
+                const viewportTable = this.viewportTable.current;
+
+                const width = viewportTable.offsetWidth;
+                const height = viewportTable.offsetHeight;
+
+                this.viewportLoadCells(
+                    new SpreadsheetViewport(
+                        topLeft,
+                        0,
+                        0,
+                        width,
+                        height
+                    )
+                );
+                this.setState({
+                    spreadsheetMetadata: state.spreadsheetMetadata.set(SpreadsheetMetadata.VIEWPORT_CELL, topLeft),
+                });
+            }
+        }
     }
 
     /**

@@ -1133,6 +1133,38 @@ test("shouldUpdateViewport property values different true #2", () => {
     ))).toBeTrue();
 });
 
+test("shouldUpdateViewport property values different " + SpreadsheetMetadata.CELL, () => {
+    expect(SpreadsheetMetadata.fromJson(
+        {
+            "cell": "A1",
+            "currency-symbol": "AUD",
+            "decimal-separator": ".",
+        }
+    ).shouldUpdateViewport(SpreadsheetMetadata.fromJson(
+        {
+            "cell": "Z99",
+            "currency-symbol": "AUD",
+            "decimal-separator": ".",
+        }
+    ))).toBeFalse();
+});
+
+test("shouldUpdateViewport property values different " + SpreadsheetMetadata.VIEWPORT_CELL, () => {
+    expect(SpreadsheetMetadata.fromJson(
+        {
+            "viewport-cell": "A1",
+            "currency-symbol": "AUD",
+            "decimal-separator": ".",
+        }
+    ).shouldUpdateViewport(SpreadsheetMetadata.fromJson(
+        {
+            "viewport-cell": "Z99",
+            "currency-symbol": "AUD",
+            "decimal-separator": ".",
+        }
+    ))).toBeFalse();
+});
+
 test("shouldUpdateViewport property values", () => {
     expect(SpreadsheetMetadata.fromJson(
         {
