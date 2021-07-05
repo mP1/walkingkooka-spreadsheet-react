@@ -159,8 +159,8 @@ export default class SpreadsheetMetadata extends SystemObject {
             case SpreadsheetMetadata.NUMBER_PARSE_PATTERNS :
             case SpreadsheetMetadata.PERCENTAGE_SYMBOL :
             case SpreadsheetMetadata.POSITIVE_SIGN :
-            case SpreadsheetMetadata.ROUNDING_MODE :
             case SpreadsheetMetadata.PRECISION :
+            case SpreadsheetMetadata.ROUNDING_MODE :
             case SpreadsheetMetadata.SELECTION :
             case SpreadsheetMetadata.SPREADSHEET_ID :
             case SpreadsheetMetadata.SPREADSHEET_NAME :
@@ -265,14 +265,14 @@ export default class SpreadsheetMetadata extends SystemObject {
                     checkPrecision(value);
                     typed = value;
                     break;
+                case SpreadsheetMetadata.ROUNDING_MODE:
+                    unmarshaller = RoundingMode.fromJson;
+                    break;
                 case SpreadsheetMetadata.SELECTION:
                     unmarshaller = spreadsheetExpressionReferenceFromJson;
                     break;
                 case SpreadsheetMetadata.SPREADSHEET_ID:
                     unmarshaller = null;
-                    break;
-                case SpreadsheetMetadata.ROUNDING_MODE:
-                    unmarshaller = RoundingMode.fromJson;
                     break;
                 case SpreadsheetMetadata.SPREADSHEET_NAME:
                     unmarshaller = SpreadsheetName.fromJson;
