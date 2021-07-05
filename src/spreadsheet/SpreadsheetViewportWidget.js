@@ -639,7 +639,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
      */
     emptyCell(reference) {
         return new SpreadsheetCell(reference,
-            new SpreadsheetFormula(""),
+            SpreadsheetFormula.EMPTY,
             TextStyle.EMPTY,
             undefined,
             Text.EMPTY);
