@@ -450,7 +450,7 @@ export default class SpreadsheetMetadata extends SystemObject {
                 break;
             case SpreadsheetMetadata.SELECTION:
                 expectedClass = SpreadsheetExpressionReference;
-                break
+                break;
             case SpreadsheetMetadata.SPREADSHEET_ID:
                 setFails(propertyName);
                 break;
