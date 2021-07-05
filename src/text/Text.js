@@ -5,8 +5,10 @@ import TextNode from "./TextNode";
 
 export default class Text extends TextLeafNode {
 
+    static EMPTY = new Text("");
+
     static fromJson(json) {
-        return new Text(json);
+        return "" === json ? Text.EMPTY : new Text(json);
     }
 
     constructor(text) {

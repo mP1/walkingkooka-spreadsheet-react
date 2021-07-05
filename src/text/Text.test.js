@@ -36,6 +36,15 @@ test("render", () => {
         .toStrictEqual(textValue);
 });
 
+// fromJson...............................................................................................................
+
+test("fromJson empty string", () => {
+    const json = "";
+
+    expect(Text.fromJson(json))
+        .toStrictEqual(Text.EMPTY);
+});
+
 // toJson...............................................................................................................
 
 test("toJson", () => {
