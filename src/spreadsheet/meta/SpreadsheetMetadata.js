@@ -31,7 +31,6 @@ function checkPropertyName(propertyName) {
     Preconditions.requireText(propertyName, "propertyName");
 
     switch(propertyName) {
-        case SpreadsheetMetadata.CELL:
         case SpreadsheetMetadata.CELL_CHARACTER_WIDTH:
         case SpreadsheetMetadata.CREATE_DATE_TIME:
         case SpreadsheetMetadata.CREATOR:
@@ -58,6 +57,7 @@ function checkPropertyName(propertyName) {
         case SpreadsheetMetadata.PRECISION:
         case SpreadsheetMetadata.SPREADSHEET_ID:
         case SpreadsheetMetadata.ROUNDING_MODE:
+        case SpreadsheetMetadata.SELECTION:
         case SpreadsheetMetadata.SPREADSHEET_NAME:
         case SpreadsheetMetadata.STYLE:
         case SpreadsheetMetadata.TEXT_FORMAT_PATTERN:
@@ -93,7 +93,6 @@ const TYPE_NAME = "spreadsheet-metadata";
  */
 export default class SpreadsheetMetadata extends SystemObject {
 
-    static CELL = "cell";
     static CELL_CHARACTER_WIDTH = "cell-character-width";
     static CREATOR = "creator";
     static CREATE_DATE_TIME = "create-date-time";
@@ -119,6 +118,7 @@ export default class SpreadsheetMetadata extends SystemObject {
     static POSITIVE_SIGN = "positive-sign";
     static ROUNDING_MODE = "rounding-mode";
     static PRECISION = "precision";
+    static SELECTION = "selection";
     static SPREADSHEET_ID = "spreadsheet-id";
     static SPREADSHEET_NAME = "spreadsheet-name";
     static STYLE = "style";
@@ -136,7 +136,6 @@ export default class SpreadsheetMetadata extends SystemObject {
         let is;
 
         switch(property) {
-            case SpreadsheetMetadata.CELL :
             case SpreadsheetMetadata.CELL_CHARACTER_WIDTH :
             case SpreadsheetMetadata.CREATOR :
             case SpreadsheetMetadata.CREATE_DATE_TIME :
@@ -162,6 +161,7 @@ export default class SpreadsheetMetadata extends SystemObject {
             case SpreadsheetMetadata.POSITIVE_SIGN :
             case SpreadsheetMetadata.ROUNDING_MODE :
             case SpreadsheetMetadata.PRECISION :
+            case SpreadsheetMetadata.SELECTION :
             case SpreadsheetMetadata.SPREADSHEET_ID :
             case SpreadsheetMetadata.SPREADSHEET_NAME :
             case SpreadsheetMetadata.STYLE :
@@ -192,9 +192,6 @@ export default class SpreadsheetMetadata extends SystemObject {
             let typed, unmarshaller;
 
             switch(key) {
-                case SpreadsheetMetadata.CELL:
-                    unmarshaller = spreadsheetExpressionReferenceFromJson;
-                    break;
                 case SpreadsheetMetadata.CELL_CHARACTER_WIDTH:
                     checkCellCharacterWidth(value);
                     typed = value;
@@ -267,6 +264,9 @@ export default class SpreadsheetMetadata extends SystemObject {
                 case SpreadsheetMetadata.PRECISION:
                     checkPrecision(value);
                     typed = value;
+                    break;
+                case SpreadsheetMetadata.SELECTION:
+                    unmarshaller = spreadsheetExpressionReferenceFromJson;
                     break;
                 case SpreadsheetMetadata.SPREADSHEET_ID:
                     unmarshaller = null;
@@ -372,9 +372,6 @@ export default class SpreadsheetMetadata extends SystemObject {
         let expectedTypeOf;
 
         switch(propertyName) {
-            case SpreadsheetMetadata.CELL:
-                expectedClass = SpreadsheetExpressionReference;
-                break;
             case SpreadsheetMetadata.CELL_CHARACTER_WIDTH:
                 checkCellCharacterWidth(value);
                 expectedTypeOf = "number";
@@ -451,6 +448,9 @@ export default class SpreadsheetMetadata extends SystemObject {
             case SpreadsheetMetadata.ROUNDING_MODE:
                 expectedClass = RoundingMode;
                 break;
+            case SpreadsheetMetadata.SELECTION:
+                expectedClass = SpreadsheetExpressionReference;
+                break
             case SpreadsheetMetadata.SPREADSHEET_ID:
                 setFails(propertyName);
                 break;
@@ -580,7 +580,6 @@ export default class SpreadsheetMetadata extends SystemObject {
         checkPropertyName(propertyName);
 
         switch(propertyName) {
-            case SpreadsheetMetadata.CELL:
             case SpreadsheetMetadata.CELL_CHARACTER_WIDTH:
             case SpreadsheetMetadata.CURRENCY_SYMBOL:
             case SpreadsheetMetadata.DATE_FORMAT_PATTERN:
@@ -599,6 +598,7 @@ export default class SpreadsheetMetadata extends SystemObject {
             case SpreadsheetMetadata.POSITIVE_SIGN:
             case SpreadsheetMetadata.ROUNDING_MODE:
             case SpreadsheetMetadata.PRECISION:
+            case SpreadsheetMetadata.SELECTION:
             case SpreadsheetMetadata.TEXT_FORMAT_PATTERN:
             case SpreadsheetMetadata.TIME_FORMAT_PATTERN:
             case SpreadsheetMetadata.TIME_PARSE_PATTERNS:
@@ -681,7 +681,6 @@ export default class SpreadsheetMetadata extends SystemObject {
  * An array of all properties.
  */
 const PROPERTY_NAMES = [
-    SpreadsheetMetadata.CELL,
     SpreadsheetMetadata.CELL_CHARACTER_WIDTH,
     SpreadsheetMetadata.CREATOR,
     SpreadsheetMetadata.CREATE_DATE_TIME,
@@ -707,6 +706,7 @@ const PROPERTY_NAMES = [
     SpreadsheetMetadata.POSITIVE_SIGN,
     SpreadsheetMetadata.ROUNDING_MODE,
     SpreadsheetMetadata.PRECISION,
+    SpreadsheetMetadata.SELECTION,
     SpreadsheetMetadata.SPREADSHEET_ID,
     SpreadsheetMetadata.SPREADSHEET_NAME,
     SpreadsheetMetadata.STYLE,
@@ -724,11 +724,11 @@ const PROPERTY_NAMES = [
 const VIEWPORT_SHOULD_UPDATE_PROPERTY_NAMES = PROPERTY_NAMES.filter(p => {
     var keep;
     switch(p) {
-        case SpreadsheetMetadata.CELL:
         case SpreadsheetMetadata.CREATOR:
         case SpreadsheetMetadata.CREATE_DATE_TIME:
         case SpreadsheetMetadata.MODIFIED_BY:
         case SpreadsheetMetadata.MODIFIED_DATE_TIME:
+        case SpreadsheetMetadata.SELECTION:
         case SpreadsheetMetadata.SPREADSHEET_NAME:
         case SpreadsheetMetadata.VIEWPORT_CELL:
             keep = false;

@@ -530,24 +530,24 @@ test("remove unknown fails", () => {
 
 test("remove absent property", () => {
     const metadata = SpreadsheetMetadata.EMPTY;
-    expect(metadata).toEqual(metadata.remove(SpreadsheetMetadata.CELL));
+    expect(metadata).toEqual(metadata.remove(SpreadsheetMetadata.SELECTION));
 });
 
 test("remove absent property #2", () => {
     const metadata = SpreadsheetMetadata.EMPTY
         .set(SpreadsheetMetadata.SPREADSHEET_NAME, new SpreadsheetName("spreadsheet-name-123"));
-    expect(metadata).toEqual(metadata.remove(SpreadsheetMetadata.CELL));
+    expect(metadata).toEqual(metadata.remove(SpreadsheetMetadata.SELECTION));
 });
 
 test("remove", () => {
     const cell = SpreadsheetCellReference.parse("Z9");
-    const metadata = SpreadsheetMetadata.EMPTY.set(SpreadsheetMetadata.CELL, cell);
-    const removed = metadata.remove(SpreadsheetMetadata.CELL);
+    const metadata = SpreadsheetMetadata.EMPTY.set(SpreadsheetMetadata.SELECTION, cell);
+    const removed = metadata.remove(SpreadsheetMetadata.SELECTION);
 
     expect(metadata).not.toEqual(removed);
 
     checkJson(metadata, {
-        "cell": "Z9",
+        "selection": "Z9",
     });
     checkJson(removed,
         {});
@@ -558,8 +558,8 @@ test("remove #2", () => {
         .set(SpreadsheetMetadata.SPREADSHEET_NAME, new SpreadsheetName("spreadsheet-name-123"));
 
     const cell = SpreadsheetCellReference.parse("Z9");
-    const metadata = withSpreadsheetName.set(SpreadsheetMetadata.CELL, cell);
-    const removed = metadata.remove(SpreadsheetMetadata.CELL);
+    const metadata = withSpreadsheetName.set(SpreadsheetMetadata.SELECTION, cell);
+    const removed = metadata.remove(SpreadsheetMetadata.SELECTION);
 
     expect(metadata).not.toEqual(removed);
     expect(withSpreadsheetName).toEqual(removed);
@@ -576,10 +576,6 @@ test("set cell-character-width 0 fails", () => {
 test("set cell-character-width -1 fails", () => {
     expect(() => SpreadsheetMetadata.EMPTY.set(SpreadsheetMetadata.CELL_CHARACTER_WIDTH, -1)).toThrow("Expected number width > 0 got -1");
 });
-
-getSetRemoveTest(SpreadsheetMetadata.CELL, SpreadsheetCellReference.parse("B97"));
-
-getSetRemoveTest(SpreadsheetMetadata.CELL, SpreadsheetLabelName.parse("Label123"));
 
 getIgnoringDefaultsTest(SpreadsheetMetadata.CREATE_DATE_TIME, LocalDateTime.fromJson("1999-12-31 12:58:59"));
 
@@ -642,6 +638,10 @@ test("set precision NAN fails", () => {
 });
 
 getSetRemoveTest(SpreadsheetMetadata.ROUNDING_MODE, RoundingMode.CEILING);
+
+getSetRemoveTest(SpreadsheetMetadata.SELECTION, SpreadsheetCellReference.parse("B97"));
+
+getSetRemoveTest(SpreadsheetMetadata.SELECTION, SpreadsheetLabelName.parse("Label123"));
 
 getIgnoringDefaultsTest(SpreadsheetMetadata.SPREADSHEET_ID, "123");
 
@@ -756,16 +756,16 @@ function removePropertyFailsTest(propertyName) {
 test("setOrRemove non null", () => {
     const cell = SpreadsheetCellReference.parse("Z99");
     const metadata = SpreadsheetMetadata.EMPTY
-        .setOrRemove(SpreadsheetMetadata.CELL, cell);
-    expect(metadata.getIgnoringDefaults(SpreadsheetMetadata.CELL)).toEqual(cell);
+        .setOrRemove(SpreadsheetMetadata.SELECTION, cell);
+    expect(metadata.getIgnoringDefaults(SpreadsheetMetadata.SELECTION)).toEqual(cell);
 });
 
 test("setOrRemove null", () => {
     const cell = SpreadsheetCellReference.parse("Z99");
     const metadata = SpreadsheetMetadata.EMPTY
-        .set(SpreadsheetMetadata.CELL, cell);
-    const metadata2 = metadata.setOrRemove(SpreadsheetMetadata.CELL, null)
-    expect(metadata2.getIgnoringDefaults(SpreadsheetMetadata.CELL)).toBeUndefined();
+        .set(SpreadsheetMetadata.SELECTION, cell);
+    const metadata2 = metadata.setOrRemove(SpreadsheetMetadata.SELECTION, null)
+    expect(metadata2.getIgnoringDefaults(SpreadsheetMetadata.SELECTION)).toBeUndefined();
 });
 
 // all..................................................................................................................
@@ -803,7 +803,7 @@ test("all setters & getters", () => {
     const viewportCell = SpreadsheetCellReference.parse("A99");
 
     const metadata = SpreadsheetMetadata.EMPTY
-        .set(SpreadsheetMetadata.CELL, cell)
+        .set(SpreadsheetMetadata.SELECTION, cell)
         .set(SpreadsheetMetadata.CELL_CHARACTER_WIDTH, cellCharacterWidth)
         .set(SpreadsheetMetadata.CURRENCY_SYMBOL, currencySymbol)
         .set(SpreadsheetMetadata.DATE_FORMAT_PATTERN, dateFormatPattern)
@@ -833,7 +833,7 @@ test("all setters & getters", () => {
         .set(SpreadsheetMetadata.VALUE_SEPARATOR, valueSeparator)
         .set(SpreadsheetMetadata.VIEWPORT_CELL, viewportCell);
 
-    expect(metadata.getIgnoringDefaults(SpreadsheetMetadata.CELL)).toEqual(cell);
+    expect(metadata.getIgnoringDefaults(SpreadsheetMetadata.SELECTION)).toEqual(cell);
     expect(metadata.getIgnoringDefaults(SpreadsheetMetadata.CELL_CHARACTER_WIDTH)).toEqual(cellCharacterWidth);
     expect(metadata.getIgnoringDefaults(SpreadsheetMetadata.CURRENCY_SYMBOL)).toEqual(currencySymbol);
     expect(metadata.getIgnoringDefaults(SpreadsheetMetadata.DATE_FORMAT_PATTERN)).toEqual(dateFormatPattern);
@@ -868,10 +868,10 @@ test("all setters & removers", () => {
     const cell = SpreadsheetCellReference.parse("Z99");
 
     const metadata = SpreadsheetMetadata.EMPTY
-        .set(SpreadsheetMetadata.CELL, cell)
-        .remove(SpreadsheetMetadata.CELL);
+        .set(SpreadsheetMetadata.SELECTION, cell)
+        .remove(SpreadsheetMetadata.SELECTION);
 
-    expect(metadata.getIgnoringDefaults(SpreadsheetMetadata.CELL)).toBeUndefined();
+    expect(metadata.getIgnoringDefaults(SpreadsheetMetadata.SELECTION)).toBeUndefined();
     expect(metadata.isEmpty()).toBeTrue();
 });
 
@@ -1133,18 +1133,18 @@ test("shouldUpdateViewport property values different true #2", () => {
     ))).toBeTrue();
 });
 
-test("shouldUpdateViewport property values different " + SpreadsheetMetadata.CELL, () => {
+test("shouldUpdateViewport property values different " + SpreadsheetMetadata.SELECTION, () => {
     expect(SpreadsheetMetadata.fromJson(
         {
-            "cell": "A1",
             "currency-symbol": "AUD",
             "decimal-separator": ".",
+            "selection": "A1",
         }
     ).shouldUpdateViewport(SpreadsheetMetadata.fromJson(
         {
-            "cell": "Z99",
             "currency-symbol": "AUD",
             "decimal-separator": ".",
+            "selection": "Z99",
         }
     ))).toBeFalse();
 });

@@ -325,7 +325,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
         const success = (cell) => this.setState({
             cell: cell,
             cellOrLabel: label,
-            spreadsheetMetadata: this.state.spreadsheetMetadata.set(SpreadsheetMetadata.CELL, cell),
+            spreadsheetMetadata: this.state.spreadsheetMetadata.set(SpreadsheetMetadata.SELECTION, cell),
         });
         const failure = (message, error) => {
             this.setState({
@@ -531,7 +531,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
         const {columnWidths, dimensions, spreadsheetMetadata} = this.state;
 
         const home = spreadsheetMetadata.getIgnoringDefaults(SpreadsheetMetadata.VIEWPORT_CELL);
-        const cell = spreadsheetMetadata.getIgnoringDefaults(SpreadsheetMetadata.CELL);
+        const cell = spreadsheetMetadata.getIgnoringDefaults(SpreadsheetMetadata.SELECTION);
         const defaultStyle = spreadsheetMetadata.effectiveStyle();
 
         const viewportWidth = dimensions.width;
@@ -563,7 +563,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
         const {cells, columnWidths, rowHeights, spreadsheetMetadata, dimensions, cellToLabels} = this.state;
 
         const home = spreadsheetMetadata.getIgnoringDefaults(SpreadsheetMetadata.VIEWPORT_CELL);
-        const cell = spreadsheetMetadata.getIgnoringDefaults(SpreadsheetMetadata.CELL);
+        const cell = spreadsheetMetadata.getIgnoringDefaults(SpreadsheetMetadata.SELECTION);
         const defaultStyle = spreadsheetMetadata.effectiveStyle();
 
         const defaultColumnWidth = defaultStyle.width().value();
@@ -700,7 +700,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
             cell: cellReference,
             cellOrLabel: cellReference,
             focused: false,
-            spreadsheetMetadata: this.state.spreadsheetMetadata.set(SpreadsheetMetadata.CELL, cellReference),
+            spreadsheetMetadata: this.state.spreadsheetMetadata.set(SpreadsheetMetadata.SELECTION, cellReference),
         });
     }
 
