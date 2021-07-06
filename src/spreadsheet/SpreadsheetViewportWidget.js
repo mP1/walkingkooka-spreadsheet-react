@@ -302,15 +302,13 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
         this.setState(newState);
 
         if(!Equality.safeEquals(metadata, previousMetadata)){
-            if(SpreadsheetViewportWidget.m > 0) {
-                this.props.spreadsheetMetadataCrud.post(
-                    metadata.getIgnoringDefaults(SpreadsheetMetadata.SPREADSHEET_ID),
-                    metadata,
-                    () => {
-                    },
-                    this.props.showError
-                );
-            }
+            this.props.spreadsheetMetadataCrud.post(
+                metadata.getIgnoringDefaults(SpreadsheetMetadata.SPREADSHEET_ID),
+                metadata,
+                () => {
+                },
+                this.props.showError
+            );
         }
 
         return historyTokens;
