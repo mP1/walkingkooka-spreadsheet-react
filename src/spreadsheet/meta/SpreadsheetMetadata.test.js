@@ -7,20 +7,23 @@ import Locale from "../../util/Locale.js";
 import PixelLength from "../../text/PixelLength";
 import RoundingMode from "../../math/RoundingMode.js";
 import SpreadsheetCellReference from "../reference/SpreadsheetCellReference";
-import SpreadsheetMetadata from "./SpreadsheetMetadata";
-import SpreadsheetName from "../SpreadsheetName";
+import SpreadsheetColumnReference from "../reference/SpreadsheetColumnReference.js";
 import SpreadsheetDateFormatPattern from "../format/SpreadsheetDateFormatPattern.js";
 import SpreadsheetDateParsePatterns from "../format/SpreadsheetDateParsePatterns.js";
 import SpreadsheetDateTimeFormatPattern from "../format/SpreadsheetDateTimeFormatPattern.js";
 import SpreadsheetDateTimeParsePatterns from "../format/SpreadsheetDateTimeParsePatterns.js";
+import SpreadsheetLabelName from "../reference/SpreadsheetLabelName.js";
+import SpreadsheetMetadata from "./SpreadsheetMetadata";
+import SpreadsheetName from "../SpreadsheetName";
 import SpreadsheetNumberFormatPattern from "../format/SpreadsheetNumberFormatPattern.js";
 import SpreadsheetNumberParsePatterns from "../format/SpreadsheetNumberParsePatterns.js";
+import SpreadsheetRange from "../reference/SpreadsheetRange.js";
+import SpreadsheetRowReference from "../reference/SpreadsheetRowReference.js";
 import SpreadsheetTextFormatPattern from "../format/SpreadsheetTextFormatPattern.js";
 import SpreadsheetTimeFormatPattern from "../format/SpreadsheetTimeFormatPattern.js";
 import SpreadsheetTimeParsePatterns from "../format/SpreadsheetTimeParsePatterns.js";
 import systemObjectTesting from "../../SystemObjectTesting.js";
 import TextStyle from "../../text/TextStyle";
-import SpreadsheetLabelName from "../reference/SpreadsheetLabelName.js";
 
 systemObjectTesting(
     new SpreadsheetMetadata(
@@ -547,7 +550,10 @@ test("remove", () => {
     expect(metadata).not.toEqual(removed);
 
     checkJson(metadata, {
-        "selection": "Z9",
+        "selection": {
+            "type": "spreadsheet-cell-reference",
+            "value": "Z9",
+        },
     });
     checkJson(removed,
         {});
@@ -641,7 +647,13 @@ getSetRemoveTest(SpreadsheetMetadata.ROUNDING_MODE, RoundingMode.CEILING);
 
 getSetRemoveTest(SpreadsheetMetadata.SELECTION, SpreadsheetCellReference.parse("B97"));
 
+getSetRemoveTest(SpreadsheetMetadata.SELECTION, SpreadsheetColumnReference.parse("B"));
+
 getSetRemoveTest(SpreadsheetMetadata.SELECTION, SpreadsheetLabelName.parse("Label123"));
+
+getSetRemoveTest(SpreadsheetMetadata.SELECTION, SpreadsheetRange.parse("B2:C3"));
+
+getSetRemoveTest(SpreadsheetMetadata.SELECTION, SpreadsheetRowReference.parse("234"));
 
 getIgnoringDefaultsTest(SpreadsheetMetadata.SPREADSHEET_ID, "123");
 
@@ -695,7 +707,9 @@ function getSetRemoveTest(propertyName, propertyValue) {
     test("remove " + propertyName,
         () => {
             const json = {};
-            json[propertyName] = (propertyValue.toJson && propertyValue.toJson()) || propertyValue;
+            json[propertyName] = SpreadsheetMetadata.SELECTION === propertyValue ?
+                propertyValue.toJsonWithType() :
+                (propertyValue.toJson && propertyValue.toJson()) || propertyValue;
 
             expect(SpreadsheetMetadata.fromJson(json)
                 .remove(propertyName)
@@ -713,7 +727,9 @@ function getIgnoringDefaultsTest0(propertyName, propertyValue) {
 
     test("getIgnoringDefaults " + propertyName, () => {
         const json = {};
-        json[propertyName] = (propertyValue.toJson && propertyValue.toJson()) || propertyValue;
+        json[propertyName] = SpreadsheetMetadata.SELECTION === propertyName ?
+            propertyValue.toJsonWithType() :
+            (propertyValue.toJson && propertyValue.toJson()) || propertyValue;
 
         expect(SpreadsheetMetadata.fromJson(json)
             .getIgnoringDefaults(propertyName)
@@ -733,7 +749,9 @@ function setPropertyTest(propertyName, propertyValue) {
             .set(propertyName, propertyValue);
 
         const json = {};
-        json[propertyName] = (propertyValue.toJson && propertyValue.toJson()) || propertyValue;
+        json[propertyName] = SpreadsheetMetadata.SELECTION === propertyName ?
+            propertyValue.toJsonWithType() :
+            (propertyValue.toJson && propertyValue.toJson()) || propertyValue;
 
         expect(SpreadsheetMetadata.fromJson(json)
             .getIgnoringDefaults(propertyName)

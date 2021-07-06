@@ -1,8 +1,8 @@
-import SystemObject from "../../SystemObject.js";
+import SpreadsheetSelection from "./SpreadsheetSelection.js";
 
 /**
  * Common base class for several types in this namespace
  */
-export default class SpreadsheetExpressionReference extends SystemObject {
+export default class SpreadsheetExpressionReference extends SpreadsheetSelection {
 
 }
