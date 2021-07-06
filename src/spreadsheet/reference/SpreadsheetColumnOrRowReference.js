@@ -1,8 +1,8 @@
 import Preconditions from "../../Preconditions.js";
 import SpreadsheetReferenceKind from "./SpreadsheetReferenceKind";
-import SystemObject from "../../SystemObject.js";
+import SpreadsheetSelection from "./SpreadsheetSelection.js";
 
-export default class SpreadsheetColumnOrRowReference extends SystemObject {
+export default class SpreadsheetColumnOrRowReference extends SpreadsheetSelection {
 
     constructor(value, kind) {
         super();

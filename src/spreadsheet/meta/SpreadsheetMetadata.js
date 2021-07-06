@@ -14,10 +14,9 @@ import SpreadsheetDateFormatPattern from "../format/SpreadsheetDateFormatPattern
 import SpreadsheetDateParsePatterns from "../format/SpreadsheetDateParsePatterns.js";
 import SpreadsheetDateTimeFormatPattern from "../format/SpreadsheetDateTimeFormatPattern.js";
 import SpreadsheetDateTimeParsePatterns from "../format/SpreadsheetDateTimeParsePatterns.js";
-import SpreadsheetExpressionReference from "../reference/SpreadsheetExpressionReference.js";
-import spreadsheetExpressionReferenceFromJson from "../reference/SpreadsheetExpressionReferenceFromJson.js";
 import SpreadsheetNumberFormatPattern from "../format/SpreadsheetNumberFormatPattern.js";
 import SpreadsheetNumberParsePatterns from "../format/SpreadsheetNumberParsePatterns.js";
+import SpreadsheetSelection from "../reference/SpreadsheetSelection.js";
 import SpreadsheetTextFormatPattern from "../format/SpreadsheetTextFormatPattern.js";
 import SpreadsheetTimeFormatPattern from "../format/SpreadsheetTimeFormatPattern.js";
 import SpreadsheetTimeParsePatterns from "../format/SpreadsheetTimeParsePatterns.js";
@@ -269,7 +268,7 @@ export default class SpreadsheetMetadata extends SystemObject {
                     unmarshaller = RoundingMode.fromJson;
                     break;
                 case SpreadsheetMetadata.SELECTION:
-                    unmarshaller = spreadsheetExpressionReferenceFromJson;
+                    unmarshaller = SystemObject.fromJsonWithType
                     break;
                 case SpreadsheetMetadata.SPREADSHEET_ID:
                     unmarshaller = null;
@@ -449,7 +448,7 @@ export default class SpreadsheetMetadata extends SystemObject {
                 expectedClass = RoundingMode;
                 break;
             case SpreadsheetMetadata.SELECTION:
-                expectedClass = SpreadsheetExpressionReference;
+                expectedClass = SpreadsheetSelection;
                 break;
             case SpreadsheetMetadata.SPREADSHEET_ID:
                 setFails(propertyName);
@@ -651,7 +650,17 @@ export default class SpreadsheetMetadata extends SystemObject {
         const json = {};
 
         for(const [key, value] of Object.entries(this.properties)) {
-            json[key] = (value.toJson && value.toJson()) || value;
+            let valueJson;
+
+            switch(key) {
+                case SpreadsheetMetadata.SELECTION:
+                    valueJson = value.toJsonWithType();
+                    break;
+                default:
+                    valueJson = (value.toJson && value.toJson()) || value;
+                    break;
+            }
+            json[key] = valueJson;
         }
 
         return json;
