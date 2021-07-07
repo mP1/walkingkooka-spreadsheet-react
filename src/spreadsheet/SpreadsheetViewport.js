@@ -31,10 +31,10 @@ export default class SpreadsheetViewport extends SystemObject {
         );
     }
 
-    constructor(reference, xOffset, yOffset, width, height) {
+    constructor(cellOrLabel, xOffset, yOffset, width, height) {
         super();
-        Preconditions.requireInstance(reference, SpreadsheetCellReference, "reference");
-        this.referenceValue = reference;
+        Preconditions.requireInstance(cellOrLabel, SpreadsheetCellReference, "cellOrLabel");
+        this.cellOrLabelValue = cellOrLabel;
 
         Preconditions.requireNumber(xOffset, "xOffset");
         this.xOffsetValue = xOffset;
@@ -49,8 +49,8 @@ export default class SpreadsheetViewport extends SystemObject {
         this.heightValue = height;
     }
 
-    reference() {
-        return this.referenceValue;
+    cellOrLabel() {
+        return this.cellOrLabelValue;
     }
 
     xOffset() {
@@ -74,7 +74,7 @@ export default class SpreadsheetViewport extends SystemObject {
      */
     toQueryStringParameters() {
         return {
-            home: this.reference(),
+            home: this.cellOrLabel(),
             xOffset: this.xOffset(),
             yOffset: this.yOffset(),
             width: this.width(),
@@ -83,7 +83,7 @@ export default class SpreadsheetViewport extends SystemObject {
     }
 
     toJson() {
-        return this.reference() + SEPARATOR + this.xOffset() + SEPARATOR + this.yOffset() + SEPARATOR + this.width() + SEPARATOR + this.height();
+        return this.cellOrLabel() + SEPARATOR + this.xOffset() + SEPARATOR + this.yOffset() + SEPARATOR + this.width() + SEPARATOR + this.height();
     }
 
     typeName() {
@@ -93,7 +93,7 @@ export default class SpreadsheetViewport extends SystemObject {
     equals(other) {
         return this === other ||
             (other instanceof SpreadsheetViewport &&
-                this.reference().equals(other.reference()) &&
+                this.cellOrLabel().equals(other.cellOrLabel()) &&
                 this.xOffset() === other.xOffset() &&
                 this.yOffset() === other.yOffset() &&
                 this.width() === other.width() &&

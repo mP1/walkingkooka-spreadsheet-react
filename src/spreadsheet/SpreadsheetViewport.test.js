@@ -1,8 +1,8 @@
-import SpreadsheetViewport from "./SpreadsheetViewport.js";
 import SpreadsheetCellReference from "./reference/SpreadsheetCellReference.js";
+import SpreadsheetViewport from "./SpreadsheetViewport.js";
 import systemObjectTesting from "../SystemObjectTesting.js";
 
-function reference() {
+function cellOrLabel() {
     return SpreadsheetCellReference.fromJson("B2");
 }
 
@@ -23,7 +23,7 @@ function height() {
 }
 
 function viewport() {
-    return new SpreadsheetViewport(reference(), xOffset(), yOffset(), width(), height());
+    return new SpreadsheetViewport(cellOrLabel(), xOffset(), yOffset(), width(), height());
 }
 
 systemObjectTesting(
@@ -37,86 +37,86 @@ systemObjectTesting(
 
 // create...............................................................................................................
 
-test("create without reference fails", () => {
-    expect(() => new SpreadsheetViewport(null, xOffset(), yOffset(), width(), height())).toThrow("Missing reference");
+test("create without cellOrLabel fails", () => {
+    expect(() => new SpreadsheetViewport(null, xOffset(), yOffset(), width(), height())).toThrow("Missing cellOrLabel");
 });
 
-test("create invalid reference type fails", () => {
-    const reference = "invalid!";
-    expect(() => new SpreadsheetViewport(reference, xOffset(), yOffset(), width(), height())).toThrow("Expected SpreadsheetCellReference reference got " + reference);
+test("create invalid cellOrLabel type fails", () => {
+    const cellOrLabel = "invalid!";
+    expect(() => new SpreadsheetViewport(cellOrLabel, xOffset(), yOffset(), width(), height())).toThrow("Expected SpreadsheetCellReference cellOrLabel got " + cellOrLabel);
 });
 
 // xOffset
 
 test("create missing xOffset fails", () => {
     const xOffset = null;
-    expect(() => new SpreadsheetViewport(reference(), xOffset, yOffset(), width(), height())).toThrow("Missing xOffset");
+    expect(() => new SpreadsheetViewport(cellOrLabel(), xOffset, yOffset(), width(), height())).toThrow("Missing xOffset");
 });
 
 test("create invalid xOffset type fails", () => {
     const xOffset = "invalid!"
-    expect(() => new SpreadsheetViewport(reference(), xOffset, yOffset(), width(), height())).toThrow("Expected number xOffset got " + xOffset);
+    expect(() => new SpreadsheetViewport(cellOrLabel(), xOffset, yOffset(), width(), height())).toThrow("Expected number xOffset got " + xOffset);
 });
 
 // yOffet
 
 test("create missing yOffset fails", () => {
     const yOffset = null;
-    expect(() => new SpreadsheetViewport(reference(), xOffset(), yOffset, width(), height())).toThrow("Missing yOffset");
+    expect(() => new SpreadsheetViewport(cellOrLabel(), xOffset(), yOffset, width(), height())).toThrow("Missing yOffset");
 });
 
 test("create invalid yOffsety type fails", () => {
     const yOffset = "invalid!"
-    expect(() => new SpreadsheetViewport(reference(), xOffset(), yOffset, width(), height())).toThrow("Expected number yOffset got " + yOffset);
+    expect(() => new SpreadsheetViewport(cellOrLabel(), xOffset(), yOffset, width(), height())).toThrow("Expected number yOffset got " + yOffset);
 });
 
 // width
 
 test("create missing width fails", () => {
     const width = null;
-    expect(() => new SpreadsheetViewport(reference(), xOffset(), yOffset(), width, height())).toThrow("Missing width");
+    expect(() => new SpreadsheetViewport(cellOrLabel(), xOffset(), yOffset(), width, height())).toThrow("Missing width");
 });
 
 test("create invalid width type fails", () => {
     const width = "invalid!"
-    expect(() => new SpreadsheetViewport(reference(), xOffset(), yOffset(), width, height())).toThrow("Expected number width got " + width);
+    expect(() => new SpreadsheetViewport(cellOrLabel(), xOffset(), yOffset(), width, height())).toThrow("Expected number width got " + width);
 });
 
 test("create invalid width value fails", () => {
     const width = -1;
-    expect(() => new SpreadsheetViewport(reference(), xOffset(), yOffset(), width, height())).toThrow("Expected number width >= 0 got " + width);
+    expect(() => new SpreadsheetViewport(cellOrLabel(), xOffset(), yOffset(), width, height())).toThrow("Expected number width >= 0 got " + width);
 });
 
 test("create invalid width value fails2", () => {
     const width = -123;
-    expect(() => new SpreadsheetViewport(reference(), xOffset(), yOffset(), width, height())).toThrow("Expected number width >= 0 got " + width);
+    expect(() => new SpreadsheetViewport(cellOrLabel(), xOffset(), yOffset(), width, height())).toThrow("Expected number width >= 0 got " + width);
 });
 
 // height
 
 test("create missing height fails", () => {
     const height = null;
-    expect(() => new SpreadsheetViewport(reference(), xOffset(), yOffset(), width(), height)).toThrow("Missing height");
+    expect(() => new SpreadsheetViewport(cellOrLabel(), xOffset(), yOffset(), width(), height)).toThrow("Missing height");
 });
 
 test("create invalid height type fails", () => {
     const height = "invalid!"
-    expect(() => new SpreadsheetViewport(reference(), xOffset(), yOffset(), width(), height)).toThrow("Expected number height got " + height);
+    expect(() => new SpreadsheetViewport(cellOrLabel(), xOffset(), yOffset(), width(), height)).toThrow("Expected number height got " + height);
 });
 
 test("create invalid height value fails", () => {
     const height = -1;
-    expect(() => new SpreadsheetViewport(reference(), xOffset(), yOffset(), width(), height)).toThrow("Expected number height >= 0 got " + height);
+    expect(() => new SpreadsheetViewport(cellOrLabel(), xOffset(), yOffset(), width(), height)).toThrow("Expected number height >= 0 got " + height);
 });
 
 test("create invalid height value fails2", () => {
     const height = -123;
-    expect(() => new SpreadsheetViewport(reference(), xOffset(), yOffset(), width(), height)).toThrow("Expected number height >= 0 got " + height);
+    expect(() => new SpreadsheetViewport(cellOrLabel(), xOffset(), yOffset(), width(), height)).toThrow("Expected number height >= 0 got " + height);
 });
 
 test("new", () => {
-    check(new SpreadsheetViewport(reference(), xOffset(), yOffset(), width(), height()),
-        reference(),
+    check(new SpreadsheetViewport(cellOrLabel(), xOffset(), yOffset(), width(), height()),
+        cellOrLabel(),
         xOffset(),
         yOffset(),
         width(),
@@ -127,8 +127,8 @@ test("new xOffset=0 yOffset=0", () => {
     const xOffset = 0;
     const yOffset = 0;
 
-    check(new SpreadsheetViewport(reference(), xOffset, yOffset, width(), height()),
-        reference(),
+    check(new SpreadsheetViewport(cellOrLabel(), xOffset, yOffset, width(), height()),
+        cellOrLabel(),
         xOffset,
         yOffset,
         width(),
@@ -137,8 +137,8 @@ test("new xOffset=0 yOffset=0", () => {
 
 test("new 0 width", () => {
     const width = 0;
-    check(new SpreadsheetViewport(reference(), xOffset(), yOffset(), width, height()),
-        reference(),
+    check(new SpreadsheetViewport(cellOrLabel(), xOffset(), yOffset(), width, height()),
+        cellOrLabel(),
         xOffset(),
         yOffset(),
         width,
@@ -147,8 +147,8 @@ test("new 0 width", () => {
 
 test("new 0 height", () => {
     const height = 0;
-    check(new SpreadsheetViewport(reference(), xOffset(), yOffset(), width(), height),
-        reference(),
+    check(new SpreadsheetViewport(cellOrLabel(), xOffset(), yOffset(), width(), height),
+        cellOrLabel(),
         xOffset(),
         yOffset(),
         width(),
@@ -157,29 +157,29 @@ test("new 0 height", () => {
 
 // equals...............................................................................................................
 
-test("equals different reference false", () => {
+test("equals different cellOrLabel false", () => {
     const v = viewport();
     expect(v.equals(new SpreadsheetViewport(SpreadsheetCellReference.parse("Z9"), xOffset(), yOffset(), width(), height()))).toBeFalse();
 });
 
 test("equals different xOffset false", () => {
     const v = viewport();
-    expect(v.equals(new SpreadsheetViewport(reference(), xOffset() + 1, yOffset(), width(), height()))).toBeFalse();
+    expect(v.equals(new SpreadsheetViewport(cellOrLabel(), xOffset() + 1, yOffset(), width(), height()))).toBeFalse();
 });
 
 test("equals different yOffset false", () => {
     const v = viewport();
-    expect(v.equals(new SpreadsheetViewport(reference(), xOffset(), yOffset() + 1, width(), height()))).toBeFalse();
+    expect(v.equals(new SpreadsheetViewport(cellOrLabel(), xOffset(), yOffset() + 1, width(), height()))).toBeFalse();
 });
 
 test("equals different width false", () => {
     const v = viewport();
-    expect(v.equals(new SpreadsheetViewport(reference(), xOffset(), yOffset(), width() + 1, height()))).toBeFalse();
+    expect(v.equals(new SpreadsheetViewport(cellOrLabel(), xOffset(), yOffset(), width() + 1, height()))).toBeFalse();
 });
 
 test("equals different height false", () => {
     const v = viewport();
-    expect(v.equals(new SpreadsheetViewport(reference(), xOffset(), yOffset(), width(), height() + 1))).toBeFalse();
+    expect(v.equals(new SpreadsheetViewport(cellOrLabel(), xOffset(), yOffset(), width(), height() + 1))).toBeFalse();
 });
 
 test("equals equivalent true", () => {
@@ -195,9 +195,9 @@ test("equals equivalent true #2", () => {
 
 // helpers..............................................................................................................
 
-function check(viewport, reference, xOffset, yOffset, width, height) {
-    expect(viewport.reference()).toStrictEqual(reference);
-    expect(viewport.reference()).toBeInstanceOf(SpreadsheetCellReference);
+function check(viewport, cellOrLabel, xOffset, yOffset, width, height) {
+    expect(viewport.cellOrLabel()).toStrictEqual(cellOrLabel);
+    expect(viewport.cellOrLabel()).toBeInstanceOf(SpreadsheetCellReference);
 
     expect(viewport.xOffset()).toStrictEqual(xOffset);
     expect(viewport.xOffset()).toBeNumber();
@@ -211,7 +211,7 @@ function check(viewport, reference, xOffset, yOffset, width, height) {
     expect(viewport.height()).toStrictEqual(height);
     expect(viewport.height()).toBeNumber();
 
-    const json = [reference, xOffset, yOffset, width, height].join(":");
+    const json = [cellOrLabel, xOffset, yOffset, width, height].join(":");
     expect(viewport.toJson()).toStrictEqual(json);
 
     expect(SpreadsheetViewport.fromJson(json)).toStrictEqual(viewport);
