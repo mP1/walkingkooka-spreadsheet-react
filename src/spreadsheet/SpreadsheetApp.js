@@ -366,10 +366,6 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
         );
     }
 
-    notificationShowError(error) {
-        this.notificationShow(SpreadsheetNotification.error(error));
-    }
-
     // settings.........................................................................................................
 
     settingsToggle() {
