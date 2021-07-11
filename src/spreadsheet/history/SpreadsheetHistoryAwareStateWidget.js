@@ -19,12 +19,7 @@ export default class SpreadsheetHistoryAwareStateWidget extends SpreadsheetHisto
 
         this.state = Object.assign(
             this.initialStateFromProps(props),
-            this.stateFromHistoryTokens(
-                SpreadsheetHistoryHash.parse(
-                    props.history.location.pathname,
-                    this.showError.bind(this),
-                )
-            )
+            props.history.tokens()
         );
     }
 
@@ -77,5 +72,5 @@ export default class SpreadsheetHistoryAwareStateWidget extends SpreadsheetHisto
 }
 
 SpreadsheetHistoryAwareStateWidget.propTypes = {
-    history: PropTypes.object.isRequired,
+    history: PropTypes.instanceOf(SpreadsheetHistoryHash).isRequired
 }

@@ -263,7 +263,7 @@ export default class SpreadsheetNavigateAutocompleteWidget extends SpreadsheetHi
 }
 
 SpreadsheetNavigateAutocompleteWidget.propTypes = {
-    history: PropTypes.object.isRequired,
+    history: PropTypes.instanceOf(SpreadsheetHistoryHash).isRequired,
     getSimilarities: PropTypes.func.isRequired, // performs a search to find similarities to the query text field.
     notificationShow: PropTypes.func.isRequired, // used to display notifications including errors and other messages
     showError: PropTypes.func.isRequired, // used mostly to display failures around getSimilarities

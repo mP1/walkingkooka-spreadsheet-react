@@ -1,15 +1,181 @@
+import CharSequences from "../../CharSequences.js";
 import SpreadsheetCellReference from "../reference/SpreadsheetCellReference.js";
 import SpreadsheetHistoryHash from "./SpreadsheetHistoryHash.js";
 import SpreadsheetLabelName from "../reference/SpreadsheetLabelName.js";
 import SpreadsheetName from "../SpreadsheetName.js";
 
-const FUNCTION = (a) =>a;
+const ID = "spreadsheet-id-123";
+const SPREADSHEET_NAME = new SpreadsheetName("spreadsheet-name-456");
+const CELL = SpreadsheetCellReference.parse("A1");
+const LABEL = SpreadsheetLabelName.parse("Label123");
+
+// validate................................................................................................................
+
+function validateTest(label, tokens, expected) {
+    test(label, () => {
+        expect(SpreadsheetHistoryHash.validate(tokens))
+            .toStrictEqual(null != expected ? expected : tokens);
+    });
+}
+
+validateTest(
+    "validate empty",
+    {}
+);
+
+validateTest(
+    "validate id & name",
+    {
+        "spreadsheet-id": ID,
+        "spreadsheet-name": SPREADSHEET_NAME,
+    }
+);
+
+validateTest(
+    "validate id & name & name-edit",
+    {
+        "spreadsheet-id": ID,
+        "spreadsheet-name": SPREADSHEET_NAME,
+        "name": true,
+    }
+);
+
+validateTest(
+    "validate id & name & cell=cell",
+    {
+        "spreadsheet-id": ID,
+        "spreadsheet-name": SPREADSHEET_NAME,
+        "cell": CELL,
+    }
+);
+
+validateTest(
+    "validate id & name & cell=label",
+    {
+        "spreadsheet-id": ID,
+        "spreadsheet-name": SPREADSHEET_NAME,
+        "cell": LABEL,
+    }
+);
+
+validateTest(
+    "validate id & name & name edit && cell",
+    {
+        "spreadsheet-id": ID,
+        "spreadsheet-name": SPREADSHEET_NAME,
+        "name": true,
+        "cell": CELL,
+    },
+    {
+        "spreadsheet-id": ID,
+        "spreadsheet-name": SPREADSHEET_NAME,
+    }
+);
+
+validateTest(
+    "validate id & name & name edit && label",
+    {
+        "spreadsheet-id": ID,
+        "spreadsheet-name": SPREADSHEET_NAME,
+        "name": true,
+        "label": LABEL,
+    },
+    {
+        "spreadsheet-id": ID,
+        "spreadsheet-name": SPREADSHEET_NAME,
+    }
+);
+
+validateTest(
+    "validate id & name & name edit && navigate",
+    {
+        "spreadsheet-id": ID,
+        "spreadsheet-name": SPREADSHEET_NAME,
+        "name": true,
+        "navigate": true,
+    },
+    {
+        "spreadsheet-id": ID,
+        "spreadsheet-name": SPREADSHEET_NAME,
+    }
+);
+
+validateTest(
+    "validate id & name & cell=CELL",
+    {
+        "spreadsheet-id": ID,
+        "spreadsheet-name": SPREADSHEET_NAME,
+        "cell": CELL,
+    }
+);
+
+validateTest(
+    "validate id & name & cell=invalid",
+    {
+        "spreadsheet-id": ID,
+        "spreadsheet-name": SPREADSHEET_NAME,
+        "cell": "!invalid",
+    },
+    {
+        "spreadsheet-id": ID,
+        "spreadsheet-name": SPREADSHEET_NAME,
+    },
+);
+
+validateTest(
+    "validate id & name & cell=LABEL",
+    {
+        "spreadsheet-id": ID,
+        "spreadsheet-name": SPREADSHEET_NAME,
+        "cell": LABEL,
+    }
+);
+
+validateTest(
+    "validate id & name & label=LABEL",
+    {
+        "spreadsheet-id": ID,
+        "spreadsheet-name": SPREADSHEET_NAME,
+        "label": LABEL,
+    }
+);
+
+validateTest(
+    "validate id & name & label=!invalid",
+    {
+        "spreadsheet-id": ID,
+        "spreadsheet-name": SPREADSHEET_NAME,
+        "label": "!invalid",
+    },
+    {
+        "spreadsheet-id": ID,
+        "spreadsheet-name": SPREADSHEET_NAME,
+    }
+);
+
+validateTest(
+    "validate id & name & navigate",
+    {
+        "spreadsheet-id": ID,
+        "spreadsheet-name": SPREADSHEET_NAME,
+        "navigate": true,
+    }
+);
+
+validateTest(
+    "validate id & name & settings",
+    {
+        "spreadsheet-id": ID,
+        "spreadsheet-name": SPREADSHEET_NAME,
+        "settings": true,
+    }
+);
 
 // parse..................................................................................................................
 
-function parseFails(pathname) {
-    test("parse " + pathname + " fails", () => {
-        expect(() => SpreadsheetHistoryHash.parse(pathname).toThrow("Expected string pathname got " + pathname));
+function parseFails(hash) {
+    test("parse " + CharSequences.quoteAndEscape(hash) + " fails", () => {
+        expect(() => SpreadsheetHistoryHash.parse(hash).toThrow("Expected string pathname got " + hash));
     });
 }
 
@@ -21,601 +187,519 @@ parseFails({});
 parseFails(SpreadsheetHistoryHash.parse);
 parseFails([]);
 
-test("parse empty", () => {
-    parseAndCheck(
-        "",
-        {}
-    );
-});
+parseAndStringifyTest(
+    "",
+    {}
+);
 
-test("parse slash", () => {
-    parseAndCheck(
-        "/",
-        {}
-    );
-});
+parseAndStringifyTest(
+    "/",
+    {}
+);
 
-test("parse /spreadsheet-id", () => {
-    parseAndCheck(
-        "/spreadsheet-id-123",
-        {
-            "spreadsheet-id": "spreadsheet-id-123",
-        }
-    );
-});
-
-test("parse /spreadsheet-id/spreadsheet-name", () => {
-    parseAndCheck(
-        "/spreadsheet-id-123/spreadsheet-name-456",
-        {
-            "spreadsheet-id": "spreadsheet-id-123",
-            "spreadsheet-name": new SpreadsheetName("spreadsheet-name-456"),
-        }
-    );
-});
-
-test("parse /spreadsheet-id/spreadsheet-name/name", () => {
-    parseAndCheck(
-        "/spreadsheet-id-123/spreadsheet-name-456/name",
-        {
-            "spreadsheet-id": "spreadsheet-id-123",
-            "spreadsheet-name": new SpreadsheetName("spreadsheet-name-456"),
-            "name": true,
-        }
-    );
-});
-
-test("parse /spreadsheet-id/spreadsheet-name/name/cell invalid", () => {
-    parseAndCheck(
-        "/spreadsheet-id-123/spreadsheet-name-456/name/cell",
-        {
-            "spreadsheet-id": "spreadsheet-id-123",
-            "spreadsheet-name": new SpreadsheetName("spreadsheet-name-456"),
-        }
-    );
-});
-
-test("parse /spreadsheet-id/spreadsheet-name/cell missing reference", () => {
-    parseAndCheck(
-        "/spreadsheet-id-123/spreadsheet-name-456/cell",
-        {
-            "spreadsheet-id": "spreadsheet-id-123",
-            "spreadsheet-name": new SpreadsheetName("spreadsheet-name-456"),
-        }
-    );
-});
-
-test("parse /spreadsheet-id/spreadsheet-name/cell/!invalid invalid reference", () => {
-    parseAndCheck(
-        "/spreadsheet-id-123/spreadsheet-name-456/cell/!invalid",
-        {
-            "spreadsheet-id": "spreadsheet-id-123",
-            "spreadsheet-name": new SpreadsheetName("spreadsheet-name-456"),
-        },
-        "Cell: Invalid character '!' at 0",
-    );
-});
-
-test("parse /spreadsheet-id/spreadsheet-name/cell/A1", () => {
-    parseAndCheck(
-        "/spreadsheet-id-123/spreadsheet-name-456/cell/A1",
-        {
-            "spreadsheet-id": "spreadsheet-id-123",
-            "spreadsheet-name": new SpreadsheetName("spreadsheet-name-456"),
-            "cell": SpreadsheetCellReference.parse("A1"),
-        }
-    );
-});
-
-test("parse /spreadsheet-id/spreadsheet-name/cell/A1/formula", () => {
-    parseAndCheck(
-        "/spreadsheet-id-123/spreadsheet-name-456/cell/A1/formula",
-        {
-            "spreadsheet-id": "spreadsheet-id-123",
-            "spreadsheet-name": new SpreadsheetName("spreadsheet-name-456"),
-            "cell": SpreadsheetCellReference.parse("A1"),
-            "formula": true,
-        }
-    );
-});
-
-test("parse /spreadsheet-id/spreadsheet-name/cell/Label123", () => {
-    parseAndCheck(
-        "/spreadsheet-id-123/spreadsheet-name-456/cell/Label123",
-        {
-            "spreadsheet-id": "spreadsheet-id-123",
-            "spreadsheet-name": new SpreadsheetName("spreadsheet-name-456"),
-            "cell": SpreadsheetLabelName.parse("Label123"),
-        }
-    );
-});
-
-test("parse /spreadsheet-id/spreadsheet-name/label invalid", () => {
-    parseAndCheck(
-        "/spreadsheet-id-123/spreadsheet-name-456/label",
-        {
-            "spreadsheet-id": "spreadsheet-id-123",
-            "spreadsheet-name": new SpreadsheetName("spreadsheet-name-456"),
-        }
-    );
-});
-
-test("parse /spreadsheet-id/spreadsheet-name/label missing label-name", () => {
-    parseAndCheck(
-        "/spreadsheet-id-123/spreadsheet-name-456/label",
-        {
-            "spreadsheet-id": "spreadsheet-id-123",
-            "spreadsheet-name": new SpreadsheetName("spreadsheet-name-456"),
-        }
-    );
-});
-
-test("parse /spreadsheet-id/spreadsheet-name/label/!invalid invalid label-name", () => {
-    parseAndCheck(
-        "/spreadsheet-id-123/spreadsheet-name-456/label/!invalid",
-        {
-            "spreadsheet-id": "spreadsheet-id-123",
-            "spreadsheet-name": new SpreadsheetName("spreadsheet-name-456"),
-        },
-        "Label: Invalid character '!' at 0",
-    );
-});
-
-test("parse /spreadsheet-id/spreadsheet-name/label/LABEL123", () => {
-    parseAndCheck(
-        "/spreadsheet-id-123/spreadsheet-name-456/label/LABEL123",
-        {
-            "spreadsheet-id": "spreadsheet-id-123",
-            "spreadsheet-name": new SpreadsheetName("spreadsheet-name-456"),
-            "label": SpreadsheetLabelName.parse("LABEL123"),
-        }
-    );
-});
-
-test("parse /spreadsheet-id/spreadsheet-name/cell/A2/label/LABEL123", () => {
-    parseAndCheck(
-        "/spreadsheet-id-123/spreadsheet-name-456/cell/A2/label/LABEL123",
-        {
-            "spreadsheet-id": "spreadsheet-id-123",
-            "spreadsheet-name": new SpreadsheetName("spreadsheet-name-456"),
-            "cell": SpreadsheetCellReference.parse("A2"),
-            "label": SpreadsheetLabelName.parse("LABEL123"),
-        }
-    );
-});
-
-test("parse /spreadsheet-id/spreadsheet-name/cell/A2/formula/label/LABEL123", () => {
-    parseAndCheck(
-        "/spreadsheet-id-123/spreadsheet-name-456/cell/A2/formula/label/LABEL123",
-        {
-            "spreadsheet-id": "spreadsheet-id-123",
-            "spreadsheet-name": new SpreadsheetName("spreadsheet-name-456"),
-            "cell": SpreadsheetCellReference.parse("A2"),
-            "formula": true,
-            "label": SpreadsheetLabelName.parse("LABEL123"),
-        }
-    );
-});
-
-test("parse /spreadsheet-id/spreadsheet-name/name", () => {
-    parseAndCheck(
-        "/spreadsheet-id-123/spreadsheet-name-456/name",
-        {
-            "spreadsheet-id": "spreadsheet-id-123",
-            "spreadsheet-name": new SpreadsheetName("spreadsheet-name-456"),
-            "name": true,
-        }
-    );
-});
-
-test("parse /spreadsheet-id/spreadsheet-name/name/label/Label123", () => {
-    parseAndCheck(
-        "/spreadsheet-id-123/spreadsheet-name-456/name/label/Label123",
-        {
-            "spreadsheet-id": "spreadsheet-id-123",
-            "spreadsheet-name": new SpreadsheetName("spreadsheet-name-456"),
-            "label": SpreadsheetLabelName.parse("Label123"),
-        }
-    );
-});
-
-test("parse /spreadsheet-id/spreadsheet-name/name/navigate", () => {
-    parseAndCheck(
-        "/spreadsheet-id-123/spreadsheet-name-456/name/navigate",
-        {
-            "spreadsheet-id": "spreadsheet-id-123",
-            "spreadsheet-name": new SpreadsheetName("spreadsheet-name-456"),
-            "navigate": true,
-        }
-    );
-});
-
-test("parse /spreadsheet-id/spreadsheet-name/navigate", () => {
-    parseAndCheck(
-        "/spreadsheet-id-123/spreadsheet-name-456/navigate",
-        {
-            "spreadsheet-id": "spreadsheet-id-123",
-            "spreadsheet-name": new SpreadsheetName("spreadsheet-name-456"),
-            "navigate": true,
-        }
-    );
-});
-
-test("parse /spreadsheet-id/spreadsheet-name/cell/A3/navigate", () => {
-    parseAndCheck(
-        "/spreadsheet-id-123/spreadsheet-name-456/cell/A3/navigate",
-        {
-            "spreadsheet-id": "spreadsheet-id-123",
-            "spreadsheet-name": new SpreadsheetName("spreadsheet-name-456"),
-            "cell": SpreadsheetCellReference.parse("A3"),
-            "navigate": true,
-        }
-    );
-});
-
-test("parse /spreadsheet-id/spreadsheet-name/cell/A3/formula/navigate", () => {
-    parseAndCheck(
-        "/spreadsheet-id-123/spreadsheet-name-456/cell/A3/formula/navigate",
-        {
-            "spreadsheet-id": "spreadsheet-id-123",
-            "spreadsheet-name": new SpreadsheetName("spreadsheet-name-456"),
-            "cell": SpreadsheetCellReference.parse("A3"),
-            "formula": true,
-            "navigate": true,
-        }
-    );
-});
-
-test("parse /spreadsheet-id/spreadsheet-name/cell/A3/formula/navigate/settings", () => {
-    parseAndCheck(
-        "/spreadsheet-id-123/spreadsheet-name-456/cell/A3/formula/navigate/settings",
-        {
-            "spreadsheet-id": "spreadsheet-id-123",
-            "spreadsheet-name": new SpreadsheetName("spreadsheet-name-456"),
-            "cell": SpreadsheetCellReference.parse("A3"),
-            "formula": true,
-            "navigate": true,
-            "settings": true,
-        }
-    );
-});
-
-test("parse /spreadsheet-id/spreadsheet-name/label/LABEL123/navigate", () => {
-    parseAndCheck(
-        "/spreadsheet-id-123/spreadsheet-name-456/label/LABEL123/navigate",
-        {
-            "spreadsheet-id": "spreadsheet-id-123",
-            "spreadsheet-name": new SpreadsheetName("spreadsheet-name-456"),
-            "label": SpreadsheetLabelName.parse("LABEL123"),
-            "navigate": true,
-        }
-    );
-});
-
-test("parse /spreadsheet-id/spreadsheet-name/navigate/settings", () => {
-    parseAndCheck(
-        "/spreadsheet-id-123/spreadsheet-name-456/navigate/settings",
-        {
-            "spreadsheet-id": "spreadsheet-id-123",
-            "spreadsheet-name": new SpreadsheetName("spreadsheet-name-456"),
-            "navigate": true,
-            "settings": true,
-        }
-    );
-});
-
-test("parse /spreadsheet-id/spreadsheet-name/navigate/settings/number", () => {
-    parseAndCheck(
-        "/spreadsheet-id-123/spreadsheet-name-456/navigate/settings/number",
-        {
-            "spreadsheet-id": "spreadsheet-id-123",
-            "spreadsheet-name": new SpreadsheetName("spreadsheet-name-456"),
-            "navigate": true,
-            "settings": true,
-            "settings-section": "number",
-        }
-    );
-});
-
-test("parse /spreadsheet-id/spreadsheet-name/settings", () => {
-    parseAndCheck(
-        "/spreadsheet-id-123/spreadsheet-name-456/settings",
-        {
-            "spreadsheet-id": "spreadsheet-id-123",
-            "spreadsheet-name": new SpreadsheetName("spreadsheet-name-456"),
-            "settings": true,
-        }
-    );
-});
-
-test("parse /spreadsheet-id/spreadsheet-name/settings/!invalid", () => {
-    parseAndCheck(
-        "/spreadsheet-id-123/spreadsheet-name-456/settings/!invalid",
-        {
-            "spreadsheet-id": "spreadsheet-id-123",
-            "spreadsheet-name": new SpreadsheetName("spreadsheet-name-456"),
-            "settings": true,
-        }
-    );
-});
-
-test("parse /spreadsheet-id/spreadsheet-name/settings/metadata", () => {
-    parseAndCheck(
-        "/spreadsheet-id-123/spreadsheet-name-456/settings/metadata",
-        {
-            "spreadsheet-id": "spreadsheet-id-123",
-            "spreadsheet-name": new SpreadsheetName("spreadsheet-name-456"),
-            "settings": true,
-            "settings-section": "metadata",
-        }
-    );
-});
-
-test("parse /spreadsheet-id/spreadsheet-name/settings/text", () => {
-    parseAndCheck(
-        "/spreadsheet-id-123/spreadsheet-name-456/settings/text",
-        {
-            "spreadsheet-id": "spreadsheet-id-123",
-            "spreadsheet-name": new SpreadsheetName("spreadsheet-name-456"),
-            "settings": true,
-            "settings-section": "text",
-        }
-    );
-});
-
-test("parse /spreadsheet-id/spreadsheet-name/settings/number", () => {
-    parseAndCheck(
-        "/spreadsheet-id-123/spreadsheet-name-456/settings/number",
-        {
-            "spreadsheet-id": "spreadsheet-id-123",
-            "spreadsheet-name": new SpreadsheetName("spreadsheet-name-456"),
-            "settings": true,
-            "settings-section": "number",
-        }
-    );
-});
-
-test("parse /spreadsheet-id/spreadsheet-name/settings/date-time", () => {
-    parseAndCheck(
-        "/spreadsheet-id-123/spreadsheet-name-456/settings/date-time",
-        {
-            "spreadsheet-id": "spreadsheet-id-123",
-            "spreadsheet-name": new SpreadsheetName("spreadsheet-name-456"),
-            "settings": true,
-            "settings-section": "date-time",
-        }
-    );
-});
-
-test("parse /spreadsheet-id/spreadsheet-name/settings/style", () => {
-    parseAndCheck(
-        "/spreadsheet-id-123/spreadsheet-name-456/settings/style",
-        {
-            "spreadsheet-id": "spreadsheet-id-123",
-            "spreadsheet-name": new SpreadsheetName("spreadsheet-name-456"),
-            "settings": true,
-            "settings-section": "style",
-        }
-    );
-});
-
-test("parse /spreadsheet-id/spreadsheet-name/name/settings", () => {
-    parseAndCheck(
-        "/spreadsheet-id-123/spreadsheet-name-456/name/settings",
-        {
-            "spreadsheet-id": "spreadsheet-id-123",
-            "spreadsheet-name": new SpreadsheetName("spreadsheet-name-456"),
-            "settings": true,
-        }
-    );
-});
-
-test("parse /spreadsheet-id/spreadsheet-name/name/settings/!invalid", () => {
-    parseAndCheck(
-        "/spreadsheet-id-123/spreadsheet-name-456/name/settings/!invalid",
-        {
-            "spreadsheet-id": "spreadsheet-id-123",
-            "spreadsheet-name": new SpreadsheetName("spreadsheet-name-456"),
-            "settings": true,
-        }
-    );
-});
-
-test("parse /spreadsheet-id/spreadsheet-name/name/settings/metadata", () => {
-    parseAndCheck(
-        "/spreadsheet-id-123/spreadsheet-name-456/name/settings/metadata",
-        {
-            "spreadsheet-id": "spreadsheet-id-123",
-            "spreadsheet-name": new SpreadsheetName("spreadsheet-name-456"),
-            "settings": true,
-            "settings-section": "metadata",
-        }
-    );
-});
-
-test("parse /spreadsheet-id/spreadsheet-name/name/settings/text", () => {
-    parseAndCheck(
-        "/spreadsheet-id-123/spreadsheet-name-456/name/settings/text",
-        {
-            "spreadsheet-id": "spreadsheet-id-123",
-            "spreadsheet-name": new SpreadsheetName("spreadsheet-name-456"),
-            "settings": true,
-            "settings-section": "text",
-        }
-    );
-});
-
-test("parse /spreadsheet-id/spreadsheet-name/name/settings/number", () => {
-    parseAndCheck(
-        "/spreadsheet-id-123/spreadsheet-name-456/name/settings/number",
-        {
-            "spreadsheet-id": "spreadsheet-id-123",
-            "spreadsheet-name": new SpreadsheetName("spreadsheet-name-456"),
-            "settings": true,
-            "settings-section": "number",
-        }
-    );
-});
-
-test("parse /spreadsheet-id/spreadsheet-name/name/settings/date-time", () => {
-    parseAndCheck(
-        "/spreadsheet-id-123/spreadsheet-name-456/name/settings/date-time",
-        {
-            "spreadsheet-id": "spreadsheet-id-123",
-            "spreadsheet-name": new SpreadsheetName("spreadsheet-name-456"),
-            "settings": true,
-            "settings-section": "date-time",
-        }
-    );
-});
-
-test("parse /spreadsheet-id/spreadsheet-name/name/settings/style", () => {
-    parseAndCheck(
-        "/spreadsheet-id-123/spreadsheet-name-456/name/settings/style",
-        {
-            "spreadsheet-id": "spreadsheet-id-123",
-            "spreadsheet-name": new SpreadsheetName("spreadsheet-name-456"),
-            "settings": true,
-            "settings-section": "style",
-        }
-    );
-});
-
-test("parse /spreadsheet-id/spreadsheet-name/cell/B2/formula/settings", () => {
-    parseAndCheck(
-        "/spreadsheet-id-123/spreadsheet-name-456/cell/B2/formula/settings",
-        {
-            "spreadsheet-id": "spreadsheet-id-123",
-            "spreadsheet-name": new SpreadsheetName("spreadsheet-name-456"),
-            "cell": SpreadsheetCellReference.parse("B2"),
-            "formula": true,
-            "settings": true,
-        }
-    );
-});
-
-test("parse /spreadsheet-id/spreadsheet-name/cell/B2/formula/settings/!invalid", () => {
-    parseAndCheck(
-        "/spreadsheet-id-123/spreadsheet-name-456/cell/B2/formula/settings/!invalid",
-        {
-            "spreadsheet-id": "spreadsheet-id-123",
-            "spreadsheet-name": new SpreadsheetName("spreadsheet-name-456"),
-            "cell": SpreadsheetCellReference.parse("B2"),
-            "formula": true,
-            "settings": true,
-        }
-    );
-});
-
-test("parse /spreadsheet-id/spreadsheet-name/cell/B2/formula/settings/metadata", () => {
-    parseAndCheck(
-        "/spreadsheet-id-123/spreadsheet-name-456/cell/B2/formula/settings/metadata",
-        {
-            "spreadsheet-id": "spreadsheet-id-123",
-            "spreadsheet-name": new SpreadsheetName("spreadsheet-name-456"),
-            "cell": SpreadsheetCellReference.parse("B2"),
-            "formula": true,
-            "settings": true,
-            "settings-section": "metadata",
-        }
-    );
-});
-
-test("parse /spreadsheet-id/spreadsheet-name/cell/B2/formula/settings/text", () => {
-    parseAndCheck(
-        "/spreadsheet-id-123/spreadsheet-name-456/cell/B2/formula/settings/text",
-        {
-            "spreadsheet-id": "spreadsheet-id-123",
-            "spreadsheet-name": new SpreadsheetName("spreadsheet-name-456"),
-            "cell": SpreadsheetCellReference.parse("B2"),
-            "formula": true,
-            "settings": true,
-            "settings-section": "text",
-        }
-    );
-});
-
-test("parse /spreadsheet-id/spreadsheet-name/cell/B2/formula/settings/number", () => {
-    parseAndCheck(
-        "/spreadsheet-id-123/spreadsheet-name-456/cell/B2/formula/settings/number",
-        {
-            "spreadsheet-id": "spreadsheet-id-123",
-            "spreadsheet-name": new SpreadsheetName("spreadsheet-name-456"),
-            "cell": SpreadsheetCellReference.parse("B2"),
-            "formula": true,
-            "settings": true,
-            "settings-section": "number",
-        }
-    );
-});
-
-test("parse /spreadsheet-id/spreadsheet-name/cell/B2/formula/settings/date-time", () => {
-    parseAndCheck(
-        "/spreadsheet-id-123/spreadsheet-name-456/cell/B2/formula/settings/date-time",
-        {
-            "spreadsheet-id": "spreadsheet-id-123",
-            "spreadsheet-name": new SpreadsheetName("spreadsheet-name-456"),
-            "cell": SpreadsheetCellReference.parse("B2"),
-            "formula": true,
-            "settings": true,
-            "settings-section": "date-time",
-        }
-    );
-});
-
-test("parse /spreadsheet-id/spreadsheet-name/cell/B2/formula/settings/style", () => {
-    parseAndCheck(
-        "/spreadsheet-id-123/spreadsheet-name-456/cell/B2/formula/settings/style",
-        {
-            "spreadsheet-id": "spreadsheet-id-123",
-            "spreadsheet-name": new SpreadsheetName("spreadsheet-name-456"),
-            "cell": SpreadsheetCellReference.parse("B2"),
-            "formula": true,
-            "settings": true,
-            "settings-section": "style",
-        }
-    );
-});
-
-test("parse /spreadsheet-id/spreadsheet-name/label/LABEL123/settings/style", () => {
-    parseAndCheck(
-        "/spreadsheet-id-123/spreadsheet-name-456/label/LABEL123/settings/style",
-        {
-            "spreadsheet-id": "spreadsheet-id-123",
-            "spreadsheet-name": new SpreadsheetName("spreadsheet-name-456"),
-            "label": SpreadsheetLabelName.parse("LABEL123"),
-            "settings": true,
-            "settings-section": "style",
-        }
-    );
-});
-
-test("parse /spreadsheet-id/spreadsheet-name/style/metadata/name fails", () => {
-    parseAndCheck(
-        "/spreadsheet-id-123/spreadsheet-name-456/cell/B2/formula/settings/metadata/name",
-        {
-            "spreadsheet-id": "spreadsheet-id-123",
-            "spreadsheet-name": new SpreadsheetName("spreadsheet-name-456"),
-        }
-    );
-});
-
-// helpers...............................................................................................................
-
-function parseAndCheck(pathname, expected, expectedError) {
-    let errors = [];
-    expect(SpreadsheetHistoryHash.parse(pathname, e => errors.push(e)))
-        .toStrictEqual(expected);
-    if(errors.length > 0) {
-        expect([expectedError])
-            .toStrictEqual(errors);
+parseAndStringifyTest(
+    "/spreadsheet-id-123",
+    {
+        "spreadsheet-id": "spreadsheet-id-123",
     }
+);
+
+parseAndStringifyTest(
+    "/spreadsheet-id-123/spreadsheet-name-456",
+    {
+        "spreadsheet-id": "spreadsheet-id-123",
+        "spreadsheet-name": SPREADSHEET_NAME,
+    }
+);
+
+parseAndStringifyTest(
+    "/spreadsheet-id-123/spreadsheet-name-456/name/!invalid4",
+    {
+        "spreadsheet-id": "spreadsheet-id-123",
+        "spreadsheet-name": SPREADSHEET_NAME,
+    }
+);
+
+parseAndStringifyTest(
+    "/spreadsheet-id-123/spreadsheet-name-456/name",
+    {
+        "spreadsheet-id": "spreadsheet-id-123",
+        "spreadsheet-name": SPREADSHEET_NAME,
+        "name": true,
+    }
+);
+
+parseAndStringifyTest(
+    "/spreadsheet-id-123/spreadsheet-name-456/name/cell/A1",
+    {
+        "spreadsheet-id": "spreadsheet-id-123",
+        "spreadsheet-name": SPREADSHEET_NAME,
+    }
+);
+
+parseAndStringifyTest(
+    "/spreadsheet-id-123/spreadsheet-name-456/cell",
+    {
+        "spreadsheet-id": "spreadsheet-id-123",
+        "spreadsheet-name": SPREADSHEET_NAME,
+    }
+);
+
+parseAndStringifyTest(
+    "/spreadsheet-id-123/spreadsheet-name-456/cell/!invalid",
+    {
+        "spreadsheet-id": "spreadsheet-id-123",
+        "spreadsheet-name": SPREADSHEET_NAME,
+    },
+    "Cell: Invalid character '!' at 0",
+);
+
+parseAndStringifyTest(
+    "/spreadsheet-id-123/spreadsheet-name-456/cell/A1",
+    {
+        "spreadsheet-id": "spreadsheet-id-123",
+        "spreadsheet-name": SPREADSHEET_NAME,
+        "cell": CELL,
+    }
+);
+
+parseAndStringifyTest(
+    "/spreadsheet-id-123/spreadsheet-name-456/cell/A1/formula",
+    {
+        "spreadsheet-id": "spreadsheet-id-123",
+        "spreadsheet-name": SPREADSHEET_NAME,
+        "cell": CELL,
+        "formula": true,
+    }
+);
+
+parseAndStringifyTest(
+    "/spreadsheet-id-123/spreadsheet-name-456/cell/Label123",
+    {
+        "spreadsheet-id": "spreadsheet-id-123",
+        "spreadsheet-name": SPREADSHEET_NAME,
+        "cell": LABEL,
+    }
+);
+
+parseAndStringifyTest(
+    "/spreadsheet-id-123/spreadsheet-name-456/label",
+    {
+        "spreadsheet-id": "spreadsheet-id-123",
+        "spreadsheet-name": SPREADSHEET_NAME,
+    }
+);
+
+parseAndStringifyTest(
+    "/spreadsheet-id-123/spreadsheet-name-456/label",
+    {
+        "spreadsheet-id": "spreadsheet-id-123",
+        "spreadsheet-name": SPREADSHEET_NAME,
+    }
+);
+
+parseAndStringifyTest(
+    "/spreadsheet-id-123/spreadsheet-name-456/label/!invalid",
+    {
+        "spreadsheet-id": "spreadsheet-id-123",
+        "spreadsheet-name": SPREADSHEET_NAME,
+    },
+    "Label: Invalid character '!' at 0",
+);
+
+parseAndStringifyTest(
+    "/spreadsheet-id-123/spreadsheet-name-456/label/Label123",
+    {
+        "spreadsheet-id": "spreadsheet-id-123",
+        "spreadsheet-name": SPREADSHEET_NAME,
+        "label": LABEL,
+    }
+);
+
+parseAndStringifyTest(
+    "/spreadsheet-id-123/spreadsheet-name-456/cell/A2/label/Label123",
+    {
+        "spreadsheet-id": "spreadsheet-id-123",
+        "spreadsheet-name": SPREADSHEET_NAME,
+        "cell": SpreadsheetCellReference.parse("A2"),
+        "label": LABEL,
+    }
+);
+
+parseAndStringifyTest(
+    "/spreadsheet-id-123/spreadsheet-name-456/cell/A2/formula/label/Label123",
+    {
+        "spreadsheet-id": "spreadsheet-id-123",
+        "spreadsheet-name": SPREADSHEET_NAME,
+        "cell": SpreadsheetCellReference.parse("A2"),
+        "formula": true,
+        "label": LABEL,
+    }
+);
+
+parseAndStringifyTest(
+    "/spreadsheet-id-123/spreadsheet-name-456/name",
+    {
+        "spreadsheet-id": "spreadsheet-id-123",
+        "spreadsheet-name": SPREADSHEET_NAME,
+        "name": true,
+    }
+);
+
+parseAndStringifyTest(
+    "/spreadsheet-id-123/spreadsheet-name-456/name/label/Label123",
+    {
+        "spreadsheet-id": "spreadsheet-id-123",
+        "spreadsheet-name": SPREADSHEET_NAME,
+    }
+);
+
+parseAndStringifyTest(
+    "/spreadsheet-id-123/spreadsheet-name-456/name/navigate",
+    {
+        "spreadsheet-id": "spreadsheet-id-123",
+        "spreadsheet-name": SPREADSHEET_NAME,
+    }
+);
+
+parseAndStringifyTest(
+    "/spreadsheet-id-123/spreadsheet-name-456/navigate",
+    {
+        "spreadsheet-id": "spreadsheet-id-123",
+        "spreadsheet-name": SPREADSHEET_NAME,
+        "navigate": true,
+    }
+);
+
+parseAndStringifyTest(
+    "/spreadsheet-id-123/spreadsheet-name-456/cell/A1/navigate",
+    {
+        "spreadsheet-id": "spreadsheet-id-123",
+        "spreadsheet-name": SPREADSHEET_NAME,
+        "cell": CELL,
+        "navigate": true,
+    }
+);
+
+parseAndStringifyTest(
+    "/spreadsheet-id-123/spreadsheet-name-456/cell/A1/formula/navigate",
+    {
+        "spreadsheet-id": "spreadsheet-id-123",
+        "spreadsheet-name": SPREADSHEET_NAME,
+        "cell": CELL,
+        "formula": true,
+        "navigate": true,
+    }
+);
+
+parseAndStringifyTest(
+    "/spreadsheet-id-123/spreadsheet-name-456/cell/A1/formula/navigate/settings",
+    {
+        "spreadsheet-id": "spreadsheet-id-123",
+        "spreadsheet-name": SPREADSHEET_NAME,
+        "cell": CELL,
+        "formula": true,
+        "navigate": true,
+        "settings": true,
+    }
+);
+
+parseAndStringifyTest(
+    "/spreadsheet-id-123/spreadsheet-name-456/label/Label123/navigate",
+    {
+        "spreadsheet-id": "spreadsheet-id-123",
+        "spreadsheet-name": SPREADSHEET_NAME,
+        "label": LABEL,
+        "navigate": true,
+    }
+);
+
+parseAndStringifyTest(
+    "/spreadsheet-id-123/spreadsheet-name-456/navigate/settings",
+    {
+        "spreadsheet-id": "spreadsheet-id-123",
+        "spreadsheet-name": SPREADSHEET_NAME,
+        "navigate": true,
+        "settings": true,
+    }
+);
+
+parseAndStringifyTest(
+    "/spreadsheet-id-123/spreadsheet-name-456/navigate/settings/number",
+    {
+        "spreadsheet-id": "spreadsheet-id-123",
+        "spreadsheet-name": SPREADSHEET_NAME,
+        "navigate": true,
+        "settings": true,
+        "settings-section": SpreadsheetHistoryHash.SETTINGS_NUMBER,
+    }
+);
+
+parseAndStringifyTest(
+    "/spreadsheet-id-123/spreadsheet-name-456/settings",
+    {
+        "spreadsheet-id": "spreadsheet-id-123",
+        "spreadsheet-name": SPREADSHEET_NAME,
+        "settings": true,
+    }
+);
+
+parseAndStringifyTest(
+    "/spreadsheet-id-123/spreadsheet-name-456/settings/!invalid",
+    {
+        "spreadsheet-id": "spreadsheet-id-123",
+        "spreadsheet-name": SPREADSHEET_NAME,
+        "settings": true,
+    }
+);
+
+parseAndStringifyTest(
+    "/spreadsheet-id-123/spreadsheet-name-456/settings/metadata",
+    {
+        "spreadsheet-id": "spreadsheet-id-123",
+        "spreadsheet-name": SPREADSHEET_NAME,
+        "settings": true,
+        "settings-section": SpreadsheetHistoryHash.SETTINGS_METADATA,
+    }
+);
+
+parseAndStringifyTest(
+    "/spreadsheet-id-123/spreadsheet-name-456/settings/text",
+    {
+        "spreadsheet-id": "spreadsheet-id-123",
+        "spreadsheet-name": SPREADSHEET_NAME,
+        "settings": true,
+        "settings-section": SpreadsheetHistoryHash.SETTINGS_TEXT,
+    }
+);
+
+parseAndStringifyTest(
+    "/spreadsheet-id-123/spreadsheet-name-456/settings/number",
+    {
+        "spreadsheet-id": "spreadsheet-id-123",
+        "spreadsheet-name": SPREADSHEET_NAME,
+        "settings": true,
+        "settings-section": SpreadsheetHistoryHash.SETTINGS_NUMBER,
+    }
+);
+
+parseAndStringifyTest(
+    "/spreadsheet-id-123/spreadsheet-name-456/settings/date-time",
+    {
+        "spreadsheet-id": "spreadsheet-id-123",
+        "spreadsheet-name": SPREADSHEET_NAME,
+        "settings": true,
+        "settings-section": SpreadsheetHistoryHash.SETTINGS_DATE_TIME,
+    }
+);
+
+parseAndStringifyTest(
+    "/spreadsheet-id-123/spreadsheet-name-456/settings/style",
+    {
+        "spreadsheet-id": "spreadsheet-id-123",
+        "spreadsheet-name": SPREADSHEET_NAME,
+        "settings": true,
+        "settings-section": SpreadsheetHistoryHash.SETTINGS_STYLE,
+    }
+);
+
+parseAndStringifyTest(
+    "/spreadsheet-id-123/spreadsheet-name-456/name/settings",
+    {
+        "spreadsheet-id": "spreadsheet-id-123",
+        "spreadsheet-name": SPREADSHEET_NAME,
+        "settings": true,
+    }
+);
+
+parseAndStringifyTest(
+    "/spreadsheet-id-123/spreadsheet-name-456/name/settings/!invalid",
+    {
+        "spreadsheet-id": "spreadsheet-id-123",
+        "spreadsheet-name": SPREADSHEET_NAME,
+        "settings": true,
+    }
+);
+
+parseAndStringifyTest(
+    "/spreadsheet-id-123/spreadsheet-name-456/name/settings/metadata",
+    {
+        "spreadsheet-id": "spreadsheet-id-123",
+        "spreadsheet-name": SPREADSHEET_NAME,
+        "settings": true,
+        "settings-section": SpreadsheetHistoryHash.SETTINGS_METADATA,
+    }
+);
+
+parseAndStringifyTest(
+    "/spreadsheet-id-123/spreadsheet-name-456/name/settings/text",
+    {
+        "spreadsheet-id": "spreadsheet-id-123",
+        "spreadsheet-name": SPREADSHEET_NAME,
+        "settings": true,
+        "settings-section": SpreadsheetHistoryHash.SETTINGS_TEXT,
+    }
+);
+
+parseAndStringifyTest(
+    "/spreadsheet-id-123/spreadsheet-name-456/name/settings/number",
+    {
+        "spreadsheet-id": "spreadsheet-id-123",
+        "spreadsheet-name": SPREADSHEET_NAME,
+        "settings": true,
+        "settings-section": SpreadsheetHistoryHash.SETTINGS_NUMBER,
+    }
+);
+
+parseAndStringifyTest(
+    "/spreadsheet-id-123/spreadsheet-name-456/name/settings/date-time",
+    {
+        "spreadsheet-id": "spreadsheet-id-123",
+        "spreadsheet-name": SPREADSHEET_NAME,
+        "settings": true,
+        "settings-section": SpreadsheetHistoryHash.SETTINGS_DATE_TIME,
+    }
+);
+
+parseAndStringifyTest(
+    "/spreadsheet-id-123/spreadsheet-name-456/name/settings/style",
+    {
+        "spreadsheet-id": "spreadsheet-id-123",
+        "spreadsheet-name": SPREADSHEET_NAME,
+        "settings": true,
+        "settings-section": SpreadsheetHistoryHash.SETTINGS_STYLE,
+    }
+);
+
+parseAndStringifyTest(
+    "/spreadsheet-id-123/spreadsheet-name-456/cell/B2/formula/settings",
+    {
+        "spreadsheet-id": "spreadsheet-id-123",
+        "spreadsheet-name": SPREADSHEET_NAME,
+        "cell": SpreadsheetCellReference.parse("B2"),
+        "formula": true,
+        "settings": true,
+    }
+);
+
+parseAndStringifyTest(
+    "/spreadsheet-id-123/spreadsheet-name-456/cell/B2/formula/settings/!invalid",
+    {
+        "spreadsheet-id": "spreadsheet-id-123",
+        "spreadsheet-name": SPREADSHEET_NAME,
+        "cell": SpreadsheetCellReference.parse("B2"),
+        "formula": true,
+        "settings": true,
+    }
+);
+
+parseAndStringifyTest(
+    "/spreadsheet-id-123/spreadsheet-name-456/cell/B2/formula/settings/metadata",
+    {
+        "spreadsheet-id": "spreadsheet-id-123",
+        "spreadsheet-name": SPREADSHEET_NAME,
+        "cell": SpreadsheetCellReference.parse("B2"),
+        "formula": true,
+        "settings": true,
+        "settings-section": "metadata",
+    }
+);
+
+parseAndStringifyTest(
+    "/spreadsheet-id-123/spreadsheet-name-456/cell/B2/formula/settings/text",
+    {
+        "spreadsheet-id": "spreadsheet-id-123",
+        "spreadsheet-name": SPREADSHEET_NAME,
+        "cell": SpreadsheetCellReference.parse("B2"),
+        "formula": true,
+        "settings": true,
+        "settings-section": "text",
+    }
+);
+
+parseAndStringifyTest(
+    "/spreadsheet-id-123/spreadsheet-name-456/cell/B2/formula/settings/number",
+    {
+        "spreadsheet-id": "spreadsheet-id-123",
+        "spreadsheet-name": SPREADSHEET_NAME,
+        "cell": SpreadsheetCellReference.parse("B2"),
+        "formula": true,
+        "settings": true,
+        "settings-section": "number",
+    }
+);
+
+parseAndStringifyTest(
+    "/spreadsheet-id-123/spreadsheet-name-456/cell/B2/formula/settings/date-time",
+    {
+        "spreadsheet-id": "spreadsheet-id-123",
+        "spreadsheet-name": SPREADSHEET_NAME,
+        "cell": SpreadsheetCellReference.parse("B2"),
+        "formula": true,
+        "settings": true,
+        "settings-section": "date-time",
+    }
+);
+
+parseAndStringifyTest(
+    "/spreadsheet-id-123/spreadsheet-name-456/cell/B2/formula/settings/style",
+    {
+        "spreadsheet-id": "spreadsheet-id-123",
+        "spreadsheet-name": SPREADSHEET_NAME,
+        "cell": SpreadsheetCellReference.parse("B2"),
+        "formula": true,
+        "settings": true,
+        "settings-section": "style",
+    }
+);
+parseAndStringifyTest(
+    "/spreadsheet-id-123/spreadsheet-name-456/label/Label123/settings/style",
+    {
+        "spreadsheet-id": "spreadsheet-id-123",
+        "spreadsheet-name": SPREADSHEET_NAME,
+        "label": LABEL,
+        "settings": true,
+        "settings-section": "style",
+    }
+);
+
+parseAndStringifyTest(
+    "/spreadsheet-id-123/spreadsheet-name-456/cell/A1/formula/settings/metadata",
+    {
+        "spreadsheet-id": "spreadsheet-id-123",
+        "spreadsheet-name": SPREADSHEET_NAME,
+        "cell": CELL,
+        "formula": true,
+        "settings": true,
+        "settings-section": SpreadsheetHistoryHash.SETTINGS_METADATA,
+    }
+);
+
+function parseAndStringifyTest(hash, expected, expectedError) {
+    test("parse " + CharSequences.quoteAndEscape(hash), () => {
+        let errors = [];
+        expect(SpreadsheetHistoryHash.parse(hash, e => errors.push(e)))
+            .toStrictEqual(expected);
+        if(errors.length > 0){
+            expect([expectedError])
+                .toStrictEqual(errors);
+        }
+    });
+
+    test("stringify " + stringify(expected), () => {
+        const string = SpreadsheetHistoryHash.stringify(expected);
+
+        expect(SpreadsheetHistoryHash.parse(string, e => {
+            throw new Error(e)
+        }))
+            .toStrictEqual(expected);
+    });
 }
 
 // merge...............................................................................................................
 
 function mergeCurrentFails(current) {
-    test("merge current: " + current + " fails", () => {
+    test("merge current: " + CharSequences.quoteAndEscape(current) + " fails", () => {
         expect(() => SpreadsheetHistoryHash.merge(current, {}).toThrow("Expected object current got " + current));
     });
 }
@@ -628,180 +712,145 @@ mergeCurrentFails("");
 mergeCurrentFails(SpreadsheetHistoryHash.parse);
 mergeCurrentFails([]);
 
-function mergeReplacementsFails(replacements) {
-    test("merge replacements: " + replacements + " fails", () => {
-        expect(() => SpreadsheetHistoryHash.merge({}, replacements).toThrow("Expected object replacements got " + replacements));
+function mergeUpdatesFails(updates) {
+    test("merge updates: " + updates + " fails", () => {
+        expect(() => SpreadsheetHistoryHash.merge({}, updates).toThrow("Expected object updates got " + updates));
     });
 }
 
-mergeReplacementsFails(undefined);
-mergeReplacementsFails(null);
-mergeReplacementsFails(false);
-mergeReplacementsFails(1);
-mergeReplacementsFails("");
-mergeReplacementsFails(SpreadsheetHistoryHash.parse);
-mergeReplacementsFails([]);
+mergeUpdatesFails(undefined);
+mergeUpdatesFails(null);
+mergeUpdatesFails(false);
+mergeUpdatesFails(1);
+mergeUpdatesFails("");
+mergeUpdatesFails(SpreadsheetHistoryHash.parse);
+mergeUpdatesFails([]);
 
-test("empty", () => {
-    mergeAndCheck(
+    mergeTest(
         "",
         {},
         "/"
     );
-});
 
-test("/spreadsheet-id", () => {
-    mergeAndCheck(
+    mergeTest(
         "/123abc",
         {},
         "/123abc"
     );
-});
 
-test("/spreadsheet-id replaced", () => {
-    mergeAndCheck(
+    mergeTest(
         "/123abc",
         {
             "spreadsheet-id": "456def",
         },
         "/456def"
     );
-});
 
-test("/spreadsheet-id/spreadsheet-name", () => {
-    mergeAndCheck(
+    mergeTest(
         "/123abc/Untitled456",
         {},
         "/123abc/Untitled456"
     );
-});
 
-test("/spreadsheet-id/spreadsheet-name & replaced spreadsheet name", () => {
-    mergeAndCheck(
+    mergeTest(
         "/123abc/Untitled456",
         {
             "spreadsheet-name": "Untitled999",
         },
         "/123abc/Untitled999"
     );
-});
 
-test("/spreadsheet-id/spreadsheet-name invalid token", () => {
-    mergeAndCheck(
+    mergeTest(
         "/123abc/Untitled456/!invalid",
         {},
         "/123abc/Untitled456"
     );
-});
 
 // spreadsheet name edit................................................................................................
 
-test("/spreadsheet-id/spreadsheet-name/name", () => {
-    mergeAndCheck(
+    mergeTest(
         "/123abc/Untitled456/name",
         {},
         "/123abc/Untitled456/name"
     );
-});
 
-test("/spreadsheet-id/spreadsheet-name replaced name=true", () => {
-    mergeAndCheck(
+    mergeTest(
         "/123abc/Untitled456",
         {
             name: true,
         },
         "/123abc/Untitled456/name"
     );
-});
 
-test("/spreadsheet-id/spreadsheet-name replaced name=false", () => {
-    mergeAndCheck(
+   mergeTest(
         "/123abc/Untitled456",
         {
             name: false,
         },
         "/123abc/Untitled456"
     );
-});
 
-test("/spreadsheet-id/spreadsheet-name/name replaced name edit true", () => {
-    mergeAndCheck(
+    mergeTest(
         "/123abc/Untitled456/name",
         {
             "name": true,
         },
         "/123abc/Untitled456/name"
     );
-});
 
-test("/spreadsheet-id/spreadsheet-name/name replaced name edit false", () => {
-    mergeAndCheck(
+    mergeTest(
         "/123abc/Untitled456/name",
         {
             "name": false,
         },
         "/123abc/Untitled456"
     );
-});
 
-test("/spreadsheet-id/spreadsheet-name/name replaced name edit true", () => {
-    mergeAndCheck(
+    mergeTest(
         "/123abc/Untitled456/name",
         {
             "name": true,
         },
         "/123abc/Untitled456/name"
     );
-});
 
-test("/spreadsheet-id/spreadsheet-name/name replaced name edit false", () => {
-    mergeAndCheck(
+    mergeTest(
         "/123abc/Untitled456/name",
         {
             "name": false,
         },
         "/123abc/Untitled456"
     );
-});
 
-test("/spreadsheet-id/spreadsheet-name/name/cell/A1/formula invalid combo", () => {
-    mergeAndCheck(
+    mergeTest(
         "/123abc/Untitled456/name/cell/A1/formula",
         {},
-        "/123abc/Untitled456/cell/A1/formula"
+        "/123abc/Untitled456"
     );
-});
 
-test("/spreadsheet-id/spreadsheet-name/name/!invalid invalid token", () => {
-    mergeAndCheck(
-        "/123abc/Untitled456/name/!invalid",
+    mergeTest(
+        "/123abc/Untitled456/name/!invalid2",
         {},
         "/123abc/Untitled456"
     );
-});
 
-test("/spreadsheet-id/spreadsheet-name/name/ replaced cell/A1", () => {
-    mergeAndCheck(
+    mergeTest(
         "/123abc/Untitled456/name/!invalid",
         {
             "cell": SpreadsheetCellReference.parse("A1")
         },
         "/123abc/Untitled456/cell/A1"
     );
-});
 
-test("/spreadsheet-id/spreadsheet-name/name/ replaced cell deleted", () => {
-    mergeAndCheck(
+    mergeTest(
         "/123abc/Untitled456/name",
         {
             "cell": null,
         },
         "/123abc/Untitled456/name"
     );
-});
 
-test("/spreadsheet-id/spreadsheet-name/name/ replaced cell/A1/formula", () => {
-    mergeAndCheck(
+    mergeTest(
         "/123abc/Untitled456/name",
         {
             "cell": SpreadsheetCellReference.parse("A1"),
@@ -809,388 +858,306 @@ test("/spreadsheet-id/spreadsheet-name/name/ replaced cell/A1/formula", () => {
         },
         "/123abc/Untitled456/cell/A1/formula"
     );
-});
 
-test("/spreadsheet-id/spreadsheet-name/name/ replaced label/LABEL123", () => {
-    mergeAndCheck(
+    mergeTest(
         "/123abc/Untitled456/name",
         {
             "label": SpreadsheetLabelName.parse("LABEL123"),
         },
         "/123abc/Untitled456/label/LABEL123"
     );
-});
 
-test("/spreadsheet-id/spreadsheet-name/name/ replaced label deleted", () => {
-    mergeAndCheck(
+    mergeTest(
         "/123abc/Untitled456/name",
         {
             "label": null,
         },
         "/123abc/Untitled456/name"
     );
-});
 
-test("/spreadsheet-id/spreadsheet-name/name/ replaced label added", () => {
-    mergeAndCheck(
+    mergeTest(
         "/123abc/Untitled456/name",
         {
             "label": SpreadsheetLabelName.parse("Label123"),
         },
         "/123abc/Untitled456/label/Label123"
     );
-});
 
-test("/spreadsheet-id/spreadsheet-name/name/ replaced navigate", () => {
-    mergeAndCheck(
+    mergeTest(
         "/123abc/Untitled456/name",
         {
             "navigate": true,
         },
         "/123abc/Untitled456/navigate"
     );
-});
 
 // cell.................................................................................................................
 
-test("/spreadsheet-id/spreadsheet-name/cell missing reference", () => {
-    mergeAndCheck(
+    mergeTest(
         "/123abc/Untitled456/cell",
         {},
         "/123abc/Untitled456"
     );
-});
 
-test("/spreadsheet-id/spreadsheet-name/cell invalid reference", () => {
-    mergeAndCheck(
+    mergeTest(
         "/123abc/Untitled456/cell/999",
         {},
         "/123abc/Untitled456"
     );
-});
 
-test("/spreadsheet-id/spreadsheet-name/cell/A1", () => {
-    mergeAndCheck(
+    mergeTest(
         "/123abc/Untitled456/cell/A1",
         {},
         "/123abc/Untitled456/cell/A1"
     );
-});
 
-test("/spreadsheet-id/spreadsheet-name/cell/A1 formula false", () => {
-    mergeAndCheck(
+    mergeTest(
         "/123abc/Untitled456/cell/A1",
         {
             "formula": false,
         },
         "/123abc/Untitled456/cell/A1"
     );
-});
 
-test("/spreadsheet-id/spreadsheet-name/cell/A1 formula true", () => {
-    mergeAndCheck(
+    mergeTest(
         "/123abc/Untitled456/cell/A1",
         {
             "formula": true,
         },
         "/123abc/Untitled456/cell/A1/formula"
     );
-});
 
-test("/spreadsheet-id/spreadsheet-name/cell/A1/formula", () => {
-    mergeAndCheck(
+    mergeTest(
         "/123abc/Untitled456/cell",
         {
             "cell": SpreadsheetCellReference.parse("A1"),
         },
         "/123abc/Untitled456/cell/A1"
     );
-});
 
-test("/spreadsheet-id/spreadsheet-name/cell/A1/formula", () => {
-    mergeAndCheck(
+    mergeTest(
         "/123abc/Untitled456/cell/A1/formula",
         {},
         "/123abc/Untitled456/cell/A1/formula"
     );
-});
 
-test("/spreadsheet-id/spreadsheet-name/cell/A1/formula cell replaced", () => {
-    mergeAndCheck(
+    mergeTest(
         "/123abc/Untitled456/cell/A1",
         {
             "cell": SpreadsheetCellReference.parse("B2"),
         },
         "/123abc/Untitled456/cell/B2"
     );
-});
 
-test("/spreadsheet-id/spreadsheet-name/cell/A1/formula cell replaced #2", () => {
-    mergeAndCheck(
+    mergeTest(
         "/123abc/Untitled456/cell/A1/formula",
         {
             "cell": SpreadsheetCellReference.parse("B2"),
         },
         "/123abc/Untitled456/cell/B2/formula"
     );
-});
 
-test("/spreadsheet-id/spreadsheet-name/cell/A1/formula formula false", () => {
-    mergeAndCheck(
+    mergeTest(
         "/123abc/Untitled456/cell/A1/formula",
         {
             "formula": false,
         },
         "/123abc/Untitled456/cell/A1"
     );
-});
 
-test("/spreadsheet-id/spreadsheet-name/cell/A1/formula AND invalid token", () => {
-    mergeAndCheck(
-        "/123abc/Untitled456/cell/A1/formula/!invalid",
+    mergeTest(
+        "/123abc/Untitled456/cell/A1/formula/!invalid3",
         {
             "formula": false,
         },
         "/123abc/Untitled456"
     );
-});
 
-test("/spreadsheet-id/spreadsheet-name/cell/A1 cell null/deleted", () => {
-    mergeAndCheck(
+    mergeTest(
         "/123abc/Untitled456/cell/A1",
         {
             "cell": null,
         },
         "/123abc/Untitled456"
     );
-});
 
-test("/spreadsheet-id/spreadsheet-name/cell/A2/formula formula null/deleted", () => {
-    mergeAndCheck(
+  mergeTest(
         "/123abc/Untitled456/cell/A1/formula",
         {
             "formula": null,
         },
         "/123abc/Untitled456/cell/A1"
     );
-});
 
-test("/spreadsheet-id/spreadsheet-name/cell/A2 replaced name false", () => {
-    mergeAndCheck(
+    mergeTest(
         "/123abc/Untitled456/cell/A2",
         {
             "name": false,
         },
         "/123abc/Untitled456/cell/A2"
     );
-});
 
-test("/spreadsheet-id/spreadsheet-name/cell/A2 replaced name true", () => {
-    mergeAndCheck(
+    mergeTest(
         "/123abc/Untitled456/cell/A2",
         {
             "name": true,
         },
         "/123abc/Untitled456/name"
     );
-});
 
-test("/spreadsheet-id/spreadsheet-name/cell/A2/formula replaced name false", () => {
-    mergeAndCheck(
+    mergeTest(
         "/123abc/Untitled456/cell/A2/formula",
         {
             "name": false,
         },
         "/123abc/Untitled456/cell/A2/formula"
     );
-});
 
-test("/spreadsheet-id/spreadsheet-name/cell/A2/formula replaced name true", () => {
-    mergeAndCheck(
+    mergeTest(
         "/123abc/Untitled456/cell/A2/formula",
         {
             "name": true,
         },
         "/123abc/Untitled456/name"
     );
-});
 
-test("/spreadsheet-id/spreadsheet-name/cell/LABEL123", () => {
-    mergeAndCheck(
+    mergeTest(
         "/123abc/Untitled456/cell/LABEL123",
         {},
         "/123abc/Untitled456/cell/LABEL123"
     );
-});
 
 // label.................................................................................................................
 
-test("/spreadsheet-id/spreadsheet-name/label missing label name", () => {
-    mergeAndCheck(
+    mergeTest(
         "/123abc/Untitled456/label",
         {},
         "/123abc/Untitled456"
     );
-});
 
-test("/spreadsheet-id/spreadsheet-name/label invalid label name", () => {
-    mergeAndCheck(
+    mergeTest(
         "/123abc/Untitled456/label/!invalid-label",
         {},
         "/123abc/Untitled456"
     );
-});
 
-test("/spreadsheet-id/spreadsheet-name/label cell-reference", () => {
-    mergeAndCheck(
+    mergeTest(
         "/123abc/Untitled456/label/A1",
         {},
         "/123abc/Untitled456"
     );
-});
 
-test("/spreadsheet-id/spreadsheet-name/label/LABEL123", () => {
-    mergeAndCheck(
+    mergeTest(
         "/123abc/Untitled456/label/LABEL123",
         {},
         "/123abc/Untitled456/label/LABEL123"
     );
-});
 
-test("/spreadsheet-id/spreadsheet-name/cell/A1/label/LABEL123", () => {
-    mergeAndCheck(
+    mergeTest(
         "/123abc/Untitled456/cell/A1/label/LABEL123",
         {},
         "/123abc/Untitled456/cell/A1/label/LABEL123"
     );
-});
 
-test("/spreadsheet-id/spreadsheet-name/label/LABEL123 replaced name=false", () => {
-    mergeAndCheck(
+    mergeTest(
         "/123abc/Untitled456/label/LABEL123",
         {
             name: false,
         },
         "/123abc/Untitled456/label/LABEL123"
     );
-});
 
-test("/spreadsheet-id/spreadsheet-name/label/LABEL123 replaced name=true", () => {
-    mergeAndCheck(
+    mergeTest(
         "/123abc/Untitled456/label/LABEL123",
         {
             name: true,
         },
         "/123abc/Untitled456/name"
     );
-});
 
 // navigate.............................................................................................................
 
-test("/spreadsheet-id/spreadsheet-name/navigate", () => {
-    mergeAndCheck(
+    mergeTest(
         "/123abc/Untitled456/navigate",
         {},
         "/123abc/Untitled456/navigate",
     );
-});
 
-test("/spreadsheet-id/spreadsheet-name/cell/A1/navigate", () => {
-    mergeAndCheck(
+    mergeTest(
         "/123abc/Untitled456/cell/A1/navigate",
         {},
         "/123abc/Untitled456/cell/A1/navigate",
     );
-});
 
-test("/spreadsheet-id/spreadsheet-name/label/LABEL123/navigate", () => {
-    mergeAndCheck(
+    mergeTest(
         "/123abc/Untitled456/label/LABEL123/navigate",
         {},
         "/123abc/Untitled456/label/LABEL123/navigate",
     );
-});
 
-test("/spreadsheet-id/spreadsheet-name/navigate/settings", () => {
-    mergeAndCheck(
+    mergeTest(
         "/123abc/Untitled456/navigate/settings",
         {},
         "/123abc/Untitled456/navigate/settings",
     );
-});
 
-test("/spreadsheet-id/spreadsheet-name/ replacement navigate=true", () => {
-    mergeAndCheck(
+    mergeTest(
         "/123abc/Untitled456/",
         {
             "navigate": true,
         },
         "/123abc/Untitled456/navigate",
     );
-});
 
-test("/spreadsheet-id/spreadsheet-name/cell/A1 replacement navigate=true", () => {
-    mergeAndCheck(
+    mergeTest(
         "/123abc/Untitled456/cell/A1",
         {
             "navigate": true,
         },
         "/123abc/Untitled456/cell/A1/navigate",
     );
-});
 
-test("/spreadsheet-id/spreadsheet-name/ replacement navigate=false", () => {
-    mergeAndCheck(
+    mergeTest(
         "/123abc/Untitled456/navigate",
         {
             "navigate": false,
         },
         "/123abc/Untitled456",
     );
-});
 
-test("/spreadsheet-id/spreadsheet-name/navigate replacement name=false", () => {
-    mergeAndCheck(
+    mergeTest(
         "/123abc/Untitled456/navigate",
         {
             "name": false,
         },
         "/123abc/Untitled456/navigate",
     );
-});
 
-test("/spreadsheet-id/spreadsheet-name/navigate replacement name=true", () => {
-    mergeAndCheck(
+    mergeTest(
         "/123abc/Untitled456/navigate",
         {
             "name": true,
         },
         "/123abc/Untitled456/name",
     );
-});
 
 // settings.............................................................................................................
 
-test("/spreadsheet-id/spreadsheet-name/settings", () => {
-    mergeAndCheck(
+    mergeTest(
         "/123abc/Untitled456/settings",
         {},
         "/123abc/Untitled456/settings"
     );
-});
 
-test("/spreadsheet-id/spreadsheet-name/settings replaced settings=true", () => {
-    mergeAndCheck(
+   mergeTest(
         "/123abc/Untitled456/settings",
         {
             "settings": true,
         },
         "/123abc/Untitled456/settings"
     );
-});
 
-test("/spreadsheet-id/spreadsheet-name/settings replaced settings=true settings-section=invalid", () => {
-    mergeAndCheck(
+    mergeTest(
         "/123abc/Untitled456/settings",
         {
             "settings": true,
@@ -1198,10 +1165,8 @@ test("/spreadsheet-id/spreadsheet-name/settings replaced settings=true settings-
         },
         "/123abc/Untitled456/settings"
     );
-});
 
-test("/spreadsheet-id/spreadsheet-name/settings replaced settings=true settings-section=metadata", () => {
-    mergeAndCheck(
+    mergeTest(
         "/123abc/Untitled456/settings",
         {
             "settings": true,
@@ -1209,10 +1174,8 @@ test("/spreadsheet-id/spreadsheet-name/settings replaced settings=true settings-
         },
         "/123abc/Untitled456/settings/metadata"
     );
-});
 
-test("/spreadsheet-id/spreadsheet-name/settings replaced settings=true settings-section=text", () => {
-    mergeAndCheck(
+    mergeTest(
         "/123abc/Untitled456/settings",
         {
             "settings": true,
@@ -1220,10 +1183,8 @@ test("/spreadsheet-id/spreadsheet-name/settings replaced settings=true settings-
         },
         "/123abc/Untitled456/settings/text"
     );
-});
 
-test("/spreadsheet-id/spreadsheet-name/settings replaced settings=true settings-section=number", () => {
-    mergeAndCheck(
+    mergeTest(
         "/123abc/Untitled456/settings",
         {
             "settings": true,
@@ -1231,10 +1192,8 @@ test("/spreadsheet-id/spreadsheet-name/settings replaced settings=true settings-
         },
         "/123abc/Untitled456/settings/number"
     );
-});
 
-test("/spreadsheet-id/spreadsheet-name/settings replaced settings=true settings-section=date-time", () => {
-    mergeAndCheck(
+    mergeTest(
         "/123abc/Untitled456/settings",
         {
             "settings": true,
@@ -1242,10 +1201,8 @@ test("/spreadsheet-id/spreadsheet-name/settings replaced settings=true settings-
         },
         "/123abc/Untitled456/settings/date-time"
     );
-});
 
-test("/spreadsheet-id/spreadsheet-name/settings replaced settings=true settings-section=style", () => {
-    mergeAndCheck(
+    mergeTest(
         "/123abc/Untitled456/settings",
         {
             "settings": true,
@@ -1253,40 +1210,32 @@ test("/spreadsheet-id/spreadsheet-name/settings replaced settings=true settings-
         },
         "/123abc/Untitled456/settings/style"
     );
-});
 
-test("/spreadsheet-id/spreadsheet-name/settings replaced settings=false", () => {
-    mergeAndCheck(
+    mergeTest(
         "/123abc/Untitled456/settings",
         {
             "settings": false,
         },
         "/123abc/Untitled456"
     );
-});
 
-test("/spreadsheet-id/spreadsheet-name/name/settings replaced settings=true", () => {
-    mergeAndCheck(
+    mergeTest(
         "/123abc/Untitled456/name/settings",
         {
             "settings": true,
         },
         "/123abc/Untitled456/settings"
     );
-});
 
-test("/spreadsheet-id/spreadsheet-name/name/settings replaced settings=false", () => {
-    mergeAndCheck(
+    mergeTest(
         "/123abc/Untitled456/name/settings",
         {
             "settings": false,
         },
         "/123abc/Untitled456"
     );
-});
 
-test("/spreadsheet-id/spreadsheet-name/name/settings replaced settings=true settings-section=invalid", () => {
-    mergeAndCheck(
+    mergeTest(
         "/123abc/Untitled456/name/settings",
         {
             "settings": true,
@@ -1294,10 +1243,8 @@ test("/spreadsheet-id/spreadsheet-name/name/settings replaced settings=true sett
         },
         "/123abc/Untitled456/settings"
     );
-});
 
-test("/spreadsheet-id/spreadsheet-name/name/settings replaced settings=true settings-section=metadata", () => {
-    mergeAndCheck(
+    mergeTest(
         "/123abc/Untitled456/name/settings",
         {
             "settings": true,
@@ -1305,10 +1252,8 @@ test("/spreadsheet-id/spreadsheet-name/name/settings replaced settings=true sett
         },
         "/123abc/Untitled456/settings/metadata"
     );
-});
 
-test("/spreadsheet-id/spreadsheet-name/name/settings replaced settings=true settings-section=text", () => {
-    mergeAndCheck(
+    mergeTest(
         "/123abc/Untitled456/name/settings",
         {
             "settings": true,
@@ -1316,10 +1261,8 @@ test("/spreadsheet-id/spreadsheet-name/name/settings replaced settings=true sett
         },
         "/123abc/Untitled456/settings/text"
     );
-});
 
-test("/spreadsheet-id/spreadsheet-name/name/settings replaced settings=true settings-section=number", () => {
-    mergeAndCheck(
+    mergeTest(
         "/123abc/Untitled456/name/settings",
         {
             "settings": true,
@@ -1327,10 +1270,8 @@ test("/spreadsheet-id/spreadsheet-name/name/settings replaced settings=true sett
         },
         "/123abc/Untitled456/settings/number"
     );
-});
 
-test("/spreadsheet-id/spreadsheet-name/name/settings replaced settings=true settings-section=date-time", () => {
-    mergeAndCheck(
+    mergeTest(
         "/123abc/Untitled456/name/settings",
         {
             "settings": true,
@@ -1338,10 +1279,8 @@ test("/spreadsheet-id/spreadsheet-name/name/settings replaced settings=true sett
         },
         "/123abc/Untitled456/settings/date-time"
     );
-});
 
-test("/spreadsheet-id/spreadsheet-name/name/settings replaced settings=true settings-section=style", () => {
-    mergeAndCheck(
+    mergeTest(
         "/123abc/Untitled456/name/settings",
         {
             "settings": true,
@@ -1349,50 +1288,40 @@ test("/spreadsheet-id/spreadsheet-name/name/settings replaced settings=true sett
         },
         "/123abc/Untitled456/settings/style"
     );
-});
 
-test("/spreadsheet-id/spreadsheet-name/cell/A1 replaced settings=true", () => {
-    mergeAndCheck(
+    mergeTest(
         "/123abc/Untitled456/cell/A1",
         {
             "settings": true,
         },
         "/123abc/Untitled456/cell/A1/settings"
     );
-});
 
-test("/spreadsheet-id/spreadsheet-name/cell/A1/settings replaced settings=false", () => {
-    mergeAndCheck(
+    mergeTest(
         "/123abc/Untitled456/cell/A1/settings",
         {
             "settings": false,
         },
         "/123abc/Untitled456/cell/A1"
     );
-});
 
-test("/spreadsheet-id/spreadsheet-name/cell/A1/formula replaced settings=true", () => {
-    mergeAndCheck(
+    mergeTest(
         "/123abc/Untitled456/cell/A1/formula",
         {
             "settings": true,
         },
         "/123abc/Untitled456/cell/A1/formula/settings"
     );
-});
 
-test("/spreadsheet-id/spreadsheet-name/cell/A1/formula/settings replaced settings=true", () => {
-    mergeAndCheck(
+    mergeTest(
         "/123abc/Untitled456/cell/A1/formula/settings",
         {
             "settings": true,
         },
         "/123abc/Untitled456/cell/A1/formula/settings"
     );
-});
 
-test("/spreadsheet-id/spreadsheet-name/cell/A1/formula/settings replaced settings=true settings-section invalid", () => {
-    mergeAndCheck(
+    mergeTest(
         "/123abc/Untitled456/cell/A1/formula/settings",
         {
             "settings": true,
@@ -1400,10 +1329,8 @@ test("/spreadsheet-id/spreadsheet-name/cell/A1/formula/settings replaced setting
         },
         "/123abc/Untitled456/cell/A1/formula/settings"
     );
-});
 
-test("/spreadsheet-id/spreadsheet-name/cell/A1/formula/settings replaced settings=true settings-section=metadata", () => {
-    mergeAndCheck(
+    mergeTest(
         "/123abc/Untitled456/cell/A1/formula/settings",
         {
             "settings": true,
@@ -1411,10 +1338,8 @@ test("/spreadsheet-id/spreadsheet-name/cell/A1/formula/settings replaced setting
         },
         "/123abc/Untitled456/cell/A1/formula/settings/metadata"
     );
-});
 
-test("/spreadsheet-id/spreadsheet-name/cell/A1/formula/settings replaced settings=true settings-section=text", () => {
-    mergeAndCheck(
+    mergeTest(
         "/123abc/Untitled456/cell/A1/formula/settings",
         {
             "settings": true,
@@ -1422,10 +1347,8 @@ test("/spreadsheet-id/spreadsheet-name/cell/A1/formula/settings replaced setting
         },
         "/123abc/Untitled456/cell/A1/formula/settings/text"
     );
-});
 
-test("/spreadsheet-id/spreadsheet-name/cell/A1/formula/settings replaced settings=true settings-section=number", () => {
-    mergeAndCheck(
+    mergeTest(
         "/123abc/Untitled456/cell/A1/formula/settings",
         {
             "settings": true,
@@ -1433,10 +1356,8 @@ test("/spreadsheet-id/spreadsheet-name/cell/A1/formula/settings replaced setting
         },
         "/123abc/Untitled456/cell/A1/formula/settings/number"
     );
-});
 
-test("/spreadsheet-id/spreadsheet-name/cell/A1/formula/settings replaced settings=true settings-section=date-time", () => {
-    mergeAndCheck(
+    mergeTest(
         "/123abc/Untitled456/cell/A1/formula/settings",
         {
             "settings": true,
@@ -1444,10 +1365,8 @@ test("/spreadsheet-id/spreadsheet-name/cell/A1/formula/settings replaced setting
         },
         "/123abc/Untitled456/cell/A1/formula/settings/date-time"
     );
-});
 
-test("/spreadsheet-id/spreadsheet-name/cell/A1/formula/settings replaced settings=true settings-section=style", () => {
-    mergeAndCheck(
+    mergeTest(
         "/123abc/Untitled456/cell/A1/formula/settings",
         {
             "settings": true,
@@ -1455,20 +1374,16 @@ test("/spreadsheet-id/spreadsheet-name/cell/A1/formula/settings replaced setting
         },
         "/123abc/Untitled456/cell/A1/formula/settings/style"
     );
-});
 
-test("/spreadsheet-id/spreadsheet-name/cell/A1/formula/settings replaced settings=false", () => {
-    mergeAndCheck(
+    mergeTest(
         "/123abc/Untitled456/cell/A1/formula/settings",
         {
             "settings": false,
         },
         "/123abc/Untitled456/cell/A1/formula"
     );
-});
 
-test("/spreadsheet-id/spreadsheet-name/cell/A1/formula/settings replaced settings=false settings-section ignored", () => {
-    mergeAndCheck(
+    mergeTest(
         "/123abc/Untitled456/cell/A1/formula/settings",
         {
             "settings": false,
@@ -1476,10 +1391,8 @@ test("/spreadsheet-id/spreadsheet-name/cell/A1/formula/settings replaced setting
         },
         "/123abc/Untitled456/cell/A1/formula"
     );
-});
 
-test("replacements #1", () => {
-    mergeAndCheck(
+    mergeTest(
         "/123abc/Untitled456/cell/A1/formula/settings",
         {
             "spreadsheet-id": "456def",
@@ -1490,10 +1403,8 @@ test("replacements #1", () => {
         },
         "/456def/new-spreadsheet-name-456/cell/B2/formula/settings"
     );
-});
 
-test("replacements #2", () => {
-    mergeAndCheck(
+    mergeTest(
         "/123abc/Untitled456/cell/A1/formula/settings",
         {
             "spreadsheet-id": "456def",
@@ -1504,80 +1415,39 @@ test("replacements #2", () => {
         },
         "/456def/new-spreadsheet-name-456/cell/B2/formula"
     );
-});
 
-test("formula without cell", () => {
-    mergeAndCheck(
+    mergeTest(
         "/123abc/Untitled456",
         {
             "formula": true,
         },
         "/123abc/Untitled456"
     );
-});
 
-function parseMergeAndPushHistoryFails(history) {
-    test("parseMergeAndPush history: " + history + " fails", () => {
-        expect(() => SpreadsheetHistoryHash.merge(history, {}, FUNCTION).toThrow("Expected object history got " + history));
+function mergeTest(hash, update, expected) {
+    test("merge " + CharSequences.quoteAndEscape(hash) + " AND " + stringify(update), () => {
+        const throwError = (e) => {throw Error(e)};
+
+        const hashTokens = SpreadsheetHistoryHash.parse(hash, throwError);
+        const expectedTokens = SpreadsheetHistoryHash.parse(expected, throwError);
+
+        expect(SpreadsheetHistoryHash.stringify(
+            SpreadsheetHistoryHash.merge(
+                hashTokens,
+                update
+            )
+        )).toStrictEqual(SpreadsheetHistoryHash.stringify(expectedTokens));
     });
 }
 
-parseMergeAndPushHistoryFails(undefined);
-parseMergeAndPushHistoryFails(null);
-parseMergeAndPushHistoryFails(false);
-parseMergeAndPushHistoryFails(1);
-parseMergeAndPushHistoryFails("");
-parseMergeAndPushHistoryFails(FUNCTION);
-parseMergeAndPushHistoryFails([]);
+function stringify(object) {
+    var s = "";
+    var separator = "";
 
-function parseMergeAndPushReplacementsFails(replacements) {
-    test("parseMergeAndPush replacements: " + replacements + " fails", () => {
-        expect(() => SpreadsheetHistoryHash.parseMergeAndPush({}, replacements, FUNCTION).toThrow("Expected object replacements got " + replacements));
-    });
-}
+    for (const property in object) {
+        s = s + separator + property + "=" + object[property];
+        separator = ", ";
+    }
 
-parseMergeAndPushReplacementsFails(undefined);
-parseMergeAndPushReplacementsFails(null);
-parseMergeAndPushReplacementsFails(false);
-parseMergeAndPushReplacementsFails(1);
-parseMergeAndPushReplacementsFails("");
-parseMergeAndPushReplacementsFails({});
-parseMergeAndPushReplacementsFails([]);
-
-function parseMergeAndPushShowErrorsFails(showErrors) {
-    test("parseMergeAndPush showErrors: " + showErrors + " fails", () => {
-        expect(() => SpreadsheetHistoryHash.parseMergeAndPush({}, {}, showErrors).toThrow("Expected object showErrors got " + showErrors));
-    });
-}
-
-parseMergeAndPushShowErrorsFails(undefined);
-parseMergeAndPushShowErrorsFails(null);
-parseMergeAndPushShowErrorsFails(false);
-parseMergeAndPushShowErrorsFails(1);
-parseMergeAndPushShowErrorsFails("");
-parseMergeAndPushShowErrorsFails({});
-parseMergeAndPushShowErrorsFails([]);
-
-// helpers...............................................................................................................
-
-function mergeAndCheck(pathname, replacements, expected) {
-    expect(SpreadsheetHistoryHash.join(
-        SpreadsheetHistoryHash.merge(
-            SpreadsheetHistoryHash.parse(pathname, FUNCTION),
-            replacements)
-        )
-    ).toStrictEqual(expected);
-
-    const pushed = [pathname];
-    const history = {
-        location: {
-            pathname: pathname,
-        },
-        push: function(path) {
-            pushed[0] = "" === path ? "/" : path;
-        },
-    };
-    SpreadsheetHistoryHash.parseMergeAndPush(history, replacements, FUNCTION);
-
-    expect(pushed[0]).toStrictEqual(Object.keys(replacements).length === 0 ? pathname : expected);
+    return s;
 }

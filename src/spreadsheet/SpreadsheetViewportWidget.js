@@ -271,6 +271,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
                     newState = {
                         cell: cellOrLabelNew,
                     };
+                    metadata = metadata.setOrRemove(SpreadsheetMetadata.SELECTION, cellOrLabelNew);
                 }
             }
 
@@ -720,7 +721,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
 
 SpreadsheetViewportWidget.propTypes = {
     dimensions: PropTypes.object,
-    history: PropTypes.object.isRequired,
+    history: PropTypes.instanceOf(SpreadsheetHistoryHash).isRequired,
     messenger: PropTypes.instanceOf(SpreadsheetMessenger),
     spreadsheetDeltaCrud: PropTypes.instanceOf(SpreadsheetMessengerCrud),
     spreadsheetLabelCrud: PropTypes.instanceOf(SpreadsheetMessengerCrud),

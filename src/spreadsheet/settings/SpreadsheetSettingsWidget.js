@@ -1395,7 +1395,7 @@ class SpreadsheetSettingsWidget extends SpreadsheetHistoryAwareStateWidget {
 }
 
 SpreadsheetSettingsWidget.propTypes = {
-    history: PropTypes.object.isRequired, // history will provide open
+    history: PropTypes.instanceOf(SpreadsheetHistoryHash).isRequired,
     spreadsheetMetadataCrud: PropTypes.instanceOf(SpreadsheetMessengerCrud).isRequired,
     notificationShow: PropTypes.func.isRequired,
     showError: PropTypes.func.isRequired,

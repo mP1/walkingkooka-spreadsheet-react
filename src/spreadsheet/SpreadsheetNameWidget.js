@@ -70,7 +70,6 @@ export default class SpreadsheetNameWidget extends SpreadsheetHistoryAwareStateW
 
         const historyTokens = {};
         historyTokens[SpreadsheetHistoryHash.SPREADSHEET_NAME_EDIT] = edit;
-        console.log("history tokens name edit: " + edit, historyTokens, "state", state, "history", this.props.history.location.pathname);
         return historyTokens;
     }
 
@@ -129,7 +128,7 @@ export default class SpreadsheetNameWidget extends SpreadsheetHistoryAwareStateW
 }
 
 SpreadsheetNameWidget.propTypes = {
-    history: PropTypes.object.isRequired,
+    history: PropTypes.instanceOf(SpreadsheetHistoryHash).isRequired,
     spreadsheetMetadataCrud: PropTypes.instanceOf(SpreadsheetMessengerCrud).isRequired,
     showError: PropTypes.func.isRequired,
 }

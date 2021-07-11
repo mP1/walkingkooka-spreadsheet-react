@@ -300,7 +300,7 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetHistoryAwareSta
 }
 
 SpreadsheetFormulaWidget.propTypes = {
-    history: PropTypes.object.isRequired,
+    history: PropTypes.instanceOf(SpreadsheetHistoryHash).isRequired,
     spreadsheetDeltaCrud: PropTypes.instanceOf(SpreadsheetMessengerCrud),
     showError: PropTypes.func.isRequired,
 }
