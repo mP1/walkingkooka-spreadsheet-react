@@ -18,28 +18,7 @@ export default class SpreadsheetHistoryAwareWidget extends React.Component {
     }
 
     componentDidMount() {
-        const history = this.props.history;
-        this.historyUnlisten = history.listen(
-            (location) => {
-                // before firing events, verify the history has is actually valid, if invalid push the fixed
-                const pathname = location.pathname;
-                const tokens = SpreadsheetHistoryHash.parse(
-                    pathname,
-                    this.showError.bind(this)
-                );
-
-                const merged = SpreadsheetHistoryHash.merge(
-                    tokens,
-                    {}
-                );
-                const updatedPathname = SpreadsheetHistoryHash.join(merged);
-                if(updatedPathname !== history.location.pathname){
-                    history.push(updatedPathname);
-                }
-
-                this.onHistoryChange(tokens);
-            }
-        );
+        this.historyUnlisten = this.props.history.addListener(this.onHistoryChange.bind(this));
     }
 
     componentWillUnmount() {
@@ -52,11 +31,7 @@ export default class SpreadsheetHistoryAwareWidget extends React.Component {
     }
 
     historyParseMergeAndPush(tokens) {
-        SpreadsheetHistoryHash.parseMergeAndPush(
-            this.props.history,
-            tokens,
-            this.showError.bind(this)
-        );
+        this.props.history.mergeAndPush(tokens);
     }
 
     showError(message, error) {
@@ -65,5 +40,5 @@ export default class SpreadsheetHistoryAwareWidget extends React.Component {
 }
 
 SpreadsheetHistoryAwareWidget.propTypes = {
-    history: PropTypes.object.isRequired,
+    history: PropTypes.instanceOf(SpreadsheetHistoryHash).isRequired
 }

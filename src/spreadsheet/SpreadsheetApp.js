@@ -1,4 +1,3 @@
-import {withRouter} from "react-router";
 import './SpreadsheetApp.css';
 
 import {withStyles} from '@material-ui/core/styles';
@@ -25,7 +24,6 @@ import SpreadsheetNameWidget from "./SpreadsheetNameWidget.js";
 import SpreadsheetNavigateAutocompleteWidget from "./reference/SpreadsheetNavigateAutocompleteWidget.js";
 import SpreadsheetNavigateLinkWidget from "./reference/SpreadsheetNavigateLinkWidget.js";
 import SpreadsheetNotification from "./notification/SpreadsheetNotification.js";
-import SpreadsheetNotificationWidget from "./notification/SpreadsheetNotificationWidget.js";
 import SpreadsheetSettingsWidget from "./settings/SpreadsheetSettingsWidget.js";
 import SpreadsheetViewportWidget from "./SpreadsheetViewportWidget.js";
 import WindowResizer from "../widget/WindowResizer.js";
@@ -51,7 +49,7 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
     // init.............................................................................................................
 
     init() {
-        const showError = this.showError.bind(this);
+        const showError = this.props.showError;
 
         const messenger = new SpreadsheetMessenger(showError);
         messenger.setWebWorker(false); // TODO test webworker mode
@@ -178,7 +176,7 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
                         {},
                         () => {
                         },
-                        (message, error) => this.showError("Unable to load spreadsheet " + id, error)
+                        (message, error) => this.props.showError("Unable to load spreadsheet " + id, error)
                     );
                 }
 
@@ -238,7 +236,7 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
             "",
             () => {
             },
-            this.showError.bind(this)
+            this.props.showError
         );
     }
 
@@ -250,7 +248,7 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
             spreadsheetMetadata: metadata,
         });
 
-        this.notificationShow(SpreadsheetNotification.success("Spreadsheet metadata saved"));
+        this.props.notificationShow(SpreadsheetNotification.success("Spreadsheet metadata saved"));
     }
 
     // rendering........................................................................................................
@@ -261,7 +259,9 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
     render() {
         const {
             classes,
-            history
+            history,
+            notificationShow,
+            showError,
         } = this.props;
 
         const {
@@ -274,14 +274,8 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
 
         console.log("render", state);
 
-        const notificationShow = this.notificationShow.bind(this);
-        const showError = this.showError.bind(this);
-
         return (
             <WindowResizer dimensions={this.onWindowResized.bind(this)}>
-                <SpreadsheetNotificationWidget ref={this.notification}
-                                               key="notification"
-                />
                 <SpreadsheetNavigateAutocompleteWidget key="navigateAutocompleteWidget"
                                                        history={history}
                                                        getSimilarities={this.similaritiesGet.bind(this)}
@@ -347,23 +341,8 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
             url,
             parameters,
             response,
-            error || this.showError.bind(this),
+            error || this.props.showError,
         )
-    }
-
-    // Notifications....................................................................................................
-
-    notificationShow(notification) {
-        Preconditions.optionalInstance(notification, SpreadsheetNotification, "notification");
-
-        console.log("notificationShow ", notification);
-
-        const widget = this.notification.current;
-        widget && widget.setState(
-            {
-                notification: notification
-            }
-        );
     }
 
     // settings.........................................................................................................
@@ -429,11 +408,6 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
         });
     }
 
-    showError(message, error) {
-        this.notificationShow(SpreadsheetNotification.error(message));
-        console.error(message, error);
-    }
-
     // toString.........................................................................................................
 
     toString() {
@@ -441,4 +415,4 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
     }
 }
 
-export default withRouter(withStyles(useStyles)(SpreadsheetApp));
+export default withStyles(useStyles)(SpreadsheetApp);

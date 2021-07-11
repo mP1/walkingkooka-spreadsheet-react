@@ -843,7 +843,11 @@ context(
 
             cellClick("C3");
 
+            renderWait(FORMULA_TEXT_CLICK_WAIT);
+
             hashAppend("/formula");
+
+            renderWait(FORMULA_TEXT_CLICK_WAIT);
 
             formulaText()
                 .should("have.focus");

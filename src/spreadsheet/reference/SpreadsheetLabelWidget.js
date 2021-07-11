@@ -297,7 +297,7 @@ export default class SpreadsheetLabelWidget extends SpreadsheetHistoryAwareState
 }
 
 SpreadsheetLabelWidget.propTypes = {
-    history: PropTypes.object.isRequired,
+    history: PropTypes.instanceOf(SpreadsheetHistoryHash).isRequired,
     spreadsheetLabelCrud: PropTypes.instanceOf(SpreadsheetMessengerCrud),
     notificationShow: PropTypes.func.isRequired, // used to display notifications including errors and other messages
     showError: PropTypes.func.isRequired,

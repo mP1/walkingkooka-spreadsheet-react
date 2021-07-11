@@ -24,11 +24,10 @@ export default class SpreadsheetNavigateLinkWidget extends SpreadsheetHistoryAwa
      * Recreate the target of the link.
      */
     stateFromHistoryTokens(tokens) {
-        const navigate = {};
-        navigate[SpreadsheetHistoryHash.NAVIGATE] = true;
+        tokens[SpreadsheetHistoryHash.NAVIGATE] = true;
 
         return {
-            target: '#' + SpreadsheetHistoryHash.join(SpreadsheetHistoryHash.merge(tokens, navigate)),
+            target: '#' + this.props.history.mergeAndStringify(tokens),
             cell: tokens[SpreadsheetHistoryHash.CELL],
         };
     }
@@ -56,6 +55,6 @@ export default class SpreadsheetNavigateLinkWidget extends SpreadsheetHistoryAwa
 }
 
 SpreadsheetNavigateLinkWidget.propTypes = {
-    history: PropTypes.object.isRequired,
+    history: PropTypes.instanceOf(SpreadsheetHistoryHash).isRequired,
     showError: PropTypes.func.isRequired,
 }
