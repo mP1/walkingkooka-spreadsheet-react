@@ -148,7 +148,7 @@ export default class SpreadsheetCell extends SystemObject {
         const reference = this.reference();
 
         const tableCell = <TableCell key={reference}
-                                     id={"cell-" + reference}
+                                     id={reference.viewportCellId()}
                                      className={"cell"}
                                      onClick={onClick}
                                      onKeyDown={onKeyDown}
