@@ -49,6 +49,10 @@ export default class SpreadsheetColumnReference extends SpreadsheetColumnOrRowRe
         return SpreadsheetColumnReference.MAX;
     }
 
+    viewportId() {
+        return "viewport-column-" + this.toString().toUpperCase();
+    }
+
     typeName() {
         return TYPE_NAME;
     }

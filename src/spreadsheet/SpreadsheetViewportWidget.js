@@ -605,8 +605,9 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
                 column = column.add(1);
             }
 
+            const id = row.viewportId();
             tableRows.push(
-                <TableRow key={"viewport-row-" + row} id={"row-" + row}>
+                <TableRow key={id} id={id}>
                     {
                         tableCells
                     }
@@ -624,11 +625,12 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
      * Creates a TABLE CELL which will be the column or row header.
      */
     headerCell(reference, highlighted) {
-        const column = reference instanceof SpreadsheetColumnReference;
-        const columnOrRow = column ? "column" : "row";
+        const isColumn = reference instanceof SpreadsheetColumnReference;
+        const columnOrRow = isColumn ? "column" : "row";
+        const id = reference.viewportId();
 
-        return <TableCell key={"viewport-" + columnOrRow + "-cell-" + reference}
-                          id={(columnOrRow) + "" + reference}
+        return <TableCell key={id}
+                          id={id}
                           className={(columnOrRow) + (highlighted ? " selected" : "")}
                           style={highlighted ? headerCellSelected : headerCell}>{reference.toString()}</TableCell>
     }

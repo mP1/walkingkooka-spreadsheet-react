@@ -219,8 +219,8 @@ export default class SpreadsheetCellReference extends SpreadsheetCellReferenceOr
         return TYPE_NAME;
     }
 
-    viewportCellId() {
-        return "cell-" + this.toString().toUpperCase();
+    viewportId() {
+        return "viewport-cell-" + this.toString().toUpperCase();
     }
 
     equals(other) {
