@@ -322,7 +322,7 @@ test("render empty style, text & defaultStyle EMPTY", () => {
         new Text(text))
         .render(TextStyle.EMPTY, c, kd, l))
         .toEqual(<TableCell key={ref}
-                            id="cell-A99"
+                            id="viewport-cell-A99"
                             tabIndex={0}
                             onClick={c}
                             onKeyDown={kd}
@@ -344,7 +344,7 @@ test("render empty style, text & defaultStyle EMPTY 2", () => {
         new Text(text))
         .render(TextStyle.EMPTY, c, kd, l))
         .toEqual(<TableCell key={ref}
-                            id="cell-B123"
+                            id="viewport-cell-B123"
                             tabIndex={0}
                             onClick={c}
                             onKeyDown={kd}
@@ -372,7 +372,7 @@ test("render empty style, text & defaultStyle width&height", () => {
             kd,
             l))
         .toEqual(<TableCell key={r}
-                            id="cell-A99"
+                            id="viewport-cell-A99"
                             tabIndex={0}
                             onClick={c}
                             onKeyDown={kd}
@@ -396,7 +396,7 @@ test("render style=width&height, text & defaultStyle=empty", () => {
         new Text(text))
         .render(TextStyle.EMPTY, c, kd, l))
         .toEqual(<TableCell key={r}
-                            id="cell-A99"
+                            id="viewport-cell-A99"
                             tabIndex={0}
                             onClick={c}
                             onKeyDown={kd}
@@ -423,7 +423,7 @@ test("render style=height, text & defaultStyle=width", () => {
             kd,
             l))
         .toEqual(<TableCell key={r}
-                            id="cell-A99"
+                            id="viewport-cell-A99"
                             tabIndex={0}
                             onClick={c}
                             onKeyDown={kd}
@@ -450,7 +450,7 @@ test("render style=width&height, text & defaultStyle=width", () => {
             c,
             kd,
             l))
-        .toEqual(<TableCell id="cell-A99"
+        .toEqual(<TableCell id="viewport-cell-A99"
                             key={r}
                             tabIndex={0}
                             onClick={c}
@@ -482,7 +482,7 @@ test("render with labels", () => {
                           id={"cell-" + r + "-Tooltip"}
                           title={"Label1, Label2"}
                           placement={"top"}>
-            <TableCell id="cell-A99"
+            <TableCell id="viewport-cell-A99"
                        key={r}
                        tabIndex={0}
                        onClick={c}

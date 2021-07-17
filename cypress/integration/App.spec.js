@@ -2721,7 +2721,7 @@ context(
             const spreadsheetCellReference = cellReference instanceof SpreadsheetCellReference ?
                 cellReference :
                 SpreadsheetCellReference.parse(cellReference);
-            return cy.get("#" + spreadsheetCellReference.viewportCellId());
+            return cy.get("#" + spreadsheetCellReference.viewportId());
         }
 
         function spreadsheetEmpty() {
