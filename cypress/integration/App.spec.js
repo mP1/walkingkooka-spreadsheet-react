@@ -6,6 +6,7 @@ import FontVariant from "../../src/text/FontVariant.js";
 import FontStyle from "../../src/text/FontStyle.js";
 import Hyphens from "../../src/text/Hyphens.js";
 import RoundingMode from "../../src/math/RoundingMode.js";
+import SpreadsheetCellReference from "../../src/spreadsheet/reference/SpreadsheetCellReference.js";
 import SpreadsheetMetadata from "../../src/spreadsheet/meta/SpreadsheetMetadata.js";
 import SpreadsheetSettingsWidget from "../../src/spreadsheet/settings/SpreadsheetSettingsWidget.js";
 import TextAlign from "../../src/text/TextAlign.js";
@@ -23,8 +24,17 @@ const FORCE_TRUE = {
     force: true,
 };
 
+const A1 = SpreadsheetCellReference.parse("A1");
+const A2 = SpreadsheetCellReference.parse("A2");
+const A3 = SpreadsheetCellReference.parse("A3");
+const B1 = SpreadsheetCellReference.parse("B1");
+const B2 = SpreadsheetCellReference.parse("B2");
+const B3 = SpreadsheetCellReference.parse("B3");
+const C2 = SpreadsheetCellReference.parse("C2");
+const C3 = SpreadsheetCellReference.parse("C3");
+const D4 = SpreadsheetCellReference.parse("D4");
+
 const LABEL = "Label123";
-const REFERENCE = "B2";
 
 const FORMULA_TEXT_CLICK_WAIT = 50;
 
@@ -359,7 +369,7 @@ context(
             spreadsheetEmpty();
             hashLabel();
 
-            const referenceText = REFERENCE;
+            const referenceText = "B2";
             labelMappingReferenceTextField()
                 .type(referenceText);
 
@@ -379,7 +389,7 @@ context(
             hashLabel();
 
             labelMappingReferenceTextField()
-                .type(REFERENCE);
+                .type("B2");
 
             labelMappingLabelTextField()
                 .type("{Esc}");
@@ -400,7 +410,7 @@ context(
             hashLabel();
 
             labelMappingReferenceTextField()
-                .type(REFERENCE + "{Esc}");
+                .type(B2 + "{Esc}");
 
             hashLabel();
 
@@ -417,7 +427,7 @@ context(
             spreadsheetEmpty();
             hashLabel();
 
-            const referenceText = REFERENCE;
+            const referenceText = "B2";
             labelMappingReferenceTextField()
                 .type(referenceText);
 
@@ -441,7 +451,7 @@ context(
             spreadsheetEmpty();
             hashLabel();
 
-            const referenceText = REFERENCE;
+            const referenceText = "B2";
             labelMappingReferenceTextField()
                 .type(referenceText + "{Enter}");
 
@@ -460,7 +470,7 @@ context(
             spreadsheetEmpty();
             hashLabel();
 
-            const referenceText = REFERENCE;
+            const referenceText = "B2";
             labelMappingReferenceTextField()
                 .type(referenceText);
 
@@ -480,7 +490,7 @@ context(
             spreadsheetEmpty();
             hashLabel();
 
-            const referenceText = REFERENCE;
+            const referenceText = "b2";
             labelMappingReferenceTextField()
                 .type(referenceText);
 
@@ -518,6 +528,8 @@ context(
             hash()
                 .should('match', /.*\/Untitled/);
 
+            const reference = B2;
+
             cy.window()
                 .then(function(win) {
                     const nonEmptySpreadsheetHash = win.location.hash;
@@ -529,7 +541,7 @@ context(
                         .should('match', /.*\/Untitled\/label\/Label456/);
 
                     labelMappingReferenceTextField()
-                        .type(REFERENCE);
+                        .type(reference.toString());
 
                     labelMappingLabelSaveButton()
                         .click();
@@ -547,7 +559,7 @@ context(
                         .wait(FORMULA_TEXT_CLICK_WAIT)
                         .type("=4{enter}");
 
-                    cellFormattedTextCheck(REFERENCE, "4.");
+                    cellFormattedTextCheck(reference, "4.");
                 });
         });
 
@@ -571,7 +583,7 @@ context(
             cy.get("#cell-A1-Tooltip")
                 .should("not.exist");
 
-            cellGet("A1")
+            cell(A1)
                 .trigger("mouseover");
 
             cy.get("#cell-A1-Tooltip")
@@ -611,7 +623,7 @@ context(
             cy.get("#cell-A1-Tooltip")
                 .should("not.exist");
 
-            cellGet("A1")
+            cell(A1)
                 .trigger("mouseover");
 
             cy.get("#cell-A1-Tooltip")
@@ -624,7 +636,7 @@ context(
             hash()
                 .should('match', /.*\/Untitled/);
 
-            cellClick("A1");
+            cellClick(A1);
 
             hash().should('match', /.*\/Untitled\/cell\/A1/)
 
@@ -633,7 +645,7 @@ context(
                 .wait(FORMULA_TEXT_CLICK_WAIT)
                 .type("=11{enter}");
 
-            cellClick("B2");
+            cellClick(B2);
 
             hash().should('match', /.*\/Untitled\/cell\/B2/)
 
@@ -655,7 +667,7 @@ context(
             labelMappingLabelCloseButton()
                 .click();
 
-            cellClick("C3");
+            cellClick(C3);
 
             hash().should('match', /.*\/Untitled\/cell\/C3/)
 
@@ -665,7 +677,7 @@ context(
                 .type("=4*MovingLabel{enter}")
                 .blur();
 
-            cellFormattedTextCheck("C3", "44."); // 4 * 11
+            cellFormattedTextCheck(C3, "44."); // 4 * 11
 
             // update existing label
             hashAppend("/label/MovingLabel");
@@ -676,7 +688,7 @@ context(
             labelMappingLabelSaveButton()
                 .click();
 
-            cellFormattedTextCheck("C3", "88."); // 4 * 22
+            cellFormattedTextCheck(C3, "88."); // 4 * 22
         });
 
         function labelDialogCheck(title,
@@ -749,7 +761,7 @@ context(
         it("Cell viewport cell click", () => {
             spreadsheetEmpty();
 
-            cellClick("B2");
+            cellClick(B2);
 
             hash()
                 .should('match', /.*\/Untitled\/cell\/B2/);
@@ -759,7 +771,7 @@ context(
             spreadsheetEmpty();
             spreadsheetNameClick();
             
-            cellClick("B2");
+            cellClick(B2);
 
             hash()
                 .should('match', /.*\/Untitled\/cell\/B2/);
@@ -768,7 +780,7 @@ context(
         it("Cell formula edit", () => {
             spreadsheetEmpty();
 
-            cellClick("B2");
+            cellClick(B2);
 
             hash().should('match', /.*\/Untitled\/cell\/B2/)
 
@@ -780,33 +792,33 @@ context(
             hash()
                 .should('match', /.*\/Untitled\/cell\/B2\/formula/);
 
-            cellFormattedTextCheck("B2", "6.");
+            cellFormattedTextCheck(B2, "6.");
         });
 
         it("Cell formula edit with reference", () => {
             spreadsheetEmpty();
 
-            cellClick("C3");
+            cellClick(C3);
 
             formulaText()
                 .click()
                 .wait(FORMULA_TEXT_CLICK_WAIT)
                 .type("=1+2+3{enter}");
 
-            cellClick("D4");
+            cellClick(D4);
 
             formulaText()
                 .click()
                 .wait(FORMULA_TEXT_CLICK_WAIT)
                 .type("=C3+10{enter}");
 
-            cellFormattedTextCheck("D4", "16.");
+            cellFormattedTextCheck(D4, "16.");
         });
 
         it("Cell formula edit, update hash cell reference", () => {
             spreadsheetEmpty();
 
-            cellClick("C3");
+            cellClick(C3);
 
             formulaText()
                 .click()
@@ -826,7 +838,7 @@ context(
                 .wait(FORMULA_TEXT_CLICK_WAIT)
                 .type("=4+5{enter}");
 
-            cellFormattedTextCheck("D4", "9.");
+            cellFormattedTextCheck(D4, "9.");
         });
 
         it("Cell hash update", () => {
@@ -841,7 +853,7 @@ context(
         it("Cell hash append formula", () => {
             spreadsheetEmpty();
 
-            cellClick("C3");
+            cellClick(C3);
 
             renderWait(FORMULA_TEXT_CLICK_WAIT);
 
@@ -865,7 +877,7 @@ context(
         it("Cell click should have focus", () => {
             spreadsheetEmpty();
 
-            cellClick("B2");
+            cellClick(B2);
 
             hash()
                 .should('match', /.*\/.*\/cell\/B2/);
@@ -874,10 +886,8 @@ context(
         it("Cell click and navigate using arrow keys", () => {
             spreadsheetEmpty();
 
-            cellClick("C3")
-                .should('have.focus');
-
-            cellGet("C3")
+            cellClick(C3);
+            cell(C3)
                 .type("{leftarrow}");
 
             renderWait(50);
@@ -885,7 +895,7 @@ context(
             hash()
                 .should('match', /.*\/.*\/cell\/B3/);
 
-            cellGet("B3")
+            cell(B3)
                 .type("{rightarrow}");
 
             renderWait(50);
@@ -893,7 +903,7 @@ context(
             hash()
                 .should('match', /.*\/.*\/cell\/C3/);
 
-            cellGet("C3")
+            cell(C3)
                 .type("{uparrow}");
 
             renderWait(50);
@@ -901,7 +911,7 @@ context(
             hash()
                 .should('match', /.*\/.*\/cell\/C2/);
 
-            cellGet("C2")
+            cell(C2)
                 .type("{downarrow}");
 
             renderWait(50);
@@ -913,10 +923,9 @@ context(
         it("Cell click and hit ENTER gives formula text focus", () => {
             spreadsheetEmpty();
 
-            cellClick("A3")
-                .should('have.focus');
+            cellClick(A3);
 
-            cellGet("A3")
+            cell(A3)
                 .type("{enter}");
 
             hash()
@@ -929,13 +938,12 @@ context(
         it("Cell select and hit ESC loses viewport cell focus", () => {
             spreadsheetEmpty();
 
-            cellClick("A3")
-                .should('have.focus');
+            cellClick(A3);
 
             hash()
                 .should('match', /.*\/.*\/cell\/A3/);
 
-            cellGet("A3")
+            cell(A3)
                 .type("{esc}");
 
             hash()
@@ -954,7 +962,7 @@ context(
                 .blur();
 
             // viewport should have jumped leaving T1 as the home cell.
-            cellGet("S1")
+            cell(SpreadsheetCellReference.parse("S1"))
                 .should('not.exist');
         });
 
@@ -970,7 +978,7 @@ context(
                 .blur();
 
             // viewport should have jumped leaving A30 as the home cell.
-            cellGet("A29")
+            cell(SpreadsheetCellReference.parse("A29"))
                 .should('not.exist');
         });
 
@@ -986,7 +994,7 @@ context(
                 .blur();
 
             // viewport should have jumped leaving T30 as the home cell.
-            cellGet("S29")
+            cell(SpreadsheetCellReference.parse("S29"))
                 .should('not.exist');
         });
 
@@ -1327,12 +1335,12 @@ context(
         it("Navigate link after cell click", () => {
             spreadsheetEmpty();
 
-            cellClick("A1");
+            cellClick(A1);
 
             navigateLink()
                 .should('have.text', "A1");
 
-            cellClick("A2");
+            cellClick(A2);
 
             navigateLink()
                 .should('have.text', "A2");
@@ -1341,7 +1349,7 @@ context(
         it("Navigate link click after cell click", () => {
             spreadsheetEmpty();
 
-            cellClick("B1");
+            cellClick(B1);
 
             navigateLink()
                 .should('have.text', "B1")
@@ -1444,7 +1452,7 @@ context(
                 .then(function(win) {
                     const nonEmptySpreadsheetHash = win.location.hash;
 
-                    cellClick("F6");
+                    cellClick(A1);
 
                     formulaText()
                         .click()
@@ -1459,7 +1467,7 @@ context(
                     hash()
                         .should('eq', nonEmptySpreadsheetHash);
 
-                    cellFormattedTextCheck("F6", "6.");
+                    cellFormattedTextCheck(A1, "6.");
                 });
         });
 
@@ -1470,7 +1478,7 @@ context(
                 .then(function(win) {
                     const nonEmptySpreadsheetHash = win.location.hash;
 
-                    cellClick("F6");
+                    cellClick(A1);
 
                     formulaText()
                         .click()
@@ -1483,7 +1491,7 @@ context(
                     hash()
                         .should('eq', nonEmptySpreadsheetHash);
 
-                    cellFormattedTextCheck("F6", "6.");
+                    cellFormattedTextCheck(A1, "6.");
                 });
         });
 
@@ -1596,15 +1604,15 @@ context(
         it("Settings open hash after Edit cell", () => {
             spreadsheetEmpty();
 
-            cellClick("F6");
+            cellClick(A1);
 
             cy.hash()
-                .should("matches", /.*\/Untitled\/cell\/F6/);
+                .should("matches", /.*\/Untitled\/cell\/A1/);
 
             settingsToggle();
 
             cy.hash()
-                .should("matches", /.*\/Untitled\/cell\/F6\/settings/);
+                .should("matches", /.*\/Untitled\/cell\/A1\/settings/);
         });
 
         it("Settings metadata check creator-date-time/modified-date-time", () => {
@@ -1637,10 +1645,8 @@ context(
                 settingsToggle();
                 settingsOpenSectionSpreadsheetMetadataProperty(property);
 
-                const a1 = "A1";
-
                 if(a1Formula){
-                    cellClick(a1);
+                    cellClick(A1);
 
                     formulaText()
                         .click()
@@ -1664,7 +1670,7 @@ context(
                     }
 
                     if(a1Formula){
-                        cellFormattedTextCheck(a1, a1CellContent);
+                        cellFormattedTextCheck(A1, a1CellContent);
                     }
 
                     // restore original textField value.
@@ -1686,8 +1692,8 @@ context(
                     }
 
                     if(a1CellContentDefault){
-                        cellClick(a1);
-                        cellFormattedTextCheck(a1, a1CellContentDefault);
+                        cellClick(A1);
+                        cellFormattedTextCheck(A1, a1CellContentDefault);
                     }
 
                     // type text and blur
@@ -1704,7 +1710,7 @@ context(
                     }
 
                     if(a1Formula){
-                        cellFormattedTextCheck(a1, a1CellContent);
+                        cellFormattedTextCheck(A1, a1CellContent);
                     }
 
                     // type text and blur
@@ -1730,10 +1736,8 @@ context(
                 settingsToggle();
                 settingsOpenSectionSpreadsheetMetadataProperty(property);
 
-                const a1 = "A1";
-
                 if(a1Formula){
-                    cellClick(a1);
+                    cellClick(A1);
 
                     formulaText()
                         .click()
@@ -1750,7 +1754,7 @@ context(
                         .click();
 
                     if(a1Formula){
-                        cellFormattedTextCheck(a1, a1CellContents[i]);
+                        cellFormattedTextCheck(A1, a1CellContents[i]);
                     }
                 });
             });
@@ -1799,10 +1803,8 @@ context(
                         break;
                 }
 
-                const a1 = "A1";
-
                 if(a1Formula){
-                    cellClick(a1);
+                    cellClick(A1);
 
                     formulaText()
                         .click()
@@ -1824,7 +1826,7 @@ context(
                         .click();
 
                     if(a1Formula){
-                        cellFormattedTextCheck(a1, a1CellContents[i]);
+                        cellFormattedTextCheck(A1, a1CellContents[i]);
                     }
                 });
 
@@ -1840,7 +1842,7 @@ context(
                         .should("have.class", "MuiSlider-markLabelActive");
 
                     if(a1Formula){
-                        cellFormattedTextCheck(a1, a1CellContents[i]);
+                        cellFormattedTextCheck(A1, a1CellContents[i]);
                     }
                 });
             });
@@ -1858,10 +1860,8 @@ context(
                 settingsToggle();
                 settingsOpenSectionSpreadsheetMetadataProperty(property);
 
-                const a1 = "A1";
-
                 if(a1Formula){
-                    cellClick(a1);
+                    cellClick(A1);
 
                     formulaText()
                         .click()
@@ -1879,7 +1879,7 @@ context(
                         .should("have.value", v.toString());
 
                     if(a1Formula){
-                        cellFormattedTextCheck(a1, a1CellContents[i]);
+                        cellFormattedTextCheck(A1, a1CellContents[i]);
                     }
                 });
             });
@@ -2242,9 +2242,7 @@ context(
                 settingsToggle();
                 settingsOpenSectionSpreadsheetMetadataStyleProperty(property);
 
-                const a1 = "A1";
-
-                cellClick(a1);
+                cellClick(A1);
 
                 formulaText()
                     .click()
@@ -2292,9 +2290,7 @@ context(
                 settingsToggle();
                 settingsOpenSectionSpreadsheetMetadataStyleProperty(property);
 
-                const a1 = "A1";
-
-                cellClick(a1);
+                cellClick(A1);
                 formulaText()
                     .click()
                     .wait(FORMULA_TEXT_CLICK_WAIT)
@@ -2345,9 +2341,7 @@ context(
                 settingsToggle();
                 settingsOpenSectionSpreadsheetMetadataStyleProperty(property);
 
-                const a1 = "A1";
-
-                cellClick(a1);
+                cellClick(A1);
                 formulaText()
                     .click()
                     .wait(FORMULA_TEXT_CLICK_WAIT)
@@ -2708,23 +2702,26 @@ context(
          * Click on the cell and verify it gets focused.
          */
         function cellClick(cellReference) {
-            const cell = cellGet(cellReference)
-                .click();
-            return cell.should("have.focus");
+            cell(cellReference)
+                .click()
+                .should("have.focus");
         }
 
         function cellFormattedTextCheck(cellReference, text) {
-            cellGet(cellReference)
+            cell(cellReference)
                 .should("have.text", text);
         }
 
         function cellA1StyleCheck(property, value) {
-            cellGet("a1")
+            cell(A1)
                 .should('have.css', property, value);
         }
 
-        function cellGet(cellReference) {
-            return cy.get("#cell-" + cellReference.toUpperCase());
+        function cell(cellReference) {
+            const spreadsheetCellReference = cellReference instanceof SpreadsheetCellReference ?
+                cellReference :
+                SpreadsheetCellReference.parse(cellReference);
+            return cy.get("#" + spreadsheetCellReference.viewportCellId());
         }
 
         function spreadsheetEmpty() {
