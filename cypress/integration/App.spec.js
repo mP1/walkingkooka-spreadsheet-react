@@ -580,13 +580,13 @@ context(
             labelMappingLabelCloseButton()
                 .click();
 
-            cy.get("#cell-A1-Tooltip")
+            cy.get("#" + A1.viewportTooltipId())
                 .should("not.exist");
 
             cell(A1)
                 .trigger("mouseover");
 
-            cy.get("#cell-A1-Tooltip")
+            cy.get("#" + A1.viewportTooltipId())
                 .should("exist")
                 .should("contain.text", "HoverLabel");
         });
@@ -620,13 +620,13 @@ context(
             labelMappingLabelCloseButton()
                 .click();
 
-            cy.get("#cell-A1-Tooltip")
+            cy.get("#" + A1.viewportTooltipId())
                 .should("not.exist");
 
             cell(A1)
                 .trigger("mouseover");
 
-            cy.get("#cell-A1-Tooltip")
+            cy.get("#" + A1.viewportTooltipId())
                 .should("exist")
                 .should("contain.text", "HoverLabel1, HoverLabel2");
         });

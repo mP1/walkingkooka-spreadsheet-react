@@ -478,8 +478,8 @@ test("render with labels", () => {
             c,
             kd,
             l))
-        .toEqual(<Tooltip key={"cell-" + r + "-Tooltip"}
-                          id={"cell-" + r + "-Tooltip"}
+        .toEqual(<Tooltip key={r.viewportTooltipId()}
+                          id={r.viewportTooltipId()}
                           title={"Label1, Label2"}
                           placement={"top"}>
             <TableCell id="viewport-cell-A99"
