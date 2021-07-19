@@ -40,7 +40,7 @@ export default class SpreadsheetLabelMapping extends SystemObject {
         return this.referenceValue;
     }
 
-    toSpreadsheetNavigateWidgetOption() {
+    toSpreadsheetSelectWidgetOption() {
         const label = this.label();
 
         return {

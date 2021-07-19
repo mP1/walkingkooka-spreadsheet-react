@@ -202,7 +202,7 @@ export default class SpreadsheetCellReference extends SpreadsheetCellReferenceOr
                 .setKind(SpreadsheetReferenceKind.RELATIVE));
     }
 
-    toSpreadsheetNavigateWidgetOption() {
+    toSpreadsheetSelectWidgetOption() {
         return {
             text: this.toString(),
             createLabel: null,

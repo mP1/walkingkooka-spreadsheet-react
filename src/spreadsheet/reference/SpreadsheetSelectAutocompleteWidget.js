@@ -28,7 +28,7 @@ const MAX_COUNT = 10;
  * <li>createLabel The selected unknown {@link SpreadsheetLabelName} for creation</li>
  * </ul>
  */
-export default class SpreadsheetNavigateAutocompleteWidget extends SpreadsheetHistoryAwareStateWidget {
+export default class SpreadsheetSelectAutocompleteWidget extends SpreadsheetHistoryAwareStateWidget {
 
     initialStateFromProps(props) {
         return {
@@ -42,13 +42,13 @@ export default class SpreadsheetNavigateAutocompleteWidget extends SpreadsheetHi
     }
 
     /**
-     * Updates the state.navigate from the history hash tokens.
+     * Updates the state.open from the history hash tokens.
      */
     stateFromHistoryTokens(tokens) {
-        const navigate = tokens[SpreadsheetHistoryHash.NAVIGATE];
+        const select = tokens[SpreadsheetHistoryHash.SELECT];
 
         return {
-            open: !!navigate,
+            open: !!select,
         };
     }
 
@@ -57,7 +57,7 @@ export default class SpreadsheetNavigateAutocompleteWidget extends SpreadsheetHi
     }
 
     /**
-     * Copies the navigate hash to state.open and also updates the AutoComplete widget to match state.option
+     * Copies the select hash to state.open and also updates the AutoComplete widget to match state.option
      */
     historyTokensFromState(prevState) {
         const {open, options} = this.state;
@@ -68,7 +68,7 @@ export default class SpreadsheetNavigateAutocompleteWidget extends SpreadsheetHi
         }
 
         const historyTokens = {};
-        historyTokens[SpreadsheetHistoryHash.NAVIGATE] = open;
+        historyTokens[SpreadsheetHistoryHash.SELECT] = open;
         return historyTokens;
     }
 
@@ -88,13 +88,13 @@ export default class SpreadsheetNavigateAutocompleteWidget extends SpreadsheetHi
         const createLabelDisabled = !createLabel;
         const editLabelDisabled = !editLabel;
 
-        return <SpreadsheetDialog id={"navigate-Dialog"}
+        return <SpreadsheetDialog id={"select-Dialog"}
                                   open={true}
                                   onClose={this.close.bind(this)}
         >
-            <span id={"navigate-DialogTitle"}>Navigate or Edit</span>
+            <span id={"select-DialogTitle"}>Select</span>
             <Autocomplete
-                id="navigate-Autocomplete-TextField"
+                id="select-Autocomplete-TextField"
                 ref={this.autoComplete}
                 freeSolo={true}
                 selectOnFocus
@@ -117,19 +117,19 @@ export default class SpreadsheetNavigateAutocompleteWidget extends SpreadsheetHi
                     />
                 }
             />
-            <Button id="navigate-gotoCellOrLabel-Button"
+            <Button id="select-gotoCellOrLabel-Button"
                     disabled={gotoCellOrLabelDisabled}
                     color="primary"
                     onClick={this.onGotoCellOrLabelClick.bind(this)}>
                 Goto
             </Button>
-            <Button id="navigate-create-link-Button"
+            <Button id="select-create-link-Button"
                     disabled={createLabelDisabled}
                     color="primary"
                     onClick={this.onCreateLabelClick.bind(this)}>
                 Create Label
             </Button>
-            <Button id="navigate-edit-link-Button"
+            <Button id="select-edit-link-Button"
                     disabled={editLabelDisabled}
                     color="primary"
                     onClick={this.onEditLabelClick.bind(this)}>
@@ -173,7 +173,7 @@ export default class SpreadsheetNavigateAutocompleteWidget extends SpreadsheetHi
                 text,
                 MAX_COUNT,
                 (s) => {
-                    const options = s.toSpreadsheetNavigateWidgetOptions(text);
+                    const options = s.toSpreadsheetSelectWidgetOptions(text);
 
                     const newState = Object.assign(
                         {
@@ -241,7 +241,7 @@ export default class SpreadsheetNavigateAutocompleteWidget extends SpreadsheetHi
         historyTokens[SpreadsheetHistoryHash.CELL] = gotoCellOrLabel;
         historyTokens[SpreadsheetHistoryHash.CELL_FORMULA] = false;
         historyTokens[SpreadsheetHistoryHash.LABEL] = label;
-        historyTokens[SpreadsheetHistoryHash.NAVIGATE] = null; // close the navigate modal
+        historyTokens[SpreadsheetHistoryHash.SELECT] = null; // close the navigate modal
 
         this.historyParseMergeAndPush(historyTokens);
     }
@@ -262,7 +262,7 @@ export default class SpreadsheetNavigateAutocompleteWidget extends SpreadsheetHi
     }
 }
 
-SpreadsheetNavigateAutocompleteWidget.propTypes = {
+SpreadsheetSelectAutocompleteWidget.propTypes = {
     history: PropTypes.instanceOf(SpreadsheetHistoryHash).isRequired,
     getSimilarities: PropTypes.func.isRequired, // performs a search to find similarities to the query text field.
     notificationShow: PropTypes.func.isRequired, // used to display notifications including errors and other messages

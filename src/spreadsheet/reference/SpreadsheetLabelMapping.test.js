@@ -157,13 +157,13 @@ test("toJson label/range", () => {
     });
 });
 
-// toSpreadsheetNavigateWidgetOption....................................................................................
+// toSpreadsheetSelectWidgetOption....................................................................................
 
-test("toSpreadsheetNavigateWidgetOption", () => {
+test("toSpreadsheetSelectWidgetOption", () => {
     const label = SpreadsheetLabelName.parse("Label123");
     const reference = SpreadsheetCellReference.parse("B99");
 
-    expect(label.mapping(reference).toSpreadsheetNavigateWidgetOption()).toStrictEqual({
+    expect(label.mapping(reference).toSpreadsheetSelectWidgetOption()).toStrictEqual({
         text: label.toString(),
         createLabel: null,
         editLabel: label,

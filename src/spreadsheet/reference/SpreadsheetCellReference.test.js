@@ -400,12 +400,12 @@ test("toRelative absolute2", () => {
     expect(SpreadsheetCellReference.parse("$C3").toRelative()).toEqual(SpreadsheetCellReference.parse("C3"));
 });
 
-// toSpreadsheetNavigateWidgetOption....................................................................................
+// toSpreadsheetSelectWidgetOption....................................................................................
 
-test("toSpreadsheetNavigateWidgetOption", () => {
+test("toSpreadsheetSelectWidgetOption", () => {
     const cell = SpreadsheetCellReference.parse("B2");
 
-    expect(cell.toSpreadsheetNavigateWidgetOption()).toStrictEqual({
+    expect(cell.toSpreadsheetSelectWidgetOption()).toStrictEqual({
         text: "B2",
         createLabel: null,
         editLabel: null,

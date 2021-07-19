@@ -87,12 +87,12 @@ validateTest(
 );
 
 validateTest(
-    "validate id & name & name edit && navigate",
+    "validate id & name & name edit && select",
     {
         "spreadsheet-id": ID,
         "spreadsheet-name": SPREADSHEET_NAME,
         "name": true,
-        "navigate": true,
+        "select": true,
     },
     {
         "spreadsheet-id": ID,
@@ -154,11 +154,11 @@ validateTest(
 );
 
 validateTest(
-    "validate id & name & navigate",
+    "validate id & name & select",
     {
         "spreadsheet-id": ID,
         "spreadsheet-name": SPREADSHEET_NAME,
-        "navigate": true,
+        "select": true,
     }
 );
 
@@ -355,7 +355,7 @@ parseAndStringifyTest(
 );
 
 parseAndStringifyTest(
-    "/spreadsheet-id-123/spreadsheet-name-456/name/navigate",
+    "/spreadsheet-id-123/spreadsheet-name-456/name/select",
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
@@ -363,73 +363,73 @@ parseAndStringifyTest(
 );
 
 parseAndStringifyTest(
-    "/spreadsheet-id-123/spreadsheet-name-456/navigate",
+    "/spreadsheet-id-123/spreadsheet-name-456/select",
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
-        "navigate": true,
+        "select": true,
     }
 );
 
 parseAndStringifyTest(
-    "/spreadsheet-id-123/spreadsheet-name-456/cell/A1/navigate",
-    {
-        "spreadsheet-id": "spreadsheet-id-123",
-        "spreadsheet-name": SPREADSHEET_NAME,
-        "cell": CELL,
-        "navigate": true,
-    }
-);
-
-parseAndStringifyTest(
-    "/spreadsheet-id-123/spreadsheet-name-456/cell/A1/formula/navigate",
+    "/spreadsheet-id-123/spreadsheet-name-456/cell/A1/select",
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
         "cell": CELL,
-        "formula": true,
-        "navigate": true,
+        "select": true,
     }
 );
 
 parseAndStringifyTest(
-    "/spreadsheet-id-123/spreadsheet-name-456/cell/A1/formula/navigate/settings",
+    "/spreadsheet-id-123/spreadsheet-name-456/cell/A1/formula/select",
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
         "cell": CELL,
         "formula": true,
-        "navigate": true,
+        "select": true,
+    }
+);
+
+parseAndStringifyTest(
+    "/spreadsheet-id-123/spreadsheet-name-456/cell/A1/formula/select/settings",
+    {
+        "spreadsheet-id": "spreadsheet-id-123",
+        "spreadsheet-name": SPREADSHEET_NAME,
+        "cell": CELL,
+        "formula": true,
+        "select": true,
         "settings": true,
     }
 );
 
 parseAndStringifyTest(
-    "/spreadsheet-id-123/spreadsheet-name-456/label/Label123/navigate",
+    "/spreadsheet-id-123/spreadsheet-name-456/label/Label123/select",
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
         "label": LABEL,
-        "navigate": true,
+        "select": true,
     }
 );
 
 parseAndStringifyTest(
-    "/spreadsheet-id-123/spreadsheet-name-456/navigate/settings",
+    "/spreadsheet-id-123/spreadsheet-name-456/select/settings",
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
-        "navigate": true,
+        "select": true,
         "settings": true,
     }
 );
 
 parseAndStringifyTest(
-    "/spreadsheet-id-123/spreadsheet-name-456/navigate/settings/number",
+    "/spreadsheet-id-123/spreadsheet-name-456/select/settings/number",
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
-        "navigate": true,
+        "select": true,
         "settings": true,
         "settings-section": SpreadsheetHistoryHash.SETTINGS_NUMBER,
     }
@@ -886,9 +886,9 @@ mergeUpdatesFails([]);
     mergeTest(
         "/123abc/Untitled456/name",
         {
-            "navigate": true,
+            "select": true,
         },
-        "/123abc/Untitled456/navigate"
+        "/123abc/Untitled456/select"
     );
 
 // cell.................................................................................................................
@@ -1075,66 +1075,66 @@ mergeUpdatesFails([]);
         "/123abc/Untitled456/name"
     );
 
-// navigate.............................................................................................................
+// select.............................................................................................................
 
     mergeTest(
-        "/123abc/Untitled456/navigate",
+        "/123abc/Untitled456/select",
         {},
-        "/123abc/Untitled456/navigate",
+        "/123abc/Untitled456/select",
     );
 
     mergeTest(
-        "/123abc/Untitled456/cell/A1/navigate",
+        "/123abc/Untitled456/cell/A1/select",
         {},
-        "/123abc/Untitled456/cell/A1/navigate",
+        "/123abc/Untitled456/cell/A1/select",
     );
 
     mergeTest(
-        "/123abc/Untitled456/label/LABEL123/navigate",
+        "/123abc/Untitled456/label/LABEL123/select",
         {},
-        "/123abc/Untitled456/label/LABEL123/navigate",
+        "/123abc/Untitled456/label/LABEL123/select",
     );
 
     mergeTest(
-        "/123abc/Untitled456/navigate/settings",
+        "/123abc/Untitled456/select/settings",
         {},
-        "/123abc/Untitled456/navigate/settings",
+        "/123abc/Untitled456/select/settings",
     );
 
     mergeTest(
         "/123abc/Untitled456/",
         {
-            "navigate": true,
+            "select": true,
         },
-        "/123abc/Untitled456/navigate",
+        "/123abc/Untitled456/select",
     );
 
     mergeTest(
         "/123abc/Untitled456/cell/A1",
         {
-            "navigate": true,
+            "select": true,
         },
-        "/123abc/Untitled456/cell/A1/navigate",
+        "/123abc/Untitled456/cell/A1/select",
     );
 
     mergeTest(
-        "/123abc/Untitled456/navigate",
+        "/123abc/Untitled456/select",
         {
-            "navigate": false,
+            "select": false,
         },
         "/123abc/Untitled456",
     );
 
     mergeTest(
-        "/123abc/Untitled456/navigate",
+        "/123abc/Untitled456/select",
         {
             "name": false,
         },
-        "/123abc/Untitled456/navigate",
+        "/123abc/Untitled456/select",
     );
 
     mergeTest(
-        "/123abc/Untitled456/navigate",
+        "/123abc/Untitled456/select",
         {
             "name": true,
         },
