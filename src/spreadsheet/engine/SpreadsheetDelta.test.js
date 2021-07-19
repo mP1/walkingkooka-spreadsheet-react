@@ -34,15 +34,26 @@ function cells() {
     return [a1(), b2()];
 }
 
-function cellToLabels() {
-    return ImmutableMap.fromJson(
-        {
-            "A1": "Label1,Label2",
-            "B2": "Label3",
-        },
-        SpreadsheetCellReference.parse,
-        (v) => v.split(",").map(l => SpreadsheetLabelName.parse(l))
-    );
+function label1() {
+    return SpreadsheetLabelName.parse("Label1");
+}
+
+function label2() {
+    return SpreadsheetLabelName.parse("Label2");
+}
+
+function label3() {
+    return SpreadsheetLabelName.parse("Label3");
+}
+
+function labels() {
+    const a1Reference = a1().reference();
+
+    return [
+        label1().mapping(a1Reference),
+        label2().mapping(a1Reference),
+        label3().mapping(SpreadsheetCellReference.parse("B2")),
+    ];
 }
 
 function maxColumnWidths() {
@@ -71,7 +82,7 @@ function window() {
 const windowJson = "A1:B2,C3:D4";
 
 function delta() {
-    return new SpreadsheetDelta(cells(), cellToLabels(), maxColumnWidths(), maxRowHeights(), window());
+    return new SpreadsheetDelta(cells(), labels(), maxColumnWidths(), maxRowHeights(), window());
 }
 
 systemObjectTesting(
@@ -87,7 +98,7 @@ systemObjectTesting(
                 }
             })
         ],
-        cellToLabels(),
+        labels(),
         maxColumnWidths(),
         maxRowHeights(),
         window()
@@ -110,10 +121,20 @@ systemObjectTesting(
                 }
             }
         },
-        "labels": {
-            "A1": "Label1,Label2",
-            "B2": "Label3"
-        },
+        "labels": [
+            {
+                "label": "Label1",
+                "reference": "A1"
+            },
+            {
+                "label": "Label2",
+                "reference": "A1"
+            },
+            {
+                "label": "Label3",
+                "reference": "B2"
+            }
+        ],
         "maxColumnWidths": {
             "A": 100
         },
@@ -128,7 +149,7 @@ systemObjectTesting(
 
 test("create without cells fails", () => {
     const c = undefined;
-    const l = cellToLabels();
+    const l = labels();
     const mcw = maxColumnWidths();
     const mrh = maxRowHeights();
     const w = window();
@@ -138,7 +159,7 @@ test("create without cells fails", () => {
 
 test("create with cell non array fails", () => {
     const c = "!invalid";
-    const l = cellToLabels();
+    const l = labels();
     const mcw = maxColumnWidths();
     const mrh = maxRowHeights();
     const w = window();
@@ -146,29 +167,29 @@ test("create with cell non array fails", () => {
     expect(() => new SpreadsheetDelta(c, l, mcw, mrh, w)).toThrow("Expected array cells got !invalid");
 });
 
-test("create without cellToLabels fails", () => {
+test("create without labels fails", () => {
     const c = cells();
     const l = undefined;
     const mcw = maxColumnWidths();
     const mrh = maxRowHeights();
     const w = window();
 
-    expect(() => new SpreadsheetDelta(c, l, mcw, mrh, w)).toThrow("Missing cellToLabels");
+    expect(() => new SpreadsheetDelta(c, l, mcw, mrh, w)).toThrow("Missing labels");
 });
 
-test("create with cellToLabels non object fails", () => {
+test("create with labels non array fails", () => {
     const c = cells();
     const l = "!invalid"
     const mcw = maxColumnWidths();
     const mrh = maxRowHeights();
     const w = window();
 
-    expect(() => new SpreadsheetDelta(c, l, mcw, mrh, w)).toThrow("Expected ImmutableMap cellToLabels got !invalid");
+    expect(() => new SpreadsheetDelta(c, l, mcw, mrh, w)).toThrow("Expected array labels got !invalid");
 });
 
 test("create without maxColumnWidths fails", () => {
     const c = cells();
-    const l = cellToLabels();
+    const l = labels();
     const mcw = undefined;
     const mrh = maxRowHeights();
     const w = window();
@@ -178,7 +199,7 @@ test("create without maxColumnWidths fails", () => {
 
 test("create with maxColumnWidths non object fails", () => {
     const c = cells();
-    const l = cellToLabels();
+    const l = labels();
     const mcw = "!invalid";
     const mrh = maxRowHeights();
     const w = window();
@@ -188,7 +209,7 @@ test("create with maxColumnWidths non object fails", () => {
 
 test("create without maxRowHeights fails", () => {
     const c = cells();
-    const l = cellToLabels();
+    const l = labels();
     const mcw = maxColumnWidths();
     const mrh = undefined;
     const w = window();
@@ -198,7 +219,7 @@ test("create without maxRowHeights fails", () => {
 
 test("create with maxRowHeights non object fails", () => {
     const c = cells();
-    const l = cellToLabels();
+    const l = labels();
     const mcw = maxColumnWidths();
     const mrh = "!invalid";
     const w = window();
@@ -208,7 +229,7 @@ test("create with maxRowHeights non object fails", () => {
 
 test("create", () => {
     const c = cells();
-    const l = cellToLabels();
+    const l = labels();
     const mcw = maxColumnWidths();
     const mrh = maxRowHeights();
     const w = window();
@@ -234,10 +255,20 @@ test("create", () => {
                     }
                 }
             },
-            labels: {
-                "A1": "Label1,Label2",
-                "B2": "Label3"
-            },
+            labels: [
+                {
+                    "label": "Label1",
+                    "reference": "A1"
+                },
+                {
+                    "label": "Label2",
+                    "reference": "A1"
+                },
+                {
+                    "label": "Label3",
+                    "reference": "B2"
+                }
+            ],
             maxColumnWidths: {
                 "A": 100
             },
@@ -250,7 +281,7 @@ test("create", () => {
 
 test("create empty", () => {
     const c = [];
-    const l = ImmutableMap.EMPTY;
+    const l = [];
     const mcw = ImmutableMap.EMPTY;
     const mrh = ImmutableMap.EMPTY;
     const w = [];
@@ -268,7 +299,7 @@ test("create empty", () => {
 
 test("referenceToCellMap, no cells", () => {
     const c = [];
-    const l = ImmutableMap.EMPTY;
+    const l = [];
     const mcw = ImmutableMap.EMPTY;
     const mrh = ImmutableMap.EMPTY;
     const w = [];
@@ -281,7 +312,7 @@ test("referenceToCellMap, 1 cell", () => {
     const cell = a1();
 
     const c = [cell];
-    const l = ImmutableMap.EMPTY;
+    const l = [];
     const mcw = ImmutableMap.EMPTY;
     const mrh = ImmutableMap.EMPTY;
     const w = [];
@@ -297,7 +328,7 @@ test("referenceToCellMap, 2 cells", () => {
     const cell2 = b2();
 
     const c = [cell, cell2];
-    const l = ImmutableMap.EMPTY;
+    const l = [];
     const mcw = ImmutableMap.EMPTY;
     const mrh = ImmutableMap.EMPTY;
     const w = [];
@@ -363,11 +394,39 @@ test("cellReference() with absent label", () => {
         .toBeUndefined();
 });
 
+// cellToLabels.........................................................................................................
+
+test("cellToLabels() several labels", () => {
+    const cellToLabels = delta().cellToLabels();
+
+    expect(cellToLabels.get(a1().reference()))
+        .toStrictEqual([
+            label1(),
+            label2(),
+        ]);
+});
+
+test("cellToLabels() 1 label", () => {
+    const cellToLabels = delta().cellToLabels();
+
+    expect(cellToLabels.get(b2().reference()))
+        .toStrictEqual([
+            label3(),
+        ]);
+});
+
+test("cellToLabels() no labels", () => {
+    const cellToLabels = delta().cellToLabels();
+
+    expect(cellToLabels.get(SpreadsheetCellReference.parse("Z99")))
+        .toBeUndefined();
+});
+
 // toJson...............................................................................................................
 
 test("toJson only 1 cell", () => {
     const c = [a1()];
-    const l = ImmutableMap.EMPTY;
+    const l = [];
     const mcw = ImmutableMap.EMPTY;
     const mrh = ImmutableMap.EMPTY;
     const w = [];
@@ -387,7 +446,7 @@ test("toJson only 1 cell", () => {
 
 test("toJson only 2 cells", () => {
     const c = cells();
-    const l = ImmutableMap.EMPTY;
+    const l = [];
     const mcw = ImmutableMap.EMPTY;
     const mrh = ImmutableMap.EMPTY;
     const w = [];
@@ -413,7 +472,7 @@ test("toJson only 2 cells", () => {
 
 test("toJson all properties", () => {
     const c = cells();
-    const l = cellToLabels();
+    const l = labels();
     const mcw = maxColumnWidths();
     const mrh = maxRowHeights();
     const w = window();
@@ -434,10 +493,20 @@ test("toJson all properties", () => {
                     }
                 },
             },
-            labels: {
-                "A1": "Label1,Label2",
-                "B2": "Label3"
-            },
+            labels: [
+                {
+                    "label": "Label1",
+                    "reference": "A1"
+                },
+                {
+                    "label": "Label2",
+                    "reference": "A1"
+                },
+                {
+                    "label": "Label3",
+                    "reference": "B2"
+                }
+            ],
             maxColumnWidths: {
                 "A": 100
             },
@@ -452,7 +521,7 @@ test("toJson all properties", () => {
 
 test("fromJson empty", () => {
     const c = [];
-    const l = ImmutableMap.EMPTY;
+    const l = [];
     const mcw = ImmutableMap.EMPTY;
     const mrh = ImmutableMap.EMPTY;
     const w = [];
@@ -462,7 +531,7 @@ test("fromJson empty", () => {
 
 test("fromJson 1 cell", () => {
     const c = [a1()];
-    const l = ImmutableMap.EMPTY;
+    const l = [];
     const mcw = ImmutableMap.EMPTY;
     const mrh = ImmutableMap.EMPTY;
     const w = [];
@@ -481,7 +550,7 @@ test("fromJson 1 cell", () => {
 
 test("fromJson 2 cells only", () => {
     const c = [a1(), b2()];
-    const l = ImmutableMap.EMPTY;
+    const l = [];
     const mcw = ImmutableMap.EMPTY;
     const mrh = ImmutableMap.EMPTY;
     const w = [];
@@ -506,7 +575,7 @@ test("fromJson 2 cells only", () => {
 
 test("fromJson all properties", () => {
     const c = cells();
-    const l = cellToLabels();
+    const l = labels();
     const mcw = maxColumnWidths();
     const mrh = maxRowHeights();
     const w = window();
@@ -526,10 +595,20 @@ test("fromJson all properties", () => {
                 }
             }
         },
-        labels: {
-            "A1": "Label1,Label2",
-            "B2": "Label3"
-        },
+        labels: [
+            {
+                "label": "Label1",
+                "reference": "A1"
+            },
+            {
+                "label": "Label2",
+                "reference": "A1"
+            },
+            {
+                "label": "Label3",
+                "reference": "B2"
+            }
+        ],
         maxColumnWidths: {
             "A": 100
         },
@@ -544,7 +623,7 @@ test("fromJson all properties", () => {
 
 test("equals different cells false", () => {
     const c = cells();
-    const l = cellToLabels();
+    const l = labels();
     const mcw = maxColumnWidths();
     const mrh = maxRowHeights();
     const w = window();
@@ -565,23 +644,23 @@ test("equals different cells false", () => {
     ).toBeFalse();
 });
 
-test("equals different cellToLabels false", () => {
+test("equals different labels false", () => {
     const c = cells();
-    const l = cellToLabels();
+    const l = labels();
     const mcw = maxColumnWidths();
     const mrh = maxRowHeights();
     const w = window();
 
     expect(new SpreadsheetDelta(c, l, mcw, mrh, w)
         .equals(
-            new SpreadsheetDelta(c, ImmutableMap.EMPTY, mcw, mrh, w)
+            new SpreadsheetDelta(c, [], mcw, mrh, w)
         )
     ).toBeFalse();
 });
 
 test("equals different maxColumnWidths false", () => {
     const c = cells();
-    const l = cellToLabels();
+    const l = labels();
     const mcw = maxColumnWidths();
     const mrh = maxRowHeights();
     const w = window();
@@ -595,7 +674,7 @@ test("equals different maxColumnWidths false", () => {
 
 test("equals different maxRowHeights false", () => {
     const c = cells();
-    const l = cellToLabels();
+    const l = labels();
     const mcw = maxColumnWidths();
     const mrh = maxRowHeights();
     const w = window();
@@ -609,7 +688,7 @@ test("equals different maxRowHeights false", () => {
 
 test("equals different window false", () => {
     const c = cells();
-    const l = cellToLabels();
+    const l = labels();
     const mcw = maxColumnWidths();
     const mrh = maxRowHeights();
     const w = window();
@@ -628,9 +707,9 @@ test("equals equivalent true", () => {
 
 // helpers..............................................................................................................
 
-function check(delta, cells, cellToLabels, maxColumnWidths, maxRowHeights, window, json) {
+function check(delta, cells, labels, maxColumnWidths, maxRowHeights, window, json) {
     expect(delta.cells()).toStrictEqual(cells);
-    expect(delta.cellToLabels()).toStrictEqual(cellToLabels);
+    expect(delta.labels()).toStrictEqual(labels);
     expect(delta.maxColumnWidths()).toStrictEqual(maxColumnWidths);
     expect(delta.maxRowHeights()).toStrictEqual(maxRowHeights);
     expect(delta.window()).toStrictEqual(window);
