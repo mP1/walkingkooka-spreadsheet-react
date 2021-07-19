@@ -261,7 +261,7 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetHistoryAwareSta
             cellOrLabel,
             new SpreadsheetDelta(
                 [cell],
-                ImmutableMap.EMPTY,
+                [],
                 ImmutableMap.EMPTY,
                 ImmutableMap.EMPTY,
                 []
