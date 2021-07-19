@@ -77,7 +77,7 @@ export default class SpreadsheetLabelName extends SpreadsheetCellReferenceOrLabe
      * Within a similarities this represents a label which does not exist and should display the CREATE and not EDIT
      * button.
      */
-    toSpreadsheetNavigateWidgetOption() {
+    toSpreadsheetSelectWidgetOption() {
         return {
             text: this.value(),
             gotoCellOrLabel: null,

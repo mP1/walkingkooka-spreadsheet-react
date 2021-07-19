@@ -52,21 +52,21 @@ export default class SpreadsheetExpressionReferenceSimilarities extends SystemOb
     }
 
     /**
-     * Creates an array of options for rendering by {@link SpreadsheetNavigateModalWidget}.
+     * Creates an array of options for rendering by {@link SpreadsheetSelectModalWidget}.
      */
-    toSpreadsheetNavigateWidgetOptions(query) {
+    toSpreadsheetSelectWidgetOptions(query) {
         Preconditions.requireText(query, "query");
 
         const options = [];
 
         const cellReference = this.cellReference();
-        cellReference && options.push(cellReference.toSpreadsheetNavigateWidgetOption());
+        cellReference && options.push(cellReference.toSpreadsheetSelectWidgetOption());
 
         const label = this.label();
-        label && options.push(label.toSpreadsheetNavigateWidgetOption());
+        label && options.push(label.toSpreadsheetSelectWidgetOption());
 
         this.labelMappings()
-            .forEach(mapping => options.push(mapping.toSpreadsheetNavigateWidgetOption()));
+            .forEach(mapping => options.push(mapping.toSpreadsheetSelectWidgetOption()));
 
         return options;
     }

@@ -21,9 +21,9 @@ import SpreadsheetMetadata from "./meta/SpreadsheetMetadata.js";
 import SpreadsheetMessenger from "./message/SpreadsheetMessenger.js";
 import SpreadsheetMessengerCrud from "./message/SpreadsheetMessengerCrud.js";
 import SpreadsheetNameWidget from "./SpreadsheetNameWidget.js";
-import SpreadsheetNavigateAutocompleteWidget from "./reference/SpreadsheetNavigateAutocompleteWidget.js";
-import SpreadsheetNavigateLinkWidget from "./reference/SpreadsheetNavigateLinkWidget.js";
 import SpreadsheetNotification from "./notification/SpreadsheetNotification.js";
+import SpreadsheetSelectAutocompleteWidget from "./reference/SpreadsheetSelectAutocompleteWidget.js";
+import SpreadsheetSelectLinkWidget from "./reference/SpreadsheetSelectLinkWidget.js";
 import SpreadsheetSettingsWidget from "./settings/SpreadsheetSettingsWidget.js";
 import SpreadsheetViewportWidget from "./SpreadsheetViewportWidget.js";
 import WindowResizer from "../widget/WindowResizer.js";
@@ -276,11 +276,11 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
 
         return (
             <WindowResizer dimensions={this.onWindowResized.bind(this)}>
-                <SpreadsheetNavigateAutocompleteWidget key="navigateAutocompleteWidget"
-                                                       history={history}
-                                                       getSimilarities={this.similaritiesGet.bind(this)}
-                                                       notificationShow={notificationShow}
-                                                       showError={showError}
+                <SpreadsheetSelectAutocompleteWidget key="navigateAutocompleteWidget"
+                                                     history={history}
+                                                     getSimilarities={this.similaritiesGet.bind(this)}
+                                                     notificationShow={notificationShow}
+                                                     showError={showError}
                 />
                 <SpreadsheetLabelWidget key="labelWidget"
                                         history={history}
@@ -300,9 +300,9 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
                                                showError={showError}
                         />
                     </SpreadsheetAppBar>
-                    <SpreadsheetNavigateLinkWidget key="SpreadsheetNavigateLinkWidget"
-                                                   history={history}
-                                                   showError={showError}
+                    <SpreadsheetSelectLinkWidget key="SpreadsheetSelectLinkWidget"
+                                                 history={history}
+                                                 showError={showError}
                     />
                     <SpreadsheetFormulaWidget ref={this.formula}
                                               key={"spreadsheetFormula"}

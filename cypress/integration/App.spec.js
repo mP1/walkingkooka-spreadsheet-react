@@ -883,7 +883,7 @@ context(
                 .should('match', /.*\/.*\/cell\/B2/);
         });
 
-        it("Cell click and navigate using arrow keys", () => {
+        it("Cell click and select using arrow keys", () => {
             spreadsheetEmpty();
 
             cellClick(C3);
@@ -1048,143 +1048,143 @@ context(
             cellFormattedTextCheck("T20", "234.");
         });
 
-        // navigate.....................................................................................................
+        // select.....................................................................................................
 
-        it("Navigate using hash initial appearance", () => {
+        it("Select using hash initial appearance", () => {
             spreadsheetEmpty();
-            navigateHistoryHash();
+            selectHistoryHash();
 
-            navigateDialogTitle()
-                .contains("Navigate or Edit");
+            selectDialogTitle()
+                .contains("Select");
 
-            navigateAutocompleteTextField()
+            selectAutocompleteTextField()
                 .should("have.value", "");
 
-            navigateAutocompleteTextFieldHelper()
+            selectAutocompleteTextFieldHelper()
                 .should("not.exist");
 
-            navigateGotoCellOrLabelButton(true);
-            navigateCreateLinkButton(true);
-            navigateEditLinkButton(true);
+            selectGotoCellOrLabelButton(true);
+            selectCreateLinkButton(true);
+            selectEditLinkButton(true);
         });
 
-        it("Navigate auto complete text field has focus", () => {
+        it("Select auto complete text field has focus", () => {
             spreadsheetEmpty();
-            navigateHistoryHash();
+            selectHistoryHash();
 
-            navigateDialogTitle()
-                .contains("Navigate or Edit");
+            selectDialogTitle()
+                .contains("Select");
 
-            navigateAutocompleteTextField()
+            selectAutocompleteTextField()
                 .should('have.focus')
                 .should("have.value", "");
         });
 
-        it("Navigate auto complete tabbing", () => {
+        it("Select auto complete tabbing", () => {
             spreadsheetEmpty();
-            navigateHistoryHash();
+            selectHistoryHash();
 
-            navigateAutocompleteTextField()
+            selectAutocompleteTextField()
                 .should('have.focus')
                 .type("Hello")
                 .wait(50)
                 .tab();
 
-            navigateCreateLinkButton(false)
+            selectCreateLinkButton(false)
                 .should("have.focus")
                 .tab();
 
             // two keyboard tabs required to tab from CREATE-LINK to CLOSE BUTTON, 1st tab gives focus to dialog box.
 
-            // navigateDialogClose()
+            // selectDialogClose()
             //     .should("have.focus")
             //     .tab());
         });
 
-        it("Navigate and close", () => {
+        it("Select and close", () => {
             spreadsheetEmpty();
-            navigateHistoryHash();
+            selectHistoryHash();
 
-            navigateDialogClose()
+            selectDialogClose()
                 .click();
 
             hash()
                 .should('match', /.*\/Untitled/);
 
-            navigateDialog()
+            selectDialog()
                 .should("not.exist");
         });
 
-        it("Navigate enter ESC closes", () => {
+        it("Select enter ESC closes", () => {
             spreadsheetEmpty();
-            navigateHistoryHash();
+            selectHistoryHash();
 
-            navigateAutocompleteTextField()
+            selectAutocompleteTextField()
                 .type("{Esc}");
 
             hash()
                 .should('match', /.*\/Untitled/);
 
-            navigateDialog()
+            selectDialog()
                 .should("not.exist");
         });
 
-        it("Navigate enter invalid cell or label", () => {
+        it("Select enter invalid cell or label", () => {
             spreadsheetEmpty();
-            navigateHistoryHash();
+            selectHistoryHash();
 
-            navigateAutocompleteTextField()
+            selectAutocompleteTextField()
                 .type("!invalid");
 
-            navigateAutocompleteTextFieldHelper()
+            selectAutocompleteTextFieldHelper()
                 .should("have.text", "Invalid character '!' at 0");
         });
 
-        it("Navigate enter cell and ENTER and click GOTO", () => {
+        it("Select enter cell and ENTER and click GOTO", () => {
             spreadsheetEmpty();
-            navigateHistoryHash();
+            selectHistoryHash();
 
-            navigateAutocompleteTextField()
+            selectAutocompleteTextField()
                 .type("B2{enter}");
 
-            navigateAutocompleteTextFieldHelper()
+            selectAutocompleteTextFieldHelper()
                 .should("not.exist");
 
-            navigateAutocompletePopup()
+            selectAutocompletePopup()
                 .should("not.exist");
 
-            navigateCreateLinkButton(true);
-            navigateEditLinkButton(true);
-            navigateGotoCellOrLabelButton(false)
+            selectCreateLinkButton(true);
+            selectEditLinkButton(true);
+            selectGotoCellOrLabelButton(false)
                 .click();
 
             hash()
                 .should('match', /.*\/Untitled\/cell\/B2/);
         });
 
-        it("Navigate enter unknown label and ENTER and click CREATE", () => {
+        it("Select enter unknown label and ENTER and click CREATE", () => {
             spreadsheetEmpty();
-            navigateHistoryHash();
+            selectHistoryHash();
 
-            navigateAutocompleteTextField()
+            selectAutocompleteTextField()
                 .type("Label123{enter}");
 
-            navigateAutocompleteTextFieldHelper()
+            selectAutocompleteTextFieldHelper()
                 .should("not.exist");
 
-            navigateAutocompletePopup()
+            selectAutocompletePopup()
                 .should("not.exist");
 
-            navigateGotoCellOrLabelButton(true);
-            navigateEditLinkButton(true);
-            navigateCreateLinkButton(false)
+            selectGotoCellOrLabelButton(true);
+            selectEditLinkButton(true);
+            selectCreateLinkButton(false)
                 .click();
 
             hash()
                 .should('match', /.*\/Untitled\/label\/Label123/);
         });
 
-        it("Navigate enter known label and ENTER and click EDIT", () => {
+        it("Select enter known label and ENTER and click EDIT", () => {
             spreadsheetEmpty();
             hashLabel();
 
@@ -1200,61 +1200,61 @@ context(
             labelMappingLabelCloseButton()
                 .click();
 
-            navigateHistoryHash();
+            selectHistoryHash();
 
             hash()
-                .should('match', /.*\/Untitled\/navigate/);
+                .should('match', /.*\/Untitled\/select/);
 
-            navigateAutocompleteTextField()
+            selectAutocompleteTextField()
                 .type("Label123{enter}");
 
-            navigateAutocompleteTextFieldHelper()
+            selectAutocompleteTextFieldHelper()
                 .should("not.exist");
 
-            navigateAutocompletePopup()
+            selectAutocompletePopup()
                 .should("not.exist");
 
-            navigateGotoCellOrLabelButton(false);
-            navigateCreateLinkButton(true);
-            navigateEditLinkButton(false)
+            selectGotoCellOrLabelButton(false);
+            selectCreateLinkButton(true);
+            selectEditLinkButton(false)
                 .click();
 
             hash()
                 .should('match', /.*\/Untitled\/label\/Label123/);
         });
 
-        it("Navigate enter cell, select from dropdown ENTER and click EDIT", () => {
+        it("Select enter cell, select from dropdown ENTER and click EDIT", () => {
             spreadsheetEmpty();
-            navigateHistoryHash();
+            selectHistoryHash();
 
             hash()
-                .should('match', /.*\/Untitled\/navigate/);
+                .should('match', /.*\/Untitled\/select/);
 
-            navigateAutocompleteTextField()
+            selectAutocompleteTextField()
                 .type("B2");
 
-            navigateAutocompleteTextFieldHelper()
+            selectAutocompleteTextFieldHelper()
                 .should("not.exist");
 
-            navigateAutocompletePopup()
+            selectAutocompletePopup()
                 .should("exist");
 
-            navigateAutocompletePopupOption(0)
+            selectAutocompletePopupOption(0)
                 .should("have.text", "B2");
 
-            navigateAutocompleteTextField()
+            selectAutocompleteTextField()
                 .type("{downarrow}{enter}");
 
-            navigateCreateLinkButton(true);
-            navigateEditLinkButton(true);
-            navigateGotoCellOrLabelButton(false)
+            selectCreateLinkButton(true);
+            selectEditLinkButton(true);
+            selectGotoCellOrLabelButton(false)
                 .click();
 
             hash()
                 .should('match', /.*\/Untitled\/cell\/B2/);
         });
 
-        it("Navigate enter known label ENTER and click EDIT", () => {
+        it("Select enter known label ENTER and click EDIT", () => {
             spreadsheetEmpty();
             hashLabel();
 
@@ -1267,30 +1267,30 @@ context(
             labelMappingLabelCloseButton()
                 .click();
 
-            navigateHistoryHash();
+            selectHistoryHash();
 
             hash()
-                .should('match', /.*\/Untitled\/navigate/);
+                .should('match', /.*\/Untitled\/select/);
 
-            navigateAutocompleteTextField()
+            selectAutocompleteTextField()
                 .type("Label123{enter}");
 
-            navigateAutocompleteTextFieldHelper()
+            selectAutocompleteTextFieldHelper()
                 .should("not.exist");
 
-            navigateAutocompletePopup()
+            selectAutocompletePopup()
                 .should("not.exist");
 
-            navigateGotoCellOrLabelButton(false);
-            navigateCreateLinkButton(true);
-            navigateEditLinkButton(false)
+            selectGotoCellOrLabelButton(false);
+            selectCreateLinkButton(true);
+            selectEditLinkButton(false)
                 .click();
 
             hash()
                 .should('match', /.*\/Untitled\/label\/Label123/);
         });
 
-        it("Navigate enter existing label, select from dropdown ENTER and click GOTO", () => {
+        it("Select enter existing label, select from dropdown ENTER and click GOTO", () => {
             spreadsheetEmpty();
             hashLabel();
 
@@ -1303,120 +1303,120 @@ context(
             labelMappingLabelCloseButton()
                 .click();
 
-            navigateHistoryHash();
+            selectHistoryHash();
 
             hash()
-                .should('match', /.*\/Untitled\/navigate/);
+                .should('match', /.*\/Untitled\/select/);
 
-            navigateAutocompleteTextField()
+            selectAutocompleteTextField()
                 .type("Label");
 
-            navigateAutocompleteTextFieldHelper()
+            selectAutocompleteTextFieldHelper()
                 .should("not.exist");
 
-            navigateAutocompletePopup()
+            selectAutocompletePopup()
                 .should("exist");
 
-            navigateAutocompletePopupOption(0)
+            selectAutocompletePopupOption(0)
                 .should("have.text", "Label123");
 
-            navigateAutocompleteTextField()
+            selectAutocompleteTextField()
                 .type("{downarrow}{enter}");
 
-            navigateCreateLinkButton(true);
-            navigateEditLinkButton(false);
-            navigateGotoCellOrLabelButton(false)
+            selectCreateLinkButton(true);
+            selectEditLinkButton(false);
+            selectGotoCellOrLabelButton(false)
                 .click();
 
             hash()
                 .should('match', /.*\/Untitled\/cell\/B2/);
         });
 
-        it("Navigate link after cell click", () => {
+        it("Select link after cell click", () => {
             spreadsheetEmpty();
 
             cellClick(A1);
 
-            navigateLink()
+            selectLink()
                 .should('have.text', "A1");
 
             cellClick(A2);
 
-            navigateLink()
+            selectLink()
                 .should('have.text', "A2");
         });
 
-        it("Navigate link click after cell click", () => {
+        it("Select link click after cell click", () => {
             spreadsheetEmpty();
 
             cellClick(B1);
 
-            navigateLink()
+            selectLink()
                 .should('have.text', "B1")
                 .click();
 
             hash()
-                .should('match', /.*\/Untitled\/cell\/B1\/navigate/);
+                .should('match', /.*\/Untitled\/cell\/B1\/select/);
 
-            navigateAutocompleteTextField()
+            selectAutocompleteTextField()
                 .should("have.value", "")
                 .type("B2{enter}");
 
-            navigateGotoCellOrLabelButton(false)
+            selectGotoCellOrLabelButton(false)
                 .click();
 
             hash()
                 .should('match', /.*\/Untitled\/cell\/B2/);
         });
 
-        function navigateHistoryHash() {
-            hashAppend("/navigate");
+        function selectHistoryHash() {
+            hashAppend("/select");
         }
 
-        function navigateLink() {
-            return cy.get("#navigate-Link");
+        function selectLink() {
+            return cy.get("#select-Link");
         }
 
-        function navigateDialog() {
-            return cy.get("#navigate-Dialog");
+        function selectDialog() {
+            return cy.get("#select-Dialog");
         }
 
-        function navigateDialogTitle() {
-            return cy.get("#navigate-DialogTitle");
+        function selectDialogTitle() {
+            return cy.get("#select-DialogTitle");
         }
 
-        function navigateDialogClose() {
-            return cy.get("#navigate-Dialog-close-Button");
+        function selectDialogClose() {
+            return cy.get("#select-Dialog-close-Button");
         }
 
-        function navigateAutocompleteTextField() {
-            return cy.get("#navigate-Autocomplete-TextField");
+        function selectAutocompleteTextField() {
+            return cy.get("#select-Autocomplete-TextField");
         }
 
-        function navigateAutocompleteTextFieldHelper() {
-            return cy.get("#navigate-Autocomplete-TextField-helper-text");
+        function selectAutocompleteTextFieldHelper() {
+            return cy.get("#select-Autocomplete-TextField-helper-text");
         }
 
-        function navigateAutocompletePopup() {
-            return cy.get("#navigate-Autocomplete-TextField-popup");
+        function selectAutocompletePopup() {
+            return cy.get("#select-Autocomplete-TextField-popup");
         }
 
-        function navigateAutocompletePopupOption(nth) {
-            return cy.get("#navigate-Autocomplete-TextField-option-" + nth);
+        function selectAutocompletePopupOption(nth) {
+            return cy.get("#select-Autocomplete-TextField-option-" + nth);
         }
 
-        function navigateGotoCellOrLabelButton(disabled) {
-            return cy.get("#navigate-gotoCellOrLabel-Button")
+        function selectGotoCellOrLabelButton(disabled) {
+            return cy.get("#select-gotoCellOrLabel-Button")
                 .should("be." + (disabled ? "disabled" : "enabled"));
         }
 
-        function navigateCreateLinkButton(disabled) {
-            return cy.get("#navigate-create-link-Button")
+        function selectCreateLinkButton(disabled) {
+            return cy.get("#select-create-link-Button")
                 .should("be." + (disabled ? "disabled" : "enabled"));
         }
 
-        function navigateEditLinkButton(disabled) {
-            return cy.get("#navigate-edit-link-Button")
+        function selectEditLinkButton(disabled) {
+            return cy.get("#select-edit-link-Button")
                 .should("be." + (disabled ? "disabled" : "enabled"));
         }
 

@@ -11,7 +11,7 @@ import SpreadsheetHistoryAwareStateWidget from "../history/SpreadsheetHistoryAwa
  *     <li>cell: the cell displayed as text by the link</li>
  * </ol>
  */
-export default class SpreadsheetNavigateLinkWidget extends SpreadsheetHistoryAwareStateWidget {
+export default class SpreadsheetSelectLinkWidget extends SpreadsheetHistoryAwareStateWidget {
 
     init() {
     }
@@ -24,7 +24,7 @@ export default class SpreadsheetNavigateLinkWidget extends SpreadsheetHistoryAwa
      * Recreate the target of the link.
      */
     stateFromHistoryTokens(tokens) {
-        tokens[SpreadsheetHistoryHash.NAVIGATE] = true;
+        tokens[SpreadsheetHistoryHash.SELECT] = true;
 
         return {
             target: '#' + this.props.history.mergeAndStringify(tokens),
@@ -39,7 +39,7 @@ export default class SpreadsheetNavigateLinkWidget extends SpreadsheetHistoryAwa
     render() {
         const {cell, target} = this.state;
 
-        return <Link id="navigate-Link"
+        return <Link id="select-Link"
                      disabled={!cell}
                      href={target}
                      style={{
@@ -54,7 +54,7 @@ export default class SpreadsheetNavigateLinkWidget extends SpreadsheetHistoryAwa
     }
 }
 
-SpreadsheetNavigateLinkWidget.propTypes = {
+SpreadsheetSelectLinkWidget.propTypes = {
     history: PropTypes.instanceOf(SpreadsheetHistoryHash).isRequired,
     showError: PropTypes.func.isRequired,
 }

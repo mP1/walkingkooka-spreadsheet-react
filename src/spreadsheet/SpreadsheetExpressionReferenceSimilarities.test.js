@@ -173,16 +173,16 @@ test("from json empty label-mappings", () => {
     );
 });
 
-// toSpreadsheetNavigateWidgetOptions...................................................................................
+// toSpreadsheetSelectWidgetOptions...................................................................................
 
-test("toSpreadsheetNavigateWidgetOptions null fails", () => {
-    expect(() => similarity().toSpreadsheetNavigateWidgetOptions(null)).toThrow("Missing query");
+test("toSpreadsheetSelectWidgetOptions null fails", () => {
+    expect(() => similarity().toSpreadsheetSelectWidgetOptions(null)).toThrow("Missing query");
 });
 
-test("toSpreadsheetNavigateWidgetOptions query=cell-reference", () => {
+test("toSpreadsheetSelectWidgetOptions query=cell-reference", () => {
     const r = cellReference();
 
-    expect(new SpreadsheetExpressionReferenceSimilarities(r, null, []).toSpreadsheetNavigateWidgetOptions(CELL_REFERENCE_TEXT))
+    expect(new SpreadsheetExpressionReferenceSimilarities(r, null, []).toSpreadsheetSelectWidgetOptions(CELL_REFERENCE_TEXT))
         .toStrictEqual([
             {
                 text: r.toString(),
@@ -193,11 +193,11 @@ test("toSpreadsheetNavigateWidgetOptions query=cell-reference", () => {
         ]);
 });
 
-test("toSpreadsheetNavigateWidgetOptions query=cell-reference and mappings", () => {
+test("toSpreadsheetSelectWidgetOptions query=cell-reference and mappings", () => {
     const r = SpreadsheetCellReference.parse("Z99");
     const m = labelMapping1();
 
-    expect(new SpreadsheetExpressionReferenceSimilarities(r, null, [m]).toSpreadsheetNavigateWidgetOptions(r.toString()))
+    expect(new SpreadsheetExpressionReferenceSimilarities(r, null, [m]).toSpreadsheetSelectWidgetOptions(r.toString()))
         .toStrictEqual([
             {
                 text: r.toString(),
@@ -214,11 +214,11 @@ test("toSpreadsheetNavigateWidgetOptions query=cell-reference and mappings", () 
         ]);
 });
 
-test("toSpreadsheetNavigateWidgetOptions query=create label", () => {
+test("toSpreadsheetSelectWidgetOptions query=create label", () => {
     const createLabel = SpreadsheetLabelName.parse("Label999");
 
     expect(new SpreadsheetExpressionReferenceSimilarities(null, createLabel, [])
-        .toSpreadsheetNavigateWidgetOptions(createLabel.toString()))
+        .toSpreadsheetSelectWidgetOptions(createLabel.toString()))
         .toStrictEqual([
             {
                 text: createLabel.toString(),
@@ -229,11 +229,11 @@ test("toSpreadsheetNavigateWidgetOptions query=create label", () => {
         ]);
 });
 
-test("toSpreadsheetNavigateWidgetOptions label without mapping", () => {
+test("toSpreadsheetSelectWidgetOptions label without mapping", () => {
     const createLabel = SpreadsheetLabelName.parse("Label999");
 
     expect(new SpreadsheetExpressionReferenceSimilarities(null, createLabel, [])
-        .toSpreadsheetNavigateWidgetOptions(createLabel.toString()))
+        .toSpreadsheetSelectWidgetOptions(createLabel.toString()))
         .toStrictEqual([
             {
                 text: createLabel.toString(),
@@ -244,10 +244,10 @@ test("toSpreadsheetNavigateWidgetOptions label without mapping", () => {
         ]);
 });
 
-test("toSpreadsheetNavigateWidgetOptions label with mapping", () => {
+test("toSpreadsheetSelectWidgetOptions label with mapping", () => {
     const m = labelMapping1();
 
-    expect(new SpreadsheetExpressionReferenceSimilarities(null, null, [m]).toSpreadsheetNavigateWidgetOptions(m.label().toString()))
+    expect(new SpreadsheetExpressionReferenceSimilarities(null, null, [m]).toSpreadsheetSelectWidgetOptions(m.label().toString()))
         .toStrictEqual([
             {
                 text: m.label().toString(),
@@ -258,12 +258,12 @@ test("toSpreadsheetNavigateWidgetOptions label with mapping", () => {
         ]);
 });
 
-test("toSpreadsheetNavigateWidgetOptions label without mapping and other mappings", () => {
+test("toSpreadsheetSelectWidgetOptions label without mapping and other mappings", () => {
     const l1 = label1();
     const l2 = label2();
     const r = cellReference();
 
-    expect(new SpreadsheetExpressionReferenceSimilarities(null, label1(), [label2().mapping(r)]).toSpreadsheetNavigateWidgetOptions(l1.toString()))
+    expect(new SpreadsheetExpressionReferenceSimilarities(null, label1(), [label2().mapping(r)]).toSpreadsheetSelectWidgetOptions(l1.toString()))
         .toStrictEqual([
             {
                 text: l1.toString(),

@@ -46,7 +46,7 @@ export default class SpreadsheetHistoryHash {
     static CELL = "cell";
     static CELL_FORMULA = "formula";
     static LABEL = "label";
-    static NAVIGATE = "navigate";
+    static SELECT = "select";
     static SETTINGS = "settings";
     static SETTINGS_SECTION = "settings-section";
 
@@ -121,8 +121,8 @@ export default class SpreadsheetHistoryHash {
                             }
                             tokens2[SpreadsheetHistoryHash.LABEL] = label;
                             break;
-                        case SpreadsheetHistoryHash.NAVIGATE:
-                            tokens2[SpreadsheetHistoryHash.NAVIGATE] = true;
+                        case SpreadsheetHistoryHash.SELECT:
+                            tokens2[SpreadsheetHistoryHash.SELECT] = true;
                             break;
                         case SpreadsheetHistoryHash.SETTINGS:
                             tokens2[SpreadsheetHistoryHash.SETTINGS] = true;
@@ -160,7 +160,7 @@ export default class SpreadsheetHistoryHash {
         var cell = tokens[SpreadsheetHistoryHash.CELL];
         var formula = tokens[SpreadsheetHistoryHash.CELL_FORMULA];
         var label = tokens[SpreadsheetHistoryHash.LABEL];
-        var navigate = tokens[SpreadsheetHistoryHash.NAVIGATE];
+        var select = tokens[SpreadsheetHistoryHash.SELECT];
         var settings = tokens[SpreadsheetHistoryHash.SETTINGS];
         var settingsSection = tokens[SpreadsheetHistoryHash.SETTINGS_SECTION];
 
@@ -171,18 +171,18 @@ export default class SpreadsheetHistoryHash {
 
             if(spreadsheetName){
                 verified[SpreadsheetHistoryHash.SPREADSHEET_NAME] = spreadsheetName;
-                if(nameEdit && (cell || label || navigate || settings)){
+                if(nameEdit && (cell || label || select || settings)){
                     nameEdit = false;
                     cell = false;
                     label = false;
-                    navigate = false;
+                    select = false;
                 }
                 if(nameEdit){
                     cell = false;
                     label = false;
-                    navigate = false;
+                    select = false;
                 }
-                if(cell || label || navigate || settings){
+                if(cell || label || select || settings){
                     nameEdit = false;
                 }
                 if(formula && !cell){
@@ -200,8 +200,8 @@ export default class SpreadsheetHistoryHash {
                 if(label instanceof SpreadsheetLabelName){
                     verified[SpreadsheetHistoryHash.LABEL] = label;
                 }
-                if(navigate){
-                    verified[SpreadsheetHistoryHash.NAVIGATE] = navigate;
+                if(select){
+                    verified[SpreadsheetHistoryHash.SELECT] = select;
                 }
                 if(settings){
                     verified[SpreadsheetHistoryHash.SETTINGS] = settings;
@@ -230,7 +230,7 @@ export default class SpreadsheetHistoryHash {
         var cell = current[SpreadsheetHistoryHash.CELL];
         var formula = current[SpreadsheetHistoryHash.CELL_FORMULA];
         var label = current[SpreadsheetHistoryHash.LABEL];
-        var navigate = current[SpreadsheetHistoryHash.NAVIGATE];
+        var select = current[SpreadsheetHistoryHash.SELECT];
         var settings = current[SpreadsheetHistoryHash.SETTINGS];
         var settingsSection = current[SpreadsheetHistoryHash.SETTINGS_SECTION];
 
@@ -249,7 +249,7 @@ export default class SpreadsheetHistoryHash {
                 cell = null;
                 formula = null;
                 label = null;
-                navigate = null;
+                select = null;
                 settings = null;
             }
         }
@@ -276,9 +276,9 @@ export default class SpreadsheetHistoryHash {
             }
         }
 
-        if(delta.hasOwnProperty(SpreadsheetHistoryHash.NAVIGATE)){
-            navigate = delta[SpreadsheetHistoryHash.NAVIGATE];
-            if(navigate){
+        if(delta.hasOwnProperty(SpreadsheetHistoryHash.SELECT)){
+            select = delta[SpreadsheetHistoryHash.SELECT];
+            if(select){
                 nameEdit = false;
             }
         }
@@ -302,7 +302,7 @@ export default class SpreadsheetHistoryHash {
 
                 valid = true;
                 if(nameEdit){
-                    if(cell || label || navigate || settings){
+                    if(cell || label || select || settings){
                         valid = false;
                     }
                 }
@@ -326,8 +326,8 @@ export default class SpreadsheetHistoryHash {
                 merged[SpreadsheetHistoryHash.LABEL] = label;
             }
 
-            if(navigate){
-                merged[SpreadsheetHistoryHash.NAVIGATE] = navigate;
+            if(select){
+                merged[SpreadsheetHistoryHash.SELECT] = select;
             }
 
             if(!!settings){
@@ -352,7 +352,7 @@ export default class SpreadsheetHistoryHash {
         var cell = tokens[SpreadsheetHistoryHash.CELL];
         var formula = tokens[SpreadsheetHistoryHash.CELL_FORMULA];
         var label = tokens[SpreadsheetHistoryHash.LABEL];
-        var navigate = tokens[SpreadsheetHistoryHash.NAVIGATE];
+        var select = tokens[SpreadsheetHistoryHash.SELECT];
         var settings = tokens[SpreadsheetHistoryHash.SETTINGS];
         var settingsSection = tokens[SpreadsheetHistoryHash.SETTINGS_SECTION];
 
@@ -367,7 +367,7 @@ export default class SpreadsheetHistoryHash {
 
                 valid = true;
                 if(nameEdit){
-                    if(cell || label || navigate || settings){
+                    if(cell || label || select || settings){
                         valid = false;
                     }
                 }
@@ -380,7 +380,7 @@ export default class SpreadsheetHistoryHash {
                 cell = null;
                 formula = null;
                 label = null;
-                navigate = null;
+                select = null;
             }
 
             if(cell){
@@ -395,8 +395,8 @@ export default class SpreadsheetHistoryHash {
                 hash = hash + "/" + SpreadsheetHistoryHash.LABEL + "/" + label;
             }
 
-            if(navigate){
-                hash = hash + "/" + SpreadsheetHistoryHash.NAVIGATE;
+            if(select){
+                hash = hash + "/" + SpreadsheetHistoryHash.SELECT;
             }
 
             if(!!settings){
@@ -475,7 +475,7 @@ export default class SpreadsheetHistoryHash {
 
     /**
      * Accepts some new history tokens and combines them with the current. This may result in some feature being cancelled,
-     * eg editing the spreadsheet name turns off cell, label, navigate and settings.
+     * eg editing the spreadsheet name turns off cell, label, select and settings.
      */
     mergeAndPush(tokens) {
         return this.push(SpreadsheetHistoryHash.merge(this.tokens(), tokens));
