@@ -194,19 +194,19 @@ function testAndCheck(label, range, cellReference, expected) {
     });
 }
 
-testAndCheck("left", "B2:D4", "B1", false);
-testAndCheck("right", "B2:D4", "B5", false);
-testAndCheck("above", "B2:D4", "A3", false);
-testAndCheck("below", "B2:D4", "E3", false);
+testAndCheck("left", "B2:D4", "A1", false);
+testAndCheck("right", "B2:D4", "E5", false);
+testAndCheck("above", "B2:D4", "C1", false);
+testAndCheck("below", "B2:D4", "C5", false);
 
 testAndCheck("topLeft", "B2:D4", "B2", true);
-testAndCheck("topEdge", "B2:D4", "B3", true);
-testAndCheck("topRight", "B2:D4", "B4", true);
+testAndCheck("topEdge", "B2:D4", "C2", true);
+testAndCheck("topRight", "B2:D4", "D2", true);
 
 testAndCheck("center", "B2:D4", "C3", true);
 
-testAndCheck("bottomLeft", "B2:D4", "D2", true);
-testAndCheck("bottomEdge", "B2:D4", "D3", true);
+testAndCheck("bottomLeft", "B2:D4", "B4", true);
+testAndCheck("bottomEdge", "B2:D4", "C4", true);
 testAndCheck("bottomRight", "B2:D4", "D4", true);
 
 // equals...............................................................................................................
