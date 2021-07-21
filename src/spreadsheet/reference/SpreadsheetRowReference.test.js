@@ -1,8 +1,8 @@
+import SpreadsheetCellReference from "./SpreadsheetCellReference.js";
 import SpreadsheetColumnReference from "./SpreadsheetColumnReference";
 import SpreadsheetReferenceKind from "./SpreadsheetReferenceKind";
 import SpreadsheetRowReference from "./SpreadsheetRowReference";
 import systemObjectTesting from "../../SystemObjectTesting.js";
-import SpreadsheetCellReference from "./SpreadsheetCellReference.js";
 
 systemObjectTesting(
     new SpreadsheetRowReference(0, SpreadsheetReferenceKind.ABSOLUTE),
@@ -233,6 +233,18 @@ testAndCheck("2", "B1", false);
 testAndCheck("3", "$B3", true);
 testAndCheck("4", "C$4", true);
 testAndCheck("5", "Z99", false);
+
+// test SpreadsheetCellReference........................................................................................
+
+function testColumnAndCheck(row, columnReference, expected) {
+    test("testColumn " + row + " " + columnReference, () => {
+        expect(SpreadsheetRowReference.parse(row).testColumn(SpreadsheetColumnReference.parse(columnReference))).toStrictEqual(expected);
+    });
+}
+
+testColumnAndCheck("2", "B", false);
+testColumnAndCheck("$3", "C", false);
+testColumnAndCheck("$4", "$D", false);
 
 // compareTo..............................................................................................................
 

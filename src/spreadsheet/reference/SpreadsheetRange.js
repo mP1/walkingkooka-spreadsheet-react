@@ -3,6 +3,7 @@ import Preconditions from "../../Preconditions.js";
 import SpreadsheetCellReference from "./SpreadsheetCellReference";
 import SpreadsheetExpressionReference from "./SpreadsheetExpressionReference.js";
 import SystemObject from "../../SystemObject.js";
+import SpreadsheetColumnReference from "./SpreadsheetColumnReference.js";
 
 const TYPE_NAME = "spreadsheet-range";
 /**
@@ -93,6 +94,16 @@ export default class SpreadsheetRange extends SpreadsheetExpressionReference {
             column.compareTo(begin.column()) >= 0 &&
             row.compareTo(end.row()) <= 0 &&
             column.compareTo(end.column()) <= 0;
+    }
+
+    testColumn(columnReference) {
+        Preconditions.requireInstance(columnReference, SpreadsheetColumnReference, "columnReference");
+
+        const begin = this.begin();
+        const end = this.end();
+
+        return columnReference.compareTo(begin.column()) >= 0 &&
+            columnReference.compareTo(end.column()) <= 0;
     }
 
     toJson() {

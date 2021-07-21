@@ -200,6 +200,12 @@ export default class SpreadsheetCellReference extends SpreadsheetCellReferenceOr
             this.row().test(cellReference);
     }
 
+    testColumn(columnReference) {
+        Preconditions.requireInstance(columnReference, SpreadsheetColumnReference, "columnReference");
+
+        return this.column().testColumn(columnReference);
+    }
+
     toRelative() {
         return this.setColumn(this.column()
             .setKind(SpreadsheetReferenceKind.RELATIVE))

@@ -1,10 +1,11 @@
 import Character from "../../Character.js";
 import CharSequences from "../../CharSequences.js";
 import Preconditions from "../../Preconditions.js";
+import SpreadsheetCellReference from "./SpreadsheetCellReference.js";
 import SpreadsheetColumnOrRowReference from "./SpreadsheetColumnOrRowReference";
+import SpreadsheetColumnReference from "./SpreadsheetColumnReference.js";
 import SpreadsheetReferenceKind from "./SpreadsheetReferenceKind";
 import SpreadObject from "../../SystemObject.js";
-import SpreadsheetCellReference from "./SpreadsheetCellReference.js";
 
 const TYPE_NAME = "spreadsheet-row-reference";
 
@@ -57,6 +58,12 @@ export default class SpreadsheetRowReference extends SpreadsheetColumnOrRowRefer
         Preconditions.requireInstance(cellReference, SpreadsheetCellReference, "cellReference");
 
         return this.value() === cellReference.row().value();
+    }
+
+    testColumn(columnReference) {
+        Preconditions.requireInstance(columnReference, SpreadsheetColumnReference, "columnReference");
+
+        return false;
     }
 
     viewportId() {

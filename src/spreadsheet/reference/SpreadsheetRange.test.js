@@ -1,4 +1,5 @@
 import SpreadsheetCellReference from "./SpreadsheetCellReference";
+import SpreadsheetColumnReference from "./SpreadsheetColumnReference.js";
 import SpreadsheetRange from "./SpreadsheetRange";
 import systemObjectTesting from "../../SystemObjectTesting.js";
 
@@ -189,7 +190,7 @@ test("test non SpreadCellReference fails", () => {
 });
 
 function testAndCheck(label, range, cellReference, expected) {
-    test(label + " " + range + " " + cellReference, () => {
+    test(label + " " + range + " test " + cellReference, () => {
         expect(SpreadsheetRange.fromJson(range).test(SpreadsheetCellReference.parse(cellReference))).toStrictEqual(expected);
     });
 }
@@ -208,6 +209,28 @@ testAndCheck("center", "B2:D4", "C3", true);
 testAndCheck("bottomLeft", "B2:D4", "B4", true);
 testAndCheck("bottomEdge", "B2:D4", "C4", true);
 testAndCheck("bottomRight", "B2:D4", "D4", true);
+
+// test.................................................................................................................
+
+test("testColumn missing fails", () => {
+    expect(() => SpreadsheetRange.fromJson("B2:C3").testColumn()).toThrow("Missing columnReference");
+});
+
+test("testColumn non SpreadCellReference fails", () => {
+    expect(() => SpreadsheetRange.fromJson("B2:C3").testColumn(123)).toThrow("Expected SpreadsheetColumnReference columnReference got 123");
+});
+
+function testColumnAndCheck(label, range, columnReference, expected) {
+    test(label + " testColumn " + range + " " + columnReference, () => {
+        expect(SpreadsheetRange.fromJson(range).testColumn(SpreadsheetColumnReference.parse(columnReference))).toStrictEqual(expected);
+    });
+}
+
+testColumnAndCheck("left", "B2:D4", "A", false);
+testColumnAndCheck("left edge", "B2:D4", "B", true);
+testColumnAndCheck("center", "B2:D4", "C", true);
+testColumnAndCheck("right edge", "B2:D4", "D", true);
+testColumnAndCheck("right", "B2:D4", "E", false);
 
 // equals...............................................................................................................
 

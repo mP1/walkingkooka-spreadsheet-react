@@ -398,6 +398,18 @@ testAndCheck("A1", "B1", false);
 testAndCheck("B2", "$B2", true);
 testAndCheck("B2", "B$2", true);
 
+// testColumn SpreadsheetCellReference........................................................................................
+
+function testColumnAndCheck(cellReference, columnReference, expected) {
+    test("testColumn " + cellReference + " " + columnReference, () => {
+        expect(SpreadsheetCellReference.parse(cellReference).testColumn(SpreadsheetColumnReference.parse(columnReference))).toStrictEqual(expected);
+    });
+}
+
+testColumnAndCheck("A1", "B", false);
+testColumnAndCheck("B2", "$B", true);
+testColumnAndCheck("$C3", "C", true);
+
 // toRelative............................................................................................................
 
 test("toRelative", () => {
