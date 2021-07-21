@@ -530,12 +530,11 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
         const {columnWidths, dimensions, spreadsheetMetadata} = this.state;
 
         const home = spreadsheetMetadata.getIgnoringDefaults(SpreadsheetMetadata.VIEWPORT_CELL);
-        const cell = spreadsheetMetadata.getIgnoringDefaults(SpreadsheetMetadata.SELECTION);
+        const selection = spreadsheetMetadata.getIgnoringDefaults(SpreadsheetMetadata.SELECTION);
         const defaultStyle = spreadsheetMetadata.effectiveStyle();
 
         const viewportWidth = dimensions.width;
         const defaultColumnWidth = defaultStyle.width().value();
-        const cellColumn = cell && cell.column();
 
         let headers = [];
         headers.push(<TableCell key={"viewport-all"} id={"select-all-cells"} style={headerCell}></TableCell>); // TODO add select all support
@@ -545,7 +544,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
 
         while(x < viewportWidth) {
             headers.push(
-                this.headerCell(column, column.equals(cellColumn))
+                this.headerCell(column, selection && selection.testColumn(column))
             );
 
             x = x + (columnWidths.get(column) || defaultColumnWidth);
@@ -562,7 +561,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
         const {cells, columnWidths, rowHeights, spreadsheetMetadata, dimensions, cellToLabels} = this.state;
 
         const home = spreadsheetMetadata.getIgnoringDefaults(SpreadsheetMetadata.VIEWPORT_CELL);
-        const cell = spreadsheetMetadata.getIgnoringDefaults(SpreadsheetMetadata.SELECTION);
+        const selection = spreadsheetMetadata.getIgnoringDefaults(SpreadsheetMetadata.SELECTION);
         const defaultStyle = spreadsheetMetadata.effectiveStyle();
 
         const defaultColumnWidth = defaultStyle.width().value();
@@ -570,8 +569,6 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
 
         const viewportWidth = dimensions.width;
         const viewportHeight = dimensions.height;
-
-        const cellRow = cell && cell.row();
 
         const tableRows = [];
 
@@ -584,19 +581,20 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
             let x = 0;
             let column = home.column();
 
-            tableCells.push(this.headerCell(row, row.equals(cellRow)));
+            tableCells.push(this.headerCell(row, selection && selection.testRow(row)));
 
             // reference, formula, style, format, formatted
             while(x < viewportWidth) {
                 const cellReference = new SpreadsheetCellReference(column, row);
                 const cellWidget = cells.get(cellReference) || this.emptyCell(cellReference);
 
-                const editing = cellReference.equals(cell);
+                const selected = selection && selection.test(cellReference);
+
                 tableCells.push(
                     cellWidget.render(
                         defaultStyle,
                         () => this.onCellClick(cellReference),
-                        editing ? (e) => this.onCellKeyDown(e, cellReference) : undefined,
+                        selected ? (e) => this.onCellKeyDown(e, cellReference) : undefined,
                         cellToLabels.get(cellReference) || [],
                     )
                 );
