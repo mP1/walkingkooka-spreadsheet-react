@@ -74,15 +74,15 @@ export default class SpreadsheetLabelName extends SpreadsheetCellReferenceOrLabe
     }
 
     test(cellReference) {
-        throw new Error("Not supported");
+        return false;
     }
 
     testColumn(columnReference) {
-        throw new Error("Not supported");
+        return false;
     }
 
     testRow(rowReference) {
-        throw new Error("Not supported");
+        return false;
     }
 
     /**
