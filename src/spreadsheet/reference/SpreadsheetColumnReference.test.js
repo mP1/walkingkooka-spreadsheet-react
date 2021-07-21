@@ -1,8 +1,8 @@
+import SpreadsheetCellReference from "./SpreadsheetCellReference.js";
 import SpreadsheetColumnReference from "./SpreadsheetColumnReference";
 import SpreadsheetReferenceKind from "./SpreadsheetReferenceKind";
 import SpreadsheetRowReference from "./SpreadsheetRowReference";
 import systemObjectTesting from "../../SystemObjectTesting.js";
-import SpreadsheetCellReference from "./SpreadsheetCellReference.js";
 
 systemObjectTesting(
     new SpreadsheetColumnReference(0, SpreadsheetReferenceKind.ABSOLUTE),
@@ -306,8 +306,20 @@ function testAndCheck(column, cellReference, expected) {
 
 testAndCheck("A", "B1", false);
 testAndCheck("B", "$B2", true);
-testAndCheck("C", "C$2", true);
-testAndCheck("D", "Z99", false);
+testAndCheck("C", "C$3", true);
+testAndCheck("$D", "D$4", true);
+
+// testColumn SpreadsheetColumnReference........................................................................................
+
+function testColumnAndCheck(column, otherColumnReference, expected) {
+    test("testColumn " + column + " " + otherColumnReference, () => {
+        expect(SpreadsheetColumnReference.parse(column).testColumn(SpreadsheetColumnReference.parse(otherColumnReference))).toStrictEqual(expected);
+    });
+}
+
+testColumnAndCheck("A", "B", false);
+testColumnAndCheck("B", "$B", true);
+testColumnAndCheck("C", "C", true);
 
 // equals................................................................................................................
 

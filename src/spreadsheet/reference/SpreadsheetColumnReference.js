@@ -53,7 +53,13 @@ export default class SpreadsheetColumnReference extends SpreadsheetColumnOrRowRe
     test(cellReference) {
         Preconditions.requireInstance(cellReference, SpreadsheetCellReference, "cellReference");
 
-        return this.value() === cellReference.column().value();
+        return this.testColumn(cellReference.column());
+    }
+
+    testColumn(columnReference) {
+        Preconditions.requireInstance(columnReference, SpreadsheetColumnReference, "columnReference");
+
+        return this.value() === columnReference.value();
     }
 
     viewportId() {
