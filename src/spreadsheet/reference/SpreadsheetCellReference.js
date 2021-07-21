@@ -201,8 +201,6 @@ export default class SpreadsheetCellReference extends SpreadsheetCellReferenceOr
     }
 
     testColumn(columnReference) {
-        Preconditions.requireInstance(columnReference, SpreadsheetColumnReference, "columnReference");
-
         return this.column().testColumn(columnReference);
     }
 
