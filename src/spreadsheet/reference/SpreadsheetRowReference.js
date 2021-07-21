@@ -66,6 +66,12 @@ export default class SpreadsheetRowReference extends SpreadsheetColumnOrRowRefer
         return false;
     }
 
+    testRow(rowReference) {
+        Preconditions.requireInstance(rowReference, SpreadsheetRowReference, "rowReference");
+
+        return this.value() === rowReference.value();
+    }
+    
     viewportId() {
         return "viewport-row-" + this.toString().toUpperCase();
     }

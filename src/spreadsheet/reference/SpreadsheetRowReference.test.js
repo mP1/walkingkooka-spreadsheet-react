@@ -234,7 +234,7 @@ testAndCheck("3", "$B3", true);
 testAndCheck("4", "C$4", true);
 testAndCheck("5", "Z99", false);
 
-// test SpreadsheetCellReference........................................................................................
+// test SpreadsheetColumnReference......................................................................................
 
 function testColumnAndCheck(row, columnReference, expected) {
     test("testColumn " + row + " " + columnReference, () => {
@@ -245,6 +245,19 @@ function testColumnAndCheck(row, columnReference, expected) {
 testColumnAndCheck("2", "B", false);
 testColumnAndCheck("$3", "C", false);
 testColumnAndCheck("$4", "$D", false);
+
+// test SpreadsheetRowReference......................................................................................
+
+function testRowAndCheck(cellReference, rowReference, expected) {
+    test("testRow " + cellReference + " " + rowReference, () => {
+        expect(SpreadsheetCellReference.parse(cellReference).testRow(SpreadsheetRowReference.parse(rowReference))).toStrictEqual(expected);
+    });
+}
+
+testRowAndCheck("A99", "1", false);
+testRowAndCheck("B2", "2", true);
+testRowAndCheck("C3", "$3", true);
+testRowAndCheck("D$4", "4", true);
 
 // compareTo..............................................................................................................
 

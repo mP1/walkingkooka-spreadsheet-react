@@ -9,7 +9,11 @@ export default class SpreadsheetSelection extends SystemObject {
         throw new Error("Not yet implemented");
     }
 
-    testColumn(cellReference) {
+    testColumn(columnReference) {
+        throw new Error("Not yet implemented");
+    }
+
+    testRow(rowReference) {
         throw new Error("Not yet implemented");
     }
 }

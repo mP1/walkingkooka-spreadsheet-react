@@ -321,6 +321,18 @@ testColumnAndCheck("A", "B", false);
 testColumnAndCheck("B", "$B", true);
 testColumnAndCheck("C", "C", true);
 
+// testRow SpreadsheetRowReference........................................................................................
+
+function testRowAndCheck(column, otherRowReference, expected) {
+    test("testRow " + column + " " + otherRowReference, () => {
+        expect(SpreadsheetColumnReference.parse(column).testRow(SpreadsheetRowReference.parse(otherRowReference))).toStrictEqual(expected);
+    });
+}
+
+testRowAndCheck("A", "1", false);
+testRowAndCheck("B", "$2", false);
+testRowAndCheck("$C", "3", false);
+
 // equals................................................................................................................
 
 test("equals SpreadsheetColumnReference false", () => {

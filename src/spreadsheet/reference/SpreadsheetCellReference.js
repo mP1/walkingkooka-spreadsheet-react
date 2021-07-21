@@ -206,6 +206,10 @@ export default class SpreadsheetCellReference extends SpreadsheetCellReferenceOr
         return this.column().testColumn(columnReference);
     }
 
+    testRow(rowReference) {
+        return this.row().testRow(rowReference);
+    }
+    
     toRelative() {
         return this.setColumn(this.column()
             .setKind(SpreadsheetReferenceKind.RELATIVE))

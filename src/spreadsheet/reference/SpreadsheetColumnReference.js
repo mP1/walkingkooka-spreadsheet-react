@@ -3,6 +3,7 @@ import Preconditions from "../../Preconditions.js";
 import SpreadsheetCellReference from "./SpreadsheetCellReference.js";
 import SpreadsheetColumnOrRowReference from "./SpreadsheetColumnOrRowReference";
 import SpreadsheetReferenceKind from "./SpreadsheetReferenceKind";
+import SpreadsheetRowReference from "./SpreadsheetRowReference.js";
 import SystemObject from "../../SystemObject.js";
 
 const A = 65;
@@ -60,6 +61,12 @@ export default class SpreadsheetColumnReference extends SpreadsheetColumnOrRowRe
         Preconditions.requireInstance(columnReference, SpreadsheetColumnReference, "columnReference");
 
         return this.value() === columnReference.value();
+    }
+
+    testRow(rowReference) {
+        Preconditions.requireInstance(rowReference, SpreadsheetRowReference, "rowReference");
+
+        return false;
     }
 
     viewportId() {
