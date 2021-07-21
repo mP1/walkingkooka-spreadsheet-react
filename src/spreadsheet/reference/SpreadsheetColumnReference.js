@@ -1,5 +1,6 @@
 import CharSequences from "../../CharSequences.js";
 import Preconditions from "../../Preconditions.js";
+import SpreadsheetCellReference from "./SpreadsheetCellReference.js";
 import SpreadsheetColumnOrRowReference from "./SpreadsheetColumnOrRowReference";
 import SpreadsheetReferenceKind from "./SpreadsheetReferenceKind";
 import SystemObject from "../../SystemObject.js";
@@ -47,6 +48,12 @@ export default class SpreadsheetColumnReference extends SpreadsheetColumnOrRowRe
 
     max() {
         return SpreadsheetColumnReference.MAX;
+    }
+
+    test(cellReference) {
+        Preconditions.requireInstance(cellReference, SpreadsheetCellReference, "cellReference");
+
+        return this.value() === cellReference.column().value();
     }
 
     viewportId() {

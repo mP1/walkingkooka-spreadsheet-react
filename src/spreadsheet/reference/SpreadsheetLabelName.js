@@ -73,6 +73,10 @@ export default class SpreadsheetLabelName extends SpreadsheetCellReferenceOrLabe
         return new SpreadsheetLabelMapping(this, reference);
     }
 
+    test(cellReference) {
+        throw new Error("Not supported");
+    }
+
     /**
      * Within a similarities this represents a label which does not exist and should display the CREATE and not EDIT
      * button.
