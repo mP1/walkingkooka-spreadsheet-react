@@ -4,6 +4,7 @@ import Preconditions from "../../Preconditions.js";
 import SpreadsheetColumnOrRowReference from "./SpreadsheetColumnOrRowReference";
 import SpreadsheetReferenceKind from "./SpreadsheetReferenceKind";
 import SpreadObject from "../../SystemObject.js";
+import SpreadsheetCellReference from "./SpreadsheetCellReference.js";
 
 const TYPE_NAME = "spreadsheet-row-reference";
 
@@ -50,6 +51,12 @@ export default class SpreadsheetRowReference extends SpreadsheetColumnOrRowRefer
 
     max() {
         return SpreadsheetRowReference.MAX;
+    }
+
+    test(cellReference) {
+        Preconditions.requireInstance(cellReference, SpreadsheetCellReference, "cellReference");
+
+        return this.value() === cellReference.row().value();
     }
 
     viewportId() {

@@ -2,6 +2,7 @@ import SpreadsheetColumnReference from "./SpreadsheetColumnReference";
 import SpreadsheetReferenceKind from "./SpreadsheetReferenceKind";
 import SpreadsheetRowReference from "./SpreadsheetRowReference";
 import systemObjectTesting from "../../SystemObjectTesting.js";
+import SpreadsheetCellReference from "./SpreadsheetCellReference.js";
 
 systemObjectTesting(
     new SpreadsheetRowReference(0, SpreadsheetReferenceKind.ABSOLUTE),
@@ -219,6 +220,19 @@ test("addSaturated overflow", () => {
     const reference = new SpreadsheetRowReference(value, kind);
     expect(reference.addSaturated(delta)).toStrictEqual(new SpreadsheetRowReference(SpreadsheetRowReference.MAX - 1, kind));
 });
+
+// test SpreadsheetCellReference........................................................................................
+
+function testAndCheck(row, cellReference, expected) {
+    test("test " + row + " " + cellReference, () => {
+        expect(SpreadsheetRowReference.parse(row).test(SpreadsheetCellReference.parse(cellReference))).toStrictEqual(expected);
+    });
+}
+
+testAndCheck("2", "B1", false);
+testAndCheck("3", "$B3", true);
+testAndCheck("4", "C$4", true);
+testAndCheck("5", "Z99", false);
 
 // compareTo..............................................................................................................
 

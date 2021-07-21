@@ -386,6 +386,18 @@ test("addRowSaturated delta overflow", () => {
     ).toEqual(SpreadsheetCellReference.parse("B" + SpreadsheetRowReference.MAX));
 });
 
+// test SpreadsheetCellReference........................................................................................
+
+function testAndCheck(cellReference, otherCellReference, expected) {
+    test("test " + cellReference + " " + otherCellReference, () => {
+        expect(SpreadsheetCellReference.parse(cellReference).test(SpreadsheetCellReference.parse(otherCellReference))).toStrictEqual(expected);
+    });
+}
+
+testAndCheck("A1", "B1", false);
+testAndCheck("B2", "$B2", true);
+testAndCheck("B2", "B$2", true);
+
 // toRelative............................................................................................................
 
 test("toRelative", () => {

@@ -2,6 +2,7 @@ import SpreadsheetColumnReference from "./SpreadsheetColumnReference";
 import SpreadsheetReferenceKind from "./SpreadsheetReferenceKind";
 import SpreadsheetRowReference from "./SpreadsheetRowReference";
 import systemObjectTesting from "../../SystemObjectTesting.js";
+import SpreadsheetCellReference from "./SpreadsheetCellReference.js";
 
 systemObjectTesting(
     new SpreadsheetColumnReference(0, SpreadsheetReferenceKind.ABSOLUTE),
@@ -294,6 +295,19 @@ test("toJson B", () => {
 test("toJson C", () => {
     expect(SpreadsheetColumnReference.parse("C").toJson()).toStrictEqual("C");
 });
+
+// test SpreadsheetCellReference........................................................................................
+
+function testAndCheck(column, cellReference, expected) {
+    test("test " + column + " " + cellReference, () => {
+        expect(SpreadsheetColumnReference.parse(column).test(SpreadsheetCellReference.parse(cellReference))).toStrictEqual(expected);
+    });
+}
+
+testAndCheck("A", "B1", false);
+testAndCheck("B", "$B2", true);
+testAndCheck("C", "C$2", true);
+testAndCheck("D", "Z99", false);
 
 // equals................................................................................................................
 

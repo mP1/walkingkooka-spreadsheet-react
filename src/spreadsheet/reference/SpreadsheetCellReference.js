@@ -195,6 +195,11 @@ export default class SpreadsheetCellReference extends SpreadsheetCellReferenceOr
         return this.setRow(this.row().addSaturated(delta));
     }
 
+    test(cellReference) {
+        return this.column().test(cellReference) &&
+            this.row().test(cellReference);
+    }
+
     toRelative() {
         return this.setColumn(this.column()
             .setKind(SpreadsheetReferenceKind.RELATIVE))
