@@ -410,6 +410,19 @@ testColumnAndCheck("A1", "B", false);
 testColumnAndCheck("B2", "$B", true);
 testColumnAndCheck("$C3", "C", true);
 
+// testRow SpreadsheetCellReference........................................................................................
+
+function testRowAndCheck(cellReference, rowReference, expected) {
+    test("testRow " + cellReference + " " + rowReference, () => {
+        expect(SpreadsheetCellReference.parse(cellReference).testRow(SpreadsheetRowReference.parse(rowReference))).toStrictEqual(expected);
+    });
+}
+
+testRowAndCheck("A99", "1", false);
+testRowAndCheck("B2", "$2", true);
+testRowAndCheck("C$3", "3", true);
+testRowAndCheck("D$4", "$4", true);
+
 // toRelative............................................................................................................
 
 test("toRelative", () => {
