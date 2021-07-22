@@ -352,7 +352,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
     }
 
     giveFocus(cellReference) {
-        const cellElement = document.getElementById("cell-" + cellReference);
+        const cellElement = document.getElementById(cellReference.viewportId());
         if(cellElement){
             cellElement.focus();
         }
