@@ -132,7 +132,7 @@ export default class SpreadsheetCell extends SystemObject {
     /**
      * Renders a TableCell with the formatted content. The default style will typically come from {@link SpreadsheetMetadata}.
      */
-    render(defaultStyle, onClick, onKeyDown, labels) {
+    renderViewport(defaultStyle, onClick, onKeyDown, labels) {
         Preconditions.requireInstance(defaultStyle,TextStyle, "defaultStyle");
         Preconditions.requireFunction(onClick, "onClick");
         Preconditions.optionalFunction(onKeyDown, "onKeyDown");

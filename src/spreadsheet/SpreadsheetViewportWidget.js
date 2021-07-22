@@ -28,31 +28,6 @@ import TableRow from '@material-ui/core/TableRow';
 
 const SCROLL_DEBOUNCE = 100;
 
-const headerCell = {
-    minWidth: "4ex",
-
-    margin: "0",
-    borderColor: "#000",
-    borderStyle: "solid",
-    borderWidth: "1px",
-    padding: "0",
-    fontWeight: "bold",
-
-    textAlign: "center",
-    verticalAlign: "middle",
-
-    backgroundColor: "#ccc", // TODO take colours from theme
-    color: "#333",
-};
-
-const headerCellSelected = Object.assign({},
-    headerCell,
-    {
-        backgroundColor: "#444", // TODO take colours from theme
-        color: "#bbb",
-    },
-);
-
 /**
  * This component holds the cells viewport as well as the column and row controls.
  * <ul>
@@ -532,15 +507,16 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
         const viewportWidth = dimensions.width;
         const defaultColumnWidth = defaultStyle.width().value();
 
-        let headers = [];
-        headers.push(<TableCell key={"viewport-all"} id={"select-all-cells"} style={headerCell}></TableCell>); // TODO add select all support
+        let headers = [
+            <TableCell key={"viewport-all"} id={"viewport-select-all-cells"}></TableCell> // TODO add select all support when range support is ready
+        ];
 
         let x = 0;
         let column = home.column();
 
         while(x < viewportWidth) {
             headers.push(
-                this.headerCell(column, selection && selection.testColumn(column))
+                column.renderViewport(selection && selection.testColumn(column))
             );
 
             x = x + (columnWidths.get(column) || defaultColumnWidth);
@@ -577,17 +553,17 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
             let x = 0;
             let column = home.column();
 
-            tableCells.push(this.headerCell(row, selection && selection.testRow(row)));
+            tableCells.push(row.renderViewport(selection && selection.testRow(row)));
 
             // reference, formula, style, format, formatted
             while(x < viewportWidth) {
                 const cellReference = new SpreadsheetCellReference(column, row);
-                const cellWidget = cells.get(cellReference) || cellReference.emptyCell();
+                const cell = cells.get(cellReference) || cellReference.emptyCell();
 
                 const selected = selection && selection.test(cellReference);
 
                 tableCells.push(
-                    cellWidget.render(
+                    cell.renderViewport(
                         defaultStyle,
                         () => this.onCellClick(cellReference),
                         selected ? (e) => this.onCellKeyDown(e, cellReference) : undefined,
@@ -613,20 +589,6 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
         }
 
         return tableRows;
-    }
-
-    /**
-     * Creates a TABLE CELL which will be the column or row header.
-     */
-    headerCell(reference, highlighted) {
-        const isColumn = reference instanceof SpreadsheetColumnReference;
-        const columnOrRow = isColumn ? "column" : "row";
-        const id = reference.viewportId();
-
-        return <TableCell key={id}
-                          id={id}
-                          className={(columnOrRow) + (highlighted ? " selected" : "")}
-                          style={highlighted ? headerCellSelected : headerCell}>{reference.toString()}</TableCell>
     }
 
     /**
