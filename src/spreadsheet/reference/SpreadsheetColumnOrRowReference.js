@@ -1,6 +1,35 @@
 import Preconditions from "../../Preconditions.js";
+import React from "react";
 import SpreadsheetReferenceKind from "./SpreadsheetReferenceKind";
 import SpreadsheetSelection from "./SpreadsheetSelection.js";
+import SpreadsheetColumnReference from "./SpreadsheetColumnReference.js";
+import TableCell from "@material-ui/core/TableCell";
+
+// default header cell styles
+const headerCell = {
+    minWidth: "4ex",
+
+    margin: "0",
+    borderColor: "#000",
+    borderStyle: "solid",
+    borderWidth: "1px",
+    padding: "0",
+    fontWeight: "bold",
+
+    textAlign: "center",
+    verticalAlign: "middle",
+
+    backgroundColor: "#ccc", // TODO take colours from theme
+    color: "#333",
+};
+
+const headerCellSelected = Object.assign({},
+    headerCell,
+    {
+        backgroundColor: "#444", // TODO take colours from theme
+        color: "#bbb",
+    },
+);
 
 export default class SpreadsheetColumnOrRowReference extends SpreadsheetSelection {
 
@@ -67,6 +96,20 @@ export default class SpreadsheetColumnOrRowReference extends SpreadsheetSelectio
 
     toJson() {
         return this.toString();
+    }
+
+    /**
+     * Renders a TABLE that may be highlighted.
+     */
+    renderViewport(highlighted) {
+        const isColumn = this instanceof SpreadsheetColumnReference;
+        const columnOrRow = isColumn ? "column" : "row";
+        const id = this.viewportId();
+
+        return <TableCell key={id}
+                          id={id}
+                          className={(columnOrRow) + (highlighted ? " selected" : "")}
+                          style={highlighted ? headerCellSelected : headerCell}>{this.toString()}</TableCell>
     }
 
     equals(other) {
