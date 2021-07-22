@@ -4,11 +4,15 @@
 import Character from "../../Character.js";
 import CharSequences from "../../CharSequences.js";
 import Preconditions from "../../Preconditions.js";
+import SpreadsheetCell from "../SpreadsheetCell.js";
 import SpreadsheetCellReferenceOrLabelName from "./SpreadsheetCellReferenceOrLabelName.js";
 import SpreadsheetColumnReference from "./SpreadsheetColumnReference";
+import SpreadsheetFormula from "../SpreadsheetFormula.js";
 import SpreadsheetReferenceKind from "./SpreadsheetReferenceKind";
 import SpreadsheetRowReference from "./SpreadsheetRowReference";
 import SystemObject from "../../SystemObject.js";
+import TextStyle from "../../text/TextStyle.js";
+import Text from "../../text/Text.js";
 
 const TYPE_NAME = "spreadsheet-cell-reference";
 
@@ -230,6 +234,19 @@ export default class SpreadsheetCellReference extends SpreadsheetCellReferenceOr
 
     typeName() {
         return TYPE_NAME;
+    }
+
+    /**
+     * Factory that creates an empty {@link SpreadsheetCell} with no formula, style or formatted text.
+     */
+    emptyCell() {
+        return new SpreadsheetCell(
+            this,
+            SpreadsheetFormula.EMPTY,
+            TextStyle.EMPTY,
+            undefined,
+            Text.EMPTY
+        );
     }
 
     viewportId() {

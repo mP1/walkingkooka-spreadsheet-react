@@ -7,10 +7,8 @@ import PropTypes from "prop-types";
 import React from 'react';
 import Slider from "@material-ui/core/Slider";
 import SpreadsheetCellReference from "./reference/SpreadsheetCellReference.js";
-import SpreadsheetCell from "./SpreadsheetCell.js";
 import SpreadsheetColumnReference from "./reference/SpreadsheetColumnReference.js";
 import SpreadsheetExpressionReferenceSimilarities from "./SpreadsheetExpressionReferenceSimilarities.js";
-import SpreadsheetFormula from "./SpreadsheetFormula.js";
 import SpreadsheetHistoryAwareStateWidget from "./history/SpreadsheetHistoryAwareStateWidget.js";
 import SpreadsheetHistoryHash from "./history/SpreadsheetHistoryHash.js";
 import SpreadsheetLabelName from "./reference/SpreadsheetLabelName.js";
@@ -27,8 +25,6 @@ import TableCell from '@material-ui/core/TableCell';
 import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
-import Text from "../text/Text.js";
-import TextStyle from "../text/TextStyle.js";
 
 const SCROLL_DEBOUNCE = 100;
 
@@ -586,7 +582,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
             // reference, formula, style, format, formatted
             while(x < viewportWidth) {
                 const cellReference = new SpreadsheetCellReference(column, row);
-                const cellWidget = cells.get(cellReference) || this.emptyCell(cellReference);
+                const cellWidget = cells.get(cellReference) || cellReference.emptyCell();
 
                 const selected = selection && selection.test(cellReference);
 
@@ -631,17 +627,6 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
                           id={id}
                           className={(columnOrRow) + (highlighted ? " selected" : "")}
                           style={highlighted ? headerCellSelected : headerCell}>{reference.toString()}</TableCell>
-    }
-
-    /**
-     * Provides the empty cell that appears when the reference has no actual cell.
-     */
-    emptyCell(reference) {
-        return new SpreadsheetCell(reference,
-            SpreadsheetFormula.EMPTY,
-            TextStyle.EMPTY,
-            undefined,
-            Text.EMPTY);
     }
 
     /**
