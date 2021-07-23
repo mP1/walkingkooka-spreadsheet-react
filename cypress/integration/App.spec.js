@@ -1009,6 +1009,7 @@ context(
                 .type("=123{enter}")
                 .blur();
 
+            hashOnlyIdAndName();
             hashAppend("/cell/T1");
 
             formulaText()
@@ -1017,6 +1018,7 @@ context(
                 .type("=234{enter}")
                 .blur();
 
+            hashOnlyIdAndName();
             hashAppend("/cell/M1");
 
             cellFormattedTextCheck("M1", "123.");
@@ -1034,6 +1036,8 @@ context(
                 .type("=123{enter}")
                 .blur();
 
+            hashOnlyIdAndName();
+
             hashAppend("/cell/T20");
 
             formulaText()
@@ -1041,6 +1045,8 @@ context(
                 .wait(FORMULA_TEXT_CLICK_WAIT)
                 .type("=234{enter}")
                 .blur();
+
+            hashOnlyIdAndName();
 
             hashAppend("/cell/M10");
 
@@ -2678,6 +2684,24 @@ context(
 
                     cy.hash()
                         .should("eq", after);
+                });
+        }
+
+        function hashOnlyIdAndName() {
+            cy.window()
+                .then(function(win) {
+                    const h = win.location.hash;
+
+                    const slash0 = h.indexOf("/");
+                    const slash1 = -1 !== slash0 && h.indexOf("/", slash0 + 1);
+                    const slash2 = -1 !== slash1 && h.indexOf("/", slash1 + 1);
+
+                    if(-1 !== slash2){
+                        hashEnter(h.substring(0, slash2));
+
+                        hash()
+                            .should('match', /.*\/.*/);
+                    }
                 });
         }
 
