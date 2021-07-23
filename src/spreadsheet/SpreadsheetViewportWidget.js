@@ -254,7 +254,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
             if(!Equality.safeEquals(cellNew, cellOld)){
                 if(!state.formula){
                     console.log("Missing " + SpreadsheetHistoryHash.CELL_FORMULA + " token giving focus to cell..." + cellNew);
-                    this.giveFocus(cellNew);
+                    this.giveSelectionFocus(cellNew);
                 }
             }
         }
@@ -351,10 +351,12 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
         );
     }
 
-    giveFocus(cellReference) {
-        const cellElement = document.getElementById(cellReference.viewportId());
-        if(cellElement){
-            cellElement.focus();
+    giveSelectionFocus(selection) {
+        if(selection && selection.viewportId){
+            const cellElement = document.getElementById(selection.viewportId());
+            if(cellElement){
+                cellElement.focus();
+            }
         }
     }
 
