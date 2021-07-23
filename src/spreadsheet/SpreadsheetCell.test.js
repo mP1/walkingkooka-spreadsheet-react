@@ -286,25 +286,25 @@ test("setFormula different", () => {
 
 test("render missing defaultStyle fails", () => {
     expect(() => new SpreadsheetCell(reference(), formula(), style())
-        .render())
+        .renderViewport())
         .toThrow("Missing defaultStyle");
 });
 
 test("render invalid defaultStyle fails", () => {
     expect(() => new SpreadsheetCell(reference(), formula(), style())
-        .render("!invalid"))
+        .renderViewport("!invalid"))
         .toThrow("Expected TextStyle defaultStyle got !invalid");
 });
 
 test("render missing onClick fails", () => {
     expect(() => new SpreadsheetCell(reference(), formula(), style())
-        .render(TextStyle.EMPTY))
+        .renderViewport(TextStyle.EMPTY))
         .toThrow("Missing onClick");
 });
 
 test("render invalid onClick fails", () => {
     expect(() => new SpreadsheetCell(reference(), formula(), style())
-        .render(TextStyle.EMPTY,"!invalid"))
+        .renderViewport(TextStyle.EMPTY,"!invalid"))
         .toThrow("Expected function onClick got !invalid");
 });
 
@@ -320,7 +320,7 @@ test("render empty style, text & defaultStyle EMPTY", () => {
         TextStyle.EMPTY,
         format(),
         new Text(text))
-        .render(TextStyle.EMPTY, c, kd, l))
+        .renderViewport(TextStyle.EMPTY, c, kd, l))
         .toEqual(<TableCell key={ref}
                             id="viewport-cell-A99"
                             tabIndex={0}
@@ -342,7 +342,7 @@ test("render empty style, text & defaultStyle EMPTY 2", () => {
         TextStyle.EMPTY,
         format(),
         new Text(text))
-        .render(TextStyle.EMPTY, c, kd, l))
+        .renderViewport(TextStyle.EMPTY, c, kd, l))
         .toEqual(<TableCell key={ref}
                             id="viewport-cell-B123"
                             tabIndex={0}
@@ -364,7 +364,7 @@ test("render empty style, text & defaultStyle width&height", () => {
         TextStyle.EMPTY,
         format(),
         new Text(text))
-        .render(
+        .renderViewport(
             TextStyle.EMPTY
                 .set("width", lengthFromJson("100px"))
                 .set("height", lengthFromJson("50px")),
@@ -394,7 +394,7 @@ test("render style=width&height, text & defaultStyle=empty", () => {
             .set("height", lengthFromJson("50px")),
         format(),
         new Text(text))
-        .render(TextStyle.EMPTY, c, kd, l))
+        .renderViewport(TextStyle.EMPTY, c, kd, l))
         .toEqual(<TableCell key={r}
                             id="viewport-cell-A99"
                             tabIndex={0}
@@ -417,7 +417,7 @@ test("render style=height, text & defaultStyle=width", () => {
             .set("height", lengthFromJson("50px")),
         format(),
         new Text(text))
-        .render(TextStyle.EMPTY
+        .renderViewport(TextStyle.EMPTY
                 .set("width", lengthFromJson("100px")),
             c,
             kd,
@@ -445,7 +445,7 @@ test("render style=width&height, text & defaultStyle=width", () => {
             .set("height", lengthFromJson("50px")),
         format(),
         new Text(text))
-        .render(TextStyle.EMPTY
+        .renderViewport(TextStyle.EMPTY
                 .set("width", lengthFromJson("99px")),
             c,
             kd,
@@ -473,7 +473,7 @@ test("render with labels", () => {
             .set("height", lengthFromJson("50px")),
         format(),
         new Text(text))
-        .render(TextStyle.EMPTY
+        .renderViewport(TextStyle.EMPTY
                 .set("width", lengthFromJson("99px")),
             c,
             kd,
