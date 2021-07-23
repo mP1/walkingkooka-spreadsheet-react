@@ -140,7 +140,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
 
     stateFromHistoryTokens(tokens) {
         return {
-            cellOrLabel: tokens[SpreadsheetHistoryHash.CELL],
+            selection: tokens[SpreadsheetHistoryHash.SELECTION],
             formula: tokens[SpreadsheetHistoryHash.CELL_FORMULA],
         };
     }
@@ -176,8 +176,8 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
             const width = viewportTable.offsetWidth;
             const height = viewportTable.offsetHeight;
 
-            const cellOrLabelOld = prevState.cellOrLabel;
-            const cellOrLabelNew = state.cellOrLabel;
+            const selectionOld = prevState.selection;
+            const selectionNew = state.selection;
 
             const cellNew = state.cell;
             const cellOld = prevState.cell;
@@ -218,7 +218,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
                         break;
                     }
 
-                    if(viewportRange && cellNew && !cellNew.equals(cellOld) && !viewportRange.test(cellNew)){
+                    if(viewportRange && cellNew instanceof SpreadsheetCellReference && !cellNew.equals(cellOld) && !viewportRange.test(cellNew)){
                         console.log("New cell " + cellNew + " outside" + viewportRange + " scroll to");
 
                         this.viewportLoadCells(
@@ -235,18 +235,18 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
                 break;
             }
 
-            if(!Equality.safeEquals(cellOrLabelOld, cellOrLabelNew)){
-                if(cellOrLabelNew instanceof SpreadsheetLabelName){
-                    this.resolveLabelToCell(cellOrLabelNew); // eventually updates state.cell
+            if(!Equality.safeEquals(selectionOld, selectionNew)){
+                if(selectionNew instanceof SpreadsheetLabelName){
+                    this.resolveLabelToCell(selectionNew); // eventually updates state.cell
                 }else {
                     newState = {
-                        cell: cellOrLabelNew,
+                        cell: selectionNew,
                     };
-                    metadata = metadata.setOrRemove(SpreadsheetMetadata.SELECTION, cellOrLabelNew);
+                    metadata = metadata.setOrRemove(SpreadsheetMetadata.SELECTION, selectionNew);
                 }
             }
 
-            historyTokens[SpreadsheetHistoryHash.CELL] = cellOrLabelNew;
+            historyTokens[SpreadsheetHistoryHash.SELECTION] = selectionNew;
             if(state.focused){
                 historyTokens[SpreadsheetHistoryHash.CELL_FORMULA] = null;
             }
@@ -294,13 +294,13 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
 
         const success = (cell) => this.setState({
             cell: cell,
-            cellOrLabel: label,
+            selection: label,
             spreadsheetMetadata: this.state.spreadsheetMetadata.set(SpreadsheetMetadata.SELECTION, cell),
         });
         const failure = (message, error) => {
             this.setState({
                 cell: null,
-                cellOrLabel: null,
+                selection: null,
             });
             props.showError(message, error);
         }
@@ -646,7 +646,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
 
         this.setState({
             cell: cellReference,
-            cellOrLabel: cellReference,
+            selection: cellReference,
             focused: false,
             spreadsheetMetadata: this.state.spreadsheetMetadata.set(SpreadsheetMetadata.SELECTION, cellReference),
         });
@@ -661,7 +661,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
 
     blurFormulaTextBox() {
         const tokens = {}
-        tokens[SpreadsheetHistoryHash.CELL] = null;
+        tokens[SpreadsheetHistoryHash.SELECTION] = null;
         tokens[SpreadsheetHistoryHash.CELL_FORMULA] = false;
 
         this.historyParseMergeAndPush(tokens);

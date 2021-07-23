@@ -9,4 +9,9 @@ export default class SpreadsheetCellReferenceOrLabelName extends SpreadsheetExpr
     viewport(xOffset, yOffset, width, height) {
         return new SpreadsheetViewport(this, xOffset, yOffset, width, height);
     }
+
+    toSelectionHashToken() {
+        // avoid referencing constant to avoid runtime TypeErrors.
+        return /*SpreadsheetHistoryHash.CELL*/ "cell/" + this;
+    }
 }

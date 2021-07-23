@@ -5,6 +5,7 @@ import SpreadsheetColumnOrRowReference from "./SpreadsheetColumnOrRowReference";
 import SpreadsheetReferenceKind from "./SpreadsheetReferenceKind";
 import SpreadsheetRowReference from "./SpreadsheetRowReference.js";
 import SystemObject from "../../SystemObject.js";
+import SpreadsheetHistoryHash from "../history/SpreadsheetHistoryHash.js";
 
 const A = 65;
 const TYPE_NAME = "spreadsheet-column-reference";
@@ -75,6 +76,10 @@ export default class SpreadsheetColumnReference extends SpreadsheetColumnOrRowRe
 
     typeName() {
         return TYPE_NAME;
+    }
+
+    toSelectionHashToken() {
+        return SpreadsheetHistoryHash.COLUMN + "/" + this;
     }
 
     toString() {

@@ -6,6 +6,7 @@ import SpreadsheetColumnOrRowReference from "./SpreadsheetColumnOrRowReference";
 import SpreadsheetColumnReference from "./SpreadsheetColumnReference.js";
 import SpreadsheetReferenceKind from "./SpreadsheetReferenceKind";
 import SpreadObject from "../../SystemObject.js";
+import SpreadsheetHistoryHash from "../history/SpreadsheetHistoryHash.js";
 
 const TYPE_NAME = "spreadsheet-row-reference";
 
@@ -74,6 +75,10 @@ export default class SpreadsheetRowReference extends SpreadsheetColumnOrRowRefer
     
     viewportId() {
         return "viewport-row-" + this.toString().toUpperCase();
+    }
+
+    toSelectionHashToken() {
+        return SpreadsheetHistoryHash.ROW + "/" + this;
     }
 
     typeName() {

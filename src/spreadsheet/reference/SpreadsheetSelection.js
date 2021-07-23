@@ -16,4 +16,8 @@ export default class SpreadsheetSelection extends SystemObject {
     testRow(rowReference) {
         throw new Error("Not yet implemented");
     }
+
+    toSelectionHashToken() {
+        throw new Error("Not yet implemented");
+    }
 }
