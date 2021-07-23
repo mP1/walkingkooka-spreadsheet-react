@@ -56,7 +56,7 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetHistoryAwareSta
         const state = this.state || {};
 
         // if a cellOrLabel is present the formula text should also be editable.
-        const cellOrLabel = historyTokens[SpreadsheetHistoryHash.CELL];
+        const cellOrLabel = historyTokens[SpreadsheetHistoryHash.SELECTION];
         const formula = historyTokens[SpreadsheetHistoryHash.CELL_FORMULA];
         const edit = !!cellOrLabel;
         const giveFocus = edit && formula && !state.focused && !state.giveFocus;
@@ -84,7 +84,7 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetHistoryAwareSta
         console.log("historyTokensFromState formula cell " + prevState.cellOrLabel + " to " + cellOrLabel + " state", state);
 
         const historyTokens = {};
-        historyTokens[SpreadsheetHistoryHash.CELL] = cellOrLabel;
+        historyTokens[SpreadsheetHistoryHash.SELECTION] = cellOrLabel;
         historyTokens[SpreadsheetHistoryHash.CELL_FORMULA] = focused | giveFocus;
 
         // if not formula editing, disable textField

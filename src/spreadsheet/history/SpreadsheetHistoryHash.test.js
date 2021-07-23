@@ -1,12 +1,16 @@
 import CharSequences from "../../CharSequences.js";
 import SpreadsheetCellReference from "../reference/SpreadsheetCellReference.js";
+import SpreadsheetColumnReference from "../reference/SpreadsheetColumnReference.js";
 import SpreadsheetHistoryHash from "./SpreadsheetHistoryHash.js";
 import SpreadsheetLabelName from "../reference/SpreadsheetLabelName.js";
 import SpreadsheetName from "../SpreadsheetName.js";
+import SpreadsheetRowReference from "../reference/SpreadsheetRowReference.js";
 
 const ID = "spreadsheet-id-123";
 const SPREADSHEET_NAME = new SpreadsheetName("spreadsheet-name-456");
 const CELL = SpreadsheetCellReference.parse("A1");
+const COLUMN = SpreadsheetColumnReference.parse("B");
+const ROW = SpreadsheetRowReference.parse("2");
 const LABEL = SpreadsheetLabelName.parse("Label123");
 
 // validate................................................................................................................
@@ -45,7 +49,7 @@ validateTest(
     {
         "spreadsheet-id": ID,
         "spreadsheet-name": SPREADSHEET_NAME,
-        "cell": CELL,
+        "selection": CELL,
     }
 );
 
@@ -54,7 +58,7 @@ validateTest(
     {
         "spreadsheet-id": ID,
         "spreadsheet-name": SPREADSHEET_NAME,
-        "cell": LABEL,
+        "selection": LABEL,
     }
 );
 
@@ -64,7 +68,7 @@ validateTest(
         "spreadsheet-id": ID,
         "spreadsheet-name": SPREADSHEET_NAME,
         "name": true,
-        "cell": CELL,
+        "selection": CELL,
     },
     {
         "spreadsheet-id": ID,
@@ -105,7 +109,7 @@ validateTest(
     {
         "spreadsheet-id": ID,
         "spreadsheet-name": SPREADSHEET_NAME,
-        "cell": CELL,
+        "selection": CELL,
     }
 );
 
@@ -114,7 +118,7 @@ validateTest(
     {
         "spreadsheet-id": ID,
         "spreadsheet-name": SPREADSHEET_NAME,
-        "cell": "!invalid",
+        "selection": "!invalid",
     },
     {
         "spreadsheet-id": ID,
@@ -127,7 +131,7 @@ validateTest(
     {
         "spreadsheet-id": ID,
         "spreadsheet-name": SPREADSHEET_NAME,
-        "cell": LABEL,
+        "selection": LABEL,
     }
 );
 
@@ -259,7 +263,7 @@ parseAndStringifyTest(
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
-        "cell": CELL,
+        "selection": CELL,
     }
 );
 
@@ -268,7 +272,7 @@ parseAndStringifyTest(
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
-        "cell": CELL,
+        "selection": CELL,
         "formula": true,
     }
 );
@@ -278,7 +282,17 @@ parseAndStringifyTest(
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
-        "cell": LABEL,
+        "selection": LABEL,
+    }
+);
+
+parseAndStringifyTest(
+    "/spreadsheet-id-123/spreadsheet-name-456/cell/Label123/formula",
+    {
+        "spreadsheet-id": "spreadsheet-id-123",
+        "spreadsheet-name": SPREADSHEET_NAME,
+        "selection": LABEL,
+        "formula": true,
     }
 );
 
@@ -321,7 +335,7 @@ parseAndStringifyTest(
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
-        "cell": SpreadsheetCellReference.parse("A2"),
+        "selection": SpreadsheetCellReference.parse("A2"),
         "label": LABEL,
     }
 );
@@ -331,7 +345,7 @@ parseAndStringifyTest(
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
-        "cell": SpreadsheetCellReference.parse("A2"),
+        "selection": SpreadsheetCellReference.parse("A2"),
         "formula": true,
         "label": LABEL,
     }
@@ -376,7 +390,7 @@ parseAndStringifyTest(
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
-        "cell": CELL,
+        "selection": CELL,
         "select": true,
     }
 );
@@ -386,7 +400,7 @@ parseAndStringifyTest(
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
-        "cell": CELL,
+        "selection": CELL,
         "formula": true,
         "select": true,
     }
@@ -397,7 +411,7 @@ parseAndStringifyTest(
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
-        "cell": CELL,
+        "selection": CELL,
         "formula": true,
         "select": true,
         "settings": true,
@@ -410,6 +424,60 @@ parseAndStringifyTest(
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
         "label": LABEL,
+        "select": true,
+    }
+);
+
+parseAndStringifyTest(
+    "/spreadsheet-id-123/spreadsheet-name-456/column/B",
+    {
+        "spreadsheet-id": "spreadsheet-id-123",
+        "spreadsheet-name": SPREADSHEET_NAME,
+        "selection": COLUMN,
+    }
+);
+
+parseAndStringifyTest(
+    "/spreadsheet-id-123/spreadsheet-name-456/column/B/formula",
+    {
+        "spreadsheet-id": "spreadsheet-id-123",
+        "spreadsheet-name": SPREADSHEET_NAME,
+    }
+);
+
+parseAndStringifyTest(
+    "/spreadsheet-id-123/spreadsheet-name-456/column/B/select",
+    {
+        "spreadsheet-id": "spreadsheet-id-123",
+        "spreadsheet-name": SPREADSHEET_NAME,
+        "selection": COLUMN,
+        "select": true,
+    }
+);
+
+parseAndStringifyTest(
+    "/spreadsheet-id-123/spreadsheet-name-456/row/2",
+    {
+        "spreadsheet-id": "spreadsheet-id-123",
+        "spreadsheet-name": SPREADSHEET_NAME,
+        "selection": ROW,
+    }
+);
+
+parseAndStringifyTest(
+    "/spreadsheet-id-123/spreadsheet-name-456/row/2/formula",
+    {
+        "spreadsheet-id": "spreadsheet-id-123",
+        "spreadsheet-name": SPREADSHEET_NAME,
+    }
+);
+
+parseAndStringifyTest(
+    "/spreadsheet-id-123/spreadsheet-name-456/row/2/select",
+    {
+        "spreadsheet-id": "spreadsheet-id-123",
+        "spreadsheet-name": SPREADSHEET_NAME,
+        "selection": ROW,
         "select": true,
     }
 );
@@ -576,7 +644,7 @@ parseAndStringifyTest(
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
-        "cell": SpreadsheetCellReference.parse("B2"),
+        "selection": SpreadsheetCellReference.parse("B2"),
         "formula": true,
         "settings": true,
     }
@@ -587,7 +655,7 @@ parseAndStringifyTest(
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
-        "cell": SpreadsheetCellReference.parse("B2"),
+        "selection": SpreadsheetCellReference.parse("B2"),
         "formula": true,
         "settings": true,
     }
@@ -598,7 +666,7 @@ parseAndStringifyTest(
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
-        "cell": SpreadsheetCellReference.parse("B2"),
+        "selection": SpreadsheetCellReference.parse("B2"),
         "formula": true,
         "settings": true,
         "settings-section": "metadata",
@@ -610,7 +678,7 @@ parseAndStringifyTest(
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
-        "cell": SpreadsheetCellReference.parse("B2"),
+        "selection": SpreadsheetCellReference.parse("B2"),
         "formula": true,
         "settings": true,
         "settings-section": "text",
@@ -622,7 +690,7 @@ parseAndStringifyTest(
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
-        "cell": SpreadsheetCellReference.parse("B2"),
+        "selection": SpreadsheetCellReference.parse("B2"),
         "formula": true,
         "settings": true,
         "settings-section": "number",
@@ -634,7 +702,7 @@ parseAndStringifyTest(
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
-        "cell": SpreadsheetCellReference.parse("B2"),
+        "selection": SpreadsheetCellReference.parse("B2"),
         "formula": true,
         "settings": true,
         "settings-section": "date-time",
@@ -646,7 +714,7 @@ parseAndStringifyTest(
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
-        "cell": SpreadsheetCellReference.parse("B2"),
+        "selection": SpreadsheetCellReference.parse("B2"),
         "formula": true,
         "settings": true,
         "settings-section": "style",
@@ -668,7 +736,7 @@ parseAndStringifyTest(
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
-        "cell": CELL,
+        "selection": CELL,
         "formula": true,
         "settings": true,
         "settings-section": SpreadsheetHistoryHash.SETTINGS_METADATA,
@@ -837,7 +905,7 @@ mergeUpdatesFails([]);
     mergeTest(
         "/123abc/Untitled456/name/!invalid",
         {
-            "cell": SpreadsheetCellReference.parse("A1")
+            "selection": SpreadsheetCellReference.parse("A1")
         },
         "/123abc/Untitled456/cell/A1"
     );
@@ -845,7 +913,7 @@ mergeUpdatesFails([]);
     mergeTest(
         "/123abc/Untitled456/name",
         {
-            "cell": null,
+            "selection": null,
         },
         "/123abc/Untitled456/name"
     );
@@ -853,7 +921,7 @@ mergeUpdatesFails([]);
     mergeTest(
         "/123abc/Untitled456/name",
         {
-            "cell": SpreadsheetCellReference.parse("A1"),
+            "selection": SpreadsheetCellReference.parse("A1"),
             "formula": true,
         },
         "/123abc/Untitled456/cell/A1/formula"
@@ -930,7 +998,7 @@ mergeUpdatesFails([]);
     mergeTest(
         "/123abc/Untitled456/cell",
         {
-            "cell": SpreadsheetCellReference.parse("A1"),
+            "selection": SpreadsheetCellReference.parse("A1"),
         },
         "/123abc/Untitled456/cell/A1"
     );
@@ -944,7 +1012,7 @@ mergeUpdatesFails([]);
     mergeTest(
         "/123abc/Untitled456/cell/A1",
         {
-            "cell": SpreadsheetCellReference.parse("B2"),
+            "selection": SpreadsheetCellReference.parse("B2"),
         },
         "/123abc/Untitled456/cell/B2"
     );
@@ -952,7 +1020,7 @@ mergeUpdatesFails([]);
     mergeTest(
         "/123abc/Untitled456/cell/A1/formula",
         {
-            "cell": SpreadsheetCellReference.parse("B2"),
+            "selection": SpreadsheetCellReference.parse("B2"),
         },
         "/123abc/Untitled456/cell/B2/formula"
     );
@@ -976,7 +1044,7 @@ mergeUpdatesFails([]);
     mergeTest(
         "/123abc/Untitled456/cell/A1",
         {
-            "cell": null,
+            "selection": null,
         },
         "/123abc/Untitled456"
     );
@@ -1397,7 +1465,7 @@ mergeUpdatesFails([]);
         {
             "spreadsheet-id": "456def",
             "spreadsheet-name": "new-spreadsheet-name-456",
-            "cell": SpreadsheetCellReference.parse("B2"),
+            "selection": SpreadsheetCellReference.parse("B2"),
             "formula": true,
             "settings": true,
         },
@@ -1409,7 +1477,7 @@ mergeUpdatesFails([]);
         {
             "spreadsheet-id": "456def",
             "spreadsheet-name": "new-spreadsheet-name-456",
-            "cell": SpreadsheetCellReference.parse("B2"),
+            "selection": SpreadsheetCellReference.parse("B2"),
             "formula": true,
             "settings": false,
         },

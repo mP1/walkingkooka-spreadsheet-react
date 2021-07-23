@@ -28,7 +28,7 @@ export default class SpreadsheetSelectLinkWidget extends SpreadsheetHistoryAware
 
         return {
             target: '#' + this.props.history.mergeAndStringify(tokens),
-            cell: tokens[SpreadsheetHistoryHash.CELL],
+            cell: tokens[SpreadsheetHistoryHash.SELECTION],
         };
     }
 

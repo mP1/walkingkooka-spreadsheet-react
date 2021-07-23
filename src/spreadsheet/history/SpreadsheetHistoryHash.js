@@ -1,8 +1,11 @@
 import ListenerCollection from "../../event/ListenerCollection.js";
 import Preconditions from "../../Preconditions.js";
 import spreadsheetCellReferenceOrLabelNameFromJson from "../reference/SpreadsheetCellReferenceOrLabelNameFromJson.js";
+import SpreadsheetCellReferenceOrLabelName from "../reference/SpreadsheetCellReferenceOrLabelName.js";
+import SpreadsheetColumnReference from "../reference/SpreadsheetColumnReference.js";
 import SpreadsheetLabelName from "../reference/SpreadsheetLabelName.js";
 import SpreadsheetName from "../SpreadsheetName.js";
+import SpreadsheetRowReference from "../reference/SpreadsheetRowReference.js";
 import SpreadsheetSelection from "../reference/SpreadsheetSelection.js";
 
 function tokenize(pathname) {
@@ -43,8 +46,14 @@ export default class SpreadsheetHistoryHash {
     static SPREADSHEET_ID = "spreadsheet-id";
     static SPREADSHEET_NAME = "spreadsheet-name";
     static SPREADSHEET_NAME_EDIT = "name";
+
+    static SELECTION = "selection";
+
     static CELL = "cell";
     static CELL_FORMULA = "formula";
+    static COLUMN = "column";
+    static ROW = "row";
+
     static LABEL = "label";
     static SELECT = "select";
     static SETTINGS = "settings";
@@ -76,7 +85,8 @@ export default class SpreadsheetHistoryHash {
 
                 const tokens2 = {};
                 var valid = true;
-                var cell = null;
+
+                var selection = null;
 
                 while(sourceTokens.length > 0 && valid) {
                     const token = sourceTokens.shift();
@@ -86,25 +96,39 @@ export default class SpreadsheetHistoryHash {
                             tokens2[SpreadsheetHistoryHash.SPREADSHEET_NAME_EDIT] = true;
                             break;
                         case SpreadsheetHistoryHash.CELL:
-                            if(sourceTokens.length === 0){
+                            if(selection || sourceTokens.length === 0){
                                 valid = false;
                                 break;
                             }
 
                             try {
-                                cell = spreadsheetCellReferenceOrLabelNameFromJson(sourceTokens.shift());
+                                selection = spreadsheetCellReferenceOrLabelNameFromJson(sourceTokens.shift());
                             } catch(invalid) {
                                 errors("Cell: " + invalid.message);
                                 valid = false;
                             }
-                            tokens2[SpreadsheetHistoryHash.CELL] = cell;
+                            tokens2[SpreadsheetHistoryHash.SELECTION] = selection;
                             break;
                         case SpreadsheetHistoryHash.CELL_FORMULA:
-                            if(!cell){
+                            if(!(selection instanceof SpreadsheetCellReferenceOrLabelName)){
                                 valid = false;
                                 break;
                             }
                             tokens2[SpreadsheetHistoryHash.CELL_FORMULA] = true;
+                            break;
+                        case SpreadsheetHistoryHash.COLUMN:
+                            if(selection || sourceTokens.length === 0){
+                                valid = false;
+                                break;
+                            }
+
+                            try {
+                                selection = SpreadsheetColumnReference.parse(sourceTokens.shift());
+                            } catch(invalid) {
+                                errors("Column: " + invalid.message);
+                                valid = false;
+                            }
+                            tokens2[SpreadsheetHistoryHash.SELECTION] = selection;
                             break;
                         case SpreadsheetHistoryHash.LABEL:
                             if(sourceTokens.length === 0){
@@ -120,6 +144,20 @@ export default class SpreadsheetHistoryHash {
                                 valid = false;
                             }
                             tokens2[SpreadsheetHistoryHash.LABEL] = label;
+                            break;
+                        case SpreadsheetHistoryHash.ROW:
+                            if(selection || sourceTokens.length === 0){
+                                valid = false;
+                                break;
+                            }
+
+                            try {
+                                selection = SpreadsheetRowReference.parse(sourceTokens.shift());
+                            } catch(invalid) {
+                                errors("Row: " + invalid.message);
+                                valid = false;
+                            }
+                            tokens2[SpreadsheetHistoryHash.SELECTION] = selection;
                             break;
                         case SpreadsheetHistoryHash.SELECT:
                             tokens2[SpreadsheetHistoryHash.SELECT] = true;
@@ -157,7 +195,7 @@ export default class SpreadsheetHistoryHash {
         var spreadsheetId = tokens[SpreadsheetHistoryHash.SPREADSHEET_ID];
         var spreadsheetName = tokens[SpreadsheetHistoryHash.SPREADSHEET_NAME];
         var nameEdit = tokens[SpreadsheetHistoryHash.SPREADSHEET_NAME_EDIT];
-        var cell = tokens[SpreadsheetHistoryHash.CELL];
+        var selection = tokens[SpreadsheetHistoryHash.SELECTION];
         var formula = tokens[SpreadsheetHistoryHash.CELL_FORMULA];
         var label = tokens[SpreadsheetHistoryHash.LABEL];
         var select = tokens[SpreadsheetHistoryHash.SELECT];
@@ -171,29 +209,29 @@ export default class SpreadsheetHistoryHash {
 
             if(spreadsheetName){
                 verified[SpreadsheetHistoryHash.SPREADSHEET_NAME] = spreadsheetName;
-                if(nameEdit && (cell || label || select || settings)){
+                if(nameEdit && (selection || label || select || settings)){
                     nameEdit = false;
-                    cell = false;
+                    selection = false;
                     label = false;
                     select = false;
                 }
                 if(nameEdit){
-                    cell = false;
+                    selection = false;
                     label = false;
                     select = false;
                 }
-                if(cell || label || select || settings){
+                if(selection || label || select || settings){
                     nameEdit = false;
                 }
-                if(formula && !cell){
+                if(formula && !selection){
                     formula = false;
                 }
                 if(nameEdit){
                     verified[SpreadsheetHistoryHash.SPREADSHEET_NAME_EDIT] = nameEdit;
                 }
-                if(cell instanceof SpreadsheetSelection){
-                    verified[SpreadsheetHistoryHash.CELL] = cell;
-                    if(formula){
+                if(selection instanceof SpreadsheetSelection){
+                    verified[SpreadsheetHistoryHash.SELECTION] = selection;
+                    if(selection instanceof SpreadsheetCellReferenceOrLabelName && formula){
                         verified[SpreadsheetHistoryHash.CELL_FORMULA] = formula;
                     }
                 }
@@ -227,7 +265,7 @@ export default class SpreadsheetHistoryHash {
         var spreadsheetId = current[SpreadsheetHistoryHash.SPREADSHEET_ID];
         var spreadsheetName = current[SpreadsheetHistoryHash.SPREADSHEET_NAME];
         var nameEdit = current[SpreadsheetHistoryHash.SPREADSHEET_NAME_EDIT];
-        var cell = current[SpreadsheetHistoryHash.CELL];
+        var selection = current[SpreadsheetHistoryHash.SELECTION];
         var formula = current[SpreadsheetHistoryHash.CELL_FORMULA];
         var label = current[SpreadsheetHistoryHash.LABEL];
         var select = current[SpreadsheetHistoryHash.SELECT];
@@ -246,7 +284,7 @@ export default class SpreadsheetHistoryHash {
         if(delta.hasOwnProperty(SpreadsheetHistoryHash.SPREADSHEET_NAME_EDIT)){
             nameEdit = !!delta[SpreadsheetHistoryHash.SPREADSHEET_NAME_EDIT];
             if(nameEdit){
-                cell = null;
+                selection = null;
                 formula = null;
                 label = null;
                 select = null;
@@ -254,9 +292,9 @@ export default class SpreadsheetHistoryHash {
             }
         }
 
-        if(delta.hasOwnProperty(SpreadsheetHistoryHash.CELL)){
-            cell = delta[SpreadsheetHistoryHash.CELL];
-            if(cell){
+        if(delta.hasOwnProperty(SpreadsheetHistoryHash.SELECTION)){
+            selection = delta[SpreadsheetHistoryHash.SELECTION];
+            if(selection){
                 nameEdit = false;
             }
         }
@@ -302,7 +340,7 @@ export default class SpreadsheetHistoryHash {
 
                 valid = true;
                 if(nameEdit){
-                    if(cell || label || select || settings){
+                    if(selection || label || select || settings){
                         valid = false;
                     }
                 }
@@ -314,11 +352,11 @@ export default class SpreadsheetHistoryHash {
                 merged[SpreadsheetHistoryHash.SPREADSHEET_NAME_EDIT] = nameEdit;
             }
 
-            if(cell){
-                merged[SpreadsheetHistoryHash.CELL] = cell;
+            if(selection){
+                merged[SpreadsheetHistoryHash.SELECTION] = selection;
             }
 
-            if(cell && !!formula){
+            if(selection && !!formula){
                 merged[SpreadsheetHistoryHash.CELL_FORMULA] = formula;
             }
 
@@ -349,7 +387,7 @@ export default class SpreadsheetHistoryHash {
         var spreadsheetId = tokens[SpreadsheetHistoryHash.SPREADSHEET_ID];
         var spreadsheetName = tokens[SpreadsheetHistoryHash.SPREADSHEET_NAME];
         var nameEdit = tokens[SpreadsheetHistoryHash.SPREADSHEET_NAME_EDIT];
-        var cell = tokens[SpreadsheetHistoryHash.CELL];
+        var selection = tokens[SpreadsheetHistoryHash.SELECTION];
         var formula = tokens[SpreadsheetHistoryHash.CELL_FORMULA];
         var label = tokens[SpreadsheetHistoryHash.LABEL];
         var select = tokens[SpreadsheetHistoryHash.SELECT];
@@ -367,7 +405,7 @@ export default class SpreadsheetHistoryHash {
 
                 valid = true;
                 if(nameEdit){
-                    if(cell || label || select || settings){
+                    if(selection || label || select || settings){
                         valid = false;
                     }
                 }
@@ -377,18 +415,18 @@ export default class SpreadsheetHistoryHash {
         if(valid){
             if(nameEdit){
                 hash = hash + "/" + SpreadsheetHistoryHash.SPREADSHEET_NAME_EDIT;
-                cell = null;
+                selection = null;
                 formula = null;
                 label = null;
                 select = null;
             }
 
-            if(cell){
-                hash = hash + "/" + SpreadsheetHistoryHash.CELL + "/" + cell;
-            }
+            if(selection){
+                hash = hash + "/" + selection.toSelectionHashToken();
 
-            if(cell && !!formula){
-                hash = hash + "/" + SpreadsheetHistoryHash.CELL_FORMULA;
+                if(!!formula){
+                    hash = hash + "/" + SpreadsheetHistoryHash.CELL_FORMULA;
+                }
             }
 
             if(label){
