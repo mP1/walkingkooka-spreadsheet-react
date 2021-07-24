@@ -3,6 +3,7 @@ import React from 'react';
 import Slider from "@material-ui/core/Slider";
 import SpreadsheetSettingsWidgetValue from "./SpreadsheetSettingsWidgetValue.js";
 import TextField from "@material-ui/core/TextField";
+import Keys from "../../Keys.js";
 
 /**
  * Shows a slider with min/max along with a text box which accepts only numbers
@@ -107,10 +108,10 @@ export default class SpreadsheetSettingsWidgetSliderWithNumberTextField extends 
      */
     onKeyDown(e) {
         switch(e.key) {
-            case "Escape":
+            case Keys.ESCAPE:
                 this.onSetDefaultValue();
                 break;
-            case "Enter":
+            case Keys.ENTER:
                 this.setValue(this.createValue(e.target.value));
                 break;
             default:

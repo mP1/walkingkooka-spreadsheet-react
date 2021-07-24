@@ -1,5 +1,6 @@
 import Button from '@material-ui/core/Button';
 import Equality from "../../Equality.js";
+import Keys from "../../Keys.js";
 import PropTypes from 'prop-types';
 import React from 'react';
 import SpreadsheetDialog from "../../widget/SpreadsheetDialog.js";
@@ -282,7 +283,7 @@ export default class SpreadsheetLabelWidget extends SpreadsheetHistoryAwareState
      */
     onKeyDown(e) {
         switch(e.key) {
-            case "Enter":
+            case Keys.ENTER:
                 this.onEnter();
                 break;
             default:
