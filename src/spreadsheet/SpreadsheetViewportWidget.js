@@ -578,9 +578,8 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
                 column = column.add(1);
             }
 
-            const id = row.viewportId();
             tableRows.push(
-                <TableRow key={id} id={id}>
+                <TableRow>
                     {
                         tableCells
                     }
