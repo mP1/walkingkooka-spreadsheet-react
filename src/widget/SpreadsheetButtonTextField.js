@@ -1,5 +1,6 @@
 import Button from '@material-ui/core/Button';
 import Equality from "../Equality.js";
+import Keys from "../Keys.js";
 import PropTypes from "prop-types";
 import React from 'react';
 import TextField from '@material-ui/core/TextField';
@@ -60,10 +61,10 @@ export default class SpreadsheetButtonTextField extends React.Component {
 
     handleKeyDown(event) {
         switch(event.key) {
-            case "Escape":
+            case Keys.ESCAPE:
                 this.handleEscapeKey(event);
                 break;
-            case "Enter":
+            case Keys.ENTER:
                 this.handleEnterKey(event);
                 break;
             default:

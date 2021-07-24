@@ -1,3 +1,4 @@
+import Keys from "../../Keys.js";
 import React from 'react';
 import SpreadsheetSettingsWidgetValue from "./SpreadsheetSettingsWidgetValue.js";
 import TextField from "@material-ui/core/TextField";
@@ -89,10 +90,10 @@ export default class SpreadsheetSettingsWidgetTextField extends SpreadsheetSetti
      */
     onKeyDown(e) {
         switch(e.key) {
-            case "Escape":
+            case Keys.ESCAPE:
                 this.resetValue();
                 break;
-            case "Enter":
+            case Keys.ENTER:
                 this.setValue(this.createValue(e.target.value));
                 break;
             default:

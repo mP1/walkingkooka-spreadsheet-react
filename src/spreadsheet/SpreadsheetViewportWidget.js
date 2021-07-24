@@ -1,6 +1,7 @@
 import _ from "lodash";
 import Equality from "../Equality.js";
 import ImmutableMap from "../util/ImmutableMap.js";
+import Keys from "../Keys.js";
 import Paper from '@material-ui/core/Paper';
 import Preconditions from "../Preconditions.js";
 import PropTypes from "prop-types";
@@ -613,22 +614,22 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
         console.log("onCellKeyDown: " + cellReference + " key: " + key);
 
         switch(key) {
-            case "ArrowLeft":
+            case Keys.ARROW_LEFT:
                 this.saveEditCell(cellReference.addColumnSaturated(-1));
                 break;
-            case "ArrowDown":
+            case Keys.ARROW_DOWN:
                 this.saveEditCell(cellReference.addRowSaturated(+1));
                 break;
-            case "ArrowRight":
+            case Keys.ARROW_RIGHT:
                 this.saveEditCell(cellReference.addColumnSaturated(+1));
                 break;
-            case "ArrowUp":
+            case Keys.ARROW_UP:
                 this.saveEditCell(cellReference.addRowSaturated(-1));
                 break;
-            case "Enter":
+            case Keys.ENTER:
                 this.giveFormulaTextBoxFocus();
                 break;
-            case "Escape":
+            case Keys.ESCAPE:
                 this.saveEditCell(null);
                 break;
             default:

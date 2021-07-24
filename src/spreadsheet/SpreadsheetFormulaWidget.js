@@ -1,6 +1,7 @@
 import CharSequences from "../CharSequences.js";
 import Equality from "../Equality.js";
 import ImmutableMap from "../util/ImmutableMap.js";
+import Keys from "../Keys.js";
 import PropTypes from "prop-types";
 import React from 'react';
 import SpreadsheetCell from "./SpreadsheetCell.js";
@@ -216,10 +217,10 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetHistoryAwareSta
      */
     onKeyDown(e) {
         switch(e.key) {
-            case "Escape":
+            case Keys.ESCAPE:
                 this.onEscapeKey(e);
                 break;
-            case "Enter":
+            case Keys.ENTER:
                 this.onEnterKey(e);
                 break;
             default:

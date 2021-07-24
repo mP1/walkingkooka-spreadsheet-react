@@ -4,6 +4,7 @@ import DialogActions from '@material-ui/core/DialogActions';
 import DialogContent from '@material-ui/core/DialogContent';
 import DialogTitle from '@material-ui/core/DialogTitle';
 import IconButton from '@material-ui/core/IconButton';
+import Keys from "../Keys.js";
 import PropTypes from 'prop-types';
 import React from 'react';
 import Slide from "@material-ui/core/Slide";
@@ -99,7 +100,7 @@ class SpreadsheetDialog extends React.Component {
      */
     onDialogKeyDown(e) {
         switch(e.key) {
-            case "Escape":
+            case Keys.ESCAPE:
                 this.onEscape();
                 break;
             default:
