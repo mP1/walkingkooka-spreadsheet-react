@@ -579,7 +579,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
             }
 
             tableRows.push(
-                <TableRow>
+                <TableRow key={"row-" + row}>
                     {
                         tableCells
                     }
