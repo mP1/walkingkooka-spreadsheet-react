@@ -62,7 +62,6 @@ export default class SpreadsheetLabelWidget extends SpreadsheetHistoryAwareState
                 this.props.spreadsheetLabelCrud.get(
                     label,
                     {},
-                    () => {},
                     this.onLabelMappingLoadFailure.bind(this)
                 );
             }
@@ -204,7 +203,6 @@ export default class SpreadsheetLabelWidget extends SpreadsheetHistoryAwareState
     onDeleteButtonClicked() {
         this.props.spreadsheetLabelCrud.delete(
             this.state.label,
-            () => {},
             this.props.showError
         );
     }
@@ -225,7 +223,6 @@ export default class SpreadsheetLabelWidget extends SpreadsheetHistoryAwareState
                     props.spreadsheetLabelCrud.post(
                         oldLabel,
                         new SpreadsheetLabelMapping(newLabel, reference),
-                        () => {},
                         props.showError
                     );
                 }

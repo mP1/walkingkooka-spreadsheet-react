@@ -278,8 +278,6 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
             this.props.spreadsheetMetadataCrud.post(
                 metadata.getIgnoringDefaults(SpreadsheetMetadata.SPREADSHEET_ID),
                 metadata,
-                () => {
-                },
                 this.props.showError
             );
         }
@@ -346,8 +344,6 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
         props.spreadsheetDeltaCrud.get(
             "*",
             viewport.toQueryStringParameters(),
-            () => {
-            },
             props.showError
         );
     }

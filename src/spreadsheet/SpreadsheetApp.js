@@ -174,8 +174,6 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
                     this.spreadsheetMetadataCrud.get(
                         id,
                         {},
-                        () => {
-                        },
                         (message, error) => this.props.showError("Unable to load spreadsheet " + id, error)
                     );
                 }
@@ -234,8 +232,6 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
         this.spreadsheetMetadataCrud.post(
             null,
             "",
-            () => {
-            },
             this.props.showError
         );
     }

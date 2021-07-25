@@ -122,8 +122,6 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetHistoryAwareSta
         this.props.spreadsheetDeltaCrud.get(
             cellOrLabel,
             {},
-            () => {
-            },
             (message, error) => {
                 this.setState({
                     giveFocus: false,
@@ -255,8 +253,6 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetHistoryAwareSta
                 ImmutableMap.EMPTY,
                 []
             ),
-            () => {
-            },
             props.showError,
         );
 
