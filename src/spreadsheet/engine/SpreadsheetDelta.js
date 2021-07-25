@@ -42,29 +42,29 @@ export default class SpreadsheetDelta extends SystemObject {
             }) :
             [];
 
-        const maxColumnWidths = ImmutableMap.fromJson(json.maxColumnWidths || {}, SpreadsheetColumnReference.fromJson, NUMBER);
+        const columnWidths = ImmutableMap.fromJson(json.columnWidths || {}, SpreadsheetColumnReference.fromJson, NUMBER);
         const maxRowHeights = ImmutableMap.fromJson(json.maxRowHeights || {}, SpreadsheetRowReference.fromJson, NUMBER);
         const windowJson = json["window"];
 
         return new SpreadsheetDelta(
             cells,
             labels,
-            maxColumnWidths,
+            columnWidths,
             maxRowHeights,
             (windowJson && windowJson.split(",").map(r => SpreadsheetRange.fromJson(r))) || []);
     }
 
-    constructor(cells, labels, maxColumnWidths, maxRowHeights, window) {
+    constructor(cells, labels, columnWidths, maxRowHeights, window) {
         super();
         Preconditions.requireArray(cells, "cells");
         Preconditions.requireArray(labels, "labels");
-        Preconditions.requireInstance(maxColumnWidths, ImmutableMap, "maxColumnWidths");
+        Preconditions.requireInstance(columnWidths, ImmutableMap, "columnWidths");
         Preconditions.requireInstance(maxRowHeights, ImmutableMap, "maxRowHeights");
         Preconditions.requireArray(window, "window");
 
         this.cellsValue = cells.slice();
         this.labelsValue = labels.slice();
-        this.maxColumnWidthsValue = maxColumnWidths;
+        this.columnWidthsValue = columnWidths;
         this.maxRowHeightsValue = maxRowHeights;
         this.windowValue = window.slice();
     }
@@ -132,8 +132,8 @@ export default class SpreadsheetDelta extends SystemObject {
         return new ImmutableMap(cellToLabels);
     }
 
-    maxColumnWidths() {
-        return this.maxColumnWidthsValue;
+    columnWidths() {
+        return this.columnWidthsValue;
     }
 
     maxRowHeights() {
@@ -159,7 +159,7 @@ export default class SpreadsheetDelta extends SystemObject {
      *        }
      *     }
      *    },
-     *    "maxColumnWidths": {
+     *    "columnWidths": {
      *      "A": 150
      *    },
      *    "maxRowHeights": {
@@ -182,9 +182,9 @@ export default class SpreadsheetDelta extends SystemObject {
             json.labels = labels.map(l => l.toJson());
         }
 
-        const maxColumnWidths = this.maxColumnWidths();
-        if(maxColumnWidths.size() > 0){
-            json.maxColumnWidths = maxColumnWidths.toJson();
+        const columnWidths = this.columnWidths();
+        if(columnWidths.size() > 0){
+            json.columnWidths = columnWidths.toJson();
         }
 
         const maxRowHeights = this.maxRowHeights();
@@ -208,7 +208,7 @@ export default class SpreadsheetDelta extends SystemObject {
             (other instanceof SpreadsheetDelta &&
                 Equality.safeEquals(this.cells(), other.cells()) &&
                 Equality.safeEquals(this.labels(), other.labels()) &&
-                this.maxColumnWidths().equals(other.maxColumnWidths()) &&
+                this.columnWidths().equals(other.columnWidths()) &&
                 this.maxRowHeights().equals(other.maxRowHeights()) &&
                 Equality.safeEquals(this.window(), other.window())
             );

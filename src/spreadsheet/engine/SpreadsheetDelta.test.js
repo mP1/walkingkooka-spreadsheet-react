@@ -56,7 +56,7 @@ function labels() {
     ];
 }
 
-function maxColumnWidths() {
+function columnWidths() {
     return ImmutableMap.fromJson({
             "A": 100,
         },
@@ -82,7 +82,7 @@ function window() {
 const windowJson = "A1:B2,C3:D4";
 
 function delta() {
-    return new SpreadsheetDelta(cells(), labels(), maxColumnWidths(), maxRowHeights(), window());
+    return new SpreadsheetDelta(cells(), labels(), columnWidths(), maxRowHeights(), window());
 }
 
 systemObjectTesting(
@@ -99,7 +99,7 @@ systemObjectTesting(
             })
         ],
         labels(),
-        maxColumnWidths(),
+        columnWidths(),
         maxRowHeights(),
         window()
     ),
@@ -135,7 +135,7 @@ systemObjectTesting(
                 "reference": "B2"
             }
         ],
-        "maxColumnWidths": {
+        "columnWidths": {
             "A": 100
         },
         "maxRowHeights": {
@@ -150,7 +150,7 @@ systemObjectTesting(
 test("create without cells fails", () => {
     const c = undefined;
     const l = labels();
-    const mcw = maxColumnWidths();
+    const mcw = columnWidths();
     const mrh = maxRowHeights();
     const w = window();
 
@@ -160,7 +160,7 @@ test("create without cells fails", () => {
 test("create with cell non array fails", () => {
     const c = "!invalid";
     const l = labels();
-    const mcw = maxColumnWidths();
+    const mcw = columnWidths();
     const mrh = maxRowHeights();
     const w = window();
 
@@ -170,7 +170,7 @@ test("create with cell non array fails", () => {
 test("create without labels fails", () => {
     const c = cells();
     const l = undefined;
-    const mcw = maxColumnWidths();
+    const mcw = columnWidths();
     const mrh = maxRowHeights();
     const w = window();
 
@@ -180,37 +180,37 @@ test("create without labels fails", () => {
 test("create with labels non array fails", () => {
     const c = cells();
     const l = "!invalid"
-    const mcw = maxColumnWidths();
+    const mcw = columnWidths();
     const mrh = maxRowHeights();
     const w = window();
 
     expect(() => new SpreadsheetDelta(c, l, mcw, mrh, w)).toThrow("Expected array labels got !invalid");
 });
 
-test("create without maxColumnWidths fails", () => {
+test("create without columnWidths fails", () => {
     const c = cells();
     const l = labels();
     const mcw = undefined;
     const mrh = maxRowHeights();
     const w = window();
 
-    expect(() => new SpreadsheetDelta(c, l, mcw, mrh, w)).toThrow("Missing maxColumnWidths");
+    expect(() => new SpreadsheetDelta(c, l, mcw, mrh, w)).toThrow("Missing columnWidths");
 });
 
-test("create with maxColumnWidths non object fails", () => {
+test("create with columnWidths non object fails", () => {
     const c = cells();
     const l = labels();
     const mcw = "!invalid";
     const mrh = maxRowHeights();
     const w = window();
 
-    expect(() => new SpreadsheetDelta(c, l, mcw, mrh, w)).toThrow("Expected ImmutableMap maxColumnWidths got !invalid");
+    expect(() => new SpreadsheetDelta(c, l, mcw, mrh, w)).toThrow("Expected ImmutableMap columnWidths got !invalid");
 });
 
 test("create without maxRowHeights fails", () => {
     const c = cells();
     const l = labels();
-    const mcw = maxColumnWidths();
+    const mcw = columnWidths();
     const mrh = undefined;
     const w = window();
 
@@ -220,7 +220,7 @@ test("create without maxRowHeights fails", () => {
 test("create with maxRowHeights non object fails", () => {
     const c = cells();
     const l = labels();
-    const mcw = maxColumnWidths();
+    const mcw = columnWidths();
     const mrh = "!invalid";
     const w = window();
 
@@ -230,7 +230,7 @@ test("create with maxRowHeights non object fails", () => {
 test("create", () => {
     const c = cells();
     const l = labels();
-    const mcw = maxColumnWidths();
+    const mcw = columnWidths();
     const mrh = maxRowHeights();
     const w = window();
 
@@ -269,7 +269,7 @@ test("create", () => {
                     "reference": "B2"
                 }
             ],
-            maxColumnWidths: {
+            columnWidths: {
                 "A": 100
             },
             maxRowHeights: {
@@ -473,7 +473,7 @@ test("toJson only 2 cells", () => {
 test("toJson all properties", () => {
     const c = cells();
     const l = labels();
-    const mcw = maxColumnWidths();
+    const mcw = columnWidths();
     const mrh = maxRowHeights();
     const w = window();
 
@@ -507,7 +507,7 @@ test("toJson all properties", () => {
                     "reference": "B2"
                 }
             ],
-            maxColumnWidths: {
+            columnWidths: {
                 "A": 100
             },
             maxRowHeights: {
@@ -576,7 +576,7 @@ test("fromJson 2 cells only", () => {
 test("fromJson all properties", () => {
     const c = cells();
     const l = labels();
-    const mcw = maxColumnWidths();
+    const mcw = columnWidths();
     const mrh = maxRowHeights();
     const w = window();
 
@@ -609,7 +609,7 @@ test("fromJson all properties", () => {
                 "reference": "B2"
             }
         ],
-        maxColumnWidths: {
+        columnWidths: {
             "A": 100
         },
         maxRowHeights: {
@@ -624,7 +624,7 @@ test("fromJson all properties", () => {
 test("equals different cells false", () => {
     const c = cells();
     const l = labels();
-    const mcw = maxColumnWidths();
+    const mcw = columnWidths();
     const mrh = maxRowHeights();
     const w = window();
 
@@ -647,7 +647,7 @@ test("equals different cells false", () => {
 test("equals different labels false", () => {
     const c = cells();
     const l = labels();
-    const mcw = maxColumnWidths();
+    const mcw = columnWidths();
     const mrh = maxRowHeights();
     const w = window();
 
@@ -658,10 +658,10 @@ test("equals different labels false", () => {
     ).toBeFalse();
 });
 
-test("equals different maxColumnWidths false", () => {
+test("equals different columnWidths false", () => {
     const c = cells();
     const l = labels();
-    const mcw = maxColumnWidths();
+    const mcw = columnWidths();
     const mrh = maxRowHeights();
     const w = window();
 
@@ -675,7 +675,7 @@ test("equals different maxColumnWidths false", () => {
 test("equals different maxRowHeights false", () => {
     const c = cells();
     const l = labels();
-    const mcw = maxColumnWidths();
+    const mcw = columnWidths();
     const mrh = maxRowHeights();
     const w = window();
 
@@ -689,7 +689,7 @@ test("equals different maxRowHeights false", () => {
 test("equals different window false", () => {
     const c = cells();
     const l = labels();
-    const mcw = maxColumnWidths();
+    const mcw = columnWidths();
     const mrh = maxRowHeights();
     const w = window();
 
@@ -707,10 +707,10 @@ test("equals equivalent true", () => {
 
 // helpers..............................................................................................................
 
-function check(delta, cells, labels, maxColumnWidths, maxRowHeights, window, json) {
+function check(delta, cells, labels, columnWidths, maxRowHeights, window, json) {
     expect(delta.cells()).toStrictEqual(cells);
     expect(delta.labels()).toStrictEqual(labels);
-    expect(delta.maxColumnWidths()).toStrictEqual(maxColumnWidths);
+    expect(delta.columnWidths()).toStrictEqual(columnWidths);
     expect(delta.maxRowHeights()).toStrictEqual(maxRowHeights);
     expect(delta.window()).toStrictEqual(window);
 
