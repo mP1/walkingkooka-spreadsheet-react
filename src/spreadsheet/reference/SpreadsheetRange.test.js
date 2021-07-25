@@ -216,7 +216,7 @@ test("testColumn missing fails", () => {
     expect(() => SpreadsheetRange.fromJson("B2:C3").testColumn()).toThrow("Missing columnReference");
 });
 
-test("testColumn non SpreadCellReference fails", () => {
+test("testColumn non SpreadsheetColumnReference fails", () => {
     expect(() => SpreadsheetRange.fromJson("B2:C3").testColumn(123)).toThrow("Expected SpreadsheetColumnReference columnReference got 123");
 });
 
