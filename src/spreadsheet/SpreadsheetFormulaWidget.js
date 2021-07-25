@@ -277,7 +277,7 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetHistoryAwareSta
 
     onChange(e) {
         this.setState({
-            value: e.target.value,
+            value: e.target.value || "",
         });
     }
 
@@ -291,7 +291,7 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetHistoryAwareSta
                 const cell = delta.referenceToCellMap().get(cellReference);
                 if(cell) {
                     this.setState({
-                        value: cell.formula().text(),
+                        value: cell.formula().text() || "",
                         reload: false,
                     });
                 }
