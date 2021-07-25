@@ -563,7 +563,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
                 const cellReference = new SpreadsheetCellReference(column, row);
                 const cell = cells.get(cellReference) || cellReference.emptyCell();
 
-                const selected = selection && selection.test(cellReference);
+                const selected = selection && selection.testCell(cellReference);
 
                 tableCells.push(
                     cell.renderViewport(
