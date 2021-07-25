@@ -45,7 +45,7 @@ export default class SpreadsheetLabelWidget extends SpreadsheetHistoryAwareState
         super.componentDidMount();
 
         const props = this.props;
-        this.spreadsheetLabelCrudRemover = props.spreadsheetLabelCrud.addListener(this.onLabelMappingLoadSuccess.bind(this));
+        this.spreadsheetLabelCrudRemover = props.spreadsheetLabelCrud.addListener(this.onLabelMapping.bind(this));
     }
 
     /**
@@ -72,37 +72,6 @@ export default class SpreadsheetLabelWidget extends SpreadsheetHistoryAwareState
         }
 
         return historyTokens;
-    }
-
-    /**
-     * Handles the response of a load label attempt.
-     */
-    onLabelMappingLoadSuccess(method, label, mapping) {
-        switch(method) {
-            case "GET":
-                console.log("onLabelMappingLoadSuccess: " + mapping);
-
-                const labelValue = mapping ? mapping.label().toString() : label.toString();
-                const referenceValue = mapping ? mapping.reference().toString() : "";
-
-                const newState = {
-                    open: true,
-                };
-                // parse ignore the returned, only interested in the helper "error" text.
-                this.parseLabel(labelValue, newState);
-                this.parseReference(referenceValue, newState);
-                this.setState(newState);
-
-                const labelWidget = this.label.current;
-                if(labelWidget){
-                    labelWidget.value = labelValue;
-                }
-
-                const referenceWidget = this.reference.current;
-                if(referenceWidget){
-                    referenceWidget.value = referenceValue;
-                }
-        }
     }
 
     onLabelMappingLoadFailure(message, error) {
@@ -235,14 +204,9 @@ export default class SpreadsheetLabelWidget extends SpreadsheetHistoryAwareState
     onDeleteButtonClicked() {
         this.props.spreadsheetLabelCrud.delete(
             this.state.label,
-            this.onLabelMappingDeleteSuccess.bind(this),
+            () => {},
             this.props.showError
         );
-    }
-
-    onLabelMappingDeleteSuccess() {
-        this.props.notificationShow(SpreadsheetNotification.success("Label deleted"));
-        this.close();
     }
 
     /**
@@ -261,7 +225,7 @@ export default class SpreadsheetLabelWidget extends SpreadsheetHistoryAwareState
                     props.spreadsheetLabelCrud.post(
                         oldLabel,
                         new SpreadsheetLabelMapping(newLabel, reference),
-                        this.onLabelMappingSaveSuccess.bind(this),
+                        () => {},
                         props.showError
                     );
                 }
@@ -272,16 +236,63 @@ export default class SpreadsheetLabelWidget extends SpreadsheetHistoryAwareState
         }
     }
 
+    onLabelMapping(method, label, mapping) {
+        switch(method) {
+            case "GET":
+                this.onLabelMappingLoadSuccess(label, mapping);
+                break;
+            case "POST":
+                this.onLabelMappingSaveSuccess(mapping);
+                break;
+            case "DELETE":
+                this.onLabelMappingDeleteSuccess();
+                break;
+        }
+    }
+
+    /**
+     * Handles the response of a load label attempt.
+     */
+    onLabelMappingLoadSuccess(label, mapping) {
+        console.log("onLabelMappingLoadSuccess: " + mapping);
+
+        const labelValue = mapping ? mapping.label().toString() : label.toString();
+        const referenceValue = mapping ? mapping.reference().toString() : "";
+
+        const newState = {
+            open: true,
+        };
+        // parse ignore the returned, only interested in the helper "error" text.
+        this.parseLabel(labelValue, newState);
+        this.parseReference(referenceValue, newState);
+        this.setState(newState);
+
+        const labelWidget = this.label.current;
+        if(labelWidget){
+            labelWidget.value = labelValue;
+        }
+
+        const referenceWidget = this.reference.current;
+        if(referenceWidget){
+            referenceWidget.value = referenceValue;
+        }
+    }
+
     /**
      * Updates the state.label, this means future operations will reference this label to save.
      */
-    onLabelMappingSaveSuccess(label, mapping) {
+    onLabelMappingSaveSuccess(mapping) {
         this.setState({
             label: mapping.label(),
             reference: mapping.reference(),
         });
 
         this.props.notificationShow(SpreadsheetNotification.success("Label saved"));
+    }
+
+    onLabelMappingDeleteSuccess() {
+        this.props.notificationShow(SpreadsheetNotification.success("Label deleted"));
+        this.close();
     }
 
     /**
