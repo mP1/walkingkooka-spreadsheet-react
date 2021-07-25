@@ -298,16 +298,19 @@ test("toJson C", () => {
 
 // test SpreadsheetCellReference........................................................................................
 
-function testAndCheck(column, cellReference, expected) {
-    test("test " + column + " " + cellReference, () => {
-        expect(SpreadsheetColumnReference.parse(column).test(SpreadsheetCellReference.parse(cellReference))).toStrictEqual(expected);
-    });
+function testCellAndCheck(column, cellReference, expected) {
+    test("testCell " + column + " " + cellReference,
+        () => {
+            expect(SpreadsheetColumnReference.parse(column)
+                .testCell(SpreadsheetCellReference.parse(cellReference)))
+                .toStrictEqual(expected);
+        });
 }
 
-testAndCheck("A", "B1", false);
-testAndCheck("B", "$B2", true);
-testAndCheck("C", "C$3", true);
-testAndCheck("$D", "D$4", true);
+testCellAndCheck("A", "B1", false);
+testCellAndCheck("B", "$B2", true);
+testCellAndCheck("C", "C$3", true);
+testCellAndCheck("$D", "D$4", true);
 
 // testColumn SpreadsheetColumnReference........................................................................................
 
