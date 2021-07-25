@@ -180,36 +180,42 @@ test("fromJson range lowercase", () => {
     check(range, begin, end, "F8:G9");
 });
 
-// test.................................................................................................................
+// testCell.............................................................................................................
 
-test("test missing fails", () => {
-    expect(() => SpreadsheetRange.fromJson("B2:C3").test()).toThrow("Missing cellReference");
+test("testCell missing fails", () => {
+    expect(() => SpreadsheetRange.fromJson("B2:C3")
+        .testCell())
+        .toThrow("Missing cellReference");
 });
 
-test("test non SpreadCellReference fails", () => {
-    expect(() => SpreadsheetRange.fromJson("B2:C3").test(123)).toThrow("Expected SpreadsheetCellReference cellReference got 123");
+test("testCell non SpreadCellReference fails", () => {
+    expect(() => SpreadsheetRange.fromJson("B2:C3")
+        .testCell(123))
+        .toThrow("Expected SpreadsheetCellReference cellReference got 123");
 });
 
-function testAndCheck(label, range, cellReference, expected) {
-    test(label + " " + range + " test " + cellReference, () => {
-        expect(SpreadsheetRange.fromJson(range).test(SpreadsheetCellReference.parse(cellReference))).toStrictEqual(expected);
+function testCellAndCheck(label, range, cellReference, expected) {
+    test("testCell " + label + " " + range + " testCell " + cellReference, () => {
+        expect(SpreadsheetRange.fromJson(range)
+            .testCell(SpreadsheetCellReference.parse(cellReference)))
+            .toStrictEqual(expected);
     });
 }
 
-testAndCheck("left", "B2:D4", "A1", false);
-testAndCheck("right", "B2:D4", "E5", false);
-testAndCheck("above", "B2:D4", "C1", false);
-testAndCheck("below", "B2:D4", "C5", false);
+testCellAndCheck("left", "B2:D4", "A1", false);
+testCellAndCheck("right", "B2:D4", "E5", false);
+testCellAndCheck("above", "B2:D4", "C1", false);
+testCellAndCheck("below", "B2:D4", "C5", false);
 
-testAndCheck("topLeft", "B2:D4", "B2", true);
-testAndCheck("topEdge", "B2:D4", "C2", true);
-testAndCheck("topRight", "B2:D4", "D2", true);
+testCellAndCheck("topLeft", "B2:D4", "B2", true);
+testCellAndCheck("topEdge", "B2:D4", "C2", true);
+testCellAndCheck("topRight", "B2:D4", "D2", true);
 
-testAndCheck("center", "B2:D4", "C3", true);
+testCellAndCheck("center", "B2:D4", "C3", true);
 
-testAndCheck("bottomLeft", "B2:D4", "B4", true);
-testAndCheck("bottomEdge", "B2:D4", "C4", true);
-testAndCheck("bottomRight", "B2:D4", "D4", true);
+testCellAndCheck("bottomLeft", "B2:D4", "B4", true);
+testCellAndCheck("bottomEdge", "B2:D4", "C4", true);
+testCellAndCheck("bottomRight", "B2:D4", "D4", true);
 
 // testColumn...........................................................................................................
 

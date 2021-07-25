@@ -82,7 +82,7 @@ export default class SpreadsheetRange extends SpreadsheetExpressionReference {
     /**
      * Tests if the given {@link SpreadsheetCellReference} is within this range.
      */
-    test(cellReference) {
+    testCell(cellReference) {
         Preconditions.requireInstance(cellReference, SpreadsheetCellReference, "cellReference");
 
         return this.testColumn(cellReference.column()) &&
