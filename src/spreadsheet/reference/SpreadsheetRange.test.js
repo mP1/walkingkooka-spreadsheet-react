@@ -1,6 +1,7 @@
 import SpreadsheetCellReference from "./SpreadsheetCellReference";
 import SpreadsheetColumnReference from "./SpreadsheetColumnReference.js";
 import SpreadsheetRange from "./SpreadsheetRange";
+import SpreadsheetRowReference from "./SpreadsheetRowReference.js";
 import systemObjectTesting from "../../SystemObjectTesting.js";
 
 function begin() {
@@ -210,7 +211,7 @@ testAndCheck("bottomLeft", "B2:D4", "B4", true);
 testAndCheck("bottomEdge", "B2:D4", "C4", true);
 testAndCheck("bottomRight", "B2:D4", "D4", true);
 
-// test.................................................................................................................
+// testColumn...........................................................................................................
 
 test("testColumn missing fails", () => {
     expect(() => SpreadsheetRange.fromJson("B2:C3").testColumn()).toThrow("Missing columnReference");
@@ -231,6 +232,28 @@ testColumnAndCheck("left edge", "B2:D4", "B", true);
 testColumnAndCheck("center", "B2:D4", "C", true);
 testColumnAndCheck("right edge", "B2:D4", "D", true);
 testColumnAndCheck("right", "B2:D4", "E", false);
+
+// testRow...........................................................................................................
+
+test("testRow missing fails", () => {
+    expect(() => SpreadsheetRange.fromJson("B2:C3").testRow()).toThrow("Missing rowReference");
+});
+
+test("testRow non SpreadRowReference fails", () => {
+    expect(() => SpreadsheetRange.fromJson("B2:C3").testRow(123)).toThrow("Expected SpreadsheetRowReference rowReference got 123");
+});
+
+function testRowAndCheck(label, range, rowReference, expected) {
+    test(label + " testRow " + range + " " + rowReference, () => {
+        expect(SpreadsheetRange.fromJson(range).testRow(SpreadsheetRowReference.parse(rowReference))).toStrictEqual(expected);
+    });
+}
+
+testRowAndCheck("left", "B2:D4", "1", false);
+testRowAndCheck("left edge", "B2:D4", "2", true);
+testRowAndCheck("center", "B2:D4", "3", true);
+testRowAndCheck("right edge", "B2:D4", "4", true);
+testRowAndCheck("right", "B2:D4", "5", false);
 
 // equals...............................................................................................................
 
