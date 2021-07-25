@@ -64,7 +64,7 @@ function columnWidths() {
         (v) => v);
 }
 
-function maxRowHeights() {
+function rowHeights() {
     return ImmutableMap.fromJson({
             "1": 20,
         },
@@ -82,7 +82,7 @@ function window() {
 const windowJson = "A1:B2,C3:D4";
 
 function delta() {
-    return new SpreadsheetDelta(cells(), labels(), columnWidths(), maxRowHeights(), window());
+    return new SpreadsheetDelta(cells(), labels(), columnWidths(), rowHeights(), window());
 }
 
 systemObjectTesting(
@@ -100,7 +100,7 @@ systemObjectTesting(
         ],
         labels(),
         columnWidths(),
-        maxRowHeights(),
+        rowHeights(),
         window()
     ),
     SpreadsheetDelta.fromJson,
@@ -138,7 +138,7 @@ systemObjectTesting(
         "columnWidths": {
             "A": 100
         },
-        "maxRowHeights": {
+        "rowHeights": {
             "1": 20
         },
         "window": "A1:B2,C3:D4"
@@ -151,7 +151,7 @@ test("create without cells fails", () => {
     const c = undefined;
     const l = labels();
     const mcw = columnWidths();
-    const mrh = maxRowHeights();
+    const mrh = rowHeights();
     const w = window();
 
     expect(() => new SpreadsheetDelta(c, l, mcw, mrh, w)).toThrow("Missing cells");
@@ -161,7 +161,7 @@ test("create with cell non array fails", () => {
     const c = "!invalid";
     const l = labels();
     const mcw = columnWidths();
-    const mrh = maxRowHeights();
+    const mrh = rowHeights();
     const w = window();
 
     expect(() => new SpreadsheetDelta(c, l, mcw, mrh, w)).toThrow("Expected array cells got !invalid");
@@ -171,7 +171,7 @@ test("create without labels fails", () => {
     const c = cells();
     const l = undefined;
     const mcw = columnWidths();
-    const mrh = maxRowHeights();
+    const mrh = rowHeights();
     const w = window();
 
     expect(() => new SpreadsheetDelta(c, l, mcw, mrh, w)).toThrow("Missing labels");
@@ -181,7 +181,7 @@ test("create with labels non array fails", () => {
     const c = cells();
     const l = "!invalid"
     const mcw = columnWidths();
-    const mrh = maxRowHeights();
+    const mrh = rowHeights();
     const w = window();
 
     expect(() => new SpreadsheetDelta(c, l, mcw, mrh, w)).toThrow("Expected array labels got !invalid");
@@ -191,7 +191,7 @@ test("create without columnWidths fails", () => {
     const c = cells();
     const l = labels();
     const mcw = undefined;
-    const mrh = maxRowHeights();
+    const mrh = rowHeights();
     const w = window();
 
     expect(() => new SpreadsheetDelta(c, l, mcw, mrh, w)).toThrow("Missing columnWidths");
@@ -201,37 +201,37 @@ test("create with columnWidths non object fails", () => {
     const c = cells();
     const l = labels();
     const mcw = "!invalid";
-    const mrh = maxRowHeights();
+    const mrh = rowHeights();
     const w = window();
 
     expect(() => new SpreadsheetDelta(c, l, mcw, mrh, w)).toThrow("Expected ImmutableMap columnWidths got !invalid");
 });
 
-test("create without maxRowHeights fails", () => {
+test("create without rowHeights fails", () => {
     const c = cells();
     const l = labels();
     const mcw = columnWidths();
     const mrh = undefined;
     const w = window();
 
-    expect(() => new SpreadsheetDelta(c, l, mcw, mrh, w)).toThrow("Missing maxRowHeights");
+    expect(() => new SpreadsheetDelta(c, l, mcw, mrh, w)).toThrow("Missing rowHeights");
 });
 
-test("create with maxRowHeights non object fails", () => {
+test("create with rowHeights non object fails", () => {
     const c = cells();
     const l = labels();
     const mcw = columnWidths();
     const mrh = "!invalid";
     const w = window();
 
-    expect(() => new SpreadsheetDelta(c, l, mcw, mrh, w)).toThrow("Expected ImmutableMap maxRowHeights got !invalid");
+    expect(() => new SpreadsheetDelta(c, l, mcw, mrh, w)).toThrow("Expected ImmutableMap rowHeights got !invalid");
 });
 
 test("create", () => {
     const c = cells();
     const l = labels();
     const mcw = columnWidths();
-    const mrh = maxRowHeights();
+    const mrh = rowHeights();
     const w = window();
 
     check(new SpreadsheetDelta(c, l, mcw, mrh, w),
@@ -272,7 +272,7 @@ test("create", () => {
             columnWidths: {
                 "A": 100
             },
-            maxRowHeights: {
+            rowHeights: {
                 "1": 20
             },
             window: windowJson
@@ -474,7 +474,7 @@ test("toJson all properties", () => {
     const c = cells();
     const l = labels();
     const mcw = columnWidths();
-    const mrh = maxRowHeights();
+    const mrh = rowHeights();
     const w = window();
 
     expect(new SpreadsheetDelta(c, l, mcw, mrh, w).toJson())
@@ -510,7 +510,7 @@ test("toJson all properties", () => {
             columnWidths: {
                 "A": 100
             },
-            maxRowHeights: {
+            rowHeights: {
                 "1": 20
             },
             window: windowJson
@@ -577,7 +577,7 @@ test("fromJson all properties", () => {
     const c = cells();
     const l = labels();
     const mcw = columnWidths();
-    const mrh = maxRowHeights();
+    const mrh = rowHeights();
     const w = window();
 
     expect(SpreadsheetDelta.fromJson({
@@ -612,7 +612,7 @@ test("fromJson all properties", () => {
         columnWidths: {
             "A": 100
         },
-        maxRowHeights: {
+        rowHeights: {
             "1": 20
         },
         window: windowJson
@@ -625,7 +625,7 @@ test("equals different cells false", () => {
     const c = cells();
     const l = labels();
     const mcw = columnWidths();
-    const mrh = maxRowHeights();
+    const mrh = rowHeights();
     const w = window();
 
     expect(new SpreadsheetDelta(c, l, mcw, mrh, w)
@@ -648,7 +648,7 @@ test("equals different labels false", () => {
     const c = cells();
     const l = labels();
     const mcw = columnWidths();
-    const mrh = maxRowHeights();
+    const mrh = rowHeights();
     const w = window();
 
     expect(new SpreadsheetDelta(c, l, mcw, mrh, w)
@@ -662,7 +662,7 @@ test("equals different columnWidths false", () => {
     const c = cells();
     const l = labels();
     const mcw = columnWidths();
-    const mrh = maxRowHeights();
+    const mrh = rowHeights();
     const w = window();
 
     expect(new SpreadsheetDelta(c, l, mcw, mrh, w)
@@ -672,11 +672,11 @@ test("equals different columnWidths false", () => {
     ).toBeFalse();
 });
 
-test("equals different maxRowHeights false", () => {
+test("equals different rowHeights false", () => {
     const c = cells();
     const l = labels();
     const mcw = columnWidths();
-    const mrh = maxRowHeights();
+    const mrh = rowHeights();
     const w = window();
 
     expect(new SpreadsheetDelta(c, l, mcw, mrh, w)
@@ -690,7 +690,7 @@ test("equals different window false", () => {
     const c = cells();
     const l = labels();
     const mcw = columnWidths();
-    const mrh = maxRowHeights();
+    const mrh = rowHeights();
     const w = window();
 
     expect(new SpreadsheetDelta(c, l, mcw, mrh, w)
@@ -707,11 +707,11 @@ test("equals equivalent true", () => {
 
 // helpers..............................................................................................................
 
-function check(delta, cells, labels, columnWidths, maxRowHeights, window, json) {
+function check(delta, cells, labels, columnWidths, rowHeights, window, json) {
     expect(delta.cells()).toStrictEqual(cells);
     expect(delta.labels()).toStrictEqual(labels);
     expect(delta.columnWidths()).toStrictEqual(columnWidths);
-    expect(delta.maxRowHeights()).toStrictEqual(maxRowHeights);
+    expect(delta.rowHeights()).toStrictEqual(rowHeights);
     expect(delta.window()).toStrictEqual(window);
 
     expect(delta.toJson()).toStrictEqual(json);
