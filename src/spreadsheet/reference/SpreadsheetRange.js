@@ -1,9 +1,10 @@
 import CharSequences from "../../CharSequences.js";
 import Preconditions from "../../Preconditions.js";
 import SpreadsheetCellReference from "./SpreadsheetCellReference";
-import SpreadsheetExpressionReference from "./SpreadsheetExpressionReference.js";
-import SystemObject from "../../SystemObject.js";
 import SpreadsheetColumnReference from "./SpreadsheetColumnReference.js";
+import SpreadsheetExpressionReference from "./SpreadsheetExpressionReference.js";
+import SpreadsheetRowReference from "./SpreadsheetRowReference.js";
+import SystemObject from "../../SystemObject.js";
 
 const TYPE_NAME = "spreadsheet-range";
 /**
@@ -106,6 +107,16 @@ export default class SpreadsheetRange extends SpreadsheetExpressionReference {
             columnReference.compareTo(end.column()) <= 0;
     }
 
+    testRow(rowReference) {
+        Preconditions.requireInstance(rowReference, SpreadsheetRowReference, "rowReference");
+
+        const begin = this.begin();
+        const end = this.end();
+
+        return rowReference.compareTo(begin.row()) >= 0 &&
+            rowReference.compareTo(end.row()) <= 0;
+    }
+    
     toJson() {
         const begin = this.begin();
         const end = this.end();
