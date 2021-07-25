@@ -176,9 +176,9 @@ class SpreadsheetSettingsWidget extends SpreadsheetHistoryAwareStateWidget {
         return historyTokens;
     }
 
-    onSpreadsheetMetadata(method, id, metadata) {
+    onSpreadsheetMetadata(method, id, queryParameters, requestMetadata, responseMetadata) {
         this.setState({
-            spreadsheetMetadata: metadata,
+            spreadsheetMetadata: responseMetadata,
         });
     }
 

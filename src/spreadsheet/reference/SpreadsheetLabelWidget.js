@@ -233,13 +233,13 @@ export default class SpreadsheetLabelWidget extends SpreadsheetHistoryAwareState
         }
     }
 
-    onLabelMapping(method, label, mapping) {
+    onLabelMapping(method, label, queryParameters, requestMapping, responseMapping) {
         switch(method) {
             case "GET":
-                this.onLabelMappingLoadSuccess(label, mapping);
+                this.onLabelMappingLoadSuccess(label, responseMapping);
                 break;
             case "POST":
-                this.onLabelMappingSaveSuccess(mapping);
+                this.onLabelMappingSaveSuccess(responseMapping);
                 break;
             case "DELETE":
                 this.onLabelMappingDeleteSuccess();

@@ -236,15 +236,18 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
         );
     }
 
-    onSpreadsheetMetadata(method, id, metadata) {
+    onSpreadsheetMetadata(method, id, queryParameters, requestMetadata, responseMetadata) {
         this.setState({
-            spreadsheetId: metadata && metadata.getIgnoringDefaults(SpreadsheetMetadata.SPREADSHEET_ID),
-            spreadsheetName: metadata && metadata.getIgnoringDefaults(SpreadsheetMetadata.SPREADSHEET_NAME),
+            spreadsheetId: responseMetadata && responseMetadata.getIgnoringDefaults(SpreadsheetMetadata.SPREADSHEET_ID),
+            spreadsheetName: responseMetadata && responseMetadata.getIgnoringDefaults(SpreadsheetMetadata.SPREADSHEET_NAME),
             creatingEmptySpreadsheet: false,
-            spreadsheetMetadata: metadata,
+            spreadsheetMetadata: responseMetadata,
         });
 
-        this.props.notificationShow(SpreadsheetNotification.success("Spreadsheet metadata saved"));
+        switch(method) {
+            case "POST":
+                this.props.notificationShow(SpreadsheetNotification.success("Spreadsheet metadata saved"));
+        }
     }
 
     // rendering........................................................................................................

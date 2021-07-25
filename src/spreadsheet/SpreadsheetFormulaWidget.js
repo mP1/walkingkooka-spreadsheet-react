@@ -259,11 +259,11 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetHistoryAwareSta
         this.setState({"value": formulaText});
     }
 
-    onSpreadsheetDelta(method, cellOrLabel, delta) {
+    onSpreadsheetDelta(method, cellOrLabel, queryParameters, requestDelta, responseDelta) {
         switch(method) {
             case "GET":
             case "POST":
-                this.onSpreadsheetDeltaLoad(cellOrLabel, delta);
+                this.onSpreadsheetDeltaLoad(cellOrLabel, responseDelta);
                 break;
         }
     }

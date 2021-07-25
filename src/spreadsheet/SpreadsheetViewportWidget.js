@@ -58,17 +58,17 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
         this.onSpreadsheetMetadataRemover = props.spreadsheetMetadataCrud.addListener(this.onSpreadsheetMetadata.bind(this));
     }
 
-    onSpreadsheetDelta(method, id, delta) {
+    onSpreadsheetDelta(method, id, queryParameters, requestDelta, responseDelta) {
         const state = this.state;
 
         const newState = { // lgtm [js/react/inconsistent-state-update]
-            cells: state.cells.setAll(delta.referenceToCellMap()),
-            columnWidths: state.columnWidths.setAll(delta.columnWidths()),
-            rowHeights: state.rowHeights.setAll(delta.rowHeights()),
-            cellToLabels: state.cellToLabels.setAll(delta.cellToLabels()),
+            cells: state.cells.setAll(responseDelta.referenceToCellMap()),
+            columnWidths: state.columnWidths.setAll(responseDelta.columnWidths()),
+            rowHeights: state.rowHeights.setAll(responseDelta.rowHeights()),
+            cellToLabels: state.cellToLabels.setAll(responseDelta.cellToLabels()),
         };
 
-        const window = delta.window();
+        const window = responseDelta.window();
         if(window.length > 0){
             const viewportRange = window[0]; // update the range of cells being shown in the viewport;
 
@@ -87,7 +87,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
     /**
      * If a label was saved o deleted refresh the viewport.
      */
-    onSpreadsheetLabel(method, id, label) {
+    onSpreadsheetLabel(method, id, queryParameters, requestLabel, responseLabel) {
         switch(method) {
             case "DELETE":
             case "POST":
@@ -109,9 +109,9 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
         }
     }
 
-    onSpreadsheetMetadata(method, id, metadata) {
+    onSpreadsheetMetadata(method, id, queryParameters, requestMetadata, responseMetadata) {
         this.setState({
-            spreadsheetMetadata: metadata,
+            spreadsheetMetadata: responseMetadata,
         });
     }
 
