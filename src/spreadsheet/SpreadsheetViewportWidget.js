@@ -63,7 +63,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
 
         const newState = { // lgtm [js/react/inconsistent-state-update]
             cells: state.cells.setAll(delta.referenceToCellMap()),
-            columnWidths: state.columnWidths.setAll(delta.maxColumnWidths()),
+            columnWidths: state.columnWidths.setAll(delta.columnWidths()),
             rowHeights: state.rowHeights.setAll(delta.maxRowHeights()),
             cellToLabels: state.cellToLabels.setAll(delta.cellToLabels()),
         };
