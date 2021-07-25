@@ -41,6 +41,13 @@ export default class SpreadsheetLabelWidget extends SpreadsheetHistoryAwareState
         this.reference = React.createRef();
     }
 
+    componentDidMount() {
+        super.componentDidMount();
+
+        const props = this.props;
+        this.spreadsheetLabelCrudRemover = props.spreadsheetLabelCrud.addListener(this.onLabelMappingLoadSuccess.bind(this));
+    }
+
     /**
      * Updates the label within the history hash.
      */
@@ -55,7 +62,7 @@ export default class SpreadsheetLabelWidget extends SpreadsheetHistoryAwareState
                 this.props.spreadsheetLabelCrud.get(
                     label,
                     {},
-                    this.onLabelMappingLoadSuccess.bind(this),
+                    () => {},
                     this.onLabelMappingLoadFailure.bind(this)
                 );
             }
@@ -70,28 +77,31 @@ export default class SpreadsheetLabelWidget extends SpreadsheetHistoryAwareState
     /**
      * Handles the response of a load label attempt.
      */
-    onLabelMappingLoadSuccess(label, mapping) {
-        console.log("onLabelMappingLoadSuccess: " + mapping);
+    onLabelMappingLoadSuccess(method, label, mapping) {
+        switch(method) {
+            case "GET":
+                console.log("onLabelMappingLoadSuccess: " + mapping);
 
-        const labelValue = mapping ? mapping.label().toString() : label.toString();
-        const referenceValue = mapping ? mapping.reference().toString() : "";
+                const labelValue = mapping ? mapping.label().toString() : label.toString();
+                const referenceValue = mapping ? mapping.reference().toString() : "";
 
-        const newState = {
-            open: true,
-        };
-        // parse ignore the returned, only interested in the helper "error" text.
-        this.parseLabel(labelValue, newState);
-        this.parseReference(referenceValue, newState);
-        this.setState(newState);
+                const newState = {
+                    open: true,
+                };
+                // parse ignore the returned, only interested in the helper "error" text.
+                this.parseLabel(labelValue, newState);
+                this.parseReference(referenceValue, newState);
+                this.setState(newState);
 
-        const labelWidget = this.label.current;
-        if(labelWidget){
-            labelWidget.value = labelValue;
-        }
+                const labelWidget = this.label.current;
+                if(labelWidget){
+                    labelWidget.value = labelValue;
+                }
 
-        const referenceWidget = this.reference.current;
-        if(referenceWidget){
-            referenceWidget.value = referenceValue;
+                const referenceWidget = this.reference.current;
+                if(referenceWidget){
+                    referenceWidget.value = referenceValue;
+                }
         }
     }
 
@@ -294,6 +304,13 @@ export default class SpreadsheetLabelWidget extends SpreadsheetHistoryAwareState
 
     onEnter() {
         this.onSaveButtonClicked();
+    }
+
+    componentWillUnmount() {
+        super.componentWillUnmount();
+
+        this.spreadsheetLabelCrudRemover && this.spreadsheetLabelCrudRemover();
+        delete this.spreadsheetLabelCrudRemover;
     }
 }
 
