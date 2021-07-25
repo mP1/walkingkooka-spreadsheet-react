@@ -97,7 +97,7 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetHistoryAwareSta
         // if different cell
         if(!Equality.safeEquals(cellOrLabel, prevState.cellOrLabel) || reload){
             if(edit){
-                this.reloadFormulaText(cellOrLabel, giveFocus);
+                this.reloadFormulaText(cellOrLabel);
             }else {
                 this.setState({
                     edit: false,
@@ -116,31 +116,13 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetHistoryAwareSta
         return historyTokens;
     }
 
-    reloadFormulaText(cellOrLabel, giveFocus) {
-        console.log("reloadFormulaText " + cellOrLabel + (giveFocus ? "giveFocus" : ""));
+    reloadFormulaText(cellOrLabel) {
+        console.log("reloadFormulaText " + cellOrLabel);
 
         this.props.spreadsheetDeltaCrud.get(
             cellOrLabel,
             {},
-            (cellOrLabel, delta) => {
-                const cell = delta.cell(cellOrLabel);
-                const cellReference = cellOrLabel instanceof SpreadsheetLabelName ?
-                    delta.cellReference(cellOrLabel) :
-                    cellOrLabel;
-                const formulaText = cell ? cell.formula().text() : "";
-                console.log("loaded formulaText for " + cellOrLabel + " is " + CharSequences.quoteAndEscape(formulaText));
-
-                this.setState({
-                    cell: cell,
-                    cellOrLabel: cellOrLabel,
-                    cellReference: cellReference,
-                    value: formulaText,
-                    reload: false,
-                });
-
-                this.input.current.value =formulaText;
-
-                giveFocus && this.giveInputFocus();
+            () => {
             },
             (message, error) => {
                 this.setState({
@@ -212,6 +194,12 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetHistoryAwareSta
         });
     }
 
+    onChange(e) {
+        this.setState({
+            value: e.target.value || "",
+        });
+    }
+
     /**
      * ESCAPE reloads the initial formula, ENTER saves the cell with the current formula text.
      */
@@ -275,27 +263,42 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetHistoryAwareSta
         this.setState({"value": formulaText});
     }
 
-    onChange(e) {
-        this.setState({
-            value: e.target.value || "",
-        });
+    onSpreadsheetDelta(method, cellOrLabel, delta) {
+        switch(method) {
+            case "GET":
+            case "POST":
+                this.onSpreadsheetDeltaLoad(cellOrLabel, delta);
+                break;
+        }
     }
 
     /**
-     * Reload formula text whenever a cell is reloaded.
+     * Check the load if it includes the cell formula being edited and updates state to match.
      */
-    onSpreadsheetDelta(method, id, delta) {
-        if("GET" === method) {
-            const cellReference = this.state.cellReference;
-            if(cellReference) {
-                const cell = delta.referenceToCellMap().get(cellReference);
-                if(cell) {
-                    this.setState({
-                        value: cell.formula().text() || "",
-                        reload: false,
-                    });
-                }
-            }
+    onSpreadsheetDeltaLoad(loadCellOrLabel, delta) {
+        const state = this.state;
+        const cellOrLabel = state.cellOrLabel;
+
+        if(cellOrLabel){
+            const cell = delta.cell(cellOrLabel);
+
+            const cellReference = cellOrLabel instanceof SpreadsheetLabelName ?
+                delta.cellReference(cellOrLabel) :
+                cellOrLabel;
+            const formulaText = cell ? cell.formula().text() : "";
+            console.log("loaded formulaText for " + cellOrLabel + " is " + CharSequences.quoteAndEscape(formulaText));
+
+            this.setState({
+                cell: cell,
+                cellOrLabel: cellOrLabel,
+                cellReference: cellReference,
+                value: formulaText,
+                reload: false,
+            });
+
+            this.input.current.value = formulaText;
+
+            state.giveFocus && this.giveInputFocus();
         }
     }
 }
