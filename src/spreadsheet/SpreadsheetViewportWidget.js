@@ -219,7 +219,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
                         break;
                     }
 
-                    if(viewportRange && cellNew instanceof SpreadsheetCellReference && !cellNew.equals(cellOld) && !viewportRange.test(cellNew)){
+                    if(viewportRange && cellNew instanceof SpreadsheetCellReference && !cellNew.equals(cellOld) && !viewportRange.testCell(cellNew)){
                         console.log("New cell " + cellNew + " outside" + viewportRange + " scroll to");
 
                         this.viewportLoadCells(
