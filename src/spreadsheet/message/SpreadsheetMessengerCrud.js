@@ -40,7 +40,7 @@ export default class SpreadsheetMessengerCrud {
     /**
      * Accepts an id and attemps to load the value, notifying all listeners on success.
      */
-    get(id, queryParameters, success, failure) {
+    get(id, queryParameters, failure) {
         Preconditions.requireNonNull(id, "id");
         Preconditions.requireObject(queryParameters, "queryParameters");
 
@@ -50,7 +50,6 @@ export default class SpreadsheetMessengerCrud {
                 method: "GET",
             },
             id,
-            success,
             failure,
         );
     }
@@ -58,7 +57,7 @@ export default class SpreadsheetMessengerCrud {
     /**
      * Accepts an id & value and saves (POST) the value notifying the listeners on success.
      */
-    post(id, value, success, failure) {
+    post(id, value, failure) {
         Preconditions.requireNonNull(value, "value");
 
         this.send(
@@ -68,7 +67,6 @@ export default class SpreadsheetMessengerCrud {
                 body: value.toJson ? JSON.stringify(value.toJson()) : value.toString(),
             },
             id,
-            success,
             failure
         );
     }
@@ -76,7 +74,7 @@ export default class SpreadsheetMessengerCrud {
     /**
      * Accepts an id and deletes (DELETE) the value notifying the listeners on success.
      */
-    delete(id, success, failure) {
+    delete(id, failure) {
         Preconditions.requireNonNull(id, "id");
 
         this.send(
@@ -85,7 +83,6 @@ export default class SpreadsheetMessengerCrud {
                 method: "DELETE",
             },
             id,
-            success,
             failure
         );
     }
@@ -93,7 +90,7 @@ export default class SpreadsheetMessengerCrud {
     /**
      * Shared method by all public methods: get, post, delete, preparing and calling the messenger.
      */
-    send(url, parameters, id, success, failure) {
+    send(url, parameters, id, failure) {
         const method = parameters.method;
 
         this.messenger.send(
@@ -101,7 +98,6 @@ export default class SpreadsheetMessengerCrud {
             parameters,
             (json) => {
                 const value = null != json ? this.unmarshall(json) : null;
-                success(id, value);
                 this.listeners.fire(method, id, value);
             },
             failure,

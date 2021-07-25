@@ -1383,8 +1383,6 @@ class SpreadsheetSettingsWidget extends SpreadsheetHistoryAwareStateWidget {
         this.props.spreadsheetMetadataCrud.post(
             metadata.getIgnoringDefaults(SpreadsheetMetadata.SPREADSHEET_ID),
             metadata,
-            (m) => {
-            },
             this.props.showError,
         );
 

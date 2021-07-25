@@ -97,7 +97,6 @@ export default class SpreadsheetNameWidget extends SpreadsheetHistoryAwareStateW
             this.props.spreadsheetMetadataCrud.post(
                 metadata.get(SpreadsheetMetadata.SPREADSHEET_ID),
                 metadata.set(SpreadsheetMetadata.SPREADSHEET_NAME, new SpreadsheetName(v)),
-                () => {},
                 this.resetValueAndShowError.bind(this)
             );
         } catch(e) {
