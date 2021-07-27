@@ -2,11 +2,11 @@ import Equality from "../../Equality.js";
 import ImmutableMap from "../../util/ImmutableMap";
 import Preconditions from "../../Preconditions.js";
 import SpreadsheetCell from "../SpreadsheetCell";
+import SpreadsheetCellRange from "../reference/SpreadsheetCellRange.js";
 import SpreadsheetCellReferenceOrLabelName from "../reference/SpreadsheetCellReferenceOrLabelName.js";
 import SpreadsheetColumnReference from "../reference/SpreadsheetColumnReference";
 import SpreadsheetLabelMapping from "../reference/SpreadsheetLabelMapping.js";
 import SpreadsheetLabelName from "../reference/SpreadsheetLabelName.js";
-import SpreadsheetRange from "../reference/SpreadsheetRange";
 import SpreadsheetRowReference from "../reference/SpreadsheetRowReference";
 import SystemObject from "../../SystemObject.js";
 
@@ -51,7 +51,7 @@ export default class SpreadsheetDelta extends SystemObject {
             labels,
             columnWidths,
             rowHeights,
-            (windowJson && windowJson.split(",").map(r => SpreadsheetRange.fromJson(r))) || []);
+            (windowJson && windowJson.split(",").map(r => SpreadsheetCellRange.fromJson(r))) || []);
     }
 
     constructor(cells, labels, columnWidths, rowHeights, window) {

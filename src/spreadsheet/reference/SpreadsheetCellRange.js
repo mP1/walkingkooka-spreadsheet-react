@@ -6,14 +6,14 @@ import SpreadsheetExpressionReference from "./SpreadsheetExpressionReference.js"
 import SpreadsheetRowReference from "./SpreadsheetRowReference.js";
 import SystemObject from "../../SystemObject.js";
 
-const TYPE_NAME = "spreadsheet-range";
+const TYPE_NAME = "spreadsheet-cell-range";
 /**
  * A range is marked by two cell references.
  */
-export default class SpreadsheetRange extends SpreadsheetExpressionReference {
+export default class SpreadsheetCellRange extends SpreadsheetExpressionReference {
 
     static fromJson(json) {
-        return SpreadsheetRange.parse(json);
+        return SpreadsheetCellRange.parse(json);
     }
 
     static parse(text) {
@@ -24,7 +24,7 @@ export default class SpreadsheetRange extends SpreadsheetExpressionReference {
         switch(tokens.length) {
             case 1:
                 const cell = SpreadsheetCellReference.fromJson(tokens[0]);
-                range = new SpreadsheetRange(cell, cell);
+                range = new SpreadsheetCellRange(cell, cell);
                 break;
             case 2:
                 const beginText = tokens[0];
@@ -51,7 +51,7 @@ export default class SpreadsheetRange extends SpreadsheetExpressionReference {
                     }
                 }
 
-                range = new SpreadsheetRange(
+                range = new SpreadsheetCellRange(
                     beginCell,
                     endCell);
                 break;
@@ -122,7 +122,7 @@ export default class SpreadsheetRange extends SpreadsheetExpressionReference {
     }
 
     equals(other) {
-        return this === other || (other instanceof SpreadsheetRange && this.begin().equals(other.begin()) && this.end().equals(other.end()));
+        return this === other || (other instanceof SpreadsheetCellRange && this.begin().equals(other.begin()) && this.end().equals(other.end()));
     }
 
     toString() {
@@ -130,4 +130,4 @@ export default class SpreadsheetRange extends SpreadsheetExpressionReference {
     }
 }
 
-SystemObject.register(TYPE_NAME, SpreadsheetRange.fromJson);
+SystemObject.register(TYPE_NAME, SpreadsheetCellRange.fromJson);

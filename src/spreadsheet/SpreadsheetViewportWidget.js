@@ -7,6 +7,7 @@ import Preconditions from "../Preconditions.js";
 import PropTypes from "prop-types";
 import React from 'react';
 import Slider from "@material-ui/core/Slider";
+import SpreadsheetCellRange from "./reference/SpreadsheetCellRange.js";
 import SpreadsheetCellReference from "./reference/SpreadsheetCellReference.js";
 import SpreadsheetColumnReference from "./reference/SpreadsheetColumnReference.js";
 import SpreadsheetExpressionReferenceSimilarities from "./SpreadsheetExpressionReferenceSimilarities.js";
@@ -16,7 +17,6 @@ import SpreadsheetLabelName from "./reference/SpreadsheetLabelName.js";
 import SpreadsheetMessenger from "./message/SpreadsheetMessenger.js";
 import SpreadsheetMessengerCrud from "./message/SpreadsheetMessengerCrud.js";
 import SpreadsheetMetadata from "./meta/SpreadsheetMetadata.js";
-import SpreadsheetRange from "./reference/SpreadsheetRange.js";
 import SpreadsheetReferenceKind from "./reference/SpreadsheetReferenceKind.js";
 import SpreadsheetRowReference from "./reference/SpreadsheetRowReference.js";
 import SpreadsheetViewport from "./SpreadsheetViewport.js";
@@ -37,7 +37,7 @@ const SCROLL_DEBOUNCE = 100;
  * <li>ImmutableMap rowHeights: A cache of the row heights within the visible viewport</li>
  * <li>object dimensions: Holds the width and height of the viewport in pixels</li>
  * <li>SpreadsheetMetadata spreadsheetMetadata: holds the viewport home cell & default style</li>
- * <li>SpreadsheetRange viewportRange: holds a range of all the cells within the viewport</li>
+ * <li>SpreadsheetCellRange viewportRange: holds a range of all the cells within the viewport</li>
  * <li>Immutable cellToLabels: cell to Label lookup</li>
  * </ul>
  */
@@ -470,7 +470,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
 
             // updating will force a reload of viewport
             if(!begin.equals(topLeft)){
-                console.log("onHorizontalVerticalSliderChange " + viewportRange + " TO " + new SpreadsheetRange(topLeft, topLeft));
+                console.log("onHorizontalVerticalSliderChange " + viewportRange + " TO " + new SpreadsheetCellRange(topLeft, topLeft));
 
                 const viewportTable = this.viewportTable.current;
 
