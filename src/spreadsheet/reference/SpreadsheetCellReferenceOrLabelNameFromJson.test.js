@@ -18,7 +18,7 @@ test("fromJson invalid cell reference fails", () => {
     expect(() => spreadsheetCellReferenceOrLabelNameFromJson("A1!")).toThrow("Invalid character '!' at 2");
 });
 
-test("fromJson SpreadsheetRange fails", () => {
+test("fromJson SpreadsheetCellRange fails", () => {
     expect(() => spreadsheetCellReferenceOrLabelNameFromJson("A1:B2")).toThrow("Invalid character ':' at 2");
 });
 

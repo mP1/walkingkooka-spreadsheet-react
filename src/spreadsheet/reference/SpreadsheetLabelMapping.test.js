@@ -1,8 +1,8 @@
+import SpreadsheetCellRange from "./SpreadsheetCellRange.js";
 import SpreadsheetCellReference from "./SpreadsheetCellReference.js";
 import SpreadsheetExpressionReference from "./SpreadsheetExpressionReference.js";
 import SpreadsheetLabelName from "./SpreadsheetLabelName.js";
 import SpreadsheetLabelMapping from "./SpreadsheetLabelMapping.js";
-import SpreadsheetRange from "./SpreadsheetRange.js";
 import systemObjectTesting from "../../SystemObjectTesting.js";
 
 function label() {
@@ -77,7 +77,7 @@ test("create Label", () => {
 
 test("create Range", () => {
     const l = label();
-    const r = SpreadsheetRange.fromJson("A1:B2")
+    const r = SpreadsheetCellRange.fromJson("A1:B2")
     const mapping = new SpreadsheetLabelMapping(l, r);
 
     check(
@@ -116,7 +116,7 @@ test("fromJson label/label", () => {
 });
 
 test("fromJson label/range", () => {
-    const reference = SpreadsheetRange.fromJson("A1:B2");
+    const reference = SpreadsheetCellRange.fromJson("A1:B2");
 
     check(
         SpreadsheetLabelMapping.fromJson({
@@ -150,7 +150,7 @@ test("toJson label/label", () => {
 
 test("toJson label/range", () => {
     expect(
-        new SpreadsheetLabelMapping(label(), SpreadsheetRange.fromJson("A1:B2")).toJson()
+        new SpreadsheetLabelMapping(label(), SpreadsheetCellRange.fromJson("A1:B2")).toJson()
     ).toStrictEqual({
         label: label().toJson(),
         reference: "A1:B2",
@@ -191,8 +191,8 @@ test("equals label/SpreadsheetLabel", () => {
     expect(new SpreadsheetLabelMapping(label(), reference).equals(new SpreadsheetLabelMapping(label(), reference))).toStrictEqual(true);
 });
 
-test("equals label/SpreadsheetRange", () => {
-    const reference = SpreadsheetRange.parse("A1:B2");
+test("equals label/SpreadsheetCellRange", () => {
+    const reference = SpreadsheetCellRange.parse("A1:B2");
     expect(new SpreadsheetLabelMapping(label(), reference).equals(new SpreadsheetLabelMapping(label(), reference))).toStrictEqual(true);
 });
 

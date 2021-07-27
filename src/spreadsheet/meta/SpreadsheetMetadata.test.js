@@ -6,6 +6,7 @@ import LocalDateTime from "../../datetime/LocalDateTime.js";
 import Locale from "../../util/Locale.js";
 import PixelLength from "../../text/PixelLength";
 import RoundingMode from "../../math/RoundingMode.js";
+import SpreadsheetCellRange from "../reference/SpreadsheetCellRange.js";
 import SpreadsheetCellReference from "../reference/SpreadsheetCellReference";
 import SpreadsheetColumnReference from "../reference/SpreadsheetColumnReference.js";
 import SpreadsheetDateFormatPattern from "../format/SpreadsheetDateFormatPattern.js";
@@ -17,7 +18,6 @@ import SpreadsheetMetadata from "./SpreadsheetMetadata";
 import SpreadsheetName from "../SpreadsheetName";
 import SpreadsheetNumberFormatPattern from "../format/SpreadsheetNumberFormatPattern.js";
 import SpreadsheetNumberParsePatterns from "../format/SpreadsheetNumberParsePatterns.js";
-import SpreadsheetRange from "../reference/SpreadsheetRange.js";
 import SpreadsheetRowReference from "../reference/SpreadsheetRowReference.js";
 import SpreadsheetTextFormatPattern from "../format/SpreadsheetTextFormatPattern.js";
 import SpreadsheetTimeFormatPattern from "../format/SpreadsheetTimeFormatPattern.js";
@@ -651,7 +651,7 @@ getSetRemoveTest(SpreadsheetMetadata.SELECTION, SpreadsheetColumnReference.parse
 
 getSetRemoveTest(SpreadsheetMetadata.SELECTION, SpreadsheetLabelName.parse("Label123"));
 
-getSetRemoveTest(SpreadsheetMetadata.SELECTION, SpreadsheetRange.parse("B2:C3"));
+getSetRemoveTest(SpreadsheetMetadata.SELECTION, SpreadsheetCellRange.parse("B2:C3"));
 
 getSetRemoveTest(SpreadsheetMetadata.SELECTION, SpreadsheetRowReference.parse("234"));
 

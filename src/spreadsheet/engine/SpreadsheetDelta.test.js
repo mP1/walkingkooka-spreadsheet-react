@@ -4,7 +4,7 @@ import SpreadsheetCellReference from "../reference/SpreadsheetCellReference.js";
 import SpreadsheetColumnReference from "../reference/SpreadsheetColumnReference";
 import SpreadsheetDelta from "./SpreadsheetDelta";
 import SpreadsheetLabelName from "../reference/SpreadsheetLabelName.js";
-import SpreadsheetRange from "../reference/SpreadsheetRange";
+import SpreadsheetCellRange from "../reference/SpreadsheetCellRange.js";
 import SpreadsheetRowReference from "../reference/SpreadsheetRowReference";
 import systemObjectTesting from "../../SystemObjectTesting.js";
 
@@ -74,8 +74,8 @@ function rowHeights() {
 
 function window() {
     return [
-        SpreadsheetRange.fromJson("A1:B2"),
-        SpreadsheetRange.fromJson("C3:D4")
+        SpreadsheetCellRange.fromJson("A1:B2"),
+        SpreadsheetCellRange.fromJson("C3:D4")
     ]
 }
 
