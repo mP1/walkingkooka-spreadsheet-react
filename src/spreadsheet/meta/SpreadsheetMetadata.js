@@ -268,7 +268,7 @@ export default class SpreadsheetMetadata extends SystemObject {
                     unmarshaller = RoundingMode.fromJson;
                     break;
                 case SpreadsheetMetadata.SELECTION:
-                    unmarshaller = SystemObject.fromJsonWithType
+                    unmarshaller = SystemObject.fromJsonWithType;
                     break;
                 case SpreadsheetMetadata.SPREADSHEET_ID:
                     unmarshaller = null;
