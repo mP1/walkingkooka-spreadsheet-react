@@ -265,6 +265,8 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetHistoryAwareSta
             case "POST":
                 this.onSpreadsheetDeltaLoad(cellOrLabel, responseDelta);
                 break;
+            default:
+                break;
         }
     }
 
