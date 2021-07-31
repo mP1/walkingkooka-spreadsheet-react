@@ -229,7 +229,10 @@ export default class SpreadsheetCellReference extends SpreadsheetCellReferenceOr
     }
 
     toJson() {
-        return this.toString();
+        return this.column()
+                .toJson() +
+            this.row()
+                .toJson();
     }
 
     typeName() {
@@ -262,7 +265,7 @@ export default class SpreadsheetCellReference extends SpreadsheetCellReferenceOr
     }
 
     toString() {
-        return this.column().toString() + this.row();
+        return this.toJson();
     }
 }
 

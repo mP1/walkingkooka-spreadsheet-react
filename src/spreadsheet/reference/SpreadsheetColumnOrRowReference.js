@@ -94,10 +94,6 @@ export default class SpreadsheetColumnOrRowReference extends SpreadsheetSelectio
         return this.value() - other.value();
     }
 
-    toJson() {
-        return this.toString();
-    }
-
     /**
      * Renders a TABLE that may be highlighted.
      */

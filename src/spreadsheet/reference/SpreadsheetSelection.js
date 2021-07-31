@@ -20,4 +20,8 @@ export default class SpreadsheetSelection extends SystemObject {
     toSelectionHashToken() {
         throw new Error("Not yet implemented");
     }
+
+    toString() {
+        return this.toJson();
+    }
 }

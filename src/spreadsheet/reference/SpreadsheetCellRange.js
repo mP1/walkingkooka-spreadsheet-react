@@ -86,10 +86,6 @@ export default class SpreadsheetCellRange extends SpreadsheetExpressionReference
     equals(other) {
         return this === other || (other instanceof SpreadsheetCellRange && this.begin().equals(other.begin()) && this.end().equals(other.end()));
     }
-
-    toString() {
-        return this.toJson();
-    }
 }
 
 SystemObject.register(TYPE_NAME, SpreadsheetCellRange.fromJson);
