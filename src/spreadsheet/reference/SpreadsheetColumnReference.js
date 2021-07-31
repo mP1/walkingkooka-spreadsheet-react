@@ -1,12 +1,11 @@
-import Character from "../../Character.js";
-import CharSequences from "../../CharSequences.js";
 import Preconditions from "../../Preconditions.js";
 import SpreadsheetCellReference from "./SpreadsheetCellReference.js";
 import SpreadsheetColumnOrRowReference from "./SpreadsheetColumnOrRowReference";
+import SpreadsheetHistoryHash from "../history/SpreadsheetHistoryHash.js";
 import SpreadsheetReferenceKind from "./SpreadsheetReferenceKind";
 import SpreadsheetRowReference from "./SpreadsheetRowReference.js";
+import SpreadsheetSelection from "./SpreadsheetSelection.js";
 import SystemObject from "../../SystemObject.js";
-import SpreadsheetHistoryHash from "../history/SpreadsheetHistoryHash.js";
 
 const A = 65;
 const TYPE_NAME = "spreadsheet-column-reference";
@@ -38,7 +37,7 @@ export default class SpreadsheetColumnReference extends SpreadsheetColumnOrRowRe
         for(var i = startIndex; i < text.length; i++) {
             const c = text.charAt(i).toUpperCase();
             if(c < 'A' || c > 'Z'){
-                throw new Error("Invalid character, got " + CharSequences.quoteAndEscape(Character.fromJson(c)) + " at " + i + " in " + CharSequences.quoteAndEscape(text));
+                SpreadsheetSelection.reportInvalidCharacter(c, i);
             }
             value = value * SpreadsheetColumnReference.RADIX + c.charCodeAt(0) - A + 1;
         }
