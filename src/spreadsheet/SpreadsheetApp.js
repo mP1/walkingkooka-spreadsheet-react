@@ -247,6 +247,9 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
         switch(method) {
             case "POST":
                 this.props.notificationShow(SpreadsheetNotification.success("Spreadsheet metadata saved"));
+                break;
+            default:
+                break;SpreadsheetFormulaWidget.js
         }
     }
 

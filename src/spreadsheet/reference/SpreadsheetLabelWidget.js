@@ -244,6 +244,8 @@ export default class SpreadsheetLabelWidget extends SpreadsheetHistoryAwareState
             case "DELETE":
                 this.onLabelMappingDeleteSuccess();
                 break;
+            default:
+                break;
         }
     }
 
