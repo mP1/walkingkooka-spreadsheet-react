@@ -85,7 +85,7 @@ export default class SpreadsheetRowReference extends SpreadsheetColumnOrRowRefer
         return TYPE_NAME;
     }
 
-    toString() {
+    toJson() {
         return this.kind().prefix() + (1 + this.value());
     }
 }
