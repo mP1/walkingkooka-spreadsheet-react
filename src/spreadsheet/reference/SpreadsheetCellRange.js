@@ -1,8 +1,8 @@
-import CharSequences from "../../CharSequences.js";
 import Preconditions from "../../Preconditions.js";
 import SpreadsheetCellReference from "./SpreadsheetCellReference";
 import SpreadsheetColumnReference from "./SpreadsheetColumnReference.js";
 import SpreadsheetExpressionReference from "./SpreadsheetExpressionReference.js";
+import spreadsheetRangeParse from "./SpreadsheetRangeParser.js";
 import SpreadsheetRowReference from "./SpreadsheetRowReference.js";
 import SystemObject from "../../SystemObject.js";
 
@@ -17,49 +17,11 @@ export default class SpreadsheetCellRange extends SpreadsheetExpressionReference
     }
 
     static parse(text) {
-        Preconditions.requireNonEmptyText(text, "text");
-
-        var range;
-        const tokens = text.split(":");
-        switch(tokens.length) {
-            case 1:
-                const cell = SpreadsheetCellReference.fromJson(tokens[0]);
-                range = new SpreadsheetCellRange(cell, cell);
-                break;
-            case 2:
-                const beginText = tokens[0];
-                if(!beginText) {
-                    throw new Error("Missing begin");
-                }
-                const beginCell = SpreadsheetCellReference.fromJson(beginText);
-                const endText = tokens[1];
-                if(!endText) {
-                    throw new Error("Missing end");
-                }
-
-                let endCell;
-                try {
-                    endCell = SpreadsheetCellReference.fromJson(endText);
-                } catch(e) {
-                    const message = e.message;
-                    if(message.startsWith("Invalid character ")){
-                        const at = message.indexOf(" at ");
-                        const pos = parseInt(message.substring(at + 4));
-                        throw new Error(message.substring(0, at + 4) + (1 + pos + text.indexOf(":")));
-                    }else {
-                        throw e;
-                    }
-                }
-
-                range = new SpreadsheetCellRange(
-                    beginCell,
-                    endCell);
-                break;
-            default:
-                throw new Error("Expected 1 or 2 tokens got " + CharSequences.quoteAndEscape(text));
-        }
-
-        return range;
+        return spreadsheetRangeParse(
+            text,
+            SpreadsheetCellReference.parse,
+            (begin, end) => new SpreadsheetCellRange(begin, end)
+        );
     }
 
     constructor(begin, end) {
