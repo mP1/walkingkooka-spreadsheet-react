@@ -23,12 +23,12 @@ test("parse of invalid text fails", () => {
 
 test("parse includes invalid character fails", () => {
     expect(() => SpreadsheetColumnReference.parse("A1"))
-        .toThrow("Invalid character, got '1' at 1 in \"A1\"");
+        .toThrow("Invalid character '1' at 1");
 });
 
 test("parse includes invalid character fails #2", () => {
     expect(() => SpreadsheetColumnReference.parse("A!"))
-        .toThrow("Invalid character, got '!' at 1 in \"A!\"");
+        .toThrow("Invalid character '!' at 1");
 });
 
 test("parse greater than MAX fails", () => {

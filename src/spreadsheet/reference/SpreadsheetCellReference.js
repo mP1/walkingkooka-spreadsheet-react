@@ -1,7 +1,6 @@
 /**
  * Holds a cell reference. Note the reference is not validated in anyway.
  */
-import Character from "../../Character.js";
 import CharSequences from "../../CharSequences.js";
 import Preconditions from "../../Preconditions.js";
 import SpreadsheetCell from "../SpreadsheetCell.js";
@@ -10,6 +9,7 @@ import SpreadsheetColumnReference from "./SpreadsheetColumnReference";
 import SpreadsheetFormula from "../SpreadsheetFormula.js";
 import SpreadsheetReferenceKind from "./SpreadsheetReferenceKind";
 import SpreadsheetRowReference from "./SpreadsheetRowReference";
+import SpreadsheetSelection from "./SpreadsheetSelection.js";
 import SystemObject from "../../SystemObject.js";
 import TextStyle from "../../text/TextStyle.js";
 import Text from "../../text/Text.js";
@@ -100,10 +100,6 @@ function isCellReferenceText0(text, reporter) {
     return MODE_ROW === mode;
 }
 
-function reportInvalidCharacter(c, pos) {
-    throw new Error("Invalid character " + CharSequences.quoteAndEscape(Character.fromJson(c)) + " at " + pos);
-}
-
 export default class SpreadsheetCellReference extends SpreadsheetCellReferenceOrLabelName {
 
     /**
@@ -123,7 +119,7 @@ export default class SpreadsheetCellReference extends SpreadsheetCellReferenceOr
 
     static parse(text) {
         Preconditions.requireNonEmptyText(text, "text");
-        isCellReferenceText0(text, reportInvalidCharacter);
+        isCellReferenceText0(text, SpreadsheetSelection.reportInvalidCharacter);
 
         for(var i = 1; i < text.length; i++) {
             switch(text.charAt(i)) {

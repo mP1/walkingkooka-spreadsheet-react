@@ -18,19 +18,23 @@ test("parse missing text fails", () => {
 });
 
 test("parse of invalid text fails", () => {
-    expect(() => SpreadsheetRowReference.parse(true)).toThrow("Expected string text got true");
+    expect(() => SpreadsheetRowReference.parse(true))
+        .toThrow("Expected string text got true");
 });
 
 test("parse of includes invalid character fails", () => {
-    expect(() => SpreadsheetRowReference.parse("A")).toThrow("Invalid character, got 'A' at 0 in \"A\"");
+    expect(() => SpreadsheetRowReference.parse("A"))
+        .toThrow("Invalid character 'A' at 0");
 });
 
 test("parse of includes invalid character fails #2", () => {
-    expect(() => SpreadsheetRowReference.parse("1A")).toThrow("Invalid character, got 'A' at 1 in \"1A\"");
+    expect(() => SpreadsheetRowReference.parse("1A"))
+        .toThrow("Invalid character 'A' at 1");
 });
 
 test("parse of includes invalid character fails #3", () => {
-    expect(() => SpreadsheetRowReference.parse("12A")).toThrow("Invalid character, got 'A' at 2 in \"12A\"");
+    expect(() => SpreadsheetRowReference.parse("12A"))
+        .toThrow("Invalid character 'A' at 2");
 });
 
 test("parse MAX fails", () => {
