@@ -79,6 +79,10 @@ export default class SpreadsheetCellRange extends SpreadsheetExpressionReference
             begin.toJson() + ":" + end.toJson();
     }
 
+    toQueryStringParameterSelectionType() {
+        return "cell-range";
+    }
+
     typeName() {
         return TYPE_NAME;
     }
