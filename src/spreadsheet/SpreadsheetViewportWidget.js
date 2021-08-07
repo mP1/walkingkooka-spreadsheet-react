@@ -324,7 +324,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
         const home = spreadsheetMetadata && spreadsheetMetadata.getIgnoringDefaults(SpreadsheetMetadata.VIEWPORT_CELL);
 
         return (dimensions && home && this.renderTable(dimensions, home)) ||
-            this.emptyTable();
+            this.renderViewportEmptyTable();
     }
 
     renderTable(dimensions, home) {
@@ -346,13 +346,13 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
                 <TableHead>
                     <TableRow>
                         {
-                            this.headers()
+                            this.renderViewportTableColumnHeaders()
                         }
                     </TableRow>
                 </TableHead>
                 <TableBody>
                     {
-                        this.body()
+                        this.renderViewportTableContent()
                     }
                 </TableBody>
             </Table>
@@ -496,7 +496,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
     /**
      * Returns an array of TableCell, one for each column header.
      */
-    headers() {
+    renderViewportTableColumnHeaders() {
         const {columnWidths, dimensions, spreadsheetMetadata} = this.state;
 
         const home = spreadsheetMetadata.getIgnoringDefaults(SpreadsheetMetadata.VIEWPORT_CELL);
@@ -528,7 +528,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
     /**
      * Render the required TABLE ROW each filled with available or empty TABLE CELL cells.
      */
-    body() {
+    renderViewportTableContent() {
         const {cells, columnWidths, rowHeights, spreadsheetMetadata, dimensions, cellToLabels} = this.state;
 
         const home = spreadsheetMetadata.getIgnoringDefaults(SpreadsheetMetadata.VIEWPORT_CELL);
@@ -588,7 +588,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
     /**
      * Renders an empty table, this happens when ALL requirements are not yet available.
      */
-    emptyTable() {
+    renderViewportEmptyTable() {
         return <TableContainer/>;
     }
 
