@@ -1,6 +1,6 @@
-import SystemObject from "../../SystemObject.js";
 import CharSequences from "../../CharSequences.js";
 import Character from "../../Character.js";
+import SystemObject from "../../SystemObject.js";
 
 /**
  * Common base class for several types in this namespace
@@ -33,5 +33,19 @@ export default class SpreadsheetSelection extends SystemObject {
 
     toString() {
         return this.toJson();
+    }
+
+    /**
+     * This function is called by the viewport widget when a click event happens.
+     */
+    onViewportClick(setSelection, giveFormulaFocus) {
+        throw new Error("Not yet implemented");
+    }
+
+    /**
+     * This function is called by the viewport widget when a keydown event happens.
+     */
+    onViewportKeyDown(key, setSelection, giveFormulaFocus, viewportHome) {
+        throw new Error("Not yet implemented");
     }
 }

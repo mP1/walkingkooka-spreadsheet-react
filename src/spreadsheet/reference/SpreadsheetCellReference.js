@@ -2,6 +2,7 @@
  * Holds a cell reference. Note the reference is not validated in anyway.
  */
 import CharSequences from "../../CharSequences.js";
+import Keys from "../../Keys.js";
 import Preconditions from "../../Preconditions.js";
 import SpreadsheetCell from "../SpreadsheetCell.js";
 import SpreadsheetCellReferenceOrLabelName from "./SpreadsheetCellReferenceOrLabelName.js";
@@ -258,6 +259,43 @@ export default class SpreadsheetCellReference extends SpreadsheetCellReferenceOr
 
     viewportTooltipId() {
         return this.viewportId() + "-Tooltip";
+    }
+
+    /**
+     * Clicking on a cell selects it.
+     */
+    onViewportClick(setSelection, giveFocus) {
+        setSelection(this);
+        //giveFocus();
+    }
+
+    /**
+     * Arrows keys increase/decrease this cell reference and then updates the selection. ENTER gives focus to the formula text box and ESCAPE clears the selection.
+     */
+    onViewportKeyDown(key, setSelection, giveFormulaFocus, viewportHome) {
+        switch(key) {
+            case Keys.ARROW_LEFT:
+                setSelection(this.addColumnSaturated(-1));
+                break;
+            case Keys.ARROW_DOWN:
+                setSelection(this.addRowSaturated(+1));
+                break;
+            case Keys.ARROW_RIGHT:
+                setSelection(this.addColumnSaturated(+1));
+                break;
+            case Keys.ARROW_UP:
+                setSelection(this.addRowSaturated(-1));
+                break;
+            case Keys.ENTER:
+                giveFormulaFocus();
+                break;
+            case Keys.ESCAPE:
+                setSelection(null);
+                break;
+            default:
+                // ignore other keys
+                break;
+        }
     }
 
     equals(other) {

@@ -1,3 +1,5 @@
+import Keys from "../../Keys.js";
+import SpreadsheetCellColumnOrRowParse from "./SpreadsheetCellColumnOrRowParse.js";
 import SpreadsheetCellReference from "./SpreadsheetCellReference.js";
 import SpreadsheetColumnReference from "./SpreadsheetColumnReference";
 import SpreadsheetReferenceKind from "./SpreadsheetReferenceKind";
@@ -308,6 +310,69 @@ test("toJson ABSOLUTE", () => {
 test("toJson RELATIVE", () => {
     expect(new SpreadsheetRowReference(3, SpreadsheetReferenceKind.RELATIVE).toJson()).toStrictEqual("4");
 });
+
+// onViewportClick......................................................................................................
+
+test("onViewportClickAndTest row=2", () => {
+
+    const state = {
+        selection: SpreadsheetCellReference.parse("Z99").toString(),
+    };
+
+    const reference = SpreadsheetRowReference.parse("2");
+
+    reference
+        .onViewportClick(
+            (s) => state.selection = s && s.toString(),
+            () => {throw new Error("!");},
+            ///SpreadsheetCellReference.parse("A1"),
+        );
+    expect(state)
+        .toStrictEqual({
+            selection: reference.toString(),
+        });
+});
+
+// onViewportKeyDown....................................................................................................
+
+function onViewportKeyDownAndTest(selection, key, viewportHome, setSelection, giveFormulaFocus) {
+    test("onViewportKeyDownAndTest cell=" + selection + " key=" + key + " home=" + viewportHome, () => {
+
+        const state = {
+            selection: SpreadsheetCellColumnOrRowParse(selection).toString(),
+            giveFormulaFocus: false,
+        };
+
+        SpreadsheetRowReference.parse(selection)
+            .onViewportKeyDown(
+                key,
+                (s) => state.selection = s && s.toString(),
+                () => state.giveFormulaFocus = true,
+                SpreadsheetCellReference.parse(viewportHome),
+            );
+        expect(state)
+            .toStrictEqual({
+                selection: setSelection ? SpreadsheetCellColumnOrRowParse(setSelection).toString() : setSelection,
+                giveFormulaFocus: giveFormulaFocus,
+            });
+    });
+}
+
+onViewportKeyDownAndTest("2", "a", "A1", "2", false);
+
+onViewportKeyDownAndTest("2", Keys.ESCAPE, "B2", null, false);
+onViewportKeyDownAndTest("2", Keys.ENTER, "B2", "2", false);
+
+onViewportKeyDownAndTest("2", Keys.ARROW_LEFT, "A1", "2", false);
+onViewportKeyDownAndTest("2", Keys.ARROW_RIGHT, "A1", "A2", false);
+onViewportKeyDownAndTest("2", Keys.ARROW_UP, "A1", "1", false);
+onViewportKeyDownAndTest("2", Keys.ARROW_DOWN, "A1", "3", false);
+
+onViewportKeyDownAndTest("1", Keys.ARROW_LEFT, "A1", "1", false);
+onViewportKeyDownAndTest("1", Keys.ARROW_UP, "A1", "1", false);
+
+onViewportKeyDownAndTest("99", Keys.ARROW_RIGHT, "K99", "K99", false);
+onViewportKeyDownAndTest("98", Keys.ARROW_RIGHT, "B2", "B98", false);
 
 // equals................................................................................................................
 

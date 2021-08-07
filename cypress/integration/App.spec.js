@@ -7,7 +7,9 @@ import FontStyle from "../../src/text/FontStyle.js";
 import Hyphens from "../../src/text/Hyphens.js";
 import RoundingMode from "../../src/math/RoundingMode.js";
 import SpreadsheetCellReference from "../../src/spreadsheet/reference/SpreadsheetCellReference.js";
+import SpreadsheetColumnReference from "../../src/spreadsheet/reference/SpreadsheetColumnReference.js";
 import SpreadsheetMetadata from "../../src/spreadsheet/meta/SpreadsheetMetadata.js";
+import SpreadsheetRowReference from "../../src/spreadsheet/reference/SpreadsheetRowReference.js";
 import SpreadsheetSettingsWidget from "../../src/spreadsheet/settings/SpreadsheetSettingsWidget.js";
 import TextAlign from "../../src/text/TextAlign.js";
 import TextStyle from "../../src/text/TextStyle.js";
@@ -962,7 +964,7 @@ context(
                 .blur();
 
             // viewport should have jumped leaving T1 as the home cell.
-            cell(SpreadsheetCellReference.parse("S1"))
+            cell(A1)
                 .should('not.exist');
         });
 
@@ -978,7 +980,7 @@ context(
                 .blur();
 
             // viewport should have jumped leaving A30 as the home cell.
-            cell(SpreadsheetCellReference.parse("A29"))
+            cell(A1)
                 .should('not.exist');
         });
 
@@ -994,7 +996,7 @@ context(
                 .blur();
 
             // viewport should have jumped leaving T30 as the home cell.
-            cell(SpreadsheetCellReference.parse("S29"))
+            cell(A1)
                 .should('not.exist');
         });
 
@@ -1052,6 +1054,84 @@ context(
 
             cellFormattedTextCheck("M10", "123.");
             cellFormattedTextCheck("T20", "234.");
+        });
+
+        // column click.................................................................................................
+
+        it("Column click", () => {
+            spreadsheetEmpty();
+
+            renderWait(100);
+
+            column("B")
+                .click();
+
+            hash()
+                .should('match', /.*\/.*\/column\/B/);
+        });
+
+        it("Column click and cursor RIGHT", () => {
+            spreadsheetEmpty();
+
+            column("B")
+                .click();
+
+            column("B")
+                .type("{rightarrow}")
+
+            hash()
+                .should('match', /.*\/.*\/column\/C/);
+        });
+
+        it("Column click and cursor DOWN", () => {
+            spreadsheetEmpty();
+
+            column("B")
+                .click();
+
+            column("B")
+                .type("{downarrow}")
+
+            hash()
+                .should('match', /.*\/.*\/cell\/B1/);
+        });
+
+        // row click.................................................................................................
+
+        it("Row click", () => {
+            spreadsheetEmpty();
+
+            row("2")
+                .click();
+
+            hash()
+                .should('match', /.*\/.*\/row\/2/);
+        });
+
+        it("Row click and cursor DOWN", () => {
+            spreadsheetEmpty();
+
+            row("2")
+                .click();
+
+            row("2")
+                .type("{downarrow}")
+
+            hash()
+                .should('match', /.*\/.*\/row\/3/);
+        });
+
+        it("Row click and cursor RIGHT", () => {
+            spreadsheetEmpty();
+
+            row("2")
+                .click();
+
+            row("2")
+                .type("{rightarrow}")
+
+            hash()
+                .should('match', /.*\/.*\/cell\/A2/);
         });
 
         // select.....................................................................................................
@@ -2748,6 +2828,20 @@ context(
             return cy.get("#" + spreadsheetCellReference.viewportId());
         }
 
+        function column(columnReference) {
+            const spreadsheetColumnReference = columnReference instanceof SpreadsheetColumnReference ?
+                columnReference :
+                SpreadsheetColumnReference.parse(columnReference);
+            return cy.get("#" + spreadsheetColumnReference.viewportId());
+        }
+
+        function row(rowReference) {
+            const spreadsheetRowReference = rowReference instanceof SpreadsheetRowReference ?
+                rowReference :
+                SpreadsheetRowReference.parse(rowReference);
+            return cy.get("#" + spreadsheetRowReference.viewportId());
+        }
+        
         function spreadsheetEmpty() {
             hash()
                 .should('match', /.*\/Untitled/); // wait for /$id/$name

@@ -1,8 +1,11 @@
+import Keys from "../../Keys.js";
+import SpreadsheetCellColumnOrRowParse from "./SpreadsheetCellColumnOrRowParse.js";
 import SpreadsheetCellReference from "./SpreadsheetCellReference.js";
 import SpreadsheetColumnReference from "./SpreadsheetColumnReference";
 import SpreadsheetReferenceKind from "./SpreadsheetReferenceKind";
 import SpreadsheetRowReference from "./SpreadsheetRowReference";
 import systemObjectTesting from "../../SystemObjectTesting.js";
+
 
 systemObjectTesting(
     new SpreadsheetColumnReference(0, SpreadsheetReferenceKind.ABSOLUTE),
@@ -335,6 +338,69 @@ function testRowAndCheck(column, otherRowReference, expected) {
 testRowAndCheck("A", "1", false);
 testRowAndCheck("B", "$2", false);
 testRowAndCheck("$C", "3", false);
+
+// onViewportClick......................................................................................................
+
+test("onViewportClickAndTest column=B", () => {
+
+    const state = {
+        selection: SpreadsheetCellReference.parse("Z99").toString(),
+    };
+
+    const reference = SpreadsheetColumnReference.parse("B");
+
+    reference
+        .onViewportClick(
+            (s) => state.selection = s && s.toString(),
+            () => {throw new Error("!")},
+            //SpreadsheetCellReference.parse("A1"),
+        );
+    expect(state)
+        .toStrictEqual({
+            selection: reference.toString(),
+        });
+});
+
+// onViewportKeyDown....................................................................................................
+
+function onViewportKeyDownAndTest(selection, key, viewportHome, setSelection, giveFormulaFocus) {
+    test("onViewportKeyDownAndTest cell=" + selection + " key=" + key + " home=" + viewportHome, () => {
+
+        const state = {
+            selection: SpreadsheetCellColumnOrRowParse(selection).toString(),
+            giveFormulaFocus: false,
+        };
+
+        SpreadsheetColumnReference.parse(selection)
+            .onViewportKeyDown(
+                key,
+                (s) => state.selection = s && s.toString(),
+                () => state.giveFormulaFocus = true,
+                SpreadsheetCellReference.parse(viewportHome),
+            );
+        expect(state)
+            .toStrictEqual({
+                selection: setSelection ? SpreadsheetCellColumnOrRowParse(setSelection).toString() : setSelection,
+                giveFormulaFocus: giveFormulaFocus,
+            });
+    });
+}
+
+onViewportKeyDownAndTest("B", "A", "A1", "B", false);
+
+onViewportKeyDownAndTest("B", Keys.ESCAPE, "B2", null, false);
+onViewportKeyDownAndTest("B", Keys.ENTER, "B2", "B", false);
+
+onViewportKeyDownAndTest("B", Keys.ARROW_LEFT, "A1", "A", false);
+onViewportKeyDownAndTest("B", Keys.ARROW_RIGHT, "A1", "C", false);
+onViewportKeyDownAndTest("B", Keys.ARROW_UP, "A1", "B", false);
+onViewportKeyDownAndTest("B", Keys.ARROW_DOWN, "A1", "B1", false);
+
+onViewportKeyDownAndTest("A", Keys.ARROW_LEFT, "A1", "A", false);
+onViewportKeyDownAndTest("A", Keys.ARROW_UP, "A1", "A", false);
+
+onViewportKeyDownAndTest("K", Keys.ARROW_DOWN, "K99", "K99", false);
+onViewportKeyDownAndTest("J", Keys.ARROW_DOWN, "B2", "J2", false);
 
 // equals................................................................................................................
 

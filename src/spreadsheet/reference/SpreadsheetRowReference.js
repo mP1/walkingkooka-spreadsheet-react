@@ -1,12 +1,13 @@
 import CharSequences from "../../CharSequences.js";
+import Keys from "../../Keys.js";
 import Preconditions from "../../Preconditions.js";
+import SpreadObject from "../../SystemObject.js";
 import SpreadsheetCellReference from "./SpreadsheetCellReference.js";
 import SpreadsheetColumnOrRowReference from "./SpreadsheetColumnOrRowReference";
 import SpreadsheetColumnReference from "./SpreadsheetColumnReference.js";
 import SpreadsheetHistoryHash from "../history/SpreadsheetHistoryHash.js";
 import SpreadsheetReferenceKind from "./SpreadsheetReferenceKind";
 import SpreadsheetSelection from "./SpreadsheetSelection.js";
-import SpreadObject from "../../SystemObject.js";
 
 const TYPE_NAME = "spreadsheet-row-reference";
 
@@ -72,17 +73,40 @@ export default class SpreadsheetRowReference extends SpreadsheetColumnOrRowRefer
 
         return this.value() === rowReference.value();
     }
-    
-    viewportId() {
-        return "viewport-row-" + this.toString().toUpperCase();
-    }
 
     toQueryStringParameterSelectionType() {
         return "row";
     }
 
+    viewportId() {
+        return "viewport-row-" + this.toString().toUpperCase();
+    }
+
     toSelectionHashToken() {
         return SpreadsheetHistoryHash.ROW + "/" + this;
+    }
+
+    /**
+     * UP/DOWN Arrow keys update the row selection, RIGHT selects the first visible cell or ESC clears the current selection.
+     */
+    onViewportKeyDown(key, setSelection, giveFormulaFocus, viewportHome) {
+        switch(key) {
+            case Keys.ARROW_UP:
+                setSelection(this.addSaturated(-1));
+                break;
+            case Keys.ARROW_DOWN:
+                setSelection(this.addSaturated(+1));
+                break;
+            case Keys.ARROW_RIGHT:
+                setSelection(viewportHome.setRow(this));
+                break;
+            case Keys.ESCAPE:
+                setSelection(null);
+                break;
+            default:
+                // ignore other keys
+                break;
+        }
     }
 
     typeName() {
