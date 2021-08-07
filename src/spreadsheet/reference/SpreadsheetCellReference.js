@@ -207,7 +207,11 @@ export default class SpreadsheetCellReference extends SpreadsheetCellReferenceOr
     testRow(rowReference) {
         return this.row().testRow(rowReference);
     }
-    
+
+    toQueryStringParameterSelectionType() {
+        return "cell";
+    }
+
     toRelative() {
         return this.setColumn(this.column()
             .setKind(SpreadsheetReferenceKind.RELATIVE))

@@ -78,6 +78,10 @@ export default class SpreadsheetColumnReference extends SpreadsheetColumnOrRowRe
         return TYPE_NAME;
     }
 
+    toQueryStringParameterSelectionType() {
+        return "column";
+    }
+
     toSelectionHashToken() {
         return SpreadsheetHistoryHash.COLUMN + "/" + this;
     }

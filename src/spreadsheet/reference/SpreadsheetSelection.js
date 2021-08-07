@@ -23,6 +23,10 @@ export default class SpreadsheetSelection extends SystemObject {
         throw new Error("Not yet implemented");
     }
 
+    toQueryStringParameterSelectionType() {
+        throw new Error("Not yet implemented");
+    }
+
     toSelectionHashToken() {
         throw new Error("Not yet implemented");
     }

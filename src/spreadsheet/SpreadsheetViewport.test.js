@@ -1,4 +1,9 @@
 import SpreadsheetCellReference from "./reference/SpreadsheetCellReference.js";
+import SpreadsheetCellRange from "./reference/SpreadsheetCellRange.js";
+import SpreadsheetColumnReference from "./reference/SpreadsheetColumnReference.js";
+import SpreadsheetColumnReferenceRange from "./reference/SpreadsheetColumnReferenceRange.js";
+import SpreadsheetRowReferenceRange from "./reference/SpreadsheetRowReferenceRange.js";
+import SpreadsheetRowReference from "./reference/SpreadsheetRowReference.js";
 import SpreadsheetViewport from "./SpreadsheetViewport.js";
 import systemObjectTesting from "../SystemObjectTesting.js";
 
@@ -155,6 +160,138 @@ test("new 0 height", () => {
         height);
 });
 
+// toQueryStringParameters..............................................................................................
+
+function toQueryStringParametersAndCheck(c, x, y, w, h, s, expected) {
+    test("toQueryStringParametersAndCheck " + c + " " + x + " " + y + " " + w + " " + h + " " + s, () => {
+        expect(expected)
+            .toStrictEqual(new SpreadsheetViewport(c, x, y, w, h, s).toQueryStringParameters(s));
+    });
+}
+
+toQueryStringParametersAndCheck(
+    cellOrLabel(),
+    xOffset(),
+    yOffset(),
+    width(),
+    height(),
+    null,
+    {
+        home: cellOrLabel(),
+        xOffset: xOffset(),
+        yOffset: yOffset(),
+        width: width(),
+        height: height(),
+    }
+);
+
+toQueryStringParametersAndCheck(
+    cellOrLabel(),
+    xOffset(),
+    yOffset(),
+    width(),
+    height(),
+    SpreadsheetCellRange.parse("B2:C3"),
+    {
+        home: cellOrLabel(),
+        xOffset: xOffset(),
+        yOffset: yOffset(),
+        width: width(),
+        height: height(),
+        selectionType: "cell-range",
+        selection: SpreadsheetCellRange.parse("B2:C3"),
+    }
+);
+
+toQueryStringParametersAndCheck(
+    cellOrLabel(),
+    xOffset(),
+    yOffset(),
+    width(),
+    height(),
+    SpreadsheetCellReference.parse("B2"),
+    {
+        home: cellOrLabel(),
+        xOffset: xOffset(),
+        yOffset: yOffset(),
+        width: width(),
+        height: height(),
+        selectionType: "cell",
+        selection: SpreadsheetCellReference.parse("B2"),
+    }
+);
+
+toQueryStringParametersAndCheck(
+    cellOrLabel(),
+    xOffset(),
+    yOffset(),
+    width(),
+    height(),
+    SpreadsheetColumnReference.parse("B"),
+    {
+        home: cellOrLabel(),
+        xOffset: xOffset(),
+        yOffset: yOffset(),
+        width: width(),
+        height: height(),
+        selectionType: "column",
+        selection: SpreadsheetColumnReference.parse("B"),
+    }
+);
+
+toQueryStringParametersAndCheck(
+    cellOrLabel(),
+    xOffset(),
+    yOffset(),
+    width(),
+    height(),
+    SpreadsheetColumnReferenceRange.parse("B:C"),
+    {
+        home: cellOrLabel(),
+        xOffset: xOffset(),
+        yOffset: yOffset(),
+        width: width(),
+        height: height(),
+        selectionType: "column-range",
+        selection: SpreadsheetColumnReferenceRange.parse("B:C"),
+    }
+);
+
+toQueryStringParametersAndCheck(
+    cellOrLabel(),
+    xOffset(),
+    yOffset(),
+    width(),
+    height(),
+    SpreadsheetRowReference.parse("99"),
+    {
+        home: cellOrLabel(),
+        xOffset: xOffset(),
+        yOffset: yOffset(),
+        width: width(),
+        height: height(),
+        selectionType: "row",
+        selection: SpreadsheetRowReference.parse("99"),
+    }
+);
+
+toQueryStringParametersAndCheck(
+    cellOrLabel(),
+    xOffset(),
+    yOffset(),
+    width(),
+    height(),
+    SpreadsheetRowReferenceRange.parse("98:99"),
+    {
+        home: cellOrLabel(),
+        xOffset: xOffset(),
+        yOffset: yOffset(),
+        width: width(),
+        height: height(),
+        selectionType: "row-range",
+        selection: SpreadsheetRowReferenceRange.parse("98:99"),
+    }
+);
 // equals...............................................................................................................
 
 test("equals different cellOrLabel false", () => {

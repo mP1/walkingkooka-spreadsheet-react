@@ -3,6 +3,7 @@
  */
 import Preconditions from "../Preconditions.js";
 import SpreadsheetCellReference from "./reference/SpreadsheetCellReference.js";
+import SpreadsheetSelection from "./reference/SpreadsheetSelection.js";
 import SystemObject from "../SystemObject.js";
 
 const SEPARATOR = ":";
@@ -72,14 +73,21 @@ export default class SpreadsheetViewport extends SystemObject {
     /**
      * Returns a query parameters map that will be used to load all the cells for the viewport widget.
      */
-    toQueryStringParameters() {
-        return {
-            home: this.cellOrLabel(),
-            xOffset: this.xOffset(),
-            yOffset: this.yOffset(),
-            width: this.width(),
-            height: this.height(),
-        };
+    toQueryStringParameters(selection) {
+        Preconditions.optionalInstance(selection, SpreadsheetSelection, "selection");
+
+        return Object.assign(
+            {
+                home: this.cellOrLabel(),
+                xOffset: this.xOffset(),
+                yOffset: this.yOffset(),
+                width: this.width(),
+                height: this.height(),
+            },
+            selection ? {
+                selectionType: selection.toQueryStringParameterSelectionType(),
+                selection: selection,
+            } : {});
     }
 
     toJson() {

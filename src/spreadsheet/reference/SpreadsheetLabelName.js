@@ -85,6 +85,10 @@ export default class SpreadsheetLabelName extends SpreadsheetCellReferenceOrLabe
         return false;
     }
 
+    toQueryStringParameterSelectionType() {
+        return "label";
+    }
+
     /**
      * Within a similarities this represents a label which does not exist and should display the CREATE and not EDIT
      * button.
