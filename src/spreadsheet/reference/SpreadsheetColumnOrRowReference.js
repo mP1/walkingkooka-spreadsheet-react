@@ -105,7 +105,19 @@ export default class SpreadsheetColumnOrRowReference extends SpreadsheetSelectio
         return <TableCell key={id}
                           id={id}
                           className={(columnOrRow) + (highlighted ? " selected" : "")}
-                          style={highlighted ? headerCellSelected : headerCell}>{this.toString()}</TableCell>
+                          style={highlighted ? headerCellSelected : headerCell}
+                          tabIndex={0}
+                          data-selection={this}
+        >{
+            this.toString()
+        }</TableCell>
+    }
+
+    /**
+     * Clicking on a column or row selects it.
+     */
+    onViewportClick(setSelection, giveFormulaFocus) {
+        setSelection(this);
     }
 
     equals(other) {

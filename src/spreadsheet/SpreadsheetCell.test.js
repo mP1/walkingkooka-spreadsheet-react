@@ -39,13 +39,6 @@ function formatted() {
     return new Text("1+2 formatted");
 }
 
-function onClick() {
-    return true;
-}
-
-function onKeyDown() {
-}
-
 systemObjectTesting(
     cell(),
     new SpreadsheetCell(
@@ -282,37 +275,23 @@ test("setFormula different", () => {
         });
 });
 
-// render...............................................................................................................
+// renderViewport.......................................................................................................
 
-test("render missing defaultStyle fails", () => {
+test("renderViewport missing defaultStyle fails", () => {
     expect(() => new SpreadsheetCell(reference(), formula(), style())
         .renderViewport())
         .toThrow("Missing defaultStyle");
 });
 
-test("render invalid defaultStyle fails", () => {
+test("renderViewport invalid defaultStyle fails", () => {
     expect(() => new SpreadsheetCell(reference(), formula(), style())
         .renderViewport("!invalid"))
         .toThrow("Expected TextStyle defaultStyle got !invalid");
 });
 
-test("render missing onClick fails", () => {
-    expect(() => new SpreadsheetCell(reference(), formula(), style())
-        .renderViewport(TextStyle.EMPTY))
-        .toThrow("Missing onClick");
-});
-
-test("render invalid onClick fails", () => {
-    expect(() => new SpreadsheetCell(reference(), formula(), style())
-        .renderViewport(TextStyle.EMPTY,"!invalid"))
-        .toThrow("Expected function onClick got !invalid");
-});
-
-test("render empty style, text & defaultStyle EMPTY", () => {
+test("renderViewport empty style, text & defaultStyle EMPTY", () => {
     const text = "text-abc123";
     const ref = reference();
-    const c = onClick;
-    const kd = onKeyDown;
     const l = [];
 
     expect(new SpreadsheetCell(ref,
@@ -320,21 +299,19 @@ test("render empty style, text & defaultStyle EMPTY", () => {
         TextStyle.EMPTY,
         format(),
         new Text(text))
-        .renderViewport(TextStyle.EMPTY, c, kd, l))
-        .toEqual(<TableCell key={ref}
-                            id="viewport-cell-A99"
+        .renderViewport(TextStyle.EMPTY, l))
+        .toEqual(<TableCell key={ref.viewportId()}
+                            id={ref.viewportId()}
                             tabIndex={0}
-                            onClick={c}
-                            onKeyDown={kd}
                             className={"cell"}
-                            style={{boxSizing: "border-box"}}>{text}</TableCell>);
+                            style={{boxSizing: "border-box"}}
+                            data-selection={ref}
+        >{text}</TableCell>);
 });
 
-test("render empty style, text & defaultStyle EMPTY 2", () => {
+test("renderViewport empty style, text & defaultStyle EMPTY 2", () => {
     const text = "text-abc123";
     const ref = SpreadsheetCellReference.parse("B123");
-    const c = onClick;
-    const kd = onKeyDown;
     const l = [];
 
     expect(new SpreadsheetCell(ref,
@@ -342,21 +319,18 @@ test("render empty style, text & defaultStyle EMPTY 2", () => {
         TextStyle.EMPTY,
         format(),
         new Text(text))
-        .renderViewport(TextStyle.EMPTY, c, kd, l))
-        .toEqual(<TableCell key={ref}
-                            id="viewport-cell-B123"
+        .renderViewport(TextStyle.EMPTY, l))
+        .toEqual(<TableCell key={ref.viewportId()}
+                            id={ref.viewportId()}
                             tabIndex={0}
-                            onClick={c}
-                            onKeyDown={kd}
                             className={"cell"}
+                            data-selection={ref}
                             style={{boxSizing: "border-box"}}>{text}</TableCell>);
 });
 
-test("render empty style, text & defaultStyle width&height", () => {
+test("renderViewport empty style, text & defaultStyle width&height", () => {
     const text = "text-abc123";
     const r = reference();
-    const c = onClick;
-    const kd = onKeyDown;
     const l = [];
 
     expect(new SpreadsheetCell(r,
@@ -368,23 +342,19 @@ test("render empty style, text & defaultStyle width&height", () => {
             TextStyle.EMPTY
                 .set("width", lengthFromJson("100px"))
                 .set("height", lengthFromJson("50px")),
-            c,
-            kd,
             l))
-        .toEqual(<TableCell key={r}
-                            id="viewport-cell-A99"
+        .toEqual(<TableCell key={r.viewportId()}
+                            id={r.viewportId()}
                             tabIndex={0}
-                            onClick={c}
-                            onKeyDown={kd}
                             className={"cell"}
-                            style={{boxSizing: "border-box", width: "100px", height: "50px"}}>{text}</TableCell>);
+                            style={{boxSizing: "border-box", width: "100px", height: "50px"}}
+                            data-selection={r}
+        >{text}</TableCell>);
 });
 
-test("render style=width&height, text & defaultStyle=empty", () => {
+test("renderViewport style=width&height, text & defaultStyle=empty", () => {
     const text = "text-abc123";
     const r = reference();
-    const c = onClick;
-    const kd = onKeyDown;
     const l = [];
 
     expect(new SpreadsheetCell(r,
@@ -394,21 +364,19 @@ test("render style=width&height, text & defaultStyle=empty", () => {
             .set("height", lengthFromJson("50px")),
         format(),
         new Text(text))
-        .renderViewport(TextStyle.EMPTY, c, kd, l))
-        .toEqual(<TableCell key={r}
-                            id="viewport-cell-A99"
+        .renderViewport(TextStyle.EMPTY, l))
+        .toEqual(<TableCell key={r.viewportId()}
+                            id={r.viewportId()}
                             tabIndex={0}
-                            onClick={c}
-                            onKeyDown={kd}
                             className={"cell"}
-                            style={{boxSizing: "border-box", width: "100px", height: "50px"}}>{text}</TableCell>);
+                            style={{boxSizing: "border-box", width: "100px", height: "50px"}}
+                            data-selection={r}
+        >{text}</TableCell>);
 });
 
-test("render style=height, text & defaultStyle=width", () => {
+test("renderViewport style=height, text & defaultStyle=width", () => {
     const text = "text-abc123";
     const r = reference();
-    const c = onClick;
-    const kd = onKeyDown;
     const l = [];
 
     expect(new SpreadsheetCell(r,
@@ -419,23 +387,19 @@ test("render style=height, text & defaultStyle=width", () => {
         new Text(text))
         .renderViewport(TextStyle.EMPTY
                 .set("width", lengthFromJson("100px")),
-            c,
-            kd,
             l))
-        .toEqual(<TableCell key={r}
-                            id="viewport-cell-A99"
+        .toEqual(<TableCell key={r.viewportId()}
+                            id={r.viewportId()}
                             tabIndex={0}
-                            onClick={c}
-                            onKeyDown={kd}
                             className={"cell"}
-                            style={{boxSizing: "border-box", width: "100px", height: "50px"}}>{text}</TableCell>);
+                            style={{boxSizing: "border-box", width: "100px", height: "50px"}}
+                            data-selection={r}
+        >{text}</TableCell>);
 });
 
-test("render style=width&height, text & defaultStyle=width", () => {
+test("renderViewport style=width&height, text & defaultStyle=width", () => {
     const text = "text-abc123";
     const r = reference();
-    const c = onClick;
-    const kd = onKeyDown;
     const l = [];
 
     expect(new SpreadsheetCell(r,
@@ -445,25 +409,23 @@ test("render style=width&height, text & defaultStyle=width", () => {
             .set("height", lengthFromJson("50px")),
         format(),
         new Text(text))
-        .renderViewport(TextStyle.EMPTY
+        .renderViewport(
+            TextStyle.EMPTY
                 .set("width", lengthFromJson("99px")),
-            c,
-            kd,
-            l))
-        .toEqual(<TableCell id="viewport-cell-A99"
-                            key={r}
+            l)
+    )
+        .toEqual(<TableCell key={r.viewportId()}
+                            id={r.viewportId()}
                             tabIndex={0}
-                            onClick={c}
-                            onKeyDown={kd}
                             className={"cell"}
-                            style={{boxSizing: "border-box", width: "100px", height: "50px"}}>{text}</TableCell>);
+                            style={{boxSizing: "border-box", width: "100px", height: "50px"}}
+                            data-selection={r}
+        >{text}</TableCell>);
 });
 
-test("render with labels", () => {
+test("renderViewport with labels", () => {
     const text = "text-abc123";
     const r = reference();
-    const c = onClick;
-    const kd = onKeyDown;
     const l = [SpreadsheetLabelName.parse("Label1"), SpreadsheetLabelName.parse("Label2")];
 
     expect(new SpreadsheetCell(r,
@@ -475,20 +437,18 @@ test("render with labels", () => {
         new Text(text))
         .renderViewport(TextStyle.EMPTY
                 .set("width", lengthFromJson("99px")),
-            c,
-            kd,
             l))
         .toEqual(<Tooltip key={r.viewportTooltipId()}
                           id={r.viewportTooltipId()}
                           title={"Label1, Label2"}
                           placement={"top"}>
-            <TableCell id="viewport-cell-A99"
-                       key={r}
+            <TableCell key={r.viewportId()}
+                       id={r.viewportId()}
                        tabIndex={0}
-                       onClick={c}
-                       onKeyDown={kd}
                        className={"cell"}
-                       style={{boxSizing: "border-box", width: "100px", height: "50px"}}>{text}</TableCell>
+                       style={{boxSizing: "border-box", width: "100px", height: "50px"}}
+                       data-selection={r}
+            >{text}</TableCell>
         </Tooltip>);
 });
 

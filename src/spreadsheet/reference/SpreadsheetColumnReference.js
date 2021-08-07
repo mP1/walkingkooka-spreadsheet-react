@@ -1,3 +1,4 @@
+import Keys from "../../Keys.js";
 import Preconditions from "../../Preconditions.js";
 import SpreadsheetCellReference from "./SpreadsheetCellReference.js";
 import SpreadsheetColumnOrRowReference from "./SpreadsheetColumnOrRowReference";
@@ -76,6 +77,31 @@ export default class SpreadsheetColumnReference extends SpreadsheetColumnOrRowRe
 
     typeName() {
         return TYPE_NAME;
+    }
+
+    /**
+     * LEFT | RIGHT Arrow keys update the column selection or when down selects the first visible cell or ESC clears the current selection.
+     */
+    onViewportKeyDown(key, setSelection, giveFormulaFocus, viewportHome) {
+        console.log("onViewportKeyDown: " + key + " " + this);
+
+        switch(key) {
+            case Keys.ARROW_LEFT:
+                setSelection(this.addSaturated(-1));
+                break;
+            case Keys.ARROW_DOWN:
+                setSelection(viewportHome.setColumn(this));
+                break;
+            case Keys.ARROW_RIGHT:
+                setSelection(this.addSaturated(+1));
+                break;
+            case Keys.ESCAPE:
+                setSelection(null);
+                break;
+            default:
+                // ignore other keys
+                break;
+        }
     }
 
     toQueryStringParameterSelectionType() {

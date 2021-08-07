@@ -5,10 +5,11 @@ import Keys from "../Keys.js";
 import PropTypes from "prop-types";
 import React from 'react';
 import SpreadsheetCell from "./SpreadsheetCell.js";
+import SpreadsheetCellReferenceOrLabelName from "./reference/SpreadsheetCellReferenceOrLabelName.js";
 import SpreadsheetDelta from "./engine/SpreadsheetDelta.js";
+import SpreadsheetFormula from "./SpreadsheetFormula.js";
 import SpreadsheetHistoryHash from "./history/SpreadsheetHistoryHash.js";
 import SpreadsheetHistoryAwareStateWidget from "./history/SpreadsheetHistoryAwareStateWidget.js";
-import SpreadsheetFormula from "./SpreadsheetFormula.js";
 import SpreadsheetLabelName from "./reference/SpreadsheetLabelName.js";
 import SpreadsheetMessengerCrud from "./message/SpreadsheetMessengerCrud.js";
 import TextField from '@material-ui/core/TextField';
@@ -54,21 +55,23 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetHistoryAwareSta
     }
 
     stateFromHistoryTokens(historyTokens) {
+        SpreadsheetFormulaWidget.column = SpreadsheetFormulaWidget.column || SpreadsheetHistoryHash.stringify(historyTokens).indexOf("column") > 0;
+
         const state = this.state || {};
 
-        // if a cellOrLabel is present the formula text should also be editable.
-        const cellOrLabel = historyTokens[SpreadsheetHistoryHash.SELECTION];
+        // if a cell or label is present the formula text should also be editable.
+        const selection = historyTokens[SpreadsheetHistoryHash.SELECTION];
         const formula = historyTokens[SpreadsheetHistoryHash.CELL_FORMULA];
-        const edit = !!cellOrLabel;
+        const edit = selection instanceof SpreadsheetCellReferenceOrLabelName;
         const giveFocus = edit && formula && !state.focused && !state.giveFocus;
 
         var newState = {};
 
-        if(!Equality.safeEquals(cellOrLabel, state.cellOrLabel) || edit !== state.edit || giveFocus){
-            console.log("stateFromHistoryTokens: " + cellOrLabel + " newCellOrLabel: " + cellOrLabel + " old: " + state.cellOrLabel);
+        if(!Equality.safeEquals(selection, state.selection) || edit !== state.edit || giveFocus){
+            console.log("stateFromHistoryTokens: " + selection + " new selection: " + selection + " old: " + state.selection);
 
             newState = {
-                cellOrLabel: cellOrLabel,
+                selection: selection,
                 edit: edit,
                 giveFocus: giveFocus,
                 reload: false,
@@ -80,12 +83,12 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetHistoryAwareSta
 
     historyTokensFromState(prevState) {
         const state = this.state;
-        const {cellOrLabel, edit, focused, giveFocus, reload} = state;
+        const {selection, edit, focused, giveFocus, reload} = state;
 
-        console.log("historyTokensFromState formula cell " + prevState.cellOrLabel + " to " + cellOrLabel + " state", state);
+        console.log("historyTokensFromState formula from " + prevState.selection + " to " + selection + " state", state);
 
         const historyTokens = {};
-        historyTokens[SpreadsheetHistoryHash.SELECTION] = cellOrLabel;
+        historyTokens[SpreadsheetHistoryHash.SELECTION] = selection;
         historyTokens[SpreadsheetHistoryHash.CELL_FORMULA] = focused | giveFocus;
 
         // if not formula editing, disable textField
@@ -95,14 +98,14 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetHistoryAwareSta
         }
 
         // if different cell
-        if(!Equality.safeEquals(cellOrLabel, prevState.cellOrLabel) || reload){
+        if(!Equality.safeEquals(selection, prevState.selection) || reload){
             if(edit){
-                this.reloadFormulaText(cellOrLabel);
+                this.reloadFormulaText(selection, giveFocus);
             }else {
                 this.setState({
                     edit: false,
                     cell: null,
-                    cellOrLabel: null,
+                    selection: selection instanceof SpreadsheetCellReferenceOrLabelName ? null : selection,
                     value: null,
                     giveFocus: false,
                 });
@@ -232,9 +235,9 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetHistoryAwareSta
 
         const props = this.props;
         const state = this.state;
-        const {cellOrLabel, cellReference} = state;
+        const {selection, cellReference} = state;
 
-        console.log("saving formula for " + cellOrLabel + " to " + CharSequences.quoteAndEscape(formulaText));
+        console.log("saving formula for " + selection + " to " + CharSequences.quoteAndEscape(formulaText));
 
         var cell = state.cell;
         if(cell){
@@ -245,7 +248,7 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetHistoryAwareSta
         }
 
         props.spreadsheetDeltaCrud.post(
-            cellOrLabel,
+            selection,
             new SpreadsheetDelta(
                 [cell],
                 [],
@@ -275,21 +278,21 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetHistoryAwareSta
      */
     onSpreadsheetDeltaLoad(loadCellOrLabel, delta) {
         const state = this.state;
-        const cellOrLabel = state.cellOrLabel;
+        const selection = state.selection;
 
-        if(cellOrLabel){
-            const cell = delta.cell(cellOrLabel);
+        if(selection){
+            const cell = delta.cell(selection);
 
-            const cellReference = cellOrLabel instanceof SpreadsheetLabelName ?
-                delta.cellReference(cellOrLabel) :
-                cellOrLabel;
+            const cellReference = selection instanceof SpreadsheetLabelName ?
+                delta.cellReference(selection) :
+                selection;
             const formulaText = cell ? cell.formula().text() : "";
-            console.log("loaded formulaText for " + cellOrLabel + " is " + CharSequences.quoteAndEscape(formulaText));
+            console.log("loaded formulaText for " + selection + " is " + CharSequences.quoteAndEscape(formulaText));
 
             this.setState({
                 cell: cell,
-                cellOrLabel: cellOrLabel,
                 cellReference: cellReference,
+                selection: selection,
                 value: formulaText,
                 reload: false,
             });

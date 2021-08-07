@@ -1,3 +1,4 @@
+import Keys from "../../Keys.js";
 import SpreadsheetCellReference from "./SpreadsheetCellReference";
 import SpreadsheetColumnReference from "./SpreadsheetColumnReference";
 import SpreadsheetRowReference from "./SpreadsheetRowReference";
@@ -452,6 +453,67 @@ test("toSpreadsheetSelectWidgetOption", () => {
         gotoCellOrLabel: cell,
     });
 });
+
+// onViewportClick......................................................................................................
+
+test("onViewportClickAndTest cell=A1", () => {
+
+    const state = {
+        selection: SpreadsheetCellReference.parse("A1").toString(),
+        giveFormulaFocus: false,
+    };
+
+    const reference = SpreadsheetCellReference.parse("B2");
+
+    reference
+        .onViewportClick(
+            (s) => state.selection = s && s.toString(),
+            () => state.giveFormulaFocus = true,
+        );
+    expect(state)
+        .toStrictEqual({
+            selection: reference.toString(),
+            giveFormulaFocus: false,
+        });
+});
+
+// onViewportKeyDown....................................................................................................
+
+function onViewportKeyDownAndTest(reference, key, viewportHome, setSelection, giveFormulaFocus) {
+    test("onViewportKeyDownAndTest cell=" + reference + " key=" + key + " home=" + viewportHome, () => {
+
+        const state = {
+            selection: SpreadsheetCellReference.parse(reference).toString(),
+            giveFormulaFocus: false,
+        };
+
+        SpreadsheetCellReference.parse(reference)
+            .onViewportKeyDown(
+                key,
+                (s) => state.selection = s && s.toString(),
+                () => state.giveFormulaFocus = true,
+                SpreadsheetCellReference.parse(viewportHome),
+            );
+        expect(state)
+            .toStrictEqual({
+                selection: setSelection ? SpreadsheetCellReference.parse(setSelection).toString() : setSelection,
+                giveFormulaFocus: giveFormulaFocus,
+            });
+    });
+}
+
+onViewportKeyDownAndTest("B2", "A", "A1", "B2", false);
+
+onViewportKeyDownAndTest("B2", Keys.ESCAPE, "B2", null, false);
+onViewportKeyDownAndTest("B2", Keys.ENTER, "B2", "B2", true);
+
+onViewportKeyDownAndTest("B2", Keys.ARROW_LEFT, "B2", "A2", false);
+onViewportKeyDownAndTest("B2", Keys.ARROW_RIGHT, "B2", "C2", false);
+onViewportKeyDownAndTest("B2", Keys.ARROW_UP, "B2", "B1", false);
+onViewportKeyDownAndTest("B2", Keys.ARROW_DOWN, "B2", "B3", false);
+
+onViewportKeyDownAndTest("A1", Keys.ARROW_LEFT, "A1", "A1", false);
+onViewportKeyDownAndTest("A1", Keys.ARROW_UP, "A1", "A1", false);
 
 // equals................................................................................................................
 

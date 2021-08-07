@@ -132,10 +132,8 @@ export default class SpreadsheetCell extends SystemObject {
     /**
      * Renders a TableCell with the formatted content. The default style will typically come from {@link SpreadsheetMetadata}.
      */
-    renderViewport(defaultStyle, onClick, onKeyDown, labels) {
+    renderViewport(defaultStyle, labels) {
         Preconditions.requireInstance(defaultStyle,TextStyle, "defaultStyle");
-        Preconditions.requireFunction(onClick, "onClick");
-        Preconditions.optionalFunction(onKeyDown, "onKeyDown");
         Preconditions.requireArray(labels, "labels");
 
         const style = defaultStyle.merge(this.style());
@@ -146,21 +144,24 @@ export default class SpreadsheetCell extends SystemObject {
         css.boxSizing = "border-box";
 
         const reference = this.reference();
+        const cellId = reference.viewportId();
 
-        const tableCell = <TableCell key={reference}
-                                     id={reference.viewportId()}
+        const tableCell = <TableCell key={cellId}
+                                     id={cellId}
                                      className={"cell"}
-                                     onClick={onClick}
-                                     onKeyDown={onKeyDown}
                                      tabIndex={0}
-                                     style={css}>{formattedRender}</TableCell>;
+                                     style={css}
+                                     data-selection={reference}
+        >{
+            formattedRender
+        }</TableCell>;
 
         // place a tooltip top-center with any labels csv.
 
-        const id = reference.viewportTooltipId();
+        const tooltipId = reference.viewportTooltipId();
         return labels.length > 0 ?
-            <Tooltip key={id}
-                     id={id}
+            <Tooltip key={tooltipId}
+                     id={tooltipId}
                      title={labels.map(l => l.value()).join(", ")}
                      placement={"top"}
                      >{
