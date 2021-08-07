@@ -104,7 +104,7 @@ export default class SpreadsheetMessengerCrud {
             parameters,
             (json) => {
                 const responseValue = null != json ? this.unmarshall(json) : null;
-                this.listeners.fire(method, id, requestValue, queryParameters, responseValue);
+                this.listeners.fire(method, id, queryParameters, requestValue, responseValue);
             },
             failure,
         );
