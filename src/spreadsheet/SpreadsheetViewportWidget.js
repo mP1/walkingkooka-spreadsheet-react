@@ -210,7 +210,6 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
             const selectionNew = state.selection;
 
             let viewportLoadCells = false;
-            let giveFocus = false;
             const viewportCell = metadata.getIgnoringDefaults(SpreadsheetMetadata.VIEWPORT_CELL);
 
             do {
@@ -219,7 +218,6 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
                         console.log("New selection " + selectionOld + " to " + " " + selectionNew);
 
                         viewportLoadCells = true;
-                        giveFocus = true;
                         break;
                     }
 
