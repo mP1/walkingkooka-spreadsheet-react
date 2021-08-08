@@ -255,7 +255,7 @@ export default class SpreadsheetHistoryHash {
     }
 
     /**
-     * Merges the two history has objects, using the delta to update and return a new object of hashes.
+     * Merges the two history hash objects, using the delta to update and return a new object.
      */
     static merge(current, delta) {
         Preconditions.requireObject(current, "current");
