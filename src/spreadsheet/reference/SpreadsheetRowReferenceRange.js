@@ -2,10 +2,10 @@ import Preconditions from "../../Preconditions.js";
 import SpreadsheetCellReference from "./SpreadsheetCellReference";
 import SpreadsheetColumnReference from "./SpreadsheetColumnReference.js";
 import SpreadsheetColumnOrRowReferenceRange from "./SpreadsheetColumnOrRowReferenceRange.js";
+import SpreadsheetHistoryHash from "../history/SpreadsheetHistoryHash.js";
 import spreadsheetRangeParse from "./SpreadsheetRangeParser.js";
 import SpreadsheetRowReference from "./SpreadsheetRowReference.js";
 import SystemObject from "../../SystemObject.js";
-
 
 const TYPE_NAME = "spreadsheet-row-reference-range";
 /**
@@ -54,7 +54,7 @@ export default class SpreadsheetRowReferenceRange extends SpreadsheetColumnOrRow
     testColumn(columnReference) {
         Preconditions.requireInstance(columnReference, SpreadsheetColumnReference, "columnReference");
 
-        return true;
+        return false;
     }
 
     testRow(rowReference) {
@@ -66,6 +66,10 @@ export default class SpreadsheetRowReferenceRange extends SpreadsheetColumnOrRow
 
     toQueryStringParameterSelectionType() {
         return "row-range";
+    }
+
+    toSelectionHashToken() {
+        return SpreadsheetHistoryHash.ROW + "/" + this;
     }
 
     typeName() {
