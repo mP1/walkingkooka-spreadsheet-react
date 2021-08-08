@@ -1,4 +1,5 @@
 import CharSequences from "../../CharSequences.js";
+import SpreadsheetCellRange from "../reference/SpreadsheetCellRange.js";
 import SpreadsheetCellReference from "../reference/SpreadsheetCellReference.js";
 import SpreadsheetColumnReference from "../reference/SpreadsheetColumnReference.js";
 import SpreadsheetHistoryHash from "./SpreadsheetHistoryHash.js";
@@ -9,6 +10,7 @@ import SpreadsheetRowReference from "../reference/SpreadsheetRowReference.js";
 const ID = "spreadsheet-id-123";
 const SPREADSHEET_NAME = new SpreadsheetName("spreadsheet-name-456");
 const CELL = SpreadsheetCellReference.parse("A1");
+const CELL_RANGE = SpreadsheetCellRange.parse("C3:D4");
 const COLUMN = SpreadsheetColumnReference.parse("B");
 const ROW = SpreadsheetRowReference.parse("2");
 const LABEL = SpreadsheetLabelName.parse("Label123");
@@ -274,6 +276,23 @@ parseAndStringifyTest(
         "spreadsheet-name": SPREADSHEET_NAME,
         "selection": CELL,
         "formula": true,
+    }
+);
+
+parseAndStringifyTest(
+    "/spreadsheet-id-123/spreadsheet-name-456/cell/C3:D4",
+    {
+        "spreadsheet-id": "spreadsheet-id-123",
+        "spreadsheet-name": SPREADSHEET_NAME,
+        "selection": CELL_RANGE,
+    }
+);
+
+parseAndStringifyTest(
+    "/spreadsheet-id-123/spreadsheet-name-456/cell/C3:D4/formula",
+    {
+        "spreadsheet-id": "spreadsheet-id-123",
+        "spreadsheet-name": SPREADSHEET_NAME,
     }
 );
 
@@ -1087,6 +1106,23 @@ mergeUpdatesFails([]);
             "name": true,
         },
         "/123abc/Untitled456/name"
+    );
+
+    mergeTest(
+        "/123abc/Untitled456/cell/A1",
+        {
+            "selection": CELL_RANGE,
+        },
+        "/123abc/Untitled456/cell/C3:D4"
+    );
+
+    mergeTest(
+        "/123abc/Untitled456/cell/A1/formula",
+        {
+            "selection": CELL_RANGE,
+            "formula": false,
+        },
+        "/123abc/Untitled456/cell/C3:D4"
     );
 
     mergeTest(

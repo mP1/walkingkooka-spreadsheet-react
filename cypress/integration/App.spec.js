@@ -1202,6 +1202,27 @@ context(
                 .should("have.focus");
         });
 
+        // cell range...................................................................................................
+
+        it("Cell range history hash", () => {
+            spreadsheetEmpty();
+
+            hashAppend("/cell/B2:C3");
+
+            hash()
+                .should('match', /.*\/.*\/cell\/B2:C3/);
+
+            column("B")
+                .should("have.css", "background-color", SELECTED_COLOR);
+            column("C")
+                .should("have.css", "background-color", SELECTED_COLOR);
+
+            row("2")
+                .should("have.css", "background-color", SELECTED_COLOR);
+            row("3")
+                .should("have.css", "background-color", SELECTED_COLOR);
+        });
+
         // select.....................................................................................................
 
         it("Select using hash initial appearance", () => {
