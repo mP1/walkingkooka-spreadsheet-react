@@ -244,9 +244,9 @@ function testRowAndCheck(label, range, rowReference, expected) {
     });
 }
 
-testRowAndCheck("left", JSON, "1", true);
-testRowAndCheck("left", JSON, "2", true);
-testRowAndCheck("left", JSON, "3", true);
+testRowAndCheck("left", JSON, "1", false);
+testRowAndCheck("left", JSON, "2", false);
+testRowAndCheck("left", JSON, "3", false);
 
 // helpers..............................................................................................................
 

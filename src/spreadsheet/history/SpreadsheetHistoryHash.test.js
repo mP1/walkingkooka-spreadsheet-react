@@ -2,6 +2,7 @@ import CharSequences from "../../CharSequences.js";
 import SpreadsheetCellRange from "../reference/SpreadsheetCellRange.js";
 import SpreadsheetCellReference from "../reference/SpreadsheetCellReference.js";
 import SpreadsheetColumnReference from "../reference/SpreadsheetColumnReference.js";
+import SpreadsheetColumnReferenceRange from "../reference/SpreadsheetColumnReferenceRange.js";
 import SpreadsheetHistoryHash from "./SpreadsheetHistoryHash.js";
 import SpreadsheetLabelName from "../reference/SpreadsheetLabelName.js";
 import SpreadsheetName from "../SpreadsheetName.js";
@@ -12,6 +13,7 @@ const SPREADSHEET_NAME = new SpreadsheetName("spreadsheet-name-456");
 const CELL = SpreadsheetCellReference.parse("A1");
 const CELL_RANGE = SpreadsheetCellRange.parse("C3:D4");
 const COLUMN = SpreadsheetColumnReference.parse("B");
+const COLUMN_RANGE = SpreadsheetColumnReferenceRange.parse("B:C");
 const ROW = SpreadsheetRowReference.parse("2");
 const LABEL = SpreadsheetLabelName.parse("Label123");
 
@@ -461,6 +463,15 @@ parseAndStringifyTest(
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
+    }
+);
+
+parseAndStringifyTest(
+    "/spreadsheet-id-123/spreadsheet-name-456/column/B:C",
+    {
+        "spreadsheet-id": "spreadsheet-id-123",
+        "spreadsheet-name": SPREADSHEET_NAME,
+        "selection": COLUMN_RANGE,
     }
 );
 
@@ -1179,7 +1190,33 @@ mergeUpdatesFails([]);
         "/123abc/Untitled456/name"
     );
 
-// select.............................................................................................................
+    // column...........................................................................................................
+
+    mergeTest(
+        "/123abc/Untitled456/",
+        {
+            selection: COLUMN,
+        },
+        "/123abc/Untitled456/column/B"
+    );
+
+    mergeTest(
+        "/123abc/Untitled456/column/B",
+        {
+            selection: COLUMN_RANGE,
+        },
+        "/123abc/Untitled456/column/B:C"
+    );
+
+    mergeTest(
+        "/123abc/Untitled456/column/B:D",
+        {
+            selection: COLUMN,
+        },
+        "/123abc/Untitled456/column/B"
+    );
+
+    // select.............................................................................................................
 
     mergeTest(
         "/123abc/Untitled456/select",

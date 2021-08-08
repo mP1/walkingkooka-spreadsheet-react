@@ -1223,6 +1223,22 @@ context(
                 .should("have.css", "background-color", SELECTED_COLOR);
         });
 
+        // column range...................................................................................................
+
+        it("column range history hash", () => {
+            spreadsheetEmpty();
+
+            hashAppend("/column/B:C");
+
+            hash()
+                .should('match', /.*\/.*\/column\/B:C/);
+
+            column("B")
+                .should("have.css", "background-color", SELECTED_COLOR);
+            column("C")
+                .should("have.css", "background-color", SELECTED_COLOR);
+        });
+
         // select.....................................................................................................
 
         it("Select using hash initial appearance", () => {

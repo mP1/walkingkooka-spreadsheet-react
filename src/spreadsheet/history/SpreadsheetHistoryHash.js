@@ -3,10 +3,18 @@ import Preconditions from "../../Preconditions.js";
 import SpreadsheetCellReferenceOrLabelName from "../reference/SpreadsheetCellReferenceOrLabelName.js";
 import spreadsheetCellReferenceOrLabelNameParse from "../reference/SpreadsheetCellReferenceOrLabelNameParse.js";
 import SpreadsheetColumnReference from "../reference/SpreadsheetColumnReference.js";
+import SpreadsheetColumnReferenceRange from "../reference/SpreadsheetColumnReferenceRange.js";
 import SpreadsheetLabelName from "../reference/SpreadsheetLabelName.js";
 import SpreadsheetName from "../SpreadsheetName.js";
 import SpreadsheetRowReference from "../reference/SpreadsheetRowReference.js";
 import SpreadsheetSelection from "../reference/SpreadsheetSelection.js";
+
+function columnOrColumnRangeParse(text) {
+    const colon = text.indexOf(":");
+    return -1 === colon ?
+        SpreadsheetColumnReference.parse(text) :
+        SpreadsheetColumnReferenceRange.parse(text);
+}
 
 function tokenize(pathname) {
     return pathname && pathname.startsWith("/") ?
@@ -123,7 +131,7 @@ export default class SpreadsheetHistoryHash {
                             }
 
                             try {
-                                selection = SpreadsheetColumnReference.parse(sourceTokens.shift());
+                                selection = columnOrColumnRangeParse(sourceTokens.shift());
                             } catch(invalid) {
                                 errors("Column: " + invalid.message);
                                 valid = false;
