@@ -322,7 +322,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
         const home = spreadsheetMetadata && spreadsheetMetadata.getIgnoringDefaults(SpreadsheetMetadata.VIEWPORT_CELL);
 
         return (dimensions && home && this.renderTable(dimensions, home)) ||
-            this.renderViewportEmptyTable();
+            this.renderTableEmpty();
     }
 
     renderTable(dimensions, home) {
@@ -344,13 +344,13 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
                 <TableHead>
                     <TableRow>
                         {
-                            this.renderViewportTableColumnHeaders()
+                            this.renderTableColumnHeaders()
                         }
                     </TableRow>
                 </TableHead>
                 <TableBody>
                     {
-                        this.renderViewportTableContent()
+                        this.renderTableContent()
                     }
                 </TableBody>
             </Table>
@@ -494,7 +494,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
     /**
      * Returns an array of TableCell, one for each column header.
      */
-    renderViewportTableColumnHeaders() {
+    renderTableColumnHeaders() {
         const {columnWidths, dimensions, spreadsheetMetadata} = this.state;
 
         const home = spreadsheetMetadata.getIgnoringDefaults(SpreadsheetMetadata.VIEWPORT_CELL);
@@ -526,7 +526,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
     /**
      * Render the required TABLE ROW each filled with available or empty TABLE CELL cells.
      */
-    renderViewportTableContent() {
+    renderTableContent() {
         const {cells, columnWidths, rowHeights, spreadsheetMetadata, dimensions, cellToLabels} = this.state;
 
         const home = spreadsheetMetadata.getIgnoringDefaults(SpreadsheetMetadata.VIEWPORT_CELL);
@@ -586,7 +586,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
     /**
      * Renders an empty table, this happens when ALL requirements are not yet available.
      */
-    renderViewportEmptyTable() {
+    renderTableEmpty() {
         return <TableContainer/>;
     }
 
