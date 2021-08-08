@@ -63,11 +63,13 @@ Components within a hash that begin with dollar sign '$' represent a variable of
 components are actual literals.
 
 - /$spreadsheet-id/$spreadsheet-name *view the selected spreadsheet*
-- /$spreadsheet-id/$spreadsheet-name/name *editing the spreadsheet name*
+- /$spreadsheet-id/$spreadsheet-name/name *edit the spreadsheet name*
 - /$spreadsheet-id/$spreadsheet-name/cell/$cell-reference-OR-label-name *navigates to the given $cell-reference or $label-name*
 - /$spreadsheet-id/$spreadsheet-name/cell/$cell-reference-OR-label-name/formula *editing of the cell formula*
+- /$spreadsheet-id/$spreadsheet-name/column/$column-reference-OR-column-reference-range *selects the column or column range*
 - /$spreadsheet-id/$spreadsheet-name/label/$label-name / *creates / edits the give $label-name*
-- /$spreadsheet-id/$spreadsheet-name/navigate *displays modal prompt user to enter cell or label with navigation / editing options*
+- /$spreadsheet-id/$spreadsheet-name/row/$row-reference-OR-row-reference-range *selects the row or row range*
+- /$spreadsheet-id/$spreadsheet-name/select *displays modal prompt user to enter cell or label with navigation / editing options*
 - /$spreadsheet-id/$spreadsheet-name/settings *open the settings panel*
 - /$spreadsheet-id/$spreadsheet-name/settings/$section *open the settings panel and expands the section*
 
