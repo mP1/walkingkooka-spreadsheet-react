@@ -7,6 +7,7 @@ import SpreadsheetHistoryHash from "./SpreadsheetHistoryHash.js";
 import SpreadsheetLabelName from "../reference/SpreadsheetLabelName.js";
 import SpreadsheetName from "../SpreadsheetName.js";
 import SpreadsheetRowReference from "../reference/SpreadsheetRowReference.js";
+import SpreadsheetRowReferenceRange from "../reference/SpreadsheetRowReferenceRange.js";
 
 const ID = "spreadsheet-id-123";
 const SPREADSHEET_NAME = new SpreadsheetName("spreadsheet-name-456");
@@ -15,6 +16,7 @@ const CELL_RANGE = SpreadsheetCellRange.parse("C3:D4");
 const COLUMN = SpreadsheetColumnReference.parse("B");
 const COLUMN_RANGE = SpreadsheetColumnReferenceRange.parse("B:C");
 const ROW = SpreadsheetRowReference.parse("2");
+const ROW_RANGE = SpreadsheetRowReferenceRange.parse("2:3");
 const LABEL = SpreadsheetLabelName.parse("Label123");
 
 // validate................................................................................................................
@@ -491,6 +493,15 @@ parseAndStringifyTest(
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
         "selection": ROW,
+    }
+);
+
+parseAndStringifyTest(
+    "/spreadsheet-id-123/spreadsheet-name-456/row/2:3",
+    {
+        "spreadsheet-id": "spreadsheet-id-123",
+        "spreadsheet-name": SPREADSHEET_NAME,
+        "selection": ROW_RANGE,
     }
 );
 
@@ -1214,6 +1225,32 @@ mergeUpdatesFails([]);
             selection: COLUMN,
         },
         "/123abc/Untitled456/column/B"
+    );
+
+    // row...........................................................................................................
+
+    mergeTest(
+        "/123abc/Untitled456/",
+        {
+            selection: ROW,
+        },
+        "/123abc/Untitled456/row/2"
+    );
+    
+    mergeTest(
+        "/123abc/Untitled456/row/2",
+        {
+            selection: ROW_RANGE,
+        },
+        "/123abc/Untitled456/row/2:3"
+    );
+    
+    mergeTest(
+        "/123abc/Untitled456/row/2:3",
+        {
+            selection: ROW,
+        },
+        "/123abc/Untitled456/row/2"
     );
 
     // select.............................................................................................................

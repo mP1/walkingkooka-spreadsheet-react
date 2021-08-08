@@ -218,9 +218,9 @@ function testColumnAndCheck(label, range, columnReference, expected) {
     });
 }
 
-testColumnAndCheck("A", JSON, "A", true);
-testColumnAndCheck("B", JSON, "B", true);
-testColumnAndCheck("C", JSON, "C", true);
+testColumnAndCheck("A", JSON, "A", false);
+testColumnAndCheck("B", JSON, "B", false);
+testColumnAndCheck("C", JSON, "C", false);
 
 // testRow...........................................................................................................
 

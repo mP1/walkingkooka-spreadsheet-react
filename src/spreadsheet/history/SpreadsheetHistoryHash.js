@@ -7,6 +7,7 @@ import SpreadsheetColumnReferenceRange from "../reference/SpreadsheetColumnRefer
 import SpreadsheetLabelName from "../reference/SpreadsheetLabelName.js";
 import SpreadsheetName from "../SpreadsheetName.js";
 import SpreadsheetRowReference from "../reference/SpreadsheetRowReference.js";
+import SpreadsheetRowReferenceRange from "../reference/SpreadsheetRowReferenceRange.js";
 import SpreadsheetSelection from "../reference/SpreadsheetSelection.js";
 
 function columnOrColumnRangeParse(text) {
@@ -14,6 +15,13 @@ function columnOrColumnRangeParse(text) {
     return -1 === colon ?
         SpreadsheetColumnReference.parse(text) :
         SpreadsheetColumnReferenceRange.parse(text);
+}
+
+function rowOrRowRangeParse(text) {
+    const colon = text.indexOf(":");
+    return -1 === colon ?
+        SpreadsheetRowReference.parse(text) :
+        SpreadsheetRowReferenceRange.parse(text);
 }
 
 function tokenize(pathname) {
@@ -160,7 +168,7 @@ export default class SpreadsheetHistoryHash {
                             }
 
                             try {
-                                selection = SpreadsheetRowReference.parse(sourceTokens.shift());
+                                selection = rowOrRowRangeParse(sourceTokens.shift());
                             } catch(invalid) {
                                 errors("Row: " + invalid.message);
                                 valid = false;
