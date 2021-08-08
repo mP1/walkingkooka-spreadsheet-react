@@ -5,6 +5,7 @@ import SpreadsheetColumnOrRowReferenceRange from "./SpreadsheetColumnOrRowRefere
 import spreadsheetRangeParse from "./SpreadsheetRangeParser.js";
 import SpreadsheetRowReference from "./SpreadsheetRowReference.js";
 import SystemObject from "../../SystemObject.js";
+import SpreadsheetHistoryHash from "../history/SpreadsheetHistoryHash.js";
 
 
 const TYPE_NAME = "spreadsheet-column-reference-range";
@@ -61,11 +62,15 @@ export default class SpreadsheetColumnReferenceRange extends SpreadsheetColumnOr
     testRow(rowReference) {
         Preconditions.requireInstance(rowReference, SpreadsheetRowReference, "rowReference");
 
-        return true;
+        return false;
     }
 
     toQueryStringParameterSelectionType() {
         return "column-range";
+    }
+
+    toSelectionHashToken() {
+        return SpreadsheetHistoryHash.COLUMN + "/" + this;
     }
 
     typeName() {
