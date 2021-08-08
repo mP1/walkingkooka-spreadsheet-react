@@ -280,7 +280,7 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetHistoryAwareSta
         const state = this.state;
         const selection = state.selection;
 
-        if(selection){
+        if(selection instanceof SpreadsheetCellReferenceOrLabelName){
             const cell = delta.cell(selection);
 
             const cellReference = selection instanceof SpreadsheetLabelName ?
