@@ -1,7 +1,7 @@
 import ListenerCollection from "../../event/ListenerCollection.js";
 import Preconditions from "../../Preconditions.js";
-import spreadsheetCellReferenceOrLabelNameFromJson from "../reference/SpreadsheetCellReferenceOrLabelNameFromJson.js";
 import SpreadsheetCellReferenceOrLabelName from "../reference/SpreadsheetCellReferenceOrLabelName.js";
+import spreadsheetCellReferenceOrLabelNameParse from "../reference/SpreadsheetCellReferenceOrLabelNameParse.js";
 import SpreadsheetColumnReference from "../reference/SpreadsheetColumnReference.js";
 import SpreadsheetLabelName from "../reference/SpreadsheetLabelName.js";
 import SpreadsheetName from "../SpreadsheetName.js";
@@ -102,7 +102,7 @@ export default class SpreadsheetHistoryHash {
                             }
 
                             try {
-                                selection = spreadsheetCellReferenceOrLabelNameFromJson(sourceTokens.shift());
+                                selection = spreadsheetCellReferenceOrLabelNameParse(sourceTokens.shift());
                             } catch(invalid) {
                                 errors("Cell: " + invalid.message);
                                 valid = false;

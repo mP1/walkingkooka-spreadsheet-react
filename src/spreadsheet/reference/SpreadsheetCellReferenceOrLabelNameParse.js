@@ -2,7 +2,7 @@ import Preconditions from "../../Preconditions.js";
 import SpreadsheetCellReference from "./SpreadsheetCellReference.js";
 import SpreadsheetLabelName from "./SpreadsheetLabelName.js";
 
-export default function spreadsheetCellReferenceOrLabelNameFromJson(text) {
+export default function spreadsheetCellReferenceOrLabelNameParse(text) {
     Preconditions.requireNonEmptyText(text, "text");
 
     return SpreadsheetCellReference.isCellReferenceText(text) ?
