@@ -215,7 +215,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
             do {
                 if(viewportCell){
                     if(!Equality.safeEquals(selectionNew, selectionOld)){
-                        console.log("New selection " + selectionOld + " to " + " " + selectionNew);
+                        console.log("New selection " + selectionOld + " to " + selectionNew);
 
                         viewportLoadCells = true;
                         break;

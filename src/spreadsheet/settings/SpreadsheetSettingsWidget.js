@@ -1026,7 +1026,7 @@ class SpreadsheetSettingsWidget extends SpreadsheetHistoryAwareStateWidget {
                                         };
                                         break;
                                     case SpreadsheetMetadata.DATETIME_OFFSET:
-                                        numberValue = typeof value == "string" ? parseInt(value) : value;
+                                        numberValue = typeof value === "string" ? parseInt(value, 10) : value;
                                         min = -25569;
                                         max = -24107;
                                         marks = [
@@ -1127,7 +1127,7 @@ class SpreadsheetSettingsWidget extends SpreadsheetHistoryAwareStateWidget {
                                                                                              marks={marks}
                                                                                              step={step}
                                                                                              value={numberValue}
-                                                                                             defaultValue={typeof defaultValue === "string" ? parseInt(defaultValue) : defaultValue}
+                                                                                             defaultValue={typeof defaultValue === "string" ? parseInt(defaultValue, 10) : defaultValue}
                                                                                              defaultValueFormatter={DEFAULT_VALUE_FORMATTER_TOSTRING}
                                                                                              defaultButtonTooltip={false}
                                                                                              setValue={setValue}

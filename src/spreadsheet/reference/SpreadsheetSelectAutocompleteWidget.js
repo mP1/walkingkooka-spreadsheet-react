@@ -102,7 +102,7 @@ export default class SpreadsheetSelectAutocompleteWidget extends SpreadsheetHist
                 clearOnEscape={false}
                 handleHomeEndKeys={true}
                 options={options}
-                getOptionLabel={(option) => typeof option == "string" ? option : option.text}
+                getOptionLabel={(option) => typeof option === "string" ? option : option.text}
                 onInputChange={this.onTextFieldChange.bind(this)}
                 onChange={this.onAutoCompleteValueChange.bind(this)}
                 noOptionsText={""}

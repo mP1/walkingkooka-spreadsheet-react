@@ -83,7 +83,7 @@ export default class SpreadsheetSettingsWidgetSliderWithNumberTextField extends 
     }
 
     onChangeTextField(e) {
-        this.onChange(parseInt(e.target.value));
+        this.onChange(parseInt(e.target.value, 10));
     }
 
     onChange(value) {
@@ -121,7 +121,7 @@ export default class SpreadsheetSettingsWidgetSliderWithNumberTextField extends 
     }
 
     createValue(text) {
-        return parseInt(text);
+        return parseInt(text, 10);
     }
 
     /**
