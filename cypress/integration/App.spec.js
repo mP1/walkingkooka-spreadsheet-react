@@ -1094,7 +1094,7 @@ context(
 
         // column click.................................................................................................
 
-        it("Column click", () => {
+        it("Column click should have focus and be selected", () => {
             spreadsheetEmpty();
 
             renderWait(100);
@@ -1104,6 +1104,11 @@ context(
 
             hash()
                 .should('match', /.*\/.*\/column\/B/);
+
+            column("B")
+                .should("have.focus")
+                .should("have.css", "background-color", SELECTED_COLOR);
+
         });
 
         it("Column click and cursor RIGHT", () => {
@@ -1117,6 +1122,10 @@ context(
 
             hash()
                 .should('match', /.*\/.*\/column\/C/);
+
+            column("C")
+                .should("have.focus")
+                .should("have.css", "background-color", SELECTED_COLOR);
         });
 
         it("Column click and cursor DOWN", () => {
@@ -1130,11 +1139,18 @@ context(
 
             hash()
                 .should('match', /.*\/.*\/cell\/B1/);
+
+            column("B")
+                .should("have.css", "background-color", SELECTED_COLOR);
+            row("1")
+                .should("have.css", "background-color", SELECTED_COLOR);
+            cell(B1)
+                .should("have.focus");
         });
 
         // row click.................................................................................................
 
-        it("Row click", () => {
+        it("Row click should have focus and be selected", () => {
             spreadsheetEmpty();
 
             row("2")
@@ -1142,16 +1158,25 @@ context(
 
             hash()
                 .should('match', /.*\/.*\/row\/2/);
+
+            row("2")
+                .should("have.focus")
+                .should("have.css", "background-color", SELECTED_COLOR);
         });
 
         it("Row click and cursor DOWN", () => {
             spreadsheetEmpty();
 
             row("2")
-                .click();
+                .click()
+                .should("have.focus");
 
             row("2")
                 .type("{downarrow}")
+
+            row("3")
+                .should("have.focus")
+                .should("have.css", "background-color", SELECTED_COLOR);
 
             hash()
                 .should('match', /.*\/.*\/row\/3/);
@@ -1164,10 +1189,17 @@ context(
                 .click();
 
             row("2")
-                .type("{rightarrow}")
+                .type("{rightarrow}");
 
             hash()
                 .should('match', /.*\/.*\/cell\/A2/);
+
+            column("A")
+                .should("have.css", "background-color", SELECTED_COLOR);
+            row("2")
+                .should("have.css", "background-color", SELECTED_COLOR);
+            cell(A2)
+                .should("have.focus");
         });
 
         // select.....................................................................................................
