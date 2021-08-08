@@ -495,10 +495,9 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
      * Returns an array of TableCell, one for each column header.
      */
     renderTableColumnHeaders() {
-        const {columnWidths, dimensions, spreadsheetMetadata} = this.state;
+        const {columnWidths, dimensions, selection, spreadsheetMetadata} = this.state;
 
         const home = spreadsheetMetadata.getIgnoringDefaults(SpreadsheetMetadata.VIEWPORT_CELL);
-        const selection = spreadsheetMetadata.getIgnoringDefaults(SpreadsheetMetadata.SELECTION);
         const defaultStyle = spreadsheetMetadata.effectiveStyle();
 
         const viewportWidth = dimensions.width;
@@ -527,10 +526,9 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
      * Render the required TABLE ROW each filled with available or empty TABLE CELL cells.
      */
     renderTableContent() {
-        const {cells, columnWidths, rowHeights, spreadsheetMetadata, dimensions, cellToLabels} = this.state;
+        const {cells, columnWidths, rowHeights, selection, spreadsheetMetadata, dimensions, cellToLabels} = this.state;
 
         const home = spreadsheetMetadata.getIgnoringDefaults(SpreadsheetMetadata.VIEWPORT_CELL);
-        const selection = spreadsheetMetadata.getIgnoringDefaults(SpreadsheetMetadata.SELECTION);
         const defaultStyle = spreadsheetMetadata.effectiveStyle();
 
         const defaultColumnWidth = defaultStyle.width().value();

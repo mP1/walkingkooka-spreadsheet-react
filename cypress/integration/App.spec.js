@@ -40,6 +40,8 @@ const LABEL = "Label123";
 
 const FORMULA_TEXT_CLICK_WAIT = 50;
 
+const SELECTED_COLOR = "rgb(68, 68, 68)";
+
 context(
     "General app usage",
     () => {
@@ -848,11 +850,31 @@ context(
 
             hashAppend("/cell/D4/formula");
 
+            column("D")
+                .should("have.css", "background-color", SELECTED_COLOR);
+            row("4")
+                .should("have.css", "background-color", SELECTED_COLOR);
+
             formulaText()
                 .should("have.focus");
         });
 
         it("Cell hash append formula", () => {
+            spreadsheetEmpty();
+
+            cellClick(C3);
+
+            renderWait(FORMULA_TEXT_CLICK_WAIT);
+
+            hashAppend("/formula");
+
+            renderWait(FORMULA_TEXT_CLICK_WAIT);
+
+            formulaText()
+                .should("have.focus");
+        });
+
+        it("Cell hash append formula has focus", () => {
             spreadsheetEmpty();
 
             cellClick(C3);
@@ -883,6 +905,20 @@ context(
 
             hash()
                 .should('match', /.*\/.*\/cell\/B2/);
+        });
+
+        it("Cell click columns & rows selected", () => {
+            spreadsheetEmpty();
+
+            cellClick(B2);
+
+            hash()
+                .should('match', /.*\/.*\/cell\/B2/);
+
+            column("B")
+                .should("have.css", "background-color", SELECTED_COLOR);
+            row("2")
+                .should("have.css", "background-color", SELECTED_COLOR);
         });
 
         it("Cell click and select using arrow keys", () => {
