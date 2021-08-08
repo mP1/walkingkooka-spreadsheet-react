@@ -425,7 +425,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
                         e.key,
                         (s) => this.saveSelection(s),
                         this.giveFormulaTextBoxFocus.bind(this),
-                        this.state.viewportRange.begin()
+                        this.state.spreadsheetMetadata.getIgnoringDefaults(SpreadsheetMetadata.VIEWPORT_CELL)
                     );
                 break;
             }
