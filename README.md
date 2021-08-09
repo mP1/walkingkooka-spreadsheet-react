@@ -111,21 +111,19 @@ an expression.  All parsing and resolution of reference and function is performe
 
 
 
-## Navigation
+## Selection & Navigation
 
 - Support APIs on the server exists to jump to any cell. **DONE**
 - Adding a smart text box to support navigation using a cell reference or label, APIs are available to resolve labels to cell references. **DONE**
 - Scrollbars to pan horizontally and vertically around viewport. **DONE**
-- APIs are available to compute the exact cell range for any given home (top left) cell and screen dimensions to fill the display in a single API request.
-- Keyboard navigation **DONE** and range selection [TODO](https://github.com/mP1/walkingkooka-spreadsheet-react/issues/561)
-
+- Keyboard navigation **DONE** and [TODO cell](https://github.com/mP1/walkingkooka-spreadsheet-react/issues/1141), [TODO column](https://github.com/mP1/walkingkooka-spreadsheet-react/issues/1142), [TODO row](https://github.com/mP1/walkingkooka-spreadsheet-react/issues/1143) selection
+- Mouse based [TODO cell](https://github.com/mP1/walkingkooka-spreadsheet-react/issues/1144), [TODO column](https://github.com/mP1/walkingkooka-spreadsheet-react/issues/1145), [TODO row](https://github.com/mP1/walkingkooka-spreadsheet-react/issues/1146) selection
 
 
 ## Editing
 
 - Label management **DONE**
 - Expressions already support cell reference and labels. **DONE**
-- Range selection [TODO](https://github.com/mP1/walkingkooka-spreadsheet-react/issues/561)
 - Cut, copy, paste cell content including formula, styling etc [TODO](https://github.com/mP1/walkingkooka-spreadsheet-react/issues/562)
 - Spreadsheet **DONE** and cell style editor [TODO](https://github.com/mP1/walkingkooka-spreadsheet-react/issues/563)
 
