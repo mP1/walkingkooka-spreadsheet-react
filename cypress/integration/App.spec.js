@@ -1223,9 +1223,28 @@ context(
                 .should("have.css", "background-color", SELECTED_COLOR);
         });
 
+        it("Cell range out of viewport history hash", () => {
+            spreadsheetEmpty();
+
+            hashAppend("/cell/X2:Y3");
+
+            hash()
+                .should('match', /.*\/.*\/cell\/X2:Y3/);
+
+            column("X")
+                .should("have.css", "background-color", SELECTED_COLOR);
+            column("Y")
+                .should("have.css", "background-color", SELECTED_COLOR);
+
+            row("2")
+                .should("have.css", "background-color", SELECTED_COLOR);
+            row("3")
+                .should("have.css", "background-color", SELECTED_COLOR);
+        });
+
         // column range...................................................................................................
 
-        it("column range history hash", () => {
+        it("Column range history hash", () => {
             spreadsheetEmpty();
 
             hashAppend("/column/B:C");
@@ -1239,9 +1258,23 @@ context(
                 .should("have.css", "background-color", SELECTED_COLOR);
         });
 
+        it("Column range out of viewport history hash", () => {
+            spreadsheetEmpty();
+
+            hashAppend("/column/X:Y");
+
+            hash()
+                .should('match', /.*\/.*\/column\/X:Y/);
+
+            column("X")
+                .should("have.css", "background-color", SELECTED_COLOR);
+            column("Y")
+                .should("have.css", "background-color", SELECTED_COLOR);
+        });
+
         // row range...................................................................................................
 
-        it("row range history hash", () => {
+        it("Row range history hash", () => {
             spreadsheetEmpty();
 
             hashAppend("/row/2:3");
@@ -1252,6 +1285,20 @@ context(
             row("2")
                 .should("have.css", "background-color", SELECTED_COLOR);
             row("3")
+                .should("have.css", "background-color", SELECTED_COLOR);
+        });
+
+        it("Row range out of viewport history hash", () => {
+            spreadsheetEmpty();
+
+            hashAppend("/row/30:31");
+
+            hash()
+                .should('match', /.*\/.*\/row\/30:31/);
+
+            row("30")
+                .should("have.css", "background-color", SELECTED_COLOR);
+            row("31")
                 .should("have.css", "background-color", SELECTED_COLOR);
         });
 
