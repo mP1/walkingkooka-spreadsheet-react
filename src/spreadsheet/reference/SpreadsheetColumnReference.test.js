@@ -299,6 +299,16 @@ test("toJson C", () => {
     expect(SpreadsheetColumnReference.parse("C").toJson()).toStrictEqual("C");
 });
 
+// setRow..............................................................................................................
+
+test("setRow", () => {
+    const column = SpreadsheetColumnReference.parse("B");
+    const row = SpreadsheetRowReference.parse("2");
+
+    expect(column.setRow(row))
+        .toStrictEqual(new SpreadsheetCellReference(column, row));
+});
+
 // test SpreadsheetCellReference........................................................................................
 
 function testCellAndCheck(column, cellReference, expected) {
