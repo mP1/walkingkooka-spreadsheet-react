@@ -42,6 +42,13 @@ export default class SpreadsheetRowReferenceRange extends SpreadsheetColumnOrRow
         return this.endValue;
     }
 
+    rowOrRange() {
+        const begin = this.begin();
+        return begin.equals(this.end()) ?
+            begin :
+            this;
+    }
+
     /**
      * Tests if the given {@link SpreadsheetCellReference} is within this range.
      */
