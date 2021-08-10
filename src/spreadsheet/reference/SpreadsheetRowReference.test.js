@@ -227,6 +227,16 @@ test("addSaturated overflow", () => {
     expect(reference.addSaturated(delta)).toStrictEqual(new SpreadsheetRowReference(SpreadsheetRowReference.MAX - 1, kind));
 });
 
+// setColumn..............................................................................................................
+
+test("setColumn", () => {
+    const column = SpreadsheetColumnReference.parse("B");
+    const row = SpreadsheetRowReference.parse("2");
+
+    expect(row.setColumn(column))
+        .toStrictEqual(new SpreadsheetCellReference(column, row));
+});
+
 // testCell SpreadsheetCellReference....................................................................................
 
 function testCellAndCheck(row, cellReference, expected) {
