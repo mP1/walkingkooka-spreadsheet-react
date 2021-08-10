@@ -11,6 +11,8 @@ export default class Preconditions {
         if(null == value){
             reportError("Missing " + label);
         }
+
+        return value;
     }
 
     /**
@@ -21,6 +23,8 @@ export default class Preconditions {
         if(!(Array.isArray(value))){
             reportError("Expected array " + label + " got " + value);
         }
+
+        return value;
     }
 
     /**
@@ -31,6 +35,8 @@ export default class Preconditions {
         if(typeof value !== "function"){
             reportError("Expected function " + label + " got " + value);
         }
+
+        return value;
     }
 
     /**
@@ -40,6 +46,8 @@ export default class Preconditions {
         if(null != value && typeof value !== "function"){
             reportError("Expected function " + label + " or nothing got " + value);
         }
+
+        return value;
     }
     
     /**
@@ -56,6 +64,8 @@ export default class Preconditions {
         if(upper && value >= upper) {
             reportError("Expected " + label + " " + value + " < " + upper);
         }
+
+        return value;
     }
 
     /**
@@ -66,6 +76,8 @@ export default class Preconditions {
         if(value < 0){
             reportError("Expected number " + label + " >= 0 got " + value);
         }
+
+        return value;
     }
 
     /**
@@ -76,6 +88,8 @@ export default class Preconditions {
         if(typeof value !== "object" || Array.isArray(value)){
             reportError("Expected object " + label + " got " + value);
         }
+
+        return value;
     }
 
     /**
@@ -86,6 +100,8 @@ export default class Preconditions {
         if(typeof value !== "string"){
             reportError("Expected string " + label + " got " + value);
         }
+
+        return value;
     }
 
     /**
@@ -96,6 +112,8 @@ export default class Preconditions {
         if(!value){
             reportError("Missing " + label);
         }
+
+        return value;
     }
 
     /**
@@ -107,6 +125,8 @@ export default class Preconditions {
         if(!(value instanceof prototype)){
             reportError("Expected " + prototype.name + " "  + label + " got " + value);
         }
+
+        return value;
     }
 
     /**
@@ -116,5 +136,7 @@ export default class Preconditions {
         if(null != value && !(value instanceof prototype)){
             reportError("Expected " + prototype.name + " or nothing "  + label + " got " + value);
         }
+
+        return value;
     }
 }
