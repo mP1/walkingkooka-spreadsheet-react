@@ -1,14 +1,17 @@
 import Preconditions from "../../Preconditions.js";
 import SpreadsheetCellReference from "./SpreadsheetCellReference";
 import SpreadsheetColumnReference from "./SpreadsheetColumnReference.js";
+import SpreadsheetColumnReferenceRange from "./SpreadsheetColumnReferenceRange.js";
 import SpreadsheetExpressionReference from "./SpreadsheetExpressionReference.js";
 import spreadsheetRangeParse from "./SpreadsheetRangeParser.js";
 import SpreadsheetRowReference from "./SpreadsheetRowReference.js";
+import SpreadsheetRowReferenceRange from "./SpreadsheetRowReferenceRange.js";
 import SystemObject from "../../SystemObject.js";
 
 const TYPE_NAME = "spreadsheet-cell-range";
 /**
- * A range is marked by two cell references.
+ * A range is marked by two cell references. Note the begin cell reference will always hold the lesser column and row
+ * and the end cell reference will always hold the greater column and row.
  */
 export default class SpreadsheetCellRange extends SpreadsheetExpressionReference {
 
@@ -27,10 +30,13 @@ export default class SpreadsheetCellRange extends SpreadsheetExpressionReference
     constructor(begin, end) {
         super();
         Preconditions.requireInstance(begin, SpreadsheetCellReference, "begin");
-        this.beginValue = begin;
-
         Preconditions.requireInstance(end, SpreadsheetCellReference, "end");
-        this.endValue = end;
+
+        const columnRange = new SpreadsheetColumnReferenceRange(begin.column(), end.column());
+        const rowRange = new SpreadsheetRowReferenceRange(begin.row(), end.row());
+
+        this.beginValue = columnRange.begin().setRow(rowRange.begin());
+        this.endValue = columnRange.end().setRow(rowRange.end());
     }
 
     begin() {
