@@ -478,6 +478,15 @@ parseAndStringifyTest(
 );
 
 parseAndStringifyTest(
+    "/spreadsheet-id-123/spreadsheet-name-456/column/B:B",
+    {
+        "spreadsheet-id": "spreadsheet-id-123",
+        "spreadsheet-name": SPREADSHEET_NAME,
+        "selection": COLUMN,
+    }
+);
+
+parseAndStringifyTest(
     "/spreadsheet-id-123/spreadsheet-name-456/column/B/select",
     {
         "spreadsheet-id": "spreadsheet-id-123",
@@ -502,6 +511,15 @@ parseAndStringifyTest(
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
         "selection": ROW_RANGE,
+    }
+);
+
+parseAndStringifyTest(
+    "/spreadsheet-id-123/spreadsheet-name-456/row/2:2",
+    {
+        "spreadsheet-id": "spreadsheet-id-123",
+        "spreadsheet-name": SPREADSHEET_NAME,
+        "selection": ROW,
     }
 );
 

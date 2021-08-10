@@ -2,27 +2,11 @@ import ListenerCollection from "../../event/ListenerCollection.js";
 import Preconditions from "../../Preconditions.js";
 import SpreadsheetCellReferenceOrLabelName from "../reference/SpreadsheetCellReferenceOrLabelName.js";
 import spreadsheetCellReferenceOrLabelNameParse from "../reference/SpreadsheetCellReferenceOrLabelNameParse.js";
-import SpreadsheetColumnReference from "../reference/SpreadsheetColumnReference.js";
 import SpreadsheetColumnReferenceRange from "../reference/SpreadsheetColumnReferenceRange.js";
 import SpreadsheetLabelName from "../reference/SpreadsheetLabelName.js";
 import SpreadsheetName from "../SpreadsheetName.js";
-import SpreadsheetRowReference from "../reference/SpreadsheetRowReference.js";
 import SpreadsheetRowReferenceRange from "../reference/SpreadsheetRowReferenceRange.js";
 import SpreadsheetSelection from "../reference/SpreadsheetSelection.js";
-
-function columnOrColumnRangeParse(text) {
-    const colon = text.indexOf(":");
-    return -1 === colon ?
-        SpreadsheetColumnReference.parse(text) :
-        SpreadsheetColumnReferenceRange.parse(text);
-}
-
-function rowOrRowRangeParse(text) {
-    const colon = text.indexOf(":");
-    return -1 === colon ?
-        SpreadsheetRowReference.parse(text) :
-        SpreadsheetRowReferenceRange.parse(text);
-}
 
 function tokenize(pathname) {
     return pathname && pathname.startsWith("/") ?
@@ -139,7 +123,8 @@ export default class SpreadsheetHistoryHash {
                             }
 
                             try {
-                                selection = columnOrColumnRangeParse(sourceTokens.shift());
+                                selection = SpreadsheetColumnReferenceRange.parse(sourceTokens.shift())
+                                    .columnOrRange();
                             } catch(invalid) {
                                 errors("Column: " + invalid.message);
                                 valid = false;
@@ -168,7 +153,8 @@ export default class SpreadsheetHistoryHash {
                             }
 
                             try {
-                                selection = rowOrRowRangeParse(sourceTokens.shift());
+                                selection = SpreadsheetRowReferenceRange.parse(sourceTokens.shift())
+                                    .rowOrRange();
                             } catch(invalid) {
                                 errors("Row: " + invalid.message);
                                 valid = false;
