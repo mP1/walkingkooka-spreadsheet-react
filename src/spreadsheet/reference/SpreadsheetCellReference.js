@@ -5,6 +5,7 @@ import CharSequences from "../../CharSequences.js";
 import Keys from "../../Keys.js";
 import Preconditions from "../../Preconditions.js";
 import SpreadsheetCell from "../SpreadsheetCell.js";
+import SpreadsheetCellRange from "./SpreadsheetCellRange.js";
 import SpreadsheetCellReferenceOrLabelName from "./SpreadsheetCellReferenceOrLabelName.js";
 import SpreadsheetColumnReference from "./SpreadsheetColumnReference";
 import SpreadsheetFormula from "../SpreadsheetFormula.js";
@@ -14,6 +15,7 @@ import SpreadsheetSelection from "./SpreadsheetSelection.js";
 import SystemObject from "../../SystemObject.js";
 import TextStyle from "../../text/TextStyle.js";
 import Text from "../../text/Text.js";
+
 
 const TYPE_NAME = "spreadsheet-cell-reference";
 
@@ -194,6 +196,46 @@ export default class SpreadsheetCellReference extends SpreadsheetCellReferenceOr
 
     addRowSaturated(delta) {
         return this.setRow(this.row().addSaturated(delta));
+    }
+
+    extendRangeLeft() {
+        const c = this.column();
+        const r = this.row();
+
+        return new SpreadsheetCellRange(
+            c.addSaturated(-1).setRow(r),
+            c.setRow(r)
+        ).cellOrRange();
+    }
+
+    extendRangeRight() {
+        const c = this.column();
+        const r = this.row();
+
+        return new SpreadsheetCellRange(
+            c.setRow(r),
+            c.addSaturated(+1).setRow(r),
+        ).cellOrRange();
+    }
+
+    extendRangeUp() {
+        const c = this.column();
+        const r = this.row();
+
+        return new SpreadsheetCellRange(
+            r.addSaturated(-1).setColumn(c),
+            c.setRow(r)
+        ).cellOrRange();
+    }
+
+    extendRangeDown() {
+        const c = this.column();
+        const r = this.row();
+
+        return new SpreadsheetCellRange(
+            c.setRow(r),
+            r.addSaturated(+1).setColumn(c),
+        ).cellOrRange();
     }
 
     testCell(cellReference) {

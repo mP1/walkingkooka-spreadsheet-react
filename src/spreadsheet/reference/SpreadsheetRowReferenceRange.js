@@ -49,6 +49,28 @@ export default class SpreadsheetRowReferenceRange extends SpreadsheetColumnOrRow
             this;
     }
 
+    extendRangeLeft() {
+        return this.rowOrRange();
+    }
+
+    extendRangeRight() {
+        return this.rowOrRange();
+    }
+
+    extendRangeUp() {
+        return new SpreadsheetRowReferenceRange(
+            this.begin().addSaturated(-1),
+            this.end()
+        ).rowOrRange();
+    }
+
+    extendRangeDown() {
+        return new SpreadsheetRowReferenceRange(
+            this.begin(),
+            this.end().addSaturated(+1)
+        ).rowOrRange();
+    }
+
     /**
      * Tests if the given {@link SpreadsheetCellReference} is within this range.
      */

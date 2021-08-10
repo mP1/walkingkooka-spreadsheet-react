@@ -48,6 +48,42 @@ export default class SpreadsheetCellRange extends SpreadsheetExpressionReference
             this;
     }
 
+    extendRangeLeft() {
+        const b = this.begin();
+
+        return new SpreadsheetCellRange(
+            b.setColumn(b.column().addSaturated(-1)),
+            this.end()
+        ).cellOrRange();
+    }
+
+    extendRangeRight() {
+        const e = this.end();
+
+        return new SpreadsheetCellRange(
+            this.begin(),
+            e.setColumn(e.column().addSaturated(+1)),
+        ).cellOrRange();
+    }
+
+    extendRangeUp() {
+        const b = this.begin();
+
+        return new SpreadsheetCellRange(
+            b.setRow(b.row().addSaturated(-1)),
+            this.end()
+        ).cellOrRange();
+    }
+
+    extendRangeDown() {
+        const e = this.end();
+
+        return new SpreadsheetCellRange(
+            this.begin(),
+            e.setRow(e.row().addSaturated(+1)),
+        ).cellOrRange();
+    }
+
     /**
      * Tests if the given {@link SpreadsheetCellReference} is within this range.
      */

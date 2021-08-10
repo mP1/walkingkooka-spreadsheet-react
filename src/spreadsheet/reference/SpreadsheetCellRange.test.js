@@ -217,6 +217,83 @@ function testCellOrRange(range, expected) {
 testCellOrRange("A1:B2", "A1:B2");
 testCellOrRange("C3:C3", "C3");
 
+// extendRangeLeft......................................................................................................
+
+function testExtendRangeLeft(range, expected) {
+    test("extendRangeLeft " + range,
+        () => {
+            expect(SpreadsheetCellRange.parse(range)
+                .extendRangeLeft()
+            ).toStrictEqual(
+                SpreadsheetCellRange.parse(expected)
+                    .cellOrRange()
+            )
+        });
+}
+
+testExtendRangeLeft("A1:A1", "A1");
+testExtendRangeLeft("A1:B2", "A1:B2");
+testExtendRangeLeft("B2:C3", "A2:C3");
+testExtendRangeLeft("C3:D4", "B3:D4");
+
+// extendRangeRight......................................................................................................
+
+function testExtendRangeRight(range, expected) {
+    test("extendRangeRight " + range,
+        () => {
+            expect(SpreadsheetCellRange.parse(range)
+                .extendRangeRight()
+            ).toStrictEqual(
+                SpreadsheetCellRange.parse(expected)
+                    .cellOrRange()
+            )
+        });
+}
+
+testExtendRangeRight("XFD1:XFD1", "XFD1");
+testExtendRangeRight("A1:B2", "A1:C2");
+testExtendRangeRight("B2:C3", "B2:D3");
+testExtendRangeRight("C3:D4", "C3:E4");
+
+// extendRangeUp......................................................................................................
+
+function testExtendRangeUp(range, expected) {
+    test("extendRangeUp " + range,
+        () => {
+            expect(SpreadsheetCellRange.parse(range)
+                .extendRangeUp()
+            ).toStrictEqual(
+                SpreadsheetCellRange.parse(expected)
+                    .cellOrRange()
+            )
+        });
+}
+
+testExtendRangeUp("A1:A1", "A1");
+testExtendRangeUp("A1:B2", "A1:B2");
+testExtendRangeUp("B2:C3", "B1:C3");
+testExtendRangeUp("C3:D4", "C2:D4");
+
+// extendRangeDown......................................................................................................
+
+function testExtendRangeDown(range, expected) {
+    test("extendRangeDown " + range,
+        () => {
+            expect(SpreadsheetCellRange.parse(range)
+                .extendRangeDown()
+            ).toStrictEqual(
+                SpreadsheetCellRange.parse(expected)
+                    .cellOrRange()
+            )
+        });
+}
+
+testExtendRangeDown("A1048576:A1048576", "A1048576");
+testExtendRangeDown("B1048576:B1048576", "B1048576");
+testExtendRangeDown("A1:B2", "A1:B3");
+testExtendRangeDown("B2:C3", "B2:C4");
+testExtendRangeDown("C3:D4", "C3:D5");
+
 // testCell.............................................................................................................
 
 test("testCell missing fails", () => {

@@ -3,6 +3,7 @@ import SpreadsheetColumnReferenceRange from "./SpreadsheetColumnReferenceRange.j
 import SpreadsheetColumnReference from "./SpreadsheetColumnReference.js";
 import SpreadsheetRowReference from "./SpreadsheetRowReference.js";
 import systemObjectTesting from "../../SystemObjectTesting.js";
+import SpreadsheetCellRange from "./SpreadsheetCellRange.js";
 
 const JSON = "B:D";
 
@@ -174,6 +175,77 @@ function testColumnOrRange(range, expected) {
 
 testColumnOrRange("A:B", "A:B");
 testColumnOrRange("C:C", "C");
+
+// extendRangeLeft......................................................................................................
+
+function testExtendRangeLeft(range, expected) {
+    test("extendRangeLeft " + range,
+        () => {
+            expect(SpreadsheetColumnReferenceRange.parse(range)
+                .extendRangeLeft()
+            ).toStrictEqual(
+                SpreadsheetColumnReferenceRange.parse(expected)
+                    .columnOrRange()
+            )
+        });
+}
+
+testExtendRangeLeft("A:A", "A");
+testExtendRangeLeft("A:B", "A:B");
+testExtendRangeLeft("B:C", "A:C");
+testExtendRangeLeft("C:D", "B:D");
+
+// extendRangeRight......................................................................................................
+
+function testExtendRangeRight(range, expected) {
+    test("extendRangeRight " + range,
+        () => {
+            expect(SpreadsheetColumnReferenceRange.parse(range)
+                .extendRangeRight()
+            ).toStrictEqual(
+                SpreadsheetColumnReferenceRange.parse(expected)
+                    .columnOrRange()
+            )
+        });
+}
+
+testExtendRangeRight("XFD:XFD", "XFD");
+testExtendRangeRight("A:XFD", "A:XFD");
+testExtendRangeRight("B:C", "B:D");
+
+// extendRangeUp......................................................................................................
+
+function testExtendRangeUp(range, expected) {
+    test("extendRangeUp " + range,
+        () => {
+            expect(SpreadsheetColumnReferenceRange.parse(range)
+                .extendRangeUp()
+            ).toStrictEqual(
+                SpreadsheetColumnReferenceRange.parse(expected)
+                    .columnOrRange()
+            )
+        });
+}
+
+testExtendRangeUp("A:A", "A:A");
+testExtendRangeUp("B:C", "B:C");
+
+// extendRangeDown......................................................................................................
+
+function testExtendRangeDown(range, expected) {
+    test("extendRangeDown " + range,
+        () => {
+            expect(SpreadsheetColumnReferenceRange.parse(range)
+                .extendRangeDown()
+            ).toStrictEqual(
+                SpreadsheetColumnReferenceRange.parse(expected)
+                    .columnOrRange()
+            )
+        });
+}
+
+testExtendRangeDown("A:A", "A:A");
+testExtendRangeDown("B:B", "B:B");
 
 // testCell.............................................................................................................
 
