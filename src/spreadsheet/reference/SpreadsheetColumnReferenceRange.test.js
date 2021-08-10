@@ -160,6 +160,21 @@ test("fromJson range", () => {
     check(range, begin(), end(), JSON);
 });
 
+// columnOrRange........................................................................................................
+
+function testColumnOrRange(range, expected) {
+    test("columnOrRange " + range, () => {
+        expect(SpreadsheetColumnReferenceRange.parse(range)
+            .columnOrRange()
+        ).toStrictEqual(expected.indexOf(":") > 0 ?
+            SpreadsheetColumnReferenceRange.parse(expected) :
+            SpreadsheetColumnReference.parse(expected));
+    });
+}
+
+testColumnOrRange("A:B", "A:B");
+testColumnOrRange("C:C", "C");
+
 // testCell.............................................................................................................
 
 test("testCell missing fails", () => {
