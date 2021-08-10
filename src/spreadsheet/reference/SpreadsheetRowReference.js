@@ -7,6 +7,7 @@ import SpreadsheetColumnOrRowReference from "./SpreadsheetColumnOrRowReference";
 import SpreadsheetColumnReference from "./SpreadsheetColumnReference.js";
 import SpreadsheetHistoryHash from "../history/SpreadsheetHistoryHash.js";
 import SpreadsheetReferenceKind from "./SpreadsheetReferenceKind";
+import SpreadsheetRowReferenceRange from "./SpreadsheetRowReferenceRange.js";
 import SpreadsheetSelection from "./SpreadsheetSelection.js";
 
 const TYPE_NAME = "spreadsheet-row-reference";
@@ -58,6 +59,28 @@ export default class SpreadsheetRowReference extends SpreadsheetColumnOrRowRefer
 
     setColumn(column) {
         return new SpreadsheetCellReference(column, this);
+    }
+
+    extendRangeLeft() {
+        return this;
+    }
+
+    extendRangeRight() {
+        return this;
+    }
+
+    extendRangeUp() {
+        return new SpreadsheetRowReferenceRange(
+            this.addSaturated(-1),
+            this
+        ).rowOrRange();
+    }
+
+    extendRangeDown() {
+        return new SpreadsheetRowReferenceRange(
+            this,
+            this.addSaturated(+1),
+        ).rowOrRange();
     }
 
     testCell(cellReference) {

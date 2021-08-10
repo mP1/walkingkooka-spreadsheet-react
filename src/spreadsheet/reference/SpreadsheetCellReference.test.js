@@ -3,6 +3,7 @@ import SpreadsheetCellReference from "./SpreadsheetCellReference";
 import SpreadsheetColumnReference from "./SpreadsheetColumnReference";
 import SpreadsheetRowReference from "./SpreadsheetRowReference";
 import systemObjectTesting from "../../SystemObjectTesting.js";
+import SpreadsheetCellRange from "./SpreadsheetCellRange.js";
 
 function column() {
     return SpreadsheetColumnReference.parse("A");
@@ -386,6 +387,79 @@ test("addRowSaturated delta overflow", () => {
             .addRowSaturated(SpreadsheetRowReference.MAX)
     ).toEqual(SpreadsheetCellReference.parse("B" + SpreadsheetRowReference.MAX));
 });
+
+// extendRangeLeft......................................................................................................
+
+function testExtendRangeLeft(cell, expected) {
+    test("extendRangeLeft " + cell,
+        () => {
+            expect(SpreadsheetCellReference.parse(cell)
+                .extendRangeLeft()
+            ).toStrictEqual(
+                SpreadsheetCellRange.parse(expected)
+                    .cellOrRange()
+            )
+        });
+}
+
+testExtendRangeLeft("A1", "A1");
+testExtendRangeLeft("B2", "A2:B2");
+testExtendRangeLeft("C3", "B3:C3");
+
+// extendRangeRight......................................................................................................
+
+function testExtendRangeRight(cell, expected) {
+    test("extendRangeRight " + cell,
+        () => {
+            expect(SpreadsheetCellReference.parse(cell)
+                .extendRangeRight()
+            ).toStrictEqual(
+                SpreadsheetCellRange.parse(expected)
+                    .cellOrRange()
+            )
+        });
+}
+
+testExtendRangeRight("XFD1", "XFD1");
+testExtendRangeRight("A1", "A1:B1");
+testExtendRangeRight("B2", "B2:C2");
+
+// extendRangeUp......................................................................................................
+
+function testExtendRangeUp(cell, expected) {
+    test("extendRangeUp " + cell,
+        () => {
+            expect(SpreadsheetCellReference.parse(cell)
+                .extendRangeUp()
+            ).toStrictEqual(
+                SpreadsheetCellRange.parse(expected)
+                    .cellOrRange()
+            )
+        });
+}
+
+testExtendRangeUp("A1", "A1");
+testExtendRangeUp("B2", "B1:B2");
+testExtendRangeUp("C3", "C2:C3");
+
+// extendRangeDown......................................................................................................
+
+function testExtendRangeDown(cell, expected) {
+    test("extendRangeDown " + cell,
+        () => {
+            expect(SpreadsheetCellReference.parse(cell)
+                .extendRangeDown()
+            ).toStrictEqual(
+                SpreadsheetCellRange.parse(expected)
+                    .cellOrRange()
+            )
+        });
+}
+
+testExtendRangeDown("A1048576", "A1048576");
+testExtendRangeDown("B1048576", "B1048576");
+testExtendRangeDown("A1", "A1:A2");
+testExtendRangeDown("B2", "B2:B3");
 
 // testCell SpreadsheetCellReference........................................................................................
 

@@ -2,6 +2,7 @@ import Keys from "../../Keys.js";
 import Preconditions from "../../Preconditions.js";
 import SpreadsheetCellReference from "./SpreadsheetCellReference.js";
 import SpreadsheetColumnOrRowReference from "./SpreadsheetColumnOrRowReference";
+import SpreadsheetColumnReferenceRange from "./SpreadsheetColumnReferenceRange.js";
 import SpreadsheetHistoryHash from "../history/SpreadsheetHistoryHash.js";
 import SpreadsheetReferenceKind from "./SpreadsheetReferenceKind";
 import SpreadsheetRowReference from "./SpreadsheetRowReference.js";
@@ -55,6 +56,28 @@ export default class SpreadsheetColumnReference extends SpreadsheetColumnOrRowRe
 
     setRow(row) {
         return new SpreadsheetCellReference(this, row);
+    }
+
+    extendRangeLeft() {
+        return new SpreadsheetColumnReferenceRange(
+            this.addSaturated(-1),
+            this
+        ).columnOrRange();
+    }
+
+    extendRangeRight() {
+        return new SpreadsheetColumnReferenceRange(
+            this,
+            this.addSaturated(+1)
+        ).columnOrRange();
+    }
+
+    extendRangeUp() {
+        return this;
+    }
+
+    extendRangeDown() {
+        return this;
     }
 
     testCell(cellReference) {

@@ -7,7 +7,6 @@ import SpreadsheetRowReference from "./SpreadsheetRowReference.js";
 import SystemObject from "../../SystemObject.js";
 import SpreadsheetHistoryHash from "../history/SpreadsheetHistoryHash.js";
 
-
 const TYPE_NAME = "spreadsheet-column-reference-range";
 /**
  * A range of columns.
@@ -48,6 +47,28 @@ export default class SpreadsheetColumnReferenceRange extends SpreadsheetColumnOr
         return begin.equals(this.end()) ?
             begin :
             this;
+    }
+
+    extendRangeLeft() {
+        return new SpreadsheetColumnReferenceRange(
+            this.begin().addSaturated(-1),
+            this.end()
+        ).columnOrRange();
+    }
+
+    extendRangeRight() {
+        return new SpreadsheetColumnReferenceRange(
+            this.begin(),
+            this.end().addSaturated(+1)
+        ).columnOrRange();
+    }
+
+    extendRangeUp() {
+        return this.columnOrRange();
+    }
+
+    extendRangeDown() {
+        return this.columnOrRange();
     }
 
     /**

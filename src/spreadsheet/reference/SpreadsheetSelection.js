@@ -11,6 +11,22 @@ export default class SpreadsheetSelection extends SystemObject {
         throw new Error("Invalid character " + CharSequences.quoteAndEscape(Character.fromJson(c)) + " at " + pos);
     }
 
+    extendRangeLeft() {
+        throw new Error("Not yet implemented");
+    }
+
+    extendRangeRight() {
+        throw new Error("Not yet implemented");
+    }
+
+    extendRangeUp() {
+        throw new Error("Not yet implemented");
+    }
+
+    extendRangeDown() {
+        throw new Error("Not yet implemented");
+    }
+
     testCell(cellReference) {
         throw new Error("Not yet implemented");
     }
