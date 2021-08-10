@@ -26,20 +26,10 @@ export default class SpreadsheetColumnReferenceRange extends SpreadsheetColumnOr
     }
 
     constructor(begin, end) {
-        super();
-        Preconditions.requireInstance(begin, SpreadsheetColumnReference, "begin");
-        this.beginValue = begin;
-
-        Preconditions.requireInstance(end, SpreadsheetColumnReference, "end");
-        this.endValue = end;
-    }
-
-    begin() {
-        return this.beginValue;
-    }
-
-    end() {
-        return this.endValue;
+        super(
+            Preconditions.requireInstance(begin, SpreadsheetColumnReference, "begin"),
+            Preconditions.requireInstance(end, SpreadsheetColumnReference, "end")
+        );
     }
 
     columnOrRange() {
