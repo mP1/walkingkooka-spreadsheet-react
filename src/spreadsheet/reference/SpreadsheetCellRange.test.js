@@ -47,6 +47,26 @@ test("create", () => {
     check(new SpreadsheetCellRange(begin(), end()), begin(), end(), "A1:B2");
 });
 
+test("create columns swapped", () => {
+    check(new SpreadsheetCellRange(SpreadsheetCellReference.parse("B1"), SpreadsheetCellReference.parse("A2")),
+        SpreadsheetCellReference.parse("A1"),
+        SpreadsheetCellReference.parse("B2"),
+        "A1:B2"
+    );
+});
+
+test("create rows swapped", () => {
+    check(new SpreadsheetCellRange(SpreadsheetCellReference.parse("A2"), SpreadsheetCellReference.parse("B1")),
+        SpreadsheetCellReference.parse("A1"),
+        SpreadsheetCellReference.parse("B2"),
+        "A1:B2"
+    );
+});
+
+test("create end < begin", () => {
+    check(new SpreadsheetCellRange(end(), begin()), begin(), end(), "A1:B2");
+});
+
 // parse.............................................................................................................
 
 test("parse missing fails", () => {
