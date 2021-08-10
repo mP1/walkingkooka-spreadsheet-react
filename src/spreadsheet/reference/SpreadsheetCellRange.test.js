@@ -202,6 +202,21 @@ test("fromJson range lowercase", () => {
     check(range, begin, end, "F8:G9");
 });
 
+// cellOrRange........................................................................................................
+
+function testCellOrRange(range, expected) {
+    test("cellOrRange " + range, () => {
+        expect(SpreadsheetCellRange.parse(range)
+            .cellOrRange()
+        ).toStrictEqual(expected.indexOf(":") > 0 ?
+            SpreadsheetCellRange.parse(expected) :
+            SpreadsheetCellReference.parse(expected));
+    });
+}
+
+testCellOrRange("A1:B2", "A1:B2");
+testCellOrRange("C3:C3", "C3");
+
 // testCell.............................................................................................................
 
 test("testCell missing fails", () => {

@@ -41,6 +41,13 @@ export default class SpreadsheetCellRange extends SpreadsheetExpressionReference
         return this.endValue;
     }
 
+    cellOrRange() {
+        const begin = this.begin();
+        return begin.equals(this.end()) ?
+            begin :
+            this;
+    }
+
     /**
      * Tests if the given {@link SpreadsheetCellReference} is within this range.
      */
