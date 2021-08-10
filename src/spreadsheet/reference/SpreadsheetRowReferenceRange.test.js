@@ -53,6 +53,10 @@ test("create", () => {
     check(new SpreadsheetRowReferenceRange(begin(), end()), begin(), end(), JSON);
 });
 
+test("create begin > end", () => {
+    check(new SpreadsheetRowReferenceRange(end(), begin()), begin(), end(), JSON);
+});
+
 // parse.............................................................................................................
 
 test("parse missing fails", () => {

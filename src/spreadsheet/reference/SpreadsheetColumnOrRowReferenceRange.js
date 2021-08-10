@@ -7,8 +7,11 @@ export default class SpreadsheetColumnOrRowReferenceRange extends SpreadsheetSel
 
     constructor(begin, end) {
         super();
-        this.beginValue = begin;
-        this.endValue = end;
+
+        const beginLTE = begin.compareTo(end) <= 0;
+
+        this.beginValue = beginLTE ? begin : end;
+        this.endValue = beginLTE ? end : begin;
     }
 
     begin() {
