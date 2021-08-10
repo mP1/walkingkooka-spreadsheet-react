@@ -53,6 +53,10 @@ export default class SpreadsheetColumnReference extends SpreadsheetColumnOrRowRe
         return SpreadsheetColumnReference.MAX;
     }
 
+    setRow(row) {
+        return new SpreadsheetCellReference(this, row);
+    }
+
     testCell(cellReference) {
         Preconditions.requireInstance(cellReference, SpreadsheetCellReference, "cellReference");
 
