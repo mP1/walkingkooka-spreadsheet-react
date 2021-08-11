@@ -61,22 +61,27 @@ export default class SpreadsheetRowReference extends SpreadsheetColumnOrRowRefer
         return new SpreadsheetCellReference(column, this);
     }
 
-    extendRangeLeft() {
+    extendRangeLeft(viewportHome) {
+        Preconditions.requireInstance(viewportHome, SpreadsheetCellReference, "viewportHome");
+
         return this;
     }
 
-    extendRangeRight() {
-        return this;
+    extendRangeRight(viewportHome) {
+        Preconditions.requireInstance(viewportHome, SpreadsheetCellReference, "viewportHome");
+
+        return viewportHome.column()
+            .setRow(this);
     }
 
-    extendRangeUp() {
+    extendRangeUp(viewportHome) {
         return new SpreadsheetRowReferenceRange(
             this.addSaturated(-1),
             this
         ).rowOrRange();
     }
 
-    extendRangeDown() {
+    extendRangeDown(viewportHome) {
         return new SpreadsheetRowReferenceRange(
             this,
             this.addSaturated(+1),

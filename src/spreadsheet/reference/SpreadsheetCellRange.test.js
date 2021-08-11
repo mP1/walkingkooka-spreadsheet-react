@@ -16,6 +16,10 @@ function range() {
     return new SpreadsheetCellRange(begin(), end());
 }
 
+function home() {
+    return SpreadsheetCellReference.parse("Z99");
+}
+
 systemObjectTesting(
     range(),
     new SpreadsheetCellRange(SpreadsheetCellReference.parse("Z9"), SpreadsheetCellReference.parse("Z99")),
@@ -240,10 +244,12 @@ testCellOrRange("C3:C3", "C3");
 // extendRangeLeft......................................................................................................
 
 function testExtendRangeLeft(range, expected) {
-    test("extendRangeLeft " + range,
+    const h = home();
+
+    test("extendRangeLeft " + range + " home=" + h,
         () => {
             expect(SpreadsheetCellRange.parse(range)
-                .extendRangeLeft()
+                .extendRangeLeft(home())
             ).toStrictEqual(
                 SpreadsheetCellRange.parse(expected)
                     .cellOrRange()
@@ -259,10 +265,11 @@ testExtendRangeLeft("C3:D4", "B3:D4");
 // extendRangeRight......................................................................................................
 
 function testExtendRangeRight(range, expected) {
-    test("extendRangeRight " + range,
+    const h = home();
+    test("extendRangeRight " + range + " home=" + h,
         () => {
             expect(SpreadsheetCellRange.parse(range)
-                .extendRangeRight()
+                .extendRangeRight(h)
             ).toStrictEqual(
                 SpreadsheetCellRange.parse(expected)
                     .cellOrRange()
@@ -278,10 +285,12 @@ testExtendRangeRight("C3:D4", "C3:E4");
 // extendRangeUp......................................................................................................
 
 function testExtendRangeUp(range, expected) {
-    test("extendRangeUp " + range,
+    const h = home();
+
+    test("extendRangeUp " + range + " home=" + h,
         () => {
             expect(SpreadsheetCellRange.parse(range)
-                .extendRangeUp()
+                .extendRangeUp(h)
             ).toStrictEqual(
                 SpreadsheetCellRange.parse(expected)
                     .cellOrRange()
@@ -297,10 +306,12 @@ testExtendRangeUp("C3:D4", "C2:D4");
 // extendRangeDown......................................................................................................
 
 function testExtendRangeDown(range, expected) {
-    test("extendRangeDown " + range,
+    const h = home();
+
+    test("extendRangeDown " + range + " home=" + h,
         () => {
             expect(SpreadsheetCellRange.parse(range)
-                .extendRangeDown()
+                .extendRangeDown(h)
             ).toStrictEqual(
                 SpreadsheetCellRange.parse(expected)
                     .cellOrRange()

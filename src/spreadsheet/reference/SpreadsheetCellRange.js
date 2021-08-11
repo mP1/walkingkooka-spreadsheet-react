@@ -54,7 +54,7 @@ export default class SpreadsheetCellRange extends SpreadsheetExpressionReference
             this;
     }
 
-    extendRangeLeft() {
+    extendRangeLeft(viewportHome) {
         const b = this.begin();
 
         return new SpreadsheetCellRange(
@@ -63,7 +63,7 @@ export default class SpreadsheetCellRange extends SpreadsheetExpressionReference
         ).cellOrRange();
     }
 
-    extendRangeRight() {
+    extendRangeRight(viewportHome) {
         const e = this.end();
 
         return new SpreadsheetCellRange(
@@ -72,7 +72,7 @@ export default class SpreadsheetCellRange extends SpreadsheetExpressionReference
         ).cellOrRange();
     }
 
-    extendRangeUp() {
+    extendRangeUp(viewportHome) {
         const b = this.begin();
 
         return new SpreadsheetCellRange(
@@ -81,7 +81,7 @@ export default class SpreadsheetCellRange extends SpreadsheetExpressionReference
         ).cellOrRange();
     }
 
-    extendRangeDown() {
+    extendRangeDown(viewportHome) {
         const e = this.end();
 
         return new SpreadsheetCellRange(

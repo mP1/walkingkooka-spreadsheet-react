@@ -11,19 +11,19 @@ export default class SpreadsheetSelection extends SystemObject {
         throw new Error("Invalid character " + CharSequences.quoteAndEscape(Character.fromJson(c)) + " at " + pos);
     }
 
-    extendRangeLeft() {
+    extendRangeLeft(viewportHome) {
         throw new Error("Not yet implemented");
     }
 
-    extendRangeRight() {
+    extendRangeRight(viewportHome) {
         throw new Error("Not yet implemented");
     }
 
-    extendRangeUp() {
+    extendRangeUp(viewportHome) {
         throw new Error("Not yet implemented");
     }
 
-    extendRangeDown() {
+    extendRangeDown(viewportHome) {
         throw new Error("Not yet implemented");
     }
 
