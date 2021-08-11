@@ -198,7 +198,7 @@ export default class SpreadsheetCellReference extends SpreadsheetCellReferenceOr
         return this.setRow(this.row().addSaturated(delta));
     }
 
-    extendRangeLeft() {
+    extendRangeLeft(viewportHome) {
         const c = this.column();
         const r = this.row();
 
@@ -208,7 +208,7 @@ export default class SpreadsheetCellReference extends SpreadsheetCellReferenceOr
         ).cellOrRange();
     }
 
-    extendRangeRight() {
+    extendRangeRight(viewportHome) {
         const c = this.column();
         const r = this.row();
 
@@ -218,7 +218,7 @@ export default class SpreadsheetCellReference extends SpreadsheetCellReferenceOr
         ).cellOrRange();
     }
 
-    extendRangeUp() {
+    extendRangeUp(viewportHome) {
         const c = this.column();
         const r = this.row();
 
@@ -228,7 +228,7 @@ export default class SpreadsheetCellReference extends SpreadsheetCellReferenceOr
         ).cellOrRange();
     }
 
-    extendRangeDown() {
+    extendRangeDown(viewportHome) {
         const c = this.column();
         const r = this.row();
 

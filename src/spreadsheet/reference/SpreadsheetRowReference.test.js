@@ -16,6 +16,10 @@ systemObjectTesting(
     "$1"
 );
 
+function home() {
+    return SpreadsheetCellReference.parse("Z99");
+}
+
 test("parse missing text fails", () => {
     expect(() => SpreadsheetRowReference.parse()).toThrow("Missing text");
 });
@@ -241,13 +245,14 @@ test("setColumn", () => {
 // extendRangeLeft......................................................................................................
 
 function testExtendRangeLeft(row, expected) {
-    test("extendRangeLeft " + row,
+    const h = home();
+
+    test("extendRangeLeft " + row + " home=" + h,
         () => {
             expect(SpreadsheetRowReference.parse(row)
-                .extendRangeLeft()
+                .extendRangeLeft(h)
             ).toStrictEqual(
-                SpreadsheetRowReferenceRange.parse(expected)
-                    .rowOrRange()
+                SpreadsheetRowReference.parse(expected)
             )
         });
 }
@@ -257,28 +262,29 @@ testExtendRangeLeft("2", "2");
 
 // extendRangeRight......................................................................................................
 
-function testExtendRangeRight(row, expected) {
-    test("extendRangeRight " + row,
+function testExtendRangeRight(row, home, expected) {
+    test("extendRangeRight " + row + " home=" + home,
         () => {
             expect(SpreadsheetRowReference.parse(row)
-                .extendRangeRight()
+                .extendRangeRight(SpreadsheetCellReference.parse(home))
             ).toStrictEqual(
-                SpreadsheetRowReferenceRange.parse(expected)
-                    .rowOrRange()
+                SpreadsheetCellReference.parse(expected)
             )
         });
 }
 
-testExtendRangeRight("1", "1");
-testExtendRangeRight("1048576", "1048576");
+testExtendRangeRight("1", "Z99", "Z1");
+testExtendRangeRight("1048576", "Z99","Z1048576");
 
 // extendRangeUp......................................................................................................
 
 function testExtendRangeUp(row, expected) {
-    test("extendRangeUp " + row,
+    const h = home();
+
+    test("extendRangeUp " + row + " home=" + h,
         () => {
             expect(SpreadsheetRowReference.parse(row)
-                .extendRangeUp()
+                .extendRangeUp(h)
             ).toStrictEqual(
                 SpreadsheetRowReferenceRange.parse(expected)
                     .rowOrRange()
@@ -294,10 +300,12 @@ testExtendRangeUp("1045678", "1045677:1045678");
 // extendRangeDown......................................................................................................
 
 function testExtendRangeDown(row, expected) {
-    test("extendRangeDown " + row,
+    const h = home();
+
+    test("extendRangeDown " + row + " home=" + h,
         () => {
             expect(SpreadsheetRowReference.parse(row)
-                .extendRangeDown()
+                .extendRangeDown(h)
             ).toStrictEqual(
                 SpreadsheetRowReferenceRange.parse(expected)
                     .rowOrRange()

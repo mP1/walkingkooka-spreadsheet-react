@@ -13,6 +13,10 @@ function row() {
     return SpreadsheetRowReference.parse("1");
 };
 
+function home() {
+    return SpreadsheetCellReference.parse("Z99");
+}
+
 systemObjectTesting(
     new SpreadsheetCellReference(column(), row()),
     new SpreadsheetCellReference(
@@ -391,10 +395,12 @@ test("addRowSaturated delta overflow", () => {
 // extendRangeLeft......................................................................................................
 
 function testExtendRangeLeft(cell, expected) {
-    test("extendRangeLeft " + cell,
+    const h = home();
+
+    test("extendRangeLeft " + cell + " home=" + h,
         () => {
             expect(SpreadsheetCellReference.parse(cell)
-                .extendRangeLeft()
+                .extendRangeLeft(h)
             ).toStrictEqual(
                 SpreadsheetCellRange.parse(expected)
                     .cellOrRange()
@@ -409,10 +415,12 @@ testExtendRangeLeft("C3", "B3:C3");
 // extendRangeRight......................................................................................................
 
 function testExtendRangeRight(cell, expected) {
-    test("extendRangeRight " + cell,
+    const h = home();
+
+    test("extendRangeRight " + cell + " home=" + h,
         () => {
             expect(SpreadsheetCellReference.parse(cell)
-                .extendRangeRight()
+                .extendRangeRight(h)
             ).toStrictEqual(
                 SpreadsheetCellRange.parse(expected)
                     .cellOrRange()
@@ -427,10 +435,12 @@ testExtendRangeRight("B2", "B2:C2");
 // extendRangeUp......................................................................................................
 
 function testExtendRangeUp(cell, expected) {
-    test("extendRangeUp " + cell,
+    const h = home();
+
+    test("extendRangeUp " + cell + " home=" + h,
         () => {
             expect(SpreadsheetCellReference.parse(cell)
-                .extendRangeUp()
+                .extendRangeUp(h)
             ).toStrictEqual(
                 SpreadsheetCellRange.parse(expected)
                     .cellOrRange()
@@ -445,7 +455,9 @@ testExtendRangeUp("C3", "C2:C3");
 // extendRangeDown......................................................................................................
 
 function testExtendRangeDown(cell, expected) {
-    test("extendRangeDown " + cell,
+    const h = home();
+
+    test("extendRangeDown " + cell + " home=" + h,
         () => {
             expect(SpreadsheetCellReference.parse(cell)
                 .extendRangeDown()

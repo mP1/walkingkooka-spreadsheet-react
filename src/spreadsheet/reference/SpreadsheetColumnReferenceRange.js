@@ -39,25 +39,25 @@ export default class SpreadsheetColumnReferenceRange extends SpreadsheetColumnOr
             this;
     }
 
-    extendRangeLeft() {
+    extendRangeLeft(viewportHome) {
         return new SpreadsheetColumnReferenceRange(
             this.begin().addSaturated(-1),
             this.end()
         ).columnOrRange();
     }
 
-    extendRangeRight() {
+    extendRangeRight(viewportHome) {
         return new SpreadsheetColumnReferenceRange(
             this.begin(),
             this.end().addSaturated(+1)
         ).columnOrRange();
     }
 
-    extendRangeUp() {
+    extendRangeUp(viewportHome) {
         return this.columnOrRange();
     }
 
-    extendRangeDown() {
+    extendRangeDown(viewportHome) {
         return this.columnOrRange();
     }
 
