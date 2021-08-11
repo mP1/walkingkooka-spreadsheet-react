@@ -1,3 +1,4 @@
+import Keys from "../../Keys.js";
 import SpreadsheetCellRange from "./SpreadsheetCellRange.js";
 import SpreadsheetCellReference from "./SpreadsheetCellReference";
 import SpreadsheetColumnReference from "./SpreadsheetColumnReference.js";
@@ -324,6 +325,43 @@ testExtendRangeDown("B1048576:B1048576", "B1048576");
 testExtendRangeDown("A1:B2", "A1:B3");
 testExtendRangeDown("B2:C3", "B2:C4");
 testExtendRangeDown("C3:D4", "C3:D5");
+
+// onViewportKeyDown....................................................................................................
+
+const SELECT_RANGE_FALSE = false;
+const SELECT_RANGE_TRUE = true;
+
+function testOnViewportKeyDown(reference, key, selectRange, viewportHome, setSelection, giveFormulaFocus) {
+    test("testOnViewportKeyDown cell=" + reference + " key=" + key + " selectRange=" + selectRange + " home=" + viewportHome, () => {
+
+        const state = {
+            selection: SpreadsheetCellRange.parse(reference).cellOrRange().toString(),
+            giveFormulaFocus: false,
+        };
+
+        SpreadsheetCellRange.parse(reference)
+            .onViewportKeyDown(
+                key,
+                selectRange,
+                (s) => state.selection = s && s.toString(),
+                () => state.giveFormulaFocus = true,
+                SpreadsheetCellReference.parse(viewportHome),
+            );
+        expect(state)
+            .toStrictEqual({
+                selection: setSelection,
+                giveFormulaFocus: giveFormulaFocus,
+            });
+    });
+}
+
+testOnViewportKeyDown("A1:B2", "A", SELECT_RANGE_FALSE, "A1", "A1:B2", false);
+testOnViewportKeyDown("A1:B2", "A", SELECT_RANGE_TRUE, "A1", "A1:B2", false);
+
+testOnViewportKeyDown("A1:B2", Keys.ESCAPE, SELECT_RANGE_FALSE, "B2", null, false);
+testOnViewportKeyDown("A1:B2", Keys.ESCAPE, SELECT_RANGE_TRUE, "B2", null, false);
+testOnViewportKeyDown("A1:B2", Keys.ENTER, SELECT_RANGE_FALSE, "B2", "A1:B2", false);
+testOnViewportKeyDown("A1:B2", Keys.ENTER, SELECT_RANGE_TRUE, "B2", "A1:B2", false);
 
 // testCell.............................................................................................................
 

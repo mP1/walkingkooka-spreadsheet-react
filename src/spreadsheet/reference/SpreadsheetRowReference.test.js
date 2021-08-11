@@ -426,8 +426,11 @@ test("onViewportClickAndTest row=2", () => {
 
 // onViewportKeyDown....................................................................................................
 
-function onViewportKeyDownAndTest(selection, key, viewportHome, setSelection, giveFormulaFocus) {
-    test("onViewportKeyDownAndTest cell=" + selection + " key=" + key + " home=" + viewportHome, () => {
+const SELECT_RANGE_FALSE = false;
+const SELECT_RANGE_TRUE = true;
+
+function testOnViewportKeyDown(selection, key, selectRange, viewportHome, setSelection, giveFormulaFocus) {
+    test("testOnViewportKeyDown cell=" + selection + " key=" + key + " selectRange=" + selectRange + " home=" + viewportHome, () => {
 
         const state = {
             selection: SpreadsheetCellColumnOrRowParse(selection).toString(),
@@ -437,33 +440,48 @@ function onViewportKeyDownAndTest(selection, key, viewportHome, setSelection, gi
         SpreadsheetRowReference.parse(selection)
             .onViewportKeyDown(
                 key,
+                selectRange,
                 (s) => state.selection = s && s.toString(),
                 () => state.giveFormulaFocus = true,
                 SpreadsheetCellReference.parse(viewportHome),
             );
         expect(state)
             .toStrictEqual({
-                selection: setSelection ? SpreadsheetCellColumnOrRowParse(setSelection).toString() : setSelection,
+                selection: setSelection,
                 giveFormulaFocus: giveFormulaFocus,
             });
     });
 }
 
-onViewportKeyDownAndTest("2", "a", "A1", "2", false);
+testOnViewportKeyDown("2", "a", SELECT_RANGE_FALSE, "A1", "2", false);
+testOnViewportKeyDown("2", "a", SELECT_RANGE_TRUE, "A1", "2", false);
 
-onViewportKeyDownAndTest("2", Keys.ESCAPE, "B2", null, false);
-onViewportKeyDownAndTest("2", Keys.ENTER, "B2", "2", false);
+testOnViewportKeyDown("2", Keys.ESCAPE, SELECT_RANGE_FALSE, "B2", null, false);
+testOnViewportKeyDown("2", Keys.ESCAPE, SELECT_RANGE_TRUE, "B2", null, false);
+testOnViewportKeyDown("2", Keys.ENTER, SELECT_RANGE_FALSE, "B2", "2", false);
+testOnViewportKeyDown("2", Keys.ENTER, SELECT_RANGE_TRUE, "B2", "2", false);
 
-onViewportKeyDownAndTest("2", Keys.ARROW_LEFT, "A1", "2", false);
-onViewportKeyDownAndTest("2", Keys.ARROW_RIGHT, "A1", "A2", false);
-onViewportKeyDownAndTest("2", Keys.ARROW_UP, "A1", "1", false);
-onViewportKeyDownAndTest("2", Keys.ARROW_DOWN, "A1", "3", false);
+testOnViewportKeyDown("2", Keys.ARROW_LEFT, SELECT_RANGE_FALSE, "A1", "2", false);
+testOnViewportKeyDown("2", Keys.ARROW_RIGHT, SELECT_RANGE_FALSE, "A1", "A2", false);
+testOnViewportKeyDown("2", Keys.ARROW_UP, SELECT_RANGE_FALSE, "A1", "1", false);
+testOnViewportKeyDown("2", Keys.ARROW_DOWN, SELECT_RANGE_FALSE, "A1", "3", false);
 
-onViewportKeyDownAndTest("1", Keys.ARROW_LEFT, "A1", "1", false);
-onViewportKeyDownAndTest("1", Keys.ARROW_UP, "A1", "1", false);
+testOnViewportKeyDown("1", Keys.ARROW_LEFT, SELECT_RANGE_FALSE, "A1", "1", false);
+testOnViewportKeyDown("1", Keys.ARROW_UP, SELECT_RANGE_FALSE, "A1", "1", false);
 
-onViewportKeyDownAndTest("99", Keys.ARROW_RIGHT, "K99", "K99", false);
-onViewportKeyDownAndTest("98", Keys.ARROW_RIGHT, "B2", "B98", false);
+testOnViewportKeyDown("99", Keys.ARROW_RIGHT, SELECT_RANGE_FALSE, "K99", "K99", false);
+testOnViewportKeyDown("98", Keys.ARROW_RIGHT, SELECT_RANGE_FALSE, "B2", "B98", false);
+
+testOnViewportKeyDown("2", Keys.ARROW_LEFT, SELECT_RANGE_TRUE, "A1", "2", false);
+testOnViewportKeyDown("2", Keys.ARROW_RIGHT, SELECT_RANGE_TRUE, "A1", "A2", false);
+testOnViewportKeyDown("2", Keys.ARROW_UP, SELECT_RANGE_TRUE, "A1", "1:2", false);
+testOnViewportKeyDown("2", Keys.ARROW_DOWN, SELECT_RANGE_TRUE, "A1", "2:3", false);
+
+testOnViewportKeyDown("1", Keys.ARROW_LEFT, SELECT_RANGE_TRUE, "A1", "1", false);
+testOnViewportKeyDown("1", Keys.ARROW_UP, SELECT_RANGE_TRUE, "A1", "1", false);
+
+testOnViewportKeyDown("99", Keys.ARROW_RIGHT, SELECT_RANGE_TRUE, "K99", "K99", false);
+testOnViewportKeyDown("98", Keys.ARROW_RIGHT, SELECT_RANGE_TRUE, "B2", "B98", false);
 
 // equals................................................................................................................
 

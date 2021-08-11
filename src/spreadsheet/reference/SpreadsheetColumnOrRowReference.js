@@ -113,6 +113,10 @@ export default class SpreadsheetColumnOrRowReference extends SpreadsheetSelectio
         }</TableCell>
     }
 
+    selectionEnter(giveFormulaFocus) {
+        // do nothing if ENTER selected on column or row.
+    }
+
     /**
      * Clicking on a column or row selects it.
      */

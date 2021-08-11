@@ -29,4 +29,8 @@ export default class SpreadsheetColumnOrRowReferenceRange extends SpreadsheetSel
             begin.toJson() :
             begin.toJson() + ":" + end.toJson();
     }
+
+    selectEnter(giveFormulaFocus) {
+        // ENTER currently is a NOP but will change to perhaps popup a menu
+    }
 }

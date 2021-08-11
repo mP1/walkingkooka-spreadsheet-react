@@ -54,6 +54,31 @@ export default class SpreadsheetCellRange extends SpreadsheetExpressionReference
             this;
     }
 
+    navigateLeft(viewportHome) {
+        const b = this.begin();
+        return this.b
+            .column().addSaturated(-1)
+            .setRow(b.row());
+    }
+
+    navigateRight(viewportHome) {
+        const b = this.begin();
+        return this.b
+            .column().addSaturated(+1)
+            .setRow(b.row());
+    }
+
+    navigateUp(viewportHome) {
+        const b = this.begin();
+        return this.b
+            .column().addSaturated(-1)
+            .setRow(b.row());
+    }
+
+    navigateDown(viewportHome) {
+        throw new Error("Not yet implemented");
+    }
+
     extendRangeLeft(viewportHome) {
         const b = this.begin();
 
@@ -88,6 +113,10 @@ export default class SpreadsheetCellRange extends SpreadsheetExpressionReference
             this.begin(),
             e.setRow(e.row().addSaturated(+1)),
         ).cellOrRange();
+    }
+
+    selectionEnter(giveFormulaFocus) {
+        // nop TODO later perhaps popup menu
     }
 
     /**
