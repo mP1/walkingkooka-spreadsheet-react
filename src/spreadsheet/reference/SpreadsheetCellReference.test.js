@@ -565,41 +565,56 @@ test("onViewportClickAndTest cell=A1", () => {
 
 // onViewportKeyDown....................................................................................................
 
-function onViewportKeyDownAndTest(reference, key, viewportHome, setSelection, giveFormulaFocus) {
-    test("onViewportKeyDownAndTest cell=" + reference + " key=" + key + " home=" + viewportHome, () => {
+const SELECT_RANGE_FALSE = false;
+const SELECT_RANGE_TRUE = true;
+
+function testOnViewportKeyDown(reference, key, selectRange, viewportHome, setSelection, giveFormulaFocus) {
+    test("testOnViewportKeyDown cell=" + reference + " key=" + key + " selectRange=" + selectRange + " home=" + viewportHome, () => {
 
         const state = {
-            selection: SpreadsheetCellReference.parse(reference).toString(),
+            selection: SpreadsheetCellRange.parse(reference).cellOrRange().toString(),
             giveFormulaFocus: false,
         };
 
         SpreadsheetCellReference.parse(reference)
             .onViewportKeyDown(
                 key,
+                selectRange,
                 (s) => state.selection = s && s.toString(),
                 () => state.giveFormulaFocus = true,
                 SpreadsheetCellReference.parse(viewportHome),
             );
         expect(state)
             .toStrictEqual({
-                selection: setSelection ? SpreadsheetCellReference.parse(setSelection).toString() : setSelection,
+                selection: setSelection && SpreadsheetCellRange.parse(setSelection).cellOrRange().toString(),
                 giveFormulaFocus: giveFormulaFocus,
             });
     });
 }
 
-onViewportKeyDownAndTest("B2", "A", "A1", "B2", false);
+testOnViewportKeyDown("B2", "A", SELECT_RANGE_FALSE, "A1", "B2", false);
+testOnViewportKeyDown("B2", "A", SELECT_RANGE_TRUE, "A1", "B2", false);
 
-onViewportKeyDownAndTest("B2", Keys.ESCAPE, "B2", null, false);
-onViewportKeyDownAndTest("B2", Keys.ENTER, "B2", "B2", true);
+testOnViewportKeyDown("B2", Keys.ESCAPE, SELECT_RANGE_FALSE, "B2", null, false);
+testOnViewportKeyDown("B2", Keys.ESCAPE, SELECT_RANGE_TRUE, "B2", null, false);
+testOnViewportKeyDown("B2", Keys.ENTER, SELECT_RANGE_FALSE, "B2", "B2", true);
+testOnViewportKeyDown("B2", Keys.ENTER, SELECT_RANGE_TRUE, "B2", "B2", true);
 
-onViewportKeyDownAndTest("B2", Keys.ARROW_LEFT, "B2", "A2", false);
-onViewportKeyDownAndTest("B2", Keys.ARROW_RIGHT, "B2", "C2", false);
-onViewportKeyDownAndTest("B2", Keys.ARROW_UP, "B2", "B1", false);
-onViewportKeyDownAndTest("B2", Keys.ARROW_DOWN, "B2", "B3", false);
+testOnViewportKeyDown("B2", Keys.ARROW_LEFT, SELECT_RANGE_FALSE, "B2", "A2", false);
+testOnViewportKeyDown("B2", Keys.ARROW_RIGHT, SELECT_RANGE_FALSE, "B2", "C2", false);
+testOnViewportKeyDown("B2", Keys.ARROW_UP, SELECT_RANGE_FALSE, "B2", "B1", false);
+testOnViewportKeyDown("B2", Keys.ARROW_DOWN, SELECT_RANGE_FALSE, "B2", "B3", false);
 
-onViewportKeyDownAndTest("A1", Keys.ARROW_LEFT, "A1", "A1", false);
-onViewportKeyDownAndTest("A1", Keys.ARROW_UP, "A1", "A1", false);
+testOnViewportKeyDown("A1", Keys.ARROW_LEFT, SELECT_RANGE_FALSE, "A1", "A1", false);
+testOnViewportKeyDown("A1", Keys.ARROW_UP, SELECT_RANGE_FALSE, "A1", "A1", false);
+
+testOnViewportKeyDown("B2", Keys.ARROW_LEFT, SELECT_RANGE_TRUE, "B2", "A2:B2", false);
+testOnViewportKeyDown("B2", Keys.ARROW_RIGHT, SELECT_RANGE_TRUE, "B2", "B2:C2", false);
+testOnViewportKeyDown("B2", Keys.ARROW_UP, SELECT_RANGE_TRUE, "B2", "B1:B2", false);
+testOnViewportKeyDown("B2", Keys.ARROW_DOWN, SELECT_RANGE_TRUE, "B2", "B2:B3", false);
+
+testOnViewportKeyDown("A1", Keys.ARROW_LEFT, SELECT_RANGE_TRUE, "A1", "A1", false);
+testOnViewportKeyDown("A1", Keys.ARROW_UP, SELECT_RANGE_TRUE, "A1", "A1", false);
 
 // equals................................................................................................................
 

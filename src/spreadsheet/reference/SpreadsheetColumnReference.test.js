@@ -453,8 +453,11 @@ test("onViewportClickAndTest column=B", () => {
 
 // onViewportKeyDown....................................................................................................
 
-function onViewportKeyDownAndTest(selection, key, viewportHome, setSelection, giveFormulaFocus) {
-    test("onViewportKeyDownAndTest cell=" + selection + " key=" + key + " home=" + viewportHome, () => {
+const SELECT_RANGE_FALSE = false;
+const SELECT_RANGE_TRUE = true;
+
+function testOnViewportKeyDown(selection, key, selectRange, viewportHome, setSelection, giveFormulaFocus) {
+    test("testOnViewportKeyDown cell=" + selection + " key=" + key + " selectRange=" + selectRange + " home=" + viewportHome, () => {
 
         const state = {
             selection: SpreadsheetCellColumnOrRowParse(selection).toString(),
@@ -464,33 +467,48 @@ function onViewportKeyDownAndTest(selection, key, viewportHome, setSelection, gi
         SpreadsheetColumnReference.parse(selection)
             .onViewportKeyDown(
                 key,
+                selectRange,
                 (s) => state.selection = s && s.toString(),
                 () => state.giveFormulaFocus = true,
                 SpreadsheetCellReference.parse(viewportHome),
             );
         expect(state)
             .toStrictEqual({
-                selection: setSelection ? SpreadsheetCellColumnOrRowParse(setSelection).toString() : setSelection,
+                selection: setSelection,
                 giveFormulaFocus: giveFormulaFocus,
             });
     });
 }
 
-onViewportKeyDownAndTest("B", "A", "A1", "B", false);
+testOnViewportKeyDown("B", "A", SELECT_RANGE_FALSE, "A1", "B", false);
+testOnViewportKeyDown("B", "A", SELECT_RANGE_TRUE, "A1", "B", false);
 
-onViewportKeyDownAndTest("B", Keys.ESCAPE, "B2", null, false);
-onViewportKeyDownAndTest("B", Keys.ENTER, "B2", "B", false);
+testOnViewportKeyDown("B", Keys.ESCAPE, SELECT_RANGE_FALSE, "B2", null, false);
+testOnViewportKeyDown("B", Keys.ESCAPE, SELECT_RANGE_TRUE, "B2", null, false);
+testOnViewportKeyDown("B", Keys.ENTER, SELECT_RANGE_FALSE, "B2", "B", false);
+testOnViewportKeyDown("B", Keys.ENTER, SELECT_RANGE_TRUE, "B2", "B", false);
 
-onViewportKeyDownAndTest("B", Keys.ARROW_LEFT, "A1", "A", false);
-onViewportKeyDownAndTest("B", Keys.ARROW_RIGHT, "A1", "C", false);
-onViewportKeyDownAndTest("B", Keys.ARROW_UP, "A1", "B", false);
-onViewportKeyDownAndTest("B", Keys.ARROW_DOWN, "A1", "B1", false);
+testOnViewportKeyDown("B", Keys.ARROW_LEFT, SELECT_RANGE_FALSE, "A1", "A", false);
+testOnViewportKeyDown("B", Keys.ARROW_RIGHT, SELECT_RANGE_FALSE, "A1", "C", false);
+testOnViewportKeyDown("B", Keys.ARROW_UP, SELECT_RANGE_FALSE, "A1", "B", false);
+testOnViewportKeyDown("B", Keys.ARROW_DOWN, SELECT_RANGE_FALSE, "A1", "B1", false);
 
-onViewportKeyDownAndTest("A", Keys.ARROW_LEFT, "A1", "A", false);
-onViewportKeyDownAndTest("A", Keys.ARROW_UP, "A1", "A", false);
+testOnViewportKeyDown("A", Keys.ARROW_LEFT, SELECT_RANGE_FALSE, "A1", "A", false);
+testOnViewportKeyDown("A", Keys.ARROW_UP, SELECT_RANGE_FALSE, "A1", "A", false);
 
-onViewportKeyDownAndTest("K", Keys.ARROW_DOWN, "K99", "K99", false);
-onViewportKeyDownAndTest("J", Keys.ARROW_DOWN, "B2", "J2", false);
+testOnViewportKeyDown("K", Keys.ARROW_DOWN, SELECT_RANGE_FALSE, "K99", "K99", false);
+testOnViewportKeyDown("J", Keys.ARROW_DOWN, SELECT_RANGE_FALSE, "B2", "J2", false);
+
+testOnViewportKeyDown("B", Keys.ARROW_LEFT, SELECT_RANGE_TRUE, "A1", "A:B", false);
+testOnViewportKeyDown("B", Keys.ARROW_RIGHT, SELECT_RANGE_TRUE, "A1", "B:C", false);
+testOnViewportKeyDown("B", Keys.ARROW_UP, SELECT_RANGE_TRUE, "A1", "B", false);
+testOnViewportKeyDown("B", Keys.ARROW_DOWN, SELECT_RANGE_TRUE, "A1", "B1", false);
+
+testOnViewportKeyDown("A", Keys.ARROW_LEFT, SELECT_RANGE_TRUE, "A1", "A", false);
+testOnViewportKeyDown("A", Keys.ARROW_UP, SELECT_RANGE_TRUE, "A1", "A", false);
+
+testOnViewportKeyDown("K", Keys.ARROW_DOWN, SELECT_RANGE_TRUE, "K99", "K99", false);
+testOnViewportKeyDown("J", Keys.ARROW_DOWN, SELECT_RANGE_TRUE, "B2", "J2", false);
 
 // equals................................................................................................................
 

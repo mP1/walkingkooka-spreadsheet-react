@@ -1,5 +1,4 @@
 import CharSequences from "../../CharSequences.js";
-import Keys from "../../Keys.js";
 import Preconditions from "../../Preconditions.js";
 import SpreadObject from "../../SystemObject.js";
 import SpreadsheetCellReference from "./SpreadsheetCellReference.js";
@@ -61,6 +60,24 @@ export default class SpreadsheetRowReference extends SpreadsheetColumnOrRowRefer
         return new SpreadsheetCellReference(column, this);
     }
 
+    // viewport keyboard................................................................................................
+
+    navigateLeft(viewportHome) {
+        return this;
+    }
+
+    navigateRight(viewportHome) {
+        return this.setColumn(viewportHome.column());
+    }
+
+    navigateUp(viewportHome) {
+        return this.addSaturated(-1);
+    }
+
+    navigateDown(viewportHome) {
+        return this.addSaturated(+1);
+    }
+
     extendRangeLeft(viewportHome) {
         Preconditions.requireInstance(viewportHome, SpreadsheetCellReference, "viewportHome");
 
@@ -116,29 +133,6 @@ export default class SpreadsheetRowReference extends SpreadsheetColumnOrRowRefer
 
     toSelectionHashToken() {
         return SpreadsheetHistoryHash.ROW + "/" + this;
-    }
-
-    /**
-     * UP/DOWN Arrow keys update the row selection, RIGHT selects the first visible cell or ESC clears the current selection.
-     */
-    onViewportKeyDown(key, setSelection, giveFormulaFocus, viewportHome) {
-        switch(key) {
-            case Keys.ARROW_UP:
-                setSelection(this.addSaturated(-1));
-                break;
-            case Keys.ARROW_DOWN:
-                setSelection(this.addSaturated(+1));
-                break;
-            case Keys.ARROW_RIGHT:
-                setSelection(viewportHome.setRow(this));
-                break;
-            case Keys.ESCAPE:
-                setSelection(null);
-                break;
-            default:
-                // ignore other keys
-                break;
-        }
     }
 
     typeName() {

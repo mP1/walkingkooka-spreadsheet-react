@@ -2,7 +2,6 @@
  * Holds a cell reference. Note the reference is not validated in anyway.
  */
 import CharSequences from "../../CharSequences.js";
-import Keys from "../../Keys.js";
 import Preconditions from "../../Preconditions.js";
 import SpreadsheetCell from "../SpreadsheetCell.js";
 import SpreadsheetCellRange from "./SpreadsheetCellRange.js";
@@ -198,6 +197,24 @@ export default class SpreadsheetCellReference extends SpreadsheetCellReferenceOr
         return this.setRow(this.row().addSaturated(delta));
     }
 
+    // viewport keyboard................................................................................................
+
+    navigateLeft(viewportHome) {
+        return this.addColumnSaturated(-1);
+    }
+
+    navigateRight(viewportHome) {
+        return this.addColumnSaturated(+1);
+    }
+
+    navigateUp(viewportHome) {
+        return this.addRowSaturated(-1);
+    }
+
+    navigateDown(viewportHome) {
+        return this.addRowSaturated(+1);
+    }
+
     extendRangeLeft(viewportHome) {
         const c = this.column();
         const r = this.row();
@@ -236,6 +253,10 @@ export default class SpreadsheetCellReference extends SpreadsheetCellReferenceOr
             c.setRow(r),
             r.addSaturated(+1).setColumn(c),
         ).cellOrRange();
+    }
+
+    selectionEnter(giveFormulaFocus) {
+        giveFormulaFocus();
     }
 
     testCell(cellReference) {
@@ -309,35 +330,6 @@ export default class SpreadsheetCellReference extends SpreadsheetCellReferenceOr
     onViewportClick(setSelection, giveFocus) {
         setSelection(this);
         //giveFocus();
-    }
-
-    /**
-     * Arrows keys increase/decrease this cell reference and then updates the selection. ENTER gives focus to the formula text box and ESCAPE clears the selection.
-     */
-    onViewportKeyDown(key, setSelection, giveFormulaFocus, viewportHome) {
-        switch(key) {
-            case Keys.ARROW_LEFT:
-                setSelection(this.addColumnSaturated(-1));
-                break;
-            case Keys.ARROW_DOWN:
-                setSelection(this.addRowSaturated(+1));
-                break;
-            case Keys.ARROW_RIGHT:
-                setSelection(this.addColumnSaturated(+1));
-                break;
-            case Keys.ARROW_UP:
-                setSelection(this.addRowSaturated(-1));
-                break;
-            case Keys.ENTER:
-                giveFormulaFocus();
-                break;
-            case Keys.ESCAPE:
-                setSelection(null);
-                break;
-            default:
-                // ignore other keys
-                break;
-        }
     }
 
     equals(other) {
