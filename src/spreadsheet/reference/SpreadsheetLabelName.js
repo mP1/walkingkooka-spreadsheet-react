@@ -4,6 +4,7 @@ import Preconditions from "../../Preconditions.js";
 import SpreadsheetCellReference from "./SpreadsheetCellReference.js";
 import SpreadsheetCellReferenceOrLabelName from "./SpreadsheetCellReferenceOrLabelName.js";
 import SpreadsheetLabelMapping from "./SpreadsheetLabelMapping.js";
+import SpreadsheetViewportSelection from "./SpreadsheetViewportSelection.js";
 import SystemObject from "../../SystemObject.js";
 
 const TYPE_NAME = "spreadsheet-label-name";
@@ -71,6 +72,10 @@ export default class SpreadsheetLabelName extends SpreadsheetCellReferenceOrLabe
 
     mapping(reference) {
         return new SpreadsheetLabelMapping(this, reference);
+    }
+
+    checkAnchor(anchor) {
+        throw new Error("Label " + this + " cannot be appear within " + SpreadsheetViewportSelection.name);
     }
 
     testCell(cellReference) {

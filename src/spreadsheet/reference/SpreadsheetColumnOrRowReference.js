@@ -113,6 +113,10 @@ export default class SpreadsheetColumnOrRowReference extends SpreadsheetSelectio
         }</TableCell>
     }
 
+    checkAnchor(anchor) {
+        SpreadsheetSelection.checkNoAnchor(anchor);
+    }
+
     selectionEnter(giveFormulaFocus) {
         // do nothing if ENTER selected on column or row.
     }

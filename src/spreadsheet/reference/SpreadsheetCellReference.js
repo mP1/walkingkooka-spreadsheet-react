@@ -199,6 +199,10 @@ export default class SpreadsheetCellReference extends SpreadsheetCellReferenceOr
 
     // viewport keyboard................................................................................................
 
+    checkAnchor(anchor) {
+        SpreadsheetSelection.checkNoAnchor(anchor);
+    }
+
     navigateLeft(viewportHome) {
         return this.addColumnSaturated(-1);
     }

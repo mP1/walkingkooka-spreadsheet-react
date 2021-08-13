@@ -12,6 +12,32 @@ export default class SpreadsheetSelection extends SystemObject {
         throw new Error("Invalid character " + CharSequences.quoteAndEscape(Character.fromJson(c)) + " at " + pos);
     }
 
+    checkAnchor(anchor) {
+        throw new Error("Not yet implemented");
+    }
+
+    /**
+     * Cell, column and row should not have an anchor.
+     */
+    static checkNoAnchor(anchor) {
+        if(null != anchor){
+            throw new Error("Expected no anchor got " + anchor);
+        }
+    }
+
+    /**
+     * Verifies that the given anchor is one of the valid anchor options.
+     */
+    static checkAnyAnchor(anchor, valid) {
+        if(null == anchor){
+            throw new Error("Missing anchor");
+        }
+
+        if(valid.findIndex(a => a.equals(anchor)) === -1 ) {
+            throw new Error("Unknown anchor " + anchor + ", expected any of " + valid.join(", "));
+        }
+    }
+
     /**
      * LEFT | RIGHT Arrow keys update the column selection or when down selects the first visible cell or ESC clears the current selection.
      */

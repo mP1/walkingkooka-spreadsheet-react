@@ -2,10 +2,12 @@ import Preconditions from "../../Preconditions.js";
 import SpreadsheetCellReference from "./SpreadsheetCellReference";
 import SpreadsheetColumnReference from "./SpreadsheetColumnReference.js";
 import SpreadsheetColumnOrRowReferenceRange from "./SpreadsheetColumnOrRowReferenceRange.js";
+import SpreadsheetHistoryHash from "../history/SpreadsheetHistoryHash.js";
 import spreadsheetRangeParse from "./SpreadsheetRangeParser.js";
 import SpreadsheetRowReference from "./SpreadsheetRowReference.js";
+import SpreadsheetSelection from "./SpreadsheetSelection.js";
+import SpreadsheetViewportSelectionAnchor from "./SpreadsheetViewportSelectionAnchor.js";
 import SystemObject from "../../SystemObject.js";
-import SpreadsheetHistoryHash from "../history/SpreadsheetHistoryHash.js";
 
 const TYPE_NAME = "spreadsheet-column-reference-range";
 /**
@@ -37,6 +39,16 @@ export default class SpreadsheetColumnReferenceRange extends SpreadsheetColumnOr
         return begin.equals(this.end()) ?
             begin :
             this;
+    }
+
+    checkAnchor(anchor) {
+        SpreadsheetSelection.checkAnyAnchor(
+            anchor,
+            [
+                SpreadsheetViewportSelectionAnchor.LEFT,
+                SpreadsheetViewportSelectionAnchor.RIGHT,
+            ]
+        );
     }
 
     extendRangeLeft(viewportHome) {

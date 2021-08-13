@@ -6,6 +6,8 @@ import SpreadsheetExpressionReference from "./SpreadsheetExpressionReference.js"
 import spreadsheetRangeParse from "./SpreadsheetRangeParser.js";
 import SpreadsheetRowReference from "./SpreadsheetRowReference.js";
 import SpreadsheetRowReferenceRange from "./SpreadsheetRowReferenceRange.js";
+import SpreadsheetSelection from "./SpreadsheetSelection.js";
+import SpreadsheetViewportSelectionAnchor from "./SpreadsheetViewportSelectionAnchor.js";
 import SystemObject from "../../SystemObject.js";
 
 const TYPE_NAME = "spreadsheet-cell-range";
@@ -52,6 +54,18 @@ export default class SpreadsheetCellRange extends SpreadsheetExpressionReference
         return begin.equals(this.end()) ?
             begin :
             this;
+    }
+
+    checkAnchor(anchor) {
+        SpreadsheetSelection.checkAnyAnchor(
+            anchor,
+            [
+                SpreadsheetViewportSelectionAnchor.TOP_LEFT,
+                SpreadsheetViewportSelectionAnchor.TOP_RIGHT,
+                SpreadsheetViewportSelectionAnchor.BOTTOM_LEFT,
+                SpreadsheetViewportSelectionAnchor.BOTTOM_RIGHT,
+            ]
+        );
     }
 
     navigateLeft(viewportHome) {
