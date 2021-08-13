@@ -5,6 +5,8 @@ import SpreadsheetColumnOrRowReferenceRange from "./SpreadsheetColumnOrRowRefere
 import SpreadsheetHistoryHash from "../history/SpreadsheetHistoryHash.js";
 import spreadsheetRangeParse from "./SpreadsheetRangeParser.js";
 import SpreadsheetRowReference from "./SpreadsheetRowReference.js";
+import SpreadsheetSelection from "./SpreadsheetSelection.js";
+import SpreadsheetViewportSelectionAnchor from "./SpreadsheetViewportSelectionAnchor.js";
 import SystemObject from "../../SystemObject.js";
 
 const TYPE_NAME = "spreadsheet-row-reference-range";
@@ -37,6 +39,16 @@ export default class SpreadsheetRowReferenceRange extends SpreadsheetColumnOrRow
         return begin.equals(this.end()) ?
             begin :
             this;
+    }
+
+    checkAnchor(anchor) {
+        SpreadsheetSelection.checkAnyAnchor(
+            anchor,
+            [
+                SpreadsheetViewportSelectionAnchor.TOP,
+                SpreadsheetViewportSelectionAnchor.BOTTOM,
+            ]
+        );
     }
 
     extendRangeLeft(viewportHome) {

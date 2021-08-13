@@ -1,6 +1,5 @@
 import CharSequences from "../../CharSequences.js";
 import Preconditions from "../../Preconditions.js";
-import SpreadObject from "../../SystemObject.js";
 import SpreadsheetCellReference from "./SpreadsheetCellReference.js";
 import SpreadsheetColumnOrRowReference from "./SpreadsheetColumnOrRowReference";
 import SpreadsheetColumnReference from "./SpreadsheetColumnReference.js";
@@ -8,6 +7,7 @@ import SpreadsheetHistoryHash from "../history/SpreadsheetHistoryHash.js";
 import SpreadsheetReferenceKind from "./SpreadsheetReferenceKind";
 import SpreadsheetRowReferenceRange from "./SpreadsheetRowReferenceRange.js";
 import SpreadsheetSelection from "./SpreadsheetSelection.js";
+import SystemObject from "../../SystemObject.js";
 
 const TYPE_NAME = "spreadsheet-row-reference";
 
@@ -144,4 +144,4 @@ export default class SpreadsheetRowReference extends SpreadsheetColumnOrRowRefer
     }
 }
 
-SpreadObject.register(TYPE_NAME, SpreadsheetRowReference.fromJson);
+SystemObject.register(TYPE_NAME, SpreadsheetRowReference.fromJson);
