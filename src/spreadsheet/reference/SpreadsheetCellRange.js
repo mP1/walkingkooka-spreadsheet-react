@@ -98,7 +98,7 @@ export default class SpreadsheetCellRange extends SpreadsheetExpressionReference
     }
 
     navigateDown(viewportHome) {
-        throw new Error("Not yet implemented");
+        SystemObject.throwUnsupportedOperation();
     }
 
     extendRangeLeft(viewportHome) {

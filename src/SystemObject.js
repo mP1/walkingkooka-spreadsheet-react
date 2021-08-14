@@ -7,6 +7,10 @@ const typeNameToFromJson = new Map();
 
 export default class SystemObject {
 
+    static throwUnsupportedOperation() {
+        throw new Error("Not yet implemented");
+    }
+    
     /**
      * All classes that support json marshalling and unmarshalling need to register.
      */
@@ -117,11 +121,11 @@ export default class SystemObject {
     }
 
     toJson() {
-        throw new Error("Not yet implemented.");
+        SystemObject.throwUnsupportedOperation();
     }
 
     typeName() {
-        throw new Error("Not yet implemented.");
+        SystemObject.throwUnsupportedOperation();
     }
 
     toJsonWithType() {

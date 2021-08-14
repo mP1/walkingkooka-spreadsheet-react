@@ -77,7 +77,7 @@ export default class SystemEnum extends SystemObject {
     }
 
     typeName() {
-        throw new Error("Not yet implemented");
+        SystemObject.throwUnsupportedOperation();
     }
 
     toString() {
