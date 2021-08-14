@@ -21,11 +21,11 @@ export default class SpreadsheetSelection extends SystemObject {
      * If the sub class is a range, call setAnchor with the given anchor otherwise call with null.
      */
     setAnchorConditional(anchor) {
-        throw new Error("Not yet implemented");
+        SystemObject.throwUnsupportedOperation();
     }
 
     checkAnchor(anchor) {
-        throw new Error("Not yet implemented");
+        SystemObject.throwUnsupportedOperation();
     }
 
     /**
@@ -98,61 +98,61 @@ export default class SpreadsheetSelection extends SystemObject {
     }
 
     extendRangeLeft(anchor, viewportHome) {
-        throw new Error("Not yet implemented");
+        SystemObject.throwUnsupportedOperation();
     }
 
     extendRangeRight(anchor, viewportHome) {
-        throw new Error("Not yet implemented");
+        SystemObject.throwUnsupportedOperation();
     }
 
     extendRangeUp(anchor, viewportHome) {
-        throw new Error("Not yet implemented");
+        SystemObject.throwUnsupportedOperation();
     }
 
     extendRangeDown(anchor, viewportHome) {
-        throw new Error("Not yet implemented");
+        SystemObject.throwUnsupportedOperation();
     }
 
     // all navigate methods must return SpreadsheetSelection
 
     navigateLeft(anchor, viewportHome) {
-        throw new Error("Not yet implemented");
+        SystemObject.throwUnsupportedOperation();
     }
 
     navigateRight(anchor, viewportHome) {
-        throw new Error("Not yet implemented");
+        SystemObject.throwUnsupportedOperation();
     }
 
     navigateUp(anchor, viewportHome) {
-        throw new Error("Not yet implemented");
+        SystemObject.throwUnsupportedOperation();
     }
 
     navigateDown(anchor, viewportHome) {
-        throw new Error("Not yet implemented");
+        SystemObject.throwUnsupportedOperation();
     }
 
     selectionEnter(giveFormulaFocus) {
-        throw new Error("Not yet implemented");
+        SystemObject.throwUnsupportedOperation();
     }
 
     testCell(cellReference) {
-        throw new Error("Not yet implemented");
+        SystemObject.throwUnsupportedOperation();
     }
 
     testColumn(columnReference) {
-        throw new Error("Not yet implemented");
+        SystemObject.throwUnsupportedOperation();
     }
 
     testRow(rowReference) {
-        throw new Error("Not yet implemented");
+        SystemObject.throwUnsupportedOperation();
     }
 
     toQueryStringParameterSelectionType() {
-        throw new Error("Not yet implemented");
+        SystemObject.throwUnsupportedOperation();
     }
 
     toSelectionHashToken() {
-        throw new Error("Not yet implemented");
+        SystemObject.throwUnsupportedOperation();
     }
 
     toString() {
@@ -163,6 +163,6 @@ export default class SpreadsheetSelection extends SystemObject {
      * This function is called by the viewport widget when a click event happens.
      */
     onViewportClick(setSelection, giveFormulaFocus) {
-        throw new Error("Not yet implemented");
+        SystemObject.throwUnsupportedOperation();
     }
 }
