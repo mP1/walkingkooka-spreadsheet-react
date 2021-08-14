@@ -16,10 +16,10 @@ import SpreadsheetDateTimeFormatPattern from "../format/SpreadsheetDateTimeForma
 import SpreadsheetDateTimeParsePatterns from "../format/SpreadsheetDateTimeParsePatterns.js";
 import SpreadsheetNumberFormatPattern from "../format/SpreadsheetNumberFormatPattern.js";
 import SpreadsheetNumberParsePatterns from "../format/SpreadsheetNumberParsePatterns.js";
-import SpreadsheetSelection from "../reference/SpreadsheetSelection.js";
 import SpreadsheetTextFormatPattern from "../format/SpreadsheetTextFormatPattern.js";
 import SpreadsheetTimeFormatPattern from "../format/SpreadsheetTimeFormatPattern.js";
 import SpreadsheetTimeParsePatterns from "../format/SpreadsheetTimeParsePatterns.js";
+import SpreadsheetViewportSelection from "../reference/SpreadsheetViewportSelection.js";
 import SystemObject from "../../SystemObject.js";
 import TextStyle from "../../text/TextStyle";
 
@@ -268,7 +268,7 @@ export default class SpreadsheetMetadata extends SystemObject {
                     unmarshaller = RoundingMode.fromJson;
                     break;
                 case SpreadsheetMetadata.SELECTION:
-                    unmarshaller = SystemObject.fromJsonWithType;
+                    unmarshaller = SpreadsheetViewportSelection.fromJson;
                     break;
                 case SpreadsheetMetadata.SPREADSHEET_ID:
                     unmarshaller = null;
@@ -448,7 +448,7 @@ export default class SpreadsheetMetadata extends SystemObject {
                 expectedClass = RoundingMode;
                 break;
             case SpreadsheetMetadata.SELECTION:
-                expectedClass = SpreadsheetSelection;
+                expectedClass = SpreadsheetViewportSelection;
                 break;
             case SpreadsheetMetadata.SPREADSHEET_ID:
                 setFails(propertyName);
@@ -654,7 +654,7 @@ export default class SpreadsheetMetadata extends SystemObject {
 
             switch(key) {
                 case SpreadsheetMetadata.SELECTION:
-                    valueJson = value.toJsonWithType();
+                    valueJson = value.toJson();
                     break;
                 default:
                     valueJson = (value.toJson && value.toJson()) || value;

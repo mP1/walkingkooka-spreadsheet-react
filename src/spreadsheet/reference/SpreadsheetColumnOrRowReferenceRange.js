@@ -30,6 +30,10 @@ export default class SpreadsheetColumnOrRowReferenceRange extends SpreadsheetSel
             begin.toJson() + ":" + end.toJson();
     }
 
+    setAnchorConditional(anchor) {
+        return this.setAnchor(anchor);
+    }
+
     selectEnter(giveFormulaFocus) {
         // ENTER currently is a NOP but will change to perhaps popup a menu
     }

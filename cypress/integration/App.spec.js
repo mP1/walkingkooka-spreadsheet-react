@@ -695,6 +695,34 @@ context(
             cellFormattedTextCheck(C3, "88."); // 4 * 22
         });
 
+        it("Label history hash navigate to label", () => {
+            spreadsheetEmpty();
+            hash()
+                .should('match', /.*\/Untitled/);
+
+            // create a new label
+            hashAppend("/label/NavigateToLabel123");
+
+            labelMappingReferenceTextField()
+                .type("A1");
+
+            labelMappingLabelSaveButton()
+                .click();
+
+            labelMappingLabelCloseButton()
+                .click();
+
+            // navigate
+            hashAppend("/cell/NavigateToLabel123");
+
+            cell(A1)
+                .should("have.focus");
+            column("A")
+                .should("have.css", "background-color", SELECTED_COLOR);
+            row("1")
+                .should("have.css", "background-color", SELECTED_COLOR);
+        });
+
         function labelDialogCheck(title,
                                   labelText,
                                   labelHelperText,

@@ -58,7 +58,8 @@ export default class SpreadsheetViewportSelection extends SystemObject {
     }
 
     toString() {
-        return JSON.stringify(this.toJson());
+        const anchor = this.anchor();
+        return this.selection() + (anchor ? " " + anchor : "");
     }
 }
 

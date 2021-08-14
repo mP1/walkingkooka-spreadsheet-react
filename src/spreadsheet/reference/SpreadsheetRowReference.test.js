@@ -1,10 +1,10 @@
 import Keys from "../../Keys.js";
-import SpreadsheetCellColumnOrRowParse from "./SpreadsheetCellColumnOrRowParse.js";
 import SpreadsheetCellReference from "./SpreadsheetCellReference.js";
 import SpreadsheetColumnReference from "./SpreadsheetColumnReference";
 import SpreadsheetReferenceKind from "./SpreadsheetReferenceKind";
 import SpreadsheetRowReference from "./SpreadsheetRowReference";
 import SpreadsheetRowReferenceRange from "./SpreadsheetRowReferenceRange.js";
+import SpreadsheetViewportSelectionAnchor from "./SpreadsheetViewportSelectionAnchor.js";
 import systemObjectTesting from "../../SystemObjectTesting.js";
 
 systemObjectTesting(
@@ -250,9 +250,10 @@ function testExtendRangeLeft(row, expected) {
     test("extendRangeLeft " + row + " home=" + h,
         () => {
             expect(SpreadsheetRowReference.parse(row)
-                .extendRangeLeft(h)
+                .extendRangeLeft(null, h)
             ).toStrictEqual(
                 SpreadsheetRowReference.parse(expected)
+                    .setAnchor()
             )
         });
 }
@@ -266,9 +267,10 @@ function testExtendRangeRight(row, home, expected) {
     test("extendRangeRight " + row + " home=" + home,
         () => {
             expect(SpreadsheetRowReference.parse(row)
-                .extendRangeRight(SpreadsheetCellReference.parse(home))
+                .extendRangeRight(null, SpreadsheetCellReference.parse(home))
             ).toStrictEqual(
                 SpreadsheetCellReference.parse(expected)
+                    .setAnchor()
             )
         });
 }
@@ -278,45 +280,47 @@ testExtendRangeRight("1048576", "Z99","Z1048576");
 
 // extendRangeUp......................................................................................................
 
-function testExtendRangeUp(row, expected) {
+function testExtendRangeUp(row, expected, anchor) {
     const h = home();
 
     test("extendRangeUp " + row + " home=" + h,
         () => {
             expect(SpreadsheetRowReference.parse(row)
-                .extendRangeUp(h)
+                .extendRangeUp(null, h)
             ).toStrictEqual(
                 SpreadsheetRowReferenceRange.parse(expected)
                     .rowOrRange()
+                    .setAnchorConditional(anchor)
             )
         });
 }
 
 testExtendRangeUp("1", "1");
-testExtendRangeUp("2", "1:2");
-testExtendRangeUp("3", "2:3");
-testExtendRangeUp("1045678", "1045677:1045678");
+testExtendRangeUp("2", "1:2", SpreadsheetViewportSelectionAnchor.BOTTOM);
+testExtendRangeUp("3", "2:3", SpreadsheetViewportSelectionAnchor.BOTTOM);
+testExtendRangeUp("1045678", "1045677:1045678", SpreadsheetViewportSelectionAnchor.BOTTOM);
 
 // extendRangeDown......................................................................................................
 
-function testExtendRangeDown(row, expected) {
+function testExtendRangeDown(row, expected, anchor) {
     const h = home();
 
     test("extendRangeDown " + row + " home=" + h,
         () => {
             expect(SpreadsheetRowReference.parse(row)
-                .extendRangeDown(h)
+                .extendRangeDown(null, h)
             ).toStrictEqual(
                 SpreadsheetRowReferenceRange.parse(expected)
                     .rowOrRange()
+                    .setAnchorConditional(anchor)
             )
         });
 }
 
 testExtendRangeDown("1048576", "1048576");
-testExtendRangeDown("1", "1:2");
-testExtendRangeDown("2", "2:3");
-testExtendRangeDown("3", "3:4");
+testExtendRangeDown("1", "1:2", SpreadsheetViewportSelectionAnchor.TOP);
+testExtendRangeDown("2", "2:3", SpreadsheetViewportSelectionAnchor.TOP);
+testExtendRangeDown("3", "3:4", SpreadsheetViewportSelectionAnchor.TOP);
 
 // testCell SpreadsheetCellReference....................................................................................
 
@@ -429,11 +433,11 @@ test("onViewportClickAndTest row=2", () => {
 const SELECT_RANGE_FALSE = false;
 const SELECT_RANGE_TRUE = true;
 
-function testOnViewportKeyDown(selection, key, selectRange, viewportHome, setSelection, giveFormulaFocus) {
-    test("testOnViewportKeyDown cell=" + selection + " key=" + key + " selectRange=" + selectRange + " home=" + viewportHome, () => {
+function testOnViewportKeyDown(selection, key, selectRange, viewportHome, setSelection, anchor, giveFormulaFocus) {
+    test("testOnViewportKeyDown row=" + selection + " key=" + key + " selectRange=" + selectRange + " home=" + viewportHome, () => {
 
         const state = {
-            selection: SpreadsheetCellColumnOrRowParse(selection).toString(),
+            selection: SpreadsheetRowReference.parse(selection).setAnchor().toString(),
             giveFormulaFocus: false,
         };
 
@@ -443,45 +447,46 @@ function testOnViewportKeyDown(selection, key, selectRange, viewportHome, setSel
                 selectRange,
                 (s) => state.selection = s && s.toString(),
                 () => state.giveFormulaFocus = true,
+                null,
                 SpreadsheetCellReference.parse(viewportHome),
             );
         expect(state)
             .toStrictEqual({
-                selection: setSelection,
+                selection: setSelection && (setSelection + (anchor ? " " + anchor : "")),
                 giveFormulaFocus: giveFormulaFocus,
             });
     });
 }
 
-testOnViewportKeyDown("2", "a", SELECT_RANGE_FALSE, "A1", "2", false);
-testOnViewportKeyDown("2", "a", SELECT_RANGE_TRUE, "A1", "2", false);
+testOnViewportKeyDown("2", "a", SELECT_RANGE_FALSE, "A1", "2", null, false);
+testOnViewportKeyDown("2", "a", SELECT_RANGE_TRUE, "A1", "2", null, false);
 
-testOnViewportKeyDown("2", Keys.ESCAPE, SELECT_RANGE_FALSE, "B2", null, false);
-testOnViewportKeyDown("2", Keys.ESCAPE, SELECT_RANGE_TRUE, "B2", null, false);
-testOnViewportKeyDown("2", Keys.ENTER, SELECT_RANGE_FALSE, "B2", "2", false);
-testOnViewportKeyDown("2", Keys.ENTER, SELECT_RANGE_TRUE, "B2", "2", false);
+testOnViewportKeyDown("2", Keys.ESCAPE, SELECT_RANGE_FALSE, "B2", null, null, false);
+testOnViewportKeyDown("2", Keys.ESCAPE, SELECT_RANGE_TRUE, "B2", null, null, false);
+testOnViewportKeyDown("2", Keys.ENTER, SELECT_RANGE_FALSE, "B2", "2", null, false);
+testOnViewportKeyDown("2", Keys.ENTER, SELECT_RANGE_TRUE, "B2", "2", null, false);
 
-testOnViewportKeyDown("2", Keys.ARROW_LEFT, SELECT_RANGE_FALSE, "A1", "2", false);
-testOnViewportKeyDown("2", Keys.ARROW_RIGHT, SELECT_RANGE_FALSE, "A1", "A2", false);
-testOnViewportKeyDown("2", Keys.ARROW_UP, SELECT_RANGE_FALSE, "A1", "1", false);
-testOnViewportKeyDown("2", Keys.ARROW_DOWN, SELECT_RANGE_FALSE, "A1", "3", false);
+testOnViewportKeyDown("2", Keys.ARROW_LEFT, SELECT_RANGE_FALSE, "A1", "2", null, false);
+testOnViewportKeyDown("2", Keys.ARROW_RIGHT, SELECT_RANGE_FALSE, "A1", "A2", null, false);
+testOnViewportKeyDown("2", Keys.ARROW_UP, SELECT_RANGE_FALSE, "A1", "1", null, false);
+testOnViewportKeyDown("2", Keys.ARROW_DOWN, SELECT_RANGE_FALSE, "A1", "3", null, false);
 
-testOnViewportKeyDown("1", Keys.ARROW_LEFT, SELECT_RANGE_FALSE, "A1", "1", false);
-testOnViewportKeyDown("1", Keys.ARROW_UP, SELECT_RANGE_FALSE, "A1", "1", false);
+testOnViewportKeyDown("1", Keys.ARROW_LEFT, SELECT_RANGE_FALSE, "A1", "1", null, false);
+testOnViewportKeyDown("1", Keys.ARROW_UP, SELECT_RANGE_FALSE, "A1", "1", null, false);
 
-testOnViewportKeyDown("99", Keys.ARROW_RIGHT, SELECT_RANGE_FALSE, "K99", "K99", false);
-testOnViewportKeyDown("98", Keys.ARROW_RIGHT, SELECT_RANGE_FALSE, "B2", "B98", false);
+testOnViewportKeyDown("99", Keys.ARROW_RIGHT, SELECT_RANGE_FALSE, "K99", "K99", null, false);
+testOnViewportKeyDown("98", Keys.ARROW_RIGHT, SELECT_RANGE_FALSE, "B2", "B98", null, false);
 
-testOnViewportKeyDown("2", Keys.ARROW_LEFT, SELECT_RANGE_TRUE, "A1", "2", false);
-testOnViewportKeyDown("2", Keys.ARROW_RIGHT, SELECT_RANGE_TRUE, "A1", "A2", false);
-testOnViewportKeyDown("2", Keys.ARROW_UP, SELECT_RANGE_TRUE, "A1", "1:2", false);
-testOnViewportKeyDown("2", Keys.ARROW_DOWN, SELECT_RANGE_TRUE, "A1", "2:3", false);
+testOnViewportKeyDown("2", Keys.ARROW_LEFT, SELECT_RANGE_TRUE, "A1", "2", null, false);
+testOnViewportKeyDown("2", Keys.ARROW_RIGHT, SELECT_RANGE_TRUE, "A1", "A2", null, false);
+testOnViewportKeyDown("2", Keys.ARROW_UP, SELECT_RANGE_TRUE, "A1", "1:2", SpreadsheetViewportSelectionAnchor.BOTTOM, false);
+testOnViewportKeyDown("2", Keys.ARROW_DOWN, SELECT_RANGE_TRUE, "A1", "2:3", SpreadsheetViewportSelectionAnchor.TOP, false);
 
-testOnViewportKeyDown("1", Keys.ARROW_LEFT, SELECT_RANGE_TRUE, "A1", "1", false);
-testOnViewportKeyDown("1", Keys.ARROW_UP, SELECT_RANGE_TRUE, "A1", "1", false);
+testOnViewportKeyDown("1", Keys.ARROW_LEFT, SELECT_RANGE_TRUE, "A1", "1", null, false);
+testOnViewportKeyDown("1", Keys.ARROW_UP, SELECT_RANGE_TRUE, "A1", "1", null, false);
 
-testOnViewportKeyDown("99", Keys.ARROW_RIGHT, SELECT_RANGE_TRUE, "K99", "K99", false);
-testOnViewportKeyDown("98", Keys.ARROW_RIGHT, SELECT_RANGE_TRUE, "B2", "B98", false);
+testOnViewportKeyDown("99", Keys.ARROW_RIGHT, SELECT_RANGE_TRUE, "K99", "K99", null, false);
+testOnViewportKeyDown("98", Keys.ARROW_RIGHT, SELECT_RANGE_TRUE, "B2", "B98", null, false);
 
 // equals................................................................................................................
 

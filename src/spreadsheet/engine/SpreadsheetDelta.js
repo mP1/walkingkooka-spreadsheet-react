@@ -115,6 +115,16 @@ export default class SpreadsheetDelta extends SystemObject {
         return this.labelsValue.slice();
     }
 
+    labelToReference() {
+        const map = new Map();
+
+        this.labels().forEach(m => {
+            map.set(m.label().toString(), m.reference());
+        });
+
+        return new ImmutableMap(map);
+    }
+
     cellToLabels() {
         const cellToLabels = new Map();
 
