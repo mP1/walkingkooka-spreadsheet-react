@@ -12,13 +12,14 @@ import SpreadsheetCellReference from "./reference/SpreadsheetCellReference.js";
 import SpreadsheetColumnReference from "./reference/SpreadsheetColumnReference.js";
 import SpreadsheetHistoryAwareStateWidget from "./history/SpreadsheetHistoryAwareStateWidget.js";
 import SpreadsheetHistoryHash from "./history/SpreadsheetHistoryHash.js";
+import SpreadsheetLabelName from "./reference/SpreadsheetLabelName.js";
 import SpreadsheetMessenger from "./message/SpreadsheetMessenger.js";
 import SpreadsheetMessengerCrud from "./message/SpreadsheetMessengerCrud.js";
 import SpreadsheetMetadata from "./meta/SpreadsheetMetadata.js";
 import SpreadsheetReferenceKind from "./reference/SpreadsheetReferenceKind.js";
 import SpreadsheetRowReference from "./reference/SpreadsheetRowReference.js";
-import SpreadsheetSelection from "./reference/SpreadsheetSelection.js";
 import SpreadsheetViewport from "./SpreadsheetViewport.js";
+import SpreadsheetViewportSelection from "./reference/SpreadsheetViewportSelection.js";
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -32,14 +33,15 @@ const SCROLL_DEBOUNCE = 100;
  * This component holds the cells viewport as well as the column and row controls.
  * <ul>
  * <li>ImmutableMap cells: A cache of the cells within the visible viewport</li>
- * <li>Immutable cellToLabels: cell to Label lookup</li>
+ * <li>ImmutableMap cellToLabels: cell to Label lookup</li>
+ * <li>ImmutableMap labelsToReference: Used to map a label to reference</li>
  * <li>ImmutableMap columnWidths: A cache of the column widths within the visible viewport</li>
  * <li>ImmutableMap rowHeights: A cache of the row heights within the visible viewport</li>
  * <li>object dimensions: Holds the width and height of the viewport in pixels</li>
  * <li>SpreadsheetSelection selection: The current selection which may include unresolved labels</li>
+ * <li>SpreadsheetViewportSelectionAnchor selection: The anchor accompanying the selection.</li>
  * <li>SpreadsheetMetadata spreadsheetMetadata: holds the viewport home cell & default style</li>
  * <li>SpreadsheetCellRange viewportRange: holds a range of all the cells within the viewport</li>
- * <li>Immutable cellToLabels: cell to Label lookup</li>
  * <li>boolean giveFocus: if cells changed give focus to the selected cell. This helps giving focus after a delta load.</li>
  * </ul>
  */
@@ -68,6 +70,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
             columnWidths: state.columnWidths.setAll(responseDelta.columnWidths()),
             rowHeights: state.rowHeights.setAll(responseDelta.rowHeights()),
             cellToLabels: state.cellToLabels.setAll(responseDelta.cellToLabels()),
+            labelToReference: state.labelToReference.setAll(responseDelta.labelToReference()),
         };
 
         switch(method) {
@@ -121,6 +124,8 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
             case "POST":
                 const viewportTable = this.viewportTable.current;
                 if(viewportTable){
+                    const selection = this.state.selection;
+
                     this.viewportLoadCells(
                         new SpreadsheetViewport(
                             this.state.spreadsheetMetadata.getIgnoringDefaults(SpreadsheetMetadata.VIEWPORT_CELL),
@@ -129,7 +134,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
                             viewportTable.offsetWidth,
                             viewportTable.offsetHeight,
                         ),
-                        this.state.selection
+                        selection
                     );
                 }
                 break;
@@ -165,6 +170,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
             dimensions: props.dimensions,
             spreadsheetMetadata: SpreadsheetMetadata.EMPTY,
             cellToLabels: ImmutableMap.EMPTY,
+            labelToReference: ImmutableMap.EMPTY,
         };
     }
 
@@ -259,7 +265,6 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
 
             if(!Equality.safeEquals(selectionNew, selectionOld)){
                 if(!state.formula){
-                    console.log("Missing " + SpreadsheetHistoryHash.CELL_FORMULA + " token giving focus to " + selectionNew);
                     this.giveSelectionFocus(selectionNew);
                 }
             }
@@ -299,17 +304,33 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
             props.showError
         );
 
-        if(!this.state.formula & selection instanceof SpreadsheetCellReference){
-            console.log("Missing " + SpreadsheetHistoryHash.CELL_FORMULA + " token giving focus to cell..." + selection);
+        if(!this.state.formula){
             this.giveSelectionFocus(selection);
         }
     }
 
+    /**
+     * Attempts to give focus to the selection including resolving of labels to cells.
+     */
     giveSelectionFocus(selection) {
-        if(selection && selection.viewportId){
-            const element = document.getElementById(selection.viewportId());
-            if(element){
-                element.focus();
+        let selectionNotLabel = null;
+
+        if(selection){
+            if(selection instanceof SpreadsheetLabelName){
+                const reference = this.state.labelToReference.get(selection);
+                if(reference instanceof SpreadsheetCellReference){
+                    selectionNotLabel = reference;
+                }
+            }else {
+                selectionNotLabel = selection;
+            }
+
+            if(selectionNotLabel.viewportId){
+                const element = document.getElementById(selectionNotLabel.viewportId());
+                if(element){
+                    console.log("Missing " + SpreadsheetHistoryHash.CELL_FORMULA + " token giving focus to ..." + selection);
+                    element.focus();
+                }
             }
         }
     }
@@ -329,6 +350,14 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
         const column = home.column().value();
         const row = home.row().value();
 
+        const state = this.state;
+        const selection = state.selection;
+
+        // need to resolve the selection to an actual cell or range so these may be highlighted
+        let selectionNotLabel = selection instanceof SpreadsheetLabelName ?
+            state.labelToReference.get(selection) :
+            selection;
+
         return <TableContainer key="viewport-TableContainer"
                                ref={this.viewportTable}
                                component={Paper}
@@ -344,13 +373,13 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
                 <TableHead>
                     <TableRow>
                         {
-                            this.renderTableColumnHeaders()
+                            this.renderTableColumnHeaders(selectionNotLabel)
                         }
                     </TableRow>
                 </TableHead>
                 <TableBody>
                     {
-                        this.renderTableContent()
+                        this.renderTableContent(selectionNotLabel)
                     }
                 </TableBody>
             </Table>
@@ -420,13 +449,16 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
         while(target) {
             const selection = target.dataset && target.dataset.selection;
             if(selection){
+                const state = this.state;
+
                 SpreadsheetCellColumnOrRowParse(selection)
                     .onViewportKeyDown(
                         e.key, // key
                         e.shiftKey, // selectRange
                         (s) => this.saveSelection(s), // setSelection
                         this.giveFormulaTextBoxFocus.bind(this), // giveFormulaFocus
-                        this.state.spreadsheetMetadata.getIgnoringDefaults(SpreadsheetMetadata.VIEWPORT_CELL), // viewportHome
+                        state.anchor, // anchor
+                        state.spreadsheetMetadata.getIgnoringDefaults(SpreadsheetMetadata.VIEWPORT_CELL), // viewportHome
                     );
                 break;
             }
@@ -495,8 +527,8 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
     /**
      * Returns an array of TableCell, one for each column header.
      */
-    renderTableColumnHeaders() {
-        const {columnWidths, dimensions, selection, spreadsheetMetadata} = this.state;
+    renderTableColumnHeaders(selection) {
+        const {columnWidths, dimensions, spreadsheetMetadata} = this.state;
 
         const home = spreadsheetMetadata.getIgnoringDefaults(SpreadsheetMetadata.VIEWPORT_CELL);
         const defaultStyle = spreadsheetMetadata.effectiveStyle();
@@ -526,8 +558,8 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
     /**
      * Render the required TABLE ROW each filled with available or empty TABLE CELL cells.
      */
-    renderTableContent() {
-        const {cells, columnWidths, rowHeights, selection, spreadsheetMetadata, dimensions, cellToLabels} = this.state;
+    renderTableContent(selection) {
+        const {cells, columnWidths, rowHeights, spreadsheetMetadata, dimensions, cellToLabels} = this.state;
 
         const home = spreadsheetMetadata.getIgnoringDefaults(SpreadsheetMetadata.VIEWPORT_CELL);
         const defaultStyle = spreadsheetMetadata.effectiveStyle();
@@ -594,10 +626,11 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
      * a cell etc.
      */
     saveSelection(selection) {
-        Preconditions.optionalInstance(selection, SpreadsheetSelection, "selection");
+        Preconditions.optionalInstance(selection, SpreadsheetViewportSelection, "selection");
 
         this.setState({
-            selection: selection,
+            selection: selection && selection.selection(),
+            anchor: selection && selection.anchor(),
             focused: false,
             spreadsheetMetadata: this.state.spreadsheetMetadata.setOrRemove(SpreadsheetMetadata.SELECTION, selection),
         });

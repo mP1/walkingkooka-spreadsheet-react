@@ -7,6 +7,7 @@ import SpreadsheetHistoryHash from "../history/SpreadsheetHistoryHash.js";
 import SpreadsheetReferenceKind from "./SpreadsheetReferenceKind";
 import SpreadsheetRowReferenceRange from "./SpreadsheetRowReferenceRange.js";
 import SpreadsheetSelection from "./SpreadsheetSelection.js";
+import SpreadsheetViewportSelectionAnchor from "./SpreadsheetViewportSelectionAnchor.js";
 import SystemObject from "../../SystemObject.js";
 
 const TYPE_NAME = "spreadsheet-row-reference";
@@ -78,31 +79,34 @@ export default class SpreadsheetRowReference extends SpreadsheetColumnOrRowRefer
         return this.addSaturated(+1);
     }
 
-    extendRangeLeft(viewportHome) {
+    extendRangeLeft(anchor, viewportHome) {
         Preconditions.requireInstance(viewportHome, SpreadsheetCellReference, "viewportHome");
 
-        return this;
+        return this.setAnchor();
     }
 
-    extendRangeRight(viewportHome) {
+    extendRangeRight(anchor, viewportHome) {
         Preconditions.requireInstance(viewportHome, SpreadsheetCellReference, "viewportHome");
 
         return viewportHome.column()
-            .setRow(this);
+            .setRow(this)
+            .setAnchor()
     }
 
-    extendRangeUp(viewportHome) {
+    extendRangeUp(anchor, viewportHome) {
         return new SpreadsheetRowReferenceRange(
             this.addSaturated(-1),
             this
-        ).rowOrRange();
+        ).rowOrRange()
+            .setAnchorConditional(SpreadsheetViewportSelectionAnchor.BOTTOM)
     }
 
-    extendRangeDown(viewportHome) {
+    extendRangeDown(anchor, viewportHome) {
         return new SpreadsheetRowReferenceRange(
             this,
             this.addSaturated(+1),
-        ).rowOrRange();
+        ).rowOrRange()
+            .setAnchorConditional(SpreadsheetViewportSelectionAnchor.TOP)
     }
 
     testCell(cellReference) {

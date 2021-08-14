@@ -37,6 +37,10 @@ function rowRange() {
     return SpreadsheetRowReferenceRange.parse("2:3");
 }
 
+function label() {
+    return SpreadsheetLabelName.parse("Label123");
+}
+
 function anchor() {
     return SpreadsheetViewportSelectionAnchor.TOP_LEFT;
 };
@@ -75,7 +79,6 @@ function testNew(selection, anchor) {
 }
 
 testNewFails(null, null, "Missing selection");
-testNewFails(SpreadsheetLabelName.parse("Label123"), null, "Label Label123 cannot be appear within SpreadsheetViewportSelection");
 
 // cell
 testNewFails(cell(), SpreadsheetViewportSelectionAnchor.TOP, "Expected no anchor got TOP");
@@ -89,14 +92,14 @@ testNewFails(cell(), SpreadsheetViewportSelectionAnchor.RIGHT);
 testNew(cell(), null);
 
 // cellRange
-testNewFails(cellRange(), SpreadsheetViewportSelectionAnchor.TOP, "Unknown anchor TOP, expected any of TOP_LEFT, TOP_RIGHT, BOTTOM_LEFT, BOTTOM_RIGHT");
+testNew(cellRange(), SpreadsheetViewportSelectionAnchor.TOP);
 testNew(cellRange(), SpreadsheetViewportSelectionAnchor.TOP_LEFT);
 testNew(cellRange(), SpreadsheetViewportSelectionAnchor.TOP_RIGHT);
-testNewFails(cellRange(), SpreadsheetViewportSelectionAnchor.BOTTOM);
+testNew(cellRange(), SpreadsheetViewportSelectionAnchor.BOTTOM);
 testNew(cellRange(), SpreadsheetViewportSelectionAnchor.BOTTOM_LEFT);
 testNew(cellRange(), SpreadsheetViewportSelectionAnchor.BOTTOM_RIGHT);
-testNewFails(cellRange(), SpreadsheetViewportSelectionAnchor.LEFT);
-testNewFails(cellRange(), SpreadsheetViewportSelectionAnchor.RIGHT);
+testNew(cellRange(), SpreadsheetViewportSelectionAnchor.LEFT);
+testNew(cellRange(), SpreadsheetViewportSelectionAnchor.RIGHT);
 testNewFails(cellRange(), null, "Missing anchor");
 
 // column
@@ -142,6 +145,17 @@ testNewFails(rowRange(), SpreadsheetViewportSelectionAnchor.BOTTOM_RIGHT);
 testNewFails(rowRange(), SpreadsheetViewportSelectionAnchor.LEFT);
 testNewFails(rowRange(), SpreadsheetViewportSelectionAnchor.RIGHT);
 testNewFails(rowRange(), null, "Missing anchor");
+
+// label
+testNew(label(), SpreadsheetViewportSelectionAnchor.TOP);
+testNew(label(), SpreadsheetViewportSelectionAnchor.TOP_LEFT);
+testNew(label(), SpreadsheetViewportSelectionAnchor.TOP_RIGHT);
+testNew(label(), SpreadsheetViewportSelectionAnchor.BOTTOM);
+testNew(label(), SpreadsheetViewportSelectionAnchor.BOTTOM_LEFT);
+testNew(label(), SpreadsheetViewportSelectionAnchor.BOTTOM_RIGHT);
+testNew(label(), SpreadsheetViewportSelectionAnchor.LEFT);
+testNew(label(), SpreadsheetViewportSelectionAnchor.RIGHT);
+testNew(label(), null);
 
 // fromJson.............................................................................................................
 

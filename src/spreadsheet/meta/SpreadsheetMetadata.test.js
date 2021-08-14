@@ -6,19 +6,15 @@ import LocalDateTime from "../../datetime/LocalDateTime.js";
 import Locale from "../../util/Locale.js";
 import PixelLength from "../../text/PixelLength";
 import RoundingMode from "../../math/RoundingMode.js";
-import SpreadsheetCellRange from "../reference/SpreadsheetCellRange.js";
 import SpreadsheetCellReference from "../reference/SpreadsheetCellReference";
-import SpreadsheetColumnReference from "../reference/SpreadsheetColumnReference.js";
 import SpreadsheetDateFormatPattern from "../format/SpreadsheetDateFormatPattern.js";
 import SpreadsheetDateParsePatterns from "../format/SpreadsheetDateParsePatterns.js";
 import SpreadsheetDateTimeFormatPattern from "../format/SpreadsheetDateTimeFormatPattern.js";
 import SpreadsheetDateTimeParsePatterns from "../format/SpreadsheetDateTimeParsePatterns.js";
-import SpreadsheetLabelName from "../reference/SpreadsheetLabelName.js";
 import SpreadsheetMetadata from "./SpreadsheetMetadata";
 import SpreadsheetName from "../SpreadsheetName";
 import SpreadsheetNumberFormatPattern from "../format/SpreadsheetNumberFormatPattern.js";
 import SpreadsheetNumberParsePatterns from "../format/SpreadsheetNumberParsePatterns.js";
-import SpreadsheetRowReference from "../reference/SpreadsheetRowReference.js";
 import SpreadsheetTextFormatPattern from "../format/SpreadsheetTextFormatPattern.js";
 import SpreadsheetTimeFormatPattern from "../format/SpreadsheetTimeFormatPattern.js";
 import SpreadsheetTimeParsePatterns from "../format/SpreadsheetTimeParsePatterns.js";
@@ -543,17 +539,15 @@ test("remove absent property #2", () => {
 });
 
 test("remove", () => {
-    const cell = SpreadsheetCellReference.parse("Z9");
-    const metadata = SpreadsheetMetadata.EMPTY.set(SpreadsheetMetadata.SELECTION, cell);
+    const selection = SpreadsheetCellReference.parse("Z9")
+        .setAnchor();
+    const metadata = SpreadsheetMetadata.EMPTY.set(SpreadsheetMetadata.SELECTION, selection);
     const removed = metadata.remove(SpreadsheetMetadata.SELECTION);
 
     expect(metadata).not.toEqual(removed);
 
     checkJson(metadata, {
-        "selection": {
-            "type": "spreadsheet-cell-reference",
-            "value": "Z9",
-        },
+        "selection": selection.toJson(),
     });
     checkJson(removed,
         {});
@@ -563,8 +557,9 @@ test("remove #2", () => {
     const withSpreadsheetName = SpreadsheetMetadata.EMPTY
         .set(SpreadsheetMetadata.SPREADSHEET_NAME, new SpreadsheetName("spreadsheet-name-123"));
 
-    const cell = SpreadsheetCellReference.parse("Z9");
-    const metadata = withSpreadsheetName.set(SpreadsheetMetadata.SELECTION, cell);
+    const selection = SpreadsheetCellReference.parse("Z9")
+        .setAnchor();
+    const metadata = withSpreadsheetName.set(SpreadsheetMetadata.SELECTION, selection);
     const removed = metadata.remove(SpreadsheetMetadata.SELECTION);
 
     expect(metadata).not.toEqual(removed);
@@ -645,15 +640,11 @@ test("set precision NAN fails", () => {
 
 getSetRemoveTest(SpreadsheetMetadata.ROUNDING_MODE, RoundingMode.CEILING);
 
-getSetRemoveTest(SpreadsheetMetadata.SELECTION, SpreadsheetCellReference.parse("B97"));
-
-getSetRemoveTest(SpreadsheetMetadata.SELECTION, SpreadsheetColumnReference.parse("B"));
-
-getSetRemoveTest(SpreadsheetMetadata.SELECTION, SpreadsheetLabelName.parse("Label123"));
-
-getSetRemoveTest(SpreadsheetMetadata.SELECTION, SpreadsheetCellRange.parse("B2:C3"));
-
-getSetRemoveTest(SpreadsheetMetadata.SELECTION, SpreadsheetRowReference.parse("234"));
+getSetRemoveTest(
+    SpreadsheetMetadata.SELECTION,
+    SpreadsheetCellReference.parse("B97")
+        .setAnchor()
+);
 
 getIgnoringDefaultsTest(SpreadsheetMetadata.SPREADSHEET_ID, "123");
 
@@ -727,9 +718,7 @@ function getIgnoringDefaultsTest0(propertyName, propertyValue) {
 
     test("getIgnoringDefaults " + propertyName, () => {
         const json = {};
-        json[propertyName] = SpreadsheetMetadata.SELECTION === propertyName ?
-            propertyValue.toJsonWithType() :
-            (propertyValue.toJson && propertyValue.toJson()) || propertyValue;
+        json[propertyName] = propertyValue.toJson && propertyValue.toJson() || propertyValue;
 
         expect(SpreadsheetMetadata.fromJson(json)
             .getIgnoringDefaults(propertyName)
@@ -749,9 +738,7 @@ function setPropertyTest(propertyName, propertyValue) {
             .set(propertyName, propertyValue);
 
         const json = {};
-        json[propertyName] = SpreadsheetMetadata.SELECTION === propertyName ?
-            propertyValue.toJsonWithType() :
-            (propertyValue.toJson && propertyValue.toJson()) || propertyValue;
+        json[propertyName] = propertyValue.toJson && propertyValue.toJson() || propertyValue;
 
         expect(SpreadsheetMetadata.fromJson(json)
             .getIgnoringDefaults(propertyName)
@@ -772,16 +759,20 @@ function removePropertyFailsTest(propertyName) {
 }
 
 test("setOrRemove non null", () => {
-    const cell = SpreadsheetCellReference.parse("Z99");
+    const viewportSelection = SpreadsheetCellReference.parse("Z99")
+        .setAnchor();
     const metadata = SpreadsheetMetadata.EMPTY
-        .setOrRemove(SpreadsheetMetadata.SELECTION, cell);
-    expect(metadata.getIgnoringDefaults(SpreadsheetMetadata.SELECTION)).toEqual(cell);
+        .setOrRemove(SpreadsheetMetadata.SELECTION, viewportSelection);
+
+    expect(metadata.getIgnoringDefaults(SpreadsheetMetadata.SELECTION))
+        .toEqual(viewportSelection);
 });
 
 test("setOrRemove null", () => {
-    const cell = SpreadsheetCellReference.parse("Z99");
+    const viewportSelection = SpreadsheetCellReference.parse("Z99")
+        .setAnchor();
     const metadata = SpreadsheetMetadata.EMPTY
-        .set(SpreadsheetMetadata.SELECTION, cell);
+        .set(SpreadsheetMetadata.SELECTION, viewportSelection);
     const metadata2 = metadata.setOrRemove(SpreadsheetMetadata.SELECTION, null)
     expect(metadata2.getIgnoringDefaults(SpreadsheetMetadata.SELECTION)).toBeUndefined();
 });
@@ -789,7 +780,6 @@ test("setOrRemove null", () => {
 // all..................................................................................................................
 
 test("all setters & getters", () => {
-    const cell = SpreadsheetCellReference.parse("Z99");
     const cellCharacterWidth = 1;
     const currencySymbol = "$AUD";
     const dateFormatPattern = SpreadsheetDateFormatPattern.fromJson("yyyymmdd");
@@ -811,6 +801,8 @@ test("all setters & getters", () => {
     const positiveSign = Character.fromJson("+");
     const precision = 1;
     const roundingMode = RoundingMode.FLOOR;
+    const selection = SpreadsheetCellReference.parse("Z99")
+        .setAnchor();
     const style = TextStyle.EMPTY
         .set("width", PixelLength.parse("123px"));
     const textFormatPattern = SpreadsheetTextFormatPattern.fromJson("@@");
@@ -821,7 +813,6 @@ test("all setters & getters", () => {
     const viewportCell = SpreadsheetCellReference.parse("A99");
 
     const metadata = SpreadsheetMetadata.EMPTY
-        .set(SpreadsheetMetadata.SELECTION, cell)
         .set(SpreadsheetMetadata.CELL_CHARACTER_WIDTH, cellCharacterWidth)
         .set(SpreadsheetMetadata.CURRENCY_SYMBOL, currencySymbol)
         .set(SpreadsheetMetadata.DATE_FORMAT_PATTERN, dateFormatPattern)
@@ -842,6 +833,7 @@ test("all setters & getters", () => {
         .set(SpreadsheetMetadata.POSITIVE_SIGN, positiveSign)
         .set(SpreadsheetMetadata.PRECISION, precision)
         .set(SpreadsheetMetadata.ROUNDING_MODE, roundingMode)
+        .set(SpreadsheetMetadata.SELECTION, selection)
         .set(SpreadsheetMetadata.SPREADSHEET_NAME, name)
         .set(SpreadsheetMetadata.STYLE, style)
         .set(SpreadsheetMetadata.TEXT_FORMAT_PATTERN, textFormatPattern)
@@ -851,7 +843,6 @@ test("all setters & getters", () => {
         .set(SpreadsheetMetadata.VALUE_SEPARATOR, valueSeparator)
         .set(SpreadsheetMetadata.VIEWPORT_CELL, viewportCell);
 
-    expect(metadata.getIgnoringDefaults(SpreadsheetMetadata.SELECTION)).toEqual(cell);
     expect(metadata.getIgnoringDefaults(SpreadsheetMetadata.CELL_CHARACTER_WIDTH)).toEqual(cellCharacterWidth);
     expect(metadata.getIgnoringDefaults(SpreadsheetMetadata.CURRENCY_SYMBOL)).toEqual(currencySymbol);
     expect(metadata.getIgnoringDefaults(SpreadsheetMetadata.DATE_FORMAT_PATTERN)).toEqual(dateFormatPattern);
@@ -872,6 +863,7 @@ test("all setters & getters", () => {
     expect(metadata.getIgnoringDefaults(SpreadsheetMetadata.POSITIVE_SIGN)).toEqual(positiveSign);
     expect(metadata.getIgnoringDefaults(SpreadsheetMetadata.PRECISION)).toEqual(precision);
     expect(metadata.getIgnoringDefaults(SpreadsheetMetadata.ROUNDING_MODE)).toEqual(roundingMode);
+    expect(metadata.getIgnoringDefaults(SpreadsheetMetadata.SELECTION)).toEqual(selection);
     expect(metadata.getIgnoringDefaults(SpreadsheetMetadata.SPREADSHEET_NAME)).toEqual(name);
     expect(metadata.getIgnoringDefaults(SpreadsheetMetadata.STYLE)).toEqual(style);
     expect(metadata.getIgnoringDefaults(SpreadsheetMetadata.TEXT_FORMAT_PATTERN)).toEqual(textFormatPattern);
@@ -880,17 +872,6 @@ test("all setters & getters", () => {
     expect(metadata.getIgnoringDefaults(SpreadsheetMetadata.TWO_DIGIT_YEAR)).toEqual(twoDigitYear);
     expect(metadata.getIgnoringDefaults(SpreadsheetMetadata.VALUE_SEPARATOR)).toEqual(valueSeparator);
     expect(metadata.getIgnoringDefaults(SpreadsheetMetadata.VIEWPORT_CELL)).toEqual(viewportCell);
-});
-
-test("all setters & removers", () => {
-    const cell = SpreadsheetCellReference.parse("Z99");
-
-    const metadata = SpreadsheetMetadata.EMPTY
-        .set(SpreadsheetMetadata.SELECTION, cell)
-        .remove(SpreadsheetMetadata.SELECTION);
-
-    expect(metadata.getIgnoringDefaults(SpreadsheetMetadata.SELECTION)).toBeUndefined();
-    expect(metadata.isEmpty()).toBeTrue();
 });
 
 // effectiveStyle.......................................................................................................
@@ -1156,13 +1137,13 @@ test("shouldUpdateViewport property values different " + SpreadsheetMetadata.SEL
         {
             "currency-symbol": "AUD",
             "decimal-separator": ".",
-            "selection": "A1",
+            "selection": SpreadsheetCellReference.parse("A1").setAnchor().toJson(),
         }
     ).shouldUpdateViewport(SpreadsheetMetadata.fromJson(
         {
             "currency-symbol": "AUD",
             "decimal-separator": ".",
-            "selection": "Z99",
+            "selection": SpreadsheetCellReference.parse("Z99").setAnchor().toJson(),
         }
     ))).toBeFalse();
 });

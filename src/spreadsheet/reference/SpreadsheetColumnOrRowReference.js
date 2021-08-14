@@ -1,8 +1,8 @@
 import Preconditions from "../../Preconditions.js";
 import React from "react";
+import SpreadsheetColumnReference from "./SpreadsheetColumnReference.js";
 import SpreadsheetReferenceKind from "./SpreadsheetReferenceKind";
 import SpreadsheetSelection from "./SpreadsheetSelection.js";
-import SpreadsheetColumnReference from "./SpreadsheetColumnReference.js";
 import TableCell from "@material-ui/core/TableCell";
 
 // default header cell styles
@@ -113,6 +113,10 @@ export default class SpreadsheetColumnOrRowReference extends SpreadsheetSelectio
         }</TableCell>
     }
 
+    setAnchorConditional(anchor) {
+        return this.setAnchor(); // not a range ignore anchor
+    }
+
     checkAnchor(anchor) {
         SpreadsheetSelection.checkNoAnchor(anchor);
     }
@@ -125,7 +129,7 @@ export default class SpreadsheetColumnOrRowReference extends SpreadsheetSelectio
      * Clicking on a column or row selects it.
      */
     onViewportClick(setSelection, giveFormulaFocus) {
-        setSelection(this);
+        setSelection(this.setAnchor());
     }
 
     equals(other) {

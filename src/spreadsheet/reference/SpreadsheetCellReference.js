@@ -11,10 +11,10 @@ import SpreadsheetFormula from "../SpreadsheetFormula.js";
 import SpreadsheetReferenceKind from "./SpreadsheetReferenceKind";
 import SpreadsheetRowReference from "./SpreadsheetRowReference";
 import SpreadsheetSelection from "./SpreadsheetSelection.js";
+import SpreadsheetViewportSelectionAnchor from "./SpreadsheetViewportSelectionAnchor.js";
 import SystemObject from "../../SystemObject.js";
 import TextStyle from "../../text/TextStyle.js";
 import Text from "../../text/Text.js";
-
 
 const TYPE_NAME = "spreadsheet-cell-reference";
 
@@ -199,6 +199,10 @@ export default class SpreadsheetCellReference extends SpreadsheetCellReferenceOr
 
     // viewport keyboard................................................................................................
 
+    setAnchorConditional(anchor) {
+        return this.setAnchor(); // ignore anchor
+    }
+
     checkAnchor(anchor) {
         SpreadsheetSelection.checkNoAnchor(anchor);
     }
@@ -219,44 +223,48 @@ export default class SpreadsheetCellReference extends SpreadsheetCellReferenceOr
         return this.addRowSaturated(+1);
     }
 
-    extendRangeLeft(viewportHome) {
+    extendRangeLeft(anchor, viewportHome) {
         const c = this.column();
         const r = this.row();
 
         return new SpreadsheetCellRange(
             c.addSaturated(-1).setRow(r),
             c.setRow(r)
-        ).cellOrRange();
+        ).cellOrRange()
+            .setAnchorConditional(SpreadsheetViewportSelectionAnchor.RIGHT)
     }
 
-    extendRangeRight(viewportHome) {
+    extendRangeRight(anchor, viewportHome) {
         const c = this.column();
         const r = this.row();
 
         return new SpreadsheetCellRange(
             c.setRow(r),
             c.addSaturated(+1).setRow(r),
-        ).cellOrRange();
+        ).cellOrRange()
+            .setAnchorConditional(SpreadsheetViewportSelectionAnchor.LEFT)
     }
 
-    extendRangeUp(viewportHome) {
+    extendRangeUp(anchor, viewportHome) {
         const c = this.column();
         const r = this.row();
 
         return new SpreadsheetCellRange(
             r.addSaturated(-1).setColumn(c),
             c.setRow(r)
-        ).cellOrRange();
+        ).cellOrRange()
+            .setAnchorConditional(SpreadsheetViewportSelectionAnchor.BOTTOM)
     }
 
-    extendRangeDown(viewportHome) {
+    extendRangeDown(anchor, viewportHome) {
         const c = this.column();
         const r = this.row();
 
         return new SpreadsheetCellRange(
             c.setRow(r),
             r.addSaturated(+1).setColumn(c),
-        ).cellOrRange();
+        ).cellOrRange()
+            .setAnchorConditional(SpreadsheetViewportSelectionAnchor.TOP)
     }
 
     selectionEnter(giveFormulaFocus) {
@@ -332,7 +340,7 @@ export default class SpreadsheetCellReference extends SpreadsheetCellReferenceOr
      * Clicking on a cell selects it.
      */
     onViewportClick(setSelection, giveFocus) {
-        setSelection(this);
+        setSelection(this.setAnchor());
         //giveFocus();
     }
 

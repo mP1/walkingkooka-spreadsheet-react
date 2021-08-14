@@ -422,6 +422,32 @@ test("cellToLabels() no labels", () => {
         .toBeUndefined();
 });
 
+// labelToReference.........................................................................................................
+
+test("labelToReference() several labels", () => {
+    const labelToReference = delta().labelToReference();
+
+    expect(labelToReference.get(label1()))
+        .toStrictEqual(a1().reference());
+
+    expect(labelToReference.get(label2()))
+        .toStrictEqual(a1().reference());
+});
+
+test("labelToReference() 1 label", () => {
+    const labelToReference = delta().labelToReference();
+
+    expect(labelToReference.get(label3()))
+        .toStrictEqual(b2().reference());
+});
+
+test("labelToReference() no labels", () => {
+    const labelToReference = delta().labelToReference();
+
+    expect(labelToReference.get(SpreadsheetLabelName.parse("Unknown")))
+        .toBeUndefined();
+});
+
 // toJson...............................................................................................................
 
 test("toJson only 1 cell", () => {
