@@ -529,8 +529,6 @@ context(
 
         it("Label mapping save, navigate to label", () => {
             spreadsheetEmpty();
-            hash()
-                .should('match', /.*\/Untitled/);
 
             const reference = B2;
 
@@ -569,8 +567,6 @@ context(
 
         it("Label mapping save, hover shows tooltip", () => {
             spreadsheetEmpty();
-            hash()
-                .should('match', /.*\/Untitled/);
 
             // create a new label
             hashAppend("/label/HoverLabel");
@@ -597,8 +593,6 @@ context(
 
         it("Label mapping save, hover shows several tooltip", () => {
             spreadsheetEmpty();
-            hash()
-                .should('match', /.*\/Untitled/);
 
             // create a new label
             hashAppend("/label/HoverLabel1");
@@ -637,8 +631,6 @@ context(
 
         it("Label mapping update, refreshes viewport", () => {
             spreadsheetEmpty();
-            hash()
-                .should('match', /.*\/Untitled/);
 
             cellClick(A1);
 
@@ -697,8 +689,6 @@ context(
 
         it("Label history hash navigate to label", () => {
             spreadsheetEmpty();
-            hash()
-                .should('match', /.*\/Untitled/);
 
             // create a new label
             hashAppend("/label/NavigateToLabel123");
