@@ -53,40 +53,42 @@ export default class SpreadsheetSelection extends SystemObject {
     /**
      * LEFT | RIGHT Arrow keys update the column selection or when down selects the first visible cell or ESC clears the current selection.
      */
-    onViewportKeyDown(key, selectRange, setSelection, giveFormulaFocus, anchor, viewportHome) {
-        console.log("onViewportKeyDown: " + key + " " + this);
+    onViewportKeyDown(key, selectRange, selection, anchor, viewportHome, setSelection, giveFormulaFocus) {
+        console.log("onViewportKeyDown: " + key + " " + (selectRange ? "selecting range ": "") + this + " " + (selection ? selection + " ":  "") + (anchor ? anchor + " ": "") + (viewportHome ? " home=" + viewportHome : ""));
+
+        const selectionOrThis = (selection ? selection : this);
 
         switch(key) {
             case Keys.ARROW_LEFT:
                 setSelection(
                     selectRange ?
-                        this.extendRangeLeft(anchor, viewportHome) :
+                        selectionOrThis.extendRangeLeft(anchor, this, viewportHome):
                         this.navigateLeft(viewportHome).setAnchor()
                 );
                 break;
             case Keys.ARROW_RIGHT:
                 setSelection(
                     selectRange ?
-                        this.extendRangeRight(anchor, viewportHome) :
+                        selectionOrThis.extendRangeRight(anchor, this, viewportHome):
                         this.navigateRight(viewportHome).setAnchor()
                 );
                 break;
             case Keys.ARROW_UP:
                 setSelection(
                     selectRange ?
-                        this.extendRangeUp(anchor, viewportHome) :
+                        selectionOrThis.extendRangeUp(anchor, this, viewportHome):
                         this.navigateUp(viewportHome).setAnchor()
                 );
                 break;
             case Keys.ARROW_DOWN:
                 setSelection(
                     selectRange ?
-                        this.extendRangeDown(anchor, viewportHome) :
+                        selectionOrThis.extendRangeDown(anchor, this, viewportHome):
                         this.navigateDown(viewportHome).setAnchor()
                 );
                 break;
             case Keys.ENTER:
-                this.selectionEnter(giveFormulaFocus);
+                selectionOrThis.selectionEnter(giveFormulaFocus);
                 break;
             case Keys.ESCAPE:
                 setSelection(null);
@@ -132,6 +134,13 @@ export default class SpreadsheetSelection extends SystemObject {
     }
 
     selectionEnter(giveFormulaFocus) {
+        SystemObject.throwUnsupportedOperation();
+    }
+
+    /**
+     * Resolves a selection which may be a label or range into a single element namely one of cell, column or row.
+     */
+    selectionFocus(labelToReference, anchor) {
         SystemObject.throwUnsupportedOperation();
     }
 

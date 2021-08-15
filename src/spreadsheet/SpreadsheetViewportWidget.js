@@ -124,9 +124,9 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
             case "POST":
                 const viewportTable = this.viewportTable.current;
                 if(viewportTable){
-                    const selection = this.state.selection;
+                    const {selection, anchor} = this.state;
 
-                    this.viewportLoadCells(
+                    this.loadCells(
                         new SpreadsheetViewport(
                             this.state.spreadsheetMetadata.getIgnoringDefaults(SpreadsheetMetadata.VIEWPORT_CELL),
                             0,
@@ -134,7 +134,8 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
                             viewportTable.offsetWidth,
                             viewportTable.offsetHeight,
                         ),
-                        selection
+                        selection,
+                        anchor
                     );
                 }
                 break;
@@ -214,6 +215,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
 
             const selectionOld = prevState.selection;
             const selectionNew = state.selection;
+            const anchor = state.anchor;
 
             let viewportLoadCells = false;
             const viewportCell = metadata.getIgnoringDefaults(SpreadsheetMetadata.VIEWPORT_CELL);
@@ -246,7 +248,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
             } while(false);
 
             if(viewportLoadCells){
-                this.viewportLoadCells(
+                this.loadCells(
                     new SpreadsheetViewport(
                         viewportCell,
                         0,
@@ -254,7 +256,8 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
                         width,
                         height
                     ),
-                    selectionNew
+                    selectionNew,
+                    anchor
                 );
             }
 
@@ -265,7 +268,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
 
             if(!Equality.safeEquals(selectionNew, selectionOld)){
                 if(!state.formula){
-                    this.giveSelectionFocus(selectionNew);
+                    this.giveSelectionFocus(selectionNew, anchor);
                 }
             }
         }
@@ -295,7 +298,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
         return historyTokens;
     }
 
-    viewportLoadCells(viewport, selection) {
+    loadCells(viewport, selection, anchor) {
         const props = this.props;
 
         props.spreadsheetDeltaCrud.get(
@@ -305,30 +308,25 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
         );
 
         if(!this.state.formula){
-            this.giveSelectionFocus(selection);
+            this.giveSelectionFocus(selection, anchor);
         }
     }
 
     /**
-     * Attempts to give focus to the selection including resolving of labels to cells.
+     * Attempts to give focus to the selection including resolving of labels to cells, using the anchor to find
+     * actual cell or column or row within a range etc.
      */
-    giveSelectionFocus(selection) {
-        let selectionNotLabel = null;
-
+    giveSelectionFocus(selection, anchor) {
         if(selection){
-            if(selection instanceof SpreadsheetLabelName){
-                const reference = this.state.labelToReference.get(selection);
-                if(reference instanceof SpreadsheetCellReference){
-                    selectionNotLabel = reference;
-                }
-            }else {
-                selectionNotLabel = selection;
-            }
+            const cellColumnOrRow = selection.selectionFocus(
+                this.state.labelToReference,
+                anchor
+            );
 
-            if(selectionNotLabel.viewportId){
-                const element = document.getElementById(selectionNotLabel.viewportId());
+            if(cellColumnOrRow){
+                const element = document.getElementById(cellColumnOrRow.viewportId());
                 if(element){
-                    console.log("Missing " + SpreadsheetHistoryHash.CELL_FORMULA + " token giving focus to ..." + selection);
+                    console.log("Missing " + SpreadsheetHistoryHash.CELL_FORMULA + " token giving focus to ..." + cellColumnOrRow);
                     element.focus();
                 }
             }
@@ -455,10 +453,11 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
                     .onViewportKeyDown(
                         e.key, // key
                         e.shiftKey, // selectRange
-                        (s) => this.saveSelection(s), // setSelection
-                        this.giveFormulaTextBoxFocus.bind(this), // giveFormulaFocus
+                        state.selection, // current selection may be null
                         state.anchor, // anchor
                         state.spreadsheetMetadata.getIgnoringDefaults(SpreadsheetMetadata.VIEWPORT_CELL), // viewportHome
+                        (s) => this.saveSelection(s), // setSelection
+                        this.giveFormulaTextBoxFocus.bind(this), // giveFormulaFocus
                     );
                 break;
             }
@@ -507,7 +506,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
                 const width = viewportTable.offsetWidth;
                 const height = viewportTable.offsetHeight;
 
-                this.viewportLoadCells(
+                this.loadCells(
                     new SpreadsheetViewport(
                         topLeft,
                         0,
@@ -515,7 +514,8 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
                         width,
                         height
                     ),
-                    null // ignore selection, unnecessary to keep it within view etc.
+                    null, // ignore selection, unnecessary to keep it within view etc.
+                    null // no anchor
                 );
                 this.setState({
                     spreadsheetMetadata: state.spreadsheetMetadata.set(SpreadsheetMetadata.VIEWPORT_CELL, topLeft),

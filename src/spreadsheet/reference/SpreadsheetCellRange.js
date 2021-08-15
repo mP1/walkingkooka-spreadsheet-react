@@ -141,6 +141,10 @@ export default class SpreadsheetCellRange extends SpreadsheetExpressionReference
         // nop TODO later perhaps popup menu
     }
 
+    selectionFocus(labelToReference, anchor) {
+        return null; // TODO https://github.com/mP1/walkingkooka-spreadsheet-react/issues/1141 Keyboard support for cell range selection
+    }
+
     /**
      * Tests if the given {@link SpreadsheetCellReference} is within this range.
      */
