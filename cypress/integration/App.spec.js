@@ -1414,6 +1414,100 @@ context(
                 .should("have.css", "background-color", SELECTED_COLOR);
         });
 
+        it("Row range extend top", () => {
+            spreadsheetEmpty();
+
+            hashAppend("/row/5");
+
+            hash()
+                .should('match', /.*\/.*\/row\/5/);
+
+            row("5")
+                .type("{shift+uparrow}");
+
+            hash()
+                .should('match', /.*\/.*\/row\/4:5/);
+
+            row("4")
+                .should("have.focus")
+                .should("have.css", "background-color", SELECTED_COLOR);
+            row("5")
+                .should("have.css", "background-color", SELECTED_COLOR);
+        });
+
+        it("Row range extend top twice", () => {
+            spreadsheetEmpty();
+
+            hashAppend("/row/5");
+
+            hash()
+                .should('match', /.*\/.*\/row\/5/);
+
+            row("5")
+                .type("{shift+uparrow}");
+
+            row("4")
+                .type("{shift+uparrow}");
+
+            hash()
+                .should('match', /.*\/.*\/row\/3:5/);
+
+            row("3")
+                .should("have.focus")
+                .should("have.css", "background-color", SELECTED_COLOR);
+            row("4")
+                .should("have.css", "background-color", SELECTED_COLOR);
+            row("5")
+                .should("have.css", "background-color", SELECTED_COLOR);
+        });
+
+        it("Row range extend bottom", () => {
+            spreadsheetEmpty();
+
+            hashAppend("/row/5");
+
+            hash()
+                .should('match', /.*\/.*\/row\/5/);
+
+            row("5")
+                .type("{shift+downarrow}");
+
+            hash()
+                .should('match', /.*\/.*\/row\/5:6/);
+
+            row("6")
+                .should("have.focus")
+                .should("have.css", "background-color", SELECTED_COLOR);
+            row("5")
+                .should("have.css", "background-color", SELECTED_COLOR);
+        });
+
+        it("Row range extend bottom twice", () => {
+            spreadsheetEmpty();
+
+            hashAppend("/row/5");
+
+            hash()
+                .should('match', /.*\/.*\/row\/5/);
+
+            row("5")
+                .type("{shift+downarrow}");
+
+            row("6")
+                .type("{shift+downarrow}");
+
+            hash()
+                .should('match', /.*\/.*\/row\/5:7/);
+
+            row("7")
+                .should("have.focus")
+                .should("have.css", "background-color", SELECTED_COLOR);
+            row("6")
+                .should("have.css", "background-color", SELECTED_COLOR);
+            row("5")
+                .should("have.css", "background-color", SELECTED_COLOR);
+        });
+        
         // select.....................................................................................................
 
         it("Select using hash initial appearance", () => {

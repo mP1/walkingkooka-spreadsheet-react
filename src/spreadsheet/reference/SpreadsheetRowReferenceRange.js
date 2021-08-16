@@ -15,6 +15,8 @@ const TYPE_NAME = "spreadsheet-row-reference-range";
  */
 export default class SpreadsheetRowReferenceRange extends SpreadsheetColumnOrRowReferenceRange {
 
+    static DEFAULT_ANCHOR = SpreadsheetViewportSelectionAnchor.TOP;
+
     static fromJson(json) {
         return SpreadsheetRowReferenceRange.parse(json);
     }
@@ -50,31 +52,86 @@ export default class SpreadsheetRowReferenceRange extends SpreadsheetColumnOrRow
             ]
         );
     }
-
-    extendRangeLeft(viewportHome) {
+    
+    extendRangeLeft(anchor, current, viewportHome) {
         return this.rowOrRange();
     }
 
-    extendRangeRight(viewportHome) {
+    extendRangeRight(anchor, current, viewportHome) {
         return this.rowOrRange();
     }
+    
+    /**
+     * Increases/decreases the row range depending on the anchor
+     */
+    extendRangeUp(anchor, current, viewportHome) {
+        const anchorOrDefault = anchor ? anchor : SpreadsheetRowReferenceRange.DEFAULT_ANCHOR;
+        var range;
 
-    extendRangeUp(viewportHome) {
-        return new SpreadsheetRowReferenceRange(
-            this.begin().addSaturated(-1),
-            this.end()
-        ).rowOrRange();
+        switch(anchorOrDefault.name()) {
+            case "TOP":
+                range = new SpreadsheetRowReferenceRange(
+                    this.begin(),
+                    current.addSaturated(-1),
+                );
+                break;
+            case "BOTTOM":
+                range = new SpreadsheetRowReferenceRange(
+                    current.addSaturated(-1),
+                    this.end()
+                );
+                break;
+            default:
+                throw new Error("Invalid anchor=" + anchor);
+        }
+
+        return range.rowOrRange()
+            .setAnchorConditional(anchorOrDefault);
     }
 
-    extendRangeDown(viewportHome) {
-        return new SpreadsheetRowReferenceRange(
-            this.begin(),
-            this.end().addSaturated(+1)
-        ).rowOrRange();
+    /**
+     * Increases/decreases the row range depending on the anchor
+     */
+    extendRangeDown(anchor, current, viewportHome) {
+        const anchorOrDefault = anchor ? anchor : SpreadsheetRowReferenceRange.DEFAULT_ANCHOR;
+        var range;
+
+        switch(anchorOrDefault.name()) {
+            case "TOP":
+                range = new SpreadsheetRowReferenceRange(
+                    this.begin(),
+                    current.addSaturated(+1),
+                );
+                break;
+            case "BOTTOM":
+                range = new SpreadsheetRowReferenceRange(
+                    current.addSaturated(+1),
+                    this.end()
+                );
+                break;
+            default:
+                throw new Error("Invalid anchor=" + anchor);
+        }
+
+        return range.rowOrRange()
+            .setAnchorConditional(anchorOrDefault);
     }
 
     selectionFocus(labelToReference, anchor) {
-        return null; // TODO https://github.com/mP1/walkingkooka-spreadsheet-react/issues/1143 Keyboard support for row range selection
+        let focus;
+
+        switch((anchor ? anchor : SpreadsheetRowReferenceRange.DEFAULT_ANCHOR).name()) {
+            case "TOP":
+                focus = this.end();
+                break;
+            case "BOTTOM":
+                focus = this.begin();
+                break;
+            default:
+                break;
+        }
+
+        return focus;
     }
 
     /**
