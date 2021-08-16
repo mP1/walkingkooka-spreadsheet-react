@@ -1290,6 +1290,100 @@ context(
                 .should("have.css", "background-color", SELECTED_COLOR);
         });
 
+        it("Column range extend left", () => {
+            spreadsheetEmpty();
+
+            hashAppend("/column/E");
+
+            hash()
+                .should('match', /.*\/.*\/column\/E/);
+
+            column("E")
+                .type("{shift+leftarrow}");
+
+            hash()
+                .should('match', /.*\/.*\/column\/D:E/);
+            
+            column("D")
+                .should("have.focus")
+                .should("have.css", "background-color", SELECTED_COLOR);
+            column("E")
+                .should("have.css", "background-color", SELECTED_COLOR);
+        });
+
+        it("Column range extend left twice", () => {
+            spreadsheetEmpty();
+
+            hashAppend("/column/E:F");
+
+            hash()
+                .should('match', /.*\/.*\/column\/E/);
+
+            column("E")
+                .type("{shift+leftarrow}");
+
+            column("D")
+                .type("{shift+leftarrow}");
+            
+            hash()
+                .should('match', /.*\/.*\/column\/C:E/);
+
+            column("C")
+                .should("have.focus")
+                .should("have.css", "background-color", SELECTED_COLOR);
+            column("D")
+                .should("have.css", "background-color", SELECTED_COLOR);
+            column("E")
+                .should("have.css", "background-color", SELECTED_COLOR);
+        });
+
+        it("Column range extend right", () => {
+            spreadsheetEmpty();
+
+            hashAppend("/column/E:F");
+
+            hash()
+                .should('match', /.*\/.*\/column\/E/);
+
+            column("E")
+                .type("{shift+rightarrow}");
+
+            hash()
+                .should('match', /.*\/.*\/column\/E:F/);
+
+            column("F")
+                .should("have.focus")
+                .should("have.css", "background-color", SELECTED_COLOR);
+            column("E")
+                .should("have.css", "background-color", SELECTED_COLOR);
+        });
+
+        it("Column range extend right twice", () => {
+            spreadsheetEmpty();
+
+            hashAppend("/column/E:F");
+
+            hash()
+                .should('match', /.*\/.*\/column\/E/);
+
+            column("E")
+                .type("{shift+rightarrow}");
+
+            column("F")
+                .type("{shift+rightarrow}");
+
+            hash()
+                .should('match', /.*\/.*\/column\/E:G/);
+
+            column("G")
+                .should("have.focus")
+                .should("have.css", "background-color", SELECTED_COLOR);
+            column("F")
+                .should("have.css", "background-color", SELECTED_COLOR);
+            column("E")
+                .should("have.css", "background-color", SELECTED_COLOR);
+        });
+        
         // row range...................................................................................................
 
         it("Row range history hash", () => {

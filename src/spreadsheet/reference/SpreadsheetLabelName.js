@@ -81,6 +81,11 @@ export default class SpreadsheetLabelName extends SpreadsheetCellReferenceOrLabe
         // nop
     }
 
+    selectionFocus(labelToReference, anchor) {
+        const target = labelToReference.get(this);
+        return target && target.selectionFocus(labelToReference, anchor);
+    }
+
     testCell(cellReference) {
         return false;
     }

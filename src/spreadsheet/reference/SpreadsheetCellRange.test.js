@@ -343,9 +343,11 @@ function testOnViewportKeyDown(reference, key, selectRange, viewportHome, setSel
             .onViewportKeyDown(
                 key,
                 selectRange,
+                null, // selection
+                null, // anchor
+                SpreadsheetCellReference.parse(viewportHome), // viewport home
                 (s) => state.selection = s && s.toString(),
                 () => state.giveFormulaFocus = true,
-                SpreadsheetCellReference.parse(viewportHome),
             );
         expect(state)
             .toStrictEqual({
@@ -360,8 +362,6 @@ testOnViewportKeyDown("A1:B2", "A", SELECT_RANGE_TRUE, "A1", "A1:B2", false);
 
 testOnViewportKeyDown("A1:B2", Keys.ESCAPE, SELECT_RANGE_FALSE, "B2", null, false);
 testOnViewportKeyDown("A1:B2", Keys.ESCAPE, SELECT_RANGE_TRUE, "B2", null, false);
-testOnViewportKeyDown("A1:B2", Keys.ENTER, SELECT_RANGE_FALSE, "B2", "A1:B2", false);
-testOnViewportKeyDown("A1:B2", Keys.ENTER, SELECT_RANGE_TRUE, "B2", "A1:B2", false);
 
 // testCell.............................................................................................................
 

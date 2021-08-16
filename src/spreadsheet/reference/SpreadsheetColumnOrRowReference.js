@@ -125,6 +125,10 @@ export default class SpreadsheetColumnOrRowReference extends SpreadsheetSelectio
         // do nothing if ENTER selected on column or row.
     }
 
+    selectionFocus(labelToReference, anchor) {
+        return this;
+    }
+
     /**
      * Clicking on a column or row selects it.
      */

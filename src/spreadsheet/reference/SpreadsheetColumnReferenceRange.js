@@ -15,6 +15,8 @@ const TYPE_NAME = "spreadsheet-column-reference-range";
  */
 export default class SpreadsheetColumnReferenceRange extends SpreadsheetColumnOrRowReferenceRange {
 
+    static DEFAULT_ANCHOR = SpreadsheetViewportSelectionAnchor.LEFT;
+
     static fromJson(json) {
         return SpreadsheetColumnReferenceRange.parse(json);
     }
@@ -51,26 +53,101 @@ export default class SpreadsheetColumnReferenceRange extends SpreadsheetColumnOr
         );
     }
 
-    extendRangeLeft(viewportHome) {
-        return new SpreadsheetColumnReferenceRange(
-            this.begin().addSaturated(-1),
-            this.end()
-        ).columnOrRange();
+    /**
+     * Increases/decreases the column range depending on the anchor
+     */
+    extendRangeLeft(anchor, current, viewportHome) {
+        const anchorOrDefault = anchor ? anchor : SpreadsheetColumnReferenceRange.DEFAULT_ANCHOR;
+        var range;
+
+        switch(anchorOrDefault.name()) {
+            case "LEFT":
+            case "TOP_LEFT":
+            case "BOTTOM_LEFT":
+                // left increasing towards right, decrease right edge
+                // range = new SpreadsheetColumnReferenceRange(
+                //     this.begin(),
+                //     this.end().addSaturated(-1),
+                // );
+                range = new SpreadsheetColumnReferenceRange(
+                    this.begin(),
+                    current.addSaturated(-1),
+                );
+                break;
+            case "RIGHT":
+            case "TOP_RIGHT":
+            case "BOTTOM_RIGHT":
+                // right increasing towards left, increase left edge
+                range = new SpreadsheetColumnReferenceRange(
+                    current.addSaturated(-1),
+                    this.end()
+                );
+                break;
+            default:
+                throw new Error("Invalid anchor=" + anchor);
+        }
+
+        return range.columnOrRange()
+            .setAnchorConditional(anchorOrDefault);
     }
 
-    extendRangeRight(viewportHome) {
-        return new SpreadsheetColumnReferenceRange(
-            this.begin(),
-            this.end().addSaturated(+1)
-        ).columnOrRange();
+    /**
+     * Increases/decreases the column range depending on the anchor
+     */
+    extendRangeRight(anchor, current, viewportHome) {
+        const anchorOrDefault = anchor ? anchor : SpreadsheetColumnReferenceRange.DEFAULT_ANCHOR;
+        var range;
+
+        switch(anchorOrDefault.name()) {
+            case "LEFT":
+            case "TOP_LEFT":
+            case "BOTTOM_LEFT":
+                // left increasing towards right, increase right edge
+                range = new SpreadsheetColumnReferenceRange(
+                    this.begin(),
+                    current.addSaturated(+1),
+                );
+                break;
+            case "RIGHT":
+            case "TOP_RIGHT":
+            case "BOTTOM_RIGHT":
+                // right increasing towards left, decrease left edge
+                range = new SpreadsheetColumnReferenceRange(
+                    current.addSaturated(+1),
+                    this.end()
+                );
+                break;
+            default:
+                throw new Error("Invalid anchor=" + anchor);
+        }
+
+        return range.columnOrRange()
+            .setAnchorConditional(anchorOrDefault);
     }
 
-    extendRangeUp(viewportHome) {
+    extendRangeUp(anchor, current, viewportHome) {
         return this.columnOrRange();
     }
 
-    extendRangeDown(viewportHome) {
+    extendRangeDown(anchor, current, viewportHome) {
         return this.columnOrRange();
+    }
+
+    selectionFocus(labelToReference, anchor) {
+        let focus;
+
+        switch(anchor ? anchor.name() : "LEFT") {
+            case "LEFT":
+                focus = this.end();
+                break;
+            case "RIGHT":
+                focus = this.begin();
+                break;
+            default:
+                break;
+        }
+
+        return focus;
     }
 
     /**

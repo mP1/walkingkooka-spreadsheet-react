@@ -77,7 +77,7 @@ export default class SpreadsheetColumnReference extends SpreadsheetColumnOrRowRe
             .setColumn(this);
     }
 
-    extendRangeLeft(anchor, viewportHome) {
+    extendRangeLeft(anchor, current, viewportHome) {
         return new SpreadsheetColumnReferenceRange(
             this.addSaturated(-1),
             this
@@ -85,7 +85,7 @@ export default class SpreadsheetColumnReference extends SpreadsheetColumnOrRowRe
             .setAnchorConditional(SpreadsheetViewportSelectionAnchor.RIGHT);
     }
 
-    extendRangeRight(anchor, viewportHome) {
+    extendRangeRight(anchor, current, viewportHome) {
         return new SpreadsheetColumnReferenceRange(
             this,
             this.addSaturated(+1)
@@ -93,18 +93,22 @@ export default class SpreadsheetColumnReference extends SpreadsheetColumnOrRowRe
             .setAnchorConditional(SpreadsheetViewportSelectionAnchor.LEFT);
     }
 
-    extendRangeUp(anchor, viewportHome) {
+    extendRangeUp(anchor, current, viewportHome) {
         Preconditions.requireInstance(viewportHome, SpreadsheetCellReference, "viewportHome");
 
         return this.setAnchor();
     }
 
-    extendRangeDown(anchor, viewportHome) {
+    extendRangeDown(anchor, current, viewportHome) {
         Preconditions.requireInstance(viewportHome, SpreadsheetCellReference, "viewportHome");
 
         return viewportHome.row()
             .setColumn(this)
             .setAnchor();
+    }
+
+    selectionFocus(labelToReference, anchor) {
+        return this;
     }
 
     testCell(cellReference) {

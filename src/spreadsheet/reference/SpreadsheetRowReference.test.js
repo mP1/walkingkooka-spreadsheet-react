@@ -250,7 +250,7 @@ function testExtendRangeLeft(row, expected) {
     test("extendRangeLeft " + row + " home=" + h,
         () => {
             expect(SpreadsheetRowReference.parse(row)
-                .extendRangeLeft(null, h)
+                .extendRangeLeft(null, null, h)
             ).toStrictEqual(
                 SpreadsheetRowReference.parse(expected)
                     .setAnchor()
@@ -267,7 +267,7 @@ function testExtendRangeRight(row, home, expected) {
     test("extendRangeRight " + row + " home=" + home,
         () => {
             expect(SpreadsheetRowReference.parse(row)
-                .extendRangeRight(null, SpreadsheetCellReference.parse(home))
+                .extendRangeRight(null, null, SpreadsheetCellReference.parse(home))
             ).toStrictEqual(
                 SpreadsheetCellReference.parse(expected)
                     .setAnchor()
@@ -286,7 +286,7 @@ function testExtendRangeUp(row, expected, anchor) {
     test("extendRangeUp " + row + " home=" + h,
         () => {
             expect(SpreadsheetRowReference.parse(row)
-                .extendRangeUp(null, h)
+                .extendRangeUp(null, null, h)
             ).toStrictEqual(
                 SpreadsheetRowReferenceRange.parse(expected)
                     .rowOrRange()
@@ -308,7 +308,7 @@ function testExtendRangeDown(row, expected, anchor) {
     test("extendRangeDown " + row + " home=" + h,
         () => {
             expect(SpreadsheetRowReference.parse(row)
-                .extendRangeDown(null, h)
+                .extendRangeDown(null, null, h)
             ).toStrictEqual(
                 SpreadsheetRowReferenceRange.parse(expected)
                     .rowOrRange()
@@ -445,10 +445,11 @@ function testOnViewportKeyDown(selection, key, selectRange, viewportHome, setSel
             .onViewportKeyDown(
                 key,
                 selectRange,
-                (s) => state.selection = s && s.toString(),
-                () => state.giveFormulaFocus = true,
+                null,
                 null,
                 SpreadsheetCellReference.parse(viewportHome),
+                (s) => state.selection = s && s.toString(),
+                () => state.giveFormulaFocus = true,
             );
         expect(state)
             .toStrictEqual({
@@ -463,8 +464,6 @@ testOnViewportKeyDown("2", "a", SELECT_RANGE_TRUE, "A1", "2", null, false);
 
 testOnViewportKeyDown("2", Keys.ESCAPE, SELECT_RANGE_FALSE, "B2", null, null, false);
 testOnViewportKeyDown("2", Keys.ESCAPE, SELECT_RANGE_TRUE, "B2", null, null, false);
-testOnViewportKeyDown("2", Keys.ENTER, SELECT_RANGE_FALSE, "B2", "2", null, false);
-testOnViewportKeyDown("2", Keys.ENTER, SELECT_RANGE_TRUE, "B2", "2", null, false);
 
 testOnViewportKeyDown("2", Keys.ARROW_LEFT, SELECT_RANGE_FALSE, "A1", "2", null, false);
 testOnViewportKeyDown("2", Keys.ARROW_RIGHT, SELECT_RANGE_FALSE, "A1", "A2", null, false);

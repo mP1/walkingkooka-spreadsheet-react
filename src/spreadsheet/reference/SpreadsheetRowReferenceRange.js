@@ -73,6 +73,10 @@ export default class SpreadsheetRowReferenceRange extends SpreadsheetColumnOrRow
         ).rowOrRange();
     }
 
+    selectionFocus(labelToReference, anchor) {
+        return null; // TODO https://github.com/mP1/walkingkooka-spreadsheet-react/issues/1143 Keyboard support for row range selection
+    }
+
     /**
      * Tests if the given {@link SpreadsheetCellReference} is within this range.
      */

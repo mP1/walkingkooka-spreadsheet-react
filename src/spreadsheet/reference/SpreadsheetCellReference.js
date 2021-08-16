@@ -271,6 +271,10 @@ export default class SpreadsheetCellReference extends SpreadsheetCellReferenceOr
         giveFormulaFocus();
     }
 
+    selectionFocus(labelToReference, anchor) {
+        return this;
+    }
+
     testCell(cellReference) {
         return this.column().testCell(cellReference) &&
             this.row().testCell(cellReference);
