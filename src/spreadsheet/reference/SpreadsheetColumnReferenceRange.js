@@ -136,7 +136,7 @@ export default class SpreadsheetColumnReferenceRange extends SpreadsheetColumnOr
     selectionFocus(labelToReference, anchor) {
         let focus;
 
-        switch(anchor ? anchor.name() : "LEFT") {
+        switch((anchor ? anchor : SpreadsheetColumnReferenceRange.DEFAULT_ANCHOR).name()) {
             case "LEFT":
                 focus = this.end();
                 break;
