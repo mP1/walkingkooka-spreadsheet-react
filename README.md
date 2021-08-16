@@ -116,7 +116,7 @@ an expression.  All parsing and resolution of reference and function is performe
 - Support APIs on the server exists to jump to any cell. **DONE**
 - Adding a smart text box to support navigation using a cell reference or label, APIs are available to resolve labels to cell references. **DONE**
 - Scrollbars to pan horizontally and vertically around viewport. **DONE**
-- Keyboard navigation **DONE** and [TODO cell](https://github.com/mP1/walkingkooka-spreadsheet-react/issues/1141), [TODO column](https://github.com/mP1/walkingkooka-spreadsheet-react/issues/1142), [TODO row](https://github.com/mP1/walkingkooka-spreadsheet-react/issues/1143) selection
+- Keyboard [TODO cell-range](https://github.com/mP1/walkingkooka-spreadsheet-react/issues/1141), column, row navigation & cell, column and row range selection. **DONE**
 - Mouse based [TODO cell](https://github.com/mP1/walkingkooka-spreadsheet-react/issues/1144), [TODO column](https://github.com/mP1/walkingkooka-spreadsheet-react/issues/1145), [TODO row](https://github.com/mP1/walkingkooka-spreadsheet-react/issues/1146) selection
 
 
