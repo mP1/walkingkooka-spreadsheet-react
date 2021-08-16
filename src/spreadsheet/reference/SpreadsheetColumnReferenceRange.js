@@ -62,22 +62,12 @@ export default class SpreadsheetColumnReferenceRange extends SpreadsheetColumnOr
 
         switch(anchorOrDefault.name()) {
             case "LEFT":
-            case "TOP_LEFT":
-            case "BOTTOM_LEFT":
-                // left increasing towards right, decrease right edge
-                // range = new SpreadsheetColumnReferenceRange(
-                //     this.begin(),
-                //     this.end().addSaturated(-1),
-                // );
                 range = new SpreadsheetColumnReferenceRange(
                     this.begin(),
                     current.addSaturated(-1),
                 );
                 break;
             case "RIGHT":
-            case "TOP_RIGHT":
-            case "BOTTOM_RIGHT":
-                // right increasing towards left, increase left edge
                 range = new SpreadsheetColumnReferenceRange(
                     current.addSaturated(-1),
                     this.end()
@@ -100,18 +90,12 @@ export default class SpreadsheetColumnReferenceRange extends SpreadsheetColumnOr
 
         switch(anchorOrDefault.name()) {
             case "LEFT":
-            case "TOP_LEFT":
-            case "BOTTOM_LEFT":
-                // left increasing towards right, increase right edge
                 range = new SpreadsheetColumnReferenceRange(
                     this.begin(),
                     current.addSaturated(+1),
                 );
                 break;
             case "RIGHT":
-            case "TOP_RIGHT":
-            case "BOTTOM_RIGHT":
-                // right increasing towards left, decrease left edge
                 range = new SpreadsheetColumnReferenceRange(
                     current.addSaturated(+1),
                     this.end()
