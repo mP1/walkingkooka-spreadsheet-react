@@ -45,6 +45,12 @@ export default class SpreadsheetCellRange extends SpreadsheetExpressionReference
         return this.beginValue;
     }
 
+    setBegin(begin) {
+        return this.begin().equals(begin) ?
+            this :
+            new SpreadsheetCellRange(begin, this.end());
+    }
+
     end() {
         return this.endValue;
     }
