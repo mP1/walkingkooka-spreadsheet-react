@@ -227,6 +227,21 @@ test("fromJson range lowercase", () => {
     check(range, begin, end, "F8:G9");
 });
 
+// setBegin.............................................................................................................
+
+test("setBegin same", () => {
+    const r = range();
+
+    expect(r.setBegin(r.begin()))
+        .toStrictEqual(r);
+});
+
+test("setBegin different", () => {
+    expect(SpreadsheetCellRange.parse("B2:C3")
+        .setBegin(SpreadsheetCellReference.parse("A1"))
+    ).toStrictEqual(SpreadsheetCellRange.parse("A1:C3"));
+});
+
 // cellOrRange........................................................................................................
 
 function testCellOrRange(range, expected) {
