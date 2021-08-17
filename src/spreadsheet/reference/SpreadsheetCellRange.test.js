@@ -242,6 +242,21 @@ test("setBegin different", () => {
     ).toStrictEqual(SpreadsheetCellRange.parse("A1:C3"));
 });
 
+// setEnd.............................................................................................................
+
+test("setEnd same", () => {
+    const r = range();
+
+    expect(r.setEnd(r.end()))
+        .toStrictEqual(r);
+});
+
+test("setEnd different", () => {
+    expect(SpreadsheetCellRange.parse("B2:C3")
+        .setEnd(SpreadsheetCellReference.parse("D4"))
+    ).toStrictEqual(SpreadsheetCellRange.parse("B2:D4"));
+});
+
 // cellOrRange........................................................................................................
 
 function testCellOrRange(range, expected) {
