@@ -35,6 +35,7 @@ const B3 = SpreadsheetCellReference.parse("B3");
 const C2 = SpreadsheetCellReference.parse("C2");
 const C3 = SpreadsheetCellReference.parse("C3");
 const D4 = SpreadsheetCellReference.parse("D4");
+const E5 = SpreadsheetCellReference.parse("E5");
 
 const LABEL = "Label123";
 
@@ -1260,6 +1261,222 @@ context(
                 .should("have.css", "background-color", SELECTED_COLOR);
         });
 
+        it("Cell range keyboard extend left", () => {
+            spreadsheetEmpty();
+
+            hashAppend("/cell/D4:E5");
+
+            hash()
+                .should('match', /.*\/.*\/cell\/D4:E5/);
+
+            cell(D4)
+                .type("{shift+leftarrow}");
+
+            hash()
+                .should('match', /.*\/.*\/cell\/C4:E5/);
+
+            cell("C4")
+                .should("have.focus");
+
+            column("C")
+                .should("have.css", "background-color", SELECTED_COLOR);
+            column("D")
+                .should("have.css", "background-color", SELECTED_COLOR);
+            column("E")
+                .should("have.css", "background-color", SELECTED_COLOR);
+
+            row("4")
+                .should("have.css", "background-color", SELECTED_COLOR);
+            row("5")
+                .should("have.css", "background-color", SELECTED_COLOR);
+        });
+
+        it("Cell range keyboard extend right", () => {
+            spreadsheetEmpty();
+
+            hashAppend("/cell/D4:E5");
+
+            hash()
+                .should('match', /.*\/.*\/cell\/D4:E5/);
+
+            cell("D4")
+                .should("have.focus")
+                .type("{shift+rightarrow}");
+
+            cell("E4")
+                .should("have.focus")
+                .type("{shift+rightarrow}");
+
+            hash()
+                .should('match', /.*\/.*\/cell\/E4:F5/);
+
+            cell("F4")
+                .should("have.focus");
+
+            column("E")
+                .should("have.css", "background-color", SELECTED_COLOR);
+            column("F")
+                .should("have.css", "background-color", SELECTED_COLOR);
+
+            row("4")
+                .should("have.css", "background-color", SELECTED_COLOR);
+            row("5")
+                .should("have.css", "background-color", SELECTED_COLOR);
+        });
+
+        it("Cell range keyboard extend right twice", () => {
+            spreadsheetEmpty();
+
+            hashAppend("/cell/D4:E5");
+
+            hash()
+                .should('match', /.*\/.*\/cell\/D4:E5/);
+
+            cell("D4")
+                .should("have.focus")
+                .type("{shift+rightarrow}");
+
+            cell("E4")
+                .should("have.focus")
+                .type("{shift+rightarrow}");
+
+            hash()
+                .should('match', /.*\/.*\/cell\/E4:F5/);
+
+            cell("F4")
+                .should("have.focus")
+                .type("{shift+rightarrow}");
+
+            hash()
+                .should('match', /.*\/.*\/cell\/E4:G5/);
+
+            cell("G4")
+                .should("have.focus");
+
+            column("E")
+                .should("have.css", "background-color", SELECTED_COLOR);
+            column("F")
+                .should("have.css", "background-color", SELECTED_COLOR);
+            column("G")
+                .should("have.css", "background-color", SELECTED_COLOR);
+
+            row("4")
+                .should("have.css", "background-color", SELECTED_COLOR);
+            row("5")
+                .should("have.css", "background-color", SELECTED_COLOR);
+        });
+
+        it("Cell range keyboard extend up", () => {
+            spreadsheetEmpty();
+
+            hashAppend("/cell/D4:E5");
+
+            hash()
+                .should('match', /.*\/.*\/cell\/D4:E5/);
+
+            cell(D4)
+                .type("{shift+uparrow}");
+
+            hash()
+                .should('match', /.*\/.*\/cell\/D3:E5/);
+
+            cell("D3")
+                .should("have.focus");
+
+            column("D")
+                .should("have.css", "background-color", SELECTED_COLOR);
+            column("E")
+                .should("have.css", "background-color", SELECTED_COLOR);
+
+            row("3")
+                .should("have.css", "background-color", SELECTED_COLOR);
+            row("4")
+                .should("have.css", "background-color", SELECTED_COLOR);
+            row("5")
+                .should("have.css", "background-color", SELECTED_COLOR);
+        });
+
+        it("Cell range keyboard extend down", () => {
+            spreadsheetEmpty();
+
+            hashAppend("/cell/D4:E5");
+
+            hash()
+                .should('match', /.*\/.*\/cell\/D4:E5/);
+
+            cell("D4")
+                .should("have.focus")
+                .type("{shift+downarrow}");
+
+            hash()
+                .should('match', /.*\/.*\/cell\/D5:E5/);
+
+            cell("D5")
+                .should("have.focus")
+                .type("{shift+downarrow}");
+
+            hash()
+                .should('match', /.*\/.*\/cell\/D5:E6/);
+
+            cell("D6")
+                .should("have.focus");
+
+            column("D")
+                .should("have.css", "background-color", SELECTED_COLOR);
+            column("E")
+                .should("have.css", "background-color", SELECTED_COLOR);
+
+            row("5")
+                .should("have.css", "background-color", SELECTED_COLOR);
+            row("6")
+                .should("have.css", "background-color", SELECTED_COLOR);
+        });
+
+        it("Cell range keyboard extend down twice", () => {
+            spreadsheetEmpty();
+
+            hashAppend("/cell/D4:E5");
+
+            hash()
+                .should('match', /.*\/.*\/cell\/D4:E5/);
+
+            cell("D4")
+                .should("have.focus")
+                .type("{shift+downarrow}");
+
+            hash()
+                .should('match', /.*\/.*\/cell\/D5:E5/);
+
+            cell("D5")
+                .should("have.focus")
+                .type("{shift+downarrow}");
+
+            hash()
+                .should('match', /.*\/.*\/cell\/D5:E6/);
+
+            cell("D6")
+                .should("have.focus")
+                .type("{shift+downarrow}");
+
+            hash()
+                .should('match', /.*\/.*\/cell\/D5:E7/);
+
+            cell("D7")
+                .should("have.focus")
+
+            column("D")
+                .should("have.css", "background-color", SELECTED_COLOR);
+            column("E")
+                .should("have.css", "background-color", SELECTED_COLOR);
+
+            row("5")
+                .should("have.css", "background-color", SELECTED_COLOR);
+            row("6")
+                .should("have.css", "background-color", SELECTED_COLOR);
+            row("7")
+                .should("have.css", "background-color", SELECTED_COLOR);
+        });
+        
         // column range...................................................................................................
 
         it("Column range history hash", () => {
