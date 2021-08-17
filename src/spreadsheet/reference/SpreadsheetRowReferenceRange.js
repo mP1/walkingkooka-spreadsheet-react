@@ -82,7 +82,7 @@ export default class SpreadsheetRowReferenceRange extends SpreadsheetColumnOrRow
                 );
                 break;
             default:
-                throw new Error("Invalid anchor=" + anchor);
+                SpreadsheetSelection.reportInvalidAnchor(anchor);
         }
 
         return range.rowOrRange()
@@ -110,7 +110,7 @@ export default class SpreadsheetRowReferenceRange extends SpreadsheetColumnOrRow
                 );
                 break;
             default:
-                throw new Error("Invalid anchor=" + anchor);
+                SpreadsheetSelection.reportInvalidAnchor(anchor);
         }
 
         return range.rowOrRange()
@@ -128,7 +128,7 @@ export default class SpreadsheetRowReferenceRange extends SpreadsheetColumnOrRow
                 focus = this.begin();
                 break;
             default:
-                break;
+                SpreadsheetSelection.reportInvalidAnchor(anchor);
         }
 
         return focus;

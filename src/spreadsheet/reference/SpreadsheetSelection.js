@@ -9,6 +9,10 @@ import SystemObject from "../../SystemObject.js";
  */
 export default class SpreadsheetSelection extends SystemObject {
 
+    static reportInvalidAnchor(anchor) {
+        throw new Error("Invalid anchor=" + anchor);
+    }
+
     static reportInvalidCharacter(c, pos) {
         throw new Error("Invalid character " + CharSequences.quoteAndEscape(Character.fromJson(c)) + " at " + pos);
     }

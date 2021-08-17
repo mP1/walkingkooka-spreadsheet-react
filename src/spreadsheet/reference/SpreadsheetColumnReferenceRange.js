@@ -74,7 +74,7 @@ export default class SpreadsheetColumnReferenceRange extends SpreadsheetColumnOr
                 );
                 break;
             default:
-                throw new Error("Invalid anchor=" + anchor);
+                SpreadsheetSelection.reportInvalidAnchor(anchor);
         }
 
         return range.columnOrRange()
@@ -102,7 +102,7 @@ export default class SpreadsheetColumnReferenceRange extends SpreadsheetColumnOr
                 );
                 break;
             default:
-                throw new Error("Invalid anchor=" + anchor);
+                SpreadsheetSelection.reportInvalidAnchor(anchor);
         }
 
         return range.columnOrRange()
