@@ -92,14 +92,14 @@ testNewFails(cell(), SpreadsheetViewportSelectionAnchor.RIGHT);
 testNew(cell(), null);
 
 // cellRange
-testNew(cellRange(), SpreadsheetViewportSelectionAnchor.TOP);
+testNewFails(cellRange(), SpreadsheetViewportSelectionAnchor.TOP);
 testNew(cellRange(), SpreadsheetViewportSelectionAnchor.TOP_LEFT);
 testNew(cellRange(), SpreadsheetViewportSelectionAnchor.TOP_RIGHT);
-testNew(cellRange(), SpreadsheetViewportSelectionAnchor.BOTTOM);
+testNewFails(cellRange(), SpreadsheetViewportSelectionAnchor.BOTTOM);
 testNew(cellRange(), SpreadsheetViewportSelectionAnchor.BOTTOM_LEFT);
 testNew(cellRange(), SpreadsheetViewportSelectionAnchor.BOTTOM_RIGHT);
-testNew(cellRange(), SpreadsheetViewportSelectionAnchor.LEFT);
-testNew(cellRange(), SpreadsheetViewportSelectionAnchor.RIGHT);
+testNewFails(cellRange(), SpreadsheetViewportSelectionAnchor.LEFT);
+testNewFails(cellRange(), SpreadsheetViewportSelectionAnchor.RIGHT);
 testNewFails(cellRange(), null, "Missing anchor");
 
 // column
