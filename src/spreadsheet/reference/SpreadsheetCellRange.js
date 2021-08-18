@@ -72,6 +72,10 @@ export default class SpreadsheetCellRange extends SpreadsheetExpressionReference
         return this.end().column().value() - this.begin().column().value() + 1;
     }
 
+    height() {
+        return this.end().row().value() - this.begin().row().value() + 1;
+    }
+
     setAnchorConditional(anchor) {
         return this.setAnchor(anchor);
     }
