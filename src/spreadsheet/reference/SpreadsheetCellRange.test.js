@@ -257,6 +257,18 @@ test("setEnd different", () => {
     ).toStrictEqual(SpreadsheetCellRange.parse("B2:D4"));
 });
 
+// width................................................................................................................
+
+test("width A1:B2", () => {
+    expect(SpreadsheetCellRange.parse("A1:B2").width())
+        .toStrictEqual(2);
+});
+
+test("width C3:C4", () => {
+    expect(SpreadsheetCellRange.parse("C3:C4").width())
+        .toStrictEqual(1);
+});
+
 // cellOrRange........................................................................................................
 
 function testCellOrRange(range, expected) {
