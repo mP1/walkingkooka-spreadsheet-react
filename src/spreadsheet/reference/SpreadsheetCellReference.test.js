@@ -403,17 +403,19 @@ function testExtendRangeLeft(cell, expected, anchor) {
         () => {
             expect(SpreadsheetCellReference.parse(cell)
                 .extendRangeLeft(h)
+                .toString()
             ).toStrictEqual(
                 SpreadsheetCellRange.parse(expected)
                     .cellOrRange()
                     .setAnchorConditional(anchor)
+                    .toString()
             )
         });
 }
 
 testExtendRangeLeft("A1", "A1");
-testExtendRangeLeft("B2", "A2:B2", SpreadsheetViewportSelectionAnchor.RIGHT);
-testExtendRangeLeft("C3", "B3:C3", SpreadsheetViewportSelectionAnchor.RIGHT);
+testExtendRangeLeft("B2", "A2:B2", SpreadsheetViewportSelectionAnchor.TOP_RIGHT);
+testExtendRangeLeft("C3", "B3:C3", SpreadsheetViewportSelectionAnchor.TOP_RIGHT);
 
 // extendRangeRight......................................................................................................
 
@@ -424,17 +426,19 @@ function testExtendRangeRight(cell, expected, anchor) {
         () => {
             expect(SpreadsheetCellReference.parse(cell)
                 .extendRangeRight(h)
+                .toString()
             ).toStrictEqual(
                 SpreadsheetCellRange.parse(expected)
                     .cellOrRange()
                     .setAnchorConditional(anchor)
+                    .toString()
             )
         });
 }
 
 testExtendRangeRight("XFD1", "XFD1");
-testExtendRangeRight("A1", "A1:B1", SpreadsheetViewportSelectionAnchor.LEFT);
-testExtendRangeRight("B2", "B2:C2", SpreadsheetViewportSelectionAnchor.LEFT);
+testExtendRangeRight("A1", "A1:B1", SpreadsheetViewportSelectionAnchor.TOP_LEFT);
+testExtendRangeRight("B2", "B2:C2", SpreadsheetViewportSelectionAnchor.TOP_LEFT);
 
 // extendRangeUp......................................................................................................
 
@@ -445,17 +449,19 @@ function testExtendRangeUp(cell, expected, anchor) {
         () => {
             expect(SpreadsheetCellReference.parse(cell)
                 .extendRangeUp(h)
+                .toString()
             ).toStrictEqual(
                 SpreadsheetCellRange.parse(expected)
                     .cellOrRange()
                     .setAnchorConditional(anchor)
+                    .toString()
             )
         });
 }
 
 testExtendRangeUp("A1", "A1");
-testExtendRangeUp("B2", "B1:B2", SpreadsheetViewportSelectionAnchor.BOTTOM);
-testExtendRangeUp("C3", "C2:C3", SpreadsheetViewportSelectionAnchor.BOTTOM);
+testExtendRangeUp("B2", "B1:B2", SpreadsheetViewportSelectionAnchor.BOTTOM_LEFT);
+testExtendRangeUp("C3", "C2:C3", SpreadsheetViewportSelectionAnchor.BOTTOM_LEFT);
 
 // extendRangeDown......................................................................................................
 
@@ -466,18 +472,20 @@ function testExtendRangeDown(cell, expected, anchor) {
         () => {
             expect(SpreadsheetCellReference.parse(cell)
                 .extendRangeDown()
+                .toString()
             ).toStrictEqual(
                 SpreadsheetCellRange.parse(expected)
                     .cellOrRange()
                     .setAnchorConditional(anchor)
+                    .toString()
             )
         });
 }
 
 testExtendRangeDown("A1048576", "A1048576");
 testExtendRangeDown("B1048576", "B1048576");
-testExtendRangeDown("A1", "A1:A2", SpreadsheetViewportSelectionAnchor.TOP);
-testExtendRangeDown("B2", "B2:B3", SpreadsheetViewportSelectionAnchor.TOP);
+testExtendRangeDown("A1", "A1:A2", SpreadsheetViewportSelectionAnchor.TOP_LEFT);
+testExtendRangeDown("B2", "B2:B3", SpreadsheetViewportSelectionAnchor.TOP_LEFT);
 
 // testCell SpreadsheetCellReference........................................................................................
 
@@ -614,10 +622,10 @@ testOnViewportKeyDown("B2", Keys.ARROW_DOWN, SELECT_RANGE_FALSE, "B2", "B3", nul
 testOnViewportKeyDown("A1", Keys.ARROW_LEFT, SELECT_RANGE_FALSE, "A1", "A1", null, false);
 testOnViewportKeyDown("A1", Keys.ARROW_UP, SELECT_RANGE_FALSE, "A1", "A1", null, false);
 
-testOnViewportKeyDown("B2", Keys.ARROW_LEFT, SELECT_RANGE_TRUE, "B2", "A2:B2", SpreadsheetViewportSelectionAnchor.RIGHT, false);
-testOnViewportKeyDown("B2", Keys.ARROW_RIGHT, SELECT_RANGE_TRUE, "B2", "B2:C2", SpreadsheetViewportSelectionAnchor.LEFT, false);
-testOnViewportKeyDown("B2", Keys.ARROW_UP, SELECT_RANGE_TRUE, "B2", "B1:B2", SpreadsheetViewportSelectionAnchor.BOTTOM, false);
-testOnViewportKeyDown("B2", Keys.ARROW_DOWN, SELECT_RANGE_TRUE, "B2", "B2:B3", SpreadsheetViewportSelectionAnchor.TOP, false);
+testOnViewportKeyDown("B2", Keys.ARROW_LEFT, SELECT_RANGE_TRUE, "B2", "A2:B2", SpreadsheetViewportSelectionAnchor.TOP_RIGHT, false);
+testOnViewportKeyDown("B2", Keys.ARROW_RIGHT, SELECT_RANGE_TRUE, "B2", "B2:C2", SpreadsheetViewportSelectionAnchor.TOP_LEFT, false);
+testOnViewportKeyDown("B2", Keys.ARROW_UP, SELECT_RANGE_TRUE, "B2", "B1:B2", SpreadsheetViewportSelectionAnchor.BOTTOM_LEFT, false);
+testOnViewportKeyDown("B2", Keys.ARROW_DOWN, SELECT_RANGE_TRUE, "B2", "B2:B3", SpreadsheetViewportSelectionAnchor.TOP_LEFTgi, false);
 
 testOnViewportKeyDown("A1", Keys.ARROW_LEFT, SELECT_RANGE_TRUE, "A1", "A1", null, false);
 testOnViewportKeyDown("A1", Keys.ARROW_UP, SELECT_RANGE_TRUE, "A1", "A1", null, false);

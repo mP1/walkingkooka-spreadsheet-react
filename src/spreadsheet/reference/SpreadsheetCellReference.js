@@ -231,7 +231,7 @@ export default class SpreadsheetCellReference extends SpreadsheetCellReferenceOr
             c.addSaturated(-1).setRow(r),
             c.setRow(r)
         ).cellOrRange()
-            .setAnchorConditional(SpreadsheetViewportSelectionAnchor.RIGHT)
+            .setAnchorConditional(SpreadsheetViewportSelectionAnchor.TOP_RIGHT)
     }
 
     extendRangeRight(anchor, viewportHome) {
@@ -242,7 +242,7 @@ export default class SpreadsheetCellReference extends SpreadsheetCellReferenceOr
             c.setRow(r),
             c.addSaturated(+1).setRow(r),
         ).cellOrRange()
-            .setAnchorConditional(SpreadsheetViewportSelectionAnchor.LEFT)
+            .setAnchorConditional(SpreadsheetViewportSelectionAnchor.TOP_LEFT)
     }
 
     extendRangeUp(anchor, viewportHome) {
@@ -253,7 +253,7 @@ export default class SpreadsheetCellReference extends SpreadsheetCellReferenceOr
             r.addSaturated(-1).setColumn(c),
             c.setRow(r)
         ).cellOrRange()
-            .setAnchorConditional(SpreadsheetViewportSelectionAnchor.BOTTOM)
+            .setAnchorConditional(SpreadsheetViewportSelectionAnchor.BOTTOM_LEFT)
     }
 
     extendRangeDown(anchor, viewportHome) {
@@ -264,7 +264,7 @@ export default class SpreadsheetCellReference extends SpreadsheetCellReferenceOr
             c.setRow(r),
             r.addSaturated(+1).setColumn(c),
         ).cellOrRange()
-            .setAnchorConditional(SpreadsheetViewportSelectionAnchor.TOP)
+            .setAnchorConditional(SpreadsheetViewportSelectionAnchor.TOP_LEFT)
     }
 
     selectionEnter(giveFormulaFocus) {
