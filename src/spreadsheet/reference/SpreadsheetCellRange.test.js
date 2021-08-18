@@ -269,6 +269,18 @@ test("width C3:C4", () => {
         .toStrictEqual(1);
 });
 
+// height................................................................................................................
+
+test("height A1:E2", () => {
+    expect(SpreadsheetCellRange.parse("A1:E2").height())
+        .toStrictEqual(2);
+});
+
+test("height A3:C3", () => {
+    expect(SpreadsheetCellRange.parse("A3:C3").height())
+        .toStrictEqual(1);
+});
+
 // cellOrRange........................................................................................................
 
 function testCellOrRange(range, expected) {
