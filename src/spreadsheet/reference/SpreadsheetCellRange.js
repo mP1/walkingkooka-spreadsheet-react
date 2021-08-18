@@ -76,10 +76,6 @@ export default class SpreadsheetCellRange extends SpreadsheetExpressionReference
         SpreadsheetSelection.checkAnyAnchor(
             anchor,
             [
-                SpreadsheetViewportSelectionAnchor.LEFT,
-                SpreadsheetViewportSelectionAnchor.RIGHT,
-                SpreadsheetViewportSelectionAnchor.TOP,
-                SpreadsheetViewportSelectionAnchor.BOTTOM,
                 SpreadsheetViewportSelectionAnchor.TOP_LEFT,
                 SpreadsheetViewportSelectionAnchor.TOP_RIGHT,
                 SpreadsheetViewportSelectionAnchor.BOTTOM_LEFT,

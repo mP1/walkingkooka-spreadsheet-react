@@ -625,7 +625,7 @@ testOnViewportKeyDown("A1", Keys.ARROW_UP, SELECT_RANGE_FALSE, "A1", "A1", null,
 testOnViewportKeyDown("B2", Keys.ARROW_LEFT, SELECT_RANGE_TRUE, "B2", "A2:B2", SpreadsheetViewportSelectionAnchor.TOP_RIGHT, false);
 testOnViewportKeyDown("B2", Keys.ARROW_RIGHT, SELECT_RANGE_TRUE, "B2", "B2:C2", SpreadsheetViewportSelectionAnchor.TOP_LEFT, false);
 testOnViewportKeyDown("B2", Keys.ARROW_UP, SELECT_RANGE_TRUE, "B2", "B1:B2", SpreadsheetViewportSelectionAnchor.BOTTOM_LEFT, false);
-testOnViewportKeyDown("B2", Keys.ARROW_DOWN, SELECT_RANGE_TRUE, "B2", "B2:B3", SpreadsheetViewportSelectionAnchor.TOP_LEFTgi, false);
+testOnViewportKeyDown("B2", Keys.ARROW_DOWN, SELECT_RANGE_TRUE, "B2", "B2:B3", SpreadsheetViewportSelectionAnchor.TOP_LEFT, false);
 
 testOnViewportKeyDown("A1", Keys.ARROW_LEFT, SELECT_RANGE_TRUE, "A1", "A1", null, false);
 testOnViewportKeyDown("A1", Keys.ARROW_UP, SELECT_RANGE_TRUE, "A1", "A1", null, false);
