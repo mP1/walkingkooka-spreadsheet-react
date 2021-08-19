@@ -13,6 +13,8 @@ import SpreadsheetHistoryAwareStateWidget from "../history/SpreadsheetHistoryAwa
  */
 export default class SpreadsheetSelectLinkWidget extends SpreadsheetHistoryAwareStateWidget {
 
+    static SELECT_LINK_ID = "select-Link";
+
     init() {
     }
 
@@ -39,7 +41,7 @@ export default class SpreadsheetSelectLinkWidget extends SpreadsheetHistoryAware
     render() {
         const {cell, target} = this.state;
 
-        return <Link id="select-Link"
+        return <Link id={SpreadsheetSelectLinkWidget.SELECT_LINK_ID}
                      disabled={!cell}
                      href={target}
                      style={{
