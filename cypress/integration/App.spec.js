@@ -10,6 +10,7 @@ import SpreadsheetCellReference from "../../src/spreadsheet/reference/Spreadshee
 import SpreadsheetColumnReference from "../../src/spreadsheet/reference/SpreadsheetColumnReference.js";
 import SpreadsheetMetadata from "../../src/spreadsheet/meta/SpreadsheetMetadata.js";
 import SpreadsheetRowReference from "../../src/spreadsheet/reference/SpreadsheetRowReference.js";
+import SpreadsheetSelectLinkWidget from "../../src/spreadsheet/reference/SpreadsheetSelectLinkWidget.js";
 import SpreadsheetSettingsWidget from "../../src/spreadsheet/settings/SpreadsheetSettingsWidget.js";
 import TextAlign from "../../src/text/TextAlign.js";
 import TextStyle from "../../src/text/TextStyle.js";
@@ -2051,7 +2052,7 @@ context(
         }
 
         function selectLink() {
-            return cy.get("#select-Link");
+            return cy.get("#" + SpreadsheetSelectLinkWidget.SELECT_LINK_ID);
         }
 
         function selectDialog() {
