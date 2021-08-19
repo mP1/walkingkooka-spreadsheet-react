@@ -11,6 +11,8 @@ import SpreadsheetColumnReference from "../../src/spreadsheet/reference/Spreadsh
 import SpreadsheetLabelWidget from "../../src/spreadsheet/reference/SpreadsheetLabelWidget.js";
 import SpreadsheetMetadata from "../../src/spreadsheet/meta/SpreadsheetMetadata.js";
 import SpreadsheetRowReference from "../../src/spreadsheet/reference/SpreadsheetRowReference.js";
+import SpreadsheetSelectAutocompleteWidget
+    from "../../src/spreadsheet/reference/SpreadsheetSelectAutocompleteWidget.js";
 import SpreadsheetSelectLinkWidget from "../../src/spreadsheet/reference/SpreadsheetSelectLinkWidget.js";
 import SpreadsheetSettingsWidget from "../../src/spreadsheet/settings/SpreadsheetSettingsWidget.js";
 import TextAlign from "../../src/text/TextAlign.js";
@@ -2060,45 +2062,45 @@ context(
         }
 
         function selectDialog() {
-            return cy.get("#select-Dialog");
+            return cy.get("#" + SpreadsheetSelectAutocompleteWidget.DIALOG_ID);
         }
 
         function selectDialogTitle() {
-            return cy.get("#select-DialogTitle");
+            return cy.get("#" + SpreadsheetSelectAutocompleteWidget.DIALOG_TITLE_ID);
         }
 
         function selectDialogClose() {
-            return cy.get("#select-Dialog-close-Button");
+            return cy.get("#" + SpreadsheetSelectAutocompleteWidget.DIALOG_CLOSE_BUTTON_ID);
         }
 
         function selectAutocompleteTextField() {
-            return cy.get("#select-Autocomplete-TextField");
+            return cy.get("#" + SpreadsheetSelectAutocompleteWidget.TEXT_FIELD_ID);
         }
 
         function selectAutocompleteTextFieldHelper() {
-            return cy.get("#select-Autocomplete-TextField-helper-text");
+            return cy.get("#" + SpreadsheetSelectAutocompleteWidget.TEXT_FIELD_HELPER_TEXT_ID);
         }
 
         function selectAutocompletePopup() {
-            return cy.get("#select-Autocomplete-TextField-popup");
+            return cy.get("#" + SpreadsheetSelectAutocompleteWidget.TEXT_FIELD_POPUP_ID);
         }
 
         function selectAutocompletePopupOption(nth) {
-            return cy.get("#select-Autocomplete-TextField-option-" + nth);
+            return cy.get("#" + SpreadsheetSelectAutocompleteWidget.TEXT_FIELD_OPTION_ID + nth);
         }
 
         function selectGotoCellOrLabelButton(disabled) {
-            return cy.get("#select-gotoCellOrLabel-Button")
+            return cy.get("#" + SpreadsheetSelectAutocompleteWidget.GOTO_BUTTON_ID)
                 .should("be." + (disabled ? "disabled" : "enabled"));
         }
 
         function selectCreateLinkButton(disabled) {
-            return cy.get("#select-create-link-Button")
+            return cy.get("#" + SpreadsheetSelectAutocompleteWidget.LABEL_CREATE_BUTTON_ID)
                 .should("be." + (disabled ? "disabled" : "enabled"));
         }
 
         function selectEditLinkButton(disabled) {
-            return cy.get("#select-edit-link-Button")
+            return cy.get("#" + SpreadsheetSelectAutocompleteWidget.LABEL_EDIT_BUTTON_ID)
                 .should("be." + (disabled ? "disabled" : "enabled"));
         }
 
