@@ -23,9 +23,9 @@ const MAX_COUNT = 10;
  * <li>open boolean when true the dialog should be displayed, false means hide</li>
  * <li>queryHelperText string that details if the query text is not a valid SpreadsheetCellReference or SpreadsheetLabelName</li>
  * <li>options holds all options from the matching similarities</li>
- * <li>gotoCellOrLabel A {@link SpreadsheetCellReferenceOrLabelName} for the currently selected auto complete option</li>
- * <li>editLabel The selected existing {@link SpreadsheetLabelName} for editing</li>
- * <li>createLabel The selected unknown {@link SpreadsheetLabelName} for creation</li>
+ * <li>goto A {@link SpreadsheetCellReferenceOrLabelName} for the currently selected auto complete option</li>
+ * <li>labelEdit The selected existing {@link SpreadsheetLabelName} for editing</li>
+ * <li>labelCreate The selected unknown {@link SpreadsheetLabelName} for creation</li>
  * </ul>
  */
 export default class SpreadsheetSelectAutocompleteWidget extends SpreadsheetHistoryAwareStateWidget {
@@ -48,18 +48,18 @@ export default class SpreadsheetSelectAutocompleteWidget extends SpreadsheetHist
 
     static GOTO_BUTTON_ID = SpreadsheetSelectAutocompleteWidget.ID_PREFIX + "-goto-Button";
 
-    static LABEL_CREATE_BUTTON_ID = SpreadsheetSelectAutocompleteWidget.ID_PREFIX + "-create-label-Button";
+    static LABEL_CREATE_BUTTON_ID = SpreadsheetSelectAutocompleteWidget.ID_PREFIX + "-label-create-Button";
 
-    static LABEL_EDIT_BUTTON_ID = SpreadsheetSelectAutocompleteWidget.ID_PREFIX + "-edit-label-Button";
+    static LABEL_EDIT_BUTTON_ID = SpreadsheetSelectAutocompleteWidget.ID_PREFIX + "-label-edit-Button";
 
     initialStateFromProps(props) {
         return {
             open: false,
             queryHelperText: null,
             options: [],
-            gotoCellOrLabel: null,
-            createLabel: null,
-            editLabel: null,
+            goto: null,
+            labelCreate: null,
+            labelEdit: null,
         };
     }
 
@@ -104,11 +104,11 @@ export default class SpreadsheetSelectAutocompleteWidget extends SpreadsheetHist
      * Renders a modal dialog, with an auto complete and two action buttons to GOTO and EDIT the selected cell or label.
      */
     renderDialog() {
-        const {queryHelperText, options, gotoCellOrLabel, editLabel, createLabel} = this.state;
+        const {queryHelperText, options, goto, labelEdit, labelCreate} = this.state;
 
-        const gotoDisabled = !gotoCellOrLabel;
-        const createLabelDisabled = !createLabel;
-        const editLabelDisabled = !editLabel;
+        const gotoDisabled = !goto;
+        const labelCreateDisabled = !labelCreate;
+        const labelEditDisabled = !labelEdit;
 
         return <SpreadsheetDialog id={"select-Dialog"}
                                   open={true}
@@ -142,19 +142,19 @@ export default class SpreadsheetSelectAutocompleteWidget extends SpreadsheetHist
             <Button id={SpreadsheetSelectAutocompleteWidget.GOTO_BUTTON_ID}
                     disabled={gotoDisabled}
                     color="primary"
-                    onClick={this.onGotoCellOrLabelClick.bind(this)}>
+                    onClick={this.onGotoClick.bind(this)}>
                 Goto
             </Button>
             <Button id={SpreadsheetSelectAutocompleteWidget.LABEL_CREATE_BUTTON_ID}
-                    disabled={createLabelDisabled}
+                    disabled={labelCreateDisabled}
                     color="primary"
-                    onClick={this.onCreateLabelClick.bind(this)}>
+                    onClick={this.onLabelCreateClick.bind(this)}>
                 Create Label
             </Button>
             <Button id={SpreadsheetSelectAutocompleteWidget.LABEL_EDIT_BUTTON_ID}
-                    disabled={editLabelDisabled}
+                    disabled={labelEditDisabled}
                     color="primary"
-                    onClick={this.onEditLabelClick.bind(this)}>
+                    onClick={this.onLabelEditClick.bind(this)}>
                 Edit Label
             </Button>
         </SpreadsheetDialog>
@@ -213,9 +213,9 @@ export default class SpreadsheetSelectAutocompleteWidget extends SpreadsheetHist
                     this.setState({
                         queryHelperText: null,
                         options: [],
-                        gotoCellOrLabel: null,
-                        createLabel: null,
-                        editLabel: null,
+                        goto: null,
+                        labelCreate: null,
+                        labelEdit: null,
                     });
                     this.props.showError(e);
                 },
@@ -226,9 +226,9 @@ export default class SpreadsheetSelectAutocompleteWidget extends SpreadsheetHist
             this.setState({
                 queryHelperText: e.message,
                 options: [],
-                gotoCellOrLabel: null,
-                editLabel: null,
-                createLabel: null,
+                goto: null,
+                labelEdit: null,
+                labelCreate: null,
             })
         }
     }
@@ -236,31 +236,31 @@ export default class SpreadsheetSelectAutocompleteWidget extends SpreadsheetHist
     /**
      * Updates the history hash token, navigating to the given cell/label
      */
-    onGotoCellOrLabelClick() {
-        this.updateHistoryTokens(this.state.gotoCellOrLabel, null);
+    onGotoClick() {
+        this.updateHistoryTokens(this.state.goto, null);
     }
 
     /**
      * Updates the history hash token, navigating to the given label for creation
      */
-    onCreateLabelClick() {
-        this.updateHistoryTokens(null, this.state.createLabel);
+    onLabelCreateClick() {
+        this.updateHistoryTokens(null, this.state.labelCreate);
     }
 
     /**
      * Updates the history hash token, navigating to the given label for editing
      */
-    onEditLabelClick() {
-        this.updateHistoryTokens(null, this.state.editLabel);
+    onLabelEditClick() {
+        this.updateHistoryTokens(null, this.state.labelEdit);
     }
 
-    updateHistoryTokens(gotoCellOrLabel, label) {
-        Preconditions.optionalInstance(gotoCellOrLabel, SpreadsheetCellReferenceOrLabelName, "gotoCellOrLabel");
+    updateHistoryTokens(goto, label) {
+        Preconditions.optionalInstance(goto, SpreadsheetCellReferenceOrLabelName, "goto");
         Preconditions.optionalInstance(label, SpreadsheetLabelName, "label");
 
         const historyTokens = {};
 
-        historyTokens[SpreadsheetHistoryHash.SELECTION] = gotoCellOrLabel;
+        historyTokens[SpreadsheetHistoryHash.SELECTION] = goto;
         historyTokens[SpreadsheetHistoryHash.CELL_FORMULA] = false;
         historyTokens[SpreadsheetHistoryHash.LABEL] = label;
         historyTokens[SpreadsheetHistoryHash.SELECT] = null; // close the navigate modal
@@ -277,9 +277,9 @@ export default class SpreadsheetSelectAutocompleteWidget extends SpreadsheetHist
             open: false,
             queryHelperText: null,
             options: [],
-            gotoCellOrLabel: null,
-            editLabel: null,
-            createLabel: null,
+            goto: null,
+            labelEdit: null,
+            labelCreate: null,
         });
     }
 }
