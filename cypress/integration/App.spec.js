@@ -8,6 +8,7 @@ import Hyphens from "../../src/text/Hyphens.js";
 import RoundingMode from "../../src/math/RoundingMode.js";
 import SpreadsheetCellReference from "../../src/spreadsheet/reference/SpreadsheetCellReference.js";
 import SpreadsheetColumnReference from "../../src/spreadsheet/reference/SpreadsheetColumnReference.js";
+import SpreadsheetLabelWidget from "../../src/spreadsheet/reference/SpreadsheetLabelWidget.js";
 import SpreadsheetMetadata from "../../src/spreadsheet/meta/SpreadsheetMetadata.js";
 import SpreadsheetRowReference from "../../src/spreadsheet/reference/SpreadsheetRowReference.js";
 import SpreadsheetSelectLinkWidget from "../../src/spreadsheet/reference/SpreadsheetSelectLinkWidget.js";
@@ -720,17 +721,17 @@ context(
                                   labelHelperText,
                                   referenceText,
                                   referenceHelperText) {
-            cy.get("#label-mapping-DialogTitle")
+            cy.get("#" + SpreadsheetLabelWidget.DIALOG_TITLE_ID)
                 .contains(title);
 
             labelMappingLabelTextField()
                 .should("have.value", labelText);
 
-            const labelHelperTextId = "#label-mapping-label-TextField-helper-text";
+            const labelHelperTextId = "#" + SpreadsheetLabelWidget.LABEL_TEXT_FIELD_HELPER_TEXT_ID;
             if(labelHelperText){
                 cy.get(labelHelperTextId)
                     .should("have.text", labelHelperText);
-            } else {
+            }else {
                 cy.get(labelHelperTextId)
                     .should("not.exist");
             }
@@ -738,7 +739,7 @@ context(
             labelMappingReferenceTextField()
                 .should("have.value", referenceText);
 
-            const referenceHelperTextId = "#label-mapping-reference-TextField-helper-text";
+            const referenceHelperTextId = "#" + SpreadsheetLabelWidget.REFERENCE_TEXT_FIELD_HELPER_TEXT_ID;
             if(referenceHelperText){
                 cy.get(referenceHelperTextId)
                     .should("have.text", referenceHelperText);
@@ -749,23 +750,23 @@ context(
         }
 
         function labelMappingLabelTextField() {
-            return cy.get("#label-mapping-label-TextField");
+            return cy.get("#" + SpreadsheetLabelWidget.LABEL_TEXT_FIELD_ID);
         }
 
         function labelMappingReferenceTextField() {
-            return cy.get("#label-mapping-reference-TextField");
+            return cy.get("#" + SpreadsheetLabelWidget.REFERENCE_TEXT_FIELD_ID);
         }
 
         function labelMappingLabelSaveButton() {
-            return cy.get("#label-mapping-save-Button");
+            return cy.get("#" + SpreadsheetLabelWidget.SAVE_BUTTON_ID);
         }
 
         function labelMappingLabelDeleteButton() {
-            return cy.get("#label-mapping-delete-Button");
+            return cy.get("#" + SpreadsheetLabelWidget.DELETE_BUTTON_ID);
         }
 
         function labelMappingLabelCloseButton() {
-            return cy.get("#label-mapping-Dialog-close-Button");
+            return cy.get("#" + SpreadsheetLabelWidget.DIALOG_CLOSE_BUTTON_ID);
         }
 
         function hashLabel() {
