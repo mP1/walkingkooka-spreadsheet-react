@@ -30,6 +30,28 @@ const MAX_COUNT = 10;
  */
 export default class SpreadsheetSelectAutocompleteWidget extends SpreadsheetHistoryAwareStateWidget {
 
+    static ID_PREFIX = "select";
+
+    static DIALOG_ID = SpreadsheetSelectAutocompleteWidget.ID_PREFIX + "-Dialog";
+
+    static DIALOG_CLOSE_BUTTON_ID = SpreadsheetSelectAutocompleteWidget.DIALOG_ID + "-close-Button";
+
+    static DIALOG_TITLE_ID = SpreadsheetSelectAutocompleteWidget.DIALOG_ID + "-title";
+
+    static TEXT_FIELD_ID = SpreadsheetSelectAutocompleteWidget.ID_PREFIX + "-Autocomplete-TextField"
+
+    static TEXT_FIELD_HELPER_TEXT_ID = SpreadsheetSelectAutocompleteWidget.TEXT_FIELD_ID + "-helper-text"
+
+    static TEXT_FIELD_POPUP_ID = SpreadsheetSelectAutocompleteWidget.TEXT_FIELD_ID + "-popup"
+
+    static TEXT_FIELD_OPTION_ID = SpreadsheetSelectAutocompleteWidget.TEXT_FIELD_ID + "-option-"
+
+    static GOTO_BUTTON_ID = SpreadsheetSelectAutocompleteWidget.ID_PREFIX + "-goto-Button";
+
+    static LABEL_CREATE_BUTTON_ID = SpreadsheetSelectAutocompleteWidget.ID_PREFIX + "-create-label-Button";
+
+    static LABEL_EDIT_BUTTON_ID = SpreadsheetSelectAutocompleteWidget.ID_PREFIX + "-edit-label-Button";
+
     initialStateFromProps(props) {
         return {
             open: false,
@@ -84,7 +106,7 @@ export default class SpreadsheetSelectAutocompleteWidget extends SpreadsheetHist
     renderDialog() {
         const {queryHelperText, options, gotoCellOrLabel, editLabel, createLabel} = this.state;
 
-        const gotoCellOrLabelDisabled = !gotoCellOrLabel;
+        const gotoDisabled = !gotoCellOrLabel;
         const createLabelDisabled = !createLabel;
         const editLabelDisabled = !editLabel;
 
@@ -92,9 +114,9 @@ export default class SpreadsheetSelectAutocompleteWidget extends SpreadsheetHist
                                   open={true}
                                   onClose={this.close.bind(this)}
         >
-            <span id={"select-DialogTitle"}>Select</span>
+            <span id={SpreadsheetSelectAutocompleteWidget.DIALOG_TITLE_ID}>Select</span>
             <Autocomplete
-                id="select-Autocomplete-TextField"
+                id={SpreadsheetSelectAutocompleteWidget.TEXT_FIELD_ID}
                 ref={this.autoComplete}
                 freeSolo={true}
                 selectOnFocus
@@ -117,19 +139,19 @@ export default class SpreadsheetSelectAutocompleteWidget extends SpreadsheetHist
                     />
                 }
             />
-            <Button id="select-gotoCellOrLabel-Button"
-                    disabled={gotoCellOrLabelDisabled}
+            <Button id={SpreadsheetSelectAutocompleteWidget.GOTO_BUTTON_ID}
+                    disabled={gotoDisabled}
                     color="primary"
                     onClick={this.onGotoCellOrLabelClick.bind(this)}>
                 Goto
             </Button>
-            <Button id="select-create-link-Button"
+            <Button id={SpreadsheetSelectAutocompleteWidget.LABEL_CREATE_BUTTON_ID}
                     disabled={createLabelDisabled}
                     color="primary"
                     onClick={this.onCreateLabelClick.bind(this)}>
                 Create Label
             </Button>
-            <Button id="select-edit-link-Button"
+            <Button id={SpreadsheetSelectAutocompleteWidget.LABEL_EDIT_BUTTON_ID}
                     disabled={editLabelDisabled}
                     color="primary"
                     onClick={this.onEditLabelClick.bind(this)}>
