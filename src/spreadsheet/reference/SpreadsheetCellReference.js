@@ -302,9 +302,9 @@ export default class SpreadsheetCellReference extends SpreadsheetCellReferenceOr
     toSpreadsheetSelectWidgetOption() {
         return {
             text: this.toString(),
-            createLabel: null,
-            editLabel: null,
-            gotoCellOrLabel: this,
+            labelCreate: null,
+            labelEdit: null,
+            goto: this,
         }
     }
 

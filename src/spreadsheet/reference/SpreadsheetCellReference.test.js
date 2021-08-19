@@ -548,9 +548,9 @@ test("toSpreadsheetSelectWidgetOption", () => {
 
     expect(cell.toSpreadsheetSelectWidgetOption()).toStrictEqual({
         text: "B2",
-        createLabel: null,
-        editLabel: null,
-        gotoCellOrLabel: cell,
+        labelCreate: null,
+        labelEdit: null,
+        goto: cell,
     });
 });
 

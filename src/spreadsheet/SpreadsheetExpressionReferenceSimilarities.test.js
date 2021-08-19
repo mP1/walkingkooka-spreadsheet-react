@@ -186,9 +186,9 @@ test("toSpreadsheetSelectWidgetOptions query=cell-reference", () => {
         .toStrictEqual([
             {
                 text: r.toString(),
-                gotoCellOrLabel: r,
-                createLabel: null,
-                editLabel: null,
+                goto: r,
+                labelCreate: null,
+                labelEdit: null,
             }
         ]);
 });
@@ -201,15 +201,15 @@ test("toSpreadsheetSelectWidgetOptions query=cell-reference and mappings", () =>
         .toStrictEqual([
             {
                 text: r.toString(),
-                gotoCellOrLabel: r,
-                createLabel: null,
-                editLabel: null,
+                goto: r,
+                labelCreate: null,
+                labelEdit: null,
             },
             {
                 text: m.label().toString(),
-                gotoCellOrLabel: m.reference(),
-                createLabel: null,
-                editLabel: m.label(),
+                goto: m.reference(),
+                labelCreate: null,
+                labelEdit: m.label(),
             }
         ]);
 });
@@ -222,9 +222,9 @@ test("toSpreadsheetSelectWidgetOptions query=create label", () => {
         .toStrictEqual([
             {
                 text: createLabel.toString(),
-                gotoCellOrLabel: null,
-                createLabel: createLabel,
-                editLabel: null,
+                goto: null,
+                labelCreate: createLabel,
+                labelEdit: null,
             }
         ]);
 });
@@ -237,9 +237,9 @@ test("toSpreadsheetSelectWidgetOptions label without mapping", () => {
         .toStrictEqual([
             {
                 text: createLabel.toString(),
-                gotoCellOrLabel: null,
-                createLabel: createLabel,
-                editLabel: null,
+                goto: null,
+                labelCreate: createLabel,
+                labelEdit: null,
             }
         ]);
 });
@@ -251,9 +251,9 @@ test("toSpreadsheetSelectWidgetOptions label with mapping", () => {
         .toStrictEqual([
             {
                 text: m.label().toString(),
-                gotoCellOrLabel: m.reference(),
-                createLabel: null,
-                editLabel: m.label(),
+                goto: m.reference(),
+                labelCreate: null,
+                labelEdit: m.label(),
             }
         ]);
 });
@@ -267,15 +267,15 @@ test("toSpreadsheetSelectWidgetOptions label without mapping and other mappings"
         .toStrictEqual([
             {
                 text: l1.toString(),
-                gotoCellOrLabel: null,
-                createLabel: l1,
-                editLabel: null,
+                goto: null,
+                labelCreate: l1,
+                labelEdit: null,
             },
             {
                 text: l2.toString(),
-                gotoCellOrLabel: r,
-                createLabel: null,
-                editLabel: l2,
+                goto: r,
+                labelCreate: null,
+                labelEdit: l2,
             },
         ]);
 });

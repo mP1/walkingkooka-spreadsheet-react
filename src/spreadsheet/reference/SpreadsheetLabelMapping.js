@@ -45,9 +45,9 @@ export default class SpreadsheetLabelMapping extends SystemObject {
 
         return {
             text: label.toString(),
-            gotoCellOrLabel: this.reference(),
-            createLabel: null,
-            editLabel: label,
+            goto: this.reference(),
+            labelCreate: null,
+            labelEdit: label,
         }
     }
 
