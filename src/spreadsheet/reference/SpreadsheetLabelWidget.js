@@ -28,13 +28,13 @@ export default class SpreadsheetLabelWidget extends SpreadsheetHistoryAwareState
 
     static DIALOG_TITLE_ID = SpreadsheetLabelWidget.DIALOG_ID + "-title";
 
-    static LABEL_TEXT_FIELD_HELPER_TEXT_ID = SpreadsheetLabelWidget.LABEL_TEXT_FIELD_ID + "-helper-text";
-
     static LABEL_TEXT_FIELD_ID = SpreadsheetLabelWidget.ID_PREFIX + "-label-TextField";
 
-    static REFERENCE_TEXT_FIELD_HELPER_TEXT_ID = SpreadsheetLabelWidget.REFERENCE_TEXT_FIELD_ID + "-helper-text";
+    static LABEL_TEXT_FIELD_HELPER_TEXT_ID = SpreadsheetLabelWidget.LABEL_TEXT_FIELD_ID + "-helper-text";
 
     static REFERENCE_TEXT_FIELD_ID = SpreadsheetLabelWidget.ID_PREFIX + "-reference-TextField";
+
+    static REFERENCE_TEXT_FIELD_HELPER_TEXT_ID = SpreadsheetLabelWidget.REFERENCE_TEXT_FIELD_ID + "-helper-text";
 
     static SAVE_BUTTON_ID = SpreadsheetLabelWidget.ID_PREFIX + "-save-Button";
 
