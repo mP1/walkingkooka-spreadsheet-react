@@ -161,7 +161,7 @@ export default class SpreadsheetCellRange extends SpreadsheetExpressionReference
             );
         }
 
-        if(this.width() == 1 && result.width() == 2){
+        if(this.width() === 1 && result.width() === 2){
             switch(newAnchor.name()) {
                 case "TOP_LEFT":
                     newAnchor = SpreadsheetViewportSelectionAnchor.TOP_RIGHT;
@@ -219,7 +219,7 @@ export default class SpreadsheetCellRange extends SpreadsheetExpressionReference
             );
         }
 
-        if(this.width() == 1 && result.width() == 2){
+        if(this.width() === 1 && result.width() === 2){
             switch(newAnchor.name()) {
                 case "TOP_RIGHT":
                     newAnchor = SpreadsheetViewportSelectionAnchor.TOP_LEFT;
@@ -277,7 +277,7 @@ export default class SpreadsheetCellRange extends SpreadsheetExpressionReference
             );
         }
 
-        if(this.height() == 1 && result.height() == 2){
+        if(this.height() === 1 && result.height() === 2){
             switch(newAnchor.name()) {
                 case "TOP_LEFT":
                     newAnchor = SpreadsheetViewportSelectionAnchor.BOTTOM_LEFT;
@@ -335,7 +335,7 @@ export default class SpreadsheetCellRange extends SpreadsheetExpressionReference
             );
         }
 
-        if(this.height() == 1 && result.height() == 2){
+        if(this.height() === 1 && result.height() === 2){
             switch(newAnchor.name()) {
                 case "BOTTOM_LEFT":
                     newAnchor = SpreadsheetViewportSelectionAnchor.TOP_LEFT;
