@@ -23,7 +23,8 @@ const MAX_COUNT = 10;
  * <li>open boolean when true the dialog should be displayed, false means hide</li>
  * <li>queryHelperText string that details if the query text is not a valid SpreadsheetCellReference or SpreadsheetLabelName</li>
  * <li>options holds all options from the matching similarities</li>
- * <li>goto A {@link SpreadsheetCellReferenceOrLabelName} for the currently selected auto complete option</li>
+ * <li>cellGoto A {@link SpreadsheetCellReference} for the currently selected auto complete option</li>
+ * <li>labelGoto A {@link SpreadsheetLabelName} for the currently selected auto complete option</li>
  * <li>labelEdit The selected existing {@link SpreadsheetLabelName} for editing</li>
  * <li>labelCreate The selected unknown {@link SpreadsheetLabelName} for creation</li>
  * </ul>
@@ -46,7 +47,9 @@ export default class SpreadsheetSelectAutocompleteWidget extends SpreadsheetHist
 
     static TEXT_FIELD_OPTION_ID = SpreadsheetSelectAutocompleteWidget.TEXT_FIELD_ID + "-option-"
 
-    static GOTO_BUTTON_ID = SpreadsheetSelectAutocompleteWidget.ID_PREFIX + "-goto-Button";
+    static CELL_GOTO_BUTTON_ID = SpreadsheetSelectAutocompleteWidget.ID_PREFIX + "-cell-goto-Button";
+
+    static LABEL_GOTO_BUTTON_ID = SpreadsheetSelectAutocompleteWidget.ID_PREFIX + "-label-goto-Button";
 
     static LABEL_CREATE_BUTTON_ID = SpreadsheetSelectAutocompleteWidget.ID_PREFIX + "-label-create-Button";
 
@@ -57,9 +60,10 @@ export default class SpreadsheetSelectAutocompleteWidget extends SpreadsheetHist
             open: false,
             queryHelperText: null,
             options: [],
-            goto: null,
+            cellGoto: null,
             labelCreate: null,
             labelEdit: null,
+            labelGoto: null,
         };
     }
 
@@ -104,11 +108,12 @@ export default class SpreadsheetSelectAutocompleteWidget extends SpreadsheetHist
      * Renders a modal dialog, with an auto complete and two action buttons to GOTO and EDIT the selected cell or label.
      */
     renderDialog() {
-        const {queryHelperText, options, goto, labelEdit, labelCreate} = this.state;
+        const {queryHelperText, options, cellGoto, labelCreate, labelEdit, labelGoto} = this.state;
 
-        const gotoDisabled = !goto;
+        const cellGotoDisabled = !cellGoto;
         const labelCreateDisabled = !labelCreate;
         const labelEditDisabled = !labelEdit;
+        const labelGotoDisabled = !labelGoto;
 
         return <SpreadsheetDialog id={SpreadsheetSelectAutocompleteWidget.DIALOG_ID}
                                   open={true}
@@ -139,22 +144,28 @@ export default class SpreadsheetSelectAutocompleteWidget extends SpreadsheetHist
                     />
                 }
             />
-            <Button id={SpreadsheetSelectAutocompleteWidget.GOTO_BUTTON_ID}
-                    disabled={gotoDisabled}
+            <Button id={SpreadsheetSelectAutocompleteWidget.CELL_GOTO_BUTTON_ID}
+                    disabled={cellGotoDisabled}
                     color="primary"
-                    onClick={this.onGotoClick.bind(this)}>
-                Goto
+                    onClick={() => this.updateHistoryTokens(cellGoto, null)}>
+                Goto Cell
+            </Button>
+            <Button id={SpreadsheetSelectAutocompleteWidget.LABEL_GOTO_BUTTON_ID}
+                    disabled={labelGotoDisabled}
+                    color="primary"
+                    onClick={() => this.updateHistoryTokens(labelGoto, null)}>
+                Goto Label
             </Button>
             <Button id={SpreadsheetSelectAutocompleteWidget.LABEL_CREATE_BUTTON_ID}
                     disabled={labelCreateDisabled}
                     color="primary"
-                    onClick={this.onLabelCreateClick.bind(this)}>
+                    onClick={() => this.updateHistoryTokens(null, labelCreate)}>
                 Create Label
             </Button>
             <Button id={SpreadsheetSelectAutocompleteWidget.LABEL_EDIT_BUTTON_ID}
                     disabled={labelEditDisabled}
                     color="primary"
-                    onClick={this.onLabelEditClick.bind(this)}>
+                    onClick={() => this.updateHistoryTokens(null, labelEdit)}>
                 Edit Label
             </Button>
         </SpreadsheetDialog>
@@ -213,9 +224,10 @@ export default class SpreadsheetSelectAutocompleteWidget extends SpreadsheetHist
                     this.setState({
                         queryHelperText: null,
                         options: [],
-                        goto: null,
+                        cellGoto: null,
                         labelCreate: null,
                         labelEdit: null,
+                        labelGoto: null,
                     });
                     this.props.showError(e);
                 },
@@ -226,32 +238,12 @@ export default class SpreadsheetSelectAutocompleteWidget extends SpreadsheetHist
             this.setState({
                 queryHelperText: e.message,
                 options: [],
-                goto: null,
-                labelEdit: null,
+                cellGoto: null,
                 labelCreate: null,
+                labelEdit: null,
+                labelGoto: null,
             })
         }
-    }
-
-    /**
-     * Updates the history hash token, navigating to the given cell/label
-     */
-    onGotoClick() {
-        this.updateHistoryTokens(this.state.goto, null);
-    }
-
-    /**
-     * Updates the history hash token, navigating to the given label for creation
-     */
-    onLabelCreateClick() {
-        this.updateHistoryTokens(null, this.state.labelCreate);
-    }
-
-    /**
-     * Updates the history hash token, navigating to the given label for editing
-     */
-    onLabelEditClick() {
-        this.updateHistoryTokens(null, this.state.labelEdit);
     }
 
     updateHistoryTokens(goto, label) {
@@ -277,7 +269,8 @@ export default class SpreadsheetSelectAutocompleteWidget extends SpreadsheetHist
             open: false,
             queryHelperText: null,
             options: [],
-            goto: null,
+            cellGoto: null,
+            labelGoto: null,
             labelEdit: null,
             labelCreate: null,
         });
