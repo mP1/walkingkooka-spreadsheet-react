@@ -1747,9 +1747,11 @@ context(
             selectAutocompleteTextFieldHelper()
                 .should("not.exist");
 
-            selectGotoCellOrLabelButton(true);
-            selectCreateLinkButton(true);
-            selectEditLinkButton(true);
+            selectCellGotoButton(true);
+            selectLabelCreateButton(true);
+            selectLabelEditButton(true);
+            selectLabelGotoButton(true);
+
         });
 
         it("Select auto complete text field has focus", () => {
@@ -1774,7 +1776,7 @@ context(
                 .wait(50)
                 .tab();
 
-            selectCreateLinkButton(false)
+            selectLabelCreateButton(false)
                 .should("have.focus")
                 .tab();
 
@@ -1837,9 +1839,10 @@ context(
             selectAutocompletePopup()
                 .should("not.exist");
 
-            selectCreateLinkButton(true);
-            selectEditLinkButton(true);
-            selectGotoCellOrLabelButton(false)
+            selectLabelCreateButton(true);
+            selectLabelEditButton(true);
+            selectLabelGotoButton(true);
+            selectCellGotoButton(false)
                 .click();
 
             hash()
@@ -1859,9 +1862,10 @@ context(
             selectAutocompletePopup()
                 .should("not.exist");
 
-            selectGotoCellOrLabelButton(true);
-            selectEditLinkButton(true);
-            selectCreateLinkButton(false)
+            selectCellGotoButton(true);
+            selectLabelEditButton(true);
+            selectLabelGotoButton(true);
+            selectLabelCreateButton(false)
                 .click();
 
             hash()
@@ -1898,9 +1902,10 @@ context(
             selectAutocompletePopup()
                 .should("not.exist");
 
-            selectGotoCellOrLabelButton(false);
-            selectCreateLinkButton(true);
-            selectEditLinkButton(false)
+            selectCellGotoButton(true);
+            selectLabelCreateButton(true);
+            selectLabelGotoButton(false);
+            selectLabelEditButton(false)
                 .click();
 
             hash()
@@ -1929,9 +1934,10 @@ context(
             selectAutocompleteTextField()
                 .type("{downarrow}{enter}");
 
-            selectCreateLinkButton(true);
-            selectEditLinkButton(true);
-            selectGotoCellOrLabelButton(false)
+            selectLabelCreateButton(true);
+            selectLabelEditButton(true);
+            selectLabelGotoButton(true);
+            selectCellGotoButton(false)
                 .click();
 
             hash()
@@ -1965,9 +1971,10 @@ context(
             selectAutocompletePopup()
                 .should("not.exist");
 
-            selectGotoCellOrLabelButton(false);
-            selectCreateLinkButton(true);
-            selectEditLinkButton(false)
+            selectCellGotoButton(true);
+            selectLabelGotoButton(false);
+            selectLabelCreateButton(true);
+            selectLabelEditButton(false)
                 .click();
 
             hash()
@@ -2007,9 +2014,10 @@ context(
             selectAutocompleteTextField()
                 .type("{downarrow}{enter}");
 
-            selectCreateLinkButton(true);
-            selectEditLinkButton(false);
-            selectGotoCellOrLabelButton(false)
+            selectCellGotoButton(true);
+            selectLabelCreateButton(true);
+            selectLabelEditButton(false);
+            selectLabelGotoButton(false)
                 .click();
 
             hash()
@@ -2046,7 +2054,7 @@ context(
                 .should("have.value", "")
                 .type("B2{enter}");
 
-            selectGotoCellOrLabelButton(false)
+            selectCellGotoButton(false)
                 .click();
 
             hash()
@@ -2089,18 +2097,23 @@ context(
             return cy.get("#" + SpreadsheetSelectAutocompleteWidget.TEXT_FIELD_OPTION_ID + nth);
         }
 
-        function selectGotoCellOrLabelButton(disabled) {
-            return cy.get("#" + SpreadsheetSelectAutocompleteWidget.GOTO_BUTTON_ID)
+        function selectCellGotoButton(disabled) {
+            return cy.get("#" + SpreadsheetSelectAutocompleteWidget.CELL_GOTO_BUTTON_ID)
                 .should("be." + (disabled ? "disabled" : "enabled"));
         }
 
-        function selectCreateLinkButton(disabled) {
+        function selectLabelCreateButton(disabled) {
             return cy.get("#" + SpreadsheetSelectAutocompleteWidget.LABEL_CREATE_BUTTON_ID)
                 .should("be." + (disabled ? "disabled" : "enabled"));
         }
 
-        function selectEditLinkButton(disabled) {
+        function selectLabelEditButton(disabled) {
             return cy.get("#" + SpreadsheetSelectAutocompleteWidget.LABEL_EDIT_BUTTON_ID)
+                .should("be." + (disabled ? "disabled" : "enabled"));
+        }
+
+        function selectLabelGotoButton(disabled) {
+            return cy.get("#" + SpreadsheetSelectAutocompleteWidget.LABEL_GOTO_BUTTON_ID)
                 .should("be." + (disabled ? "disabled" : "enabled"));
         }
 

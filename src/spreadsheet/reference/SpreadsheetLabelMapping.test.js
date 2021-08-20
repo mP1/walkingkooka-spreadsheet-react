@@ -165,9 +165,10 @@ test("toSpreadsheetSelectWidgetOption", () => {
 
     expect(label.mapping(reference).toSpreadsheetSelectWidgetOption()).toStrictEqual({
         text: label.toString(),
+        cellGoto: null,
         labelCreate: null,
         labelEdit: label,
-        goto: reference,
+        labelGoto: reference,
     });
 });
 

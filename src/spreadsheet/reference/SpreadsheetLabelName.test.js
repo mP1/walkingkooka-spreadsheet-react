@@ -87,9 +87,10 @@ test("toSpreadsheetSelectWidgetOption", () => {
     expect(label.toSpreadsheetSelectWidgetOption())
         .toStrictEqual({
             text: label.toString(),
+            cellGoto: null,
             labelCreate: label,
             labelEdit: null,
-            goto: null,
+            labelGoto: null,
         });
 });
 

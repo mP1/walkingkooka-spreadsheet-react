@@ -109,9 +109,10 @@ export default class SpreadsheetLabelName extends SpreadsheetCellReferenceOrLabe
     toSpreadsheetSelectWidgetOption() {
         return {
             text: this.value(),
-            goto: null,
+            cellGoto: null,
             labelCreate: this,
             labelEdit: null,
+            labelGoto: null,
         };
     }
 
