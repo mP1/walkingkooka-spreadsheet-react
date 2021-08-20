@@ -541,20 +541,6 @@ test("toRelative absolute2", () => {
     expect(SpreadsheetCellReference.parse("$C3").toRelative()).toEqual(SpreadsheetCellReference.parse("C3"));
 });
 
-// toSpreadsheetSelectWidgetOption....................................................................................
-
-test("toSpreadsheetSelectWidgetOption", () => {
-    const cell = SpreadsheetCellReference.parse("B2");
-
-    expect(cell.toSpreadsheetSelectWidgetOption()).toStrictEqual({
-        text: "B2",
-        cellGoto: cell,
-        labelCreate: null,
-        labelEdit: null,
-        labelGoto: null,
-    });
-});
-
 // onViewportClick......................................................................................................
 
 test("onViewportClickAndTest cell=A1", () => {

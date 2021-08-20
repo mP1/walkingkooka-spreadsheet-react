@@ -1748,6 +1748,7 @@ context(
                 .should("not.exist");
 
             selectCellGotoButton(true);
+            selectColumnGotoButton(true);
             selectLabelCreateButton(true);
             selectLabelEditButton(true);
             selectLabelGotoButton(true);
@@ -1872,14 +1873,14 @@ context(
                 .should('match', /.*\/Untitled\/label\/Label123/);
         });
 
-        it("Select enter known label and ENTER and click EDIT", () => {
+        it("Select enter known label and ENTER and click LABEL EDIT", () => {
             spreadsheetEmpty();
             hashLabel();
 
-            labelMappingReferenceTextField()
+            labelMappingLabelTextField()
                 .type("Label123");
 
-            labelMappingLabelTextField()
+            labelMappingReferenceTextField()
                 .type("B2");
 
             labelMappingLabelSaveButton()
@@ -1903,6 +1904,7 @@ context(
                 .should("not.exist");
 
             selectCellGotoButton(true);
+            selectColumnGotoButton(true);
             selectLabelCreateButton(true);
             selectLabelGotoButton(false);
             selectLabelEditButton(false)
@@ -1912,7 +1914,7 @@ context(
                 .should('match', /.*\/Untitled\/label\/Label123/);
         });
 
-        it("Select enter cell, select from dropdown ENTER and click EDIT", () => {
+        it("Select enter cell, select from dropdown ENTER and click GOTO CELL", () => {
             spreadsheetEmpty();
             selectHistoryHash();
 
@@ -1934,6 +1936,7 @@ context(
             selectAutocompleteTextField()
                 .type("{downarrow}{enter}");
 
+            selectColumnGotoButton(true);
             selectLabelCreateButton(true);
             selectLabelEditButton(true);
             selectLabelGotoButton(true);
@@ -1944,7 +1947,40 @@ context(
                 .should('match', /.*\/Untitled\/cell\/B2/);
         });
 
-        it("Select enter known label ENTER and click EDIT", () => {
+        it("Select enter column, select from dropdown ENTER and click GOTO COLUMN", () => {
+            spreadsheetEmpty();
+            selectHistoryHash();
+
+            hash()
+                .should('match', /.*\/Untitled\/select/);
+
+            selectAutocompleteTextField()
+                .type("C");
+
+            selectAutocompleteTextFieldHelper()
+                .should("not.exist");
+
+            selectAutocompletePopup()
+                .should("exist");
+
+            selectAutocompletePopupOption(0)
+                .should("have.text", "C");
+
+            selectAutocompleteTextField()
+                .type("{downarrow}{enter}");
+
+            selectCellGotoButton(true);
+            selectLabelCreateButton(false); // "C" could be a column or label so enable both
+            selectLabelEditButton(true);
+            selectLabelGotoButton(true);
+            selectColumnGotoButton(false)
+                .click();
+
+            hash()
+                .should('match', /.*\/Untitled\/column\/C/);
+        });
+
+        it("Select enter known label ENTER and click LABEL EDIT", () => {
             spreadsheetEmpty();
             hashLabel();
 
@@ -1972,6 +2008,7 @@ context(
                 .should("not.exist");
 
             selectCellGotoButton(true);
+            selectColumnGotoButton(true);
             selectLabelGotoButton(false);
             selectLabelCreateButton(true);
             selectLabelEditButton(false)
@@ -1981,7 +2018,7 @@ context(
                 .should('match', /.*\/Untitled\/label\/Label123/);
         });
 
-        it("Select enter existing label, select from dropdown ENTER and click GOTO", () => {
+        it("Select enter existing label, select from dropdown ENTER and click GOTO LABEL", () => {
             spreadsheetEmpty();
             hashLabel();
 
@@ -2009,19 +2046,23 @@ context(
                 .should("exist");
 
             selectAutocompletePopupOption(0)
+                .should("have.text", "Label");
+
+            selectAutocompletePopupOption(1)
                 .should("have.text", "Label123");
 
             selectAutocompleteTextField()
-                .type("{downarrow}{enter}");
+                .type("{downarrow}{downarrow}{enter}");
 
             selectCellGotoButton(true);
+            selectColumnGotoButton(true);
             selectLabelCreateButton(true);
             selectLabelEditButton(false);
             selectLabelGotoButton(false)
                 .click();
 
             hash()
-                .should('match', /.*\/Untitled\/cell\/B2/);
+                .should('match', /.*\/Untitled\/cell\/Label123/);
         });
 
         it("Select link after cell click", () => {
@@ -2099,6 +2140,11 @@ context(
 
         function selectCellGotoButton(disabled) {
             return cy.get("#" + SpreadsheetSelectAutocompleteWidget.CELL_GOTO_BUTTON_ID)
+                .should("be." + (disabled ? "disabled" : "enabled"));
+        }
+
+        function selectColumnGotoButton(disabled) {
+            return cy.get("#" + SpreadsheetSelectAutocompleteWidget.COLUMN_GOTO_BUTTON_ID)
                 .should("be." + (disabled ? "disabled" : "enabled"));
         }
 
