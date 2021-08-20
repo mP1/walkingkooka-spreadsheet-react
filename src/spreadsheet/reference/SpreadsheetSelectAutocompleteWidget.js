@@ -110,7 +110,7 @@ export default class SpreadsheetSelectAutocompleteWidget extends SpreadsheetHist
         const labelCreateDisabled = !labelCreate;
         const labelEditDisabled = !labelEdit;
 
-        return <SpreadsheetDialog id={"select-Dialog"}
+        return <SpreadsheetDialog id={SpreadsheetSelectAutocompleteWidget.DIALOG_ID}
                                   open={true}
                                   onClose={this.close.bind(this)}
         >
