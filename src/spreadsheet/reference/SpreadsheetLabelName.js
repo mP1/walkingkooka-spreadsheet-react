@@ -102,10 +102,6 @@ export default class SpreadsheetLabelName extends SpreadsheetCellReferenceOrLabe
         return "label";
     }
 
-    selectOptionText() {
-        return this.toString();
-    }
-
     toJson() {
         return this.toString();
     }

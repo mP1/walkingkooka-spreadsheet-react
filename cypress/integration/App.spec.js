@@ -1748,6 +1748,7 @@ context(
                 .should("not.exist");
 
             selectCellGotoButton(true);
+            selectCellRangeSelectButton(true);
             selectColumnGotoButton(true);
             selectLabelCreateButton(true);
             selectLabelEditButton(true);
@@ -1841,6 +1842,7 @@ context(
             selectAutocompletePopup()
                 .should("not.exist");
 
+            selectCellRangeSelectButton(true);
             selectLabelCreateButton(true);
             selectLabelEditButton(true);
             selectLabelGotoButton(true);
@@ -1849,6 +1851,30 @@ context(
 
             hash()
                 .should('match', /.*\/Untitled\/cell\/B2/);
+        });
+
+        it("Select enter cell range and ENTER and click SELECT CELL RANGE", () => {
+            spreadsheetEmpty();
+            selectHistoryHash();
+
+            selectAutocompleteTextField()
+                .type("A1:B2{enter}");
+
+            selectAutocompleteTextFieldHelper()
+                .should("not.exist");
+
+            selectAutocompletePopup()
+                .should("not.exist");
+
+            selectCellGotoButton(true);
+            selectLabelCreateButton(true);
+            selectLabelEditButton(true);
+            selectLabelGotoButton(true);
+            selectCellRangeSelectButton(false)
+                .click();
+
+            hash()
+                .should('match', /.*\/Untitled\/cell\/A1:B2/);
         });
 
         it("Select enter unknown label and ENTER and click CREATE", () => {
@@ -1865,6 +1891,7 @@ context(
                 .should("not.exist");
 
             selectCellGotoButton(true);
+            selectCellRangeSelectButton(true);
             selectLabelEditButton(true);
             selectLabelGotoButton(true);
             selectLabelCreateButton(false)
@@ -1905,6 +1932,7 @@ context(
                 .should("not.exist");
 
             selectCellGotoButton(true);
+            selectCellRangeSelectButton(true);
             selectColumnGotoButton(true);
             selectLabelCreateButton(true);
             selectLabelGotoButton(false);
@@ -1939,6 +1967,7 @@ context(
             selectAutocompleteTextField()
                 .type("{downarrow}{enter}");
 
+            selectCellRangeSelectButton(true);
             selectColumnGotoButton(true);
             selectLabelCreateButton(true);
             selectLabelEditButton(true);
@@ -1975,6 +2004,7 @@ context(
                 .type("{downarrow}{enter}");
 
             selectCellGotoButton(true);
+            selectCellRangeSelectButton(true);
             selectLabelCreateButton(false); // "C" could be a column or label so enable both
             selectLabelEditButton(true);
             selectLabelGotoButton(true);
@@ -2015,6 +2045,7 @@ context(
                 .should("not.exist");
 
             selectCellGotoButton(true);
+            selectCellRangeSelectButton(true);
             selectColumnGotoButton(true);
             selectLabelGotoButton(false);
             selectLabelCreateButton(true);
@@ -2064,6 +2095,7 @@ context(
                 .type("{downarrow}{downarrow}{enter}");
 
             selectCellGotoButton(true);
+            selectCellRangeSelectButton(true);
             selectColumnGotoButton(true);
             selectLabelCreateButton(true);
             selectLabelEditButton(false);
@@ -2098,6 +2130,7 @@ context(
                 .type("{downarrow}{enter}");
 
             selectCellGotoButton(true);
+            selectCellRangeSelectButton(true);
             selectColumnGotoButton(true);
             selectLabelCreateButton(true);
             selectLabelEditButton(true);
@@ -2185,6 +2218,11 @@ context(
 
         function selectCellGotoButton(disabled) {
             return cy.get("#" + SpreadsheetSelectAutocompleteWidget.CELL_GOTO_BUTTON_ID)
+                .should("be." + (disabled ? "disabled" : "enabled"));
+        }
+
+        function selectCellRangeSelectButton(disabled) {
+            return cy.get("#" + SpreadsheetSelectAutocompleteWidget.CELL_RANGE_SELECT_BUTTON_ID)
                 .should("be." + (disabled ? "disabled" : "enabled"));
         }
 
