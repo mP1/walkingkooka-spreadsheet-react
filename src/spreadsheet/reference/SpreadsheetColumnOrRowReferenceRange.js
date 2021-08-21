@@ -37,4 +37,8 @@ export default class SpreadsheetColumnOrRowReferenceRange extends SpreadsheetSel
     selectEnter(giveFormulaFocus) {
         // ENTER currently is a NOP but will change to perhaps popup a menu
     }
+
+    selectOptionText() {
+        return this.toString();
+    }
 }

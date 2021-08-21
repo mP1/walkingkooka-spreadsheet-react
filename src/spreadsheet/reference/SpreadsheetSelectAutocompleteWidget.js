@@ -13,6 +13,7 @@ import SpreadsheetHistoryAwareStateWidget from "../history/SpreadsheetHistoryAwa
 import SpreadsheetLabelMapping from "./SpreadsheetLabelMapping.js";
 import SpreadsheetLabelName from "./SpreadsheetLabelName.js";
 import SpreadsheetRowReference from "./SpreadsheetRowReference.js";
+import SpreadsheetRowReferenceRange from "./SpreadsheetRowReferenceRange.js";
 import SpreadsheetSelection from "./SpreadsheetSelection.js";
 import TextField from '@material-ui/core/TextField';
 
@@ -64,6 +65,8 @@ export default class SpreadsheetSelectAutocompleteWidget extends SpreadsheetHist
     static LABEL_EDIT_BUTTON_ID = SpreadsheetSelectAutocompleteWidget.ID_PREFIX + "-label-edit-Button";
 
     static ROW_GOTO_BUTTON_ID = SpreadsheetSelectAutocompleteWidget.ID_PREFIX + "-row-goto-Button";
+
+    static ROW_RANGE_SELECT_BUTTON_ID = SpreadsheetSelectAutocompleteWidget.ID_PREFIX + "-row-range-select-Button";
 
     initialStateFromProps(props) {
         return {
@@ -124,6 +127,7 @@ export default class SpreadsheetSelectAutocompleteWidget extends SpreadsheetHist
         var columnRange = null;
         var label = null;
         var row = null;
+        var rowRange = null;
 
         // if we find a label mapping then turn on label edit
         var labelMapping = null;
@@ -149,6 +153,9 @@ export default class SpreadsheetSelectAutocompleteWidget extends SpreadsheetHist
             }
             if(possible instanceof SpreadsheetRowReference) {
                 row = possible;
+            }
+            if(possible instanceof SpreadsheetRowReferenceRange) {
+                rowRange = possible;
             }
         }
 
@@ -240,6 +247,12 @@ export default class SpreadsheetSelectAutocompleteWidget extends SpreadsheetHist
                     onClick={() => this.updateHistoryTokens(row, null)}>
                 Goto Row
             </Button>
+            <Button id={SpreadsheetSelectAutocompleteWidget.ROW_RANGE_SELECT_BUTTON_ID}
+                    disabled={row || !rowRange}
+                    color="primary"
+                    onClick={() => this.updateHistoryTokens(rowRange, null)}>
+                Select Row Range
+            </Button>
         </SpreadsheetDialog>;
     }
 
@@ -284,6 +297,7 @@ export default class SpreadsheetSelectAutocompleteWidget extends SpreadsheetHist
             SpreadsheetColumnReferenceRange.parse,
             SpreadsheetLabelName.parse,
             SpreadsheetRowReference.parse,
+            SpreadsheetRowReferenceRange.parse,
         ];
 
         var clearQueryHelperText = false; // Dont want to show the error message from SpreadsheetColumnReference.parse if SpreadsheetCellReference.parse was successful
