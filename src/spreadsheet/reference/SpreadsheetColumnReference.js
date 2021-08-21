@@ -145,10 +145,6 @@ export default class SpreadsheetColumnReference extends SpreadsheetColumnOrRowRe
         return SpreadsheetHistoryHash.COLUMN + "/" + this;
     }
 
-    selectOptionText() {
-        return this.toString();
-    }
-
     toJson() {
         return this.kind().prefix() + toString0(this.value());
     }

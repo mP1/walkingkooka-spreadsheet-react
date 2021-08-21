@@ -1752,6 +1752,7 @@ context(
             selectLabelCreateButton(true);
             selectLabelEditButton(true);
             selectLabelGotoButton(true);
+            selectRowGotoButton(true);
 
         });
 
@@ -1907,6 +1908,8 @@ context(
             selectColumnGotoButton(true);
             selectLabelCreateButton(true);
             selectLabelGotoButton(false);
+            selectRowGotoButton(true);
+
             selectLabelEditButton(false)
                 .click();
 
@@ -1940,6 +1943,8 @@ context(
             selectLabelCreateButton(true);
             selectLabelEditButton(true);
             selectLabelGotoButton(true);
+            selectRowGotoButton(true);
+
             selectCellGotoButton(false)
                 .click();
 
@@ -1973,6 +1978,8 @@ context(
             selectLabelCreateButton(false); // "C" could be a column or label so enable both
             selectLabelEditButton(true);
             selectLabelGotoButton(true);
+            selectRowGotoButton(true);
+
             selectColumnGotoButton(false)
                 .click();
 
@@ -2011,6 +2018,8 @@ context(
             selectColumnGotoButton(true);
             selectLabelGotoButton(false);
             selectLabelCreateButton(true);
+            selectRowGotoButton(true);
+
             selectLabelEditButton(false)
                 .click();
 
@@ -2058,11 +2067,47 @@ context(
             selectColumnGotoButton(true);
             selectLabelCreateButton(true);
             selectLabelEditButton(false);
+            selectRowGotoButton(true);
             selectLabelGotoButton(false)
                 .click();
 
             hash()
                 .should('match', /.*\/Untitled\/cell\/Label123/);
+        });
+
+        it("Select enter row, select from dropdown ENTER and click GOTO ROW", () => {
+            spreadsheetEmpty();
+            selectHistoryHash();
+
+            hash()
+                .should('match', /.*\/Untitled\/select/);
+
+            selectAutocompleteTextField()
+                .type("3");
+
+            selectAutocompleteTextFieldHelper()
+                .should("not.exist");
+
+            selectAutocompletePopup()
+                .should("exist");
+
+            selectAutocompletePopupOption(0)
+                .should("have.text", "3");
+
+            selectAutocompleteTextField()
+                .type("{downarrow}{enter}");
+
+            selectCellGotoButton(true);
+            selectColumnGotoButton(true);
+            selectLabelCreateButton(true);
+            selectLabelEditButton(true);
+            selectLabelGotoButton(true);
+
+            selectRowGotoButton(false)
+                .click();
+
+            hash()
+                .should('match', /.*\/Untitled\/row\/3/);
         });
 
         it("Select link after cell click", () => {
@@ -2160,6 +2205,11 @@ context(
 
         function selectLabelGotoButton(disabled) {
             return cy.get("#" + SpreadsheetSelectAutocompleteWidget.LABEL_GOTO_BUTTON_ID)
+                .should("be." + (disabled ? "disabled" : "enabled"));
+        }
+
+        function selectRowGotoButton(disabled) {
+            return cy.get("#" + SpreadsheetSelectAutocompleteWidget.ROW_GOTO_BUTTON_ID)
                 .should("be." + (disabled ? "disabled" : "enabled"));
         }
 
