@@ -309,7 +309,7 @@ export default class SpreadsheetSelectAutocompleteWidget extends SpreadsheetHist
         }
 
         if(clearQueryHelperText){
-            delete newState.queryHelperText;
+            newState.queryHelperText = "";
         }
         this.setState(newState);
     }
