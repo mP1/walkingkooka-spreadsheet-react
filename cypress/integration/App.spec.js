@@ -1734,6 +1734,9 @@ context(
         
         // select.....................................................................................................
 
+        const ENABLED = false;
+        const DISABLED = true;
+
         it("Select using hash initial appearance", () => {
             spreadsheetEmpty();
             selectHistoryHash();
@@ -1747,13 +1750,13 @@ context(
             selectAutocompleteTextFieldHelper()
                 .should("not.exist");
 
-            selectCellGotoButton(true);
-            selectCellRangeSelectButton(true);
-            selectColumnGotoButton(true);
-            selectLabelCreateButton(true);
-            selectLabelEditButton(true);
-            selectLabelGotoButton(true);
-            selectRowGotoButton(true);
+            selectCellGotoButton(DISABLED);
+            selectCellRangeSelectButton(DISABLED);
+            selectColumnGotoButton(DISABLED);
+            selectLabelCreateButton(DISABLED);
+            selectLabelEditButton(DISABLED);
+            selectLabelGotoButton(DISABLED);
+            selectRowGotoButton(DISABLED);
 
         });
 
@@ -1842,11 +1845,11 @@ context(
             selectAutocompletePopup()
                 .should("not.exist");
 
-            selectCellRangeSelectButton(true);
-            selectLabelCreateButton(true);
-            selectLabelEditButton(true);
-            selectLabelGotoButton(true);
-            selectCellGotoButton(false)
+            selectCellRangeSelectButton(DISABLED);
+            selectLabelCreateButton(DISABLED);
+            selectLabelEditButton(DISABLED);
+            selectLabelGotoButton(DISABLED);
+            selectCellGotoButton(ENABLED)
                 .click();
 
             hash()
@@ -1866,11 +1869,11 @@ context(
             selectAutocompletePopup()
                 .should("not.exist");
 
-            selectCellGotoButton(true);
-            selectLabelCreateButton(true);
-            selectLabelEditButton(true);
-            selectLabelGotoButton(true);
-            selectCellRangeSelectButton(false)
+            selectCellGotoButton(DISABLED);
+            selectLabelCreateButton(DISABLED);
+            selectLabelEditButton(DISABLED);
+            selectLabelGotoButton(DISABLED);
+            selectCellRangeSelectButton(ENABLED)
                 .click();
 
             hash()
@@ -1890,11 +1893,11 @@ context(
             selectAutocompletePopup()
                 .should("not.exist");
 
-            selectCellGotoButton(true);
-            selectCellRangeSelectButton(true);
-            selectLabelEditButton(true);
-            selectLabelGotoButton(true);
-            selectLabelCreateButton(false)
+            selectCellGotoButton(DISABLED);
+            selectCellRangeSelectButton(DISABLED);
+            selectLabelEditButton(DISABLED);
+            selectLabelGotoButton(DISABLED);
+            selectLabelCreateButton(ENABLED)
                 .click();
 
             hash()
@@ -1931,14 +1934,14 @@ context(
             selectAutocompletePopup()
                 .should("not.exist");
 
-            selectCellGotoButton(true);
-            selectCellRangeSelectButton(true);
-            selectColumnGotoButton(true);
-            selectLabelCreateButton(true);
-            selectLabelGotoButton(false);
-            selectRowGotoButton(true);
+            selectCellGotoButton(DISABLED);
+            selectCellRangeSelectButton(DISABLED);
+            selectColumnGotoButton(DISABLED);
+            selectLabelCreateButton(DISABLED);
+            selectLabelGotoButton(ENABLED);
+            selectRowGotoButton(DISABLED);
 
-            selectLabelEditButton(false)
+            selectLabelEditButton(ENABLED)
                 .click();
 
             hash()
@@ -1967,14 +1970,14 @@ context(
             selectAutocompleteTextField()
                 .type("{downarrow}{enter}");
 
-            selectCellRangeSelectButton(true);
-            selectColumnGotoButton(true);
-            selectLabelCreateButton(true);
-            selectLabelEditButton(true);
-            selectLabelGotoButton(true);
-            selectRowGotoButton(true);
+            selectCellRangeSelectButton(DISABLED);
+            selectColumnGotoButton(DISABLED);
+            selectLabelCreateButton(DISABLED);
+            selectLabelEditButton(DISABLED);
+            selectLabelGotoButton(DISABLED);
+            selectRowGotoButton(DISABLED);
 
-            selectCellGotoButton(false)
+            selectCellGotoButton(ENABLED)
                 .click();
 
             hash()
@@ -2003,14 +2006,14 @@ context(
             selectAutocompleteTextField()
                 .type("{downarrow}{enter}");
 
-            selectCellGotoButton(true);
-            selectCellRangeSelectButton(true);
-            selectLabelCreateButton(false); // "C" could be a column or label so enable both
-            selectLabelEditButton(true);
-            selectLabelGotoButton(true);
-            selectRowGotoButton(true);
+            selectCellGotoButton(DISABLED);
+            selectCellRangeSelectButton(DISABLED);
+            selectLabelCreateButton(ENABLED); // "C" could be a column or label so enable both
+            selectLabelEditButton(DISABLED);
+            selectLabelGotoButton(DISABLED);
+            selectRowGotoButton(DISABLED);
 
-            selectColumnGotoButton(false)
+            selectColumnGotoButton(ENABLED)
                 .click();
 
             hash()
@@ -2044,14 +2047,14 @@ context(
             selectAutocompletePopup()
                 .should("not.exist");
 
-            selectCellGotoButton(true);
-            selectCellRangeSelectButton(true);
-            selectColumnGotoButton(true);
-            selectLabelGotoButton(false);
-            selectLabelCreateButton(true);
-            selectRowGotoButton(true);
+            selectCellGotoButton(DISABLED);
+            selectCellRangeSelectButton(DISABLED);
+            selectColumnGotoButton(DISABLED);
+            selectLabelGotoButton(ENABLED);
+            selectLabelCreateButton(DISABLED);
+            selectRowGotoButton(DISABLED);
 
-            selectLabelEditButton(false)
+            selectLabelEditButton(ENABLED)
                 .click();
 
             hash()
@@ -2094,13 +2097,13 @@ context(
             selectAutocompleteTextField()
                 .type("{downarrow}{downarrow}{enter}");
 
-            selectCellGotoButton(true);
-            selectCellRangeSelectButton(true);
-            selectColumnGotoButton(true);
-            selectLabelCreateButton(true);
-            selectLabelEditButton(false);
-            selectRowGotoButton(true);
-            selectLabelGotoButton(false)
+            selectCellGotoButton(DISABLED);
+            selectCellRangeSelectButton(DISABLED);
+            selectColumnGotoButton(DISABLED);
+            selectLabelCreateButton(DISABLED);
+            selectLabelEditButton(ENABLED);
+            selectRowGotoButton(DISABLED);
+            selectLabelGotoButton(ENABLED)
                 .click();
 
             hash()
@@ -2129,14 +2132,14 @@ context(
             selectAutocompleteTextField()
                 .type("{downarrow}{enter}");
 
-            selectCellGotoButton(true);
-            selectCellRangeSelectButton(true);
-            selectColumnGotoButton(true);
-            selectLabelCreateButton(true);
-            selectLabelEditButton(true);
-            selectLabelGotoButton(true);
+            selectCellGotoButton(DISABLED);
+            selectCellRangeSelectButton(DISABLED);
+            selectColumnGotoButton(DISABLED);
+            selectLabelCreateButton(DISABLED);
+            selectLabelEditButton(DISABLED);
+            selectLabelGotoButton(DISABLED);
 
-            selectRowGotoButton(false)
+            selectRowGotoButton(ENABLED)
                 .click();
 
             hash()
