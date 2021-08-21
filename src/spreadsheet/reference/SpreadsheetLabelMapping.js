@@ -40,16 +40,8 @@ export default class SpreadsheetLabelMapping extends SystemObject {
         return this.referenceValue;
     }
 
-    toSpreadsheetSelectWidgetOption() {
-        const label = this.label();
-
-        return {
-            text: label.toString(),
-            cellGoto: null,
-            labelCreate: null,
-            labelEdit: label,
-            labelGoto: this.reference(),
-        }
+    selectOptionText() {
+        return this.label().selectOptionText();
     }
 
     toJson() {

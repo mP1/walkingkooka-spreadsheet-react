@@ -168,6 +168,13 @@ export default class SpreadsheetSelection extends SystemObject {
         SystemObject.throwUnsupportedOperation();
     }
 
+    /**
+     * This is the text that will appear in the {@link SpreadsheetSelectAutocompleteWidget}.
+     */
+    selectOptionText() {
+        SystemObject.throwUnsupportedOperation();
+    }
+
     toString() {
         return this.toJson();
     }

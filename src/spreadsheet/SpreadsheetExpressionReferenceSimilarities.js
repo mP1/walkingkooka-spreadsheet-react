@@ -51,26 +51,6 @@ export default class SpreadsheetExpressionReferenceSimilarities extends SystemOb
         return [...this.labelMappingsValue];
     }
 
-    /**
-     * Creates an array of options for rendering by {@link SpreadsheetSelectModalWidget}.
-     */
-    toSpreadsheetSelectWidgetOptions(query) {
-        Preconditions.requireText(query, "query");
-
-        const options = [];
-
-        const cellReference = this.cellReference();
-        cellReference && options.push(cellReference.toSpreadsheetSelectWidgetOption());
-
-        const label = this.label();
-        label && options.push(label.toSpreadsheetSelectWidgetOption());
-
-        this.labelMappings()
-            .forEach(mapping => options.push(mapping.toSpreadsheetSelectWidgetOption()));
-
-        return options;
-    }
-
     toJson() {
         const json = {
         };

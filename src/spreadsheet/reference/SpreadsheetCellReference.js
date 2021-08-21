@@ -299,14 +299,8 @@ export default class SpreadsheetCellReference extends SpreadsheetCellReferenceOr
                 .setKind(SpreadsheetReferenceKind.RELATIVE));
     }
 
-    toSpreadsheetSelectWidgetOption() {
-        return {
-            text: this.toString(),
-            cellGoto: this,
-            labelCreate: null,
-            labelEdit: null,
-            labelGoto: null,
-        }
+    selectOptionText() {
+        return this.toString();
     }
 
     toJson() {
