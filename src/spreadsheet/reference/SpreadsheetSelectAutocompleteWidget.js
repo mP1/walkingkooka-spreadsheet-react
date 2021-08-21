@@ -6,6 +6,7 @@ import React from 'react';
 import SpreadsheetCellRange from "./SpreadsheetCellRange.js";
 import SpreadsheetCellReference from "./SpreadsheetCellReference.js";
 import SpreadsheetColumnReference from "./SpreadsheetColumnReference.js";
+import SpreadsheetColumnReferenceRange from "./SpreadsheetColumnReferenceRange.js";
 import SpreadsheetDialog from "../../widget/SpreadsheetDialog.js";
 import SpreadsheetHistoryHash from "../history/SpreadsheetHistoryHash.js";
 import SpreadsheetHistoryAwareStateWidget from "../history/SpreadsheetHistoryAwareStateWidget.js";
@@ -53,6 +54,8 @@ export default class SpreadsheetSelectAutocompleteWidget extends SpreadsheetHist
     static CELL_RANGE_SELECT_BUTTON_ID = SpreadsheetSelectAutocompleteWidget.ID_PREFIX + "-cell-range-select-Button";
 
     static COLUMN_GOTO_BUTTON_ID = SpreadsheetSelectAutocompleteWidget.ID_PREFIX + "-column-goto-Button";
+
+    static COLUMN_RANGE_SELECT_BUTTON_ID = SpreadsheetSelectAutocompleteWidget.ID_PREFIX + "-column-range-select-Button";
 
     static LABEL_GOTO_BUTTON_ID = SpreadsheetSelectAutocompleteWidget.ID_PREFIX + "-label-goto-Button";
 
@@ -118,6 +121,7 @@ export default class SpreadsheetSelectAutocompleteWidget extends SpreadsheetHist
         var cell = null;
         var cellRange = null;
         var column = null;
+        var columnRange = null;
         var label = null;
         var row = null;
 
@@ -133,6 +137,9 @@ export default class SpreadsheetSelectAutocompleteWidget extends SpreadsheetHist
             }
             if(possible instanceof SpreadsheetColumnReference) {
                 column = possible;
+            }
+            if(possible instanceof SpreadsheetColumnReferenceRange) {
+                columnRange = possible;
             }
             if(possible instanceof SpreadsheetLabelName) {
                 label = possible;
@@ -203,6 +210,12 @@ export default class SpreadsheetSelectAutocompleteWidget extends SpreadsheetHist
                     onClick={() => this.updateHistoryTokens(column, null)}>
                 Goto Column
             </Button>
+            <Button id={SpreadsheetSelectAutocompleteWidget.COLUMN_RANGE_SELECT_BUTTON_ID}
+                    disabled={column || !columnRange}
+                    color="primary"
+                    onClick={() => this.updateHistoryTokens(columnRange, null)}>
+                Select Column Range
+            </Button>
             <Button id={SpreadsheetSelectAutocompleteWidget.LABEL_GOTO_BUTTON_ID}
                     disabled={!labelMapping}
                     color="primary"
@@ -268,6 +281,7 @@ export default class SpreadsheetSelectAutocompleteWidget extends SpreadsheetHist
             SpreadsheetCellReference.parse,
             SpreadsheetCellRange.parse,
             SpreadsheetColumnReference.parse,
+            SpreadsheetColumnReferenceRange.parse,
             SpreadsheetLabelName.parse,
             SpreadsheetRowReference.parse,
         ];

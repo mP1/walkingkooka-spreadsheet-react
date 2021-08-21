@@ -164,6 +164,10 @@ export default class SpreadsheetColumnReferenceRange extends SpreadsheetColumnOr
         return SpreadsheetHistoryHash.COLUMN + "/" + this;
     }
 
+    selectOptionText() {
+        return this.toString();
+    }
+
     typeName() {
         return TYPE_NAME;
     }

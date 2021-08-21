@@ -1753,6 +1753,7 @@ context(
             selectCellGotoButton(DISABLED);
             selectCellRangeSelectButton(DISABLED);
             selectColumnGotoButton(DISABLED);
+            selectColumnRangeSelectButton(DISABLED);
             selectLabelCreateButton(DISABLED);
             selectLabelEditButton(DISABLED);
             selectLabelGotoButton(DISABLED);
@@ -1846,6 +1847,8 @@ context(
                 .should("not.exist");
 
             selectCellRangeSelectButton(DISABLED);
+            selectColumnGotoButton(DISABLED);
+            selectColumnRangeSelectButton(DISABLED);
             selectLabelCreateButton(DISABLED);
             selectLabelEditButton(DISABLED);
             selectLabelGotoButton(DISABLED);
@@ -1870,6 +1873,8 @@ context(
                 .should("not.exist");
 
             selectCellGotoButton(DISABLED);
+            selectColumnGotoButton(DISABLED);
+            selectColumnRangeSelectButton(DISABLED);
             selectLabelCreateButton(DISABLED);
             selectLabelEditButton(DISABLED);
             selectLabelGotoButton(DISABLED);
@@ -1895,6 +1900,8 @@ context(
 
             selectCellGotoButton(DISABLED);
             selectCellRangeSelectButton(DISABLED);
+            selectColumnGotoButton(DISABLED);
+            selectColumnRangeSelectButton(DISABLED);
             selectLabelEditButton(DISABLED);
             selectLabelGotoButton(DISABLED);
             selectLabelCreateButton(ENABLED)
@@ -1937,6 +1944,7 @@ context(
             selectCellGotoButton(DISABLED);
             selectCellRangeSelectButton(DISABLED);
             selectColumnGotoButton(DISABLED);
+            selectColumnRangeSelectButton(DISABLED);
             selectLabelCreateButton(DISABLED);
             selectLabelGotoButton(ENABLED);
             selectRowGotoButton(DISABLED);
@@ -1972,6 +1980,7 @@ context(
 
             selectCellRangeSelectButton(DISABLED);
             selectColumnGotoButton(DISABLED);
+            selectColumnRangeSelectButton(DISABLED);
             selectLabelCreateButton(DISABLED);
             selectLabelEditButton(DISABLED);
             selectLabelGotoButton(DISABLED);
@@ -2008,6 +2017,7 @@ context(
 
             selectCellGotoButton(DISABLED);
             selectCellRangeSelectButton(DISABLED);
+            selectColumnRangeSelectButton(DISABLED);
             selectLabelCreateButton(ENABLED); // "C" could be a column or label so enable both
             selectLabelEditButton(DISABLED);
             selectLabelGotoButton(DISABLED);
@@ -2018,6 +2028,43 @@ context(
 
             hash()
                 .should('match', /.*\/Untitled\/column\/C/);
+        });
+
+        it("Select enter column range, select from dropdown ENTER and click SELECT COLUMN RANGE", () => {
+            spreadsheetEmpty();
+            selectHistoryHash();
+
+            hash()
+                .should('match', /.*\/Untitled\/select/);
+
+            selectAutocompleteTextField()
+                .type("D:E");
+
+            selectAutocompleteTextFieldHelper()
+                .should("not.exist");
+
+            selectAutocompletePopup()
+                .should("exist");
+
+            selectAutocompletePopupOption(0)
+                .should("have.text", "D:E");
+
+            selectAutocompleteTextField()
+                .type("{downarrow}{enter}");
+
+            selectCellGotoButton(DISABLED);
+            selectCellRangeSelectButton(DISABLED);
+            selectColumnGotoButton(DISABLED);
+            selectLabelCreateButton(ENABLED); // "C" could be a column or label so enable both
+            selectLabelEditButton(DISABLED);
+            selectLabelGotoButton(DISABLED);
+            selectRowGotoButton(DISABLED);
+
+            selectColumnRangeSelectButton(ENABLED)
+                .click();
+
+            hash()
+                .should('match', /.*\/Untitled\/column\/D:E/);
         });
 
         it("Select enter known label ENTER and click LABEL EDIT", () => {
@@ -2050,6 +2097,7 @@ context(
             selectCellGotoButton(DISABLED);
             selectCellRangeSelectButton(DISABLED);
             selectColumnGotoButton(DISABLED);
+            selectColumnRangeSelectButton(DISABLED);
             selectLabelGotoButton(ENABLED);
             selectLabelCreateButton(DISABLED);
             selectRowGotoButton(DISABLED);
@@ -2100,6 +2148,7 @@ context(
             selectCellGotoButton(DISABLED);
             selectCellRangeSelectButton(DISABLED);
             selectColumnGotoButton(DISABLED);
+            selectColumnRangeSelectButton(DISABLED);
             selectLabelCreateButton(DISABLED);
             selectLabelEditButton(ENABLED);
             selectRowGotoButton(DISABLED);
@@ -2135,6 +2184,7 @@ context(
             selectCellGotoButton(DISABLED);
             selectCellRangeSelectButton(DISABLED);
             selectColumnGotoButton(DISABLED);
+            selectColumnRangeSelectButton(DISABLED);
             selectLabelCreateButton(DISABLED);
             selectLabelEditButton(DISABLED);
             selectLabelGotoButton(DISABLED);
@@ -2231,6 +2281,11 @@ context(
 
         function selectColumnGotoButton(disabled) {
             return cy.get("#" + SpreadsheetSelectAutocompleteWidget.COLUMN_GOTO_BUTTON_ID)
+                .should("be." + (disabled ? "disabled" : "enabled"));
+        }
+
+        function selectColumnRangeSelectButton(disabled) {
+            return cy.get("#" + SpreadsheetSelectAutocompleteWidget.COLUMN_RANGE_SELECT_BUTTON_ID)
                 .should("be." + (disabled ? "disabled" : "enabled"));
         }
 
