@@ -214,7 +214,7 @@ export default class SpreadsheetSelectAutocompleteWidget extends SpreadsheetHist
                     onClick={() => this.updateHistoryTokens(row, null)}>
                 Goto Row
             </Button>
-        </SpreadsheetDialog>
+        </SpreadsheetDialog>;
     }
 
     /**
