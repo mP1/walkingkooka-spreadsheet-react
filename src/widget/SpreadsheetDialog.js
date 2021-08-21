@@ -59,6 +59,8 @@ class SpreadsheetDialog extends React.Component {
 
         return <Dialog key={id}
                        id={id}
+                       fullWidth={true}
+                       maxWidth={"md"}
                        open={true}
                        onKeyDownCapture={this.onDialogKeyDown.bind(this)}
                        onClose={close} /*aria-labelledby="form-dialog-title"*/

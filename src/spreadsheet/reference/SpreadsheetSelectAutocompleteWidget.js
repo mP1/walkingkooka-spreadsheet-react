@@ -182,7 +182,7 @@ export default class SpreadsheetSelectAutocompleteWidget extends SpreadsheetHist
                 onChange={this.onAutoCompleteValueChange.bind(this)}
                 noOptionsText={""}
                 includeInputInList={true}
-                style={{width: 500}}
+                fullWidth={true}
                 renderInput={(params) =>
                     <TextField
                         {...params}
