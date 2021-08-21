@@ -299,10 +299,6 @@ export default class SpreadsheetCellReference extends SpreadsheetCellReferenceOr
                 .setKind(SpreadsheetReferenceKind.RELATIVE));
     }
 
-    selectOptionText() {
-        return this.toString();
-    }
-
     toJson() {
         return this.column()
                 .toJson() +

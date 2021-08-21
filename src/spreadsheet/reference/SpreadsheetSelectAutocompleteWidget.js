@@ -3,6 +3,7 @@ import Button from "@material-ui/core/Button";
 import Preconditions from "../../Preconditions.js";
 import PropTypes from 'prop-types';
 import React from 'react';
+import SpreadsheetCellRange from "./SpreadsheetCellRange.js";
 import SpreadsheetCellReference from "./SpreadsheetCellReference.js";
 import SpreadsheetColumnReference from "./SpreadsheetColumnReference.js";
 import SpreadsheetDialog from "../../widget/SpreadsheetDialog.js";
@@ -48,6 +49,8 @@ export default class SpreadsheetSelectAutocompleteWidget extends SpreadsheetHist
     static TEXT_FIELD_OPTION_ID = SpreadsheetSelectAutocompleteWidget.TEXT_FIELD_ID + "-option-"
 
     static CELL_GOTO_BUTTON_ID = SpreadsheetSelectAutocompleteWidget.ID_PREFIX + "-cell-goto-Button";
+
+    static CELL_RANGE_SELECT_BUTTON_ID = SpreadsheetSelectAutocompleteWidget.ID_PREFIX + "-cell-range-select-Button";
 
     static COLUMN_GOTO_BUTTON_ID = SpreadsheetSelectAutocompleteWidget.ID_PREFIX + "-column-goto-Button";
 
@@ -113,6 +116,7 @@ export default class SpreadsheetSelectAutocompleteWidget extends SpreadsheetHist
 
         // if we find a cell in options then we enable the goto cell button etc.
         var cell = null;
+        var cellRange = null;
         var column = null;
         var label = null;
         var row = null;
@@ -123,6 +127,9 @@ export default class SpreadsheetSelectAutocompleteWidget extends SpreadsheetHist
         for (const possible of options) {
             if(possible instanceof SpreadsheetCellReference) {
                 cell = possible;
+            }
+            if(possible instanceof SpreadsheetCellRange) {
+                cellRange = possible;
             }
             if(possible instanceof SpreadsheetColumnReference) {
                 column = possible;
@@ -183,6 +190,12 @@ export default class SpreadsheetSelectAutocompleteWidget extends SpreadsheetHist
                     color="primary"
                     onClick={() => this.updateHistoryTokens(cell, null)}>
                 Goto Cell
+            </Button>
+            <Button id={SpreadsheetSelectAutocompleteWidget.CELL_RANGE_SELECT_BUTTON_ID}
+                    disabled={cell || !cellRange}
+                    color="primary"
+                    onClick={() => this.updateHistoryTokens(cellRange, null)}>
+                Select Cell Range
             </Button>
             <Button id={SpreadsheetSelectAutocompleteWidget.COLUMN_GOTO_BUTTON_ID}
                     disabled={!column}
@@ -253,6 +266,7 @@ export default class SpreadsheetSelectAutocompleteWidget extends SpreadsheetHist
 
         const trying = [
             SpreadsheetCellReference.parse,
+            SpreadsheetCellRange.parse,
             SpreadsheetColumnReference.parse,
             SpreadsheetLabelName.parse,
             SpreadsheetRowReference.parse,
