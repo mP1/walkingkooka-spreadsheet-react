@@ -52,7 +52,15 @@ export default class SpreadsheetRowReferenceRange extends SpreadsheetColumnOrRow
             ]
         );
     }
-    
+
+    // context menu events..............................................................................................
+
+    onContextMenu(spreadsheetDeltaCrud) {
+        // nop
+    }
+
+    // keyboard events..................................................................................................
+
     extendRangeLeft(anchor, current, viewportHome) {
         return this.rowOrRange();
     }

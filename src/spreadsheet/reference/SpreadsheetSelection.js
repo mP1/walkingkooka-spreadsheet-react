@@ -54,6 +54,18 @@ export default class SpreadsheetSelection extends SystemObject {
         }
     }
 
+    // context menu events..............................................................................................
+
+    /**
+     * This method is called whenever the element for this selection is clicked, providing an opportunity to
+     * prepare the context menu items that will be displayed ready for clicking.
+     */
+    onContextMenu(spreadsheetDeltaCrud) {
+        SystemObject.throwUnsupportedOperation();
+    }
+
+    // key events.......................................................................................................
+
     /**
      * LEFT | RIGHT Arrow keys update the column selection or when down selects the first visible cell or ESC clears the current selection.
      */

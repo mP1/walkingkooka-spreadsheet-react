@@ -1,6 +1,7 @@
 import _ from "lodash";
 import Equality from "../Equality.js";
 import ImmutableMap from "../util/ImmutableMap.js";
+import Menu from "@material-ui/core/Menu";
 import Paper from '@material-ui/core/Paper';
 import Preconditions from "../Preconditions.js";
 import PropTypes from "prop-types";
@@ -43,6 +44,7 @@ const SCROLL_DEBOUNCE = 100;
  * <li>SpreadsheetMetadata spreadsheetMetadata: holds the viewport home cell & default style</li>
  * <li>SpreadsheetCellRange viewportRange: holds a range of all the cells within the viewport</li>
  * <li>boolean giveFocus: if cells changed give focus to the selected cell. This helps giving focus after a delta load.</li>
+ * <li>contextMenu object an object with two properties anchorPosition and menuList both which are given to the Menu to present itself.</li>
  * </ul>
  */
 export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareStateWidget {
@@ -178,6 +180,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
             spreadsheetMetadata: SpreadsheetMetadata.EMPTY,
             cellToLabels: ImmutableMap.EMPTY,
             labelToReference: ImmutableMap.EMPTY,
+            contextMenu: {},
         };
     }
 
@@ -362,70 +365,93 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
             state.labelToReference.get(selection) :
             selection;
 
-        return <TableContainer key="viewport-TableContainer"
-                               ref={this.viewportTable}
-                               component={Paper}
-                               onClick={this.onClick.bind(this)}
-                               onKeyDown={this.onKeyDown.bind(this)}
-                               style={{
-                                   width: dimensions.width,
-                                   height: dimensions.height,
-                                   overflow: "hidden",
-                                   borderRadius: 0, // cancel paper rounding.
-                               }}>
-            <Table>
-                <TableHead>
-                    <TableRow>
+        const contextMenu = state.contextMenu;
+        const {anchorPosition, menuItems} = contextMenu;
+        const contextMenuOpen = !!menuItems;
+
+        return [
+            <TableContainer key="viewport-TableContainer"
+                            ref={this.viewportTable}
+                            component={Paper}
+                            onClick={this.onClick.bind(this)}
+                            onContextMenu={this.onContextMenu.bind(this)}
+                            onKeyDown={this.onKeyDown.bind(this)}
+                            style={{
+                                width: dimensions.width,
+                                height: dimensions.height,
+                                overflow: "hidden",
+                                borderRadius: 0, // cancel paper rounding.
+                                cursor: contextMenuOpen && "context-menu",
+                            }}>
+                <Table>
+                    <TableHead>
+                        <TableRow>
+                            {
+                                this.renderTableColumnHeaders(selectionNotLabel)
+                            }
+                        </TableRow>
+                    </TableHead>
+                    <TableBody>
                         {
-                            this.renderTableColumnHeaders(selectionNotLabel)
+                            this.renderTableContent(selectionNotLabel)
                         }
-                    </TableRow>
-                </TableHead>
-                <TableBody>
-                    {
-                        this.renderTableContent(selectionNotLabel)
-                    }
-                </TableBody>
-            </Table>
-            <Slider ref={this.horizontalSlider}
-                    id={SpreadsheetViewportWidget.VIEWPORT_HORIZONTAL_SLIDER_ID}
-                    orientation="horizontal"
-                    aria-labelledby="horizontal-slider"
-                    track={false}
-                    valueLabelDisplay="off"
-                    min={0}
-                    max={SpreadsheetColumnReference.MAX -1}
-                    step={SpreadsheetViewportWidget.SLIDER_STEP}
-                    defaultValue={0}
-                    style={{
-                        position: "absolute",
-                        left: "40px",
-                        bottom: "10px",
-                        width: dimensions.width - 75,
-                    }}
-                    value={column}
-                    onChange={_.debounce((e, newColumn) => {this.onHorizontalSliderChange(newColumn)}, SCROLL_DEBOUNCE)}
-            />
-            <Slider ref={this.verticalSlider}
-                    id={SpreadsheetViewportWidget.VIEWPORT_VERTICAL_SLIDER_ID}
-                    orientation="vertical"
-                    aria-labelledby="vertical-slider"
-                    track={false}
-                    valueLabelDisplay="off"
-                    min={0}
-                    max={SpreadsheetRowReference.MAX -1}
-                    step={SpreadsheetViewportWidget.SLIDER_STEP}
-                    defaultValue={SpreadsheetViewportWidget.toVerticalSliderValue(0)}
-                    style={{
-                        position: "absolute",
-                        bottom: "25px",
-                        right: "10px",
-                        height: dimensions.height - 60,
-                    }}
-                    value={SpreadsheetViewportWidget.toVerticalSliderValue(row)}
-                    onChange={_.debounce((e, newColumn) => {this.onVerticalSliderChange(newColumn)}, SCROLL_DEBOUNCE)}
-            />
-        </TableContainer>;
+                    </TableBody>
+                </Table>
+                <Slider ref={this.horizontalSlider}
+                        id={SpreadsheetViewportWidget.VIEWPORT_HORIZONTAL_SLIDER_ID}
+                        orientation="horizontal"
+                        aria-labelledby="horizontal-slider"
+                        track={false}
+                        valueLabelDisplay="off"
+                        min={0}
+                        max={SpreadsheetColumnReference.MAX - 1}
+                        step={SpreadsheetViewportWidget.SLIDER_STEP}
+                        defaultValue={0}
+                        style={{
+                            position: "absolute",
+                            left: "40px",
+                            bottom: "10px",
+                            width: dimensions.width - 75,
+                        }}
+                        value={column}
+                        onChange={_.debounce((e, newColumn) => {
+                            this.onHorizontalSliderChange(newColumn)
+                        }, SCROLL_DEBOUNCE)}
+                />
+                <Slider ref={this.verticalSlider}
+                        id={SpreadsheetViewportWidget.VIEWPORT_VERTICAL_SLIDER_ID}
+                        orientation="vertical"
+                        aria-labelledby="vertical-slider"
+                        track={false}
+                        valueLabelDisplay="off"
+                        min={0}
+                        max={SpreadsheetRowReference.MAX - 1}
+                        step={SpreadsheetViewportWidget.SLIDER_STEP}
+                        defaultValue={SpreadsheetViewportWidget.toVerticalSliderValue(0)}
+                        style={{
+                            position: "absolute",
+                            bottom: "25px",
+                            right: "10px",
+                            height: dimensions.height - 60,
+                        }}
+                        value={SpreadsheetViewportWidget.toVerticalSliderValue(row)}
+                        onChange={_.debounce((e, newColumn) => {
+                            this.onVerticalSliderChange(newColumn)
+                        }, SCROLL_DEBOUNCE)}
+                />
+            </TableContainer>,
+            <Menu
+                keepMounted
+                open={contextMenuOpen}
+                onClose={() => this.setState({
+                    contextMenu: {},
+                })}
+                anchorReference="anchorPosition"
+                anchorPosition={anchorPosition || {}}
+            >
+                {menuItems}
+            </Menu>
+        ];
     }
 
     onClick(e) {
@@ -438,6 +464,33 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
                 this.giveFormulaTextBoxFocus.bind(this),
             );
         }
+    }
+
+    /**
+     * This method is invoked whenever any element within the viewport is right mouse clicked. When this
+     * happens the {@link SpreadsheetSelection} is asked to prepare the menu items and they are shown.
+     */
+    onContextMenu(e) {
+        e.preventDefault();
+
+        let contextMenuState = {};
+
+        const selection = this.findEventTargetSelection(e.target);
+        if(selection){
+            contextMenuState = {
+                anchorPosition: {
+                    left: e.clientX - 2,
+                    top: e.clientY - 4,
+                },
+                menuItems: selection.onContextMenu(
+                    this.props.spreadsheetDeltaCrud
+                )
+            }
+        }
+
+        this.setState({
+            contextMenu: contextMenuState,
+        });
     }
 
     onKeyDown(e) {
