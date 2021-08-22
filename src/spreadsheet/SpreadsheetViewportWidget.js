@@ -47,6 +47,12 @@ const SCROLL_DEBOUNCE = 100;
  */
 export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareStateWidget {
 
+    static VIEWPORT_ID = "viewport";
+
+    static VIEWPORT_HORIZONTAL_SLIDER_ID = SpreadsheetViewportWidget.VIEWPORT_ID + "-horizontal-Slider";
+
+    static VIEWPORT_VERTICAL_SLIDER_ID = SpreadsheetViewportWidget.VIEWPORT_ID + "-vertical-Slider";
+
     init() {
         this.horizontalSlider = React.createRef();
         this.verticalSlider = React.createRef();
@@ -382,7 +388,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
                 </TableBody>
             </Table>
             <Slider ref={this.horizontalSlider}
-                    id="viewport-horizontal-Slider"
+                    id={SpreadsheetViewportWidget.VIEWPORT_HORIZONTAL_SLIDER_ID}
                     orientation="horizontal"
                     aria-labelledby="horizontal-slider"
                     track={false}
@@ -401,7 +407,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
                     onChange={_.debounce((e, newColumn) => {this.onHorizontalSliderChange(newColumn)}, SCROLL_DEBOUNCE)}
             />
             <Slider ref={this.verticalSlider}
-                    id="viewport-vertical-Slider"
+                    id={SpreadsheetViewportWidget.VIEWPORT_VERTICAL_SLIDER_ID}
                     orientation="vertical"
                     aria-labelledby="vertical-slider"
                     track={false}
