@@ -53,6 +53,14 @@ export default class SpreadsheetColumnReferenceRange extends SpreadsheetColumnOr
         );
     }
 
+    // context menu events..............................................................................................
+
+    onContextMenu(spreadsheetDeltaCrud) {
+        // nop
+    }
+
+    // keyboard events..................................................................................................
+
     /**
      * Increases/decreases the column range depending on the anchor
      */

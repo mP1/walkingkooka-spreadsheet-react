@@ -94,6 +94,14 @@ export default class SpreadsheetCellRange extends SpreadsheetExpressionReference
         );
     }
 
+    // context menu events..............................................................................................
+
+    onContextMenu(spreadsheetDeltaCrud) {
+        // nop
+    }
+
+    // keyboard events..................................................................................................
+
     navigateLeft(viewportHome) {
         const b = this.begin();
         return this.b

@@ -58,7 +58,13 @@ export default class SpreadsheetColumnReference extends SpreadsheetColumnOrRowRe
         return new SpreadsheetCellReference(this, row);
     }
 
-    // viewport keyboard................................................................................................
+    // context menu events..............................................................................................
+
+    onContextMenu(spreadsheetDeltaCrud) {
+        // nop
+    }
+
+    // keyboard events..................................................................................................
 
     navigateLeft(viewportHome) {
         return this.addSaturated(-1);
