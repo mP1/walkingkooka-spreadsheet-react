@@ -431,44 +431,50 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
     onClick(e) {
         e.preventDefault();
 
-        let target = e.target;
-        while(target) {
-            const selection = target.dataset && target.dataset.selection;
-            if(selection){
-                SpreadsheetCellColumnOrRowParse(selection)
-                    .onViewportClick(
-                        (s) => this.saveSelection(s),
-                        this.giveFormulaTextBoxFocus.bind(this),
-                    );
-                break;
-            }
-            target = target.parentNode;
+        const selection = this.findEventTargetSelection(e.target);
+        if(selection){
+            selection.onViewportClick(
+                (s) => this.saveSelection(s),
+                this.giveFormulaTextBoxFocus.bind(this),
+            );
         }
     }
 
     onKeyDown(e) {
         e.preventDefault();
 
-        let target = e.target;
+        const selection = this.findEventTargetSelection(e.target);
+        if(selection){
+            const state = this.state;
+
+            selection.onViewportKeyDown(
+                e.key, // key
+                e.shiftKey, // selectRange
+                state.selection, // current selection may be null
+                state.anchor, // anchor
+                state.spreadsheetMetadata.getIgnoringDefaults(SpreadsheetMetadata.VIEWPORT_CELL), // viewportHome
+                (s) => this.saveSelection(s), // setSelection
+                this.giveFormulaTextBoxFocus.bind(this), // giveFormulaFocus
+            );
+        }
+    }
+
+    /**
+     * Accepts an event target and attempts to locate the {@link SpreadsheetSelection}
+     */
+    findEventTargetSelection(target) {
+        let targetSelection;
+
         while(target) {
             const selection = target.dataset && target.dataset.selection;
             if(selection){
-                const state = this.state;
-
-                SpreadsheetCellColumnOrRowParse(selection)
-                    .onViewportKeyDown(
-                        e.key, // key
-                        e.shiftKey, // selectRange
-                        state.selection, // current selection may be null
-                        state.anchor, // anchor
-                        state.spreadsheetMetadata.getIgnoringDefaults(SpreadsheetMetadata.VIEWPORT_CELL), // viewportHome
-                        (s) => this.saveSelection(s), // setSelection
-                        this.giveFormulaTextBoxFocus.bind(this), // giveFormulaFocus
-                    );
+                targetSelection = SpreadsheetCellColumnOrRowParse(selection);
                 break;
             }
             target = target.parentNode;
         }
+
+        return targetSelection;
     }
 
     static SLIDER_STEP = 1;
