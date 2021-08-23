@@ -9,7 +9,7 @@ export default class SpreadsheetExpressionReference extends SpreadsheetSelection
         return this.toString();
     }
 
-    toSelectionHashToken() {
+    toSelectionHistoryHashToken() {
         // avoid referencing constant to avoid runtime TypeErrors.
         return /*SpreadsheetHistoryHash.CELL*/ "cell/" + this;
     }
