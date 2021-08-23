@@ -363,7 +363,7 @@ export default class SpreadsheetSelectAutocompleteWidget extends SpreadsheetHist
         const historyTokens = {};
 
         historyTokens[SpreadsheetHistoryHash.SELECTION] = goto;
-        historyTokens[SpreadsheetHistoryHash.CELL_FORMULA] = false;
+        historyTokens[SpreadsheetHistoryHash.SELECTION_ACTION] = null;
         historyTokens[SpreadsheetHistoryHash.LABEL] = label;
         historyTokens[SpreadsheetHistoryHash.SELECT] = null; // close the navigate modal
 

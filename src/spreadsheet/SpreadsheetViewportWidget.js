@@ -187,7 +187,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
     stateFromHistoryTokens(tokens) {
         return {
             selection: tokens[SpreadsheetHistoryHash.SELECTION],
-            formula: tokens[SpreadsheetHistoryHash.CELL_FORMULA],
+            selectionAction: tokens[SpreadsheetHistoryHash.SELECTION_ACTION],
         };
     }
 
@@ -272,7 +272,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
 
             historyTokens[SpreadsheetHistoryHash.SELECTION] = selectionNew;
             if(state.focused){
-                historyTokens[SpreadsheetHistoryHash.CELL_FORMULA] = null;
+                historyTokens[SpreadsheetHistoryHash.SELECTION_ACTION] = null;
             }
 
             if(!Equality.safeEquals(selectionNew, selectionOld)){
@@ -335,7 +335,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
             if(cellColumnOrRow){
                 const element = document.getElementById(cellColumnOrRow.viewportId());
                 if(element){
-                    console.log("Missing " + SpreadsheetHistoryHash.CELL_FORMULA + " token giving focus to ..." + cellColumnOrRow);
+                    console.log("Missing " + SpreadsheetHistoryHash.SELECTION_ACTION + " token giving focus to ..." + cellColumnOrRow);
                     element.focus();
                 }
             }
@@ -703,7 +703,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
 
     giveFormulaTextBoxFocus() {
         const tokens = {}
-        tokens[SpreadsheetHistoryHash.CELL_FORMULA] = true;
+        tokens[SpreadsheetHistoryHash.SELECTION_ACTION] = SpreadsheetHistoryHash.CELL_FORMULA;
 
         this.historyParseMergeAndPush(tokens);
     }
