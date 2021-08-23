@@ -21,19 +21,19 @@ const LABEL = SpreadsheetLabelName.parse("Label123");
 
 // validate................................................................................................................
 
-function validateTest(label, tokens, expected) {
+function testValidate(label, tokens, expected) {
     test(label, () => {
         expect(SpreadsheetHistoryHash.validate(tokens))
             .toStrictEqual(null != expected ? expected : tokens);
     });
 }
 
-validateTest(
+testValidate(
     "validate empty",
     {}
 );
 
-validateTest(
+testValidate(
     "validate id & name",
     {
         "spreadsheet-id": ID,
@@ -41,7 +41,7 @@ validateTest(
     }
 );
 
-validateTest(
+testValidate(
     "validate id & name & name-edit",
     {
         "spreadsheet-id": ID,
@@ -50,7 +50,7 @@ validateTest(
     }
 );
 
-validateTest(
+testValidate(
     "validate id & name & cell=cell",
     {
         "spreadsheet-id": ID,
@@ -59,7 +59,7 @@ validateTest(
     }
 );
 
-validateTest(
+testValidate(
     "validate id & name & cell=label",
     {
         "spreadsheet-id": ID,
@@ -68,7 +68,7 @@ validateTest(
     }
 );
 
-validateTest(
+testValidate(
     "validate id & name & name edit && cell",
     {
         "spreadsheet-id": ID,
@@ -82,7 +82,7 @@ validateTest(
     }
 );
 
-validateTest(
+testValidate(
     "validate id & name & name edit && label",
     {
         "spreadsheet-id": ID,
@@ -96,7 +96,7 @@ validateTest(
     }
 );
 
-validateTest(
+testValidate(
     "validate id & name & name edit && select",
     {
         "spreadsheet-id": ID,
@@ -110,7 +110,7 @@ validateTest(
     }
 );
 
-validateTest(
+testValidate(
     "validate id & name & cell=CELL",
     {
         "spreadsheet-id": ID,
@@ -119,7 +119,7 @@ validateTest(
     }
 );
 
-validateTest(
+testValidate(
     "validate id & name & cell=invalid",
     {
         "spreadsheet-id": ID,
@@ -132,7 +132,7 @@ validateTest(
     },
 );
 
-validateTest(
+testValidate(
     "validate id & name & cell=LABEL",
     {
         "spreadsheet-id": ID,
@@ -141,7 +141,7 @@ validateTest(
     }
 );
 
-validateTest(
+testValidate(
     "validate id & name & label=LABEL",
     {
         "spreadsheet-id": ID,
@@ -150,7 +150,7 @@ validateTest(
     }
 );
 
-validateTest(
+testValidate(
     "validate id & name & label=!invalid",
     {
         "spreadsheet-id": ID,
@@ -163,7 +163,7 @@ validateTest(
     }
 );
 
-validateTest(
+testValidate(
     "validate id & name & select",
     {
         "spreadsheet-id": ID,
@@ -172,7 +172,7 @@ validateTest(
     }
 );
 
-validateTest(
+testValidate(
     "validate id & name & settings",
     {
         "spreadsheet-id": ID,
@@ -183,38 +183,38 @@ validateTest(
 
 // parse..................................................................................................................
 
-function parseFails(hash) {
+function testParseFails(hash) {
     test("parse " + CharSequences.quoteAndEscape(hash) + " fails", () => {
         expect(() => SpreadsheetHistoryHash.parse(hash).toThrow("Expected string pathname got " + hash));
     });
 }
 
-parseFails(undefined);
-parseFails(null);
-parseFails(false);
-parseFails(1);
-parseFails({});
-parseFails(SpreadsheetHistoryHash.parse);
-parseFails([]);
+testParseFails(undefined);
+testParseFails(null);
+testParseFails(false);
+testParseFails(1);
+testParseFails({});
+testParseFails(SpreadsheetHistoryHash.parse);
+testParseFails([]);
 
-parseAndStringifyTest(
+testParseAndStringify(
     "",
     {}
 );
 
-parseAndStringifyTest(
+testParseAndStringify(
     "/",
     {}
 );
 
-parseAndStringifyTest(
+testParseAndStringify(
     "/spreadsheet-id-123",
     {
         "spreadsheet-id": "spreadsheet-id-123",
     }
 );
 
-parseAndStringifyTest(
+testParseAndStringify(
     "/spreadsheet-id-123/spreadsheet-name-456",
     {
         "spreadsheet-id": "spreadsheet-id-123",
@@ -222,7 +222,7 @@ parseAndStringifyTest(
     }
 );
 
-parseAndStringifyTest(
+testParseAndStringify(
     "/spreadsheet-id-123/spreadsheet-name-456/name/!invalid4",
     {
         "spreadsheet-id": "spreadsheet-id-123",
@@ -230,7 +230,7 @@ parseAndStringifyTest(
     }
 );
 
-parseAndStringifyTest(
+testParseAndStringify(
     "/spreadsheet-id-123/spreadsheet-name-456/name",
     {
         "spreadsheet-id": "spreadsheet-id-123",
@@ -239,7 +239,7 @@ parseAndStringifyTest(
     }
 );
 
-parseAndStringifyTest(
+testParseAndStringify(
     "/spreadsheet-id-123/spreadsheet-name-456/name/cell/A1",
     {
         "spreadsheet-id": "spreadsheet-id-123",
@@ -247,7 +247,7 @@ parseAndStringifyTest(
     }
 );
 
-parseAndStringifyTest(
+testParseAndStringify(
     "/spreadsheet-id-123/spreadsheet-name-456/cell",
     {
         "spreadsheet-id": "spreadsheet-id-123",
@@ -255,7 +255,7 @@ parseAndStringifyTest(
     }
 );
 
-parseAndStringifyTest(
+testParseAndStringify(
     "/spreadsheet-id-123/spreadsheet-name-456/cell/!invalid",
     {
         "spreadsheet-id": "spreadsheet-id-123",
@@ -264,7 +264,7 @@ parseAndStringifyTest(
     "Cell: Invalid character '!' at 0",
 );
 
-parseAndStringifyTest(
+testParseAndStringify(
     "/spreadsheet-id-123/spreadsheet-name-456/cell/A1",
     {
         "spreadsheet-id": "spreadsheet-id-123",
@@ -273,7 +273,7 @@ parseAndStringifyTest(
     }
 );
 
-parseAndStringifyTest(
+testParseAndStringify(
     "/spreadsheet-id-123/spreadsheet-name-456/cell/A1/formula",
     {
         "spreadsheet-id": "spreadsheet-id-123",
@@ -283,7 +283,7 @@ parseAndStringifyTest(
     }
 );
 
-parseAndStringifyTest(
+testParseAndStringify(
     "/spreadsheet-id-123/spreadsheet-name-456/cell/C3:D4",
     {
         "spreadsheet-id": "spreadsheet-id-123",
@@ -292,7 +292,7 @@ parseAndStringifyTest(
     }
 );
 
-parseAndStringifyTest(
+testParseAndStringify(
     "/spreadsheet-id-123/spreadsheet-name-456/cell/C3:D4/formula",
     {
         "spreadsheet-id": "spreadsheet-id-123",
@@ -300,7 +300,7 @@ parseAndStringifyTest(
     }
 );
 
-parseAndStringifyTest(
+testParseAndStringify(
     "/spreadsheet-id-123/spreadsheet-name-456/cell/Label123",
     {
         "spreadsheet-id": "spreadsheet-id-123",
@@ -309,7 +309,7 @@ parseAndStringifyTest(
     }
 );
 
-parseAndStringifyTest(
+testParseAndStringify(
     "/spreadsheet-id-123/spreadsheet-name-456/cell/Label123/formula",
     {
         "spreadsheet-id": "spreadsheet-id-123",
@@ -319,7 +319,7 @@ parseAndStringifyTest(
     }
 );
 
-parseAndStringifyTest(
+testParseAndStringify(
     "/spreadsheet-id-123/spreadsheet-name-456/label",
     {
         "spreadsheet-id": "spreadsheet-id-123",
@@ -327,7 +327,7 @@ parseAndStringifyTest(
     }
 );
 
-parseAndStringifyTest(
+testParseAndStringify(
     "/spreadsheet-id-123/spreadsheet-name-456/label",
     {
         "spreadsheet-id": "spreadsheet-id-123",
@@ -335,7 +335,7 @@ parseAndStringifyTest(
     }
 );
 
-parseAndStringifyTest(
+testParseAndStringify(
     "/spreadsheet-id-123/spreadsheet-name-456/label/!invalid",
     {
         "spreadsheet-id": "spreadsheet-id-123",
@@ -344,7 +344,7 @@ parseAndStringifyTest(
     "Label: Invalid character '!' at 0",
 );
 
-parseAndStringifyTest(
+testParseAndStringify(
     "/spreadsheet-id-123/spreadsheet-name-456/label/Label123",
     {
         "spreadsheet-id": "spreadsheet-id-123",
@@ -353,7 +353,7 @@ parseAndStringifyTest(
     }
 );
 
-parseAndStringifyTest(
+testParseAndStringify(
     "/spreadsheet-id-123/spreadsheet-name-456/cell/A2/label/Label123",
     {
         "spreadsheet-id": "spreadsheet-id-123",
@@ -363,7 +363,7 @@ parseAndStringifyTest(
     }
 );
 
-parseAndStringifyTest(
+testParseAndStringify(
     "/spreadsheet-id-123/spreadsheet-name-456/cell/A2/formula/label/Label123",
     {
         "spreadsheet-id": "spreadsheet-id-123",
@@ -374,7 +374,7 @@ parseAndStringifyTest(
     }
 );
 
-parseAndStringifyTest(
+testParseAndStringify(
     "/spreadsheet-id-123/spreadsheet-name-456/name",
     {
         "spreadsheet-id": "spreadsheet-id-123",
@@ -383,7 +383,7 @@ parseAndStringifyTest(
     }
 );
 
-parseAndStringifyTest(
+testParseAndStringify(
     "/spreadsheet-id-123/spreadsheet-name-456/name/label/Label123",
     {
         "spreadsheet-id": "spreadsheet-id-123",
@@ -391,7 +391,7 @@ parseAndStringifyTest(
     }
 );
 
-parseAndStringifyTest(
+testParseAndStringify(
     "/spreadsheet-id-123/spreadsheet-name-456/name/select",
     {
         "spreadsheet-id": "spreadsheet-id-123",
@@ -399,7 +399,7 @@ parseAndStringifyTest(
     }
 );
 
-parseAndStringifyTest(
+testParseAndStringify(
     "/spreadsheet-id-123/spreadsheet-name-456/select",
     {
         "spreadsheet-id": "spreadsheet-id-123",
@@ -408,7 +408,7 @@ parseAndStringifyTest(
     }
 );
 
-parseAndStringifyTest(
+testParseAndStringify(
     "/spreadsheet-id-123/spreadsheet-name-456/cell/A1/select",
     {
         "spreadsheet-id": "spreadsheet-id-123",
@@ -418,7 +418,7 @@ parseAndStringifyTest(
     }
 );
 
-parseAndStringifyTest(
+testParseAndStringify(
     "/spreadsheet-id-123/spreadsheet-name-456/cell/A1/formula/select",
     {
         "spreadsheet-id": "spreadsheet-id-123",
@@ -429,7 +429,7 @@ parseAndStringifyTest(
     }
 );
 
-parseAndStringifyTest(
+testParseAndStringify(
     "/spreadsheet-id-123/spreadsheet-name-456/cell/A1/formula/select/settings",
     {
         "spreadsheet-id": "spreadsheet-id-123",
@@ -441,7 +441,7 @@ parseAndStringifyTest(
     }
 );
 
-parseAndStringifyTest(
+testParseAndStringify(
     "/spreadsheet-id-123/spreadsheet-name-456/label/Label123/select",
     {
         "spreadsheet-id": "spreadsheet-id-123",
@@ -451,7 +451,7 @@ parseAndStringifyTest(
     }
 );
 
-parseAndStringifyTest(
+testParseAndStringify(
     "/spreadsheet-id-123/spreadsheet-name-456/column/B",
     {
         "spreadsheet-id": "spreadsheet-id-123",
@@ -460,7 +460,7 @@ parseAndStringifyTest(
     }
 );
 
-parseAndStringifyTest(
+testParseAndStringify(
     "/spreadsheet-id-123/spreadsheet-name-456/column/B/formula",
     {
         "spreadsheet-id": "spreadsheet-id-123",
@@ -468,7 +468,7 @@ parseAndStringifyTest(
     }
 );
 
-parseAndStringifyTest(
+testParseAndStringify(
     "/spreadsheet-id-123/spreadsheet-name-456/column/B:C",
     {
         "spreadsheet-id": "spreadsheet-id-123",
@@ -477,7 +477,7 @@ parseAndStringifyTest(
     }
 );
 
-parseAndStringifyTest(
+testParseAndStringify(
     "/spreadsheet-id-123/spreadsheet-name-456/column/B:B",
     {
         "spreadsheet-id": "spreadsheet-id-123",
@@ -486,7 +486,7 @@ parseAndStringifyTest(
     }
 );
 
-parseAndStringifyTest(
+testParseAndStringify(
     "/spreadsheet-id-123/spreadsheet-name-456/column/B/select",
     {
         "spreadsheet-id": "spreadsheet-id-123",
@@ -496,7 +496,7 @@ parseAndStringifyTest(
     }
 );
 
-parseAndStringifyTest(
+testParseAndStringify(
     "/spreadsheet-id-123/spreadsheet-name-456/row/2",
     {
         "spreadsheet-id": "spreadsheet-id-123",
@@ -505,7 +505,7 @@ parseAndStringifyTest(
     }
 );
 
-parseAndStringifyTest(
+testParseAndStringify(
     "/spreadsheet-id-123/spreadsheet-name-456/row/2:3",
     {
         "spreadsheet-id": "spreadsheet-id-123",
@@ -514,7 +514,7 @@ parseAndStringifyTest(
     }
 );
 
-parseAndStringifyTest(
+testParseAndStringify(
     "/spreadsheet-id-123/spreadsheet-name-456/row/2:2",
     {
         "spreadsheet-id": "spreadsheet-id-123",
@@ -523,7 +523,7 @@ parseAndStringifyTest(
     }
 );
 
-parseAndStringifyTest(
+testParseAndStringify(
     "/spreadsheet-id-123/spreadsheet-name-456/row/2/formula",
     {
         "spreadsheet-id": "spreadsheet-id-123",
@@ -531,7 +531,7 @@ parseAndStringifyTest(
     }
 );
 
-parseAndStringifyTest(
+testParseAndStringify(
     "/spreadsheet-id-123/spreadsheet-name-456/row/2/select",
     {
         "spreadsheet-id": "spreadsheet-id-123",
@@ -541,7 +541,7 @@ parseAndStringifyTest(
     }
 );
 
-parseAndStringifyTest(
+testParseAndStringify(
     "/spreadsheet-id-123/spreadsheet-name-456/select/settings",
     {
         "spreadsheet-id": "spreadsheet-id-123",
@@ -551,7 +551,7 @@ parseAndStringifyTest(
     }
 );
 
-parseAndStringifyTest(
+testParseAndStringify(
     "/spreadsheet-id-123/spreadsheet-name-456/select/settings/number",
     {
         "spreadsheet-id": "spreadsheet-id-123",
@@ -562,7 +562,7 @@ parseAndStringifyTest(
     }
 );
 
-parseAndStringifyTest(
+testParseAndStringify(
     "/spreadsheet-id-123/spreadsheet-name-456/settings",
     {
         "spreadsheet-id": "spreadsheet-id-123",
@@ -571,7 +571,7 @@ parseAndStringifyTest(
     }
 );
 
-parseAndStringifyTest(
+testParseAndStringify(
     "/spreadsheet-id-123/spreadsheet-name-456/settings/!invalid",
     {
         "spreadsheet-id": "spreadsheet-id-123",
@@ -580,7 +580,7 @@ parseAndStringifyTest(
     }
 );
 
-parseAndStringifyTest(
+testParseAndStringify(
     "/spreadsheet-id-123/spreadsheet-name-456/settings/metadata",
     {
         "spreadsheet-id": "spreadsheet-id-123",
@@ -590,7 +590,7 @@ parseAndStringifyTest(
     }
 );
 
-parseAndStringifyTest(
+testParseAndStringify(
     "/spreadsheet-id-123/spreadsheet-name-456/settings/text",
     {
         "spreadsheet-id": "spreadsheet-id-123",
@@ -600,7 +600,7 @@ parseAndStringifyTest(
     }
 );
 
-parseAndStringifyTest(
+testParseAndStringify(
     "/spreadsheet-id-123/spreadsheet-name-456/settings/number",
     {
         "spreadsheet-id": "spreadsheet-id-123",
@@ -610,7 +610,7 @@ parseAndStringifyTest(
     }
 );
 
-parseAndStringifyTest(
+testParseAndStringify(
     "/spreadsheet-id-123/spreadsheet-name-456/settings/date-time",
     {
         "spreadsheet-id": "spreadsheet-id-123",
@@ -620,7 +620,7 @@ parseAndStringifyTest(
     }
 );
 
-parseAndStringifyTest(
+testParseAndStringify(
     "/spreadsheet-id-123/spreadsheet-name-456/settings/style",
     {
         "spreadsheet-id": "spreadsheet-id-123",
@@ -630,7 +630,7 @@ parseAndStringifyTest(
     }
 );
 
-parseAndStringifyTest(
+testParseAndStringify(
     "/spreadsheet-id-123/spreadsheet-name-456/name/settings",
     {
         "spreadsheet-id": "spreadsheet-id-123",
@@ -639,7 +639,7 @@ parseAndStringifyTest(
     }
 );
 
-parseAndStringifyTest(
+testParseAndStringify(
     "/spreadsheet-id-123/spreadsheet-name-456/name/settings/!invalid",
     {
         "spreadsheet-id": "spreadsheet-id-123",
@@ -648,7 +648,7 @@ parseAndStringifyTest(
     }
 );
 
-parseAndStringifyTest(
+testParseAndStringify(
     "/spreadsheet-id-123/spreadsheet-name-456/name/settings/metadata",
     {
         "spreadsheet-id": "spreadsheet-id-123",
@@ -658,7 +658,7 @@ parseAndStringifyTest(
     }
 );
 
-parseAndStringifyTest(
+testParseAndStringify(
     "/spreadsheet-id-123/spreadsheet-name-456/name/settings/text",
     {
         "spreadsheet-id": "spreadsheet-id-123",
@@ -668,7 +668,7 @@ parseAndStringifyTest(
     }
 );
 
-parseAndStringifyTest(
+testParseAndStringify(
     "/spreadsheet-id-123/spreadsheet-name-456/name/settings/number",
     {
         "spreadsheet-id": "spreadsheet-id-123",
@@ -678,7 +678,7 @@ parseAndStringifyTest(
     }
 );
 
-parseAndStringifyTest(
+testParseAndStringify(
     "/spreadsheet-id-123/spreadsheet-name-456/name/settings/date-time",
     {
         "spreadsheet-id": "spreadsheet-id-123",
@@ -688,7 +688,7 @@ parseAndStringifyTest(
     }
 );
 
-parseAndStringifyTest(
+testParseAndStringify(
     "/spreadsheet-id-123/spreadsheet-name-456/name/settings/style",
     {
         "spreadsheet-id": "spreadsheet-id-123",
@@ -698,7 +698,7 @@ parseAndStringifyTest(
     }
 );
 
-parseAndStringifyTest(
+testParseAndStringify(
     "/spreadsheet-id-123/spreadsheet-name-456/cell/B2/formula/settings",
     {
         "spreadsheet-id": "spreadsheet-id-123",
@@ -709,7 +709,7 @@ parseAndStringifyTest(
     }
 );
 
-parseAndStringifyTest(
+testParseAndStringify(
     "/spreadsheet-id-123/spreadsheet-name-456/cell/B2/formula/settings/!invalid",
     {
         "spreadsheet-id": "spreadsheet-id-123",
@@ -720,7 +720,7 @@ parseAndStringifyTest(
     }
 );
 
-parseAndStringifyTest(
+testParseAndStringify(
     "/spreadsheet-id-123/spreadsheet-name-456/cell/B2/formula/settings/metadata",
     {
         "spreadsheet-id": "spreadsheet-id-123",
@@ -732,7 +732,7 @@ parseAndStringifyTest(
     }
 );
 
-parseAndStringifyTest(
+testParseAndStringify(
     "/spreadsheet-id-123/spreadsheet-name-456/cell/B2/formula/settings/text",
     {
         "spreadsheet-id": "spreadsheet-id-123",
@@ -744,7 +744,7 @@ parseAndStringifyTest(
     }
 );
 
-parseAndStringifyTest(
+testParseAndStringify(
     "/spreadsheet-id-123/spreadsheet-name-456/cell/B2/formula/settings/number",
     {
         "spreadsheet-id": "spreadsheet-id-123",
@@ -756,7 +756,7 @@ parseAndStringifyTest(
     }
 );
 
-parseAndStringifyTest(
+testParseAndStringify(
     "/spreadsheet-id-123/spreadsheet-name-456/cell/B2/formula/settings/date-time",
     {
         "spreadsheet-id": "spreadsheet-id-123",
@@ -768,7 +768,7 @@ parseAndStringifyTest(
     }
 );
 
-parseAndStringifyTest(
+testParseAndStringify(
     "/spreadsheet-id-123/spreadsheet-name-456/cell/B2/formula/settings/style",
     {
         "spreadsheet-id": "spreadsheet-id-123",
@@ -779,7 +779,7 @@ parseAndStringifyTest(
         "settings-section": "style",
     }
 );
-parseAndStringifyTest(
+testParseAndStringify(
     "/spreadsheet-id-123/spreadsheet-name-456/label/Label123/settings/style",
     {
         "spreadsheet-id": "spreadsheet-id-123",
@@ -790,7 +790,7 @@ parseAndStringifyTest(
     }
 );
 
-parseAndStringifyTest(
+testParseAndStringify(
     "/spreadsheet-id-123/spreadsheet-name-456/cell/A1/formula/settings/metadata",
     {
         "spreadsheet-id": "spreadsheet-id-123",
@@ -802,7 +802,7 @@ parseAndStringifyTest(
     }
 );
 
-function parseAndStringifyTest(hash, expected, expectedError) {
+function testParseAndStringify(hash, expected, expectedError) {
     test("parse " + CharSequences.quoteAndEscape(hash), () => {
         let errors = [];
         expect(SpreadsheetHistoryHash.parse(hash, e => errors.push(e)))
@@ -825,19 +825,19 @@ function parseAndStringifyTest(hash, expected, expectedError) {
 
 // merge...............................................................................................................
 
-function mergeCurrentFails(current) {
+function testMergeCurrentFails(current) {
     test("merge current: " + CharSequences.quoteAndEscape(current) + " fails", () => {
         expect(() => SpreadsheetHistoryHash.merge(current, {}).toThrow("Expected object current got " + current));
     });
 }
 
-mergeCurrentFails(undefined);
-mergeCurrentFails(null);
-mergeCurrentFails(false);
-mergeCurrentFails(1);
-mergeCurrentFails("");
-mergeCurrentFails(SpreadsheetHistoryHash.parse);
-mergeCurrentFails([]);
+testMergeCurrentFails(undefined);
+testMergeCurrentFails(null);
+testMergeCurrentFails(false);
+testMergeCurrentFails(1);
+testMergeCurrentFails("");
+testMergeCurrentFails(SpreadsheetHistoryHash.parse);
+testMergeCurrentFails([]);
 
 function mergeUpdatesFails(updates) {
     test("merge updates: " + updates + " fails", () => {
@@ -853,19 +853,19 @@ mergeUpdatesFails("");
 mergeUpdatesFails(SpreadsheetHistoryHash.parse);
 mergeUpdatesFails([]);
 
-    mergeTest(
+    testMerge(
         "",
         {},
         "/"
     );
 
-    mergeTest(
+    testMerge(
         "/123abc",
         {},
         "/123abc"
     );
 
-    mergeTest(
+    testMerge(
         "/123abc",
         {
             "spreadsheet-id": "456def",
@@ -873,13 +873,13 @@ mergeUpdatesFails([]);
         "/456def"
     );
 
-    mergeTest(
+    testMerge(
         "/123abc/Untitled456",
         {},
         "/123abc/Untitled456"
     );
 
-    mergeTest(
+    testMerge(
         "/123abc/Untitled456",
         {
             "spreadsheet-name": "Untitled999",
@@ -887,7 +887,7 @@ mergeUpdatesFails([]);
         "/123abc/Untitled999"
     );
 
-    mergeTest(
+    testMerge(
         "/123abc/Untitled456/!invalid",
         {},
         "/123abc/Untitled456"
@@ -895,13 +895,13 @@ mergeUpdatesFails([]);
 
 // spreadsheet name edit................................................................................................
 
-    mergeTest(
+    testMerge(
         "/123abc/Untitled456/name",
         {},
         "/123abc/Untitled456/name"
     );
 
-    mergeTest(
+    testMerge(
         "/123abc/Untitled456",
         {
             name: true,
@@ -909,7 +909,7 @@ mergeUpdatesFails([]);
         "/123abc/Untitled456/name"
     );
 
-   mergeTest(
+   testMerge(
         "/123abc/Untitled456",
         {
             name: false,
@@ -917,7 +917,7 @@ mergeUpdatesFails([]);
         "/123abc/Untitled456"
     );
 
-    mergeTest(
+    testMerge(
         "/123abc/Untitled456/name",
         {
             "name": true,
@@ -925,7 +925,7 @@ mergeUpdatesFails([]);
         "/123abc/Untitled456/name"
     );
 
-    mergeTest(
+    testMerge(
         "/123abc/Untitled456/name",
         {
             "name": false,
@@ -933,7 +933,7 @@ mergeUpdatesFails([]);
         "/123abc/Untitled456"
     );
 
-    mergeTest(
+    testMerge(
         "/123abc/Untitled456/name",
         {
             "name": true,
@@ -941,7 +941,7 @@ mergeUpdatesFails([]);
         "/123abc/Untitled456/name"
     );
 
-    mergeTest(
+    testMerge(
         "/123abc/Untitled456/name",
         {
             "name": false,
@@ -949,19 +949,19 @@ mergeUpdatesFails([]);
         "/123abc/Untitled456"
     );
 
-    mergeTest(
+    testMerge(
         "/123abc/Untitled456/name/cell/A1/formula",
         {},
         "/123abc/Untitled456"
     );
 
-    mergeTest(
+    testMerge(
         "/123abc/Untitled456/name/!invalid2",
         {},
         "/123abc/Untitled456"
     );
 
-    mergeTest(
+    testMerge(
         "/123abc/Untitled456/name/!invalid",
         {
             "selection": SpreadsheetCellReference.parse("A1")
@@ -969,7 +969,7 @@ mergeUpdatesFails([]);
         "/123abc/Untitled456/cell/A1"
     );
 
-    mergeTest(
+    testMerge(
         "/123abc/Untitled456/name",
         {
             "selection": null,
@@ -977,7 +977,7 @@ mergeUpdatesFails([]);
         "/123abc/Untitled456/name"
     );
 
-    mergeTest(
+    testMerge(
         "/123abc/Untitled456/name",
         {
             "selection": SpreadsheetCellReference.parse("A1"),
@@ -986,7 +986,7 @@ mergeUpdatesFails([]);
         "/123abc/Untitled456/cell/A1/formula"
     );
 
-    mergeTest(
+    testMerge(
         "/123abc/Untitled456/name",
         {
             "label": SpreadsheetLabelName.parse("LABEL123"),
@@ -994,7 +994,7 @@ mergeUpdatesFails([]);
         "/123abc/Untitled456/label/LABEL123"
     );
 
-    mergeTest(
+    testMerge(
         "/123abc/Untitled456/name",
         {
             "label": null,
@@ -1002,7 +1002,7 @@ mergeUpdatesFails([]);
         "/123abc/Untitled456/name"
     );
 
-    mergeTest(
+    testMerge(
         "/123abc/Untitled456/name",
         {
             "label": SpreadsheetLabelName.parse("Label123"),
@@ -1010,7 +1010,7 @@ mergeUpdatesFails([]);
         "/123abc/Untitled456/label/Label123"
     );
 
-    mergeTest(
+    testMerge(
         "/123abc/Untitled456/name",
         {
             "select": true,
@@ -1020,25 +1020,25 @@ mergeUpdatesFails([]);
 
 // cell.................................................................................................................
 
-    mergeTest(
+    testMerge(
         "/123abc/Untitled456/cell",
         {},
         "/123abc/Untitled456"
     );
 
-    mergeTest(
+    testMerge(
         "/123abc/Untitled456/cell/999",
         {},
         "/123abc/Untitled456"
     );
 
-    mergeTest(
+    testMerge(
         "/123abc/Untitled456/cell/A1",
         {},
         "/123abc/Untitled456/cell/A1"
     );
 
-    mergeTest(
+    testMerge(
         "/123abc/Untitled456/cell/A1",
         {
             "formula": false,
@@ -1046,7 +1046,7 @@ mergeUpdatesFails([]);
         "/123abc/Untitled456/cell/A1"
     );
 
-    mergeTest(
+    testMerge(
         "/123abc/Untitled456/cell/A1",
         {
             "formula": true,
@@ -1054,7 +1054,7 @@ mergeUpdatesFails([]);
         "/123abc/Untitled456/cell/A1/formula"
     );
 
-    mergeTest(
+    testMerge(
         "/123abc/Untitled456/cell",
         {
             "selection": SpreadsheetCellReference.parse("A1"),
@@ -1062,13 +1062,13 @@ mergeUpdatesFails([]);
         "/123abc/Untitled456/cell/A1"
     );
 
-    mergeTest(
+    testMerge(
         "/123abc/Untitled456/cell/A1/formula",
         {},
         "/123abc/Untitled456/cell/A1/formula"
     );
 
-    mergeTest(
+    testMerge(
         "/123abc/Untitled456/cell/A1",
         {
             "selection": SpreadsheetCellReference.parse("B2"),
@@ -1076,7 +1076,7 @@ mergeUpdatesFails([]);
         "/123abc/Untitled456/cell/B2"
     );
 
-    mergeTest(
+    testMerge(
         "/123abc/Untitled456/cell/A1/formula",
         {
             "selection": SpreadsheetCellReference.parse("B2"),
@@ -1084,7 +1084,7 @@ mergeUpdatesFails([]);
         "/123abc/Untitled456/cell/B2/formula"
     );
 
-    mergeTest(
+    testMerge(
         "/123abc/Untitled456/cell/A1/formula",
         {
             "formula": false,
@@ -1092,7 +1092,7 @@ mergeUpdatesFails([]);
         "/123abc/Untitled456/cell/A1"
     );
 
-    mergeTest(
+    testMerge(
         "/123abc/Untitled456/cell/A1/formula/!invalid3",
         {
             "formula": false,
@@ -1100,7 +1100,7 @@ mergeUpdatesFails([]);
         "/123abc/Untitled456"
     );
 
-    mergeTest(
+    testMerge(
         "/123abc/Untitled456/cell/A1",
         {
             "selection": null,
@@ -1108,7 +1108,7 @@ mergeUpdatesFails([]);
         "/123abc/Untitled456"
     );
 
-  mergeTest(
+  testMerge(
         "/123abc/Untitled456/cell/A1/formula",
         {
             "formula": null,
@@ -1116,7 +1116,7 @@ mergeUpdatesFails([]);
         "/123abc/Untitled456/cell/A1"
     );
 
-    mergeTest(
+    testMerge(
         "/123abc/Untitled456/cell/A2",
         {
             "name": false,
@@ -1124,7 +1124,7 @@ mergeUpdatesFails([]);
         "/123abc/Untitled456/cell/A2"
     );
 
-    mergeTest(
+    testMerge(
         "/123abc/Untitled456/cell/A2",
         {
             "name": true,
@@ -1132,7 +1132,7 @@ mergeUpdatesFails([]);
         "/123abc/Untitled456/name"
     );
 
-    mergeTest(
+    testMerge(
         "/123abc/Untitled456/cell/A2/formula",
         {
             "name": false,
@@ -1140,7 +1140,7 @@ mergeUpdatesFails([]);
         "/123abc/Untitled456/cell/A2/formula"
     );
 
-    mergeTest(
+    testMerge(
         "/123abc/Untitled456/cell/A2/formula",
         {
             "name": true,
@@ -1148,7 +1148,7 @@ mergeUpdatesFails([]);
         "/123abc/Untitled456/name"
     );
 
-    mergeTest(
+    testMerge(
         "/123abc/Untitled456/cell/A1",
         {
             "selection": CELL_RANGE,
@@ -1156,7 +1156,7 @@ mergeUpdatesFails([]);
         "/123abc/Untitled456/cell/C3:D4"
     );
 
-    mergeTest(
+    testMerge(
         "/123abc/Untitled456/cell/A1/formula",
         {
             "selection": CELL_RANGE,
@@ -1165,7 +1165,7 @@ mergeUpdatesFails([]);
         "/123abc/Untitled456/cell/C3:D4"
     );
 
-    mergeTest(
+    testMerge(
         "/123abc/Untitled456/cell/LABEL123",
         {},
         "/123abc/Untitled456/cell/LABEL123"
@@ -1173,37 +1173,37 @@ mergeUpdatesFails([]);
 
 // label.................................................................................................................
 
-    mergeTest(
+    testMerge(
         "/123abc/Untitled456/label",
         {},
         "/123abc/Untitled456"
     );
 
-    mergeTest(
+    testMerge(
         "/123abc/Untitled456/label/!invalid-label",
         {},
         "/123abc/Untitled456"
     );
 
-    mergeTest(
+    testMerge(
         "/123abc/Untitled456/label/A1",
         {},
         "/123abc/Untitled456"
     );
 
-    mergeTest(
+    testMerge(
         "/123abc/Untitled456/label/LABEL123",
         {},
         "/123abc/Untitled456/label/LABEL123"
     );
 
-    mergeTest(
+    testMerge(
         "/123abc/Untitled456/cell/A1/label/LABEL123",
         {},
         "/123abc/Untitled456/cell/A1/label/LABEL123"
     );
 
-    mergeTest(
+    testMerge(
         "/123abc/Untitled456/label/LABEL123",
         {
             name: false,
@@ -1211,7 +1211,7 @@ mergeUpdatesFails([]);
         "/123abc/Untitled456/label/LABEL123"
     );
 
-    mergeTest(
+    testMerge(
         "/123abc/Untitled456/label/LABEL123",
         {
             name: true,
@@ -1221,7 +1221,7 @@ mergeUpdatesFails([]);
 
     // column...........................................................................................................
 
-    mergeTest(
+    testMerge(
         "/123abc/Untitled456/",
         {
             selection: COLUMN,
@@ -1229,7 +1229,7 @@ mergeUpdatesFails([]);
         "/123abc/Untitled456/column/B"
     );
 
-    mergeTest(
+    testMerge(
         "/123abc/Untitled456/column/B",
         {
             selection: COLUMN_RANGE,
@@ -1237,7 +1237,7 @@ mergeUpdatesFails([]);
         "/123abc/Untitled456/column/B:C"
     );
 
-    mergeTest(
+    testMerge(
         "/123abc/Untitled456/column/B:D",
         {
             selection: COLUMN,
@@ -1247,7 +1247,7 @@ mergeUpdatesFails([]);
 
     // row...........................................................................................................
 
-    mergeTest(
+    testMerge(
         "/123abc/Untitled456/",
         {
             selection: ROW,
@@ -1255,7 +1255,7 @@ mergeUpdatesFails([]);
         "/123abc/Untitled456/row/2"
     );
     
-    mergeTest(
+    testMerge(
         "/123abc/Untitled456/row/2",
         {
             selection: ROW_RANGE,
@@ -1263,7 +1263,7 @@ mergeUpdatesFails([]);
         "/123abc/Untitled456/row/2:3"
     );
     
-    mergeTest(
+    testMerge(
         "/123abc/Untitled456/row/2:3",
         {
             selection: ROW,
@@ -1273,31 +1273,31 @@ mergeUpdatesFails([]);
 
     // select.............................................................................................................
 
-    mergeTest(
+    testMerge(
         "/123abc/Untitled456/select",
         {},
         "/123abc/Untitled456/select",
     );
 
-    mergeTest(
+    testMerge(
         "/123abc/Untitled456/cell/A1/select",
         {},
         "/123abc/Untitled456/cell/A1/select",
     );
 
-    mergeTest(
+    testMerge(
         "/123abc/Untitled456/label/LABEL123/select",
         {},
         "/123abc/Untitled456/label/LABEL123/select",
     );
 
-    mergeTest(
+    testMerge(
         "/123abc/Untitled456/select/settings",
         {},
         "/123abc/Untitled456/select/settings",
     );
 
-    mergeTest(
+    testMerge(
         "/123abc/Untitled456/",
         {
             "select": true,
@@ -1305,7 +1305,7 @@ mergeUpdatesFails([]);
         "/123abc/Untitled456/select",
     );
 
-    mergeTest(
+    testMerge(
         "/123abc/Untitled456/cell/A1",
         {
             "select": true,
@@ -1313,7 +1313,7 @@ mergeUpdatesFails([]);
         "/123abc/Untitled456/cell/A1/select",
     );
 
-    mergeTest(
+    testMerge(
         "/123abc/Untitled456/select",
         {
             "select": false,
@@ -1321,7 +1321,7 @@ mergeUpdatesFails([]);
         "/123abc/Untitled456",
     );
 
-    mergeTest(
+    testMerge(
         "/123abc/Untitled456/select",
         {
             "name": false,
@@ -1329,7 +1329,7 @@ mergeUpdatesFails([]);
         "/123abc/Untitled456/select",
     );
 
-    mergeTest(
+    testMerge(
         "/123abc/Untitled456/select",
         {
             "name": true,
@@ -1339,13 +1339,13 @@ mergeUpdatesFails([]);
 
 // settings.............................................................................................................
 
-    mergeTest(
+    testMerge(
         "/123abc/Untitled456/settings",
         {},
         "/123abc/Untitled456/settings"
     );
 
-   mergeTest(
+   testMerge(
         "/123abc/Untitled456/settings",
         {
             "settings": true,
@@ -1353,7 +1353,7 @@ mergeUpdatesFails([]);
         "/123abc/Untitled456/settings"
     );
 
-    mergeTest(
+    testMerge(
         "/123abc/Untitled456/settings",
         {
             "settings": true,
@@ -1362,7 +1362,7 @@ mergeUpdatesFails([]);
         "/123abc/Untitled456/settings"
     );
 
-    mergeTest(
+    testMerge(
         "/123abc/Untitled456/settings",
         {
             "settings": true,
@@ -1371,7 +1371,7 @@ mergeUpdatesFails([]);
         "/123abc/Untitled456/settings/metadata"
     );
 
-    mergeTest(
+    testMerge(
         "/123abc/Untitled456/settings",
         {
             "settings": true,
@@ -1380,7 +1380,7 @@ mergeUpdatesFails([]);
         "/123abc/Untitled456/settings/text"
     );
 
-    mergeTest(
+    testMerge(
         "/123abc/Untitled456/settings",
         {
             "settings": true,
@@ -1389,7 +1389,7 @@ mergeUpdatesFails([]);
         "/123abc/Untitled456/settings/number"
     );
 
-    mergeTest(
+    testMerge(
         "/123abc/Untitled456/settings",
         {
             "settings": true,
@@ -1398,7 +1398,7 @@ mergeUpdatesFails([]);
         "/123abc/Untitled456/settings/date-time"
     );
 
-    mergeTest(
+    testMerge(
         "/123abc/Untitled456/settings",
         {
             "settings": true,
@@ -1407,7 +1407,7 @@ mergeUpdatesFails([]);
         "/123abc/Untitled456/settings/style"
     );
 
-    mergeTest(
+    testMerge(
         "/123abc/Untitled456/settings",
         {
             "settings": false,
@@ -1415,7 +1415,7 @@ mergeUpdatesFails([]);
         "/123abc/Untitled456"
     );
 
-    mergeTest(
+    testMerge(
         "/123abc/Untitled456/name/settings",
         {
             "settings": true,
@@ -1423,7 +1423,7 @@ mergeUpdatesFails([]);
         "/123abc/Untitled456/settings"
     );
 
-    mergeTest(
+    testMerge(
         "/123abc/Untitled456/name/settings",
         {
             "settings": false,
@@ -1431,7 +1431,7 @@ mergeUpdatesFails([]);
         "/123abc/Untitled456"
     );
 
-    mergeTest(
+    testMerge(
         "/123abc/Untitled456/name/settings",
         {
             "settings": true,
@@ -1440,7 +1440,7 @@ mergeUpdatesFails([]);
         "/123abc/Untitled456/settings"
     );
 
-    mergeTest(
+    testMerge(
         "/123abc/Untitled456/name/settings",
         {
             "settings": true,
@@ -1449,7 +1449,7 @@ mergeUpdatesFails([]);
         "/123abc/Untitled456/settings/metadata"
     );
 
-    mergeTest(
+    testMerge(
         "/123abc/Untitled456/name/settings",
         {
             "settings": true,
@@ -1458,7 +1458,7 @@ mergeUpdatesFails([]);
         "/123abc/Untitled456/settings/text"
     );
 
-    mergeTest(
+    testMerge(
         "/123abc/Untitled456/name/settings",
         {
             "settings": true,
@@ -1467,7 +1467,7 @@ mergeUpdatesFails([]);
         "/123abc/Untitled456/settings/number"
     );
 
-    mergeTest(
+    testMerge(
         "/123abc/Untitled456/name/settings",
         {
             "settings": true,
@@ -1476,7 +1476,7 @@ mergeUpdatesFails([]);
         "/123abc/Untitled456/settings/date-time"
     );
 
-    mergeTest(
+    testMerge(
         "/123abc/Untitled456/name/settings",
         {
             "settings": true,
@@ -1485,7 +1485,7 @@ mergeUpdatesFails([]);
         "/123abc/Untitled456/settings/style"
     );
 
-    mergeTest(
+    testMerge(
         "/123abc/Untitled456/cell/A1",
         {
             "settings": true,
@@ -1493,7 +1493,7 @@ mergeUpdatesFails([]);
         "/123abc/Untitled456/cell/A1/settings"
     );
 
-    mergeTest(
+    testMerge(
         "/123abc/Untitled456/cell/A1/settings",
         {
             "settings": false,
@@ -1501,7 +1501,7 @@ mergeUpdatesFails([]);
         "/123abc/Untitled456/cell/A1"
     );
 
-    mergeTest(
+    testMerge(
         "/123abc/Untitled456/cell/A1/formula",
         {
             "settings": true,
@@ -1509,7 +1509,7 @@ mergeUpdatesFails([]);
         "/123abc/Untitled456/cell/A1/formula/settings"
     );
 
-    mergeTest(
+    testMerge(
         "/123abc/Untitled456/cell/A1/formula/settings",
         {
             "settings": true,
@@ -1517,7 +1517,7 @@ mergeUpdatesFails([]);
         "/123abc/Untitled456/cell/A1/formula/settings"
     );
 
-    mergeTest(
+    testMerge(
         "/123abc/Untitled456/cell/A1/formula/settings",
         {
             "settings": true,
@@ -1526,7 +1526,7 @@ mergeUpdatesFails([]);
         "/123abc/Untitled456/cell/A1/formula/settings"
     );
 
-    mergeTest(
+    testMerge(
         "/123abc/Untitled456/cell/A1/formula/settings",
         {
             "settings": true,
@@ -1535,7 +1535,7 @@ mergeUpdatesFails([]);
         "/123abc/Untitled456/cell/A1/formula/settings/metadata"
     );
 
-    mergeTest(
+    testMerge(
         "/123abc/Untitled456/cell/A1/formula/settings",
         {
             "settings": true,
@@ -1544,7 +1544,7 @@ mergeUpdatesFails([]);
         "/123abc/Untitled456/cell/A1/formula/settings/text"
     );
 
-    mergeTest(
+    testMerge(
         "/123abc/Untitled456/cell/A1/formula/settings",
         {
             "settings": true,
@@ -1553,7 +1553,7 @@ mergeUpdatesFails([]);
         "/123abc/Untitled456/cell/A1/formula/settings/number"
     );
 
-    mergeTest(
+    testMerge(
         "/123abc/Untitled456/cell/A1/formula/settings",
         {
             "settings": true,
@@ -1562,7 +1562,7 @@ mergeUpdatesFails([]);
         "/123abc/Untitled456/cell/A1/formula/settings/date-time"
     );
 
-    mergeTest(
+    testMerge(
         "/123abc/Untitled456/cell/A1/formula/settings",
         {
             "settings": true,
@@ -1571,7 +1571,7 @@ mergeUpdatesFails([]);
         "/123abc/Untitled456/cell/A1/formula/settings/style"
     );
 
-    mergeTest(
+    testMerge(
         "/123abc/Untitled456/cell/A1/formula/settings",
         {
             "settings": false,
@@ -1579,7 +1579,7 @@ mergeUpdatesFails([]);
         "/123abc/Untitled456/cell/A1/formula"
     );
 
-    mergeTest(
+    testMerge(
         "/123abc/Untitled456/cell/A1/formula/settings",
         {
             "settings": false,
@@ -1588,7 +1588,7 @@ mergeUpdatesFails([]);
         "/123abc/Untitled456/cell/A1/formula"
     );
 
-    mergeTest(
+    testMerge(
         "/123abc/Untitled456/cell/A1/formula/settings",
         {
             "spreadsheet-id": "456def",
@@ -1600,7 +1600,7 @@ mergeUpdatesFails([]);
         "/456def/new-spreadsheet-name-456/cell/B2/formula/settings"
     );
 
-    mergeTest(
+    testMerge(
         "/123abc/Untitled456/cell/A1/formula/settings",
         {
             "spreadsheet-id": "456def",
@@ -1612,7 +1612,7 @@ mergeUpdatesFails([]);
         "/456def/new-spreadsheet-name-456/cell/B2/formula"
     );
 
-    mergeTest(
+    testMerge(
         "/123abc/Untitled456",
         {
             "formula": true,
@@ -1620,7 +1620,7 @@ mergeUpdatesFails([]);
         "/123abc/Untitled456"
     );
 
-function mergeTest(hash, update, expected) {
+function testMerge(hash, update, expected) {
     test("merge " + CharSequences.quoteAndEscape(hash) + " AND " + stringify(update), () => {
         const throwError = (e) => {throw Error(e)};
 
