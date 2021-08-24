@@ -3,10 +3,13 @@ import Preconditions from "../../Preconditions.js";
 import SpreadsheetCellReferenceOrLabelName from "../reference/SpreadsheetCellReferenceOrLabelName.js";
 import spreadsheetCellReferenceOrLabelNameParse from "../reference/SpreadsheetCellReferenceOrLabelNameParse.js";
 import SpreadsheetColumnReferenceRange from "../reference/SpreadsheetColumnReferenceRange.js";
+import SpreadsheetFormulaHistoryHashToken from "./SpreadsheetFormulaHistoryHashToken.js";
+import SpreadsheetHistoryHashToken from "./SpreadsheetHistoryHashToken.js";
 import SpreadsheetLabelName from "../reference/SpreadsheetLabelName.js";
 import SpreadsheetName from "../SpreadsheetName.js";
 import SpreadsheetRowReferenceRange from "../reference/SpreadsheetRowReferenceRange.js";
 import SpreadsheetSelection from "../reference/SpreadsheetSelection.js";
+
 
 function tokenize(pathname) {
     return pathname && pathname.startsWith("/") ?
@@ -115,7 +118,7 @@ export default class SpreadsheetHistoryHash {
                                 valid = false;
                                 break;
                             }
-                            tokens2[SpreadsheetHistoryHash.SELECTION_ACTION] = SpreadsheetHistoryHash.CELL_FORMULA;
+                            tokens2[SpreadsheetHistoryHash.SELECTION_ACTION] = new SpreadsheetFormulaHistoryHashToken();
                             break;
                         case SpreadsheetHistoryHash.COLUMN:
                             if(selection || sourceTokens.length === 0){
@@ -234,7 +237,7 @@ export default class SpreadsheetHistoryHash {
                 }
                 if(selection instanceof SpreadsheetSelection){
                     verified[SpreadsheetHistoryHash.SELECTION] = selection;
-                    if(selection instanceof SpreadsheetCellReferenceOrLabelName && selectionAction){
+                    if(selection instanceof SpreadsheetCellReferenceOrLabelName && selectionAction instanceof SpreadsheetHistoryHashToken){
                         verified[SpreadsheetHistoryHash.SELECTION_ACTION] = selectionAction;
                     }
                 }
@@ -304,7 +307,7 @@ export default class SpreadsheetHistoryHash {
 
         if(delta.hasOwnProperty(SpreadsheetHistoryHash.SELECTION_ACTION)){
             selectionAction = delta[SpreadsheetHistoryHash.SELECTION_ACTION];
-            if(selectionAction){
+            if(selectionAction instanceof SpreadsheetFormulaHistoryHashToken){
                 nameEdit = false;
             }
         }
@@ -359,7 +362,7 @@ export default class SpreadsheetHistoryHash {
                 merged[SpreadsheetHistoryHash.SELECTION] = selection;
             }
 
-            if(selection && !!selectionAction){
+            if(selection && selectionAction instanceof SpreadsheetHistoryHashToken){
                 merged[SpreadsheetHistoryHash.SELECTION_ACTION] = selectionAction;
             }
 
@@ -427,8 +430,8 @@ export default class SpreadsheetHistoryHash {
             if(selection){
                 hash = hash + "/" + selection.toHistoryHashToken();
 
-                if(!!selectionAction){
-                    hash = hash + "/" + selectionAction;
+                if(selectionAction instanceof SpreadsheetHistoryHashToken){
+                    hash = hash + "/" + selectionAction.toHistoryHashToken();
                 }
             }
 
