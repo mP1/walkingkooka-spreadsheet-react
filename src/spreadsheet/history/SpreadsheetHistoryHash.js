@@ -3,6 +3,11 @@ import Preconditions from "../../Preconditions.js";
 import SpreadsheetCellReferenceOrLabelName from "../reference/SpreadsheetCellReferenceOrLabelName.js";
 import spreadsheetCellReferenceOrLabelNameParse from "../reference/SpreadsheetCellReferenceOrLabelNameParse.js";
 import SpreadsheetColumnReferenceRange from "../reference/SpreadsheetColumnReferenceRange.js";
+import SpreadsheetColumnOrRowReference from "../reference/SpreadsheetColumnOrRowReference.js";
+import SpreadsheetColumnOrRowDeleteHistoryHashToken from "./SpreadsheetColumnOrRowDeleteHistoryHashToken.js";
+import SpreadsheetColumnOrRowDeleteOrInsertHistoryHashToken
+    from "./SpreadsheetColumnOrRowDeleteOrInsertHistoryHashToken.js";
+import SpreadsheetColumnOrRowInsertHistoryHashToken from "./SpreadsheetColumnOrRowInsertHistoryHashToken.js";
 import SpreadsheetFormulaHistoryHashToken from "./SpreadsheetFormulaHistoryHashToken.js";
 import SpreadsheetHistoryHashToken from "./SpreadsheetHistoryHashToken.js";
 import SpreadsheetLabelName from "../reference/SpreadsheetLabelName.js";
@@ -57,6 +62,8 @@ export default class SpreadsheetHistoryHash {
     static CELL_FORMULA = "formula";
     static COLUMN = "column";
     static ROW = "row";
+    static DELETE_COLUMN_OR_ROW = "delete";
+    static INSERT_COLUMN_OR_ROW = "insert";
 
     static LABEL = "label";
     static SELECT = "select";
@@ -136,6 +143,36 @@ export default class SpreadsheetHistoryHash {
                             } catch(invalid) {
                                 errors("Column: " + invalid.message);
                                 valid = false;
+                            }
+                            break;
+                        case SpreadsheetHistoryHash.DELETE_COLUMN_OR_ROW:
+                            valid = false;
+                            if(!(selection instanceof SpreadsheetColumnOrRowReference) || tokens.length === 0){
+                                break;
+                            }
+                            const deleteCount = tokens.shift();
+                            if(!Number.isNaN(new Number(deleteCount))){
+                                try {
+                                    selectionAction = new SpreadsheetColumnOrRowDeleteHistoryHashToken(parseInt(deleteCount, 10));
+                                    valid = true;
+                                } catch(invalid) {
+                                    errors("Insert count: " + invalid.message);
+                                }
+                            }
+                            break;
+                        case SpreadsheetHistoryHash.INSERT_COLUMN_OR_ROW:
+                            valid = false;
+                            if(!(selection instanceof SpreadsheetColumnOrRowReference) || tokens.length === 0){
+                                break;
+                            }
+                            const insertCount = tokens.shift();
+                            if(!Number.isNaN(new Number(insertCount))){
+                                try {
+                                    selectionAction = new SpreadsheetColumnOrRowInsertHistoryHashToken(parseInt(insertCount, 10));
+                                    valid = true;
+                                } catch(invalid) {
+                                    errors("Insert count: " + invalid.message);
+                                }
                             }
                             break;
                         case SpreadsheetHistoryHash.LABEL:
@@ -249,15 +286,16 @@ export default class SpreadsheetHistoryHash {
                 if(selection || label || select || settings){
                     nameEdit = false;
                 }
-                if(selectionAction && !selection){
-                    selectionAction = null;
-                }
                 if(nameEdit){
                     verified[SpreadsheetHistoryHash.SPREADSHEET_NAME_EDIT] = nameEdit;
                 }
                 if(selection instanceof SpreadsheetSelection){
                     verified[SpreadsheetHistoryHash.SELECTION] = selection;
-                    if(selection instanceof SpreadsheetCellReferenceOrLabelName && selectionAction instanceof SpreadsheetHistoryHashToken){
+
+                    if(selection instanceof SpreadsheetColumnOrRowReference && selectionAction instanceof SpreadsheetColumnOrRowDeleteOrInsertHistoryHashToken){
+                        verified[SpreadsheetHistoryHash.SELECTION_ACTION] = selectionAction;
+                    }
+                    if(selection instanceof SpreadsheetCellReferenceOrLabelName && selectionAction instanceof SpreadsheetFormulaHistoryHashToken){
                         verified[SpreadsheetHistoryHash.SELECTION_ACTION] = selectionAction;
                     }
                 }
@@ -327,7 +365,7 @@ export default class SpreadsheetHistoryHash {
 
         if(delta.hasOwnProperty(SpreadsheetHistoryHash.SELECTION_ACTION)){
             selectionAction = delta[SpreadsheetHistoryHash.SELECTION_ACTION];
-            if(selectionAction instanceof SpreadsheetFormulaHistoryHashToken){
+            if(selectionAction instanceof SpreadsheetHistoryHashToken){
                 nameEdit = false;
             }
         }
