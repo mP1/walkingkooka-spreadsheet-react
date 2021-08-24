@@ -1,4 +1,3 @@
-import CharSequences from "../../CharSequences.js";
 import SpreadsheetHistoryHash from "./SpreadsheetHistoryHash.js";
 import SpreadsheetHistoryHashToken from "./SpreadsheetHistoryHashToken.js";
 
@@ -16,15 +15,19 @@ export default class SpreadsheetFormulaHistoryHashToken extends SpreadsheetHisto
     }
 
     toHistoryHashToken() {
-        return SpreadsheetHistoryHash.CELL_FORMULA;
+        const formulaText = this.formulaText();
+
+        return SpreadsheetHistoryHash.CELL_FORMULA +
+            (formulaText != null ?
+                "/" + encodeURI(formulaText) :
+            "");
     }
 
     equals(other) {
-        return this === other || (other instanceof SpreadsheetFormulaHistoryHashToken && this.formulaText().equals(other.formulaText()));
+        return this === other || (other instanceof SpreadsheetFormulaHistoryHashToken && this.formulaText() === other.formulaText());
     }
 
     toString() {
-        const formulaText = this.formulaText();
-        return SpreadsheetHistoryHash.CELL_FORMULA + null != formulaText ? "=" + CharSequences.quoteAndEscape(formulaText) : "";
+        return this.toHistoryHashToken();
     }
 }
