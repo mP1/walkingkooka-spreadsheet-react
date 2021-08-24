@@ -139,4 +139,15 @@ export default class Preconditions {
 
         return value;
     }
+
+    /**
+     * Throws an exception if non null value is not text
+     */
+    static optionalText(value, label) {
+        if(null != value) {
+            Preconditions.requireText(value, label);
+        }
+
+        return value;
+    }
 }

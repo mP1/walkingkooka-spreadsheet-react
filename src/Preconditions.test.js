@@ -146,6 +146,18 @@ testThrows("requireNonEmptyText object", Preconditions.requireNonEmptyText, {}, 
 testThrows("requireNonEmptyText empty string", Preconditions.requireNonEmptyText, "", "Label123", "Missing Label123");
 testNotThrows("requireNonEmptyText non empty string", Preconditions.requireNonEmptyText, "abc123");
 
+// optionalText.......................................................................................................
+
+testNotThrows("optionalText undefined", Preconditions.optionalText, undefined, "Label123", "Missing Label123");
+testNotThrows("optionalText null", Preconditions.optionalText, null, "Label123", "Missing Label123");
+testThrows("optionalText false", Preconditions.optionalText, false, "Label123", "Expected string Label123 got false");
+testThrows("optionalText 0", Preconditions.optionalText, 0, "Label123", "Expected string Label123 got 0");
+testThrows("optionalText array", Preconditions.optionalText, ARRAY, "Label123", "Expected string Label123 got 1,2,3");
+testThrows("optionalText function", Preconditions.optionalText, FUNCTION, "Label123", "Expected string Label123 got function () {}");
+testThrows("optionalText object", Preconditions.optionalText, {}, "Label123", "Expected string Label123 got [object Object]");
+testNotThrows("optionalText empty string", Preconditions.optionalText, "");
+testNotThrows("optionalText non empty string", Preconditions.optionalText, "abc123");
+
 // requireInstance......................................................................................................
 
 class Test1 {
