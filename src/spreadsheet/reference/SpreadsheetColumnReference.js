@@ -147,7 +147,7 @@ export default class SpreadsheetColumnReference extends SpreadsheetColumnOrRowRe
         return "column";
     }
 
-    toSelectionHistoryHashToken() {
+    toHistoryHashToken() {
         return SpreadsheetHistoryHash.COLUMN + "/" + this;
     }
 

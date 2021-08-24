@@ -176,7 +176,7 @@ export default class SpreadsheetSelection extends SystemObject {
         SystemObject.throwUnsupportedOperation();
     }
 
-    toSelectionHistoryHashToken() {
+    toHistoryHashToken() {
         SystemObject.throwUnsupportedOperation();
     }
 

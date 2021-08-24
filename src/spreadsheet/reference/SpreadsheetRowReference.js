@@ -145,7 +145,7 @@ export default class SpreadsheetRowReference extends SpreadsheetColumnOrRowRefer
         return "viewport-row-" + this.toString().toUpperCase();
     }
 
-    toSelectionHistoryHashToken() {
+    toHistoryHashToken() {
         return SpreadsheetHistoryHash.ROW + "/" + this;
     }
 
