@@ -168,7 +168,7 @@ export default class SpreadsheetRowReferenceRange extends SpreadsheetColumnOrRow
         return "row-range";
     }
 
-    toSelectionHistoryHashToken() {
+    toHistoryHashToken() {
         return SpreadsheetHistoryHash.ROW + "/" + this;
     }
 

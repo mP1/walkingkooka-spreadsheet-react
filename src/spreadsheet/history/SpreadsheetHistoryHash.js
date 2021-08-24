@@ -425,7 +425,7 @@ export default class SpreadsheetHistoryHash {
             }
 
             if(selection){
-                hash = hash + "/" + selection.toSelectionHistoryHashToken();
+                hash = hash + "/" + selection.toHistoryHashToken();
 
                 if(!!selectionAction){
                     hash = hash + "/" + selectionAction;
