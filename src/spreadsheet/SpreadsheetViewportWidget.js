@@ -68,7 +68,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
         super.componentDidMount();
 
         const props = this.props;
-        this.onSpreadsheetDeltaRemover = props.spreadsheetDeltaCrud.addListener(this.onSpreadsheetDelta.bind(this));
+        this.onSpreadsheetDeltaRemover = props.spreadsheetDeltaCellCrud.addListener(this.onSpreadsheetDelta.bind(this));
         this.onSpreadsheetLabelCrudRemover = props.spreadsheetLabelCrud.addListener(this.onSpreadsheetLabel.bind(this));
         this.onSpreadsheetMetadataRemover = props.spreadsheetMetadataCrud.addListener(this.onSpreadsheetMetadata.bind(this));
     }
@@ -313,7 +313,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
     loadCells(viewport, selection, anchor) {
         const props = this.props;
 
-        props.spreadsheetDeltaCrud.get(
+        props.spreadsheetDeltaCellCrud.get(
             "*",
             viewport.toLoadCellsQueryStringParameters(selection),
             props.showError
@@ -486,7 +486,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
                     top: e.clientY - 4,
                 },
                 menuItems: selection.onContextMenu(
-                    this.props.spreadsheetDeltaCrud
+                    this.props.spreadsheetDeltaCellCrud
                 )
             }
         }
@@ -716,7 +716,7 @@ SpreadsheetViewportWidget.propTypes = {
     dimensions: PropTypes.object,
     history: PropTypes.instanceOf(SpreadsheetHistoryHash).isRequired,
     messenger: PropTypes.instanceOf(SpreadsheetMessenger),
-    spreadsheetDeltaCrud: PropTypes.instanceOf(SpreadsheetMessengerCrud),
+    spreadsheetDeltaCellCrud: PropTypes.instanceOf(SpreadsheetMessengerCrud),
     spreadsheetLabelCrud: PropTypes.instanceOf(SpreadsheetMessengerCrud),
     spreadsheetMetadataCrud: PropTypes.instanceOf(SpreadsheetMessengerCrud),
     showError: PropTypes.func.isRequired,

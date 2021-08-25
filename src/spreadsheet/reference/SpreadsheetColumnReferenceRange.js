@@ -55,7 +55,7 @@ export default class SpreadsheetColumnReferenceRange extends SpreadsheetColumnOr
 
     // context menu events..............................................................................................
 
-    onContextMenu(spreadsheetDeltaCrud) {
+    onContextMenu(spreadsheetDeltaCellCrud) {
         // nop
     }
 
