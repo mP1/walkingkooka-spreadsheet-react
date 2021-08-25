@@ -308,17 +308,6 @@ export default class SpreadsheetCellReference extends SpreadsheetCellReferenceOr
                 .setKind(SpreadsheetReferenceKind.RELATIVE));
     }
 
-    toJson() {
-        return this.column()
-                .toJson() +
-            this.row()
-                .toJson();
-    }
-
-    typeName() {
-        return TYPE_NAME;
-    }
-
     /**
      * Factory that creates an empty {@link SpreadsheetCell} with no formula, style or formatted text.
      */
@@ -346,6 +335,18 @@ export default class SpreadsheetCellReference extends SpreadsheetCellReferenceOr
     onViewportClick(setSelection, giveFocus) {
         setSelection(this.setAnchor());
         //giveFocus();
+    }
+
+
+    toJson() {
+        return this.column()
+                .toJson() +
+            this.row()
+                .toJson();
+    }
+
+    typeName() {
+        return TYPE_NAME;
     }
 
     equals(other) {

@@ -139,10 +139,6 @@ export default class SpreadsheetColumnReference extends SpreadsheetColumnOrRowRe
         return "viewport-column-" + this.toString().toUpperCase();
     }
 
-    typeName() {
-        return TYPE_NAME;
-    }
-
     toLoadCellsQueryStringParameterSelectionType() {
         return "column";
     }
@@ -153,6 +149,10 @@ export default class SpreadsheetColumnReference extends SpreadsheetColumnOrRowRe
 
     toJson() {
         return this.kind().prefix() + toString0(this.value());
+    }
+
+    typeName() {
+        return TYPE_NAME;
     }
 }
 

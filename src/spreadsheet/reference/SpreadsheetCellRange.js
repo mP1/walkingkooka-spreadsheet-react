@@ -425,17 +425,17 @@ export default class SpreadsheetCellRange extends SpreadsheetExpressionReference
         return rowReference.compareTo(begin.row()) >= 0 &&
             rowReference.compareTo(end.row()) <= 0;
     }
-    
+
+    toLoadCellsQueryStringParameterSelectionType() {
+        return "cell-range";
+    }
+
     toJson() {
         const begin = this.begin();
         const end = this.end();
         return begin.equals(end) ?
             begin.toJson() :
             begin.toJson() + ":" + end.toJson();
-    }
-
-    toLoadCellsQueryStringParameterSelectionType() {
-        return "cell-range";
     }
 
     typeName() {
