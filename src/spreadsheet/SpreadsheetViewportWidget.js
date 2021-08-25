@@ -133,11 +133,11 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
             case "POST":
                 const viewportTable = this.viewportTable.current;
                 if(viewportTable){
-                    const {selection, anchor} = this.state;
+                    const {selection, anchor, spreadsheetMetadata} = this.state;
 
                     this.loadCells(
                         new SpreadsheetViewport(
-                            this.state.spreadsheetMetadata.getIgnoringDefaults(SpreadsheetMetadata.VIEWPORT_CELL),
+                            spreadsheetMetadata.getIgnoringDefaults(SpreadsheetMetadata.VIEWPORT_CELL),
                             0,
                             0,
                             viewportTable.offsetWidth,
