@@ -77,7 +77,10 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
         );
 
         this.spreadsheetLabelCrud = new SpreadsheetMessengerCrud(
-            (method, label) => this.labelUrl(label),
+            (method, label) => {
+                Preconditions.requireInstance(label, SpreadsheetLabelName, "label");
+                return this.spreadsheetMetadataApiUrl() + "/label/" + label;
+            },
             messenger,
             SpreadsheetLabelMapping.fromJson,
             new ListenerCollection()
@@ -105,14 +108,6 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
                 height: window.innerHeight,
             },
         };
-    }
-
-    /**
-     * Creates an URL for the given label.
-     */
-    labelUrl(label) {
-        Preconditions.requireInstance(label, SpreadsheetLabelName, "label");
-        return this.spreadsheetMetadataApiUrl() + "/label/" + label
     }
 
     /**
