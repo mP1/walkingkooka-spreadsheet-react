@@ -63,7 +63,7 @@ export default class SpreadsheetRowReference extends SpreadsheetColumnOrRowRefer
 
     // context menu events..............................................................................................
 
-    onContextMenu(spreadsheetDeltaCrud) {
+    onContextMenu(spreadsheetDeltaCellCrud) {
         // nop
     }
 

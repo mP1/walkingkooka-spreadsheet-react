@@ -45,7 +45,7 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetHistoryAwareSta
     componentDidMount() {
         super.componentDidMount();
 
-        this.onSpreadsheetDeltaRemover = this.props.spreadsheetDeltaCrud.addListener(this.onSpreadsheetDelta.bind(this));
+        this.onSpreadsheetDeltaRemover = this.props.spreadsheetDeltaCellCrud.addListener(this.onSpreadsheetDelta.bind(this));
     }
 
     componentWillUnmount() {
@@ -123,7 +123,7 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetHistoryAwareSta
     reloadFormulaText(cellOrLabel) {
         console.log("reloadFormulaText " + cellOrLabel);
 
-        this.props.spreadsheetDeltaCrud.get(
+        this.props.spreadsheetDeltaCellCrud.get(
             cellOrLabel,
             {},
             (message, error) => {
@@ -248,7 +248,7 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetHistoryAwareSta
             cell = new SpreadsheetCell(cellReference, new SpreadsheetFormula(formulaText), TextStyle.EMPTY);
         }
 
-        props.spreadsheetDeltaCrud.post(
+        props.spreadsheetDeltaCellCrud.post(
             selection,
             new SpreadsheetDelta(
                 [cell],
@@ -307,6 +307,6 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetHistoryAwareSta
 
 SpreadsheetFormulaWidget.propTypes = {
     history: PropTypes.instanceOf(SpreadsheetHistoryHash).isRequired,
-    spreadsheetDeltaCrud: PropTypes.instanceOf(SpreadsheetMessengerCrud),
+    spreadsheetDeltaCellCrud: PropTypes.instanceOf(SpreadsheetMessengerCrud),
     showError: PropTypes.func.isRequired,
 }

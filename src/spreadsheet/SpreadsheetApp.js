@@ -63,7 +63,7 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
 
         document.title = "Empty spreadsheet";
 
-        this.spreadsheetDeltaCrud = new SpreadsheetMessengerCrud(
+        this.spreadsheetDeltaCellCrud = new SpreadsheetMessengerCrud(
             (method, cellOrRange, queryStringParameters) => {
                 return this.cellUrl(
                     cellOrRange,
@@ -268,7 +268,7 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
 
         const {
             messenger,
-            spreadsheetDeltaCrud,
+            spreadsheetDeltaCellCrud,
             spreadsheetLabelCrud,
             spreadsheetMetadataCrud,
             state,
@@ -309,7 +309,7 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
                     <SpreadsheetFormulaWidget ref={this.formula}
                                               key={"spreadsheetFormula"}
                                               history={history}
-                                              spreadsheetDeltaCrud={spreadsheetDeltaCrud}
+                                              spreadsheetDeltaCellCrud={spreadsheetDeltaCellCrud}
                                               showError={showError}
                     />
                     <Divider/>
@@ -318,7 +318,7 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
                                            history={history}
                                            ref={this.viewport}
                                            messenger={messenger}
-                                           spreadsheetDeltaCrud={spreadsheetDeltaCrud}
+                                           spreadsheetDeltaCellCrud={spreadsheetDeltaCellCrud}
                                            spreadsheetLabelCrud={spreadsheetLabelCrud}
                                            spreadsheetMetadataCrud={spreadsheetMetadataCrud}
                                            showError={showError}

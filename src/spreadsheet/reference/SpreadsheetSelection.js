@@ -60,7 +60,7 @@ export default class SpreadsheetSelection extends SystemObject {
      * This method is called whenever the element for this selection is clicked, providing an opportunity to
      * prepare the context menu items that will be displayed ready for clicking.
      */
-    onContextMenu(spreadsheetDeltaCrud) {
+    onContextMenu(spreadsheetDeltaCellCrud) {
         SystemObject.throwUnsupportedOperation();
     }
 

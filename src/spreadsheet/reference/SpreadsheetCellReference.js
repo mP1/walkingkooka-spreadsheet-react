@@ -200,7 +200,7 @@ export default class SpreadsheetCellReference extends SpreadsheetCellReferenceOr
 
     // context menu events..............................................................................................
 
-    onContextMenu(spreadsheetDeltaCrud) {
+    onContextMenu(spreadsheetDeltaCellCrud) {
         return [
             <MenuItem onClick={() => alert(this.toString())}>Click!</MenuItem>
         ]

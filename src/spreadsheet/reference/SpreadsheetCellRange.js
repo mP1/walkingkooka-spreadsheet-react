@@ -96,7 +96,7 @@ export default class SpreadsheetCellRange extends SpreadsheetExpressionReference
 
     // context menu events..............................................................................................
 
-    onContextMenu(spreadsheetDeltaCrud) {
+    onContextMenu(spreadsheetDeltaCellCrud) {
         // nop
     }
 
