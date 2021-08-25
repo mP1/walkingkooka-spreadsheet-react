@@ -56,6 +56,8 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
 
     static VIEWPORT_VERTICAL_SLIDER_ID = SpreadsheetViewportWidget.VIEWPORT_ID + "-vertical-Slider";
 
+    static VIEWPORT_SELECT_ALL_ID = SpreadsheetViewportWidget.VIEWPORT_ID + "-select-all-cells";
+
     init() {
         this.horizontalSlider = React.createRef();
         this.verticalSlider = React.createRef();
@@ -603,7 +605,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
         const defaultColumnWidth = defaultStyle.width().value();
 
         let headers = [
-            <TableCell key={"viewport-all"} id={"viewport-select-all-cells"}></TableCell> // TODO add select all support when range support is ready
+            <TableCell key={SpreadsheetViewportWidget.VIEWPORT_SELECT_ALL_ID} id={SpreadsheetViewportWidget.VIEWPORT_SELECT_ALL_ID}></TableCell> // TODO add select all support when range support is ready
         ];
 
         let x = 0;
