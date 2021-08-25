@@ -151,7 +151,7 @@ export default class SpreadsheetHistoryHash {
                                 break;
                             }
                             const deleteCount = tokens.shift();
-                            if(!Number.isNaN(new Number(deleteCount))){
+                            if(!Number.isNaN(Number(deleteCount))){
                                 try {
                                     selectionAction = new SpreadsheetColumnOrRowDeleteHistoryHashToken(parseInt(deleteCount, 10));
                                     valid = true;
@@ -166,7 +166,7 @@ export default class SpreadsheetHistoryHash {
                                 break;
                             }
                             const insertCount = tokens.shift();
-                            if(!Number.isNaN(new Number(insertCount))){
+                            if(!Number.isNaN(Number(insertCount))){
                                 try {
                                     selectionAction = new SpreadsheetColumnOrRowInsertHistoryHashToken(parseInt(insertCount, 10));
                                     valid = true;
