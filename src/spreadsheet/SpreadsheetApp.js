@@ -65,9 +65,11 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
 
         this.spreadsheetDeltaCellCrud = new SpreadsheetMessengerCrud(
             (method, cellOrRange, queryStringParameters) => {
-                return this.cellUrl(
-                    cellOrRange,
-                    method.toUpperCase() === "GET" ? SpreadsheetEngineEvaluation.FORCE_RECOMPUTE : null) + SpreadsheetMessengerCrud.toQueryString(queryStringParameters)
+                var url = this.spreadsheetMetadataApiUrl() + "/cell/" + cellOrRange;
+                if(method.toUpperCase() === "GET") {
+                    url = url + "/" + SpreadsheetEngineEvaluation.FORCE_RECOMPUTE.nameKebabCase();
+                }
+                return url + SpreadsheetMessengerCrud.toQueryString(queryStringParameters);
             },
             messenger,
             SpreadsheetDelta.fromJson,
@@ -103,19 +105,6 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
                 height: window.innerHeight,
             },
         };
-    }
-
-    /**
-     * Returns a URL with the spreadsheet id and ONLY the provided cell selection.
-     */
-    cellUrl(selection, evaluation) {
-        Preconditions.requireNonNull(selection, "selection");
-        Preconditions.optionalInstance(evaluation, SpreadsheetEngineEvaluation, "evaluation")
-
-        const url = this.spreadsheetMetadataApiUrl() + "/cell/" + selection;
-        return evaluation ?
-            url + "/" + evaluation.nameKebabCase() :
-            url;
     }
 
     /**
