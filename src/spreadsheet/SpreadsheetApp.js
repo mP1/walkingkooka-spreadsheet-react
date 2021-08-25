@@ -347,23 +347,13 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
         Preconditions.requireFunction(failure, "failure");
 
         this.messageSend(
-            this.similaritiesUrl(text, count),
+            this.spreadsheetMetadataApiUrl() + "/cell-reference/" + encodeURI(text) + "?count=" + count,
             {
                 method: "GET",
             },
             (json) => success(SpreadsheetExpressionReferenceSimilarities.fromJson(json)),
             failure,
         );
-    }
-
-    /**
-     * Returns a URL that may be used to call the cell-reference end point
-     */
-    similaritiesUrl(text, count) {
-        Preconditions.requireText(text, "text");
-        Preconditions.requirePositiveNumber(count, "count");
-
-        return this.spreadsheetMetadataApiUrl() + "/cell-reference/" + encodeURI(text) + "?count=" + count;
     }
 
     // resizing.........................................................................................................
