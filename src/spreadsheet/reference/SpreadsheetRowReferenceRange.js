@@ -164,7 +164,7 @@ export default class SpreadsheetRowReferenceRange extends SpreadsheetColumnOrRow
             this.end().compareTo(rowReference) >= 0;
     }
 
-    toQueryStringParameterSelectionType() {
+    toLoadCellsQueryStringParameterSelectionType() {
         return "row-range";
     }
 

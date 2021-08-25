@@ -164,7 +164,7 @@ export default class SpreadsheetColumnReferenceRange extends SpreadsheetColumnOr
         return false;
     }
 
-    toQueryStringParameterSelectionType() {
+    toLoadCellsQueryStringParameterSelectionType() {
         return "column-range";
     }
 

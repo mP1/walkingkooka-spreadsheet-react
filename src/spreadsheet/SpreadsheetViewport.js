@@ -85,7 +85,7 @@ export default class SpreadsheetViewport extends SystemObject {
                 height: this.height(),
             },
             selection ? {
-                selectionType: selection.toQueryStringParameterSelectionType(),
+                selectionType: selection.toLoadCellsQueryStringParameterSelectionType(),
                 selection: selection,
             } : {});
     }
