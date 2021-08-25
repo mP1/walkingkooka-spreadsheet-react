@@ -172,6 +172,14 @@ export default class SpreadsheetColumnReferenceRange extends SpreadsheetColumnOr
         return SpreadsheetHistoryHash.COLUMN + "/" + this;
     }
 
+    toDeleteUrl() {
+        return "/column/" + this;
+    }
+
+    onDelete(viewportWidget) {
+        viewportWidget.deleteColumn(this);
+    }
+
     typeName() {
         return TYPE_NAME;
     }

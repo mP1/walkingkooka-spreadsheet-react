@@ -299,6 +299,7 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
                     <Divider/>
                 </SpreadsheetBox>
                 <SpreadsheetViewportWidget key={"viewport"}
+                                           deleteSelection={this.deleteSelection.bind(this)}
                                            history={history}
                                            ref={this.viewport}
                                            messenger={messenger}
@@ -314,6 +315,44 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
                                            showError={showError}
                 />
             </WindowResizer>
+        );
+    }
+
+    /**
+     * Deletes the given selection and then clears the selection and selection action.
+     */
+    deleteSelection(selection) {
+        this.performSpreadsheetDelta(
+            "DELETE",
+            this.spreadsheetMetadataApiUrl() + selection.toDeleteUrl(),
+            selection
+        );
+    }
+
+    /**
+     * Invokes a service which will return a SpreadsheetDelta. On both success and failure the history hash the
+     * selection & selection-action tokens will be cleared.
+     */
+    performSpreadsheetDelta(method, url, id) {
+        const crud = this.spreadsheetDeltaCellCrud;
+
+        const parameters = {
+            method: method,
+        };
+        const queryParameters = {};
+        const requestValue = null;
+
+        const failure = this.props.showError;
+
+        crud.messenger.send(
+            url,
+            parameters,
+            (json) => {
+                crud.fireResponse(method, id, queryParameters, requestValue, json)
+            },
+            () => {
+                failure();
+            },
         );
     }
 
