@@ -160,16 +160,16 @@ test("new 0 height", () => {
         height);
 });
 
-// toQueryStringParameters..............................................................................................
+// toLoadCellsQueryStringParameters..............................................................................................
 
-function toQueryStringParametersAndCheck(c, x, y, w, h, s, expected) {
-    test("toQueryStringParametersAndCheck " + c + " " + x + " " + y + " " + w + " " + h + " " + s, () => {
+function toLoadCellsQueryStringParametersAndCheck(c, x, y, w, h, s, expected) {
+    test("toLoadCellsQueryStringParametersAndCheck " + c + " " + x + " " + y + " " + w + " " + h + " " + s, () => {
         expect(expected)
-            .toStrictEqual(new SpreadsheetViewport(c, x, y, w, h, s).toQueryStringParameters(s));
+            .toStrictEqual(new SpreadsheetViewport(c, x, y, w, h, s).toLoadCellsQueryStringParameters(s));
     });
 }
 
-toQueryStringParametersAndCheck(
+toLoadCellsQueryStringParametersAndCheck(
     cellOrLabel(),
     xOffset(),
     yOffset(),
@@ -185,7 +185,7 @@ toQueryStringParametersAndCheck(
     }
 );
 
-toQueryStringParametersAndCheck(
+toLoadCellsQueryStringParametersAndCheck(
     cellOrLabel(),
     xOffset(),
     yOffset(),
@@ -203,7 +203,7 @@ toQueryStringParametersAndCheck(
     }
 );
 
-toQueryStringParametersAndCheck(
+toLoadCellsQueryStringParametersAndCheck(
     cellOrLabel(),
     xOffset(),
     yOffset(),
@@ -221,7 +221,7 @@ toQueryStringParametersAndCheck(
     }
 );
 
-toQueryStringParametersAndCheck(
+toLoadCellsQueryStringParametersAndCheck(
     cellOrLabel(),
     xOffset(),
     yOffset(),
@@ -239,7 +239,7 @@ toQueryStringParametersAndCheck(
     }
 );
 
-toQueryStringParametersAndCheck(
+toLoadCellsQueryStringParametersAndCheck(
     cellOrLabel(),
     xOffset(),
     yOffset(),
@@ -257,7 +257,7 @@ toQueryStringParametersAndCheck(
     }
 );
 
-toQueryStringParametersAndCheck(
+toLoadCellsQueryStringParametersAndCheck(
     cellOrLabel(),
     xOffset(),
     yOffset(),
@@ -275,7 +275,7 @@ toQueryStringParametersAndCheck(
     }
 );
 
-toQueryStringParametersAndCheck(
+toLoadCellsQueryStringParametersAndCheck(
     cellOrLabel(),
     xOffset(),
     yOffset(),
