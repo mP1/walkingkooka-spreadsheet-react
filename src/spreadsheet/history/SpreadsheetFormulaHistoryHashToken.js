@@ -6,7 +6,8 @@ import SpreadsheetHistoryHashToken from "./SpreadsheetHistoryHashToken.js";
  */
 export default class SpreadsheetFormulaHistoryHashToken extends SpreadsheetHistoryHashToken {
 
-    cnstructor(formulaText) {
+    constructor(formulaText) {
+        super();
         this.formulaTextValue = formulaText;
     }
 
