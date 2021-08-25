@@ -297,7 +297,7 @@ export default class SpreadsheetCellReference extends SpreadsheetCellReferenceOr
         return this.row().testRow(rowReference);
     }
 
-    toQueryStringParameterSelectionType() {
+    toLoadCellsQueryStringParameterSelectionType() {
         return "cell";
     }
 

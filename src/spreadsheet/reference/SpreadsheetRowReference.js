@@ -137,7 +137,7 @@ export default class SpreadsheetRowReference extends SpreadsheetColumnOrRowRefer
         return this.value() === rowReference.value();
     }
 
-    toQueryStringParameterSelectionType() {
+    toLoadCellsQueryStringParameterSelectionType() {
         return "row";
     }
 

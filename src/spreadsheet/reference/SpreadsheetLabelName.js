@@ -98,7 +98,7 @@ export default class SpreadsheetLabelName extends SpreadsheetCellReferenceOrLabe
         return false;
     }
 
-    toQueryStringParameterSelectionType() {
+    toLoadCellsQueryStringParameterSelectionType() {
         return "label";
     }
 

@@ -434,7 +434,7 @@ export default class SpreadsheetCellRange extends SpreadsheetExpressionReference
             begin.toJson() + ":" + end.toJson();
     }
 
-    toQueryStringParameterSelectionType() {
+    toLoadCellsQueryStringParameterSelectionType() {
         return "cell-range";
     }
 

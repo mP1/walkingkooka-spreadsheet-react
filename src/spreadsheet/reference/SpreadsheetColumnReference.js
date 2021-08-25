@@ -143,7 +143,7 @@ export default class SpreadsheetColumnReference extends SpreadsheetColumnOrRowRe
         return TYPE_NAME;
     }
 
-    toQueryStringParameterSelectionType() {
+    toLoadCellsQueryStringParameterSelectionType() {
         return "column";
     }
 
