@@ -105,7 +105,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
                             height
                         );
 
-                        if(Equality.safeEquals(queryParameters, viewport.toQueryStringParameters(selection))){
+                        if(Equality.safeEquals(queryParameters, viewport.toLoadCellsQueryStringParameters(selection))){
                             const viewportRange = window[0];
                             
                             Object.assign(
@@ -315,7 +315,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
 
         props.spreadsheetDeltaCrud.get(
             "*",
-            viewport.toQueryStringParameters(selection),
+            viewport.toLoadCellsQueryStringParameters(selection),
             props.showError
         );
 
