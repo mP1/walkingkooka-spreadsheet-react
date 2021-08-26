@@ -7,7 +7,8 @@ import SpreadsheetColumnOrRowReference from "../reference/SpreadsheetColumnOrRow
 import SpreadsheetColumnOrRowDeleteHistoryHashToken from "./SpreadsheetColumnOrRowDeleteHistoryHashToken.js";
 import SpreadsheetColumnOrRowDeleteOrInsertHistoryHashToken
     from "./SpreadsheetColumnOrRowDeleteOrInsertHistoryHashToken.js";
-import SpreadsheetColumnOrRowInsertHistoryHashToken from "./SpreadsheetColumnOrRowInsertHistoryHashToken.js";
+import SpreadsheetColumnOrRowInsertBeforeHistoryHashToken
+    from "./SpreadsheetColumnOrRowInsertBeforeHistoryHashToken.js";
 import SpreadsheetFormulaHistoryHashToken from "./SpreadsheetFormulaHistoryHashToken.js";
 import SpreadsheetHistoryHashToken from "./SpreadsheetHistoryHashToken.js";
 import SpreadsheetLabelName from "../reference/SpreadsheetLabelName.js";
@@ -63,7 +64,7 @@ export default class SpreadsheetHistoryHash {
     static COLUMN = "column";
     static ROW = "row";
     static DELETE_COLUMN_OR_ROW = "delete";
-    static INSERT_COLUMN_OR_ROW = "insert";
+    static INSERT_BEFORE_COLUMN_OR_ROW = "insert-before";
 
     static LABEL = "label";
     static SELECT = "select";
@@ -160,7 +161,7 @@ export default class SpreadsheetHistoryHash {
                                 }
                             }
                             break;
-                        case SpreadsheetHistoryHash.INSERT_COLUMN_OR_ROW:
+                        case SpreadsheetHistoryHash.INSERT_BEFORE_COLUMN_OR_ROW:
                             valid = false;
                             if(!(selection instanceof SpreadsheetColumnOrRowReference) || tokens.length === 0){
                                 break;
@@ -168,7 +169,7 @@ export default class SpreadsheetHistoryHash {
                             const insertCount = tokens.shift();
                             if(!Number.isNaN(Number(insertCount))){
                                 try {
-                                    selectionAction = new SpreadsheetColumnOrRowInsertHistoryHashToken(parseInt(insertCount, 10));
+                                    selectionAction = new SpreadsheetColumnOrRowInsertBeforeHistoryHashToken(parseInt(insertCount, 10));
                                     valid = true;
                                 } catch(invalid) {
                                     errors("Insert count: " + invalid.message);

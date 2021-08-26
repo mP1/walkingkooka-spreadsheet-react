@@ -2,7 +2,8 @@ import CharSequences from "../../CharSequences.js";
 import SpreadsheetCellRange from "../reference/SpreadsheetCellRange.js";
 import SpreadsheetCellReference from "../reference/SpreadsheetCellReference.js";
 import SpreadsheetColumnOrRowDeleteHistoryHashToken from "./SpreadsheetColumnOrRowDeleteHistoryHashToken.js";
-import SpreadsheetColumnOrRowInsertHistoryHashToken from "./SpreadsheetColumnOrRowInsertHistoryHashToken.js";
+import SpreadsheetColumnOrRowInsertBeforeHistoryHashToken
+    from "./SpreadsheetColumnOrRowInsertBeforeHistoryHashToken.js";
 import SpreadsheetColumnReference from "../reference/SpreadsheetColumnReference.js";
 import SpreadsheetColumnReferenceRange from "../reference/SpreadsheetColumnReferenceRange.js";
 import SpreadsheetFormulaHistoryHashToken from "./SpreadsheetFormulaHistoryHashToken.js";
@@ -482,7 +483,7 @@ testParseAndStringify(
 );
 
 testParseAndStringify(
-    "/spreadsheet-id-123/spreadsheet-name-456/column/B/insert",
+    "/spreadsheet-id-123/spreadsheet-name-456/column/B/insert-before",
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
@@ -490,12 +491,12 @@ testParseAndStringify(
 );
 
 testParseAndStringify(
-    "/spreadsheet-id-123/spreadsheet-name-456/column/B/insert/123",
+    "/spreadsheet-id-123/spreadsheet-name-456/column/B/insert-before/123",
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
         "selection": COLUMN,
-        "selection-action": new SpreadsheetColumnOrRowInsertHistoryHashToken(123),
+        "selection-action": new SpreadsheetColumnOrRowInsertBeforeHistoryHashToken(123),
     }
 );
 
@@ -563,7 +564,7 @@ testParseAndStringify(
 );
 
 testParseAndStringify(
-    "/spreadsheet-id-123/spreadsheet-name-456/row/2/insert",
+    "/spreadsheet-id-123/spreadsheet-name-456/row/2/insert-before",
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
@@ -571,12 +572,12 @@ testParseAndStringify(
 );
 
 testParseAndStringify(
-    "/spreadsheet-id-123/spreadsheet-name-456/row/2/insert/123",
+    "/spreadsheet-id-123/spreadsheet-name-456/row/2/insert-before/123",
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
         "selection": ROW,
-        "selection-action": new SpreadsheetColumnOrRowInsertHistoryHashToken(123),
+        "selection-action": new SpreadsheetColumnOrRowInsertBeforeHistoryHashToken(123),
     }
 );
 
