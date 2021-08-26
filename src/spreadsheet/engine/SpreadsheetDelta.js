@@ -51,7 +51,8 @@ export default class SpreadsheetDelta extends SystemObject {
             labels,
             columnWidths,
             rowHeights,
-            (windowJson && windowJson.split(",").map(r => SpreadsheetCellRange.fromJson(r))) || []);
+            (windowJson && SpreadsheetCellRange.fromJson(windowJson))
+        );
     }
 
     constructor(cells, labels, columnWidths, rowHeights, window) {
@@ -60,13 +61,13 @@ export default class SpreadsheetDelta extends SystemObject {
         Preconditions.requireArray(labels, "labels");
         Preconditions.requireInstance(columnWidths, ImmutableMap, "columnWidths");
         Preconditions.requireInstance(rowHeights, ImmutableMap, "rowHeights");
-        Preconditions.requireArray(window, "window");
+        Preconditions.optionalInstance(window, SpreadsheetCellRange, "window");
 
         this.cellsValue = cells.slice();
         this.labelsValue = labels.slice();
         this.columnWidthsValue = columnWidths;
         this.rowHeightsValue = rowHeights;
-        this.windowValue = window.slice();
+        this.windowValue = window;
     }
 
     cells() {
@@ -151,7 +152,7 @@ export default class SpreadsheetDelta extends SystemObject {
     }
 
     window() {
-        return this.windowValue.slice();
+        return this.windowValue;
     }
 
     /**
@@ -175,7 +176,7 @@ export default class SpreadsheetDelta extends SystemObject {
      *    "rowHeights": {
      *      "1": 75
      *    },
-     *    "window": "B9:300:50"
+     *    "window": "B2:Z99"
      * }
      * </pre>
      */
@@ -203,8 +204,8 @@ export default class SpreadsheetDelta extends SystemObject {
         }
 
         const window = this.window();
-        if(window.length > 0){
-            json.window = window.map(w => w.toJson()).join(",");
+        if(window){
+            json.window = window.toJson();
         }
         return json;
     }

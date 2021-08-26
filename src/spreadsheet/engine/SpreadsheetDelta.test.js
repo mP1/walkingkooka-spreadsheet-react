@@ -73,13 +73,10 @@ function rowHeights() {
 }
 
 function window() {
-    return [
-        SpreadsheetCellRange.fromJson("A1:B2"),
-        SpreadsheetCellRange.fromJson("C3:D4")
-    ]
+    return SpreadsheetCellRange.fromJson("A1:B2");
 }
 
-const windowJson = "A1:B2,C3:D4";
+const windowJson = "A1:B2";
 
 function delta() {
     return new SpreadsheetDelta(cells(), labels(), columnWidths(), rowHeights(), window());
@@ -141,7 +138,7 @@ systemObjectTesting(
         "rowHeights": {
             "1": 20
         },
-        "window": "A1:B2,C3:D4"
+        "window": "A1:B2"
     }
 );
 
@@ -279,12 +276,12 @@ test("create", () => {
         });
 });
 
-test("create empty", () => {
+test("create empty all properties", () => {
     const c = [];
     const l = [];
     const mcw = ImmutableMap.EMPTY;
     const mrh = ImmutableMap.EMPTY;
-    const w = [];
+    const w = undefined;
 
     check(new SpreadsheetDelta(c, l, mcw, mrh, w),
         c,
@@ -302,7 +299,7 @@ test("referenceToCellMap, no cells", () => {
     const l = [];
     const mcw = ImmutableMap.EMPTY;
     const mrh = ImmutableMap.EMPTY;
-    const w = [];
+    const w = null;
 
     expect(new SpreadsheetDelta(c, l, mcw, mrh, w).referenceToCellMap())
         .toStrictEqual(ImmutableMap.EMPTY);
@@ -315,7 +312,7 @@ test("referenceToCellMap, 1 cell", () => {
     const l = [];
     const mcw = ImmutableMap.EMPTY;
     const mrh = ImmutableMap.EMPTY;
-    const w = [];
+    const w = null;
 
     expect(new SpreadsheetDelta(c, l, mcw, mrh, w).referenceToCellMap())
         .toStrictEqual(new ImmutableMap(new Map([
@@ -331,7 +328,7 @@ test("referenceToCellMap, 2 cells", () => {
     const l = [];
     const mcw = ImmutableMap.EMPTY;
     const mrh = ImmutableMap.EMPTY;
-    const w = [];
+    const w = null;
 
     expect(new SpreadsheetDelta(c, l, mcw, mrh, w).referenceToCellMap())
         .toStrictEqual(new ImmutableMap(new Map([
@@ -455,7 +452,7 @@ test("toJson only 1 cell", () => {
     const l = [];
     const mcw = ImmutableMap.EMPTY;
     const mrh = ImmutableMap.EMPTY;
-    const w = [];
+    const w = null;
 
     expect(new SpreadsheetDelta(c, l, mcw, mrh, w).toJson())
         .toStrictEqual({
@@ -475,7 +472,7 @@ test("toJson only 2 cells", () => {
     const l = [];
     const mcw = ImmutableMap.EMPTY;
     const mrh = ImmutableMap.EMPTY;
-    const w = [];
+    const w = undefined;
 
     expect(new SpreadsheetDelta(c, l, mcw, mrh, w).toJson())
         .toStrictEqual({
@@ -550,7 +547,7 @@ test("fromJson empty", () => {
     const l = [];
     const mcw = ImmutableMap.EMPTY;
     const mrh = ImmutableMap.EMPTY;
-    const w = [];
+    const w = undefined;
 
     expect(SpreadsheetDelta.fromJson({})).toStrictEqual(new SpreadsheetDelta(c, l, mcw, mrh, w));
 });
@@ -560,7 +557,7 @@ test("fromJson 1 cell", () => {
     const l = [];
     const mcw = ImmutableMap.EMPTY;
     const mrh = ImmutableMap.EMPTY;
-    const w = [];
+    const w = undefined;
 
     expect(SpreadsheetDelta.fromJson({
         cells: {
@@ -579,7 +576,7 @@ test("fromJson 2 cells only", () => {
     const l = [];
     const mcw = ImmutableMap.EMPTY;
     const mrh = ImmutableMap.EMPTY;
-    const w = [];
+    const w = undefined;
 
     expect(SpreadsheetDelta.fromJson({
         cells: {
@@ -721,7 +718,7 @@ test("equals different window false", () => {
 
     expect(new SpreadsheetDelta(c, l, mcw, mrh, w)
         .equals(
-            new SpreadsheetDelta(c, l, mcw, mrh, [])
+            new SpreadsheetDelta(c, l, mcw, mrh, null)
         )
     ).toBeFalse();
 });
