@@ -255,7 +255,7 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetHistoryAwareSta
                 [],
                 ImmutableMap.EMPTY,
                 ImmutableMap.EMPTY,
-                []
+                null
             ),
             props.showError,
         );

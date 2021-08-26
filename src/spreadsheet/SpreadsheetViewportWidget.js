@@ -87,7 +87,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
         switch(method) {
             case "GET":
                 const window = responseDelta.window();
-                if(window.length > 0){
+                if(window){
                     const viewportTable = this.viewportTable.current;
                     if(viewportTable){
                         const width = viewportTable.offsetWidth;
@@ -106,7 +106,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
                         );
 
                         if(Equality.safeEquals(queryParameters, viewport.toLoadCellsQueryStringParameters(selection))){
-                            const viewportRange = window[0];
+                            const viewportRange = window;
                             
                             Object.assign(
                                 newState,
