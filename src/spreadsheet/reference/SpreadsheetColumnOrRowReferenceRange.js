@@ -21,6 +21,13 @@ export default class SpreadsheetColumnOrRowReferenceRange extends SpreadsheetSel
     end() {
         return this.endValue;
     }
+
+    /**
+     * The number of columns or rows in this range.
+     */
+    count() {
+        return this.end().value() - this.begin().value() + 1;
+    }
     
     toJson() {
         const begin = this.begin();
