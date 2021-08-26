@@ -485,6 +485,16 @@ testParseAndStringify(
 );
 
 testParseAndStringify(
+    "/spreadsheet-id-123/spreadsheet-name-456/column/B:C/delete/123",
+    {
+        "spreadsheet-id": "spreadsheet-id-123",
+        "spreadsheet-name": SPREADSHEET_NAME,
+        "selection": COLUMN_RANGE,
+        "selection-action": new SpreadsheetColumnOrRowDeleteHistoryHashToken(123),
+    }
+);
+
+testParseAndStringify(
     "/spreadsheet-id-123/spreadsheet-name-456/column/B/insert-after",
     {
         "spreadsheet-id": "spreadsheet-id-123",
@@ -579,6 +589,16 @@ testParseAndStringify(
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
         "selection": ROW,
+        "selection-action": new SpreadsheetColumnOrRowDeleteHistoryHashToken(123),
+    }
+);
+
+testParseAndStringify(
+    "/spreadsheet-id-123/spreadsheet-name-456/row/2:3/delete/123",
+    {
+        "spreadsheet-id": "spreadsheet-id-123",
+        "spreadsheet-name": SPREADSHEET_NAME,
+        "selection": ROW_RANGE,
         "selection-action": new SpreadsheetColumnOrRowDeleteHistoryHashToken(123),
     }
 );

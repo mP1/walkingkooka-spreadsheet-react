@@ -4,11 +4,11 @@ import SpreadsheetCellReferenceOrLabelName from "../reference/SpreadsheetCellRef
 import spreadsheetCellReferenceOrLabelNameParse from "../reference/SpreadsheetCellReferenceOrLabelNameParse.js";
 import SpreadsheetColumnReferenceRange from "../reference/SpreadsheetColumnReferenceRange.js";
 import SpreadsheetColumnOrRowReference from "../reference/SpreadsheetColumnOrRowReference.js";
+import SpreadsheetColumnOrRowReferenceRange from "../reference/SpreadsheetColumnOrRowReferenceRange.js";
 import SpreadsheetColumnOrRowDeleteHistoryHashToken from "./SpreadsheetColumnOrRowDeleteHistoryHashToken.js";
 import SpreadsheetColumnOrRowDeleteOrInsertHistoryHashToken
     from "./SpreadsheetColumnOrRowDeleteOrInsertHistoryHashToken.js";
-import SpreadsheetColumnOrRowInsertAfterHistoryHashToken
-    from "./SpreadsheetColumnOrRowInsertAfterHistoryHashToken.js";
+import SpreadsheetColumnOrRowInsertAfterHistoryHashToken from "./SpreadsheetColumnOrRowInsertAfterHistoryHashToken.js";
 import SpreadsheetColumnOrRowInsertBeforeHistoryHashToken
     from "./SpreadsheetColumnOrRowInsertBeforeHistoryHashToken.js";
 import SpreadsheetFormulaHistoryHashToken from "./SpreadsheetFormulaHistoryHashToken.js";
@@ -151,7 +151,7 @@ export default class SpreadsheetHistoryHash {
                             break;
                         case SpreadsheetHistoryHash.DELETE_COLUMN_OR_ROW:
                             valid = false;
-                            if(!(selection instanceof SpreadsheetColumnOrRowReference) || tokens.length === 0){
+                            if(!(selection instanceof SpreadsheetColumnOrRowReference || selection instanceof SpreadsheetColumnOrRowReferenceRange) || tokens.length === 0){
                                 break;
                             }
                             const deleteCount = tokens.shift();
@@ -311,7 +311,7 @@ export default class SpreadsheetHistoryHash {
                 if(selection instanceof SpreadsheetSelection){
                     verified[SpreadsheetHistoryHash.SELECTION] = selection;
 
-                    if(selection instanceof SpreadsheetColumnOrRowReference && selectionAction instanceof SpreadsheetColumnOrRowDeleteOrInsertHistoryHashToken){
+                    if((selection instanceof SpreadsheetColumnOrRowReference || selection instanceof SpreadsheetColumnOrRowReferenceRange) && selectionAction instanceof SpreadsheetColumnOrRowDeleteOrInsertHistoryHashToken){
                         verified[SpreadsheetHistoryHash.SELECTION_ACTION] = selectionAction;
                     }
                     if(selection instanceof SpreadsheetCellReferenceOrLabelName && selectionAction instanceof SpreadsheetFormulaHistoryHashToken){
