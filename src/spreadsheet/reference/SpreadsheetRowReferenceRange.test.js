@@ -380,6 +380,9 @@ function check(range, begin, end, json) {
     expect(range.end())
         .toBeInstanceOf(SpreadsheetRowReference);
 
+    expect(range.count())
+        .toStrictEqual(end.value() - begin.value() + 1);
+
     expect(range.toJson()).toStrictEqual(json);
     expect(range.toString()).toBe(json);
 
