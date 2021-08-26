@@ -7,6 +7,8 @@ import SpreadsheetColumnOrRowReference from "../reference/SpreadsheetColumnOrRow
 import SpreadsheetColumnOrRowDeleteHistoryHashToken from "./SpreadsheetColumnOrRowDeleteHistoryHashToken.js";
 import SpreadsheetColumnOrRowDeleteOrInsertHistoryHashToken
     from "./SpreadsheetColumnOrRowDeleteOrInsertHistoryHashToken.js";
+import SpreadsheetColumnOrRowInsertAfterHistoryHashToken
+    from "./SpreadsheetColumnOrRowInsertAfterHistoryHashToken.js";
 import SpreadsheetColumnOrRowInsertBeforeHistoryHashToken
     from "./SpreadsheetColumnOrRowInsertBeforeHistoryHashToken.js";
 import SpreadsheetFormulaHistoryHashToken from "./SpreadsheetFormulaHistoryHashToken.js";
@@ -64,6 +66,7 @@ export default class SpreadsheetHistoryHash {
     static COLUMN = "column";
     static ROW = "row";
     static DELETE_COLUMN_OR_ROW = "delete";
+    static INSERT_AFTER_COLUMN_OR_ROW = "insert-after";
     static INSERT_BEFORE_COLUMN_OR_ROW = "insert-before";
 
     static LABEL = "label";
@@ -161,18 +164,33 @@ export default class SpreadsheetHistoryHash {
                                 }
                             }
                             break;
+                        case SpreadsheetHistoryHash.INSERT_AFTER_COLUMN_OR_ROW:
+                            valid = false;
+                            if(!(selection instanceof SpreadsheetColumnOrRowReference) || tokens.length === 0){
+                                break;
+                            }
+                            const insertAfterCount = tokens.shift();
+                            if(!Number.isNaN(Number(insertAfterCount))){
+                                try {
+                                    selectionAction = new SpreadsheetColumnOrRowInsertAfterHistoryHashToken(parseInt(insertAfterCount, 10));
+                                    valid = true;
+                                } catch(invalid) {
+                                    errors("Insert after count: " + invalid.message);
+                                }
+                            }
+                            break;
                         case SpreadsheetHistoryHash.INSERT_BEFORE_COLUMN_OR_ROW:
                             valid = false;
                             if(!(selection instanceof SpreadsheetColumnOrRowReference) || tokens.length === 0){
                                 break;
                             }
-                            const insertCount = tokens.shift();
-                            if(!Number.isNaN(Number(insertCount))){
+                            const insertBeforeCount = tokens.shift();
+                            if(!Number.isNaN(Number(insertBeforeCount))){
                                 try {
-                                    selectionAction = new SpreadsheetColumnOrRowInsertBeforeHistoryHashToken(parseInt(insertCount, 10));
+                                    selectionAction = new SpreadsheetColumnOrRowInsertBeforeHistoryHashToken(parseInt(insertBeforeCount, 10));
                                     valid = true;
                                 } catch(invalid) {
-                                    errors("Insert count: " + invalid.message);
+                                    errors("Insert before count: " + invalid.message);
                                 }
                             }
                             break;
