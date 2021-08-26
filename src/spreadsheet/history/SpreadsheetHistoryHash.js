@@ -431,10 +431,10 @@ export default class SpreadsheetHistoryHash {
 
             if(selection){
                 merged[SpreadsheetHistoryHash.SELECTION] = selection;
-            }
 
-            if(selection && selectionAction instanceof SpreadsheetHistoryHashToken){
-                merged[SpreadsheetHistoryHash.SELECTION_ACTION] = selectionAction;
+                if(selectionAction instanceof SpreadsheetHistoryHashToken){
+                    merged[SpreadsheetHistoryHash.SELECTION_ACTION] = selectionAction;
+                }
             }
 
             if(label){
