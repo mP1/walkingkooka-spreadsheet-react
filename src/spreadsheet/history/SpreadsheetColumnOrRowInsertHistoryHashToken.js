@@ -2,9 +2,9 @@ import Preconditions from "../../Preconditions.js";
 import SpreadsheetHistoryHashToken from "./SpreadsheetHistoryHashToken.js";
 
 /**
- * Base for a history hash token that represents a column or row delete or insert.
+ * Base for a history hash token that represents a column or row insert before / after.
  */
-export default class SpreadsheetColumnOrRowDeleteOrInsertHistoryHashToken extends SpreadsheetHistoryHashToken {
+export default class SpreadsheetColumnOrRowInsertHistoryHashToken extends SpreadsheetHistoryHashToken {
 
     constructor(count) {
         super();

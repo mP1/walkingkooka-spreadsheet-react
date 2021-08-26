@@ -6,8 +6,7 @@ import SpreadsheetColumnReferenceRange from "../reference/SpreadsheetColumnRefer
 import SpreadsheetColumnOrRowReference from "../reference/SpreadsheetColumnOrRowReference.js";
 import SpreadsheetColumnOrRowReferenceRange from "../reference/SpreadsheetColumnOrRowReferenceRange.js";
 import SpreadsheetColumnOrRowDeleteHistoryHashToken from "./SpreadsheetColumnOrRowDeleteHistoryHashToken.js";
-import SpreadsheetColumnOrRowDeleteOrInsertHistoryHashToken
-    from "./SpreadsheetColumnOrRowDeleteOrInsertHistoryHashToken.js";
+import SpreadsheetColumnOrRowInsertHistoryHashToken from "./SpreadsheetColumnOrRowInsertHistoryHashToken.js";
 import SpreadsheetColumnOrRowInsertAfterHistoryHashToken from "./SpreadsheetColumnOrRowInsertAfterHistoryHashToken.js";
 import SpreadsheetColumnOrRowInsertBeforeHistoryHashToken
     from "./SpreadsheetColumnOrRowInsertBeforeHistoryHashToken.js";
@@ -151,17 +150,9 @@ export default class SpreadsheetHistoryHash {
                             break;
                         case SpreadsheetHistoryHash.DELETE_COLUMN_OR_ROW:
                             valid = false;
-                            if(!(selection instanceof SpreadsheetColumnOrRowReference || selection instanceof SpreadsheetColumnOrRowReferenceRange) || tokens.length === 0){
-                                break;
-                            }
-                            const deleteCount = tokens.shift();
-                            if(!Number.isNaN(Number(deleteCount))){
-                                try {
-                                    selectionAction = new SpreadsheetColumnOrRowDeleteHistoryHashToken(parseInt(deleteCount, 10));
-                                    valid = true;
-                                } catch(invalid) {
-                                    errors("Insert count: " + invalid.message);
-                                }
+                            if(selection instanceof SpreadsheetColumnOrRowReference || selection instanceof SpreadsheetColumnOrRowReferenceRange){
+                                selectionAction = SpreadsheetColumnOrRowDeleteHistoryHashToken.INSTANCE;
+                                valid = true;
                             }
                             break;
                         case SpreadsheetHistoryHash.INSERT_AFTER_COLUMN_OR_ROW:
@@ -311,7 +302,10 @@ export default class SpreadsheetHistoryHash {
                 if(selection instanceof SpreadsheetSelection){
                     verified[SpreadsheetHistoryHash.SELECTION] = selection;
 
-                    if((selection instanceof SpreadsheetColumnOrRowReference || selection instanceof SpreadsheetColumnOrRowReferenceRange) && selectionAction instanceof SpreadsheetColumnOrRowDeleteOrInsertHistoryHashToken){
+                    if((selection instanceof SpreadsheetColumnOrRowReference || selection instanceof SpreadsheetColumnOrRowReferenceRange) && selectionAction instanceof SpreadsheetColumnOrRowDeleteHistoryHashToken){
+                        verified[SpreadsheetHistoryHash.SELECTION_ACTION] = selectionAction;
+                    }
+                    if((selection instanceof SpreadsheetColumnOrRowReference || selection instanceof SpreadsheetColumnOrRowReferenceRange) && selectionAction instanceof SpreadsheetColumnOrRowInsertHistoryHashToken){
                         verified[SpreadsheetHistoryHash.SELECTION_ACTION] = selectionAction;
                     }
                     if(selection instanceof SpreadsheetCellReferenceOrLabelName && selectionAction instanceof SpreadsheetFormulaHistoryHashToken){
