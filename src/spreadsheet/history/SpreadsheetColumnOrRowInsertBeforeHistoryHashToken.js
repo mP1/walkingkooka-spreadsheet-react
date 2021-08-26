@@ -1,11 +1,11 @@
-import SpreadsheetColumnOrRowDeleteOrInsertHistoryHashToken
-    from "./SpreadsheetColumnOrRowDeleteOrInsertHistoryHashToken.js";
+import SpreadsheetColumnOrRowInsertHistoryHashToken
+    from "./SpreadsheetColumnOrRowInsertHistoryHashToken.js";
 import SpreadsheetHistoryHash from "./SpreadsheetHistoryHash.js";
 
 /**
  * Represents a column/row insert BEFORE history hash token.
  */
-export default class SpreadsheetColumnOrRowInsertBeforeHistoryHashToken extends SpreadsheetColumnOrRowDeleteOrInsertHistoryHashToken {
+export default class SpreadsheetColumnOrRowInsertBeforeHistoryHashToken extends SpreadsheetColumnOrRowInsertHistoryHashToken {
 
     toHistoryHashToken() {
         return SpreadsheetHistoryHash.INSERT_BEFORE_COLUMN_OR_ROW + "/" + this.count();

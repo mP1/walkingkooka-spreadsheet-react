@@ -1,11 +1,11 @@
-import SpreadsheetColumnOrRowDeleteOrInsertHistoryHashToken
-    from "./SpreadsheetColumnOrRowDeleteOrInsertHistoryHashToken.js";
+import SpreadsheetColumnOrRowInsertHistoryHashToken
+    from "./SpreadsheetColumnOrRowInsertHistoryHashToken.js";
 import SpreadsheetHistoryHash from "./SpreadsheetHistoryHash.js";
 
 /**
  * Represents a column/row insert AFTER history hash token.
  */
-export default class SpreadsheetColumnOrRowInsertAfterHistoryHashToken extends SpreadsheetColumnOrRowDeleteOrInsertHistoryHashToken {
+export default class SpreadsheetColumnOrRowInsertAfterHistoryHashToken extends SpreadsheetColumnOrRowInsertHistoryHashToken {
 
     toHistoryHashToken() {
         return SpreadsheetHistoryHash.INSERT_AFTER_COLUMN_OR_ROW + "/" + this.count();
