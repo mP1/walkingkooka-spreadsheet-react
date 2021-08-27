@@ -73,57 +73,86 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
         this.onSpreadsheetMetadataRemover = props.spreadsheetMetadataCrud.addListener(this.onSpreadsheetMetadata.bind(this));
     }
 
+    /**
+     * Includes logic to clear any present cells etc that are within any present window in the response SpreadsheetDelta
+     * before updating the cells, cell to labels, labels etc.
+     */
     onSpreadsheetDelta(method, id, queryParameters, requestDelta, responseDelta) {
         const state = this.state;
 
-        const newState = { // lgtm [js/react/inconsistent-state-update]
-            cells: state.cells.setAll(responseDelta.referenceToCellMap()),
-            columnWidths: state.columnWidths.setAll(responseDelta.columnWidths()),
-            rowHeights: state.rowHeights.setAll(responseDelta.rowHeights()),
-            cellToLabels: state.cellToLabels.setAll(responseDelta.cellToLabels()),
-            labelToReference: state.labelToReference.setAll(responseDelta.labelToReference()),
-        };
+        const viewportTable = this.viewportTable.current;
+        if(viewportTable){
+            const width = viewportTable.offsetWidth;
+            const height = viewportTable.offsetHeight;
 
-        switch(method) {
-            case "GET":
-                const window = responseDelta.window();
-                if(window){
-                    const viewportTable = this.viewportTable.current;
-                    if(viewportTable){
-                        const width = viewportTable.offsetWidth;
-                        const height = viewportTable.offsetHeight;
+            const metadata = state.spreadsheetMetadata;
+            const selection = state.selection;
+            const viewportCell = metadata.getIgnoringDefaults(SpreadsheetMetadata.VIEWPORT_CELL);
 
-                        const metadata = state.spreadsheetMetadata;
-                        const selection = state.selection;
-                        const viewportCell = metadata.getIgnoringDefaults(SpreadsheetMetadata.VIEWPORT_CELL);
+            const viewport = new SpreadsheetViewport(
+                viewportCell,
+                0,
+                0,
+                width,
+                height
+            );
 
-                        const viewport = new SpreadsheetViewport(
-                            viewportCell,
-                            0,
-                            0,
-                            width,
-                            height
-                        );
+            const window = responseDelta.window();
 
-                        if(Equality.safeEquals(queryParameters, viewport.toLoadCellsQueryStringParameters(selection))){
-                            const viewportRange = window;
-                            
-                            Object.assign(
-                                newState,
-                                {
-                                    viewportRange: viewportRange,
-                                    spreadsheetMetadata: metadata.set(SpreadsheetMetadata.VIEWPORT_CELL, viewportRange.begin())
-                                }
-                            );
+            var {cells, cellToLabels, labelToReference} = state;
+
+            // if a window was present on the response delta, clear any OLD cells etc.
+            if(window){
+                var tempCells = new Map();
+                var tempCellToLabels = new Map();
+
+                // only copy cells that are not within the window.
+                for(var cell in cells.toMap().values()) {
+                    if(!window.testCell(cell)){
+                        const reference = cell.reference();
+                        tempCells.set(reference.toString(), cell);
+
+                        var label = cellToLabels.get(reference);
+                        if(label){
+                            tempCellToLabels.set(reference.toString(), label);
                         }
                     }
                 }
-                break;
-            default:
-                break;
-        }
 
-        this.setState(newState);
+                cells = new ImmutableMap(tempCells);
+                cellToLabels = new ImmutableMap(tempCellToLabels);
+
+                // only copy labels that are not within the window.
+                var tempLabelToReference = new Map();
+                for(const [label, reference] of labelToReference.toMap().entries()) {
+                    if(!window.testCell(reference)){
+                        tempLabelToReference.set(reference.toString(), label);
+                    }
+                }
+
+                labelToReference = new ImmutableMap(tempLabelToReference);
+            }
+
+            const newState = { // lgtm [js/react/inconsistent-state-update]
+                cells: cells.setAll(responseDelta.referenceToCellMap()),
+                cellToLabels: cellToLabels.setAll(responseDelta.cellToLabels()),
+                labelToReference: labelToReference.setAll(responseDelta.labelToReference()),
+                columnWidths: state.columnWidths.setAll(responseDelta.columnWidths()),
+                rowHeights: state.rowHeights.setAll(responseDelta.rowHeights()),
+            };
+
+            if(window && Equality.safeEquals(queryParameters, viewport.toLoadCellsQueryStringParameters(selection))){
+                Object.assign(
+                    newState,
+                    {
+                        viewportRange: window,
+                        spreadsheetMetadata: metadata.set(SpreadsheetMetadata.VIEWPORT_CELL, window.begin())
+                    }
+                )
+            }
+
+            this.setState(newState);
+        }
     }
 
     /**
