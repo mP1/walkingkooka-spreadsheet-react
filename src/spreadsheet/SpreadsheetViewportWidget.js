@@ -479,7 +479,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
                     contextMenu: {},
                 })}
                 anchorReference="anchorPosition"
-                anchorPosition={anchorPosition || {}}
+                anchorPosition={anchorPosition || { left: 0, top: 0}}
             >
                 {menuItems}
             </Menu>
