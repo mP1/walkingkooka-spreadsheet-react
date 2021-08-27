@@ -1,5 +1,4 @@
-import SpreadsheetColumnOrRowInsertHistoryHashToken
-    from "./SpreadsheetColumnOrRowInsertHistoryHashToken.js";
+import SpreadsheetColumnOrRowInsertHistoryHashToken from "./SpreadsheetColumnOrRowInsertHistoryHashToken.js";
 import SpreadsheetHistoryHash from "./SpreadsheetHistoryHash.js";
 
 /**
