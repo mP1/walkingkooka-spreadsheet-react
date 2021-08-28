@@ -148,7 +148,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
                         viewportRange: window,
                         spreadsheetMetadata: metadata.set(SpreadsheetMetadata.VIEWPORT_CELL, window.begin())
                     }
-                )
+                );
             }
 
             this.setState(newState);
