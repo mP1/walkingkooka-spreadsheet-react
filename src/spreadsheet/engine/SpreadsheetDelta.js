@@ -3,6 +3,7 @@ import ImmutableMap from "../../util/ImmutableMap";
 import Preconditions from "../../Preconditions.js";
 import SpreadsheetCell from "../SpreadsheetCell";
 import SpreadsheetCellRange from "../reference/SpreadsheetCellRange.js";
+import SpreadsheetCellReference from "../reference/SpreadsheetCellReference.js";
 import SpreadsheetCellReferenceOrLabelName from "../reference/SpreadsheetCellReferenceOrLabelName.js";
 import SpreadsheetColumnReference from "../reference/SpreadsheetColumnReference";
 import SpreadsheetLabelMapping from "../reference/SpreadsheetLabelMapping.js";
@@ -42,6 +43,11 @@ export default class SpreadsheetDelta extends SystemObject {
             }) :
             [];
 
+        let deletedCells = [];
+        for(const deleted of (json.deletedCells || [])) {
+            deletedCells.push(SpreadsheetCellReference.fromJson(deleted));
+        }
+        
         const columnWidths = ImmutableMap.fromJson(json.columnWidths || {}, SpreadsheetColumnReference.fromJson, NUMBER);
         const rowHeights = ImmutableMap.fromJson(json.rowHeights || {}, SpreadsheetRowReference.fromJson, NUMBER);
         const windowJson = json["window"];
@@ -49,22 +55,25 @@ export default class SpreadsheetDelta extends SystemObject {
         return new SpreadsheetDelta(
             cells,
             labels,
+            deletedCells,
             columnWidths,
             rowHeights,
             (windowJson && SpreadsheetCellRange.fromJson(windowJson))
         );
     }
 
-    constructor(cells, labels, columnWidths, rowHeights, window) {
+    constructor(cells, labels, deletedCells, columnWidths, rowHeights, window) {
         super();
         Preconditions.requireArray(cells, "cells");
         Preconditions.requireArray(labels, "labels");
+        Preconditions.requireArray(deletedCells, "deletedCells");
         Preconditions.requireInstance(columnWidths, ImmutableMap, "columnWidths");
         Preconditions.requireInstance(rowHeights, ImmutableMap, "rowHeights");
         Preconditions.optionalInstance(window, SpreadsheetCellRange, "window");
 
         this.cellsValue = cells.slice();
         this.labelsValue = labels.slice();
+        this.deletedCellsValue = deletedCells.slice();
         this.columnWidthsValue = columnWidths;
         this.rowHeightsValue = rowHeights;
         this.windowValue = window;
@@ -143,6 +152,10 @@ export default class SpreadsheetDelta extends SystemObject {
         return new ImmutableMap(cellToLabels);
     }
 
+    deletedCells() {
+        return this.deletedCellsValue.slice();
+    }
+
     columnWidths() {
         return this.columnWidthsValue;
     }
@@ -193,6 +206,11 @@ export default class SpreadsheetDelta extends SystemObject {
             json.labels = labels.map(l => l.toJson());
         }
 
+        const deletedCells = this.deletedCells();
+        if(deletedCells.length > 0){
+            json.deletedCells = deletedCells.map(deleted => deleted.toJson());
+        }
+
         const columnWidths = this.columnWidths();
         if(columnWidths.size() > 0){
             json.columnWidths = columnWidths.toJson();
@@ -219,6 +237,7 @@ export default class SpreadsheetDelta extends SystemObject {
             (other instanceof SpreadsheetDelta &&
                 Equality.safeEquals(this.cells(), other.cells()) &&
                 Equality.safeEquals(this.labels(), other.labels()) &&
+                Equality.safeEquals(this.deletedCells(), other.deletedCells()) &&
                 this.columnWidths().equals(other.columnWidths()) &&
                 this.rowHeights().equals(other.rowHeights()) &&
                 Equality.safeEquals(this.window(), other.window())

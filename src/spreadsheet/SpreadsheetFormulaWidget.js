@@ -253,6 +253,7 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetHistoryAwareSta
             new SpreadsheetDelta(
                 [cell],
                 [],
+                [],
                 ImmutableMap.EMPTY,
                 ImmutableMap.EMPTY,
                 null
