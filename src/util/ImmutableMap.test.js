@@ -163,6 +163,41 @@ test("setAll not empty map same not empty map", () => {
     expect(after === map).toBeTrue();
 });
 
+// remove..................................................................................................................
+
+test("remove unknown key", () => {
+    const a1 = SpreadsheetCellReference.parse("A1");
+    const b2 = SpreadsheetCellReference.parse("B2");
+
+    const a1v = "A1-value";
+    const b2v = "B2-value";
+
+    const nativeMap = new Map([[a1.toString(), a1v], [b2.toString(), b2v]]);
+    const map = new ImmutableMap(nativeMap);
+
+    expect(map.remove(
+        SpreadsheetCellReference.parse("Z99"))
+    ).toStrictEqual(map);
+});
+
+test("remove", () => {
+    const a1 = SpreadsheetCellReference.parse("A1");
+    const b2 = SpreadsheetCellReference.parse("B2");
+
+    const a1v = "A1-value";
+    const b2v = "B2-value";
+
+    const nativeMap = new Map([[a1.toString(), a1v], [b2.toString(), b2v]]);
+    const map = new ImmutableMap(nativeMap);
+
+    expect(map.remove(a1))
+        .toStrictEqual(
+            new ImmutableMap(
+                new Map([[b2.toString(), b2v]])
+            )
+        );
+});
+
 // fromJson.............................................................................................................
 
 test("fromJson missing json fails", () => {
