@@ -50,6 +50,15 @@ export default class ImmutableMap {
     }
 
     /**
+     * Removes the value with the given key returning a new ImmutableMap.
+     */
+    remove(key) {
+        const copy = new Map([...this.map]);
+        copy.delete(key.toString());
+        return new ImmutableMap(copy);
+    }
+
+    /**
      * Returns true if the map is empty that is has no entries.
      */
     isEmpty() {
