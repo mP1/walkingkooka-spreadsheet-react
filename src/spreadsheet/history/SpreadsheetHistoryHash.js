@@ -107,113 +107,109 @@ export default class SpreadsheetHistoryHash {
                 var settings = null;
                 var settingsSection = null;
 
-                while(tokens.length > 0 && valid) {
-                    const token = tokens.shift();
+                var previous = null;
 
-                    switch(token) {
+                while(tokens.length > 0 && valid) {
+                    valid = false;
+
+                    switch(tokens.shift()) {
                         case SpreadsheetHistoryHash.SPREADSHEET_NAME_EDIT:
                             name = true;
+                            previous = null;
+                            valid = true;
                             break;
                         case SpreadsheetHistoryHash.CELL:
-                            if(selection || tokens.length === 0){
-                                valid = false;
-                                break;
-                            }
-
-                            try {
-                                selection = spreadsheetCellReferenceOrLabelNameParse(tokens.shift());
-                            } catch(invalid) {
-                                errors("Cell: " + invalid.message);
-                                valid = false;
+                            if(!selection && tokens.length > 0) {
+                                try {
+                                    selection = spreadsheetCellReferenceOrLabelNameParse(tokens.shift());
+                                    previous = selection;
+                                    valid = true;
+                                } catch(invalid) {
+                                    errors("Cell: " + invalid.message);
+                                }
                             }
                             break;
                         case SpreadsheetHistoryHash.CELL_FORMULA:
-                            if(!(selection instanceof SpreadsheetCellReferenceOrLabelName)){
-                                valid = false;
-                                break;
+                            if(previous instanceof SpreadsheetCellReferenceOrLabelName){
+                                selectionAction = new SpreadsheetFormulaHistoryHashToken();
+                                previous = null;
+                                valid = true;
                             }
-                            selectionAction = new SpreadsheetFormulaHistoryHashToken();
                             break;
                         case SpreadsheetHistoryHash.COLUMN:
-                            if(selection || tokens.length === 0){
-                                valid = false;
-                                break;
-                            }
-
-                            try {
-                                selection = SpreadsheetColumnReferenceRange.parse(tokens.shift())
-                                    .columnOrRange();
-                            } catch(invalid) {
-                                errors("Column: " + invalid.message);
-                                valid = false;
+                            if(!selection && tokens.length > 0){
+                                try {
+                                    selection = SpreadsheetColumnReferenceRange.parse(tokens.shift())
+                                        .columnOrRange();
+                                    previous = selection;
+                                    valid = true;
+                                } catch(invalid) {
+                                    errors("Column: " + invalid.message);
+                                }
                             }
                             break;
                         case SpreadsheetHistoryHash.DELETE_COLUMN_OR_ROW:
-                            valid = false;
-                            if(selection instanceof SpreadsheetColumnOrRowReference || selection instanceof SpreadsheetColumnOrRowReferenceRange){
+                            if(previous instanceof SpreadsheetColumnOrRowReference || selection instanceof SpreadsheetColumnOrRowReferenceRange){
                                 selectionAction = SpreadsheetColumnOrRowDeleteHistoryHashToken.INSTANCE;
+                                previous = null;
                                 valid = true;
                             }
                             break;
                         case SpreadsheetHistoryHash.INSERT_AFTER_COLUMN_OR_ROW:
-                            valid = false;
-                            if(!(selection instanceof SpreadsheetColumnOrRowReference) || tokens.length === 0){
-                                break;
-                            }
-                            const insertAfterCount = tokens.shift();
-                            if(!Number.isNaN(Number(insertAfterCount))){
-                                try {
-                                    selectionAction = new SpreadsheetColumnOrRowInsertAfterHistoryHashToken(parseInt(insertAfterCount, 10));
-                                    valid = true;
-                                } catch(invalid) {
-                                    errors("Insert after count: " + invalid.message);
+                            if(previous instanceof SpreadsheetColumnOrRowReference && tokens.length > 0){
+                                const insertAfterCount = tokens.shift();
+                                if(!Number.isNaN(Number(insertAfterCount))){
+                                    try {
+                                        selectionAction = new SpreadsheetColumnOrRowInsertAfterHistoryHashToken(parseInt(insertAfterCount, 10));
+                                        previous = null;
+                                        valid = true;
+                                    } catch(invalid) {
+                                        errors("Insert after count: " + invalid.message);
+                                    }
                                 }
                             }
                             break;
                         case SpreadsheetHistoryHash.INSERT_BEFORE_COLUMN_OR_ROW:
-                            valid = false;
-                            if(!(selection instanceof SpreadsheetColumnOrRowReference) || tokens.length === 0){
-                                break;
-                            }
-                            const insertBeforeCount = tokens.shift();
-                            if(!Number.isNaN(Number(insertBeforeCount))){
-                                try {
-                                    selectionAction = new SpreadsheetColumnOrRowInsertBeforeHistoryHashToken(parseInt(insertBeforeCount, 10));
-                                    valid = true;
-                                } catch(invalid) {
-                                    errors("Insert before count: " + invalid.message);
+                            if(previous instanceof SpreadsheetColumnOrRowReference && tokens.length > 0){
+                                const insertBeforeCount = tokens.shift();
+                                if(!Number.isNaN(Number(insertBeforeCount))){
+                                    try {
+                                        selectionAction = new SpreadsheetColumnOrRowInsertBeforeHistoryHashToken(parseInt(insertBeforeCount, 10));
+                                        previous = null;
+                                        valid = true;
+                                    } catch(invalid) {
+                                        errors("Insert before count: " + invalid.message);
+                                    }
                                 }
                             }
                             break;
                         case SpreadsheetHistoryHash.LABEL:
-                            if(tokens.length === 0){
-                                valid = false;
-                                break;
-                            }
-
-                            try {
-                                label = SpreadsheetLabelName.parse(tokens.shift());
-                            } catch(invalid) {
-                                errors("Label: " + invalid.message);
-                                valid = false;
+                            if(tokens.length > 0){
+                                try {
+                                    label = SpreadsheetLabelName.parse(tokens.shift());
+                                    previous = null;
+                                    valid = true;
+                                } catch(invalid) {
+                                    errors("Label: " + invalid.message);
+                                }
                             }
                             break;
                         case SpreadsheetHistoryHash.ROW:
-                            if(selection || tokens.length === 0){
-                                valid = false;
-                                break;
-                            }
-
-                            try {
-                                selection = SpreadsheetRowReferenceRange.parse(tokens.shift())
-                                    .rowOrRange();
-                            } catch(invalid) {
-                                errors("Row: " + invalid.message);
-                                valid = false;
+                            if(!selection && tokens.length > 0){
+                                try {
+                                    selection = SpreadsheetRowReferenceRange.parse(tokens.shift())
+                                        .rowOrRange();
+                                    previous = selection;
+                                    valid = true;
+                                } catch(invalid) {
+                                    errors("Row: " + invalid.message);
+                                }
                             }
                             break;
                         case SpreadsheetHistoryHash.SELECT:
                             select = true;
+                            previous = null;
+                            valid = true;
                             break;
                         case SpreadsheetHistoryHash.SETTINGS:
                             settings = true;
@@ -223,10 +219,10 @@ export default class SpreadsheetHistoryHash {
                                     settingsSection = possibleSection;
                                 }
                             }
+                            previous = null;
                             valid = true;
                             break;
                         default:
-                            valid = false;
                             break;
                     }
                 }
