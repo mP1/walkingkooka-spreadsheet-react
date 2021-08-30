@@ -2,8 +2,7 @@ import CharSequences from "../../CharSequences.js";
 import SpreadsheetCellRange from "../reference/SpreadsheetCellRange.js";
 import SpreadsheetCellReference from "../reference/SpreadsheetCellReference.js";
 import SpreadsheetColumnOrRowDeleteHistoryHashToken from "./SpreadsheetColumnOrRowDeleteHistoryHashToken.js";
-import SpreadsheetColumnOrRowInsertAfterHistoryHashToken
-    from "./SpreadsheetColumnOrRowInsertAfterHistoryHashToken.js";
+import SpreadsheetColumnOrRowInsertAfterHistoryHashToken from "./SpreadsheetColumnOrRowInsertAfterHistoryHashToken.js";
 import SpreadsheetColumnOrRowInsertBeforeHistoryHashToken
     from "./SpreadsheetColumnOrRowInsertBeforeHistoryHashToken.js";
 import SpreadsheetColumnReference from "../reference/SpreadsheetColumnReference.js";
@@ -271,6 +270,14 @@ testParseAndStringify(
 );
 
 testParseAndStringify(
+    "/spreadsheet-id-123/spreadsheet-name-456/cell/cell/A2",
+    {
+        "spreadsheet-id": "spreadsheet-id-123",
+        "spreadsheet-name": SPREADSHEET_NAME,
+    }
+);
+
+testParseAndStringify(
     "/spreadsheet-id-123/spreadsheet-name-456/cell/A1",
     {
         "spreadsheet-id": "spreadsheet-id-123",
@@ -300,6 +307,38 @@ testParseAndStringify(
 
 testParseAndStringify(
     "/spreadsheet-id-123/spreadsheet-name-456/cell/C3:D4/formula",
+    {
+        "spreadsheet-id": "spreadsheet-id-123",
+        "spreadsheet-name": SPREADSHEET_NAME,
+    }
+);
+
+testParseAndStringify(
+    "/spreadsheet-id-123/spreadsheet-name-456/cell/C3/formula/delete",
+    {
+        "spreadsheet-id": "spreadsheet-id-123",
+        "spreadsheet-name": SPREADSHEET_NAME,
+    }
+);
+
+testParseAndStringify(
+    "/spreadsheet-id-123/spreadsheet-name-456/cell/C3/formula/formula",
+    {
+        "spreadsheet-id": "spreadsheet-id-123",
+        "spreadsheet-name": SPREADSHEET_NAME,
+    }
+);
+
+testParseAndStringify(
+    "/spreadsheet-id-123/spreadsheet-name-456/cell/C3/formula/insert-before",
+    {
+        "spreadsheet-id": "spreadsheet-id-123",
+        "spreadsheet-name": SPREADSHEET_NAME,
+    }
+);
+
+testParseAndStringify(
+    "/spreadsheet-id-123/spreadsheet-name-456/cell/C3/formula/insert-after",
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
@@ -487,6 +526,38 @@ testParseAndStringify(
 );
 
 testParseAndStringify(
+    "/spreadsheet-id-123/spreadsheet-name-456/column/B/delete/delete",
+    {
+        "spreadsheet-id": "spreadsheet-id-123",
+        "spreadsheet-name": SPREADSHEET_NAME
+    }
+);
+
+testParseAndStringify(
+    "/spreadsheet-id-123/spreadsheet-name-456/column/B/delete/formula",
+    {
+        "spreadsheet-id": "spreadsheet-id-123",
+        "spreadsheet-name": SPREADSHEET_NAME
+    }
+);
+
+testParseAndStringify(
+    "/spreadsheet-id-123/spreadsheet-name-456/column/B/delete/insert-after",
+    {
+        "spreadsheet-id": "spreadsheet-id-123",
+        "spreadsheet-name": SPREADSHEET_NAME
+    }
+);
+
+testParseAndStringify(
+    "/spreadsheet-id-123/spreadsheet-name-456/column/B/delete/insert-before",
+    {
+        "spreadsheet-id": "spreadsheet-id-123",
+        "spreadsheet-name": SPREADSHEET_NAME
+    }
+);
+
+testParseAndStringify(
     "/spreadsheet-id-123/spreadsheet-name-456/column/B/insert-after",
     {
         "spreadsheet-id": "spreadsheet-id-123",
@@ -519,6 +590,14 @@ testParseAndStringify(
         "spreadsheet-name": SPREADSHEET_NAME,
         "selection": COLUMN,
         "selection-action": new SpreadsheetColumnOrRowInsertBeforeHistoryHashToken(123),
+    }
+);
+
+testParseAndStringify(
+    "/spreadsheet-id-123/spreadsheet-name-456/column/B/insert-before/123/delete",
+    {
+        "spreadsheet-id": "spreadsheet-id-123",
+        "spreadsheet-name": SPREADSHEET_NAME
     }
 );
 
@@ -588,6 +667,30 @@ testParseAndStringify(
 );
 
 testParseAndStringify(
+    "/spreadsheet-id-123/spreadsheet-name-456/row/2/delete/formula",
+    {
+        "spreadsheet-id": "spreadsheet-id-123",
+        "spreadsheet-name": SPREADSHEET_NAME
+    }
+);
+
+testParseAndStringify(
+    "/spreadsheet-id-123/spreadsheet-name-456/row/2/delete/insert-after",
+    {
+        "spreadsheet-id": "spreadsheet-id-123",
+        "spreadsheet-name": SPREADSHEET_NAME
+    }
+);
+
+testParseAndStringify(
+    "/spreadsheet-id-123/spreadsheet-name-456/row/2/delete/insert-before",
+    {
+        "spreadsheet-id": "spreadsheet-id-123",
+        "spreadsheet-name": SPREADSHEET_NAME
+    }
+);
+
+testParseAndStringify(
     "/spreadsheet-id-123/spreadsheet-name-456/row/2/insert-after",
     {
         "spreadsheet-id": "spreadsheet-id-123",
@@ -606,6 +709,46 @@ testParseAndStringify(
 );
 
 testParseAndStringify(
+    "/spreadsheet-id-123/spreadsheet-name-456/row/2/insert-after/123/delete",
+    {
+        "spreadsheet-id": "spreadsheet-id-123",
+        "spreadsheet-name": SPREADSHEET_NAME
+    }
+);
+
+testParseAndStringify(
+    "/spreadsheet-id-123/spreadsheet-name-456/row/2/insert-after/123/delete",
+    {
+        "spreadsheet-id": "spreadsheet-id-123",
+        "spreadsheet-name": SPREADSHEET_NAME
+    }
+);
+
+testParseAndStringify(
+    "/spreadsheet-id-123/spreadsheet-name-456/row/2/insert-after/123/formula",
+    {
+        "spreadsheet-id": "spreadsheet-id-123",
+        "spreadsheet-name": SPREADSHEET_NAME
+    }
+);
+
+testParseAndStringify(
+    "/spreadsheet-id-123/spreadsheet-name-456/row/2/insert-after/123/insert-after",
+    {
+        "spreadsheet-id": "spreadsheet-id-123",
+        "spreadsheet-name": SPREADSHEET_NAME
+    }
+);
+
+testParseAndStringify(
+    "/spreadsheet-id-123/spreadsheet-name-456/row/2/insert-after/123/insert-before",
+    {
+        "spreadsheet-id": "spreadsheet-id-123",
+        "spreadsheet-name": SPREADSHEET_NAME
+    }
+);
+
+testParseAndStringify(
     "/spreadsheet-id-123/spreadsheet-name-456/row/2/insert-before",
     {
         "spreadsheet-id": "spreadsheet-id-123",
@@ -620,6 +763,38 @@ testParseAndStringify(
         "spreadsheet-name": SPREADSHEET_NAME,
         "selection": ROW,
         "selection-action": new SpreadsheetColumnOrRowInsertBeforeHistoryHashToken(123),
+    }
+);
+
+testParseAndStringify(
+    "/spreadsheet-id-123/spreadsheet-name-456/row/2/insert-before/789/delete",
+    {
+        "spreadsheet-id": "spreadsheet-id-123",
+        "spreadsheet-name": SPREADSHEET_NAME,
+    }
+);
+
+testParseAndStringify(
+    "/spreadsheet-id-123/spreadsheet-name-456/row/2/insert-before/123/formula",
+    {
+        "spreadsheet-id": "spreadsheet-id-123",
+        "spreadsheet-name": SPREADSHEET_NAME,
+    }
+);
+
+testParseAndStringify(
+    "/spreadsheet-id-123/spreadsheet-name-456/row/2/insert-before/123/insert-before",
+    {
+        "spreadsheet-id": "spreadsheet-id-123",
+        "spreadsheet-name": SPREADSHEET_NAME,
+    }
+);
+
+testParseAndStringify(
+    "/spreadsheet-id-123/spreadsheet-name-456/row/2/insert-before/123/insert-after",
+    {
+        "spreadsheet-id": "spreadsheet-id-123",
+        "spreadsheet-name": SPREADSHEET_NAME,
     }
 );
 
