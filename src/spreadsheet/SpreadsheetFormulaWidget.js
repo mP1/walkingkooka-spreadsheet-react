@@ -8,7 +8,7 @@ import SpreadsheetCell from "./SpreadsheetCell.js";
 import SpreadsheetCellReferenceOrLabelName from "./reference/SpreadsheetCellReferenceOrLabelName.js";
 import SpreadsheetDelta from "./engine/SpreadsheetDelta.js";
 import SpreadsheetFormula from "./SpreadsheetFormula.js";
-import SpreadsheetFormulaHistoryHashToken from "./history/SpreadsheetFormulaHistoryHashToken.js";
+import SpreadsheetFormulaLoadAndEditHistoryHashToken from "./history/SpreadsheetFormulaLoadAndEditHistoryHashToken.js";
 import SpreadsheetHistoryHash from "./history/SpreadsheetHistoryHash.js";
 import SpreadsheetHistoryAwareStateWidget from "./history/SpreadsheetHistoryAwareStateWidget.js";
 import SpreadsheetLabelName from "./reference/SpreadsheetLabelName.js";
@@ -62,7 +62,7 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetHistoryAwareSta
 
         // if a cell or label is present the formula text should also be editable.
         const selection = historyTokens[SpreadsheetHistoryHash.SELECTION];
-        const formula = historyTokens[SpreadsheetHistoryHash.SELECTION_ACTION] instanceof SpreadsheetFormulaHistoryHashToken;
+        const formula = historyTokens[SpreadsheetHistoryHash.SELECTION_ACTION] instanceof SpreadsheetFormulaLoadAndEditHistoryHashToken;
         const edit = selection instanceof SpreadsheetCellReferenceOrLabelName;
         const giveFocus = edit && formula && !state.focused && !state.giveFocus;
 
@@ -90,7 +90,7 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetHistoryAwareSta
 
         const historyTokens = {};
         historyTokens[SpreadsheetHistoryHash.SELECTION] = selection;
-        historyTokens[SpreadsheetHistoryHash.SELECTION_ACTION] = (focused | giveFocus) ? new SpreadsheetFormulaHistoryHashToken() : null;
+        historyTokens[SpreadsheetHistoryHash.SELECTION_ACTION] = (focused | giveFocus) ? new SpreadsheetFormulaLoadAndEditHistoryHashToken() : null;
 
         // if not formula editing, disable textField
         const textField = this.textField.current;
