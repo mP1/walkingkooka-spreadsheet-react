@@ -807,7 +807,21 @@ context(
                 .should('match', /.*\/Untitled\/cell\/B2/);
         });
 
-        it("Cell formula edit", () => {
+        // @see https://github.com/mP1/walkingkooka-spreadsheet-react/issues/1256
+        it("Cell formula load then history hash save", () => {
+            spreadsheetEmpty();
+
+            cellClick(B2);
+
+            hash().should('match', /.*\/Untitled\/cell\/B2\/formula/)
+
+            hash()
+                .should('match', /.*\/Untitled\/cell\/B2\/formula\/save\/=2*3/);
+
+            cellFormattedTextCheck(B2, "6.");
+        });
+
+        it("Cell formula edit ENTER saves", () => {
             spreadsheetEmpty();
 
             cellClick(B2);
