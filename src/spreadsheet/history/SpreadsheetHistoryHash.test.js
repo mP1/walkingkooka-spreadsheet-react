@@ -8,6 +8,7 @@ import SpreadsheetColumnOrRowInsertBeforeHistoryHashToken
 import SpreadsheetColumnReference from "../reference/SpreadsheetColumnReference.js";
 import SpreadsheetColumnReferenceRange from "../reference/SpreadsheetColumnReferenceRange.js";
 import SpreadsheetFormulaLoadAndEditHistoryHashToken from "./SpreadsheetFormulaLoadAndEditHistoryHashToken.js";
+import SpreadsheetFormulaSaveHistoryHashToken from "./SpreadsheetFormulaSaveHistoryHashToken.js";
 import SpreadsheetHistoryHash from "./SpreadsheetHistoryHash.js";
 import SpreadsheetLabelName from "../reference/SpreadsheetLabelName.js";
 import SpreadsheetName from "../SpreadsheetName.js";
@@ -23,6 +24,9 @@ const COLUMN_RANGE = SpreadsheetColumnReferenceRange.parse("B:C");
 const ROW = SpreadsheetRowReference.parse("2");
 const ROW_RANGE = SpreadsheetRowReferenceRange.parse("2:3");
 const LABEL = SpreadsheetLabelName.parse("Label123");
+
+const CELL_FORMULA = new SpreadsheetFormulaLoadAndEditHistoryHashToken();
+const CELL_FORMULA_SAVE = new SpreadsheetFormulaSaveHistoryHashToken("Abc123");
 
 // validate................................................................................................................
 
@@ -138,11 +142,31 @@ testValidate(
 );
 
 testValidate(
+    "validate id & name & cell=CELL",
+    {
+        "spreadsheet-id": ID,
+        "spreadsheet-name": SPREADSHEET_NAME,
+        "selection": CELL,
+        "selection-action": CELL_FORMULA,
+    }
+);
+
+testValidate(
     "validate id & name & cell=LABEL",
     {
         "spreadsheet-id": ID,
         "spreadsheet-name": SPREADSHEET_NAME,
         "selection": LABEL,
+    }
+);
+
+testValidate(
+    "validate id & name & cell=CELL & formula-save",
+    {
+        "spreadsheet-id": ID,
+        "spreadsheet-name": SPREADSHEET_NAME,
+        "selection": CELL,
+        "selection-action": CELL_FORMULA_SAVE,
     }
 );
 
@@ -165,6 +189,16 @@ testValidate(
     {
         "spreadsheet-id": ID,
         "spreadsheet-name": SPREADSHEET_NAME,
+    }
+);
+
+testValidate(
+    "validate id & name & cell=LABEL & formula-save",
+    {
+        "spreadsheet-id": ID,
+        "spreadsheet-name": SPREADSHEET_NAME,
+        "selection": LABEL,
+        "selection-action": CELL_FORMULA_SAVE,
     }
 );
 
@@ -297,6 +331,34 @@ testParseAndStringify(
 );
 
 testParseAndStringify(
+    "/spreadsheet-id-123/spreadsheet-name-456/cell/A1/formula/save",
+    {
+        "spreadsheet-id": "spreadsheet-id-123",
+        "spreadsheet-name": SPREADSHEET_NAME,
+    }
+);
+
+testParseAndStringify(
+    "/spreadsheet-id-123/spreadsheet-name-456/cell/A1/formula/save/",
+    {
+        "spreadsheet-id": "spreadsheet-id-123",
+        "spreadsheet-name": SPREADSHEET_NAME,
+        "selection": CELL,
+        "selection-action": new SpreadsheetFormulaSaveHistoryHashToken(""),
+    }
+);
+
+testParseAndStringify(
+    "/spreadsheet-id-123/spreadsheet-name-456/cell/A1/formula/save/ABC%20123",
+    {
+        "spreadsheet-id": "spreadsheet-id-123",
+        "spreadsheet-name": SPREADSHEET_NAME,
+        "selection": CELL,
+        "selection-action": new SpreadsheetFormulaSaveHistoryHashToken("ABC 123"),
+    }
+);
+
+testParseAndStringify(
     "/spreadsheet-id-123/spreadsheet-name-456/cell/C3:D4",
     {
         "spreadsheet-id": "spreadsheet-id-123",
@@ -361,6 +423,24 @@ testParseAndStringify(
         "spreadsheet-name": SPREADSHEET_NAME,
         "selection": LABEL,
         "selection-action": new SpreadsheetFormulaLoadAndEditHistoryHashToken(),
+    }
+);
+
+testParseAndStringify(
+    "/spreadsheet-id-123/spreadsheet-name-456/cell/Label123/formula/save",
+    {
+        "spreadsheet-id": "spreadsheet-id-123",
+        "spreadsheet-name": SPREADSHEET_NAME,
+    }
+);
+
+testParseAndStringify(
+    "/spreadsheet-id-123/spreadsheet-name-456/cell/Label123/formula/save/ABC%20123",
+    {
+        "spreadsheet-id": "spreadsheet-id-123",
+        "spreadsheet-name": SPREADSHEET_NAME,
+        "selection": LABEL,
+        "selection-action": new SpreadsheetFormulaSaveHistoryHashToken("ABC 123"),
     }
 );
 
