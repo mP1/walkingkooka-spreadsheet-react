@@ -11,12 +11,12 @@ import SpreadsheetColumnOrRowInsertAfterHistoryHashToken from "./SpreadsheetColu
 import SpreadsheetColumnOrRowInsertBeforeHistoryHashToken
     from "./SpreadsheetColumnOrRowInsertBeforeHistoryHashToken.js";
 import SpreadsheetFormulaLoadAndEditHistoryHashToken from "./SpreadsheetFormulaLoadAndEditHistoryHashToken.js";
+import SpreadsheetFormulaSaveHistoryHashToken from "./SpreadsheetFormulaSaveHistoryHashToken.js";
 import SpreadsheetHistoryHashToken from "./SpreadsheetHistoryHashToken.js";
 import SpreadsheetLabelName from "../reference/SpreadsheetLabelName.js";
 import SpreadsheetName from "../SpreadsheetName.js";
 import SpreadsheetRowReferenceRange from "../reference/SpreadsheetRowReferenceRange.js";
 import SpreadsheetSelection from "../reference/SpreadsheetSelection.js";
-
 
 function tokenize(pathname) {
     return pathname && pathname.startsWith("/") ?
@@ -62,6 +62,7 @@ export default class SpreadsheetHistoryHash {
 
     static CELL = "cell";
     static CELL_FORMULA = "formula";
+    static CELL_FORMULA_SAVE = "save";
     static COLUMN = "column";
     static ROW = "row";
     static DELETE_COLUMN_OR_ROW = "delete";
@@ -132,8 +133,17 @@ export default class SpreadsheetHistoryHash {
                         case SpreadsheetHistoryHash.CELL_FORMULA:
                             if(previous instanceof SpreadsheetCellReferenceOrLabelName){
                                 selectionAction = new SpreadsheetFormulaLoadAndEditHistoryHashToken();
+                                previous = selectionAction;
+                                valid = true;
+                            }
+                            break;
+                        case SpreadsheetHistoryHash.CELL_FORMULA_SAVE:
+                            if(previous instanceof SpreadsheetFormulaLoadAndEditHistoryHashToken && tokens.length > 0){
+                                selectionAction = new SpreadsheetFormulaSaveHistoryHashToken(decodeURIComponent(tokens.shift()));
                                 previous = null;
                                 valid = true;
+                            } else {
+                                previous = null;
                             }
                             break;
                         case SpreadsheetHistoryHash.COLUMN:
@@ -304,8 +314,10 @@ export default class SpreadsheetHistoryHash {
                     if((selection instanceof SpreadsheetColumnOrRowReference || selection instanceof SpreadsheetColumnOrRowReferenceRange) && selectionAction instanceof SpreadsheetColumnOrRowInsertHistoryHashToken){
                         verified[SpreadsheetHistoryHash.SELECTION_ACTION] = selectionAction;
                     }
-                    if(selection instanceof SpreadsheetCellReferenceOrLabelName && selectionAction instanceof SpreadsheetFormulaLoadAndEditHistoryHashToken){
-                        verified[SpreadsheetHistoryHash.SELECTION_ACTION] = selectionAction;
+                    if(selection instanceof SpreadsheetCellReferenceOrLabelName){
+                        if(selectionAction instanceof SpreadsheetFormulaLoadAndEditHistoryHashToken || selectionAction instanceof SpreadsheetFormulaSaveHistoryHashToken){
+                            verified[SpreadsheetHistoryHash.SELECTION_ACTION] = selectionAction;
+                        }
                     }
                 }
                 if(label instanceof SpreadsheetLabelName){
