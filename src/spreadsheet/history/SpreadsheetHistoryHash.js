@@ -10,7 +10,7 @@ import SpreadsheetColumnOrRowInsertHistoryHashToken from "./SpreadsheetColumnOrR
 import SpreadsheetColumnOrRowInsertAfterHistoryHashToken from "./SpreadsheetColumnOrRowInsertAfterHistoryHashToken.js";
 import SpreadsheetColumnOrRowInsertBeforeHistoryHashToken
     from "./SpreadsheetColumnOrRowInsertBeforeHistoryHashToken.js";
-import SpreadsheetFormulaHistoryHashToken from "./SpreadsheetFormulaHistoryHashToken.js";
+import SpreadsheetFormulaLoadAndEditHistoryHashToken from "./SpreadsheetFormulaLoadAndEditHistoryHashToken.js";
 import SpreadsheetHistoryHashToken from "./SpreadsheetHistoryHashToken.js";
 import SpreadsheetLabelName from "../reference/SpreadsheetLabelName.js";
 import SpreadsheetName from "../SpreadsheetName.js";
@@ -131,7 +131,7 @@ export default class SpreadsheetHistoryHash {
                             break;
                         case SpreadsheetHistoryHash.CELL_FORMULA:
                             if(previous instanceof SpreadsheetCellReferenceOrLabelName){
-                                selectionAction = new SpreadsheetFormulaHistoryHashToken();
+                                selectionAction = new SpreadsheetFormulaLoadAndEditHistoryHashToken();
                                 previous = null;
                                 valid = true;
                             }
@@ -304,7 +304,7 @@ export default class SpreadsheetHistoryHash {
                     if((selection instanceof SpreadsheetColumnOrRowReference || selection instanceof SpreadsheetColumnOrRowReferenceRange) && selectionAction instanceof SpreadsheetColumnOrRowInsertHistoryHashToken){
                         verified[SpreadsheetHistoryHash.SELECTION_ACTION] = selectionAction;
                     }
-                    if(selection instanceof SpreadsheetCellReferenceOrLabelName && selectionAction instanceof SpreadsheetFormulaHistoryHashToken){
+                    if(selection instanceof SpreadsheetCellReferenceOrLabelName && selectionAction instanceof SpreadsheetFormulaLoadAndEditHistoryHashToken){
                         verified[SpreadsheetHistoryHash.SELECTION_ACTION] = selectionAction;
                     }
                 }

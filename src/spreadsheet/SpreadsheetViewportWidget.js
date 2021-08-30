@@ -11,7 +11,7 @@ import SpreadsheetCellColumnOrRowParse from "./reference/SpreadsheetCellColumnOr
 import SpreadsheetCellRange from "./reference/SpreadsheetCellRange.js";
 import SpreadsheetCellReference from "./reference/SpreadsheetCellReference.js";
 import SpreadsheetColumnReference from "./reference/SpreadsheetColumnReference.js";
-import SpreadsheetFormulaHistoryHashToken from "./history/SpreadsheetFormulaHistoryHashToken.js";
+import SpreadsheetFormulaLoadAndEditHistoryHashToken from "./history/SpreadsheetFormulaLoadAndEditHistoryHashToken.js";
 import SpreadsheetHistoryAwareStateWidget from "./history/SpreadsheetHistoryAwareStateWidget.js";
 import SpreadsheetHistoryHash from "./history/SpreadsheetHistoryHash.js";
 import SpreadsheetLabelName from "./reference/SpreadsheetLabelName.js";
@@ -735,7 +735,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
 
     giveFormulaTextBoxFocus() {
         const tokens = {}
-        tokens[SpreadsheetHistoryHash.SELECTION_ACTION] = new SpreadsheetFormulaHistoryHashToken();
+        tokens[SpreadsheetHistoryHash.SELECTION_ACTION] = new SpreadsheetFormulaLoadAndEditHistoryHashToken();
 
         this.historyParseMergeAndPush(tokens);
     }
