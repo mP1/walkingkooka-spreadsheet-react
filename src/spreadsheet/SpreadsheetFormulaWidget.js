@@ -5,10 +5,12 @@ import Keys from "../Keys.js";
 import PropTypes from "prop-types";
 import React from 'react';
 import SpreadsheetCell from "./SpreadsheetCell.js";
+import SpreadsheetCellReference from "./reference/SpreadsheetCellReference.js";
 import SpreadsheetCellReferenceOrLabelName from "./reference/SpreadsheetCellReferenceOrLabelName.js";
 import SpreadsheetDelta from "./engine/SpreadsheetDelta.js";
 import SpreadsheetFormula from "./SpreadsheetFormula.js";
 import SpreadsheetFormulaLoadAndEditHistoryHashToken from "./history/SpreadsheetFormulaLoadAndEditHistoryHashToken.js";
+import SpreadsheetFormulaSaveHistoryHashToken from "./history/SpreadsheetFormulaSaveHistoryHashToken.js";
 import SpreadsheetHistoryHash from "./history/SpreadsheetHistoryHash.js";
 import SpreadsheetHistoryAwareStateWidget from "./history/SpreadsheetHistoryAwareStateWidget.js";
 import SpreadsheetLabelName from "./reference/SpreadsheetLabelName.js";
@@ -22,11 +24,8 @@ import TextStyle from "../text/TextStyle.js";
  * ENTER calls the setter, ESCAPE reloads the initial value(text).
  * <ul>
  *     <li>SpreadsheetCell cell: The cell being edited</li>
- *     <li>SpreadsheetCellOrLabelName cellOrLabel:  A reference of the formula being edited.</li>
  *     <li>SpreadsheetCellReference cellReference: The cell reference of the cell being edited.</li>
- *     <li>boolean edit: true indicates the widget is being edited, false it is disabled</li>
- *     <li>boolean giveFocus: true indicates a one time attempt to give focus to the formula TextField</li>
- *     <li>boolean reload: true indicates the formula text is being reloaded.</li>
+ *     <li>boolean focused: true indicates the text field has focus</li>
  * </ul>
  */
 export default class SpreadsheetFormulaWidget extends SpreadsheetHistoryAwareStateWidget {
@@ -55,87 +54,133 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetHistoryAwareSta
         delete this.onSpreadsheetDeltaRemover;
     }
 
+    /**
+     * Filter only interested in cell or labels and load/edit or save formula actions.
+     */
     stateFromHistoryTokens(historyTokens) {
-        SpreadsheetFormulaWidget.column = SpreadsheetFormulaWidget.column || SpreadsheetHistoryHash.stringify(historyTokens).indexOf("column") > 0;
+        console.log("historyTokens: " + SpreadsheetHistoryHash.stringify(historyTokens));
 
-        const state = this.state || {};
-
-        // if a cell or label is present the formula text should also be editable.
         const selection = historyTokens[SpreadsheetHistoryHash.SELECTION];
-        const formula = historyTokens[SpreadsheetHistoryHash.SELECTION_ACTION] instanceof SpreadsheetFormulaLoadAndEditHistoryHashToken;
-        const edit = selection instanceof SpreadsheetCellReferenceOrLabelName;
-        const giveFocus = edit && formula && !state.focused && !state.giveFocus;
+        const cellOrLabel = selection instanceof SpreadsheetCellReferenceOrLabelName && selection;
+        const selectionAction = historyTokens[SpreadsheetHistoryHash.SELECTION_ACTION];
 
-        var newState = {};
-
-        if(!Equality.safeEquals(selection, state.selection) || edit !== state.edit || giveFocus){
-            console.log("stateFromHistoryTokens: " + selection + " new selection: " + selection + " old: " + state.selection);
-
-            newState = {
-                selection: selection,
-                edit: edit,
-                giveFocus: giveFocus,
-                reload: false,
-            };
+        return {
+            selection: cellOrLabel,
+            selectionAction: (cellOrLabel &&
+                (selectionAction instanceof SpreadsheetFormulaLoadAndEditHistoryHashToken ||
+                selectionAction instanceof SpreadsheetFormulaSaveHistoryHashToken)) &&
+                selectionAction,
         }
-
-        return newState;
     }
 
     historyTokensFromState(prevState) {
         const state = this.state;
-        const {selection, edit, focused, giveFocus, reload} = state;
+        const {selection, cellReference, focused} = state;
+        var {selectionAction} = state;
 
-        console.log("historyTokensFromState formula from " + prevState.selection + " to " + selection + " state", state);
+        console.log("historyTokensFromState: " + selection + " " + selectionAction, state);
 
+        if(selection instanceof SpreadsheetCellReferenceOrLabelName) {
+            const load = selectionAction instanceof SpreadsheetFormulaLoadAndEditHistoryHashToken;
+            const save = selectionAction instanceof SpreadsheetFormulaSaveHistoryHashToken;
+
+            const previousSelectionAction = prevState.selectionAction;
+            const previousLoad = previousSelectionAction instanceof SpreadsheetFormulaLoadAndEditHistoryHashToken;
+            const previousSave = previousSelectionAction instanceof SpreadsheetFormulaSaveHistoryHashToken;
+
+            const differentCell = !Equality.safeEquals(selection, prevState.selection);
+            if(differentCell) {
+                console.log("historyTokensFromState formula from " + prevState.selection + " to " + selection + " state", state);
+            }
+
+            // if load but not save OR different cell
+            if((load && ((!previousLoad & !previousSave) | differentCell))) {
+                this.loadFormulaText(selection);
+            }
+
+            if(save){
+                if(cellReference instanceof SpreadsheetCellReference){
+                    debugger;
+                    this.saveFormulaText(cellReference, selection, selectionAction.formulaText());
+                } else {
+                    console.log("Save request ignored because cell " + selection + " was not previous loaded");
+                }
+                selectionAction = new SpreadsheetFormulaLoadAndEditHistoryHashToken();
+            }
+
+            // update UI, if not formula editing, disable textField
+            const textField = this.textField.current;
+            if(textField){
+                textField.disabled = !(load || (previousLoad && save));
+
+                // if textField does not have focus and not save -> load give focus.
+                if(!focused && load && !previousSave) {
+                    this.giveInputFocus();
+                }
+            }
+        }
+
+        // prepare history tokens from state.
         const historyTokens = {};
         historyTokens[SpreadsheetHistoryHash.SELECTION] = selection;
-        historyTokens[SpreadsheetHistoryHash.SELECTION_ACTION] = (focused | giveFocus) ? new SpreadsheetFormulaLoadAndEditHistoryHashToken() : null;
-
-        // if not formula editing, disable textField
-        const textField = this.textField.current;
-        if(textField){
-            textField.disabled = !edit;
-        }
-
-        // if different cell
-        if(!Equality.safeEquals(selection, prevState.selection) || reload){
-            if(edit){
-                this.reloadFormulaText(selection, giveFocus);
-            }else {
-                this.setState({
-                    edit: false,
-                    cell: null,
-                    selection: selection instanceof SpreadsheetCellReferenceOrLabelName ? null : selection,
-                    value: null,
-                    giveFocus: false,
-                });
-            }
-        }else {
-            if(edit && giveFocus){
-                this.giveInputFocus();
-            }
-        }
-
+        historyTokens[SpreadsheetHistoryHash.SELECTION_ACTION] = selectionAction;
         return historyTokens;
     }
 
-    reloadFormulaText(cellOrLabel) {
-        console.log("reloadFormulaText " + cellOrLabel);
+    /**
+     * Loads the SpreadsheetDelta for the given cellOrLabel.
+     */
+    loadFormulaText(cellOrLabel) {
+        console.log("loadFormulaText " + cellOrLabel);
 
         this.props.spreadsheetDeltaCellCrud.get(
             cellOrLabel,
             {},
             (message, error) => {
                 this.setState({
-                    giveFocus: false,
-                    reload: false,
+                    selection: null,
+                    selectionAction: null,
                 });
 
                 this.showError(message, error);
-            });
+            }
+        );
     }
 
+    /**
+     * Saves the given formula text to the given cell, including the creation of new cells that were previously empty.
+     * This assumes that the cell being saved has been loaded.
+     */
+    saveFormulaText(cellReference, selection, formulaText) {
+        console.log("saving formula for " + selection + " with " + CharSequences.quoteAndEscape(formulaText));
+
+        var cell = this.state.cell;
+        if(cell){
+            const formula = cell.formula();
+            cell = cell.setFormula(formula.setText(formulaText));
+        }else {
+            cell = new SpreadsheetCell(cellReference, new SpreadsheetFormula(formulaText), TextStyle.EMPTY);
+        }
+
+        this.historyParseMergeAndPush({
+            "selection-action": new SpreadsheetFormulaLoadAndEditHistoryHashToken(),
+        });
+
+        const props = this.props;
+        props.spreadsheetDeltaCellCrud.post(
+            cellReference,
+            new SpreadsheetDelta(
+                [cell],
+                [],
+                [],
+                ImmutableMap.EMPTY,
+                ImmutableMap.EMPTY,
+                null
+            ),
+            props.showError,
+        );
+    }
+    
     giveInputFocus() {
         const input = this.input.current;
         input && setTimeout(() => {
@@ -145,7 +190,9 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetHistoryAwareSta
 
     render() {
         const state = this.state;
-        const {edit, value} = state;
+        const {selection, value} = state;
+
+        const edit = selection;
 
         console.log("render " + (!edit ? "disabled" : "enabled") + " formula: \"" + (value || "") + "\"", state);
 
@@ -176,23 +223,17 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetHistoryAwareSta
      * Remove the formula portion of history hash
      */
     onBlur(e) {
-        this.setStateFocused("onBlur", false);
+        this.setState({
+            selectionAction: null,
+        });
     }
 
     /**
      * Add the formula portion to the history hash
      */
     onFocus(e) {
-        this.setStateFocused("onFocus", true);
-    }
-
-    setStateFocused(eventName, focused) {
-        console.log("setStateFocused " + eventName + " focused: " + focused);
-
         this.setState({
-            focused: focused,
-            reload: focused,
-            giveFocus: false,
+            selectionAction: new SpreadsheetFormulaLoadAndEditHistoryHashToken(),
         });
     }
 
@@ -232,36 +273,11 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetHistoryAwareSta
      */
     onEnterKey(e) {
         e.preventDefault();
-        const formulaText = e.target.value;
 
-        const props = this.props;
-        const state = this.state;
-        const {selection, cellReference} = state;
-
-        console.log("saving formula for " + selection + " to " + CharSequences.quoteAndEscape(formulaText));
-
-        var cell = state.cell;
-        if(cell){
-            const formula = cell.formula();
-            cell = cell.setFormula(formula.setText(formulaText));
-        }else {
-            cell = new SpreadsheetCell(cellReference, new SpreadsheetFormula(formulaText), TextStyle.EMPTY);
-        }
-
-        props.spreadsheetDeltaCellCrud.post(
-            selection,
-            new SpreadsheetDelta(
-                [cell],
-                [],
-                [],
-                ImmutableMap.EMPTY,
-                ImmutableMap.EMPTY,
-                null
-            ),
-            props.showError,
-        );
-
-        this.setState({"value": formulaText});
+        const historyTokens = {};
+        historyTokens[SpreadsheetHistoryHash.SELECTION] = this.state.selection;
+        historyTokens[SpreadsheetHistoryHash.SELECTION_ACTION] = new SpreadsheetFormulaSaveHistoryHashToken(e.target.value);
+        this.historyParseMergeAndPush(historyTokens);
     }
 
     onSpreadsheetDelta(method, cellOrLabel, queryParameters, requestDelta, responseDelta) {
