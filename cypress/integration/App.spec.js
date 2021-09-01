@@ -813,10 +813,12 @@ context(
 
             cellClick(B2);
 
+            formulaText()
+                .click();
+
             hash().should('match', /.*\/Untitled\/cell\/B2\/formula/)
 
-            hash()
-                .should('match', /.*\/Untitled\/cell\/B2\/formula\/save\/=2*3/);
+            hashAppend("/save/=2*3")
 
             cellFormattedTextCheck(B2, "6.");
         });
