@@ -887,7 +887,7 @@ context(
             cellFormattedTextCheck(D4, "9.");
         });
 
-        it("Cell hash update", () => {
+        it("Cell hash formula update", () => {
             spreadsheetEmpty();
 
             hashAppend("/cell/D4/formula");
@@ -1747,7 +1747,84 @@ context(
             row("5")
                 .should("have.css", "background-color", SELECTED_COLOR);
         });
-        
+
+        // selection then different viewport selections.................................................................
+
+        it("Cell formula edit then column click", () => {
+            spreadsheetEmpty();
+
+            hashAppend("/cell/B2/formula");
+
+            hash()
+                .should('match', /.*\/.*\/cell\/B2\/formula/);
+
+            column("C")
+                .click();
+
+            hash()
+                .should('match', /.*\/.*\/column\/C/);
+        });
+
+        it("Cell formula edit then row click", () => {
+            spreadsheetEmpty();
+
+            hashAppend("/cell/B2/formula");
+
+            hash()
+                .should('match', /.*\/.*\/cell\/B2\/formula/);
+
+            row("3")
+                .click();
+
+            hash()
+                .should('match', /.*\/.*\/row\/3/);
+        });
+
+        it("Cell formula edit different formula edit", () => {
+            spreadsheetEmpty();
+
+            hashAppend("/cell/B2/formula");
+
+            hash()
+                .should('match', /.*\/.*\/cell\/B2\/formula/);
+
+            hashAppend("/cell/C3/formula"); // invalid removes cell from hash
+            hashAppend("/cell/C3/formula");
+
+            hash()
+                .should('match', /.*\/.*\/cell\/C3/);
+        });
+
+        it("Column select then Cell", () => {
+            spreadsheetEmpty();
+
+            hashAppend("/column/B");
+
+            hash()
+                .should('match', /.*\/.*\/column\/B/);
+
+            cell(A1)
+                .click();
+
+            hash()
+                .should('match', /.*\/.*\/cell\/A1/);
+        });
+
+        it("Row select then Cell", () => {
+            spreadsheetEmpty();
+
+            hashAppend("/row/2");
+
+            hash()
+                .should('match', /.*\/.*\/row\/2/);
+
+            cell(A1)
+                .click();
+
+            hash()
+                .should('match', /.*\/.*\/cell\/A1/);
+        });
+
         // select.....................................................................................................
 
         const ENABLED = false;
