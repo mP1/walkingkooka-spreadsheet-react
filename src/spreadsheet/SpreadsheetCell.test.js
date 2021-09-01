@@ -3,13 +3,14 @@ import React from "react";
 import SpreadsheetCell from "./SpreadsheetCell.js";
 import SpreadsheetCellFormat from "./SpreadsheetCellFormat";
 import SpreadsheetCellReference from "./reference/SpreadsheetCellReference";
+import SpreadsheetCellReferenceOrLabelName from "./reference/SpreadsheetCellReferenceOrLabelName.js";
 import SpreadsheetFormula from "./SpreadsheetFormula";
+import SpreadsheetLabelName from "./reference/SpreadsheetLabelName.js";
 import systemObjectTesting from "../SystemObjectTesting.js";
 import TableCell from "@material-ui/core/TableCell";
 import Text from "../text/Text";
 import TextStyle from "../text/TextStyle";
 import Tooltip from "@material-ui/core/Tooltip";
-import SpreadsheetLabelName from "./reference/SpreadsheetLabelName.js";
 
 function cell() {
     return new SpreadsheetCell(reference(),
@@ -189,6 +190,29 @@ test("create ABSOLUTE reference, formula, style, format, formatted", () => {
         f3,
         {
             "B78": {
+                formula: f.toJson(),
+                style: s.toJson(),
+                format: f2.toJson(),
+                formatted: f3.toJson()
+            }
+        })
+});
+
+test("create label, formula, style, format, formatted", () => {
+    const r = SpreadsheetLabelName.parse("Label123");
+    const f = formula();
+    const s = style();
+    const f2 = format();
+    const f3 = formatted();
+
+    check(new SpreadsheetCell(r, f, s, f2, f3),
+        r,
+        f,
+        s,
+        f2,
+        f3,
+        {
+            "Label123": {
                 formula: f.toJson(),
                 style: s.toJson(),
                 format: f2.toJson(),
@@ -524,7 +548,7 @@ test("equals equivalent true #2", () => {
 
 function check(cell, reference, formula, style, format, formatted, json) {
     expect(cell.reference()).toStrictEqual(reference);
-    expect(cell.reference()).toBeInstanceOf(SpreadsheetCellReference);
+    expect(cell.reference()).toBeInstanceOf(SpreadsheetCellReferenceOrLabelName);
 
     expect(cell.formula()).toStrictEqual(formula);
     expect(cell.formula()).toBeInstanceOf(SpreadsheetFormula);
