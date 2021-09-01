@@ -1748,6 +1748,104 @@ context(
                 .should("have.css", "background-color", SELECTED_COLOR);
         });
 
+        // selection delete.............................................................................................
+
+        it("Column select delete hash", () => {
+            spreadsheetEmpty();
+
+            renderWait(100);
+
+            cellClick(E5);
+
+            formulaText()
+                .click()
+                .wait(FORMULA_TEXT_CLICK_WAIT)
+                .type("'Moved{enter}");
+
+            column("B")
+                .click();
+
+            hashAppend("/delete");
+
+            hash()
+                .should('match', /.*\/.*/);
+
+            cellFormattedTextCheck("D5", "Moved");
+            cellFormattedTextCheck(E5, "");
+        });
+
+        it("Column range select delete hash", () => {
+            spreadsheetEmpty();
+
+            renderWait(100);
+
+            cellClick(E5);
+
+            formulaText()
+                .click()
+                .wait(FORMULA_TEXT_CLICK_WAIT)
+                .type("'Moved{enter}");
+
+            column("B")
+                .click();
+
+            hashAppend(":C/delete");
+
+            hash()
+                .should('match', /.*\/.*/);
+
+            cellFormattedTextCheck("C5", "Moved");
+            cellFormattedTextCheck(E5, "");
+        });
+
+        it("Row select delete hash", () => {
+            spreadsheetEmpty();
+
+            renderWait(100);
+
+            cellClick(E5);
+
+            formulaText()
+                .click()
+                .wait(FORMULA_TEXT_CLICK_WAIT)
+                .type("'Moved{enter}");
+
+            row("2")
+                .click();
+
+            hashAppend("/delete");
+
+            hash()
+                .should('match', /.*\/.*/);
+
+            cellFormattedTextCheck("E4", "Moved");
+            cellFormattedTextCheck(E5, "");
+        });
+
+        it("Row range select delete hash", () => {
+            spreadsheetEmpty();
+
+            renderWait(100);
+
+            cellClick(E5);
+
+            formulaText()
+                .click()
+                .wait(FORMULA_TEXT_CLICK_WAIT)
+                .type("'Moved{enter}");
+
+            row("2")
+                .click();
+
+            hashAppend(":3/delete");
+
+            hash()
+                .should('match', /.*\/.*/);
+
+            cellFormattedTextCheck("E3", "Moved");
+            cellFormattedTextCheck(E5, "");
+        });
+        
         // selection then different viewport selections.................................................................
 
         it("Cell formula edit then column click", () => {

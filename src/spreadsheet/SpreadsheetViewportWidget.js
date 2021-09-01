@@ -101,6 +101,12 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
 
             var {cells, cellToLabels, labelToReference} = state;
 
+            // first remove any deleted cells.
+            responseDelta.deletedCells()
+                .forEach(r => {
+                    cells = cells.remove(r)
+                });
+
             // if a window was present on the response delta, clear any OLD cells etc.
             if(window){
                 var tempCells = new Map();
@@ -234,6 +240,8 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
         let metadata = state.spreadsheetMetadata;
         const previousMetadata = prevState.spreadsheetMetadata;
 
+        const props = this.props;
+
         const viewportTable = this.viewportTable.current;
 
         let newState = {};
@@ -258,11 +266,21 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
             const selectionNew = state.selection;
             const anchor = state.anchor;
 
+            const selectionActionOld = prevState.selectionAction;
+            const selectionActionNew = state.selectionAction;
+
             let viewportLoadCells = false;
             const viewportCell = metadata.getIgnoringDefaults(SpreadsheetMetadata.VIEWPORT_CELL);
 
-            do {
-                if(viewportCell){
+            if(viewportCell){
+                do {
+                    if(!Equality.safeEquals(selectionActionNew, selectionActionOld)){
+                        // new action perform
+                        if(selectionActionNew){
+                            selectionActionNew.onViewportSelectionAction(selectionNew, this); // perform delete/insert etc.
+                            break;
+                        }
+                    }
                     if(!Equality.safeEquals(selectionNew, selectionOld)){
                         console.log("New selection " + selectionOld + " to " + selectionNew);
 
@@ -285,21 +303,21 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
                         viewportLoadCells = true;
                         break;
                     }
-                }
-            } while(false);
+                } while(false);
 
-            if(viewportLoadCells){
-                this.loadCells(
-                    new SpreadsheetViewport(
-                        viewportCell,
-                        0,
-                        0,
-                        width,
-                        height
-                    ),
-                    selectionNew,
-                    anchor
-                );
+                if(viewportLoadCells){
+                    this.loadCells(
+                        new SpreadsheetViewport(
+                            viewportCell,
+                            0,
+                            0,
+                            width,
+                            height
+                        ),
+                        selectionNew,
+                        anchor
+                    );
+                }
             }
 
             historyTokens[SpreadsheetHistoryHash.SELECTION] = selectionNew;
@@ -329,14 +347,25 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
         this.setState(newState);
 
         if(!Equality.safeEquals(metadata, previousMetadata)){
-            this.props.spreadsheetMetadataCrud.post(
+            props.spreadsheetMetadataCrud.post(
                 metadata.getIgnoringDefaults(SpreadsheetMetadata.SPREADSHEET_ID),
                 metadata,
-                this.props.showError
+                props.showError
             );
         }
 
         return historyTokens;
+    }
+
+    /**
+     * Remove the selection, the deleted column, row etc and then perform the delete API.
+     */
+    deleteSelection(selection) {
+        this.setState({
+            selection: null,
+            selectionAction: null,
+        });
+        this.props.deleteSelection(selection);
     }
 
     loadCells(viewport, selection, anchor) {
@@ -742,6 +771,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
 }
 
 SpreadsheetViewportWidget.propTypes = {
+    deleteSelection: PropTypes.func.isRequired,
     dimensions: PropTypes.object,
     history: PropTypes.instanceOf(SpreadsheetHistoryHash).isRequired,
     messenger: PropTypes.instanceOf(SpreadsheetMessenger),

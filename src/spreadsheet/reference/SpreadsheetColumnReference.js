@@ -139,12 +139,20 @@ export default class SpreadsheetColumnReference extends SpreadsheetColumnOrRowRe
         return "viewport-column-" + this.toString().toUpperCase();
     }
 
+    toHistoryHashToken() {
+        return SpreadsheetHistoryHash.COLUMN + "/" + this;
+    }
+
     toLoadCellsQueryStringParameterSelectionType() {
         return "column";
     }
 
-    toHistoryHashToken() {
-        return SpreadsheetHistoryHash.COLUMN + "/" + this;
+    toDeleteUrl() {
+        return "/column/" + this;
+    }
+
+    onDelete(viewportWidget) {
+        viewportWidget.deleteColumn(this);
     }
 
     toJson() {
