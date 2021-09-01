@@ -19,8 +19,7 @@ import TextField from '@material-ui/core/TextField';
 import TextStyle from "../text/TextStyle.js";
 
 /**
- * A widget that supports editing formula text. The widget is disabled when state.cellOrLabel is falsey.
- * An falsey value will disable the text box used to edit the formula text.
+ * A widget that supports editing formula text.
  * ENTER calls the setter, ESCAPE reloads the initial value(text).
  * <ul>
  *     <li>SpreadsheetCell cell: The cell being edited</li>
@@ -60,13 +59,13 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetHistoryAwareSta
     stateFromHistoryTokens(historyTokens) {
         console.log("historyTokens: " + SpreadsheetHistoryHash.stringify(historyTokens));
 
-        const selection = historyTokens[SpreadsheetHistoryHash.SELECTION];
-        const cellOrLabel = selection instanceof SpreadsheetCellReferenceOrLabelName && selection;
+        const selectionHistoryHash = historyTokens[SpreadsheetHistoryHash.SELECTION];
+        const selection = selectionHistoryHash instanceof SpreadsheetCellReferenceOrLabelName && selectionHistoryHash;
         const selectionAction = historyTokens[SpreadsheetHistoryHash.SELECTION_ACTION];
 
         return {
-            selection: cellOrLabel,
-            selectionAction: (cellOrLabel &&
+            selection: selection,
+            selectionAction: (selection &&
                 (selectionAction instanceof SpreadsheetFormulaLoadAndEditHistoryHashToken ||
                 selectionAction instanceof SpreadsheetFormulaSaveHistoryHashToken)) &&
                 selectionAction,
@@ -99,12 +98,7 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetHistoryAwareSta
             }
 
             if(save){
-                if(cellReference instanceof SpreadsheetCellReference){
-                    debugger;
-                    this.saveFormulaText(cellReference, selection, selectionAction.formulaText());
-                } else {
-                    console.log("Save request ignored because cell " + selection + " was not previous loaded");
-                }
+                this.saveFormulaText(cellReference, selection, selectionAction.formulaText());
                 selectionAction = new SpreadsheetFormulaLoadAndEditHistoryHashToken();
             }
 
@@ -128,7 +122,7 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetHistoryAwareSta
     }
 
     /**
-     * Loads the SpreadsheetDelta for the given cellOrLabel.
+     * Loads the SpreadsheetDelta for the given cell or label.
      */
     loadFormulaText(cellOrLabel) {
         console.log("loadFormulaText " + cellOrLabel);

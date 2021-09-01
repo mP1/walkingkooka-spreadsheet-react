@@ -102,6 +102,10 @@ export default class SpreadsheetLabelName extends SpreadsheetCellReferenceOrLabe
         return "label";
     }
 
+    toRelative() {
+        return this;
+    }
+
     toJson() {
         return this.toString();
     }

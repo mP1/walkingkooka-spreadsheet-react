@@ -2,9 +2,11 @@ import textNodeJsonSupportFromJson from "../text/TextNodeJsonSupport";
 import Equality from "../Equality.js";
 import Preconditions from "../Preconditions.js";
 import React from "react";
-import SpreadsheetCellReference from "./reference/SpreadsheetCellReference";
-import SpreadsheetFormula from "./SpreadsheetFormula";
+import SpreadsheetCellReference from "./reference/SpreadsheetCellReference.js";
 import SpreadsheetCellFormat from "./SpreadsheetCellFormat";
+import SpreadsheetCellReferenceOrLabelName from "./reference/SpreadsheetCellReferenceOrLabelName.js";
+import SpreadsheetFormula from "./SpreadsheetFormula";
+import SpreadsheetLabelName from "./reference/SpreadsheetLabelName.js";
 import SystemObject from "../SystemObject.js";
 import TableCell from "@material-ui/core/TableCell";
 import TextNode from "../text/TextNode";
@@ -42,10 +44,13 @@ export default class SpreadsheetCell extends SystemObject {
             case 0:
                 throw new Error("Missing reference");
             case 1:
-                const reference = keys[0];
-                const {formula, style, format, formatted} = json[reference];
+                const cellReferenceOrLabel = keys[0];
+                const {formula, style, format, formatted} = json[cellReferenceOrLabel];
 
-                return new SpreadsheetCell(SpreadsheetCellReference.fromJson(reference),
+                return new SpreadsheetCell(
+                    SpreadsheetCellReference.isCellReferenceText(cellReferenceOrLabel) ?
+                      SpreadsheetCellReference.fromJson(cellReferenceOrLabel) :
+                        SpreadsheetLabelName.fromJson(cellReferenceOrLabel),
                     SpreadsheetFormula.fromJson(formula),
                     (style && TextStyle.fromJson(style)) || TextStyle.EMPTY,
                     format != null ? SpreadsheetCellFormat.fromJson(format) : format,
@@ -57,7 +62,7 @@ export default class SpreadsheetCell extends SystemObject {
 
     constructor(reference, formula, style, format, formatted) {
         super();
-        Preconditions.requireInstance(reference, SpreadsheetCellReference, "reference");
+        Preconditions.requireInstance(reference, SpreadsheetCellReferenceOrLabelName, "reference");
         Preconditions.requireInstance(formula, SpreadsheetFormula, "formula");
         Preconditions.requireInstance(style, TextStyle, "style");
         Preconditions.optionalInstance(format, SpreadsheetCellFormat, "format");
