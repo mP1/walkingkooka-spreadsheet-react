@@ -5,7 +5,6 @@ import Keys from "../Keys.js";
 import PropTypes from "prop-types";
 import React from 'react';
 import SpreadsheetCell from "./SpreadsheetCell.js";
-import SpreadsheetCellReference from "./reference/SpreadsheetCellReference.js";
 import SpreadsheetCellReferenceOrLabelName from "./reference/SpreadsheetCellReferenceOrLabelName.js";
 import SpreadsheetDelta from "./engine/SpreadsheetDelta.js";
 import SpreadsheetFormula from "./SpreadsheetFormula.js";
@@ -59,20 +58,15 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetHistoryAwareSta
     stateFromHistoryTokens(historyTokens) {
         console.log("historyTokens: " + SpreadsheetHistoryHash.stringify(historyTokens));
 
-        const selectionHistoryHash = historyTokens[SpreadsheetHistoryHash.SELECTION];
-        const selection = selectionHistoryHash instanceof SpreadsheetCellReferenceOrLabelName && selectionHistoryHash;
-        const selectionAction = historyTokens[SpreadsheetHistoryHash.SELECTION_ACTION];
-
         return {
-            selection: selection,
-            selectionAction: (selection &&
-                (selectionAction instanceof SpreadsheetFormulaLoadAndEditHistoryHashToken ||
-                selectionAction instanceof SpreadsheetFormulaSaveHistoryHashToken)) &&
-                selectionAction,
+            selection: historyTokens[SpreadsheetHistoryHash.SELECTION],
+            selectionAction: historyTokens[SpreadsheetHistoryHash.SELECTION_ACTION],
         }
     }
 
     historyTokensFromState(prevState) {
+        const historyTokens = {};
+
         const state = this.state;
         const {selection, cellReference, focused} = state;
         var {selectionAction} = state;
@@ -112,12 +106,11 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetHistoryAwareSta
                     this.giveInputFocus();
                 }
             }
+
+            historyTokens[SpreadsheetHistoryHash.SELECTION] = selection;
+            historyTokens[SpreadsheetHistoryHash.SELECTION_ACTION] = selectionAction;
         }
 
-        // prepare history tokens from state.
-        const historyTokens = {};
-        historyTokens[SpreadsheetHistoryHash.SELECTION] = selection;
-        historyTokens[SpreadsheetHistoryHash.SELECTION_ACTION] = selectionAction;
         return historyTokens;
     }
 
