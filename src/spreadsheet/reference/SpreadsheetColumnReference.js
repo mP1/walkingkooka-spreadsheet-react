@@ -151,10 +151,6 @@ export default class SpreadsheetColumnReference extends SpreadsheetColumnOrRowRe
         return "/column/" + this;
     }
 
-    onDelete(viewportWidget) {
-        viewportWidget.deleteColumn(this);
-    }
-
     toJson() {
         return this.kind().prefix() + toString0(this.value());
     }

@@ -184,10 +184,6 @@ export default class SpreadsheetSelection extends SystemObject {
         SystemObject.throwUnsupportedOperation();
     }
 
-    onDelete(viewportWidget) {
-        SystemObject.throwUnsupportedOperation();
-    }
-
     /**
      * This is the text that will appear in the {@link SpreadsheetSelectAutocompleteWidget}.
      */
