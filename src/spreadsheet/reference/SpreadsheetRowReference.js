@@ -153,10 +153,6 @@ export default class SpreadsheetRowReference extends SpreadsheetColumnOrRowRefer
         return "/row/" + this;
     }
 
-    onDelete(viewportWidget) {
-        viewportWidget.deleteRow(this);
-    }
-
     typeName() {
         return TYPE_NAME;
     }
