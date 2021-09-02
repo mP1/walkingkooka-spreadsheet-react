@@ -365,7 +365,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
             selection: null,
             selectionAction: null,
         });
-        this.props.deleteSelection(selection);
+        this.props.deleteSelection(selection, this.state.viewportRange);
     }
 
     loadCells(viewport, selection, anchor) {
