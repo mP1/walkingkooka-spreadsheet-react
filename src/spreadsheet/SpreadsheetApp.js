@@ -319,12 +319,14 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
     }
 
     /**
-     * Deletes the given selection and then clears the selection and selection action.
+     * Deletes the given selection and appends the window if present as a query parameter.
      */
-    deleteSelection(selection) {
+    deleteSelection(selection, window) {
+        const query = window ? "?window=" + window : "";
+
         this.performSpreadsheetDelta(
             "DELETE",
-            this.spreadsheetMetadataApiUrl() + selection.toDeleteUrl(),
+            this.spreadsheetMetadataApiUrl() + selection.toDeleteUrl() + query,
             selection
         );
     }
