@@ -69,7 +69,7 @@ test("create without reference fails", () => {
 });
 
 test("create with invalid reference fails", () => {
-    expect(() => new SpreadsheetCell(1.5)).toThrow("Expected SpreadsheetCellReference reference got 1.5");
+    expect(() => new SpreadsheetCell(1.5)).toThrow("Expected SpreadsheetCellReferenceOrLabelName reference got 1.5");
 });
 
 test("create without formula fails", () => {
