@@ -9,6 +9,7 @@ import SpreadsheetColumnReference from "../reference/SpreadsheetColumnReference"
 import SpreadsheetLabelMapping from "../reference/SpreadsheetLabelMapping.js";
 import SpreadsheetLabelName from "../reference/SpreadsheetLabelName.js";
 import SpreadsheetRowReference from "../reference/SpreadsheetRowReference";
+import SpreadsheetSelection from "../reference/SpreadsheetSelection.js";
 import SystemObject from "../../SystemObject.js";
 
 /**
@@ -28,6 +29,8 @@ export default class SpreadsheetDelta extends SystemObject {
 
     static fromJson(json) {
         Preconditions.requireObject(json, "json");
+
+        const selection = json.selection && SystemObject.fromJsonWithType(json.selection);
 
         let cells = [];
         for(const referenceToValues of Object.entries(json.cells || {})) {
@@ -53,6 +56,7 @@ export default class SpreadsheetDelta extends SystemObject {
         const windowJson = json["window"];
 
         return new SpreadsheetDelta(
+            selection,
             cells,
             labels,
             deletedCells,
@@ -62,8 +66,9 @@ export default class SpreadsheetDelta extends SystemObject {
         );
     }
 
-    constructor(cells, labels, deletedCells, columnWidths, rowHeights, window) {
+    constructor(selection, cells, labels, deletedCells, columnWidths, rowHeights, window) {
         super();
+        Preconditions.optionalInstance(selection, SpreadsheetSelection, "selection");
         Preconditions.requireArray(cells, "cells");
         Preconditions.requireArray(labels, "labels");
         Preconditions.requireArray(deletedCells, "deletedCells");
@@ -71,12 +76,17 @@ export default class SpreadsheetDelta extends SystemObject {
         Preconditions.requireInstance(rowHeights, ImmutableMap, "rowHeights");
         Preconditions.optionalInstance(window, SpreadsheetCellRange, "window");
 
+        this.selectionValue = selection;
         this.cellsValue = cells.slice();
         this.labelsValue = labels.slice();
         this.deletedCellsValue = deletedCells.slice();
         this.columnWidthsValue = columnWidths;
         this.rowHeightsValue = rowHeights;
         this.windowValue = window;
+    }
+
+    selection() {
+        return this.selectionValue;
     }
 
     cells() {
@@ -171,6 +181,10 @@ export default class SpreadsheetDelta extends SystemObject {
     /**
      * <pre>
      * {
+     *   "selection": {
+     *       "type": "spreadsheet-cell-reference",
+     *       "value": "A1",
+     *   }
      *   "cells": {
      *     "A1": {
      *       "formula": {
@@ -195,6 +209,11 @@ export default class SpreadsheetDelta extends SystemObject {
      */
     toJson() {
         let json = {};
+
+        const selection = this.selection();
+        if(selection) {
+            json.selection = selection.toJsonWithType();
+        }
 
         const cellsArray = this.cells();
         if(cellsArray.length > 0){
@@ -235,6 +254,7 @@ export default class SpreadsheetDelta extends SystemObject {
     equals(other) {
         return this === other ||
             (other instanceof SpreadsheetDelta &&
+                Equality.safeEquals(this.selection(), other.selection()) &&
                 Equality.safeEquals(this.cells(), other.cells()) &&
                 Equality.safeEquals(this.labels(), other.labels()) &&
                 Equality.safeEquals(this.deletedCells(), other.deletedCells()) &&

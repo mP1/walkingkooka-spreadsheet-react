@@ -157,6 +157,7 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetHistoryAwareSta
         props.spreadsheetDeltaCellCrud.post(
             cellReference,
             new SpreadsheetDelta(
+                null,
                 [cell],
                 [],
                 [],
