@@ -176,10 +176,6 @@ export default class SpreadsheetRowReferenceRange extends SpreadsheetColumnOrRow
         return "/row/" + this;
     }
 
-    onDelete(viewportWidget) {
-        viewportWidget.deleteRow(this);
-    }
-
     typeName() {
         return TYPE_NAME;
     }
