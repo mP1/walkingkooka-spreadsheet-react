@@ -115,7 +115,7 @@ export default class SpreadsheetHistoryHash {
 
                     switch(tokens.shift()) {
                         case "":
-                            valid = tokens.length == 0;
+                            valid = tokens.length === 0;
                             break;
                         case SpreadsheetHistoryHash.SPREADSHEET_NAME_EDIT:
                             name = true;
