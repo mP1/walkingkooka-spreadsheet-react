@@ -304,8 +304,6 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetHistoryAwareSta
             });
 
             this.input.current.value = formulaText;
-
-            state.giveFocus && this.giveInputFocus();
         }
     }
 }
