@@ -767,6 +767,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
 
         this.setState({
             selection: selection && selection.selection(),
+            selectionActon: null, // always clear, navigating within viewport never sets an selection-action
             anchor: selection && selection.anchor(),
             focused: false,
             spreadsheetMetadata: this.state.spreadsheetMetadata.setOrRemove(SpreadsheetMetadata.SELECTION, selection),
