@@ -222,7 +222,7 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetHistoryAwareSta
     onFocus(e) {
         this.historyParseMergeAndPush({
             "selection-action": new SpreadsheetFormulaLoadAndEditHistoryHashToken(),
-        })
+        });
     }
 
     onChange(e) {
