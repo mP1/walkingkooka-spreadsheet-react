@@ -533,7 +533,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
         if(selection){
             selection.onViewportClick(
                 (s) => this.saveSelection(s),
-                this.giveFormulaTextBoxFocus.bind(this),
+                () => this.giveFormulaTextBoxFocus(selection),
             );
         }
     }
