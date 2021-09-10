@@ -157,6 +157,18 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
                 );
             }
 
+            switch(method) {
+                case "DELETE":
+                    Object.assign(
+                        newState,
+                        {
+                            selection: null,
+                            selectionAction: null,
+                        }
+                    )
+                    break;
+            }
+
             this.setState(newState);
         }
     }
@@ -361,11 +373,10 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
      * Remove the selection, the deleted column, row etc and then perform the delete API.
      */
     deleteSelection(selection) {
-        this.setState({
-            selection: null,
-            selectionAction: null,
-        });
-        this.props.deleteSelection(selection, this.state.viewportRange);
+        this.props.deleteSelection(
+            selection,
+            this.state.viewportRange
+        );
     }
 
     loadCells(viewport, selection, anchor) {
