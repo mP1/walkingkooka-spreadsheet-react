@@ -579,7 +579,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
                 state.anchor, // anchor
                 state.spreadsheetMetadata.getIgnoringDefaults(SpreadsheetMetadata.VIEWPORT_CELL), // viewportHome
                 (s) => this.saveSelection(s), // setSelection
-                this.giveFormulaTextBoxFocus.bind(this), // giveFormulaFocus
+                () => this.giveFormulaTextBoxFocus(selection),
             );
         }
     }
@@ -773,8 +773,9 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
         });
     }
 
-    giveFormulaTextBoxFocus() {
+    giveFormulaTextBoxFocus(selection) {
         const tokens = {}
+        tokens[SpreadsheetHistoryHash.SELECTION] = selection;
         tokens[SpreadsheetHistoryHash.SELECTION_ACTION] = new SpreadsheetFormulaLoadAndEditHistoryHashToken();
 
         this.historyParseMergeAndPush(tokens);
