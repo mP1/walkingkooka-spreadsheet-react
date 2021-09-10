@@ -211,8 +211,8 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetHistoryAwareSta
      * Remove the formula portion of history hash
      */
     onBlur(e) {
-        this.setState({
-            selectionAction: null,
+        this.historyParseMergeAndPush({
+           "selection-action": null,
         });
     }
 
@@ -220,9 +220,9 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetHistoryAwareSta
      * Add the formula portion to the history hash
      */
     onFocus(e) {
-        this.setState({
-            selectionAction: new SpreadsheetFormulaLoadAndEditHistoryHashToken(),
-        });
+        this.historyParseMergeAndPush({
+            "selection-action": new SpreadsheetFormulaLoadAndEditHistoryHashToken(),
+        })
     }
 
     onChange(e) {
