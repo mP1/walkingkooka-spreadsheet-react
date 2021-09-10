@@ -167,6 +167,8 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
                         }
                     )
                     break;
+                default:
+                    break;
             }
 
             this.setState(newState);
