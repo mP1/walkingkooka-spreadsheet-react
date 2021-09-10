@@ -165,7 +165,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
                             selection: null,
                             selectionAction: null,
                         }
-                    )
+                    );
                     break;
                 default:
                     break;
