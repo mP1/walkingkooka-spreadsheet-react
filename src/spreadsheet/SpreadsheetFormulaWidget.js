@@ -211,18 +211,20 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetHistoryAwareSta
      * Remove the formula portion of history hash
      */
     onBlur(e) {
-        this.historyParseMergeAndPush({
-           "selection-action": null,
-        });
+        const tokens = {};
+        tokens[SpreadsheetHistoryHash.SELECTION_ACTION] = null;
+
+        this.historyParseMergeAndPush(tokens);
     }
 
     /**
      * Add the formula portion to the history hash
      */
     onFocus(e) {
-        this.historyParseMergeAndPush({
-            "selection-action": new SpreadsheetFormulaLoadAndEditHistoryHashToken(),
-        });
+        const tokens = {};
+        tokens[SpreadsheetHistoryHash.SELECTION_ACTION] = new SpreadsheetFormulaLoadAndEditHistoryHashToken();
+
+        this.historyParseMergeAndPush(tokens);
     }
 
     onChange(e) {
