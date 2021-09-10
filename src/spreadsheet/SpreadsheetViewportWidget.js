@@ -529,8 +529,6 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
     }
 
     onClick(e) {
-        e.preventDefault();
-
         const selection = this.findEventTargetSelection(e.target);
         if(selection){
             selection.onViewportClick(
