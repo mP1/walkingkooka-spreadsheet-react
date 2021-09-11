@@ -149,9 +149,9 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetHistoryAwareSta
             cell = new SpreadsheetCell(cellReference, new SpreadsheetFormula(formulaText), TextStyle.EMPTY);
         }
 
-        this.historyParseMergeAndPush({
-            "selection-action": new SpreadsheetFormulaLoadAndEditHistoryHashToken(),
-        });
+        const tokens = {};
+        tokens[SpreadsheetHistoryHash.SELECTION_ACTION] = new SpreadsheetFormulaLoadAndEditHistoryHashToken();
+        this.historyParseMergeAndPush(tokens);
 
         const props = this.props;
         props.spreadsheetDeltaCellCrud.post(
