@@ -42,6 +42,12 @@ export default class SpreadsheetColumnReferenceRange extends SpreadsheetColumnOr
             new SpreadsheetColumnReferenceRange(begin, this.end());
     }
 
+    setEnd(end) {
+        return this.end().equals(end) ?
+            this :
+            new SpreadsheetColumnReferenceRange(this.begin(), end);
+    }
+
     columnOrRange() {
         const begin = this.begin();
         return begin.equals(this.end()) ?
