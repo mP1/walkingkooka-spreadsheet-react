@@ -170,6 +170,22 @@ test("fromJson range", () => {
     check(range, begin(), end(), JSON);
 });
 
+// setBegin..............................................................................................................
+
+function testSetBegin(range, begin, expected) {
+    test(range + ".setBegin " + begin, () => {
+        expect(
+            SpreadsheetRowReferenceRange.parse(range)
+                .setBegin(SpreadsheetRowReference.parse(begin))
+        ).toStrictEqual(SpreadsheetRowReferenceRange.parse(expected));
+    });
+}
+
+testSetBegin("1:2", "1", "1:2");
+testSetBegin("1:2", "2", "2:2");
+testSetBegin("3:5", "1", "1:5");
+testSetBegin("3:5", "7", "5:7");
+
 // rowOrRange........................................................................................................
 
 function testRowOrRange(range, expected) {
