@@ -406,28 +406,6 @@ test("toJson RELATIVE", () => {
     expect(new SpreadsheetRowReference(3, SpreadsheetReferenceKind.RELATIVE).toJson()).toStrictEqual("4");
 });
 
-// onViewportClick......................................................................................................
-
-test("onViewportClickAndTest row=2", () => {
-
-    const state = {
-        selection: SpreadsheetCellReference.parse("Z99").toString(),
-    };
-
-    const reference = SpreadsheetRowReference.parse("2");
-
-    reference
-        .onViewportClick(
-            (s) => state.selection = s && s.toString(),
-            () => {throw new Error("!");},
-            ///SpreadsheetCellReference.parse("A1"),
-        );
-    expect(state)
-        .toStrictEqual({
-            selection: reference.toString(),
-        });
-});
-
 // onViewportKeyDown....................................................................................................
 
 const SELECT_RANGE_FALSE = false;

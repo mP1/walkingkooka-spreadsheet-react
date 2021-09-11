@@ -528,13 +528,17 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
         ];
     }
 
+    /**
+     * Clicking on any selection component within a viewport updates the history hash and clears the selection action.
+     */
     onClick(e) {
         const selection = this.findEventTargetSelection(e.target);
         if(selection){
-            selection.onViewportClick(
-                (s) => this.saveSelection(s),
-                () => this.giveFormulaTextBoxFocus(selection),
-            );
+            const tokens = {};
+            tokens[SpreadsheetHistoryHash.SELECTION] = selection;
+            tokens[SpreadsheetHistoryHash.SELECTION_ACTION] = null;
+            
+            this.historyParseMergeAndPush(tokens);
         }
     }
 

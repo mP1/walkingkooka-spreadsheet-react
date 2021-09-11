@@ -129,13 +129,6 @@ export default class SpreadsheetColumnOrRowReference extends SpreadsheetSelectio
         return this;
     }
 
-    /**
-     * Clicking on a column or row selects it.
-     */
-    onViewportClick(setSelection, giveFormulaFocus) {
-        setSelection(this.setAnchor());
-    }
-
     selectOptionText() {
         return this.toString();
     }

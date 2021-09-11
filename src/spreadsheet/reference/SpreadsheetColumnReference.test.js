@@ -433,28 +433,6 @@ testRowAndCheck("A", "1", false);
 testRowAndCheck("B", "$2", false);
 testRowAndCheck("$C", "3", false);
 
-// onViewportClick......................................................................................................
-
-test("onViewportClickAndTest column=B", () => {
-
-    const state = {
-        selection: SpreadsheetCellReference.parse("Z99").toString(),
-    };
-
-    const reference = SpreadsheetColumnReference.parse("B");
-
-    reference
-        .onViewportClick(
-            (s) => state.selection = s && s.toString(),
-            () => {throw new Error("!")},
-            //SpreadsheetCellReference.parse("A1"),
-        );
-    expect(state)
-        .toStrictEqual({
-            selection: reference.setAnchor().toString(),
-        });
-});
-
 // onViewportKeyDown....................................................................................................
 
 const SELECT_RANGE_FALSE = false;
