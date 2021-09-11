@@ -186,6 +186,22 @@ testSetBegin("1:2", "2", "2:2");
 testSetBegin("3:5", "1", "1:5");
 testSetBegin("3:5", "7", "5:7");
 
+// setEnd..............................................................................................................
+
+function testSetEnd(range, end, expected) {
+    test(range + ".setEnd " + end, () => {
+        expect(
+            SpreadsheetRowReferenceRange.parse(range)
+                .setEnd(SpreadsheetRowReference.parse(end))
+        ).toStrictEqual(SpreadsheetRowReferenceRange.parse(expected));
+    });
+}
+
+testSetEnd("1:2", "1", "1:1");
+testSetEnd("1:2", "2", "1:2");
+testSetEnd("3:5", "1", "1:3");
+testSetEnd("3:5", "7", "3:7");
+
 // rowOrRange........................................................................................................
 
 function testRowOrRange(range, expected) {
