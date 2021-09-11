@@ -194,11 +194,4 @@ export default class SpreadsheetSelection extends SystemObject {
     toString() {
         return this.toJson();
     }
-
-    /**
-     * This function is called by the viewport widget when a click event happens.
-     */
-    onViewportClick(setSelection, giveFormulaFocus) {
-        SystemObject.throwUnsupportedOperation();
-    }
 }

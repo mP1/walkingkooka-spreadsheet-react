@@ -541,29 +541,6 @@ test("toRelative absolute2", () => {
     expect(SpreadsheetCellReference.parse("$C3").toRelative()).toEqual(SpreadsheetCellReference.parse("C3"));
 });
 
-// onViewportClick......................................................................................................
-
-test("onViewportClickAndTest cell=A1", () => {
-
-    const state = {
-        selection: SpreadsheetCellReference.parse("A1").toString(),
-        giveFormulaFocus: false,
-    };
-
-    const reference = SpreadsheetCellReference.parse("B2");
-
-    reference
-        .onViewportClick(
-            (s) => state.selection = s && s.toString(),
-            () => state.giveFormulaFocus = true,
-        );
-    expect(state)
-        .toStrictEqual({
-            selection: reference.setAnchor().toString(),
-            giveFormulaFocus: false,
-        });
-});
-
 // onViewportKeyDown....................................................................................................
 
 const SELECT_RANGE_FALSE = false;

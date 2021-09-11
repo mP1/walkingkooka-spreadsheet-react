@@ -329,15 +329,6 @@ export default class SpreadsheetCellReference extends SpreadsheetCellReferenceOr
         return this.viewportId() + "-Tooltip";
     }
 
-    /**
-     * Clicking on a cell selects it.
-     */
-    onViewportClick(setSelection, giveFocus) {
-        setSelection(this.setAnchor());
-        //giveFocus();
-    }
-
-
     toJson() {
         return this.column()
                 .toJson() +
