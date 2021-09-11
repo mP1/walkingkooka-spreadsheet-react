@@ -2039,3 +2039,21 @@ function stringify(object) {
 
     return s;
 }
+
+// spreadsheetIdAndName................................................................................................
+
+test("spreadsheetIdAndName", () => {
+    expect(
+        SpreadsheetHistoryHash.spreadsheetIdAndName(
+            {
+                "spreadsheet-id": ID,
+                "spreadsheet-name": SPREADSHEET_NAME,
+                "selection": CELL,
+                "selection-action": CELL_FORMULA,
+            }
+        )
+    ).toStrictEqual({
+        "spreadsheet-id": ID,
+        "spreadsheet-name": SPREADSHEET_NAME,
+    });
+});
