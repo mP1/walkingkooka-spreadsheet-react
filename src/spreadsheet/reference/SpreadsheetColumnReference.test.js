@@ -438,7 +438,7 @@ testRowAndCheck("$C", "3", false);
 const SELECT_RANGE_FALSE = false;
 const SELECT_RANGE_TRUE = true;
 
-function testOnViewportKeyDown(column, key, selectRange, viewportHome, setSelection, anchor, giveFormulaFocus) {
+function testOnViewportKeyDown(column, key, selectRange, viewportHome, saveSelection, anchor, giveFormulaFocus) {
     test("testOnViewportKeyDown column=" + column + " key=" + key + " selectRange=" + selectRange + " home=" + viewportHome, () => {
 
         const state = {
@@ -459,7 +459,7 @@ function testOnViewportKeyDown(column, key, selectRange, viewportHome, setSelect
         expect(state)
             .toStrictEqual({
                 giveFormulaFocus: giveFormulaFocus,
-                selection: setSelection && (setSelection + (anchor ? " " + anchor : "")),
+                selection: saveSelection && (saveSelection + (anchor ? " " + anchor : "")),
             });
     });
 }
