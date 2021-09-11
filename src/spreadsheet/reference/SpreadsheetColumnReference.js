@@ -58,65 +58,6 @@ export default class SpreadsheetColumnReference extends SpreadsheetColumnOrRowRe
         return new SpreadsheetCellReference(this, row);
     }
 
-    // context menu events..............................................................................................
-
-    buildContextMenuItems(historyTokens){
-        // nop
-    }
-
-    // keyboard events..................................................................................................
-
-    navigateLeft(viewportHome) {
-        return this.addSaturated(-1);
-    }
-
-    navigateRight(viewportHome) {
-        return this.addSaturated(+1);
-    }
-
-    navigateUp(viewportHome) {
-        return this;
-    }
-
-    navigateDown(viewportHome) {
-        return viewportHome.row()
-            .setColumn(this);
-    }
-
-    extendRangeLeft(anchor, current, viewportHome) {
-        return new SpreadsheetColumnReferenceRange(
-            this.addSaturated(-1),
-            this
-        ).columnOrRange()
-            .setAnchorConditional(SpreadsheetViewportSelectionAnchor.RIGHT);
-    }
-
-    extendRangeRight(anchor, current, viewportHome) {
-        return new SpreadsheetColumnReferenceRange(
-            this,
-            this.addSaturated(+1)
-        ).columnOrRange()
-            .setAnchorConditional(SpreadsheetViewportSelectionAnchor.LEFT);
-    }
-
-    extendRangeUp(anchor, current, viewportHome) {
-        Preconditions.requireInstance(viewportHome, SpreadsheetCellReference, "viewportHome");
-
-        return this.setAnchor();
-    }
-
-    extendRangeDown(anchor, current, viewportHome) {
-        Preconditions.requireInstance(viewportHome, SpreadsheetCellReference, "viewportHome");
-
-        return viewportHome.row()
-            .setColumn(this)
-            .setAnchor();
-    }
-
-    selectionFocus(labelToReference, anchor) {
-        return this;
-    }
-
     testCell(cellReference) {
         Preconditions.requireInstance(cellReference, SpreadsheetCellReference, "cellReference");
 
@@ -135,6 +76,12 @@ export default class SpreadsheetColumnReference extends SpreadsheetColumnOrRowRe
         return false;
     }
 
+    // context menu events..............................................................................................
+
+    buildContextMenuItems(historyTokens){
+        // nop
+    }
+
     viewportId() {
         return "viewport-column-" + this.toString().toUpperCase();
     }
@@ -150,6 +97,53 @@ export default class SpreadsheetColumnReference extends SpreadsheetColumnOrRowRe
     toDeleteUrl() {
         return "/column/" + this;
     }
+
+    // viewport.........................................................................................................
+
+    viewportLeft() {
+        return this.addSaturated(-1);
+    }
+
+    viewportRight() {
+        return this.addSaturated(+1);
+    }
+
+    viewportUp(viewportHome) {
+        return this;
+    }
+
+    viewportDown(viewportHome) {
+        return viewportHome.row()
+            .setColumn(this);
+    }
+
+    viewportLeftExtend(anchor, current, viewportHome) {
+        return new SpreadsheetColumnReferenceRange(
+            this.viewportLeft(),
+            this
+        ).columnOrRange()
+            .setAnchorConditional(SpreadsheetViewportSelectionAnchor.RIGHT);
+    }
+
+    viewportRightExtend(anchor, current, viewportHome) {
+        return new SpreadsheetColumnReferenceRange(
+            this,
+            this.viewportRight()
+        ).columnOrRange()
+            .setAnchorConditional(SpreadsheetViewportSelectionAnchor.LEFT);
+    }
+
+    viewportUpExtend(anchor, current, viewportHome) {
+        return this.setAnchor();
+    }
+
+    viewportDownExtend(anchor, current, viewportHome) {
+        return viewportHome.row()
+            .setColumn(this)
+            .setAnchor();
+    }
+    
+    // JSON.............................................................................................................
 
     toJson() {
         return this.kind().prefix() + toString0(this.value());

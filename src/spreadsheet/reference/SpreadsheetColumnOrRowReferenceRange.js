@@ -28,21 +28,23 @@ export default class SpreadsheetColumnOrRowReferenceRange extends SpreadsheetSel
     count() {
         return this.end().value() - this.begin().value() + 1;
     }
-    
-    toJson() {
-        const begin = this.begin();
-        const end = this.end();
-        return begin.equals(end) ?
-            begin.toJson() :
-            begin.toJson() + ":" + end.toJson();
+
+    viewportEnter(giveFormulaFocus) {
+        // ENTER currently is a NOP but will change to perhaps popup a menu
     }
 
     setAnchorConditional(anchor) {
         return this.setAnchor(anchor);
     }
 
-    selectEnter(giveFormulaFocus) {
-        // ENTER currently is a NOP but will change to perhaps popup a menu
+    // JSON............................................................................................................
+
+    toJson() {
+        const begin = this.begin();
+        const end = this.end();
+        return begin.equals(end) ?
+            begin.toJson() :
+            begin.toJson() + ":" + end.toJson();
     }
 
     selectOptionText() {

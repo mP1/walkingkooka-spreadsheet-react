@@ -394,99 +394,6 @@ test("addRowSaturated delta overflow", () => {
     ).toEqual(SpreadsheetCellReference.parse("B" + SpreadsheetRowReference.MAX));
 });
 
-// extendRangeLeft......................................................................................................
-
-function testExtendRangeLeft(cell, expected, anchor) {
-    const h = home();
-
-    test("extendRangeLeft " + cell + " home=" + h,
-        () => {
-            expect(SpreadsheetCellReference.parse(cell)
-                .extendRangeLeft(h)
-                .toString()
-            ).toStrictEqual(
-                SpreadsheetCellRange.parse(expected)
-                    .cellOrRange()
-                    .setAnchorConditional(anchor)
-                    .toString()
-            )
-        });
-}
-
-testExtendRangeLeft("A1", "A1");
-testExtendRangeLeft("B2", "A2:B2", SpreadsheetViewportSelectionAnchor.TOP_RIGHT);
-testExtendRangeLeft("C3", "B3:C3", SpreadsheetViewportSelectionAnchor.TOP_RIGHT);
-
-// extendRangeRight......................................................................................................
-
-function testExtendRangeRight(cell, expected, anchor) {
-    const h = home();
-
-    test("extendRangeRight " + cell + " home=" + h,
-        () => {
-            expect(SpreadsheetCellReference.parse(cell)
-                .extendRangeRight(h)
-                .toString()
-            ).toStrictEqual(
-                SpreadsheetCellRange.parse(expected)
-                    .cellOrRange()
-                    .setAnchorConditional(anchor)
-                    .toString()
-            )
-        });
-}
-
-testExtendRangeRight("XFD1", "XFD1");
-testExtendRangeRight("A1", "A1:B1", SpreadsheetViewportSelectionAnchor.TOP_LEFT);
-testExtendRangeRight("B2", "B2:C2", SpreadsheetViewportSelectionAnchor.TOP_LEFT);
-
-// extendRangeUp......................................................................................................
-
-function testExtendRangeUp(cell, expected, anchor) {
-    const h = home();
-
-    test("extendRangeUp " + cell + " home=" + h,
-        () => {
-            expect(SpreadsheetCellReference.parse(cell)
-                .extendRangeUp(h)
-                .toString()
-            ).toStrictEqual(
-                SpreadsheetCellRange.parse(expected)
-                    .cellOrRange()
-                    .setAnchorConditional(anchor)
-                    .toString()
-            )
-        });
-}
-
-testExtendRangeUp("A1", "A1");
-testExtendRangeUp("B2", "B1:B2", SpreadsheetViewportSelectionAnchor.BOTTOM_LEFT);
-testExtendRangeUp("C3", "C2:C3", SpreadsheetViewportSelectionAnchor.BOTTOM_LEFT);
-
-// extendRangeDown......................................................................................................
-
-function testExtendRangeDown(cell, expected, anchor) {
-    const h = home();
-
-    test("extendRangeDown " + cell + " home=" + h,
-        () => {
-            expect(SpreadsheetCellReference.parse(cell)
-                .extendRangeDown()
-                .toString()
-            ).toStrictEqual(
-                SpreadsheetCellRange.parse(expected)
-                    .cellOrRange()
-                    .setAnchorConditional(anchor)
-                    .toString()
-            )
-        });
-}
-
-testExtendRangeDown("A1048576", "A1048576");
-testExtendRangeDown("B1048576", "B1048576");
-testExtendRangeDown("A1", "A1:A2", SpreadsheetViewportSelectionAnchor.TOP_LEFT);
-testExtendRangeDown("B2", "B2:B3", SpreadsheetViewportSelectionAnchor.TOP_LEFT);
-
 // testCell SpreadsheetCellReference........................................................................................
 
 function testCellAndCheck(cellReference, otherCellReference, expected) {
@@ -540,6 +447,163 @@ test("toRelative absolute", () => {
 test("toRelative absolute2", () => {
     expect(SpreadsheetCellReference.parse("$C3").toRelative()).toEqual(SpreadsheetCellReference.parse("C3"));
 });
+
+// viewportLeft......................................................................................................
+
+function testViewportLeft(cell, expected) {
+    test(cell + ".viewportLeft",
+        () => {
+            expect(SpreadsheetCellReference.parse(cell)
+                .viewportLeft(null)
+                .toString()
+            ).toStrictEqual(expected)
+        });
+}
+
+testViewportLeft("A1", "A1");
+testViewportLeft("B2", "A2");
+testViewportLeft("C3", "B3");
+
+// viewportRight......................................................................................................
+
+function testViewportRight(cell, expected) {
+    test(cell + ".viewportRight",
+        () => {
+            expect(SpreadsheetCellReference.parse(cell)
+                .viewportRight(null)
+                .toString()
+            ).toStrictEqual(expected)
+        });
+}
+
+testViewportRight("A1", "B1");
+testViewportRight("B2", "C2");
+testViewportRight("XFD4", "XFD4");
+
+// viewportUp......................................................................................................
+
+function testViewportUp(cell, expected) {
+    test(cell + ".viewportUp",
+        () => {
+            expect(SpreadsheetCellReference.parse(cell)
+                .viewportUp(null)
+                .toString()
+            ).toStrictEqual(expected)
+        });
+}
+
+testViewportUp("A1", "A1");
+testViewportUp("B2", "B1");
+testViewportUp("C3", "C2");
+
+// viewportDown......................................................................................................
+
+function testViewportDown(cell, expected) {
+    test(cell + ".viewportDown",
+        () => {
+            expect(SpreadsheetCellReference.parse(cell)
+                .viewportDown(null)
+                .toString()
+            ).toStrictEqual(expected)
+        });
+}
+
+testViewportDown("A1", "A2");
+testViewportDown("B2", "B3");
+testViewportDown("C1048576", "C1048576");
+
+// viewportLeftExtend......................................................................................................
+
+function testViewportLeftExtend(cell, expected, anchor) {
+    const h = home();
+
+    test("viewportLeftExtend " + cell + " home=" + h,
+        () => {
+            expect(SpreadsheetCellReference.parse(cell)
+                .viewportLeftExtend(h)
+                .toString()
+            ).toStrictEqual(
+                SpreadsheetCellRange.parse(expected)
+                    .cellOrRange()
+                    .setAnchorConditional(anchor)
+                    .toString()
+            )
+        });
+}
+
+testViewportLeftExtend("A1", "A1");
+testViewportLeftExtend("B2", "A2:B2", SpreadsheetViewportSelectionAnchor.TOP_RIGHT);
+testViewportLeftExtend("C3", "B3:C3", SpreadsheetViewportSelectionAnchor.TOP_RIGHT);
+
+// viewportRightExtend......................................................................................................
+
+function testViewportRightExtend(cell, expected, anchor) {
+    const h = home();
+
+    test("viewportRightExtend " + cell + " home=" + h,
+        () => {
+            expect(SpreadsheetCellReference.parse(cell)
+                .viewportRightExtend(h)
+                .toString()
+            ).toStrictEqual(
+                SpreadsheetCellRange.parse(expected)
+                    .cellOrRange()
+                    .setAnchorConditional(anchor)
+                    .toString()
+            )
+        });
+}
+
+testViewportRightExtend("XFD1", "XFD1");
+testViewportRightExtend("A1", "A1:B1", SpreadsheetViewportSelectionAnchor.TOP_LEFT);
+testViewportRightExtend("B2", "B2:C2", SpreadsheetViewportSelectionAnchor.TOP_LEFT);
+
+// viewportUpExtend......................................................................................................
+
+function testViewportUpExtend(cell, expected, anchor) {
+    const h = home();
+
+    test("viewportUpExtend " + cell + " home=" + h,
+        () => {
+            expect(SpreadsheetCellReference.parse(cell)
+                .viewportUpExtend(h)
+                .toString()
+            ).toStrictEqual(
+                SpreadsheetCellRange.parse(expected)
+                    .cellOrRange()
+                    .setAnchorConditional(anchor)
+                    .toString()
+            )
+        });
+}
+
+testViewportUpExtend("A1", "A1");
+testViewportUpExtend("B2", "B1:B2", SpreadsheetViewportSelectionAnchor.BOTTOM_LEFT);
+testViewportUpExtend("C3", "C2:C3", SpreadsheetViewportSelectionAnchor.BOTTOM_LEFT);
+
+// viewportDownExtend......................................................................................................
+
+function testViewportDownExtend(cell, expected, anchor) {
+    const h = home();
+
+    test("viewportDownExtend " + cell + " home=" + h,
+        () => {
+            expect(SpreadsheetCellReference.parse(cell)
+                .viewportDownExtend()
+                .toString()
+            ).toStrictEqual(
+                SpreadsheetCellRange.parse(expected)
+                    .cellOrRange()
+                    .setAnchorConditional(anchor)
+                    .toString()
+            )
+        });
+}
+
+testViewportDownExtend("A1048576", "A1048576");
+testViewportDownExtend("B1048576", "B1048576");
+testViewportDownExtend("A1", "A1:A2", SpreadsheetViewportSelectionAnchor.TOP_LEFT);
+testViewportDownExtend("B2", "B2:B3", SpreadsheetViewportSelectionAnchor.TOP_LEFT);
 
 // onViewportKeyDown....................................................................................................
 

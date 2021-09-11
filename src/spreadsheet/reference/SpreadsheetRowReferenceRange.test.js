@@ -185,101 +185,6 @@ function testRowOrRange(range, expected) {
 testRowOrRange("2:3", "2:3");
 testRowOrRange("4:4", "4");
 
-// extendRangeLeft......................................................................................................
-
-function testExtendRangeLeft(range, expected) {
-    const h = home();
-
-    test("extendRangeLeft " + range + " home=" + h,
-        () => {
-            expect(SpreadsheetRowReferenceRange.parse(range)
-                .extendRangeLeft(null, null, h)
-            ).toStrictEqual(
-                SpreadsheetRowReferenceRange.parse(expected)
-                    .rowOrRange()
-            )
-        });
-}
-
-testExtendRangeLeft("1:1", "1");
-testExtendRangeLeft("2:2", "2");
-testExtendRangeLeft("3:4", "3:4");
-
-// extendRangeRight......................................................................................................
-
-function testExtendRangeRight(range, home, expected) {
-    test("extendRangeRight " + range + " home=" + home,
-        () => {
-            expect(SpreadsheetRowReferenceRange.parse(range)
-                .extendRangeRight(null, null, SpreadsheetCellReference.parse(home))
-            ).toStrictEqual(
-                SpreadsheetRowReferenceRange.parse(expected)
-                    .rowOrRange()
-            )
-        });
-}
-
-testExtendRangeRight("1:1", "Z99", "1");
-testExtendRangeRight("2:2", "Z99","2");
-testExtendRangeRight("3:4", "Z99","3:4");
-
-// extendRangeUp......................................................................................................
-
-function testExtendRangeUp(range, anchor, current, expected) {
-    test("extendRangeUp range=" + range + " anchor=" + anchor + " current=" + current,
-        () => {
-            expect(SpreadsheetRowReferenceRange.parse(range)
-                .extendRangeUp(anchor, SpreadsheetRowReference.parse(current))
-                .toString()
-            ).toStrictEqual(
-                SpreadsheetRowReferenceRange.parse(expected)
-                    .rowOrRange()
-                    .setAnchorConditional(anchor)
-                    .toString()
-            )
-        });
-}
-
-testExtendRangeUp("1:2", SpreadsheetViewportSelectionAnchor.BOTTOM, "1", "1:2");
-testExtendRangeUp("2:3", SpreadsheetViewportSelectionAnchor.BOTTOM, "2", "1:3");
-testExtendRangeUp("3:4", SpreadsheetViewportSelectionAnchor.BOTTOM, "3", "2:4");
-
-testExtendRangeUp("1:1", SpreadsheetViewportSelectionAnchor.TOP, "1", "1");
-testExtendRangeUp("1:2", SpreadsheetViewportSelectionAnchor.TOP, "2", "1");
-testExtendRangeUp("2:3", SpreadsheetViewportSelectionAnchor.TOP, "3", "2");
-testExtendRangeUp("3:4", SpreadsheetViewportSelectionAnchor.TOP, "4", "3");
-testExtendRangeUp("5:7", SpreadsheetViewportSelectionAnchor.TOP, "7", "5:6");
-testExtendRangeUp("7:8", SpreadsheetViewportSelectionAnchor.TOP, "8", "7");
-testExtendRangeUp("7:8", SpreadsheetViewportSelectionAnchor.TOP, "9", "7:8");
-
-// extendRangeDown......................................................................................................
-
-function testExtendRangeDown(range, anchor, current, expected) {
-    test("extendRangeDown range=" + range + " anchor=" + anchor + " current=" + current,
-        () => {
-            expect(SpreadsheetRowReferenceRange.parse(range)
-                .extendRangeDown(anchor, SpreadsheetRowReference.parse(current))
-                .toString()
-            ).toStrictEqual(
-                SpreadsheetRowReferenceRange.parse(expected)
-                    .rowOrRange()
-                    .setAnchorConditional(anchor)
-                    .toString()
-            )
-        });
-}
-
-testExtendRangeDown("1048576:1048576", SpreadsheetViewportSelectionAnchor.TOP, "1048576", "1048576");
-testExtendRangeDown("1:1048576", SpreadsheetViewportSelectionAnchor.TOP, "1048576","1:1048576");
-testExtendRangeDown("2:3", SpreadsheetViewportSelectionAnchor.TOP,"3", "2:4");
-testExtendRangeDown("3:5", SpreadsheetViewportSelectionAnchor.TOP,"5", "3:6");
-
-testExtendRangeDown("1048576:1048576", SpreadsheetViewportSelectionAnchor.BOTTOM, "1048576", "1048576");
-testExtendRangeDown("1:1048576", SpreadsheetViewportSelectionAnchor.BOTTOM,"1", "2:1048576");
-testExtendRangeDown("2:3", SpreadsheetViewportSelectionAnchor.BOTTOM,"2", "3");
-testExtendRangeDown("5:7", SpreadsheetViewportSelectionAnchor.BOTTOM,"5", "6:7");
-testExtendRangeDown("5:6", SpreadsheetViewportSelectionAnchor.BOTTOM,"5", "6");
-
 // testCell.............................................................................................................
 
 test("testCell missing fails", () => {
@@ -366,6 +271,179 @@ testRowAndCheck("top edge", JSON, "2", true);
 testRowAndCheck("center", JSON, "3", true);
 testRowAndCheck("bottom edge", JSON, "4", true);
 testRowAndCheck("below", JSON, "5", false);
+
+test("2:3.viewportLeft()",
+    () => {
+        expect(SpreadsheetRowReferenceRange.parse("2:3")
+            .viewportLeft(null)
+        ).toStrictEqual(
+            SpreadsheetRowReferenceRange.parse("2:3")
+        )
+    });
+
+test("2:3.viewportRight()",
+    () => {
+        expect(SpreadsheetRowReferenceRange.parse("2:3")
+            .viewportRight(null)
+        ).toStrictEqual(
+            SpreadsheetRowReferenceRange.parse("2:3")
+        )
+    });
+
+// viewportUp......................................................................................................
+
+function testViewportUp(row, start, expected) {
+    test(row + ".viewportUp " + start,
+        () => {
+            expect(SpreadsheetRowReferenceRange.parse(row)
+                .viewportUp(SpreadsheetRowReference.parse(start))
+                .toString()
+            ).toStrictEqual(expected)
+        });
+}
+
+testViewportUp("1:2", "1", "1");
+testViewportUp("1:2", "2", "1");
+
+testViewportUp("2:3", "2", "1");
+testViewportUp("2:3", "3", "2");
+
+testViewportUp("3:4", "3", "2");
+testViewportUp("3:4", "4", "3");
+
+// viewportDown......................................................................................................
+
+function testViewportDown(row, start, expected) {
+    test(row + ".viewportDown " + start,
+        () => {
+            expect(SpreadsheetRowReferenceRange.parse(row)
+                .viewportDown(SpreadsheetRowReference.parse(start))
+                .toString()
+            ).toStrictEqual(expected)
+        });
+}
+
+testViewportDown("1:2", "1", "2");
+testViewportDown("1:2", "2", "3");
+
+testViewportDown("2:3", "2", "3");
+testViewportDown("2:3", "3", "4");
+
+testViewportDown("1048575:1048576", "1048575", "1048576");
+testViewportDown("1048575:1048576", "1048576", "1048576");
+
+test("2:3.viewportLeftExtend()",
+    () => {
+        expect(SpreadsheetRowReferenceRange.parse("2:3")
+            .viewportLeftExtend(null)
+        ).toStrictEqual(
+            SpreadsheetRowReferenceRange.parse("2:3")
+        )
+    });
+
+test("2:3.viewportRightExtend()",
+    () => {
+        expect(SpreadsheetRowReferenceRange.parse("2:3")
+            .viewportRightExtend(null)
+        ).toStrictEqual(
+            SpreadsheetRowReferenceRange.parse("2:3")
+        )
+    });
+
+// viewportLeftExtend......................................................................................................
+
+function testViewportLeftExtend(range, expected) {
+    const h = home();
+
+    test("viewportLeftExtend " + range + " home=" + h,
+        () => {
+            expect(SpreadsheetRowReferenceRange.parse(range)
+                .viewportLeftExtend(null, null, h)
+            ).toStrictEqual(
+                SpreadsheetRowReferenceRange.parse(expected)
+                    .rowOrRange()
+            )
+        });
+}
+
+testViewportLeftExtend("1:1", "1");
+testViewportLeftExtend("2:2", "2");
+testViewportLeftExtend("3:4", "3:4");
+
+// viewportRightExtend......................................................................................................
+
+function testViewportRightExtend(range, home, expected) {
+    test("viewportRightExtend " + range + " home=" + home,
+        () => {
+            expect(SpreadsheetRowReferenceRange.parse(range)
+                .viewportRightExtend(null, null, SpreadsheetCellReference.parse(home))
+            ).toStrictEqual(
+                SpreadsheetRowReferenceRange.parse(expected)
+                    .rowOrRange()
+            )
+        });
+}
+
+testViewportRightExtend("1:1", "Z99", "1");
+testViewportRightExtend("2:2", "Z99","2");
+testViewportRightExtend("3:4", "Z99","3:4");
+
+// viewportUpExtend......................................................................................................
+
+function testViewportUpExtend(range, anchor, current, expected) {
+    test("viewportUpExtend range=" + range + " anchor=" + anchor + " current=" + current,
+        () => {
+            expect(SpreadsheetRowReferenceRange.parse(range)
+                .viewportUpExtend(anchor, SpreadsheetRowReference.parse(current))
+                .toString()
+            ).toStrictEqual(
+                SpreadsheetRowReferenceRange.parse(expected)
+                    .rowOrRange()
+                    .setAnchorConditional(anchor)
+                    .toString()
+            )
+        });
+}
+
+testViewportUpExtend("1:2", SpreadsheetViewportSelectionAnchor.BOTTOM, "1", "1:2");
+testViewportUpExtend("2:3", SpreadsheetViewportSelectionAnchor.BOTTOM, "2", "1:3");
+testViewportUpExtend("3:4", SpreadsheetViewportSelectionAnchor.BOTTOM, "3", "2:4");
+
+testViewportUpExtend("1:1", SpreadsheetViewportSelectionAnchor.TOP, "1", "1");
+testViewportUpExtend("1:2", SpreadsheetViewportSelectionAnchor.TOP, "2", "1");
+testViewportUpExtend("2:3", SpreadsheetViewportSelectionAnchor.TOP, "3", "2");
+testViewportUpExtend("3:4", SpreadsheetViewportSelectionAnchor.TOP, "4", "3");
+testViewportUpExtend("5:7", SpreadsheetViewportSelectionAnchor.TOP, "7", "5:6");
+testViewportUpExtend("7:8", SpreadsheetViewportSelectionAnchor.TOP, "8", "7");
+testViewportUpExtend("7:8", SpreadsheetViewportSelectionAnchor.TOP, "9", "7:8");
+
+// viewportDownExtend......................................................................................................
+
+function testViewportDownExtend(range, anchor, current, expected) {
+    test("viewportDownExtend range=" + range + " anchor=" + anchor + " current=" + current,
+        () => {
+            expect(SpreadsheetRowReferenceRange.parse(range)
+                .viewportDownExtend(anchor, SpreadsheetRowReference.parse(current))
+                .toString()
+            ).toStrictEqual(
+                SpreadsheetRowReferenceRange.parse(expected)
+                    .rowOrRange()
+                    .setAnchorConditional(anchor)
+                    .toString()
+            )
+        });
+}
+
+testViewportDownExtend("1048576:1048576", SpreadsheetViewportSelectionAnchor.TOP, "1048576", "1048576");
+testViewportDownExtend("1:1048576", SpreadsheetViewportSelectionAnchor.TOP, "1048576","1:1048576");
+testViewportDownExtend("2:3", SpreadsheetViewportSelectionAnchor.TOP,"3", "2:4");
+testViewportDownExtend("3:5", SpreadsheetViewportSelectionAnchor.TOP,"5", "3:6");
+
+testViewportDownExtend("1048576:1048576", SpreadsheetViewportSelectionAnchor.BOTTOM, "1048576", "1048576");
+testViewportDownExtend("1:1048576", SpreadsheetViewportSelectionAnchor.BOTTOM,"1", "2:1048576");
+testViewportDownExtend("2:3", SpreadsheetViewportSelectionAnchor.BOTTOM,"2", "3");
+testViewportDownExtend("5:7", SpreadsheetViewportSelectionAnchor.BOTTOM,"5", "6:7");
+testViewportDownExtend("5:6", SpreadsheetViewportSelectionAnchor.BOTTOM,"5", "6");
 
 // helpers..............................................................................................................
 

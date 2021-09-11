@@ -61,64 +61,6 @@ export default class SpreadsheetRowReference extends SpreadsheetColumnOrRowRefer
         return new SpreadsheetCellReference(column, this);
     }
 
-    // context menu events..............................................................................................
-
-    buildContextMenuItems(historyTokens){
-        // nop
-    }
-
-    // keyboard events..................................................................................................
-
-    navigateLeft(viewportHome) {
-        return this;
-    }
-
-    navigateRight(viewportHome) {
-        return this.setColumn(viewportHome.column());
-    }
-
-    navigateUp(viewportHome) {
-        return this.addSaturated(-1);
-    }
-
-    navigateDown(viewportHome) {
-        return this.addSaturated(+1);
-    }
-
-    extendRangeLeft(anchor, current, viewportHome) {
-        Preconditions.requireInstance(viewportHome, SpreadsheetCellReference, "viewportHome");
-
-        return this.setAnchor();
-    }
-
-    extendRangeRight(anchor, current, viewportHome) {
-        Preconditions.requireInstance(viewportHome, SpreadsheetCellReference, "viewportHome");
-
-        return viewportHome.column()
-            .setRow(this)
-            .setAnchor()
-    }
-
-    extendRangeUp(anchor, current, viewportHome) {
-        return new SpreadsheetRowReferenceRange(
-            this.addSaturated(-1),
-            this
-        ).rowOrRange()
-            .setAnchorConditional(SpreadsheetViewportSelectionAnchor.BOTTOM)
-    }
-
-    extendRangeDown(anchor, current, viewportHome) {
-        return new SpreadsheetRowReferenceRange(
-            this,
-            this.addSaturated(+1),
-        ).rowOrRange()
-            .setAnchorConditional(SpreadsheetViewportSelectionAnchor.TOP)
-    }
-
-    selectionFocus(labelToReference, anchor) {
-        return this;
-    }
-
     testCell(cellReference) {
         Preconditions.requireInstance(cellReference, SpreadsheetCellReference, "cellReference");
 
@@ -137,6 +79,12 @@ export default class SpreadsheetRowReference extends SpreadsheetColumnOrRowRefer
         return this.value() === rowReference.value();
     }
 
+    // context menu events..............................................................................................
+
+    buildContextMenuItems(historyTokens){
+        // nop
+    }
+
     toLoadCellsQueryStringParameterSelectionType() {
         return "row";
     }
@@ -152,6 +100,52 @@ export default class SpreadsheetRowReference extends SpreadsheetColumnOrRowRefer
     toDeleteUrl() {
         return "/row/" + this;
     }
+
+    // viewport.........................................................................................................
+
+    viewportLeft() {
+        return this;
+    }
+
+    viewportRight(viewportHome) {
+        return this.setColumn(viewportHome.column());
+    }
+
+    viewportUp() {
+        return this.addSaturated(-1);
+    }
+
+    viewportDown() {
+        return this.addSaturated(+1);
+    }
+
+    viewportLeftExtend(anchor, current, viewportHome) {
+        return this.setAnchor();
+    }
+
+    viewportRightExtend(anchor, current, viewportHome) {
+        return viewportHome.column()
+            .setRow(this)
+            .setAnchor()
+    }
+
+    viewportUpExtend(anchor, current, viewportHome) {
+        return new SpreadsheetRowReferenceRange(
+            this.viewportUp(),
+            this
+        ).rowOrRange()
+            .setAnchorConditional(SpreadsheetViewportSelectionAnchor.BOTTOM)
+    }
+
+    viewportDownExtend(anchor, current, viewportHome) {
+        return new SpreadsheetRowReferenceRange(
+            this,
+            this.viewportDown(),
+        ).rowOrRange()
+            .setAnchorConditional(SpreadsheetViewportSelectionAnchor.TOP)
+    }
+
+    // JSON............................................................................................................
 
     typeName() {
         return TYPE_NAME;

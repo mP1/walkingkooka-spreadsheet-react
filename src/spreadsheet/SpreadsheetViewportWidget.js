@@ -40,11 +40,10 @@ const SCROLL_DEBOUNCE = 100;
  * <li>ImmutableMap columnWidths: A cache of the column widths within the visible viewport</li>
  * <li>ImmutableMap rowHeights: A cache of the row heights within the visible viewport</li>
  * <li>object dimensions: Holds the width and height of the viewport in pixels</li>
- * <li>SpreadsheetSelection selection: The current selection which may include unresolved labels</li>
- * <li>SpreadsheetViewportSelectionAnchor selection: The anchor accompanying the selection.</li>
  * <li>SpreadsheetMetadata spreadsheetMetadata: holds the viewport home cell & default style</li>
  * <li>SpreadsheetCellRange viewportRange: holds a range of all the cells within the viewport</li>
  * <li>boolean giveFocus: if cells changed give focus to the selected cell. This helps giving focus after a delta load.</li>
+ * <li>SpreadsheetSelection current: The currently focused column, cell or row, important when extending a range</li>
  * <li>contextMenu object an object with two properties anchorPosition and menuList both which are given to the Menu to present itself.</li>
  * </ul>
  */
@@ -401,7 +400,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
      */
     giveSelectionFocus(selection, anchor) {
         if(selection){
-            const cellColumnOrRow = selection.selectionFocus(
+            const cellColumnOrRow = selection.viewportFocus(
                 this.state.labelToReference,
                 anchor
             );

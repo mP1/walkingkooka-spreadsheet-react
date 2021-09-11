@@ -113,20 +113,22 @@ export default class SpreadsheetColumnOrRowReference extends SpreadsheetSelectio
         }</TableCell>
     }
 
+    // viewport.........................................................................................................
+
+    viewportEnter(giveFormulaFocus) {
+        // do nothing if ENTER selected on column or row.
+    }
+
+    viewportFocus(labelToReference, anchor) {
+        return this;
+    }
+
     setAnchorConditional(anchor) {
         return this.setAnchor(); // not a range ignore anchor
     }
 
     checkAnchor(anchor) {
         SpreadsheetSelection.checkNoAnchor(anchor);
-    }
-
-    selectionEnter(giveFormulaFocus) {
-        // do nothing if ENTER selected on column or row.
-    }
-
-    selectionFocus(labelToReference, anchor) {
-        return this;
     }
 
     selectOptionText() {

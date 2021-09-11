@@ -9,12 +9,144 @@ import SystemObject from "../../SystemObject.js";
  */
 export default class SpreadsheetSelection extends SystemObject {
 
-    static reportInvalidAnchor(anchor) {
-        throw new Error("Invalid anchor=" + anchor);
-    }
-
     static reportInvalidCharacter(c, pos) {
         throw new Error("Invalid character " + CharSequences.quoteAndEscape(Character.fromJson(c)) + " at " + pos);
+    }
+
+    testCell(cellReference) {
+        SystemObject.throwUnsupportedOperation();
+    }
+
+    testColumn(columnReference) {
+        SystemObject.throwUnsupportedOperation();
+    }
+
+    testRow(rowReference) {
+        SystemObject.throwUnsupportedOperation();
+    }
+
+    toLoadCellsQueryStringParameterSelectionType() {
+        SystemObject.throwUnsupportedOperation();
+    }
+
+    toHistoryHashToken() {
+        SystemObject.throwUnsupportedOperation();
+    }
+
+    toDeleteUrl() {
+        SystemObject.throwUnsupportedOperation();
+    }
+
+    /**
+     * This is the text that will appear in the {@link SpreadsheetSelectAutocompleteWidget}.
+     */
+    selectOptionText() {
+        SystemObject.throwUnsupportedOperation();
+    }
+
+    // context menu events..............................................................................................
+
+    /**
+     * This method is called whenever the element for this selection is clicked, providing an opportunity to
+     * build the context menu items that will be displayed ready for clicking.
+     */
+    buildContextMenuItems(historyTokens){
+        SystemObject.throwUnsupportedOperation();
+    }
+
+    // key events.......................................................................................................
+
+    /**
+     *
+     */
+    onViewportKeyDown(key, selectRange, selection, anchor, viewportHome, saveSelection, giveFormulaFocus) {
+        console.log("onViewportKeyDown: " + key + " " + (selectRange ? "selecting range ": "") + this + " " + (selection ? selection + " ":  "") + (anchor ? anchor + " ": "") + (viewportHome ? " home=" + viewportHome : ""));
+
+        const selectionOrThis = selection ? selection : this;
+
+        switch(key) {
+            case Keys.ARROW_LEFT:
+                saveSelection(
+                    selectRange ?
+                        selectionOrThis.viewportLeftExtend(anchor, this, viewportHome):
+                        this.viewportLeft(viewportHome).setAnchor()
+                );
+                break;
+            case Keys.ARROW_RIGHT:
+                saveSelection(
+                    selectRange ?
+                        selectionOrThis.viewportRightExtend(anchor, this, viewportHome):
+                        this.viewportRight(viewportHome).setAnchor()
+                );
+                break;
+            case Keys.ARROW_UP:
+                saveSelection(
+                    selectRange ?
+                        selectionOrThis.viewportUpExtend(anchor, this, viewportHome):
+                        this.viewportUp(viewportHome).setAnchor()
+                );
+                break;
+            case Keys.ARROW_DOWN:
+                saveSelection(
+                    selectRange ?
+                        selectionOrThis.viewportDownExtend(anchor, this, viewportHome):
+                        this.viewportDown(viewportHome).setAnchor()
+                );
+                break;
+            case Keys.ENTER:
+                selectionOrThis.viewportEnter(giveFormulaFocus);
+                break;
+            case Keys.ESCAPE:
+                saveSelection(null);
+                break;
+            default:
+                // ignore other keys
+                break;
+        }
+    }
+
+    viewportEnter(giveFormulaFocus) {
+        SystemObject.throwUnsupportedOperation();
+    }
+
+    viewportFocus(giveFormulaFocus) {
+        SystemObject.throwUnsupportedOperation();
+    }
+
+    viewportLeft(start) {
+        SystemObject.throwUnsupportedOperation()
+    }
+
+    viewportRight(start) {
+        SystemObject.throwUnsupportedOperation()
+    }
+
+    viewportUp(start) {
+        SystemObject.throwUnsupportedOperation()
+    }
+
+    viewportDown(start) {
+        SystemObject.throwUnsupportedOperation()
+    }
+
+    viewportLeftExtend(start) {
+        SystemObject.throwUnsupportedOperation()
+    }
+
+    viewportRightExtend(start) {
+        SystemObject.throwUnsupportedOperation()
+    }
+
+    viewportUpExtend(start) {
+        SystemObject.throwUnsupportedOperation()
+    }
+
+    viewportDownExtend(start) {
+        SystemObject.throwUnsupportedOperation()
+    }
+
+    static reportInvalidAnchor(anchor) {
+        throw new Error("Invalid anchor=" + anchor);
     }
 
     setAnchor(anchor) {
@@ -52,143 +184,6 @@ export default class SpreadsheetSelection extends SystemObject {
         if(valid.findIndex(a => a.equals(anchor)) === -1 ) {
             throw new Error("Unknown anchor " + anchor + ", expected any of " + valid.join(", "));
         }
-    }
-
-    // context menu events..............................................................................................
-
-    /**
-     * This method is called whenever the element for this selection is clicked, providing an opportunity to
-     * build the context menu items that will be displayed ready for clicking.
-     */
-    buildContextMenuItems(historyTokens){
-        SystemObject.throwUnsupportedOperation();
-    }
-
-    // key events.......................................................................................................
-
-    /**
-     * LEFT | RIGHT Arrow keys update the column selection or when down selects the first visible cell or ESC clears the current selection.
-     */
-    onViewportKeyDown(key, selectRange, selection, anchor, viewportHome, saveSelection, giveFormulaFocus) {
-        console.log("onViewportKeyDown: " + key + " " + (selectRange ? "selecting range ": "") + this + " " + (selection ? selection + " ":  "") + (anchor ? anchor + " ": "") + (viewportHome ? " home=" + viewportHome : ""));
-
-        const selectionOrThis = (selection ? selection : this);
-
-        switch(key) {
-            case Keys.ARROW_LEFT:
-                saveSelection(
-                    selectRange ?
-                        selectionOrThis.extendRangeLeft(anchor, this, viewportHome):
-                        this.navigateLeft(viewportHome).setAnchor()
-                );
-                break;
-            case Keys.ARROW_RIGHT:
-                saveSelection(
-                    selectRange ?
-                        selectionOrThis.extendRangeRight(anchor, this, viewportHome):
-                        this.navigateRight(viewportHome).setAnchor()
-                );
-                break;
-            case Keys.ARROW_UP:
-                saveSelection(
-                    selectRange ?
-                        selectionOrThis.extendRangeUp(anchor, this, viewportHome):
-                        this.navigateUp(viewportHome).setAnchor()
-                );
-                break;
-            case Keys.ARROW_DOWN:
-                saveSelection(
-                    selectRange ?
-                        selectionOrThis.extendRangeDown(anchor, this, viewportHome):
-                        this.navigateDown(viewportHome).setAnchor()
-                );
-                break;
-            case Keys.ENTER:
-                selectionOrThis.selectionEnter(giveFormulaFocus);
-                break;
-            case Keys.ESCAPE:
-                saveSelection(null);
-                break;
-            default:
-                // ignore other keys
-                break;
-        }
-    }
-
-    extendRangeLeft(anchor, viewportHome) {
-        SystemObject.throwUnsupportedOperation();
-    }
-
-    extendRangeRight(anchor, viewportHome) {
-        SystemObject.throwUnsupportedOperation();
-    }
-
-    extendRangeUp(anchor, viewportHome) {
-        SystemObject.throwUnsupportedOperation();
-    }
-
-    extendRangeDown(anchor, viewportHome) {
-        SystemObject.throwUnsupportedOperation();
-    }
-
-    // all navigate methods must return SpreadsheetSelection
-
-    navigateLeft(anchor, viewportHome) {
-        SystemObject.throwUnsupportedOperation();
-    }
-
-    navigateRight(anchor, viewportHome) {
-        SystemObject.throwUnsupportedOperation();
-    }
-
-    navigateUp(anchor, viewportHome) {
-        SystemObject.throwUnsupportedOperation();
-    }
-
-    navigateDown(anchor, viewportHome) {
-        SystemObject.throwUnsupportedOperation();
-    }
-
-    selectionEnter(giveFormulaFocus) {
-        SystemObject.throwUnsupportedOperation();
-    }
-
-    /**
-     * Resolves a selection which may be a label or range into a single element namely one of cell, column or row.
-     */
-    selectionFocus(labelToReference, anchor) {
-        SystemObject.throwUnsupportedOperation();
-    }
-
-    testCell(cellReference) {
-        SystemObject.throwUnsupportedOperation();
-    }
-
-    testColumn(columnReference) {
-        SystemObject.throwUnsupportedOperation();
-    }
-
-    testRow(rowReference) {
-        SystemObject.throwUnsupportedOperation();
-    }
-
-    toLoadCellsQueryStringParameterSelectionType() {
-        SystemObject.throwUnsupportedOperation();
-    }
-
-    toHistoryHashToken() {
-        SystemObject.throwUnsupportedOperation();
-    }
-
-    toDeleteUrl() {
-        SystemObject.throwUnsupportedOperation();
-    }
-
-    /**
-     * This is the text that will appear in the {@link SpreadsheetSelectAutocompleteWidget}.
-     */
-    selectOptionText() {
-        SystemObject.throwUnsupportedOperation();
     }
 
     toString() {
