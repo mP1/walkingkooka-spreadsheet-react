@@ -380,7 +380,7 @@ testExtendRangeDown("B2:C3", SpreadsheetViewportSelectionAnchor.BOTTOM_RIGHT, "B
 const SELECT_RANGE_FALSE = false;
 const SELECT_RANGE_TRUE = true;
 
-function testOnViewportKeyDown(reference, key, selectRange, viewportHome, setSelection, giveFormulaFocus) {
+function testOnViewportKeyDown(reference, key, selectRange, viewportHome, saveSelection, giveFormulaFocus) {
     test("testOnViewportKeyDown cell=" + reference + " key=" + key + " selectRange=" + selectRange + " home=" + viewportHome, () => {
 
         const state = {
@@ -400,7 +400,7 @@ function testOnViewportKeyDown(reference, key, selectRange, viewportHome, setSel
             );
         expect(state)
             .toStrictEqual({
-                selection: setSelection,
+                selection: saveSelection,
                 giveFormulaFocus: giveFormulaFocus,
             });
     });

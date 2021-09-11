@@ -411,7 +411,7 @@ test("toJson RELATIVE", () => {
 const SELECT_RANGE_FALSE = false;
 const SELECT_RANGE_TRUE = true;
 
-function testOnViewportKeyDown(selection, key, selectRange, viewportHome, setSelection, anchor, giveFormulaFocus) {
+function testOnViewportKeyDown(selection, key, selectRange, viewportHome, saveSelection, anchor, giveFormulaFocus) {
     test("testOnViewportKeyDown row=" + selection + " key=" + key + " selectRange=" + selectRange + " home=" + viewportHome, () => {
 
         const state = {
@@ -431,7 +431,7 @@ function testOnViewportKeyDown(selection, key, selectRange, viewportHome, setSel
             );
         expect(state)
             .toStrictEqual({
-                selection: setSelection && (setSelection + (anchor ? " " + anchor : "")),
+                selection: saveSelection && (saveSelection + (anchor ? " " + anchor : "")),
                 giveFormulaFocus: giveFormulaFocus,
             });
     });

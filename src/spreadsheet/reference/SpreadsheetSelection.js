@@ -69,35 +69,35 @@ export default class SpreadsheetSelection extends SystemObject {
     /**
      * LEFT | RIGHT Arrow keys update the column selection or when down selects the first visible cell or ESC clears the current selection.
      */
-    onViewportKeyDown(key, selectRange, selection, anchor, viewportHome, setSelection, giveFormulaFocus) {
+    onViewportKeyDown(key, selectRange, selection, anchor, viewportHome, saveSelection, giveFormulaFocus) {
         console.log("onViewportKeyDown: " + key + " " + (selectRange ? "selecting range ": "") + this + " " + (selection ? selection + " ":  "") + (anchor ? anchor + " ": "") + (viewportHome ? " home=" + viewportHome : ""));
 
         const selectionOrThis = (selection ? selection : this);
 
         switch(key) {
             case Keys.ARROW_LEFT:
-                setSelection(
+                saveSelection(
                     selectRange ?
                         selectionOrThis.extendRangeLeft(anchor, this, viewportHome):
                         this.navigateLeft(viewportHome).setAnchor()
                 );
                 break;
             case Keys.ARROW_RIGHT:
-                setSelection(
+                saveSelection(
                     selectRange ?
                         selectionOrThis.extendRangeRight(anchor, this, viewportHome):
                         this.navigateRight(viewportHome).setAnchor()
                 );
                 break;
             case Keys.ARROW_UP:
-                setSelection(
+                saveSelection(
                     selectRange ?
                         selectionOrThis.extendRangeUp(anchor, this, viewportHome):
                         this.navigateUp(viewportHome).setAnchor()
                 );
                 break;
             case Keys.ARROW_DOWN:
-                setSelection(
+                saveSelection(
                     selectRange ?
                         selectionOrThis.extendRangeDown(anchor, this, viewportHome):
                         this.navigateDown(viewportHome).setAnchor()
@@ -107,7 +107,7 @@ export default class SpreadsheetSelection extends SystemObject {
                 selectionOrThis.selectionEnter(giveFormulaFocus);
                 break;
             case Keys.ESCAPE:
-                setSelection(null);
+                saveSelection(null);
                 break;
             default:
                 // ignore other keys

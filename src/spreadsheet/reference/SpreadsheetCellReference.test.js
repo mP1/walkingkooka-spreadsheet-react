@@ -546,7 +546,7 @@ test("toRelative absolute2", () => {
 const SELECT_RANGE_FALSE = false;
 const SELECT_RANGE_TRUE = true;
 
-function testOnViewportKeyDown(cell, key, selectRange, viewportHome, setSelection, anchor, giveFormulaFocus) {
+function testOnViewportKeyDown(cell, key, selectRange, viewportHome, saveSelection, anchor, giveFormulaFocus) {
     test("testOnViewportKeyDown cell=" + cell + " key=" + key + " selectRange=" + selectRange + " anchor=" + anchor + " home=" + viewportHome, () => {
 
         const state = {
@@ -566,7 +566,7 @@ function testOnViewportKeyDown(cell, key, selectRange, viewportHome, setSelectio
             );
         expect(state)
             .toStrictEqual({
-                selection: setSelection && SpreadsheetCellRange.parse(setSelection).cellOrRange().setAnchorConditional(anchor).toString(),
+                selection: saveSelection && SpreadsheetCellRange.parse(saveSelection).cellOrRange().setAnchorConditional(anchor).toString(),
                 giveFormulaFocus: giveFormulaFocus,
             });
     });
