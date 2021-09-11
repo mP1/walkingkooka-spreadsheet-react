@@ -181,6 +181,22 @@ testSetBegin("A:B", "B", "B:B");
 testSetBegin("C:E", "A", "A:E");
 testSetBegin("C:E", "G", "E:G");
 
+// setEnd..............................................................................................................
+
+function testSetEnd(range, end, expected) {
+    test(range + ".setEnd " + end, () => {
+        expect(
+            SpreadsheetColumnReferenceRange.parse(range)
+                .setEnd(SpreadsheetColumnReference.parse(end))
+        ).toStrictEqual(SpreadsheetColumnReferenceRange.parse(expected));
+    });
+}
+
+testSetEnd("A:B", "A", "A:A");
+testSetEnd("A:B", "B", "A:B");
+testSetEnd("C:E", "A", "A:C");
+testSetEnd("C:E", "G", "C:G");
+
 // columnOrRange........................................................................................................
 
 function testColumnOrRange(range, expected) {
