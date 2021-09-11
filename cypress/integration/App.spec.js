@@ -564,7 +564,7 @@ context(
                     formulaText()
                         .click()
                         .wait(FORMULA_TEXT_CLICK_WAIT)
-                        .type("=4{enter}");
+                        .type("{selectall}=4{enter}");
 
                     cellFormattedTextCheck(reference, "4.");
                 });
@@ -644,7 +644,7 @@ context(
             formulaText()
                 .click()
                 .wait(FORMULA_TEXT_CLICK_WAIT)
-                .type("=11{enter}");
+                .type("{selectall}=11{enter}");
 
             cellClick(B2);
 
@@ -653,7 +653,7 @@ context(
             formulaText()
                 .click()
                 .wait(FORMULA_TEXT_CLICK_WAIT)
-                .type("=22{enter}")
+                .type("{selectall}=22{enter}")
                 .blur();
 
             // create a new label
@@ -675,7 +675,7 @@ context(
             formulaText()
                 .click()
                 .wait(FORMULA_TEXT_CLICK_WAIT)
-                .type("=4*MovingLabel{enter}")
+                .type("{selectall}=4*MovingLabel{enter}")
                 .blur();
 
             cellFormattedTextCheck(C3, "44."); // 4 * 11
@@ -833,7 +833,7 @@ context(
             formulaText()
                 .click()
                 .wait(FORMULA_TEXT_CLICK_WAIT)
-                .type("=1+2+3{enter}");
+                .type("{selectall}=1+2+3{enter}");
 
             hash()
                 .should('match', /.*\/Untitled\/cell\/B2\/formula/);
@@ -849,14 +849,14 @@ context(
             formulaText()
                 .click()
                 .wait(FORMULA_TEXT_CLICK_WAIT)
-                .type("=1+2+3{enter}");
+                .type("{selectall}=1+2+3{enter}");
 
             cellClick(D4);
 
             formulaText()
                 .click()
                 .wait(FORMULA_TEXT_CLICK_WAIT)
-                .type("=C3+10{enter}");
+                .type("{selectall}=C3+10{enter}");
 
             cellFormattedTextCheck(D4, "16.");
         });
@@ -869,7 +869,7 @@ context(
             formulaText()
                 .click()
                 .wait(FORMULA_TEXT_CLICK_WAIT)
-                .type("=1+2+3{enter}");
+                .type("{selectall}=1+2+3{enter}");
 
             cy.window()
                 .then(function(win) {
@@ -882,7 +882,7 @@ context(
             formulaText()
                 .click()
                 .wait(FORMULA_TEXT_CLICK_WAIT)
-                .type("=4+5{enter}");
+                .type("{selectall}=4+5{enter}");
 
             cellFormattedTextCheck(D4, "9.");
         });
@@ -1038,7 +1038,7 @@ context(
             formulaText()
                 .click()
                 .wait(FORMULA_TEXT_CLICK_WAIT)
-                .type("=234{enter}")
+                .type("{selectall}=234{enter}")
                 .blur();
 
             // viewport should have jumped leaving T1 as the home cell.
@@ -1054,7 +1054,7 @@ context(
             formulaText()
                 .click()
                 .wait(FORMULA_TEXT_CLICK_WAIT)
-                .type("=234{enter}")
+                .type("{selectall}=234{enter}")
                 .blur();
 
             // viewport should have jumped leaving A30 as the home cell.
@@ -1070,7 +1070,7 @@ context(
             formulaText()
                 .click()
                 .wait(FORMULA_TEXT_CLICK_WAIT)
-                .type("=234{enter}")
+                .type("{selectall}=234{enter}")
                 .blur();
 
             // viewport should have jumped leaving T30 as the home cell.
@@ -1086,7 +1086,7 @@ context(
             formulaText()
                 .click()
                 .wait(FORMULA_TEXT_CLICK_WAIT)
-                .type("=123{enter}")
+                .type("{selectall}=123{enter}")
                 .blur();
 
             hashOnlyIdAndName();
@@ -1095,7 +1095,7 @@ context(
             formulaText()
                 .click()
                 .wait(FORMULA_TEXT_CLICK_WAIT)
-                .type("=234{enter}")
+                .type("{selectall}=234{enter}")
                 .blur();
 
             hashOnlyIdAndName();
@@ -1113,7 +1113,7 @@ context(
             formulaText()
                 .click()
                 .wait(FORMULA_TEXT_CLICK_WAIT)
-                .type("=123{enter}")
+                .type("{selectall}=123{enter}")
                 .blur();
 
             hashOnlyIdAndName();
@@ -1123,7 +1123,7 @@ context(
             formulaText()
                 .click()
                 .wait(FORMULA_TEXT_CLICK_WAIT)
-                .type("=234{enter}")
+                .type("{selectall}=234{enter}")
                 .blur();
 
             hashOnlyIdAndName();
@@ -2576,7 +2576,7 @@ context(
             formulaText()
                 .click()
                 .wait(FORMULA_TEXT_CLICK_WAIT)
-                .type("=1+2+3{enter}");
+                .type("{selectall}=1+2+3{enter}");
 
             hashEnter("/");
 
@@ -2597,7 +2597,7 @@ context(
                     formulaText()
                         .click()
                         .wait(FORMULA_TEXT_CLICK_WAIT)
-                        .type("=1+2+3{enter}");
+                        .type("{selectall}=1+2+3{enter}");
                     
                     spreadsheetEmpty();
 
@@ -2623,7 +2623,7 @@ context(
                     formulaText()
                         .click()
                         .wait(FORMULA_TEXT_CLICK_WAIT)
-                        .type("=1+2+3{enter}");
+                        .type("{selectall}=1+2+3{enter}");
 
                     // reload previous spreadsheet and verify viewport reloaded
                     hashEnter(nonEmptySpreadsheetHash);
