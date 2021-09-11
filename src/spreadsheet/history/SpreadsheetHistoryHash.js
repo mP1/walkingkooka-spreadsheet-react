@@ -624,4 +624,16 @@ export default class SpreadsheetHistoryHash {
             SpreadsheetHistoryHash.merge(this.tokens(), tokens)
         );
     }
+
+    /**
+     * Filters the given tokens and returns just the spreadsheet id and name if present.
+     */
+    static spreadsheetIdAndName(tokens) {
+        const only = {};
+
+        only[SpreadsheetHistoryHash.SPREADSHEET_ID] = tokens[SpreadsheetHistoryHash.SPREADSHEET_ID];
+        only[SpreadsheetHistoryHash.SPREADSHEET_NAME] = tokens[SpreadsheetHistoryHash.SPREADSHEET_NAME];
+
+        return only;
+    }
 }
