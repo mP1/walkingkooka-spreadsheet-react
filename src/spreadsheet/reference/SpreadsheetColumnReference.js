@@ -60,7 +60,7 @@ export default class SpreadsheetColumnReference extends SpreadsheetColumnOrRowRe
 
     // context menu events..............................................................................................
 
-    onContextMenu(spreadsheetDeltaCellCrud) {
+    buildContextMenuItems(historyTokens){
         // nop
     }
 

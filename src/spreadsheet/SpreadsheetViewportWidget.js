@@ -558,9 +558,9 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
                     left: e.clientX - 2,
                     top: e.clientY - 4,
                 },
-                menuItems: selection.onContextMenu(
-                    this.props.spreadsheetDeltaCellCrud
-                )
+                menuItems: selection.buildContextMenuItems(
+                    SpreadsheetHistoryHash.spreadsheetIdAndName(this.props.history.hash())
+                ),
             }
         }
 
