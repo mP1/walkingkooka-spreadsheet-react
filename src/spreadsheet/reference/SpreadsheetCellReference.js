@@ -198,92 +198,6 @@ export default class SpreadsheetCellReference extends SpreadsheetCellReferenceOr
         return this.setRow(this.row().addSaturated(delta));
     }
 
-    // context menu events..............................................................................................
-
-    buildContextMenuItems(historyTokens){
-        return [
-            <MenuItem onClick={() => alert(this.toString())}>Click!</MenuItem>
-        ]
-    }
-
-    // keyboard events..................................................................................................
-
-    setAnchorConditional(anchor) {
-        return this.setAnchor(); // ignore anchor
-    }
-
-    checkAnchor(anchor) {
-        SpreadsheetSelection.checkNoAnchor(anchor);
-    }
-
-    navigateLeft(viewportHome) {
-        return this.addColumnSaturated(-1);
-    }
-
-    navigateRight(viewportHome) {
-        return this.addColumnSaturated(+1);
-    }
-
-    navigateUp(viewportHome) {
-        return this.addRowSaturated(-1);
-    }
-
-    navigateDown(viewportHome) {
-        return this.addRowSaturated(+1);
-    }
-
-    extendRangeLeft(anchor, viewportHome) {
-        const c = this.column();
-        const r = this.row();
-
-        return new SpreadsheetCellRange(
-            c.addSaturated(-1).setRow(r),
-            c.setRow(r)
-        ).cellOrRange()
-            .setAnchorConditional(SpreadsheetViewportSelectionAnchor.TOP_RIGHT)
-    }
-
-    extendRangeRight(anchor, viewportHome) {
-        const c = this.column();
-        const r = this.row();
-
-        return new SpreadsheetCellRange(
-            c.setRow(r),
-            c.addSaturated(+1).setRow(r),
-        ).cellOrRange()
-            .setAnchorConditional(SpreadsheetViewportSelectionAnchor.TOP_LEFT)
-    }
-
-    extendRangeUp(anchor, viewportHome) {
-        const c = this.column();
-        const r = this.row();
-
-        return new SpreadsheetCellRange(
-            r.addSaturated(-1).setColumn(c),
-            c.setRow(r)
-        ).cellOrRange()
-            .setAnchorConditional(SpreadsheetViewportSelectionAnchor.BOTTOM_LEFT)
-    }
-
-    extendRangeDown(anchor, viewportHome) {
-        const c = this.column();
-        const r = this.row();
-
-        return new SpreadsheetCellRange(
-            c.setRow(r),
-            r.addSaturated(+1).setColumn(c),
-        ).cellOrRange()
-            .setAnchorConditional(SpreadsheetViewportSelectionAnchor.TOP_LEFT)
-    }
-
-    selectionEnter(giveFormulaFocus) {
-        giveFormulaFocus();
-    }
-
-    selectionFocus(labelToReference, anchor) {
-        return this;
-    }
-
     testCell(cellReference) {
         return this.column().testCell(cellReference) &&
             this.row().testCell(cellReference);
@@ -328,6 +242,94 @@ export default class SpreadsheetCellReference extends SpreadsheetCellReferenceOr
     viewportTooltipId() {
         return this.viewportId() + "-Tooltip";
     }
+
+    // context menu events..............................................................................................
+
+    buildContextMenuItems(historyTokens){
+        return [
+            <MenuItem onClick={() => alert(this.toString())}>Click!</MenuItem>
+        ]
+    }
+
+    // viewport.........................................................................................................
+
+    viewportEnter(giveFormulaFocus) {
+        giveFormulaFocus();
+    }
+
+    viewportFocus(labelToReference, anchor) {
+        return this;
+    }
+
+    viewportLeft() {
+        return this.setColumn(this.column().viewportLeft());
+    }
+
+    viewportRight() {
+        return this.setColumn(this.column().viewportRight());
+    }
+
+    viewportUp() {
+        return this.setRow(this.row().viewportUp());
+    }
+
+    viewportDown() {
+        return this.setRow(this.row().viewportDown());
+    }
+
+    viewportLeftExtend(anchor, viewportHome) {
+        const c = this.column();
+        const r = this.row();
+
+        return new SpreadsheetCellRange(
+            c.viewportLeft().setRow(r),
+            c.setRow(r)
+        ).cellOrRange()
+            .setAnchorConditional(SpreadsheetViewportSelectionAnchor.TOP_RIGHT)
+    }
+
+    viewportRightExtend(anchor, viewportHome) {
+        const c = this.column();
+        const r = this.row();
+
+        return new SpreadsheetCellRange(
+            c.setRow(r),
+            c.viewportRight().setRow(r),
+        ).cellOrRange()
+            .setAnchorConditional(SpreadsheetViewportSelectionAnchor.TOP_LEFT)
+    }
+
+    viewportUpExtend(anchor, viewportHome) {
+        const c = this.column();
+        const r = this.row();
+
+        return new SpreadsheetCellRange(
+            r.viewportUp().setColumn(c),
+            c.setRow(r)
+        ).cellOrRange()
+            .setAnchorConditional(SpreadsheetViewportSelectionAnchor.BOTTOM_LEFT)
+    }
+
+    viewportDownExtend(anchor, viewportHome) {
+        const c = this.column();
+        const r = this.row();
+
+        return new SpreadsheetCellRange(
+            c.setRow(r),
+            r.viewportDown().setColumn(c),
+        ).cellOrRange()
+            .setAnchorConditional(SpreadsheetViewportSelectionAnchor.TOP_LEFT)
+    }
+
+    setAnchorConditional(anchor) {
+        return this.setAnchor(); // ignore anchor
+    }
+
+    checkAnchor(anchor) {
+        SpreadsheetSelection.checkNoAnchor(anchor);
+    }
+
+    // json............................................................................................................
 
     toJson() {
         return this.column()

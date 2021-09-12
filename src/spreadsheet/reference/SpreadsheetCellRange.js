@@ -17,8 +17,6 @@ const TYPE_NAME = "spreadsheet-cell-range";
  */
 export default class SpreadsheetCellRange extends SpreadsheetExpressionReference {
 
-    static DEFAULT_ANCHOR = SpreadsheetViewportSelectionAnchor.BOTTOM_RIGHT;
-
     static fromJson(json) {
         return SpreadsheetCellRange.parse(json);
     }
@@ -62,7 +60,7 @@ export default class SpreadsheetCellRange extends SpreadsheetExpressionReference
             this :
             new SpreadsheetCellRange(this.begin(), end);
     }
-    
+
     cellOrRange() {
         const begin = this.begin();
         return begin.equals(this.end()) ?
@@ -76,324 +74,6 @@ export default class SpreadsheetCellRange extends SpreadsheetExpressionReference
 
     height() {
         return this.end().row().value() - this.begin().row().value() + 1;
-    }
-
-    setAnchorConditional(anchor) {
-        return this.setAnchor(anchor);
-    }
-
-    checkAnchor(anchor) {
-        SpreadsheetSelection.checkAnyAnchor(
-            anchor,
-            [
-                SpreadsheetViewportSelectionAnchor.TOP_LEFT,
-                SpreadsheetViewportSelectionAnchor.TOP_RIGHT,
-                SpreadsheetViewportSelectionAnchor.BOTTOM_LEFT,
-                SpreadsheetViewportSelectionAnchor.BOTTOM_RIGHT,
-            ]
-        );
-    }
-
-    // context menu events..............................................................................................
-
-    buildContextMenuItems(historyTokens){
-        // nop
-    }
-
-    // keyboard events..................................................................................................
-
-    navigateLeft(viewportHome) {
-        const b = this.begin();
-        return this.b
-            .column().addSaturated(-1)
-            .setRow(b.row());
-    }
-
-    navigateRight(viewportHome) {
-        const b = this.begin();
-        return this.b
-            .column().addSaturated(+1)
-            .setRow(b.row());
-    }
-
-    navigateUp(viewportHome) {
-        const b = this.begin();
-        return this.b
-            .column().addSaturated(-1)
-            .setRow(b.row());
-    }
-
-    navigateDown(viewportHome) {
-        SystemObject.throwUnsupportedOperation();
-    }
-
-    extendRangeLeft(anchor, current, viewportHome) {
-        var begin;
-        var newAnchor;
-
-        switch((anchor ? anchor : SpreadsheetCellRange.DEFAULT_ANCHOR).name()) {
-            case "TOP_RIGHT":
-                begin = true;
-                newAnchor = SpreadsheetViewportSelectionAnchor.TOP_RIGHT;
-                break;
-            case "TOP_LEFT":
-                newAnchor = SpreadsheetViewportSelectionAnchor.TOP_LEFT;
-                break;
-            case "BOTTOM_RIGHT":
-                begin = true;
-                newAnchor = SpreadsheetViewportSelectionAnchor.BOTTOM_RIGHT;
-                break;
-            case "BOTTOM_LEFT":
-                newAnchor = SpreadsheetViewportSelectionAnchor.BOTTOM_LEFT;
-                break;
-            default:
-                SpreadsheetSelection.reportInvalidAnchor(anchor);
-        }
-
-        var result;
-        if(begin){
-            result = this.setBegin(
-                this.begin()
-                    .setColumn(
-                        current.navigateLeft(viewportHome)
-                            .column()
-                    )
-            );
-        }else {
-            result = this.setEnd(
-                this.end()
-                    .setColumn(
-                        current.navigateLeft(viewportHome)
-                            .column()
-                    )
-            );
-        }
-
-        if(this.width() === 1 && result.width() === 2){
-            switch(newAnchor.name()) {
-                case "TOP_LEFT":
-                    newAnchor = SpreadsheetViewportSelectionAnchor.TOP_RIGHT;
-                    break;
-                case "BOTTOM_LEFT":
-                    newAnchor = SpreadsheetViewportSelectionAnchor.BOTTOM_RIGHT;
-                    break;
-                default:
-                    break;
-            }
-        }
-
-        return result.setAnchorConditional(newAnchor);
-    }
-
-    extendRangeRight(anchor, current, viewportHome) {
-        var begin;
-        var newAnchor;
-
-        switch((anchor ? anchor : SpreadsheetCellRange.DEFAULT_ANCHOR).name()) {
-            case "TOP_RIGHT":
-                begin = true;
-                newAnchor = SpreadsheetViewportSelectionAnchor.TOP_RIGHT;
-                break;
-            case "TOP_LEFT":
-                newAnchor = SpreadsheetViewportSelectionAnchor.TOP_LEFT;
-                break;
-            case "BOTTOM_RIGHT":
-                begin = true;
-                newAnchor = SpreadsheetViewportSelectionAnchor.BOTTOM_RIGHT;
-                break;
-            case "BOTTOM_LEFT":
-                newAnchor = SpreadsheetViewportSelectionAnchor.BOTTOM_LEFT;
-                break;
-            default:
-                SpreadsheetSelection.reportInvalidAnchor(anchor);
-        }
-
-        var result;
-        if(begin){
-            result = this.setBegin(
-                this.begin()
-                    .setColumn(
-                        current.navigateRight(viewportHome)
-                            .column()
-                    )
-            );
-        }else {
-            result = this.setEnd(
-                this.end()
-                    .setColumn(
-                        current.navigateRight(viewportHome)
-                            .column()
-                    )
-            );
-        }
-
-        if(this.width() === 1 && result.width() === 2){
-            switch(newAnchor.name()) {
-                case "TOP_RIGHT":
-                    newAnchor = SpreadsheetViewportSelectionAnchor.TOP_LEFT;
-                    break;
-                case "BOTTOM_RIGHT":
-                    newAnchor = SpreadsheetViewportSelectionAnchor.BOTTOM_LEFT;
-                    break;
-                default:
-                    break;
-            }
-        }
-
-        return result.setAnchorConditional(newAnchor);
-    }
-
-    extendRangeUp(anchor, current, viewportHome) {
-        var begin;
-        var newAnchor;
-
-        switch((anchor ? anchor : SpreadsheetCellRange.DEFAULT_ANCHOR).name()) {
-            case "TOP_RIGHT":
-                newAnchor = SpreadsheetViewportSelectionAnchor.TOP_RIGHT;
-                break;
-            case "TOP_LEFT":
-                newAnchor = SpreadsheetViewportSelectionAnchor.TOP_LEFT;
-                break;
-            case "BOTTOM_RIGHT":
-                begin = true;
-                newAnchor = SpreadsheetViewportSelectionAnchor.BOTTOM_RIGHT;
-                break;
-            case "BOTTOM_LEFT":
-                begin = true;
-                newAnchor = SpreadsheetViewportSelectionAnchor.BOTTOM_LEFT;
-                break;
-            default:
-                SpreadsheetSelection.reportInvalidAnchor(anchor);
-        }
-
-        var result;
-        if(begin){
-            result = this.setBegin(
-                this.begin()
-                    .setRow(
-                        current.navigateUp(viewportHome)
-                            .row()
-                    )
-            );
-        }else {
-            result = this.setEnd(
-                this.end()
-                    .setRow(
-                        current.navigateUp(viewportHome)
-                            .row()
-                    )
-            );
-        }
-
-        if(this.height() === 1 && result.height() === 2){
-            switch(newAnchor.name()) {
-                case "TOP_LEFT":
-                    newAnchor = SpreadsheetViewportSelectionAnchor.BOTTOM_LEFT;
-                    break;
-                case "TOP_RIGHT":
-                    newAnchor = SpreadsheetViewportSelectionAnchor.BOTTOM_RIGHT;
-                    break;
-                default:
-                    break;
-            }
-        }
-        
-        return result.setAnchorConditional(newAnchor);
-    }
-
-    extendRangeDown(anchor, current, viewportHome) {
-        var begin;
-        var newAnchor;
-
-        switch((anchor ? anchor : SpreadsheetCellRange.DEFAULT_ANCHOR).name()) {
-            case "TOP_RIGHT":
-                newAnchor = SpreadsheetViewportSelectionAnchor.TOP_RIGHT;
-                break;
-            case "TOP_LEFT":
-                newAnchor = SpreadsheetViewportSelectionAnchor.TOP_LEFT;
-                break;
-            case "BOTTOM_RIGHT":
-                begin = true;
-                newAnchor = SpreadsheetViewportSelectionAnchor.BOTTOM_RIGHT;
-                break;
-            case "BOTTOM_LEFT":
-                begin = true;
-                newAnchor = SpreadsheetViewportSelectionAnchor.BOTTOM_LEFT;
-                break;
-            default:
-                SpreadsheetSelection.reportInvalidAnchor(anchor);
-        }
-
-        var result;
-        if(begin){
-            result = this.setBegin(
-                this.begin()
-                    .setRow(
-                        current.navigateDown(viewportHome)
-                            .row()
-                    )
-            );
-        }else {
-            result = this.setEnd(
-                this.end()
-                    .setRow(
-                        current.navigateDown(viewportHome)
-                            .row()
-                    )
-            );
-        }
-
-        if(this.height() === 1 && result.height() === 2){
-            switch(newAnchor.name()) {
-                case "BOTTOM_LEFT":
-                    newAnchor = SpreadsheetViewportSelectionAnchor.TOP_LEFT;
-                    break;
-                case "BOTTOM_RIGHT":
-                    newAnchor = SpreadsheetViewportSelectionAnchor.TOP_RIGHT;
-                    break;
-                default:
-                    break;
-            }
-        }
-
-        return result.setAnchorConditional(newAnchor);
-    }
-
-    selectionEnter(giveFormulaFocus) {
-        // nop TODO later perhaps popup menu
-    }
-
-    selectionFocus(labelToReference, anchor) {
-        let focus;
-
-        switch((anchor ? anchor : SpreadsheetCellRange.DEFAULT_ANCHOR).name()) {
-            case "LEFT":
-            case "TOP":
-            case "TOP_LEFT":
-                focus = this.end();
-                break;
-            case "RIGHT":
-            case "TOP_RIGHT":
-                focus = this.begin()
-                    .setRow(
-                        this.end().row()
-                    );
-                break;
-            case "BOTTOM":
-            case "BOTTOM_LEFT":
-                focus = this.end()
-                    .setRow(
-                        this.begin().row()
-                    );
-                break;
-            case "BOTTOM_RIGHT":
-                focus = this.begin();
-                break;
-            default:
-                SpreadsheetSelection.reportInvalidCharacter(anchor);
-        }
-
-        return focus;
     }
 
     /**
@@ -429,6 +109,319 @@ export default class SpreadsheetCellRange extends SpreadsheetExpressionReference
     toLoadCellsQueryStringParameterSelectionType() {
         return "cell-range";
     }
+
+    // context menu events..............................................................................................
+
+    buildContextMenuItems(historyTokens) {
+        // nop
+    }
+
+    // viewport.........................................................................................................
+
+    viewportEnter(giveFormulaFocus) {
+        // nop TODO later perhaps popup menu
+    }
+
+    viewportFocus(labelToReference, anchor) {
+        let focus;
+
+        switch((anchor ? anchor : SpreadsheetCellRange.DEFAULT_ANCHOR).name()) {
+            case "LEFT":
+            case "TOP":
+            case "TOP_LEFT":
+                focus = this.end();
+                break;
+            case "RIGHT":
+            case "TOP_RIGHT":
+                focus = this.begin()
+                    .setRow(
+                        this.end().row()
+                    );
+                break;
+            case "BOTTOM":
+            case "BOTTOM_LEFT":
+                focus = this.end()
+                    .setRow(
+                        this.begin().row()
+                    );
+                break;
+            case "BOTTOM_RIGHT":
+                focus = this.begin();
+                break;
+            default:
+                SpreadsheetSelection.reportInvalidCharacter(anchor);
+        }
+
+        return focus;
+    }
+
+    viewportLeft(current) {
+        return current.viewportLeft();
+    }
+
+    viewportRight(current) {
+        return current.viewportRight();
+    }
+
+    viewportUp(current) {
+        return current.viewportUp();
+    }
+
+    viewportDown(current) {
+        return current.viewportDown();
+    }
+
+    static DEFAULT_ANCHOR = SpreadsheetViewportSelectionAnchor.BOTTOM_RIGHT;
+
+    viewportLeftExtend(anchor, current, viewportHome) {
+        var begin;
+        var newAnchor;
+
+        switch((anchor ? anchor : SpreadsheetCellRange.DEFAULT_ANCHOR).name()) {
+            case "TOP_RIGHT":
+                begin = true;
+                newAnchor = SpreadsheetViewportSelectionAnchor.TOP_RIGHT;
+                break;
+            case "TOP_LEFT":
+                newAnchor = SpreadsheetViewportSelectionAnchor.TOP_LEFT;
+                break;
+            case "BOTTOM_RIGHT":
+                begin = true;
+                newAnchor = SpreadsheetViewportSelectionAnchor.BOTTOM_RIGHT;
+                break;
+            case "BOTTOM_LEFT":
+                newAnchor = SpreadsheetViewportSelectionAnchor.BOTTOM_LEFT;
+                break;
+            default:
+                SpreadsheetSelection.reportInvalidAnchor(anchor);
+        }
+
+        var result;
+        if(begin){
+            result = this.setBegin(
+                this.begin()
+                    .setColumn(
+                        current.viewportLeft(viewportHome)
+                            .column()
+                    )
+            );
+        }else {
+            result = this.setEnd(
+                this.end()
+                    .setColumn(
+                        current.viewportLeft(viewportHome)
+                            .column()
+                    )
+            );
+        }
+
+        if(this.width() === 1 && result.width() === 2){
+            switch(newAnchor.name()) {
+                case "TOP_LEFT":
+                    newAnchor = SpreadsheetViewportSelectionAnchor.TOP_RIGHT;
+                    break;
+                case "BOTTOM_LEFT":
+                    newAnchor = SpreadsheetViewportSelectionAnchor.BOTTOM_RIGHT;
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        return result.setAnchorConditional(newAnchor);
+    }
+
+    viewportRightExtend(anchor, current, viewportHome) {
+        var begin;
+        var newAnchor;
+
+        switch((anchor ? anchor : SpreadsheetCellRange.DEFAULT_ANCHOR).name()) {
+            case "TOP_RIGHT":
+                begin = true;
+                newAnchor = SpreadsheetViewportSelectionAnchor.TOP_RIGHT;
+                break;
+            case "TOP_LEFT":
+                newAnchor = SpreadsheetViewportSelectionAnchor.TOP_LEFT;
+                break;
+            case "BOTTOM_RIGHT":
+                begin = true;
+                newAnchor = SpreadsheetViewportSelectionAnchor.BOTTOM_RIGHT;
+                break;
+            case "BOTTOM_LEFT":
+                newAnchor = SpreadsheetViewportSelectionAnchor.BOTTOM_LEFT;
+                break;
+            default:
+                SpreadsheetSelection.reportInvalidAnchor(anchor);
+        }
+
+        var result;
+        if(begin){
+            result = this.setBegin(
+                this.begin()
+                    .setColumn(
+                        current.viewportRight(viewportHome)
+                            .column()
+                    )
+            );
+        }else {
+            result = this.setEnd(
+                this.end()
+                    .setColumn(
+                        current.viewportRight(viewportHome)
+                            .column()
+                    )
+            );
+        }
+
+        if(this.width() === 1 && result.width() === 2){
+            switch(newAnchor.name()) {
+                case "TOP_RIGHT":
+                    newAnchor = SpreadsheetViewportSelectionAnchor.TOP_LEFT;
+                    break;
+                case "BOTTOM_RIGHT":
+                    newAnchor = SpreadsheetViewportSelectionAnchor.BOTTOM_LEFT;
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        return result.setAnchorConditional(newAnchor);
+    }
+
+    viewportUpExtend(anchor, current, viewportHome) {
+        var begin;
+        var newAnchor;
+
+        switch((anchor ? anchor : SpreadsheetCellRange.DEFAULT_ANCHOR).name()) {
+            case "TOP_RIGHT":
+                newAnchor = SpreadsheetViewportSelectionAnchor.TOP_RIGHT;
+                break;
+            case "TOP_LEFT":
+                newAnchor = SpreadsheetViewportSelectionAnchor.TOP_LEFT;
+                break;
+            case "BOTTOM_RIGHT":
+                begin = true;
+                newAnchor = SpreadsheetViewportSelectionAnchor.BOTTOM_RIGHT;
+                break;
+            case "BOTTOM_LEFT":
+                begin = true;
+                newAnchor = SpreadsheetViewportSelectionAnchor.BOTTOM_LEFT;
+                break;
+            default:
+                SpreadsheetSelection.reportInvalidAnchor(anchor);
+        }
+
+        var result;
+        if(begin){
+            result = this.setBegin(
+                this.begin()
+                    .setRow(
+                        current.viewportUp(viewportHome)
+                            .row()
+                    )
+            );
+        }else {
+            result = this.setEnd(
+                this.end()
+                    .setRow(
+                        current.viewportUp(viewportHome)
+                            .row()
+                    )
+            );
+        }
+
+        if(this.height() === 1 && result.height() === 2){
+            switch(newAnchor.name()) {
+                case "TOP_LEFT":
+                    newAnchor = SpreadsheetViewportSelectionAnchor.BOTTOM_LEFT;
+                    break;
+                case "TOP_RIGHT":
+                    newAnchor = SpreadsheetViewportSelectionAnchor.BOTTOM_RIGHT;
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        return result.setAnchorConditional(newAnchor);
+    }
+
+    viewportDownExtend(anchor, current, viewportHome) {
+        var begin;
+        var newAnchor;
+
+        switch((anchor ? anchor : SpreadsheetCellRange.DEFAULT_ANCHOR).name()) {
+            case "TOP_RIGHT":
+                newAnchor = SpreadsheetViewportSelectionAnchor.TOP_RIGHT;
+                break;
+            case "TOP_LEFT":
+                newAnchor = SpreadsheetViewportSelectionAnchor.TOP_LEFT;
+                break;
+            case "BOTTOM_RIGHT":
+                begin = true;
+                newAnchor = SpreadsheetViewportSelectionAnchor.BOTTOM_RIGHT;
+                break;
+            case "BOTTOM_LEFT":
+                begin = true;
+                newAnchor = SpreadsheetViewportSelectionAnchor.BOTTOM_LEFT;
+                break;
+            default:
+                SpreadsheetSelection.reportInvalidAnchor(anchor);
+        }
+
+        var result;
+        if(begin){
+            result = this.setBegin(
+                this.begin()
+                    .setRow(
+                        current.viewportDown(viewportHome)
+                            .row()
+                    )
+            );
+        }else {
+            result = this.setEnd(
+                this.end()
+                    .setRow(
+                        current.viewportDown(viewportHome)
+                            .row()
+                    )
+            );
+        }
+
+        if(this.height() === 1 && result.height() === 2){
+            switch(newAnchor.name()) {
+                case "BOTTOM_LEFT":
+                    newAnchor = SpreadsheetViewportSelectionAnchor.TOP_LEFT;
+                    break;
+                case "BOTTOM_RIGHT":
+                    newAnchor = SpreadsheetViewportSelectionAnchor.TOP_RIGHT;
+                    break;
+                default:
+                    break;
+            }
+        }
+
+        return result.setAnchorConditional(newAnchor);
+    }
+
+    setAnchorConditional(anchor) {
+        return this.setAnchor(anchor);
+    }
+
+    checkAnchor(anchor) {
+        SpreadsheetSelection.checkAnyAnchor(
+            anchor,
+            [
+                SpreadsheetViewportSelectionAnchor.TOP_LEFT,
+                SpreadsheetViewportSelectionAnchor.TOP_RIGHT,
+                SpreadsheetViewportSelectionAnchor.BOTTOM_LEFT,
+                SpreadsheetViewportSelectionAnchor.BOTTOM_RIGHT,
+            ]
+        );
+    }
+
+    // json............................................................................................................
 
     toJson() {
         const begin = this.begin();

@@ -313,86 +313,6 @@ test("setRow", () => {
         .toStrictEqual(new SpreadsheetCellReference(column, row));
 });
 
-// extendRangeLeft......................................................................................................
-
-function testExtendRangeLeft(column, expected, anchor) {
-    const h = home();
-
-    test("extendRangeLeft " + column + " home=" + h,
-        () => {
-            expect(SpreadsheetColumnReference.parse(column)
-                .extendRangeLeft(null, null, h)
-            ).toStrictEqual(
-                SpreadsheetColumnReferenceRange.parse(expected)
-                    .columnOrRange()
-                    .setAnchorConditional(anchor)
-            )
-        });
-}
-
-testExtendRangeLeft("A", "A");
-testExtendRangeLeft("B", "A:B", SpreadsheetViewportSelectionAnchor.RIGHT);
-testExtendRangeLeft("C", "B:C", SpreadsheetViewportSelectionAnchor.RIGHT);
-
-// extendRangeRight......................................................................................................
-
-function testExtendRangeRight(column, expected, anchor) {
-    const h = home();
-
-    test("extendRangeRight " + column + " home=" + h,
-        () => {
-            expect(SpreadsheetColumnReference.parse(column)
-                .extendRangeRight(null, null, h)
-            ).toStrictEqual(
-                SpreadsheetColumnReferenceRange.parse(expected)
-                    .columnOrRange()
-                    .setAnchorConditional(anchor)
-            )
-        });
-}
-
-testExtendRangeRight("XFD", "XFD");
-testExtendRangeRight("A", "A:B", SpreadsheetViewportSelectionAnchor.LEFT);
-testExtendRangeRight("B", "B:C", SpreadsheetViewportSelectionAnchor.LEFT);
-
-// extendRangeUp......................................................................................................
-
-function testExtendRangeUp(column, expected, anchor) {
-    const h = home();
-
-    test("extendRangeUp " + column + " home=" + h,
-        () => {
-            expect(SpreadsheetColumnReference.parse(column)
-                .extendRangeUp(null, null, h)
-            ).toStrictEqual(
-                SpreadsheetColumnReferenceRange.parse(expected)
-                    .columnOrRange()
-                    .setAnchor(anchor)
-            )
-        });
-}
-
-testExtendRangeUp("A", "A");
-testExtendRangeUp("B", "B");
-
-// extendRangeDown......................................................................................................
-
-function testExtendRangeDown(column, home, expected) {
-    test("extendRangeDown " + column + " home=" + home,
-        () => {
-            expect(SpreadsheetColumnReference.parse(column)
-                .extendRangeDown(null, null, SpreadsheetCellReference.parse(home))
-            ).toStrictEqual(
-                SpreadsheetCellReference.parse(expected)
-                    .setAnchor()
-            )
-        });
-}
-
-testExtendRangeDown("A", "Z99", "A99");
-testExtendRangeDown("B", "Z99","B99");
-testExtendRangeDown("C", "A1","C1");
-
 // test SpreadsheetCellReference........................................................................................
 
 function testCellAndCheck(column, cellReference, expected) {
@@ -432,6 +352,136 @@ function testRowAndCheck(column, otherRowReference, expected) {
 testRowAndCheck("A", "1", false);
 testRowAndCheck("B", "$2", false);
 testRowAndCheck("$C", "3", false);
+
+// viewportLeft......................................................................................................
+
+function testViewportLeft(column, expected) {
+    test(column + ".viewportLeft",
+        () => {
+            expect(SpreadsheetColumnReference.parse(column)
+                .viewportLeft(null)
+                .toString()
+            ).toStrictEqual(expected)
+        });
+}
+
+testViewportLeft("A", "A");
+testViewportLeft("B", "A");
+testViewportLeft("C", "B");
+
+// viewportRight......................................................................................................
+
+function testViewportRight(column, expected) {
+    test(column + ".viewportRight",
+        () => {
+            expect(SpreadsheetColumnReference.parse(column)
+                .viewportRight(null)
+                .toString()
+            ).toStrictEqual(expected)
+        });
+}
+
+testViewportRight("A", "B");
+testViewportRight("B", "C");
+testViewportRight("XFD", "XFD");
+
+test("A.viewportUp()",
+    () => {
+        expect(SpreadsheetColumnReference.parse("A")
+            .viewportUp(null)
+        ).toStrictEqual(
+            SpreadsheetColumnReference.parse("A")
+        )
+    });
+
+test("A.viewportDown()",
+    () => {
+        expect(SpreadsheetColumnReference.parse("A")
+            .viewportDown(home())
+        ).toStrictEqual(
+            home().setColumn(SpreadsheetColumnReference.parse("A"))
+        )
+    });
+
+// viewportLeftExtend......................................................................................................
+
+function testViewportLeftExtend(column, expected, anchor) {
+    const h = home();
+
+    test("viewportLeftExtend " + column + " home=" + h,
+        () => {
+            expect(SpreadsheetColumnReference.parse(column)
+                .viewportLeftExtend(null, null, h)
+            ).toStrictEqual(
+                SpreadsheetColumnReferenceRange.parse(expected)
+                    .columnOrRange()
+                    .setAnchorConditional(anchor)
+            )
+        });
+}
+
+testViewportLeftExtend("A", "A");
+testViewportLeftExtend("B", "A:B", SpreadsheetViewportSelectionAnchor.RIGHT);
+testViewportLeftExtend("C", "B:C", SpreadsheetViewportSelectionAnchor.RIGHT);
+
+// viewportRightExtend......................................................................................................
+
+function testViewportRightExtend(column, expected, anchor) {
+    const h = home();
+
+    test("viewportRightExtend " + column + " home=" + h,
+        () => {
+            expect(SpreadsheetColumnReference.parse(column)
+                .viewportRightExtend(null, null, h)
+            ).toStrictEqual(
+                SpreadsheetColumnReferenceRange.parse(expected)
+                    .columnOrRange()
+                    .setAnchorConditional(anchor)
+            )
+        });
+}
+
+testViewportRightExtend("XFD", "XFD");
+testViewportRightExtend("A", "A:B", SpreadsheetViewportSelectionAnchor.LEFT);
+testViewportRightExtend("B", "B:C", SpreadsheetViewportSelectionAnchor.LEFT);
+
+// viewportUpExtend......................................................................................................
+
+function testViewportUpExtend(column, expected, anchor) {
+    const h = home();
+
+    test("viewportUpExtend " + column + " home=" + h,
+        () => {
+            expect(SpreadsheetColumnReference.parse(column)
+                .viewportUpExtend(null, null, h)
+            ).toStrictEqual(
+                SpreadsheetColumnReferenceRange.parse(expected)
+                    .columnOrRange()
+                    .setAnchor(anchor)
+            )
+        });
+}
+
+testViewportUpExtend("A", "A");
+testViewportUpExtend("B", "B");
+
+// viewportDownExtend......................................................................................................
+
+function testViewportDownExtend(column, home, expected) {
+    test("viewportDownExtend " + column + " home=" + home,
+        () => {
+            expect(SpreadsheetColumnReference.parse(column)
+                .viewportDownExtend(null, null, SpreadsheetCellReference.parse(home))
+            ).toStrictEqual(
+                SpreadsheetCellReference.parse(expected)
+                    .setAnchor()
+            )
+        });
+}
+
+testViewportDownExtend("A", "Z99", "A99");
+testViewportDownExtend("B", "Z99","B99");
+testViewportDownExtend("C", "A1","C1");
 
 // onViewportKeyDown....................................................................................................
 

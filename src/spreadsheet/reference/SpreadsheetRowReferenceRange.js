@@ -15,8 +15,6 @@ const TYPE_NAME = "spreadsheet-row-reference-range";
  */
 export default class SpreadsheetRowReferenceRange extends SpreadsheetColumnOrRowReferenceRange {
 
-    static DEFAULT_ANCHOR = SpreadsheetViewportSelectionAnchor.TOP;
-
     static fromJson(json) {
         return SpreadsheetRowReferenceRange.parse(json);
     }
@@ -55,105 +53,6 @@ export default class SpreadsheetRowReferenceRange extends SpreadsheetColumnOrRow
             this;
     }
 
-    checkAnchor(anchor) {
-        SpreadsheetSelection.checkAnyAnchor(
-            anchor,
-            [
-                SpreadsheetViewportSelectionAnchor.TOP,
-                SpreadsheetViewportSelectionAnchor.BOTTOM,
-            ]
-        );
-    }
-
-    // context menu events..............................................................................................
-
-    buildContextMenuItems(historyTokens){
-        // nop
-    }
-
-    // keyboard events..................................................................................................
-
-    extendRangeLeft(anchor, current, viewportHome) {
-        return this.rowOrRange();
-    }
-
-    extendRangeRight(anchor, current, viewportHome) {
-        return this.rowOrRange();
-    }
-    
-    /**
-     * Increases/decreases the row range depending on the anchor
-     */
-    extendRangeUp(anchor, current, viewportHome) {
-        const anchorOrDefault = anchor ? anchor : SpreadsheetRowReferenceRange.DEFAULT_ANCHOR;
-        var range;
-
-        switch(anchorOrDefault.name()) {
-            case "TOP":
-                range = new SpreadsheetRowReferenceRange(
-                    this.begin(),
-                    current.addSaturated(-1),
-                );
-                break;
-            case "BOTTOM":
-                range = new SpreadsheetRowReferenceRange(
-                    current.addSaturated(-1),
-                    this.end()
-                );
-                break;
-            default:
-                SpreadsheetSelection.reportInvalidAnchor(anchor);
-        }
-
-        return range.rowOrRange()
-            .setAnchorConditional(anchorOrDefault);
-    }
-
-    /**
-     * Increases/decreases the row range depending on the anchor
-     */
-    extendRangeDown(anchor, current, viewportHome) {
-        const anchorOrDefault = anchor ? anchor : SpreadsheetRowReferenceRange.DEFAULT_ANCHOR;
-        var range;
-
-        switch(anchorOrDefault.name()) {
-            case "TOP":
-                range = new SpreadsheetRowReferenceRange(
-                    this.begin(),
-                    current.addSaturated(+1),
-                );
-                break;
-            case "BOTTOM":
-                range = new SpreadsheetRowReferenceRange(
-                    current.addSaturated(+1),
-                    this.end()
-                );
-                break;
-            default:
-                SpreadsheetSelection.reportInvalidAnchor(anchor);
-        }
-
-        return range.rowOrRange()
-            .setAnchorConditional(anchorOrDefault);
-    }
-
-    selectionFocus(labelToReference, anchor) {
-        let focus;
-
-        switch((anchor ? anchor : SpreadsheetRowReferenceRange.DEFAULT_ANCHOR).name()) {
-            case "TOP":
-                focus = this.end();
-                break;
-            case "BOTTOM":
-                focus = this.begin();
-                break;
-            default:
-                SpreadsheetSelection.reportInvalidAnchor(anchor);
-        }
-
-        return focus;
-    }
-
     /**
      * Tests if the given {@link SpreadsheetCellReference} is within this range.
      */
@@ -176,6 +75,12 @@ export default class SpreadsheetRowReferenceRange extends SpreadsheetColumnOrRow
             this.end().compareTo(rowReference) >= 0;
     }
 
+    // context menu events..............................................................................................
+
+    buildContextMenuItems(historyTokens) {
+        // nop
+    }
+
     toLoadCellsQueryStringParameterSelectionType() {
         return "row-range";
     }
@@ -187,6 +92,119 @@ export default class SpreadsheetRowReferenceRange extends SpreadsheetColumnOrRow
     toDeleteUrl() {
         return "/row/" + this;
     }
+
+    // viewport.........................................................................................................
+
+    viewportFocus(labelToReference, anchor) {
+        let focus;
+
+        switch((anchor ? anchor : SpreadsheetRowReferenceRange.DEFAULT_ANCHOR).name()) {
+            case "TOP":
+                focus = this.end();
+                break;
+            case "BOTTOM":
+                focus = this.begin();
+                break;
+            default:
+                SpreadsheetSelection.reportInvalidAnchor(anchor);
+        }
+
+        return focus;
+    }
+
+    viewportLeft(current) {
+        return this;
+    }
+
+    viewportRight(current) {
+        return this;
+    }
+
+    viewportUp(current) {
+        return current.viewportUp();
+    }
+
+    viewportDown(current) {
+        return current.viewportDown();
+    }
+
+    static DEFAULT_ANCHOR = SpreadsheetViewportSelectionAnchor.TOP;
+
+    viewportLeftExtend(anchor, current, viewportHome) {
+        return this.rowOrRange();
+    }
+
+    viewportRightExtend(anchor, current, viewportHome) {
+        return this.rowOrRange();
+    }
+
+    /**
+     * Increases/decreases the row range depending on the anchor
+     */
+    viewportUpExtend(anchor, current, viewportHome) {
+        const anchorOrDefault = anchor ? anchor : SpreadsheetRowReferenceRange.DEFAULT_ANCHOR;
+        var range;
+
+        switch(anchorOrDefault.name()) {
+            case "TOP":
+                range = new SpreadsheetRowReferenceRange(
+                    this.begin(),
+                    current.viewportUp(),
+                );
+                break;
+            case "BOTTOM":
+                range = new SpreadsheetRowReferenceRange(
+                    current.viewportUp(),
+                    this.end()
+                );
+                break;
+            default:
+                SpreadsheetSelection.reportInvalidAnchor(anchor);
+        }
+
+        return range.rowOrRange()
+            .setAnchorConditional(anchorOrDefault);
+    }
+
+    /**
+     * Increases/decreases the row range depending on the anchor
+     */
+    viewportDownExtend(anchor, current, viewportHome) {
+        const anchorOrDefault = anchor ? anchor : SpreadsheetRowReferenceRange.DEFAULT_ANCHOR;
+        var range;
+
+        switch(anchorOrDefault.name()) {
+            case "TOP":
+                range = new SpreadsheetRowReferenceRange(
+                    this.begin(),
+                    current.viewportDown(),
+                );
+                break;
+            case "BOTTOM":
+                range = new SpreadsheetRowReferenceRange(
+                    current.viewportDown(),
+                    this.end()
+                );
+                break;
+            default:
+                SpreadsheetSelection.reportInvalidAnchor(anchor);
+        }
+
+        return range.rowOrRange()
+            .setAnchorConditional(anchorOrDefault);
+    }
+
+    checkAnchor(anchor) {
+        SpreadsheetSelection.checkAnyAnchor(
+            anchor,
+            [
+                SpreadsheetViewportSelectionAnchor.TOP,
+                SpreadsheetViewportSelectionAnchor.BOTTOM,
+            ]
+        );
+    }
+
+    // JSON............................................................................................................
 
     typeName() {
         return TYPE_NAME;

@@ -73,19 +73,6 @@ export default class SpreadsheetLabelName extends SpreadsheetCellReferenceOrLabe
         return new SpreadsheetLabelMapping(this, reference);
     }
 
-    setAnchorConditional(anchor) {
-        return this.setAnchor(anchor);// keep
-    }
-
-    checkAnchor(anchor) {
-        // nop
-    }
-
-    selectionFocus(labelToReference, anchor) {
-        const target = labelToReference.get(this);
-        return target && target.selectionFocus(labelToReference, anchor);
-    }
-
     testCell(cellReference) {
         return false;
     }
@@ -105,6 +92,23 @@ export default class SpreadsheetLabelName extends SpreadsheetCellReferenceOrLabe
     toRelative() {
         return this;
     }
+
+    // viewport.........................................................................................................
+
+    viewportFocus(labelToReference, anchor) {
+        const target = labelToReference.get(this);
+        return target && target.viewportFocus(labelToReference, anchor);
+    }
+
+    setAnchorConditional(anchor) {
+        return this.setAnchor(anchor);// keep
+    }
+
+    checkAnchor(anchor) {
+        // nop
+    }
+
+    // JSON.............................................................................................................
 
     toJson() {
         return this.toString();
