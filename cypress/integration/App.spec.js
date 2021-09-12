@@ -1853,8 +1853,7 @@ context(
 
             hashAppend("/cell/B2/formula");
 
-            hash()
-                .should('match', /.*\/.*\/cell\/B2\/formula/);
+            renderWait();
 
             column("C")
                 .click();
@@ -1868,8 +1867,7 @@ context(
 
             hashAppend("/cell/B2/formula");
 
-            hash()
-                .should('match', /.*\/.*\/cell\/B2\/formula/);
+            renderWait();
 
             row("3")
                 .click();
