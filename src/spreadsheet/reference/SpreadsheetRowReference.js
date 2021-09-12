@@ -101,6 +101,10 @@ export default class SpreadsheetRowReference extends SpreadsheetColumnOrRowRefer
         return "/row/" + this;
     }
 
+    toInsertAfterUrl(count) {
+        return "/row/" + this + "/after?count=" + count;
+    }
+
     // viewport.........................................................................................................
 
     viewportLeft() {
@@ -146,10 +150,6 @@ export default class SpreadsheetRowReference extends SpreadsheetColumnOrRowRefer
     }
 
     // JSON............................................................................................................
-
-    toInsertAfterUrl(count) {
-        return "/row/" + this + "/after?count=" + count;
-    }
 
     typeName() {
         return TYPE_NAME;

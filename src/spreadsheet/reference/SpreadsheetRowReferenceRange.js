@@ -93,6 +93,10 @@ export default class SpreadsheetRowReferenceRange extends SpreadsheetColumnOrRow
         return "/row/" + this;
     }
 
+    toInsertAfterUrl(count) {
+        return "/row/" + this + "/after?count=" + count;
+    }
+
     // viewport.........................................................................................................
 
     viewportFocus(labelToReference, anchor) {
@@ -206,10 +210,6 @@ export default class SpreadsheetRowReferenceRange extends SpreadsheetColumnOrRow
     }
 
     // JSON............................................................................................................
-
-    toInsertAfterUrl(count) {
-        return "/row/" + this + "/after?count=" + count;
-    }
 
     typeName() {
         return TYPE_NAME;
