@@ -169,7 +169,7 @@ export default class SpreadsheetHistoryHash {
                             }
                             break;
                         case SpreadsheetHistoryHash.INSERT_AFTER_COLUMN_OR_ROW:
-                            if(previous instanceof SpreadsheetColumnOrRowReference && tokens.length > 0){
+                            if((previous instanceof SpreadsheetColumnOrRowReference || previous instanceof SpreadsheetColumnOrRowReferenceRange) && tokens.length > 0){
                                 const insertAfterCount = tokens.shift();
                                 if(!Number.isNaN(Number(insertAfterCount))){
                                     try {
@@ -183,7 +183,7 @@ export default class SpreadsheetHistoryHash {
                             }
                             break;
                         case SpreadsheetHistoryHash.INSERT_BEFORE_COLUMN_OR_ROW:
-                            if(previous instanceof SpreadsheetColumnOrRowReference && tokens.length > 0){
+                            if((previous instanceof SpreadsheetColumnOrRowReference || previous instanceof SpreadsheetColumnOrRowReferenceRange) && tokens.length > 0){
                                 const insertBeforeCount = tokens.shift();
                                 if(!Number.isNaN(Number(insertBeforeCount))){
                                     try {
