@@ -15,8 +15,4 @@ export default class SpreadsheetColumnOrRowInsertHistoryHashToken extends Spread
     count() {
         return this.countValue;
     }
-
-    toString() {
-        return this.toHistoryHashToken();
-    }
 }

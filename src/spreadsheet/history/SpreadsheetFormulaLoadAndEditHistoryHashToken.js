@@ -31,8 +31,4 @@ export default class SpreadsheetFormulaLoadAndEditHistoryHashToken extends Sprea
     equals(other) {
         return this === other || (other instanceof SpreadsheetFormulaLoadAndEditHistoryHashToken && this.formulaText() === other.formulaText());
     }
-
-    toString() {
-        return this.toHistoryHashToken();
-    }
 }

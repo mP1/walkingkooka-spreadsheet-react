@@ -12,4 +12,8 @@ export default class SpreadsheetHistoryHashToken {
     toHistoryHashToken() {
         SystemObject.throwUnsupportedOperation();
     }
+
+    toString() {
+        return this.toHistoryHashToken();
+    }
 }
