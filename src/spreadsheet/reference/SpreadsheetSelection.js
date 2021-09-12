@@ -37,6 +37,10 @@ export default class SpreadsheetSelection extends SystemObject {
         SystemObject.throwUnsupportedOperation();
     }
 
+    toInsertAfterUrl(count) {
+        SystemObject.throwUnsupportedOperation();
+    }
+
     /**
      * This is the text that will appear in the {@link SpreadsheetSelectAutocompleteWidget}.
      */
@@ -182,10 +186,6 @@ export default class SpreadsheetSelection extends SystemObject {
     }
 
     defaultAnchor() {
-        SystemObject.throwUnsupportedOperation();
-    }
-
-    toInsertAfterUrl(count) {
         SystemObject.throwUnsupportedOperation();
     }
 
