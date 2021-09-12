@@ -418,6 +418,10 @@ export default class SpreadsheetCellRange extends SpreadsheetExpressionReference
         ];
     }
 
+    defaultAnchor() {
+        return SpreadsheetCellRange.DEFAULT_ANCHOR;
+    }
+
     // json............................................................................................................
 
     toJson() {

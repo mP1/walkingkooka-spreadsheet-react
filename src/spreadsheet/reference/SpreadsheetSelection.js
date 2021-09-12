@@ -181,6 +181,10 @@ export default class SpreadsheetSelection extends SystemObject {
         }
     }
 
+    defaultAnchor() {
+        SystemObject.throwUnsupportedOperation();
+    }
+
     /**
      * Returns an array of allowed anchors for this selection.
      */

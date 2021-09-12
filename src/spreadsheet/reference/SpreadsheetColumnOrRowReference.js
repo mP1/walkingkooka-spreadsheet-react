@@ -131,6 +131,10 @@ export default class SpreadsheetColumnOrRowReference extends SpreadsheetSelectio
         return [];
     }
 
+    defaultAnchor() {
+        return null;
+    }
+
     selectOptionText() {
         return this.toString();
     }

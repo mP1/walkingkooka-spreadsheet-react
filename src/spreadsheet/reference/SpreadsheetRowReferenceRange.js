@@ -201,6 +201,10 @@ export default class SpreadsheetRowReferenceRange extends SpreadsheetColumnOrRow
         ];
     }
 
+    defaultAnchor() {
+        return SpreadsheetRowReferenceRange.DEFAULT_ANCHOR;
+    }
+
     // JSON............................................................................................................
 
     typeName() {
