@@ -9,4 +9,8 @@ export default class SpreadsheetCellReferenceOrLabelName extends SpreadsheetExpr
     viewport(xOffset, yOffset, width, height) {
         return new SpreadsheetViewport(this, xOffset, yOffset, width, height);
     }
+
+    defaultAnchor() {
+        return null;
+    }
 }
