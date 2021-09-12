@@ -147,6 +147,10 @@ export default class SpreadsheetRowReference extends SpreadsheetColumnOrRowRefer
 
     // JSON............................................................................................................
 
+    toInsertAfterUrl(count) {
+        return "/row/" + this + "/after?count=" + count;
+    }
+
     typeName() {
         return TYPE_NAME;
     }

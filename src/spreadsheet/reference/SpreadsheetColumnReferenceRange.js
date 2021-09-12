@@ -207,6 +207,10 @@ export default class SpreadsheetColumnReferenceRange extends SpreadsheetColumnOr
 
     // JSON............................................................................................................
 
+    toInsertAfterUrl(count) {
+        return "/column/" + this + "/after?count=" + count;
+    }
+
     typeName() {
         return TYPE_NAME;
     }

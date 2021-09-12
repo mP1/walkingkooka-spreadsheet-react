@@ -10,6 +10,17 @@ export default class SpreadsheetColumnOrRowInsertAfterHistoryHashToken extends S
         return SpreadsheetHistoryHash.INSERT_AFTER_COLUMN_OR_ROW + "/" + this.count();
     }
 
+    /**
+     * Handles history hash token evens such as /column/A/insertAfter/1 or /column/B:C/insertAfter/2
+     */
+    onViewportSelectionAction(selection, viewportWidget) {
+        viewportWidget.insertAfterSelection(selection, this.count());
+
+        const tokens = {};
+        tokens[SpreadsheetHistoryHash.SELECTION_ACTION] = null;
+        viewportWidget.historyParseMergeAndPush(tokens);
+    }
+
     equals(other) {
         return this === other || (other instanceof SpreadsheetColumnOrRowInsertAfterHistoryHashToken && this.count() === other.count());
     }

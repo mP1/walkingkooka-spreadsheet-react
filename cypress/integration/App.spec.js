@@ -1845,6 +1845,104 @@ context(
             cellFormattedTextCheck("E3", "Moved");
             cellFormattedTextCheck(E5, "");
         });
+
+        // selection insert-after.............................................................................................
+
+        it("Column select insert-after hash", () => {
+            spreadsheetEmpty();
+
+            renderWait(100);
+
+            cellClick(E5);
+
+            formulaText()
+                .click()
+                .wait(FORMULA_TEXT_CLICK_WAIT)
+                .type("'Moved{enter}");
+
+            column("B")
+                .click();
+
+            hashAppendWithoutCheck("/insert-after/1");
+
+            hash()
+                .should('match', /.*\/.*\/column\/B/);
+
+            cellFormattedTextCheck("F5", "Moved");
+            cellFormattedTextCheck(E5, "");
+        });
+
+        it("Column range select insert-after hash", () => {
+            spreadsheetEmpty();
+
+            renderWait(100);
+
+            cellClick(E5);
+
+            formulaText()
+                .click()
+                .wait(FORMULA_TEXT_CLICK_WAIT)
+                .type("'Moved{enter}");
+
+            column("B")
+                .click();
+
+            hashAppendWithoutCheck(":C/insert-after/2");
+
+            hash()
+                .should('match', /.*\/.*\/column\/B:C/);
+
+            cellFormattedTextCheck("G5", "Moved");
+            cellFormattedTextCheck(E5, "");
+        });
+
+        it("Row select insert-after hash", () => {
+            spreadsheetEmpty();
+
+            renderWait(100);
+
+            cellClick(E5);
+
+            formulaText()
+                .click()
+                .wait(FORMULA_TEXT_CLICK_WAIT)
+                .type("'Moved{enter}");
+
+            row("2")
+                .click();
+
+            hashAppendWithoutCheck("/insert-after/1");
+
+            hash()
+                .should('match', /.*\/.*\/row\/2/);
+
+            cellFormattedTextCheck("E6", "Moved");
+            cellFormattedTextCheck(E5, "");
+        });
+
+        it("Row range select insert-after hash", () => {
+            spreadsheetEmpty();
+
+            renderWait(100);
+
+            cellClick(E5);
+
+            formulaText()
+                .click()
+                .wait(FORMULA_TEXT_CLICK_WAIT)
+                .type("'Moved{enter}");
+
+            row("2")
+                .click();
+
+            hashAppendWithoutCheck(":3/insert-after/2");
+
+            hash()
+                .should('match', /.*\/.*\/row\/2:3/);
+
+            cellFormattedTextCheck("E7", "Moved");
+            cellFormattedTextCheck(E5, "");
+        });
         
         // selection then different viewport selections.................................................................
 
@@ -3816,6 +3914,16 @@ context(
 
                     cy.hash()
                         .should("eq", after);
+                });
+        }
+
+        function hashAppendWithoutCheck(append) {
+            cy.window()
+                .then(function(win) {
+                    const hash = win.location.hash;
+                    const after = hash + append;
+
+                    win.location.hash = after;
                 });
         }
 
