@@ -127,8 +127,8 @@ export default class SpreadsheetColumnOrRowReference extends SpreadsheetSelectio
         return this.setAnchor(); // not a range ignore anchor
     }
 
-    checkAnchor(anchor) {
-        SpreadsheetSelection.checkNoAnchor(anchor);
+    anchors() {
+        return [];
     }
 
     selectOptionText() {

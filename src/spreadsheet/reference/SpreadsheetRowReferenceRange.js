@@ -194,14 +194,11 @@ export default class SpreadsheetRowReferenceRange extends SpreadsheetColumnOrRow
             .setAnchorConditional(anchorOrDefault);
     }
 
-    checkAnchor(anchor) {
-        SpreadsheetSelection.checkAnyAnchor(
-            anchor,
-            [
-                SpreadsheetViewportSelectionAnchor.TOP,
-                SpreadsheetViewportSelectionAnchor.BOTTOM,
-            ]
-        );
+    anchors() {
+        return [
+            SpreadsheetViewportSelectionAnchor.TOP,
+            SpreadsheetViewportSelectionAnchor.BOTTOM,
+        ];
     }
 
     // JSON............................................................................................................

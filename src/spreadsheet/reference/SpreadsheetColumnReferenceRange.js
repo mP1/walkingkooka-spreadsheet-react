@@ -194,14 +194,11 @@ export default class SpreadsheetColumnReferenceRange extends SpreadsheetColumnOr
         return this.columnOrRange();
     }
 
-    checkAnchor(anchor) {
-        SpreadsheetSelection.checkAnyAnchor(
-            anchor,
-            [
-                SpreadsheetViewportSelectionAnchor.LEFT,
-                SpreadsheetViewportSelectionAnchor.RIGHT,
-            ]
-        );
+    anchors() {
+        return [
+            SpreadsheetViewportSelectionAnchor.LEFT,
+            SpreadsheetViewportSelectionAnchor.RIGHT,
+        ];
     }
 
     // JSON............................................................................................................

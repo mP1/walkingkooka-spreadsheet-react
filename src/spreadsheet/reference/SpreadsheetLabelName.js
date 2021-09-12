@@ -108,6 +108,10 @@ export default class SpreadsheetLabelName extends SpreadsheetCellReferenceOrLabe
         // nop
     }
 
+    anchors() {
+        return [];
+    }
+
     // JSON.............................................................................................................
 
     toJson() {
