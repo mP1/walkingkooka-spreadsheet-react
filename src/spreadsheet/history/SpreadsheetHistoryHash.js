@@ -492,7 +492,7 @@ export default class SpreadsheetHistoryHash {
             if(selection){
                 merged[SpreadsheetHistoryHash.SELECTION] = selection;
 
-                if(selectionAnchor instanceof SpreadsheetHistoryHashToken){
+                if(selectionAnchor instanceof SpreadsheetViewportSelectionAnchor){
                     merged[SpreadsheetHistoryHash.SELECTION_ANCHOR] = selectionAnchor;
                 }
 
