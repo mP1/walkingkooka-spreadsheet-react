@@ -25,8 +25,4 @@ export default class SpreadsheetColumnOrRowDeleteHistoryHashToken extends Spread
     equals(other) {
         return this === other || (other instanceof SpreadsheetColumnOrRowDeleteHistoryHashToken);
     }
-
-    toString() {
-        return this.toHistoryHashToken();
-    }
 }
