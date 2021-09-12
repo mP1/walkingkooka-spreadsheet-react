@@ -14,6 +14,7 @@ import SpreadsheetLabelName from "../reference/SpreadsheetLabelName.js";
 import SpreadsheetName from "../SpreadsheetName.js";
 import SpreadsheetRowReference from "../reference/SpreadsheetRowReference.js";
 import SpreadsheetRowReferenceRange from "../reference/SpreadsheetRowReferenceRange.js"
+import SpreadsheetViewportSelectionAnchor from "../reference/SpreadsheetViewportSelectionAnchor.js";
 
 const ID = "spreadsheet-id-123";
 const SPREADSHEET_NAME = new SpreadsheetName("spreadsheet-name-456");
@@ -203,6 +204,36 @@ testValidate(
 );
 
 testValidate(
+    "validate id & name & cell=CELL_RANGE & TOP_LEFT",
+    {
+        "spreadsheet-id": ID,
+        "spreadsheet-name": SPREADSHEET_NAME,
+        "selection": CELL_RANGE,
+        "selection-anchor": SpreadsheetViewportSelectionAnchor.TOP_LEFT,
+    }
+);
+
+testValidate(
+    "validate id & name & cell=COLUMN_RANGE & LEFT",
+    {
+        "spreadsheet-id": ID,
+        "spreadsheet-name": SPREADSHEET_NAME,
+        "selection": COLUMN_RANGE,
+        "selection-anchor": SpreadsheetViewportSelectionAnchor.LEFT,
+    }
+);
+
+testValidate(
+    "validate id & name & cell=ROW_RANGE & TOP",
+    {
+        "spreadsheet-id": ID,
+        "spreadsheet-name": SPREADSHEET_NAME,
+        "selection": ROW_RANGE,
+        "selection-anchor": SpreadsheetViewportSelectionAnchor.TOP,
+    }
+);
+
+testValidate(
     "validate id & name & select",
     {
         "spreadsheet-id": ID,
@@ -383,6 +414,26 @@ testParseAndStringify(
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
         "selection": CELL_RANGE,
+    }
+);
+
+testParseAndStringify(
+    "/spreadsheet-id-123/spreadsheet-name-456/cell/C3:D4/top-left",
+    {
+        "spreadsheet-id": "spreadsheet-id-123",
+        "spreadsheet-name": SPREADSHEET_NAME,
+        "selection": CELL_RANGE,
+        "selection-anchor": SpreadsheetViewportSelectionAnchor.TOP_LEFT
+    }
+);
+
+testParseAndStringify(
+    "/spreadsheet-id-123/spreadsheet-name-456/cell/C3:D4/bottom-right",
+    {
+        "spreadsheet-id": "spreadsheet-id-123",
+        "spreadsheet-name": SPREADSHEET_NAME,
+        "selection": CELL_RANGE,
+        "selection-anchor": SpreadsheetViewportSelectionAnchor.BOTTOM_RIGHT
     }
 );
 
@@ -727,6 +778,26 @@ testParseAndStringify(
 );
 
 testParseAndStringify(
+    "/spreadsheet-id-123/spreadsheet-name-456/column/B:C/left",
+    {
+        "spreadsheet-id": "spreadsheet-id-123",
+        "spreadsheet-name": SPREADSHEET_NAME,
+        "selection": COLUMN_RANGE,
+        "selection-anchor": SpreadsheetViewportSelectionAnchor.LEFT
+    }
+);
+
+testParseAndStringify(
+    "/spreadsheet-id-123/spreadsheet-name-456/column/B:C/right",
+    {
+        "spreadsheet-id": "spreadsheet-id-123",
+        "spreadsheet-name": SPREADSHEET_NAME,
+        "selection": COLUMN_RANGE,
+        "selection-anchor": SpreadsheetViewportSelectionAnchor.RIGHT
+    }
+);
+
+testParseAndStringify(
     "/spreadsheet-id-123/spreadsheet-name-456/column/B:C/delete",
     {
         "spreadsheet-id": "spreadsheet-id-123",
@@ -942,6 +1013,26 @@ testParseAndStringify(
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
         "selection": ROW,
+    }
+);
+
+testParseAndStringify(
+    "/spreadsheet-id-123/spreadsheet-name-456/row/2:3/top",
+    {
+        "spreadsheet-id": "spreadsheet-id-123",
+        "spreadsheet-name": SPREADSHEET_NAME,
+        "selection": ROW_RANGE,
+        "selection-anchor": SpreadsheetViewportSelectionAnchor.TOP
+    }
+);
+
+testParseAndStringify(
+    "/spreadsheet-id-123/spreadsheet-name-456/row/2:3/bottom",
+    {
+        "spreadsheet-id": "spreadsheet-id-123",
+        "spreadsheet-name": SPREADSHEET_NAME,
+        "selection": ROW_RANGE,
+        "selection-anchor": SpreadsheetViewportSelectionAnchor.BOTTOM
     }
 );
 

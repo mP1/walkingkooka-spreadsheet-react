@@ -36,6 +36,15 @@ export default class SpreadsheetViewportSelectionAnchor extends SystemEnum {
   static fromJson(name) {
     return SpreadsheetViewportSelectionAnchor.valueOf(name);
   }
+
+  /**
+   * TOP_LEFT -> top-left, TOP_RIGHT -> top-right
+   */
+  toHistoryHashToken() {
+    return this.name()
+        .toLowerCase()
+        .replace("_", "-")
+  }
   
   typeName() {
     return TYPE_NAME;
