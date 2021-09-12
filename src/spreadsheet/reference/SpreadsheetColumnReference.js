@@ -145,6 +145,10 @@ export default class SpreadsheetColumnReference extends SpreadsheetColumnOrRowRe
     
     // JSON.............................................................................................................
 
+    toInsertAfterUrl(count) {
+        return "/column/" + this + "/after?count=" + count;
+    }
+
     toJson() {
         return this.kind().prefix() + toString0(this.value());
     }

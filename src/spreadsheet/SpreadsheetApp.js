@@ -301,6 +301,7 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
                 <SpreadsheetViewportWidget key={"viewport"}
                                            deleteSelection={this.deleteSelection.bind(this)}
                                            history={history}
+                                           insertAfterSelection={this.insertAfterSelection.bind(this)}
                                            ref={this.viewport}
                                            messenger={messenger}
                                            spreadsheetDeltaCellCrud={spreadsheetDeltaCellCrud}
@@ -327,6 +328,19 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
         this.performSpreadsheetDelta(
             "DELETE",
             this.spreadsheetMetadataApiUrl() + selection.toDeleteUrl() + query,
+            selection
+        );
+    }
+
+    /**
+     * Does a POST to a url which will insert after the requested count columns or rows.
+     */
+    insertAfterSelection(selection, count, window) {
+        const query = window ? "?window=" + window : "";
+
+        this.performSpreadsheetDelta(
+            "POST",
+            this.spreadsheetMetadataApiUrl() + selection.toInsertAfterUrl(count) + query,
             selection
         );
     }

@@ -339,10 +339,8 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
             }
 
             historyTokens[SpreadsheetHistoryHash.SELECTION] = selectionNew;
-            if(state.focused){
-                historyTokens[SpreadsheetHistoryHash.SELECTION_ACTION] = null;
-            }
-
+            historyTokens[SpreadsheetHistoryHash.SELECTION_ACTION] = selectionActionNew;
+            
             if(!Equality.safeEquals(selectionNew, selectionOld)){
                 if(!state.formula){
                     this.giveSelectionFocus(selectionNew, selectionAnchor);
@@ -383,6 +381,13 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
             selection,
             this.state.viewportRange
         );
+    }
+
+    /**
+     * Performs the insertAfter operation, leaving the selection unchanged.
+     */
+    insertAfterSelection(selection, count) {
+        this.props.insertAfterSelection(selection, count);
     }
 
     loadCells(viewport, selection, anchor) {
@@ -804,6 +809,7 @@ SpreadsheetViewportWidget.propTypes = {
     deleteSelection: PropTypes.func.isRequired,
     dimensions: PropTypes.object,
     history: PropTypes.instanceOf(SpreadsheetHistoryHash).isRequired,
+    insertAfterSelection: PropTypes.func.isRequired,
     messenger: PropTypes.instanceOf(SpreadsheetMessenger),
     spreadsheetDeltaCellCrud: PropTypes.instanceOf(SpreadsheetMessengerCrud),
     spreadsheetLabelCrud: PropTypes.instanceOf(SpreadsheetMessengerCrud),
