@@ -1714,6 +1714,15 @@ mergeUpdatesFails([]);
         "/123abc/Untitled456/cell/LABEL123"
     );
 
+    testMerge(
+        "/123abc/Untitled456/cell/A1",
+        {
+            "selection": CELL_RANGE,
+            "selection-anchor": SpreadsheetViewportSelectionAnchor.TOP_LEFT,
+        },
+        "/123abc/Untitled456/cell/C3:D4/top-left"
+    );
+
 // label.................................................................................................................
 
     testMerge(
@@ -1781,6 +1790,15 @@ mergeUpdatesFails([]);
     );
 
     testMerge(
+        "/123abc/Untitled456/column/B",
+        {
+            "selection": COLUMN_RANGE,
+            "selection-anchor": SpreadsheetViewportSelectionAnchor.LEFT,
+        },
+        "/123abc/Untitled456/column/B:C/left"
+    );
+
+    testMerge(
         "/123abc/Untitled456/column/B:D",
         {
             selection: COLUMN,
@@ -1805,7 +1823,16 @@ mergeUpdatesFails([]);
         },
         "/123abc/Untitled456/row/2:3"
     );
-    
+
+    testMerge(
+        "/123abc/Untitled456/row/2",
+        {
+            "selection": ROW_RANGE,
+            "selection-anchor": SpreadsheetViewportSelectionAnchor.TOP,
+        },
+        "/123abc/Untitled456/row/2:3/top"
+    );
+
     testMerge(
         "/123abc/Untitled456/row/2:3",
         {
