@@ -325,8 +325,8 @@ export default class SpreadsheetCellReference extends SpreadsheetCellReferenceOr
         return this.setAnchor(); // ignore anchor
     }
 
-    checkAnchor(anchor) {
-        SpreadsheetSelection.checkNoAnchor(anchor);
+    anchors() {
+        return [];
     }
 
     // json............................................................................................................

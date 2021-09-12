@@ -409,16 +409,13 @@ export default class SpreadsheetCellRange extends SpreadsheetExpressionReference
         return this.setAnchor(anchor);
     }
 
-    checkAnchor(anchor) {
-        SpreadsheetSelection.checkAnyAnchor(
-            anchor,
-            [
-                SpreadsheetViewportSelectionAnchor.TOP_LEFT,
-                SpreadsheetViewportSelectionAnchor.TOP_RIGHT,
-                SpreadsheetViewportSelectionAnchor.BOTTOM_LEFT,
-                SpreadsheetViewportSelectionAnchor.BOTTOM_RIGHT,
-            ]
-        );
+    anchors() {
+        return [
+            SpreadsheetViewportSelectionAnchor.TOP_LEFT,
+            SpreadsheetViewportSelectionAnchor.TOP_RIGHT,
+            SpreadsheetViewportSelectionAnchor.BOTTOM_LEFT,
+            SpreadsheetViewportSelectionAnchor.BOTTOM_RIGHT,
+        ];
     }
 
     // json............................................................................................................
