@@ -1760,7 +1760,7 @@ context(
             formulaText()
                 .click()
                 .wait(FORMULA_TEXT_CLICK_WAIT)
-                .type("'Moved{enter}");
+                .type("{selectall}'Moved{enter}");
 
             column("B")
                 .click();
@@ -1784,7 +1784,7 @@ context(
             formulaText()
                 .click()
                 .wait(FORMULA_TEXT_CLICK_WAIT)
-                .type("'Moved{enter}");
+                .type("{selectall}'Moved{enter}");
 
             column("B")
                 .click();
@@ -1808,7 +1808,7 @@ context(
             formulaText()
                 .click()
                 .wait(FORMULA_TEXT_CLICK_WAIT)
-                .type("'Moved{enter}");
+                .type("{selectall}'Moved{enter}");
 
             row("2")
                 .click();
@@ -1832,7 +1832,7 @@ context(
             formulaText()
                 .click()
                 .wait(FORMULA_TEXT_CLICK_WAIT)
-                .type("'Moved{enter}");
+                .type("{selectall}'Moved{enter}");
 
             row("2")
                 .click();
@@ -1858,7 +1858,7 @@ context(
             formulaText()
                 .click()
                 .wait(FORMULA_TEXT_CLICK_WAIT)
-                .type("'Moved{enter}");
+                .type("{selectall}'Moved{enter}");
 
             column("B")
                 .click();
@@ -1882,7 +1882,7 @@ context(
             formulaText()
                 .click()
                 .wait(FORMULA_TEXT_CLICK_WAIT)
-                .type("'Moved{enter}");
+                .type("{selectall}'Moved{enter}");
 
             column("B")
                 .click();
@@ -1906,7 +1906,7 @@ context(
             formulaText()
                 .click()
                 .wait(FORMULA_TEXT_CLICK_WAIT)
-                .type("'Moved{enter}");
+                .type("{selectall}'Moved{enter}");
 
             row("2")
                 .click();
@@ -1930,7 +1930,7 @@ context(
             formulaText()
                 .click()
                 .wait(FORMULA_TEXT_CLICK_WAIT)
-                .type("'Moved{enter}");
+                .type("{selectall}'Moved{enter}");
 
             row("2")
                 .click();
@@ -3483,7 +3483,7 @@ context(
                 formulaText()
                     .click()
                     .wait(FORMULA_TEXT_CLICK_WAIT)
-                    .type("'ABC"+ "{enter}", FORCE_TRUE);
+                    .type("{selectall}'ABC"+ "{enter}", FORCE_TRUE);
 
                 const textFieldId = "#settings-spreadsheet-metadata-style-" + property + "-TextField";
 
@@ -3530,7 +3530,7 @@ context(
                 formulaText()
                     .click()
                     .wait(FORMULA_TEXT_CLICK_WAIT)
-                    .type("'ABC{enter}", FORCE_TRUE);
+                    .type("{selectall}'ABC{enter}", FORCE_TRUE);
 
                 const sliderId = "#settings-spreadsheet-metadata-style-" + property + "-Slider";
 
@@ -3581,7 +3581,7 @@ context(
                 formulaText()
                     .click()
                     .wait(FORMULA_TEXT_CLICK_WAIT)
-                    .type("'ABC{enter}", FORCE_TRUE);
+                    .type("{selectall}'ABC{enter}", FORCE_TRUE);
 
                 const sliderId = "#settings-spreadsheet-metadata-style-" + property + "-Slider";
                 const numberTextFieldId = "#settings-spreadsheet-metadata-style-" + property + "-NumberTextField";
