@@ -727,6 +727,36 @@ testParseAndStringify(
 );
 
 testParseAndStringify(
+    "/spreadsheet-id-123/spreadsheet-name-456/column/B:C/delete",
+    {
+        "spreadsheet-id": "spreadsheet-id-123",
+        "spreadsheet-name": SPREADSHEET_NAME,
+        "selection": COLUMN_RANGE,
+        "selection-action": SpreadsheetColumnOrRowDeleteHistoryHashToken.INSTANCE,
+    }
+);
+
+testParseAndStringify(
+    "/spreadsheet-id-123/spreadsheet-name-456/column/B:C/insert-after/1",
+    {
+        "spreadsheet-id": "spreadsheet-id-123",
+        "spreadsheet-name": SPREADSHEET_NAME,
+        "selection": COLUMN_RANGE,
+        "selection-action": new SpreadsheetColumnOrRowInsertAfterHistoryHashToken(1),
+    }
+);
+
+testParseAndStringify(
+    "/spreadsheet-id-123/spreadsheet-name-456/column/B:C/insert-before/2",
+    {
+        "spreadsheet-id": "spreadsheet-id-123",
+        "spreadsheet-name": SPREADSHEET_NAME,
+        "selection": COLUMN_RANGE,
+        "selection-action": new SpreadsheetColumnOrRowInsertBeforeHistoryHashToken(2),
+    }
+);
+
+testParseAndStringify(
     "/spreadsheet-id-123/spreadsheet-name-456/column/B/select",
     {
         "spreadsheet-id": "spreadsheet-id-123",
@@ -912,6 +942,36 @@ testParseAndStringify(
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
         "selection": ROW,
+    }
+);
+
+testParseAndStringify(
+    "/spreadsheet-id-123/spreadsheet-name-456/row/2:3/delete",
+    {
+        "spreadsheet-id": "spreadsheet-id-123",
+        "spreadsheet-name": SPREADSHEET_NAME,
+        "selection": ROW_RANGE,
+        "selection-action": SpreadsheetColumnOrRowDeleteHistoryHashToken.INSTANCE,
+    }
+);
+
+testParseAndStringify(
+    "/spreadsheet-id-123/spreadsheet-name-456/row/2:3/insert-after/1",
+    {
+        "spreadsheet-id": "spreadsheet-id-123",
+        "spreadsheet-name": SPREADSHEET_NAME,
+        "selection": ROW_RANGE,
+        "selection-action": new SpreadsheetColumnOrRowInsertAfterHistoryHashToken(1),
+    }
+);
+
+testParseAndStringify(
+    "/spreadsheet-id-123/spreadsheet-name-456/row/2:3/insert-before/2",
+    {
+        "spreadsheet-id": "spreadsheet-id-123",
+        "spreadsheet-name": SPREADSHEET_NAME,
+        "selection": ROW_RANGE,
+        "selection-action": new SpreadsheetColumnOrRowInsertBeforeHistoryHashToken(2),
     }
 );
 
