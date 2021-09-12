@@ -14,14 +14,16 @@ import SpreadsheetColumnReference from "./reference/SpreadsheetColumnReference.j
 import SpreadsheetFormulaLoadAndEditHistoryHashToken from "./history/SpreadsheetFormulaLoadAndEditHistoryHashToken.js";
 import SpreadsheetHistoryAwareStateWidget from "./history/SpreadsheetHistoryAwareStateWidget.js";
 import SpreadsheetHistoryHash from "./history/SpreadsheetHistoryHash.js";
+import SpreadsheetHistoryHashToken from "./history/SpreadsheetHistoryHashToken.js";
 import SpreadsheetLabelName from "./reference/SpreadsheetLabelName.js";
 import SpreadsheetMessenger from "./message/SpreadsheetMessenger.js";
 import SpreadsheetMessengerCrud from "./message/SpreadsheetMessengerCrud.js";
 import SpreadsheetMetadata from "./meta/SpreadsheetMetadata.js";
 import SpreadsheetReferenceKind from "./reference/SpreadsheetReferenceKind.js";
 import SpreadsheetRowReference from "./reference/SpreadsheetRowReference.js";
+import SpreadsheetSelection from "./reference/SpreadsheetSelection.js";
 import SpreadsheetViewport from "./SpreadsheetViewport.js";
-import SpreadsheetViewportSelection from "./reference/SpreadsheetViewportSelection.js";
+import SpreadsheetViewportSelectionAnchor from "./reference/SpreadsheetViewportSelectionAnchor.js";
 import Table from '@material-ui/core/Table';
 import TableBody from '@material-ui/core/TableBody';
 import TableCell from '@material-ui/core/TableCell';
@@ -43,7 +45,9 @@ const SCROLL_DEBOUNCE = 100;
  * <li>SpreadsheetMetadata spreadsheetMetadata: holds the viewport home cell & default style</li>
  * <li>SpreadsheetCellRange viewportRange: holds a range of all the cells within the viewport</li>
  * <li>boolean giveFocus: if cells changed give focus to the selected cell. This helps giving focus after a delta load.</li>
- * <li>SpreadsheetSelection current: The currently focused column, cell or row, important when extending a range</li>
+ * <li>boolean focused: When true the viewport has focus, and cleared when the blur event happens.</li>
+ * <li>SpreadsheetSelection selection: The currently active selection including ranges</li>
+ * <li>SpreadsheetViewportSelectionAnchor anchor: When a range is the current selection this will hold the anchor.</li>
  * <li>contextMenu object an object with two properties anchorPosition and menuList both which are given to the Menu to present itself.</li>
  * </ul>
  */
@@ -238,6 +242,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
     stateFromHistoryTokens(tokens) {
         return {
             selection: tokens[SpreadsheetHistoryHash.SELECTION],
+            selectionAnchor: tokens[SpreadsheetHistoryHash.SELECTION_ANCHOR],
             selectionAction: tokens[SpreadsheetHistoryHash.SELECTION_ACTION],
         };
     }
@@ -277,7 +282,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
 
             const selectionOld = prevState.selection;
             const selectionNew = state.selection;
-            const anchor = state.anchor;
+            const selectionAnchor = state.selectionAnchor;
 
             const selectionActionOld = prevState.selectionAction;
             const selectionActionNew = state.selectionAction;
@@ -328,7 +333,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
                             height
                         ),
                         selectionNew,
-                        anchor
+                        selectionAnchor
                     );
                 }
             }
@@ -340,7 +345,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
 
             if(!Equality.safeEquals(selectionNew, selectionOld)){
                 if(!state.formula){
-                    this.giveSelectionFocus(selectionNew, anchor);
+                    this.giveSelectionFocus(selectionNew, selectionAnchor);
                 }
             }
         }
@@ -446,6 +451,8 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
             <TableContainer key="viewport-TableContainer"
                             ref={this.viewportTable}
                             component={Paper}
+                            onFocus={this.onFocus.bind(this)}
+                            onBlur={this.onBlur.bind(this)}
                             onClick={this.onClick.bind(this)}
                             onContextMenu={this.onContextMenu.bind(this)}
                             onKeyDown={this.onKeyDown.bind(this)}
@@ -527,6 +534,18 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
         ];
     }
 
+    onFocus(e) {
+        this.setState({
+            focused: true,
+        });
+    }
+
+    onBlur(e) {
+        this.setState({
+            focused: false,
+        });
+    }
+
     /**
      * Clicking on any selection component within a viewport updates the history hash and clears the selection action.
      */
@@ -535,6 +554,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
         if(selection){
             const tokens = {};
             tokens[SpreadsheetHistoryHash.SELECTION] = selection;
+            tokens[SpreadsheetHistoryHash.SELECTION_ANCHOR] = null;
             tokens[SpreadsheetHistoryHash.SELECTION_ACTION] = null;
             
             this.historyParseMergeAndPush(tokens);
@@ -579,10 +599,10 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
                 e.key, // key
                 e.shiftKey, // selectRange
                 state.selection, // current selection may be null
-                state.anchor, // anchor
+                state.selectionAnchor, // anchor
                 state.spreadsheetMetadata.getIgnoringDefaults(SpreadsheetMetadata.VIEWPORT_CELL), // viewportHome
-                (s) => this.saveSelection(s), // setSelection
-                () => this.giveFormulaTextBoxFocus(selection),
+                (s) => this.saveSelection(s && s.selection(), s && s.anchor(), null), // setSelection
+                () => this.saveSelection(selection, null, new SpreadsheetFormulaLoadAndEditHistoryHashToken()),
             );
         }
     }
@@ -765,22 +785,16 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
      * Saves the new selection which may be made by using arrow keys to move around the viewport or a mouse click on
      * a cell etc.
      */
-    saveSelection(selection) {
-        Preconditions.optionalInstance(selection, SpreadsheetViewportSelection, "selection");
+    saveSelection(selection, anchor, action) {
+        Preconditions.optionalInstance(selection, SpreadsheetSelection, "selection");
+        Preconditions.optionalInstance(anchor, SpreadsheetViewportSelectionAnchor, "anchor");
+        Preconditions.optionalInstance(action, SpreadsheetHistoryHashToken, "action");
 
-        this.setState({
-            selection: selection && selection.selection(),
-            selectionActon: null, // always clear, navigating within viewport never sets an selection-action
-            anchor: selection && selection.anchor(),
-            focused: false,
-            spreadsheetMetadata: this.state.spreadsheetMetadata.setOrRemove(SpreadsheetMetadata.SELECTION, selection),
-        });
-    }
+        const tokens = {};
 
-    giveFormulaTextBoxFocus(selection) {
-        const tokens = {}
         tokens[SpreadsheetHistoryHash.SELECTION] = selection;
-        tokens[SpreadsheetHistoryHash.SELECTION_ACTION] = new SpreadsheetFormulaLoadAndEditHistoryHashToken();
+        tokens[SpreadsheetHistoryHash.SELECTION_ANCHOR] = anchor
+        tokens[SpreadsheetHistoryHash.SELECTION_ACTION] = action;
 
         this.historyParseMergeAndPush(tokens);
     }
