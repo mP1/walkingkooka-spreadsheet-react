@@ -11,7 +11,6 @@ import SpreadsheetColumnOrRowInsertBeforeHistoryHashToken
     from "./SpreadsheetColumnOrRowInsertBeforeHistoryHashToken.js";
 import SpreadsheetFormulaLoadAndEditHistoryHashToken from "./SpreadsheetFormulaLoadAndEditHistoryHashToken.js";
 import SpreadsheetFormulaSaveHistoryHashToken from "./SpreadsheetFormulaSaveHistoryHashToken.js";
-import SpreadsheetHistoryHashToken from "./SpreadsheetHistoryHashToken.js";
 import SpreadsheetLabelName from "../reference/SpreadsheetLabelName.js";
 import SpreadsheetName from "../SpreadsheetName.js";
 import SpreadsheetRowReferenceRange from "../reference/SpreadsheetRowReferenceRange.js";
@@ -430,7 +429,7 @@ export default class SpreadsheetHistoryHash {
 
         if(delta.hasOwnProperty(SpreadsheetHistoryHash.SELECTION_ANCHOR)){
             selectionAnchor = delta[SpreadsheetHistoryHash.SELECTION_ANCHOR];
-            if(selectionAnchor instanceof SpreadsheetHistoryHashToken){
+            if(selectionAnchor instanceof SpreadsheetViewportSelectionAnchor){
                 nameEdit = false;
             }
         }
