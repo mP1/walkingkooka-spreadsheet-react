@@ -1,10 +1,10 @@
 import SpreadsheetHistoryHash from "./SpreadsheetHistoryHash.js";
-import SpreadsheetSelectionActionHistoryHashToken from "./SpreadsheetSelectionActionHistoryHashToken.js";
+import SpreadsheetColumnOrRowSelectionActionHistoryHashToken from "./SpreadsheetColumnOrRowSelectionActionHistoryHashToken.js";
 
 /**
  * Represents a column/row delete history hash token.
  */
-export default class SpreadsheetColumnOrRowDeleteHistoryHashToken extends SpreadsheetSelectionActionHistoryHashToken {
+export default class SpreadsheetColumnOrRowDeleteHistoryHashToken extends SpreadsheetColumnOrRowSelectionActionHistoryHashToken {
 
     /**
      * Singleton instance.
