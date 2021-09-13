@@ -163,15 +163,6 @@ export default class SpreadsheetHistoryHash {
                                 valid = true;
                             }
                             break;
-                        case SpreadsheetHistoryHash.SAVE:
-                            if(previous instanceof SpreadsheetFormulaLoadAndEditHistoryHashToken && tokens.length > 0){
-                                selectionAction = new SpreadsheetFormulaSaveHistoryHashToken(decodeURIComponent(tokens.shift()));
-                                previous = null;
-                                valid = true;
-                            }else {
-                                previous = null;
-                            }
-                            break;
                         case SpreadsheetHistoryHash.COLUMN:
                             if(!selection && tokens.length > 0){
                                 try {
@@ -245,6 +236,15 @@ export default class SpreadsheetHistoryHash {
                                 } catch(invalid) {
                                     errors("Row: " + invalid.message);
                                 }
+                            }
+                            break;
+                        case SpreadsheetHistoryHash.SAVE:
+                            if(previous instanceof SpreadsheetFormulaLoadAndEditHistoryHashToken && tokens.length > 0){
+                                selectionAction = new SpreadsheetFormulaSaveHistoryHashToken(decodeURIComponent(tokens.shift()));
+                                previous = null;
+                                valid = true;
+                            }else {
+                                previous = null;
                             }
                             break;
                         case SpreadsheetHistoryHash.SELECT:
