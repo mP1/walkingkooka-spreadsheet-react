@@ -1,5 +1,7 @@
 import ListenerCollection from "../../event/ListenerCollection.js";
 import Preconditions from "../../Preconditions.js";
+import spreadsheetCellRangeCellReferenceOrLabelParse
+    from "../reference/SpreadsheetCellRangeCellReferenceOrLabelParse.js";
 import SpreadsheetCellReferenceOrLabelName from "../reference/SpreadsheetCellReferenceOrLabelName.js";
 import spreadsheetCellReferenceOrLabelNameParse from "../reference/SpreadsheetCellReferenceOrLabelNameParse.js";
 import SpreadsheetColumnOrRowSelectionActionHistoryHashToken
@@ -16,6 +18,7 @@ import SpreadsheetFormulaSaveHistoryHashToken from "./SpreadsheetFormulaSaveHist
 import SpreadsheetFormulaSelectionActionHistoryHashToken from "./SpreadsheetFormulaSelectionActionHistoryHashToken.js";
 import SpreadsheetLabelMappingDeleteHistoryHashToken from "./SpreadsheetLabelMappingDeleteHistoryHashToken.js";
 import SpreadsheetLabelMappingHistoryHashToken from "./SpreadsheetLabelMappingHistoryHashToken.js";
+import SpreadsheetLabelMappingSaveHistoryHashToken from "./SpreadsheetLabelMappingSaveHistoryHashToken.js";
 import SpreadsheetLabelName from "../reference/SpreadsheetLabelName.js";
 import SpreadsheetName from "../SpreadsheetName.js";
 import SpreadsheetRowReferenceRange from "../reference/SpreadsheetRowReferenceRange.js";
@@ -239,13 +242,22 @@ export default class SpreadsheetHistoryHash {
                             }
                             break;
                         case SpreadsheetHistoryHash.SAVE:
-                            if(previous instanceof SpreadsheetFormulaLoadAndEditHistoryHashToken && tokens.length > 0){
-                                selectionAction = new SpreadsheetFormulaSaveHistoryHashToken(decodeURIComponent(tokens.shift()));
-                                previous = null;
+                            if(label && tokens.length > 0){
+                                labelAction = new SpreadsheetLabelMappingSaveHistoryHashToken(
+                                    spreadsheetCellRangeCellReferenceOrLabelParse(
+                                        decodeURIComponent(
+                                            tokens.shift()
+                                        )
+                                    )
+                                );
                                 valid = true;
-                            }else {
-                                previous = null;
+                            } else {
+                                if(previous instanceof SpreadsheetFormulaLoadAndEditHistoryHashToken && tokens.length > 0){
+                                    selectionAction = new SpreadsheetFormulaSaveHistoryHashToken(decodeURIComponent(tokens.shift()));
+                                    valid = true;
+                                }
                             }
+                            previous = null;
                             break;
                         case SpreadsheetHistoryHash.SELECT:
                             select = true;
