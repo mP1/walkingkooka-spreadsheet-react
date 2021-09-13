@@ -7,7 +7,7 @@ import SpreadsheetHistoryHash from "./SpreadsheetHistoryHash.js";
 export default class SpreadsheetColumnOrRowInsertAfterHistoryHashToken extends SpreadsheetColumnOrRowInsertHistoryHashToken {
 
     toHistoryHashToken() {
-        return SpreadsheetHistoryHash.INSERT_AFTER_COLUMN_OR_ROW + "/" + this.count();
+        return SpreadsheetHistoryHash.INSERT_AFTER + "/" + this.count();
     }
 
     /**

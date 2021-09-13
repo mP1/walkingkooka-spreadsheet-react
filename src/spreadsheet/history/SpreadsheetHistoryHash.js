@@ -74,12 +74,13 @@ export default class SpreadsheetHistoryHash {
 
     static CELL = "cell";
     static CELL_FORMULA = "formula";
-    static CELL_FORMULA_SAVE = "save";
     static COLUMN = "column";
     static ROW = "row";
-    static DELETE_COLUMN_OR_ROW = "delete";
-    static INSERT_AFTER_COLUMN_OR_ROW = "insert-after";
-    static INSERT_BEFORE_COLUMN_OR_ROW = "insert-before";
+
+    static DELETE = "delete";
+    static INSERT_AFTER = "insert-after";
+    static INSERT_BEFORE = "insert-before";
+    static SAVE = "save";
 
     static LABEL = "label";
     static SELECT = "select";
@@ -154,7 +155,7 @@ export default class SpreadsheetHistoryHash {
                                 valid = true;
                             }
                             break;
-                        case SpreadsheetHistoryHash.CELL_FORMULA_SAVE:
+                        case SpreadsheetHistoryHash.SAVE:
                             if(previous instanceof SpreadsheetFormulaLoadAndEditHistoryHashToken && tokens.length > 0){
                                 selectionAction = new SpreadsheetFormulaSaveHistoryHashToken(decodeURIComponent(tokens.shift()));
                                 previous = null;
@@ -175,14 +176,14 @@ export default class SpreadsheetHistoryHash {
                                 }
                             }
                             break;
-                        case SpreadsheetHistoryHash.DELETE_COLUMN_OR_ROW:
+                        case SpreadsheetHistoryHash.DELETE:
                             if(isColumnOrRowAny(previous) || isAnchorAndColumnOrRowAny(previous, selection)){
                                 selectionAction = SpreadsheetColumnOrRowDeleteHistoryHashToken.INSTANCE;
                                 previous = null;
                                 valid = true;
                             }
                             break;
-                        case SpreadsheetHistoryHash.INSERT_AFTER_COLUMN_OR_ROW:
+                        case SpreadsheetHistoryHash.INSERT_AFTER:
                             if((isColumnOrRowAny(previous) || isAnchorAndColumnOrRowAny(previous, selection)) && tokens.length > 0){
                                 const insertAfterCount = tokens.shift();
                                 if(!Number.isNaN(Number(insertAfterCount))){
@@ -196,7 +197,7 @@ export default class SpreadsheetHistoryHash {
                                 }
                             }
                             break;
-                        case SpreadsheetHistoryHash.INSERT_BEFORE_COLUMN_OR_ROW:
+                        case SpreadsheetHistoryHash.INSERT_BEFORE:
                             if((isColumnOrRowAny(previous) || isAnchorAndColumnOrRowAny(previous, selection)) && tokens.length > 0){
                                 const insertBeforeCount = tokens.shift();
                                 if(!Number.isNaN(Number(insertBeforeCount))){
