@@ -3,10 +3,10 @@ import Equality from "../../Equality.js";
 import Keys from "../../Keys.js";
 import PropTypes from 'prop-types';
 import React from 'react';
+import spreadsheetCellRangeCellReferenceOrLabelParse from "./SpreadsheetCellRangeCellReferenceOrLabelParse.js";
 import SpreadsheetDialog from "../../widget/SpreadsheetDialog.js";
-import spreadsheetExpressionReferenceFromJson from "./SpreadsheetExpressionReferenceFromJson.js";
-import SpreadsheetHistoryHash from "../history/SpreadsheetHistoryHash.js";
 import SpreadsheetHistoryAwareStateWidget from "../history/SpreadsheetHistoryAwareStateWidget.js";
+import SpreadsheetHistoryHash from "../history/SpreadsheetHistoryHash.js";
 import SpreadsheetLabelMapping from "./SpreadsheetLabelMapping.js";
 import SpreadsheetLabelName from "./SpreadsheetLabelName.js";
 import SpreadsheetMessengerCrud from "../message/SpreadsheetMessengerCrud.js";
@@ -191,7 +191,7 @@ export default class SpreadsheetLabelWidget extends SpreadsheetHistoryAwareState
         let reference;
         let message;
         try {
-            reference = spreadsheetExpressionReferenceFromJson(text);
+            reference = spreadsheetCellRangeCellReferenceOrLabelParse(text);
             message = null;
 
             const label = this.parseLabel(this.label.current.value, state);
