@@ -18,8 +18,9 @@ import SpreadsheetRowReferenceRange from "../reference/SpreadsheetRowReferenceRa
 import SpreadsheetSelection from "../reference/SpreadsheetSelection.js";
 import SpreadsheetSelectionActionHistoryHashToken from "./SpreadsheetSelectionActionHistoryHashToken.js";
 import SpreadsheetViewportSelectionAnchor from "../reference/SpreadsheetViewportSelectionAnchor.js";
-import SpreadsheetFormulaHistoryHashToken from "./SpreadsheetFormulaHistoryHashToken.js";
-import SpreadsheetColumnOrRowSelectionActionHistoryHashToken from "./SpreadsheetColumnOrRowSelectionActionHistoryHashToken.js";
+import SpreadsheetFormulaSelectionActionHistoryHashToken from "./SpreadsheetFormulaSelectionActionHistoryHashToken.js";
+import SpreadsheetColumnOrRowSelectionActionHistoryHashToken
+    from "./SpreadsheetColumnOrRowSelectionActionHistoryHashToken.js";
 
 function tokenize(pathname) {
     return pathname && pathname.startsWith("/") ?
@@ -357,7 +358,7 @@ export default class SpreadsheetHistoryHash {
                             verified[SpreadsheetHistoryHash.SELECTION_ACTION] = selectionAction;
                         }
 
-                        if(selection instanceof SpreadsheetCellReferenceOrLabelName && selectionAction instanceof SpreadsheetFormulaHistoryHashToken){
+                        if(selection instanceof SpreadsheetCellReferenceOrLabelName && selectionAction instanceof SpreadsheetFormulaSelectionActionHistoryHashToken){
                             verified[SpreadsheetHistoryHash.SELECTION_ACTION] = selectionAction;
                         }
                     }

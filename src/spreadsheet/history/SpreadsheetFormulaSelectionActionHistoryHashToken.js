@@ -3,7 +3,7 @@ import SpreadsheetSelectionActionHistoryHashToken from "./SpreadsheetSelectionAc
 /**
  * Base for all formula actions
  */
-export default class SpreadsheetFormulaHistoryHashToken extends SpreadsheetSelectionActionHistoryHashToken {
+export default class SpreadsheetFormulaSelectionActionHistoryHashToken extends SpreadsheetSelectionActionHistoryHashToken {
 
     constructor() {
         super();
