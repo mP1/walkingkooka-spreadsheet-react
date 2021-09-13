@@ -1,7 +1,7 @@
 import CharSequences from "../../CharSequences.js";
 import Preconditions from "../../Preconditions.js";
+import spreadsheetCellRangeCellReferenceOrLabelParse from "./SpreadsheetCellRangeCellReferenceOrLabelParse.js";
 import SpreadsheetExpressionReference from "./SpreadsheetExpressionReference.js";
-import spreadsheetExpressionReferenceFromJson from "./SpreadsheetExpressionReferenceFromJson.js";
 import SpreadsheetLabelName from "./SpreadsheetLabelName.js";
 import SystemObject from "../../SystemObject.js";
 
@@ -15,7 +15,7 @@ export default class SpreadsheetLabelMapping extends SystemObject {
         const {label, reference} = json;
         return new SpreadsheetLabelMapping(
             SpreadsheetLabelName.fromJson(label),
-            spreadsheetExpressionReferenceFromJson(reference)
+            spreadsheetCellRangeCellReferenceOrLabelParse(reference)
         );
     }
 
