@@ -12,7 +12,7 @@ export default class SpreadsheetColumnOrRowDeleteHistoryHashToken extends Spread
     static INSTANCE = new SpreadsheetColumnOrRowDeleteHistoryHashToken();
 
     toHistoryHashToken() {
-        return SpreadsheetHistoryHash.DELETE_COLUMN_OR_ROW;
+        return SpreadsheetHistoryHash.DELETE;
     }
 
     /**
