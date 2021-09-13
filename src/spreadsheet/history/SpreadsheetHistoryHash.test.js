@@ -10,6 +10,7 @@ import SpreadsheetColumnReferenceRange from "../reference/SpreadsheetColumnRefer
 import SpreadsheetFormulaLoadAndEditHistoryHashToken from "./SpreadsheetFormulaLoadAndEditHistoryHashToken.js";
 import SpreadsheetFormulaSaveHistoryHashToken from "./SpreadsheetFormulaSaveHistoryHashToken.js";
 import SpreadsheetHistoryHash from "./SpreadsheetHistoryHash.js";
+import SpreadsheetLabelMappingDeleteHistoryHashToken from "./SpreadsheetLabelMappingDeleteHistoryHashToken.js";
 import SpreadsheetLabelName from "../reference/SpreadsheetLabelName.js";
 import SpreadsheetName from "../SpreadsheetName.js";
 import SpreadsheetRowReference from "../reference/SpreadsheetRowReference.js";
@@ -28,6 +29,8 @@ const LABEL = SpreadsheetLabelName.parse("Label123");
 
 const CELL_FORMULA = new SpreadsheetFormulaLoadAndEditHistoryHashToken();
 const CELL_FORMULA_SAVE = new SpreadsheetFormulaSaveHistoryHashToken("Abc123");
+
+const LABEL_DELETE = SpreadsheetLabelMappingDeleteHistoryHashToken.INSTANCE;
 
 // validate................................................................................................................
 
@@ -545,6 +548,16 @@ testParseAndStringify(
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
         "label": LABEL,
+    }
+);
+
+testParseAndStringify(
+    "/spreadsheet-id-123/spreadsheet-name-456/label/Label123/delete",
+    {
+        "spreadsheet-id": "spreadsheet-id-123",
+        "spreadsheet-name": SPREADSHEET_NAME,
+        "label": LABEL,
+        "label-action": LABEL_DELETE,
     }
 );
 
@@ -1396,803 +1409,840 @@ mergeUpdatesFails("");
 mergeUpdatesFails(SpreadsheetHistoryHash.parse);
 mergeUpdatesFails([]);
 
-    testMerge(
-        "",
-        {},
-        "/"
-    );
+testMerge(
+    "",
+    {},
+    "/"
+);
 
-    testMerge(
-        "/123abc",
-        {},
-        "/123abc"
-    );
+testMerge(
+    "/123abc",
+    {},
+    "/123abc"
+);
 
-    testMerge(
-        "/123abc",
-        {
-            "spreadsheet-id": "456def",
-        },
-        "/456def"
-    );
+testMerge(
+    "/123abc",
+    {
+        "spreadsheet-id": "456def",
+    },
+    "/456def"
+);
 
-    testMerge(
-        "/123abc/Untitled456",
-        {},
-        "/123abc/Untitled456"
-    );
+testMerge(
+    "/123abc/Untitled456",
+    {},
+    "/123abc/Untitled456"
+);
 
-    testMerge(
-        "/123abc/Untitled456",
-        {
-            "spreadsheet-name": "Untitled999",
-        },
-        "/123abc/Untitled999"
-    );
+testMerge(
+    "/123abc/Untitled456",
+    {
+        "spreadsheet-name": "Untitled999",
+    },
+    "/123abc/Untitled999"
+);
 
-    testMerge(
-        "/123abc/Untitled456/!invalid",
-        {},
-        "/123abc/Untitled456"
-    );
+testMerge(
+    "/123abc/Untitled456/!invalid",
+    {},
+    "/123abc/Untitled456"
+);
 
 // spreadsheet name edit................................................................................................
 
-    testMerge(
-        "/123abc/Untitled456/name",
-        {},
-        "/123abc/Untitled456/name"
-    );
+testMerge(
+    "/123abc/Untitled456/name",
+    {},
+    "/123abc/Untitled456/name"
+);
 
-    testMerge(
-        "/123abc/Untitled456",
-        {
-            name: true,
-        },
-        "/123abc/Untitled456/name"
-    );
+testMerge(
+    "/123abc/Untitled456",
+    {
+        name: true,
+    },
+    "/123abc/Untitled456/name"
+);
 
-   testMerge(
-        "/123abc/Untitled456",
-        {
-            name: false,
-        },
-        "/123abc/Untitled456"
-    );
+testMerge(
+    "/123abc/Untitled456",
+    {
+        name: false,
+    },
+    "/123abc/Untitled456"
+);
 
-    testMerge(
-        "/123abc/Untitled456/name",
-        {
-            "name": true,
-        },
-        "/123abc/Untitled456/name"
-    );
+testMerge(
+    "/123abc/Untitled456/name",
+    {
+        "name": true,
+    },
+    "/123abc/Untitled456/name"
+);
 
-    testMerge(
-        "/123abc/Untitled456/name",
-        {
-            "name": false,
-        },
-        "/123abc/Untitled456"
-    );
+testMerge(
+    "/123abc/Untitled456/name",
+    {
+        "name": false,
+    },
+    "/123abc/Untitled456"
+);
 
-    testMerge(
-        "/123abc/Untitled456/name",
-        {
-            "name": true,
-        },
-        "/123abc/Untitled456/name"
-    );
+testMerge(
+    "/123abc/Untitled456/name",
+    {
+        "name": true,
+    },
+    "/123abc/Untitled456/name"
+);
 
-    testMerge(
-        "/123abc/Untitled456/name",
-        {
-            "name": false,
-        },
-        "/123abc/Untitled456"
-    );
+testMerge(
+    "/123abc/Untitled456/name",
+    {
+        "name": false,
+    },
+    "/123abc/Untitled456"
+);
 
-    testMerge(
-        "/123abc/Untitled456/name/cell/A1/formula",
-        {},
-        "/123abc/Untitled456"
-    );
+testMerge(
+    "/123abc/Untitled456/name/cell/A1/formula",
+    {},
+    "/123abc/Untitled456"
+);
 
-    testMerge(
-        "/123abc/Untitled456/name/!invalid2",
-        {},
-        "/123abc/Untitled456"
-    );
+testMerge(
+    "/123abc/Untitled456/name/!invalid2",
+    {},
+    "/123abc/Untitled456"
+);
 
-    testMerge(
-        "/123abc/Untitled456/name/!invalid",
-        {
-            "selection": SpreadsheetCellReference.parse("A1")
-        },
-        "/123abc/Untitled456/cell/A1"
-    );
+testMerge(
+    "/123abc/Untitled456/name/!invalid",
+    {
+        "selection": SpreadsheetCellReference.parse("A1")
+    },
+    "/123abc/Untitled456/cell/A1"
+);
 
-    testMerge(
-        "/123abc/Untitled456/name",
-        {
-            "selection": null,
-        },
-        "/123abc/Untitled456/name"
-    );
+testMerge(
+    "/123abc/Untitled456/name",
+    {
+        "selection": null,
+    },
+    "/123abc/Untitled456/name"
+);
 
-    testMerge(
-        "/123abc/Untitled456/name",
-        {
-            "selection": SpreadsheetCellReference.parse("A1"),
-            "selection-action": new SpreadsheetFormulaLoadAndEditHistoryHashToken(),
-        },
-        "/123abc/Untitled456/cell/A1/formula"
-    );
+testMerge(
+    "/123abc/Untitled456/name",
+    {
+        "selection": SpreadsheetCellReference.parse("A1"),
+        "selection-action": new SpreadsheetFormulaLoadAndEditHistoryHashToken(),
+    },
+    "/123abc/Untitled456/cell/A1/formula"
+);
 
-    testMerge(
-        "/123abc/Untitled456/name",
-        {
-            "label": SpreadsheetLabelName.parse("LABEL123"),
-        },
-        "/123abc/Untitled456/label/LABEL123"
-    );
+testMerge(
+    "/123abc/Untitled456/name",
+    {
+        "label": SpreadsheetLabelName.parse("LABEL123"),
+    },
+    "/123abc/Untitled456/label/LABEL123"
+);
 
-    testMerge(
-        "/123abc/Untitled456/name",
-        {
-            "label": null,
-        },
-        "/123abc/Untitled456/name"
-    );
+testMerge(
+    "/123abc/Untitled456/name",
+    {
+        "label": null,
+    },
+    "/123abc/Untitled456/name"
+);
 
-    testMerge(
-        "/123abc/Untitled456/name",
-        {
-            "label": SpreadsheetLabelName.parse("Label123"),
-        },
-        "/123abc/Untitled456/label/Label123"
-    );
+testMerge(
+    "/123abc/Untitled456/name",
+    {
+        "label": SpreadsheetLabelName.parse("Label123"),
+    },
+    "/123abc/Untitled456/label/Label123"
+);
 
-    testMerge(
-        "/123abc/Untitled456/name",
-        {
-            "select": true,
-        },
-        "/123abc/Untitled456/select"
-    );
+testMerge(
+    "/123abc/Untitled456/name",
+    {
+        "select": true,
+    },
+    "/123abc/Untitled456/select"
+);
 
 // cell.................................................................................................................
 
-    testMerge(
-        "/123abc/Untitled456/cell",
-        {},
-        "/123abc/Untitled456"
-    );
+testMerge(
+    "/123abc/Untitled456/cell",
+    {},
+    "/123abc/Untitled456"
+);
 
-    testMerge(
-        "/123abc/Untitled456/cell/999",
-        {},
-        "/123abc/Untitled456"
-    );
+testMerge(
+    "/123abc/Untitled456/cell/999",
+    {},
+    "/123abc/Untitled456"
+);
 
-    testMerge(
-        "/123abc/Untitled456/cell/A1",
-        {},
-        "/123abc/Untitled456/cell/A1"
-    );
+testMerge(
+    "/123abc/Untitled456/cell/A1",
+    {},
+    "/123abc/Untitled456/cell/A1"
+);
 
-    testMerge(
-        "/123abc/Untitled456/cell/A1",
-        {
-            "selection-action": null,
-        },
-        "/123abc/Untitled456/cell/A1"
-    );
+testMerge(
+    "/123abc/Untitled456/cell/A1",
+    {
+        "selection-action": null,
+    },
+    "/123abc/Untitled456/cell/A1"
+);
 
-    testMerge(
-        "/123abc/Untitled456/cell/A1",
-        {
-            "selection-action": new SpreadsheetFormulaLoadAndEditHistoryHashToken(),
-        },
-        "/123abc/Untitled456/cell/A1/formula"
-    );
+testMerge(
+    "/123abc/Untitled456/cell/A1",
+    {
+        "selection-action": new SpreadsheetFormulaLoadAndEditHistoryHashToken(),
+    },
+    "/123abc/Untitled456/cell/A1/formula"
+);
 
-    testMerge(
-        "/123abc/Untitled456/cell",
-        {
-            "selection": SpreadsheetCellReference.parse("A1"),
-        },
-        "/123abc/Untitled456/cell/A1"
-    );
+testMerge(
+    "/123abc/Untitled456/cell",
+    {
+        "selection": SpreadsheetCellReference.parse("A1"),
+    },
+    "/123abc/Untitled456/cell/A1"
+);
 
-    testMerge(
-        "/123abc/Untitled456/cell/A1/formula",
-        {},
-        "/123abc/Untitled456/cell/A1/formula"
-    );
+testMerge(
+    "/123abc/Untitled456/cell/A1/formula",
+    {},
+    "/123abc/Untitled456/cell/A1/formula"
+);
 
-    testMerge(
-        "/123abc/Untitled456/cell/A1",
-        {
-            "selection": SpreadsheetCellReference.parse("B2"),
-        },
-        "/123abc/Untitled456/cell/B2"
-    );
+testMerge(
+    "/123abc/Untitled456/cell/A1",
+    {
+        "selection": SpreadsheetCellReference.parse("B2"),
+    },
+    "/123abc/Untitled456/cell/B2"
+);
 
-    testMerge(
-        "/123abc/Untitled456/cell/A1/formula",
-        {
-            "selection": SpreadsheetCellReference.parse("B2"),
-        },
-        "/123abc/Untitled456/cell/B2/formula"
-    );
+testMerge(
+    "/123abc/Untitled456/cell/A1/formula",
+    {
+        "selection": SpreadsheetCellReference.parse("B2"),
+    },
+    "/123abc/Untitled456/cell/B2/formula"
+);
 
-    testMerge(
-        "/123abc/Untitled456/cell/A1/formula",
-        {
-            "selection-action": null,
-        },
-        "/123abc/Untitled456/cell/A1"
-    );
+testMerge(
+    "/123abc/Untitled456/cell/A1/formula",
+    {
+        "selection-action": null,
+    },
+    "/123abc/Untitled456/cell/A1"
+);
 
-    testMerge(
-        "/123abc/Untitled456/cell/A1/formula/!invalid3",
-        {
-            "selection-action": null,
-        },
-        "/123abc/Untitled456"
-    );
+testMerge(
+    "/123abc/Untitled456/cell/A1/formula/!invalid3",
+    {
+        "selection-action": null,
+    },
+    "/123abc/Untitled456"
+);
 
-    testMerge(
-        "/123abc/Untitled456/cell/A1",
-        {
-            "selection": null,
-        },
-        "/123abc/Untitled456"
-    );
+testMerge(
+    "/123abc/Untitled456/cell/A1",
+    {
+        "selection": null,
+    },
+    "/123abc/Untitled456"
+);
 
-  testMerge(
-        "/123abc/Untitled456/cell/A1/formula",
-        {
-            "selection-action": null,
-        },
-        "/123abc/Untitled456/cell/A1"
-    );
+testMerge(
+    "/123abc/Untitled456/cell/A1/formula",
+    {
+        "selection-action": null,
+    },
+    "/123abc/Untitled456/cell/A1"
+);
 
-    testMerge(
-        "/123abc/Untitled456/cell/A2",
-        {
-            "name": false,
-        },
-        "/123abc/Untitled456/cell/A2"
-    );
+testMerge(
+    "/123abc/Untitled456/cell/A2",
+    {
+        "name": false,
+    },
+    "/123abc/Untitled456/cell/A2"
+);
 
-    testMerge(
-        "/123abc/Untitled456/cell/A2",
-        {
-            "name": true,
-        },
-        "/123abc/Untitled456/name"
-    );
+testMerge(
+    "/123abc/Untitled456/cell/A2",
+    {
+        "name": true,
+    },
+    "/123abc/Untitled456/name"
+);
 
-    testMerge(
-        "/123abc/Untitled456/cell/A2/formula",
-        {
-            "name": false,
-        },
-        "/123abc/Untitled456/cell/A2/formula"
-    );
+testMerge(
+    "/123abc/Untitled456/cell/A2/formula",
+    {
+        "name": false,
+    },
+    "/123abc/Untitled456/cell/A2/formula"
+);
 
-    testMerge(
-        "/123abc/Untitled456/cell/A2/formula",
-        {
-            "name": true,
-        },
-        "/123abc/Untitled456/name"
-    );
+testMerge(
+    "/123abc/Untitled456/cell/A2/formula",
+    {
+        "name": true,
+    },
+    "/123abc/Untitled456/name"
+);
 
-    testMerge(
-        "/123abc/Untitled456/cell/A1",
-        {
-            "selection": CELL_RANGE,
-        },
-        "/123abc/Untitled456/cell/C3:D4"
-    );
+testMerge(
+    "/123abc/Untitled456/cell/A1",
+    {
+        "selection": CELL_RANGE,
+    },
+    "/123abc/Untitled456/cell/C3:D4"
+);
 
-    testMerge(
-        "/123abc/Untitled456/cell/A1/formula",
-        {
-            "selection": CELL_RANGE,
-            "selection-action": null,
-        },
-        "/123abc/Untitled456/cell/C3:D4"
-    );
+testMerge(
+    "/123abc/Untitled456/cell/A1/formula",
+    {
+        "selection": CELL_RANGE,
+        "selection-action": null,
+    },
+    "/123abc/Untitled456/cell/C3:D4"
+);
 
-    testMerge(
-        "/123abc/Untitled456/cell/LABEL123",
-        {},
-        "/123abc/Untitled456/cell/LABEL123"
-    );
+testMerge(
+    "/123abc/Untitled456/cell/LABEL123",
+    {},
+    "/123abc/Untitled456/cell/LABEL123"
+);
 
-    testMerge(
-        "/123abc/Untitled456/cell/A1",
-        {
-            "selection": CELL_RANGE,
-            "selection-anchor": SpreadsheetViewportSelectionAnchor.TOP_LEFT,
-        },
-        "/123abc/Untitled456/cell/C3:D4/top-left"
-    );
+testMerge(
+    "/123abc/Untitled456/cell/A1",
+    {
+        "selection": CELL_RANGE,
+        "selection-anchor": SpreadsheetViewportSelectionAnchor.TOP_LEFT,
+    },
+    "/123abc/Untitled456/cell/C3:D4/top-left"
+);
 
 // label.................................................................................................................
 
-    testMerge(
-        "/123abc/Untitled456/label",
-        {},
-        "/123abc/Untitled456"
-    );
+testMerge(
+    "/123abc/Untitled456/label",
+    {},
+    "/123abc/Untitled456"
+);
 
-    testMerge(
-        "/123abc/Untitled456/label/!invalid-label",
-        {},
-        "/123abc/Untitled456"
-    );
+testMerge(
+    "/123abc/Untitled456/label/!invalid-label",
+    {},
+    "/123abc/Untitled456"
+);
 
-    testMerge(
-        "/123abc/Untitled456/label/A1",
-        {},
-        "/123abc/Untitled456"
-    );
+testMerge(
+    "/123abc/Untitled456/label/A1",
+    {},
+    "/123abc/Untitled456"
+);
 
-    testMerge(
-        "/123abc/Untitled456/label/LABEL123",
-        {},
-        "/123abc/Untitled456/label/LABEL123"
-    );
+testMerge(
+    "/123abc/Untitled456/label/LABEL123",
+    {},
+    "/123abc/Untitled456/label/LABEL123"
+);
 
-    testMerge(
-        "/123abc/Untitled456/cell/A1/label/LABEL123",
-        {},
-        "/123abc/Untitled456/cell/A1/label/LABEL123"
-    );
+testMerge(
+    "/123abc/Untitled456/cell/A1/label/LABEL123",
+    {},
+    "/123abc/Untitled456/cell/A1/label/LABEL123"
+);
 
-    testMerge(
-        "/123abc/Untitled456/label/LABEL123",
-        {
-            name: false,
-        },
-        "/123abc/Untitled456/label/LABEL123"
-    );
+testMerge(
+    "/123abc/Untitled456/label/LABEL123",
+    {
+        name: false,
+    },
+    "/123abc/Untitled456/label/LABEL123"
+);
 
-    testMerge(
-        "/123abc/Untitled456/label/LABEL123",
-        {
-            name: true,
-        },
-        "/123abc/Untitled456/name"
-    );
+testMerge(
+    "/123abc/Untitled456/label/LABEL123",
+    {
+        name: true,
+    },
+    "/123abc/Untitled456/name"
+);
 
-    // column...........................................................................................................
+// column...........................................................................................................
 
-    testMerge(
-        "/123abc/Untitled456/",
-        {
-            selection: COLUMN,
-        },
-        "/123abc/Untitled456/column/B"
-    );
+testMerge(
+    "/123abc/Untitled456/",
+    {
+        selection: COLUMN,
+    },
+    "/123abc/Untitled456/column/B"
+);
 
-    testMerge(
-        "/123abc/Untitled456/column/B",
-        {
-            selection: COLUMN_RANGE,
-        },
-        "/123abc/Untitled456/column/B:C"
-    );
+testMerge(
+    "/123abc/Untitled456/column/B",
+    {
+        selection: COLUMN_RANGE,
+    },
+    "/123abc/Untitled456/column/B:C"
+);
 
-    testMerge(
-        "/123abc/Untitled456/column/B",
-        {
-            "selection": COLUMN_RANGE,
-            "selection-anchor": SpreadsheetViewportSelectionAnchor.LEFT,
-        },
-        "/123abc/Untitled456/column/B:C/left"
-    );
+testMerge(
+    "/123abc/Untitled456/column/B",
+    {
+        "selection": COLUMN_RANGE,
+        "selection-anchor": SpreadsheetViewportSelectionAnchor.LEFT,
+    },
+    "/123abc/Untitled456/column/B:C/left"
+);
 
-    testMerge(
-        "/123abc/Untitled456/column/B:D",
-        {
-            selection: COLUMN,
-        },
-        "/123abc/Untitled456/column/B"
-    );
+testMerge(
+    "/123abc/Untitled456/column/B:D",
+    {
+        selection: COLUMN,
+    },
+    "/123abc/Untitled456/column/B"
+);
 
-    // row...........................................................................................................
+// row...........................................................................................................
 
-    testMerge(
-        "/123abc/Untitled456/",
-        {
-            selection: ROW,
-        },
-        "/123abc/Untitled456/row/2"
-    );
-    
-    testMerge(
-        "/123abc/Untitled456/row/2",
-        {
-            selection: ROW_RANGE,
-        },
-        "/123abc/Untitled456/row/2:3"
-    );
+testMerge(
+    "/123abc/Untitled456/",
+    {
+        selection: ROW,
+    },
+    "/123abc/Untitled456/row/2"
+);
 
-    testMerge(
-        "/123abc/Untitled456/row/2",
-        {
-            "selection": ROW_RANGE,
-            "selection-anchor": SpreadsheetViewportSelectionAnchor.TOP,
-        },
-        "/123abc/Untitled456/row/2:3/top"
-    );
+testMerge(
+    "/123abc/Untitled456/row/2",
+    {
+        selection: ROW_RANGE,
+    },
+    "/123abc/Untitled456/row/2:3"
+);
 
-    testMerge(
-        "/123abc/Untitled456/row/2:3",
-        {
-            selection: ROW,
-        },
-        "/123abc/Untitled456/row/2"
-    );
+testMerge(
+    "/123abc/Untitled456/row/2",
+    {
+        "selection": ROW_RANGE,
+        "selection-anchor": SpreadsheetViewportSelectionAnchor.TOP,
+    },
+    "/123abc/Untitled456/row/2:3/top"
+);
 
-    // select.............................................................................................................
+testMerge(
+    "/123abc/Untitled456/row/2:3",
+    {
+        selection: ROW,
+    },
+    "/123abc/Untitled456/row/2"
+);
 
-    testMerge(
-        "/123abc/Untitled456/select",
-        {},
-        "/123abc/Untitled456/select",
-    );
+// label...........................................................................................................
 
-    testMerge(
-        "/123abc/Untitled456/cell/A1/select",
-        {},
-        "/123abc/Untitled456/cell/A1/select",
-    );
+testMerge(
+    "/123abc/Untitled456/label/Label123",
+    {
+        "label-action": LABEL_DELETE,
+    },
+    "/123abc/Untitled456/label/Label123/delete"
+);
 
-    testMerge(
-        "/123abc/Untitled456/label/LABEL123/select",
-        {},
-        "/123abc/Untitled456/label/LABEL123/select",
-    );
+testMerge(
+    "/123abc/Untitled456/label/LabelOld",
+    {
+        "label": LABEL,
+        "label-action": LABEL_DELETE,
+    },
+    "/123abc/Untitled456/label/Label123/delete"
+);
 
-    testMerge(
-        "/123abc/Untitled456/select/settings",
-        {},
-        "/123abc/Untitled456/select/settings",
-    );
+testMerge(
+    "/123abc/Untitled456/label/LabelOld/delete",
+    {
+        "label": LABEL,
+    },
+    "/123abc/Untitled456/label/Label123/delete"
+);
 
-    testMerge(
-        "/123abc/Untitled456/",
-        {
-            "select": true,
-        },
-        "/123abc/Untitled456/select",
-    );
+testMerge("/123abc/Untitled456/label/LabelOld/delete",
+    {
+        "label": LABEL,
+        "label-action": null,
+    },
+    "/123abc/Untitled456/label/Label123"
+);
 
-    testMerge(
-        "/123abc/Untitled456/cell/A1",
-        {
-            "select": true,
-        },
-        "/123abc/Untitled456/cell/A1/select",
-    );
+// select.............................................................................................................
 
-    testMerge(
-        "/123abc/Untitled456/select",
-        {
-            "select": false,
-        },
-        "/123abc/Untitled456",
-    );
+testMerge(
+    "/123abc/Untitled456/select",
+    {},
+    "/123abc/Untitled456/select",
+);
 
-    testMerge(
-        "/123abc/Untitled456/select",
-        {
-            "name": false,
-        },
-        "/123abc/Untitled456/select",
-    );
+testMerge(
+    "/123abc/Untitled456/cell/A1/select",
+    {},
+    "/123abc/Untitled456/cell/A1/select",
+);
 
-    testMerge(
-        "/123abc/Untitled456/select",
-        {
-            "name": true,
-        },
-        "/123abc/Untitled456/name",
-    );
+testMerge(
+    "/123abc/Untitled456/label/LABEL123/select",
+    {},
+    "/123abc/Untitled456/label/LABEL123/select",
+);
+
+testMerge(
+    "/123abc/Untitled456/select/settings",
+    {},
+    "/123abc/Untitled456/select/settings",
+);
+
+testMerge(
+    "/123abc/Untitled456/",
+    {
+        "select": true,
+    },
+    "/123abc/Untitled456/select",
+);
+
+testMerge(
+    "/123abc/Untitled456/cell/A1",
+    {
+        "select": true,
+    },
+    "/123abc/Untitled456/cell/A1/select",
+);
+
+testMerge(
+    "/123abc/Untitled456/select",
+    {
+        "select": false,
+    },
+    "/123abc/Untitled456",
+);
+
+testMerge(
+    "/123abc/Untitled456/select",
+    {
+        "name": false,
+    },
+    "/123abc/Untitled456/select",
+);
+
+testMerge(
+    "/123abc/Untitled456/select",
+    {
+        "name": true,
+    },
+    "/123abc/Untitled456/name",
+);
 
 // settings.............................................................................................................
 
-    testMerge(
-        "/123abc/Untitled456/settings",
-        {},
-        "/123abc/Untitled456/settings"
-    );
+testMerge(
+    "/123abc/Untitled456/settings",
+    {},
+    "/123abc/Untitled456/settings"
+);
 
-   testMerge(
-        "/123abc/Untitled456/settings",
-        {
-            "settings": true,
-        },
-        "/123abc/Untitled456/settings"
-    );
+testMerge(
+    "/123abc/Untitled456/settings",
+    {
+        "settings": true,
+    },
+    "/123abc/Untitled456/settings"
+);
 
-    testMerge(
-        "/123abc/Untitled456/settings",
-        {
-            "settings": true,
-            "settings-section": "!invalid",
-        },
-        "/123abc/Untitled456/settings"
-    );
+testMerge(
+    "/123abc/Untitled456/settings",
+    {
+        "settings": true,
+        "settings-section": "!invalid",
+    },
+    "/123abc/Untitled456/settings"
+);
 
-    testMerge(
-        "/123abc/Untitled456/settings",
-        {
-            "settings": true,
-            "settings-section": SpreadsheetHistoryHash.SETTINGS_METADATA,
-        },
-        "/123abc/Untitled456/settings/metadata"
-    );
+testMerge(
+    "/123abc/Untitled456/settings",
+    {
+        "settings": true,
+        "settings-section": SpreadsheetHistoryHash.SETTINGS_METADATA,
+    },
+    "/123abc/Untitled456/settings/metadata"
+);
 
-    testMerge(
-        "/123abc/Untitled456/settings",
-        {
-            "settings": true,
-            "settings-section": SpreadsheetHistoryHash.SETTINGS_TEXT,
-        },
-        "/123abc/Untitled456/settings/text"
-    );
+testMerge(
+    "/123abc/Untitled456/settings",
+    {
+        "settings": true,
+        "settings-section": SpreadsheetHistoryHash.SETTINGS_TEXT,
+    },
+    "/123abc/Untitled456/settings/text"
+);
 
-    testMerge(
-        "/123abc/Untitled456/settings",
-        {
-            "settings": true,
-            "settings-section": SpreadsheetHistoryHash.SETTINGS_NUMBER,
-        },
-        "/123abc/Untitled456/settings/number"
-    );
+testMerge(
+    "/123abc/Untitled456/settings",
+    {
+        "settings": true,
+        "settings-section": SpreadsheetHistoryHash.SETTINGS_NUMBER,
+    },
+    "/123abc/Untitled456/settings/number"
+);
 
-    testMerge(
-        "/123abc/Untitled456/settings",
-        {
-            "settings": true,
-            "settings-section": SpreadsheetHistoryHash.SETTINGS_DATE_TIME,
-        },
-        "/123abc/Untitled456/settings/date-time"
-    );
+testMerge(
+    "/123abc/Untitled456/settings",
+    {
+        "settings": true,
+        "settings-section": SpreadsheetHistoryHash.SETTINGS_DATE_TIME,
+    },
+    "/123abc/Untitled456/settings/date-time"
+);
 
-    testMerge(
-        "/123abc/Untitled456/settings",
-        {
-            "settings": true,
-            "settings-section": SpreadsheetHistoryHash.SETTINGS_STYLE,
-        },
-        "/123abc/Untitled456/settings/style"
-    );
+testMerge(
+    "/123abc/Untitled456/settings",
+    {
+        "settings": true,
+        "settings-section": SpreadsheetHistoryHash.SETTINGS_STYLE,
+    },
+    "/123abc/Untitled456/settings/style"
+);
 
-    testMerge(
-        "/123abc/Untitled456/settings",
-        {
-            "settings": false,
-        },
-        "/123abc/Untitled456"
-    );
+testMerge(
+    "/123abc/Untitled456/settings",
+    {
+        "settings": false,
+    },
+    "/123abc/Untitled456"
+);
 
-    testMerge(
-        "/123abc/Untitled456/name/settings",
-        {
-            "settings": true,
-        },
-        "/123abc/Untitled456/settings"
-    );
+testMerge(
+    "/123abc/Untitled456/name/settings",
+    {
+        "settings": true,
+    },
+    "/123abc/Untitled456/settings"
+);
 
-    testMerge(
-        "/123abc/Untitled456/name/settings",
-        {
-            "settings": false,
-        },
-        "/123abc/Untitled456"
-    );
+testMerge(
+    "/123abc/Untitled456/name/settings",
+    {
+        "settings": false,
+    },
+    "/123abc/Untitled456"
+);
 
-    testMerge(
-        "/123abc/Untitled456/name/settings",
-        {
-            "settings": true,
-            "settings-section": "invalid"
-        },
-        "/123abc/Untitled456/settings"
-    );
+testMerge(
+    "/123abc/Untitled456/name/settings",
+    {
+        "settings": true,
+        "settings-section": "invalid"
+    },
+    "/123abc/Untitled456/settings"
+);
 
-    testMerge(
-        "/123abc/Untitled456/name/settings",
-        {
-            "settings": true,
-            "settings-section": SpreadsheetHistoryHash.SETTINGS_METADATA,
-        },
-        "/123abc/Untitled456/settings/metadata"
-    );
+testMerge(
+    "/123abc/Untitled456/name/settings",
+    {
+        "settings": true,
+        "settings-section": SpreadsheetHistoryHash.SETTINGS_METADATA,
+    },
+    "/123abc/Untitled456/settings/metadata"
+);
 
-    testMerge(
-        "/123abc/Untitled456/name/settings",
-        {
-            "settings": true,
-            "settings-section": SpreadsheetHistoryHash.SETTINGS_TEXT,
-        },
-        "/123abc/Untitled456/settings/text"
-    );
+testMerge(
+    "/123abc/Untitled456/name/settings",
+    {
+        "settings": true,
+        "settings-section": SpreadsheetHistoryHash.SETTINGS_TEXT,
+    },
+    "/123abc/Untitled456/settings/text"
+);
 
-    testMerge(
-        "/123abc/Untitled456/name/settings",
-        {
-            "settings": true,
-            "settings-section": SpreadsheetHistoryHash.SETTINGS_NUMBER,
-        },
-        "/123abc/Untitled456/settings/number"
-    );
+testMerge(
+    "/123abc/Untitled456/name/settings",
+    {
+        "settings": true,
+        "settings-section": SpreadsheetHistoryHash.SETTINGS_NUMBER,
+    },
+    "/123abc/Untitled456/settings/number"
+);
 
-    testMerge(
-        "/123abc/Untitled456/name/settings",
-        {
-            "settings": true,
-            "settings-section": SpreadsheetHistoryHash.SETTINGS_DATE_TIME,
-        },
-        "/123abc/Untitled456/settings/date-time"
-    );
+testMerge(
+    "/123abc/Untitled456/name/settings",
+    {
+        "settings": true,
+        "settings-section": SpreadsheetHistoryHash.SETTINGS_DATE_TIME,
+    },
+    "/123abc/Untitled456/settings/date-time"
+);
 
-    testMerge(
-        "/123abc/Untitled456/name/settings",
-        {
-            "settings": true,
-            "settings-section": SpreadsheetHistoryHash.SETTINGS_STYLE,
-        },
-        "/123abc/Untitled456/settings/style"
-    );
+testMerge(
+    "/123abc/Untitled456/name/settings",
+    {
+        "settings": true,
+        "settings-section": SpreadsheetHistoryHash.SETTINGS_STYLE,
+    },
+    "/123abc/Untitled456/settings/style"
+);
 
-    testMerge(
-        "/123abc/Untitled456/cell/A1",
-        {
-            "settings": true,
-        },
-        "/123abc/Untitled456/cell/A1/settings"
-    );
+testMerge(
+    "/123abc/Untitled456/cell/A1",
+    {
+        "settings": true,
+    },
+    "/123abc/Untitled456/cell/A1/settings"
+);
 
-    testMerge(
-        "/123abc/Untitled456/cell/A1/settings",
-        {
-            "settings": false,
-        },
-        "/123abc/Untitled456/cell/A1"
-    );
+testMerge(
+    "/123abc/Untitled456/cell/A1/settings",
+    {
+        "settings": false,
+    },
+    "/123abc/Untitled456/cell/A1"
+);
 
-    testMerge(
-        "/123abc/Untitled456/cell/A1/formula",
-        {
-            "settings": true,
-        },
-        "/123abc/Untitled456/cell/A1/formula/settings"
-    );
+testMerge(
+    "/123abc/Untitled456/cell/A1/formula",
+    {
+        "settings": true,
+    },
+    "/123abc/Untitled456/cell/A1/formula/settings"
+);
 
-    testMerge(
-        "/123abc/Untitled456/cell/A1/formula/settings",
-        {
-            "settings": true,
-        },
-        "/123abc/Untitled456/cell/A1/formula/settings"
-    );
+testMerge(
+    "/123abc/Untitled456/cell/A1/formula/settings",
+    {
+        "settings": true,
+    },
+    "/123abc/Untitled456/cell/A1/formula/settings"
+);
 
-    testMerge(
-        "/123abc/Untitled456/cell/A1/formula/settings",
-        {
-            "settings": true,
-            "settings-section": "!invalid"
-        },
-        "/123abc/Untitled456/cell/A1/formula/settings"
-    );
+testMerge(
+    "/123abc/Untitled456/cell/A1/formula/settings",
+    {
+        "settings": true,
+        "settings-section": "!invalid"
+    },
+    "/123abc/Untitled456/cell/A1/formula/settings"
+);
 
-    testMerge(
-        "/123abc/Untitled456/cell/A1/formula/settings",
-        {
-            "settings": true,
-            "settings-section": SpreadsheetHistoryHash.SETTINGS_METADATA,
-        },
-        "/123abc/Untitled456/cell/A1/formula/settings/metadata"
-    );
+testMerge(
+    "/123abc/Untitled456/cell/A1/formula/settings",
+    {
+        "settings": true,
+        "settings-section": SpreadsheetHistoryHash.SETTINGS_METADATA,
+    },
+    "/123abc/Untitled456/cell/A1/formula/settings/metadata"
+);
 
-    testMerge(
-        "/123abc/Untitled456/cell/A1/formula/settings",
-        {
-            "settings": true,
-            "settings-section": SpreadsheetHistoryHash.SETTINGS_TEXT,
-        },
-        "/123abc/Untitled456/cell/A1/formula/settings/text"
-    );
+testMerge(
+    "/123abc/Untitled456/cell/A1/formula/settings",
+    {
+        "settings": true,
+        "settings-section": SpreadsheetHistoryHash.SETTINGS_TEXT,
+    },
+    "/123abc/Untitled456/cell/A1/formula/settings/text"
+);
 
-    testMerge(
-        "/123abc/Untitled456/cell/A1/formula/settings",
-        {
-            "settings": true,
-            "settings-section": SpreadsheetHistoryHash.SETTINGS_NUMBER,
-        },
-        "/123abc/Untitled456/cell/A1/formula/settings/number"
-    );
+testMerge(
+    "/123abc/Untitled456/cell/A1/formula/settings",
+    {
+        "settings": true,
+        "settings-section": SpreadsheetHistoryHash.SETTINGS_NUMBER,
+    },
+    "/123abc/Untitled456/cell/A1/formula/settings/number"
+);
 
-    testMerge(
-        "/123abc/Untitled456/cell/A1/formula/settings",
-        {
-            "settings": true,
-            "settings-section": SpreadsheetHistoryHash.SETTINGS_DATE_TIME,
-        },
-        "/123abc/Untitled456/cell/A1/formula/settings/date-time"
-    );
+testMerge(
+    "/123abc/Untitled456/cell/A1/formula/settings",
+    {
+        "settings": true,
+        "settings-section": SpreadsheetHistoryHash.SETTINGS_DATE_TIME,
+    },
+    "/123abc/Untitled456/cell/A1/formula/settings/date-time"
+);
 
-    testMerge(
-        "/123abc/Untitled456/cell/A1/formula/settings",
-        {
-            "settings": true,
-            "settings-section": SpreadsheetHistoryHash.SETTINGS_STYLE,
-        },
-        "/123abc/Untitled456/cell/A1/formula/settings/style"
-    );
+testMerge(
+    "/123abc/Untitled456/cell/A1/formula/settings",
+    {
+        "settings": true,
+        "settings-section": SpreadsheetHistoryHash.SETTINGS_STYLE,
+    },
+    "/123abc/Untitled456/cell/A1/formula/settings/style"
+);
 
-    testMerge(
-        "/123abc/Untitled456/cell/A1/formula/settings",
-        {
-            "settings": false,
-        },
-        "/123abc/Untitled456/cell/A1/formula"
-    );
+testMerge(
+    "/123abc/Untitled456/cell/A1/formula/settings",
+    {
+        "settings": false,
+    },
+    "/123abc/Untitled456/cell/A1/formula"
+);
 
-    testMerge(
-        "/123abc/Untitled456/cell/A1/formula/settings",
-        {
-            "settings": false,
-            "settings-section": SpreadsheetHistoryHash.SETTINGS_METADATA,
-        },
-        "/123abc/Untitled456/cell/A1/formula"
-    );
+testMerge(
+    "/123abc/Untitled456/cell/A1/formula/settings",
+    {
+        "settings": false,
+        "settings-section": SpreadsheetHistoryHash.SETTINGS_METADATA,
+    },
+    "/123abc/Untitled456/cell/A1/formula"
+);
 
-    testMerge(
-        "/123abc/Untitled456/cell/A1/formula/settings",
-        {
-            "spreadsheet-id": "456def",
-            "spreadsheet-name": "new-spreadsheet-name-456",
-            "selection": SpreadsheetCellReference.parse("B2"),
-            "selection-action": new SpreadsheetFormulaLoadAndEditHistoryHashToken(),
-            "settings": true,
-        },
-        "/456def/new-spreadsheet-name-456/cell/B2/formula/settings"
-    );
+testMerge(
+    "/123abc/Untitled456/cell/A1/formula/settings",
+    {
+        "spreadsheet-id": "456def",
+        "spreadsheet-name": "new-spreadsheet-name-456",
+        "selection": SpreadsheetCellReference.parse("B2"),
+        "selection-action": new SpreadsheetFormulaLoadAndEditHistoryHashToken(),
+        "settings": true,
+    },
+    "/456def/new-spreadsheet-name-456/cell/B2/formula/settings"
+);
 
-    testMerge(
-        "/123abc/Untitled456/cell/A1/formula/settings",
-        {
-            "spreadsheet-id": "456def",
-            "spreadsheet-name": "new-spreadsheet-name-456",
-            "selection": SpreadsheetCellReference.parse("B2"),
-            "selection-action": new SpreadsheetFormulaLoadAndEditHistoryHashToken(),
-            "settings": false,
-        },
-        "/456def/new-spreadsheet-name-456/cell/B2/formula"
-    );
+testMerge(
+    "/123abc/Untitled456/cell/A1/formula/settings",
+    {
+        "spreadsheet-id": "456def",
+        "spreadsheet-name": "new-spreadsheet-name-456",
+        "selection": SpreadsheetCellReference.parse("B2"),
+        "selection-action": new SpreadsheetFormulaLoadAndEditHistoryHashToken(),
+        "settings": false,
+    },
+    "/456def/new-spreadsheet-name-456/cell/B2/formula"
+);
 
-    testMerge(
-        "/123abc/Untitled456",
-        {
-            "selection-action": new SpreadsheetFormulaLoadAndEditHistoryHashToken(),
-        },
-        "/123abc/Untitled456"
-    );
+testMerge(
+    "/123abc/Untitled456",
+    {
+        "selection-action": new SpreadsheetFormulaLoadAndEditHistoryHashToken(),
+    },
+    "/123abc/Untitled456"
+);
 
 function testMerge(hash, update, expected) {
     test("merge " + CharSequences.quoteAndEscape(hash) + " AND " + stringify(update), () => {
-        const throwError = (e) => {throw Error(e)};
+        const throwError = (e) => {
+            throw Error(e)
+        };
 
         const hashTokens = SpreadsheetHistoryHash.parse(hash, throwError);
         const expectedTokens = SpreadsheetHistoryHash.parse(expected, throwError);
@@ -2210,7 +2260,7 @@ function stringify(object) {
     var s = "";
     var separator = "";
 
-    for (const property in object) {
+    for(const property in object) {
         s = s + separator + property + "=" + object[property];
         separator = ", ";
     }
