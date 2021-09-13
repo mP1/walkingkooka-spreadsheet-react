@@ -2,24 +2,26 @@ import ListenerCollection from "../../event/ListenerCollection.js";
 import Preconditions from "../../Preconditions.js";
 import SpreadsheetCellReferenceOrLabelName from "../reference/SpreadsheetCellReferenceOrLabelName.js";
 import spreadsheetCellReferenceOrLabelNameParse from "../reference/SpreadsheetCellReferenceOrLabelNameParse.js";
-import SpreadsheetColumnReferenceRange from "../reference/SpreadsheetColumnReferenceRange.js";
+import SpreadsheetColumnOrRowSelectionActionHistoryHashToken
+    from "./SpreadsheetColumnOrRowSelectionActionHistoryHashToken.js";
 import SpreadsheetColumnOrRowReference from "../reference/SpreadsheetColumnOrRowReference.js";
 import SpreadsheetColumnOrRowReferenceRange from "../reference/SpreadsheetColumnOrRowReferenceRange.js";
 import SpreadsheetColumnOrRowDeleteHistoryHashToken from "./SpreadsheetColumnOrRowDeleteHistoryHashToken.js";
 import SpreadsheetColumnOrRowInsertAfterHistoryHashToken from "./SpreadsheetColumnOrRowInsertAfterHistoryHashToken.js";
 import SpreadsheetColumnOrRowInsertBeforeHistoryHashToken
     from "./SpreadsheetColumnOrRowInsertBeforeHistoryHashToken.js";
+import SpreadsheetColumnReferenceRange from "../reference/SpreadsheetColumnReferenceRange.js";
 import SpreadsheetFormulaLoadAndEditHistoryHashToken from "./SpreadsheetFormulaLoadAndEditHistoryHashToken.js";
 import SpreadsheetFormulaSaveHistoryHashToken from "./SpreadsheetFormulaSaveHistoryHashToken.js";
+import SpreadsheetFormulaSelectionActionHistoryHashToken from "./SpreadsheetFormulaSelectionActionHistoryHashToken.js";
+import SpreadsheetLabelMappingDeleteHistoryHashToken from "./SpreadsheetLabelMappingDeleteHistoryHashToken.js";
+import SpreadsheetLabelMappingHistoryHashToken from "./SpreadsheetLabelMappingHistoryHashToken.js";
 import SpreadsheetLabelName from "../reference/SpreadsheetLabelName.js";
 import SpreadsheetName from "../SpreadsheetName.js";
 import SpreadsheetRowReferenceRange from "../reference/SpreadsheetRowReferenceRange.js";
 import SpreadsheetSelection from "../reference/SpreadsheetSelection.js";
 import SpreadsheetSelectionActionHistoryHashToken from "./SpreadsheetSelectionActionHistoryHashToken.js";
 import SpreadsheetViewportSelectionAnchor from "../reference/SpreadsheetViewportSelectionAnchor.js";
-import SpreadsheetFormulaSelectionActionHistoryHashToken from "./SpreadsheetFormulaSelectionActionHistoryHashToken.js";
-import SpreadsheetColumnOrRowSelectionActionHistoryHashToken
-    from "./SpreadsheetColumnOrRowSelectionActionHistoryHashToken.js";
 
 function tokenize(pathname) {
     return pathname && pathname.startsWith("/") ?
@@ -83,6 +85,8 @@ export default class SpreadsheetHistoryHash {
     static SAVE = "save";
 
     static LABEL = "label";
+    static LABEL_ACTION = "label-action";
+
     static SELECT = "select";
     static SETTINGS = "settings";
     static SETTINGS_SECTION = "settings-section";
@@ -114,10 +118,14 @@ export default class SpreadsheetHistoryHash {
                 var valid = true;
 
                 var name = null;
+
                 var selection = null;
                 var selectionAnchor = null;
                 var selectionAction = null;
+
                 var label = null;
+                var labelAction = null;
+
                 var select = null;
                 var settings = null;
                 var settingsSection = null;
@@ -177,6 +185,11 @@ export default class SpreadsheetHistoryHash {
                             }
                             break;
                         case SpreadsheetHistoryHash.DELETE:
+                            if(label){
+                                labelAction = SpreadsheetLabelMappingDeleteHistoryHashToken.INSTANCE;
+                                previous = null;
+                                valid = true;
+                            }
                             if(isColumnOrRowAny(previous) || isAnchorAndColumnOrRowAny(previous, selection)){
                                 selectionAction = SpreadsheetColumnOrRowDeleteHistoryHashToken.INSTANCE;
                                 previous = null;
@@ -280,6 +293,10 @@ export default class SpreadsheetHistoryHash {
                     }
                     if(label){
                         historyHashTokens[SpreadsheetHistoryHash.LABEL] = label;
+
+                        if(labelAction){
+                            historyHashTokens[SpreadsheetHistoryHash.LABEL_ACTION] = labelAction;
+                        }
                     }
                     if(select){
                         historyHashTokens[SpreadsheetHistoryHash.SELECT] = select;
@@ -305,10 +322,14 @@ export default class SpreadsheetHistoryHash {
         var spreadsheetId = tokens[SpreadsheetHistoryHash.SPREADSHEET_ID];
         var spreadsheetName = tokens[SpreadsheetHistoryHash.SPREADSHEET_NAME];
         var nameEdit = tokens[SpreadsheetHistoryHash.SPREADSHEET_NAME_EDIT];
+
         var selection = tokens[SpreadsheetHistoryHash.SELECTION];
         var selectionAnchor = tokens[SpreadsheetHistoryHash.SELECTION_ANCHOR];
         var selectionAction = tokens[SpreadsheetHistoryHash.SELECTION_ACTION];
+
         var label = tokens[SpreadsheetHistoryHash.LABEL];
+        var labelAction = tokens[SpreadsheetHistoryHash.LABEL_ACTION];
+
         var select = tokens[SpreadsheetHistoryHash.SELECT];
         var settings = tokens[SpreadsheetHistoryHash.SETTINGS];
         var settingsSection = tokens[SpreadsheetHistoryHash.SETTINGS_SECTION];
@@ -365,6 +386,10 @@ export default class SpreadsheetHistoryHash {
                 }
                 if(label instanceof SpreadsheetLabelName){
                     verified[SpreadsheetHistoryHash.LABEL] = label;
+
+                    if(labelAction instanceof SpreadsheetLabelMappingHistoryHashToken){
+                        verified[SpreadsheetHistoryHash.LABEL_ACTION] = labelAction;
+                    }
                 }
                 if(select){
                     verified[SpreadsheetHistoryHash.SELECT] = select;
@@ -393,11 +418,16 @@ export default class SpreadsheetHistoryHash {
         var spreadsheetId = current[SpreadsheetHistoryHash.SPREADSHEET_ID];
         var spreadsheetName = current[SpreadsheetHistoryHash.SPREADSHEET_NAME];
         var nameEdit = current[SpreadsheetHistoryHash.SPREADSHEET_NAME_EDIT];
+
         var selection = current[SpreadsheetHistoryHash.SELECTION];
         var selectionAnchor = current[SpreadsheetHistoryHash.SELECTION_ANCHOR];
         var selectionAction = current[SpreadsheetHistoryHash.SELECTION_ACTION];
+
         var label = current[SpreadsheetHistoryHash.LABEL];
+        var labelAction = current[SpreadsheetHistoryHash.LABEL_ACTION];
+
         var select = current[SpreadsheetHistoryHash.SELECT];
+
         var settings = current[SpreadsheetHistoryHash.SETTINGS];
         var settingsSection = current[SpreadsheetHistoryHash.SETTINGS_SECTION];
 
@@ -446,6 +476,13 @@ export default class SpreadsheetHistoryHash {
             label = delta[SpreadsheetHistoryHash.LABEL];
 
             if(label){
+                nameEdit = false;
+            }
+        }
+
+        if(delta.hasOwnProperty(SpreadsheetHistoryHash.LABEL_ACTION)){
+            labelAction = delta[SpreadsheetHistoryHash.LABEL_ACTION];
+            if(labelAction instanceof SpreadsheetLabelMappingHistoryHashToken){
                 nameEdit = false;
             }
         }
@@ -502,6 +539,10 @@ export default class SpreadsheetHistoryHash {
 
             if(label){
                 merged[SpreadsheetHistoryHash.LABEL] = label;
+
+                if(labelAction instanceof SpreadsheetLabelMappingHistoryHashToken){
+                    merged[SpreadsheetHistoryHash.LABEL_ACTION] = labelAction;
+                }
             }
 
             if(select){
@@ -527,11 +568,16 @@ export default class SpreadsheetHistoryHash {
         var spreadsheetId = tokens[SpreadsheetHistoryHash.SPREADSHEET_ID];
         var spreadsheetName = tokens[SpreadsheetHistoryHash.SPREADSHEET_NAME];
         var nameEdit = tokens[SpreadsheetHistoryHash.SPREADSHEET_NAME_EDIT];
+
         var selection = tokens[SpreadsheetHistoryHash.SELECTION];
         var selectionAnchor = tokens[SpreadsheetHistoryHash.SELECTION_ANCHOR];
         var selectionAction = tokens[SpreadsheetHistoryHash.SELECTION_ACTION];
+
         var label = tokens[SpreadsheetHistoryHash.LABEL];
+        var labelAction = tokens[SpreadsheetHistoryHash.LABEL_ACTION];
+
         var select = tokens[SpreadsheetHistoryHash.SELECT];
+
         var settings = tokens[SpreadsheetHistoryHash.SETTINGS];
         var settingsSection = tokens[SpreadsheetHistoryHash.SETTINGS_SECTION];
 
@@ -576,6 +622,10 @@ export default class SpreadsheetHistoryHash {
 
             if(label){
                 hash = hash + "/" + SpreadsheetHistoryHash.LABEL + "/" + label;
+
+                if(labelAction instanceof SpreadsheetLabelMappingHistoryHashToken){
+                    hash = hash + "/" + labelAction.toHistoryHashToken();
+                }
             }
 
             if(select){
