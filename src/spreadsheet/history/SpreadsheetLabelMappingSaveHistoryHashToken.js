@@ -31,6 +31,10 @@ export default class SpreadsheetLabelMappingSaveHistoryHashToken extends Spreads
         return SpreadsheetHistoryHash.SAVE + "/" + this.newLabel() + "/" + this.reference();
     }
 
+    labelMappingWidget(widget) {
+        widget.saveLabelMapping(this.newLabel(), this.reference());
+    }
+
     equals(other) {
         return this === other || (other instanceof SpreadsheetLabelMappingSaveHistoryHashToken) && this.newLabel().equals(other.newLabel()) && this.reference().equals(other.reference());
     }

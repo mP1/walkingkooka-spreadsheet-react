@@ -181,7 +181,11 @@ context(
             spreadsheetEmpty();
             hashLabel();
 
+            labelMappingReferenceTextField()
+                .type("{selectall}A1");
+
             labelMappingLabelTextField()
+                .click()
                 .should("have.focus")
                 .tab();
 
@@ -307,7 +311,8 @@ context(
             labelMappingLabelTextField()
                 .type("{selectAll}" + labelText);
 
-            labelMappingLabelSaveButton().click();
+            labelMappingLabelSaveButton()
+                .should("be.disabled");
 
             labelMappingDialogCheck(
                 "Label: " + LABEL,

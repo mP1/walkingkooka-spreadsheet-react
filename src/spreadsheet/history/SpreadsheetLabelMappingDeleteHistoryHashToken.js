@@ -19,6 +19,10 @@ export default class SpreadsheetLabelMappingDeleteHistoryHashToken extends Sprea
         return SpreadsheetHistoryHash.DELETE;
     }
 
+    labelMappingWidget(widget) {
+        widget.deleteLabelMapping();
+    }
+
     equals(other) {
         return this === other || (other instanceof SpreadsheetLabelMappingDeleteHistoryHashToken);
     }
