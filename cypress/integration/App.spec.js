@@ -2031,6 +2031,7 @@ context(
 
         it("Select using hash initial appearance", () => {
             spreadsheetEmpty();
+
             selectHistoryHash();
 
             selectDialogTitle()
@@ -2055,6 +2056,7 @@ context(
 
         it("Select auto complete text field has focus", () => {
             spreadsheetEmpty();
+
             selectHistoryHash();
 
             selectDialogTitle()
@@ -2067,6 +2069,7 @@ context(
 
         it("Select auto complete tabbing", () => {
             spreadsheetEmpty();
+
             selectHistoryHash();
 
             selectAutocompleteTextField()
@@ -2088,6 +2091,7 @@ context(
 
         it("Select and close", () => {
             spreadsheetEmpty();
+
             selectHistoryHash();
 
             selectDialogClose()
@@ -2102,6 +2106,7 @@ context(
 
         it("Select enter ESC closes", () => {
             spreadsheetEmpty();
+
             selectHistoryHash();
 
             selectAutocompleteTextField()
@@ -2116,6 +2121,7 @@ context(
 
         it("Select enter invalid cell or label", () => {
             spreadsheetEmpty();
+
             selectHistoryHash();
 
             selectAutocompleteTextField()
@@ -2127,6 +2133,7 @@ context(
 
         it("Select enter cell and ENTER and click GOTO", () => {
             spreadsheetEmpty();
+
             selectHistoryHash();
 
             selectAutocompleteTextField()
@@ -2156,6 +2163,7 @@ context(
 
         it("Select enter cell range and ENTER and click SELECT CELL RANGE", () => {
             spreadsheetEmpty();
+
             selectHistoryHash();
 
             selectAutocompleteTextField()
@@ -2185,6 +2193,7 @@ context(
 
         it("Select enter unknown label and ENTER and click CREATE", () => {
             spreadsheetEmpty();
+
             selectHistoryHash();
 
             selectAutocompleteTextField()
@@ -2233,9 +2242,6 @@ context(
 
             selectHistoryHash();
 
-            hash()
-                .should('match', /.*\/Untitled\/select/);
-
             selectAutocompleteTextField()
                 .type("Label123{enter}");
 
@@ -2263,10 +2269,8 @@ context(
 
         it("Select enter cell, select from dropdown ENTER and click GOTO CELL", () => {
             spreadsheetEmpty();
-            selectHistoryHash();
 
-            hash()
-                .should('match', /.*\/Untitled\/select/);
+            selectHistoryHash();
 
             selectAutocompleteTextField()
                 .type("B2");
@@ -2301,10 +2305,8 @@ context(
 
         it("Select enter column, select from dropdown ENTER and click GOTO COLUMN", () => {
             spreadsheetEmpty();
-            selectHistoryHash();
 
-            hash()
-                .should('match', /.*\/Untitled\/select/);
+            selectHistoryHash();
 
             selectAutocompleteTextField()
                 .type("C");
@@ -2339,10 +2341,8 @@ context(
 
         it("Select enter column range, select from dropdown ENTER and click SELECT COLUMN RANGE", () => {
             spreadsheetEmpty();
-            selectHistoryHash();
 
-            hash()
-                .should('match', /.*\/Untitled\/select/);
+            selectHistoryHash();
 
             selectAutocompleteTextField()
                 .type("D:E");
@@ -2390,9 +2390,6 @@ context(
 
             selectHistoryHash();
 
-            hash()
-                .should('match', /.*\/Untitled\/select/);
-
             selectAutocompleteTextField()
                 .type("Label123{enter}");
 
@@ -2433,9 +2430,6 @@ context(
 
             selectHistoryHash();
 
-            hash()
-                .should('match', /.*\/Untitled\/select/);
-
             selectAutocompleteTextField()
                 .type("Label");
 
@@ -2472,10 +2466,8 @@ context(
 
         it("Select enter row, select from dropdown ENTER and click GOTO ROW", () => {
             spreadsheetEmpty();
-            selectHistoryHash();
 
-            hash()
-                .should('match', /.*\/Untitled\/select/);
+            selectHistoryHash();
 
             selectAutocompleteTextField()
                 .type("3");
@@ -2510,10 +2502,8 @@ context(
 
         it("Select enter row range, select from dropdown ENTER and click SELECT ROW RANGE", () => {
             spreadsheetEmpty();
-            selectHistoryHash();
 
-            hash()
-                .should('match', /.*\/Untitled\/select/);
+            selectHistoryHash();
 
             selectAutocompleteTextField()
                 .type("4:6");
