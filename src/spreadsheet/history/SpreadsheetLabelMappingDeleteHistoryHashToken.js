@@ -11,10 +11,6 @@ export default class SpreadsheetLabelMappingDeleteHistoryHashToken extends Sprea
      */
     static INSTANCE = new SpreadsheetLabelMappingDeleteHistoryHashToken();
 
-    constructor() {
-        super();
-    }
-
     toHistoryHashToken() {
         return SpreadsheetHistoryHash.DELETE;
     }
