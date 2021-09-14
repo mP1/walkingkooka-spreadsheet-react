@@ -2228,6 +2228,9 @@ context(
             labelMappingLabelCloseButton()
                 .click();
 
+            hash()
+                .should('match', /.*\/Untitled/);
+
             selectHistoryHash();
 
             hash()
@@ -2617,48 +2620,49 @@ context(
         }
 
         function selectCellGotoButton(disabled) {
-            return cy.get("#" + SpreadsheetSelectAutocompleteWidget.CELL_GOTO_BUTTON_ID)
-                .should("be." + (disabled ? "disabled" : "enabled"));
+            return selectButtonDisabled(SpreadsheetSelectAutocompleteWidget.CELL_GOTO_BUTTON_ID, disabled);
         }
 
         function selectCellRangeSelectButton(disabled) {
-            return cy.get("#" + SpreadsheetSelectAutocompleteWidget.CELL_RANGE_SELECT_BUTTON_ID)
-                .should("be." + (disabled ? "disabled" : "enabled"));
+            return selectButtonDisabled(SpreadsheetSelectAutocompleteWidget.CELL_RANGE_SELECT_BUTTON_ID, disabled);
         }
 
         function selectColumnGotoButton(disabled) {
-            return cy.get("#" + SpreadsheetSelectAutocompleteWidget.COLUMN_GOTO_BUTTON_ID)
-                .should("be." + (disabled ? "disabled" : "enabled"));
+            return selectButtonDisabled(SpreadsheetSelectAutocompleteWidget.COLUMN_GOTO_BUTTON_ID, disabled);
         }
 
         function selectColumnRangeSelectButton(disabled) {
-            return cy.get("#" + SpreadsheetSelectAutocompleteWidget.COLUMN_RANGE_SELECT_BUTTON_ID)
-                .should("be." + (disabled ? "disabled" : "enabled"));
+            return selectButtonDisabled(SpreadsheetSelectAutocompleteWidget.COLUMN_RANGE_SELECT_BUTTON_ID, disabled);
         }
 
         function selectLabelCreateButton(disabled) {
-            return cy.get("#" + SpreadsheetSelectAutocompleteWidget.LABEL_CREATE_BUTTON_ID)
-                .should("be." + (disabled ? "disabled" : "enabled"));
+            return selectButtonDisabled(SpreadsheetSelectAutocompleteWidget.LABEL_CREATE_BUTTON_ID, disabled);
         }
 
         function selectLabelEditButton(disabled) {
-            return cy.get("#" + SpreadsheetSelectAutocompleteWidget.LABEL_EDIT_BUTTON_ID)
-                .should("be." + (disabled ? "disabled" : "enabled"));
+            return selectButtonDisabled(SpreadsheetSelectAutocompleteWidget.LABEL_EDIT_BUTTON_ID, disabled);
         }
 
         function selectLabelGotoButton(disabled) {
-            return cy.get("#" + SpreadsheetSelectAutocompleteWidget.LABEL_GOTO_BUTTON_ID)
-                .should("be." + (disabled ? "disabled" : "enabled"));
+            return selectButtonDisabled(SpreadsheetSelectAutocompleteWidget.LABEL_GOTO_BUTTON_ID, disabled);
         }
 
         function selectRowGotoButton(disabled) {
-            return cy.get("#" + SpreadsheetSelectAutocompleteWidget.ROW_GOTO_BUTTON_ID)
-                .should("be." + (disabled ? "disabled" : "enabled"));
+            return selectButtonDisabled(SpreadsheetSelectAutocompleteWidget.ROW_GOTO_BUTTON_ID, disabled);
         }
 
         function selectRowRangeSelectButton(disabled) {
-            return cy.get("#" + SpreadsheetSelectAutocompleteWidget.ROW_RANGE_SELECT_BUTTON_ID)
-                .should("be." + (disabled ? "disabled" : "enabled"));
+            return selectButtonDisabled(SpreadsheetSelectAutocompleteWidget.ROW_RANGE_SELECT_BUTTON_ID, disabled);
+        }
+
+        function selectButtonDisabled(id, disabled) {
+            const button = cy.get((disabled ? "BUTTON" : "A") + "#" + id);
+
+            if(disabled){
+                button.should("be.disabled");
+            }
+
+            return button;
         }
 
         // create/load spreadsheet............................................................................................
