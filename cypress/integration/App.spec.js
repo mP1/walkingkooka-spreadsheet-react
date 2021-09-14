@@ -8,7 +8,7 @@ import Hyphens from "../../src/text/Hyphens.js";
 import RoundingMode from "../../src/math/RoundingMode.js";
 import SpreadsheetCellReference from "../../src/spreadsheet/reference/SpreadsheetCellReference.js";
 import SpreadsheetColumnReference from "../../src/spreadsheet/reference/SpreadsheetColumnReference.js";
-import SpreadsheetLabelWidget from "../../src/spreadsheet/reference/SpreadsheetLabelWidget.js";
+import SpreadsheetLabelMappingWidget from "../../src/spreadsheet/reference/SpreadsheetLabelMappingWidget.js";
 import SpreadsheetMetadata from "../../src/spreadsheet/meta/SpreadsheetMetadata.js";
 import SpreadsheetRowReference from "../../src/spreadsheet/reference/SpreadsheetRowReference.js";
 import SpreadsheetSelectAutocompleteWidget
@@ -160,7 +160,7 @@ context(
             spreadsheetEmpty();
             hashLabel();
 
-            labelDialogCheck(
+            labelMappingDialogCheck(
                 "Label: " + LABEL,
                 LABEL,
                 "",
@@ -217,7 +217,7 @@ context(
             hash()
                 .should('match', /.*\/Untitled\/label\/Label123/);
 
-            labelDialogCheck(
+            labelMappingDialogCheck(
                 "Label: " + LABEL,
                 LABEL,
                 "",
@@ -235,7 +235,7 @@ context(
             labelMappingLabelTextField()
                 .type("{selectAll}{backspace}");
 
-            labelDialogCheck(
+            labelMappingDialogCheck(
                 "Label: " + LABEL,
                 "",
                 "Missing text",
@@ -253,7 +253,7 @@ context(
             labelMappingLabelTextField()
                 .type("{selectAll}" + labelText);
 
-            labelDialogCheck(
+            labelMappingDialogCheck(
                 "Label: " + LABEL,
                 labelText,
                 "Invalid character '!' at 0",
@@ -271,7 +271,7 @@ context(
             labelMappingLabelTextField()
                 .type("{selectAll}" + labelText);
 
-            labelDialogCheck(
+            labelMappingDialogCheck(
                 "Label: " + LABEL,
                 labelText,
                 "Invalid character '!' at 1",
@@ -289,7 +289,7 @@ context(
             labelMappingLabelTextField()
                 .type("{selectAll}" + labelText + "{enter}");
 
-            labelDialogCheck(
+            labelMappingDialogCheck(
                 "Label: " + LABEL,
                 labelText,
                 "",
@@ -309,7 +309,7 @@ context(
 
             labelMappingLabelSaveButton().click();
 
-            labelDialogCheck(
+            labelMappingDialogCheck(
                 "Label: " + LABEL,
                 labelText,
                 "",
@@ -329,7 +329,7 @@ context(
             labelMappingReferenceTextField()
                 .type(referenceText);
 
-            labelDialogCheck(
+            labelMappingDialogCheck(
                 "Label: " + LABEL,
                 LABEL,
                 "",
@@ -347,7 +347,7 @@ context(
             labelMappingReferenceTextField()
                 .type(referenceText);
 
-            labelDialogCheck(
+            labelMappingDialogCheck(
                 "Label: " + LABEL,
                 LABEL,
                 "",
@@ -365,7 +365,7 @@ context(
             labelMappingReferenceTextField()
                 .type(referenceText);
 
-            labelDialogCheck(
+            labelMappingDialogCheck(
                 "Label: " + LABEL,
                 LABEL,
                 "",
@@ -382,7 +382,7 @@ context(
             labelMappingReferenceTextField()
                 .type(referenceText);
 
-            labelDialogCheck(
+            labelMappingDialogCheck(
                 "Label: " + LABEL,
                 LABEL,
                 "",
@@ -405,7 +405,7 @@ context(
 
             hashLabel();
 
-            labelDialogCheck(
+            labelMappingDialogCheck(
                 "Label: " + LABEL,
                 LABEL,
                 "",
@@ -423,7 +423,7 @@ context(
 
             hashLabel();
 
-            labelDialogCheck(
+            labelMappingDialogCheck(
                 "Label: " + LABEL,
                 LABEL,
                 "",
@@ -447,7 +447,7 @@ context(
 
             labelMappingLabelSaveButton().click();
 
-            labelDialogCheck(
+            labelMappingDialogCheck(
                 "Label: " + labelText,
                 labelText,
                 "",
@@ -466,7 +466,7 @@ context(
 
             labelMappingLabelSaveButton().click();
 
-            labelDialogCheck(
+            labelMappingDialogCheck(
                 "Label: " + LABEL,
                 LABEL,
                 "",
@@ -486,7 +486,7 @@ context(
             labelMappingLabelSaveButton()
                 .click();
 
-            labelDialogCheck(
+            labelMappingDialogCheck(
                 "Label: " + LABEL,
                 LABEL,
                 "",
@@ -512,7 +512,7 @@ context(
 
             hashLabel();
 
-            labelDialogCheck(
+            labelMappingDialogCheck(
                 "Label: " + LABEL,
                 LABEL,
                 "",
@@ -718,18 +718,18 @@ context(
                 .should("have.css", "background-color", SELECTED_COLOR);
         });
 
-        function labelDialogCheck(title,
-                                  labelText,
-                                  labelHelperText,
-                                  referenceText,
-                                  referenceHelperText) {
-            cy.get("#" + SpreadsheetLabelWidget.DIALOG_TITLE_ID)
+        function labelMappingDialogCheck(title,
+                                         labelText,
+                                         labelHelperText,
+                                         referenceText,
+                                         referenceHelperText) {
+            cy.get("#" + SpreadsheetLabelMappingWidget.DIALOG_TITLE_ID)
                 .contains(title);
 
             labelMappingLabelTextField()
                 .should("have.value", labelText);
 
-            const labelHelperTextId = "#" + SpreadsheetLabelWidget.LABEL_TEXT_FIELD_HELPER_TEXT_ID;
+            const labelHelperTextId = "#" + SpreadsheetLabelMappingWidget.LABEL_TEXT_FIELD_HELPER_TEXT_ID;
             if(labelHelperText){
                 cy.get(labelHelperTextId)
                     .should("have.text", labelHelperText);
@@ -741,34 +741,34 @@ context(
             labelMappingReferenceTextField()
                 .should("have.value", referenceText);
 
-            const referenceHelperTextId = "#" + SpreadsheetLabelWidget.REFERENCE_TEXT_FIELD_HELPER_TEXT_ID;
+            const referenceHelperTextId = "#" + SpreadsheetLabelMappingWidget.REFERENCE_TEXT_FIELD_HELPER_TEXT_ID;
             if(referenceHelperText){
                 cy.get(referenceHelperTextId)
                     .should("have.text", referenceHelperText);
-            } else {
+            }else {
                 cy.get(referenceHelperTextId)
                     .should("not.exist");
             }
         }
 
         function labelMappingLabelTextField() {
-            return cy.get("#" + SpreadsheetLabelWidget.LABEL_TEXT_FIELD_ID);
+            return cy.get("#" + SpreadsheetLabelMappingWidget.LABEL_TEXT_FIELD_ID);
         }
 
         function labelMappingReferenceTextField() {
-            return cy.get("#" + SpreadsheetLabelWidget.REFERENCE_TEXT_FIELD_ID);
+            return cy.get("#" + SpreadsheetLabelMappingWidget.REFERENCE_TEXT_FIELD_ID);
         }
 
         function labelMappingLabelSaveButton() {
-            return cy.get("#" + SpreadsheetLabelWidget.SAVE_BUTTON_ID);
+            return cy.get("#" + SpreadsheetLabelMappingWidget.SAVE_BUTTON_ID);
         }
 
         function labelMappingLabelDeleteButton() {
-            return cy.get("#" + SpreadsheetLabelWidget.DELETE_BUTTON_ID);
+            return cy.get("#" + SpreadsheetLabelMappingWidget.DELETE_BUTTON_ID);
         }
 
         function labelMappingLabelCloseButton() {
-            return cy.get("#" + SpreadsheetLabelWidget.DIALOG_CLOSE_BUTTON_ID);
+            return cy.get("#" + SpreadsheetLabelMappingWidget.DIALOG_CLOSE_BUTTON_ID);
         }
 
         function hashLabel() {
