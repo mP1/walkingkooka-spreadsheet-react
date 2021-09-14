@@ -317,7 +317,7 @@ export default class SpreadsheetSelectAutocompleteWidget extends SpreadsheetHist
                        color="primary"
                        href={link}>
             {text}
-        </Button>
+        </Button>;
     }
 
     /**
