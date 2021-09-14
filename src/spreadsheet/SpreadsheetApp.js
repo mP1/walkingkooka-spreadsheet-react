@@ -16,7 +16,7 @@ import SpreadsheetHistoryAwareStateWidget from "./history/SpreadsheetHistoryAwar
 import SpreadsheetHistoryHash from "./history/SpreadsheetHistoryHash.js";
 import SpreadsheetLabelMapping from "./reference/SpreadsheetLabelMapping.js";
 import SpreadsheetLabelName from "./reference/SpreadsheetLabelName.js";
-import SpreadsheetLabelWidget from "./reference/SpreadsheetLabelWidget.js";
+import SpreadsheetLabelMappingWidget from "./reference/SpreadsheetLabelMappingWidget.js";
 import SpreadsheetMetadata from "./meta/SpreadsheetMetadata.js";
 import SpreadsheetMessenger from "./message/SpreadsheetMessenger.js";
 import SpreadsheetMessengerCrud from "./message/SpreadsheetMessengerCrud.js";
@@ -268,11 +268,11 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
                                                      notificationShow={notificationShow}
                                                      showError={showError}
                 />
-                <SpreadsheetLabelWidget key="labelWidget"
-                                        history={history}
-                                        spreadsheetLabelCrud={this.spreadsheetLabelCrud}
-                                        notificationShow={notificationShow}
-                                        showError={showError}
+                <SpreadsheetLabelMappingWidget key="labelWidget"
+                                               history={history}
+                                               spreadsheetLabelCrud={this.spreadsheetLabelCrud}
+                                               notificationShow={notificationShow}
+                                               showError={showError}
                 />
                 <SpreadsheetBox ref={this.aboveViewport}
                                 key={{windowDimensions: state.windowDimensions}}

@@ -16,27 +16,27 @@ import TextField from '@material-ui/core/TextField';
 /**
  * A dialog with some text fields to enter the label and reference and buttons to save, delete, cancel the edit.
  */
-export default class SpreadsheetLabelWidget extends SpreadsheetHistoryAwareStateWidget {
+export default class SpreadsheetLabelMappingWidget extends SpreadsheetHistoryAwareStateWidget {
 
     static ID_PREFIX = "label-mapping";
 
-    static DELETE_BUTTON_ID = SpreadsheetLabelWidget.ID_PREFIX + "-delete-Button";
+    static DELETE_BUTTON_ID = SpreadsheetLabelMappingWidget.ID_PREFIX + "-delete-Button";
 
-    static DIALOG_ID = SpreadsheetLabelWidget.ID_PREFIX + "-Dialog";
+    static DIALOG_ID = SpreadsheetLabelMappingWidget.ID_PREFIX + "-Dialog";
 
-    static DIALOG_CLOSE_BUTTON_ID = SpreadsheetLabelWidget.DIALOG_ID + "-close-Button";
+    static DIALOG_CLOSE_BUTTON_ID = SpreadsheetLabelMappingWidget.DIALOG_ID + "-close-Button";
 
-    static DIALOG_TITLE_ID = SpreadsheetLabelWidget.DIALOG_ID + "-title";
+    static DIALOG_TITLE_ID = SpreadsheetLabelMappingWidget.DIALOG_ID + "-title";
 
-    static LABEL_TEXT_FIELD_ID = SpreadsheetLabelWidget.ID_PREFIX + "-label-TextField";
+    static LABEL_TEXT_FIELD_ID = SpreadsheetLabelMappingWidget.ID_PREFIX + "-label-TextField";
 
-    static LABEL_TEXT_FIELD_HELPER_TEXT_ID = SpreadsheetLabelWidget.LABEL_TEXT_FIELD_ID + "-helper-text";
+    static LABEL_TEXT_FIELD_HELPER_TEXT_ID = SpreadsheetLabelMappingWidget.LABEL_TEXT_FIELD_ID + "-helper-text";
 
-    static REFERENCE_TEXT_FIELD_ID = SpreadsheetLabelWidget.ID_PREFIX + "-reference-TextField";
+    static REFERENCE_TEXT_FIELD_ID = SpreadsheetLabelMappingWidget.ID_PREFIX + "-reference-TextField";
 
-    static REFERENCE_TEXT_FIELD_HELPER_TEXT_ID = SpreadsheetLabelWidget.REFERENCE_TEXT_FIELD_ID + "-helper-text";
+    static REFERENCE_TEXT_FIELD_HELPER_TEXT_ID = SpreadsheetLabelMappingWidget.REFERENCE_TEXT_FIELD_ID + "-helper-text";
 
-    static SAVE_BUTTON_ID = SpreadsheetLabelWidget.ID_PREFIX + "-save-Button";
+    static SAVE_BUTTON_ID = SpreadsheetLabelMappingWidget.ID_PREFIX + "-save-Button";
 
     initialStateFromProps(props) {
         return {
@@ -111,16 +111,16 @@ export default class SpreadsheetLabelWidget extends SpreadsheetHistoryAwareState
         const {label, labelHelper, reference, referenceHelper} = this.state;
         console.log("render: ", "label:" + label, "labelHelper:" + labelHelper, ", reference:" + reference, "referenceHelper" + referenceHelper);
 
-        return <SpreadsheetDialog id={SpreadsheetLabelWidget.DIALOG_ID}
+        return <SpreadsheetDialog id={SpreadsheetLabelMappingWidget.DIALOG_ID}
                                   key={"label-mapping"}
                                   open={true}
                                   onClose={this.close.bind(this)}
         >
-            <span id={SpreadsheetLabelWidget.DIALOG_TITLE_ID}>{"Label: " + label}</span>
+            <span id={SpreadsheetLabelMappingWidget.DIALOG_TITLE_ID}>{"Label: " + label}</span>
             <span>
                 <TextField key={"label"}
                            inputRef={this.label}
-                           id={SpreadsheetLabelWidget.LABEL_TEXT_FIELD_ID}
+                           id={SpreadsheetLabelMappingWidget.LABEL_TEXT_FIELD_ID}
                            margin="dense"
                            label="Label"
                            type="text"
@@ -132,7 +132,7 @@ export default class SpreadsheetLabelWidget extends SpreadsheetHistoryAwareState
                 />
                 <TextField key="reference"
                            inputRef={this.reference}
-                           id={SpreadsheetLabelWidget.REFERENCE_TEXT_FIELD_ID}
+                           id={SpreadsheetLabelMappingWidget.REFERENCE_TEXT_FIELD_ID}
                            margin="dense"
                            label="Reference"
                            type="text"
@@ -142,12 +142,12 @@ export default class SpreadsheetLabelWidget extends SpreadsheetHistoryAwareState
                            onChange={this.onReferenceTextFieldValueChange.bind(this)}
                 />
             </span>
-            <Button id={SpreadsheetLabelWidget.SAVE_BUTTON_ID}
+            <Button id={SpreadsheetLabelMappingWidget.SAVE_BUTTON_ID}
                     onClick={this.onSaveButtonClicked.bind(this)}
                     color="primary">
                 Save
             </Button>
-            <Button id={SpreadsheetLabelWidget.DELETE_BUTTON_ID}
+            <Button id={SpreadsheetLabelMappingWidget.DELETE_BUTTON_ID}
                     onClick={this.onDeleteButtonClicked.bind(this)}
                     color="primary">
                 Delete
@@ -344,7 +344,7 @@ export default class SpreadsheetLabelWidget extends SpreadsheetHistoryAwareState
     }
 }
 
-SpreadsheetLabelWidget.propTypes = {
+SpreadsheetLabelMappingWidget.propTypes = {
     history: PropTypes.instanceOf(SpreadsheetHistoryHash).isRequired,
     spreadsheetLabelCrud: PropTypes.instanceOf(SpreadsheetMessengerCrud),
     notificationShow: PropTypes.func.isRequired, // used to display notifications including errors and other messages
