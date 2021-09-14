@@ -195,7 +195,7 @@ export default class SpreadsheetLabelMappingWidget extends SpreadsheetHistoryAwa
                     color="primary">
                 Delete
             </Button>
-        </SpreadsheetDialog>
+        </SpreadsheetDialog>;
     }
 
     onLabelTextFieldValueChange(e) {
