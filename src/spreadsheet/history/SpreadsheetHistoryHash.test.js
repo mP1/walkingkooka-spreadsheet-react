@@ -27,12 +27,16 @@ const COLUMN_RANGE = SpreadsheetColumnReferenceRange.parse("B:C");
 const ROW = SpreadsheetRowReference.parse("2");
 const ROW_RANGE = SpreadsheetRowReferenceRange.parse("2:3");
 const LABEL = SpreadsheetLabelName.parse("Label123");
+const NEW_LABEL = SpreadsheetLabelName.parse("Label999");
 
 const CELL_FORMULA = new SpreadsheetFormulaLoadAndEditHistoryHashToken();
 const CELL_FORMULA_SAVE = new SpreadsheetFormulaSaveHistoryHashToken("Abc123");
 
 const LABEL_DELETE = SpreadsheetLabelMappingDeleteHistoryHashToken.INSTANCE;
-const LABEL_SAVE = new SpreadsheetLabelMappingSaveHistoryHashToken(CELL_RANGE);
+const LABEL_SAVE = new SpreadsheetLabelMappingSaveHistoryHashToken(
+    NEW_LABEL,
+    CELL_RANGE
+);
 
 // validate................................................................................................................
 
@@ -572,32 +576,35 @@ testParseAndStringify(
 );
 
 testParseAndStringify(
-    "/spreadsheet-id-123/spreadsheet-name-456/label/Label123/save/A1",
+    "/spreadsheet-id-123/spreadsheet-name-456/label/Label123/save/Label999/A1",
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
         "label": LABEL,
-        "label-action": new SpreadsheetLabelMappingSaveHistoryHashToken(CELL),
+        "label-action": new SpreadsheetLabelMappingSaveHistoryHashToken(NEW_LABEL, CELL),
     }
 );
 
 testParseAndStringify(
-    "/spreadsheet-id-123/spreadsheet-name-456/label/Label123/save/C3:D4",
+    "/spreadsheet-id-123/spreadsheet-name-456/label/Label123/save/Label999/C3:D4",
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
         "label": LABEL,
-        "label-action": new SpreadsheetLabelMappingSaveHistoryHashToken(CELL_RANGE),
+        "label-action": new SpreadsheetLabelMappingSaveHistoryHashToken(NEW_LABEL, CELL_RANGE),
     }
 );
 
 testParseAndStringify(
-    "/spreadsheet-id-123/spreadsheet-name-456/label/Label123/save/Label456",
+    "/spreadsheet-id-123/spreadsheet-name-456/label/Label123/save/Label999/Label456",
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
         "label": LABEL,
-        "label-action": new SpreadsheetLabelMappingSaveHistoryHashToken(SpreadsheetLabelName.fromJson("Label456")),
+        "label-action": new SpreadsheetLabelMappingSaveHistoryHashToken(
+            NEW_LABEL,
+            SpreadsheetLabelName.parse("Label456")
+        ),
     }
 );
 
@@ -1937,7 +1944,7 @@ testMerge(
     {
         "label-action": LABEL_SAVE,
     },
-    "/123abc/Untitled456/label/Label123/save/C3:D4"
+    "/123abc/Untitled456/label/Label123/save/Label999/C3:D4"
 );
 
 testMerge(
@@ -1946,15 +1953,15 @@ testMerge(
         "label": LABEL,
         "label-action": LABEL_SAVE,
     },
-    "/123abc/Untitled456/label/Label123/save/C3:D4"
+    "/123abc/Untitled456/label/Label123/save/Label999/C3:D4"
 );
 
 testMerge(
-    "/123abc/Untitled456/label/LabelOld/save/Z9",
+    "/123abc/Untitled456/label/LabelOld/save/Label999/Z9",
     {
         "label": LABEL,
     },
-    "/123abc/Untitled456/label/Label123/save/Z9"
+    "/123abc/Untitled456/label/Label123/save/Label999/Z9"
 );
 
 testMerge("/123abc/Untitled456/label/LabelOld/save",
