@@ -242,8 +242,13 @@ export default class SpreadsheetHistoryHash {
                             }
                             break;
                         case SpreadsheetHistoryHash.SAVE:
-                            if(label && tokens.length > 0){
+                            if(label && tokens.length >= 2){
                                 labelAction = new SpreadsheetLabelMappingSaveHistoryHashToken(
+                                    SpreadsheetLabelName.parse(
+                                        decodeURIComponent(
+                                            tokens.shift()
+                                        )
+                                    ),
                                     spreadsheetCellRangeCellReferenceOrLabelParse(
                                         decodeURIComponent(
                                             tokens.shift()
