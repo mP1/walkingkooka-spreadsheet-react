@@ -26,7 +26,6 @@ const MAX_COUNT = 10;
  * Displays a dialog with a text box that accepts query text that matches cells and labels. Buttons are also present
  * which support navigating, creating or editing the label.
  * <ul>
- * <li>open boolean when true the dialog should be displayed, false means hide</li>
  * <li>text string The entered text</li>
  * <li>queryHelperText string that details if the query text is not a valid SpreadsheetCellReference or SpreadsheetLabelName</li>
  * <li>options array holds all options from the matching similarities, this might include a column and label or label mappings if similar labels were found</li>
@@ -70,7 +69,6 @@ export default class SpreadsheetSelectAutocompleteWidget extends SpreadsheetHist
 
     initialStateFromProps(props) {
         return {
-            open: false,
             text: null,
             queryHelperText: null,
             options: [],
@@ -78,14 +76,32 @@ export default class SpreadsheetSelectAutocompleteWidget extends SpreadsheetHist
     }
 
     /**
-     * Updates the state.open from the history hash tokens.
+     * Need to watch selectionXXX & label hash tokens so button links can be rebuilt.
      */
     stateFromHistoryTokens(tokens) {
         const select = tokens[SpreadsheetHistoryHash.SELECT];
 
-        return {
-            open: !!select,
+        const state = {
+            select: select,
+            selection: tokens[SpreadsheetHistoryHash.SELECTION],
+            selectionAction: tokens[SpreadsheetHistoryHash.SELECTION_ACTION],
+            selectionAnchor: tokens[SpreadsheetHistoryHash.SELECTION_ANCHOR],
+            label: tokens[SpreadsheetHistoryHash.LABEL],
+            labelAction: tokens[SpreadsheetHistoryHash.LABEL_ACTION],
         };
+
+        if(!select){
+            Object.assign(
+                state,
+                {
+                    text: "",
+                    queryHelperText: "",
+                    options: [],
+                }
+            );
+        }
+
+        return state;
     }
 
     init() {
@@ -96,20 +112,11 @@ export default class SpreadsheetSelectAutocompleteWidget extends SpreadsheetHist
      * Copies the select hash to state.open and also updates the AutoComplete widget to match state.option
      */
     historyTokensFromState(prevState) {
-        const {open, options} = this.state;
-
-        const autoComplete = this.autoComplete.current;
-        if(autoComplete){
-            autoComplete.options = options;
-        }
-
-        const historyTokens = {};
-        historyTokens[SpreadsheetHistoryHash.SELECT] = open;
-        return historyTokens;
+        return {};
     }
 
     render() {
-        return this.state.open ?
+        return this.state.select ?
             this.renderDialog() :
             null;
     }
@@ -119,6 +126,11 @@ export default class SpreadsheetSelectAutocompleteWidget extends SpreadsheetHist
      */
     renderDialog() {
         const {queryHelperText, options} = this.state;
+
+        const autoComplete = this.autoComplete.current;
+        if(autoComplete){
+            autoComplete.options = options;
+        }
 
         // if we find a cell in options then we enable the goto cell button etc.
         var cell = null;
@@ -132,29 +144,29 @@ export default class SpreadsheetSelectAutocompleteWidget extends SpreadsheetHist
         // if we find a label mapping then turn on label edit
         var labelMapping = null;
 
-        for (const possible of options) {
-            if(possible instanceof SpreadsheetCellReference) {
+        for(const possible of options) {
+            if(possible instanceof SpreadsheetCellReference){
                 cell = possible;
             }
-            if(possible instanceof SpreadsheetCellRange) {
+            if(possible instanceof SpreadsheetCellRange){
                 cellRange = possible;
             }
-            if(possible instanceof SpreadsheetColumnReference) {
+            if(possible instanceof SpreadsheetColumnReference){
                 column = possible;
             }
-            if(possible instanceof SpreadsheetColumnReferenceRange) {
+            if(possible instanceof SpreadsheetColumnReferenceRange){
                 columnRange = possible;
             }
-            if(possible instanceof SpreadsheetLabelName) {
+            if(possible instanceof SpreadsheetLabelName){
                 label = possible;
             }
-            if(possible instanceof SpreadsheetLabelMapping) {
+            if(possible instanceof SpreadsheetLabelMapping){
                 labelMapping = possible;
             }
-            if(possible instanceof SpreadsheetRowReference) {
+            if(possible instanceof SpreadsheetRowReference){
                 row = possible;
             }
-            if(possible instanceof SpreadsheetRowReferenceRange) {
+            if(possible instanceof SpreadsheetRowReferenceRange){
                 rowRange = possible;
             }
         }
@@ -199,61 +211,109 @@ export default class SpreadsheetSelectAutocompleteWidget extends SpreadsheetHist
                     />
                 }
             />
-            <Button id={SpreadsheetSelectAutocompleteWidget.CELL_GOTO_BUTTON_ID}
-                    disabled={!cell}
-                    color="primary"
-                    onClick={() => this.updateHistoryTokens(cell, null)}>
-                Goto Cell
-            </Button>
-            <Button id={SpreadsheetSelectAutocompleteWidget.CELL_RANGE_SELECT_BUTTON_ID}
-                    disabled={cell || !cellRange}
-                    color="primary"
-                    onClick={() => this.updateHistoryTokens(cellRange, null)}>
-                Select Cell Range
-            </Button>
-            <Button id={SpreadsheetSelectAutocompleteWidget.COLUMN_GOTO_BUTTON_ID}
-                    disabled={!column}
-                    color="primary"
-                    onClick={() => this.updateHistoryTokens(column, null)}>
-                Goto Column
-            </Button>
-            <Button id={SpreadsheetSelectAutocompleteWidget.COLUMN_RANGE_SELECT_BUTTON_ID}
-                    disabled={column || !columnRange}
-                    color="primary"
-                    onClick={() => this.updateHistoryTokens(columnRange, null)}>
-                Select Column Range
-            </Button>
-            <Button id={SpreadsheetSelectAutocompleteWidget.LABEL_GOTO_BUTTON_ID}
-                    disabled={!labelMapping}
-                    color="primary"
-                    onClick={() => this.updateHistoryTokens(label, null)}>
-                Goto Label
-            </Button>
-            <Button id={SpreadsheetSelectAutocompleteWidget.LABEL_CREATE_BUTTON_ID}
-                    disabled={ cell || !(label && !labelMapping)}
-                    color="primary"
-                    onClick={() => this.updateHistoryTokens(null, label)}>
-                Create Label
-            </Button>
-            <Button id={SpreadsheetSelectAutocompleteWidget.LABEL_EDIT_BUTTON_ID}
-                    disabled={!labelMapping}
-                    color="primary"
-                    onClick={() => this.updateHistoryTokens(null, label)}>
-                Edit Label
-            </Button>
-            <Button id={SpreadsheetSelectAutocompleteWidget.ROW_GOTO_BUTTON_ID}
-                    disabled={!row}
-                    color="primary"
-                    onClick={() => this.updateHistoryTokens(row, null)}>
-                Goto Row
-            </Button>
-            <Button id={SpreadsheetSelectAutocompleteWidget.ROW_RANGE_SELECT_BUTTON_ID}
-                    disabled={row || !rowRange}
-                    color="primary"
-                    onClick={() => this.updateHistoryTokens(rowRange, null)}>
-                Select Row Range
-            </Button>
+            {
+                this.button(
+                    SpreadsheetSelectAutocompleteWidget.CELL_GOTO_BUTTON_ID,
+                    !cell,
+                    cell,
+                    null,
+                    "Goto Cell"
+                )}
+            {
+                this.button(
+                    SpreadsheetSelectAutocompleteWidget.CELL_RANGE_SELECT_BUTTON_ID,
+                    cell || !cellRange,
+                    cellRange,
+                    null,
+                    "Select Cell Range"
+                )}
+            {
+                this.button(
+                    SpreadsheetSelectAutocompleteWidget.COLUMN_GOTO_BUTTON_ID,
+                    !column,
+                    column,
+                    null,
+                    "Goto Column"
+                )}
+            {
+                this.button(
+                    SpreadsheetSelectAutocompleteWidget.COLUMN_RANGE_SELECT_BUTTON_ID,
+                    column || !columnRange,
+                    columnRange,
+                    null,
+                    "Select Column Range"
+                )}
+            {
+                this.button(
+                    SpreadsheetSelectAutocompleteWidget.LABEL_GOTO_BUTTON_ID,
+                    !labelMapping,
+                    label,
+                    null, "Goto Label"
+                )},
+            {
+                this.button(
+                    SpreadsheetSelectAutocompleteWidget.LABEL_CREATE_BUTTON_ID,
+                    cell || !(label && !labelMapping),
+                    null,
+                    label,
+                    "Create Label"
+                )}
+            {
+                this.button(
+                    SpreadsheetSelectAutocompleteWidget.LABEL_EDIT_BUTTON_ID,
+                    !labelMapping,
+                    null,
+                    label,
+                    "Edit Label"
+                )}
+            {
+                this.button(
+                    SpreadsheetSelectAutocompleteWidget.ROW_GOTO_BUTTON_ID,
+                    !row,
+                    row,
+                    null,
+                    "Goto Row"
+                )}
+            {
+                this.button(
+                    SpreadsheetSelectAutocompleteWidget.ROW_RANGE_SELECT_BUTTON_ID,
+                    row || !rowRange,
+                    rowRange,
+                    null,
+                    "Select Row Range")
+            }
         </SpreadsheetDialog>;
+    }
+
+    /**
+     * Factory that creates a BUTTON including the target link.
+     */
+    button(id, disabled, goto, label, text) {
+        Preconditions.optionalInstance(goto, SpreadsheetSelection, "goto");
+        Preconditions.optionalInstance(label, SpreadsheetLabelName, "label");
+
+        var link = null;
+
+        if(!disabled){
+            const tokens = this.props.history.tokens();
+
+            tokens[SpreadsheetHistoryHash.SELECT] = null; // close the navigate modal
+
+            tokens[SpreadsheetHistoryHash.SELECTION] = goto;
+            tokens[SpreadsheetHistoryHash.SELECTION_ACTION] = null;
+
+            tokens[SpreadsheetHistoryHash.LABEL] = label;
+            tokens[SpreadsheetHistoryHash.LABEL_ACTION] = null;
+
+            link = "#" + SpreadsheetHistoryHash.stringify(tokens);
+        }
+
+        return <Button id={id}
+                       disabled={disabled}
+                       color="primary"
+                       href={link}>
+            {text}
+        </Button>
     }
 
     /**
@@ -356,32 +416,15 @@ export default class SpreadsheetSelectAutocompleteWidget extends SpreadsheetHist
         this.setState(newState);
     }
 
-    updateHistoryTokens(goto, label) {
-        Preconditions.optionalInstance(goto, SpreadsheetSelection, "goto");
-        Preconditions.optionalInstance(label, SpreadsheetLabelName, "label");
-
-        const historyTokens = {};
-
-        historyTokens[SpreadsheetHistoryHash.SELECTION] = goto;
-        historyTokens[SpreadsheetHistoryHash.SELECTION_ACTION] = null;
-        historyTokens[SpreadsheetHistoryHash.LABEL] = label;
-        historyTokens[SpreadsheetHistoryHash.SELECT] = null; // close the navigate modal
-
-        this.historyParseMergeAndPush(historyTokens);
-        this.close();
-    }
-
     /**
      * Closes the dialog.
      */
     close() {
         console.log("close");
-        this.setState({
-            open: false,
-            text: "",
-            queryHelperText: "",
-            options: [],
-        });
+
+        const tokens = {};
+        tokens[SpreadsheetHistoryHash.SELECT] = null;
+        this.historyParseMergeAndPush(tokens);
     }
 }
 
