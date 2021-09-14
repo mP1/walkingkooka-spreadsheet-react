@@ -299,11 +299,15 @@ export default class SpreadsheetSelectAutocompleteWidget extends SpreadsheetHist
 
             tokens[SpreadsheetHistoryHash.SELECT] = null; // close the navigate modal
 
-            tokens[SpreadsheetHistoryHash.SELECTION] = goto;
-            tokens[SpreadsheetHistoryHash.SELECTION_ACTION] = null;
+            if(goto){
+                tokens[SpreadsheetHistoryHash.SELECTION] = goto;
+                tokens[SpreadsheetHistoryHash.SELECTION_ACTION] = null;
+            }
 
-            tokens[SpreadsheetHistoryHash.LABEL] = label;
-            tokens[SpreadsheetHistoryHash.LABEL_ACTION] = null;
+            if(label){
+                tokens[SpreadsheetHistoryHash.LABEL] = label;
+                tokens[SpreadsheetHistoryHash.LABEL_ACTION] = null;
+            }
 
             link = "#" + SpreadsheetHistoryHash.stringify(tokens);
         }

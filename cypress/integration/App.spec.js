@@ -2267,6 +2267,42 @@ context(
                 .should('match', /.*\/Untitled\/label\/Label123/);
         });
 
+        it("Click CELL then select create LABEL and ENTER, verify cell not lost from hash", () => {
+            spreadsheetEmpty();
+
+            cell(A1)
+                .click();
+
+            hash()
+                .should('match', /.*\/Untitled\/cell\/A1/);
+
+            selectHistoryHash(); // TODO not sure WHY but select dialog doesnt appear in test.
+
+            selectAutocompleteTextField()
+                .type("Label123{enter}");
+
+            selectAutocompleteTextFieldHelper()
+                .should("not.exist");
+
+            selectAutocompletePopup()
+                .should("not.exist");
+
+            selectCellGotoButton(DISABLED);
+            selectCellRangeSelectButton(DISABLED);
+            selectColumnGotoButton(DISABLED);
+            selectColumnRangeSelectButton(DISABLED);
+            selectLabelCreateButton(DISABLED);
+            selectLabelGotoButton(ENABLED);
+            selectRowGotoButton(DISABLED);
+            selectRowRangeSelectButton(DISABLED);
+
+            selectLabelEditButton(ENABLED)
+                .click();
+
+            hash()
+                .should('match', /.*\/Untitled\/cell\/A1\/label\/Label123/);
+        });
+
         it("Select enter cell, select from dropdown ENTER and click GOTO CELL", () => {
             spreadsheetEmpty();
 
