@@ -9,18 +9,6 @@ import SpreadsheetMessenger from "./SpreadsheetMessenger.js";
  */
 export default class SpreadsheetMessengerCrud {
 
-    static toQueryString(parameters) {
-        Preconditions.requireObject(parameters, "parameters");
-
-        return parameters ?
-            "?" +
-            (Object.keys(parameters)
-                    .map(key => key + '=' + parameters[key])
-                    .join('&')
-            ) :
-            "";
-    }
-
     constructor(url,
                 messenger,
                 unmarshall,

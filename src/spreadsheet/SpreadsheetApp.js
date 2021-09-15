@@ -26,6 +26,7 @@ import SpreadsheetSelectAutocompleteWidget from "./reference/SpreadsheetSelectAu
 import SpreadsheetSelectLinkWidget from "./reference/SpreadsheetSelectLinkWidget.js";
 import SpreadsheetSettingsWidget from "./settings/SpreadsheetSettingsWidget.js";
 import SpreadsheetViewportWidget from "./SpreadsheetViewportWidget.js";
+import UrlPath from "../net/UrlPath.js";
 import WindowResizer from "../widget/WindowResizer.js";
 
 const useStyles = theme => ({
@@ -69,7 +70,7 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
                 if(method.toUpperCase() === "GET") {
                     url = url + "/" + SpreadsheetEngineEvaluation.FORCE_RECOMPUTE.nameKebabCase();
                 }
-                return url + SpreadsheetMessengerCrud.toQueryString(queryStringParameters);
+                return url + UrlPath.toQueryString(queryStringParameters);
             },
             messenger,
             SpreadsheetDelta.fromJson,
