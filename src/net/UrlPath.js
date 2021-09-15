@@ -1,10 +1,23 @@
 import Equality from "../Equality.js";
+import Preconditions from "../Preconditions.js";
 import SystemObject from "../SystemObject.js";
 
 /**
  * Represents a url path with methods to get the path and parameters.
  */
 export default class UrlPath extends SystemObject {
+
+    static toQueryString(parameters) {
+        Preconditions.requireObject(parameters, "parameters");
+
+        return parameters ?
+            "?" +
+            (Object.keys(parameters)
+                    .map(key => encodeURIComponent(key) + '=' + encodeURIComponent(parameters[key]))
+                    .join('&')
+            ) :
+            "";
+    }
 
     static parse(url) {
         const decoded = decodeURI(url);
