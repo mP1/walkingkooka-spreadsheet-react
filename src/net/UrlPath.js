@@ -67,11 +67,10 @@ export default class UrlPath extends SystemObject {
         return new UrlPath(path, queryParameters, decoded);
     }
 
-    constructor(path, queryParameters, url) {
+    constructor(path, queryParameters) {
         super();
         this.pathValue = path;
         this.queryParametersValue = queryParameters;
-        this.urlValue = url;
     }
 
     path() {
@@ -90,6 +89,6 @@ export default class UrlPath extends SystemObject {
     }
 
     toString() {
-        return this.url();
+        return this.path() + UrlPath.toQueryString(this.queryParameters());
     }
 }
