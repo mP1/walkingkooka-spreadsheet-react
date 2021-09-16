@@ -105,6 +105,11 @@ export default class UrlPath extends SystemObject {
         return values && values.slice();
     }
 
+    firstParameterValue(name) {
+        const values = this.getParameterValues(name);
+        return values && values[0];
+    }
+
     setParameterValues(name, values) {
         Preconditions.requireText(name, "name");
         Preconditions.requireArray(values, "values");
