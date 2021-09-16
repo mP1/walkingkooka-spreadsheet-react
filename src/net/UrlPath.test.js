@@ -260,6 +260,33 @@ testGetParameterValues(
     ["1", "2"]
 );
 
+// firstParameterValue...................................................................................................
+
+function testFirstParameterValue(url, name, value) {
+    test(url + " firstParameterValue " + name + " " + value, () => {
+        expect(UrlPath.parse(url).firstParameterValue(name))
+            .toStrictEqual(value);
+    });
+}
+
+testFirstParameterValue(
+    "/a/b",
+    "unknown",
+    undefined
+);
+
+testFirstParameterValue(
+    "/a/b?x=y",
+    "x",
+    "y"
+);
+
+testFirstParameterValue(
+    "/a/b?q=r&x=1&x=2",
+    "x",
+    "1"
+);
+
 // equals...............................................................................................................
 
 test("equals different path", () => {
