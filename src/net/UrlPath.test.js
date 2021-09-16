@@ -67,6 +67,64 @@ testParse("/abc?def=ghi&def=1",
     }
 );
 
+// toQuerystring...............................................................................................................
+
+function testToQueryString(queryParameters, queryString) {
+    test("toQueryString " + JSON.stringify(queryParameters), () => {
+        expect(UrlPath.toQueryString(queryParameters))
+            .toStrictEqual(queryString);
+    });
+}
+
+testToQueryString(
+    {},
+    ""
+);
+
+testToQueryString(
+    {
+        "a": []
+    },
+    "?a"
+);
+
+testToQueryString(
+    {
+        "a": ["1"]
+    },
+    "?a=1"
+);
+
+testToQueryString(
+    {
+        "x y": ["3 4"]
+    },
+    "?x%20y=3%204"
+);
+
+testToQueryString(
+    {
+        "a": ["11", "22"]
+    },
+    "?a=11&a=22"
+);
+
+testToQueryString(
+    {
+        "x": ["1234"],
+        "y": ["5678"]
+    },
+    "?x=1234&y=5678"
+);
+
+testToQueryString(
+    {
+        "a": ["1", "2"],
+        "b": ["99"]
+    },
+    "?a=1&a=2&b=99"
+);
+
 // equals...............................................................................................................
 
 test("equals different path", () => {
