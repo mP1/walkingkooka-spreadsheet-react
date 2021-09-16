@@ -10,13 +10,32 @@ export default class UrlPath extends SystemObject {
     static toQueryString(parameters) {
         Preconditions.requireObject(parameters, "parameters");
 
-        return parameters ?
-            "?" +
-            (Object.keys(parameters)
-                    .map(key => encodeURIComponent(key) + '=' + encodeURIComponent(parameters[key]))
-                    .join('&')
-            ) :
-            "";
+        const components = [];
+        var separator = "?";
+
+        for (const [name, values] of Object.entries(parameters)) {
+            const encodedName = encodeURIComponent(name);
+
+            if(values.length > 0) {
+                values.forEach((v) => {
+                    components.push(separator);
+
+                    components.push(encodedName);
+                    components.push("=");
+                    components.push(encodeURIComponent(v));
+
+                    separator = "&";
+                });
+            } else {
+                components.push(separator);
+
+                components.push(encodedName);
+
+                separator = "&";
+            }
+        }
+
+        return components.join("");
     }
 
     static parse(url) {

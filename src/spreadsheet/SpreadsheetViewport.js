@@ -78,15 +78,15 @@ export default class SpreadsheetViewport extends SystemObject {
 
         return Object.assign(
             {
-                home: this.cellOrLabel(),
-                xOffset: this.xOffset(),
-                yOffset: this.yOffset(),
-                width: this.width(),
-                height: this.height(),
+                home: [this.cellOrLabel()],
+                xOffset: [this.xOffset()],
+                yOffset: [this.yOffset()],
+                width: [this.width()],
+                height: [this.height()],
             },
             selection ? {
-                selectionType: selection.toLoadCellsQueryStringParameterSelectionType(),
-                selection: selection,
+                selectionType: [selection.toLoadCellsQueryStringParameterSelectionType()],
+                selection: [selection],
             } : {});
     }
 

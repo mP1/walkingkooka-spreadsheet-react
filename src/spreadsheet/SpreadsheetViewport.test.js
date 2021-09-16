@@ -177,11 +177,11 @@ toLoadCellsQueryStringParametersAndCheck(
     height(),
     null,
     {
-        home: cellOrLabel(),
-        xOffset: xOffset(),
-        yOffset: yOffset(),
-        width: width(),
-        height: height(),
+        home: [cellOrLabel()],
+        xOffset: [xOffset()],
+        yOffset: [yOffset()],
+        width: [width()],
+        height: [height()],
     }
 );
 
@@ -193,13 +193,13 @@ toLoadCellsQueryStringParametersAndCheck(
     height(),
     SpreadsheetCellRange.parse("B2:C3"),
     {
-        home: cellOrLabel(),
-        xOffset: xOffset(),
-        yOffset: yOffset(),
-        width: width(),
-        height: height(),
-        selectionType: "cell-range",
-        selection: SpreadsheetCellRange.parse("B2:C3"),
+        home: [cellOrLabel()],
+        xOffset: [xOffset()],
+        yOffset: [yOffset()],
+        width: [width()],
+        height: [height()],
+        selectionType: ["cell-range"],
+        selection: [SpreadsheetCellRange.parse("B2:C3")],
     }
 );
 
@@ -211,13 +211,13 @@ toLoadCellsQueryStringParametersAndCheck(
     height(),
     SpreadsheetCellReference.parse("B2"),
     {
-        home: cellOrLabel(),
-        xOffset: xOffset(),
-        yOffset: yOffset(),
-        width: width(),
-        height: height(),
-        selectionType: "cell",
-        selection: SpreadsheetCellReference.parse("B2"),
+        home: [cellOrLabel()],
+        xOffset: [xOffset()],
+        yOffset: [yOffset()],
+        width: [width()],
+        height: [height()],
+        selectionType: ["cell"],
+        selection: [SpreadsheetCellReference.parse("B2")],
     }
 );
 
@@ -229,13 +229,13 @@ toLoadCellsQueryStringParametersAndCheck(
     height(),
     SpreadsheetColumnReference.parse("B"),
     {
-        home: cellOrLabel(),
-        xOffset: xOffset(),
-        yOffset: yOffset(),
-        width: width(),
-        height: height(),
-        selectionType: "column",
-        selection: SpreadsheetColumnReference.parse("B"),
+        home: [cellOrLabel()],
+        xOffset: [xOffset()],
+        yOffset: [yOffset()],
+        width: [width()],
+        height: [height()],
+        selectionType: ["column"],
+        selection: [SpreadsheetColumnReference.parse("B")],
     }
 );
 
@@ -247,13 +247,13 @@ toLoadCellsQueryStringParametersAndCheck(
     height(),
     SpreadsheetColumnReferenceRange.parse("B:C"),
     {
-        home: cellOrLabel(),
-        xOffset: xOffset(),
-        yOffset: yOffset(),
-        width: width(),
-        height: height(),
-        selectionType: "column-range",
-        selection: SpreadsheetColumnReferenceRange.parse("B:C"),
+        home: [cellOrLabel()],
+        xOffset: [xOffset()],
+        yOffset: [yOffset()],
+        width: [width()],
+        height: [height()],
+        selectionType: ["column-range"],
+        selection: [SpreadsheetColumnReferenceRange.parse("B:C")],
     }
 );
 
@@ -265,13 +265,13 @@ toLoadCellsQueryStringParametersAndCheck(
     height(),
     SpreadsheetRowReference.parse("99"),
     {
-        home: cellOrLabel(),
-        xOffset: xOffset(),
-        yOffset: yOffset(),
-        width: width(),
-        height: height(),
-        selectionType: "row",
-        selection: SpreadsheetRowReference.parse("99"),
+        home: [cellOrLabel()],
+        xOffset: [xOffset()],
+        yOffset: [yOffset()],
+        width: [width()],
+        height: [height()],
+        selectionType: ["row"],
+        selection: [SpreadsheetRowReference.parse("99")],
     }
 );
 
@@ -283,13 +283,13 @@ toLoadCellsQueryStringParametersAndCheck(
     height(),
     SpreadsheetRowReferenceRange.parse("98:99"),
     {
-        home: cellOrLabel(),
-        xOffset: xOffset(),
-        yOffset: yOffset(),
-        width: width(),
-        height: height(),
-        selectionType: "row-range",
-        selection: SpreadsheetRowReferenceRange.parse("98:99"),
+        home: [cellOrLabel()],
+        xOffset: [xOffset()],
+        yOffset: [yOffset()],
+        width: [width()],
+        height: [height()],
+        selectionType: ["row-range"],
+        selection: [SpreadsheetRowReferenceRange.parse("98:99")],
     }
 );
 // equals...............................................................................................................
