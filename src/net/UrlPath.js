@@ -77,6 +77,12 @@ export default class UrlPath extends SystemObject {
         return this.pathValue;
     }
 
+    setPath(path) {
+        Preconditions.requireText(path, "path");
+
+        return new UrlPath(path, this.queryParameters());
+    }
+
     queryParameters() {
         return Object.assign({}, this.queryParametersValue);
     }
