@@ -87,6 +87,17 @@ export default class UrlPath extends SystemObject {
         return Object.assign({}, this.queryParametersValue);
     }
 
+    setQueryParameters(queryParameters) {
+        Preconditions.requireObject(queryParameters, "queryParameters");
+
+        const copy = {};
+
+        return new UrlPath(
+            this.path(),
+            Object.assign(copy, queryParameters)
+        );
+    }
+
     equals(other) {
         return this === other ||
             (other instanceof UrlPath &&
