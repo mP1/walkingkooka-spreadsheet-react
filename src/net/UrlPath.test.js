@@ -125,6 +125,27 @@ testToQueryString(
     "?a=1&a=2&b=99"
 );
 
+// setPath...............................................................................................................
+
+function testSetPath(url, path, toString) {
+    test("url setPath " + path, () => {
+        expect(UrlPath.parse(url).setPath(path).toString())
+            .toStrictEqual(toString);
+    });
+}
+
+testSetPath(
+    "/a/b",
+    "/c",
+    "/c"
+);
+
+testSetPath(
+    "/a/b?x=y",
+    "/c",
+    "/c?x=y"
+);
+
 // equals...............................................................................................................
 
 test("equals different path", () => {
