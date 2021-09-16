@@ -11,27 +11,22 @@ export default class RelativeUrl extends SystemObject {
         Preconditions.requireObject(parameters, "parameters");
 
         const components = [];
-        var separator = "?";
 
         for (const [name, values] of Object.entries(parameters)) {
             const encodedName = encodeURIComponent(name);
 
             if(values.length > 0) {
                 values.forEach((v) => {
-                    components.push(separator);
+                    components.push(components.length > 0 ? "&" : "?");
 
                     components.push(encodedName);
                     components.push("=");
                     components.push(encodeURIComponent(v));
-
-                    separator = "&";
                 });
             } else {
-                components.push(separator);
+                components.push(components.length > 0 ? "&" : "?");
 
                 components.push(encodedName);
-
-                separator = "&";
             }
         }
 
