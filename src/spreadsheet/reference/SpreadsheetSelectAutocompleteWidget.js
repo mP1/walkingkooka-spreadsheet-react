@@ -218,7 +218,8 @@ export default class SpreadsheetSelectAutocompleteWidget extends SpreadsheetHist
                     cell,
                     null,
                     "Goto Cell"
-                )}
+                )
+            }
             {
                 this.button(
                     SpreadsheetSelectAutocompleteWidget.CELL_RANGE_SELECT_BUTTON_ID,
@@ -226,7 +227,8 @@ export default class SpreadsheetSelectAutocompleteWidget extends SpreadsheetHist
                     cellRange,
                     null,
                     "Select Cell Range"
-                )}
+                )
+            }
             {
                 this.button(
                     SpreadsheetSelectAutocompleteWidget.COLUMN_GOTO_BUTTON_ID,
@@ -234,7 +236,8 @@ export default class SpreadsheetSelectAutocompleteWidget extends SpreadsheetHist
                     column,
                     null,
                     "Goto Column"
-                )}
+                )
+            }
             {
                 this.button(
                     SpreadsheetSelectAutocompleteWidget.COLUMN_RANGE_SELECT_BUTTON_ID,
@@ -242,14 +245,16 @@ export default class SpreadsheetSelectAutocompleteWidget extends SpreadsheetHist
                     columnRange,
                     null,
                     "Select Column Range"
-                )}
+                )
+            }
             {
                 this.button(
                     SpreadsheetSelectAutocompleteWidget.LABEL_GOTO_BUTTON_ID,
                     !labelMapping,
                     label,
                     null, "Goto Label"
-                )},
+                )
+            }
             {
                 this.button(
                     SpreadsheetSelectAutocompleteWidget.LABEL_CREATE_BUTTON_ID,
@@ -257,7 +262,8 @@ export default class SpreadsheetSelectAutocompleteWidget extends SpreadsheetHist
                     null,
                     label,
                     "Create Label"
-                )}
+                )
+            }
             {
                 this.button(
                     SpreadsheetSelectAutocompleteWidget.LABEL_EDIT_BUTTON_ID,
@@ -265,7 +271,8 @@ export default class SpreadsheetSelectAutocompleteWidget extends SpreadsheetHist
                     null,
                     label,
                     "Edit Label"
-                )}
+                )
+            }
             {
                 this.button(
                     SpreadsheetSelectAutocompleteWidget.ROW_GOTO_BUTTON_ID,
@@ -273,7 +280,8 @@ export default class SpreadsheetSelectAutocompleteWidget extends SpreadsheetHist
                     row,
                     null,
                     "Goto Row"
-                )}
+                )
+            }
             {
                 this.button(
                     SpreadsheetSelectAutocompleteWidget.ROW_RANGE_SELECT_BUTTON_ID,
