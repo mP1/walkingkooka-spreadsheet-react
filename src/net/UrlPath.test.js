@@ -170,6 +170,36 @@ testSetQueryParameters(
     "/a/b?1=2&3=4"
 );
 
+// setParameterValues...................................................................................................
+
+function testSetParameterValues(url, name, values, toString) {
+    test("url setParameterValues " + name + " " + JSON.stringify(values), () => {
+        expect(UrlPath.parse(url).setParameterValues(name, values).toString())
+            .toStrictEqual(toString);
+    });
+}
+
+testSetParameterValues(
+    "/a/b",
+    "c",
+    ["d"],
+    "/a/b?c=d"
+);
+
+testSetParameterValues(
+    "/a/b?x=y",
+    "c",
+    ["d"],
+    "/a/b?x=y&c=d"
+);
+
+testSetParameterValues(
+    "/a/b?x=y",
+    "c",
+    ["1", "2"],
+    "/a/b?x=y&c=1&c=2"
+);
+
 // equals...............................................................................................................
 
 test("equals different path", () => {
