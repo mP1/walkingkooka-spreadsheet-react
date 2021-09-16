@@ -9,7 +9,7 @@ function urlPath() {
 function testParse(url, path, queryParameters) {
     test("Parse " + url, () => {
         const urlPath = UrlPath.parse(url);
-        console.log("urlPath\n" + urlPath.path() + "\n" + JSON.stringify(urlPath.queryParameters()));
+
         expect(urlPath.path())
             .toStrictEqual(path);
         expect(urlPath.queryParameters())
