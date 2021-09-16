@@ -1,14 +1,14 @@
-import UrlPath from "./UrlPath";
+import RelativeUrl from "./RelativeUrl.js";
 
 function urlPath() {
-    return UrlPath.parse("/path?a=c");
+    return RelativeUrl.parse("/path?a=c");
 }
 
 // parse...............................................................................................................
 
 function testParse(url, path, queryParameters) {
     test("Parse " + url, () => {
-        const urlPath = UrlPath.parse(url);
+        const urlPath = RelativeUrl.parse(url);
 
         expect(urlPath.path())
             .toStrictEqual(path);
@@ -71,7 +71,7 @@ testParse("/abc?def=ghi&def=1",
 
 function testToQueryString(queryParameters, queryString) {
     test("toQueryString " + JSON.stringify(queryParameters), () => {
-        expect(UrlPath.toQueryString(queryParameters))
+        expect(RelativeUrl.toQueryString(queryParameters))
             .toStrictEqual(queryString);
     });
 }
@@ -129,7 +129,7 @@ testToQueryString(
 
 function testSetPath(url, path, toString) {
     test("url setPath " + path, () => {
-        expect(UrlPath.parse(url).setPath(path).toString())
+        expect(RelativeUrl.parse(url).setPath(path).toString())
             .toStrictEqual(toString);
     });
 }
@@ -150,7 +150,7 @@ testSetPath(
 
 function testSetQueryParameters(url, queryParameters, toString) {
     test("url setQueryParameters " + JSON.stringify(queryParameters), () => {
-        expect(UrlPath.parse(url).setQueryParameters(queryParameters).toString())
+        expect(RelativeUrl.parse(url).setQueryParameters(queryParameters).toString())
             .toStrictEqual(toString);
     });
 }
@@ -174,7 +174,7 @@ testSetQueryParameters(
 
 function testSetParameterValues(url, name, values, toString) {
     test("url setParameterValues " + name + " " + JSON.stringify(values), () => {
-        expect(UrlPath.parse(url).setParameterValues(name, values).toString())
+        expect(RelativeUrl.parse(url).setParameterValues(name, values).toString())
             .toStrictEqual(toString);
     });
 }
@@ -204,7 +204,7 @@ testSetParameterValues(
 
 function testRemoveParameter(url, name, toString) {
     test("url removeParameter " + name, () => {
-        expect(UrlPath.parse(url).removeParameter(name).toString())
+        expect(RelativeUrl.parse(url).removeParameter(name).toString())
             .toStrictEqual(toString);
     });
 }
@@ -237,7 +237,7 @@ testRemoveParameter(
 
 function testGetParameterValues(url, name, values) {
     test("url getParameterValues " + name + " " + JSON.stringify(values), () => {
-        expect(UrlPath.parse(url).getParameterValues(name))
+        expect(RelativeUrl.parse(url).getParameterValues(name))
             .toStrictEqual(values);
     });
 }
@@ -264,7 +264,7 @@ testGetParameterValues(
 
 function testFirstParameterValue(url, name, value) {
     test(url + " firstParameterValue " + name + " " + value, () => {
-        expect(UrlPath.parse(url).firstParameterValue(name))
+        expect(RelativeUrl.parse(url).firstParameterValue(name))
             .toStrictEqual(value);
     });
 }
@@ -290,12 +290,12 @@ testFirstParameterValue(
 // equals...............................................................................................................
 
 test("equals different path", () => {
-    expect(urlPath().equals(UrlPath.parse("/different")))
+    expect(urlPath().equals(RelativeUrl.parse("/different")))
         .toBeFalse();
 });
 
 test("equals different query parameters", () => {
-    expect(UrlPath.parse("/same?different=1").equals(UrlPath.parse("/same?different=23")))
+    expect(RelativeUrl.parse("/same?different=1").equals(RelativeUrl.parse("/same?different=23")))
         .toBeFalse();
 });
 
@@ -303,7 +303,7 @@ test("equals different query parameters", () => {
 
 function testToString(urlPath, toString) {
     test("toString " + urlPath, () => {
-        expect(UrlPath.parse(urlPath).toString())
+        expect(RelativeUrl.parse(urlPath).toString())
             .toStrictEqual(toString);
     });
 }

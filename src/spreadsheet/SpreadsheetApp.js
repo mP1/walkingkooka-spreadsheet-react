@@ -6,6 +6,7 @@ import Equality from "../Equality.js";
 import ListenerCollection from "../event/ListenerCollection.js";
 import Preconditions from "../Preconditions.js";
 import React from 'react';
+import RelativeUrl from "../net/RelativeUrl.js";
 import SpreadsheetAppBar from "../widget/SpreadsheetAppBar.js";
 import SpreadsheetBox from "../widget/SpreadsheetBox.js";
 import SpreadsheetDelta from "./engine/SpreadsheetDelta.js";
@@ -26,7 +27,6 @@ import SpreadsheetSelectAutocompleteWidget from "./reference/SpreadsheetSelectAu
 import SpreadsheetSelectLinkWidget from "./reference/SpreadsheetSelectLinkWidget.js";
 import SpreadsheetSettingsWidget from "./settings/SpreadsheetSettingsWidget.js";
 import SpreadsheetViewportWidget from "./SpreadsheetViewportWidget.js";
-import UrlPath from "../net/UrlPath.js";
 import WindowResizer from "../widget/WindowResizer.js";
 
 const useStyles = theme => ({
@@ -70,7 +70,7 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
                 if(method.toUpperCase() === "GET") {
                     url = url + "/" + SpreadsheetEngineEvaluation.FORCE_RECOMPUTE.nameKebabCase();
                 }
-                return url + UrlPath.toQueryString(queryStringParameters);
+                return url + RelativeUrl.toQueryString(queryStringParameters);
             },
             messenger,
             SpreadsheetDelta.fromJson,
