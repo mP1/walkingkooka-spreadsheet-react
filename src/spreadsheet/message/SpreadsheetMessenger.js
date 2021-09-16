@@ -1,6 +1,6 @@
 import Preconditions from "../../Preconditions.js";
+import RelativeUrl from "../../net/RelativeUrl.js";
 import timeoutPromise from "./FetchTimeoutPromise.js";
-
 // default timeout if timeout property in parameters is missing
 const DEFAULT_TIMEOUT = 30 * 1000;
 
@@ -51,7 +51,7 @@ export default class SpreadsheetMessenger {
     }
 
     send(url, parameters, success, failure) {
-        Preconditions.requireNonEmptyText(url, "url");
+        Preconditions.requireInstance(url, RelativeUrl, "url");
         Preconditions.requireObject(parameters, "parameters");
         Preconditions.requireFunction(success, "success");
         Preconditions.requireFunction(failure, "failure");
@@ -71,9 +71,9 @@ export default class SpreadsheetMessenger {
             });
 
         if(this.webworker){
-            this.postMessage(url, parametersWithDefaults, transactionIdHeader, success, failure);
+            this.postMessage(url.toString(), parametersWithDefaults, transactionIdHeader, success, failure);
         }else {
-            this.browserFetch(url, parametersWithDefaults, success, failure);
+            this.browserFetch(url.toString(), parametersWithDefaults, success, failure);
         }
     }
 

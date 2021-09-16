@@ -32,7 +32,7 @@ export default class SpreadsheetNameWidget extends SpreadsheetHistoryAwareStateW
         this.spreadsheetMetadataCrudRemover = this.props.spreadsheetMetadataCrud.addListener(this.onSpreadsheetMetadata.bind(this));
     }
 
-    onSpreadsheetMetadata(method, id, queryParameters, requestMetadata, responseMetadata) {
+    onSpreadsheetMetadata(method, id, url, requestMetadata, responseMetadata) {
         this.setState({
             metadata: responseMetadata,
             value: responseMetadata && responseMetadata.getIgnoringDefaults(SpreadsheetMetadata.SPREADSHEET_NAME),

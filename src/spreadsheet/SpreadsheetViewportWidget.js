@@ -80,7 +80,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
      * Includes logic to clear any present cells etc that are within any present window in the response SpreadsheetDelta
      * before updating the cells, cell to labels, labels etc.
      */
-    onSpreadsheetDelta(method, id, queryParameters, requestDelta, responseDelta) {
+    onSpreadsheetDelta(method, id, url, requestDelta, responseDelta) {
         const state = this.state;
 
         const viewportTable = this.viewportTable.current;
@@ -150,7 +150,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
                 rowHeights: state.rowHeights.setAll(responseDelta.rowHeights()),
             };
 
-            if(window && Equality.safeEquals(queryParameters, viewport.toLoadCellsQueryStringParameters(selection))){
+            if(window && Equality.safeEquals(url.queryParameters(), viewport.toLoadCellsQueryStringParameters(selection))){
                 Object.assign(
                     newState,
                     {
@@ -181,7 +181,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
     /**
      * If a label was saved o deleted refresh the viewport.
      */
-    onSpreadsheetLabel(method, id, queryParameters, requestLabel, responseLabel) {
+    onSpreadsheetLabel(method, id, url, requestLabel, responseLabel) {
         switch(method) {
             case "DELETE":
             case "POST":
@@ -207,7 +207,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
         }
     }
 
-    onSpreadsheetMetadata(method, id, queryParameters, requestMetadata, responseMetadata) {
+    onSpreadsheetMetadata(method, id, url, requestMetadata, responseMetadata) {
         this.setState({
             spreadsheetMetadata: responseMetadata,
         });
