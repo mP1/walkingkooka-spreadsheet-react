@@ -13,6 +13,7 @@ import Paper from '@material-ui/core/Paper';
 import Preconditions from "../../Preconditions.js";
 import PropTypes from 'prop-types';
 import React from 'react';
+import RelativeUrl from "../../net/RelativeUrl.js";
 import RoundingMode from "../../math/RoundingMode.js";
 import SpreadsheetFormatRequest from "../server/format/SpreadsheetFormatRequest.js";
 import SpreadsheetHistoryAwareStateWidget from "../history/SpreadsheetHistoryAwareStateWidget.js";
@@ -176,7 +177,7 @@ class SpreadsheetSettingsWidget extends SpreadsheetHistoryAwareStateWidget {
         return historyTokens;
     }
 
-    onSpreadsheetMetadata(method, id, queryParameters, requestMetadata, responseMetadata) {
+    onSpreadsheetMetadata(method, id, url, requestMetadata, responseMetadata) {
         this.setState({
             spreadsheetMetadata: responseMetadata,
         });
@@ -187,7 +188,7 @@ class SpreadsheetSettingsWidget extends SpreadsheetHistoryAwareStateWidget {
      */
     metadataFormatCreateDateTimeModifiedDateTime(request) {
         this.props.spreadsheetMetadataCrud.messenger.send(
-            "/api/spreadsheet/" + this.state.spreadsheetMetadata.getIgnoringDefaults(SpreadsheetMetadata.SPREADSHEET_ID) + "/format",
+            new RelativeUrl("/api/spreadsheet/" + this.state.spreadsheetMetadata.getIgnoringDefaults(SpreadsheetMetadata.SPREADSHEET_ID) + "/format", {} ),
             {
                 method: "POST",
                 body: JSON.stringify(request.toJson()),

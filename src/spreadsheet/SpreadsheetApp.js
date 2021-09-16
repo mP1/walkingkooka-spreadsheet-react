@@ -70,7 +70,10 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
                 if(method.toUpperCase() === "GET") {
                     url = url + "/" + SpreadsheetEngineEvaluation.FORCE_RECOMPUTE.nameKebabCase();
                 }
-                return url + RelativeUrl.toQueryString(queryStringParameters);
+                return new RelativeUrl(
+                    url,
+                    queryStringParameters
+                );
             },
             messenger,
             SpreadsheetDelta.fromJson,
@@ -80,7 +83,10 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
         this.spreadsheetLabelCrud = new SpreadsheetMessengerCrud(
             (method, label) => {
                 Preconditions.requireInstance(label, SpreadsheetLabelName, "label");
-                return this.spreadsheetMetadataApiUrl() + "/label/" + label;
+                return new RelativeUrl(
+                    this.spreadsheetMetadataApiUrl() + "/label/" + label,
+                    {}
+                );
             },
             messenger,
             SpreadsheetLabelMapping.fromJson,
@@ -88,7 +94,10 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
         );
 
         this.spreadsheetMetadataCrud = new SpreadsheetMessengerCrud(
-            (method, spreadsheetId) => "/api/spreadsheet/" + (spreadsheetId ? spreadsheetId : ""),
+            (method, spreadsheetId) => new RelativeUrl(
+                "/api/spreadsheet/" + (spreadsheetId ? spreadsheetId : ""),
+                    {}
+            ),
             messenger,
             SpreadsheetMetadata.fromJson,
             new ListenerCollection()
@@ -221,7 +230,7 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
         );
     }
 
-    onSpreadsheetMetadata(method, id, queryParameters, requestMetadata, responseMetadata) {
+    onSpreadsheetMetadata(method, id, url, requestMetadata, responseMetadata) {
         this.setState({
             spreadsheetId: responseMetadata && responseMetadata.getIgnoringDefaults(SpreadsheetMetadata.SPREADSHEET_ID),
             spreadsheetName: responseMetadata && responseMetadata.getIgnoringDefaults(SpreadsheetMetadata.SPREADSHEET_NAME),
@@ -328,7 +337,7 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
 
         this.performSpreadsheetDelta(
             "DELETE",
-            this.spreadsheetMetadataApiUrl() + selection.toDeleteUrl() + query,
+            RelativeUrl.parse(this.spreadsheetMetadataApiUrl() + selection.toDeleteUrl() + query),
             selection
         );
     }
@@ -341,7 +350,7 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
 
         this.performSpreadsheetDelta(
             "POST",
-            this.spreadsheetMetadataApiUrl() + selection.toInsertAfterUrl(count) + query,
+            RelativeUrl.parse(this.spreadsheetMetadataApiUrl() + selection.toInsertAfterUrl(count) + query),
             selection
         );
     }
@@ -356,7 +365,6 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
         const parameters = {
             method: method,
         };
-        const queryParameters = {};
         const requestValue = null;
 
         const failure = this.props.showError;
@@ -365,7 +373,7 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
             url,
             parameters,
             (json) => {
-                crud.fireResponse(method, id, queryParameters, requestValue, json)
+                crud.fireResponse(method, id, url, requestValue, json)
             },
             () => {
                 failure();
@@ -403,7 +411,7 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
         Preconditions.requireFunction(failure, "failure");
 
         this.messageSend(
-            this.spreadsheetMetadataApiUrl() + "/cell-reference/" + encodeURI(text) + "?count=" + count,
+            RelativeUrl.parse(this.spreadsheetMetadataApiUrl() + "/cell-reference/" + encodeURI(text) + "?count=" + count),
             {
                 method: "GET",
             },

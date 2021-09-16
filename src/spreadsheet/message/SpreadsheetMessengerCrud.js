@@ -38,7 +38,6 @@ export default class SpreadsheetMessengerCrud {
                 method: "GET",
             },
             id,
-            queryParameters,
             null,
             failure,
         );
@@ -57,7 +56,6 @@ export default class SpreadsheetMessengerCrud {
                 body: value.toJson ? JSON.stringify(value.toJson()) : value.toString(),
             },
             id,
-            {},
             value,
             failure
         );
@@ -75,7 +73,6 @@ export default class SpreadsheetMessengerCrud {
                 method: "DELETE",
             },
             id,
-            {},
             null,
             failure
         );
@@ -84,20 +81,20 @@ export default class SpreadsheetMessengerCrud {
     /**
      * Shared method by all public methods: get, post, delete, preparing and calling the messenger.
      */
-    send(url, parameters, id, queryParameters, requestValue, failure) {
+    send(url, parameters, id, requestValue, failure) {
         const method = parameters.method;
 
         this.messenger.send(
             url,
             parameters,
-            (json) => this.fireResponse(method, id, queryParameters, requestValue, json),
+            (json) => this.fireResponse(method, id, url, requestValue, json),
             failure,
         );
     }
 
-    fireResponse(method, id, queryParameters, requestValue, responseJson) {
+    fireResponse(method, id, url, requestValue, responseJson) {
         const responseValue = null != responseJson ? this.unmarshall(responseJson) : null;
-        this.listeners.fire(method, id, queryParameters, requestValue, responseValue);
+        this.listeners.fire(method, id, url, requestValue, responseValue);
     }
 
     addListener(listener) {
