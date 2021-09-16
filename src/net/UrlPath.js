@@ -64,7 +64,7 @@ export default class UrlPath extends SystemObject {
             }
         }
 
-        return new UrlPath(path, queryParameters, decoded);
+        return new UrlPath(path, queryParameters);
     }
 
     constructor(path, queryParameters) {
