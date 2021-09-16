@@ -233,6 +233,33 @@ testRemoveParameter(
     "/a/b?x=y"
 );
 
+// getParameterValues...................................................................................................
+
+function testGetParameterValues(url, name, values) {
+    test("url getParameterValues " + name + " " + JSON.stringify(values), () => {
+        expect(UrlPath.parse(url).getParameterValues(name))
+            .toStrictEqual(values);
+    });
+}
+
+testGetParameterValues(
+    "/a/b",
+    "unknown",
+    undefined
+);
+
+testGetParameterValues(
+    "/a/b?x=y",
+    "x",
+    ["y"]
+);
+
+testGetParameterValues(
+    "/a/b?q=r&x=1&x=2",
+    "x",
+    ["1", "2"]
+);
+
 // equals...............................................................................................................
 
 test("equals different path", () => {

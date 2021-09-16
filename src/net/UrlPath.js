@@ -98,6 +98,13 @@ export default class UrlPath extends SystemObject {
         );
     }
 
+    getParameterValues(name) {
+        Preconditions.requireText(name, "name");
+
+        const values = this.queryParameters()[name];
+        return values && values.slice();
+    }
+
     setParameterValues(name, values) {
         Preconditions.requireText(name, "name");
         Preconditions.requireArray(values, "values");
