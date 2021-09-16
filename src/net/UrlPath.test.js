@@ -200,6 +200,39 @@ testSetParameterValues(
     "/a/b?x=y&c=1&c=2"
 );
 
+// removeParameter...................................................................................................
+
+function testRemoveParameter(url, name, toString) {
+    test("url removeParameter " + name, () => {
+        expect(UrlPath.parse(url).removeParameter(name).toString())
+            .toStrictEqual(toString);
+    });
+}
+
+testRemoveParameter(
+    "/a/b",
+    "unknown",
+    "/a/b"
+);
+
+testRemoveParameter(
+    "/a/b?x=y",
+    "c",
+    "/a/b?x=y"
+);
+
+testRemoveParameter(
+    "/a/b?x=y&z=1",
+    "z",
+    "/a/b?x=y"
+);
+
+testRemoveParameter(
+    "/a/b?x=y&z=1&z=2",
+    "z",
+    "/a/b?x=y"
+);
+
 // equals...............................................................................................................
 
 test("equals different path", () => {
