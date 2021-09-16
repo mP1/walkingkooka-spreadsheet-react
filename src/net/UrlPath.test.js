@@ -136,3 +136,16 @@ test("equals different query parameters", () => {
     expect(UrlPath.parse("/same?different=1").equals(UrlPath.parse("/same?different=23")))
         .toBeFalse();
 });
+
+// toString...............................................................................................................
+
+function testToString(urlPath, toString) {
+    test("toString " + urlPath, () => {
+        expect(UrlPath.parse(urlPath).toString())
+            .toStrictEqual(toString);
+    });
+}
+
+testToString("/a/b", "/a/b");
+testToString("/a/b?", "/a/b");
+testToString("/a/b?x=y", "/a/b?x=y");
