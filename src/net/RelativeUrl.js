@@ -5,7 +5,7 @@ import SystemObject from "../SystemObject.js";
 /**
  * Represents a url path with methods to get the path and parameters.
  */
-export default class UrlPath extends SystemObject {
+export default class RelativeUrl extends SystemObject {
 
     static toQueryString(parameters) {
         Preconditions.requireObject(parameters, "parameters");
@@ -64,7 +64,7 @@ export default class UrlPath extends SystemObject {
             }
         }
 
-        return new UrlPath(path, queryParameters);
+        return new RelativeUrl(path, queryParameters);
     }
 
     constructor(path, queryParameters) {
@@ -80,7 +80,7 @@ export default class UrlPath extends SystemObject {
     setPath(path) {
         Preconditions.requireText(path, "path");
 
-        return new UrlPath(path, this.queryParameters());
+        return new RelativeUrl(path, this.queryParameters());
     }
 
     queryParameters() {
@@ -92,7 +92,7 @@ export default class UrlPath extends SystemObject {
 
         const copy = {};
 
-        return new UrlPath(
+        return new RelativeUrl(
             this.path(),
             Object.assign(copy, queryParameters)
         );
@@ -129,12 +129,12 @@ export default class UrlPath extends SystemObject {
 
     equals(other) {
         return this === other ||
-            (other instanceof UrlPath &&
+            (other instanceof RelativeUrl &&
                 this.path() === other.path() &&
                 Equality.safeEquals(this.queryParameters(), other.queryParameters()));
     }
 
     toString() {
-        return this.path() + UrlPath.toQueryString(this.queryParameters());
+        return this.path() + RelativeUrl.toQueryString(this.queryParameters());
     }
 }
