@@ -135,6 +135,11 @@ export default class SpreadsheetColumnOrRowReference extends SpreadsheetSelectio
         return null;
     }
 
+    // move the column or row to the right/down by count.
+    viewportPostInsertAfterSelection(count) {
+        return this.addSaturated(count);
+    }
+
     selectOptionText() {
         return this.toString();
     }

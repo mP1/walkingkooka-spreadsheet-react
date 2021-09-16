@@ -41,6 +41,17 @@ export default class SpreadsheetSelection extends SystemObject {
         SystemObject.throwUnsupportedOperation();
     }
 
+    // 0 = ""
+    // 1 == api
+    // 2 == spreadsheet
+    // 3 == $spreadsheet-id
+    // 4 == column == Selection
+    // 5 == $selection
+    // 6 == before == insert-action.toUrl
+    isInsertBeforePostUrl(urlPaths) {
+        SystemObject.throwUnsupportedOperation();
+    }
+
     /**
      * This is the text that will appear in the {@link SpreadsheetSelectAutocompleteWidget}.
      */
@@ -193,6 +204,10 @@ export default class SpreadsheetSelection extends SystemObject {
      * Returns an array of allowed anchors for this selection.
      */
     anchors() {
+        SystemObject.throwUnsupportedOperation();
+    }
+
+    viewportPostInsertAfterSelection(count) {
         SystemObject.throwUnsupportedOperation();
     }
 

@@ -37,6 +37,15 @@ export default class SpreadsheetColumnOrRowReferenceRange extends SpreadsheetSel
         return this.setAnchor(anchor);
     }
 
+    // move the begin and end column or row to the right/down by count.
+    viewportPostInsertAfterSelection(count) {
+        const begin = this.begin();
+        const end = this.end();
+
+        return this.setEnd(end.addSaturated(count)).setBegin(begin.addSaturated(count));
+    }
+
+
     // JSON............................................................................................................
 
     toJson() {
