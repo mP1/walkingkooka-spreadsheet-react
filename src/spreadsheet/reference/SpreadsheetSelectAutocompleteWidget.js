@@ -313,7 +313,7 @@ export default class SpreadsheetSelectAutocompleteWidget extends SpreadsheetHist
         }
 
         return <Button id={id}
-                       disabled={disabled}
+                       disabled={!!disabled}
                        color="primary"
                        href={link}>
             {text}
