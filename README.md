@@ -60,18 +60,136 @@ created and used appropriate. These have not be documented, projects will be cre
 ## History hash format
 
 Components within a hash that begin with dollar sign '$' represent a variable of some sort related to the context. Other
-components are actual literals.
+components are actual literals. Note the examples below dont show values with url-encoding but in reality string literals will be url-encoded.
 
-- /$spreadsheet-id/$spreadsheet-name *view the selected spreadsheet*
-- /$spreadsheet-id/$spreadsheet-name/name *edit the spreadsheet name*
-- /$spreadsheet-id/$spreadsheet-name/cell/$cell-reference-OR-label-name *navigates to the given $cell-reference or $label-name*
-- /$spreadsheet-id/$spreadsheet-name/cell/$cell-reference-OR-label-name/formula *editing of the cell formula*
-- /$spreadsheet-id/$spreadsheet-name/column/$column-reference-OR-column-reference-range *selects the column or column range*
-- /$spreadsheet-id/$spreadsheet-name/label/$label-name / *creates / edits the give $label-name*
-- /$spreadsheet-id/$spreadsheet-name/row/$row-reference-OR-row-reference-range *selects the row or row range*
-- /$spreadsheet-id/$spreadsheet-name/select *displays modal prompt user to enter cell or label with navigation / editing options*
-- /$spreadsheet-id/$spreadsheet-name/settings *open the settings panel*
-- /$spreadsheet-id/$spreadsheet-name/settings/$section *open the settings panel and expands the section*
+
+
+### Design goals
+
+The UI is being built so that each button or link results in an update to the history hash, this hash is watched and causes
+actions to happen. The goal is that ALL spreadsheet actions will be driven primarily by updating the history hash. This means
+the browser history for this site will actually contain an audit log of all major edit and similar actions that occurred to the spreadsheet.
+
+
+### Available history hash tokens
+
+All the urls below assume the first two path components are the following:
+
+- spreadsheet id
+- spreadsheet name
+
+The history hash tokens are evolving and more will be available shortly to make server apis available within the UI.
+
+
+
+#### /spreadsheet-id/spreadsheet-name/name
+
+> /#123/Untitled/name
+
+Activates editing of the spreadsheet name.
+
+
+
+#### /spreadsheet-id/spreadsheet-name/cell/cell-or-cell-range-or-label
+
+> /#123/Untitled/cell/A1
+> /#123/Untitled/cell/B2:C3
+> /#123/Untitled/cell/Label123
+
+Following the selection of a cell, the following commands are possible
+
+- /formula Loads the formula text box with the current value for this cell
+- /formula/save/$formula Saves the given $formula for the cell.
+
+> /#123/Untitled/cell/D4/formula
+> /#123/Untitled/cell/E5/formula/save/=1+2
+
+
+
+#### /spreadsheet-id/spreadsheet-name/column/column-or-column-range
+
+> /#123/Untitled/column/A
+> /#123/Untitled/column/B:C
+
+Selects the column or column range.
+
+Following the selection of a column or column range, the following commands are possible
+
+- /delete Deletes the selected column or column range
+- /insert-after/$count Inserts the requested number of columns after the column/column range
+- /insert-before/$count Inserts the requested number of columns before the column/column range. Once the operation completes the selected column/column-range will be updated to account for the insertion.
+
+> /#123/Untitled/column/A/delete
+> /#123/Untitled/column/B:C/delete
+
+> /#123/Untitled/column/A/insert-after/2
+> /#123/Untitled/column/B:C/insert-after/2
+
+> /#123/Untitled/column/A/insert-before/3
+> /#123/Untitled/column/B:C/insert-before/3
+
+
+
+#### /spreadsheet-id/spreadsheet-name/label/label-name
+
+Supports numerous actions relating to creating, updating or deleting a label mapping to another cell/cell-range or label.
+
+- /label-name Opens a dialog allowing entering of a new label mapping.
+- /$old-label-name/save/$new-label-name/$target Saves or updates the OLD label name with the new label name and target cell/cell-range or label.
+- /$old-label-name/delete Deletes $old-label-name if it exists.
+
+> /#123/Untitled/label/Label123
+> /#123/Untitled/label/OldLabelName1/save/NewLabelName2/C3
+> /#123/Untitled/label/Label456/delete
+
+
+
+#### /spreadsheet-id/spreadsheet-name/row/row-or-row-range
+
+> /#123/Untitled/row/1
+> /#123/Untitled/row/2:3
+
+Selects the row or row range.
+
+Following the selection of a row or row range, the following commands are possible
+
+- /delete Deletes the selected row or row range
+- /insert-after/$count Inserts the requested number of rows after the row/row range
+- /insert-before/$count Inserts the requested number of rows before the row/row range. Once the operation completes the selected row/row-range will be updated to account for the insertion.
+
+> /#123/Untitled/row/1/delete
+> /#123/Untitled/row/2:3/delete
+
+> /#123/Untitled/row/1/insert-after/2
+> /#123/Untitled/row/2:3/insert-after/2
+
+> /#123/Untitled/row/1/insert-before/3
+> /#123/Untitled/row/2:3/insert-before/3
+
+
+
+#### /spreadsheet-id/spreadsheet-name/select
+
+Opens a dialog that allows entering of a selection such as cell, cell-range, column, column-range, label, row or row-range. As text is entered
+buttons with links will be enabled to select or edit (for labels).
+
+Note the labels will have links as described above for the various label components. The Goto Label button will have a link of
+
+> /#123/Untitled/cell/Label123
+
+
+
+#### /spreadsheet-id/spreadsheet-name/settings
+
+Opens the right panel that holds global or shared settings for this spreadsheet.
+
+- Metadata
+- Text
+- Number
+- Date/Time
+- Default Cell style(s)
+
+Each of these sections will hold appropriate key/values. For example Number will have default parsing and formatting patterns.
 
 
 
