@@ -93,7 +93,9 @@ Activates editing of the spreadsheet name.
 #### /spreadsheet-id/spreadsheet-name/cell/cell-or-cell-range-or-label
 
 > /#123/Untitled/cell/A1
+> 
 > /#123/Untitled/cell/B2:C3
+> 
 > /#123/Untitled/cell/Label123
 
 Following the selection of a cell, the following commands are possible
@@ -102,6 +104,7 @@ Following the selection of a cell, the following commands are possible
 - /formula/save/$formula Saves the given $formula for the cell.
 
 > /#123/Untitled/cell/D4/formula
+> 
 > /#123/Untitled/cell/E5/formula/save/=1+2
 
 
@@ -109,6 +112,7 @@ Following the selection of a cell, the following commands are possible
 #### /spreadsheet-id/spreadsheet-name/column/column-or-column-range
 
 > /#123/Untitled/column/A
+> 
 > /#123/Untitled/column/B:C
 
 Selects the column or column range.
@@ -120,12 +124,15 @@ Following the selection of a column or column range, the following commands are 
 - /insert-before/$count Inserts the requested number of columns before the column/column range. Once the operation completes the selected column/column-range will be updated to account for the insertion.
 
 > /#123/Untitled/column/A/delete
+> 
 > /#123/Untitled/column/B:C/delete
 
 > /#123/Untitled/column/A/insert-after/2
+> 
 > /#123/Untitled/column/B:C/insert-after/2
 
 > /#123/Untitled/column/A/insert-before/3
+> 
 > /#123/Untitled/column/B:C/insert-before/3
 
 
@@ -139,7 +146,9 @@ Supports numerous actions relating to creating, updating or deleting a label map
 - /$old-label-name/delete Deletes $old-label-name if it exists.
 
 > /#123/Untitled/label/Label123
+> 
 > /#123/Untitled/label/OldLabelName1/save/NewLabelName2/C3
+> 
 > /#123/Untitled/label/Label456/delete
 
 
@@ -147,6 +156,7 @@ Supports numerous actions relating to creating, updating or deleting a label map
 #### /spreadsheet-id/spreadsheet-name/row/row-or-row-range
 
 > /#123/Untitled/row/1
+> 
 > /#123/Untitled/row/2:3
 
 Selects the row or row range.
@@ -158,12 +168,15 @@ Following the selection of a row or row range, the following commands are possib
 - /insert-before/$count Inserts the requested number of rows before the row/row range. Once the operation completes the selected row/row-range will be updated to account for the insertion.
 
 > /#123/Untitled/row/1/delete
+> 
 > /#123/Untitled/row/2:3/delete
 
 > /#123/Untitled/row/1/insert-after/2
+> 
 > /#123/Untitled/row/2:3/insert-after/2
 
 > /#123/Untitled/row/1/insert-before/3
+> 
 > /#123/Untitled/row/2:3/insert-before/3
 
 
@@ -191,7 +204,17 @@ Opens the right panel that holds global or shared settings for this spreadsheet.
 
 Each of these sections will hold appropriate key/values. For example Number will have default parsing and formatting patterns.
 
-
+> /#123/Untitled/settings/
+> 
+> /#123/Untitled/settings/Metadata
+>
+> /#123/Untitled/settings/Text
+> 
+> /#123/Untitled/settings/Number
+>
+> /#123/Untitled/settings/Date-Time
+>
+> /#123/Untitled/settings/Style
 
 ## Value types
 
