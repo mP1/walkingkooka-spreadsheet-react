@@ -1948,6 +1948,104 @@ context(
             cellFormattedTextCheck("E7", "Moved");
             cellFormattedTextCheck(E5, "");
         });
+
+        // selection insert-before.............................................................................................
+
+        it("Column select insert-before hash", () => {
+            spreadsheetEmpty();
+
+            renderWait(100);
+
+            cellClick(E5);
+
+            formulaText()
+                .click()
+                .wait(FORMULA_TEXT_CLICK_WAIT)
+                .type("{selectall}'Moved{enter}");
+
+            column("B")
+                .click();
+
+            hashAppendWithoutCheck("/insert-before/1");
+
+            hash()
+                .should('match', /.*\/.*\/column\/C/);
+
+            cellFormattedTextCheck("F5", "Moved");
+            cellFormattedTextCheck(E5, "");
+        });
+
+        it("Column range select insert-before hash", () => {
+            spreadsheetEmpty();
+
+            renderWait(100);
+
+            cellClick(E5);
+
+            formulaText()
+                .click()
+                .wait(FORMULA_TEXT_CLICK_WAIT)
+                .type("{selectall}'Moved{enter}");
+
+            column("B")
+                .click();
+
+            hashAppendWithoutCheck(":C/insert-before/2");
+
+            hash()
+                .should('match', /.*\/.*\/column\/D:E/);
+
+            cellFormattedTextCheck("G5", "Moved");
+            cellFormattedTextCheck(E5, "");
+        });
+
+        it("Row select insert-before hash", () => {
+            spreadsheetEmpty();
+
+            renderWait(100);
+
+            cellClick(E5);
+
+            formulaText()
+                .click()
+                .wait(FORMULA_TEXT_CLICK_WAIT)
+                .type("{selectall}'Moved{enter}");
+
+            row("2")
+                .click();
+
+            hashAppendWithoutCheck("/insert-before/1");
+
+            hash()
+                .should('match', /.*\/.*\/row\/3/);
+
+            cellFormattedTextCheck("E6", "Moved");
+            cellFormattedTextCheck(E5, "");
+        });
+
+        it("Row range select insert-before hash", () => {
+            spreadsheetEmpty();
+
+            renderWait(100);
+
+            cellClick(E5);
+
+            formulaText()
+                .click()
+                .wait(FORMULA_TEXT_CLICK_WAIT)
+                .type("{selectall}'Moved{enter}");
+
+            row("2")
+                .click();
+
+            hashAppendWithoutCheck(":3/insert-before/2");
+
+            hash()
+                .should('match', /.*\/.*\/row\/4:5/);
+
+            cellFormattedTextCheck("E7", "Moved");
+            cellFormattedTextCheck(E5, "");
+        });
         
         // selection then different viewport selections.................................................................
 

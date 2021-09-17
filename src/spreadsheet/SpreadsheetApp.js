@@ -312,6 +312,7 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
                                            deleteSelection={this.deleteSelection.bind(this)}
                                            history={history}
                                            insertAfterSelection={this.insertAfterSelection.bind(this)}
+                                           insertBeforeSelection={this.insertBeforeSelection.bind(this)}
                                            ref={this.viewport}
                                            messenger={messenger}
                                            spreadsheetDeltaCellCrud={spreadsheetDeltaCellCrud}
@@ -355,6 +356,19 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
         );
     }
 
+    /**
+     * Does a POST to a url which will insert before the requested count columns or rows.
+     */
+    insertBeforeSelection(selection, count, window) {
+        const query = window ? "?window=" + window : "";
+
+        this.performSpreadsheetDelta(
+            "POST",
+            RelativeUrl.parse(this.spreadsheetMetadataApiUrl() + selection.toInsertBeforeUrl(count) + query),
+            selection
+        );
+    }
+    
     /**
      * Invokes a service which will return a SpreadsheetDelta. On both success and failure the history hash the
      * selection & selection-action tokens will be cleared.

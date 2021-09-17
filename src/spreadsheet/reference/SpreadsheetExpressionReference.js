@@ -1,9 +1,15 @@
 import SpreadsheetSelection from "./SpreadsheetSelection.js";
+import SystemObject from "../../SystemObject.js";
 
 /**
  * Common base class for cell-range, cell reference and label name.
  */
 export default class SpreadsheetExpressionReference extends SpreadsheetSelection {
+
+    // insertBefore not supported by cell or cell range or label
+    isInsertBeforePostUrl(urlPaths) {
+        return false;
+    }
 
     selectOptionText() {
         return this.toString();

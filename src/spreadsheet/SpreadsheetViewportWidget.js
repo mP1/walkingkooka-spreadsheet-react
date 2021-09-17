@@ -10,6 +10,8 @@ import Slider from "@material-ui/core/Slider";
 import SpreadsheetCellColumnOrRowParse from "./reference/SpreadsheetCellColumnOrRowParse.js";
 import SpreadsheetCellRange from "./reference/SpreadsheetCellRange.js";
 import SpreadsheetCellReference from "./reference/SpreadsheetCellReference.js";
+import SpreadsheetColumnOrRowInsertBeforeHistoryHashToken
+    from "./history/SpreadsheetColumnOrRowInsertBeforeHistoryHashToken.js";
 import SpreadsheetColumnReference from "./reference/SpreadsheetColumnReference.js";
 import SpreadsheetFormulaLoadAndEditHistoryHashToken from "./history/SpreadsheetFormulaLoadAndEditHistoryHashToken.js";
 import SpreadsheetHistoryAwareStateWidget from "./history/SpreadsheetHistoryAwareStateWidget.js";
@@ -169,6 +171,34 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
                             selectionAction: null,
                         }
                     );
+                    break;
+                case "POST":
+                    const historyTokens = this.props.history.tokens();
+                    const selectionAction = historyTokens[SpreadsheetHistoryHash.SELECTION_ACTION];
+                    if(selectionAction instanceof SpreadsheetColumnOrRowInsertBeforeHistoryHashToken){
+                        const urlPaths = url.path().split("/");
+                        if(urlPaths.length === 7){
+                            // 0 = ""
+                            // 1 == api
+                            // 2 == spreadsheet
+                            // 3 == $spreadsheet-id
+                            // 4 == column == Selection
+                            // 5 == $selection
+                            // 6 == before == insert-action.toUrl
+                            if(urlPaths[3] === historyTokens[SpreadsheetHistoryHash.SPREADSHEET_ID].toString()){
+                                const selection = historyTokens[SpreadsheetHistoryHash.SELECTION];
+                                if(selection && selection.isInsertBeforePostUrl(urlPaths)){
+                                    Object.assign(
+                                        newState,
+                                        {
+                                            selection: selection.viewportPostInsertAfterSelection(selectionAction.count()),
+                                            selectionAction: null,
+                                        }
+                                    );
+                                }
+                            }
+                        }
+                    }
                     break;
                 default:
                     break;
@@ -388,6 +418,13 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
      */
     insertAfterSelection(selection, count) {
         this.props.insertAfterSelection(selection, count);
+    }
+
+    /**
+     * Performs the insert-before operation, leaving the selection unchanged.
+     */
+    insertBeforeSelection(selection, count) {
+        this.props.insertBeforeSelection(selection, count);
     }
 
     loadCells(viewport, selection, anchor) {
