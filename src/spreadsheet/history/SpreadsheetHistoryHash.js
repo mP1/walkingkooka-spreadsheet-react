@@ -55,7 +55,7 @@ function isSettingsToken(token) {
 }
 
 function isColumnOrRowScalarOrRange(test) {
-    return test.isColumnOrRowScalarOrRange && test.isColumnOrRowScalarOrRange();
+    return test && test.isColumnOrRowScalarOrRange && test.isColumnOrRowScalarOrRange();
 }
 
 function isAnchorAndColumnOrRowAny(previous, selection) {
@@ -181,6 +181,7 @@ export default class SpreadsheetHistoryHash {
                                 labelAction = SpreadsheetLabelMappingDeleteHistoryHashToken.INSTANCE;
                                 previous = null;
                                 valid = true;
+                                break;
                             }
                             if(isColumnOrRowScalarOrRange(previous) || isAnchorAndColumnOrRowAny(previous, selection)){
                                 selectionAction = SpreadsheetColumnOrRowDeleteHistoryHashToken.INSTANCE;
