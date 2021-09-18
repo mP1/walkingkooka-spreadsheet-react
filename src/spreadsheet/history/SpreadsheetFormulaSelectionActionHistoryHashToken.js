@@ -1,7 +1,7 @@
-import SpreadsheetSelectionActionHistoryHashToken from "./SpreadsheetSelectionActionHistoryHashToken.js";
+import SpreadsheetCellSelectionActionHistoryHashToken from "./SpreadsheetCellSelectionActionHistoryHashToken.js";
 
 /**
  * Base for all formula actions
  */
-export default class SpreadsheetFormulaSelectionActionHistoryHashToken extends SpreadsheetSelectionActionHistoryHashToken {
+export default class SpreadsheetFormulaSelectionActionHistoryHashToken extends SpreadsheetCellSelectionActionHistoryHashToken {
 }
