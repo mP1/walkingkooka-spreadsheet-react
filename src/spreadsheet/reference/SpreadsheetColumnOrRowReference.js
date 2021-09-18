@@ -94,6 +94,14 @@ export default class SpreadsheetColumnOrRowReference extends SpreadsheetSelectio
         return this.value() - other.value();
     }
 
+    // selection........................................................................................................
+
+    isColumnOrRowScalarOrRange() {
+        return true;
+    }
+
+    // selection........................................................................................................
+
     /**
      * Renders a TABLE that may be highlighted.
      */

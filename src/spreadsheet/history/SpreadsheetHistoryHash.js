@@ -6,8 +6,6 @@ import SpreadsheetCellReferenceOrLabelName from "../reference/SpreadsheetCellRef
 import spreadsheetCellReferenceOrLabelNameParse from "../reference/SpreadsheetCellReferenceOrLabelNameParse.js";
 import SpreadsheetColumnOrRowSelectionActionHistoryHashToken
     from "./SpreadsheetColumnOrRowSelectionActionHistoryHashToken.js";
-import SpreadsheetColumnOrRowReference from "../reference/SpreadsheetColumnOrRowReference.js";
-import SpreadsheetColumnOrRowReferenceRange from "../reference/SpreadsheetColumnOrRowReferenceRange.js";
 import SpreadsheetColumnOrRowDeleteHistoryHashToken from "./SpreadsheetColumnOrRowDeleteHistoryHashToken.js";
 import SpreadsheetColumnOrRowInsertAfterHistoryHashToken from "./SpreadsheetColumnOrRowInsertAfterHistoryHashToken.js";
 import SpreadsheetColumnOrRowInsertBeforeHistoryHashToken
@@ -56,12 +54,12 @@ function isSettingsToken(token) {
     return valid;
 }
 
-function isColumnOrRowAny(test) {
-    return test instanceof SpreadsheetColumnOrRowReference || test instanceof SpreadsheetColumnOrRowReferenceRange;
+function isColumnOrRowScalarOrRange(test) {
+    return test.isColumnOrRowScalarOrRange && test.isColumnOrRowScalarOrRange();
 }
 
 function isAnchorAndColumnOrRowAny(previous, selection) {
-    return previous instanceof SpreadsheetViewportSelectionAnchor && isColumnOrRowAny(selection);
+    return previous instanceof SpreadsheetViewportSelectionAnchor && isColumnOrRowScalarOrRange(selection);
 }
 
 /**
@@ -184,14 +182,14 @@ export default class SpreadsheetHistoryHash {
                                 previous = null;
                                 valid = true;
                             }
-                            if(isColumnOrRowAny(previous) || isAnchorAndColumnOrRowAny(previous, selection)){
+                            if(isColumnOrRowScalarOrRange(previous) || isAnchorAndColumnOrRowAny(previous, selection)){
                                 selectionAction = SpreadsheetColumnOrRowDeleteHistoryHashToken.INSTANCE;
                                 previous = null;
                                 valid = true;
                             }
                             break;
                         case SpreadsheetHistoryHash.INSERT_AFTER:
-                            if((isColumnOrRowAny(previous) || isAnchorAndColumnOrRowAny(previous, selection)) && tokens.length > 0){
+                            if((isColumnOrRowScalarOrRange(previous) || isAnchorAndColumnOrRowAny(previous, selection)) && tokens.length > 0){
                                 const insertAfterCount = tokens.shift();
                                 if(!Number.isNaN(Number(insertAfterCount))){
                                     try {
@@ -205,7 +203,7 @@ export default class SpreadsheetHistoryHash {
                             }
                             break;
                         case SpreadsheetHistoryHash.INSERT_BEFORE:
-                            if((isColumnOrRowAny(previous) || isAnchorAndColumnOrRowAny(previous, selection)) && tokens.length > 0){
+                            if((isColumnOrRowScalarOrRange(previous) || isAnchorAndColumnOrRowAny(previous, selection)) && tokens.length > 0){
                                 const insertBeforeCount = tokens.shift();
                                 if(!Number.isNaN(Number(insertBeforeCount))){
                                     try {
@@ -392,7 +390,7 @@ export default class SpreadsheetHistoryHash {
                             verified[SpreadsheetHistoryHash.SELECTION_ANCHOR] = selectionAnchor;
                         }
 
-                        if(isColumnOrRowAny(selection) && selectionAction instanceof SpreadsheetColumnOrRowSelectionActionHistoryHashToken){
+                        if(isColumnOrRowScalarOrRange(selection) && selectionAction instanceof SpreadsheetColumnOrRowSelectionActionHistoryHashToken){
                             verified[SpreadsheetHistoryHash.SELECTION_ACTION] = selectionAction;
                         }
 

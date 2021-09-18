@@ -13,6 +13,13 @@ export default class SpreadsheetSelection extends SystemObject {
         throw new Error("Invalid character " + CharSequences.quoteAndEscape(Character.fromJson(c)) + " at " + pos);
     }
 
+    /**
+     * Returns true if the selection is a column/row or column-range/row-range.
+     */
+    isColumnOrRowScalarOrRange() {
+        return false;
+    }
+
     testCell(cellReference) {
         SystemObject.throwUnsupportedOperation();
     }
