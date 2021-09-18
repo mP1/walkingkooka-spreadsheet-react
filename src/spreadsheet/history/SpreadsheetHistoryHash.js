@@ -23,6 +23,7 @@ import SpreadsheetRowReferenceRange from "../reference/SpreadsheetRowReferenceRa
 import SpreadsheetSelection from "../reference/SpreadsheetSelection.js";
 import SpreadsheetSelectionActionHistoryHashToken from "./SpreadsheetSelectionActionHistoryHashToken.js";
 import SpreadsheetViewportSelectionAnchor from "../reference/SpreadsheetViewportSelectionAnchor.js";
+import SpreadsheetHistoryHashTokens from "./SpreadsheetHistoryHashTokens.js";
 
 function tokenize(pathname) {
     return pathname && pathname.startsWith("/") ?
@@ -40,11 +41,11 @@ function isSettingsToken(token) {
     var valid;
 
     switch(token) {
-        case SpreadsheetHistoryHash.SETTINGS_METADATA:
-        case SpreadsheetHistoryHash.SETTINGS_TEXT:
-        case SpreadsheetHistoryHash.SETTINGS_NUMBER:
-        case SpreadsheetHistoryHash.SETTINGS_DATE_TIME:
-        case SpreadsheetHistoryHash.SETTINGS_STYLE:
+        case SpreadsheetHistoryHashTokens.SETTINGS_METADATA:
+        case SpreadsheetHistoryHashTokens.SETTINGS_TEXT:
+        case SpreadsheetHistoryHashTokens.SETTINGS_NUMBER:
+        case SpreadsheetHistoryHashTokens.SETTINGS_DATE_TIME:
+        case SpreadsheetHistoryHashTokens.SETTINGS_STYLE:
             valid = true;
             break;
         default:
@@ -65,39 +66,7 @@ function isAnchorAndColumnOrRowAny(previous, selection) {
 /**
  * A collection of utilities that support history hash.
  */
-export default class SpreadsheetHistoryHash {
-
-    static SPREADSHEET_ID = "spreadsheet-id";
-    static SPREADSHEET_NAME = "spreadsheet-name";
-    static SPREADSHEET_NAME_EDIT = "name";
-
-    static SELECTION = "selection";
-    static SELECTION_ANCHOR = "selection-anchor";
-    static SELECTION_ACTION = "selection-action";
-
-    static CELL = "cell";
-    static CELL_FORMULA = "formula";
-    static COLUMN = "column";
-    static ROW = "row";
-
-    static DELETE = "delete";
-    static INSERT_AFTER = "insert-after";
-    static INSERT_BEFORE = "insert-before";
-    static SAVE = "save";
-
-    static LABEL = "label";
-    static LABEL_ACTION = "label-action";
-
-    static SELECT = "select";
-    static SETTINGS = "settings";
-    static SETTINGS_SECTION = "settings-section";
-
-    // these tokens are optional and only one may appear after SETTINGS
-    static SETTINGS_METADATA = "metadata";
-    static SETTINGS_TEXT = "text";
-    static SETTINGS_NUMBER = "number";
-    static SETTINGS_DATE_TIME = "date-time";
-    static SETTINGS_STYLE = "style";
+export default class SpreadsheetHistoryHash extends SpreadsheetHistoryHashTokens {
 
     /**
      * Parsers the path extracting tokens returning an object with valid tokens. Invalid combination will be removed.
@@ -111,7 +80,7 @@ export default class SpreadsheetHistoryHash {
         const historyHashTokens = {};
 
         if(spreadsheetId){
-            historyHashTokens[SpreadsheetHistoryHash.SPREADSHEET_ID] = spreadsheetId;
+            historyHashTokens[SpreadsheetHistoryHashTokens.SPREADSHEET_ID] = spreadsheetId;
 
             var name;
             try {
@@ -120,7 +89,7 @@ export default class SpreadsheetHistoryHash {
             }
 
             if(name) {
-                historyHashTokens[SpreadsheetHistoryHash.SPREADSHEET_NAME] = name;
+                historyHashTokens[SpreadsheetHistoryHashTokens.SPREADSHEET_NAME] = name;
 
                 var valid = true;
 
@@ -147,12 +116,12 @@ export default class SpreadsheetHistoryHash {
                         case "":
                             valid = tokens.length === 0;
                             break;
-                        case SpreadsheetHistoryHash.SPREADSHEET_NAME_EDIT:
+                        case SpreadsheetHistoryHashTokens.SPREADSHEET_NAME_EDIT:
                             nameEdit = true;
                             previous = null;
                             valid = true;
                             break;
-                        case SpreadsheetHistoryHash.CELL:
+                        case SpreadsheetHistoryHashTokens.CELL:
                             if(!selection && tokens.length > 0){
                                 try {
                                     selection = spreadsheetCellReferenceOrLabelNameParse(tokens.shift());
@@ -163,14 +132,14 @@ export default class SpreadsheetHistoryHash {
                                 }
                             }
                             break;
-                        case SpreadsheetHistoryHash.CELL_FORMULA:
+                        case SpreadsheetHistoryHashTokens.CELL_FORMULA:
                             if(previous instanceof SpreadsheetCellReferenceOrLabelName){
                                 selectionAction = new SpreadsheetFormulaLoadAndEditHistoryHashToken();
                                 previous = selectionAction;
                                 valid = true;
                             }
                             break;
-                        case SpreadsheetHistoryHash.COLUMN:
+                        case SpreadsheetHistoryHashTokens.COLUMN:
                             if(!selection && tokens.length > 0){
                                 try {
                                     selection = SpreadsheetColumnReferenceRange.parse(tokens.shift())
@@ -182,7 +151,7 @@ export default class SpreadsheetHistoryHash {
                                 }
                             }
                             break;
-                        case SpreadsheetHistoryHash.DELETE:
+                        case SpreadsheetHistoryHashTokens.DELETE:
                             if(label){
                                 labelAction = SpreadsheetLabelMappingDeleteHistoryHashToken.INSTANCE;
                                 previous = null;
@@ -195,7 +164,7 @@ export default class SpreadsheetHistoryHash {
                                 valid = true;
                             }
                             break;
-                        case SpreadsheetHistoryHash.INSERT_AFTER:
+                        case SpreadsheetHistoryHashTokens.INSERT_AFTER:
                             if((isColumnOrRowScalarOrRange(previous) || isAnchorAndColumnOrRowAny(previous, selection)) && tokens.length > 0){
                                 const insertAfterCount = tokens.shift();
                                 if(!Number.isNaN(Number(insertAfterCount))){
@@ -209,7 +178,7 @@ export default class SpreadsheetHistoryHash {
                                 }
                             }
                             break;
-                        case SpreadsheetHistoryHash.INSERT_BEFORE:
+                        case SpreadsheetHistoryHashTokens.INSERT_BEFORE:
                             if((isColumnOrRowScalarOrRange(previous) || isAnchorAndColumnOrRowAny(previous, selection)) && tokens.length > 0){
                                 const insertBeforeCount = tokens.shift();
                                 if(!Number.isNaN(Number(insertBeforeCount))){
@@ -223,7 +192,7 @@ export default class SpreadsheetHistoryHash {
                                 }
                             }
                             break;
-                        case SpreadsheetHistoryHash.LABEL:
+                        case SpreadsheetHistoryHashTokens.LABEL:
                             if(tokens.length > 0){
                                 try {
                                     label = SpreadsheetLabelName.parse(tokens.shift());
@@ -234,7 +203,7 @@ export default class SpreadsheetHistoryHash {
                                 }
                             }
                             break;
-                        case SpreadsheetHistoryHash.ROW:
+                        case SpreadsheetHistoryHashTokens.ROW:
                             if(!selection && tokens.length > 0){
                                 try {
                                     selection = SpreadsheetRowReferenceRange.parse(tokens.shift())
@@ -246,7 +215,7 @@ export default class SpreadsheetHistoryHash {
                                 }
                             }
                             break;
-                        case SpreadsheetHistoryHash.SAVE:
+                        case SpreadsheetHistoryHashTokens.SAVE:
                             if(label && tokens.length >= 2){
                                 labelAction = new SpreadsheetLabelMappingSaveHistoryHashToken(
                                     SpreadsheetLabelName.parse(
@@ -269,12 +238,12 @@ export default class SpreadsheetHistoryHash {
                             }
                             previous = null;
                             break;
-                        case SpreadsheetHistoryHash.SELECT:
+                        case SpreadsheetHistoryHashTokens.SELECT:
                             select = true;
                             previous = null;
                             valid = true;
                             break;
-                        case SpreadsheetHistoryHash.SETTINGS:
+                        case SpreadsheetHistoryHashTokens.SETTINGS:
                             settings = true;
                             const possibleSection = tokens.shift();
                             if(null != possibleSection){
@@ -302,31 +271,31 @@ export default class SpreadsheetHistoryHash {
 
                 if(valid){
                     if(nameEdit){
-                        historyHashTokens[SpreadsheetHistoryHash.SPREADSHEET_NAME_EDIT] = nameEdit;
+                        historyHashTokens[SpreadsheetHistoryHashTokens.SPREADSHEET_NAME_EDIT] = nameEdit;
                     }
                     if(selection){
-                        historyHashTokens[SpreadsheetHistoryHash.SELECTION] = selection;
+                        historyHashTokens[SpreadsheetHistoryHashTokens.SELECTION] = selection;
                         if(selectionAnchor){
-                            historyHashTokens[SpreadsheetHistoryHash.SELECTION_ANCHOR] = selectionAnchor;
+                            historyHashTokens[SpreadsheetHistoryHashTokens.SELECTION_ANCHOR] = selectionAnchor;
                         }
                         if(selectionAction){
-                            historyHashTokens[SpreadsheetHistoryHash.SELECTION_ACTION] = selectionAction;
+                            historyHashTokens[SpreadsheetHistoryHashTokens.SELECTION_ACTION] = selectionAction;
                         }
                     }
                     if(label){
-                        historyHashTokens[SpreadsheetHistoryHash.LABEL] = label;
+                        historyHashTokens[SpreadsheetHistoryHashTokens.LABEL] = label;
 
                         if(labelAction){
-                            historyHashTokens[SpreadsheetHistoryHash.LABEL_ACTION] = labelAction;
+                            historyHashTokens[SpreadsheetHistoryHashTokens.LABEL_ACTION] = labelAction;
                         }
                     }
                     if(select){
-                        historyHashTokens[SpreadsheetHistoryHash.SELECT] = select;
+                        historyHashTokens[SpreadsheetHistoryHashTokens.SELECT] = select;
                     }
                     if(settings){
-                        historyHashTokens[SpreadsheetHistoryHash.SETTINGS] = settings;
+                        historyHashTokens[SpreadsheetHistoryHashTokens.SETTINGS] = settings;
                         if(settingsSection){
-                            historyHashTokens[SpreadsheetHistoryHash.SETTINGS_SECTION] = settingsSection;
+                            historyHashTokens[SpreadsheetHistoryHashTokens.SETTINGS_SECTION] = settingsSection;
                         }
                     }
                 }
@@ -340,28 +309,28 @@ export default class SpreadsheetHistoryHash {
      * Verifies the given tokens are valid, for example formula cannot be set if cell if absent.
      */
     static validate(tokens) {
-        var spreadsheetId = tokens[SpreadsheetHistoryHash.SPREADSHEET_ID];
-        var spreadsheetName = tokens[SpreadsheetHistoryHash.SPREADSHEET_NAME];
-        var nameEdit = tokens[SpreadsheetHistoryHash.SPREADSHEET_NAME_EDIT];
+        var spreadsheetId = tokens[SpreadsheetHistoryHashTokens.SPREADSHEET_ID];
+        var spreadsheetName = tokens[SpreadsheetHistoryHashTokens.SPREADSHEET_NAME];
+        var nameEdit = tokens[SpreadsheetHistoryHashTokens.SPREADSHEET_NAME_EDIT];
 
-        var selection = tokens[SpreadsheetHistoryHash.SELECTION];
-        var selectionAnchor = tokens[SpreadsheetHistoryHash.SELECTION_ANCHOR];
-        var selectionAction = tokens[SpreadsheetHistoryHash.SELECTION_ACTION];
+        var selection = tokens[SpreadsheetHistoryHashTokens.SELECTION];
+        var selectionAnchor = tokens[SpreadsheetHistoryHashTokens.SELECTION_ANCHOR];
+        var selectionAction = tokens[SpreadsheetHistoryHashTokens.SELECTION_ACTION];
 
-        var label = tokens[SpreadsheetHistoryHash.LABEL];
-        var labelAction = tokens[SpreadsheetHistoryHash.LABEL_ACTION];
+        var label = tokens[SpreadsheetHistoryHashTokens.LABEL];
+        var labelAction = tokens[SpreadsheetHistoryHashTokens.LABEL_ACTION];
 
-        var select = tokens[SpreadsheetHistoryHash.SELECT];
-        var settings = tokens[SpreadsheetHistoryHash.SETTINGS];
-        var settingsSection = tokens[SpreadsheetHistoryHash.SETTINGS_SECTION];
+        var select = tokens[SpreadsheetHistoryHashTokens.SELECT];
+        var settings = tokens[SpreadsheetHistoryHashTokens.SETTINGS];
+        var settingsSection = tokens[SpreadsheetHistoryHashTokens.SETTINGS_SECTION];
 
         const verified = {};
 
         if(spreadsheetId){
-            verified[SpreadsheetHistoryHash.SPREADSHEET_ID] = spreadsheetId;
+            verified[SpreadsheetHistoryHashTokens.SPREADSHEET_ID] = spreadsheetId;
 
             if(spreadsheetName){
-                verified[SpreadsheetHistoryHash.SPREADSHEET_NAME] = spreadsheetName;
+                verified[SpreadsheetHistoryHashTokens.SPREADSHEET_NAME] = spreadsheetName;
                 if(nameEdit && (selection || label || select || settings)){
                     nameEdit = false;
                     selection = false;
@@ -377,10 +346,10 @@ export default class SpreadsheetHistoryHash {
                     nameEdit = false;
                 }
                 if(nameEdit){
-                    verified[SpreadsheetHistoryHash.SPREADSHEET_NAME_EDIT] = nameEdit;
+                    verified[SpreadsheetHistoryHashTokens.SPREADSHEET_NAME_EDIT] = nameEdit;
                 }
                 if(selection instanceof SpreadsheetSelection){
-                    verified[SpreadsheetHistoryHash.SELECTION] = selection;
+                    verified[SpreadsheetHistoryHashTokens.SELECTION] = selection;
 
                     var anchorOk = !selectionAnchor; // $selectionAnchor = null && anchors.length() == 0
                     if(!anchorOk){
@@ -393,33 +362,33 @@ export default class SpreadsheetHistoryHash {
                     }
                     if(anchorOk){
                         if(selectionAnchor){
-                            verified[SpreadsheetHistoryHash.SELECTION_ANCHOR] = selectionAnchor;
+                            verified[SpreadsheetHistoryHashTokens.SELECTION_ANCHOR] = selectionAnchor;
                         }
 
                         if(isColumnOrRowScalarOrRange(selection) && selectionAction instanceof SpreadsheetColumnOrRowSelectionActionHistoryHashToken){
-                            verified[SpreadsheetHistoryHash.SELECTION_ACTION] = selectionAction;
+                            verified[SpreadsheetHistoryHashTokens.SELECTION_ACTION] = selectionAction;
                         }
 
                         if(selection instanceof SpreadsheetCellReferenceOrLabelName && selectionAction instanceof SpreadsheetFormulaSelectionActionHistoryHashToken){
-                            verified[SpreadsheetHistoryHash.SELECTION_ACTION] = selectionAction;
+                            verified[SpreadsheetHistoryHashTokens.SELECTION_ACTION] = selectionAction;
                         }
                     }
                 }
                 if(label instanceof SpreadsheetLabelName){
-                    verified[SpreadsheetHistoryHash.LABEL] = label;
+                    verified[SpreadsheetHistoryHashTokens.LABEL] = label;
 
                     if(labelAction instanceof SpreadsheetLabelMappingHistoryHashToken){
-                        verified[SpreadsheetHistoryHash.LABEL_ACTION] = labelAction;
+                        verified[SpreadsheetHistoryHashTokens.LABEL_ACTION] = labelAction;
                     }
                 }
                 if(select){
-                    verified[SpreadsheetHistoryHash.SELECT] = select;
+                    verified[SpreadsheetHistoryHashTokens.SELECT] = select;
                 }
                 if(settings){
-                    verified[SpreadsheetHistoryHash.SETTINGS] = settings;
+                    verified[SpreadsheetHistoryHashTokens.SETTINGS] = settings;
 
                     if(settingsSection){
-                        verified[SpreadsheetHistoryHash.SETTINGS_SECTION] = settingsSection;
+                        verified[SpreadsheetHistoryHashTokens.SETTINGS_SECTION] = settingsSection;
                     }
                 }
             }
@@ -436,33 +405,33 @@ export default class SpreadsheetHistoryHash {
         Preconditions.requireObject(delta, "delta");
 
         // get the current
-        var spreadsheetId = current[SpreadsheetHistoryHash.SPREADSHEET_ID];
-        var spreadsheetName = current[SpreadsheetHistoryHash.SPREADSHEET_NAME];
-        var nameEdit = current[SpreadsheetHistoryHash.SPREADSHEET_NAME_EDIT];
+        var spreadsheetId = current[SpreadsheetHistoryHashTokens.SPREADSHEET_ID];
+        var spreadsheetName = current[SpreadsheetHistoryHashTokens.SPREADSHEET_NAME];
+        var nameEdit = current[SpreadsheetHistoryHashTokens.SPREADSHEET_NAME_EDIT];
 
-        var selection = current[SpreadsheetHistoryHash.SELECTION];
-        var selectionAnchor = current[SpreadsheetHistoryHash.SELECTION_ANCHOR];
-        var selectionAction = current[SpreadsheetHistoryHash.SELECTION_ACTION];
+        var selection = current[SpreadsheetHistoryHashTokens.SELECTION];
+        var selectionAnchor = current[SpreadsheetHistoryHashTokens.SELECTION_ANCHOR];
+        var selectionAction = current[SpreadsheetHistoryHashTokens.SELECTION_ACTION];
 
-        var label = current[SpreadsheetHistoryHash.LABEL];
-        var labelAction = current[SpreadsheetHistoryHash.LABEL_ACTION];
+        var label = current[SpreadsheetHistoryHashTokens.LABEL];
+        var labelAction = current[SpreadsheetHistoryHashTokens.LABEL_ACTION];
 
-        var select = current[SpreadsheetHistoryHash.SELECT];
+        var select = current[SpreadsheetHistoryHashTokens.SELECT];
 
-        var settings = current[SpreadsheetHistoryHash.SETTINGS];
-        var settingsSection = current[SpreadsheetHistoryHash.SETTINGS_SECTION];
+        var settings = current[SpreadsheetHistoryHashTokens.SETTINGS];
+        var settingsSection = current[SpreadsheetHistoryHashTokens.SETTINGS_SECTION];
 
         // try replacing...
-        if(delta.hasOwnProperty(SpreadsheetHistoryHash.SPREADSHEET_ID)){
-            spreadsheetId = delta[SpreadsheetHistoryHash.SPREADSHEET_ID];
+        if(delta.hasOwnProperty(SpreadsheetHistoryHashTokens.SPREADSHEET_ID)){
+            spreadsheetId = delta[SpreadsheetHistoryHashTokens.SPREADSHEET_ID];
         }
 
-        if(delta.hasOwnProperty(SpreadsheetHistoryHash.SPREADSHEET_NAME)){
-            spreadsheetName = delta[SpreadsheetHistoryHash.SPREADSHEET_NAME];
+        if(delta.hasOwnProperty(SpreadsheetHistoryHashTokens.SPREADSHEET_NAME)){
+            spreadsheetName = delta[SpreadsheetHistoryHashTokens.SPREADSHEET_NAME];
         }
 
-        if(delta.hasOwnProperty(SpreadsheetHistoryHash.SPREADSHEET_NAME_EDIT)){
-            nameEdit = !!delta[SpreadsheetHistoryHash.SPREADSHEET_NAME_EDIT];
+        if(delta.hasOwnProperty(SpreadsheetHistoryHashTokens.SPREADSHEET_NAME_EDIT)){
+            nameEdit = !!delta[SpreadsheetHistoryHashTokens.SPREADSHEET_NAME_EDIT];
             if(nameEdit){
                 selection = null;
                 selectionAction = null;
@@ -472,52 +441,52 @@ export default class SpreadsheetHistoryHash {
             }
         }
 
-        if(delta.hasOwnProperty(SpreadsheetHistoryHash.SELECTION)){
-            selection = delta[SpreadsheetHistoryHash.SELECTION];
+        if(delta.hasOwnProperty(SpreadsheetHistoryHashTokens.SELECTION)){
+            selection = delta[SpreadsheetHistoryHashTokens.SELECTION];
             if(selection){
                 nameEdit = false;
             }
         }
 
-        if(delta.hasOwnProperty(SpreadsheetHistoryHash.SELECTION_ANCHOR)){
-            selectionAnchor = delta[SpreadsheetHistoryHash.SELECTION_ANCHOR];
+        if(delta.hasOwnProperty(SpreadsheetHistoryHashTokens.SELECTION_ANCHOR)){
+            selectionAnchor = delta[SpreadsheetHistoryHashTokens.SELECTION_ANCHOR];
             if(selectionAnchor instanceof SpreadsheetViewportSelectionAnchor){
                 nameEdit = false;
             }
         }
 
-        if(delta.hasOwnProperty(SpreadsheetHistoryHash.SELECTION_ACTION)){
-            selectionAction = delta[SpreadsheetHistoryHash.SELECTION_ACTION];
+        if(delta.hasOwnProperty(SpreadsheetHistoryHashTokens.SELECTION_ACTION)){
+            selectionAction = delta[SpreadsheetHistoryHashTokens.SELECTION_ACTION];
             if(selectionAction instanceof SpreadsheetSelectionActionHistoryHashToken){
                 nameEdit = false;
             }
         }
 
-        if(delta.hasOwnProperty(SpreadsheetHistoryHash.LABEL)){
-            label = delta[SpreadsheetHistoryHash.LABEL];
+        if(delta.hasOwnProperty(SpreadsheetHistoryHashTokens.LABEL)){
+            label = delta[SpreadsheetHistoryHashTokens.LABEL];
 
             if(label){
                 nameEdit = false;
             }
         }
 
-        if(delta.hasOwnProperty(SpreadsheetHistoryHash.LABEL_ACTION)){
-            labelAction = delta[SpreadsheetHistoryHash.LABEL_ACTION];
+        if(delta.hasOwnProperty(SpreadsheetHistoryHashTokens.LABEL_ACTION)){
+            labelAction = delta[SpreadsheetHistoryHashTokens.LABEL_ACTION];
             if(labelAction instanceof SpreadsheetLabelMappingHistoryHashToken){
                 nameEdit = false;
             }
         }
 
-        if(delta.hasOwnProperty(SpreadsheetHistoryHash.SELECT)){
-            select = delta[SpreadsheetHistoryHash.SELECT];
+        if(delta.hasOwnProperty(SpreadsheetHistoryHashTokens.SELECT)){
+            select = delta[SpreadsheetHistoryHashTokens.SELECT];
             if(select){
                 nameEdit = false;
             }
         }
 
-        if(delta.hasOwnProperty(SpreadsheetHistoryHash.SETTINGS)){
-            settings = delta[SpreadsheetHistoryHash.SETTINGS];
-            settingsSection = delta[SpreadsheetHistoryHash.SETTINGS_SECTION];
+        if(delta.hasOwnProperty(SpreadsheetHistoryHashTokens.SETTINGS)){
+            settings = delta[SpreadsheetHistoryHashTokens.SETTINGS];
+            settingsSection = delta[SpreadsheetHistoryHashTokens.SETTINGS_SECTION];
             if(settingsSection && !isSettingsToken(settingsSection)){
                 settingsSection = null;
             }
@@ -527,10 +496,10 @@ export default class SpreadsheetHistoryHash {
         let valid = false;
 
         if(null != spreadsheetId){
-            merged[SpreadsheetHistoryHash.SPREADSHEET_ID] = spreadsheetId;
+            merged[SpreadsheetHistoryHashTokens.SPREADSHEET_ID] = spreadsheetId;
 
             if(null != spreadsheetName){
-                merged[SpreadsheetHistoryHash.SPREADSHEET_NAME] = spreadsheetName;
+                merged[SpreadsheetHistoryHashTokens.SPREADSHEET_NAME] = spreadsheetName;
 
                 valid = true;
                 if(nameEdit){
@@ -543,38 +512,38 @@ export default class SpreadsheetHistoryHash {
 
         if(valid){
             if(nameEdit){
-                merged[SpreadsheetHistoryHash.SPREADSHEET_NAME_EDIT] = nameEdit;
+                merged[SpreadsheetHistoryHashTokens.SPREADSHEET_NAME_EDIT] = nameEdit;
             }
 
             if(selection){
-                merged[SpreadsheetHistoryHash.SELECTION] = selection;
+                merged[SpreadsheetHistoryHashTokens.SELECTION] = selection;
 
                 if(selectionAnchor instanceof SpreadsheetViewportSelectionAnchor){
-                    merged[SpreadsheetHistoryHash.SELECTION_ANCHOR] = selectionAnchor;
+                    merged[SpreadsheetHistoryHashTokens.SELECTION_ANCHOR] = selectionAnchor;
                 }
 
                 if(selectionAction instanceof SpreadsheetSelectionActionHistoryHashToken){
-                    merged[SpreadsheetHistoryHash.SELECTION_ACTION] = selectionAction;
+                    merged[SpreadsheetHistoryHashTokens.SELECTION_ACTION] = selectionAction;
                 }
             }
 
             if(label){
-                merged[SpreadsheetHistoryHash.LABEL] = label;
+                merged[SpreadsheetHistoryHashTokens.LABEL] = label;
 
                 if(labelAction instanceof SpreadsheetLabelMappingHistoryHashToken){
-                    merged[SpreadsheetHistoryHash.LABEL_ACTION] = labelAction;
+                    merged[SpreadsheetHistoryHashTokens.LABEL_ACTION] = labelAction;
                 }
             }
 
             if(select){
-                merged[SpreadsheetHistoryHash.SELECT] = select;
+                merged[SpreadsheetHistoryHashTokens.SELECT] = select;
             }
 
             if(!!settings){
-                merged[SpreadsheetHistoryHash.SETTINGS] = settings;
+                merged[SpreadsheetHistoryHashTokens.SETTINGS] = settings;
 
                 if(settingsSection){
-                    merged[SpreadsheetHistoryHash.SETTINGS_SECTION] = settingsSection;
+                    merged[SpreadsheetHistoryHashTokens.SETTINGS_SECTION] = settingsSection;
                 }
             }
         }
@@ -586,21 +555,21 @@ export default class SpreadsheetHistoryHash {
      * Accepts some history tokens, verifies the combinations are valid and returns the hash without the leading hash-sign.
      */
     static stringify(tokens) {
-        var spreadsheetId = tokens[SpreadsheetHistoryHash.SPREADSHEET_ID];
-        var spreadsheetName = tokens[SpreadsheetHistoryHash.SPREADSHEET_NAME];
-        var nameEdit = tokens[SpreadsheetHistoryHash.SPREADSHEET_NAME_EDIT];
+        var spreadsheetId = tokens[SpreadsheetHistoryHashTokens.SPREADSHEET_ID];
+        var spreadsheetName = tokens[SpreadsheetHistoryHashTokens.SPREADSHEET_NAME];
+        var nameEdit = tokens[SpreadsheetHistoryHashTokens.SPREADSHEET_NAME_EDIT];
 
-        var selection = tokens[SpreadsheetHistoryHash.SELECTION];
-        var selectionAnchor = tokens[SpreadsheetHistoryHash.SELECTION_ANCHOR];
-        var selectionAction = tokens[SpreadsheetHistoryHash.SELECTION_ACTION];
+        var selection = tokens[SpreadsheetHistoryHashTokens.SELECTION];
+        var selectionAnchor = tokens[SpreadsheetHistoryHashTokens.SELECTION_ANCHOR];
+        var selectionAction = tokens[SpreadsheetHistoryHashTokens.SELECTION_ACTION];
 
-        var label = tokens[SpreadsheetHistoryHash.LABEL];
-        var labelAction = tokens[SpreadsheetHistoryHash.LABEL_ACTION];
+        var label = tokens[SpreadsheetHistoryHashTokens.LABEL];
+        var labelAction = tokens[SpreadsheetHistoryHashTokens.LABEL_ACTION];
 
-        var select = tokens[SpreadsheetHistoryHash.SELECT];
+        var select = tokens[SpreadsheetHistoryHashTokens.SELECT];
 
-        var settings = tokens[SpreadsheetHistoryHash.SETTINGS];
-        var settingsSection = tokens[SpreadsheetHistoryHash.SETTINGS_SECTION];
+        var settings = tokens[SpreadsheetHistoryHashTokens.SETTINGS];
+        var settingsSection = tokens[SpreadsheetHistoryHashTokens.SETTINGS_SECTION];
 
         let hash = "";
         let valid = false;
@@ -622,7 +591,7 @@ export default class SpreadsheetHistoryHash {
 
         if(valid){
             if(nameEdit){
-                hash = hash + "/" + SpreadsheetHistoryHash.SPREADSHEET_NAME_EDIT;
+                hash = hash + "/" + SpreadsheetHistoryHashTokens.SPREADSHEET_NAME_EDIT;
                 selection = null;
                 selectionAction = null;
                 label = null;
@@ -642,7 +611,7 @@ export default class SpreadsheetHistoryHash {
             }
 
             if(label){
-                hash = hash + "/" + SpreadsheetHistoryHash.LABEL + "/" + label;
+                hash = hash + "/" + SpreadsheetHistoryHashTokens.LABEL + "/" + label;
 
                 if(labelAction instanceof SpreadsheetLabelMappingHistoryHashToken){
                     hash = hash + "/" + labelAction.toHistoryHashToken();
@@ -650,11 +619,11 @@ export default class SpreadsheetHistoryHash {
             }
 
             if(select){
-                hash = hash + "/" + SpreadsheetHistoryHash.SELECT;
+                hash = hash + "/" + SpreadsheetHistoryHashTokens.SELECT;
             }
 
             if(!!settings){
-                hash = hash + "/" + SpreadsheetHistoryHash.SETTINGS;
+                hash = hash + "/" + SpreadsheetHistoryHashTokens.SETTINGS;
 
                 if(settingsSection){
                     hash = hash + "/" + settingsSection;
@@ -666,6 +635,7 @@ export default class SpreadsheetHistoryHash {
     }
 
     constructor(hash, setHash, showError) {
+        super();
         Preconditions.requireFunction(hash, "hash");
         Preconditions.requireFunction(setHash, "setHash");
         Preconditions.requireFunction(showError, "showError");
@@ -759,8 +729,8 @@ export default class SpreadsheetHistoryHash {
     static spreadsheetIdAndName(tokens) {
         const only = {};
 
-        only[SpreadsheetHistoryHash.SPREADSHEET_ID] = tokens[SpreadsheetHistoryHash.SPREADSHEET_ID];
-        only[SpreadsheetHistoryHash.SPREADSHEET_NAME] = tokens[SpreadsheetHistoryHash.SPREADSHEET_NAME];
+        only[SpreadsheetHistoryHashTokens.SPREADSHEET_ID] = tokens[SpreadsheetHistoryHashTokens.SPREADSHEET_ID];
+        only[SpreadsheetHistoryHashTokens.SPREADSHEET_NAME] = tokens[SpreadsheetHistoryHashTokens.SPREADSHEET_NAME];
 
         return only;
     }

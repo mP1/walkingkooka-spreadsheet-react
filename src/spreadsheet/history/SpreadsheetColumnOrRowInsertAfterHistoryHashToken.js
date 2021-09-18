@@ -1,5 +1,5 @@
 import SpreadsheetColumnOrRowInsertHistoryHashToken from "./SpreadsheetColumnOrRowInsertHistoryHashToken.js";
-import SpreadsheetHistoryHash from "./SpreadsheetHistoryHash.js";
+import SpreadsheetHistoryHashTokens from "./SpreadsheetHistoryHashTokens.js";
 
 /**
  * Represents a column/row insert AFTER history hash token.
@@ -7,7 +7,7 @@ import SpreadsheetHistoryHash from "./SpreadsheetHistoryHash.js";
 export default class SpreadsheetColumnOrRowInsertAfterHistoryHashToken extends SpreadsheetColumnOrRowInsertHistoryHashToken {
 
     toHistoryHashToken() {
-        return SpreadsheetHistoryHash.INSERT_AFTER + "/" + this.count();
+        return SpreadsheetHistoryHashTokens.INSERT_AFTER + "/" + this.count();
     }
 
     /**
@@ -17,7 +17,7 @@ export default class SpreadsheetColumnOrRowInsertAfterHistoryHashToken extends S
         viewportWidget.insertAfterSelection(selection, this.count());
 
         const tokens = {};
-        tokens[SpreadsheetHistoryHash.SELECTION_ACTION] = null;
+        tokens[SpreadsheetHistoryHashTokens.SELECTION_ACTION] = null;
         viewportWidget.historyParseMergeAndPush(tokens);
     }
 
