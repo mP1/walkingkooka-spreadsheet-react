@@ -1630,12 +1630,6 @@ testMerge(
 );
 
 testMerge(
-    "/123abc/Untitled456/cell/999",
-    {},
-    "/123abc/Untitled456"
-);
-
-testMerge(
     "/123abc/Untitled456/cell/A1",
     {},
     "/123abc/Untitled456/cell/A1"
@@ -1787,18 +1781,6 @@ testMerge(
 
 testMerge(
     "/123abc/Untitled456/label",
-    {},
-    "/123abc/Untitled456"
-);
-
-testMerge(
-    "/123abc/Untitled456/label/!invalid-label",
-    {},
-    "/123abc/Untitled456"
-);
-
-testMerge(
-    "/123abc/Untitled456/label/A1",
     {},
     "/123abc/Untitled456"
 );
