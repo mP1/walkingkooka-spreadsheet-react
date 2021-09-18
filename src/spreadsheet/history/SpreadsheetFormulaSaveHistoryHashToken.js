@@ -1,6 +1,6 @@
-import SpreadsheetHistoryHash from "./SpreadsheetHistoryHash.js";
 import Preconditions from "../../Preconditions.js";
 import SpreadsheetFormulaSelectionActionHistoryHashToken from "./SpreadsheetFormulaSelectionActionHistoryHashToken.js";
+import SpreadsheetHistoryHashTokens from "./SpreadsheetHistoryHashTokens.js";
 
 /**
  * A history hash token that saves the given formula text for the current cell.
@@ -18,7 +18,7 @@ export default class SpreadsheetFormulaSaveHistoryHashToken extends SpreadsheetF
     }
 
     toHistoryHashToken() {
-        return SpreadsheetHistoryHash.CELL_FORMULA + "/" + SpreadsheetHistoryHash.SAVE + "/" + encodeURIComponent(this.formulaText());
+        return SpreadsheetHistoryHashTokens.CELL_FORMULA + "/" + SpreadsheetHistoryHashTokens.SAVE + "/" + encodeURIComponent(this.formulaText());
     }
 
     equals(other) {

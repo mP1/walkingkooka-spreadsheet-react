@@ -1,5 +1,6 @@
-import SpreadsheetHistoryHash from "./SpreadsheetHistoryHash.js";
-import SpreadsheetColumnOrRowSelectionActionHistoryHashToken from "./SpreadsheetColumnOrRowSelectionActionHistoryHashToken.js";
+import SpreadsheetColumnOrRowSelectionActionHistoryHashToken
+    from "./SpreadsheetColumnOrRowSelectionActionHistoryHashToken.js";
+import SpreadsheetHistoryHashTokens from "./SpreadsheetHistoryHashTokens.js";
 
 /**
  * Represents a column/row delete history hash token.
@@ -12,7 +13,7 @@ export default class SpreadsheetColumnOrRowDeleteHistoryHashToken extends Spread
     static INSTANCE = new SpreadsheetColumnOrRowDeleteHistoryHashToken();
 
     toHistoryHashToken() {
-        return SpreadsheetHistoryHash.DELETE;
+        return SpreadsheetHistoryHashTokens.DELETE;
     }
 
     /**

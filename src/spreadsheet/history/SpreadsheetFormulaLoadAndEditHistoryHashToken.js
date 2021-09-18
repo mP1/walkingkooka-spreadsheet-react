@@ -1,5 +1,5 @@
-import SpreadsheetHistoryHash from "./SpreadsheetHistoryHash.js";
 import SpreadsheetFormulaSelectionActionHistoryHashToken from "./SpreadsheetFormulaSelectionActionHistoryHashToken.js";
+import SpreadsheetHistoryHashTokens from "./SpreadsheetHistoryHashTokens.js";
 
 /**
  * Represent a token with the history hash that indicates the current (a cell or label pointing to a cell) selection formula should be loaded and edited.
@@ -22,7 +22,7 @@ export default class SpreadsheetFormulaLoadAndEditHistoryHashToken extends Sprea
     toHistoryHashToken() {
         const formulaText = this.formulaText();
 
-        return SpreadsheetHistoryHash.CELL_FORMULA +
+        return SpreadsheetHistoryHashTokens.CELL_FORMULA +
             (formulaText != null ?
                 "/" + encodeURI(formulaText) :
             "");
