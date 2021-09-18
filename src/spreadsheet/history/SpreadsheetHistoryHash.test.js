@@ -1,4 +1,5 @@
 import CharSequences from "../../CharSequences.js";
+import SpreadsheetCellDeleteSelectionActionHistoryHashToken from "./SpreadsheetCellDeleteSelectionActionHistoryHashToken.js";
 import SpreadsheetCellRange from "../reference/SpreadsheetCellRange.js";
 import SpreadsheetCellReference from "../reference/SpreadsheetCellReference.js";
 import SpreadsheetColumnOrRowDeleteHistoryHashToken from "./SpreadsheetColumnOrRowDeleteHistoryHashToken.js";
@@ -29,6 +30,7 @@ const ROW_RANGE = SpreadsheetRowReferenceRange.parse("2:3");
 const LABEL = SpreadsheetLabelName.parse("Label123");
 const NEW_LABEL = SpreadsheetLabelName.parse("Label999");
 
+const CELL_DELETE = SpreadsheetCellDeleteSelectionActionHistoryHashToken.INSTANCE;
 const CELL_FORMULA = new SpreadsheetFormulaLoadAndEditHistoryHashToken();
 const CELL_FORMULA_SAVE = new SpreadsheetFormulaSaveHistoryHashToken("Abc123");
 
@@ -167,6 +169,16 @@ testValidate(
         "spreadsheet-id": ID,
         "spreadsheet-name": SPREADSHEET_NAME,
         "selection": LABEL,
+    }
+);
+
+testValidate(
+    "validate id & name & cell=CELL & delete",
+    {
+        "spreadsheet-id": ID,
+        "spreadsheet-name": SPREADSHEET_NAME,
+        "selection": CELL,
+        "selection-action": CELL_DELETE,
     }
 );
 
@@ -370,12 +382,22 @@ testParseAndStringify(
 );
 
 testParseAndStringify(
+    "/spreadsheet-id-123/spreadsheet-name-456/cell/A1/delete",
+    {
+        "spreadsheet-id": "spreadsheet-id-123",
+        "spreadsheet-name": SPREADSHEET_NAME,
+        "selection": CELL,
+        "selection-action": CELL_DELETE,
+    }
+);
+
+testParseAndStringify(
     "/spreadsheet-id-123/spreadsheet-name-456/cell/A1/formula",
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
         "selection": CELL,
-        "selection-action": new SpreadsheetFormulaLoadAndEditHistoryHashToken(),
+        "selection-action": CELL_FORMULA,
     }
 );
 
@@ -2179,6 +2201,22 @@ testMerge(
         "settings": false,
     },
     "/123abc/Untitled456/cell/A1"
+);
+
+testMerge(
+    "/123abc/Untitled456/cell/A1",
+    {
+        "selection-action": SpreadsheetColumnOrRowDeleteHistoryHashToken.INSTANCE,
+    },
+    "/123abc/Untitled456/cell/A1/delete"
+);
+
+testMerge(
+    "/123abc/Untitled456/cell/A1/delete",
+    {
+        "settings": true,
+    },
+    "/123abc/Untitled456/cell/A1/delete/settings"
 );
 
 testMerge(

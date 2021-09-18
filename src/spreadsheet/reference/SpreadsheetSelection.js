@@ -14,10 +14,21 @@ export default class SpreadsheetSelection extends SystemObject {
     }
 
     /**
+     * Returns true if the selection is a cell or cell-range
+     */
+    isCellScalarOrRange() {
+        return false;
+    }
+
+    /**
      * Returns true if the selection is a column/row or column-range/row-range.
      */
     isColumnOrRowScalarOrRange() {
         return false;
+    }
+
+    deleteHistoryHashToken() {
+        SystemObject.throwUnsupportedOperation();
     }
 
     testCell(cellReference) {

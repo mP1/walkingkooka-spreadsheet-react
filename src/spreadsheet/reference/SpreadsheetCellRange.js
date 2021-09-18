@@ -1,4 +1,6 @@
 import Preconditions from "../../Preconditions.js";
+import SpreadsheetCellDeleteSelectionActionHistoryHashToken
+    from "../history/SpreadsheetCellDeleteSelectionActionHistoryHashToken.js";
 import SpreadsheetCellReference from "./SpreadsheetCellReference";
 import SpreadsheetColumnReference from "./SpreadsheetColumnReference.js";
 import SpreadsheetColumnReferenceRange from "./SpreadsheetColumnReferenceRange.js";
@@ -74,6 +76,10 @@ export default class SpreadsheetCellRange extends SpreadsheetExpressionReference
 
     height() {
         return this.end().row().value() - this.begin().row().value() + 1;
+    }
+
+    isCellScalarOrRange() {
+        return true;
     }
 
     /**
@@ -420,6 +426,10 @@ export default class SpreadsheetCellRange extends SpreadsheetExpressionReference
 
     defaultAnchor() {
         return SpreadsheetCellRange.DEFAULT_ANCHOR;
+    }
+
+    deleteHistoryHashToken() {
+        return SpreadsheetCellDeleteSelectionActionHistoryHashToken.INSTANCE;
     }
 
     // json............................................................................................................

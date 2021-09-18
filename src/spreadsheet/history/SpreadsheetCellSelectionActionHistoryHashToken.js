@@ -4,4 +4,6 @@ import SpreadsheetSelectionActionHistoryHashToken from "./SpreadsheetSelectionAc
  * Base for all cell actions
  */
 export default class SpreadsheetCellSelectionActionHistoryHashToken extends SpreadsheetSelectionActionHistoryHashToken {
+
+    static INSTANCE = new SpreadsheetCellSelectionActionHistoryHashToken();
 }
