@@ -1,5 +1,4 @@
 import SpreadsheetSelection from "./SpreadsheetSelection.js";
-import SystemObject from "../../SystemObject.js";
 
 /**
  * Common base class for cell-range, cell reference and label name.
