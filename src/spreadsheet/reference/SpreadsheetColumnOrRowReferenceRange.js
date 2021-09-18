@@ -29,6 +29,14 @@ export default class SpreadsheetColumnOrRowReferenceRange extends SpreadsheetSel
         return this.end().value() - this.begin().value() + 1;
     }
 
+    // selection........................................................................................................
+
+    isColumnOrRowScalarOrRange() {
+        return true;
+    }
+
+    // viewport.........................................................................................................
+
     viewportEnter(giveFormulaFocus) {
         // ENTER currently is a NOP but will change to perhaps popup a menu
     }
