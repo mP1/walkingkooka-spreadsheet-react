@@ -1936,9 +1936,6 @@ testMerge("/123abc/Untitled456/label/LabelOld/delete",
     "/123abc/Untitled456/label/Label123"
 );
 
-
-
-
 testMerge(
     "/123abc/Untitled456/label/Label123",
     {
