@@ -4,16 +4,16 @@ import spreadsheetCellRangeCellReferenceOrLabelParse
     from "../reference/SpreadsheetCellRangeCellReferenceOrLabelParse.js";
 import SpreadsheetCellReferenceOrLabelName from "../reference/SpreadsheetCellReferenceOrLabelName.js";
 import spreadsheetCellReferenceOrLabelNameParse from "../reference/SpreadsheetCellReferenceOrLabelNameParse.js";
+import SpreadsheetCellSelectionActionHistoryHashToken from "./SpreadsheetCellSelectionActionHistoryHashToken.js";
 import SpreadsheetColumnOrRowSelectionActionHistoryHashToken
     from "./SpreadsheetColumnOrRowSelectionActionHistoryHashToken.js";
-import SpreadsheetColumnOrRowDeleteHistoryHashToken from "./SpreadsheetColumnOrRowDeleteHistoryHashToken.js";
 import SpreadsheetColumnOrRowInsertAfterHistoryHashToken from "./SpreadsheetColumnOrRowInsertAfterHistoryHashToken.js";
 import SpreadsheetColumnOrRowInsertBeforeHistoryHashToken
     from "./SpreadsheetColumnOrRowInsertBeforeHistoryHashToken.js";
 import SpreadsheetColumnReferenceRange from "../reference/SpreadsheetColumnReferenceRange.js";
 import SpreadsheetFormulaLoadAndEditHistoryHashToken from "./SpreadsheetFormulaLoadAndEditHistoryHashToken.js";
 import SpreadsheetFormulaSaveHistoryHashToken from "./SpreadsheetFormulaSaveHistoryHashToken.js";
-import SpreadsheetFormulaSelectionActionHistoryHashToken from "./SpreadsheetFormulaSelectionActionHistoryHashToken.js";
+import SpreadsheetHistoryHashTokens from "./SpreadsheetHistoryHashTokens.js";
 import SpreadsheetLabelMappingDeleteHistoryHashToken from "./SpreadsheetLabelMappingDeleteHistoryHashToken.js";
 import SpreadsheetLabelMappingHistoryHashToken from "./SpreadsheetLabelMappingHistoryHashToken.js";
 import SpreadsheetLabelMappingSaveHistoryHashToken from "./SpreadsheetLabelMappingSaveHistoryHashToken.js";
@@ -23,7 +23,6 @@ import SpreadsheetRowReferenceRange from "../reference/SpreadsheetRowReferenceRa
 import SpreadsheetSelection from "../reference/SpreadsheetSelection.js";
 import SpreadsheetSelectionActionHistoryHashToken from "./SpreadsheetSelectionActionHistoryHashToken.js";
 import SpreadsheetViewportSelectionAnchor from "../reference/SpreadsheetViewportSelectionAnchor.js";
-import SpreadsheetHistoryHashTokens from "./SpreadsheetHistoryHashTokens.js";
 
 function tokenize(pathname) {
     return pathname && pathname.startsWith("/") ?
@@ -53,14 +52,6 @@ function isSettingsToken(token) {
             break;
     }
     return valid;
-}
-
-function isColumnOrRowScalarOrRange(test) {
-    return test && test.isColumnOrRowScalarOrRange && test.isColumnOrRowScalarOrRange();
-}
-
-function isAnchorAndColumnOrRowAny(previous, selection) {
-    return previous instanceof SpreadsheetViewportSelectionAnchor && isColumnOrRowScalarOrRange(selection);
 }
 
 /**
@@ -158,14 +149,14 @@ export default class SpreadsheetHistoryHash extends SpreadsheetHistoryHashTokens
                                 valid = true;
                                 break;
                             }
-                            if(isColumnOrRowScalarOrRange(previous) || isAnchorAndColumnOrRowAny(previous, selection)){
-                                selectionAction = SpreadsheetColumnOrRowDeleteHistoryHashToken.INSTANCE;
+                            if(previous instanceof SpreadsheetSelection || (previous instanceof SpreadsheetViewportSelectionAnchor && selection instanceof SpreadsheetSelection)){
+                                selectionAction = selection.deleteHistoryHashToken();
                                 previous = null;
                                 valid = true;
                             }
                             break;
                         case SpreadsheetHistoryHashTokens.INSERT_AFTER:
-                            if((isColumnOrRowScalarOrRange(previous) || isAnchorAndColumnOrRowAny(previous, selection)) && tokens.length > 0){
+                            if((previous instanceof SpreadsheetSelection || (previous instanceof SpreadsheetViewportSelectionAnchor && selection instanceof SpreadsheetSelection)) && tokens.length > 0){
                                 const insertAfterCount = tokens.shift();
                                 if(!Number.isNaN(Number(insertAfterCount))){
                                     try {
@@ -179,7 +170,7 @@ export default class SpreadsheetHistoryHash extends SpreadsheetHistoryHashTokens
                             }
                             break;
                         case SpreadsheetHistoryHashTokens.INSERT_BEFORE:
-                            if((isColumnOrRowScalarOrRange(previous) || isAnchorAndColumnOrRowAny(previous, selection)) && tokens.length > 0){
+                            if((previous instanceof SpreadsheetSelection || (previous instanceof SpreadsheetViewportSelectionAnchor && selection instanceof SpreadsheetSelection)) && tokens.length > 0){
                                 const insertBeforeCount = tokens.shift();
                                 if(!Number.isNaN(Number(insertBeforeCount))){
                                     try {
@@ -365,11 +356,11 @@ export default class SpreadsheetHistoryHash extends SpreadsheetHistoryHashTokens
                             verified[SpreadsheetHistoryHashTokens.SELECTION_ANCHOR] = selectionAnchor;
                         }
 
-                        if(isColumnOrRowScalarOrRange(selection) && selectionAction instanceof SpreadsheetColumnOrRowSelectionActionHistoryHashToken){
+                        if(selection.isCellScalarOrRange() && selectionAction instanceof SpreadsheetCellSelectionActionHistoryHashToken){
                             verified[SpreadsheetHistoryHashTokens.SELECTION_ACTION] = selectionAction;
                         }
 
-                        if(selection instanceof SpreadsheetCellReferenceOrLabelName && selectionAction instanceof SpreadsheetFormulaSelectionActionHistoryHashToken){
+                        if(selection.isColumnOrRowScalarOrRange() && selectionAction instanceof SpreadsheetColumnOrRowSelectionActionHistoryHashToken){
                             verified[SpreadsheetHistoryHashTokens.SELECTION_ACTION] = selectionAction;
                         }
                     }
