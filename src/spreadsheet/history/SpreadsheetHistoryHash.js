@@ -113,12 +113,18 @@ export default class SpreadsheetHistoryHash {
         if(spreadsheetId){
             historyHashTokens[SpreadsheetHistoryHash.SPREADSHEET_ID] = spreadsheetId;
 
+            var name;
             try {
-                historyHashTokens[SpreadsheetHistoryHash.SPREADSHEET_NAME] = new SpreadsheetName(tokens.shift());
+                name = new SpreadsheetName(tokens.shift());
+            } catch (ignore) {
+            }
+
+            if(name) {
+                historyHashTokens[SpreadsheetHistoryHash.SPREADSHEET_NAME] = name;
 
                 var valid = true;
 
-                var name = null;
+                var nameEdit = null;
 
                 var selection = null;
                 var selectionAnchor = null;
@@ -142,7 +148,7 @@ export default class SpreadsheetHistoryHash {
                             valid = tokens.length === 0;
                             break;
                         case SpreadsheetHistoryHash.SPREADSHEET_NAME_EDIT:
-                            name = true;
+                            nameEdit = true;
                             previous = null;
                             valid = true;
                             break;
@@ -255,7 +261,7 @@ export default class SpreadsheetHistoryHash {
                                     )
                                 );
                                 valid = true;
-                            } else {
+                            }else {
                                 if(previous instanceof SpreadsheetFormulaLoadAndEditHistoryHashToken && tokens.length > 0){
                                     selectionAction = new SpreadsheetFormulaSaveHistoryHashToken(decodeURIComponent(tokens.shift()));
                                     valid = true;
@@ -295,8 +301,8 @@ export default class SpreadsheetHistoryHash {
                 }
 
                 if(valid){
-                    if(name){
-                        historyHashTokens[SpreadsheetHistoryHash.SPREADSHEET_NAME_EDIT] = name;
+                    if(nameEdit){
+                        historyHashTokens[SpreadsheetHistoryHash.SPREADSHEET_NAME_EDIT] = nameEdit;
                     }
                     if(selection){
                         historyHashTokens[SpreadsheetHistoryHash.SELECTION] = selection;
@@ -324,7 +330,6 @@ export default class SpreadsheetHistoryHash {
                         }
                     }
                 }
-            } catch(ignore) {
             }
         }
 
