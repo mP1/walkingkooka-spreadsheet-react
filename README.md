@@ -100,12 +100,17 @@ Activates editing of the spreadsheet name.
 
 Following the selection of a cell, the following commands are possible
 
+- /delete Deletes the cell or cell-range
 - /formula Loads the formula text box with the current value for this cell
 - /formula/save/$formula Saves the given $formula for the cell.
 
-> /#123/Untitled/cell/D4/formula
+> /#123/Untitled/cell/D4/delete
 > 
-> /#123/Untitled/cell/E5/formula/save/=1+2
+> /#123/Untitled/cell/E5:F6/formula
+> 
+> /#123/Untitled/cell/G7/formula
+> 
+> /#123/Untitled/cell/H8/formula/save/=1+2
 
 
 

@@ -432,6 +432,10 @@ export default class SpreadsheetCellRange extends SpreadsheetExpressionReference
         return SpreadsheetCellDeleteSelectionActionHistoryHashToken.INSTANCE;
     }
 
+    toDeleteUrl() {
+        return "/cell/" + this;
+    }
+
     // json............................................................................................................
 
     toJson() {
