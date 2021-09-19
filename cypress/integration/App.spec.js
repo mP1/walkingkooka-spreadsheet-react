@@ -1755,6 +1755,65 @@ context(
 
         // selection delete.............................................................................................
 
+        it("Cell select delete hash", () => {
+            spreadsheetEmpty();
+
+            renderWait(100);
+
+            cellClick(B2);
+
+            formulaText()
+                .click()
+                .wait(FORMULA_TEXT_CLICK_WAIT)
+                .type("{selectall}'Deleted{enter}");
+
+            cellClick(B2);
+            hashAppendWithoutCheck("/delete");
+
+            hash()
+                .should('match', /.*\/.*/);
+
+            cellFormattedTextCheck(B2, "");
+        });
+
+        it("Cell range select delete hash", () => {
+            spreadsheetEmpty();
+
+            renderWait(100);
+
+            cellClick(A1);
+
+            formulaText()
+                .click()
+                .wait(FORMULA_TEXT_CLICK_WAIT)
+                .type("{selectall}'NotDeleted{enter}");
+
+            cellClick(C3);
+
+            formulaText()
+                .click()
+                .wait(FORMULA_TEXT_CLICK_WAIT)
+                .type("{selectall}'DeletedC3{enter}");
+
+            cellClick(B2);
+
+            formulaText()
+                .click()
+                .wait(FORMULA_TEXT_CLICK_WAIT)
+                .type("{selectall}'DeletedB2{enter}");
+
+            cellClick(B2);
+
+            hashAppendWithoutCheck(":C3/delete");
+
+            hash()
+                .should('match', /.*\/.*/);
+
+            cellFormattedTextCheck("A1", "NotDeleted");
+            cellFormattedTextCheck(B2, "");
+            cellFormattedTextCheck(C3, "");
+        });
+        
         it("Column select delete hash", () => {
             spreadsheetEmpty();
 
