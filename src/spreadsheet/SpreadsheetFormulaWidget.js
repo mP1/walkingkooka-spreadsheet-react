@@ -270,7 +270,7 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetHistoryAwareSta
         this.historyParseMergeAndPush(historyTokens);
     }
 
-    onSpreadsheetDelta(method, cellOrLabel, queryParameters, requestDelta, responseDelta) {
+    onSpreadsheetDelta(method, cellOrLabel, url, requestDelta, responseDelta) {
         switch(method) {
             case "GET":
             case "POST":
