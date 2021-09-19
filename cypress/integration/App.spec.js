@@ -1774,6 +1774,9 @@ context(
                 .should('match', /.*\/.*/);
 
             cellFormattedTextCheck(B2, "");
+
+            formulaText()
+                .should("have.value", "");
         });
 
         it("Cell range select delete hash", () => {

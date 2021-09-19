@@ -271,39 +271,35 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetHistoryAwareSta
     }
 
     onSpreadsheetDelta(method, cellOrLabel, url, requestDelta, responseDelta) {
-        switch(method) {
-            case "GET":
-            case "POST":
-                this.onSpreadsheetDeltaLoad(cellOrLabel, responseDelta);
-                break;
-            default:
-                break;
-        }
-    }
-
-    /**
-     * Check the load if it includes the cell formula being edited and updates state to match.
-     */
-    onSpreadsheetDeltaLoad(loadCellOrLabel, delta) {
         const state = this.state;
         const selection = state.selection;
 
         if(selection instanceof SpreadsheetCellReferenceOrLabelName){
-            const cell = delta.cell(selection);
+            // check if selectin was loaded.
+            var formulaText = "";
 
+            const cell = responseDelta.cell(selection);
             const cellReference = selection instanceof SpreadsheetLabelName ?
-                delta.cellReference(selection) :
+                responseDelta.cellReference(selection) :
                 selection;
-            const formulaText = cell ? cell.formula().text() : "";
-            console.log("loaded formulaText for " + selection + " is " + CharSequences.quoteAndEscape(formulaText));
+            if(cell){
+                formulaText = cell.formula().text();
+                console.log("loaded formula text for " + selection + " is " + CharSequences.quoteAndEscape(formulaText));
+            }else {
+                if(responseDelta.deletedCells().find(deleted => deleted.equals(selection))){
+                    console.log("cell " + selection + " deleted, formula cleared");
+                }
+            }
 
-            this.setState({
-                cell: cell,
-                cellReference: cellReference,
-                selection: selection,
-                value: formulaText,
-                reload: false,
-            });
+            this.setState(
+                {
+                    cell: cell,
+                    cellReference: cellReference,
+                    selection: selection,
+                    value: formulaText,
+                    reload: false,
+                }
+            );
 
             this.input.current.value = formulaText;
         }
