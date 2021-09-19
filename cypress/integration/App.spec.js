@@ -210,7 +210,7 @@ context(
 
             spreadsheetNameClick();
             spreadsheetName()
-                .type("Lost")
+                .type("{selectall}Lost")
                 .blur();
 
             cy.window()
@@ -237,7 +237,7 @@ context(
             hashLabel();
 
             labelMappingLabelTextField()
-                .type("{selectAll}{backspace}");
+                .type("{selectall}{backspace}");
 
             labelMappingDialogCheck(
                 "Label: " + LABEL,
@@ -255,7 +255,7 @@ context(
             const labelText = "!InvalidLabel";
 
             labelMappingLabelTextField()
-                .type("{selectAll}" + labelText);
+                .type("{selectall}" + labelText);
 
             labelMappingDialogCheck(
                 "Label: " + LABEL,
@@ -273,7 +273,7 @@ context(
             const labelText = "I!nvalidLabel";
 
             labelMappingLabelTextField()
-                .type("{selectAll}" + labelText);
+                .type("{selectall}" + labelText);
 
             labelMappingDialogCheck(
                 "Label: " + LABEL,
@@ -291,7 +291,7 @@ context(
             const labelText = "Label456";
 
             labelMappingLabelTextField()
-                .type("{selectAll}" + labelText + "{enter}");
+                .type("{selectall}" + labelText + "{enter}");
 
             labelMappingDialogCheck(
                 "Label: " + LABEL,
@@ -309,7 +309,7 @@ context(
             const labelText = "Label456";
 
             labelMappingLabelTextField()
-                .type("{selectAll}" + labelText);
+                .type("{selectall}" + labelText);
 
             labelMappingLabelSaveButton()
                 .should("be.disabled");
@@ -403,10 +403,10 @@ context(
             hashLabel();
 
             labelMappingReferenceTextField()
-                .type("B2");
+                .type("{selectall}B2");
 
             labelMappingLabelTextField()
-                .type("{Esc}");
+                .type("{esc}");
 
             hashLabel();
 
@@ -424,7 +424,7 @@ context(
             hashLabel();
 
             labelMappingReferenceTextField()
-                .type(B2 + "{Esc}");
+                .type(B2 + "{esc}");
 
             hashLabel();
 
@@ -582,7 +582,7 @@ context(
             hashAppend("/label/HoverLabel");
 
             labelMappingReferenceTextField()
-                .type("A1");
+                .type("{selectall}A1");
 
             labelMappingLabelSaveButton()
                 .click();
@@ -608,7 +608,7 @@ context(
             hashAppend("/label/HoverLabel1");
 
             labelMappingReferenceTextField()
-                .type("A1");
+                .type("{selectall}A1");
 
             labelMappingLabelSaveButton()
                 .click();
@@ -620,7 +620,7 @@ context(
             hashAppend("/label/HoverLabel2");
 
             labelMappingReferenceTextField()
-                .type("A1");
+                .type("{selectall}A1");
 
             labelMappingLabelSaveButton()
                 .click();
@@ -665,7 +665,7 @@ context(
             hashAppend("/label/MovingLabel");
 
             labelMappingReferenceTextField()
-                .type("A1");
+                .type("{selectall}A1");
 
             labelMappingLabelSaveButton()
                 .click();
@@ -704,7 +704,7 @@ context(
             hashAppend("/label/NavigateToLabel123");
 
             labelMappingReferenceTextField()
-                .type("A1");
+                .type("{selectall}A1");
 
             labelMappingLabelSaveButton()
                 .click();
@@ -2234,7 +2234,7 @@ context(
 
             selectAutocompleteTextField()
                 .should('have.focus')
-                .type("Hello")
+                .type("{selectall}Hello")
                 .wait(50)
                 .tab();
 
@@ -2270,7 +2270,7 @@ context(
             selectHistoryHash();
 
             selectAutocompleteTextField()
-                .type("{Esc}");
+                .type("{esc}");
 
             hash()
                 .should('match', /.*\/Untitled/);
@@ -2285,7 +2285,7 @@ context(
             selectHistoryHash();
 
             selectAutocompleteTextField()
-                .type("!invalid");
+                .type("{selectall}!invalid");
 
             selectAutocompleteTextFieldHelper()
                 .should("have.text", "Invalid character '!' at 0");
@@ -2297,7 +2297,7 @@ context(
             selectHistoryHash();
 
             selectAutocompleteTextField()
-                .type("B2{enter}");
+                .type("{selectall}B2{enter}");
 
             selectAutocompleteTextFieldHelper()
                 .should("not.exist");
@@ -2327,7 +2327,7 @@ context(
             selectHistoryHash();
 
             selectAutocompleteTextField()
-                .type("A1:B2{enter}");
+                .type("{selectall}A1:B2{enter}");
 
             selectAutocompleteTextFieldHelper()
                 .should("not.exist");
@@ -2357,7 +2357,7 @@ context(
             selectHistoryHash();
 
             selectAutocompleteTextField()
-                .type("Label123{enter}");
+                .type("{selectall}Label123{enter}");
 
             selectAutocompleteTextFieldHelper()
                 .should("not.exist");
@@ -2386,10 +2386,10 @@ context(
             hashLabel();
 
             labelMappingLabelTextField()
-                .type("Label123");
+                .type("{selectall}Label123");
 
             labelMappingReferenceTextField()
-                .type("B2");
+                .type("{selectall}B2");
 
             labelMappingLabelSaveButton()
                 .click();
@@ -2403,7 +2403,7 @@ context(
             selectHistoryHash();
 
             selectAutocompleteTextField()
-                .type("Label123{enter}");
+                .type("{selectall}Label123{enter}");
 
             selectAutocompleteTextFieldHelper()
                 .should("not.exist");
@@ -2439,7 +2439,7 @@ context(
             selectHistoryHash(); // TODO not sure WHY but select dialog doesnt appear in test.
 
             selectAutocompleteTextField()
-                .type("Label123{enter}");
+                .type("{selectall}Label123{enter}");
 
             selectAutocompleteTextFieldHelper()
                 .should("not.exist");
@@ -2469,7 +2469,7 @@ context(
             selectHistoryHash();
 
             selectAutocompleteTextField()
-                .type("B2");
+                .type("{selectall}B2");
 
             selectAutocompleteTextFieldHelper()
                 .should("not.exist");
@@ -2505,7 +2505,7 @@ context(
             selectHistoryHash();
 
             selectAutocompleteTextField()
-                .type("C");
+                .type("{selectall}C");
 
             selectAutocompleteTextFieldHelper()
                 .should("not.exist");
@@ -2541,7 +2541,7 @@ context(
             selectHistoryHash();
 
             selectAutocompleteTextField()
-                .type("D:E");
+                .type("{selectall}D:E");
 
             selectAutocompleteTextFieldHelper()
                 .should("not.exist");
@@ -2576,7 +2576,7 @@ context(
             hashLabel();
 
             labelMappingReferenceTextField()
-                .type("B2");
+                .type("{selectall}B2");
 
             labelMappingLabelSaveButton()
                 .click();
@@ -2587,7 +2587,7 @@ context(
             selectHistoryHash();
 
             selectAutocompleteTextField()
-                .type("Label123{enter}");
+                .type("{selectall}Label123{enter}");
 
             selectAutocompleteTextFieldHelper()
                 .should("not.exist");
@@ -2616,7 +2616,7 @@ context(
             hashLabel();
 
             labelMappingReferenceTextField()
-                .type("B2");
+                .type("{selectall}B2");
 
             labelMappingLabelSaveButton()
                 .click();
@@ -2627,7 +2627,7 @@ context(
             selectHistoryHash();
 
             selectAutocompleteTextField()
-                .type("Label");
+                .type("{selectall}Label");
 
             selectAutocompleteTextFieldHelper()
                 .should("not.exist");
@@ -2666,7 +2666,7 @@ context(
             selectHistoryHash();
 
             selectAutocompleteTextField()
-                .type("3");
+                .type("{selectall}3");
 
             selectAutocompleteTextFieldHelper()
                 .should("not.exist");
@@ -2702,7 +2702,7 @@ context(
             selectHistoryHash();
 
             selectAutocompleteTextField()
-                .type("4:6");
+                .type("{selectall}4:6");
 
             selectAutocompleteTextFieldHelper()
                 .should("not.exist");
@@ -2760,7 +2760,7 @@ context(
 
             selectAutocompleteTextField()
                 .should("have.value", "")
-                .type("B2{enter}");
+                .type("{selectall}B2{enter}");
 
             selectCellGotoButton(false)
                 .click();
@@ -3146,7 +3146,7 @@ context(
 
                     // type text and blur
                     cy.get(textFieldId)
-                        .type("{selectall}XYZ{Esc}")
+                        .type("{selectall}XYZ{esc}")
 
                     cy.get(textFieldId)
                         .should("have.value", text);
