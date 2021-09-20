@@ -119,7 +119,7 @@ export default class SpreadsheetRowReference extends SpreadsheetColumnOrRowRefer
     isInsertBeforePostUrl(urlPaths) {
         return urlPaths[4] === "row" &&
             urlPaths[5] === this.toString() &&
-            urlPaths[6] == "before";
+            urlPaths[6] === "before";
     }
 
     // viewport.........................................................................................................

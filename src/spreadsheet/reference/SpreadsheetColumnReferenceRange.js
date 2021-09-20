@@ -111,7 +111,7 @@ export default class SpreadsheetColumnReferenceRange extends SpreadsheetColumnOr
     isInsertBeforePostUrl(urlPaths) {
         return urlPaths[4] === "column" &&
             urlPaths[5] === this.toString() &&
-            urlPaths[6] == "before";
+            urlPaths[6] === "before";
     }
 
     // viewport.........................................................................................................
