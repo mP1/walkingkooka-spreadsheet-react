@@ -107,6 +107,19 @@ export default class SpreadsheetRowReferenceRange extends SpreadsheetColumnOrRow
     // 3 == $spreadsheet-id
     // 4 == column == Selection
     // 5 == $selection
+    // 6 == after === insert-action.toUrl
+    isInsertAfterPostUrl(urlPaths) {
+        return urlPaths[4] === "row" &&
+            urlPaths[5] === this.toString() &&
+            urlPaths[6] === "after";
+    }
+    
+    // 0 = ""
+    // 1 == api
+    // 2 == spreadsheet
+    // 3 == $spreadsheet-id
+    // 4 == column == Selection
+    // 5 == $selection
     // 6 == before == insert-action.toUrl
     isInsertBeforePostUrl(urlPaths) {
         return urlPaths[4] === "row" &&
