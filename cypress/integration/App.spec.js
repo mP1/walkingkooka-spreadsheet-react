@@ -2558,7 +2558,7 @@ context(
             selectCellGotoButton(DISABLED);
             selectCellRangeSelectButton(DISABLED);
             selectColumnGotoButton(DISABLED);
-            selectLabelCreateButton(ENABLED); // "C" could be a column or label so enable both
+            selectLabelCreateButton(DISABLED);
             selectLabelEditButton(DISABLED);
             selectLabelGotoButton(DISABLED);
             selectRowGotoButton(DISABLED);
