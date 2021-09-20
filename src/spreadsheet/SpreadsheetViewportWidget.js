@@ -191,7 +191,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
                                     Object.assign(
                                         newState,
                                         {
-                                            selection: selection.viewportPostInsertAfterSelection(selectionAction.count()),
+                                            selection: selection.viewportInsertBeforePostSucessSelection(selectionAction.count()),
                                             selectionAction: null,
                                         }
                                     );

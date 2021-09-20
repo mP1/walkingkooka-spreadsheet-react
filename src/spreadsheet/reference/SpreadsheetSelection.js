@@ -225,7 +225,7 @@ export default class SpreadsheetSelection extends SystemObject {
         SystemObject.throwUnsupportedOperation();
     }
 
-    viewportPostInsertAfterSelection(count) {
+    viewportInsertBeforePostSucessSelection(count) {
         SystemObject.throwUnsupportedOperation();
     }
 
