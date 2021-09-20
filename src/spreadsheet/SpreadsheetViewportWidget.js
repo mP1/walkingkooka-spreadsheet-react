@@ -590,14 +590,14 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
                         }, SCROLL_DEBOUNCE)}
                 />
             </TableContainer>,
-            <Menu
-                keepMounted
-                open={contextMenuOpen}
-                onClose={() => this.setState({
-                    contextMenu: {},
-                })}
-                anchorReference="anchorPosition"
-                anchorPosition={anchorPosition || { left: 0, top: 0}}
+            <Menu key="viewport-ContextMenu"
+                  keepMounted
+                  open={contextMenuOpen}
+                  onClose={() => this.setState({
+                      contextMenu: {},
+                  })}
+                  anchorReference="anchorPosition"
+                  anchorPosition={anchorPosition || {left: 0, top: 0}}
             >
                 {menuItems}
             </Menu>
