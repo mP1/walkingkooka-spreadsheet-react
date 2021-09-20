@@ -10,6 +10,8 @@ import Slider from "@material-ui/core/Slider";
 import SpreadsheetCellColumnOrRowParse from "./reference/SpreadsheetCellColumnOrRowParse.js";
 import SpreadsheetCellRange from "./reference/SpreadsheetCellRange.js";
 import SpreadsheetCellReference from "./reference/SpreadsheetCellReference.js";
+import SpreadsheetColumnOrRowInsertAfterHistoryHashToken
+    from "./history/SpreadsheetColumnOrRowInsertAfterHistoryHashToken.js";
 import SpreadsheetColumnOrRowInsertBeforeHistoryHashToken
     from "./history/SpreadsheetColumnOrRowInsertBeforeHistoryHashToken.js";
 import SpreadsheetColumnReference from "./reference/SpreadsheetColumnReference.js";
@@ -198,6 +200,32 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
                                 }
                             }
                         }
+                        break;
+                    }
+                    if(selectionAction instanceof SpreadsheetColumnOrRowInsertAfterHistoryHashToken){
+                        const urlPaths = url.path().split("/");
+                        if(urlPaths.length === 7){
+                            // 0 = ""
+                            // 1 == api
+                            // 2 == spreadsheet
+                            // 3 == $spreadsheet-id
+                            // 4 == column == Selection
+                            // 5 == $selection
+                            // 6 == before == insert-action.toUrl
+                            if(urlPaths[3] === historyTokens[SpreadsheetHistoryHash.SPREADSHEET_ID].toString()){
+                                const selection = historyTokens[SpreadsheetHistoryHash.SELECTION];
+                                if(selection && selection.isInsertAfterPostUrl(urlPaths)){
+                                    Object.assign(
+                                        newState,
+                                        {
+                                            selection: selection,
+                                            selectionAction: null,
+                                        }
+                                    );
+                                }
+                            }
+                        }
+                        break;
                     }
                     break;
                 default:
