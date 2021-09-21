@@ -595,7 +595,6 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
                   id={SpreadsheetViewportWidget.VIEWPORT_CONTEXT_MENU_ID}
                   keepMounted
                   open={contextMenuOpen}
-                  XonClick={this.closeContextMenu.bind(this)}
                   onClose={this.closeContextMenu.bind(this)}
                   anchorReference="anchorPosition"
                   anchorPosition={anchorPosition || {left: 0, top: 0}}
