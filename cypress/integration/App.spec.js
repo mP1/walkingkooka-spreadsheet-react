@@ -1145,8 +1145,6 @@ context(
         it("Column click should have focus and be selected", () => {
             spreadsheetEmpty();
 
-            renderWait(100);
-
             column("B")
                 .click();
 
@@ -1759,8 +1757,6 @@ context(
         it("Cell select delete hash", () => {
             spreadsheetEmpty();
 
-            renderWait(100);
-
             cellClick(B2);
 
             formulaText()
@@ -1782,8 +1778,6 @@ context(
 
         it("Cell range select delete hash", () => {
             spreadsheetEmpty();
-
-            renderWait(100);
 
             cellClick(A1);
 
@@ -1821,8 +1815,6 @@ context(
         it("Column select delete hash", () => {
             spreadsheetEmpty();
 
-            renderWait(100);
-
             cellClick(E5);
 
             formulaText()
@@ -1844,8 +1836,6 @@ context(
 
         it("Column range select delete hash", () => {
             spreadsheetEmpty();
-
-            renderWait(100);
 
             cellClick(E5);
 
@@ -1869,8 +1859,6 @@ context(
         it("Row select delete hash", () => {
             spreadsheetEmpty();
 
-            renderWait(100);
-
             cellClick(E5);
 
             formulaText()
@@ -1892,8 +1880,6 @@ context(
 
         it("Row range select delete hash", () => {
             spreadsheetEmpty();
-
-            renderWait(100);
 
             cellClick(E5);
 
@@ -1919,8 +1905,6 @@ context(
         it("Column select insert-after hash", () => {
             spreadsheetEmpty();
 
-            renderWait(100);
-
             cellClick(E5);
 
             formulaText()
@@ -1942,8 +1926,6 @@ context(
 
         it("Column range select insert-after hash", () => {
             spreadsheetEmpty();
-
-            renderWait(100);
 
             cellClick(E5);
 
@@ -1967,8 +1949,6 @@ context(
         it("Row select insert-after hash", () => {
             spreadsheetEmpty();
 
-            renderWait(100);
-
             cellClick(E5);
 
             formulaText()
@@ -1990,8 +1970,6 @@ context(
 
         it("Row range select insert-after hash", () => {
             spreadsheetEmpty();
-
-            renderWait(100);
 
             cellClick(E5);
 
@@ -2017,8 +1995,6 @@ context(
         it("Column select insert-before hash", () => {
             spreadsheetEmpty();
 
-            renderWait(100);
-
             cellClick(E5);
 
             formulaText()
@@ -2040,8 +2016,6 @@ context(
 
         it("Column range select insert-before hash", () => {
             spreadsheetEmpty();
-
-            renderWait(100);
 
             cellClick(E5);
 
@@ -2065,8 +2039,6 @@ context(
         it("Row select insert-before hash", () => {
             spreadsheetEmpty();
 
-            renderWait(100);
-
             cellClick(E5);
 
             formulaText()
@@ -2088,8 +2060,6 @@ context(
 
         it("Row range select insert-before hash", () => {
             spreadsheetEmpty();
-
-            renderWait(100);
 
             cellClick(E5);
 
