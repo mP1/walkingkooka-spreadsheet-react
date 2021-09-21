@@ -1,4 +1,5 @@
 import ListenerCollection from "../../event/ListenerCollection.js";
+import MenuItem from "@material-ui/core/MenuItem";
 import Preconditions from "../../Preconditions.js";
 import spreadsheetCellRangeCellReferenceOrLabelParse
     from "../reference/SpreadsheetCellRangeCellReferenceOrLabelParse.js";
@@ -724,5 +725,23 @@ export default class SpreadsheetHistoryHash extends SpreadsheetHistoryHashTokens
         only[SpreadsheetHistoryHashTokens.SPREADSHEET_NAME] = tokens[SpreadsheetHistoryHashTokens.SPREADSHEET_NAME];
 
         return only;
+    }
+
+    /**
+     * Factory that builds a MenuItem with the given text and a link created from the given history hash tokens.
+     */
+    menuItem(text, id, historyTokens) {
+        const copy = Object.assign({}, historyTokens);
+
+        const href = "#" + SpreadsheetHistoryHash.stringify(historyTokens);
+
+        // unfortunately href is not honoured and does not update history
+        return <MenuItem key={href}
+                         id={id}
+                         href={href}
+                         onClick={() => this.mergeAndPush(copy)}
+                         tabIndex={0}>{
+                             text
+                         }</MenuItem>;
     }
 }

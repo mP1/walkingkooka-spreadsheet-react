@@ -302,6 +302,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
             selection: tokens[SpreadsheetHistoryHash.SELECTION],
             selectionAnchor: tokens[SpreadsheetHistoryHash.SELECTION_ANCHOR],
             selectionAction: tokens[SpreadsheetHistoryHash.SELECTION_ACTION],
+            contextMenu: {}, // close context menu
         };
     }
 
@@ -590,12 +591,12 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
                         }, SCROLL_DEBOUNCE)}
                 />
             </TableContainer>,
-            <Menu key="viewport-ContextMenu"
+            <Menu key={SpreadsheetViewportWidget.VIEWPORT_CONTEXT_MENU_ID}
+                  id={SpreadsheetViewportWidget.VIEWPORT_CONTEXT_MENU_ID}
                   keepMounted
                   open={contextMenuOpen}
-                  onClose={() => this.setState({
-                      contextMenu: {},
-                  })}
+                  XonClick={this.closeContextMenu.bind(this)}
+                  onClose={this.closeContextMenu.bind(this)}
                   anchorReference="anchorPosition"
                   anchorPosition={anchorPosition || {left: 0, top: 0}}
             >
@@ -603,6 +604,14 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
             </Menu>
         ];
     }
+
+    closeContextMenu() {
+        this.setState({
+            contextMenu: {},
+        });
+    }
+
+    static VIEWPORT_CONTEXT_MENU_ID = "viewport-context-Menu";
 
     onFocus(e) {
         this.setState({
@@ -642,13 +651,16 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
 
         const selection = this.findEventTargetSelection(e.target);
         if(selection){
+            const history = this.props.history;
+
             contextMenuState = {
                 anchorPosition: {
                     left: e.clientX - 2,
                     top: e.clientY - 4,
                 },
                 menuItems: selection.buildContextMenuItems(
-                    SpreadsheetHistoryHash.spreadsheetIdAndName(this.props.history.hash())
+                    SpreadsheetHistoryHash.spreadsheetIdAndName(history.tokens()),
+                    history
                 ),
             }
         }

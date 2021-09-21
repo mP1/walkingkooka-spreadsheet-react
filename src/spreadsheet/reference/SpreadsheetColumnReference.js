@@ -1,6 +1,10 @@
 import Preconditions from "../../Preconditions.js";
 import SpreadsheetCellReference from "./SpreadsheetCellReference.js";
 import SpreadsheetColumnOrRowReference from "./SpreadsheetColumnOrRowReference";
+import SpreadsheetColumnOrRowInsertAfterHistoryHashToken
+    from "../history/SpreadsheetColumnOrRowInsertAfterHistoryHashToken.js";
+import SpreadsheetColumnOrRowInsertBeforeHistoryHashToken
+    from "../history/SpreadsheetColumnOrRowInsertBeforeHistoryHashToken.js";
 import SpreadsheetColumnReferenceRange from "./SpreadsheetColumnReferenceRange.js";
 import SpreadsheetHistoryHash from "../history/SpreadsheetHistoryHash.js";
 import SpreadsheetReferenceKind from "./SpreadsheetReferenceKind";
@@ -78,9 +82,81 @@ export default class SpreadsheetColumnReference extends SpreadsheetColumnOrRowRe
 
     // context menu events..............................................................................................
 
-    buildContextMenuItems(historyTokens){
-        // nop
+    // context menu events..............................................................................................
+
+    // delete
+    // insert 1 before
+    // insert 2 before
+    // insert 1 after
+    // insert 2 after
+    buildContextMenuItems(historyTokens, history) {
+        historyTokens[SpreadsheetHistoryHash.SELECTION] = this;
+        historyTokens[SpreadsheetHistoryHash.SELECTION_ACTION] = null;
+        historyTokens[SpreadsheetHistoryHash.SELECTION_ANCHOR] = null;
+
+        const menuItems = [];
+
+        const before2 = this.addSaturated(-2);
+        const before1 = this.addSaturated(-1);
+
+        if(!before2.equals(before1)){
+            historyTokens[SpreadsheetHistoryHash.SELECTION_ACTION] = new SpreadsheetColumnOrRowInsertBeforeHistoryHashToken(2);
+
+            menuItems.push(
+                history.menuItem(
+                    "Insert 2 before",
+                    SpreadsheetColumnReference.VIEWPORT_COLUMN_INSERT_BEFORE_2,
+                    historyTokens
+                )
+            );
+        }
+
+        if(!before1.equals(this)){
+            historyTokens[SpreadsheetHistoryHash.SELECTION_ACTION] = new SpreadsheetColumnOrRowInsertBeforeHistoryHashToken(1);
+
+            menuItems.push(
+                history.menuItem(
+                    "Insert 1 before",
+                    SpreadsheetColumnReference.VIEWPORT_COLUMN_INSERT_BEFORE_1,
+                    historyTokens
+                )
+            );
+        }
+
+        const after2 = this.addSaturated(+2);
+        const after1 = this.addSaturated(+1);
+
+        if(!after1.equals(this)){
+            historyTokens[SpreadsheetHistoryHash.SELECTION_ACTION] = new SpreadsheetColumnOrRowInsertAfterHistoryHashToken(1);
+
+            menuItems.push(
+                history.menuItem(
+                    "Insert 1 after",
+                    SpreadsheetColumnReference.VIEWPORT_COLUMN_INSERT_AFTER_1,
+                    historyTokens
+                )
+            );
+        }
+
+        if(!after2.equals(after1)){
+            historyTokens[SpreadsheetHistoryHash.SELECTION_ACTION] = new SpreadsheetColumnOrRowInsertAfterHistoryHashToken(2);
+
+            menuItems.push(
+                history.menuItem(
+                    "Insert 2 after",
+                    SpreadsheetColumnReference.VIEWPORT_COLUMN_INSERT_AFTER_2,
+                    historyTokens
+                )
+            );
+        }
+
+        return menuItems;
     }
+
+    static VIEWPORT_COLUMN_INSERT_BEFORE_2 = "viewport-column-insert-before-2";
+    static VIEWPORT_COLUMN_INSERT_BEFORE_1 = "viewport-column-insert-before-1";
+    static VIEWPORT_COLUMN_INSERT_AFTER_1 = "viewport-column-insert-after-1";
+    static VIEWPORT_COLUMN_INSERT_AFTER_2 = "viewport-column-insert-after-2";
 
     viewportId() {
         return "viewport-column-" + this.toString().toUpperCase();
