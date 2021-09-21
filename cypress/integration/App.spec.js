@@ -2578,12 +2578,12 @@ context(
             selectCellRangeSelectButton(DISABLED);
             selectColumnGotoButton(DISABLED);
             selectColumnRangeSelectButton(DISABLED);
-            selectLabelCreateButton(DISABLED);
-            selectLabelGotoButton(ENABLED);
+            selectLabelEditButton(DISABLED);
+            selectLabelGotoButton(DISABLED);
             selectRowGotoButton(DISABLED);
             selectRowRangeSelectButton(DISABLED);
 
-            selectLabelEditButton(ENABLED)
+            selectLabelCreateButton(ENABLED)
                 .click();
 
             hash()
