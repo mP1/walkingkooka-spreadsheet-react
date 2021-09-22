@@ -18,6 +18,8 @@ import SpreadsheetMetadata from "./meta/SpreadsheetMetadata.js";
  */
 export default class SpreadsheetNameWidget extends SpreadsheetHistoryAwareStateWidget {
 
+    static SPREADSHEET_NAME_ID = "spreadsheet-name";
+
     init() {
         this.textField = React.createRef();
     }
@@ -80,7 +82,7 @@ export default class SpreadsheetNameWidget extends SpreadsheetHistoryAwareStateW
         // TODO add a validator to verify spreadsheetName characters
         return <SpreadsheetButtonTextField ref={this.textField}
                                            key={value}
-                                           id={"spreadsheet-name"}
+                                           id={SpreadsheetNameWidget.SPREADSHEET_NAME_ID}
                                            className={"spreadsheet-name"}
                                            value={value}
                                            setValue={this.onValue.bind(this)}
