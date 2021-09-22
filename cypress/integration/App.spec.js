@@ -55,10 +55,17 @@ context(
     () => {
 
         beforeEach(() => {
-            cy.visit('/')
+            cy.visit('/');
+
+            spreadsheetEmptyReady();
         });
 
         // Spreadsheet create & load....................................................................................
+
+        function spreadsheetEmptyReady() {
+            hash()
+                .should('match', /.*\/Untitled/); // wait for /$id/$name
+        }
 
         it("Spreadsheet initial empty check", () => {
             spreadsheetEmptyCheck();
@@ -71,8 +78,6 @@ context(
         });
 
         it("Spreadsheet create empty after editing cell", () => {
-            spreadsheetEmpty();
-
             cellClick("E5");
 
             formulaText()
@@ -88,8 +93,6 @@ context(
         });
 
         it("Spreadsheet create, edit cell, create empty, reload non empty", () => {
-            spreadsheetEmpty();
-
             cy.window()
                 .then(function(win) {
                     const nonEmptySpreadsheetHash = win.location.hash;
@@ -101,7 +104,7 @@ context(
                         .wait(FORMULA_TEXT_CLICK_WAIT)
                         .type("{selectall}=1+2+3{enter}");
 
-                    spreadsheetEmpty();
+                    spreadsheetEmptyReady();
 
                     // reload previous spreadsheet and verify viewport reloaded
                     hashEnter(nonEmptySpreadsheetHash);
@@ -114,8 +117,6 @@ context(
         });
 
         it("Spreadsheet create, edit cell, reload", () => {
-            spreadsheetEmpty();
-
             cy.window()
                 .then(function(win) {
                     const nonEmptySpreadsheetHash = win.location.hash;
@@ -150,8 +151,6 @@ context(
         });
 
         it("Spreadsheet name edit & ESCAPE, changes lost", () => {
-            spreadsheetEmpty();
-
             spreadsheetNameClick();
 
             // type the new name in
@@ -169,8 +168,6 @@ context(
         });
 
         it("Spreadsheet name edit & blur changes lost", () => {
-            spreadsheetEmpty();
-
             spreadsheetNameClick();
 
             // type the new name in
@@ -189,8 +186,6 @@ context(
         });
 
         it("Spreadsheet name clear & save fails", () => {
-            spreadsheetEmpty();
-
             spreadsheetNameClick();
 
             // type the new name in
@@ -208,8 +203,6 @@ context(
         });
 
         it("Spreadsheet name edit & save", () => {
-            spreadsheetEmpty();
-
             spreadsheetNameClick();
 
             const updatedSpreadsheetName = "SpreadsheetName234"; // easier to use in regex below
@@ -237,7 +230,6 @@ context(
         });
 
         it("Label mapping enter hash", () => {
-            spreadsheetEmpty();
             hashLabel();
 
             labelMappingDialogCheck(
@@ -250,7 +242,6 @@ context(
         });
 
         it("Label mapping label text field has focus", () => {
-            spreadsheetEmpty();
             hashLabel();
 
             labelMappingLabelTextField()
@@ -258,7 +249,6 @@ context(
         });
 
         it("Label mapping label tabbing", () => {
-            spreadsheetEmpty();
             hashLabel();
 
             labelMappingReferenceTextField()
@@ -286,8 +276,6 @@ context(
         });
 
         it("Label mapping hash show label mapping after editing name", () => {
-            spreadsheetEmpty();
-
             spreadsheetNameClick();
 
             spreadsheetName()
@@ -314,7 +302,6 @@ context(
         // LABEL MAPPING LABEL..........................................................................................
 
         it("Label mapping edit label empty text", () => {
-            spreadsheetEmpty();
             hashLabel();
 
             labelMappingLabelTextField()
@@ -330,7 +317,6 @@ context(
         });
 
         it("Label mapping edit label invalid text", () => {
-            spreadsheetEmpty();
             hashLabel();
 
             const labelText = "!InvalidLabel";
@@ -348,7 +334,6 @@ context(
         });
 
         it("Label mapping edit label invalid text #2", () => {
-            spreadsheetEmpty();
             hashLabel();
 
             const labelText = "I!nvalidLabel";
@@ -366,7 +351,6 @@ context(
         });
 
         it("Label mapping edit label text, missing reference ENTER", () => {
-            spreadsheetEmpty();
             hashLabel();
 
             const labelText = "Label456";
@@ -384,7 +368,6 @@ context(
         });
 
         it("Label mapping edit label text, missing reference SAVE", () => {
-            spreadsheetEmpty();
             hashLabel();
 
             const labelText = "Label456";
@@ -407,7 +390,6 @@ context(
         // LABEL MAPPING REFERENCE......................................................................................
 
         it("Label mapping edit reference invalid text", () => {
-            spreadsheetEmpty();
             hashLabel();
 
             const referenceText = "!InvalidReference";
@@ -425,7 +407,6 @@ context(
         });
 
         it("Label mapping edit reference invalid text #2", () => {
-            spreadsheetEmpty();
             hashLabel();
 
             const referenceText = "A!InvalidReference";
@@ -443,7 +424,6 @@ context(
         });
 
         it("Label mapping edit reference same label", () => {
-            spreadsheetEmpty();
             hashLabel();
 
             const referenceText = LABEL;
@@ -461,7 +441,6 @@ context(
         });
 
         it("Label mapping edit reference", () => {
-            spreadsheetEmpty();
             hashLabel();
 
             const referenceText = "B2";
@@ -480,7 +459,6 @@ context(
         // special keys and buttons.....................................................................................
 
         it("Label mapping label TextField ESC", () => {
-            spreadsheetEmpty();
             hashLabel();
 
             labelMappingReferenceTextField()
@@ -501,7 +479,6 @@ context(
         });
 
         it("Label mapping reference TextField ESC", () => {
-            spreadsheetEmpty();
             hashLabel();
 
             labelMappingReferenceTextField()
@@ -519,7 +496,6 @@ context(
         });
 
         it("Label mapping edit label/reference label TextField ENTER", () => {
-            spreadsheetEmpty();
             hashLabel();
 
             const referenceText = "B2";
@@ -543,7 +519,6 @@ context(
         });
 
         it("Label mapping edit label/reference reference TextField ENTER", () => {
-            spreadsheetEmpty();
             hashLabel();
 
             const referenceText = "B2";
@@ -562,7 +537,6 @@ context(
         });
 
         it("Label mapping edit label/reference click SAVE button", () => {
-            spreadsheetEmpty();
             hashLabel();
 
             const referenceText = "B2";
@@ -582,7 +556,6 @@ context(
         });
 
         it("Label mapping edit label/reference click DELETE button", () => {
-            spreadsheetEmpty();
             hashLabel();
 
             const referenceText = "b2";
@@ -608,7 +581,6 @@ context(
         });
 
         it("Label mapping edit close BUTTON", () => {
-            spreadsheetEmpty();
             hashLabel();
 
             labelMappingLabelCloseButton()
@@ -619,8 +591,6 @@ context(
         });
 
         it("Label mapping save, navigate to label", () => {
-            spreadsheetEmpty();
-
             const reference = B2;
 
             cy.window()
@@ -657,8 +627,6 @@ context(
         });
 
         it("Label mapping save, hover shows tooltip", () => {
-            spreadsheetEmpty();
-
             // create a new label
             hashAppend("/label/HoverLabel");
 
@@ -683,8 +651,6 @@ context(
         });
 
         it("Label mapping save, hover shows several tooltip", () => {
-            spreadsheetEmpty();
-
             // create a new label
             hashAppend("/label/HoverLabel1");
 
@@ -721,8 +687,6 @@ context(
         });
 
         it("Label mapping update, refreshes viewport", () => {
-            spreadsheetEmpty();
-
             cellClick(A1);
 
             hash().should('match', /.*\/Untitled\/cell\/A1/)
@@ -779,8 +743,6 @@ context(
         });
 
         it("Label history hash navigate to label", () => {
-            spreadsheetEmpty();
-
             // create a new label
             hashAppend("/label/NavigateToLabel123");
 
@@ -875,8 +837,6 @@ context(
         });
 
         it("Cell viewport cell click", () => {
-            spreadsheetEmpty();
-
             cellClick(B2);
 
             hash()
@@ -884,8 +844,6 @@ context(
         });
 
         it("Cell viewport cell click after editing name", () => {
-            spreadsheetEmpty();
-
             spreadsheetNameClick();
             
             cellClick(B2);
@@ -896,8 +854,6 @@ context(
 
         // @see https://github.com/mP1/walkingkooka-spreadsheet-react/issues/1256
         it("Cell formula load then history hash save", () => {
-            spreadsheetEmpty();
-
             cellClick(B2);
 
             formulaText()
@@ -911,7 +867,7 @@ context(
         });
 
         it("Cell formula edit ENTER saves", () => {
-            spreadsheetEmpty();
+            spreadsheetEmptyReady();
 
             cellClick(B2);
 
@@ -929,8 +885,6 @@ context(
         });
 
         it("Cell formula edit with reference", () => {
-            spreadsheetEmpty();
-
             cellClick(C3);
 
             formulaText()
@@ -949,8 +903,6 @@ context(
         });
 
         it("Cell formula edit, update hash cell reference", () => {
-            spreadsheetEmpty();
-
             cellClick(C3);
 
             formulaText()
@@ -975,8 +927,6 @@ context(
         });
 
         it("Cell hash formula update", () => {
-            spreadsheetEmpty();
-
             hashAppend("/cell/D4/formula");
 
             column("D")
@@ -989,8 +939,6 @@ context(
         });
 
         it("Cell hash append formula", () => {
-            spreadsheetEmpty();
-
             cellClick(C3);
 
             renderWait(FORMULA_TEXT_CLICK_WAIT);
@@ -1004,8 +952,6 @@ context(
         });
 
         it("Cell hash append formula has focus", () => {
-            spreadsheetEmpty();
-
             cellClick(C3);
 
             renderWait(FORMULA_TEXT_CLICK_WAIT);
@@ -1019,8 +965,6 @@ context(
         });
 
         it("Cell hash with unknown label", () => {
-            spreadsheetEmpty();
-
             hashAppend("/cell/" + LABEL);
 
             hash()
@@ -1028,8 +972,6 @@ context(
         });
 
         it("Cell click should have focus", () => {
-            spreadsheetEmpty();
-
             cellClick(B2);
 
             hash()
@@ -1037,8 +979,6 @@ context(
         });
 
         it("Cell click columns & rows selected", () => {
-            spreadsheetEmpty();
-
             cellClick(B2);
 
             hash()
@@ -1051,9 +991,8 @@ context(
         });
 
         it("Cell click and select using arrow keys", () => {
-            spreadsheetEmpty();
-
             cellClick(C3);
+
             cell(C3)
                 .type("{leftarrow}");
 
@@ -1088,8 +1027,6 @@ context(
         });
 
         it("Cell click and hit ENTER gives formula text focus", () => {
-            spreadsheetEmpty();
-
             cellClick(A3);
 
             cell(A3)
@@ -1103,8 +1040,6 @@ context(
         });
 
         it("Cell select and hit ESC loses viewport cell focus", () => {
-            spreadsheetEmpty();
-
             cellClick(A3);
 
             hash()
@@ -1118,8 +1053,6 @@ context(
         });
 
         it("Cell outside viewport", () => {
-            spreadsheetEmpty();
-
             hashAppend("/cell/T1");
 
             formulaText()
@@ -1134,8 +1067,6 @@ context(
         });
 
         it("Cell outside viewport vertical", () => {
-            spreadsheetEmpty();
-
             hashAppend("/cell/A30");
 
             formulaText()
@@ -1150,8 +1081,6 @@ context(
         });
 
         it("Cell outside viewport horiz & vertical", () => {
-            spreadsheetEmpty();
-
             hashAppend("/cell/T30");
 
             formulaText()
@@ -1166,8 +1095,6 @@ context(
         });
 
         it("Cell outside viewport and reload", () => {
-            spreadsheetEmpty();
-
             hashAppend("/cell/M1");
 
             formulaText()
@@ -1193,8 +1120,6 @@ context(
         });
 
         it("Cell outside viewport horiz & vert and reload", () => {
-            spreadsheetEmpty();
-
             hashAppend("/cell/M10");
 
             formulaText()
@@ -1224,8 +1149,6 @@ context(
         // column click.................................................................................................
 
         it("Column click should have focus and be selected", () => {
-            spreadsheetEmpty();
-
             column("B")
                 .click();
 
@@ -1239,8 +1162,6 @@ context(
         });
 
         it("Column click and cursor RIGHT", () => {
-            spreadsheetEmpty();
-
             column("B")
                 .click();
 
@@ -1256,8 +1177,6 @@ context(
         });
 
         it("Column click and cursor DOWN", () => {
-            spreadsheetEmpty();
-
             column("B")
                 .click();
 
@@ -1278,8 +1197,6 @@ context(
         // row click.................................................................................................
 
         it("Row click should have focus and be selected", () => {
-            spreadsheetEmpty();
-
             row("2")
                 .click();
 
@@ -1292,8 +1209,6 @@ context(
         });
 
         it("Row click and cursor DOWN", () => {
-            spreadsheetEmpty();
-
             row("2")
                 .click()
                 .should("have.focus");
@@ -1310,8 +1225,6 @@ context(
         });
 
         it("Row click and cursor RIGHT", () => {
-            spreadsheetEmpty();
-
             row("2")
                 .click();
 
@@ -1332,8 +1245,6 @@ context(
         // cell range...................................................................................................
 
         it("Cell range history hash", () => {
-            spreadsheetEmpty();
-
             hashAppend("/cell/B2:C3");
 
             hash()
@@ -1351,8 +1262,6 @@ context(
         });
 
         it("Cell range out of viewport history hash", () => {
-            spreadsheetEmpty();
-
             hashAppend("/cell/X2:Y3");
 
             hash()
@@ -1370,8 +1279,6 @@ context(
         });
 
         it("Cell range keyboard extend left", () => {
-            spreadsheetEmpty();
-
             hashAppend("/cell/D4:E5");
 
             hash()
@@ -1400,8 +1307,6 @@ context(
         });
 
         it("Cell range keyboard extend right", () => {
-            spreadsheetEmpty();
-
             hashAppend("/cell/D4:E5");
 
             hash()
@@ -1433,8 +1338,6 @@ context(
         });
 
         it("Cell range keyboard extend right twice", () => {
-            spreadsheetEmpty();
-
             hashAppend("/cell/D4:E5");
 
             hash()
@@ -1475,8 +1378,6 @@ context(
         });
 
         it("Cell range keyboard extend up", () => {
-            spreadsheetEmpty();
-
             hashAppend("/cell/D4:E5");
 
             hash()
@@ -1505,8 +1406,6 @@ context(
         });
 
         it("Cell range keyboard extend down", () => {
-            spreadsheetEmpty();
-
             hashAppend("/cell/D4:E5");
 
             hash()
@@ -1541,8 +1440,6 @@ context(
         });
 
         it("Cell range keyboard extend down twice", () => {
-            spreadsheetEmpty();
-
             hashAppend("/cell/D4:E5");
 
             hash()
@@ -1588,8 +1485,6 @@ context(
         // column range...................................................................................................
 
         it("Column range history hash", () => {
-            spreadsheetEmpty();
-
             hashAppend("/column/B:C");
 
             hash()
@@ -1602,8 +1497,6 @@ context(
         });
 
         it("Column range out of viewport history hash", () => {
-            spreadsheetEmpty();
-
             hashAppend("/column/X:Y");
 
             hash()
@@ -1616,8 +1509,6 @@ context(
         });
 
         it("Column range extend left", () => {
-            spreadsheetEmpty();
-
             hashAppend("/column/E");
 
             hash()
@@ -1637,8 +1528,6 @@ context(
         });
 
         it("Column range extend left twice", () => {
-            spreadsheetEmpty();
-
             hashAppend("/column/E:F");
 
             hash()
@@ -1663,8 +1552,6 @@ context(
         });
 
         it("Column range extend right", () => {
-            spreadsheetEmpty();
-
             hashAppend("/column/E:F");
 
             hash()
@@ -1684,8 +1571,6 @@ context(
         });
 
         it("Column range extend right twice", () => {
-            spreadsheetEmpty();
-
             hashAppend("/column/E:F");
 
             hash()
@@ -1712,8 +1597,6 @@ context(
         // row range...................................................................................................
 
         it("Row range history hash", () => {
-            spreadsheetEmpty();
-
             hashAppend("/row/2:3");
 
             hash()
@@ -1726,8 +1609,6 @@ context(
         });
 
         it("Row range out of viewport history hash", () => {
-            spreadsheetEmpty();
-
             hashAppend("/row/30:31");
 
             hash()
@@ -1740,8 +1621,6 @@ context(
         });
 
         it("Row range extend top", () => {
-            spreadsheetEmpty();
-
             hashAppend("/row/5");
 
             hash()
@@ -1761,8 +1640,6 @@ context(
         });
 
         it("Row range extend top twice", () => {
-            spreadsheetEmpty();
-
             hashAppend("/row/5");
 
             hash()
@@ -1787,8 +1664,6 @@ context(
         });
 
         it("Row range extend bottom", () => {
-            spreadsheetEmpty();
-
             hashAppend("/row/5");
 
             hash()
@@ -1808,8 +1683,6 @@ context(
         });
 
         it("Row range extend bottom twice", () => {
-            spreadsheetEmpty();
-
             hashAppend("/row/5");
 
             hash()
@@ -1836,8 +1709,6 @@ context(
         // selection delete.............................................................................................
 
         it("Cell select delete hash", () => {
-            spreadsheetEmpty();
-
             cellClick(B2);
 
             formulaText()
@@ -1858,8 +1729,6 @@ context(
         });
 
         it("Cell range select delete hash", () => {
-            spreadsheetEmpty();
-
             cellClick(A1);
 
             formulaText()
@@ -1894,8 +1763,6 @@ context(
         });
         
         it("Column select delete hash", () => {
-            spreadsheetEmpty();
-
             cellClick(E5);
 
             formulaText()
@@ -1916,8 +1783,6 @@ context(
         });
 
         it("Column range select delete hash", () => {
-            spreadsheetEmpty();
-
             cellClick(E5);
 
             formulaText()
@@ -1938,8 +1803,6 @@ context(
         });
 
         it("Row select delete hash", () => {
-            spreadsheetEmpty();
-
             cellClick(E5);
 
             formulaText()
@@ -1960,8 +1823,6 @@ context(
         });
 
         it("Row range select delete hash", () => {
-            spreadsheetEmpty();
-
             cellClick(E5);
 
             formulaText()
@@ -1984,8 +1845,6 @@ context(
         // selection insert-after.............................................................................................
 
         it("Column select insert-after hash", () => {
-            spreadsheetEmpty();
-
             cellClick(E5);
 
             formulaText()
@@ -2006,8 +1865,6 @@ context(
         });
 
         it("Column range select insert-after hash", () => {
-            spreadsheetEmpty();
-
             cellClick(E5);
 
             formulaText()
@@ -2028,8 +1885,6 @@ context(
         });
 
         it("Row select insert-after hash", () => {
-            spreadsheetEmpty();
-
             cellClick(E5);
 
             formulaText()
@@ -2050,8 +1905,6 @@ context(
         });
 
         it("Row range select insert-after hash", () => {
-            spreadsheetEmpty();
-
             cellClick(E5);
 
             formulaText()
@@ -2074,8 +1927,6 @@ context(
         // selection insert-before.............................................................................................
 
         it("Column select insert-before hash", () => {
-            spreadsheetEmpty();
-
             cellClick(E5);
 
             formulaText()
@@ -2096,8 +1947,6 @@ context(
         });
 
         it("Column range select insert-before hash", () => {
-            spreadsheetEmpty();
-
             cellClick(E5);
 
             formulaText()
@@ -2118,8 +1967,6 @@ context(
         });
 
         it("Row select insert-before hash", () => {
-            spreadsheetEmpty();
-
             cellClick(E5);
 
             formulaText()
@@ -2140,8 +1987,6 @@ context(
         });
 
         it("Row range select insert-before hash", () => {
-            spreadsheetEmpty();
-
             cellClick(E5);
 
             formulaText()
@@ -2164,8 +2009,6 @@ context(
         // selection then different viewport selections.................................................................
 
         it("Cell formula edit then column click", () => {
-            spreadsheetEmpty();
-
             hashAppend("/cell/B2/formula");
 
             renderWait();
@@ -2178,8 +2021,6 @@ context(
         });
 
         it("Cell formula edit then row click", () => {
-            spreadsheetEmpty();
-
             hashAppend("/cell/B2/formula");
 
             renderWait();
@@ -2192,8 +2033,6 @@ context(
         });
 
         it("Cell formula edit different formula edit", () => {
-            spreadsheetEmpty();
-
             hashAppend("/cell/B2/formula");
 
             hash()
@@ -2207,8 +2046,6 @@ context(
         });
 
         it("Column select then Cell", () => {
-            spreadsheetEmpty();
-
             hashAppend("/column/B");
 
             hash()
@@ -2222,8 +2059,6 @@ context(
         });
 
         it("Row select then Cell", () => {
-            spreadsheetEmpty();
-
             hashAppend("/row/2");
 
             hash()
@@ -2239,8 +2074,6 @@ context(
         // column context menu...........................................................................................
 
         it("Column context menu", () => {
-            spreadsheetEmpty();
-
             column("C")
                 .rightclick();
 
@@ -2251,8 +2084,6 @@ context(
         });
 
         it("Column context menu click insert before 2", () => {
-            spreadsheetEmpty();
-
             cellClick(C3);
 
             formulaText()
@@ -2281,8 +2112,6 @@ context(
         });
 
         it("Column context menu click insert before 1", () => {
-            spreadsheetEmpty();
-
             cellClick(C3);
 
             formulaText()
@@ -2310,8 +2139,6 @@ context(
         });
 
         it("Column context menu click insert after 1", () => {
-            spreadsheetEmpty();
-
             cellClick(A1);
 
             formulaText()
@@ -2348,8 +2175,6 @@ context(
         });
 
         it("Column context menu click insert after 2", () => {
-            spreadsheetEmpty();
-
             cellClick(A1);
 
             formulaText()
@@ -2387,8 +2212,6 @@ context(
         });
 
         it("Column select then context menu click insert before 2", () => {
-            spreadsheetEmpty();
-
             cellClick(C3);
 
             formulaText()
@@ -2425,8 +2248,6 @@ context(
         });
 
         it("Column select then context menu click insert before 1", () => {
-            spreadsheetEmpty();
-
             cellClick(C3);
 
             formulaText()
@@ -2463,8 +2284,6 @@ context(
         });
 
         it("Column select then context menu click insert after 1", () => {
-            spreadsheetEmpty();
-
             cellClick(A1);
 
             formulaText()
@@ -2510,8 +2329,6 @@ context(
         });
 
         it("Column select then context menu click insert after 2", () => {
-            spreadsheetEmpty();
-
             cellClick(A1);
 
             formulaText()
@@ -2566,8 +2383,6 @@ context(
         const DISABLED = true;
 
         it("Select using hash initial appearance", () => {
-            spreadsheetEmpty();
-
             selectHistoryHash();
 
             selectDialogTitle()
@@ -2591,8 +2406,6 @@ context(
         });
 
         it("Select auto complete text field has focus", () => {
-            spreadsheetEmpty();
-
             selectHistoryHash();
 
             selectDialogTitle()
@@ -2604,8 +2417,6 @@ context(
         });
 
         it("Select auto complete tabbing", () => {
-            spreadsheetEmpty();
-
             selectHistoryHash();
 
             selectAutocompleteTextField()
@@ -2626,8 +2437,6 @@ context(
         });
 
         it("Select and close", () => {
-            spreadsheetEmpty();
-
             selectHistoryHash();
 
             selectDialogClose()
@@ -2641,8 +2450,6 @@ context(
         });
 
         it("Select enter ESC closes", () => {
-            spreadsheetEmpty();
-
             selectHistoryHash();
 
             selectAutocompleteTextField()
@@ -2656,8 +2463,6 @@ context(
         });
 
         it("Select enter invalid cell or label", () => {
-            spreadsheetEmpty();
-
             selectHistoryHash();
 
             selectAutocompleteTextField()
@@ -2668,8 +2473,6 @@ context(
         });
 
         it("Select enter cell and ENTER and click GOTO", () => {
-            spreadsheetEmpty();
-
             selectHistoryHash();
 
             selectAutocompleteTextField()
@@ -2698,8 +2501,6 @@ context(
         });
 
         it("Select enter cell range and ENTER and click SELECT CELL RANGE", () => {
-            spreadsheetEmpty();
-
             selectHistoryHash();
 
             selectAutocompleteTextField()
@@ -2728,8 +2529,6 @@ context(
         });
 
         it("Select enter unknown label and ENTER and click CREATE", () => {
-            spreadsheetEmpty();
-
             selectHistoryHash();
 
             selectAutocompleteTextField()
@@ -2758,7 +2557,6 @@ context(
         });
 
         it("Select enter known label and ENTER and click LABEL EDIT", () => {
-            spreadsheetEmpty();
             hashLabel();
 
             labelMappingLabelTextField()
@@ -2804,8 +2602,6 @@ context(
         });
 
         it("Click CELL then select create LABEL and ENTER, verify cell not lost from hash", () => {
-            spreadsheetEmpty();
-
             cell(A1)
                 .click();
 
@@ -2840,8 +2636,6 @@ context(
         });
 
         it("Select enter cell, select from dropdown ENTER and click GOTO CELL", () => {
-            spreadsheetEmpty();
-
             selectHistoryHash();
 
             selectAutocompleteTextField()
@@ -2876,7 +2670,7 @@ context(
         });
 
         it("Select enter column, select from dropdown ENTER and click GOTO COLUMN", () => {
-            spreadsheetEmpty();
+            spreadsheetEmptyReady();
 
             selectHistoryHash();
 
@@ -2912,8 +2706,6 @@ context(
         });
 
         it("Select enter column range, select from dropdown ENTER and click SELECT COLUMN RANGE", () => {
-            spreadsheetEmpty();
-
             selectHistoryHash();
 
             selectAutocompleteTextField()
@@ -2948,7 +2740,6 @@ context(
         });
 
         it("Select enter known label ENTER and click LABEL EDIT", () => {
-            spreadsheetEmpty();
             hashLabel();
 
             labelMappingReferenceTextField()
@@ -2988,7 +2779,6 @@ context(
         });
 
         it("Select enter existing label, select from dropdown ENTER and click GOTO LABEL", () => {
-            spreadsheetEmpty();
             hashLabel();
 
             labelMappingReferenceTextField()
@@ -3037,8 +2827,6 @@ context(
         });
 
         it("Select enter row, select from dropdown ENTER and click GOTO ROW", () => {
-            spreadsheetEmpty();
-
             selectHistoryHash();
 
             selectAutocompleteTextField()
@@ -3073,8 +2861,6 @@ context(
         });
 
         it("Select enter row range, select from dropdown ENTER and click SELECT ROW RANGE", () => {
-            spreadsheetEmpty();
-
             selectHistoryHash();
 
             selectAutocompleteTextField()
@@ -3109,8 +2895,6 @@ context(
         });
 
         it("Select link after cell click", () => {
-            spreadsheetEmpty();
-
             cellClick(A1);
 
             selectLink()
@@ -3123,8 +2907,6 @@ context(
         });
 
         it("Select link click after cell click", () => {
-            spreadsheetEmpty();
-
             cellClick(B1);
 
             selectLink()
@@ -3230,7 +3012,6 @@ context(
         // SETTINGS.........................................................................................................
 
         it("Settings toggle(Show and hide)", () => {
-            spreadsheetEmpty();
             settingsToggle();
 
             settings()
@@ -3249,8 +3030,6 @@ context(
         });
 
         it("Settings hash show settings", () => {
-            spreadsheetEmpty();
-
             hashAppend("/settings");
 
             settings()
@@ -3258,7 +3037,6 @@ context(
         });
 
         it("Settings hash hide settings", () => {
-            spreadsheetEmpty();
             settingsToggle();
 
             cy.window()
@@ -3272,27 +3050,21 @@ context(
         });
 
         it("Settings toggle hash", () => {
-            spreadsheetEmpty();
+            settingsToggle();
 
-                    settingsToggle();
-
-                    cy.hash()
-                        .should("match", /.*\/Untitled\/settings/);
+            cy.hash()
+                .should("match", /.*\/Untitled\/settings/);
         });
 
         it("Settings hash Toggle show then hide", () => {
-            spreadsheetEmpty();
+            settingsToggle();
+            settingsToggle();
 
-                    settingsToggle();
-                    settingsToggle();
-
-                    cy.hash()
-                        .should("match", /.*\/Untitled/);
+            cy.hash()
+                .should("match", /.*\/Untitled/);
         });
 
         it("Settings hash Toggle section and hide", () => {
-            spreadsheetEmpty();
-
             cy.window()
                 .then(function(win) {
                     var hash = win.location.hash;
@@ -3315,8 +3087,6 @@ context(
         });
 
         it("Settings show after editing spreadsheet name", () => {
-            spreadsheetEmpty();
-
             spreadsheetNameClick();
 
             spreadsheetName()
@@ -3332,8 +3102,6 @@ context(
         });
 
         it("Settings open hash after Edit cell", () => {
-            spreadsheetEmpty();
-
             cellClick(A1);
 
             cy.hash()
@@ -3346,8 +3114,8 @@ context(
         });
 
         it("Settings metadata check creator-date-time/modified-date-time", () => {
-            spreadsheetEmpty();
             settingsToggle();
+
             settingsOpenSectionSpreadsheetMetadataProperty(SpreadsheetMetadata.CREATE_DATE_TIME);
 
             const year = new Date().getFullYear();
@@ -3371,8 +3139,8 @@ context(
                                                                  a1CellContent,
                                                                  a1CellContentDefault) {
             it("Settings update SpreadsheetMetadata." + property, () => {
-                spreadsheetEmpty();
                 settingsToggle();
+
                 settingsOpenSectionSpreadsheetMetadataProperty(property);
 
                 if(a1Formula){
@@ -3462,8 +3230,8 @@ context(
                                                                    values,
                                                                    a1CellContents) {
             it("Settings update SpreadsheetMetadata." + property, () => {
-                spreadsheetEmpty();
                 settingsToggle();
+
                 settingsOpenSectionSpreadsheetMetadataProperty(property);
 
                 if(a1Formula){
@@ -3498,8 +3266,8 @@ context(
                                                                                   values,
                                                                                   a1CellContents) {
             it("Settings update SpreadsheetMetadata." + property, () => {
-                spreadsheetEmpty();
                 settingsToggle();
+
                 settingsOpenSectionSpreadsheetMetadataProperty(property);
 
                 const dateParsePatternsId = "#settings-spreadsheet-metadata-" + SpreadsheetMetadata.DATE_PARSE_PATTERNS + "-TextField";
@@ -3586,8 +3354,8 @@ context(
                                                                          values,
                                                                          a1CellContents) {
             it("Settings update SpreadsheetMetadata." + property, () => {
-                spreadsheetEmpty();
                 settingsToggle();
+
                 settingsOpenSectionSpreadsheetMetadataProperty(property);
 
                 if(a1Formula){
@@ -3902,8 +3670,8 @@ context(
                                                                   property2,
                                                                   text2) {
             it("Settings update SpreadsheetMetadata." + property1 + "=" + text1 + " & " + property2 + "=" + text2 + " causing value swap", () => {
-                spreadsheetEmpty();
                 settingsToggle();
+
                 settingsOpenSectionSpreadsheetMetadataProperty(property1);
 
                 const textFieldId1 = "#settings-spreadsheet-metadata-" + property1 + "-TextField";
@@ -3968,8 +3736,8 @@ context(
 
         function settingsSpreadsheetMetadataStyleColorAndCheck(property, defaultColor) {
             it("Settings update SpreadsheetMetadata.style." + property, () => {
-                spreadsheetEmpty();
                 settingsToggle();
+
                 settingsOpenSectionSpreadsheetMetadataStyleProperty(property);
 
                 cellClick(A1);
@@ -4016,8 +3784,8 @@ context(
                                                                 defaultValue,
                                                                 defaultButtonText) {
             it("Settings update SpreadsheetMetadata.style." + property, () => {
-                spreadsheetEmpty();
                 settingsToggle();
+
                 settingsOpenSectionSpreadsheetMetadataStyleProperty(property);
 
                 cellClick(A1);
@@ -4067,8 +3835,8 @@ context(
                                                                               defaultValue,
                                                                               defaultButtonText) {
             it("Settings update SpreadsheetMetadata.style." + property, () => {
-                spreadsheetEmpty();
                 settingsToggle();
+
                 settingsOpenSectionSpreadsheetMetadataStyleProperty(property);
 
                 cellClick(A1);
@@ -4369,7 +4137,7 @@ context(
          * hash is restored.
          */
         function hashInvalidRejected(hashAppend) {
-            spreadsheetEmpty();
+            spreadsheetEmptyReady();
 
             cy.window()
                 .then(function(win) {
@@ -4489,11 +4257,6 @@ context(
                 rowReference :
                 SpreadsheetRowReference.parse(rowReference);
             return cy.get("#" + spreadsheetRowReference.viewportId());
-        }
-        
-        function spreadsheetEmpty() {
-            hash()
-                .should('match', /.*\/Untitled/); // wait for /$id/$name
         }
 
         /**
