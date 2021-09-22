@@ -2307,6 +2307,176 @@ context(
             cellFormattedTextCheck(C3, "");
         });
 
+        it("Column select then context menu click insert before 2", () => {
+            spreadsheetEmpty();
+
+            cellClick(C3);
+
+            formulaText()
+                .click()
+                .wait(FORMULA_TEXT_CLICK_WAIT)
+                .type("{selectall}'Moved{enter}")
+                .blur();
+
+            column("C")
+                .click();
+
+            hash()
+                .should('match', /.*\/Untitled\/column\/C/);
+
+            column("C")
+                .rightclick();
+
+            contextMenu()
+                .should("be.visible")
+                .find("#" + SpreadsheetColumnReference.VIEWPORT_COLUMN_INSERT_BEFORE_2)
+                .should("include.text", "Insert 2 before");
+
+            cy.get("#" + SpreadsheetColumnReference.VIEWPORT_COLUMN_INSERT_BEFORE_2)
+                .click();
+
+            contextMenu()
+                .should("not.be.visible");
+
+            hash()
+                .should('match', /.*\/Untitled\/column\/E/);
+
+            cellFormattedTextCheck("E3", "Moved");
+            cellFormattedTextCheck(C3, "");
+        });
+
+        it("Column select then context menu click insert before 1", () => {
+            spreadsheetEmpty();
+
+            cellClick(C3);
+
+            formulaText()
+                .click()
+                .wait(FORMULA_TEXT_CLICK_WAIT)
+                .type("{selectall}'Moved{enter}")
+                .blur();
+
+            column("C")
+                .click();
+
+            hash()
+                .should('match', /.*\/Untitled\/column\/C/);
+
+            column("C")
+                .rightclick();
+
+            contextMenu()
+                .should("be.visible")
+                .find("#" + SpreadsheetColumnReference.VIEWPORT_COLUMN_INSERT_BEFORE_1)
+                .should("include.text", "Insert 1 before");
+
+            cy.get("#" + SpreadsheetColumnReference.VIEWPORT_COLUMN_INSERT_BEFORE_1)
+                .click();
+
+            contextMenu()
+                .should("not.be.visible");
+
+            hash()
+                .should('match', /.*\/Untitled\/column\/D/);
+
+            cellFormattedTextCheck("D3", "Moved");
+            cellFormattedTextCheck(C3, "");
+        });
+
+        it("Column select then context menu click insert after 1", () => {
+            spreadsheetEmpty();
+
+            cellClick(A1);
+
+            formulaText()
+                .click()
+                .wait(FORMULA_TEXT_CLICK_WAIT)
+                .type("{selectall}'Never{enter}")
+                .blur();
+
+            cellClick(C3);
+
+            formulaText()
+                .click()
+                .wait(FORMULA_TEXT_CLICK_WAIT)
+                .type("{selectall}'Moved{enter}")
+                .blur();
+
+            column("B")
+                .click();
+
+            hash()
+                .should('match', /.*\/Untitled\/column\/B/);
+
+            column("B")
+                .rightclick();
+
+            contextMenu()
+                .should("be.visible")
+                .find("#" + SpreadsheetColumnReference.VIEWPORT_COLUMN_INSERT_AFTER_1)
+                .should("include.text", "Insert 1 after");
+
+            cy.get("#" + SpreadsheetColumnReference.VIEWPORT_COLUMN_INSERT_AFTER_1)
+                .click();
+
+            contextMenu()
+                .should("not.be.visible");
+
+            hash()
+                .should('match', /.*\/Untitled\/column\/B/);
+
+            cellFormattedTextCheck("A1", "Never");
+            cellFormattedTextCheck("D3", "Moved");
+            cellFormattedTextCheck(C3, "");
+        });
+
+        it("Column select then context menu click insert after 2", () => {
+            spreadsheetEmpty();
+
+            cellClick(A1);
+
+            formulaText()
+                .click()
+                .wait(FORMULA_TEXT_CLICK_WAIT)
+                .type("{selectall}'Never{enter}")
+                .blur();
+
+            cellClick(C3);
+
+            formulaText()
+                .click()
+                .wait(FORMULA_TEXT_CLICK_WAIT)
+                .type("{selectall}'Moved{enter}")
+                .blur();
+
+            column("B")
+                .click();
+
+            hash()
+                .should('match', /.*\/Untitled\/column\/B/);
+
+            column("B")
+                .rightclick();
+
+            contextMenu()
+                .should("be.visible")
+                .find("#" + SpreadsheetColumnReference.VIEWPORT_COLUMN_INSERT_AFTER_2)
+                .should("include.text", "Insert 2 after");
+
+            cy.get("#" + SpreadsheetColumnReference.VIEWPORT_COLUMN_INSERT_AFTER_2)
+                .click();
+
+            contextMenu()
+                .should("not.be.visible");
+
+            hash()
+                .should('match', /.*\/Untitled\/column\/B/);
+
+            cellFormattedTextCheck("A1", "Never");
+            cellFormattedTextCheck("E3", "Moved");
+            cellFormattedTextCheck(C3, "");
+        });
+
         function contextMenu() {
             return cy.get("#" + SpreadsheetViewportWidget.VIEWPORT_CONTEXT_MENU_ID);
         }
