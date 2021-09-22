@@ -58,6 +58,8 @@ context(
             cy.visit('/')
         });
 
+        // Spreadsheet create & load....................................................................................
+
         it("Spreadsheet initial empty check", () => {
             spreadsheetEmptyCheck();
         });
@@ -66,6 +68,73 @@ context(
             hashEnter("/");
 
             spreadsheetEmptyCheck();
+        });
+
+        it("Spreadsheet create empty after editing cell", () => {
+            spreadsheetEmpty();
+
+            cellClick("E5");
+
+            formulaText()
+                .click()
+                .wait(FORMULA_TEXT_CLICK_WAIT)
+                .type("{selectall}=1+2+3{enter}");
+
+            hashEnter("/");
+
+            hash().should('match', /.*\/Untitled/) // => true
+
+            spreadsheetEmptyCheck();
+        });
+
+        it("Spreadsheet create, edit cell, create empty, reload non empty", () => {
+            spreadsheetEmpty();
+
+            cy.window()
+                .then(function(win) {
+                    const nonEmptySpreadsheetHash = win.location.hash;
+
+                    cellClick(A1);
+
+                    formulaText()
+                        .click()
+                        .wait(FORMULA_TEXT_CLICK_WAIT)
+                        .type("{selectall}=1+2+3{enter}");
+
+                    spreadsheetEmpty();
+
+                    // reload previous spreadsheet and verify viewport reloaded
+                    hashEnter(nonEmptySpreadsheetHash);
+
+                    hash()
+                        .should('eq', nonEmptySpreadsheetHash);
+
+                    cellFormattedTextCheck(A1, "6.");
+                });
+        });
+
+        it("Spreadsheet create, edit cell, reload", () => {
+            spreadsheetEmpty();
+
+            cy.window()
+                .then(function(win) {
+                    const nonEmptySpreadsheetHash = win.location.hash;
+
+                    cellClick(A1);
+
+                    formulaText()
+                        .click()
+                        .wait(FORMULA_TEXT_CLICK_WAIT)
+                        .type("{selectall}=1+2+3{enter}");
+
+                    // reload previous spreadsheet and verify viewport reloaded
+                    hashEnter(nonEmptySpreadsheetHash);
+
+                    hash()
+                        .should('eq', nonEmptySpreadsheetHash);
+
+                    cellFormattedTextCheck(A1, "6.");
+                });
         });
 
         // INVALID TARGET. ...................................................................................................
@@ -3157,81 +3226,6 @@ context(
 
             return button;
         }
-
-        // create/load spreadsheet............................................................................................
-
-        it("Spreadsheet create empty", () => {
-            hashEnter("/");
-
-            spreadsheetEmptyCheck();
-        });
-
-        it("Spreadsheet create empty after editing cell", () => {
-            spreadsheetEmpty();
-
-            cellClick("E5");
-
-            formulaText()
-                .click()
-                .wait(FORMULA_TEXT_CLICK_WAIT)
-                .type("{selectall}=1+2+3{enter}");
-
-            hashEnter("/");
-
-            hash().should('match', /.*\/Untitled/) // => true
-
-            spreadsheetEmptyCheck();
-        });
-
-        it("Spreadsheet create, edit cell, create empty, reload non empty", () => {
-            spreadsheetEmpty();
-
-            cy.window()
-                .then(function(win) {
-                    const nonEmptySpreadsheetHash = win.location.hash;
-
-                    cellClick(A1);
-
-                    formulaText()
-                        .click()
-                        .wait(FORMULA_TEXT_CLICK_WAIT)
-                        .type("{selectall}=1+2+3{enter}");
-                    
-                    spreadsheetEmpty();
-
-                    // reload previous spreadsheet and verify viewport reloaded
-                    hashEnter(nonEmptySpreadsheetHash);
-
-                    hash()
-                        .should('eq', nonEmptySpreadsheetHash);
-
-                    cellFormattedTextCheck(A1, "6.");
-                });
-        });
-
-        it("Spreadsheet create, edit cell, reload", () => {
-            spreadsheetEmpty();
-
-            cy.window()
-                .then(function(win) {
-                    const nonEmptySpreadsheetHash = win.location.hash;
-
-                    cellClick(A1);
-
-                    formulaText()
-                        .click()
-                        .wait(FORMULA_TEXT_CLICK_WAIT)
-                        .type("{selectall}=1+2+3{enter}");
-
-                    // reload previous spreadsheet and verify viewport reloaded
-                    hashEnter(nonEmptySpreadsheetHash);
-
-                    hash()
-                        .should('eq', nonEmptySpreadsheetHash);
-
-                    cellFormattedTextCheck(A1, "6.");
-                });
-        });
 
         // SETTINGS.........................................................................................................
 
