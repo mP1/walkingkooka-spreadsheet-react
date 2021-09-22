@@ -90,7 +90,7 @@ context(
 
             spreadsheetName()
                 .should("have.text", "Untitled");
-            title()
+            cy.title()
                 .should("eq", "Untitled");
             hash()
                 .should('match', /.*\/Untitled/) // => true
@@ -109,7 +109,7 @@ context(
 
             spreadsheetName()
                 .should("have.text", "Untitled");
-            title()
+            cy.title()
                 .should("eq", "Untitled");
             hash()
                 .should('match', /.*\/Untitled/) // => true
@@ -127,8 +127,10 @@ context(
 
             spreadsheetName()
                 .should("have.text", "Untitled");
-            title().should("eq", "Untitled");
-            hash().should('match', /.*\/Untitled/) // => true
+            cy.title()
+                .should("eq", "Untitled");
+            hash()
+                .should('match', /.*\/Untitled/) // => true
         });
 
         it("Spreadsheet name edit & save", () => {
@@ -147,8 +149,10 @@ context(
                 .should("have.text", updatedSpreadsheetName);
 
             // verify hash and title updated to include $updateSpreadsheetName
-            title().should("eq", updatedSpreadsheetName.toString());
-            hash().should('match', /.*\/SpreadsheetName234/) // => true
+            cy.title()
+                .should("eq", updatedSpreadsheetName.toString());
+            hash()
+                .should('match', /.*\/SpreadsheetName234/) // => true
         });
 
         // LABEL........................................................................................................
@@ -4379,10 +4383,6 @@ context(
                 });
         }
 
-        function title() {
-            return cy.title();
-        }
-
         function hashEnter(hash) {
             cy.window()
                 .then(function(win) {
@@ -4508,7 +4508,8 @@ context(
                 .should("have.class", "MuiButton-root")
                 .should("have.text", "Untitled");
 
-            title().should("eq", "Untitled");
+            cy.title()
+                .should("eq", "Untitled");
 
             // Verify formula is read only and empty
             formulaText()
