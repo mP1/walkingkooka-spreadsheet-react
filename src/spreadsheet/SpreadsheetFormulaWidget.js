@@ -28,6 +28,8 @@ import TextStyle from "../text/TextStyle.js";
  */
 export default class SpreadsheetFormulaWidget extends SpreadsheetHistoryAwareStateWidget {
 
+    static TEXT_FIELD_ID = "formula-TextField";
+
     init() {
         this.textField = React.createRef();
         this.input = React.createRef();
@@ -186,7 +188,7 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetHistoryAwareSta
 
         return (
             <TextField ref={this.textField}
-                       id={"formula-TextField"}
+                       id={SpreadsheetFormulaWidget.TEXT_FIELD_ID}
                        value={value}
                        disabled={!edit}
                        onBlur={this.onBlur.bind(this)}

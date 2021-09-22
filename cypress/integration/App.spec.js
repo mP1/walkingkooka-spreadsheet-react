@@ -22,6 +22,7 @@ import TextStyle from "../../src/text/TextStyle.js";
 import VerticalAlign from "../../src/text/VerticalAlign.js";
 import WordBreak from "../../src/text/WordBreak.js";
 import WordWrap from "../../src/text/WordWrap.js";
+import SpreadsheetFormulaWidget from "../../src/spreadsheet/SpreadsheetFormulaWidget.js";
 
 const SELECTED = ".selected";
 const COLUMN = ".column";
@@ -4453,7 +4454,7 @@ context(
         }
 
         function formulaText() {
-            return cy.get("#formula-TextField");
+            return cy.get("#" + SpreadsheetFormulaWidget.TEXT_FIELD_ID);
         }
 
         /**
