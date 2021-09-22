@@ -4436,7 +4436,6 @@ context(
         }
 
         function spreadsheetName() {
-            renderWait();
             return cy.get("#spreadsheet-name");
         }
 
