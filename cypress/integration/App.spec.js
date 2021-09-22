@@ -10,6 +10,7 @@ import SpreadsheetCellReference from "../../src/spreadsheet/reference/Spreadshee
 import SpreadsheetColumnReference from "../../src/spreadsheet/reference/SpreadsheetColumnReference.js";
 import SpreadsheetLabelMappingWidget from "../../src/spreadsheet/reference/SpreadsheetLabelMappingWidget.js";
 import SpreadsheetMetadata from "../../src/spreadsheet/meta/SpreadsheetMetadata.js";
+import SpreadsheetNameWidget from "../../src/spreadsheet/SpreadsheetNameWidget.js";
 import SpreadsheetRowReference from "../../src/spreadsheet/reference/SpreadsheetRowReference.js";
 import SpreadsheetSelectAutocompleteWidget
     from "../../src/spreadsheet/reference/SpreadsheetSelectAutocompleteWidget.js";
@@ -4440,7 +4441,7 @@ context(
         }
 
         function spreadsheetName() {
-            return cy.get("#spreadsheet-name");
+            return cy.get("#" + SpreadsheetNameWidget.SPREADSHEET_NAME_ID);
         }
 
         function spreadsheetNameClick() {
