@@ -80,6 +80,7 @@ context(
 
         it("Spreadsheet name edit & ESCAPE, changes lost", () => {
             spreadsheetEmpty();
+
             spreadsheetNameClick();
 
             // type the new name in
@@ -98,6 +99,7 @@ context(
 
         it("Spreadsheet name edit & blur changes lost", () => {
             spreadsheetEmpty();
+
             spreadsheetNameClick();
 
             // type the new name in
@@ -117,6 +119,7 @@ context(
 
         it("Spreadsheet name clear & save fails", () => {
             spreadsheetEmpty();
+
             spreadsheetNameClick();
 
             // type the new name in
@@ -135,6 +138,7 @@ context(
 
         it("Spreadsheet name edit & save", () => {
             spreadsheetEmpty();
+
             spreadsheetNameClick();
 
             const updatedSpreadsheetName = "SpreadsheetName234"; // easier to use in regex below
@@ -214,6 +218,7 @@ context(
             spreadsheetEmpty();
 
             spreadsheetNameClick();
+
             spreadsheetName()
                 .type("{selectall}Lost")
                 .blur();
@@ -809,6 +814,7 @@ context(
 
         it("Cell viewport cell click after editing name", () => {
             spreadsheetEmpty();
+
             spreadsheetNameClick();
             
             cellClick(B2);
@@ -3314,10 +3320,8 @@ context(
 
         it("Settings show after editing spreadsheet name", () => {
             spreadsheetEmpty();
-            spreadsheetNameClick();
 
-            cy.hash()
-                .should("matches", /.*\/Untitled\/name/);
+            spreadsheetNameClick();
 
             spreadsheetName()
                 .blur();
