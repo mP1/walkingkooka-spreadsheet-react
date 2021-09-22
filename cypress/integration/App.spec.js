@@ -2218,7 +2218,6 @@ context(
                 .find("#" + SpreadsheetColumnReference.VIEWPORT_COLUMN_INSERT_BEFORE_1)
                 .should("include.text", "Insert 1 before");
 
-
             cy.get("#" + SpreadsheetColumnReference.VIEWPORT_COLUMN_INSERT_BEFORE_1)
                 .click();
 
@@ -2255,7 +2254,6 @@ context(
                 .should("be.visible")
                 .find("#" + SpreadsheetColumnReference.VIEWPORT_COLUMN_INSERT_AFTER_1)
                 .should("include.text", "Insert 1 after");
-
 
             cy.get("#" + SpreadsheetColumnReference.VIEWPORT_COLUMN_INSERT_AFTER_1)
                 .click();
