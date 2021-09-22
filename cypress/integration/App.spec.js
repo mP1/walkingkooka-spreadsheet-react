@@ -54,7 +54,7 @@ context(
 
         beforeEach(() => {
             cy.visit('/')
-        })
+        });
 
         it("Spreadsheet initial empty check", () => {
             spreadsheetEmptyCheck();
@@ -4054,7 +4054,7 @@ context(
 
                     cellA1StyleCheck(property, defaultValue.toCssValue());
                 }
-            })
+            });
         }
 
         function settingsSpreadsheetMetadataStyleSliderWithTextNumberAndCheck(property,
