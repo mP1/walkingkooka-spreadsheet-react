@@ -138,17 +138,7 @@ context(
                 });
         });
 
-        // INVALID TARGET. ...................................................................................................
-
-        it("Hash invalid rejected", () => {
-            hashInvalidRejected("/!invalid-target");
-        });
-
         // SPREADSHEET NAME ...................................................................................................
-
-        it("Spreadsheet name hash invalid name", () => {
-            hashInvalidRejected("/name/!invalid-name-action");
-        });
 
         it("Spreadsheet name edit & ESCAPE, changes lost", () => {
             spreadsheetNameClick();
@@ -224,10 +214,6 @@ context(
         });
 
         // LABEL........................................................................................................
-
-        it("Label mapping hash with invalid label name", () => {
-            hashInvalidRejected("/label/!invalid-label");
-        });
 
         it("Label mapping enter hash", () => {
             hashLabel();
@@ -826,15 +812,7 @@ context(
                 .should('match', /.*\/Untitled\/label\/Label123/);
         }
 
-        // CELL ................................................................................................................
-
-        it("Cell hash with invalid reference fails", () => {
-            hashInvalidRejected("/cell/!invalid-cell-reference");
-        });
-
-        it("Cell hash invalid action fails", () => {
-            hashInvalidRejected("/cell/A1/!invalid-cell-action");
-        });
+        // CELL ........................................................................................................
 
         it("Cell viewport cell click", () => {
             cellClick(B2);
@@ -4131,25 +4109,6 @@ context(
         }
 
         // helpers..............................................................................................................
-
-        /**
-         * Updates the url hash by appending the parameter (which should result in an invalid hash) and then verifies the previous
-         * hash is restored.
-         */
-        function hashInvalidRejected(hashAppend) {
-            spreadsheetEmptyReady();
-
-            cy.window()
-                .then(function(win) {
-                    var hash = win.location.hash;
-
-                    // updated hash should be rejected.
-                    win.location.hash = hash + hashAppend;
-
-                    cy.hash()
-                        .should("eq", hash);
-                });
-        }
 
         function hashEnter(hash) {
             cy.window()
