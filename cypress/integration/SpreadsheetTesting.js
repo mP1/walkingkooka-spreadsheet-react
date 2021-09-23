@@ -3,6 +3,11 @@ import SpreadsheetColumnReference from "../../src/spreadsheet/reference/Spreadsh
 import SpreadsheetFormulaWidget from "../../src/spreadsheet/SpreadsheetFormulaWidget.js";
 import SpreadsheetNameWidget from "../../src/spreadsheet/SpreadsheetNameWidget.js";
 import SpreadsheetRowReference from "../../src/spreadsheet/reference/SpreadsheetRowReference.js";
+import SpreadsheetLabelMappingWidget from "../../src/spreadsheet/reference/SpreadsheetLabelMappingWidget.js";
+import SpreadsheetSelectLinkWidget from "../../src/spreadsheet/reference/SpreadsheetSelectLinkWidget.js";
+import SpreadsheetSelectAutocompleteWidget
+    from "../../src/spreadsheet/reference/SpreadsheetSelectAutocompleteWidget.js";
+import SpreadsheetViewportWidget from "../../src/spreadsheet/SpreadsheetViewportWidget.js";
 
 export default class SpreadsheetTesting {
 
@@ -98,6 +103,116 @@ export default class SpreadsheetTesting {
 
     formulaText() {
         return this.cy.get("#" + SpreadsheetFormulaWidget.TEXT_FIELD_ID);
+    }
+
+    labelMappingLabelTextField() {
+        return this.cy.get("#" + SpreadsheetLabelMappingWidget.LABEL_TEXT_FIELD_ID);
+    }
+
+    labelMappingReferenceTextField() {
+        return this.cy.get("#" + SpreadsheetLabelMappingWidget.REFERENCE_TEXT_FIELD_ID);
+    }
+
+    labelMappingLabelSaveButton() {
+        return this.cy.get("#" + SpreadsheetLabelMappingWidget.SAVE_BUTTON_ID);
+    }
+
+    labelMappingLabelDeleteButton() {
+        return this.cy.get("#" + SpreadsheetLabelMappingWidget.DELETE_BUTTON_ID);
+    }
+
+    labelMappingLabelCloseButton() {
+        return this.cy.get("#" + SpreadsheetLabelMappingWidget.DIALOG_CLOSE_BUTTON_ID);
+    }
+
+    hashLabel() {
+        this.hashAppend("/label/" + SpreadsheetTesting.LABEL);
+    }
+
+    selectHistoryHash() {
+        this.hashAppend("/select");
+    }
+
+    selectLink() {
+        return this.cy.get("#" + SpreadsheetSelectLinkWidget.SELECT_LINK_ID);
+    }
+
+    selectDialog() {
+        return this.cy.get("#" + SpreadsheetSelectAutocompleteWidget.DIALOG_ID);
+    }
+
+    selectDialogTitle() {
+        return this.cy.get("#" + SpreadsheetSelectAutocompleteWidget.DIALOG_TITLE_ID);
+    }
+
+    selectDialogClose() {
+        return this.cy.get("#" + SpreadsheetSelectAutocompleteWidget.DIALOG_CLOSE_BUTTON_ID);
+    }
+
+    selectAutocompleteTextField() {
+        return this.cy.get("#" + SpreadsheetSelectAutocompleteWidget.TEXT_FIELD_ID);
+    }
+
+    selectAutocompleteTextFieldHelper() {
+        return this.cy.get("#" + SpreadsheetSelectAutocompleteWidget.TEXT_FIELD_HELPER_TEXT_ID);
+    }
+
+    selectAutocompletePopup() {
+        return this.cy.get("#" + SpreadsheetSelectAutocompleteWidget.TEXT_FIELD_POPUP_ID);
+    }
+
+    selectAutocompletePopupOption(nth) {
+        return this.cy.get("#" + SpreadsheetSelectAutocompleteWidget.TEXT_FIELD_OPTION_ID + nth);
+    }
+
+    selectCellGotoButton(disabled) {
+        return this.selectButtonDisabled(SpreadsheetSelectAutocompleteWidget.CELL_GOTO_BUTTON_ID, disabled);
+    }
+
+    selectCellRangeSelectButton(disabled) {
+        return this.selectButtonDisabled(SpreadsheetSelectAutocompleteWidget.CELL_RANGE_SELECT_BUTTON_ID, disabled);
+    }
+
+    selectColumnGotoButton(disabled) {
+        return this.selectButtonDisabled(SpreadsheetSelectAutocompleteWidget.COLUMN_GOTO_BUTTON_ID, disabled);
+    }
+
+    selectColumnRangeSelectButton(disabled) {
+        return this.selectButtonDisabled(SpreadsheetSelectAutocompleteWidget.COLUMN_RANGE_SELECT_BUTTON_ID, disabled);
+    }
+
+    selectLabelCreateButton(disabled) {
+        return this.selectButtonDisabled(SpreadsheetSelectAutocompleteWidget.LABEL_CREATE_BUTTON_ID, disabled);
+    }
+
+    selectLabelEditButton(disabled) {
+        return this.selectButtonDisabled(SpreadsheetSelectAutocompleteWidget.LABEL_EDIT_BUTTON_ID, disabled);
+    }
+
+    selectLabelGotoButton(disabled) {
+        return this.selectButtonDisabled(SpreadsheetSelectAutocompleteWidget.LABEL_GOTO_BUTTON_ID, disabled);
+    }
+
+    selectRowGotoButton(disabled) {
+        return this.selectButtonDisabled(SpreadsheetSelectAutocompleteWidget.ROW_GOTO_BUTTON_ID, disabled);
+    }
+
+    selectRowRangeSelectButton(disabled) {
+        return this.selectButtonDisabled(SpreadsheetSelectAutocompleteWidget.ROW_RANGE_SELECT_BUTTON_ID, disabled);
+    }
+
+    selectButtonDisabled(id, disabled) {
+        const button = this.cy.get((disabled ? "BUTTON" : "A") + "#" + id);
+
+        if(disabled){
+            button.should("be.disabled");
+        }
+
+        return button;
+    }
+
+    viewportContextMenu() {
+        return this.cy.get("#" + SpreadsheetViewportWidget.VIEWPORT_CONTEXT_MENU_ID);
     }
 
     /**
