@@ -807,9 +807,6 @@ context(
 
         function hashLabel() {
             hashAppend("/label/" + LABEL);
-
-            hash()
-                .should('match', /.*\/Untitled\/label\/Label123/);
         }
 
         // CELL ........................................................................................................
