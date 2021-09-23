@@ -10,8 +10,6 @@ import SpreadsheetCellReference from "../../src/spreadsheet/reference/Spreadshee
 import SpreadsheetColumnReference from "../../src/spreadsheet/reference/SpreadsheetColumnReference.js";
 import SpreadsheetLabelMappingWidget from "../../src/spreadsheet/reference/SpreadsheetLabelMappingWidget.js";
 import SpreadsheetMetadata from "../../src/spreadsheet/meta/SpreadsheetMetadata.js";
-import SpreadsheetNameWidget from "../../src/spreadsheet/SpreadsheetNameWidget.js";
-import SpreadsheetRowReference from "../../src/spreadsheet/reference/SpreadsheetRowReference.js";
 import SpreadsheetSelectAutocompleteWidget
     from "../../src/spreadsheet/reference/SpreadsheetSelectAutocompleteWidget.js";
 import SpreadsheetSelectLinkWidget from "../../src/spreadsheet/reference/SpreadsheetSelectLinkWidget.js";
@@ -22,12 +20,7 @@ import TextStyle from "../../src/text/TextStyle.js";
 import VerticalAlign from "../../src/text/VerticalAlign.js";
 import WordBreak from "../../src/text/WordBreak.js";
 import WordWrap from "../../src/text/WordWrap.js";
-import SpreadsheetFormulaWidget from "../../src/spreadsheet/SpreadsheetFormulaWidget.js";
-
-const SELECTED = ".selected";
-const COLUMN = ".column";
-const ROW = ".row";
-const CELL = ".cell";
+import SpreadsheetTesting from "./SpreadsheetTesting.js";
 
 const FORCE_TRUE = {
     force: true,
@@ -54,162 +47,164 @@ context(
     "General app usage",
     () => {
 
+        const testing = new SpreadsheetTesting(cy);
+
         beforeEach(() => {
             cy.visit('/');
 
-            spreadsheetEmptyReady();
+            testing.spreadsheetEmptyReady();
         });
 
         // Spreadsheet create & load....................................................................................
 
-        function spreadsheetEmptyReady() {
-            hash()
-                .should('match', /.*\/Untitled/); // wait for /$id/$name
-        }
-
         it("Spreadsheet initial empty check", () => {
-            spreadsheetEmptyCheck();
+            testing.spreadsheetEmptyCheck();
         });
 
         it("Spreadsheet create empty", () => {
-            hashEnter("/");
+            testing.hashEnter("/");
 
-            spreadsheetEmptyCheck();
+            testing.spreadsheetEmptyCheck();
         });
 
         it("Spreadsheet create empty after editing cell", () => {
-            cellClick("E5");
+            testing.cellClick("E5");
 
-            formulaText()
+            testing.formulaText()
                 .click()
                 .wait(FORMULA_TEXT_CLICK_WAIT)
                 .type("{selectall}=1+2+3{enter}");
 
-            hashEnter("/");
+            testing.hashEnter("/");
 
-            hash().should('match', /.*\/Untitled/) // => true
+            testing.hash().should('match', /.*\/Untitled/) // => true
 
-            spreadsheetEmptyCheck();
+            testing.spreadsheetEmptyCheck();
         });
 
         it("Spreadsheet create, edit cell, create empty, reload non empty", () => {
             cy.window()
-                .then(function(win) {
+                .then((win) => {
                     const nonEmptySpreadsheetHash = win.location.hash;
 
-                    cellClick(A1);
+                    testing.cellClick(A1);
 
-                    formulaText()
+                    testing.formulaText()
                         .click()
                         .wait(FORMULA_TEXT_CLICK_WAIT)
                         .type("{selectall}=1+2+3{enter}");
 
-                    spreadsheetEmptyReady();
+                    testing.spreadsheetEmptyReady();
 
                     // reload previous spreadsheet and verify viewport reloaded
-                    hashEnter(nonEmptySpreadsheetHash);
+                    testing.hashEnter(nonEmptySpreadsheetHash);
 
-                    hash()
+                    testing.hash()
                         .should('eq', nonEmptySpreadsheetHash);
 
-                    cellFormattedTextCheck(A1, "6.");
+                    testing.cellFormattedTextCheck(A1, "6.");
                 });
         });
 
         it("Spreadsheet create, edit cell, reload", () => {
             cy.window()
-                .then(function(win) {
+                .then((win) => {
                     const nonEmptySpreadsheetHash = win.location.hash;
 
-                    cellClick(A1);
+                    testing.cellClick(A1);
 
-                    formulaText()
+                    testing.formulaText()
                         .click()
                         .wait(FORMULA_TEXT_CLICK_WAIT)
                         .type("{selectall}=1+2+3{enter}");
 
                     // reload previous spreadsheet and verify viewport reloaded
-                    hashEnter(nonEmptySpreadsheetHash);
+                    testing.hashEnter(nonEmptySpreadsheetHash);
 
-                    hash()
+                    testing.hash()
                         .should('eq', nonEmptySpreadsheetHash);
 
-                    cellFormattedTextCheck(A1, "6.");
+                    testing.cellFormattedTextCheck(A1, "6.");
                 });
         });
 
         // SPREADSHEET NAME ...................................................................................................
 
         it("Spreadsheet name edit & ESCAPE, changes lost", () => {
-            spreadsheetNameClick();
+            testing.spreadsheetNameClick();
 
             // type the new name in
-            spreadsheetName()
+            testing.spreadsheetName()
                 .type("{selectall}UpdatedSpreadsheetName456{esc}");
 
-            renderWait();
+            testing.wait();
 
-            spreadsheetName()
+            testing.spreadsheetName()
                 .should("have.text", "Untitled");
+
             cy.title()
                 .should("eq", "Untitled");
-            hash()
+
+            testing.hash()
                 .should('match', /.*\/Untitled/) // => true
         });
 
         it("Spreadsheet name edit & blur changes lost", () => {
-            spreadsheetNameClick();
+            testing.spreadsheetNameClick();
 
             // type the new name in
-            spreadsheetName()
+            testing.spreadsheetName()
                 .type("{selectall}UpdatedSpreadsheetName456")
                 .blur();
 
-            renderWait();
+            testing.wait();
 
-            spreadsheetName()
+            testing.spreadsheetName()
                 .should("have.text", "Untitled");
+
             cy.title()
                 .should("eq", "Untitled");
-            hash()
+
+            testing.hash()
                 .should('match', /.*\/Untitled/) // => true
         });
 
         it("Spreadsheet name clear & save fails", () => {
-            spreadsheetNameClick();
+            testing.spreadsheetNameClick();
 
             // type the new name in
-            spreadsheetName()
+            testing.spreadsheetName()
                 .type("{selectall}{backspace}{enter}");
 
-            renderWait();
+            testing.wait();
 
-            spreadsheetName()
+            testing.spreadsheetName()
                 .should("have.text", "Untitled");
             cy.title()
                 .should("eq", "Untitled");
-            hash()
+            testing.hash()
                 .should('match', /.*\/Untitled/) // => true
         });
 
         it("Spreadsheet name edit & save", () => {
-            spreadsheetNameClick();
+            testing.spreadsheetNameClick();
 
             const updatedSpreadsheetName = "SpreadsheetName234"; // easier to use in regex below
 
             // type the new name in
-            spreadsheetName()
+            testing.spreadsheetName()
                 .type("{selectall}" + updatedSpreadsheetName + "{enter}");
 
-            renderWait();
+            testing.wait();
 
-            spreadsheetName()
+            testing.spreadsheetName()
                 .should("have.text", updatedSpreadsheetName);
 
             // verify hash and title updated to include $updateSpreadsheetName
             cy.title()
                 .should("eq", updatedSpreadsheetName.toString());
-            hash()
+
+            testing.hash()
                 .should('match', /.*\/SpreadsheetName234/) // => true
         });
 
@@ -262,18 +257,18 @@ context(
         });
 
         it("Label mapping hash show label mapping after editing name", () => {
-            spreadsheetNameClick();
+            testing.spreadsheetNameClick();
 
-            spreadsheetName()
+            testing.spreadsheetName()
                 .type("{selectall}Lost")
                 .blur();
 
             cy.window()
-                .then(function(win) {
+                .then((win) => {
                     win.location.hash = win.location.hash + "/label/Label123";
                 });
 
-            hash()
+            testing.hash()
                 .should('match', /.*\/Untitled\/label\/Label123/);
 
             labelMappingDialogCheck(
@@ -552,6 +547,7 @@ context(
                 .click();
 
             hashLabel();
+
             labelMappingLabelDeleteButton()
                 .click();
 
@@ -572,7 +568,7 @@ context(
             labelMappingLabelCloseButton()
                 .click();
 
-            hash()
+            testing.hash()
                 .should('match', /.*\/Untitled/);
         });
 
@@ -580,13 +576,13 @@ context(
             const reference = B2;
 
             cy.window()
-                .then(function(win) {
+                .then((win) => {
                     const nonEmptySpreadsheetHash = win.location.hash;
 
                     // create a new label
-                    hashEnter(nonEmptySpreadsheetHash + "/label/Label456");
+                    testing.hashEnter(nonEmptySpreadsheetHash + "/label/Label456");
 
-                    hash()
+                    testing.hash()
                         .should('match', /.*\/Untitled\/label\/Label456/);
 
                     labelMappingReferenceTextField()
@@ -599,22 +595,22 @@ context(
                         .click();
 
                     // navigate to label's formula
-                    hashEnter(nonEmptySpreadsheetHash + "/cell/Label456/formula");
-                    hash()
+                    testing.hashEnter(nonEmptySpreadsheetHash + "/cell/Label456/formula");
+                    testing.hash()
                         .should('match', /.*\/Untitled\/cell\/Label456\/formula/);
 
-                    formulaText()
+                    testing.formulaText()
                         .click()
                         .wait(FORMULA_TEXT_CLICK_WAIT)
                         .type("{selectall}=4{enter}");
 
-                    cellFormattedTextCheck(reference, "4.");
+                    testing.cellFormattedTextCheck(reference, "4.");
                 });
         });
 
         it("Label mapping save, hover shows tooltip", () => {
             // create a new label
-            hashAppend("/label/HoverLabel");
+            testing.hashAppend("/label/HoverLabel");
 
             labelMappingReferenceTextField()
                 .type("{selectall}A1");
@@ -628,7 +624,7 @@ context(
             cy.get("#" + A1.viewportTooltipId())
                 .should("not.exist");
 
-            cell(A1)
+            testing.cell(A1)
                 .trigger("mouseover");
 
             cy.get("#" + A1.viewportTooltipId())
@@ -638,7 +634,7 @@ context(
 
         it("Label mapping save, hover shows several tooltip", () => {
             // create a new label
-            hashAppend("/label/HoverLabel1");
+            testing.hashAppend("/label/HoverLabel1");
 
             labelMappingReferenceTextField()
                 .type("{selectall}A1");
@@ -650,7 +646,7 @@ context(
                 .click();
 
             // create a new label #2
-            hashAppend("/label/HoverLabel2");
+            testing.hashAppend("/label/HoverLabel2");
 
             labelMappingReferenceTextField()
                 .type("{selectall}A1");
@@ -664,7 +660,7 @@ context(
             cy.get("#" + A1.viewportTooltipId())
                 .should("not.exist");
 
-            cell(A1)
+            testing.cell(A1)
                 .trigger("mouseover");
 
             cy.get("#" + A1.viewportTooltipId())
@@ -673,27 +669,29 @@ context(
         });
 
         it("Label mapping update, refreshes viewport", () => {
-            cellClick(A1);
+            testing.cellClick(A1);
 
-            hash().should('match', /.*\/Untitled\/cell\/A1/)
+            testing.hash()
+                .should('match', /.*\/Untitled\/cell\/A1/)
 
-            formulaText()
+            testing.formulaText()
                 .click()
                 .wait(FORMULA_TEXT_CLICK_WAIT)
                 .type("{selectall}=11{enter}");
 
-            cellClick(B2);
+            testing.cellClick(B2);
 
-            hash().should('match', /.*\/Untitled\/cell\/B2/)
+            testing.hash()
+                .should('match', /.*\/Untitled\/cell\/B2/)
 
-            formulaText()
+            testing.formulaText()
                 .click()
                 .wait(FORMULA_TEXT_CLICK_WAIT)
                 .type("{selectall}=22{enter}")
                 .blur();
 
             // create a new label
-            hashAppend("/label/MovingLabel");
+            testing.hashAppend("/label/MovingLabel");
 
             labelMappingReferenceTextField()
                 .type("{selectall}A1");
@@ -704,20 +702,20 @@ context(
             labelMappingLabelCloseButton()
                 .click();
 
-            cellClick(C3);
+            testing.cellClick(C3);
 
-            hash().should('match', /.*\/Untitled\/cell\/C3/)
+            testing.hash().should('match', /.*\/Untitled\/cell\/C3/)
 
-            formulaText()
+            testing.formulaText()
                 .click()
                 .wait(FORMULA_TEXT_CLICK_WAIT)
                 .type("{selectall}=4*MovingLabel{enter}")
                 .blur();
 
-            cellFormattedTextCheck(C3, "44."); // 4 * 11
+            testing.cellFormattedTextCheck(C3, "44."); // 4 * 11
 
             // update existing label
-            hashAppend("/label/MovingLabel");
+            testing.hashAppend("/label/MovingLabel");
 
             labelMappingReferenceTextField()
                 .type("{selectall}B2{enter}");
@@ -725,12 +723,12 @@ context(
             labelMappingLabelSaveButton()
                 .click();
 
-            cellFormattedTextCheck(C3, "88."); // 4 * 22
+            testing.cellFormattedTextCheck(C3, "88."); // 4 * 22
         });
 
         it("Label history hash navigate to label", () => {
             // create a new label
-            hashAppend("/label/NavigateToLabel123");
+            testing.hashAppend("/label/NavigateToLabel123");
 
             labelMappingReferenceTextField()
                 .type("{selectall}A1");
@@ -742,13 +740,15 @@ context(
                 .click();
 
             // navigate
-            hashAppend("/cell/NavigateToLabel123");
+            testing.hashAppend("/cell/NavigateToLabel123");
 
-            cell(A1)
+            testing.cell(A1)
                 .should("have.focus");
-            column("A")
+
+            testing.column("A")
                 .should("have.css", "background-color", SELECTED_COLOR);
-            row("1")
+
+            testing.row("1")
                 .should("have.css", "background-color", SELECTED_COLOR);
         });
 
@@ -806,1248 +806,1248 @@ context(
         }
 
         function hashLabel() {
-            hashAppend("/label/" + LABEL);
+            testing.hashAppend("/label/" + LABEL);
         }
 
         // CELL ........................................................................................................
 
         it("Cell viewport cell click", () => {
-            cellClick(B2);
+            testing.cellClick(B2);
 
-            hash()
+            testing.hash()
                 .should('match', /.*\/Untitled\/cell\/B2/);
         });
 
         it("Cell viewport cell click after editing name", () => {
-            spreadsheetNameClick();
-            
-            cellClick(B2);
+            testing.spreadsheetNameClick();
 
-            hash()
+            testing.cellClick(B2);
+
+            testing.hash()
                 .should('match', /.*\/Untitled\/cell\/B2/);
         });
 
         // @see https://github.com/mP1/walkingkooka-spreadsheet-react/issues/1256
         it("Cell formula load then history hash save", () => {
-            cellClick(B2);
+            testing.cellClick(B2);
 
-            formulaText()
+            testing.formulaText()
                 .click();
 
-            hash().should('match', /.*\/Untitled\/cell\/B2\/formula/)
+            testing.hash().should('match', /.*\/Untitled\/cell\/B2\/formula/)
 
-            hashAppend("/save/=2*3")
+            testing.hashAppend("/save/=2*3")
 
-            cellFormattedTextCheck(B2, "6.");
+            testing.cellFormattedTextCheck(B2, "6.");
         });
 
         it("Cell formula edit ENTER saves", () => {
-            cellClick(B2);
+            testing.cellClick(B2);
 
-            hash().should('match', /.*\/Untitled\/cell\/B2/)
+            testing.hash().should('match', /.*\/Untitled\/cell\/B2/)
 
-            formulaText()
+            testing.formulaText()
                 .click()
                 .wait(FORMULA_TEXT_CLICK_WAIT)
                 .type("{selectall}=1+2+3{enter}");
 
-            hash()
+            testing.hash()
                 .should('match', /.*\/Untitled\/cell\/B2\/formula/);
 
-            cellFormattedTextCheck(B2, "6.");
+            testing.cellFormattedTextCheck(B2, "6.");
         });
 
         it("Cell formula edit with reference", () => {
-            cellClick(C3);
+            testing.cellClick(C3);
 
-            formulaText()
+            testing.formulaText()
                 .click()
                 .wait(FORMULA_TEXT_CLICK_WAIT)
                 .type("{selectall}=1+2+3{enter}");
 
-            cellClick(D4);
+            testing.cellClick(D4);
 
-            formulaText()
+            testing.formulaText()
                 .click()
                 .wait(FORMULA_TEXT_CLICK_WAIT)
                 .type("{selectall}=C3+10{enter}");
 
-            cellFormattedTextCheck(D4, "16.");
+            testing.cellFormattedTextCheck(D4, "16.");
         });
 
         it("Cell formula edit, update hash cell reference", () => {
-            cellClick(C3);
+            testing.cellClick(C3);
 
-            formulaText()
+            testing.formulaText()
                 .click()
                 .wait(FORMULA_TEXT_CLICK_WAIT)
                 .type("{selectall}=1+2+3{enter}");
 
             cy.window()
-                .then(function(win) {
+                .then((win) => {
                     var hash = win.location.hash;
                     win.location.hash = hash.replace("/cell/C3/formula", "/cell/D4/formula");
                 });
 
-            renderWait();
+            testing.wait();
 
-            formulaText()
+            testing.formulaText()
                 .click()
                 .wait(FORMULA_TEXT_CLICK_WAIT)
                 .type("{selectall}=4+5{enter}");
 
-            cellFormattedTextCheck(D4, "9.");
+            testing.cellFormattedTextCheck(D4, "9.");
         });
 
         it("Cell hash formula update", () => {
-            hashAppend("/cell/D4/formula");
+            testing.hashAppend("/cell/D4/formula");
 
-            column("D")
+            testing.column("D")
                 .should("have.css", "background-color", SELECTED_COLOR);
-            row("4")
+            testing.row("4")
                 .should("have.css", "background-color", SELECTED_COLOR);
 
-            formulaText()
+            testing.formulaText()
                 .should("have.focus");
         });
 
         it("Cell hash append formula", () => {
-            cellClick(C3);
+            testing.cellClick(C3);
 
-            renderWait(FORMULA_TEXT_CLICK_WAIT);
+            testing.wait(FORMULA_TEXT_CLICK_WAIT);
 
-            hashAppend("/formula");
+            testing.hashAppend("/formula");
 
-            renderWait(FORMULA_TEXT_CLICK_WAIT);
+            testing.wait(FORMULA_TEXT_CLICK_WAIT);
 
-            formulaText()
+            testing.formulaText()
                 .should("have.focus");
         });
 
         it("Cell hash append formula has focus", () => {
-            cellClick(C3);
+            testing.cellClick(C3);
 
-            renderWait(FORMULA_TEXT_CLICK_WAIT);
+            testing.wait(FORMULA_TEXT_CLICK_WAIT);
 
-            hashAppend("/formula");
+            testing.hashAppend("/formula");
 
-            renderWait(FORMULA_TEXT_CLICK_WAIT);
+            testing.wait(FORMULA_TEXT_CLICK_WAIT);
 
-            formulaText()
+            testing.formulaText()
                 .should("have.focus");
         });
 
         it("Cell hash with unknown label", () => {
-            hashAppend("/cell/" + LABEL);
+            testing.hashAppend("/cell/" + LABEL);
 
-            hash()
+            testing.hash()
                 .should('match', /.*\/Untitled/);
         });
 
         it("Cell click should have focus", () => {
-            cellClick(B2);
+            testing.cellClick(B2);
 
-            hash()
+            testing.hash()
                 .should('match', /.*\/.*\/cell\/B2/);
         });
 
         it("Cell click columns & rows selected", () => {
-            cellClick(B2);
+            testing.cellClick(B2);
 
-            hash()
+            testing.hash()
                 .should('match', /.*\/.*\/cell\/B2/);
 
-            column("B")
+            testing.column("B")
                 .should("have.css", "background-color", SELECTED_COLOR);
-            row("2")
+            testing.row("2")
                 .should("have.css", "background-color", SELECTED_COLOR);
         });
 
         it("Cell click and select using arrow keys", () => {
-            cellClick(C3);
+            testing.cellClick(C3);
 
-            cell(C3)
+            testing.cell(C3)
                 .type("{leftarrow}");
 
-            renderWait(50);
+            testing.wait(50);
 
-            hash()
+            testing.hash()
                 .should('match', /.*\/.*\/cell\/B3/);
 
-            cell(B3)
+            testing.cell(B3)
                 .type("{rightarrow}");
 
-            renderWait(50);
+            testing.wait(50);
 
-            hash()
+            testing.hash()
                 .should('match', /.*\/.*\/cell\/C3/);
 
-            cell(C3)
+            testing.cell(C3)
                 .type("{uparrow}");
 
-            renderWait(50);
+            testing.wait(50);
 
-            hash()
+            testing.hash()
                 .should('match', /.*\/.*\/cell\/C2/);
 
-            cell(C2)
+            testing.cell(C2)
                 .type("{downarrow}");
 
-            renderWait(50);
-            
-            hash()
+            testing.wait(50);
+
+            testing.hash()
                 .should('match', /.*\/.*\/cell\/C3/);
         });
 
         it("Cell click and hit ENTER gives formula text focus", () => {
-            cellClick(A3);
+            testing.cellClick(A3);
 
-            cell(A3)
+            testing.cell(A3)
                 .type("{enter}");
 
-            hash()
+            testing.hash()
                 .should('match', /.*\/.*\/cell\/A3\/formula/);
 
-            formulaText()
+            testing.formulaText()
                 .should("have.focus");
         });
 
         it("Cell select and hit ESC loses viewport cell focus", () => {
-            cellClick(A3);
+            testing.cellClick(A3);
 
-            hash()
+            testing.hash()
                 .should('match', /.*\/.*\/cell\/A3/);
 
-            cell(A3)
+            testing.cell(A3)
                 .type("{esc}");
 
-            hash()
+            testing.hash()
                 .should('match', /.*\/.*/);
         });
 
         it("Cell outside viewport", () => {
-            hashAppend("/cell/T1");
+            testing.hashAppend("/cell/T1");
 
-            formulaText()
+            testing.formulaText()
                 .click()
                 .wait(FORMULA_TEXT_CLICK_WAIT)
                 .type("{selectall}=234{enter}")
                 .blur();
 
             // viewport should have jumped leaving T1 as the home cell.
-            cell(A1)
+            testing.cell(A1)
                 .should('not.exist');
         });
 
         it("Cell outside viewport vertical", () => {
-            hashAppend("/cell/A30");
+            testing.hashAppend("/cell/A30");
 
-            formulaText()
+            testing.formulaText()
                 .click()
                 .wait(FORMULA_TEXT_CLICK_WAIT)
                 .type("{selectall}=234{enter}")
                 .blur();
 
             // viewport should have jumped leaving A30 as the home cell.
-            cell(A1)
+            testing.cell(A1)
                 .should('not.exist');
         });
 
         it("Cell outside viewport horiz & vertical", () => {
-            hashAppend("/cell/T30");
+            testing.hashAppend("/cell/T30");
 
-            formulaText()
+            testing.formulaText()
                 .click()
                 .wait(FORMULA_TEXT_CLICK_WAIT)
                 .type("{selectall}=234{enter}")
                 .blur();
 
             // viewport should have jumped leaving T30 as the home cell.
-            cell(A1)
+            testing.cell(A1)
                 .should('not.exist');
         });
 
         it("Cell outside viewport and reload", () => {
-            hashAppend("/cell/M1");
+            testing.hashAppend("/cell/M1");
 
-            formulaText()
+            testing.formulaText()
                 .click()
                 .wait(FORMULA_TEXT_CLICK_WAIT)
                 .type("{selectall}=123{enter}")
                 .blur();
 
-            hashOnlyIdAndName();
-            hashAppend("/cell/T1");
+            testing.hashOnlyIdAndName();
+            testing.hashAppend("/cell/T1");
 
-            formulaText()
+            testing.formulaText()
                 .click()
                 .wait(FORMULA_TEXT_CLICK_WAIT)
                 .type("{selectall}=234{enter}")
                 .blur();
 
-            hashOnlyIdAndName();
-            hashAppend("/cell/M1");
+            testing.hashOnlyIdAndName();
+            testing.hashAppend("/cell/M1");
 
-            cellFormattedTextCheck("M1", "123.");
-            cellFormattedTextCheck("T1", "234.");
+            testing.cellFormattedTextCheck("M1", "123.");
+            testing.cellFormattedTextCheck("T1", "234.");
         });
 
         it("Cell outside viewport horiz & vert and reload", () => {
-            hashAppend("/cell/M10");
+            testing.hashAppend("/cell/M10");
 
-            formulaText()
+            testing.formulaText()
                 .click()
                 .wait(FORMULA_TEXT_CLICK_WAIT)
                 .type("{selectall}=123{enter}")
                 .blur();
 
-            hashOnlyIdAndName();
+            testing.hashOnlyIdAndName();
 
-            hashAppend("/cell/T20");
+            testing.hashAppend("/cell/T20");
 
-            formulaText()
+            testing.formulaText()
                 .click()
                 .wait(FORMULA_TEXT_CLICK_WAIT)
                 .type("{selectall}=234{enter}")
                 .blur();
 
-            hashOnlyIdAndName();
+            testing.hashOnlyIdAndName();
 
-            hashAppend("/cell/M10");
+            testing.hashAppend("/cell/M10");
 
-            cellFormattedTextCheck("M10", "123.");
-            cellFormattedTextCheck("T20", "234.");
+            testing.cellFormattedTextCheck("M10", "123.");
+            testing.cellFormattedTextCheck("T20", "234.");
         });
 
         // column click.................................................................................................
 
         it("Column click should have focus and be selected", () => {
-            column("B")
+            testing.column("B")
                 .click();
 
-            hash()
+            testing.hash()
                 .should('match', /.*\/.*\/column\/B/);
 
-            column("B")
+            testing.column("B")
                 .should("have.focus")
                 .should("have.css", "background-color", SELECTED_COLOR);
 
         });
 
         it("Column click and cursor RIGHT", () => {
-            column("B")
+            testing.column("B")
                 .click();
 
-            column("B")
+            testing.column("B")
                 .type("{rightarrow}")
 
-            hash()
+            testing.hash()
                 .should('match', /.*\/.*\/column\/C/);
 
-            column("C")
+            testing.column("C")
                 .should("have.focus")
                 .should("have.css", "background-color", SELECTED_COLOR);
         });
 
         it("Column click and cursor DOWN", () => {
-            column("B")
+            testing.column("B")
                 .click();
 
-            column("B")
+            testing.column("B")
                 .type("{downarrow}")
 
-            hash()
+            testing.hash()
                 .should('match', /.*\/.*\/cell\/B1/);
 
-            column("B")
+            testing.column("B")
                 .should("have.css", "background-color", SELECTED_COLOR);
-            row("1")
+            testing.row("1")
                 .should("have.css", "background-color", SELECTED_COLOR);
-            cell(B1)
+            testing.cell(B1)
                 .should("have.focus");
         });
 
         // row click.................................................................................................
 
         it("Row click should have focus and be selected", () => {
-            row("2")
+            testing.row("2")
                 .click();
 
-            hash()
+            testing.hash()
                 .should('match', /.*\/.*\/row\/2/);
 
-            row("2")
+            testing.row("2")
                 .should("have.focus")
                 .should("have.css", "background-color", SELECTED_COLOR);
         });
 
         it("Row click and cursor DOWN", () => {
-            row("2")
+            testing.row("2")
                 .click()
                 .should("have.focus");
 
-            row("2")
+            testing.row("2")
                 .type("{downarrow}")
 
-            row("3")
+            testing.row("3")
                 .should("have.focus")
                 .should("have.css", "background-color", SELECTED_COLOR);
 
-            hash()
+            testing.hash()
                 .should('match', /.*\/.*\/row\/3/);
         });
 
         it("Row click and cursor RIGHT", () => {
-            row("2")
+            testing.row("2")
                 .click();
 
-            row("2")
+            testing.row("2")
                 .type("{rightarrow}");
 
-            hash()
+            testing.hash()
                 .should('match', /.*\/.*\/cell\/A2/);
 
-            column("A")
+            testing.column("A")
                 .should("have.css", "background-color", SELECTED_COLOR);
-            row("2")
+            testing.row("2")
                 .should("have.css", "background-color", SELECTED_COLOR);
-            cell(A2)
+            testing.cell(A2)
                 .should("have.focus");
         });
 
         // cell range...................................................................................................
 
         it("Cell range history hash", () => {
-            hashAppend("/cell/B2:C3");
+            testing.hashAppend("/cell/B2:C3");
 
-            hash()
+            testing.hash()
                 .should('match', /.*\/.*\/cell\/B2:C3/);
 
-            column("B")
+            testing.column("B")
                 .should("have.css", "background-color", SELECTED_COLOR);
-            column("C")
+            testing.column("C")
                 .should("have.css", "background-color", SELECTED_COLOR);
 
-            row("2")
+            testing.row("2")
                 .should("have.css", "background-color", SELECTED_COLOR);
-            row("3")
+            testing.row("3")
                 .should("have.css", "background-color", SELECTED_COLOR);
         });
 
         it("Cell range out of viewport history hash", () => {
-            hashAppend("/cell/X2:Y3");
+            testing.hashAppend("/cell/X2:Y3");
 
-            hash()
+            testing.hash()
                 .should('match', /.*\/.*\/cell\/X2:Y3/);
 
-            column("X")
+            testing.column("X")
                 .should("have.css", "background-color", SELECTED_COLOR);
-            column("Y")
+            testing.column("Y")
                 .should("have.css", "background-color", SELECTED_COLOR);
 
-            row("2")
+            testing.row("2")
                 .should("have.css", "background-color", SELECTED_COLOR);
-            row("3")
+            testing.row("3")
                 .should("have.css", "background-color", SELECTED_COLOR);
         });
 
         it("Cell range keyboard extend left", () => {
-            hashAppend("/cell/D4:E5");
+            testing.hashAppend("/cell/D4:E5");
 
-            hash()
+            testing.hash()
                 .should('match', /.*\/.*\/cell\/D4:E5/);
 
-            cell(D4)
+            testing.cell(D4)
                 .type("{shift+leftarrow}");
 
-            hash()
+            testing.hash()
                 .should('match', /.*\/.*\/cell\/C4:E5/);
 
-            cell("C4")
+            testing.cell("C4")
                 .should("have.focus");
 
-            column("C")
+            testing.column("C")
                 .should("have.css", "background-color", SELECTED_COLOR);
-            column("D")
+            testing.column("D")
                 .should("have.css", "background-color", SELECTED_COLOR);
-            column("E")
+            testing.column("E")
                 .should("have.css", "background-color", SELECTED_COLOR);
 
-            row("4")
+            testing.row("4")
                 .should("have.css", "background-color", SELECTED_COLOR);
-            row("5")
+            testing.row("5")
                 .should("have.css", "background-color", SELECTED_COLOR);
         });
 
         it("Cell range keyboard extend right", () => {
-            hashAppend("/cell/D4:E5");
+            testing.hashAppend("/cell/D4:E5");
 
-            hash()
+            testing.hash()
                 .should('match', /.*\/.*\/cell\/D4:E5/);
 
-            cell("D4")
+            testing.cell("D4")
                 .should("have.focus")
                 .type("{shift+rightarrow}");
 
-            cell("E4")
+            testing.cell("E4")
                 .should("have.focus")
                 .type("{shift+rightarrow}");
 
-            hash()
+            testing.hash()
                 .should('match', /.*\/.*\/cell\/E4:F5/);
 
-            cell("F4")
+            testing.cell("F4")
                 .should("have.focus");
 
-            column("E")
+            testing.column("E")
                 .should("have.css", "background-color", SELECTED_COLOR);
-            column("F")
+            testing.column("F")
                 .should("have.css", "background-color", SELECTED_COLOR);
 
-            row("4")
+            testing.row("4")
                 .should("have.css", "background-color", SELECTED_COLOR);
-            row("5")
+            testing.row("5")
                 .should("have.css", "background-color", SELECTED_COLOR);
         });
 
         it("Cell range keyboard extend right twice", () => {
-            hashAppend("/cell/D4:E5");
+            testing.hashAppend("/cell/D4:E5");
 
-            hash()
+            testing.hash()
                 .should('match', /.*\/.*\/cell\/D4:E5/);
 
-            cell("D4")
+            testing.cell("D4")
                 .should("have.focus")
                 .type("{shift+rightarrow}");
 
-            cell("E4")
+            testing.cell("E4")
                 .should("have.focus")
                 .type("{shift+rightarrow}");
 
-            hash()
+            testing.hash()
                 .should('match', /.*\/.*\/cell\/E4:F5/);
 
-            cell("F4")
+            testing.cell("F4")
                 .should("have.focus")
                 .type("{shift+rightarrow}");
 
-            hash()
+            testing.hash()
                 .should('match', /.*\/.*\/cell\/E4:G5/);
 
-            cell("G4")
+            testing.cell("G4")
                 .should("have.focus");
 
-            column("E")
+            testing.column("E")
                 .should("have.css", "background-color", SELECTED_COLOR);
-            column("F")
+            testing.column("F")
                 .should("have.css", "background-color", SELECTED_COLOR);
-            column("G")
+            testing.column("G")
                 .should("have.css", "background-color", SELECTED_COLOR);
 
-            row("4")
+            testing.row("4")
                 .should("have.css", "background-color", SELECTED_COLOR);
-            row("5")
+            testing.row("5")
                 .should("have.css", "background-color", SELECTED_COLOR);
         });
 
         it("Cell range keyboard extend up", () => {
-            hashAppend("/cell/D4:E5");
+            testing.hashAppend("/cell/D4:E5");
 
-            hash()
+            testing.hash()
                 .should('match', /.*\/.*\/cell\/D4:E5/);
 
-            cell(D4)
+            testing.cell(D4)
                 .type("{shift+uparrow}");
 
-            hash()
+            testing.hash()
                 .should('match', /.*\/.*\/cell\/D3:E5/);
 
-            cell("D3")
+            testing.cell("D3")
                 .should("have.focus");
 
-            column("D")
+            testing.column("D")
                 .should("have.css", "background-color", SELECTED_COLOR);
-            column("E")
+            testing.column("E")
                 .should("have.css", "background-color", SELECTED_COLOR);
 
-            row("3")
+            testing.row("3")
                 .should("have.css", "background-color", SELECTED_COLOR);
-            row("4")
+            testing.row("4")
                 .should("have.css", "background-color", SELECTED_COLOR);
-            row("5")
+            testing.row("5")
                 .should("have.css", "background-color", SELECTED_COLOR);
         });
 
         it("Cell range keyboard extend down", () => {
-            hashAppend("/cell/D4:E5");
+            testing.hashAppend("/cell/D4:E5");
 
-            hash()
+            testing.hash()
                 .should('match', /.*\/.*\/cell\/D4:E5/);
 
-            cell("D4")
+            testing.cell("D4")
                 .should("have.focus")
                 .type("{shift+downarrow}");
 
-            hash()
+            testing.hash()
                 .should('match', /.*\/.*\/cell\/D5:E5/);
 
-            cell("D5")
+            testing.cell("D5")
                 .should("have.focus")
                 .type("{shift+downarrow}");
 
-            hash()
+            testing.hash()
                 .should('match', /.*\/.*\/cell\/D5:E6/);
 
-            cell("D6")
+            testing.cell("D6")
                 .should("have.focus");
 
-            column("D")
+            testing.column("D")
                 .should("have.css", "background-color", SELECTED_COLOR);
-            column("E")
+            testing.column("E")
                 .should("have.css", "background-color", SELECTED_COLOR);
 
-            row("5")
+            testing.row("5")
                 .should("have.css", "background-color", SELECTED_COLOR);
-            row("6")
+            testing.row("6")
                 .should("have.css", "background-color", SELECTED_COLOR);
         });
 
         it("Cell range keyboard extend down twice", () => {
-            hashAppend("/cell/D4:E5");
+            testing.hashAppend("/cell/D4:E5");
 
-            hash()
+            testing.hash()
                 .should('match', /.*\/.*\/cell\/D4:E5/);
 
-            cell("D4")
+            testing.cell("D4")
                 .should("have.focus")
                 .type("{shift+downarrow}");
 
-            hash()
+            testing.hash()
                 .should('match', /.*\/.*\/cell\/D5:E5/);
 
-            cell("D5")
+            testing.cell("D5")
                 .should("have.focus")
                 .type("{shift+downarrow}");
 
-            hash()
+            testing.hash()
                 .should('match', /.*\/.*\/cell\/D5:E6/);
 
-            cell("D6")
+            testing.cell("D6")
                 .should("have.focus")
                 .type("{shift+downarrow}");
 
-            hash()
+            testing.hash()
                 .should('match', /.*\/.*\/cell\/D5:E7/);
 
-            cell("D7")
+            testing.cell("D7")
                 .should("have.focus")
 
-            column("D")
+            testing.column("D")
                 .should("have.css", "background-color", SELECTED_COLOR);
-            column("E")
+            testing.column("E")
                 .should("have.css", "background-color", SELECTED_COLOR);
 
-            row("5")
+            testing.row("5")
                 .should("have.css", "background-color", SELECTED_COLOR);
-            row("6")
+            testing.row("6")
                 .should("have.css", "background-color", SELECTED_COLOR);
-            row("7")
+            testing.row("7")
                 .should("have.css", "background-color", SELECTED_COLOR);
         });
-        
+
         // column range...................................................................................................
 
         it("Column range history hash", () => {
-            hashAppend("/column/B:C");
+            testing.hashAppend("/column/B:C");
 
-            hash()
+            testing.hash()
                 .should('match', /.*\/.*\/column\/B:C/);
 
-            column("B")
+            testing.column("B")
                 .should("have.css", "background-color", SELECTED_COLOR);
-            column("C")
+            testing.column("C")
                 .should("have.css", "background-color", SELECTED_COLOR);
         });
 
         it("Column range out of viewport history hash", () => {
-            hashAppend("/column/X:Y");
+            testing.hashAppend("/column/X:Y");
 
-            hash()
+            testing.hash()
                 .should('match', /.*\/.*\/column\/X:Y/);
 
-            column("X")
+            testing.column("X")
                 .should("have.css", "background-color", SELECTED_COLOR);
-            column("Y")
+            testing.column("Y")
                 .should("have.css", "background-color", SELECTED_COLOR);
         });
 
         it("Column range extend left", () => {
-            hashAppend("/column/E");
+            testing.hashAppend("/column/E");
 
-            hash()
+            testing.hash()
                 .should('match', /.*\/.*\/column\/E/);
 
-            column("E")
+            testing.column("E")
                 .type("{shift+leftarrow}");
 
-            hash()
+            testing.hash()
                 .should('match', /.*\/.*\/column\/D:E/);
-            
-            column("D")
+
+            testing.column("D")
                 .should("have.focus")
                 .should("have.css", "background-color", SELECTED_COLOR);
-            column("E")
+            testing.column("E")
                 .should("have.css", "background-color", SELECTED_COLOR);
         });
 
         it("Column range extend left twice", () => {
-            hashAppend("/column/E:F");
+            testing.hashAppend("/column/E:F");
 
-            hash()
+            testing.hash()
                 .should('match', /.*\/.*\/column\/E/);
 
-            column("E")
+            testing.column("E")
                 .type("{shift+leftarrow}");
 
-            column("D")
+            testing.column("D")
                 .type("{shift+leftarrow}");
-            
-            hash()
+
+            testing.hash()
                 .should('match', /.*\/.*\/column\/C:E/);
 
-            column("C")
+            testing.column("C")
                 .should("have.focus")
                 .should("have.css", "background-color", SELECTED_COLOR);
-            column("D")
+            testing.column("D")
                 .should("have.css", "background-color", SELECTED_COLOR);
-            column("E")
+            testing.column("E")
                 .should("have.css", "background-color", SELECTED_COLOR);
         });
 
         it("Column range extend right", () => {
-            hashAppend("/column/E:F");
+            testing.hashAppend("/column/E:F");
 
-            hash()
+            testing.hash()
                 .should('match', /.*\/.*\/column\/E/);
 
-            column("E")
+            testing.column("E")
                 .type("{shift+rightarrow}");
 
-            hash()
+            testing.hash()
                 .should('match', /.*\/.*\/column\/E:F/);
 
-            column("F")
+            testing.column("F")
                 .should("have.focus")
                 .should("have.css", "background-color", SELECTED_COLOR);
-            column("E")
+            testing.column("E")
                 .should("have.css", "background-color", SELECTED_COLOR);
         });
 
         it("Column range extend right twice", () => {
-            hashAppend("/column/E:F");
+            testing.hashAppend("/column/E:F");
 
-            hash()
+            testing.hash()
                 .should('match', /.*\/.*\/column\/E/);
 
-            column("E")
+            testing.column("E")
                 .type("{shift+rightarrow}");
 
-            column("F")
+            testing.column("F")
                 .type("{shift+rightarrow}");
 
-            hash()
+            testing.hash()
                 .should('match', /.*\/.*\/column\/E:G/);
 
-            column("G")
+            testing.column("G")
                 .should("have.focus")
                 .should("have.css", "background-color", SELECTED_COLOR);
-            column("F")
+            testing.column("F")
                 .should("have.css", "background-color", SELECTED_COLOR);
-            column("E")
+            testing.column("E")
                 .should("have.css", "background-color", SELECTED_COLOR);
         });
-        
+
         // row range...................................................................................................
 
         it("Row range history hash", () => {
-            hashAppend("/row/2:3");
+            testing.hashAppend("/row/2:3");
 
-            hash()
+            testing.hash()
                 .should('match', /.*\/.*\/row\/2:3/);
 
-            row("2")
+            testing.row("2")
                 .should("have.css", "background-color", SELECTED_COLOR);
-            row("3")
+            testing.row("3")
                 .should("have.css", "background-color", SELECTED_COLOR);
         });
 
         it("Row range out of viewport history hash", () => {
-            hashAppend("/row/30:31");
+            testing.hashAppend("/row/30:31");
 
-            hash()
+            testing.hash()
                 .should('match', /.*\/.*\/row\/30:31/);
 
-            row("30")
+            testing.row("30")
                 .should("have.css", "background-color", SELECTED_COLOR);
-            row("31")
+            testing.row("31")
                 .should("have.css", "background-color", SELECTED_COLOR);
         });
 
         it("Row range extend top", () => {
-            hashAppend("/row/5");
+            testing.hashAppend("/row/5");
 
-            hash()
+            testing.hash()
                 .should('match', /.*\/.*\/row\/5/);
 
-            row("5")
+            testing.row("5")
                 .type("{shift+uparrow}");
 
-            hash()
+            testing.hash()
                 .should('match', /.*\/.*\/row\/4:5/);
 
-            row("4")
+            testing.row("4")
                 .should("have.focus")
                 .should("have.css", "background-color", SELECTED_COLOR);
-            row("5")
+            testing.row("5")
                 .should("have.css", "background-color", SELECTED_COLOR);
         });
 
         it("Row range extend top twice", () => {
-            hashAppend("/row/5");
+            testing.hashAppend("/row/5");
 
-            hash()
+            testing.hash()
                 .should('match', /.*\/.*\/row\/5/);
 
-            row("5")
+            testing.row("5")
                 .type("{shift+uparrow}");
 
-            row("4")
+            testing.row("4")
                 .type("{shift+uparrow}");
 
-            hash()
+            testing.hash()
                 .should('match', /.*\/.*\/row\/3:5/);
 
-            row("3")
+            testing.row("3")
                 .should("have.focus")
                 .should("have.css", "background-color", SELECTED_COLOR);
-            row("4")
+            testing.row("4")
                 .should("have.css", "background-color", SELECTED_COLOR);
-            row("5")
+            testing.row("5")
                 .should("have.css", "background-color", SELECTED_COLOR);
         });
 
         it("Row range extend bottom", () => {
-            hashAppend("/row/5");
+            testing.hashAppend("/row/5");
 
-            hash()
+            testing.hash()
                 .should('match', /.*\/.*\/row\/5/);
 
-            row("5")
+            testing.row("5")
                 .type("{shift+downarrow}");
 
-            hash()
+            testing.hash()
                 .should('match', /.*\/.*\/row\/5:6/);
 
-            row("6")
+            testing.row("6")
                 .should("have.focus")
                 .should("have.css", "background-color", SELECTED_COLOR);
-            row("5")
+            testing.row("5")
                 .should("have.css", "background-color", SELECTED_COLOR);
         });
 
         it("Row range extend bottom twice", () => {
-            hashAppend("/row/5");
+            testing.hashAppend("/row/5");
 
-            hash()
+            testing.hash()
                 .should('match', /.*\/.*\/row\/5/);
 
-            row("5")
+            testing.row("5")
                 .type("{shift+downarrow}");
 
-            row("6")
+            testing.row("6")
                 .type("{shift+downarrow}");
 
-            hash()
+            testing.hash()
                 .should('match', /.*\/.*\/row\/5:7/);
 
-            row("7")
+            testing.row("7")
                 .should("have.focus")
                 .should("have.css", "background-color", SELECTED_COLOR);
-            row("6")
+            testing.row("6")
                 .should("have.css", "background-color", SELECTED_COLOR);
-            row("5")
+            testing.row("5")
                 .should("have.css", "background-color", SELECTED_COLOR);
         });
 
         // selection delete.............................................................................................
 
         it("Cell select delete hash", () => {
-            cellClick(B2);
+            testing.cellClick(B2);
 
-            formulaText()
+            testing.formulaText()
                 .click()
                 .wait(FORMULA_TEXT_CLICK_WAIT)
                 .type("{selectall}'Deleted{enter}");
 
-            cellClick(B2);
-            hashAppendWithoutCheck("/delete");
+            testing.cellClick(B2);
+            testing.hashAppendWithoutCheck("/delete");
 
-            hash()
+            testing.hash()
                 .should('match', /.*\/.*/);
 
-            cellFormattedTextCheck(B2, "");
+            testing.cellFormattedTextCheck(B2, "");
 
-            formulaText()
+            testing.formulaText()
                 .should("have.value", "");
         });
 
         it("Cell range select delete hash", () => {
-            cellClick(A1);
+            testing.cellClick(A1);
 
-            formulaText()
+            testing.formulaText()
                 .click()
                 .wait(FORMULA_TEXT_CLICK_WAIT)
                 .type("{selectall}'NotDeleted{enter}");
 
-            cellClick(C3);
+            testing.cellClick(C3);
 
-            formulaText()
+            testing.formulaText()
                 .click()
                 .wait(FORMULA_TEXT_CLICK_WAIT)
                 .type("{selectall}'DeletedC3{enter}");
 
-            cellClick(B2);
+            testing.cellClick(B2);
 
-            formulaText()
+            testing.formulaText()
                 .click()
                 .wait(FORMULA_TEXT_CLICK_WAIT)
                 .type("{selectall}'DeletedB2{enter}");
 
-            cellClick(B2);
+            testing.cellClick(B2);
 
-            hashAppendWithoutCheck(":C3/delete");
+            testing.hashAppendWithoutCheck(":C3/delete");
 
-            hash()
+            testing.hash()
                 .should('match', /.*\/.*/);
 
-            cellFormattedTextCheck("A1", "NotDeleted");
-            cellFormattedTextCheck(B2, "");
-            cellFormattedTextCheck(C3, "");
+            testing.cellFormattedTextCheck("A1", "NotDeleted");
+            testing.cellFormattedTextCheck(B2, "");
+            testing.cellFormattedTextCheck(C3, "");
         });
-        
-        it("Column select delete hash", () => {
-            cellClick(E5);
 
-            formulaText()
+        it("Column select delete hash", () => {
+            testing.cellClick(E5);
+
+            testing.formulaText()
                 .click()
                 .wait(FORMULA_TEXT_CLICK_WAIT)
                 .type("{selectall}'Moved{enter}");
 
-            column("B")
+            testing.column("B")
                 .click();
 
-            hashAppend("/delete");
+            testing.hashAppend("/delete");
 
-            hash()
+            testing.hash()
                 .should('match', /.*\/.*/);
 
-            cellFormattedTextCheck("D5", "Moved");
-            cellFormattedTextCheck(E5, "");
+            testing.cellFormattedTextCheck("D5", "Moved");
+            testing.cellFormattedTextCheck(E5, "");
         });
 
         it("Column range select delete hash", () => {
-            cellClick(E5);
+            testing.cellClick(E5);
 
-            formulaText()
+            testing.formulaText()
                 .click()
                 .wait(FORMULA_TEXT_CLICK_WAIT)
                 .type("{selectall}'Moved{enter}");
 
-            column("B")
+            testing.column("B")
                 .click();
 
-            hashAppend(":C/delete");
+            testing.hashAppend(":C/delete");
 
-            hash()
+            testing.hash()
                 .should('match', /.*\/.*/);
 
-            cellFormattedTextCheck("C5", "Moved");
-            cellFormattedTextCheck(E5, "");
+            testing.cellFormattedTextCheck("C5", "Moved");
+            testing.cellFormattedTextCheck(E5, "");
         });
 
         it("Row select delete hash", () => {
-            cellClick(E5);
+            testing.cellClick(E5);
 
-            formulaText()
+            testing.formulaText()
                 .click()
                 .wait(FORMULA_TEXT_CLICK_WAIT)
                 .type("{selectall}'Moved{enter}");
 
-            row("2")
+            testing.row("2")
                 .click();
 
-            hashAppend("/delete");
+            testing.hashAppend("/delete");
 
-            hash()
+            testing.hash()
                 .should('match', /.*\/.*/);
 
-            cellFormattedTextCheck("E4", "Moved");
-            cellFormattedTextCheck(E5, "");
+            testing.cellFormattedTextCheck("E4", "Moved");
+            testing.cellFormattedTextCheck(E5, "");
         });
 
         it("Row range select delete hash", () => {
-            cellClick(E5);
+            testing.cellClick(E5);
 
-            formulaText()
+            testing.formulaText()
                 .click()
                 .wait(FORMULA_TEXT_CLICK_WAIT)
                 .type("{selectall}'Moved{enter}");
 
-            row("2")
+            testing.row("2")
                 .click();
 
-            hashAppend(":3/delete");
+            testing.hashAppend(":3/delete");
 
-            hash()
+            testing.hash()
                 .should('match', /.*\/.*/);
 
-            cellFormattedTextCheck("E3", "Moved");
-            cellFormattedTextCheck(E5, "");
+            testing.cellFormattedTextCheck("E3", "Moved");
+            testing.cellFormattedTextCheck(E5, "");
         });
 
         // selection insert-after.............................................................................................
 
         it("Column select insert-after hash", () => {
-            cellClick(E5);
+            testing.cellClick(E5);
 
-            formulaText()
+            testing.formulaText()
                 .click()
                 .wait(FORMULA_TEXT_CLICK_WAIT)
                 .type("{selectall}'Moved{enter}");
 
-            column("B")
+            testing.column("B")
                 .click();
 
-            hashAppendWithoutCheck("/insert-after/1");
+            testing.hashAppendWithoutCheck("/insert-after/1");
 
-            hash()
+            testing.hash()
                 .should('match', /.*\/.*\/column\/B/);
 
-            cellFormattedTextCheck("F5", "Moved");
-            cellFormattedTextCheck(E5, "");
+            testing.cellFormattedTextCheck("F5", "Moved");
+            testing.cellFormattedTextCheck(E5, "");
         });
 
         it("Column range select insert-after hash", () => {
-            cellClick(E5);
+            testing.cellClick(E5);
 
-            formulaText()
+            testing.formulaText()
                 .click()
                 .wait(FORMULA_TEXT_CLICK_WAIT)
                 .type("{selectall}'Moved{enter}");
 
-            column("B")
+            testing.column("B")
                 .click();
 
-            hashAppendWithoutCheck(":C/insert-after/2");
+            testing.hashAppendWithoutCheck(":C/insert-after/2");
 
-            hash()
+            testing.hash()
                 .should('match', /.*\/.*\/column\/B:C/);
 
-            cellFormattedTextCheck("G5", "Moved");
-            cellFormattedTextCheck(E5, "");
+            testing.cellFormattedTextCheck("G5", "Moved");
+            testing.cellFormattedTextCheck(E5, "");
         });
 
         it("Row select insert-after hash", () => {
-            cellClick(E5);
+            testing.cellClick(E5);
 
-            formulaText()
+            testing.formulaText()
                 .click()
                 .wait(FORMULA_TEXT_CLICK_WAIT)
                 .type("{selectall}'Moved{enter}");
 
-            row("2")
+            testing.row("2")
                 .click();
 
-            hashAppendWithoutCheck("/insert-after/1");
+            testing.hashAppendWithoutCheck("/insert-after/1");
 
-            hash()
+            testing.hash()
                 .should('match', /.*\/.*\/row\/2/);
 
-            cellFormattedTextCheck("E6", "Moved");
-            cellFormattedTextCheck(E5, "");
+            testing.cellFormattedTextCheck("E6", "Moved");
+            testing.cellFormattedTextCheck(E5, "");
         });
 
         it("Row range select insert-after hash", () => {
-            cellClick(E5);
+            testing.cellClick(E5);
 
-            formulaText()
+            testing.formulaText()
                 .click()
                 .wait(FORMULA_TEXT_CLICK_WAIT)
                 .type("{selectall}'Moved{enter}");
 
-            row("2")
+            testing.row("2")
                 .click();
 
-            hashAppendWithoutCheck(":3/insert-after/2");
+            testing.hashAppendWithoutCheck(":3/insert-after/2");
 
-            hash()
+            testing.hash()
                 .should('match', /.*\/.*\/row\/2:3/);
 
-            cellFormattedTextCheck("E7", "Moved");
-            cellFormattedTextCheck(E5, "");
+            testing.cellFormattedTextCheck("E7", "Moved");
+            testing.cellFormattedTextCheck(E5, "");
         });
 
         // selection insert-before.............................................................................................
 
         it("Column select insert-before hash", () => {
-            cellClick(E5);
+            testing.cellClick(E5);
 
-            formulaText()
+            testing.formulaText()
                 .click()
                 .wait(FORMULA_TEXT_CLICK_WAIT)
                 .type("{selectall}'Moved{enter}");
 
-            column("B")
+            testing.column("B")
                 .click();
 
-            hashAppendWithoutCheck("/insert-before/1");
+            testing.hashAppendWithoutCheck("/insert-before/1");
 
-            hash()
+            testing.hash()
                 .should('match', /.*\/.*\/column\/C/);
 
-            cellFormattedTextCheck("F5", "Moved");
-            cellFormattedTextCheck(E5, "");
+            testing.cellFormattedTextCheck("F5", "Moved");
+            testing.cellFormattedTextCheck(E5, "");
         });
 
         it("Column range select insert-before hash", () => {
-            cellClick(E5);
+            testing.cellClick(E5);
 
-            formulaText()
+            testing.formulaText()
                 .click()
                 .wait(FORMULA_TEXT_CLICK_WAIT)
                 .type("{selectall}'Moved{enter}");
 
-            column("B")
+            testing.column("B")
                 .click();
 
-            hashAppendWithoutCheck(":C/insert-before/2");
+            testing.hashAppendWithoutCheck(":C/insert-before/2");
 
-            hash()
+            testing.hash()
                 .should('match', /.*\/.*\/column\/D:E/);
 
-            cellFormattedTextCheck("G5", "Moved");
-            cellFormattedTextCheck(E5, "");
+            testing.cellFormattedTextCheck("G5", "Moved");
+            testing.cellFormattedTextCheck(E5, "");
         });
 
         it("Row select insert-before hash", () => {
-            cellClick(E5);
+            testing.cellClick(E5);
 
-            formulaText()
+            testing.formulaText()
                 .click()
                 .wait(FORMULA_TEXT_CLICK_WAIT)
                 .type("{selectall}'Moved{enter}");
 
-            row("2")
+            testing.row("2")
                 .click();
 
-            hashAppendWithoutCheck("/insert-before/1");
+            testing.hashAppendWithoutCheck("/insert-before/1");
 
-            hash()
+            testing.hash()
                 .should('match', /.*\/.*\/row\/3/);
 
-            cellFormattedTextCheck("E6", "Moved");
-            cellFormattedTextCheck(E5, "");
+            testing.cellFormattedTextCheck("E6", "Moved");
+            testing.cellFormattedTextCheck(E5, "");
         });
 
         it("Row range select insert-before hash", () => {
-            cellClick(E5);
+            testing.cellClick(E5);
 
-            formulaText()
+            testing.formulaText()
                 .click()
                 .wait(FORMULA_TEXT_CLICK_WAIT)
                 .type("{selectall}'Moved{enter}");
 
-            row("2")
+            testing.row("2")
                 .click();
 
-            hashAppendWithoutCheck(":3/insert-before/2");
+            testing.hashAppendWithoutCheck(":3/insert-before/2");
 
-            hash()
+            testing.hash()
                 .should('match', /.*\/.*\/row\/4:5/);
 
-            cellFormattedTextCheck("E7", "Moved");
-            cellFormattedTextCheck(E5, "");
+            testing.cellFormattedTextCheck("E7", "Moved");
+            testing.cellFormattedTextCheck(E5, "");
         });
-        
+
         // selection then different viewport selections.................................................................
 
         it("Cell formula edit then column click", () => {
-            hashAppend("/cell/B2/formula");
+            testing.hashAppend("/cell/B2/formula");
 
-            renderWait();
+            testing.wait();
 
-            column("C")
+            testing.column("C")
                 .click();
 
-            hash()
+            testing.hash()
                 .should('match', /.*\/.*\/column\/C/);
         });
 
         it("Cell formula edit then row click", () => {
-            hashAppend("/cell/B2/formula");
+            testing.hashAppend("/cell/B2/formula");
 
-            renderWait();
+            testing.wait();
 
-            row("3")
+            testing.row("3")
                 .click();
 
-            hash()
+            testing.hash()
                 .should('match', /.*\/.*\/row\/3/);
         });
 
         it("Cell formula edit different formula edit", () => {
-            hashAppend("/cell/B2/formula");
+            testing.hashAppend("/cell/B2/formula");
 
-            hash()
+            testing.hash()
                 .should('match', /.*\/.*\/cell\/B2\/formula/);
 
-            hashAppend("/cell/C3/formula"); // invalid removes cell from hash
-            hashAppend("/cell/C3/formula");
+            testing.hashAppend("/cell/C3/formula"); // invalid removes cell from hash
+            testing.hashAppend("/cell/C3/formula");
 
-            hash()
+            testing.hash()
                 .should('match', /.*\/.*\/cell\/C3/);
         });
 
         it("Column select then Cell", () => {
-            hashAppend("/column/B");
+            testing.hashAppend("/column/B");
 
-            hash()
+            testing.hash()
                 .should('match', /.*\/.*\/column\/B/);
 
-            cell(A1)
+            testing.cell(A1)
                 .click();
 
-            hash()
+            testing.hash()
                 .should('match', /.*\/.*\/cell\/A1/);
         });
 
         it("Row select then Cell", () => {
-            hashAppend("/row/2");
+            testing.hashAppend("/row/2");
 
-            hash()
+            testing.hash()
                 .should('match', /.*\/.*\/row\/2/);
 
-            cell(A1)
+            testing.cell(A1)
                 .click();
 
-            hash()
+            testing.hash()
                 .should('match', /.*\/.*\/cell\/A1/);
         });
 
         // column context menu...........................................................................................
 
         it("Column context menu", () => {
-            column("C")
+            testing.column("C")
                 .rightclick();
 
             contextMenu()
@@ -2057,15 +2057,15 @@ context(
         });
 
         it("Column context menu click insert before 2", () => {
-            cellClick(C3);
+            testing.cellClick(C3);
 
-            formulaText()
+            testing.formulaText()
                 .click()
                 .wait(FORMULA_TEXT_CLICK_WAIT)
                 .type("{selectall}'Moved{enter}")
                 .blur();
 
-            column("C")
+            testing.column("C")
                 .rightclick();
 
             contextMenu()
@@ -2080,20 +2080,20 @@ context(
             contextMenu()
                 .should("not.be.visible");
 
-            cellFormattedTextCheck("E3", "Moved");
-            cellFormattedTextCheck(C3, "");
+            testing.cellFormattedTextCheck("E3", "Moved");
+            testing.cellFormattedTextCheck(C3, "");
         });
 
         it("Column context menu click insert before 1", () => {
-            cellClick(C3);
+            testing.cellClick(C3);
 
-            formulaText()
+            testing.formulaText()
                 .click()
                 .wait(FORMULA_TEXT_CLICK_WAIT)
                 .type("{selectall}'Moved{enter}")
                 .blur();
 
-            column("C")
+            testing.column("C")
                 .rightclick();
 
             contextMenu()
@@ -2107,28 +2107,28 @@ context(
             contextMenu()
                 .should("not.be.visible");
 
-            cellFormattedTextCheck("D3", "Moved");
-            cellFormattedTextCheck(C3, "");
+            testing.cellFormattedTextCheck("D3", "Moved");
+            testing.cellFormattedTextCheck(C3, "");
         });
 
         it("Column context menu click insert after 1", () => {
-            cellClick(A1);
+            testing.cellClick(A1);
 
-            formulaText()
+            testing.formulaText()
                 .click()
                 .wait(FORMULA_TEXT_CLICK_WAIT)
                 .type("{selectall}'Never{enter}")
                 .blur();
 
-            cellClick(C3);
+            testing.cellClick(C3);
 
-            formulaText()
+            testing.formulaText()
                 .click()
                 .wait(FORMULA_TEXT_CLICK_WAIT)
                 .type("{selectall}'Moved{enter}")
                 .blur();
 
-            column("B")
+            testing.column("B")
                 .rightclick();
 
             contextMenu()
@@ -2142,29 +2142,29 @@ context(
             contextMenu()
                 .should("not.be.visible");
 
-            cellFormattedTextCheck("A1", "Never");
-            cellFormattedTextCheck("D3", "Moved");
-            cellFormattedTextCheck(C3, "");
+            testing.cellFormattedTextCheck("A1", "Never");
+            testing.cellFormattedTextCheck("D3", "Moved");
+            testing.cellFormattedTextCheck(C3, "");
         });
 
         it("Column context menu click insert after 2", () => {
-            cellClick(A1);
+            testing.cellClick(A1);
 
-            formulaText()
+            testing.formulaText()
                 .click()
                 .wait(FORMULA_TEXT_CLICK_WAIT)
                 .type("{selectall}'Never{enter}")
                 .blur();
 
-            cellClick(C3);
+            testing.cellClick(C3);
 
-            formulaText()
+            testing.formulaText()
                 .click()
                 .wait(FORMULA_TEXT_CLICK_WAIT)
                 .type("{selectall}'Moved{enter}")
                 .blur();
 
-            column("B")
+            testing.column("B")
                 .rightclick();
 
             contextMenu()
@@ -2179,27 +2179,27 @@ context(
             contextMenu()
                 .should("not.be.visible");
 
-            cellFormattedTextCheck("A1", "Never");
-            cellFormattedTextCheck("E3", "Moved");
-            cellFormattedTextCheck(C3, "");
+            testing.cellFormattedTextCheck("A1", "Never");
+            testing.cellFormattedTextCheck("E3", "Moved");
+            testing.cellFormattedTextCheck(C3, "");
         });
 
         it("Column select then context menu click insert before 2", () => {
-            cellClick(C3);
+            testing.cellClick(C3);
 
-            formulaText()
+            testing.formulaText()
                 .click()
                 .wait(FORMULA_TEXT_CLICK_WAIT)
                 .type("{selectall}'Moved{enter}")
                 .blur();
 
-            column("C")
+            testing.column("C")
                 .click();
 
-            hash()
+            testing.hash()
                 .should('match', /.*\/Untitled\/column\/C/);
 
-            column("C")
+            testing.column("C")
                 .rightclick();
 
             contextMenu()
@@ -2213,29 +2213,29 @@ context(
             contextMenu()
                 .should("not.be.visible");
 
-            hash()
+            testing.hash()
                 .should('match', /.*\/Untitled\/column\/E/);
 
-            cellFormattedTextCheck("E3", "Moved");
-            cellFormattedTextCheck(C3, "");
+            testing.cellFormattedTextCheck("E3", "Moved");
+            testing.cellFormattedTextCheck(C3, "");
         });
 
         it("Column select then context menu click insert before 1", () => {
-            cellClick(C3);
+            testing.cellClick(C3);
 
-            formulaText()
+            testing.formulaText()
                 .click()
                 .wait(FORMULA_TEXT_CLICK_WAIT)
                 .type("{selectall}'Moved{enter}")
                 .blur();
 
-            column("C")
+            testing.column("C")
                 .click();
 
-            hash()
+            testing.hash()
                 .should('match', /.*\/Untitled\/column\/C/);
 
-            column("C")
+            testing.column("C")
                 .rightclick();
 
             contextMenu()
@@ -2249,37 +2249,37 @@ context(
             contextMenu()
                 .should("not.be.visible");
 
-            hash()
+            testing.hash()
                 .should('match', /.*\/Untitled\/column\/D/);
 
-            cellFormattedTextCheck("D3", "Moved");
-            cellFormattedTextCheck(C3, "");
+            testing.cellFormattedTextCheck("D3", "Moved");
+            testing.cellFormattedTextCheck(C3, "");
         });
 
         it("Column select then context menu click insert after 1", () => {
-            cellClick(A1);
+            testing.cellClick(A1);
 
-            formulaText()
+            testing.formulaText()
                 .click()
                 .wait(FORMULA_TEXT_CLICK_WAIT)
                 .type("{selectall}'Never{enter}")
                 .blur();
 
-            cellClick(C3);
+            testing.cellClick(C3);
 
-            formulaText()
+            testing.formulaText()
                 .click()
                 .wait(FORMULA_TEXT_CLICK_WAIT)
                 .type("{selectall}'Moved{enter}")
                 .blur();
 
-            column("B")
+            testing.column("B")
                 .click();
 
-            hash()
+            testing.hash()
                 .should('match', /.*\/Untitled\/column\/B/);
 
-            column("B")
+            testing.column("B")
                 .rightclick();
 
             contextMenu()
@@ -2293,38 +2293,38 @@ context(
             contextMenu()
                 .should("not.be.visible");
 
-            hash()
+            testing.hash()
                 .should('match', /.*\/Untitled\/column\/B/);
 
-            cellFormattedTextCheck("A1", "Never");
-            cellFormattedTextCheck("D3", "Moved");
-            cellFormattedTextCheck(C3, "");
+            testing.cellFormattedTextCheck("A1", "Never");
+            testing.cellFormattedTextCheck("D3", "Moved");
+            testing.cellFormattedTextCheck(C3, "");
         });
 
         it("Column select then context menu click insert after 2", () => {
-            cellClick(A1);
+            testing.cellClick(A1);
 
-            formulaText()
+            testing.formulaText()
                 .click()
                 .wait(FORMULA_TEXT_CLICK_WAIT)
                 .type("{selectall}'Never{enter}")
                 .blur();
 
-            cellClick(C3);
+            testing.cellClick(C3);
 
-            formulaText()
+            testing.formulaText()
                 .click()
                 .wait(FORMULA_TEXT_CLICK_WAIT)
                 .type("{selectall}'Moved{enter}")
                 .blur();
 
-            column("B")
+            testing.column("B")
                 .click();
 
-            hash()
+            testing.hash()
                 .should('match', /.*\/Untitled\/column\/B/);
 
-            column("B")
+            testing.column("B")
                 .rightclick();
 
             contextMenu()
@@ -2338,12 +2338,12 @@ context(
             contextMenu()
                 .should("not.be.visible");
 
-            hash()
+            testing.hash()
                 .should('match', /.*\/Untitled\/column\/B/);
 
-            cellFormattedTextCheck("A1", "Never");
-            cellFormattedTextCheck("E3", "Moved");
-            cellFormattedTextCheck(C3, "");
+            testing.cellFormattedTextCheck("A1", "Never");
+            testing.cellFormattedTextCheck("E3", "Moved");
+            testing.cellFormattedTextCheck(C3, "");
         });
 
         function contextMenu() {
@@ -2415,7 +2415,7 @@ context(
             selectDialogClose()
                 .click();
 
-            hash()
+            testing.hash()
                 .should('match', /.*\/Untitled/);
 
             selectDialog()
@@ -2428,7 +2428,7 @@ context(
             selectAutocompleteTextField()
                 .type("{esc}");
 
-            hash()
+            testing.hash()
                 .should('match', /.*\/Untitled/);
 
             selectDialog()
@@ -2465,11 +2465,11 @@ context(
             selectLabelGotoButton(DISABLED);
             selectRowGotoButton(DISABLED);
             selectRowRangeSelectButton(DISABLED);
-            
+
             selectCellGotoButton(ENABLED)
                 .click();
 
-            hash()
+            testing.hash()
                 .should('match', /.*\/Untitled\/cell\/B2/);
         });
 
@@ -2493,11 +2493,11 @@ context(
             selectLabelGotoButton(DISABLED);
             selectRowGotoButton(DISABLED);
             selectRowRangeSelectButton(DISABLED);
-            
+
             selectCellRangeSelectButton(ENABLED)
                 .click();
 
-            hash()
+            testing.hash()
                 .should('match', /.*\/Untitled\/cell\/A1:B2/);
         });
 
@@ -2521,11 +2521,11 @@ context(
             selectLabelGotoButton(DISABLED);
             selectRowGotoButton(DISABLED);
             selectRowRangeSelectButton(DISABLED);
-            
+
             selectLabelCreateButton(ENABLED)
                 .click();
 
-            hash()
+            testing.hash()
                 .should('match', /.*\/Untitled\/label\/Label123/);
         });
 
@@ -2544,7 +2544,7 @@ context(
             labelMappingLabelCloseButton()
                 .click();
 
-            hash()
+            testing.hash()
                 .should('match', /.*\/Untitled/);
 
             selectHistoryHash();
@@ -2566,19 +2566,19 @@ context(
             selectLabelGotoButton(ENABLED);
             selectRowGotoButton(DISABLED);
             selectRowRangeSelectButton(DISABLED);
-            
+
             selectLabelEditButton(ENABLED)
                 .click();
 
-            hash()
+            testing.hash()
                 .should('match', /.*\/Untitled\/label\/Label123/);
         });
 
         it("Click CELL then select create LABEL and ENTER, verify cell not lost from hash", () => {
-            cell(A1)
+            testing.cell(A1)
                 .click();
 
-            hash()
+            testing.hash()
                 .should('match', /.*\/Untitled\/cell\/A1/);
 
             selectHistoryHash(); // TODO not sure WHY but select dialog doesnt appear in test.
@@ -2604,7 +2604,7 @@ context(
             selectLabelCreateButton(ENABLED)
                 .click();
 
-            hash()
+            testing.hash()
                 .should('match', /.*\/Untitled\/cell\/A1\/label\/Label123/);
         });
 
@@ -2634,16 +2634,16 @@ context(
             selectLabelGotoButton(DISABLED);
             selectRowGotoButton(DISABLED);
             selectRowRangeSelectButton(DISABLED);
-            
+
             selectCellGotoButton(ENABLED)
                 .click();
 
-            hash()
+            testing.hash()
                 .should('match', /.*\/Untitled\/cell\/B2/);
         });
 
         it("Select enter column, select from dropdown ENTER and click GOTO COLUMN", () => {
-            spreadsheetEmptyReady();
+            testing.spreadsheetEmptyReady();
 
             selectHistoryHash();
 
@@ -2670,11 +2670,11 @@ context(
             selectLabelGotoButton(DISABLED);
             selectRowGotoButton(DISABLED);
             selectRowRangeSelectButton(DISABLED);
-            
+
             selectColumnGotoButton(ENABLED)
                 .click();
 
-            hash()
+            testing.hash()
                 .should('match', /.*\/Untitled\/column\/C/);
         });
 
@@ -2704,11 +2704,11 @@ context(
             selectLabelGotoButton(DISABLED);
             selectRowGotoButton(DISABLED);
             selectRowRangeSelectButton(DISABLED);
-            
+
             selectColumnRangeSelectButton(ENABLED)
                 .click();
 
-            hash()
+            testing.hash()
                 .should('match', /.*\/Untitled\/column\/D:E/);
         });
 
@@ -2743,11 +2743,11 @@ context(
             selectLabelCreateButton(DISABLED);
             selectRowGotoButton(DISABLED);
             selectRowRangeSelectButton(DISABLED);
-            
+
             selectLabelEditButton(ENABLED)
                 .click();
 
-            hash()
+            testing.hash()
                 .should('match', /.*\/Untitled\/label\/Label123/);
         });
 
@@ -2791,11 +2791,11 @@ context(
             selectLabelEditButton(ENABLED);
             selectRowGotoButton(DISABLED);
             selectRowRangeSelectButton(DISABLED);
-            
+
             selectLabelGotoButton(ENABLED)
                 .click();
 
-            hash()
+            testing.hash()
                 .should('match', /.*\/Untitled\/cell\/Label123/);
         });
 
@@ -2825,11 +2825,11 @@ context(
             selectLabelEditButton(DISABLED);
             selectLabelGotoButton(DISABLED);
             selectRowRangeSelectButton(DISABLED);
-            
+
             selectRowGotoButton(ENABLED)
                 .click();
 
-            hash()
+            testing.hash()
                 .should('match', /.*\/Untitled\/row\/3/);
         });
 
@@ -2863,30 +2863,30 @@ context(
             selectRowRangeSelectButton(ENABLED)
                 .click();
 
-            hash()
+            testing.hash()
                 .should('match', /.*\/Untitled\/row\/4:6/);
         });
 
         it("Select link after cell click", () => {
-            cellClick(A1);
+            testing.cellClick(A1);
 
             selectLink()
                 .should('have.text', "A1");
 
-            cellClick(A2);
+            testing.cellClick(A2);
 
             selectLink()
                 .should('have.text', "A2");
         });
 
         it("Select link click after cell click", () => {
-            cellClick(B1);
+            testing.cellClick(B1);
 
             selectLink()
                 .should('have.text', "B1")
                 .click();
 
-            hash()
+            testing.hash()
                 .should('match', /.*\/Untitled\/cell\/B1\/select/);
 
             selectAutocompleteTextField()
@@ -2896,12 +2896,12 @@ context(
             selectCellGotoButton(false)
                 .click();
 
-            hash()
+            testing.hash()
                 .should('match', /.*\/Untitled\/cell\/B2/);
         });
 
         function selectHistoryHash() {
-            hashAppend("/select");
+            testing.hashAppend("/select");
         }
 
         function selectLink() {
@@ -2990,7 +2990,7 @@ context(
             settings()
                 .should('be.visible');
 
-            hash()
+            testing.hash()
                 .should('match', /.*\/.*\/settings/) // => true
 
             settingsToggle();
@@ -2998,12 +2998,12 @@ context(
             settings()
                 .should('be.not.visible');
 
-            hash()
+            testing.hash()
                 .should('not.match', /.*\/.*\/settings/);
         });
 
         it("Settings hash show settings", () => {
-            hashAppend("/settings");
+            testing.hashAppend("/settings");
 
             settings()
                 .should('be.visible');
@@ -3013,7 +3013,7 @@ context(
             settingsToggle();
 
             cy.window()
-                .then(function(win) {
+                .then((win) => {
                     var hash = win.location.hash;
                     win.location.hash = hash.substring(0, hash.length - 1);
                 });
@@ -3039,7 +3039,7 @@ context(
 
         it("Settings hash Toggle section and hide", () => {
             cy.window()
-                .then(function(win) {
+                .then((win) => {
                     var hash = win.location.hash;
 
                     settingsToggle(); // open
@@ -3060,9 +3060,9 @@ context(
         });
 
         it("Settings show after editing spreadsheet name", () => {
-            spreadsheetNameClick();
+            testing.spreadsheetNameClick();
 
-            spreadsheetName()
+            testing.spreadsheetName()
                 .blur();
 
             cy.hash()
@@ -3075,7 +3075,7 @@ context(
         });
 
         it("Settings open hash after Edit cell", () => {
-            cellClick(A1);
+            testing.cellClick(A1);
 
             cy.hash()
                 .should("matches", /.*\/Untitled\/cell\/A1/);
@@ -3117,9 +3117,9 @@ context(
                 settingsOpenSectionSpreadsheetMetadataProperty(property);
 
                 if(a1Formula){
-                    cellClick(A1);
+                    testing.cellClick(A1);
 
-                    formulaText()
+                    testing.formulaText()
                         .click()
                         .wait(FORMULA_TEXT_CLICK_WAIT)
                         .type(a1Formula + "{enter}", FORCE_TRUE);
@@ -3136,12 +3136,12 @@ context(
                         .should("have.value", text);
 
                     if(updatedA1Formula){
-                        formulaText()
+                        testing.formulaText()
                             .should("have.value", updatedA1Formula)
                     }
 
                     if(a1Formula){
-                        cellFormattedTextCheck(A1, a1CellContent);
+                        testing.cellFormattedTextCheck(A1, a1CellContent);
                     }
 
                     // restore original textField value.
@@ -3158,13 +3158,13 @@ context(
                         .should("have.value", "");
 
                     if(a1Formula){
-                        formulaText()
+                        testing.formulaText()
                             .should("have.value", a1Formula)
                     }
 
                     if(a1CellContentDefault){
-                        cellClick(A1);
-                        cellFormattedTextCheck(A1, a1CellContentDefault);
+                        testing.cellClick(A1);
+                        testing.cellFormattedTextCheck(A1, a1CellContentDefault);
                     }
 
                     // type text and blur
@@ -3176,12 +3176,12 @@ context(
                         .should("have.value", text);
 
                     if(updatedA1Formula){
-                        formulaText()
+                        testing.formulaText()
                             .should("have.value", updatedA1Formula)
                     }
 
                     if(a1Formula){
-                        cellFormattedTextCheck(A1, a1CellContent);
+                        testing.cellFormattedTextCheck(A1, a1CellContent);
                     }
 
                     // type text and blur
@@ -3208,12 +3208,12 @@ context(
                 settingsOpenSectionSpreadsheetMetadataProperty(property);
 
                 if(a1Formula){
-                    cellClick(A1);
+                    testing.cellClick(A1);
 
-                    formulaText()
+                    testing.formulaText()
                         .click()
                         .wait(FORMULA_TEXT_CLICK_WAIT)
-                        .type(a1Formula +"{enter}", FORCE_TRUE);
+                        .type(a1Formula + "{enter}", FORCE_TRUE);
                 }
 
                 const sliderId = "#settings-spreadsheet-metadata-" + property + "-Slider";
@@ -3225,11 +3225,12 @@ context(
                         .click();
 
                     if(a1Formula){
-                        cellFormattedTextCheck(A1, a1CellContents[i]);
+                        testing.cellFormattedTextCheck(A1, a1CellContents[i]);
                     }
                 });
             });
         }
+
         /**
          * Opens the spreadsheet settings, selects each value by clicking the slider.
          * TODO Currently no test is made upon the a1 cell contents.
@@ -3275,12 +3276,12 @@ context(
                 }
 
                 if(a1Formula){
-                    cellClick(A1);
+                    testing.cellClick(A1);
 
-                    formulaText()
+                    testing.formulaText()
                         .click()
                         .wait(FORMULA_TEXT_CLICK_WAIT)
-                        .type(a1Formula +"{enter}", FORCE_TRUE);
+                        .type(a1Formula + "{enter}", FORCE_TRUE);
                 }
 
                 const sliderId = "#settings-spreadsheet-metadata-" + property + "-Slider";
@@ -3297,7 +3298,7 @@ context(
                         .click();
 
                     if(a1Formula){
-                        cellFormattedTextCheck(A1, a1CellContents[i]);
+                        testing.cellFormattedTextCheck(A1, a1CellContents[i]);
                     }
                 });
 
@@ -3306,18 +3307,19 @@ context(
                     console.log("value=" + JSON.stringify(v) + " i=" + i);
 
                     cy.get(numberTextFieldId)
-                        .type("{selectall}" + v.value+ "{enter}")
+                        .type("{selectall}" + v.value + "{enter}")
                         .click();
 
                     cy.get(sliderId + " *[data-index=\"" + i + "\"][aria-hidden=\"true\"]")
                         .should("have.class", "MuiSlider-markLabelActive");
 
                     if(a1Formula){
-                        cellFormattedTextCheck(A1, a1CellContents[i]);
+                        testing.cellFormattedTextCheck(A1, a1CellContents[i]);
                     }
                 });
             });
         }
+
         /**
          * Opens the spreadsheet settings, selects each value by clicking the drop down list (select).
          * TODO Currently no test is made upon the a1 cell contents.
@@ -3332,12 +3334,12 @@ context(
                 settingsOpenSectionSpreadsheetMetadataProperty(property);
 
                 if(a1Formula){
-                    cellClick(A1);
+                    testing.cellClick(A1);
 
-                    formulaText()
+                    testing.formulaText()
                         .click()
                         .wait(FORMULA_TEXT_CLICK_WAIT)
-                        .type(a1Formula +"{enter}", FORCE_TRUE);
+                        .type(a1Formula + "{enter}", FORCE_TRUE);
                 }
 
                 const dropDownListId = "#settings-spreadsheet-metadata-" + property + "-DropDownList";
@@ -3350,7 +3352,7 @@ context(
                         .should("have.value", v.toString());
 
                     if(a1Formula){
-                        cellFormattedTextCheck(A1, a1CellContents[i]);
+                        testing.cellFormattedTextCheck(A1, a1CellContents[i]);
                     }
                 });
             });
@@ -3713,12 +3715,12 @@ context(
 
                 settingsOpenSectionSpreadsheetMetadataStyleProperty(property);
 
-                cellClick(A1);
+                testing.cellClick(A1);
 
-                formulaText()
+                testing.formulaText()
                     .click()
                     .wait(FORMULA_TEXT_CLICK_WAIT)
-                    .type("{selectall}'ABC"+ "{enter}", FORCE_TRUE);
+                    .type("{selectall}'ABC" + "{enter}", FORCE_TRUE);
 
                 const textFieldId = "#settings-spreadsheet-metadata-style-" + property + "-TextField";
 
@@ -3730,12 +3732,12 @@ context(
                     .type("{selectall}#123456")
                     .blur();
 
-                cellA1StyleCheck(property, "rgb(18, 52, 86)");
+                testing.cellA1StyleCheck(property, "rgb(18, 52, 86)");
 
                 cy.get(textFieldId)
                     .type("{selectall}#789abc{enter}");
 
-                cellA1StyleCheck(property, "rgb(120, 154, 188)");
+                testing.cellA1StyleCheck(property, "rgb(120, 154, 188)");
 
                 if(defaultColor){
                     const defaultButtonId = "#settings-spreadsheet-metadata-style-" + property + "-default-Button";
@@ -3747,7 +3749,7 @@ context(
                     const green = parseInt(defaultColor.substring(3, 5), 16);
                     const blue = parseInt(defaultColor.substring(5, 7), 16);
 
-                    cellA1StyleCheck(property, "rgb(" + red + ", " + green + ", " + blue + ")");
+                    testing.cellA1StyleCheck(property, "rgb(" + red + ", " + green + ", " + blue + ")");
                 }
             });
         }
@@ -3761,8 +3763,8 @@ context(
 
                 settingsOpenSectionSpreadsheetMetadataStyleProperty(property);
 
-                cellClick(A1);
-                formulaText()
+                testing.cellClick(A1);
+                testing.formulaText()
                     .click()
                     .wait(FORMULA_TEXT_CLICK_WAIT)
                     .type("{selectall}'ABC{enter}", FORCE_TRUE);
@@ -3787,7 +3789,7 @@ context(
                             //.should("have.text", v.nameCapitalCase()) Element is not visible because it has CSS property: 'position: fixed' and its being covered by another element
                             .click(FORCE_TRUE);
 
-                        cellA1StyleCheck(property, v.toCssValue());
+                        testing.cellA1StyleCheck(property, v.toCssValue());
                     }
                 });
 
@@ -3797,7 +3799,7 @@ context(
                         .should("have.text", defaultButtonText)// @see https://github.com/mP1/walkingkooka-spreadsheet-react/issues/695
                         .click();
 
-                    cellA1StyleCheck(property, defaultValue.toCssValue());
+                    testing.cellA1StyleCheck(property, defaultValue.toCssValue());
                 }
             });
         }
@@ -3812,8 +3814,8 @@ context(
 
                 settingsOpenSectionSpreadsheetMetadataStyleProperty(property);
 
-                cellClick(A1);
-                formulaText()
+                testing.cellClick(A1);
+                testing.formulaText()
                     .click()
                     .wait(FORMULA_TEXT_CLICK_WAIT)
                     .type("{selectall}'ABC{enter}", FORCE_TRUE);
@@ -3848,7 +3850,7 @@ context(
                         case TextStyle.HEIGHT:
                             break;
                         default:
-                            cellA1StyleCheck(property, v.value + "px");
+                            testing.cellA1StyleCheck(property, v.value + "px");
                             break;
                     }
                 });
@@ -3864,7 +3866,7 @@ context(
                         case TextStyle.HEIGHT:
                             break;
                         default:
-                            cellA1StyleCheck(property, defaultValue);
+                            testing.cellA1StyleCheck(property, defaultValue);
                             break;
                     }
                 }
@@ -4084,12 +4086,12 @@ context(
             cy.get("#settings-spreadsheet-" + section + "-expand-more-icon")
                 .click();
 
-            renderWait();
+            testing.wait();
 
             cy.get("#settings-spreadsheet-" + section + "-content");
             //.should('be.visible');
 
-            hash()
+            testing.hash()
                 .should('match', new RegExp(".*\/.*\/settings\/" + section)) // => true
         }
 
@@ -4097,152 +4099,9 @@ context(
          * Fetches the icon that when clicked toggles the settings
          */
         function settingsToggle() {
-            renderWait();
+            testing.wait();
             cy.get("#settings-icon")
                 .click();
-        }
-
-        // helpers..............................................................................................................
-
-        function hashEnter(hash) {
-            cy.window()
-                .then(function(win) {
-                    win.location.hash = hash;
-                });
-        }
-
-        function hash() {
-            return cy.location().hash();
-        }
-
-        function hashAppend(append) {
-            cy.window()
-                .then(function(win) {
-                    const hash = win.location.hash;
-                    const after = hash + append;
-
-                    win.location.hash = after;
-
-                    cy.hash()
-                        .should("eq", after);
-                });
-        }
-
-        function hashAppendWithoutCheck(append) {
-            cy.window()
-                .then(function(win) {
-                    const hash = win.location.hash;
-                    const after = hash + append;
-
-                    win.location.hash = after;
-                });
-        }
-
-        function hashOnlyIdAndName() {
-            cy.window()
-                .then(function(win) {
-                    const h = win.location.hash;
-
-                    const slash0 = h.indexOf("/");
-                    const slash1 = -1 !== slash0 && h.indexOf("/", slash0 + 1);
-                    const slash2 = -1 !== slash1 && h.indexOf("/", slash1 + 1);
-
-                    if(-1 !== slash2){
-                        hashEnter(h.substring(0, slash2));
-
-                        hash()
-                            .should('match', /.*\/.*/);
-                    }
-                });
-        }
-
-        function spreadsheetName() {
-            return cy.get("#" + SpreadsheetNameWidget.SPREADSHEET_NAME_ID);
-        }
-
-        function spreadsheetNameClick() {
-            spreadsheetName()
-                .click();
-
-            hash()
-                .should('match', /.*\/.*\/name/) // => true
-        }
-
-        function formulaText() {
-            return cy.get("#" + SpreadsheetFormulaWidget.TEXT_FIELD_ID);
-        }
-
-        /**
-         * Click on the cell and verify it gets focused.
-         */
-        function cellClick(cellReference) {
-            cell(cellReference)
-                .click()
-                .should("have.focus");
-        }
-
-        function cellFormattedTextCheck(cellReference, text) {
-            cell(cellReference)
-                .should("have.text", text);
-        }
-
-        function cellA1StyleCheck(property, value) {
-            cell(A1)
-                .should('have.css', property, value);
-        }
-
-        function cell(cellReference) {
-            const spreadsheetCellReference = cellReference instanceof SpreadsheetCellReference ?
-                cellReference :
-                SpreadsheetCellReference.parse(cellReference);
-            return cy.get("#" + spreadsheetCellReference.viewportId());
-        }
-
-        function column(columnReference) {
-            const spreadsheetColumnReference = columnReference instanceof SpreadsheetColumnReference ?
-                columnReference :
-                SpreadsheetColumnReference.parse(columnReference);
-            return cy.get("#" + spreadsheetColumnReference.viewportId());
-        }
-
-        function row(rowReference) {
-            const spreadsheetRowReference = rowReference instanceof SpreadsheetRowReference ?
-                rowReference :
-                SpreadsheetRowReference.parse(rowReference);
-            return cy.get("#" + spreadsheetRowReference.viewportId());
-        }
-
-        /**
-         * Checks that the spreadsheet is completely empty.
-         */
-        function spreadsheetEmptyCheck() {
-            hash().should('match', /.*\/Untitled/) // => true
-
-            // Verify spreadsheet name is "Untitled"
-            spreadsheetName()
-                .should("have.class", "MuiButton-root")
-                .should("have.text", "Untitled");
-
-            cy.title()
-                .should("eq", "Untitled");
-
-            // Verify formula is read only and empty
-            formulaText()
-                .should("be.disabled")
-                .should("have.text", "");
-
-            cy.get(COLUMN + SELECTED)
-                .should("have.length", 0);
-
-            cy.get(ROW + SELECTED)
-                .should("have.length", 0);
-
-            cy.get(CELL)
-                .should("have.text", "");
-        }
-
-        function renderWait(period) {
-            cy.wait(period || 20);
         }
     }
 );
