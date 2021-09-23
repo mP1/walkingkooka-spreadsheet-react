@@ -11,8 +11,7 @@ const FORMULA_TEXT_CLICK_WAIT = 50;
 
 const SELECTED_COLOR = "rgb(68, 68, 68)";
 
-context(
-    "General app usage",
+describe("Row",
     () => {
 
         const testing = new SpreadsheetTesting(cy);
