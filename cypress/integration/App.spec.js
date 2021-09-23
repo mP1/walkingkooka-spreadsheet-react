@@ -842,8 +842,6 @@ context(
         });
 
         it("Cell formula edit ENTER saves", () => {
-            spreadsheetEmptyReady();
-
             cellClick(B2);
 
             hash().should('match', /.*\/Untitled\/cell\/B2/)
