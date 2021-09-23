@@ -3,11 +3,7 @@
 import SpreadsheetCellReference from "../../src/spreadsheet/reference/SpreadsheetCellReference.js";
 import SpreadsheetColumnReference from "../../src/spreadsheet/reference/SpreadsheetColumnReference.js";
 import SpreadsheetLabelMappingWidget from "../../src/spreadsheet/reference/SpreadsheetLabelMappingWidget.js";
-import SpreadsheetSelectAutocompleteWidget
-    from "../../src/spreadsheet/reference/SpreadsheetSelectAutocompleteWidget.js";
-import SpreadsheetSelectLinkWidget from "../../src/spreadsheet/reference/SpreadsheetSelectLinkWidget.js";
 import SpreadsheetTesting from "./SpreadsheetTesting.js";
-import SpreadsheetViewportWidget from "../../src/spreadsheet/SpreadsheetViewportWidget.js";
 
 const A1 = SpreadsheetCellReference.parse("A1");
 const A2 = SpreadsheetCellReference.parse("A2");
@@ -194,7 +190,7 @@ context(
         // LABEL........................................................................................................
 
         it("Label mapping enter hash", () => {
-            hashLabel();
+            testing.hashLabel();
 
             labelMappingDialogCheck(
                 "Label: " + LABEL,
@@ -206,32 +202,32 @@ context(
         });
 
         it("Label mapping label text field has focus", () => {
-            hashLabel();
+            testing.hashLabel();
 
-            labelMappingLabelTextField()
+            testing.labelMappingLabelTextField()
                 .should("have.focus");
         });
 
         it("Label mapping label tabbing", () => {
-            hashLabel();
+            testing.hashLabel();
 
-            labelMappingReferenceTextField()
+            testing.labelMappingReferenceTextField()
                 .type("{selectall}A1");
 
-            labelMappingLabelTextField()
+            testing.labelMappingLabelTextField()
                 .click()
                 .should("have.focus")
                 .tab();
 
-            labelMappingReferenceTextField()
+            testing.labelMappingReferenceTextField()
                 .should("have.focus")
                 .tab();
 
-            labelMappingLabelSaveButton()
+            testing.labelMappingLabelSaveButton()
                 .should("have.focus")
                 .tab();
 
-            labelMappingLabelDeleteButton()
+            testing.labelMappingLabelDeleteButton()
                 .should("have.focus")
                 .tab();
 
@@ -266,9 +262,9 @@ context(
         // LABEL MAPPING LABEL..........................................................................................
 
         it("Label mapping edit label empty text", () => {
-            hashLabel();
+            testing.hashLabel();
 
-            labelMappingLabelTextField()
+            testing.labelMappingLabelTextField()
                 .type("{selectall}{backspace}");
 
             labelMappingDialogCheck(
@@ -281,11 +277,11 @@ context(
         });
 
         it("Label mapping edit label invalid text", () => {
-            hashLabel();
+            testing.hashLabel();
 
             const labelText = "!InvalidLabel";
 
-            labelMappingLabelTextField()
+            testing.labelMappingLabelTextField()
                 .type("{selectall}" + labelText);
 
             labelMappingDialogCheck(
@@ -298,11 +294,11 @@ context(
         });
 
         it("Label mapping edit label invalid text #2", () => {
-            hashLabel();
+            testing.hashLabel();
 
             const labelText = "I!nvalidLabel";
 
-            labelMappingLabelTextField()
+            testing.labelMappingLabelTextField()
                 .type("{selectall}" + labelText);
 
             labelMappingDialogCheck(
@@ -315,11 +311,11 @@ context(
         });
 
         it("Label mapping edit label text, missing reference ENTER", () => {
-            hashLabel();
+            testing.hashLabel();
 
             const labelText = "Label456";
 
-            labelMappingLabelTextField()
+            testing.labelMappingLabelTextField()
                 .type("{selectall}" + labelText + "{enter}");
 
             labelMappingDialogCheck(
@@ -332,14 +328,14 @@ context(
         });
 
         it("Label mapping edit label text, missing reference SAVE", () => {
-            hashLabel();
+            testing.hashLabel();
 
             const labelText = "Label456";
 
-            labelMappingLabelTextField()
+            testing.labelMappingLabelTextField()
                 .type("{selectall}" + labelText);
 
-            labelMappingLabelSaveButton()
+            testing.labelMappingLabelSaveButton()
                 .should("be.disabled");
 
             labelMappingDialogCheck(
@@ -354,11 +350,11 @@ context(
         // LABEL MAPPING REFERENCE......................................................................................
 
         it("Label mapping edit reference invalid text", () => {
-            hashLabel();
+            testing.hashLabel();
 
             const referenceText = "!InvalidReference";
 
-            labelMappingReferenceTextField()
+            testing.labelMappingReferenceTextField()
                 .type(referenceText);
 
             labelMappingDialogCheck(
@@ -371,11 +367,11 @@ context(
         });
 
         it("Label mapping edit reference invalid text #2", () => {
-            hashLabel();
+            testing.hashLabel();
 
             const referenceText = "A!InvalidReference";
 
-            labelMappingReferenceTextField()
+            testing.labelMappingReferenceTextField()
                 .type(referenceText);
 
             labelMappingDialogCheck(
@@ -388,11 +384,11 @@ context(
         });
 
         it("Label mapping edit reference same label", () => {
-            hashLabel();
+            testing.hashLabel();
 
             const referenceText = LABEL;
 
-            labelMappingReferenceTextField()
+            testing.labelMappingReferenceTextField()
                 .type(referenceText);
 
             labelMappingDialogCheck(
@@ -405,10 +401,10 @@ context(
         });
 
         it("Label mapping edit reference", () => {
-            hashLabel();
+            testing.hashLabel();
 
             const referenceText = "B2";
-            labelMappingReferenceTextField()
+            testing.labelMappingReferenceTextField()
                 .type(referenceText);
 
             labelMappingDialogCheck(
@@ -423,15 +419,15 @@ context(
         // special keys and buttons.....................................................................................
 
         it("Label mapping label TextField ESC", () => {
-            hashLabel();
+            testing.hashLabel();
 
-            labelMappingReferenceTextField()
+            testing.labelMappingReferenceTextField()
                 .type("{selectall}B2");
 
-            labelMappingLabelTextField()
+            testing.labelMappingLabelTextField()
                 .type("{esc}");
 
-            hashLabel();
+            testing.hashLabel();
 
             labelMappingDialogCheck(
                 "Label: " + LABEL,
@@ -443,12 +439,12 @@ context(
         });
 
         it("Label mapping reference TextField ESC", () => {
-            hashLabel();
+            testing.hashLabel();
 
-            labelMappingReferenceTextField()
+            testing.labelMappingReferenceTextField()
                 .type(B2 + "{esc}");
 
-            hashLabel();
+            testing.hashLabel();
 
             labelMappingDialogCheck(
                 "Label: " + LABEL,
@@ -460,18 +456,18 @@ context(
         });
 
         it("Label mapping edit label/reference label TextField ENTER", () => {
-            hashLabel();
+            testing.hashLabel();
 
             const referenceText = "B2";
-            labelMappingReferenceTextField()
+            testing.labelMappingReferenceTextField()
                 .type(referenceText);
 
             const labelText = "Label456";
 
-            labelMappingLabelTextField()
+            testing.labelMappingLabelTextField()
                 .type("{selectall}" + labelText);
 
-            labelMappingLabelSaveButton().click();
+            testing.labelMappingLabelSaveButton().click();
 
             labelMappingDialogCheck(
                 "Label: " + labelText,
@@ -483,13 +479,13 @@ context(
         });
 
         it("Label mapping edit label/reference reference TextField ENTER", () => {
-            hashLabel();
+            testing.hashLabel();
 
             const referenceText = "B2";
-            labelMappingReferenceTextField()
+            testing.labelMappingReferenceTextField()
                 .type(referenceText + "{Enter}");
 
-            labelMappingLabelSaveButton().click();
+            testing.labelMappingLabelSaveButton().click();
 
             labelMappingDialogCheck(
                 "Label: " + LABEL,
@@ -501,13 +497,13 @@ context(
         });
 
         it("Label mapping edit label/reference click SAVE button", () => {
-            hashLabel();
+            testing.hashLabel();
 
             const referenceText = "B2";
-            labelMappingReferenceTextField()
+            testing.labelMappingReferenceTextField()
                 .type(referenceText);
 
-            labelMappingLabelSaveButton()
+            testing.labelMappingLabelSaveButton()
                 .click();
 
             labelMappingDialogCheck(
@@ -520,21 +516,21 @@ context(
         });
 
         it("Label mapping edit label/reference click DELETE button", () => {
-            hashLabel();
+            testing.hashLabel();
 
             const referenceText = "b2";
-            labelMappingReferenceTextField()
+            testing.labelMappingReferenceTextField()
                 .type(referenceText);
 
-            labelMappingLabelSaveButton()
+            testing.labelMappingLabelSaveButton()
                 .click();
 
-            hashLabel();
+            testing.hashLabel();
 
-            labelMappingLabelDeleteButton()
+            testing.labelMappingLabelDeleteButton()
                 .click();
 
-            hashLabel();
+            testing.hashLabel();
 
             labelMappingDialogCheck(
                 "Label: " + LABEL,
@@ -546,9 +542,9 @@ context(
         });
 
         it("Label mapping edit close BUTTON", () => {
-            hashLabel();
+            testing.hashLabel();
 
-            labelMappingLabelCloseButton()
+            testing.labelMappingLabelCloseButton()
                 .click();
 
             testing.hash()
@@ -568,13 +564,13 @@ context(
                     testing.hash()
                         .should('match', /.*\/Untitled\/label\/Label456/);
 
-                    labelMappingReferenceTextField()
+                    testing.labelMappingReferenceTextField()
                         .type(reference.toString());
 
-                    labelMappingLabelSaveButton()
+                    testing.labelMappingLabelSaveButton()
                         .click();
 
-                    labelMappingLabelCloseButton()
+                    testing.labelMappingLabelCloseButton()
                         .click();
 
                     // navigate to label's formula
@@ -595,13 +591,13 @@ context(
             // create a new label
             testing.hashAppend("/label/HoverLabel");
 
-            labelMappingReferenceTextField()
+            testing.labelMappingReferenceTextField()
                 .type("{selectall}A1");
 
-            labelMappingLabelSaveButton()
+            testing.labelMappingLabelSaveButton()
                 .click();
 
-            labelMappingLabelCloseButton()
+            testing.labelMappingLabelCloseButton()
                 .click();
 
             cy.get("#" + A1.viewportTooltipId())
@@ -619,25 +615,25 @@ context(
             // create a new label
             testing.hashAppend("/label/HoverLabel1");
 
-            labelMappingReferenceTextField()
+            testing.labelMappingReferenceTextField()
                 .type("{selectall}A1");
 
-            labelMappingLabelSaveButton()
+            testing.labelMappingLabelSaveButton()
                 .click();
 
-            labelMappingLabelCloseButton()
+            testing.labelMappingLabelCloseButton()
                 .click();
 
             // create a new label #2
             testing.hashAppend("/label/HoverLabel2");
 
-            labelMappingReferenceTextField()
+            testing.labelMappingReferenceTextField()
                 .type("{selectall}A1");
 
-            labelMappingLabelSaveButton()
+            testing.labelMappingLabelSaveButton()
                 .click();
 
-            labelMappingLabelCloseButton()
+            testing.labelMappingLabelCloseButton()
                 .click();
 
             cy.get("#" + A1.viewportTooltipId())
@@ -676,13 +672,13 @@ context(
             // create a new label
             testing.hashAppend("/label/MovingLabel");
 
-            labelMappingReferenceTextField()
+            testing.labelMappingReferenceTextField()
                 .type("{selectall}A1");
 
-            labelMappingLabelSaveButton()
+            testing.labelMappingLabelSaveButton()
                 .click();
 
-            labelMappingLabelCloseButton()
+            testing.labelMappingLabelCloseButton()
                 .click();
 
             testing.cellClick(C3);
@@ -700,10 +696,10 @@ context(
             // update existing label
             testing.hashAppend("/label/MovingLabel");
 
-            labelMappingReferenceTextField()
+            testing.labelMappingReferenceTextField()
                 .type("{selectall}B2{enter}");
 
-            labelMappingLabelSaveButton()
+            testing.labelMappingLabelSaveButton()
                 .click();
 
             testing.cellFormattedTextCheck(C3, "88."); // 4 * 22
@@ -713,13 +709,13 @@ context(
             // create a new label
             testing.hashAppend("/label/NavigateToLabel123");
 
-            labelMappingReferenceTextField()
+            testing.labelMappingReferenceTextField()
                 .type("{selectall}A1");
 
-            labelMappingLabelSaveButton()
+            testing.labelMappingLabelSaveButton()
                 .click();
 
-            labelMappingLabelCloseButton()
+            testing.labelMappingLabelCloseButton()
                 .click();
 
             // navigate
@@ -743,7 +739,7 @@ context(
             cy.get("#" + SpreadsheetLabelMappingWidget.DIALOG_TITLE_ID)
                 .contains(title);
 
-            labelMappingLabelTextField()
+            testing.labelMappingLabelTextField()
                 .should("have.value", labelText);
 
             const labelHelperTextId = "#" + SpreadsheetLabelMappingWidget.LABEL_TEXT_FIELD_HELPER_TEXT_ID;
@@ -755,7 +751,7 @@ context(
                     .should("not.exist");
             }
 
-            labelMappingReferenceTextField()
+            testing.labelMappingReferenceTextField()
                 .should("have.value", referenceText);
 
             const referenceHelperTextId = "#" + SpreadsheetLabelMappingWidget.REFERENCE_TEXT_FIELD_HELPER_TEXT_ID;
@@ -766,30 +762,6 @@ context(
                 cy.get(referenceHelperTextId)
                     .should("not.exist");
             }
-        }
-
-        function labelMappingLabelTextField() {
-            return cy.get("#" + SpreadsheetLabelMappingWidget.LABEL_TEXT_FIELD_ID);
-        }
-
-        function labelMappingReferenceTextField() {
-            return cy.get("#" + SpreadsheetLabelMappingWidget.REFERENCE_TEXT_FIELD_ID);
-        }
-
-        function labelMappingLabelSaveButton() {
-            return cy.get("#" + SpreadsheetLabelMappingWidget.SAVE_BUTTON_ID);
-        }
-
-        function labelMappingLabelDeleteButton() {
-            return cy.get("#" + SpreadsheetLabelMappingWidget.DELETE_BUTTON_ID);
-        }
-
-        function labelMappingLabelCloseButton() {
-            return cy.get("#" + SpreadsheetLabelMappingWidget.DIALOG_CLOSE_BUTTON_ID);
-        }
-
-        function hashLabel() {
-            testing.hashAppend("/label/" + LABEL);
         }
 
         // CELL ........................................................................................................
@@ -2033,7 +2005,7 @@ context(
             testing.column("C")
                 .rightclick();
 
-            contextMenu()
+            testing.viewportContextMenu()
                 .should("be.visible")
                 .find("LI")
                 .should("have.length", 4);
@@ -2051,7 +2023,7 @@ context(
             testing.column("C")
                 .rightclick();
 
-            contextMenu()
+            testing.viewportContextMenu()
                 .should("be.visible")
                 .find("#" + SpreadsheetColumnReference.VIEWPORT_COLUMN_INSERT_BEFORE_2)
                 .should("include.text", "Insert 2 before");
@@ -2060,7 +2032,7 @@ context(
             cy.get("#" + SpreadsheetColumnReference.VIEWPORT_COLUMN_INSERT_BEFORE_2)
                 .click();
 
-            contextMenu()
+            testing.viewportContextMenu()
                 .should("not.be.visible");
 
             testing.cellFormattedTextCheck("E3", "Moved");
@@ -2079,7 +2051,7 @@ context(
             testing.column("C")
                 .rightclick();
 
-            contextMenu()
+            testing.viewportContextMenu()
                 .should("be.visible")
                 .find("#" + SpreadsheetColumnReference.VIEWPORT_COLUMN_INSERT_BEFORE_1)
                 .should("include.text", "Insert 1 before");
@@ -2087,7 +2059,7 @@ context(
             cy.get("#" + SpreadsheetColumnReference.VIEWPORT_COLUMN_INSERT_BEFORE_1)
                 .click();
 
-            contextMenu()
+            testing.viewportContextMenu()
                 .should("not.be.visible");
 
             testing.cellFormattedTextCheck("D3", "Moved");
@@ -2114,7 +2086,7 @@ context(
             testing.column("B")
                 .rightclick();
 
-            contextMenu()
+            testing.viewportContextMenu()
                 .should("be.visible")
                 .find("#" + SpreadsheetColumnReference.VIEWPORT_COLUMN_INSERT_AFTER_1)
                 .should("include.text", "Insert 1 after");
@@ -2122,7 +2094,7 @@ context(
             cy.get("#" + SpreadsheetColumnReference.VIEWPORT_COLUMN_INSERT_AFTER_1)
                 .click();
 
-            contextMenu()
+            testing.viewportContextMenu()
                 .should("not.be.visible");
 
             testing.cellFormattedTextCheck("A1", "Never");
@@ -2150,7 +2122,7 @@ context(
             testing.column("B")
                 .rightclick();
 
-            contextMenu()
+            testing.viewportContextMenu()
                 .should("be.visible")
                 .find("#" + SpreadsheetColumnReference.VIEWPORT_COLUMN_INSERT_AFTER_2)
                 .should("include.text", "Insert 2 after");
@@ -2159,7 +2131,7 @@ context(
             cy.get("#" + SpreadsheetColumnReference.VIEWPORT_COLUMN_INSERT_AFTER_2)
                 .click();
 
-            contextMenu()
+            testing.viewportContextMenu()
                 .should("not.be.visible");
 
             testing.cellFormattedTextCheck("A1", "Never");
@@ -2185,7 +2157,7 @@ context(
             testing.column("C")
                 .rightclick();
 
-            contextMenu()
+            testing.viewportContextMenu()
                 .should("be.visible")
                 .find("#" + SpreadsheetColumnReference.VIEWPORT_COLUMN_INSERT_BEFORE_2)
                 .should("include.text", "Insert 2 before");
@@ -2193,7 +2165,7 @@ context(
             cy.get("#" + SpreadsheetColumnReference.VIEWPORT_COLUMN_INSERT_BEFORE_2)
                 .click();
 
-            contextMenu()
+            testing.viewportContextMenu()
                 .should("not.be.visible");
 
             testing.hash()
@@ -2221,7 +2193,7 @@ context(
             testing.column("C")
                 .rightclick();
 
-            contextMenu()
+            testing.viewportContextMenu()
                 .should("be.visible")
                 .find("#" + SpreadsheetColumnReference.VIEWPORT_COLUMN_INSERT_BEFORE_1)
                 .should("include.text", "Insert 1 before");
@@ -2229,7 +2201,7 @@ context(
             cy.get("#" + SpreadsheetColumnReference.VIEWPORT_COLUMN_INSERT_BEFORE_1)
                 .click();
 
-            contextMenu()
+            testing.viewportContextMenu()
                 .should("not.be.visible");
 
             testing.hash()
@@ -2265,7 +2237,7 @@ context(
             testing.column("B")
                 .rightclick();
 
-            contextMenu()
+            testing.viewportContextMenu()
                 .should("be.visible")
                 .find("#" + SpreadsheetColumnReference.VIEWPORT_COLUMN_INSERT_AFTER_1)
                 .should("include.text", "Insert 1 after");
@@ -2273,7 +2245,7 @@ context(
             cy.get("#" + SpreadsheetColumnReference.VIEWPORT_COLUMN_INSERT_AFTER_1)
                 .click();
 
-            contextMenu()
+            testing.viewportContextMenu()
                 .should("not.be.visible");
 
             testing.hash()
@@ -2310,7 +2282,7 @@ context(
             testing.column("B")
                 .rightclick();
 
-            contextMenu()
+            testing.viewportContextMenu()
                 .should("be.visible")
                 .find("#" + SpreadsheetColumnReference.VIEWPORT_COLUMN_INSERT_AFTER_2)
                 .should("include.text", "Insert 2 after");
@@ -2318,7 +2290,7 @@ context(
             cy.get("#" + SpreadsheetColumnReference.VIEWPORT_COLUMN_INSERT_AFTER_2)
                 .click();
 
-            contextMenu()
+            testing.viewportContextMenu()
                 .should("not.be.visible");
 
             testing.hash()
@@ -2329,59 +2301,55 @@ context(
             testing.cellFormattedTextCheck(C3, "");
         });
 
-        function contextMenu() {
-            return cy.get("#" + SpreadsheetViewportWidget.VIEWPORT_CONTEXT_MENU_ID);
-        }
-
         // select.....................................................................................................
 
         const ENABLED = false;
         const DISABLED = true;
 
         it("Select using hash initial appearance", () => {
-            selectHistoryHash();
+            testing.selectHistoryHash();
 
-            selectDialogTitle()
+            testing.selectDialogTitle()
                 .contains("Select");
 
-            selectAutocompleteTextField()
+            testing.selectAutocompleteTextField()
                 .should("have.value", "");
 
-            selectAutocompleteTextFieldHelper()
+            testing.selectAutocompleteTextFieldHelper()
                 .should("not.exist");
 
-            selectCellGotoButton(DISABLED);
-            selectCellRangeSelectButton(DISABLED);
-            selectColumnGotoButton(DISABLED);
-            selectColumnRangeSelectButton(DISABLED);
-            selectLabelCreateButton(DISABLED);
-            selectLabelEditButton(DISABLED);
-            selectLabelGotoButton(DISABLED);
-            selectRowGotoButton(DISABLED);
-            selectRowRangeSelectButton(DISABLED);
+            testing.selectCellGotoButton(DISABLED);
+            testing.selectCellRangeSelectButton(DISABLED);
+            testing.selectColumnGotoButton(DISABLED);
+            testing.selectColumnRangeSelectButton(DISABLED);
+            testing.selectLabelCreateButton(DISABLED);
+            testing.selectLabelEditButton(DISABLED);
+            testing.selectLabelGotoButton(DISABLED);
+            testing.selectRowGotoButton(DISABLED);
+            testing.selectRowRangeSelectButton(DISABLED);
         });
 
         it("Select auto complete text field has focus", () => {
-            selectHistoryHash();
+            testing.selectHistoryHash();
 
-            selectDialogTitle()
+            testing.selectDialogTitle()
                 .contains("Select");
 
-            selectAutocompleteTextField()
+            testing.selectAutocompleteTextField()
                 .should('have.focus')
                 .should("have.value", "");
         });
 
         it("Select auto complete tabbing", () => {
-            selectHistoryHash();
+            testing.selectHistoryHash();
 
-            selectAutocompleteTextField()
+            testing.selectAutocompleteTextField()
                 .should('have.focus')
                 .type("{selectall}Hello")
                 .wait(50)
                 .tab();
 
-            selectLabelCreateButton(false)
+            testing.selectLabelCreateButton(false)
                 .should("have.focus")
                 .tab();
 
@@ -2393,63 +2361,63 @@ context(
         });
 
         it("Select and close", () => {
-            selectHistoryHash();
+            testing.selectHistoryHash();
 
-            selectDialogClose()
+            testing.selectDialogClose()
                 .click();
 
             testing.hash()
                 .should('match', /.*\/Untitled/);
 
-            selectDialog()
+            testing.selectDialog()
                 .should("not.exist");
         });
 
         it("Select enter ESC closes", () => {
-            selectHistoryHash();
+            testing.selectHistoryHash();
 
-            selectAutocompleteTextField()
+            testing.selectAutocompleteTextField()
                 .type("{esc}");
 
             testing.hash()
                 .should('match', /.*\/Untitled/);
 
-            selectDialog()
+            testing.selectDialog()
                 .should("not.exist");
         });
 
         it("Select enter invalid cell or label", () => {
-            selectHistoryHash();
+            testing.selectHistoryHash();
 
-            selectAutocompleteTextField()
+            testing.selectAutocompleteTextField()
                 .type("{selectall}!invalid");
 
-            selectAutocompleteTextFieldHelper()
+            testing.selectAutocompleteTextFieldHelper()
                 .should("have.text", "Invalid character '!' at 0");
         });
 
         it("Select enter cell and ENTER and click GOTO", () => {
-            selectHistoryHash();
+            testing.selectHistoryHash();
 
-            selectAutocompleteTextField()
+            testing.selectAutocompleteTextField()
                 .type("{selectall}B2{enter}");
 
-            selectAutocompleteTextFieldHelper()
+            testing.selectAutocompleteTextFieldHelper()
                 .should("not.exist");
 
-            selectAutocompletePopup()
+            testing.selectAutocompletePopup()
                 .should("not.exist");
 
-            selectCellRangeSelectButton(DISABLED);
-            selectColumnGotoButton(DISABLED);
-            selectColumnRangeSelectButton(DISABLED);
-            selectLabelCreateButton(DISABLED);
-            selectLabelEditButton(DISABLED);
-            selectLabelGotoButton(DISABLED);
-            selectRowGotoButton(DISABLED);
-            selectRowRangeSelectButton(DISABLED);
+            testing.selectCellRangeSelectButton(DISABLED);
+            testing.selectColumnGotoButton(DISABLED);
+            testing.selectColumnRangeSelectButton(DISABLED);
+            testing.selectLabelCreateButton(DISABLED);
+            testing.selectLabelEditButton(DISABLED);
+            testing.selectLabelGotoButton(DISABLED);
+            testing.selectRowGotoButton(DISABLED);
+            testing.selectRowRangeSelectButton(DISABLED);
 
-            selectCellGotoButton(ENABLED)
+            testing.selectCellGotoButton(ENABLED)
                 .click();
 
             testing.hash()
@@ -2457,27 +2425,27 @@ context(
         });
 
         it("Select enter cell range and ENTER and click SELECT CELL RANGE", () => {
-            selectHistoryHash();
+            testing.selectHistoryHash();
 
-            selectAutocompleteTextField()
+            testing.selectAutocompleteTextField()
                 .type("{selectall}A1:B2{enter}");
 
-            selectAutocompleteTextFieldHelper()
+            testing.selectAutocompleteTextFieldHelper()
                 .should("not.exist");
 
-            selectAutocompletePopup()
+            testing.selectAutocompletePopup()
                 .should("not.exist");
 
-            selectCellGotoButton(DISABLED);
-            selectColumnGotoButton(DISABLED);
-            selectColumnRangeSelectButton(DISABLED);
-            selectLabelCreateButton(DISABLED);
-            selectLabelEditButton(DISABLED);
-            selectLabelGotoButton(DISABLED);
-            selectRowGotoButton(DISABLED);
-            selectRowRangeSelectButton(DISABLED);
+            testing.selectCellGotoButton(DISABLED);
+            testing.selectColumnGotoButton(DISABLED);
+            testing.selectColumnRangeSelectButton(DISABLED);
+            testing.selectLabelCreateButton(DISABLED);
+            testing.selectLabelEditButton(DISABLED);
+            testing.selectLabelGotoButton(DISABLED);
+            testing.selectRowGotoButton(DISABLED);
+            testing.selectRowRangeSelectButton(DISABLED);
 
-            selectCellRangeSelectButton(ENABLED)
+            testing.selectCellRangeSelectButton(ENABLED)
                 .click();
 
             testing.hash()
@@ -2485,27 +2453,27 @@ context(
         });
 
         it("Select enter unknown label and ENTER and click CREATE", () => {
-            selectHistoryHash();
+            testing.selectHistoryHash();
 
-            selectAutocompleteTextField()
+            testing.selectAutocompleteTextField()
                 .type("{selectall}Label123{enter}");
 
-            selectAutocompleteTextFieldHelper()
+            testing.selectAutocompleteTextFieldHelper()
                 .should("not.exist");
 
-            selectAutocompletePopup()
+            testing.selectAutocompletePopup()
                 .should("not.exist");
 
-            selectCellGotoButton(DISABLED);
-            selectCellRangeSelectButton(DISABLED);
-            selectColumnGotoButton(DISABLED);
-            selectColumnRangeSelectButton(DISABLED);
-            selectLabelEditButton(DISABLED);
-            selectLabelGotoButton(DISABLED);
-            selectRowGotoButton(DISABLED);
-            selectRowRangeSelectButton(DISABLED);
+            testing.selectCellGotoButton(DISABLED);
+            testing.selectCellRangeSelectButton(DISABLED);
+            testing.selectColumnGotoButton(DISABLED);
+            testing.selectColumnRangeSelectButton(DISABLED);
+            testing.selectLabelEditButton(DISABLED);
+            testing.selectLabelGotoButton(DISABLED);
+            testing.selectRowGotoButton(DISABLED);
+            testing.selectRowRangeSelectButton(DISABLED);
 
-            selectLabelCreateButton(ENABLED)
+            testing.selectLabelCreateButton(ENABLED)
                 .click();
 
             testing.hash()
@@ -2513,44 +2481,44 @@ context(
         });
 
         it("Select enter known label and ENTER and click LABEL EDIT", () => {
-            hashLabel();
+            testing.hashLabel();
 
-            labelMappingLabelTextField()
+            testing.labelMappingLabelTextField()
                 .type("{selectall}Label123");
 
-            labelMappingReferenceTextField()
+            testing.labelMappingReferenceTextField()
                 .type("{selectall}B2");
 
-            labelMappingLabelSaveButton()
+            testing.labelMappingLabelSaveButton()
                 .click();
 
-            labelMappingLabelCloseButton()
+            testing.labelMappingLabelCloseButton()
                 .click();
 
             testing.hash()
                 .should('match', /.*\/Untitled/);
 
-            selectHistoryHash();
+            testing.selectHistoryHash();
 
-            selectAutocompleteTextField()
+            testing.selectAutocompleteTextField()
                 .type("{selectall}Label123{enter}");
 
-            selectAutocompleteTextFieldHelper()
+            testing.selectAutocompleteTextFieldHelper()
                 .should("not.exist");
 
-            selectAutocompletePopup()
+            testing.selectAutocompletePopup()
                 .should("not.exist");
 
-            selectCellGotoButton(DISABLED);
-            selectCellRangeSelectButton(DISABLED);
-            selectColumnGotoButton(DISABLED);
-            selectColumnRangeSelectButton(DISABLED);
-            selectLabelCreateButton(DISABLED);
-            selectLabelGotoButton(ENABLED);
-            selectRowGotoButton(DISABLED);
-            selectRowRangeSelectButton(DISABLED);
+            testing.selectCellGotoButton(DISABLED);
+            testing.selectCellRangeSelectButton(DISABLED);
+            testing.selectColumnGotoButton(DISABLED);
+            testing.selectColumnRangeSelectButton(DISABLED);
+            testing.selectLabelCreateButton(DISABLED);
+            testing.selectLabelGotoButton(ENABLED);
+            testing.selectRowGotoButton(DISABLED);
+            testing.selectRowRangeSelectButton(DISABLED);
 
-            selectLabelEditButton(ENABLED)
+            testing.selectLabelEditButton(ENABLED)
                 .click();
 
             testing.hash()
@@ -2564,27 +2532,27 @@ context(
             testing.hash()
                 .should('match', /.*\/Untitled\/cell\/A1/);
 
-            selectHistoryHash(); // TODO not sure WHY but select dialog doesnt appear in test.
+            testing.selectHistoryHash(); // TODO not sure WHY but select dialog doesnt appear in test.
 
-            selectAutocompleteTextField()
+            testing.selectAutocompleteTextField()
                 .type("{selectall}Label123{enter}");
 
-            selectAutocompleteTextFieldHelper()
+            testing.selectAutocompleteTextFieldHelper()
                 .should("not.exist");
 
-            selectAutocompletePopup()
+            testing.selectAutocompletePopup()
                 .should("not.exist");
 
-            selectCellGotoButton(DISABLED);
-            selectCellRangeSelectButton(DISABLED);
-            selectColumnGotoButton(DISABLED);
-            selectColumnRangeSelectButton(DISABLED);
-            selectLabelEditButton(DISABLED);
-            selectLabelGotoButton(DISABLED);
-            selectRowGotoButton(DISABLED);
-            selectRowRangeSelectButton(DISABLED);
+            testing.selectCellGotoButton(DISABLED);
+            testing.selectCellRangeSelectButton(DISABLED);
+            testing.selectColumnGotoButton(DISABLED);
+            testing.selectColumnRangeSelectButton(DISABLED);
+            testing.selectLabelEditButton(DISABLED);
+            testing.selectLabelGotoButton(DISABLED);
+            testing.selectRowGotoButton(DISABLED);
+            testing.selectRowRangeSelectButton(DISABLED);
 
-            selectLabelCreateButton(ENABLED)
+            testing.selectLabelCreateButton(ENABLED)
                 .click();
 
             testing.hash()
@@ -2592,33 +2560,33 @@ context(
         });
 
         it("Select enter cell, select from dropdown ENTER and click GOTO CELL", () => {
-            selectHistoryHash();
+            testing.selectHistoryHash();
 
-            selectAutocompleteTextField()
+            testing.selectAutocompleteTextField()
                 .type("{selectall}B2");
 
-            selectAutocompleteTextFieldHelper()
+            testing.selectAutocompleteTextFieldHelper()
                 .should("not.exist");
 
-            selectAutocompletePopup()
+            testing.selectAutocompletePopup()
                 .should("exist");
 
-            selectAutocompletePopupOption(0)
+            testing.selectAutocompletePopupOption(0)
                 .should("have.text", "B2");
 
-            selectAutocompleteTextField()
+            testing.selectAutocompleteTextField()
                 .type("{downarrow}{enter}");
 
-            selectCellRangeSelectButton(DISABLED);
-            selectColumnGotoButton(DISABLED);
-            selectColumnRangeSelectButton(DISABLED);
-            selectLabelCreateButton(DISABLED);
-            selectLabelEditButton(DISABLED);
-            selectLabelGotoButton(DISABLED);
-            selectRowGotoButton(DISABLED);
-            selectRowRangeSelectButton(DISABLED);
+            testing.selectCellRangeSelectButton(DISABLED);
+            testing.selectColumnGotoButton(DISABLED);
+            testing.selectColumnRangeSelectButton(DISABLED);
+            testing.selectLabelCreateButton(DISABLED);
+            testing.selectLabelEditButton(DISABLED);
+            testing.selectLabelGotoButton(DISABLED);
+            testing.selectRowGotoButton(DISABLED);
+            testing.selectRowRangeSelectButton(DISABLED);
 
-            selectCellGotoButton(ENABLED)
+            testing.selectCellGotoButton(ENABLED)
                 .click();
 
             testing.hash()
@@ -2628,33 +2596,33 @@ context(
         it("Select enter column, select from dropdown ENTER and click GOTO COLUMN", () => {
             testing.spreadsheetEmptyReady();
 
-            selectHistoryHash();
+            testing.selectHistoryHash();
 
-            selectAutocompleteTextField()
+            testing.selectAutocompleteTextField()
                 .type("{selectall}C");
 
-            selectAutocompleteTextFieldHelper()
+            testing.selectAutocompleteTextFieldHelper()
                 .should("not.exist");
 
-            selectAutocompletePopup()
+            testing.selectAutocompletePopup()
                 .should("exist");
 
-            selectAutocompletePopupOption(0)
+            testing.selectAutocompletePopupOption(0)
                 .should("have.text", "C");
 
-            selectAutocompleteTextField()
+            testing.selectAutocompleteTextField()
                 .type("{downarrow}{enter}");
 
-            selectCellGotoButton(DISABLED);
-            selectCellRangeSelectButton(DISABLED);
-            selectColumnRangeSelectButton(DISABLED);
-            selectLabelCreateButton(ENABLED); // "C" could be a column or label so enable both
-            selectLabelEditButton(DISABLED);
-            selectLabelGotoButton(DISABLED);
-            selectRowGotoButton(DISABLED);
-            selectRowRangeSelectButton(DISABLED);
+            testing.selectCellGotoButton(DISABLED);
+            testing.selectCellRangeSelectButton(DISABLED);
+            testing.selectColumnRangeSelectButton(DISABLED);
+            testing.selectLabelCreateButton(ENABLED); // "C" could be a column or label so enable both
+            testing.selectLabelEditButton(DISABLED);
+            testing.selectLabelGotoButton(DISABLED);
+            testing.selectRowGotoButton(DISABLED);
+            testing.selectRowRangeSelectButton(DISABLED);
 
-            selectColumnGotoButton(ENABLED)
+            testing.selectColumnGotoButton(ENABLED)
                 .click();
 
             testing.hash()
@@ -2662,33 +2630,33 @@ context(
         });
 
         it("Select enter column range, select from dropdown ENTER and click SELECT COLUMN RANGE", () => {
-            selectHistoryHash();
+            testing.selectHistoryHash();
 
-            selectAutocompleteTextField()
+            testing.selectAutocompleteTextField()
                 .type("{selectall}D:E");
 
-            selectAutocompleteTextFieldHelper()
+            testing.selectAutocompleteTextFieldHelper()
                 .should("not.exist");
 
-            selectAutocompletePopup()
+            testing.selectAutocompletePopup()
                 .should("exist");
 
-            selectAutocompletePopupOption(0)
+            testing.selectAutocompletePopupOption(0)
                 .should("have.text", "D:E");
 
-            selectAutocompleteTextField()
+            testing.selectAutocompleteTextField()
                 .type("{downarrow}{enter}");
 
-            selectCellGotoButton(DISABLED);
-            selectCellRangeSelectButton(DISABLED);
-            selectColumnGotoButton(DISABLED);
-            selectLabelCreateButton(DISABLED);
-            selectLabelEditButton(DISABLED);
-            selectLabelGotoButton(DISABLED);
-            selectRowGotoButton(DISABLED);
-            selectRowRangeSelectButton(DISABLED);
+            testing.selectCellGotoButton(DISABLED);
+            testing.selectCellRangeSelectButton(DISABLED);
+            testing.selectColumnGotoButton(DISABLED);
+            testing.selectLabelCreateButton(DISABLED);
+            testing.selectLabelEditButton(DISABLED);
+            testing.selectLabelGotoButton(DISABLED);
+            testing.selectRowGotoButton(DISABLED);
+            testing.selectRowRangeSelectButton(DISABLED);
 
-            selectColumnRangeSelectButton(ENABLED)
+            testing.selectColumnRangeSelectButton(ENABLED)
                 .click();
 
             testing.hash()
@@ -2696,38 +2664,38 @@ context(
         });
 
         it("Select enter known label ENTER and click LABEL EDIT", () => {
-            hashLabel();
+            testing.hashLabel();
 
-            labelMappingReferenceTextField()
+            testing.labelMappingReferenceTextField()
                 .type("{selectall}B2");
 
-            labelMappingLabelSaveButton()
+            testing.labelMappingLabelSaveButton()
                 .click();
 
-            labelMappingLabelCloseButton()
+            testing.labelMappingLabelCloseButton()
                 .click();
 
-            selectHistoryHash();
+            testing.selectHistoryHash();
 
-            selectAutocompleteTextField()
+            testing.selectAutocompleteTextField()
                 .type("{selectall}Label123{enter}");
 
-            selectAutocompleteTextFieldHelper()
+            testing.selectAutocompleteTextFieldHelper()
                 .should("not.exist");
 
-            selectAutocompletePopup()
+            testing.selectAutocompletePopup()
                 .should("not.exist");
 
-            selectCellGotoButton(DISABLED);
-            selectCellRangeSelectButton(DISABLED);
-            selectColumnGotoButton(DISABLED);
-            selectColumnRangeSelectButton(DISABLED);
-            selectLabelGotoButton(ENABLED);
-            selectLabelCreateButton(DISABLED);
-            selectRowGotoButton(DISABLED);
-            selectRowRangeSelectButton(DISABLED);
+            testing.selectCellGotoButton(DISABLED);
+            testing.selectCellRangeSelectButton(DISABLED);
+            testing.selectColumnGotoButton(DISABLED);
+            testing.selectColumnRangeSelectButton(DISABLED);
+            testing.selectLabelGotoButton(ENABLED);
+            testing.selectLabelCreateButton(DISABLED);
+            testing.selectRowGotoButton(DISABLED);
+            testing.selectRowRangeSelectButton(DISABLED);
 
-            selectLabelEditButton(ENABLED)
+            testing.selectLabelEditButton(ENABLED)
                 .click();
 
             testing.hash()
@@ -2735,47 +2703,47 @@ context(
         });
 
         it("Select enter existing label, select from dropdown ENTER and click GOTO LABEL", () => {
-            hashLabel();
+            testing.hashLabel();
 
-            labelMappingReferenceTextField()
+            testing.labelMappingReferenceTextField()
                 .type("{selectall}B2");
 
-            labelMappingLabelSaveButton()
+            testing.labelMappingLabelSaveButton()
                 .click();
 
-            labelMappingLabelCloseButton()
+            testing.labelMappingLabelCloseButton()
                 .click();
 
-            selectHistoryHash();
+            testing.selectHistoryHash();
 
-            selectAutocompleteTextField()
+            testing.selectAutocompleteTextField()
                 .type("{selectall}Label");
 
-            selectAutocompleteTextFieldHelper()
+            testing.selectAutocompleteTextFieldHelper()
                 .should("not.exist");
 
-            selectAutocompletePopup()
+            testing.selectAutocompletePopup()
                 .should("exist");
 
-            selectAutocompletePopupOption(0)
+            testing.selectAutocompletePopupOption(0)
                 .should("have.text", "Label");
 
-            selectAutocompletePopupOption(1)
+            testing.selectAutocompletePopupOption(1)
                 .should("have.text", "Label123");
 
-            selectAutocompleteTextField()
+            testing.selectAutocompleteTextField()
                 .type("{downarrow}{downarrow}{enter}");
 
-            selectCellGotoButton(DISABLED);
-            selectCellRangeSelectButton(DISABLED);
-            selectColumnGotoButton(DISABLED);
-            selectColumnRangeSelectButton(DISABLED);
-            selectLabelCreateButton(DISABLED);
-            selectLabelEditButton(ENABLED);
-            selectRowGotoButton(DISABLED);
-            selectRowRangeSelectButton(DISABLED);
+            testing.selectCellGotoButton(DISABLED);
+            testing.selectCellRangeSelectButton(DISABLED);
+            testing.selectColumnGotoButton(DISABLED);
+            testing.selectColumnRangeSelectButton(DISABLED);
+            testing.selectLabelCreateButton(DISABLED);
+            testing.selectLabelEditButton(ENABLED);
+            testing.selectRowGotoButton(DISABLED);
+            testing.selectRowRangeSelectButton(DISABLED);
 
-            selectLabelGotoButton(ENABLED)
+            testing.selectLabelGotoButton(ENABLED)
                 .click();
 
             testing.hash()
@@ -2783,33 +2751,33 @@ context(
         });
 
         it("Select enter row, select from dropdown ENTER and click GOTO ROW", () => {
-            selectHistoryHash();
+            testing.selectHistoryHash();
 
-            selectAutocompleteTextField()
+            testing.selectAutocompleteTextField()
                 .type("{selectall}3");
 
-            selectAutocompleteTextFieldHelper()
+            testing.selectAutocompleteTextFieldHelper()
                 .should("not.exist");
 
-            selectAutocompletePopup()
+            testing.selectAutocompletePopup()
                 .should("exist");
 
-            selectAutocompletePopupOption(0)
+            testing.selectAutocompletePopupOption(0)
                 .should("have.text", "3");
 
-            selectAutocompleteTextField()
+            testing.selectAutocompleteTextField()
                 .type("{downarrow}{enter}");
 
-            selectCellGotoButton(DISABLED);
-            selectCellRangeSelectButton(DISABLED);
-            selectColumnGotoButton(DISABLED);
-            selectColumnRangeSelectButton(DISABLED);
-            selectLabelCreateButton(DISABLED);
-            selectLabelEditButton(DISABLED);
-            selectLabelGotoButton(DISABLED);
-            selectRowRangeSelectButton(DISABLED);
+            testing.selectCellGotoButton(DISABLED);
+            testing.selectCellRangeSelectButton(DISABLED);
+            testing.selectColumnGotoButton(DISABLED);
+            testing.selectColumnRangeSelectButton(DISABLED);
+            testing.selectLabelCreateButton(DISABLED);
+            testing.selectLabelEditButton(DISABLED);
+            testing.selectLabelGotoButton(DISABLED);
+            testing.selectRowRangeSelectButton(DISABLED);
 
-            selectRowGotoButton(ENABLED)
+            testing.selectRowGotoButton(ENABLED)
                 .click();
 
             testing.hash()
@@ -2817,33 +2785,33 @@ context(
         });
 
         it("Select enter row range, select from dropdown ENTER and click SELECT ROW RANGE", () => {
-            selectHistoryHash();
+            testing.selectHistoryHash();
 
-            selectAutocompleteTextField()
+            testing.selectAutocompleteTextField()
                 .type("{selectall}4:6");
 
-            selectAutocompleteTextFieldHelper()
+            testing.selectAutocompleteTextFieldHelper()
                 .should("not.exist");
 
-            selectAutocompletePopup()
+            testing.selectAutocompletePopup()
                 .should("exist");
 
-            selectAutocompletePopupOption(0)
+            testing.selectAutocompletePopupOption(0)
                 .should("have.text", "4:6");
 
-            selectAutocompleteTextField()
+            testing.selectAutocompleteTextField()
                 .type("{downarrow}{enter}");
 
-            selectCellGotoButton(DISABLED);
-            selectCellRangeSelectButton(DISABLED);
-            selectColumnGotoButton(DISABLED);
-            selectColumnRangeSelectButton(DISABLED);
-            selectLabelCreateButton(DISABLED);
-            selectLabelEditButton(DISABLED);
-            selectLabelGotoButton(DISABLED);
-            selectRowGotoButton(DISABLED);
+            testing.selectCellGotoButton(DISABLED);
+            testing.selectCellRangeSelectButton(DISABLED);
+            testing.selectColumnGotoButton(DISABLED);
+            testing.selectColumnRangeSelectButton(DISABLED);
+            testing.selectLabelCreateButton(DISABLED);
+            testing.selectLabelEditButton(DISABLED);
+            testing.selectLabelGotoButton(DISABLED);
+            testing.selectRowGotoButton(DISABLED);
 
-            selectRowRangeSelectButton(ENABLED)
+            testing.selectRowRangeSelectButton(ENABLED)
                 .click();
 
             testing.hash()
@@ -2853,116 +2821,34 @@ context(
         it("Select link after cell click", () => {
             testing.cellClick(A1);
 
-            selectLink()
+            testing.selectLink()
                 .should('have.text', "A1");
 
             testing.cellClick(A2);
 
-            selectLink()
+            testing.selectLink()
                 .should('have.text', "A2");
         });
 
         it("Select link click after cell click", () => {
             testing.cellClick(B1);
 
-            selectLink()
+            testing.selectLink()
                 .should('have.text', "B1")
                 .click();
 
             testing.hash()
                 .should('match', /.*\/Untitled\/cell\/B1\/select/);
 
-            selectAutocompleteTextField()
+            testing.selectAutocompleteTextField()
                 .should("have.value", "")
                 .type("{selectall}B2{enter}");
 
-            selectCellGotoButton(false)
+            testing.selectCellGotoButton(false)
                 .click();
 
             testing.hash()
                 .should('match', /.*\/Untitled\/cell\/B2/);
         });
-
-        function selectHistoryHash() {
-            testing.hashAppend("/select");
-        }
-
-        function selectLink() {
-            return cy.get("#" + SpreadsheetSelectLinkWidget.SELECT_LINK_ID);
-        }
-
-        function selectDialog() {
-            return cy.get("#" + SpreadsheetSelectAutocompleteWidget.DIALOG_ID);
-        }
-
-        function selectDialogTitle() {
-            return cy.get("#" + SpreadsheetSelectAutocompleteWidget.DIALOG_TITLE_ID);
-        }
-
-        function selectDialogClose() {
-            return cy.get("#" + SpreadsheetSelectAutocompleteWidget.DIALOG_CLOSE_BUTTON_ID);
-        }
-
-        function selectAutocompleteTextField() {
-            return cy.get("#" + SpreadsheetSelectAutocompleteWidget.TEXT_FIELD_ID);
-        }
-
-        function selectAutocompleteTextFieldHelper() {
-            return cy.get("#" + SpreadsheetSelectAutocompleteWidget.TEXT_FIELD_HELPER_TEXT_ID);
-        }
-
-        function selectAutocompletePopup() {
-            return cy.get("#" + SpreadsheetSelectAutocompleteWidget.TEXT_FIELD_POPUP_ID);
-        }
-
-        function selectAutocompletePopupOption(nth) {
-            return cy.get("#" + SpreadsheetSelectAutocompleteWidget.TEXT_FIELD_OPTION_ID + nth);
-        }
-
-        function selectCellGotoButton(disabled) {
-            return selectButtonDisabled(SpreadsheetSelectAutocompleteWidget.CELL_GOTO_BUTTON_ID, disabled);
-        }
-
-        function selectCellRangeSelectButton(disabled) {
-            return selectButtonDisabled(SpreadsheetSelectAutocompleteWidget.CELL_RANGE_SELECT_BUTTON_ID, disabled);
-        }
-
-        function selectColumnGotoButton(disabled) {
-            return selectButtonDisabled(SpreadsheetSelectAutocompleteWidget.COLUMN_GOTO_BUTTON_ID, disabled);
-        }
-
-        function selectColumnRangeSelectButton(disabled) {
-            return selectButtonDisabled(SpreadsheetSelectAutocompleteWidget.COLUMN_RANGE_SELECT_BUTTON_ID, disabled);
-        }
-
-        function selectLabelCreateButton(disabled) {
-            return selectButtonDisabled(SpreadsheetSelectAutocompleteWidget.LABEL_CREATE_BUTTON_ID, disabled);
-        }
-
-        function selectLabelEditButton(disabled) {
-            return selectButtonDisabled(SpreadsheetSelectAutocompleteWidget.LABEL_EDIT_BUTTON_ID, disabled);
-        }
-
-        function selectLabelGotoButton(disabled) {
-            return selectButtonDisabled(SpreadsheetSelectAutocompleteWidget.LABEL_GOTO_BUTTON_ID, disabled);
-        }
-
-        function selectRowGotoButton(disabled) {
-            return selectButtonDisabled(SpreadsheetSelectAutocompleteWidget.ROW_GOTO_BUTTON_ID, disabled);
-        }
-
-        function selectRowRangeSelectButton(disabled) {
-            return selectButtonDisabled(SpreadsheetSelectAutocompleteWidget.ROW_RANGE_SELECT_BUTTON_ID, disabled);
-        }
-
-        function selectButtonDisabled(id, disabled) {
-            const button = cy.get((disabled ? "BUTTON" : "A") + "#" + id);
-
-            if(disabled){
-                button.should("be.disabled");
-            }
-
-            return button;
-        }
     }
 );
