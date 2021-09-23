@@ -4064,7 +4064,6 @@ context(
          * The settings that appears on the right containing settings, tools and more.
          */
         function settings() {
-            renderWait();
             return cy.get("#settings > DIV"); // the #settings remains 1000x0 while the DIV child has an actual height
         }
 
