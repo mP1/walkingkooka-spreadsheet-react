@@ -533,7 +533,7 @@ describe(
                 .should('match', /.*\/Untitled\/row\/4:6/);
         });
 
-        it("Select link after cell click", () => {
+        it("Cell click then verify Select link", () => {
             testing.cellClick(A1);
 
             testing.selectLink()
@@ -545,7 +545,7 @@ describe(
                 .should('have.text', "A2");
         });
 
-        it("Select link click after cell click", () => {
+        it("Cell click then click Select link", () => {
             testing.cellClick(B1);
 
             testing.selectLink()
