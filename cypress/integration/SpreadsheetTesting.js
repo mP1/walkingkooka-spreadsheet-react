@@ -131,6 +131,8 @@ export default class SpreadsheetTesting {
 
     selectHistoryHash() {
         this.hashAppend("/select");
+
+        this.wait(50); // wait for dialog to appear.
     }
 
     selectLink() {
