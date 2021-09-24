@@ -189,7 +189,7 @@ class SpreadsheetSettingsWidget extends SpreadsheetHistoryAwareStateWidget {
      */
     metadataFormatCreateDateTimeModifiedDateTime(request) {
         this.props.spreadsheetMetadataCrud.messenger.send(
-            new RelativeUrl("/api/spreadsheet/" + this.state.spreadsheetMetadata.getIgnoringDefaults(SpreadsheetMetadata.SPREADSHEET_ID) + "/format", {} ),
+            new RelativeUrl("/api/spreadsheet/" + this.state.spreadsheetMetadata.getIgnoringDefaults(SpreadsheetMetadata.SPREADSHEET_ID) + "/format", {}),
             {
                 method: "POST",
                 body: JSON.stringify(request.toJson()),
@@ -255,24 +255,24 @@ class SpreadsheetSettingsWidget extends SpreadsheetHistoryAwareStateWidget {
     static section(property) {
         var section;
 
-        for(;;) {
-            if(SpreadsheetSettingsWidget.metadataRows().includes(property)) {
+        for(; ;) {
+            if(SpreadsheetSettingsWidget.metadataRows().includes(property)){
                 section = SpreadsheetHistoryHash.SETTINGS_METADATA;
                 break;
             }
-            if(SpreadsheetSettingsWidget.spreadsheetTextRows().includes(property)) {
+            if(SpreadsheetSettingsWidget.spreadsheetTextRows().includes(property)){
                 section = SpreadsheetHistoryHash.SETTINGS_TEXT;
                 break;
             }
-            if(SpreadsheetSettingsWidget.spreadsheetDateTimeRows().includes(property)) {
+            if(SpreadsheetSettingsWidget.spreadsheetDateTimeRows().includes(property)){
                 section = SpreadsheetHistoryHash.SETTINGS_DATE_TIME;
                 break;
             }
-            if(SpreadsheetSettingsWidget.spreadsheetNumberRows().includes(property)) {
+            if(SpreadsheetSettingsWidget.spreadsheetNumberRows().includes(property)){
                 section = SpreadsheetHistoryHash.SETTINGS_NUMBER;
                 break;
             }
-            if(SpreadsheetSettingsWidget.spreadsheetStyleRows().includes(property)) {
+            if(SpreadsheetSettingsWidget.spreadsheetStyleRows().includes(property)){
                 section = SpreadsheetHistoryHash.SETTINGS_STYLE;
                 break;
             }
@@ -408,31 +408,31 @@ class SpreadsheetSettingsWidget extends SpreadsheetHistoryAwareStateWidget {
 
     static spreadsheetStyleRows() {
         return [
-                TextStyle.BACKGROUND_COLOR,
-                //
-                TextStyle.WIDTH,
-                TextStyle.HEIGHT,
-                //
-                TextStyle.BORDER_LEFT_COLOR,
-                TextStyle.BORDER_LEFT_STYLE,
-                TextStyle.BORDER_LEFT_WIDTH,
-                //
-                TextStyle.BORDER_TOP_COLOR,
-                TextStyle.BORDER_TOP_STYLE,
-                TextStyle.BORDER_TOP_WIDTH,
-                //
-                TextStyle.BORDER_RIGHT_COLOR,
-                TextStyle.BORDER_RIGHT_STYLE,
-                TextStyle.BORDER_RIGHT_WIDTH,
-                //
-                TextStyle.BORDER_BOTTOM_COLOR,
-                TextStyle.BORDER_BOTTOM_STYLE,
-                TextStyle.BORDER_BOTTOM_WIDTH,
-                //
-                TextStyle.PADDING_LEFT,
-                TextStyle.PADDING_TOP,
-                TextStyle.PADDING_RIGHT,
-                TextStyle.PADDING_BOTTOM,
+            TextStyle.BACKGROUND_COLOR,
+            //
+            TextStyle.WIDTH,
+            TextStyle.HEIGHT,
+            //
+            TextStyle.BORDER_LEFT_COLOR,
+            TextStyle.BORDER_LEFT_STYLE,
+            TextStyle.BORDER_LEFT_WIDTH,
+            //
+            TextStyle.BORDER_TOP_COLOR,
+            TextStyle.BORDER_TOP_STYLE,
+            TextStyle.BORDER_TOP_WIDTH,
+            //
+            TextStyle.BORDER_RIGHT_COLOR,
+            TextStyle.BORDER_RIGHT_STYLE,
+            TextStyle.BORDER_RIGHT_WIDTH,
+            //
+            TextStyle.BORDER_BOTTOM_COLOR,
+            TextStyle.BORDER_BOTTOM_STYLE,
+            TextStyle.BORDER_BOTTOM_WIDTH,
+            //
+            TextStyle.PADDING_LEFT,
+            TextStyle.PADDING_TOP,
+            TextStyle.PADDING_RIGHT,
+            TextStyle.PADDING_BOTTOM,
             TextStyle.PADDING_BOTTOM,
         ];
     }
@@ -482,12 +482,12 @@ class SpreadsheetSettingsWidget extends SpreadsheetHistoryAwareStateWidget {
             case TextStyle.OUTLINE_COLOR:
             case TextStyle.TEXT_DECORATION_COLOR:
                 render = <SpreadsheetSettingsWidgetColor id={id}
-                                                          value={value}
-                                                          defaultButtonTooltip={false}
-                                                          defaultValue={defaultValue}
-                                                          defaultValueFormatter={DEFAULT_VALUE_FORMATTER_TOSTRING}
-                                                          setValue={setValue}
-                                                          notificationShow={notificationShow}
+                                                         value={value}
+                                                         defaultButtonTooltip={false}
+                                                         defaultValue={defaultValue}
+                                                         defaultValueFormatter={DEFAULT_VALUE_FORMATTER_TOSTRING}
+                                                         setValue={setValue}
+                                                         notificationShow={notificationShow}
                 />;
                 break;
             default:
@@ -993,134 +993,12 @@ class SpreadsheetSettingsWidget extends SpreadsheetHistoryAwareStateWidget {
                                 break;
                             case SpreadsheetMetadata.DEFAULT_YEAR:
                             case SpreadsheetMetadata.TWO_DIGIT_YEAR:
-                                var numberValue; // DATETIME_OFFSET is a java Long in String form, ugly hack to assume can always be converted to a number
-                                var min;
-                                var max;
-                                var style;
-                                switch(property) {
-                                    case SpreadsheetMetadata.DEFAULT_YEAR:
-                                        numberValue = value;
-                                        min = 0;
-                                        max = 2000;
-                                        style = {};
-                                        break;
-                                    case SpreadsheetMetadata.TWO_DIGIT_YEAR:
-                                        numberValue = value;
-                                        min = 0;
-                                        max = 99;
-                                        style = {};
-                                        break;
-                                    default:
-                                        break;
-                                }
-                                render = <SpreadsheetSettingsWidgetNumber id={id}
-                                                                          style={style}
-                                                                          min={min}
-                                                                          max={max}
-                                                                          value={numberValue}
-                                                                          defaultValue={typeof defaultValue === "string" ? parseInt(defaultValue, 10) : defaultValue}
-                                                                          defaultValueFormatter={DEFAULT_VALUE_FORMATTER_TOSTRING}
-                                                                          defaultButtonTooltip={false}
-                                                                          setValue={setValue}
-                                />;
+                                render = this.number(property, value, id, defaultValue, setValue);
                                 break;
                             case SpreadsheetMetadata.CELL_CHARACTER_WIDTH:
                             case SpreadsheetMetadata.DATETIME_OFFSET:
                             case SpreadsheetMetadata.PRECISION:
-                                var numberValue; // DATETIME_OFFSET is a java Long in String form, ugly hack to assume can always be converted to a number
-                                var min;
-                                var max;
-                                var marks;
-                                var style;
-                                var step;
-                                switch(property) {
-                                    case SpreadsheetMetadata.CELL_CHARACTER_WIDTH:
-                                        numberValue = value;
-                                        min = 0;
-                                        max = 20;
-                                        marks = [
-                                            {
-                                                value: 1,
-                                                label: "1",
-                                            },
-                                            {
-                                                value: 10,
-                                                label: "10",
-                                            },
-                                            {
-                                                value: 20,
-                                                label: "20",
-                                            },
-                                        ];
-                                        step = null;
-                                        style = {
-                                            marginLeft: 0,
-                                            marginRight: "2em",
-                                        };
-                                        break;
-                                    case SpreadsheetMetadata.DATETIME_OFFSET:
-                                        numberValue = typeof value === "string" ? parseInt(value, 10) : value;
-                                        min = -25569;
-                                        max = -24107;
-                                        marks = [
-                                            {
-                                                value: -25569,
-                                                label: "1900",
-                                            },
-                                            {
-                                                value: -24107,
-                                                label: "1904",
-                                            }
-                                        ];
-                                        step = null;
-                                        style = {
-                                            marginLeft: "1em",
-                                            marginRight: "2em",
-                                        };
-                                        break;
-                                    case SpreadsheetMetadata.PRECISION:
-                                        numberValue = value;
-                                        min = 0;
-                                        max = 128;
-                                        marks = [
-                                            {
-                                                value: 0,
-                                                label: "∞",
-                                            },
-                                            {
-                                                value: 32,
-                                                label: "32",
-                                            },
-                                            {
-                                                value: 64,
-                                                label: "64",
-                                            },
-                                            {
-                                                value: 128,
-                                                label: "128",
-                                            },
-                                        ];
-                                        step = null;
-                                        style = {
-                                            marginLeft: "2em",
-                                            marginRight: "2em",
-                                        };
-                                        break;
-                                    default:
-                                        break;
-                                }
-                                render = <SpreadsheetSettingsWidgetSliderWithNumberTextField id={id}
-                                                                                             style={style}
-                                                                                             min={min}
-                                                                                             max={max}
-                                                                                             marks={marks}
-                                                                                             step={step}
-                                                                                             value={numberValue}
-                                                                                             defaultValue={typeof defaultValue === "string" ? parseInt(defaultValue, 10) : defaultValue}
-                                                                                             defaultValueFormatter={DEFAULT_VALUE_FORMATTER_TOSTRING}
-                                                                                             defaultButtonTooltip={false}
-                                                                                             setValue={setValue}
-                                />;
+                                render = this.sliderAndNumber(property, value, id, defaultValue, setValue);
                                 break;
                             case SpreadsheetMetadata.NUMBER_FORMAT_PATTERN:
                                 render = <SpreadsheetSettingsWidgetSpreadsheetNumberFormatPattern id={id}
@@ -1293,6 +1171,144 @@ class SpreadsheetSettingsWidget extends SpreadsheetHistoryAwareStateWidget {
         }
 
         return label;
+    }
+
+    /**
+     * Factory that creates a number widget customising based on the property.
+     */
+    number(property, value, id, defaultValue, setValue) {
+        var numberValue; // DATETIME_OFFSET is a java Long in String form, ugly hack to assume can always be converted to a number
+        var min;
+        var max;
+        var style;
+
+        switch(property) {
+            case SpreadsheetMetadata.DEFAULT_YEAR:
+                numberValue = value;
+                min = 0;
+                max = 2000;
+                style = {};
+                break;
+            case SpreadsheetMetadata.TWO_DIGIT_YEAR:
+                numberValue = value;
+                min = 0;
+                max = 99;
+                style = {};
+                break;
+            default:
+                break;
+        }
+
+        return <SpreadsheetSettingsWidgetNumber id={id}
+                                                style={style}
+                                                min={min}
+                                                max={max}
+                                                value={numberValue}
+                                                defaultValue={typeof defaultValue === "string" ? parseInt(defaultValue, 10) : defaultValue}
+                                                defaultValueFormatter={DEFAULT_VALUE_FORMATTER_TOSTRING}
+                                                defaultButtonTooltip={false}
+                                                setValue={setValue}
+        />;
+    }
+
+    /**
+     * Factory that creates a slider with number using the property to customized some properties.
+     */
+    sliderAndNumber(property, value, id, defaultValue, setValue) {
+        var numberValue; // DATETIME_OFFSET is a java Long in String form, ugly hack to assume can always be converted to a number
+        var min;
+        var max;
+        var marks;
+        var style;
+        var step;
+        switch(property) {
+            case SpreadsheetMetadata.CELL_CHARACTER_WIDTH:
+                numberValue = value;
+                min = 0;
+                max = 20;
+                marks = [
+                    {
+                        value: 1,
+                        label: "1",
+                    },
+                    {
+                        value: 10,
+                        label: "10",
+                    },
+                    {
+                        value: 20,
+                        label: "20",
+                    },
+                ];
+                step = null;
+                style = {
+                    marginLeft: 0,
+                    marginRight: "2em",
+                };
+                break;
+            case SpreadsheetMetadata.DATETIME_OFFSET:
+                numberValue = typeof value === "string" ? parseInt(value, 10) : value;
+                min = -25569;
+                max = -24107;
+                marks = [
+                    {
+                        value: -25569,
+                        label: "1900",
+                    },
+                    {
+                        value: -24107,
+                        label: "1904",
+                    }
+                ];
+                step = null;
+                style = {
+                    marginLeft: "1em",
+                    marginRight: "2em",
+                };
+                break;
+            case SpreadsheetMetadata.PRECISION:
+                numberValue = value;
+                min = 0;
+                max = 128;
+                marks = [
+                    {
+                        value: 0,
+                        label: "∞",
+                    },
+                    {
+                        value: 32,
+                        label: "32",
+                    },
+                    {
+                        value: 64,
+                        label: "64",
+                    },
+                    {
+                        value: 128,
+                        label: "128",
+                    },
+                ];
+                step = null;
+                style = {
+                    marginLeft: "2em",
+                    marginRight: "2em",
+                };
+                break;
+            default:
+                break;
+        }
+        return <SpreadsheetSettingsWidgetSliderWithNumberTextField id={id}
+                                                                   style={style}
+                                                                   min={min}
+                                                                   max={max}
+                                                                   marks={marks}
+                                                                   step={step}
+                                                                   value={numberValue}
+                                                                   defaultValue={typeof defaultValue === "string" ? parseInt(defaultValue, 10) : defaultValue}
+                                                                   defaultValueFormatter={DEFAULT_VALUE_FORMATTER_TOSTRING}
+                                                                   defaultButtonTooltip={false}
+                                                                   setValue={setValue}
+        />;
     }
 
     tableRow(id, label, value, classes) {
