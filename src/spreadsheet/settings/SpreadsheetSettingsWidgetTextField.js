@@ -1,4 +1,4 @@
-import Keys from "../../Keys.js";
+ import Keys from "../../Keys.js";
 import React from 'react';
 import SpreadsheetSettingsWidgetValue from "./SpreadsheetSettingsWidgetValue.js";
 import TextField from "@material-ui/core/TextField";
@@ -28,6 +28,7 @@ export default class SpreadsheetSettingsWidgetTextField extends SpreadsheetSetti
         const placeholder = this.placeholder();
         const size = this.size();
         const maxLength = this.maxLength();
+        const type = this.type();
 
         return <TextField inputRef={this.inputField}
                           id={textFieldId}
@@ -51,6 +52,7 @@ export default class SpreadsheetSettingsWidgetTextField extends SpreadsheetSetti
                               {
                                   size: size,
                                   maxLength: maxLength,
+                                  type: type,
                               }
                           }
                           onBlur={this.onBlur.bind(this)}
@@ -68,6 +70,13 @@ export default class SpreadsheetSettingsWidgetTextField extends SpreadsheetSetti
 
     maxLength() {
         throw new Error("Not yet implemented: maxLength");
+    }
+
+    /**
+     * This becomes the type=value of the INPUT field.
+     */
+    type() {
+        return "text";
     }
 
     /**
