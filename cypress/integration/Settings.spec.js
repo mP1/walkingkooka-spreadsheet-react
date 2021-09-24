@@ -180,6 +180,15 @@ describe(
                             .type("{selectall}yyyy/mm/dd{enter}")
                             .blur();
                         break;
+                    case SpreadsheetMetadata.TWO_DIGIT_YEAR:
+                        cy.get(dateParsePatternsId)
+                            .type("{selectall}yy/mm/dd{enter}")
+                            .blur();
+
+                        cy.get(dateFormatPatternId)
+                            .type("{selectall}yyyy/mm/dd{enter}")
+                            .blur();
+                        break;
                     default:
                         break;
                 }
@@ -190,7 +199,7 @@ describe(
                     testing.formulaText()
                         .click()
                         .wait(FORMULA_TEXT_CLICK_WAIT)
-                        .type(a1Formula + "{enter}", FORCE_TRUE);
+                        .type("{selectall}" + a1Formula + "{enter}", FORCE_TRUE);
                 }
 
                 const textFieldId = "#settings-spreadsheet-metadata-" + property + "-TextField";
@@ -311,22 +320,6 @@ describe(
                 settingsToggle();
 
                 settingsOpenSectionSpreadsheetMetadataProperty(property);
-
-                const dateParsePatternsId = "#settings-spreadsheet-metadata-" + SpreadsheetMetadata.DATE_PARSE_PATTERNS + "-TextField";
-                const dateFormatPatternId = "#settings-spreadsheet-metadata-" + SpreadsheetMetadata.DATE_FORMAT_PATTERN + "-TextField";
-                switch(property) {
-                    case SpreadsheetMetadata.TWO_DIGIT_YEAR:
-                        cy.get(dateParsePatternsId)
-                            .type("{selectall}yy/mm/dd{enter}")
-                            .blur();
-
-                        cy.get(dateFormatPatternId)
-                            .type("{selectall}yyyy/mm/dd{enter}")
-                            .blur();
-                        break;
-                    default:
-                        break;
-                }
 
                 if(a1Formula){
                     testing.cellClick(A1);
@@ -657,20 +650,14 @@ describe(
             "12:58:59",
         );
 
-        settingsSpreadsheetMetadataPropertySliderNumberTextFieldAndCheck(
+        settingsSpreadsheetMetadataPropertyTextAndCheck(
             SpreadsheetMetadata.TWO_DIGIT_YEAR,
             "30/12/31",
-            [
-                {
-                    value: "20",
-                    text: "20",
-                },
-                {
-                    value: "50",
-                    text: "50",
-                },
-            ],
-            ["1930/12/31", "2030/12/31"]
+            "50",
+            "20",
+            "30/12/31",
+            "2030/12/31",
+            "1930/12/31",
         );
 
         settingsSpreadsheetMetadataPropertyTextAndCheck(
@@ -772,7 +759,7 @@ describe(
                 const textFieldId = "#settings-spreadsheet-metadata-style-" + property + "-TextField";
 
                 cy.get(textFieldId)
-                    .type("{selectall}!invalid123")
+                    .type("{selectall}!BAD")
                     .blur(); // TODO verify alert appears!
 
                 cy.get(textFieldId)

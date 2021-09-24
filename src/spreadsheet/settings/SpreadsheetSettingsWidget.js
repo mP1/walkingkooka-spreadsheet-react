@@ -992,6 +992,7 @@ class SpreadsheetSettingsWidget extends SpreadsheetHistoryAwareStateWidget {
                                 />;
                                 break;
                             case SpreadsheetMetadata.DEFAULT_YEAR:
+                            case SpreadsheetMetadata.TWO_DIGIT_YEAR:
                                 var numberValue; // DATETIME_OFFSET is a java Long in String form, ugly hack to assume can always be converted to a number
                                 var min;
                                 var max;
@@ -1001,6 +1002,12 @@ class SpreadsheetSettingsWidget extends SpreadsheetHistoryAwareStateWidget {
                                         numberValue = value;
                                         min = 0;
                                         max = 2000;
+                                        style = {};
+                                        break;
+                                    case SpreadsheetMetadata.TWO_DIGIT_YEAR:
+                                        numberValue = value;
+                                        min = 0;
+                                        max = 99;
                                         style = {};
                                         break;
                                     default:
@@ -1017,17 +1024,9 @@ class SpreadsheetSettingsWidget extends SpreadsheetHistoryAwareStateWidget {
                                                                           setValue={setValue}
                                 />;
                                 break;
-
-
-
-
-
-
-
                             case SpreadsheetMetadata.CELL_CHARACTER_WIDTH:
                             case SpreadsheetMetadata.DATETIME_OFFSET:
                             case SpreadsheetMetadata.PRECISION:
-                            case SpreadsheetMetadata.TWO_DIGIT_YEAR:
                                 var numberValue; // DATETIME_OFFSET is a java Long in String form, ugly hack to assume can always be converted to a number
                                 var min;
                                 var max;
@@ -1099,30 +1098,6 @@ class SpreadsheetSettingsWidget extends SpreadsheetHistoryAwareStateWidget {
                                             {
                                                 value: 128,
                                                 label: "128",
-                                            },
-                                        ];
-                                        step = null;
-                                        style = {
-                                            marginLeft: "2em",
-                                            marginRight: "2em",
-                                        };
-                                        break;
-                                    case SpreadsheetMetadata.TWO_DIGIT_YEAR:
-                                        numberValue = value;
-                                        min = 0;
-                                        max = 99;
-                                        marks = [
-                                            {
-                                                value: 20,
-                                                label: "20",
-                                            },
-                                            {
-                                                value: 50,
-                                                label: "50",
-                                            },
-                                            {
-                                                value: 70,
-                                                label: "70",
                                             },
                                         ];
                                         step = null;
