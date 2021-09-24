@@ -90,7 +90,7 @@ export default class SpreadsheetTesting {
     }
 
     spreadsheetName() {
-        return this.cy.get("#" + SpreadsheetNameWidget.SPREADSHEET_NAME_ID);
+        return this.getById(SpreadsheetNameWidget.SPREADSHEET_NAME_ID);
     }
 
     spreadsheetNameClick() {
@@ -102,27 +102,27 @@ export default class SpreadsheetTesting {
     }
 
     formulaText() {
-        return this.cy.get("#" + SpreadsheetFormulaWidget.TEXT_FIELD_ID);
+        return this.getById(SpreadsheetFormulaWidget.TEXT_FIELD_ID);
     }
 
     labelMappingLabelTextField() {
-        return this.cy.get("#" + SpreadsheetLabelMappingWidget.LABEL_TEXT_FIELD_ID);
+        return this.getById(SpreadsheetLabelMappingWidget.LABEL_TEXT_FIELD_ID);
     }
 
     labelMappingReferenceTextField() {
-        return this.cy.get("#" + SpreadsheetLabelMappingWidget.REFERENCE_TEXT_FIELD_ID);
+        return this.getById(SpreadsheetLabelMappingWidget.REFERENCE_TEXT_FIELD_ID);
     }
 
     labelMappingLabelSaveButton() {
-        return this.cy.get("#" + SpreadsheetLabelMappingWidget.SAVE_BUTTON_ID);
+        return this.getById(SpreadsheetLabelMappingWidget.SAVE_BUTTON_ID);
     }
 
     labelMappingLabelDeleteButton() {
-        return this.cy.get("#" + SpreadsheetLabelMappingWidget.DELETE_BUTTON_ID);
+        return this.getById(SpreadsheetLabelMappingWidget.DELETE_BUTTON_ID);
     }
 
     labelMappingLabelCloseButton() {
-        return this.cy.get("#" + SpreadsheetLabelMappingWidget.DIALOG_CLOSE_BUTTON_ID);
+        return this.getById(SpreadsheetLabelMappingWidget.DIALOG_CLOSE_BUTTON_ID);
     }
 
     hashLabel() {
@@ -136,35 +136,35 @@ export default class SpreadsheetTesting {
     }
 
     selectLink() {
-        return this.cy.get("#" + SpreadsheetSelectLinkWidget.SELECT_LINK_ID);
+        return this.getById(SpreadsheetSelectLinkWidget.SELECT_LINK_ID);
     }
 
     selectDialog() {
-        return this.cy.get("#" + SpreadsheetSelectAutocompleteWidget.DIALOG_ID);
+        return this.getById(SpreadsheetSelectAutocompleteWidget.DIALOG_ID);
     }
 
     selectDialogTitle() {
-        return this.cy.get("#" + SpreadsheetSelectAutocompleteWidget.DIALOG_TITLE_ID);
+        return this.getById(SpreadsheetSelectAutocompleteWidget.DIALOG_TITLE_ID);
     }
 
     selectDialogClose() {
-        return this.cy.get("#" + SpreadsheetSelectAutocompleteWidget.DIALOG_CLOSE_BUTTON_ID);
+        return this.getById(SpreadsheetSelectAutocompleteWidget.DIALOG_CLOSE_BUTTON_ID);
     }
 
     selectAutocompleteTextField() {
-        return this.cy.get("#" + SpreadsheetSelectAutocompleteWidget.TEXT_FIELD_ID);
+        return this.getById(SpreadsheetSelectAutocompleteWidget.TEXT_FIELD_ID);
     }
 
     selectAutocompleteTextFieldHelper() {
-        return this.cy.get("#" + SpreadsheetSelectAutocompleteWidget.TEXT_FIELD_HELPER_TEXT_ID);
+        return this.getById(SpreadsheetSelectAutocompleteWidget.TEXT_FIELD_HELPER_TEXT_ID);
     }
 
     selectAutocompletePopup() {
-        return this.cy.get("#" + SpreadsheetSelectAutocompleteWidget.TEXT_FIELD_POPUP_ID);
+        return this.getById(SpreadsheetSelectAutocompleteWidget.TEXT_FIELD_POPUP_ID);
     }
 
     selectAutocompletePopupOption(nth) {
-        return this.cy.get("#" + SpreadsheetSelectAutocompleteWidget.TEXT_FIELD_OPTION_ID + nth);
+        return this.getById(SpreadsheetSelectAutocompleteWidget.TEXT_FIELD_OPTION_ID + nth);
     }
 
     selectCellGotoButton(disabled) {
@@ -214,7 +214,7 @@ export default class SpreadsheetTesting {
     }
 
     viewportContextMenu() {
-        return this.cy.get("#" + SpreadsheetViewportWidget.VIEWPORT_CONTEXT_MENU_ID);
+        return this.getById(SpreadsheetViewportWidget.VIEWPORT_CONTEXT_MENU_ID);
     }
 
     /**
@@ -241,7 +241,7 @@ export default class SpreadsheetTesting {
             cellReference :
             SpreadsheetCellReference.parse(cellReference);
 
-        return this.cy.get("#" + spreadsheetCellReference.viewportId());
+        return this.getById(spreadsheetCellReference.viewportId());
     }
 
     column(columnReference) {
@@ -249,7 +249,7 @@ export default class SpreadsheetTesting {
             columnReference :
             SpreadsheetColumnReference.parse(columnReference);
 
-        return this.cy.get("#" + spreadsheetColumnReference.viewportId());
+        return this.getById(spreadsheetColumnReference.viewportId());
     }
 
     row(rowReference) {
@@ -257,7 +257,7 @@ export default class SpreadsheetTesting {
             rowReference :
             SpreadsheetRowReference.parse(rowReference);
 
-        return this.cy.get("#" + spreadsheetRowReference.viewportId());
+        return this.getById(spreadsheetRowReference.viewportId());
     }
 
     /**
@@ -292,5 +292,9 @@ export default class SpreadsheetTesting {
 
     wait(period) {
         this.cy.wait(period || 20);
+    }
+    
+    getById(id) {
+        return this.cy.get("#" + id);
     }
 }
