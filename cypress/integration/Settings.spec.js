@@ -168,6 +168,22 @@ describe(
 
                 settingsOpenSectionSpreadsheetMetadataProperty(property);
 
+                const dateParsePatternsId = "#settings-spreadsheet-metadata-" + SpreadsheetMetadata.DATE_PARSE_PATTERNS + "-TextField";
+                const dateFormatPatternId = "#settings-spreadsheet-metadata-" + SpreadsheetMetadata.DATE_FORMAT_PATTERN + "-TextField";
+                switch(property) {
+                    case SpreadsheetMetadata.DEFAULT_YEAR:
+                        cy.get(dateParsePatternsId)
+                            .type("{selectall}dd:mm{enter}")
+                            .blur();
+
+                        cy.get(dateFormatPatternId)
+                            .type("{selectall}yyyy/mm/dd{enter}")
+                            .blur();
+                        break;
+                    default:
+                        break;
+                }
+
                 if(a1Formula){
                     testing.cellClick(A1);
 
@@ -299,15 +315,6 @@ describe(
                 const dateParsePatternsId = "#settings-spreadsheet-metadata-" + SpreadsheetMetadata.DATE_PARSE_PATTERNS + "-TextField";
                 const dateFormatPatternId = "#settings-spreadsheet-metadata-" + SpreadsheetMetadata.DATE_FORMAT_PATTERN + "-TextField";
                 switch(property) {
-                    case SpreadsheetMetadata.DEFAULT_YEAR:
-                        cy.get(dateParsePatternsId)
-                            .type("{selectall}dd:mm{enter}")
-                            .blur();
-
-                        cy.get(dateFormatPatternId)
-                            .type("{selectall}yyyy/mm/dd{enter}")
-                            .blur();
-                        break;
                     case SpreadsheetMetadata.TWO_DIGIT_YEAR:
                         cy.get(dateParsePatternsId)
                             .type("{selectall}yy/mm/dd{enter}")
@@ -490,20 +497,14 @@ describe(
             "2.5",
         );
 
-        settingsSpreadsheetMetadataPropertySliderNumberTextFieldAndCheck(
+        settingsSpreadsheetMetadataPropertyTextAndCheck(
             SpreadsheetMetadata.DEFAULT_YEAR,
             "31:12",
-            [
-                {
-                    value: "1900",
-                    text: "1900",
-                },
-                {
-                    value: "2000",
-                    text: "2000",
-                }
-            ],
-            ["1900/12/31", "2000/12/31"]
+            "2000",
+            "1900",
+            "31:12",
+            "2000/12/31",
+            "1900/12/31",
         );
 
         settingsSpreadsheetMetadataPropertyTextAndCheck(

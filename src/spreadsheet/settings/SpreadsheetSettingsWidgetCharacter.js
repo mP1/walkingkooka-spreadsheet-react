@@ -25,6 +25,10 @@ export default class SpreadsheetSettingsWidgetCharacter extends SpreadsheetSetti
         return 1;
     }
 
+    type() {
+        return "text";
+    }
+
     createValue(string) {
         var value;
 

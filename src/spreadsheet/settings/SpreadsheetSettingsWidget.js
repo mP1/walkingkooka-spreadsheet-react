@@ -26,6 +26,7 @@ import SpreadsheetMultiFormatResponse from "../server/format/SpreadsheetMultiFor
 import SpreadsheetSettingsWidgetCharacter from "./SpreadsheetSettingsWidgetCharacter.js";
 import SpreadsheetSettingsWidgetColor from "./SpreadsheetSettingsWidgetColor.js";
 import SpreadsheetSettingsWidgetDropDownList from "./SpreadsheetSettingsWidgetDropDownList.js";
+import SpreadsheetSettingsWidgetNumber from "./SpreadsheetSettingsWidgetNumber.js";
 import SpreadsheetSettingsWidgetSlider from "./SpreadsheetSettingsWidgetSlider.js";
 import SpreadsheetSettingsWidgetSliderWithNumberTextField
     from "./SpreadsheetSettingsWidgetSliderWithNumberTextField.js";
@@ -990,9 +991,41 @@ class SpreadsheetSettingsWidget extends SpreadsheetHistoryAwareStateWidget {
                                                                           setValue={setValue}
                                 />;
                                 break;
+                            case SpreadsheetMetadata.DEFAULT_YEAR:
+                                var numberValue; // DATETIME_OFFSET is a java Long in String form, ugly hack to assume can always be converted to a number
+                                var min;
+                                var max;
+                                var style;
+                                switch(property) {
+                                    case SpreadsheetMetadata.DEFAULT_YEAR:
+                                        numberValue = value;
+                                        min = 0;
+                                        max = 2000;
+                                        style = {};
+                                        break;
+                                    default:
+                                        break;
+                                }
+                                render = <SpreadsheetSettingsWidgetNumber id={id}
+                                                                          style={style}
+                                                                          min={min}
+                                                                          max={max}
+                                                                          value={numberValue}
+                                                                          defaultValue={typeof defaultValue === "string" ? parseInt(defaultValue, 10) : defaultValue}
+                                                                          defaultValueFormatter={DEFAULT_VALUE_FORMATTER_TOSTRING}
+                                                                          defaultButtonTooltip={false}
+                                                                          setValue={setValue}
+                                />;
+                                break;
+
+
+
+
+
+
+
                             case SpreadsheetMetadata.CELL_CHARACTER_WIDTH:
                             case SpreadsheetMetadata.DATETIME_OFFSET:
-                            case SpreadsheetMetadata.DEFAULT_YEAR:
                             case SpreadsheetMetadata.PRECISION:
                             case SpreadsheetMetadata.TWO_DIGIT_YEAR:
                                 var numberValue; // DATETIME_OFFSET is a java Long in String form, ugly hack to assume can always be converted to a number
@@ -1038,26 +1071,6 @@ class SpreadsheetSettingsWidget extends SpreadsheetHistoryAwareStateWidget {
                                             {
                                                 value: -24107,
                                                 label: "1904",
-                                            }
-                                        ];
-                                        step = null;
-                                        style = {
-                                            marginLeft: "1em",
-                                            marginRight: "2em",
-                                        };
-                                        break;
-                                    case SpreadsheetMetadata.DEFAULT_YEAR:
-                                        numberValue = value;
-                                        min = 1900;
-                                        max = 2020;
-                                        marks = [
-                                            {
-                                                value: 1900,
-                                                label: "1900",
-                                            },
-                                            {
-                                                value: 2000,
-                                                label: "2000",
                                             }
                                         ];
                                         step = null;

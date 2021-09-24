@@ -26,6 +26,10 @@ export default class SpreadsheetSettingsWidgetColor extends SpreadsheetSettingsW
         return 7;
     }
 
+    type() {
+        return "text";
+    }
+
     createValue(string) {
         return (!!string ? Color.parse(string) : null);
     }

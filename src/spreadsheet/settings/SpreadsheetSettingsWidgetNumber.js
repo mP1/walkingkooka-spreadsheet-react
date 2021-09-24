@@ -3,9 +3,9 @@ import SpreadsheetSettingsWidgetTextField from "./SpreadsheetSettingsWidgetTextF
 import SpreadsheetSettingsWidgetValue from "./SpreadsheetSettingsWidgetValue.js";
 
 /**
- * A widget which displays a {@link String} for editing using a TextField. All edits immediately update the spreadsheet.
+ * A widget which displays a number for editing using a TextField. All edits immediately update the spreadsheet.
  */
-export default class SpreadsheetSettingsWidgetString extends SpreadsheetSettingsWidgetTextField {
+export default class SpreadsheetSettingsWidgetNumber extends SpreadsheetSettingsWidgetTextField {
 
     // eslint-disable-next-line
     constructor(props) {
@@ -17,7 +17,7 @@ export default class SpreadsheetSettingsWidgetString extends SpreadsheetSettings
     }
 
     size() {
-        return this.props.length;
+        return 1;
     }
 
     maxLength() {
@@ -25,15 +25,15 @@ export default class SpreadsheetSettingsWidgetString extends SpreadsheetSettings
     }
 
     type() {
-        return "text";
+        return "number";
     }
 
-    createValue(string) {
-        return string === "" ? undefined : string;
+    createValue(text) {
+        return parseInt(text, 10);
     }
 }
 
-SpreadsheetSettingsWidgetString.propTypes = SpreadsheetSettingsWidgetValue.createPropTypes(
+SpreadsheetSettingsWidgetNumber.propTypes = SpreadsheetSettingsWidgetValue.createPropTypes(
     PropTypes.string,
     {
         length: PropTypes.number.isRequired,
