@@ -312,9 +312,6 @@ describe(
                         cy.get(dateParsePatternsId)
                             .type("{selectall}yy/mm/dd{enter}")
                             .blur();
-                        cy.get(dateFormatPatternId)
-                            .type("{selectall}yyyy/mm/dd{enter}")
-                            .blur();
 
                         cy.get(dateFormatPatternId)
                             .type("{selectall}yyyy/mm/dd{enter}")
