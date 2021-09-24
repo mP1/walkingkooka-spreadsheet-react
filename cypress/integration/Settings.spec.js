@@ -333,7 +333,7 @@ describe(
                     testing.formulaText()
                         .click()
                         .wait(FORMULA_TEXT_CLICK_WAIT)
-                        .type(a1Formula + "{enter}", FORCE_TRUE);
+                        .type("{selectall}" + a1Formula + "{enter}", FORCE_TRUE);
                 }
 
                 const sliderId = "#settings-spreadsheet-metadata-" + property + "-Slider";
@@ -391,7 +391,7 @@ describe(
                     testing.formulaText()
                         .click()
                         .wait(FORMULA_TEXT_CLICK_WAIT)
-                        .type(a1Formula + "{enter}", FORCE_TRUE);
+                        .type("{selectall}" + a1Formula + "{enter}", FORCE_TRUE);
                 }
 
                 const dropDownListId = "#settings-spreadsheet-metadata-" + property + "-DropDownList";
