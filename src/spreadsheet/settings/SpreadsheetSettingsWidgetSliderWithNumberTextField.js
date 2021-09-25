@@ -147,6 +147,6 @@ SpreadsheetSettingsWidgetSliderWithNumberTextField.propTypes = SpreadsheetSettin
         min: PropTypes.number.isRequired,
         max: PropTypes.number.isRequired,
         marks: PropTypes.array.isRequired,
-        step: PropTypes.object, // null is acceptable
+        step: PropTypes.number, // null is acceptable
     }
 );
