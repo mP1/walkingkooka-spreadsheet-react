@@ -226,7 +226,7 @@ export default class SpreadsheetTesting {
             .should("have.focus");
 
         this.hash()
-            .should('match', new RegExp("\/.*\/.*\/cell\/" + cellReference + "(.*)", 'i'));
+            .should('match', new RegExp("\/.*\/.*\/cell\/" + cellReference + "(\/.*)*"));
     }
 
     cellFormattedTextCheck(cellReference, text) {
