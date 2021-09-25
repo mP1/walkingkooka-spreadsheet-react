@@ -917,6 +917,7 @@ class SpreadsheetSettingsWidget extends SpreadsheetHistoryAwareStateWidget {
                         switch(property) {
                             case SpreadsheetMetadata.CURRENCY_SYMBOL:
                                 render = <SpreadsheetSettingsWidgetString id={id}
+                                                                          length={10}
                                                                           maxLength={10}
                                                                           value={value}
                                                                           defaultValue={defaultValue}
