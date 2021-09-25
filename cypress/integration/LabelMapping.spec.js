@@ -489,16 +489,16 @@ describe(
         it("Label mapping update, refreshes viewport", () => {
             testing.cellClick(A1);
 
+            testing.formulaTextClick();
+
             testing.formulaText()
-                .click()
-                .wait(FORMULA_TEXT_CLICK_WAIT)
                 .type("{selectall}=11{enter}");
 
             testing.cellClick(B2);
 
+            testing.formulaTextClick();
+
             testing.formulaText()
-                .click()
-                .wait(FORMULA_TEXT_CLICK_WAIT)
                 .type("{selectall}=22{enter}")
                 .blur();
 
@@ -516,9 +516,9 @@ describe(
 
             testing.cellClick(C3);
 
+            testing.formulaTextClick();
+
             testing.formulaText()
-                .click()
-                .wait(FORMULA_TEXT_CLICK_WAIT)
                 .type("{selectall}=4*MovingLabel{enter}")
                 .blur();
 

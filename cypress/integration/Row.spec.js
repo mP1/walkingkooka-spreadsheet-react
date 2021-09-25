@@ -7,8 +7,6 @@ const A1 = SpreadsheetCellReference.parse("A1");
 const A2 = SpreadsheetCellReference.parse("A2");
 const E5 = SpreadsheetCellReference.parse("E5");
 
-const FORMULA_TEXT_CLICK_WAIT = 50;
-
 const SELECTED_COLOR = "rgb(68, 68, 68)";
 
 describe("Row",
@@ -187,9 +185,9 @@ describe("Row",
         it("Row select delete hash", () => {
             testing.cellClick(E5);
 
+            testing.formulaTextClick();
+
             testing.formulaText()
-                .click()
-                .wait(FORMULA_TEXT_CLICK_WAIT)
                 .type("{selectall}'Moved{enter}");
 
             testing.row("2")
@@ -207,9 +205,9 @@ describe("Row",
         it("Row range select delete hash", () => {
             testing.cellClick(E5);
 
+            testing.formulaTextClick();
+
             testing.formulaText()
-                .click()
-                .wait(FORMULA_TEXT_CLICK_WAIT)
                 .type("{selectall}'Moved{enter}");
 
             testing.row("2")
@@ -229,9 +227,9 @@ describe("Row",
         it("Row select insert-after hash", () => {
             testing.cellClick(E5);
 
+            testing.formulaTextClick();
+
             testing.formulaText()
-                .click()
-                .wait(FORMULA_TEXT_CLICK_WAIT)
                 .type("{selectall}'Moved{enter}");
 
             testing.row("2")
@@ -249,9 +247,9 @@ describe("Row",
         it("Row range select insert-after hash", () => {
             testing.cellClick(E5);
 
+            testing.formulaTextClick();
+
             testing.formulaText()
-                .click()
-                .wait(FORMULA_TEXT_CLICK_WAIT)
                 .type("{selectall}'Moved{enter}");
 
             testing.row("2")
@@ -271,9 +269,9 @@ describe("Row",
         it("Row select insert-before hash", () => {
             testing.cellClick(E5);
 
+            testing.formulaTextClick();
+
             testing.formulaText()
-                .click()
-                .wait(FORMULA_TEXT_CLICK_WAIT)
                 .type("{selectall}'Moved{enter}");
 
             testing.row("2")
@@ -291,9 +289,9 @@ describe("Row",
         it("Row range select insert-before hash", () => {
             testing.cellClick(E5);
 
+            testing.formulaTextClick();
+
             testing.formulaText()
-                .click()
-                .wait(FORMULA_TEXT_CLICK_WAIT)
                 .type("{selectall}'Moved{enter}");
 
             testing.row("2")

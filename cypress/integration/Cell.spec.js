@@ -13,8 +13,6 @@ const D4 = SpreadsheetCellReference.parse("D4");
 
 const LABEL = "Label123";
 
-const FORMULA_TEXT_CLICK_WAIT = 50;
-
 const SELECTED_COLOR = "rgb(68, 68, 68)";
 
 describe(
@@ -39,10 +37,7 @@ describe(
         it("Cell formula load then history hash save", () => {
             testing.cellClick(B2);
 
-            testing.formulaText()
-                .click();
-
-            testing.hash().should('match', /.*\/Untitled\/cell\/B2\/formula/)
+            testing.formulaTextClick();
 
             testing.hashAppend("/save/=2*3")
 
@@ -52,9 +47,9 @@ describe(
         it("Cell formula edit ENTER saves", () => {
             testing.cellClick(B2);
 
+            testing.formulaTextClick();
+
             testing.formulaText()
-                .click()
-                .wait(FORMULA_TEXT_CLICK_WAIT)
                 .type("{selectall}=1+2+3{enter}");
 
             testing.hash()
@@ -66,16 +61,14 @@ describe(
         it("Cell formula edit with reference", () => {
             testing.cellClick(C3);
 
+            testing.formulaTextClick();
+
             testing.formulaText()
-                .click()
-                .wait(FORMULA_TEXT_CLICK_WAIT)
                 .type("{selectall}=1+2+3{enter}");
 
             testing.cellClick(D4);
 
             testing.formulaText()
-                .click()
-                .wait(FORMULA_TEXT_CLICK_WAIT)
                 .type("{selectall}=C3+10{enter}");
 
             testing.cellFormattedTextCheck(D4, "16.");
@@ -84,9 +77,9 @@ describe(
         it("Cell formula edit, update hash cell reference", () => {
             testing.cellClick(C3);
 
+            testing.formulaTextClick();
+
             testing.formulaText()
-                .click()
-                .wait(FORMULA_TEXT_CLICK_WAIT)
                 .type("{selectall}=1+2+3{enter}");
 
             cy.window()
@@ -98,8 +91,6 @@ describe(
             testing.wait();
 
             testing.formulaText()
-                .click()
-                .wait(FORMULA_TEXT_CLICK_WAIT)
                 .type("{selectall}=4+5{enter}");
 
             testing.cellFormattedTextCheck(D4, "9.");
@@ -117,25 +108,10 @@ describe(
                 .should("have.focus");
         });
 
-        it("Cell hash append formula", () => {
-            testing.cellClick(C3);
-
-            testing.wait(FORMULA_TEXT_CLICK_WAIT);
-
-            testing.hashAppend("/formula");
-
-            testing.wait(FORMULA_TEXT_CLICK_WAIT);
-
-            testing.formulaText()
-                .should("have.focus");
-        });
-
         it("Cell hash append formula has focus", () => {
             testing.cellClick(C3);
 
             testing.hashAppend("/formula");
-
-            testing.wait(FORMULA_TEXT_CLICK_WAIT);
 
             testing.formulaText()
                 .should("have.focus");
@@ -227,9 +203,9 @@ describe(
         it("Cell outside viewport", () => {
             testing.hashAppend("/cell/T1");
 
+            testing.formulaTextClick();
+
             testing.formulaText()
-                .click()
-                .wait(FORMULA_TEXT_CLICK_WAIT)
                 .type("{selectall}=234{enter}")
                 .blur();
 
@@ -241,9 +217,9 @@ describe(
         it("Cell outside viewport vertical", () => {
             testing.hashAppend("/cell/A30");
 
+            testing.formulaTextClick();
+
             testing.formulaText()
-                .click()
-                .wait(FORMULA_TEXT_CLICK_WAIT)
                 .type("{selectall}=234{enter}")
                 .blur();
 
@@ -255,9 +231,9 @@ describe(
         it("Cell outside viewport horiz & vertical", () => {
             testing.hashAppend("/cell/T30");
 
+            testing.formulaTextClick();
+
             testing.formulaText()
-                .click()
-                .wait(FORMULA_TEXT_CLICK_WAIT)
                 .type("{selectall}=234{enter}")
                 .blur();
 
@@ -269,18 +245,18 @@ describe(
         it("Cell outside viewport and reload", () => {
             testing.hashAppend("/cell/M1");
 
+            testing.formulaTextClick();
+
             testing.formulaText()
-                .click()
-                .wait(FORMULA_TEXT_CLICK_WAIT)
                 .type("{selectall}=123{enter}")
                 .blur();
 
             testing.hashOnlyIdAndName();
             testing.hashAppend("/cell/T1");
 
+            testing.formulaTextClick();
+
             testing.formulaText()
-                .click()
-                .wait(FORMULA_TEXT_CLICK_WAIT)
                 .type("{selectall}=234{enter}")
                 .blur();
 
@@ -294,9 +270,9 @@ describe(
         it("Cell outside viewport horiz & vert and reload", () => {
             testing.hashAppend("/cell/M10");
 
+            testing.formulaTextClick();
+
             testing.formulaText()
-                .click()
-                .wait(FORMULA_TEXT_CLICK_WAIT)
                 .type("{selectall}=123{enter}")
                 .blur();
 
@@ -304,9 +280,9 @@ describe(
 
             testing.hashAppend("/cell/T20");
 
+            testing.formulaTextClick();
+
             testing.formulaText()
-                .click()
-                .wait(FORMULA_TEXT_CLICK_WAIT)
                 .type("{selectall}=234{enter}")
                 .blur();
 
@@ -564,9 +540,9 @@ describe(
         it("Cell select delete hash", () => {
             testing.cellClick(B2);
 
+            testing.formulaTextClick();
+
             testing.formulaText()
-                .click()
-                .wait(FORMULA_TEXT_CLICK_WAIT)
                 .type("{selectall}'Deleted{enter}");
 
             testing.cellClick(B2);
@@ -584,23 +560,23 @@ describe(
         it("Cell range select delete hash", () => {
             testing.cellClick(A1);
 
+            testing.formulaTextClick();
+
             testing.formulaText()
-                .click()
-                .wait(FORMULA_TEXT_CLICK_WAIT)
                 .type("{selectall}'NotDeleted{enter}");
 
             testing.cellClick(C3);
 
+            testing.formulaTextClick();
+
             testing.formulaText()
-                .click()
-                .wait(FORMULA_TEXT_CLICK_WAIT)
                 .type("{selectall}'DeletedC3{enter}");
 
             testing.cellClick(B2);
 
+            testing.formulaTextClick();
+
             testing.formulaText()
-                .click()
-                .wait(FORMULA_TEXT_CLICK_WAIT)
                 .type("{selectall}'DeletedB2{enter}");
 
             testing.cellClick(B2);
