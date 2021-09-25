@@ -224,6 +224,9 @@ export default class SpreadsheetTesting {
         this.cell(cellReference)
             .click()
             .should("have.focus");
+
+        this.hash()
+            .should('match', new RegExp("\/.*\/.*\/cell\/" + cellReference + "(.*)", 'i'));
     }
 
     cellFormattedTextCheck(cellReference, text) {
