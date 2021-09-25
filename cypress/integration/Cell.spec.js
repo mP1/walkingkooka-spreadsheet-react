@@ -33,18 +33,6 @@ describe(
 
         it("Cell viewport cell click", () => {
             testing.cellClick(B2);
-
-            testing.hash()
-                .should('match', /.*\/Untitled\/cell\/B2/);
-        });
-
-        it("Cell viewport cell click after editing name", () => {
-            testing.spreadsheetNameClick();
-
-            testing.cellClick(B2);
-
-            testing.hash()
-                .should('match', /.*\/Untitled\/cell\/B2/);
         });
 
         // @see https://github.com/mP1/walkingkooka-spreadsheet-react/issues/1256
@@ -63,8 +51,6 @@ describe(
 
         it("Cell formula edit ENTER saves", () => {
             testing.cellClick(B2);
-
-            testing.hash().should('match', /.*\/Untitled\/cell\/B2/)
 
             testing.formulaText()
                 .click()
@@ -147,8 +133,6 @@ describe(
         it("Cell hash append formula has focus", () => {
             testing.cellClick(C3);
 
-            testing.wait(FORMULA_TEXT_CLICK_WAIT);
-
             testing.hashAppend("/formula");
 
             testing.wait(FORMULA_TEXT_CLICK_WAIT);
@@ -174,11 +158,9 @@ describe(
         it("Cell click columns & rows selected", () => {
             testing.cellClick(B2);
 
-            testing.hash()
-                .should('match', /.*\/.*\/cell\/B2/);
-
             testing.column("B")
                 .should("have.css", "background-color", SELECTED_COLOR);
+
             testing.row("2")
                 .should("have.css", "background-color", SELECTED_COLOR);
         });
@@ -234,9 +216,6 @@ describe(
 
         it("Cell select and hit ESC loses viewport cell focus", () => {
             testing.cellClick(A3);
-
-            testing.hash()
-                .should('match', /.*\/.*\/cell\/A3/);
 
             testing.cell(A3)
                 .type("{esc}");

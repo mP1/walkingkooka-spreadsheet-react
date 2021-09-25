@@ -489,18 +489,12 @@ describe(
         it("Label mapping update, refreshes viewport", () => {
             testing.cellClick(A1);
 
-            testing.hash()
-                .should('match', /.*\/Untitled\/cell\/A1/)
-
             testing.formulaText()
                 .click()
                 .wait(FORMULA_TEXT_CLICK_WAIT)
                 .type("{selectall}=11{enter}");
 
             testing.cellClick(B2);
-
-            testing.hash()
-                .should('match', /.*\/Untitled\/cell\/B2/)
 
             testing.formulaText()
                 .click()
@@ -521,8 +515,6 @@ describe(
                 .click();
 
             testing.cellClick(C3);
-
-            testing.hash().should('match', /.*\/Untitled\/cell\/C3/)
 
             testing.formulaText()
                 .click()
