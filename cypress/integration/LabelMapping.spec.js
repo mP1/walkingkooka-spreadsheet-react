@@ -192,7 +192,7 @@ describe(
             const referenceText = "!InvalidReference";
 
             testing.labelMappingReferenceTextField()
-                .type(referenceText);
+                .type("{selectall}" + referenceText);
 
             labelMappingDialogCheck(
                 "Label: " + LABEL,
@@ -209,7 +209,7 @@ describe(
             const referenceText = "A!InvalidReference";
 
             testing.labelMappingReferenceTextField()
-                .type(referenceText);
+                .type("{selectall}" + referenceText);
 
             labelMappingDialogCheck(
                 "Label: " + LABEL,
@@ -226,7 +226,7 @@ describe(
             const referenceText = LABEL;
 
             testing.labelMappingReferenceTextField()
-                .type(referenceText);
+                .type("{selectall}" + referenceText);
 
             labelMappingDialogCheck(
                 "Label: " + LABEL,
@@ -242,7 +242,7 @@ describe(
 
             const referenceText = "B2";
             testing.labelMappingReferenceTextField()
-                .type(referenceText);
+                .type("{selectall}" + referenceText);
 
             labelMappingDialogCheck(
                 "Label: " + LABEL,
@@ -297,7 +297,7 @@ describe(
 
             const referenceText = "B2";
             testing.labelMappingReferenceTextField()
-                .type(referenceText);
+                .type("{selectall}" + referenceText);
 
             const labelText = "Label456";
 
@@ -320,7 +320,7 @@ describe(
 
             const referenceText = "B2";
             testing.labelMappingReferenceTextField()
-                .type(referenceText + "{Enter}");
+                .type("{selectall}" + referenceText + "{Enter}");
 
             testing.labelMappingLabelSaveButton().click();
 
@@ -338,7 +338,7 @@ describe(
 
             const referenceText = "B2";
             testing.labelMappingReferenceTextField()
-                .type(referenceText);
+                .type("{selectall}" + referenceText);
 
             testing.labelMappingLabelSaveButton()
                 .click();
@@ -357,7 +357,7 @@ describe(
 
             const referenceText = "b2";
             testing.labelMappingReferenceTextField()
-                .type(referenceText);
+                .type("{selectall}" + referenceText);
 
             testing.labelMappingLabelSaveButton()
                 .click();
