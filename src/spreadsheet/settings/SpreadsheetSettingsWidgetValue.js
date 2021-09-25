@@ -17,7 +17,6 @@ export default class SpreadsheetSettingsWidgetValue extends React.Component {
             {
                 id: PropTypes.string, // id used by cypress tests
                 value: valueType, // The value being displayed/edited
-                showDefaultButton: PropTypes.bool.isRequired, // false means the default button will not be shown
                 defaultValue: valueType, // This value is set when the default button is clicked.
                 defaultValueFormatter: PropTypes.func.isRequired, // Used to convert the default value if one is present into text
                 setValue: PropTypes.func.isRequired, // if present editing/updates to the value are supported.
