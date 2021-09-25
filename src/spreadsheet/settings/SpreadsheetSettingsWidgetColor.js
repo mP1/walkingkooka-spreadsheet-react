@@ -40,7 +40,7 @@ export default class SpreadsheetSettingsWidgetColor extends SpreadsheetSettingsW
 }
 
 SpreadsheetSettingsWidgetColor.propTypes = SpreadsheetSettingsWidgetValue.createPropTypes(
-    PropTypes.string,
+    PropTypes.instanceOf(Color),
     {
         notificationShow: PropTypes.func.isRequired
     }
