@@ -105,6 +105,14 @@ export default class SpreadsheetTesting {
         return this.getById(SpreadsheetFormulaWidget.TEXT_FIELD_ID);
     }
 
+    formulaTextClick() {
+        this.formulaText()
+            .click();
+
+        this.hash()
+            .should('match', /\/.*\/.*\/cell\/.*\/formula(\/.*)*/);
+    }
+
     labelMappingLabelTextField() {
         return this.getById(SpreadsheetLabelMappingWidget.LABEL_TEXT_FIELD_ID);
     }

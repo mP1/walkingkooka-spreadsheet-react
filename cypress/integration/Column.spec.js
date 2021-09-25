@@ -9,8 +9,6 @@ const B1 = SpreadsheetCellReference.parse("B1");
 const C3 = SpreadsheetCellReference.parse("C3");
 const E5 = SpreadsheetCellReference.parse("E5");
 
-const FORMULA_TEXT_CLICK_WAIT = 50;
-
 const SELECTED_COLOR = "rgb(68, 68, 68)";
 
 describe(
@@ -190,9 +188,9 @@ describe(
         it("Column select delete hash", () => {
             testing.cellClick(E5);
 
+            testing.formulaTextClick();
+
             testing.formulaText()
-                .click()
-                .wait(FORMULA_TEXT_CLICK_WAIT)
                 .type("{selectall}'Moved{enter}");
 
             testing.column("B")
@@ -210,9 +208,9 @@ describe(
         it("Column range select delete hash", () => {
             testing.cellClick(E5);
 
+            testing.formulaTextClick();
+
             testing.formulaText()
-                .click()
-                .wait(FORMULA_TEXT_CLICK_WAIT)
                 .type("{selectall}'Moved{enter}");
 
             testing.column("B")
@@ -232,9 +230,9 @@ describe(
         it("Column select insert-after hash", () => {
             testing.cellClick(E5);
 
+            testing.formulaTextClick();
+
             testing.formulaText()
-                .click()
-                .wait(FORMULA_TEXT_CLICK_WAIT)
                 .type("{selectall}'Moved{enter}");
 
             testing.column("B")
@@ -252,9 +250,9 @@ describe(
         it("Column range select insert-after hash", () => {
             testing.cellClick(E5);
 
+            testing.formulaTextClick();
+
             testing.formulaText()
-                .click()
-                .wait(FORMULA_TEXT_CLICK_WAIT)
                 .type("{selectall}'Moved{enter}");
 
             testing.column("B")
@@ -274,9 +272,9 @@ describe(
         it("Column select insert-before hash", () => {
             testing.cellClick(E5);
 
+            testing.formulaTextClick();
+
             testing.formulaText()
-                .click()
-                .wait(FORMULA_TEXT_CLICK_WAIT)
                 .type("{selectall}'Moved{enter}");
 
             testing.column("B")
@@ -294,9 +292,9 @@ describe(
         it("Column range select insert-before hash", () => {
             testing.cellClick(E5);
 
+            testing.formulaTextClick();
+
             testing.formulaText()
-                .click()
-                .wait(FORMULA_TEXT_CLICK_WAIT)
                 .type("{selectall}'Moved{enter}");
 
             testing.column("B")
@@ -341,9 +339,9 @@ describe(
         it("Column context menu click insert before 2", () => {
             testing.cellClick(C3);
 
+            testing.formulaTextClick();
+
             testing.formulaText()
-                .click()
-                .wait(FORMULA_TEXT_CLICK_WAIT)
                 .type("{selectall}'Moved{enter}")
                 .blur();
 
@@ -369,9 +367,9 @@ describe(
         it("Column context menu click insert before 1", () => {
             testing.cellClick(C3);
 
+            testing.formulaTextClick();
+
             testing.formulaText()
-                .click()
-                .wait(FORMULA_TEXT_CLICK_WAIT)
                 .type("{selectall}'Moved{enter}")
                 .blur();
 
@@ -396,17 +394,17 @@ describe(
         it("Column context menu click insert after 1", () => {
             testing.cellClick(A1);
 
+            testing.formulaTextClick();
+
             testing.formulaText()
-                .click()
-                .wait(FORMULA_TEXT_CLICK_WAIT)
                 .type("{selectall}'Never{enter}")
                 .blur();
 
             testing.cellClick(C3);
 
+            testing.formulaTextClick();
+
             testing.formulaText()
-                .click()
-                .wait(FORMULA_TEXT_CLICK_WAIT)
                 .type("{selectall}'Moved{enter}")
                 .blur();
 
@@ -432,17 +430,17 @@ describe(
         it("Column context menu click insert after 2", () => {
             testing.cellClick(A1);
 
+            testing.formulaTextClick();
+
             testing.formulaText()
-                .click()
-                .wait(FORMULA_TEXT_CLICK_WAIT)
                 .type("{selectall}'Never{enter}")
                 .blur();
 
             testing.cellClick(C3);
 
+            testing.formulaTextClick();
+
             testing.formulaText()
-                .click()
-                .wait(FORMULA_TEXT_CLICK_WAIT)
                 .type("{selectall}'Moved{enter}")
                 .blur();
 
@@ -469,9 +467,9 @@ describe(
         it("Column select then context menu click insert before 2", () => {
             testing.cellClick(C3);
 
+            testing.formulaTextClick();
+
             testing.formulaText()
-                .click()
-                .wait(FORMULA_TEXT_CLICK_WAIT)
                 .type("{selectall}'Moved{enter}")
                 .blur();
 
@@ -505,9 +503,9 @@ describe(
         it("Column select then context menu click insert before 1", () => {
             testing.cellClick(C3);
 
+            testing.formulaTextClick();
+
             testing.formulaText()
-                .click()
-                .wait(FORMULA_TEXT_CLICK_WAIT)
                 .type("{selectall}'Moved{enter}")
                 .blur();
 
@@ -541,17 +539,17 @@ describe(
         it("Column select then context menu click insert after 1", () => {
             testing.cellClick(A1);
 
+            testing.formulaTextClick();
+
             testing.formulaText()
-                .click()
-                .wait(FORMULA_TEXT_CLICK_WAIT)
                 .type("{selectall}'Never{enter}")
                 .blur();
 
             testing.cellClick(C3);
 
+            testing.formulaTextClick();
+
             testing.formulaText()
-                .click()
-                .wait(FORMULA_TEXT_CLICK_WAIT)
                 .type("{selectall}'Moved{enter}")
                 .blur();
 
@@ -586,17 +584,17 @@ describe(
         it("Column select then context menu click insert after 2", () => {
             testing.cellClick(A1);
 
+            testing.formulaTextClick();
+
             testing.formulaText()
-                .click()
-                .wait(FORMULA_TEXT_CLICK_WAIT)
                 .type("{selectall}'Never{enter}")
                 .blur();
 
             testing.cellClick(C3);
 
+            testing.formulaTextClick();
+
             testing.formulaText()
-                .click()
-                .wait(FORMULA_TEXT_CLICK_WAIT)
                 .type("{selectall}'Moved{enter}")
                 .blur();
 

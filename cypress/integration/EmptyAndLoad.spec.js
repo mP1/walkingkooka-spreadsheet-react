@@ -34,9 +34,9 @@ describe(
         it("Create empty after editing cell", () => {
             testing.cellClick("E5");
 
+            testing.formulaTextClick();
+
             testing.formulaText()
-                .click()
-                .wait(FORMULA_TEXT_CLICK_WAIT)
                 .type("{selectall}=1+2+3{enter}");
 
             testing.hashEnter("/");
@@ -53,9 +53,9 @@ describe(
 
                     testing.cellClick(A1);
 
+                    testing.formulaTextClick();
+
                     testing.formulaText()
-                        .click()
-                        .wait(FORMULA_TEXT_CLICK_WAIT)
                         .type("{selectall}=1+2+3{enter}");
 
                     testing.spreadsheetEmptyReady();
@@ -77,9 +77,9 @@ describe(
 
                     testing.cellClick(A1);
 
+                    testing.formulaTextClick();
+
                     testing.formulaText()
-                        .click()
-                        .wait(FORMULA_TEXT_CLICK_WAIT)
                         .type("{selectall}=1+2+3{enter}");
 
                     // reload previous spreadsheet and verify viewport reloaded

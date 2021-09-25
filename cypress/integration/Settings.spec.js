@@ -22,8 +22,6 @@ const FORCE_TRUE = {
 
 const A1 = SpreadsheetCellReference.parse("A1");
 
-const FORMULA_TEXT_CLICK_WAIT = 50;
-
 describe(
     "Settings",
     () => {
@@ -193,9 +191,9 @@ describe(
                 if(a1Formula){
                     testing.cellClick(A1);
 
+                    testing.formulaTextClick();
+
                     testing.formulaText()
-                        .click()
-                        .wait(FORMULA_TEXT_CLICK_WAIT)
                         .type("{selectall}" + a1Formula + "{enter}", FORCE_TRUE);
                 }
 
@@ -285,9 +283,9 @@ describe(
                 if(a1Formula){
                     testing.cellClick(A1);
 
+                    testing.formulaTextClick();
+
                     testing.formulaText()
-                        .click()
-                        .wait(FORMULA_TEXT_CLICK_WAIT)
                         .type(a1Formula + "{enter}", FORCE_TRUE);
                 }
 
@@ -322,9 +320,9 @@ describe(
                 if(a1Formula){
                     testing.cellClick(A1);
 
+                    testing.formulaTextClick();
+
                     testing.formulaText()
-                        .click()
-                        .wait(FORMULA_TEXT_CLICK_WAIT)
                         .type("{selectall}" + a1Formula + "{enter}", FORCE_TRUE);
                 }
 
@@ -380,9 +378,9 @@ describe(
                 if(a1Formula){
                     testing.cellClick(A1);
 
+                    testing.formulaTextClick();
+
                     testing.formulaText()
-                        .click()
-                        .wait(FORMULA_TEXT_CLICK_WAIT)
                         .type("{selectall}" + a1Formula + "{enter}", FORCE_TRUE);
                 }
 
@@ -749,9 +747,9 @@ describe(
 
                 testing.cellClick(A1);
 
+                testing.formulaTextClick();
+
                 testing.formulaText()
-                    .click()
-                    .wait(FORMULA_TEXT_CLICK_WAIT)
                     .type("{selectall}'ABC" + "{enter}", FORCE_TRUE);
 
                 const textFieldId = "#settings-spreadsheet-metadata-style-" + property + "-TextField";
@@ -797,9 +795,9 @@ describe(
 
                 testing.cellClick(A1);
 
+                testing.formulaTextClick();
+
                 testing.formulaText()
-                    .click()
-                    .wait(FORMULA_TEXT_CLICK_WAIT)
                     .type("{selectall}'ABC{enter}", FORCE_TRUE);
 
                 const sliderId = "#settings-spreadsheet-metadata-style-" + property + "-Slider";
@@ -849,9 +847,9 @@ describe(
 
                 testing.cellClick(A1);
 
+                testing.formulaTextClick();
+
                 testing.formulaText()
-                    .click()
-                    .wait(FORMULA_TEXT_CLICK_WAIT)
                     .type("{selectall}'ABC{enter}", FORCE_TRUE);
 
                 const sliderId = "#settings-spreadsheet-metadata-style-" + property + "-Slider";
