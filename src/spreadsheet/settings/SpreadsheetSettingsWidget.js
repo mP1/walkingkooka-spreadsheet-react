@@ -917,6 +917,7 @@ class SpreadsheetSettingsWidget extends SpreadsheetHistoryAwareStateWidget {
                         switch(property) {
                             case SpreadsheetMetadata.CURRENCY_SYMBOL:
                                 render = <SpreadsheetSettingsWidgetString id={id}
+                                                                          key={id}
                                                                           length={10}
                                                                           maxLength={10}
                                                                           value={value}
@@ -928,6 +929,7 @@ class SpreadsheetSettingsWidget extends SpreadsheetHistoryAwareStateWidget {
                                 break;
                             case SpreadsheetMetadata.DATE_FORMAT_PATTERN:
                                 render = <SpreadsheetSettingsWidgetSpreadsheetDateFormatPattern id={id}
+                                                                                                key={id}
                                                                                                 value={value}
                                                                                                 defaultValue={defaultValue}
                                                                                                 defaultValueFormatter={DEFAULT_VALUE_FORMATTER_TOSTRING}
@@ -937,6 +939,7 @@ class SpreadsheetSettingsWidget extends SpreadsheetHistoryAwareStateWidget {
                                 break;
                             case SpreadsheetMetadata.DATE_PARSE_PATTERNS:
                                 render = <SpreadsheetSettingsWidgetSpreadsheetDateParsePatterns id={id}
+                                                                                                key={id}
                                                                                                 value={value}
                                                                                                 defaultValue={defaultValue}
                                                                                                 defaultValueFormatter={DEFAULT_VALUE_FORMATTER_TOSTRING}
@@ -946,6 +949,7 @@ class SpreadsheetSettingsWidget extends SpreadsheetHistoryAwareStateWidget {
                                 break;
                             case SpreadsheetMetadata.DATETIME_FORMAT_PATTERN:
                                 render = <SpreadsheetSettingsWidgetSpreadsheetDateTimeFormatPattern id={id}
+                                                                                                    key={id}
                                                                                                     value={value}
                                                                                                     defaultValue={defaultValue}
                                                                                                     defaultValueFormatter={DEFAULT_VALUE_FORMATTER_TOSTRING}
@@ -955,6 +959,7 @@ class SpreadsheetSettingsWidget extends SpreadsheetHistoryAwareStateWidget {
                                 break;
                             case SpreadsheetMetadata.DATETIME_PARSE_PATTERNS:
                                 render = <SpreadsheetSettingsWidgetSpreadsheetDateTimeParsePatterns id={id}
+                                                                                                    key={id}
                                                                                                     value={value}
                                                                                                     defaultValue={defaultValue}
                                                                                                     defaultValueFormatter={DEFAULT_VALUE_FORMATTER_TOSTRING}
@@ -970,7 +975,7 @@ class SpreadsheetSettingsWidget extends SpreadsheetHistoryAwareStateWidget {
                             case SpreadsheetMetadata.POSITIVE_SIGN:
                             case SpreadsheetMetadata.VALUE_SEPARATOR:
                                 render = <SpreadsheetSettingsWidgetCharacter id={id}
-                                                                             key={[id, value]}
+                                                                             key={id}
                                                                              value={value}
                                                                              defaultValue={defaultValue}
                                                                              defaultValueFormatter={DEFAULT_VALUE_FORMATTER_TOSTRING}
@@ -980,6 +985,7 @@ class SpreadsheetSettingsWidget extends SpreadsheetHistoryAwareStateWidget {
                                 break;
                             case SpreadsheetMetadata.EXPRESSION_NUMBER_KIND:
                                 render = <SpreadsheetSettingsWidgetSlider id={id}
+                                                                          key={id}
                                                                           style={{
                                                                               marginLeft: "2.5em",
                                                                               marginRight: "2.5em",
@@ -1003,6 +1009,7 @@ class SpreadsheetSettingsWidget extends SpreadsheetHistoryAwareStateWidget {
                                 break;
                             case SpreadsheetMetadata.NUMBER_FORMAT_PATTERN:
                                 render = <SpreadsheetSettingsWidgetSpreadsheetNumberFormatPattern id={id}
+                                                                                                  key={id}
                                                                                                   value={value}
                                                                                                   defaultValue={defaultValue}
                                                                                                   defaultValueFormatter={DEFAULT_VALUE_FORMATTER_TOSTRING}
@@ -1012,6 +1019,7 @@ class SpreadsheetSettingsWidget extends SpreadsheetHistoryAwareStateWidget {
                                 break;
                             case SpreadsheetMetadata.NUMBER_PARSE_PATTERNS:
                                 render = <SpreadsheetSettingsWidgetSpreadsheetNumberParsePatterns id={id}
+                                                                                                  key={id}
                                                                                                   value={value}
                                                                                                   defaultValue={defaultValue}
                                                                                                   defaultValueFormatter={DEFAULT_VALUE_FORMATTER_TOSTRING}
@@ -1021,6 +1029,7 @@ class SpreadsheetSettingsWidget extends SpreadsheetHistoryAwareStateWidget {
                                 break;
                             case SpreadsheetMetadata.ROUNDING_MODE:
                                 render = <SpreadsheetSettingsWidgetDropDownList id={id}
+                                                                                key={id}
                                                                                 values={RoundingMode.values()}
                                                                                 value={value}
                                                                                 defaultValue={defaultValue}
@@ -1031,6 +1040,7 @@ class SpreadsheetSettingsWidget extends SpreadsheetHistoryAwareStateWidget {
                                 break;
                             case SpreadsheetMetadata.TEXT_FORMAT_PATTERN:
                                 render = <SpreadsheetSettingsWidgetSpreadsheetTextFormatPattern id={id}
+                                                                                                key={id}
                                                                                                 value={value}
                                                                                                 defaultValue={defaultValue}
                                                                                                 defaultValueFormatter={DEFAULT_VALUE_FORMATTER_TOSTRING}
@@ -1040,6 +1050,7 @@ class SpreadsheetSettingsWidget extends SpreadsheetHistoryAwareStateWidget {
                                 break;
                             case SpreadsheetMetadata.TIME_FORMAT_PATTERN:
                                 render = <SpreadsheetSettingsWidgetSpreadsheetTimeFormatPattern id={id}
+                                                                                                key={id}
                                                                                                 value={value}
                                                                                                 defaultValue={defaultValue}
                                                                                                 defaultValueFormatter={DEFAULT_VALUE_FORMATTER_TOSTRING}
@@ -1049,6 +1060,7 @@ class SpreadsheetSettingsWidget extends SpreadsheetHistoryAwareStateWidget {
                                 break;
                             case SpreadsheetMetadata.TIME_PARSE_PATTERNS:
                                 render = <SpreadsheetSettingsWidgetSpreadsheetTimeParsePatterns id={id}
+                                                                                                key={id}
                                                                                                 value={value}
                                                                                                 defaultValue={defaultValue}
                                                                                                 defaultValueFormatter={DEFAULT_VALUE_FORMATTER_TOSTRING}
