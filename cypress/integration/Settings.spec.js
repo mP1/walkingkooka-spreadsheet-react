@@ -286,7 +286,7 @@ describe(
                     testing.formulaTextClick();
 
                     testing.formulaText()
-                        .type(a1Formula + "{enter}", FORCE_TRUE);
+                        .type("{selectall}" + a1Formula + "{enter}", FORCE_TRUE);
                 }
 
                 const sliderId = "#settings-spreadsheet-metadata-" + property + "-Slider";
