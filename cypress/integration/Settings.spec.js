@@ -129,9 +129,6 @@ describe(
         it("Open hash after Edit cell", () => {
             testing.cellClick(A1);
 
-            cy.hash()
-                .should("matches", /.*\/Untitled\/cell\/A1/);
-
             settingsToggle();
 
             cy.hash()
@@ -241,6 +238,7 @@ describe(
 
                     if(a1CellContentDefault){
                         testing.cellClick(A1);
+
                         testing.cellFormattedTextCheck(A1, a1CellContentDefault);
                     }
 
@@ -798,6 +796,7 @@ describe(
                 settingsOpenSectionSpreadsheetMetadataStyleProperty(property);
 
                 testing.cellClick(A1);
+
                 testing.formulaText()
                     .click()
                     .wait(FORMULA_TEXT_CLICK_WAIT)
@@ -849,6 +848,7 @@ describe(
                 settingsOpenSectionSpreadsheetMetadataStyleProperty(property);
 
                 testing.cellClick(A1);
+
                 testing.formulaText()
                     .click()
                     .wait(FORMULA_TEXT_CLICK_WAIT)
