@@ -167,8 +167,8 @@ describe(
         it("Cell click should have focus", () => {
             testing.cellClick(B2);
 
-            testing.hash()
-                .should('match', /.*\/.*\/cell\/B2/);
+            testing.cell(B2)
+                .should('have.focus');
         });
 
         it("Cell click columns & rows selected", () => {
