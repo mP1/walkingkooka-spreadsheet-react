@@ -1179,18 +1179,24 @@ class SpreadsheetSettingsWidget extends SpreadsheetHistoryAwareStateWidget {
      */
     number(property, value, id, defaultValue, setValue) {
         var numberValue; // DATETIME_OFFSET is a java Long in String form, ugly hack to assume can always be converted to a number
+        var length;
+        var maxLength;
         var min;
         var max;
         var style;
 
         switch(property) {
             case SpreadsheetMetadata.DEFAULT_YEAR:
+                length = 4;
+                maxLength = 4;
                 numberValue = value;
                 min = 0;
                 max = 2000;
                 style = {};
                 break;
             case SpreadsheetMetadata.TWO_DIGIT_YEAR:
+                length = 2;
+                maxLength = 2;
                 numberValue = value;
                 min = 0;
                 max = 99;
@@ -1202,6 +1208,8 @@ class SpreadsheetSettingsWidget extends SpreadsheetHistoryAwareStateWidget {
 
         return <SpreadsheetSettingsWidgetNumber id={id}
                                                 style={style}
+                                                length={length}
+                                                maxLength={maxLength}
                                                 min={min}
                                                 max={max}
                                                 value={numberValue}
