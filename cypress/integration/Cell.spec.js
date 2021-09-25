@@ -543,7 +543,8 @@ describe(
             testing.formulaTextClick();
 
             testing.formulaText()
-                .type("{selectall}'Deleted{enter}");
+                .type("{selectall}'Deleted{enter}")
+                .blur();
 
             testing.cellClick(B2);
             testing.hashAppendWithoutCheck("/delete");
