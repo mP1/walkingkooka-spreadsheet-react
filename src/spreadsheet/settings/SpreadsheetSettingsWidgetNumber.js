@@ -34,7 +34,7 @@ export default class SpreadsheetSettingsWidgetNumber extends SpreadsheetSettings
 }
 
 SpreadsheetSettingsWidgetNumber.propTypes = SpreadsheetSettingsWidgetValue.createPropTypes(
-    PropTypes.string,
+    PropTypes.number,
     {
         length: PropTypes.number.isRequired,
         maxLength: PropTypes.number.isRequired,
