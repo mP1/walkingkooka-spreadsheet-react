@@ -4,6 +4,7 @@
 import CharSequences from "../../CharSequences.js";
 import MenuItem from "@material-ui/core/MenuItem";
 import Preconditions from "../../Preconditions.js";
+import React from 'react';
 import SpreadsheetCell from "../SpreadsheetCell.js";
 import SpreadsheetCellRange from "./SpreadsheetCellRange.js";
 import SpreadsheetCellReferenceOrLabelName from "./SpreadsheetCellReferenceOrLabelName.js";
@@ -248,7 +249,7 @@ export default class SpreadsheetCellReference extends SpreadsheetCellReferenceOr
     buildContextMenuItems(historyTokens){
         return [
             <MenuItem onClick={() => alert(this.toString())}>Click!</MenuItem>
-        ]
+        ];
     }
 
     // viewport.........................................................................................................
