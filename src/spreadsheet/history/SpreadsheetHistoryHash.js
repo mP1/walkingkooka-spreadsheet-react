@@ -1,6 +1,7 @@
 import ListenerCollection from "../../event/ListenerCollection.js";
 import MenuItem from "@material-ui/core/MenuItem";
 import Preconditions from "../../Preconditions.js";
+import React from 'react';
 import spreadsheetCellRangeCellReferenceOrLabelParse
     from "../reference/SpreadsheetCellRangeCellReferenceOrLabelParse.js";
 import SpreadsheetCellReferenceOrLabelName from "../reference/SpreadsheetCellReferenceOrLabelName.js";
