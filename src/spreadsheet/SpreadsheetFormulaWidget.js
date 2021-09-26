@@ -36,9 +36,7 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetHistoryAwareSta
     }
 
     initialStateFromProps(props) {
-        return {
-            edit: false,
-        };
+        return {};
     }
 
     componentDidMount() {
