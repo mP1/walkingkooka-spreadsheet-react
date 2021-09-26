@@ -32,7 +32,7 @@ export default function spreadsheetRangeParse(text, componentParser, rangeFactor
                 const message = e.message;
                 if(message.startsWith("Invalid character ")){
                     const at = message.indexOf(" at ");
-                    const pos = parseInt(message.substring(at + 4));
+                    const pos = parseInt(message.substring(at + 4), 10);
                     throw new Error(message.substring(0, at + 4) + (1 + pos + text.indexOf(":")));
                 }else {
                     throw e;
