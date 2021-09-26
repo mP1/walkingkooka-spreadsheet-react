@@ -194,6 +194,7 @@ describe(
                     testing.formulaTextClick();
 
                     testing.formulaText()
+                        .wait(200)
                         .type("{selectall}" + a1Formula + "{enter}", FORCE_TRUE);
                 }
 
