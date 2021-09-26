@@ -433,7 +433,6 @@ class SpreadsheetSettingsWidget extends SpreadsheetHistoryAwareStateWidget {
             TextStyle.PADDING_TOP,
             TextStyle.PADDING_RIGHT,
             TextStyle.PADDING_BOTTOM,
-            TextStyle.PADDING_BOTTOM,
         ];
     }
 
