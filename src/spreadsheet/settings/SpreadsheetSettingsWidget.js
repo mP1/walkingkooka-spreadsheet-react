@@ -570,7 +570,7 @@ class SpreadsheetSettingsWidget extends SpreadsheetHistoryAwareStateWidget {
                             case TextStyle.TAB_SIZE:
                             case TextStyle.TEXT_DECORATION_THICKNESS:
                             case TextStyle.WIDTH:
-                                render = this.sliderWithNumberTextField(property, id, value, defaultValue, setValue);
+                                render = this.lengthProperty(property, id, value, defaultValue, setValue);
                                 break;
                             default:
                                 throw new Error("Invalid default style property " + property);
@@ -586,7 +586,7 @@ class SpreadsheetSettingsWidget extends SpreadsheetHistoryAwareStateWidget {
     /**
      * Factory that creates a component that combines a slider and number text field for entry.
      */
-    sliderWithNumberTextField(property, id, value, defaultValue, setValue) {
+    lengthProperty(property, id, value, defaultValue, setValue) {
         let min = 0;
         let max = 0;
 
