@@ -570,67 +570,7 @@ class SpreadsheetSettingsWidget extends SpreadsheetHistoryAwareStateWidget {
                             case TextStyle.TAB_SIZE:
                             case TextStyle.TEXT_DECORATION_THICKNESS:
                             case TextStyle.WIDTH:
-                                let min = 0;
-                                let max = 0;
-                                switch(property) {
-                                    case TextStyle.BORDER_LEFT_WIDTH:
-                                    case TextStyle.BORDER_RIGHT_WIDTH:
-                                    case TextStyle.BORDER_BOTTOM_WIDTH:
-                                    case TextStyle.BORDER_TOP_WIDTH:
-                                        max = 2;
-                                        break;
-                                    case TextStyle.HEIGHT:
-                                        min = 20;
-                                        max = 30;
-                                        break;
-                                    case TextStyle.OUTLINE_OFFSET:
-                                        max = 10;
-                                        break;
-                                    case TextStyle.PADDING_BOTTOM:
-                                    case TextStyle.PADDING_LEFT:
-                                    case TextStyle.PADDING_RIGHT:
-                                    case TextStyle.PADDING_TOP:
-                                        max = 10;
-                                        break;
-                                    case TextStyle.TAB_SIZE:
-                                        max = 10;
-                                        break;
-                                    case TextStyle.TEXT_DECORATION_THICKNESS:
-                                        max = 10;
-                                        break;
-                                    case TextStyle.WIDTH:
-                                        min = 20;
-                                        max = 200;
-                                        break;
-                                    default:
-                                        break;
-                                }
-                                const marks = [
-                                    {
-                                        value: min,
-                                        label: "" + min,
-                                    },
-                                    {
-                                        value: max,
-                                        label: "" + max,
-                                    },
-                                ];
-
-                                render = <SpreadsheetSettingsWidgetSliderWithNumberTextField id={id}
-                                                                                             style={{
-                                                                                                 marginLeft: "1em",
-                                                                                                 marginRight: "1em",
-                                                                                             }}
-                                                                                             min={min}
-                                                                                             max={max}
-                                                                                             marks={marks}
-                                                                                             step={1}
-                                                                                             value={value && value.pixelValue()}
-                                                                                             defaultValue={null != defaultValue && defaultValue.pixelValue()}
-                                                                                             defaultValueFormatter={DEFAULT_VALUE_FORMATTER_TOSTRING}
-                                                                                             defaultButtonTooltip={false}
-                                                                                             setValue={(v) => setValue(isNaN(v) ? NoneLength.INSTANCE : lengthFromJson(v + "px"))}
-                                />;
+                                render = this.sliderWithNumberTextField(property, id, value, defaultValue, setValue);
                                 break;
                             default:
                                 throw new Error("Invalid default style property " + property);
@@ -641,6 +581,74 @@ class SpreadsheetSettingsWidget extends SpreadsheetHistoryAwareStateWidget {
 
         const label = this.textStyleLabel(property);
         return this.tableRow(id, label, render, classes);
+    }
+
+    /**
+     * Factory that creates a component that combines a slider and number text field for entry.
+     */
+    sliderWithNumberTextField(property, id, value, defaultValue, setValue) {
+        let min = 0;
+        let max = 0;
+
+        switch(property) {
+            case TextStyle.BORDER_LEFT_WIDTH:
+            case TextStyle.BORDER_RIGHT_WIDTH:
+            case TextStyle.BORDER_BOTTOM_WIDTH:
+            case TextStyle.BORDER_TOP_WIDTH:
+                max = 2;
+                break;
+            case TextStyle.HEIGHT:
+                min = 20;
+                max = 30;
+                break;
+            case TextStyle.OUTLINE_OFFSET:
+                max = 10;
+                break;
+            case TextStyle.PADDING_BOTTOM:
+            case TextStyle.PADDING_LEFT:
+            case TextStyle.PADDING_RIGHT:
+            case TextStyle.PADDING_TOP:
+                max = 10;
+                break;
+            case TextStyle.TAB_SIZE:
+                max = 10;
+                break;
+            case TextStyle.TEXT_DECORATION_THICKNESS:
+                max = 10;
+                break;
+            case TextStyle.WIDTH:
+                min = 20;
+                max = 200;
+                break;
+            default:
+                break;
+        }
+        const marks = [
+            {
+                value: min,
+                label: "" + min,
+            },
+            {
+                value: max,
+                label: "" + max,
+            },
+        ];
+
+        return <SpreadsheetSettingsWidgetSliderWithNumberTextField id={id}
+                                                                   style={{
+                                                                       marginLeft: "1em",
+                                                                       marginRight: "1em",
+                                                                   }}
+                                                                   min={min}
+                                                                   max={max}
+                                                                   marks={marks}
+                                                                   step={1}
+                                                                   value={value && value.pixelValue()}
+                                                                   defaultValue={null != defaultValue && defaultValue.pixelValue()}
+                                                                   defaultValueFormatter={DEFAULT_VALUE_FORMATTER_TOSTRING}
+                                                                   defaultButtonTooltip={false}
+                                                                   setValue={(v) => setValue(isNaN(v) ? NoneLength.INSTANCE : lengthFromJson(v + "px"))}
+        />;
     }
 
     /**
