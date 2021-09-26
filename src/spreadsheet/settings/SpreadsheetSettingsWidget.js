@@ -982,7 +982,7 @@ class SpreadsheetSettingsWidget extends SpreadsheetHistoryAwareStateWidget {
                             case SpreadsheetMetadata.POSITIVE_SIGN:
                             case SpreadsheetMetadata.VALUE_SEPARATOR:
                                 render = <SpreadsheetSettingsWidgetCharacter id={id}
-                                                                             key={id}
+                                                                             key={[id, value, defaultValue]}
                                                                              value={value}
                                                                              defaultValue={defaultValue}
                                                                              defaultValueFormatter={DEFAULT_VALUE_FORMATTER_TOSTRING}
