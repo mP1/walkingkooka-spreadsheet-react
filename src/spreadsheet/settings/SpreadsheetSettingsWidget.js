@@ -481,6 +481,7 @@ class SpreadsheetSettingsWidget extends SpreadsheetHistoryAwareStateWidget {
             case TextStyle.OUTLINE_COLOR:
             case TextStyle.TEXT_DECORATION_COLOR:
                 render = <SpreadsheetSettingsWidgetColor id={id}
+                                                         key={id}
                                                          value={value}
                                                          defaultButtonTooltip={false}
                                                          defaultValue={defaultValue}
@@ -529,6 +530,7 @@ class SpreadsheetSettingsWidget extends SpreadsheetHistoryAwareStateWidget {
                     case TextStyle.WORD_WRAP:
                     case TextStyle.WRITING_MODE:
                         render = <SpreadsheetSettingsWidgetSlider id={id}
+                                                                  key={id}
                                                                   style={{
                                                                       marginLeft: "2.5em",
                                                                       marginRight: "2.5em",
@@ -543,6 +545,7 @@ class SpreadsheetSettingsWidget extends SpreadsheetHistoryAwareStateWidget {
                         break;
                     case TextStyle.FONT_FAMILY:
                         render = <SpreadsheetSettingsWidgetSlider id={id}
+                                                                  key={id}
                                                                   style={{
                                                                       marginLeft: "2.5em",
                                                                       marginRight: "2.5em",
@@ -635,6 +638,7 @@ class SpreadsheetSettingsWidget extends SpreadsheetHistoryAwareStateWidget {
         ];
 
         return <SpreadsheetSettingsWidgetSliderWithNumberTextField id={id}
+                                                                   key={id}
                                                                    style={{
                                                                        marginLeft: "1em",
                                                                        marginRight: "1em",
@@ -909,7 +913,7 @@ class SpreadsheetSettingsWidget extends SpreadsheetHistoryAwareStateWidget {
                     case SpreadsheetMetadata.MODIFIED_BY:
                     case SpreadsheetMetadata.LOCALE:
                     case SpreadsheetMetadata.STYLE:
-                        render = <span id={id}>{value ? value.toString() : ""}</span>;
+                        render = <span id={id} key={[id, value]}>{value ? value.toString() : ""}</span>;
                         break;
                     default:
                         const setValue = (v) => {
@@ -1226,6 +1230,7 @@ class SpreadsheetSettingsWidget extends SpreadsheetHistoryAwareStateWidget {
         }
 
         return <SpreadsheetSettingsWidgetNumber id={id}
+                                                key={id}
                                                 style={style}
                                                 length={length}
                                                 maxLength={maxLength}
@@ -1326,6 +1331,7 @@ class SpreadsheetSettingsWidget extends SpreadsheetHistoryAwareStateWidget {
                 break;
         }
         return <SpreadsheetSettingsWidgetSliderWithNumberTextField id={id}
+                                                                   key={id}
                                                                    style={style}
                                                                    min={min}
                                                                    max={max}
@@ -1344,6 +1350,7 @@ class SpreadsheetSettingsWidget extends SpreadsheetHistoryAwareStateWidget {
                          hover={true}>
             <TableCell className={classes.label}>{label}</TableCell>
             <TableCell id={id}
+                       key={id}
                        className={classes.value}>{value}</TableCell>
         </TableRow>;
     }
@@ -1367,8 +1374,8 @@ class SpreadsheetSettingsWidget extends SpreadsheetHistoryAwareStateWidget {
         const state = this.state;
         console.log("accordion: " + id + " sectionName: " + sectionName + " state.section: " + state.section + " expanded: " + (state.section === sectionName), "state", state);
 
-        return <Accordion key={id}
-                          id={id}
+        return <Accordion id={id}
+                          key={id}
                           expanded={state.section === sectionName}
                           onChange={(e, expanded) => this.accordionOnChange(expanded, sectionName)}>
             <AccordionSummary expandIcon={<ExpandMoreIcon id={id + "-expand-more-icon"}/>}
