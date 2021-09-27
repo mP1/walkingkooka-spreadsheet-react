@@ -78,9 +78,6 @@ describe("Row",
         it("Row range history hash", () => {
             testing.hashAppend("/row/2:3");
 
-            testing.hash()
-                .should('match', /.*\/.*\/row\/2:3/);
-
             testing.row("2")
                 .should("have.css", "background-color", SELECTED_COLOR);
             testing.row("3")
@@ -102,9 +99,6 @@ describe("Row",
         it("Row range extend top", () => {
             testing.hashAppend("/row/5");
 
-            testing.hash()
-                .should('match', /.*\/.*\/row\/5/);
-
             testing.row("5")
                 .type("{shift+uparrow}");
 
@@ -120,9 +114,6 @@ describe("Row",
 
         it("Row range extend top twice", () => {
             testing.hashAppend("/row/5");
-
-            testing.hash()
-                .should('match', /.*\/.*\/row\/5/);
 
             testing.row("5")
                 .type("{shift+uparrow}");
@@ -145,9 +136,6 @@ describe("Row",
         it("Row range extend bottom", () => {
             testing.hashAppend("/row/5");
 
-            testing.hash()
-                .should('match', /.*\/.*\/row\/5/);
-
             testing.row("5")
                 .type("{shift+downarrow}");
 
@@ -163,9 +151,6 @@ describe("Row",
 
         it("Row range extend bottom twice", () => {
             testing.hashAppend("/row/5");
-
-            testing.hash()
-                .should('match', /.*\/.*\/row\/5/);
 
             testing.row("5")
                 .type("{shift+downarrow}");
@@ -285,9 +270,6 @@ describe("Row",
 
         it("Row select then Cell", () => {
             testing.hashAppend("/row/2");
-
-            testing.hash()
-                .should('match', /.*\/.*\/row\/2/);
 
             testing.cell(A1)
                 .click();

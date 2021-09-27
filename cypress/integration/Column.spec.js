@@ -79,9 +79,6 @@ describe(
         it("Column range history hash", () => {
             testing.hashAppend("/column/B:C");
 
-            testing.hash()
-                .should('match', /.*\/.*\/column\/B:C/);
-
             testing.column("B")
                 .should("have.css", "background-color", SELECTED_COLOR);
             testing.column("C")
@@ -91,9 +88,6 @@ describe(
         it("Column range out of viewport history hash", () => {
             testing.hashAppend("/column/X:Y");
 
-            testing.hash()
-                .should('match', /.*\/.*\/column\/X:Y/);
-
             testing.column("X")
                 .should("have.css", "background-color", SELECTED_COLOR);
             testing.column("Y")
@@ -102,9 +96,6 @@ describe(
 
         it("Column range extend left", () => {
             testing.hashAppend("/column/E");
-
-            testing.hash()
-                .should('match', /.*\/.*\/column\/E/);
 
             testing.column("E")
                 .type("{shift+leftarrow}");
@@ -286,9 +277,6 @@ describe(
 
         it("Column select then Cell", () => {
             testing.hashAppend("/column/B");
-
-            testing.hash()
-                .should('match', /.*\/.*\/column\/B/);
 
             testing.cell(A1)
                 .click();
