@@ -96,59 +96,45 @@ export default class SpreadsheetColumnReference extends SpreadsheetColumnOrRowRe
 
         const menuItems = [];
 
-        const before2 = this.addSaturated(-2);
-        const before1 = this.addSaturated(-1);
+        historyTokens[SpreadsheetHistoryHash.SELECTION_ACTION] = new SpreadsheetColumnOrRowInsertBeforeHistoryHashToken(2);
 
-        if(!before2.equals(before1)){
-            historyTokens[SpreadsheetHistoryHash.SELECTION_ACTION] = new SpreadsheetColumnOrRowInsertBeforeHistoryHashToken(2);
+        menuItems.push(
+            history.menuItem(
+                "Insert 2 before",
+                SpreadsheetColumnReference.VIEWPORT_COLUMN_INSERT_BEFORE_2,
+                historyTokens
+            )
+        );
 
-            menuItems.push(
-                history.menuItem(
-                    "Insert 2 before",
-                    SpreadsheetColumnReference.VIEWPORT_COLUMN_INSERT_BEFORE_2,
-                    historyTokens
-                )
-            );
-        }
+        historyTokens[SpreadsheetHistoryHash.SELECTION_ACTION] = new SpreadsheetColumnOrRowInsertBeforeHistoryHashToken(1);
 
-        if(!before1.equals(this)){
-            historyTokens[SpreadsheetHistoryHash.SELECTION_ACTION] = new SpreadsheetColumnOrRowInsertBeforeHistoryHashToken(1);
+        menuItems.push(
+            history.menuItem(
+                "Insert 1 before",
+                SpreadsheetColumnReference.VIEWPORT_COLUMN_INSERT_BEFORE_1,
+                historyTokens
+            )
+        );
 
-            menuItems.push(
-                history.menuItem(
-                    "Insert 1 before",
-                    SpreadsheetColumnReference.VIEWPORT_COLUMN_INSERT_BEFORE_1,
-                    historyTokens
-                )
-            );
-        }
+        historyTokens[SpreadsheetHistoryHash.SELECTION_ACTION] = new SpreadsheetColumnOrRowInsertAfterHistoryHashToken(1);
 
-        const after2 = this.addSaturated(+2);
-        const after1 = this.addSaturated(+1);
+        menuItems.push(
+            history.menuItem(
+                "Insert 1 after",
+                SpreadsheetColumnReference.VIEWPORT_COLUMN_INSERT_AFTER_1,
+                historyTokens
+            )
+        );
 
-        if(!after1.equals(this)){
-            historyTokens[SpreadsheetHistoryHash.SELECTION_ACTION] = new SpreadsheetColumnOrRowInsertAfterHistoryHashToken(1);
+        historyTokens[SpreadsheetHistoryHash.SELECTION_ACTION] = new SpreadsheetColumnOrRowInsertAfterHistoryHashToken(2);
 
-            menuItems.push(
-                history.menuItem(
-                    "Insert 1 after",
-                    SpreadsheetColumnReference.VIEWPORT_COLUMN_INSERT_AFTER_1,
-                    historyTokens
-                )
-            );
-        }
-
-        if(!after2.equals(after1)){
-            historyTokens[SpreadsheetHistoryHash.SELECTION_ACTION] = new SpreadsheetColumnOrRowInsertAfterHistoryHashToken(2);
-
-            menuItems.push(
-                history.menuItem(
-                    "Insert 2 after",
-                    SpreadsheetColumnReference.VIEWPORT_COLUMN_INSERT_AFTER_2,
-                    historyTokens
-                )
-            );
-        }
+        menuItems.push(
+            history.menuItem(
+                "Insert 2 after",
+                SpreadsheetColumnReference.VIEWPORT_COLUMN_INSERT_AFTER_2,
+                historyTokens
+            )
+        );
 
         return menuItems;
     }
