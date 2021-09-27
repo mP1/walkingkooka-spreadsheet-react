@@ -188,12 +188,7 @@ describe("Row",
         // selection delete.............................................................................................
 
         it("Row select delete hash", () => {
-            testing.cellClick(E5);
-
-            testing.formulaTextClick();
-
-            testing.formulaText()
-                .type("{selectall}'Moved{enter}");
+            testing.cellFormulaEnterAndSave(E5, "'Moved");
 
             testing.row("2")
                 .click();
@@ -208,12 +203,7 @@ describe("Row",
         });
 
         it("Row range select delete hash", () => {
-            testing.cellClick(E5);
-
-            testing.formulaTextClick();
-
-            testing.formulaText()
-                .type("{selectall}'Moved{enter}");
+            testing.cellFormulaEnterAndSave(E5,"'Moved");
 
             testing.row("2")
                 .click();
@@ -230,12 +220,7 @@ describe("Row",
         // selection insert-after.............................................................................................
 
         it("Row select insert-after hash", () => {
-            testing.cellClick(E5);
-
-            testing.formulaTextClick();
-
-            testing.formulaText()
-                .type("{selectall}'Moved{enter}");
+            testing.cellFormulaEnterAndSave(E5,"'Moved");
 
             testing.row("2")
                 .click();
@@ -250,12 +235,7 @@ describe("Row",
         });
 
         it("Row range select insert-after hash", () => {
-            testing.cellClick(E5);
-
-            testing.formulaTextClick();
-
-            testing.formulaText()
-                .type("{selectall}'Moved{enter}");
+            testing.cellFormulaEnterAndSave(E5,"'Moved");
 
             testing.row("2")
                 .click();
@@ -272,12 +252,7 @@ describe("Row",
         // selection insert-before.............................................................................................
 
         it("Row select insert-before hash", () => {
-            testing.cellClick(E5);
-
-            testing.formulaTextClick();
-
-            testing.formulaText()
-                .type("{selectall}'Moved{enter}");
+            testing.cellFormulaEnterAndSave(E5,"'Moved");
 
             testing.row("2")
                 .click();
@@ -292,12 +267,7 @@ describe("Row",
         });
 
         it("Row range select insert-before hash", () => {
-            testing.cellClick(E5);
-
-            testing.formulaTextClick();
-
-            testing.formulaText()
-                .type("{selectall}'Moved{enter}");
+            testing.cellFormulaEnterAndSave(E5,"'Moved");
 
             testing.row("2")
                 .click();
