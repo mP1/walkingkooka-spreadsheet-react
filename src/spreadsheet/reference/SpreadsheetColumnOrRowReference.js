@@ -1,10 +1,17 @@
 import Preconditions from "../../Preconditions.js";
 import React from "react";
 import SpreadsheetColumnOrRowDeleteHistoryHashToken from "../history/SpreadsheetColumnOrRowDeleteHistoryHashToken.js";
+import SpreadsheetColumnOrRowInsertAfterHistoryHashToken
+    from "../history/SpreadsheetColumnOrRowInsertAfterHistoryHashToken.js";
+import SpreadsheetColumnOrRowInsertBeforeHistoryHashToken
+    from "../history/SpreadsheetColumnOrRowInsertBeforeHistoryHashToken.js";
 import SpreadsheetColumnReference from "./SpreadsheetColumnReference.js";
+import SpreadsheetHistoryHashTokens from "../history/SpreadsheetHistoryHashTokens.js";
 import SpreadsheetReferenceKind from "./SpreadsheetReferenceKind";
 import SpreadsheetSelection from "./SpreadsheetSelection.js";
+import SystemObject from "../../SystemObject.js";
 import TableCell from "@material-ui/core/TableCell";
+
 
 // default header cell styles
 const headerCell = {
@@ -127,6 +134,95 @@ export default class SpreadsheetColumnOrRowReference extends SpreadsheetSelectio
     }
 
     // viewport.........................................................................................................
+
+    // context menu events..............................................................................................
+
+    // delete
+    // insert 1 before
+    // insert 2 before
+    // insert 1 after
+    // insert 2 after
+    buildContextMenuItems(historyTokens, history) {
+        historyTokens[SpreadsheetHistoryHashTokens.SELECTION] = this;
+        historyTokens[SpreadsheetHistoryHashTokens.SELECTION_ACTION] = null;
+        historyTokens[SpreadsheetHistoryHashTokens.SELECTION_ANCHOR] = null;
+
+        const menuItems = [];
+
+        historyTokens[SpreadsheetHistoryHashTokens.SELECTION_ACTION] = new SpreadsheetColumnOrRowInsertBeforeHistoryHashToken(2);
+
+        menuItems.push(
+            history.menuItem(
+                this.viewportInsertBefore2Text(),
+                this.viewportInsertBefore2Id(),
+                historyTokens
+            )
+        );
+
+        historyTokens[SpreadsheetHistoryHashTokens.SELECTION_ACTION] = new SpreadsheetColumnOrRowInsertBeforeHistoryHashToken(1);
+
+        menuItems.push(
+            history.menuItem(
+                this.viewportInsertBefore1Text(),
+                this.viewportInsertBefore1Id(),
+                historyTokens
+            )
+        );
+
+        historyTokens[SpreadsheetHistoryHashTokens.SELECTION_ACTION] = new SpreadsheetColumnOrRowInsertAfterHistoryHashToken(1);
+
+        menuItems.push(
+            history.menuItem(
+                this.viewportInsertAfter1Text(),
+                this.viewportInsertAfter1Id(),
+                historyTokens
+            )
+        );
+
+        historyTokens[SpreadsheetHistoryHashTokens.SELECTION_ACTION] = new SpreadsheetColumnOrRowInsertAfterHistoryHashToken(2);
+
+        menuItems.push(
+            history.menuItem(
+                this.viewportInsertAfter2Text(),
+                this.viewportInsertAfter2Id(),
+                historyTokens
+            )
+        );
+
+        return menuItems;
+    }
+
+    viewportInsertAfter1Id() {
+        SystemObject.throwUnsupportedOperation();
+    }
+
+    viewportInsertAfter1Text() {
+        SystemObject.throwUnsupportedOperation();
+    }
+
+    viewportInsertAfter2Id() {
+        SystemObject.throwUnsupportedOperation();
+    }
+
+    viewportInsertAfter2Text() {
+        SystemObject.throwUnsupportedOperation();
+    }
+
+    viewportInsertBefore1Id() {
+        SystemObject.throwUnsupportedOperation();
+    }
+
+    viewportInsertBefore1Text() {
+        SystemObject.throwUnsupportedOperation();
+    }
+
+    viewportInsertBefore2Id() {
+        SystemObject.throwUnsupportedOperation();
+    }
+
+    viewportInsertBefore2Text() {
+        SystemObject.throwUnsupportedOperation();
+    }
 
     viewportEnter(giveFormulaFocus) {
         // do nothing if ENTER selected on column or row.

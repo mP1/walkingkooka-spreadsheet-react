@@ -1,11 +1,16 @@
 /// <reference types="cypress" />
 
 import SpreadsheetCellReference from "../../src/spreadsheet/reference/SpreadsheetCellReference.js";
+import SpreadsheetRowReference from "../../src/spreadsheet/reference/SpreadsheetRowReference.js";
 import SpreadsheetTesting from "./SpreadsheetTesting.js";
 
 const A1 = SpreadsheetCellReference.parse("A1");
 const A2 = SpreadsheetCellReference.parse("A2");
+const C3 = SpreadsheetCellReference.parse("C3");
 const E5 = SpreadsheetCellReference.parse("E5");
+
+const ROW_2 = SpreadsheetRowReference.parse("2");
+const ROW_3 = SpreadsheetRowReference.parse("3");
 
 const SELECTED_COLOR = "rgb(68, 68, 68)";
 
@@ -319,6 +324,221 @@ describe("Row",
 
             testing.hash()
                 .should('match', /.*\/.*\/cell\/A1/);
+        });
+
+        // row context menu...........................................................................................
+
+        it("Row context menu", () => {
+            testing.contextMenu(ROW_3.viewportId());
+
+            testing.viewportContextMenu()
+                .should("be.visible")
+                .find("LI")
+                .should("have.length", 4);
+        });
+
+        it("Row context menu click insert before 2", () => {
+            testing.cellFormulaEnterAndSave(C3, "'Moved");
+
+            testing.contextMenu(ROW_3.viewportId());
+
+            testing.viewportContextMenu()
+                .should("be.visible")
+                .find("#" + SpreadsheetRowReference.VIEWPORT_INSERT_BEFORE_2_ID)
+                .should("include.text", "Insert 2 before");
+
+            cy.get("#" + SpreadsheetRowReference.VIEWPORT_INSERT_BEFORE_2_ID)
+                .click();
+
+            testing.viewportContextMenu()
+                .should("not.be.visible");
+
+            testing.cellFormattedTextCheck("C5", "Moved");
+            testing.cellFormattedTextCheck(C3, "");
+        });
+
+        it("Row context menu click insert before 1", () => {
+            testing.cellFormulaEnterAndSave(C3, "'Moved");
+
+            testing.contextMenu(ROW_3.viewportId());
+
+            testing.viewportContextMenu()
+                .should("be.visible")
+                .find("#" + SpreadsheetRowReference.VIEWPORT_INSERT_BEFORE_1_ID)
+                .should("include.text", "Insert 1 before");
+
+            cy.get("#" + SpreadsheetRowReference.VIEWPORT_INSERT_BEFORE_1_ID)
+                .click();
+
+            testing.viewportContextMenu()
+                .should("not.be.visible");
+
+            testing.cellFormattedTextCheck("C4", "Moved");
+            testing.cellFormattedTextCheck(C3, "");
+        });
+
+        it("Row context menu click insert after 1", () => {
+            testing.cellFormulaEnterAndSave(A1, "'Never");
+            testing.cellFormulaEnterAndSave(C3, "'Moved");
+
+            testing.contextMenu(ROW_2.viewportId());
+
+            testing.viewportContextMenu()
+                .should("be.visible")
+                .find("#" + SpreadsheetRowReference.VIEWPORT_INSERT_AFTER_1_ID)
+                .should("include.text", "Insert 1 after");
+
+            cy.get("#" + SpreadsheetRowReference.VIEWPORT_INSERT_AFTER_1_ID)
+                .click();
+
+            testing.viewportContextMenu()
+                .should("not.be.visible");
+
+            testing.cellFormattedTextCheck("A1", "Never");
+            testing.cellFormattedTextCheck("C4", "Moved");
+            testing.cellFormattedTextCheck(C3, "");
+        });
+
+        it("Row context menu click insert after 2", () => {
+            testing.cellFormulaEnterAndSave(A1, "'Never");
+            testing.cellFormulaEnterAndSave(C3, "'Moved");
+
+            testing.contextMenu(ROW_2.viewportId());
+
+            testing.viewportContextMenu()
+                .should("be.visible")
+                .find("#" + SpreadsheetRowReference.VIEWPORT_INSERT_AFTER_2_ID)
+                .should("include.text", "Insert 2 after");
+
+            cy.get("#" + SpreadsheetRowReference.VIEWPORT_INSERT_AFTER_2_ID)
+                .click();
+
+            testing.viewportContextMenu()
+                .should("not.be.visible");
+
+            testing.cellFormattedTextCheck("A1", "Never");
+            testing.cellFormattedTextCheck("C5", "Moved");
+            testing.cellFormattedTextCheck(C3, "");
+        });
+
+        it("Row select then context menu click insert before 2", () => {
+            testing.cellFormulaEnterAndSave(C3, "'Moved");
+
+            testing.row("3")
+                .click();
+
+            testing.hash()
+                .should('match', /.*\/Untitled\/row\/3/);
+
+            testing.contextMenu(ROW_3.viewportId());
+
+            testing.viewportContextMenu()
+                .should("be.visible")
+                .find("#" + SpreadsheetRowReference.VIEWPORT_INSERT_BEFORE_2_ID)
+                .should("include.text", "Insert 2 before");
+
+            cy.get("#" + SpreadsheetRowReference.VIEWPORT_INSERT_BEFORE_2_ID)
+                .click();
+
+            testing.viewportContextMenu()
+                .should("not.be.visible");
+
+            testing.hash()
+                .should('match', /.*\/Untitled\/row\/5/);
+
+            testing.cellFormattedTextCheck("C5", "Moved");
+            testing.cellFormattedTextCheck(C3, "");
+        });
+
+        it("Row select then context menu click insert before 1", () => {
+            testing.cellFormulaEnterAndSave(C3, "'Moved");
+
+            testing.row("3")
+                .click();
+
+            testing.hash()
+                .should('match', /.*\/Untitled\/row\/3/);
+
+            testing.contextMenu(ROW_3.viewportId());
+
+            testing.viewportContextMenu()
+                .should("be.visible")
+                .find("#" + SpreadsheetRowReference.VIEWPORT_INSERT_BEFORE_1_ID)
+                .should("include.text", "Insert 1 before");
+
+            cy.get("#" + SpreadsheetRowReference.VIEWPORT_INSERT_BEFORE_1_ID)
+                .click();
+
+            testing.viewportContextMenu()
+                .should("not.be.visible");
+
+            testing.hash()
+                .should('match', /.*\/Untitled\/row\/4/);
+
+            testing.cellFormattedTextCheck("C4", "Moved");
+            testing.cellFormattedTextCheck(C3, "");
+        });
+
+        it("Row select then context menu click insert after 1", () => {
+            testing.cellFormulaEnterAndSave(A1, "'Never");
+            testing.cellFormulaEnterAndSave(C3, "'Moved");
+
+            testing.row("2")
+                .click();
+
+            testing.hash()
+                .should('match', /.*\/Untitled\/row\/2/);
+
+            testing.contextMenu(ROW_2.viewportId());
+
+            testing.viewportContextMenu()
+                .should("be.visible")
+                .find("#" + SpreadsheetRowReference.VIEWPORT_INSERT_AFTER_1_ID)
+                .should("include.text", "Insert 1 after");
+
+            cy.get("#" + SpreadsheetRowReference.VIEWPORT_INSERT_AFTER_1_ID)
+                .click();
+
+            testing.viewportContextMenu()
+                .should("not.be.visible");
+
+            testing.hash()
+                .should('match', /.*\/Untitled\/row\/2/);
+
+            testing.cellFormattedTextCheck("A1", "Never");
+            testing.cellFormattedTextCheck("C4", "Moved");
+            testing.cellFormattedTextCheck(C3, "");
+        });
+
+        it("Row select then context menu click insert after 2", () => {
+            testing.cellFormulaEnterAndSave(A1, "'Never");
+            testing.cellFormulaEnterAndSave(C3, "'Moved");
+
+            testing.row("2")
+                .click();
+
+            testing.hash()
+                .should('match', /.*\/Untitled\/row\/2/);
+
+            testing.contextMenu(ROW_2.viewportId());
+
+            testing.viewportContextMenu()
+                .should("be.visible")
+                .find("#" + SpreadsheetRowReference.VIEWPORT_INSERT_AFTER_2_ID)
+                .should("include.text", "Insert 2 after");
+
+            cy.get("#" + SpreadsheetRowReference.VIEWPORT_INSERT_AFTER_2_ID)
+                .click();
+
+            testing.viewportContextMenu()
+                .should("not.be.visible");
+
+            testing.hash()
+                .should('match', /.*\/Untitled\/row\/2/);
+
+            testing.cellFormattedTextCheck("A1", "Never");
+            testing.cellFormattedTextCheck("C5", "Moved");
+            testing.cellFormattedTextCheck(C3, "");
         });
     }
 );
