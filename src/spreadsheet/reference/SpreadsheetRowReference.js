@@ -3,7 +3,7 @@ import Preconditions from "../../Preconditions.js";
 import SpreadsheetCellReference from "./SpreadsheetCellReference.js";
 import SpreadsheetColumnOrRowReference from "./SpreadsheetColumnOrRowReference";
 import SpreadsheetColumnReference from "./SpreadsheetColumnReference.js";
-import SpreadsheetHistoryHash from "../history/SpreadsheetHistoryHash.js";
+import SpreadsheetHistoryHashTokens from "../history/SpreadsheetHistoryHashTokens.js";
 import SpreadsheetReferenceKind from "./SpreadsheetReferenceKind";
 import SpreadsheetRowReferenceRange from "./SpreadsheetRowReferenceRange.js";
 import SpreadsheetSelection from "./SpreadsheetSelection.js";
@@ -81,20 +81,53 @@ export default class SpreadsheetRowReference extends SpreadsheetColumnOrRowRefer
 
     // context menu events..............................................................................................
 
-    buildContextMenuItems(historyTokens){
-        // nop
-    }
-
     toLoadCellsQueryStringParameterSelectionType() {
         return "row";
     }
+
+    viewportInsertAfter1Id() {
+        return SpreadsheetRowReference.VIEWPORT_INSERT_AFTER_1_ID;
+    }
+
+    viewportInsertAfter1Text() {
+        return "Insert 1 after";
+    }
+
+    viewportInsertAfter2Id() {
+        return SpreadsheetRowReference.VIEWPORT_INSERT_AFTER_2_ID;
+    }
+
+    viewportInsertAfter2Text() {
+        return "Insert 2 after";
+    }
+
+    viewportInsertBefore1Id() {
+        return SpreadsheetRowReference.VIEWPORT_INSERT_BEFORE_1_ID;
+    }
+
+    viewportInsertBefore1Text() {
+        return "Insert 1 before";
+    }
+
+    viewportInsertBefore2Id() {
+        return SpreadsheetRowReference.VIEWPORT_INSERT_BEFORE_2_ID;
+    }
+
+    viewportInsertBefore2Text() {
+        return "Insert 2 before";
+    }
+    
+    static VIEWPORT_INSERT_BEFORE_2_ID = "viewport-row-insert-before-2";
+    static VIEWPORT_INSERT_BEFORE_1_ID = "viewport-row-insert-before-1";
+    static VIEWPORT_INSERT_AFTER_1_ID = "viewport-row-insert-after-1";
+    static VIEWPORT_INSERT_AFTER_2_ID = "viewport-row-insert-after-2";
 
     viewportId() {
         return "viewport-row-" + this.toString().toUpperCase();
     }
 
     toHistoryHashToken() {
-        return SpreadsheetHistoryHash.ROW + "/" + this;
+        return SpreadsheetHistoryHashTokens.ROW + "/" + this;
     }
 
     toDeleteUrl() {
