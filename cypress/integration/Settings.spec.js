@@ -29,19 +29,8 @@ describe(
         const testing = new SpreadsheetTesting(cy);
 
         // helper that includes some waits to make formula text entry more reliable.
-        function formulaTextEntry(a1Formula) {
-            testing.cellClick(A1);
-
-            testing.wait(100); // wait for formula text to load.
-
-            testing.formulaTextClick();
-
-            testing.wait(200);
-
-            testing.formulaText()
-                .type("{selectall}" + a1Formula + "{enter}", FORCE_TRUE);
-
-            testing.wait(200); // wait for save to complete.
+        function formulaTextEnterAndSave(a1Formula) {
+            testing.cellFormulaEnterAndSave(A1, a1Formula);
         }
 
         beforeEach(() => {
@@ -205,7 +194,7 @@ describe(
                 }
 
                 if(a1Formula){
-                    formulaTextEntry(a1Formula);
+                    formulaTextEnterAndSave(a1Formula);
                 }
 
                 const textFieldId = "#settings-spreadsheet-metadata-" + property + "-TextField";
@@ -292,7 +281,7 @@ describe(
                 settingsOpenSectionSpreadsheetMetadataProperty(property);
 
                 if(a1Formula){
-                    formulaTextEntry(a1Formula);
+                    formulaTextEnterAndSave(a1Formula);
                 }
 
                 const sliderId = "#settings-spreadsheet-metadata-" + property + "-Slider";
@@ -324,7 +313,7 @@ describe(
                 settingsOpenSectionSpreadsheetMetadataProperty(property);
 
                 if(a1Formula){
-                    formulaTextEntry(a1Formula);
+                    formulaTextEnterAndSave(a1Formula);
                 }
 
                 const sliderId = "#settings-spreadsheet-metadata-" + property + "-Slider";
@@ -377,7 +366,7 @@ describe(
                 settingsOpenSectionSpreadsheetMetadataProperty(property);
 
                 if(a1Formula){
-                    formulaTextEntry(a1Formula);
+                    formulaTextEnterAndSave(a1Formula);
                 }
 
                 const dropDownListId = "#settings-spreadsheet-metadata-" + property + "-DropDownList";
@@ -741,7 +730,7 @@ describe(
 
                 settingsOpenSectionSpreadsheetMetadataStyleProperty(property);
 
-                formulaTextEntry("'ABC");
+                formulaTextEnterAndSave("'ABC");
 
                 const textFieldId = "#settings-spreadsheet-metadata-style-" + property + "-TextField";
 
@@ -784,7 +773,7 @@ describe(
 
                 settingsOpenSectionSpreadsheetMetadataStyleProperty(property);
 
-                formulaTextEntry("'ABC");
+                formulaTextEnterAndSave("'ABC");
 
                 const sliderId = "#settings-spreadsheet-metadata-style-" + property + "-Slider";
 
@@ -831,7 +820,7 @@ describe(
 
                 settingsOpenSectionSpreadsheetMetadataStyleProperty(property);
 
-                formulaTextEntry("'ABC");
+                formulaTextEnterAndSave("'ABC");
 
                 const sliderId = "#settings-spreadsheet-metadata-style-" + property + "-Slider";
                 const numberTextFieldId = "#settings-spreadsheet-metadata-style-" + property + "-NumberTextField";

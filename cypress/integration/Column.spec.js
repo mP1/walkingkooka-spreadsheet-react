@@ -9,6 +9,9 @@ const B1 = SpreadsheetCellReference.parse("B1");
 const C3 = SpreadsheetCellReference.parse("C3");
 const E5 = SpreadsheetCellReference.parse("E5");
 
+const B = SpreadsheetColumnReference.parse("B");
+const C = SpreadsheetColumnReference.parse("C");
+
 const SELECTED_COLOR = "rgb(68, 68, 68)";
 
 describe(
@@ -186,12 +189,7 @@ describe(
         // selection delete.............................................................................................
 
         it("Column select delete hash", () => {
-            testing.cellClick(E5);
-
-            testing.formulaTextClick();
-
-            testing.formulaText()
-                .type("{selectall}'Moved{enter}");
+            testing.cellFormulaEnterAndSave(E5, "'Moved");
 
             testing.column("B")
                 .click();
@@ -206,12 +204,7 @@ describe(
         });
 
         it("Column range select delete hash", () => {
-            testing.cellClick(E5);
-
-            testing.formulaTextClick();
-
-            testing.formulaText()
-                .type("{selectall}'Moved{enter}");
+            testing.cellFormulaEnterAndSave(E5, "'Moved");
 
             testing.column("B")
                 .click();
@@ -228,12 +221,7 @@ describe(
         // selection insert-after.............................................................................................
 
         it("Column select insert-after hash", () => {
-            testing.cellClick(E5);
-
-            testing.formulaTextClick();
-
-            testing.formulaText()
-                .type("{selectall}'Moved{enter}");
+            testing.cellFormulaEnterAndSave(E5, "'Moved");
 
             testing.column("B")
                 .click();
@@ -248,12 +236,7 @@ describe(
         });
 
         it("Column range select insert-after hash", () => {
-            testing.cellClick(E5);
-
-            testing.formulaTextClick();
-
-            testing.formulaText()
-                .type("{selectall}'Moved{enter}");
+            testing.cellFormulaEnterAndSave(E5, "'Moved");
 
             testing.column("B")
                 .click();
@@ -270,12 +253,7 @@ describe(
         // selection insert-before.............................................................................................
 
         it("Column select insert-before hash", () => {
-            testing.cellClick(E5);
-
-            testing.formulaTextClick();
-
-            testing.formulaText()
-                .type("{selectall}'Moved{enter}");
+            testing.cellFormulaEnterAndSave(E5, "'Moved");
 
             testing.column("B")
                 .click();
@@ -290,12 +268,7 @@ describe(
         });
 
         it("Column range select insert-before hash", () => {
-            testing.cellClick(E5);
-
-            testing.formulaTextClick();
-
-            testing.formulaText()
-                .type("{selectall}'Moved{enter}");
+            testing.cellFormulaEnterAndSave(E5, "'Moved");
 
             testing.column("B")
                 .click();
@@ -327,8 +300,7 @@ describe(
         // column context menu...........................................................................................
 
         it("Column context menu", () => {
-            testing.column("C")
-                .rightclick();
+            testing.contextMenu(C.viewportId());
 
             testing.viewportContextMenu()
                 .should("be.visible")
@@ -337,22 +309,14 @@ describe(
         });
 
         it("Column context menu click insert before 2", () => {
-            testing.cellClick(C3);
+            testing.cellFormulaEnterAndSave(C3, "'Moved");
 
-            testing.formulaTextClick();
-
-            testing.formulaText()
-                .type("{selectall}'Moved{enter}")
-                .blur();
-
-            testing.column("C")
-                .rightclick();
+            testing.contextMenu(C.viewportId());
 
             testing.viewportContextMenu()
                 .should("be.visible")
                 .find("#" + SpreadsheetColumnReference.VIEWPORT_COLUMN_INSERT_BEFORE_2)
                 .should("include.text", "Insert 2 before");
-
 
             cy.get("#" + SpreadsheetColumnReference.VIEWPORT_COLUMN_INSERT_BEFORE_2)
                 .click();
@@ -365,16 +329,9 @@ describe(
         });
 
         it("Column context menu click insert before 1", () => {
-            testing.cellClick(C3);
+            testing.cellFormulaEnterAndSave(C3, "'Moved");
 
-            testing.formulaTextClick();
-
-            testing.formulaText()
-                .type("{selectall}'Moved{enter}")
-                .blur();
-
-            testing.column("C")
-                .rightclick();
+            testing.contextMenu(C.viewportId());
 
             testing.viewportContextMenu()
                 .should("be.visible")
@@ -392,24 +349,10 @@ describe(
         });
 
         it("Column context menu click insert after 1", () => {
-            testing.cellClick(A1);
+            testing.cellFormulaEnterAndSave(A1, "'Never");
+            testing.cellFormulaEnterAndSave(C3, "'Moved");
 
-            testing.formulaTextClick();
-
-            testing.formulaText()
-                .type("{selectall}'Never{enter}")
-                .blur();
-
-            testing.cellClick(C3);
-
-            testing.formulaTextClick();
-
-            testing.formulaText()
-                .type("{selectall}'Moved{enter}")
-                .blur();
-
-            testing.column("B")
-                .rightclick();
+            testing.contextMenu(B.viewportId());
 
             testing.viewportContextMenu()
                 .should("be.visible")
@@ -428,30 +371,15 @@ describe(
         });
 
         it("Column context menu click insert after 2", () => {
-            testing.cellClick(A1);
+            testing.cellFormulaEnterAndSave(A1, "'Never");
+            testing.cellFormulaEnterAndSave(C3, "'Moved");
 
-            testing.formulaTextClick();
-
-            testing.formulaText()
-                .type("{selectall}'Never{enter}")
-                .blur();
-
-            testing.cellClick(C3);
-
-            testing.formulaTextClick();
-
-            testing.formulaText()
-                .type("{selectall}'Moved{enter}")
-                .blur();
-
-            testing.column("B")
-                .rightclick();
+            testing.contextMenu(B.viewportId());
 
             testing.viewportContextMenu()
                 .should("be.visible")
                 .find("#" + SpreadsheetColumnReference.VIEWPORT_COLUMN_INSERT_AFTER_2)
                 .should("include.text", "Insert 2 after");
-
 
             cy.get("#" + SpreadsheetColumnReference.VIEWPORT_COLUMN_INSERT_AFTER_2)
                 .click();
@@ -465,13 +393,7 @@ describe(
         });
 
         it("Column select then context menu click insert before 2", () => {
-            testing.cellClick(C3);
-
-            testing.formulaTextClick();
-
-            testing.formulaText()
-                .type("{selectall}'Moved{enter}")
-                .blur();
+            testing.cellFormulaEnterAndSave(C3, "'Moved");
 
             testing.column("C")
                 .click();
@@ -479,8 +401,7 @@ describe(
             testing.hash()
                 .should('match', /.*\/Untitled\/column\/C/);
 
-            testing.column("C")
-                .rightclick();
+            testing.contextMenu(C.viewportId());
 
             testing.viewportContextMenu()
                 .should("be.visible")
@@ -501,13 +422,7 @@ describe(
         });
 
         it("Column select then context menu click insert before 1", () => {
-            testing.cellClick(C3);
-
-            testing.formulaTextClick();
-
-            testing.formulaText()
-                .type("{selectall}'Moved{enter}")
-                .blur();
+            testing.cellFormulaEnterAndSave(C3, "'Moved");
 
             testing.column("C")
                 .click();
@@ -515,8 +430,7 @@ describe(
             testing.hash()
                 .should('match', /.*\/Untitled\/column\/C/);
 
-            testing.column("C")
-                .rightclick();
+            testing.contextMenu(C.viewportId());
 
             testing.viewportContextMenu()
                 .should("be.visible")
@@ -537,21 +451,8 @@ describe(
         });
 
         it("Column select then context menu click insert after 1", () => {
-            testing.cellClick(A1);
-
-            testing.formulaTextClick();
-
-            testing.formulaText()
-                .type("{selectall}'Never{enter}")
-                .blur();
-
-            testing.cellClick(C3);
-
-            testing.formulaTextClick();
-
-            testing.formulaText()
-                .type("{selectall}'Moved{enter}")
-                .blur();
+            testing.cellFormulaEnterAndSave(A1, "'Never");
+            testing.cellFormulaEnterAndSave(C3, "'Moved");
 
             testing.column("B")
                 .click();
@@ -559,8 +460,7 @@ describe(
             testing.hash()
                 .should('match', /.*\/Untitled\/column\/B/);
 
-            testing.column("B")
-                .rightclick();
+            testing.contextMenu(B.viewportId());
 
             testing.viewportContextMenu()
                 .should("be.visible")
@@ -582,21 +482,8 @@ describe(
         });
 
         it("Column select then context menu click insert after 2", () => {
-            testing.cellClick(A1);
-
-            testing.formulaTextClick();
-
-            testing.formulaText()
-                .type("{selectall}'Never{enter}")
-                .blur();
-
-            testing.cellClick(C3);
-
-            testing.formulaTextClick();
-
-            testing.formulaText()
-                .type("{selectall}'Moved{enter}")
-                .blur();
+            testing.cellFormulaEnterAndSave(A1, "'Never");
+            testing.cellFormulaEnterAndSave(C3, "'Moved");
 
             testing.column("B")
                 .click();
@@ -604,8 +491,7 @@ describe(
             testing.hash()
                 .should('match', /.*\/Untitled\/column\/B/);
 
-            testing.column("B")
-                .rightclick();
+            testing.contextMenu(B.viewportId());
 
             testing.viewportContextMenu()
                 .should("be.visible")

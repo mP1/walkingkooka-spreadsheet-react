@@ -28,6 +28,10 @@ export default class SpreadsheetTesting {
     static CELL = ".cell";
     static LABEL = "Label123";
 
+    static FORCE_TRUE = {
+        force: true,
+    };
+
     constructor(cy) {
         this.cy = cy;
     }
@@ -111,6 +115,33 @@ export default class SpreadsheetTesting {
 
         this.hash()
             .should('match', /\/.*\/.*\/cell\/.*\/formula(\/.*)*/);
+
+        this.formulaTextLoadWait();
+    }
+
+    cellFormulaEnterAndSave(cell, text) {
+        this.cellClick(cell);
+
+        this.wait(100); // wait for formula text to load.
+
+        this.formulaTextEnterAndSave(text);
+    }
+
+    formulaTextEnterAndSave(text) {
+        this.formulaTextClick();
+
+        this.formulaText()
+            .type("{selectall}" + text + "{enter}", SpreadsheetTesting.FORCE_TRUE);
+
+        this.formulaTextSaveWait(); // wait for save to complete.
+    }
+
+    formulaTextLoadWait() {
+        this.wait(200);
+    }
+
+    formulaTextSaveWait() {
+        this.wait(200);
     }
 
     labelMappingLabelTextField() {
@@ -221,6 +252,12 @@ export default class SpreadsheetTesting {
         return button;
     }
 
+    contextMenu(id) {
+        this.getById(id)
+            .rightclick()
+            .rightclick(SpreadsheetTesting.FORCE_TRUE); // try twice unfortunately once often fails.
+    }
+
     viewportContextMenu() {
         return this.getById(SpreadsheetViewportWidget.VIEWPORT_CONTEXT_MENU_ID);
     }
@@ -230,11 +267,13 @@ export default class SpreadsheetTesting {
      */
     cellClick(cellReference) {
         this.cell(cellReference)
-            .click()
+            .click(SpreadsheetTesting.FORCE_TRUE)
             .should("have.focus");
 
         this.hash()
             .should('match', new RegExp("\/.*\/.*\/cell\/" + cellReference + "(\/.*)*"));
+
+        this.wait(100);
     }
 
     cellFormattedTextCheck(cellReference, text) {
