@@ -32,12 +32,7 @@ describe(
         });
 
         it("Create empty after editing cell", () => {
-            testing.cellClick("E5");
-
-            testing.formulaTextClick();
-
-            testing.formulaText()
-                .type("{selectall}=1+2+3{enter}");
+            testing.cellFormulaEnterAndSave("E5", "=1+2+3");
 
             testing.hashEnter("/");
 
@@ -51,12 +46,7 @@ describe(
                 .then((win) => {
                     const nonEmptySpreadsheetHash = win.location.hash;
 
-                    testing.cellClick(A1);
-
-                    testing.formulaTextClick();
-
-                    testing.formulaText()
-                        .type("{selectall}=1+2+3{enter}");
+                    testing.cellFormulaEnterAndSave(A1, "=1+2+3");
 
                     testing.spreadsheetEmptyReady();
 
@@ -75,12 +65,7 @@ describe(
                 .then((win) => {
                     const nonEmptySpreadsheetHash = win.location.hash;
 
-                    testing.cellClick(A1);
-
-                    testing.formulaTextClick();
-
-                    testing.formulaText()
-                        .type("{selectall}=1+2+3{enter}");
+                    testing.cellFormulaEnterAndSave(A1, "=1+2+3");
 
                     // reload previous spreadsheet and verify viewport reloaded
                     testing.hashEnter(nonEmptySpreadsheetHash);

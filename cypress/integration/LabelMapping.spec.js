@@ -418,9 +418,7 @@ describe(
 
                     testing.wait(50); // wait for formula text box to become enabled.
 
-                    testing.formulaText()
-                        .click()
-                        .type("{selectall}=4{enter}");
+                    testing.formulaTextEnterAndSave("=4");
 
                     testing.cellFormattedTextCheck(reference, "4.");
                 });
@@ -487,20 +485,8 @@ describe(
         });
 
         it("Label mapping update, refreshes viewport", () => {
-            testing.cellClick(A1);
-
-            testing.formulaTextClick();
-
-            testing.formulaText()
-                .type("{selectall}=11{enter}");
-
-            testing.cellClick(B2);
-
-            testing.formulaTextClick();
-
-            testing.formulaText()
-                .type("{selectall}=22{enter}")
-                .blur();
+            testing.cellFormulaEnterAndSave(A1, "=11");
+            testing.cellFormulaEnterAndSave(B2, "=22");
 
             // create a new label
             testing.hashAppend("/label/MovingLabel");
@@ -514,13 +500,7 @@ describe(
             testing.labelMappingLabelCloseButton()
                 .click();
 
-            testing.cellClick(C3);
-
-            testing.formulaTextClick();
-
-            testing.formulaText()
-                .type("{selectall}=4*MovingLabel{enter}")
-                .blur();
+            testing.cellFormulaEnterAndSave(C3, "=4*MovingLabel");
 
             testing.cellFormattedTextCheck(C3, "44."); // 4 * 11
 

@@ -59,28 +59,14 @@ describe(
         });
 
         it("Cell formula edit with reference", () => {
-            testing.cellClick(C3);
-
-            testing.formulaTextClick();
-
-            testing.formulaText()
-                .type("{selectall}=1+2+3{enter}");
-
-            testing.cellClick(D4);
-
-            testing.formulaText()
-                .type("{selectall}=C3+10{enter}");
+            testing.cellFormulaEnterAndSave(C3, "=1+2+3");
+            testing.cellFormulaEnterAndSave(D4, "=C3+10");
 
             testing.cellFormattedTextCheck(D4, "16.");
         });
 
         it("Cell formula edit, update hash cell reference", () => {
-            testing.cellClick(C3);
-
-            testing.formulaTextClick();
-
-            testing.formulaText()
-                .type("{selectall}=1+2+3{enter}");
+            testing.cellFormulaEnterAndSave(C3, "=1+2+3");
 
             cy.window()
                 .then((win) => {
@@ -203,11 +189,9 @@ describe(
         it("Cell outside viewport", () => {
             testing.hashAppend("/cell/T1");
 
-            testing.formulaTextClick();
+            testing.formulaTextLoadWait();
 
-            testing.formulaText()
-                .type("{selectall}=234{enter}")
-                .blur();
+            testing.formulaTextEnterAndSave("=234");
 
             // viewport should have jumped leaving T1 as the home cell.
             testing.cell(A1)
@@ -217,11 +201,9 @@ describe(
         it("Cell outside viewport vertical", () => {
             testing.hashAppend("/cell/A30");
 
-            testing.formulaTextClick();
+            testing.formulaTextLoadWait();
 
-            testing.formulaText()
-                .type("{selectall}=234{enter}")
-                .blur();
+            testing.formulaTextEnterAndSave("=234");
 
             // viewport should have jumped leaving A30 as the home cell.
             testing.cell(A1)
@@ -231,11 +213,9 @@ describe(
         it("Cell outside viewport horiz & vertical", () => {
             testing.hashAppend("/cell/T30");
 
-            testing.formulaTextClick();
+            testing.formulaTextLoadWait();
 
-            testing.formulaText()
-                .type("{selectall}=234{enter}")
-                .blur();
+            testing.formulaTextEnterAndSave("=234");
 
             // viewport should have jumped leaving T30 as the home cell.
             testing.cell(A1)
@@ -245,20 +225,19 @@ describe(
         it("Cell outside viewport and reload", () => {
             testing.hashAppend("/cell/M1");
 
-            testing.formulaTextClick();
+            testing.formulaTextLoadWait();
 
-            testing.formulaText()
-                .type("{selectall}=123{enter}")
-                .blur();
+            testing.formulaTextEnterAndSave("=123");
 
             testing.hashOnlyIdAndName();
+
+            testing.wait(100);
+
             testing.hashAppend("/cell/T1");
 
-            testing.formulaTextClick();
-
-            testing.formulaText()
-                .type("{selectall}=234{enter}")
-                .blur();
+            testing.formulaTextLoadWait();
+            
+            testing.formulaTextEnterAndSave("=234");
 
             testing.hashOnlyIdAndName();
             testing.hashAppend("/cell/M1");
@@ -270,25 +249,25 @@ describe(
         it("Cell outside viewport horiz & vert and reload", () => {
             testing.hashAppend("/cell/M10");
 
-            testing.formulaTextClick();
+            testing.formulaTextLoadWait();
 
-            testing.formulaText()
-                .type("{selectall}=123{enter}")
-                .blur();
+            testing.formulaTextEnterAndSave("=123");
 
             testing.hashOnlyIdAndName();
 
+            testing.wait(100);
+
             testing.hashAppend("/cell/T20");
 
-            testing.formulaTextClick();
+            testing.formulaTextLoadWait();
 
-            testing.formulaText()
-                .type("{selectall}=234{enter}")
-                .blur();
+            testing.formulaTextEnterAndSave("=234");
 
             testing.hashOnlyIdAndName();
 
             testing.hashAppend("/cell/M10");
+
+            testing.formulaTextLoadWait();
 
             testing.cellFormattedTextCheck("M10", "123.");
             testing.cellFormattedTextCheck("T20", "234.");
@@ -538,15 +517,10 @@ describe(
 
 
         it("Cell select delete hash", () => {
-            testing.cellClick(B2);
-
-            testing.formulaTextClick();
-
-            testing.formulaText()
-                .type("{selectall}'Deleted{enter}")
-                .blur();
+            testing.cellFormulaEnterAndSave(B2, "'Deleted");
 
             testing.cellClick(B2);
+
             testing.hashAppendWithoutCheck("/delete");
 
             testing.hash()
@@ -559,26 +533,9 @@ describe(
         });
 
         it("Cell range select delete hash", () => {
-            testing.cellClick(A1);
-
-            testing.formulaTextClick();
-
-            testing.formulaText()
-                .type("{selectall}'NotDeleted{enter}");
-
-            testing.cellClick(C3);
-
-            testing.formulaTextClick();
-
-            testing.formulaText()
-                .type("{selectall}'DeletedC3{enter}");
-
-            testing.cellClick(B2);
-
-            testing.formulaTextClick();
-
-            testing.formulaText()
-                .type("{selectall}'DeletedB2{enter}");
+            testing.cellFormulaEnterAndSave(A1, "'NotDeleted");
+            testing.cellFormulaEnterAndSave(C3, "'Deleted");
+            testing.cellFormulaEnterAndSave(B2, "'DeletedB2");
 
             testing.cellClick(B2);
 
@@ -595,9 +552,7 @@ describe(
         // selection then different viewport selections.................................................................
 
         it("Cell formula edit then column click", () => {
-            testing.hashAppend("/cell/B2/formula");
-
-            testing.wait();
+            testing.cellFormulaEnterAndSave(A1, "=1");
 
             testing.column("C")
                 .click();
@@ -607,9 +562,7 @@ describe(
         });
 
         it("Cell formula edit then row click", () => {
-            testing.hashAppend("/cell/B2/formula");
-
-            testing.wait();
+            testing.cellFormulaEnterAndSave(A1, "=1");
 
             testing.row("3")
                 .click();
