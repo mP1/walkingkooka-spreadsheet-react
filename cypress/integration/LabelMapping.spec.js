@@ -437,13 +437,13 @@ describe(
             testing.labelMappingLabelCloseButton()
                 .click();
 
-            cy.get("#" + A1.viewportTooltipId())
+            testing.getById(A1.viewportTooltipId())
                 .should("not.exist");
 
             testing.cell(A1)
                 .trigger("mouseover");
 
-            cy.get("#" + A1.viewportTooltipId())
+            testing.getById(A1.viewportTooltipId())
                 .should("exist")
                 .should("contain.text", "HoverLabel");
         });
@@ -473,13 +473,13 @@ describe(
             testing.labelMappingLabelCloseButton()
                 .click();
 
-            cy.get("#" + A1.viewportTooltipId())
+            testing.getById(A1.viewportTooltipId())
                 .should("not.exist");
 
             testing.cell(A1)
                 .trigger("mouseover");
 
-            cy.get("#" + A1.viewportTooltipId())
+            testing.getById(A1.viewportTooltipId())
                 .should("exist")
                 .should("contain.text", "HoverLabel1, HoverLabel2");
         });
@@ -547,30 +547,30 @@ describe(
                                          labelHelperText,
                                          referenceText,
                                          referenceHelperText) {
-            cy.get("#" + SpreadsheetLabelMappingWidget.DIALOG_TITLE_ID)
+            testing.getById(SpreadsheetLabelMappingWidget.DIALOG_TITLE_ID)
                 .contains(title);
 
             testing.labelMappingLabelTextField()
                 .should("have.value", labelText);
 
-            const labelHelperTextId = "#" + SpreadsheetLabelMappingWidget.LABEL_TEXT_FIELD_HELPER_TEXT_ID;
+            const labelHelperTextId = SpreadsheetLabelMappingWidget.LABEL_TEXT_FIELD_HELPER_TEXT_ID;
             if(labelHelperText){
-                cy.get(labelHelperTextId)
+                testing.getById(labelHelperTextId)
                     .should("have.text", labelHelperText);
             }else {
-                cy.get(labelHelperTextId)
+                testing.getById(labelHelperTextId)
                     .should("not.exist");
             }
 
             testing.labelMappingReferenceTextField()
                 .should("have.value", referenceText);
 
-            const referenceHelperTextId = "#" + SpreadsheetLabelMappingWidget.REFERENCE_TEXT_FIELD_HELPER_TEXT_ID;
+            const referenceHelperTextId = SpreadsheetLabelMappingWidget.REFERENCE_TEXT_FIELD_HELPER_TEXT_ID;
             if(referenceHelperText){
-                cy.get(referenceHelperTextId)
+                testing.getById(referenceHelperTextId)
                     .should("have.text", referenceHelperText);
             }else {
-                cy.get(referenceHelperTextId)
+                testing.getById(referenceHelperTextId)
                     .should("not.exist");
             }
         }

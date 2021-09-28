@@ -299,7 +299,7 @@ describe("Row",
                 .find("#" + SpreadsheetRowReference.VIEWPORT_INSERT_BEFORE_2_ID)
                 .should("include.text", "Insert 2 before");
 
-            cy.get("#" + SpreadsheetRowReference.VIEWPORT_INSERT_BEFORE_2_ID)
+            testing.getById(SpreadsheetRowReference.VIEWPORT_INSERT_BEFORE_2_ID)
                 .click();
 
             testing.viewportContextMenu()
@@ -319,7 +319,7 @@ describe("Row",
                 .find("#" + SpreadsheetRowReference.VIEWPORT_INSERT_BEFORE_1_ID)
                 .should("include.text", "Insert 1 before");
 
-            cy.get("#" + SpreadsheetRowReference.VIEWPORT_INSERT_BEFORE_1_ID)
+            testing.getById(SpreadsheetRowReference.VIEWPORT_INSERT_BEFORE_1_ID)
                 .click();
 
             testing.viewportContextMenu()
@@ -340,7 +340,7 @@ describe("Row",
                 .find("#" + SpreadsheetRowReference.VIEWPORT_INSERT_AFTER_1_ID)
                 .should("include.text", "Insert 1 after");
 
-            cy.get("#" + SpreadsheetRowReference.VIEWPORT_INSERT_AFTER_1_ID)
+            testing.getById(SpreadsheetRowReference.VIEWPORT_INSERT_AFTER_1_ID)
                 .click();
 
             testing.viewportContextMenu()
@@ -362,7 +362,7 @@ describe("Row",
                 .find("#" + SpreadsheetRowReference.VIEWPORT_INSERT_AFTER_2_ID)
                 .should("include.text", "Insert 2 after");
 
-            cy.get("#" + SpreadsheetRowReference.VIEWPORT_INSERT_AFTER_2_ID)
+            testing.getById(SpreadsheetRowReference.VIEWPORT_INSERT_AFTER_2_ID)
                 .click();
 
             testing.viewportContextMenu()
@@ -389,7 +389,7 @@ describe("Row",
                 .find("#" + SpreadsheetRowReference.VIEWPORT_INSERT_BEFORE_2_ID)
                 .should("include.text", "Insert 2 before");
 
-            cy.get("#" + SpreadsheetRowReference.VIEWPORT_INSERT_BEFORE_2_ID)
+            testing.getById(SpreadsheetRowReference.VIEWPORT_INSERT_BEFORE_2_ID)
                 .click();
 
             testing.viewportContextMenu()
@@ -418,7 +418,7 @@ describe("Row",
                 .find("#" + SpreadsheetRowReference.VIEWPORT_INSERT_BEFORE_1_ID)
                 .should("include.text", "Insert 1 before");
 
-            cy.get("#" + SpreadsheetRowReference.VIEWPORT_INSERT_BEFORE_1_ID)
+            testing.getById(SpreadsheetRowReference.VIEWPORT_INSERT_BEFORE_1_ID)
                 .click();
 
             testing.viewportContextMenu()
@@ -448,7 +448,7 @@ describe("Row",
                 .find("#" + SpreadsheetRowReference.VIEWPORT_INSERT_AFTER_1_ID)
                 .should("include.text", "Insert 1 after");
 
-            cy.get("#" + SpreadsheetRowReference.VIEWPORT_INSERT_AFTER_1_ID)
+            testing.getById(SpreadsheetRowReference.VIEWPORT_INSERT_AFTER_1_ID)
                 .click();
 
             testing.viewportContextMenu()
@@ -479,7 +479,7 @@ describe("Row",
                 .find("#" + SpreadsheetRowReference.VIEWPORT_INSERT_AFTER_2_ID)
                 .should("include.text", "Insert 2 after");
 
-            cy.get("#" + SpreadsheetRowReference.VIEWPORT_INSERT_AFTER_2_ID)
+            testing.getById(SpreadsheetRowReference.VIEWPORT_INSERT_AFTER_2_ID)
                 .click();
 
             testing.viewportContextMenu()
