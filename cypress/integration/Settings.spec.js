@@ -168,24 +168,24 @@ describe(
 
                 settingsOpenSectionSpreadsheetMetadataProperty(property);
 
-                const dateParsePatternsId = "#settings-spreadsheet-metadata-" + SpreadsheetMetadata.DATE_PARSE_PATTERNS + "-TextField";
-                const dateFormatPatternId = "#settings-spreadsheet-metadata-" + SpreadsheetMetadata.DATE_FORMAT_PATTERN + "-TextField";
+                const dateParsePatternsId = "settings-spreadsheet-metadata-" + SpreadsheetMetadata.DATE_PARSE_PATTERNS + "-TextField";
+                const dateFormatPatternId = "settings-spreadsheet-metadata-" + SpreadsheetMetadata.DATE_FORMAT_PATTERN + "-TextField";
                 switch(property) {
                     case SpreadsheetMetadata.DEFAULT_YEAR:
-                        cy.get(dateParsePatternsId)
+                        testing.getById(dateParsePatternsId)
                             .type("{selectall}dd:mm{enter}")
                             .blur();
 
-                        cy.get(dateFormatPatternId)
+                        testing.getById(dateFormatPatternId)
                             .type("{selectall}yyyy/mm/dd{enter}")
                             .blur();
                         break;
                     case SpreadsheetMetadata.TWO_DIGIT_YEAR:
-                        cy.get(dateParsePatternsId)
+                        testing.getById(dateParsePatternsId)
                             .type("{selectall}yy/mm/dd{enter}")
                             .blur();
 
-                        cy.get(dateFormatPatternId)
+                        testing.getById(dateFormatPatternId)
                             .type("{selectall}yyyy/mm/dd{enter}")
                             .blur();
                         break;
@@ -197,14 +197,15 @@ describe(
                     formulaTextEnterAndSave(a1Formula);
                 }
 
-                const textFieldId = "#settings-spreadsheet-metadata-" + property + "-TextField";
+                const textFieldId = "settings-spreadsheet-metadata-" + property + "-TextField";
 
-                cy.get(textFieldId).then((input) => {
+                testing.getById(textFieldId)
+                    .then((input) => {
                     // type text and hit ENTER
-                    cy.get(textFieldId)
+                        testing.getById(textFieldId)
                         .type("{selectall}" + text + "{enter}");
 
-                    cy.get(textFieldId)
+                        testing.getById(textFieldId)
                         .should("have.value", text);
 
                     if(updatedA1Formula){
@@ -217,16 +218,16 @@ describe(
                     }
 
                     // restore original textField value.
-                    cy.get(textFieldId)
+                        testing.getById(textFieldId)
                         .type("{selectall}" + input.text() + "{enter}");
 
                     // click default button...
-                    const buttonId = "#settings-spreadsheet-metadata-" + property + "-default-Button";
-                    cy.get(buttonId)
+                    const buttonId = "settings-spreadsheet-metadata-" + property + "-default-Button";
+                    testing.getById(buttonId)
                         .should("have.text", defaultText)
                         .click();
 
-                    cy.get(textFieldId)
+                    testing.getById(textFieldId)
                         .should("have.value", "");
 
                     if(a1Formula){
@@ -241,11 +242,11 @@ describe(
                     }
 
                     // type text and blur
-                    cy.get(textFieldId)
+                    testing.getById(textFieldId)
                         .type("{selectall}" + text)
                         .blur();
 
-                    cy.get(textFieldId)
+                    testing.getById(textFieldId)
                         .should("have.value", text);
 
                     if(updatedA1Formula){
@@ -258,10 +259,10 @@ describe(
                     }
 
                     // type text and blur
-                    cy.get(textFieldId)
+                    testing.getById(textFieldId)
                         .type("{selectall}XYZ{esc}")
 
-                    cy.get(textFieldId)
+                    testing.getById(textFieldId)
                         .should("have.value", text);
                 });
             });
@@ -317,7 +318,7 @@ describe(
                 }
 
                 const sliderId = "#settings-spreadsheet-metadata-" + property + "-Slider";
-                const numberTextFieldId = "#settings-spreadsheet-metadata-" + property + "-NumberTextField";
+                const numberTextFieldId = "settings-spreadsheet-metadata-" + property + "-NumberTextField";
 
                 // click on the slider and verify number in TextField was updated
                 values.forEach((v, i) => {
@@ -325,7 +326,7 @@ describe(
                         .should("have.text", v.text)
                         .click();
 
-                    cy.get(numberTextFieldId)
+                    testing.getById(numberTextFieldId)
                         .should("have.value", v.value)
                         .click();
 
@@ -338,7 +339,7 @@ describe(
                 values.forEach((v, i) => {
                     console.log("value=" + JSON.stringify(v) + " i=" + i);
 
-                    cy.get(numberTextFieldId)
+                    testing.getById(numberTextFieldId)
                         .type("{selectall}" + v.value + "{enter}")
                         .click();
 
