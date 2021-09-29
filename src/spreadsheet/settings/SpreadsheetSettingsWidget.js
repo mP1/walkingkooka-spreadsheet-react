@@ -1256,7 +1256,7 @@ class SpreadsheetSettingsWidget extends SpreadsheetHistoryAwareStateWidget {
         var step;
         switch(property) {
             case SpreadsheetMetadata.CELL_CHARACTER_WIDTH:
-                numberValue = value;
+                numberValue = Number.isNaN(Number(value)) ? 0 : value;
                 min = 0;
                 max = 20;
                 marks = [
