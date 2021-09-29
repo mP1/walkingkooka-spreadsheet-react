@@ -49,6 +49,7 @@ export default class SpreadsheetSettingsWidgetSliderWithNumberTextField extends 
                        InputLabelProps={
                            {
                                shrink: true,
+                               tabIndex: 0,
                            }
                        }
                        value={value}

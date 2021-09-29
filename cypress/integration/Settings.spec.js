@@ -1063,6 +1063,164 @@ describe(
             "normal"
         );
 
+        it("Tabbing", () => {
+            settingsToggle();
+
+            settings()
+                .should('be.visible');
+
+            testing.hash()
+                .should('match', /.*\/.*\/settings/) // => true
+
+            tabSection("text");
+
+            tabColor(TextStyle.COLOR);
+            tabSlider(TextStyle.FONT_STYLE);
+            tabSlider(TextStyle.FONT_VARIANT);
+            tabSlider(TextStyle.TEXT_ALIGN);
+            tabSlider(TextStyle.HYPHENS);
+            tabSlider(TextStyle.VERTICAL_ALIGN);
+            tabSlider(TextStyle.WORD_BREAK);
+            tabSlider(TextStyle.WORD_WRAP);
+            tabSlider(SpreadsheetMetadata.TEXT_FORMAT_PATTERN);
+
+            tabNumberSlider(SpreadsheetMetadata.CELL_CHARACTER_WIDTH);
+
+            tabSection("number");
+
+            tabSlider(SpreadsheetMetadata.EXPRESSION_NUMBER_KIND);
+            tabNumberSlider(SpreadsheetMetadata.PRECISION);
+            tabDropdown(SpreadsheetMetadata.ROUNDING_MODE);
+            tabText(SpreadsheetMetadata.CURRENCY_SYMBOL);
+            tabText(SpreadsheetMetadata.DECIMAL_SEPARATOR);
+            tabText(SpreadsheetMetadata.EXPONENT_SYMBOL);
+            tabText(SpreadsheetMetadata.GROUPING_SEPARATOR);
+            tabText(SpreadsheetMetadata.NEGATIVE_SIGN);
+            tabText(SpreadsheetMetadata.PERCENTAGE_SYMBOL);
+            tabText(SpreadsheetMetadata.POSITIVE_SIGN);
+            tabText(SpreadsheetMetadata.NUMBER_FORMAT_PATTERN);
+            tabText(SpreadsheetMetadata.NUMBER_PARSE_PATTERNS);
+            tabText(SpreadsheetMetadata.VALUE_SEPARATOR);
+
+            tabSection("date-time");
+
+            tabNumberSlider(SpreadsheetMetadata.DATETIME_OFFSET);
+            tabNumber(SpreadsheetMetadata.DEFAULT_YEAR);
+            tabNumber(SpreadsheetMetadata.TWO_DIGIT_YEAR);
+            tabText(SpreadsheetMetadata.DATE_FORMAT_PATTERN);
+            tabText(SpreadsheetMetadata.DATE_PARSE_PATTERNS);
+            tabText(SpreadsheetMetadata.DATETIME_FORMAT_PATTERN);
+            tabText(SpreadsheetMetadata.DATETIME_PARSE_PATTERNS);
+            tabText(SpreadsheetMetadata.TIME_FORMAT_PATTERN);
+            tabText(SpreadsheetMetadata.TIME_PARSE_PATTERNS);
+
+            tabSection("style");
+
+            tabColor(TextStyle.BACKGROUND_COLOR);
+
+            tabNumberSlider(TextStyle.WIDTH);
+            tabNumberSlider(TextStyle.HEIGHT);
+
+            tabColor(TextStyle.BORDER_LEFT_COLOR);
+            tabSlider(TextStyle.BORDER_LEFT_STYLE);
+            tabNumberSlider(TextStyle.BORDER_LEFT_WIDTH);
+
+            tabColor(TextStyle.BORDER_TOP_COLOR);
+            tabSlider(TextStyle.BORDER_TOP_STYLE);
+            tabNumberSlider(TextStyle.BORDER_TOP_WIDTH);
+
+            tabColor(TextStyle.BORDER_RIGHT_COLOR);
+            tabSlider(TextStyle.BORDER_RIGHT_STYLE);
+            tabNumberSlider(TextStyle.BORDER_RIGHT_WIDTH);
+
+            tabColor(TextStyle.BORDER_BOTTOM_COLOR);
+            tabSlider(TextStyle.BORDER_BOTTOM_STYLE);
+            tabNumberSlider(TextStyle.BORDER_BOTTOM_WIDTH);
+
+            tabNumberSlider(TextStyle.PADDING_LEFT);
+            tabNumberSlider(TextStyle.PADDING_TOP);
+            tabNumberSlider(TextStyle.PADDING_RIGHT);
+            tabNumberSlider(TextStyle.PADDING_BOTTOM);
+        });
+
+        function tabSection(section) {
+            testing.getById("settings-spreadsheet-" + section)
+                .tab()
+                .type("{enter}")
+                .scrollIntoView()
+                .tab();
+
+            testing.hash()
+                .should('match', new RegExp(".*\/.*\/settings\/" + section));
+        }
+
+        function tabColor(property) {
+            tabText(property);
+        }
+
+        function tabDropdown(property) {
+            tabProperty(property, "DropDownList");
+        }
+
+        function tabNumber(property) {
+            tabProperty(property, "TextField");
+        }
+
+        function tabSlider(property) {
+            const id = idPrefix(property);
+
+            testing.focused()
+                .scrollIntoView()
+                .tab();
+
+            testing.focused()
+                .should("have.attr", "id", id + "-default-Button")
+                .tab();
+        }
+
+        function tabText(property) {
+            tabProperty(property, "TextField");
+        }
+
+        function tabProperty(property, componentType) {
+            const id = idPrefix(property);
+
+            testing.focused()
+                .scrollIntoView()
+                .should("have.attr", "id", id + "-" + componentType)
+                .tab();
+
+            testing.focused()
+                .should("have.attr", "id", id + "-default-Button")
+                .tab();
+        }
+
+        function tabNumberSlider(property) {
+            const id = idPrefix(property);
+
+            testing.focused()
+                .scrollIntoView()
+                //.should("have.attr", "id", id + "-NumberTextField")
+                .type(" ")
+                .tab();
+
+            testing.focused()
+                .tab();
+
+            testing.focused()
+                .should("have.attr", "id", id + "-default-Button")
+                .tab();
+        }
+
+        function idPrefix(property) {
+            return "settings-spreadsheet-metadata-" +
+                (
+                    SpreadsheetMetadata.isProperty(property) ?
+                        property.toString().toLowerCase() :
+                        "style-" + property.toString().toLowerCase()
+                );
+        }
+
         /**
          * The settings that appears on the right containing settings, tools and more.
          */

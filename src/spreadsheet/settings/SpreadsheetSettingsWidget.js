@@ -1371,6 +1371,7 @@ class SpreadsheetSettingsWidget extends SpreadsheetHistoryAwareStateWidget {
 
         return <Accordion id={id}
                           key={id}
+                          tabIndex={0}
                           expanded={state.section === sectionName}
                           onChange={(e, expanded) => this.accordionOnChange(expanded, sectionName)}>
             <AccordionSummary expandIcon={<ExpandMoreIcon id={id + "-expand-more-icon"}/>}
