@@ -1248,7 +1248,7 @@ class SpreadsheetSettingsWidget extends SpreadsheetHistoryAwareStateWidget {
      * Factory that creates a slider with number using the property to customized some properties.
      */
     sliderAndNumber(property, value, id, defaultValue, setValue) {
-        var numberValue; // DATETIME_OFFSET is a java Long in String form, ugly hack to assume can always be converted to a number
+        const numberValue = Number.isNaN(Number(value)) ? 0 : value;
         var min;
         var max;
         var marks;
@@ -1256,7 +1256,6 @@ class SpreadsheetSettingsWidget extends SpreadsheetHistoryAwareStateWidget {
         var step;
         switch(property) {
             case SpreadsheetMetadata.CELL_CHARACTER_WIDTH:
-                numberValue = Number.isNaN(Number(value)) ? 0 : value;
                 min = 0;
                 max = 20;
                 marks = [
@@ -1280,7 +1279,6 @@ class SpreadsheetSettingsWidget extends SpreadsheetHistoryAwareStateWidget {
                 };
                 break;
             case SpreadsheetMetadata.DATETIME_OFFSET:
-                numberValue = typeof value === "string" ? parseInt(value, 10) : value;
                 min = -25569;
                 max = -24107;
                 marks = [
@@ -1300,7 +1298,6 @@ class SpreadsheetSettingsWidget extends SpreadsheetHistoryAwareStateWidget {
                 };
                 break;
             case SpreadsheetMetadata.PRECISION:
-                numberValue = Number.isNaN(Number(value)) ? 0 : value;
                 min = 0;
                 max = 128;
                 marks = [
