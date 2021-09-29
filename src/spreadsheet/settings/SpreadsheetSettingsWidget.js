@@ -1300,7 +1300,7 @@ class SpreadsheetSettingsWidget extends SpreadsheetHistoryAwareStateWidget {
                 };
                 break;
             case SpreadsheetMetadata.PRECISION:
-                numberValue = value;
+                numberValue = Number.isNaN(Number(value)) ? 0 : value;
                 min = 0;
                 max = 128;
                 marks = [
