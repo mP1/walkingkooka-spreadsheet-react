@@ -647,11 +647,11 @@ class SpreadsheetSettingsWidget extends SpreadsheetHistoryAwareStateWidget {
                                                                    max={max}
                                                                    marks={marks}
                                                                    step={1}
-                                                                   value={value && value.pixelValue()}
-                                                                   defaultValue={null != defaultValue && defaultValue.pixelValue()}
+                                                                   value={value ? value.pixelValue() : ""}
+                                                                   defaultValue={null != defaultValue ? defaultValue.pixelValue() : ""}
                                                                    defaultValueFormatter={DEFAULT_VALUE_FORMATTER_TOSTRING}
                                                                    defaultButtonTooltip={false}
-                                                                   setValue={(v) => setValue(isNaN(v) ? NoneLength.INSTANCE : lengthFromJson(v + "px"))}
+                                                                   setValue={(v) => setValue(v == null ? null : isNaN(v) ? NoneLength.INSTANCE : lengthFromJson(v + "px"))}
         />;
     }
 

@@ -121,7 +121,7 @@ export default class SpreadsheetSettingsWidgetSliderWithNumberTextField extends 
     }
 
     createValue(text) {
-        return parseInt(text, 10);
+        return text === "" ? null : parseInt(text, 10);
     }
 
     /**
