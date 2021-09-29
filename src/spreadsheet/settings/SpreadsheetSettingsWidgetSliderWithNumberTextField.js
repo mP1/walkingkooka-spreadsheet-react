@@ -72,7 +72,7 @@ export default class SpreadsheetSettingsWidgetSliderWithNumberTextField extends 
                     max={max}
                     step={step}
                     marks={marks}
-                    value={value}
+                    value={value ? value : 0}
                     onChange={this.onChangeSlider.bind(this)}
                     style={this.style}/>,
         ];
