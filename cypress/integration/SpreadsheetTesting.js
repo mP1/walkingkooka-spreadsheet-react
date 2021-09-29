@@ -343,6 +343,15 @@ export default class SpreadsheetTesting {
     wait(period) {
         this.cy.wait(period || 20);
     }
+
+    focused() {
+        return this.cy.focused();
+    }
+
+    tab() {
+        return this.focused()
+            .tab();
+    }
     
     getById(id) {
         return this.cy.get("#" + id);
