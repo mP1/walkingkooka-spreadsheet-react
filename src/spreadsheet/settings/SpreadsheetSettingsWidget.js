@@ -1201,7 +1201,7 @@ class SpreadsheetSettingsWidget extends SpreadsheetHistoryAwareStateWidget {
      * Factory that creates a number widget customising based on the property.
      */
     number(property, value, id, defaultValue, setValue) {
-        var numberValue; // DATETIME_OFFSET is a java Long in String form, ugly hack to assume can always be converted to a number
+        const numberValue = Number.isNaN(Number(value)) ? "" : value;
         var length;
         var maxLength;
         var min;
@@ -1212,7 +1212,6 @@ class SpreadsheetSettingsWidget extends SpreadsheetHistoryAwareStateWidget {
             case SpreadsheetMetadata.DEFAULT_YEAR:
                 length = 4;
                 maxLength = 4;
-                numberValue = value;
                 min = 0;
                 max = 2000;
                 style = {};
@@ -1220,7 +1219,6 @@ class SpreadsheetSettingsWidget extends SpreadsheetHistoryAwareStateWidget {
             case SpreadsheetMetadata.TWO_DIGIT_YEAR:
                 length = 2;
                 maxLength = 2;
-                numberValue = value;
                 min = 0;
                 max = 99;
                 style = {};
