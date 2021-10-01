@@ -667,7 +667,7 @@ class SpreadsheetSettingsWidget extends SpreadsheetHistoryAwareStateWidget {
         return style;
     }
 
-    textStyleLabel(property) {
+    static textStyleLabel(property) {
         var label;
 
         switch(property) {
@@ -682,9 +682,6 @@ class SpreadsheetSettingsWidget extends SpreadsheetHistoryAwareStateWidget {
                 break;
             case TextStyle.BORDER_BOTTOM_WIDTH :
                 label = "Border bottom width";
-                break;
-            case TextStyle.BORDER_COLLAPSE :
-                label = "Border collapse";
                 break;
             case TextStyle.BORDER_LEFT_COLOR :
                 label = "Border left color";
@@ -704,9 +701,6 @@ class SpreadsheetSettingsWidget extends SpreadsheetHistoryAwareStateWidget {
             case TextStyle.BORDER_RIGHT_WIDTH :
                 label = "Border right width";
                 break;
-            case TextStyle.BORDER_SPACING :
-                label = "Border spacing";
-                break;
             case TextStyle.BORDER_TOP_COLOR :
                 label = "Border top color";
                 break;
@@ -719,95 +713,11 @@ class SpreadsheetSettingsWidget extends SpreadsheetHistoryAwareStateWidget {
             case TextStyle.COLOR :
                 label = "Color";
                 break;
-            case TextStyle.DIRECTION :
-                label = "Direction";
-                break;
-            case TextStyle.FONT_FAMILY :
-                label = "Font family";
-                break;
-            case TextStyle.FONT_KERNING :
-                label = "Font kerning";
-                break;
-            case TextStyle.FONT_SIZE :
-                label = "Font size";
-                break;
-            case TextStyle.FONT_STRETCH :
-                label = "Font stretch";
-                break;
-            case TextStyle.FONT_STYLE :
-                label = "Font style";
-                break;
-            case TextStyle.FONT_VARIANT :
-                label = "Font variant";
-                break;
-            case TextStyle.FONT_WEIGHT :
-                label = "Font weight";
-                break;
-            case TextStyle.HANGING_PUNCTUATION :
-                label = "Hanging punctuation";
-                break;
             case TextStyle.HEIGHT :
                 label = "Height";
                 break;
             case TextStyle.HYPHENS :
                 label = "Hyphens";
-                break;
-            case TextStyle.LETTER_SPACING :
-                label = "Letter spacing";
-                break;
-            case TextStyle.LINE_HEIGHT :
-                label = "Line height";
-                break;
-            case TextStyle.LIST_STYLE_POSITION :
-                label = "List style position";
-                break;
-            case TextStyle.LIST_STYLE_TYPE :
-                label = "List style type";
-                break;
-            case TextStyle.MARGIN_BOTTOM :
-                label = "Margin bottom";
-                break;
-            case TextStyle.MARGIN_LEFT :
-                label = "Margin left";
-                break;
-            case TextStyle.MARGIN_RIGHT :
-                label = "Margin right";
-                break;
-            case TextStyle.MARGIN_TOP :
-                label = "Margin top";
-                break;
-            case TextStyle.MAX_HEIGHT :
-                label = "Max height";
-                break;
-            case TextStyle.MAX_WIDTH :
-                label = "Max width";
-                break;
-            case TextStyle.MIN_HEIGHT :
-                label = "Min height";
-                break;
-            case TextStyle.MIN_WIDTH :
-                label = "Min width";
-                break;
-            case TextStyle.OPACITY :
-                label = "Opacity";
-                break;
-            case TextStyle.OUTLINE_COLOR :
-                label = "Outline color";
-                break;
-            case TextStyle.OUTLINE_OFFSET :
-                label = "Outline offset";
-                break;
-            case TextStyle.OUTLINE_STYLE :
-                label = "Outline style";
-                break;
-            case TextStyle.OUTLINE_WIDTH :
-                label = "Outline width";
-                break;
-            case TextStyle.OVERFLOW_X :
-                label = "Overflow x";
-                break;
-            case TextStyle.OVERFLOW_Y :
-                label = "Overflow y";
                 break;
             case TextStyle.PADDING_BOTTOM :
                 label = "Padding bottom";
@@ -821,50 +731,11 @@ class SpreadsheetSettingsWidget extends SpreadsheetHistoryAwareStateWidget {
             case TextStyle.PADDING_TOP :
                 label = "Padding top";
                 break;
-            case TextStyle.TAB_SIZE :
-                label = "Tab size";
-                break;
-            case TextStyle.TEXT :
-                label = "Text";
-                break;
             case TextStyle.TEXT_ALIGN :
                 label = "Horizontal align";
                 break;
-            case TextStyle.TEXT_DECORATION_COLOR :
-                label = "Text decoration color";
-                break;
-            case TextStyle.TEXT_DECORATION_LINE :
-                label = "Text decoration line";
-                break;
-            case TextStyle.TEXT_DECORATION_STYLE :
-                label = "Text decoration style";
-                break;
-            case TextStyle.TEXT_DECORATION_THICKNESS :
-                label = "Text decoration thickness";
-                break;
-            case TextStyle.TEXT_INDENT :
-                label = "Indent";
-                break;
-            case TextStyle.TEXT_JUSTIFY :
-                label = "Justify";
-                break;
-            case TextStyle.TEXT_OVERFLOW :
-                label = "Text overflow";
-                break;
-            case TextStyle.TEXT_TRANSFORM :
-                label = "Text transform";
-                break;
-            case TextStyle.TEXT_WRAPPING :
-                label = "Text wrapping";
-                break;
             case TextStyle.VERTICAL_ALIGN :
                 label = "Vertical align";
-                break;
-            case TextStyle.VISIBILITY :
-                label = "Visibility";
-                break;
-            case TextStyle.WHITE_SPACE :
-                label = "Whitespace";
                 break;
             case TextStyle.WIDTH :
                 label = "Width";
@@ -872,14 +743,8 @@ class SpreadsheetSettingsWidget extends SpreadsheetHistoryAwareStateWidget {
             case TextStyle.WORD_BREAK :
                 label = "Word break";
                 break;
-            case TextStyle.WORD_SPACING :
-                label = "Word spacing";
-                break;
             case TextStyle.WORD_WRAP :
                 label = "Word wrap";
-                break;
-            case TextStyle.WRITING_MODE :
-                label = "Writing mode";
                 break;
             default:
                 throw new Error("Unknown TextStyle property \"" + property + "\"");
@@ -1088,7 +953,7 @@ class SpreadsheetSettingsWidget extends SpreadsheetHistoryAwareStateWidget {
         return this.tableRow(id, label, render, classes);
     }
 
-    spreadsheetMetadataPropertyLabel(property) {
+    static spreadsheetMetadataPropertyLabel(property) {
         let label;
 
         switch(property) {
@@ -1166,12 +1031,6 @@ class SpreadsheetSettingsWidget extends SpreadsheetHistoryAwareStateWidget {
                 break;
             case SpreadsheetMetadata.SPREADSHEET_ID :
                 label = "Id";
-                break;
-            case SpreadsheetMetadata.SPREADSHEET_NAME :
-                label = "Name";
-                break;
-            case SpreadsheetMetadata.STYLE :
-                label = "Style";
                 break;
             case SpreadsheetMetadata.TEXT_FORMAT_PATTERN :
                 label = "Text format";
