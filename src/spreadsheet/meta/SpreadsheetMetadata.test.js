@@ -38,6 +38,16 @@ systemObjectTesting(
     }
 );
 
+// isProperty...........................................................................................................
+
+test("isProperty using properties()", () => {
+    const missing = SpreadsheetMetadata.properties()
+        .concat("Unknown123")
+        .filter(property => !SpreadsheetMetadata.isProperty(property))
+
+    expect(missing).toStrictEqual(["Unknown123"]);
+});
+
 // EMPTY................................................................................................................
 
 test("Empty", () => {
