@@ -48,6 +48,28 @@ function textStyle() {
     });
 }
 
+// properties...........................................................................................................
+
+test("isProperty using properties()", () => {
+    const missing = TextStyle.properties()
+        .concat("Unknown123")
+        .filter(property => {
+            var filter = false;
+
+            try {
+                TextStyle.EMPTY.get(property)
+            } catch(e) {
+                filter = true;
+            }
+
+            return filter;
+        });
+
+    expect(missing).toStrictEqual(["Unknown123"]);
+});
+
+// create...............................................................................................................
+
 test("create without text fails", () => {
     expect(() => new TextStyle(null)).toThrow("Missing properties");
 });
