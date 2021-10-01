@@ -324,8 +324,8 @@ class SpreadsheetSettingsWidget extends SpreadsheetHistoryAwareStateWidget {
             //TextStyle.DIRECTION,
             //TextStyle.FONT_FAMILY,
             //TextStyle.FONT_SIZE,
-            TextStyle.FONT_STYLE,
-            TextStyle.FONT_VARIANT,
+            //TextStyle.FONT_STYLE,
+            //TextStyle.FONT_VARIANT,
             //TextStyle.FONT_WEIGHT,
             TextStyle.TEXT_ALIGN,
             TextStyle.HYPHENS,
@@ -502,8 +502,6 @@ class SpreadsheetSettingsWidget extends SpreadsheetHistoryAwareStateWidget {
                     case TextStyle.FONT_KERNING:
                     case TextStyle.FONT_SIZE:
                     case TextStyle.FONT_STRETCH:
-                    case TextStyle.FONT_STYLE:
-                    case TextStyle.FONT_VARIANT:
                     case TextStyle.FONT_WEIGHT:
                     case TextStyle.HANGING_PUNCTUATION:
                     case TextStyle.HYPHENS:

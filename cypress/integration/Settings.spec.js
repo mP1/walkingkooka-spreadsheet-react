@@ -2,8 +2,6 @@
 
 import BorderStyle from "../../src/text/BorderStyle.js";
 import ExpressionNumberKind from "../../src/math/ExpressionNumberKind.js";
-import FontVariant from "../../src/text/FontVariant.js";
-import FontStyle from "../../src/text/FontStyle.js";
 import Hyphens from "../../src/text/Hyphens.js";
 import RoundingMode from "../../src/math/RoundingMode.js";
 import SpreadsheetCellReference from "../../src/spreadsheet/reference/SpreadsheetCellReference.js";
@@ -780,24 +778,11 @@ describe(
 
                 // the first slot of a Slider is reserved for "Default".
                 values.forEach((v, i) => {
-                    let skip;
-                    switch(property) {
-                        case TextStyle.FONT_STYLE:
-                        case TextStyle.FONT_VARIANT:
-                            skip = i > 0;
-                            break;
-                        default:
-                            skip = true;
-                            break;
-                    }
+                    cy.get(sliderId + " *[data-index=\"" + (1 + i) + "\"][aria-hidden=\"true\"]")
+                        //.should("have.text", v.nameCapitalCase()) Element is not visible because it has CSS property: 'position: fixed' and its being covered by another element
+                        .click(FORCE_TRUE);
 
-                    if(!skip){
-                        cy.get(sliderId + " *[data-index=\"" + (1 + i) + "\"][aria-hidden=\"true\"]")
-                            //.should("have.text", v.nameCapitalCase()) Element is not visible because it has CSS property: 'position: fixed' and its being covered by another element
-                            .click(FORCE_TRUE);
-
-                        testing.cellA1StyleCheck(property, v.toCssValue());
-                    }
+                    testing.cellA1StyleCheck(property, v.toCssValue());
                 });
 
                 if(defaultValue){
@@ -966,20 +951,6 @@ describe(
             "#000000"
         );
 
-        settingsSpreadsheetMetadataStyleSliderAndCheck(
-            TextStyle.FONT_STYLE,
-            FontStyle.values(),
-            FontStyle.NORMAL,
-            "normal"
-        );
-
-        settingsSpreadsheetMetadataStyleSliderAndCheck(
-            TextStyle.FONT_VARIANT,
-            FontVariant.values(),
-            FontVariant.NORMAL,
-            "normal"
-        );
-
         settingsSpreadsheetMetadataStyleSliderWithTextNumberAndCheck(
             TextStyle.HEIGHT,
             21,
@@ -1075,8 +1046,6 @@ describe(
             tabSection("text");
 
             tabColor(TextStyle.COLOR);
-            tabSlider(TextStyle.FONT_STYLE);
-            tabSlider(TextStyle.FONT_VARIANT);
             tabSlider(TextStyle.TEXT_ALIGN);
             tabSlider(TextStyle.HYPHENS);
             tabSlider(TextStyle.VERTICAL_ALIGN);
