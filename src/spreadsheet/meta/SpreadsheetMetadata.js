@@ -129,6 +129,49 @@ export default class SpreadsheetMetadata extends SystemObject {
     static VIEWPORT_CELL = "viewport-cell";
 
     /**
+     * Returns all property names.
+     */
+    static properties() {
+        return [
+            SpreadsheetMetadata.CELL_CHARACTER_WIDTH,
+            SpreadsheetMetadata.CREATOR,
+            SpreadsheetMetadata.CREATE_DATE_TIME,
+            SpreadsheetMetadata.CURRENCY_SYMBOL,
+            SpreadsheetMetadata.DATE_FORMAT_PATTERN,
+            SpreadsheetMetadata.DATE_PARSE_PATTERNS,
+            SpreadsheetMetadata.DATETIME_OFFSET,
+            SpreadsheetMetadata.DATETIME_FORMAT_PATTERN,
+            SpreadsheetMetadata.DATETIME_PARSE_PATTERNS,
+            SpreadsheetMetadata.DECIMAL_SEPARATOR,
+            SpreadsheetMetadata.DEFAULTS,
+            SpreadsheetMetadata.DEFAULT_YEAR,
+            SpreadsheetMetadata.EXPONENT_SYMBOL,
+            SpreadsheetMetadata.EXPRESSION_NUMBER_KIND,
+            SpreadsheetMetadata.GROUPING_SEPARATOR,
+            SpreadsheetMetadata.LOCALE,
+            SpreadsheetMetadata.MODIFIED_BY,
+            SpreadsheetMetadata.MODIFIED_DATE_TIME,
+            SpreadsheetMetadata.NEGATIVE_SIGN,
+            SpreadsheetMetadata.NUMBER_FORMAT_PATTERN,
+            SpreadsheetMetadata.NUMBER_PARSE_PATTERNS,
+            SpreadsheetMetadata.PERCENTAGE_SYMBOL,
+            SpreadsheetMetadata.POSITIVE_SIGN,
+            SpreadsheetMetadata.ROUNDING_MODE,
+            SpreadsheetMetadata.PRECISION,
+            SpreadsheetMetadata.SELECTION,
+            SpreadsheetMetadata.SPREADSHEET_ID,
+            SpreadsheetMetadata.SPREADSHEET_NAME,
+            SpreadsheetMetadata.STYLE,
+            SpreadsheetMetadata.TEXT_FORMAT_PATTERN,
+            SpreadsheetMetadata.TIME_FORMAT_PATTERN,
+            SpreadsheetMetadata.TIME_PARSE_PATTERNS,
+            SpreadsheetMetadata.TWO_DIGIT_YEAR,
+            SpreadsheetMetadata.VALUE_SEPARATOR,
+            SpreadsheetMetadata.VIEWPORT_CELL,
+        ];
+    }
+    
+    /**
      * Tests if the property name is a valid property.
      */
     static isProperty(property) {
