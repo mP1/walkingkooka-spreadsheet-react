@@ -572,7 +572,7 @@ class SpreadsheetSettingsWidget extends SpreadsheetHistoryAwareStateWidget {
                 }
         }
 
-        const label = SpreadsheetSettingsWidget.textStyleLabel(property);
+        const label = SpreadsheetSettingsWidget.textStylePropertyLabel(property);
         return this.tableRow(id, label, render, classes);
     }
 
@@ -659,7 +659,7 @@ class SpreadsheetSettingsWidget extends SpreadsheetHistoryAwareStateWidget {
         return style;
     }
 
-    static textStyleLabel(property) {
+    static textStylePropertyLabel(property) {
         var label;
 
         switch(property) {
