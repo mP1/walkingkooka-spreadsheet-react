@@ -64,14 +64,14 @@ test("spreadsheetMetadataPropertyLabel unnecessary labels", () => {
     expect(extra).toStrictEqual([]);
 });
 
-test("textStyleLabel", () => {
+test("textStylePropertyLabel", () => {
     const missing = allRows()
         .filter(property => {
             var filter = false;
 
             if(TextStyle.properties().indexOf(property) > -1){
                 try {
-                    SpreadsheetSettingsWidget.textStyleLabel(property);
+                    SpreadsheetSettingsWidget.textStylePropertyLabel(property);
                 } catch(e) {
                     filter = true;
                 }
@@ -82,7 +82,7 @@ test("textStyleLabel", () => {
     expect(missing).toStrictEqual([]);
 });
 
-test("textStyleLabel unnecessary labels", () => {
+test("textStylePropertyLabel unnecessary labels", () => {
     console.log(JSON.stringify(allRows()));
 
     const extra = TextStyle.properties()
@@ -90,7 +90,7 @@ test("textStyleLabel unnecessary labels", () => {
             var filter = false;
 
             try {
-                SpreadsheetSettingsWidget.textStyleLabel(property);
+                SpreadsheetSettingsWidget.textStylePropertyLabel(property);
                 filter = allRows()
                     .indexOf(property) === -1;
             } catch(e) {
