@@ -90,28 +90,6 @@ describe(
                 .should("match", /.*\/Untitled/);
         });
 
-        it("Hash Toggle section and hide", () => {
-            cy.window()
-                .then((win) => {
-                    var hash = win.location.hash;
-
-                    settingsToggle(); // open
-
-                    settingsOpenSectionSpreadsheetMetadataProperty(SpreadsheetMetadata.TWO_DIGIT_YEAR);
-
-                    settingsToggle(); // close
-
-                    settingsToggle(); // open
-
-                    const section = SpreadsheetSettingsWidget.section(SpreadsheetMetadata.TWO_DIGIT_YEAR);
-                    cy.get("#settings-spreadsheet-" + section + "-content")
-                        .should('be.visible');
-
-                    cy.hash()
-                        .should("eq", hash + "/settings/" + section);
-                });
-        });
-
         it("Settings show after editing spreadsheet name", () => {
             testing.spreadsheetNameClick();
 
