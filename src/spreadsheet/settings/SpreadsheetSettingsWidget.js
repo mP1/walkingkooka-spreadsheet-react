@@ -118,22 +118,22 @@ class SpreadsheetSettingsWidget extends SpreadsheetHistoryAwareStateWidget {
 
     stateFromHistoryTokens(tokens) {
         return {
-            open: tokens[SpreadsheetHistoryHash.SETTINGS],
+            settings: tokens[SpreadsheetHistoryHash.SETTINGS],
             section: tokens[SpreadsheetHistoryHash.SETTINGS_SECTION],
         };
     }
 
     /**
-     * Toggles the open/close of the settings by updating the state.open flag.
+     * Toggles the open/close of the settings by updating the state.settings flag.
      */
     toggle() {
         const state = this.state;
-        const open = state ? !state.open : true;
+        const settings = state ? !state.settings : true;
 
-        console.log("toggle to " + open);
+        console.log("toggle to " + settings);
 
         this.setState({
-            open: open,
+            settings: settings,
             section: state.toggleSection, // always clear
             toggleSection: state.section,
         });
@@ -148,18 +148,18 @@ class SpreadsheetSettingsWidget extends SpreadsheetHistoryAwareStateWidget {
 
         console.log("componentDidUpdate", "prevState", prevState, "state", state);
 
-        const openNew = !!state.open;
+        const settingsNew = !!state.settings;
 
         const oldSection = prevState.section;
         const newSection = state.section;
 
         const metadata = state.spreadsheetMetadata;
 
-        historyTokens[SpreadsheetHistoryHash.SETTINGS] = openNew;
+        historyTokens[SpreadsheetHistoryHash.SETTINGS] = settingsNew;
         historyTokens[SpreadsheetHistoryHash.SETTINGS_SECTION] = newSection;
 
         // if now showing metadata load formatted createDateTime/modifiedDateTime
-        if(openNew &&
+        if(settingsNew &&
             newSection === SpreadsheetHistoryHash.SETTINGS_METADATA &&
             oldSection !== SpreadsheetHistoryHash.SETTINGS_METADATA
         ){
@@ -215,10 +215,10 @@ class SpreadsheetSettingsWidget extends SpreadsheetHistoryAwareStateWidget {
 
     render() {
         const {classes} = this.props;
-        const {open, section, spreadsheetMetadata} = this.state;
+        const {settings, section, spreadsheetMetadata} = this.state;
 
         // if metadata is empty skip rendering content.
-        const children = spreadsheetMetadata && (!spreadsheetMetadata.isEmpty() && open &&
+        const children = spreadsheetMetadata && (!spreadsheetMetadata.isEmpty() && settings &&
             [
                 this.metadata(classes, SpreadsheetHistoryHash.SETTINGS_METADATA === section),
                 this.spreadsheetText(classes, SpreadsheetHistoryHash.SETTINGS_TEXT === section),
@@ -230,7 +230,7 @@ class SpreadsheetSettingsWidget extends SpreadsheetHistoryAwareStateWidget {
         return <Drawer id={"settings"}
                        anchor={"right"}
                        variant={"persistent"}
-                       open={this.state.open}
+                       open={Boolean(this.state.settings)}
                        modal={"false"}
                        onClose={this.onClose}
         >
@@ -244,7 +244,7 @@ class SpreadsheetSettingsWidget extends SpreadsheetHistoryAwareStateWidget {
     onDrawerClose() {
         this.setState(
             {
-                open: false,
+                settings: false,
             }
         )
     }
