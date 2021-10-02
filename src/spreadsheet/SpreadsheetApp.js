@@ -57,7 +57,6 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
         this.messenger = messenger;
 
         this.notification = React.createRef();
-        this.settings = React.createRef();
         this.aboveViewport = React.createRef();
         this.formula = React.createRef();
         this.viewport = React.createRef();
@@ -320,8 +319,7 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
                                            spreadsheetMetadataCrud={spreadsheetMetadataCrud}
                                            showError={showError}
                 />
-                <SpreadsheetSettingsWidget ref={this.settings}
-                                           history={history}
+                <SpreadsheetSettingsWidget history={history}
                                            spreadsheetMetadataCrud={spreadsheetMetadataCrud}
                                            notificationShow={notificationShow}
                                            showError={showError}
@@ -412,8 +410,7 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
     // settings.........................................................................................................
 
     settingsToggle() {
-        const widget = this.settings.current;
-        widget && widget.toggle();
+        this.props.history.settingsToggle();
     }
 
     // similarities.....................................................................................................

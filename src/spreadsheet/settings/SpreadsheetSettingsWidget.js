@@ -124,15 +124,6 @@ class SpreadsheetSettingsWidget extends SpreadsheetHistoryAwareStateWidget {
     }
 
     /**
-     * Toggles the open/close of the settings by updating the history hash.
-     */
-    toggle() {
-        const tokens = this.props.history.tokens();
-        tokens[SpreadsheetHistoryHash.SETTINGS] = !Boolean(tokens[SpreadsheetHistoryHash.SETTINGS]);
-        this.historyParseMergeAndPush(tokens);
-    }
-
-    /**
      * Translates the state to history tokens and performs some other updates and checks.
      */
     historyTokensFromState(prevState) {
