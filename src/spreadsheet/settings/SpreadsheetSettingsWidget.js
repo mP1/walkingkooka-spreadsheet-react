@@ -204,11 +204,11 @@ class SpreadsheetSettingsWidget extends SpreadsheetHistoryAwareStateWidget {
         // if metadata is empty skip rendering content.
         const children = spreadsheetMetadata && (!spreadsheetMetadata.isEmpty() && settings &&
             [
-                this.metadata(classes, SpreadsheetHistoryHash.SETTINGS_METADATA === section),
-                this.spreadsheetText(classes, SpreadsheetHistoryHash.SETTINGS_TEXT === section),
-                this.spreadsheetNumber(classes, SpreadsheetHistoryHash.SETTINGS_NUMBER === section),
-                this.spreadsheetDateTime(classes, SpreadsheetHistoryHash.SETTINGS_DATE_TIME === section),
-                this.spreadsheetDefaultCellBox(classes, SpreadsheetHistoryHash.SETTINGS_STYLE === section)
+                this.metadataAccordion(classes, SpreadsheetHistoryHash.SETTINGS_METADATA === section),
+                this.spreadsheetTextAccordion(classes, SpreadsheetHistoryHash.SETTINGS_TEXT === section),
+                this.spreadsheetNumberAccordion(classes, SpreadsheetHistoryHash.SETTINGS_NUMBER === section),
+                this.spreadsheetDateTimeAccordion(classes, SpreadsheetHistoryHash.SETTINGS_DATE_TIME === section),
+                this.spreadsheetStyleAccordion(classes, SpreadsheetHistoryHash.SETTINGS_STYLE === section)
             ]);
 
         return <Drawer id={"settings"}
@@ -267,7 +267,7 @@ class SpreadsheetSettingsWidget extends SpreadsheetHistoryAwareStateWidget {
 
     // METADATA.........................................................................................................
 
-    metadata(classes) {
+    metadataAccordion(classes) {
         return this.accordion(
             SpreadsheetHistoryHash.SETTINGS_METADATA,
             classes,
@@ -290,7 +290,7 @@ class SpreadsheetSettingsWidget extends SpreadsheetHistoryAwareStateWidget {
 
     // TEXT.............................................................................................................
 
-    spreadsheetText(classes) {
+    spreadsheetTextAccordion(classes) {
         return this.accordion(
             SpreadsheetHistoryHash.SETTINGS_TEXT,
             classes,
@@ -324,7 +324,7 @@ class SpreadsheetSettingsWidget extends SpreadsheetHistoryAwareStateWidget {
         ];
     }
 
-    spreadsheetDateTime(classes) {
+    spreadsheetDateTimeAccordion(classes) {
         return this.accordion(
             SpreadsheetHistoryHash.SETTINGS_DATE_TIME,
             classes,
@@ -349,7 +349,7 @@ class SpreadsheetSettingsWidget extends SpreadsheetHistoryAwareStateWidget {
         ];
     }
 
-    spreadsheetNumber(classes) {
+    spreadsheetNumberAccordion(classes) {
         return this.accordion(
             SpreadsheetHistoryHash.SETTINGS_NUMBER,
             classes,
@@ -378,7 +378,7 @@ class SpreadsheetSettingsWidget extends SpreadsheetHistoryAwareStateWidget {
         ];
     }
 
-    spreadsheetDefaultCellBox(classes) {
+    spreadsheetStyleAccordion(classes) {
         return this.accordion(
             SpreadsheetHistoryHash.SETTINGS_STYLE,
             classes,
