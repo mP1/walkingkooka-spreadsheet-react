@@ -745,4 +745,13 @@ export default class SpreadsheetHistoryHash extends SpreadsheetHistoryHashTokens
                              text
                          }</MenuItem>;
     }
+
+    /**
+     * Toggles the settings widget open becomes close and vice versa.
+     */
+    settingsToggle() {
+        const tokens = this.tokens();
+        tokens[SpreadsheetHistoryHash.SETTINGS] = !Boolean(tokens[SpreadsheetHistoryHash.SETTINGS]);
+        this.push(tokens);
+    }
 }
