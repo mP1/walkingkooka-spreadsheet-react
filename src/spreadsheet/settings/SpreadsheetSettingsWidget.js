@@ -124,19 +124,12 @@ class SpreadsheetSettingsWidget extends SpreadsheetHistoryAwareStateWidget {
     }
 
     /**
-     * Toggles the open/close of the settings by updating the state.settings flag.
+     * Toggles the open/close of the settings by updating the history hash.
      */
     toggle() {
-        const state = this.state;
-        const settings = state ? !state.settings : true;
-
-        console.log("toggle to " + settings);
-
-        this.setState({
-            settings: settings,
-            section: state.toggleSection, // always clear
-            toggleSection: state.section,
-        });
+        const tokens = this.props.history.tokens();
+        tokens[SpreadsheetHistoryHash.SETTINGS] = !Boolean(tokens[SpreadsheetHistoryHash.SETTINGS]);
+        this.historyParseMergeAndPush(tokens);
     }
 
     /**
@@ -242,11 +235,10 @@ class SpreadsheetSettingsWidget extends SpreadsheetHistoryAwareStateWidget {
     }
 
     onDrawerClose() {
-        this.setState(
-            {
-                settings: false,
-            }
-        )
+        const tokens = {};
+        tokens[SpreadsheetHistoryHash.SETTINGS] = false;
+
+        this.historyParseMergeAndPush(tokens);
     }
 
     /**
@@ -1255,16 +1247,16 @@ class SpreadsheetSettingsWidget extends SpreadsheetHistoryAwareStateWidget {
     }
 
     accordionOnChange(expanded, sectionName) {
-        var stateSectionName = expanded ?
+        var updated = expanded ?
             sectionName :
             null;
 
-        console.log("accordionOnChange expanded: " + expanded + " sectionName: " + sectionName + " new state.section: " + stateSectionName, "state", this.state);
+        console.log("accordionOnChange expanded: " + expanded + " sectionName: " + sectionName);
 
-        this.setState({
-            section: stateSectionName,
-            toggleSection: stateSectionName,
-        });
+        const tokens = this.props.history.tokens();
+        tokens[SpreadsheetHistoryHash.SETTINGS_SECTION] = updated;
+
+        this.historyParseMergeAndPush(tokens);
     }
 
     /**
