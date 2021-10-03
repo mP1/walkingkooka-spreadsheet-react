@@ -97,7 +97,7 @@ export default class SpreadsheetHistoryHash extends SpreadsheetHistoryHashTokens
 
                 var select = null;
                 var settings = null;
-                var settingsSection = null;
+                var settingsItem = null;
 
                 var previous = null;
 
@@ -241,7 +241,7 @@ export default class SpreadsheetHistoryHash extends SpreadsheetHistoryHashTokens
                             const possibleSection = tokens.shift();
                             if(null != possibleSection){
                                 if(isSettingsToken(possibleSection)){
-                                    settingsSection = possibleSection;
+                                    settingsItem = possibleSection;
                                 }
                             }
                             previous = null;
@@ -287,8 +287,8 @@ export default class SpreadsheetHistoryHash extends SpreadsheetHistoryHashTokens
                     }
                     if(settings){
                         historyHashTokens[SpreadsheetHistoryHashTokens.SETTINGS] = settings;
-                        if(settingsSection){
-                            historyHashTokens[SpreadsheetHistoryHashTokens.SETTINGS_SECTION] = settingsSection;
+                        if(settingsItem){
+                            historyHashTokens[SpreadsheetHistoryHashTokens.SETTINGS_ITEM] = settingsItem;
                         }
                     }
                 }
@@ -315,7 +315,7 @@ export default class SpreadsheetHistoryHash extends SpreadsheetHistoryHashTokens
 
         var select = tokens[SpreadsheetHistoryHashTokens.SELECT];
         var settings = tokens[SpreadsheetHistoryHashTokens.SETTINGS];
-        var settingsSection = tokens[SpreadsheetHistoryHashTokens.SETTINGS_SECTION];
+        var settingsItem = tokens[SpreadsheetHistoryHashTokens.SETTINGS_ITEM];
 
         const verified = {};
 
@@ -380,8 +380,8 @@ export default class SpreadsheetHistoryHash extends SpreadsheetHistoryHashTokens
                 if(settings){
                     verified[SpreadsheetHistoryHashTokens.SETTINGS] = settings;
 
-                    if(settingsSection){
-                        verified[SpreadsheetHistoryHashTokens.SETTINGS_SECTION] = settingsSection;
+                    if(settingsItem){
+                        verified[SpreadsheetHistoryHashTokens.SETTINGS_ITEM] = settingsItem;
                     }
                 }
             }
@@ -412,7 +412,7 @@ export default class SpreadsheetHistoryHash extends SpreadsheetHistoryHashTokens
         var select = current[SpreadsheetHistoryHashTokens.SELECT];
 
         var settings = current[SpreadsheetHistoryHashTokens.SETTINGS];
-        var settingsSection = current[SpreadsheetHistoryHashTokens.SETTINGS_SECTION];
+        var settingsItem = current[SpreadsheetHistoryHashTokens.SETTINGS_ITEM];
 
         // try replacing...
         if(delta.hasOwnProperty(SpreadsheetHistoryHashTokens.SPREADSHEET_ID)){
@@ -479,9 +479,9 @@ export default class SpreadsheetHistoryHash extends SpreadsheetHistoryHashTokens
 
         if(delta.hasOwnProperty(SpreadsheetHistoryHashTokens.SETTINGS)){
             settings = delta[SpreadsheetHistoryHashTokens.SETTINGS];
-            settingsSection = delta[SpreadsheetHistoryHashTokens.SETTINGS_SECTION];
-            if(settingsSection && !isSettingsToken(settingsSection)){
-                settingsSection = null;
+            settingsItem = delta[SpreadsheetHistoryHashTokens.SETTINGS_ITEM];
+            if(settingsItem && !isSettingsToken(settingsItem)){
+                settingsItem = null;
             }
         }
 
@@ -535,8 +535,8 @@ export default class SpreadsheetHistoryHash extends SpreadsheetHistoryHashTokens
             if(!!settings){
                 merged[SpreadsheetHistoryHashTokens.SETTINGS] = settings;
 
-                if(settingsSection){
-                    merged[SpreadsheetHistoryHashTokens.SETTINGS_SECTION] = settingsSection;
+                if(settingsItem){
+                    merged[SpreadsheetHistoryHashTokens.SETTINGS_ITEM] = settingsItem;
                 }
             }
         }
@@ -562,7 +562,7 @@ export default class SpreadsheetHistoryHash extends SpreadsheetHistoryHashTokens
         var select = tokens[SpreadsheetHistoryHashTokens.SELECT];
 
         var settings = tokens[SpreadsheetHistoryHashTokens.SETTINGS];
-        var settingsSection = tokens[SpreadsheetHistoryHashTokens.SETTINGS_SECTION];
+        var settingsItem = tokens[SpreadsheetHistoryHashTokens.SETTINGS_ITEM];
 
         let hash = "";
         let valid = false;
@@ -618,8 +618,8 @@ export default class SpreadsheetHistoryHash extends SpreadsheetHistoryHashTokens
             if(!!settings){
                 hash = hash + "/" + SpreadsheetHistoryHashTokens.SETTINGS;
 
-                if(settingsSection){
-                    hash = hash + "/" + settingsSection;
+                if(settingsItem){
+                    hash = hash + "/" + settingsItem;
                 }
             }
         }

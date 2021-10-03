@@ -119,7 +119,7 @@ class SpreadsheetSettingsWidget extends SpreadsheetHistoryAwareStateWidget {
     stateFromHistoryTokens(tokens) {
         return {
             settings: tokens[SpreadsheetHistoryHash.SETTINGS],
-            section: tokens[SpreadsheetHistoryHash.SETTINGS_SECTION],
+            settingsItem: tokens[SpreadsheetHistoryHash.SETTINGS_ITEM],
         };
     }
 
@@ -134,18 +134,18 @@ class SpreadsheetSettingsWidget extends SpreadsheetHistoryAwareStateWidget {
 
         const settingsNew = !!state.settings;
 
-        const oldSection = prevState.section;
-        const newSection = state.section;
+        const oldSettingsItem = prevState.settingsItem;
+        const newSettingsItem = state.settingsItem;
 
         const metadata = state.spreadsheetMetadata;
 
         historyTokens[SpreadsheetHistoryHash.SETTINGS] = settingsNew;
-        historyTokens[SpreadsheetHistoryHash.SETTINGS_SECTION] = newSection;
+        historyTokens[SpreadsheetHistoryHash.SETTINGS_ITEM] = newSettingsItem;
 
         // if now showing metadata load formatted createDateTime/modifiedDateTime
         if(settingsNew &&
-            newSection === SpreadsheetHistoryHash.SETTINGS_METADATA &&
-            oldSection !== SpreadsheetHistoryHash.SETTINGS_METADATA
+            newSettingsItem === SpreadsheetHistoryHash.SETTINGS_METADATA &&
+            oldSettingsItem !== SpreadsheetHistoryHash.SETTINGS_METADATA
         ){
             const createDateTime = metadata.getIgnoringDefaults(SpreadsheetMetadata.CREATE_DATE_TIME);
             const modifiedDateTime = metadata.getIgnoringDefaults(SpreadsheetMetadata.MODIFIED_DATE_TIME);
@@ -199,16 +199,16 @@ class SpreadsheetSettingsWidget extends SpreadsheetHistoryAwareStateWidget {
 
     render() {
         const {classes} = this.props;
-        const {settings, section, spreadsheetMetadata} = this.state;
+        const {settings, settingsItem, spreadsheetMetadata} = this.state;
 
         // if metadata is empty skip rendering content.
         const children = spreadsheetMetadata && (!spreadsheetMetadata.isEmpty() && settings &&
             [
-                this.metadataAccordion(classes, SpreadsheetHistoryHash.SETTINGS_METADATA === section),
-                this.spreadsheetTextAccordion(classes, SpreadsheetHistoryHash.SETTINGS_TEXT === section),
-                this.spreadsheetNumberAccordion(classes, SpreadsheetHistoryHash.SETTINGS_NUMBER === section),
-                this.spreadsheetDateTimeAccordion(classes, SpreadsheetHistoryHash.SETTINGS_DATE_TIME === section),
-                this.spreadsheetStyleAccordion(classes, SpreadsheetHistoryHash.SETTINGS_STYLE === section)
+                this.metadataAccordion(classes, SpreadsheetHistoryHash.SETTINGS_METADATA === settingsItem),
+                this.spreadsheetTextAccordion(classes, SpreadsheetHistoryHash.SETTINGS_TEXT === settingsItem),
+                this.spreadsheetNumberAccordion(classes, SpreadsheetHistoryHash.SETTINGS_NUMBER === settingsItem),
+                this.spreadsheetDateTimeAccordion(classes, SpreadsheetHistoryHash.SETTINGS_DATE_TIME === settingsItem),
+                this.spreadsheetStyleAccordion(classes, SpreadsheetHistoryHash.SETTINGS_STYLE === settingsItem)
             ]);
 
         return <Drawer id={"settings"}
@@ -233,36 +233,36 @@ class SpreadsheetSettingsWidget extends SpreadsheetHistoryAwareStateWidget {
     }
 
     /**
-     * Returns the section for the given property.
+     * Returns the settings accordion name for the given property.
      */
-    static section(property) {
-        var section;
+    static parentAccordion(property) {
+        var parentAccordion;
 
         for(; ;) {
             if(SpreadsheetSettingsWidget.metadataRows().includes(property)){
-                section = SpreadsheetHistoryHash.SETTINGS_METADATA;
+                parentAccordion = SpreadsheetHistoryHash.SETTINGS_METADATA;
                 break;
             }
             if(SpreadsheetSettingsWidget.spreadsheetTextRows().includes(property)){
-                section = SpreadsheetHistoryHash.SETTINGS_TEXT;
+                parentAccordion = SpreadsheetHistoryHash.SETTINGS_TEXT;
                 break;
             }
             if(SpreadsheetSettingsWidget.spreadsheetDateTimeRows().includes(property)){
-                section = SpreadsheetHistoryHash.SETTINGS_DATE_TIME;
+                parentAccordion = SpreadsheetHistoryHash.SETTINGS_DATE_TIME;
                 break;
             }
             if(SpreadsheetSettingsWidget.spreadsheetNumberRows().includes(property)){
-                section = SpreadsheetHistoryHash.SETTINGS_NUMBER;
+                parentAccordion = SpreadsheetHistoryHash.SETTINGS_NUMBER;
                 break;
             }
             if(SpreadsheetSettingsWidget.spreadsheetStyleRows().includes(property)){
-                section = SpreadsheetHistoryHash.SETTINGS_STYLE;
+                parentAccordion = SpreadsheetHistoryHash.SETTINGS_STYLE;
                 break;
             }
             throw new Error("Unknown property \"" + property + "\"");
         }
 
-        return section;
+        return parentAccordion;
     }
 
     // METADATA.........................................................................................................
@@ -1195,25 +1195,25 @@ class SpreadsheetSettingsWidget extends SpreadsheetHistoryAwareStateWidget {
     // https://material-ui.com/components/accordion/
 
     /**
-     * Creates the accordion container so all sections in the settings have a common look and feel and history hash management.
+     * Creates the accordion container so all settingsItems in the settings have a common look and feel and history hash management.
      */
     // TODO AccordionSummary aria-control
-    accordion(sectionName,
+    accordion(settingsItemName,
               classes,
               heading,
               secondaryHeading,
               tableAriaLabel,
               rows) {
-        const id = "settings-spreadsheet-" + sectionName;
+        const id = "settings-spreadsheet-" + settingsItemName;
 
         const state = this.state;
-        console.log("accordion: " + id + " sectionName: " + sectionName + " state.section: " + state.section + " expanded: " + (state.section === sectionName), "state", state);
+        console.log("accordion: " + id + " settingsItemName: " + settingsItemName + " state.settingsItem: " + state.settingsItem + " expanded: " + (state.settingsItem === settingsItemName), "state", state);
 
         return <Accordion id={id}
                           key={id}
                           tabIndex={0}
-                          expanded={state.section === sectionName}
-                          onChange={(e, expanded) => this.accordionOnChange(expanded, sectionName)}>
+                          expanded={state.settingsItem === settingsItemName}
+                          onChange={(e, expanded) => this.accordionOnChange(expanded, settingsItemName)}>
             <AccordionSummary expandIcon={<ExpandMoreIcon id={id + "-expand-more-icon"}/>}
                               id={id + "-icon"}
             >
@@ -1237,15 +1237,15 @@ class SpreadsheetSettingsWidget extends SpreadsheetHistoryAwareStateWidget {
         </Accordion>;
     }
 
-    accordionOnChange(expanded, sectionName) {
+    accordionOnChange(expanded, settingsItemName) {
         var updated = expanded ?
-            sectionName :
+            settingsItemName :
             null;
 
-        console.log("accordionOnChange expanded: " + expanded + " sectionName: " + sectionName);
+        console.log("accordionOnChange expanded: " + expanded + " settingsItemName: " + settingsItemName);
 
         const tokens = this.props.history.tokens();
-        tokens[SpreadsheetHistoryHash.SETTINGS_SECTION] = updated;
+        tokens[SpreadsheetHistoryHash.SETTINGS_ITEM] = updated;
 
         this.historyParseMergeAndPush(tokens);
     }
