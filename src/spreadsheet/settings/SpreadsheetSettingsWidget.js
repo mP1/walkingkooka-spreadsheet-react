@@ -18,6 +18,7 @@ import RoundingMode from "../../math/RoundingMode.js";
 import SpreadsheetFormatRequest from "../server/format/SpreadsheetFormatRequest.js";
 import SpreadsheetHistoryAwareStateWidget from "../history/SpreadsheetHistoryAwareStateWidget.js";
 import SpreadsheetHistoryHash from "../history/SpreadsheetHistoryHash.js";
+import SpreadsheetHistoryHashTokens from "../history/SpreadsheetHistoryHashTokens.js";
 import SpreadsheetLocaleDefaultDateTimeFormat from "../server/format/SpreadsheetLocaleDefaultDateTimeFormat.js";
 import SpreadsheetMessengerCrud from "../message/SpreadsheetMessengerCrud.js";
 import SpreadsheetMetadata from "../meta/SpreadsheetMetadata.js";
@@ -26,6 +27,7 @@ import SpreadsheetMultiFormatResponse from "../server/format/SpreadsheetMultiFor
 import SpreadsheetSettingsWidgetCharacter from "./SpreadsheetSettingsWidgetCharacter.js";
 import SpreadsheetSettingsWidgetColor from "./SpreadsheetSettingsWidgetColor.js";
 import SpreadsheetSettingsWidgetDropDownList from "./SpreadsheetSettingsWidgetDropDownList.js";
+import SpreadsheetSettingsWidgetItems from "./SpreadsheetSettingsWidgetItems.js";
 import SpreadsheetSettingsWidgetNumber from "./SpreadsheetSettingsWidgetNumber.js";
 import SpreadsheetSettingsWidgetSlider from "./SpreadsheetSettingsWidgetSlider.js";
 import SpreadsheetSettingsWidgetSliderWithNumberTextField
@@ -118,8 +120,8 @@ class SpreadsheetSettingsWidget extends SpreadsheetHistoryAwareStateWidget {
 
     stateFromHistoryTokens(tokens) {
         return {
-            settings: tokens[SpreadsheetHistoryHash.SETTINGS],
-            settingsItem: tokens[SpreadsheetHistoryHash.SETTINGS_ITEM],
+            settings: tokens[SpreadsheetHistoryHashTokens.SETTINGS],
+            settingsItem: tokens[SpreadsheetHistoryHashTokens.SETTINGS_ITEM],
         };
     }
 
@@ -139,13 +141,13 @@ class SpreadsheetSettingsWidget extends SpreadsheetHistoryAwareStateWidget {
 
         const metadata = state.spreadsheetMetadata;
 
-        historyTokens[SpreadsheetHistoryHash.SETTINGS] = settingsNew;
-        historyTokens[SpreadsheetHistoryHash.SETTINGS_ITEM] = newSettingsItem;
+        historyTokens[SpreadsheetHistoryHashTokens.SETTINGS] = settingsNew;
+        historyTokens[SpreadsheetHistoryHashTokens.SETTINGS_ITEM] = newSettingsItem;
 
         // if now showing metadata load formatted createDateTime/modifiedDateTime
         if(settingsNew &&
-            newSettingsItem === SpreadsheetHistoryHash.SETTINGS_METADATA &&
-            oldSettingsItem !== SpreadsheetHistoryHash.SETTINGS_METADATA
+            newSettingsItem === SpreadsheetHistoryHashTokens.SETTINGS_METADATA &&
+            oldSettingsItem !== SpreadsheetHistoryHashTokens.SETTINGS_METADATA
         ){
             const createDateTime = metadata.getIgnoringDefaults(SpreadsheetMetadata.CREATE_DATE_TIME);
             const modifiedDateTime = metadata.getIgnoringDefaults(SpreadsheetMetadata.MODIFIED_DATE_TIME);
@@ -204,11 +206,11 @@ class SpreadsheetSettingsWidget extends SpreadsheetHistoryAwareStateWidget {
         // if metadata is empty skip rendering content.
         const children = spreadsheetMetadata && (!spreadsheetMetadata.isEmpty() && settings &&
             [
-                this.metadataAccordion(classes, SpreadsheetHistoryHash.SETTINGS_METADATA === settingsItem),
-                this.spreadsheetTextAccordion(classes, SpreadsheetHistoryHash.SETTINGS_TEXT === settingsItem),
-                this.spreadsheetNumberAccordion(classes, SpreadsheetHistoryHash.SETTINGS_NUMBER === settingsItem),
-                this.spreadsheetDateTimeAccordion(classes, SpreadsheetHistoryHash.SETTINGS_DATE_TIME === settingsItem),
-                this.spreadsheetStyleAccordion(classes, SpreadsheetHistoryHash.SETTINGS_STYLE === settingsItem)
+                this.metadataAccordion(classes, SpreadsheetHistoryHashTokens.SETTINGS_METADATA === settingsItem),
+                this.spreadsheetTextAccordion(classes, SpreadsheetHistoryHashTokens.SETTINGS_TEXT === settingsItem),
+                this.spreadsheetNumberAccordion(classes, SpreadsheetHistoryHashTokens.SETTINGS_NUMBER === settingsItem),
+                this.spreadsheetDateTimeAccordion(classes, SpreadsheetHistoryHashTokens.SETTINGS_DATE_TIME === settingsItem),
+                this.spreadsheetStyleAccordion(classes, SpreadsheetHistoryHashTokens.SETTINGS_STYLE === settingsItem)
             ]);
 
         return <Drawer id={"settings"}
@@ -227,196 +229,68 @@ class SpreadsheetSettingsWidget extends SpreadsheetHistoryAwareStateWidget {
 
     onDrawerClose() {
         const tokens = {};
-        tokens[SpreadsheetHistoryHash.SETTINGS] = false;
+        tokens[SpreadsheetHistoryHashTokens.SETTINGS] = false;
 
         this.historyParseMergeAndPush(tokens);
-    }
-
-    /**
-     * Returns the settings accordion name for the given property.
-     */
-    static parentAccordion(property) {
-        var parentAccordion;
-
-        for(; ;) {
-            if(SpreadsheetSettingsWidget.metadataRows().includes(property)){
-                parentAccordion = SpreadsheetHistoryHash.SETTINGS_METADATA;
-                break;
-            }
-            if(SpreadsheetSettingsWidget.spreadsheetTextRows().includes(property)){
-                parentAccordion = SpreadsheetHistoryHash.SETTINGS_TEXT;
-                break;
-            }
-            if(SpreadsheetSettingsWidget.spreadsheetDateTimeRows().includes(property)){
-                parentAccordion = SpreadsheetHistoryHash.SETTINGS_DATE_TIME;
-                break;
-            }
-            if(SpreadsheetSettingsWidget.spreadsheetNumberRows().includes(property)){
-                parentAccordion = SpreadsheetHistoryHash.SETTINGS_NUMBER;
-                break;
-            }
-            if(SpreadsheetSettingsWidget.spreadsheetStyleRows().includes(property)){
-                parentAccordion = SpreadsheetHistoryHash.SETTINGS_STYLE;
-                break;
-            }
-            throw new Error("Unknown property \"" + property + "\"");
-        }
-
-        return parentAccordion;
     }
 
     // METADATA.........................................................................................................
 
     metadataAccordion(classes) {
         return this.accordion(
-            SpreadsheetHistoryHash.SETTINGS_METADATA,
+            SpreadsheetHistoryHashTokens.SETTINGS_METADATA,
             classes,
             "Metadata",
             "",
             "Readonly Spreadsheet Metadata",
-            SpreadsheetSettingsWidget.metadataRows(),
+            SpreadsheetSettingsWidgetItems.metadataRows(),
         );
-    }
-
-    static metadataRows() {
-        return [
-            SpreadsheetMetadata.SPREADSHEET_ID,
-            SpreadsheetMetadata.CREATOR,
-            SpreadsheetMetadata.CREATE_DATE_TIME,
-            SpreadsheetMetadata.MODIFIED_BY,
-            SpreadsheetMetadata.MODIFIED_DATE_TIME,
-        ];
     }
 
     // TEXT.............................................................................................................
 
     spreadsheetTextAccordion(classes) {
         return this.accordion(
-            SpreadsheetHistoryHash.SETTINGS_TEXT,
+            SpreadsheetHistoryHashTokens.SETTINGS_TEXT,
             classes,
             "Text",
             "",
             "Text",
-            SpreadsheetSettingsWidget.spreadsheetTextRows(),
+            SpreadsheetSettingsWidgetItems.spreadsheetTextRows(),
         );
-    }
-
-    static spreadsheetTextRows() {
-        return [
-            TextStyle.COLOR,
-            //TextStyle.DIRECTION,
-            //TextStyle.FONT_FAMILY,
-            //TextStyle.FONT_SIZE,
-            //TextStyle.FONT_STYLE,
-            //TextStyle.FONT_VARIANT,
-            //TextStyle.FONT_WEIGHT,
-            TextStyle.TEXT_ALIGN,
-            TextStyle.HYPHENS,
-            //TextStyle.LINE_HEIGHT,
-            TextStyle.VERTICAL_ALIGN,
-            //TextStyle.WORD_SPACING,
-            TextStyle.WORD_BREAK,
-            TextStyle.WORD_WRAP,
-            //
-            SpreadsheetMetadata.LOCALE,
-            SpreadsheetMetadata.TEXT_FORMAT_PATTERN,
-            SpreadsheetMetadata.CELL_CHARACTER_WIDTH,
-        ];
     }
 
     spreadsheetDateTimeAccordion(classes) {
         return this.accordion(
-            SpreadsheetHistoryHash.SETTINGS_DATE_TIME,
+            SpreadsheetHistoryHashTokens.SETTINGS_DATE_TIME,
             classes,
             "Date/Time",
             "",
             "Spreadsheet Date/Time",
-            SpreadsheetSettingsWidget.spreadsheetDateTimeRows(),
+            SpreadsheetSettingsWidgetItems.spreadsheetDateTimeRows(),
         );
-    }
-
-    static spreadsheetDateTimeRows() {
-        return [
-            SpreadsheetMetadata.DATETIME_OFFSET,
-            SpreadsheetMetadata.DEFAULT_YEAR,
-            SpreadsheetMetadata.TWO_DIGIT_YEAR,
-            SpreadsheetMetadata.DATE_FORMAT_PATTERN,
-            SpreadsheetMetadata.DATE_PARSE_PATTERNS,
-            SpreadsheetMetadata.DATETIME_FORMAT_PATTERN,
-            SpreadsheetMetadata.DATETIME_PARSE_PATTERNS,
-            SpreadsheetMetadata.TIME_FORMAT_PATTERN,
-            SpreadsheetMetadata.TIME_PARSE_PATTERNS
-        ];
     }
 
     spreadsheetNumberAccordion(classes) {
         return this.accordion(
-            SpreadsheetHistoryHash.SETTINGS_NUMBER,
+            SpreadsheetHistoryHashTokens.SETTINGS_NUMBER,
             classes,
             "Number",
             "",
             "Spreadsheet Number Settings",
-            SpreadsheetSettingsWidget.spreadsheetNumberRows()
+            SpreadsheetSettingsWidgetItems.spreadsheetNumberRows()
         );
-    }
-
-    static spreadsheetNumberRows() {
-        return [
-            SpreadsheetMetadata.EXPRESSION_NUMBER_KIND,
-            SpreadsheetMetadata.PRECISION,
-            SpreadsheetMetadata.ROUNDING_MODE,
-            SpreadsheetMetadata.CURRENCY_SYMBOL,
-            SpreadsheetMetadata.DECIMAL_SEPARATOR,
-            SpreadsheetMetadata.EXPONENT_SYMBOL,
-            SpreadsheetMetadata.GROUPING_SEPARATOR,
-            SpreadsheetMetadata.NEGATIVE_SIGN,
-            SpreadsheetMetadata.PERCENTAGE_SYMBOL,
-            SpreadsheetMetadata.POSITIVE_SIGN,
-            SpreadsheetMetadata.NUMBER_FORMAT_PATTERN,
-            SpreadsheetMetadata.NUMBER_PARSE_PATTERNS,
-            SpreadsheetMetadata.VALUE_SEPARATOR,
-        ];
     }
 
     spreadsheetStyleAccordion(classes) {
         return this.accordion(
-            SpreadsheetHistoryHash.SETTINGS_STYLE,
+            SpreadsheetHistoryHashTokens.SETTINGS_STYLE,
             classes,
             "Default Cell style(s)",
             "",
             "Default Cell style(s)",
-            SpreadsheetSettingsWidget.spreadsheetStyleRows(),
+            SpreadsheetSettingsWidgetItems.spreadsheetStyleRows(),
         );
-    }
-
-    static spreadsheetStyleRows() {
-        return [
-            TextStyle.BACKGROUND_COLOR,
-            //
-            TextStyle.WIDTH,
-            TextStyle.HEIGHT,
-            //
-            TextStyle.BORDER_LEFT_COLOR,
-            TextStyle.BORDER_LEFT_STYLE,
-            TextStyle.BORDER_LEFT_WIDTH,
-            //
-            TextStyle.BORDER_TOP_COLOR,
-            TextStyle.BORDER_TOP_STYLE,
-            TextStyle.BORDER_TOP_WIDTH,
-            //
-            TextStyle.BORDER_RIGHT_COLOR,
-            TextStyle.BORDER_RIGHT_STYLE,
-            TextStyle.BORDER_RIGHT_WIDTH,
-            //
-            TextStyle.BORDER_BOTTOM_COLOR,
-            TextStyle.BORDER_BOTTOM_STYLE,
-            TextStyle.BORDER_BOTTOM_WIDTH,
-            //
-            TextStyle.PADDING_LEFT,
-            TextStyle.PADDING_TOP,
-            TextStyle.PADDING_RIGHT,
-            TextStyle.PADDING_BOTTOM,
-        ];
     }
 
     renderRow(property, classes) {
@@ -1245,7 +1119,7 @@ class SpreadsheetSettingsWidget extends SpreadsheetHistoryAwareStateWidget {
         console.log("accordionOnChange expanded: " + expanded + " settingsItemName: " + settingsItemName);
 
         const tokens = this.props.history.tokens();
-        tokens[SpreadsheetHistoryHash.SETTINGS_ITEM] = updated;
+        tokens[SpreadsheetHistoryHashTokens.SETTINGS_ITEM] = updated;
 
         this.historyParseMergeAndPush(tokens);
     }

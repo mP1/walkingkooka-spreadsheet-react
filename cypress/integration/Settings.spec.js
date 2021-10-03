@@ -6,13 +6,13 @@ import Hyphens from "../../src/text/Hyphens.js";
 import RoundingMode from "../../src/math/RoundingMode.js";
 import SpreadsheetCellReference from "../../src/spreadsheet/reference/SpreadsheetCellReference.js";
 import SpreadsheetMetadata from "../../src/spreadsheet/meta/SpreadsheetMetadata.js";
-import SpreadsheetSettingsWidget from "../../src/spreadsheet/settings/SpreadsheetSettingsWidget.js";
 import SpreadsheetTesting from "./SpreadsheetTesting.js";
 import TextAlign from "../../src/text/TextAlign.js";
 import TextStyle from "../../src/text/TextStyle.js";
 import VerticalAlign from "../../src/text/VerticalAlign.js";
 import WordBreak from "../../src/text/WordBreak.js";
 import WordWrap from "../../src/text/WordWrap.js";
+import SpreadsheetSettingsWidgetItems from "../../src/spreadsheet/settings/SpreadsheetSettingsWidgetItems.js";
 
 const FORCE_TRUE = {
     force: true,
@@ -1179,11 +1179,11 @@ describe(
          * Opens the settings section that includes the given SpreadsheetMetadata property
          */
         function settingsOpenSectionSpreadsheetMetadataProperty(property) {
-            settingsOpenSection(SpreadsheetSettingsWidget.parentAccordion(property));
+            settingsOpenSection(SpreadsheetSettingsWidgetItems.parentAccordion(property));
         }
 
         function settingsOpenSectionSpreadsheetMetadataStyleProperty(property) {
-            settingsOpenSection(SpreadsheetSettingsWidget.parentAccordion(property));
+            settingsOpenSection(SpreadsheetSettingsWidgetItems.parentAccordion(property));
         }
 
         function settingsOpenSection(section) {
