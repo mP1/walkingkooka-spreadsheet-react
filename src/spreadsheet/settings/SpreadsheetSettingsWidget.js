@@ -915,7 +915,7 @@ class SpreadsheetSettingsWidget extends SpreadsheetHistoryAwareStateWidget {
      * Factory that creates a number widget customising based on the property.
      */
     number(property, value, id, defaultValue, setValue) {
-        const numberValue = Number.isNaN(Number(value)) ? null : value;
+        const numberValue = Number.isNaN(Number(value)) ? null : Number(value);
         var length;
         var maxLength;
         var min;
@@ -960,7 +960,7 @@ class SpreadsheetSettingsWidget extends SpreadsheetHistoryAwareStateWidget {
      * Factory that creates a slider with number using the property to customized some properties.
      */
     sliderAndNumber(property, value, id, defaultValue, setValue) {
-        const numberValue = Number.isNaN(Number(value)) ? null : value;
+        const numberValue = Number.isNaN(Number(value)) ? null : Number(value);
         var min;
         var max;
         var marks;
