@@ -1183,7 +1183,7 @@ testParseAndStringify(
         "spreadsheet-name": SPREADSHEET_NAME,
         "select": true,
         "settings": true,
-        "settings-section": SpreadsheetHistoryHash.SETTINGS_NUMBER,
+        "settings-item": SpreadsheetHistoryHash.SETTINGS_NUMBER,
     }
 );
 
@@ -1211,7 +1211,7 @@ testParseAndStringify(
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
         "settings": true,
-        "settings-section": SpreadsheetHistoryHash.SETTINGS_METADATA,
+        "settings-item": SpreadsheetHistoryHash.SETTINGS_METADATA,
     }
 );
 
@@ -1221,7 +1221,7 @@ testParseAndStringify(
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
         "settings": true,
-        "settings-section": SpreadsheetHistoryHash.SETTINGS_TEXT,
+        "settings-item": SpreadsheetHistoryHash.SETTINGS_TEXT,
     }
 );
 
@@ -1231,7 +1231,7 @@ testParseAndStringify(
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
         "settings": true,
-        "settings-section": SpreadsheetHistoryHash.SETTINGS_NUMBER,
+        "settings-item": SpreadsheetHistoryHash.SETTINGS_NUMBER,
     }
 );
 
@@ -1241,7 +1241,7 @@ testParseAndStringify(
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
         "settings": true,
-        "settings-section": SpreadsheetHistoryHash.SETTINGS_DATE_TIME,
+        "settings-item": SpreadsheetHistoryHash.SETTINGS_DATE_TIME,
     }
 );
 
@@ -1251,7 +1251,7 @@ testParseAndStringify(
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
         "settings": true,
-        "settings-section": SpreadsheetHistoryHash.SETTINGS_STYLE,
+        "settings-item": SpreadsheetHistoryHash.SETTINGS_STYLE,
     }
 );
 
@@ -1279,7 +1279,7 @@ testParseAndStringify(
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
         "settings": true,
-        "settings-section": SpreadsheetHistoryHash.SETTINGS_METADATA,
+        "settings-item": SpreadsheetHistoryHash.SETTINGS_METADATA,
     }
 );
 
@@ -1289,7 +1289,7 @@ testParseAndStringify(
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
         "settings": true,
-        "settings-section": SpreadsheetHistoryHash.SETTINGS_TEXT,
+        "settings-item": SpreadsheetHistoryHash.SETTINGS_TEXT,
     }
 );
 
@@ -1299,7 +1299,7 @@ testParseAndStringify(
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
         "settings": true,
-        "settings-section": SpreadsheetHistoryHash.SETTINGS_NUMBER,
+        "settings-item": SpreadsheetHistoryHash.SETTINGS_NUMBER,
     }
 );
 
@@ -1309,7 +1309,7 @@ testParseAndStringify(
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
         "settings": true,
-        "settings-section": SpreadsheetHistoryHash.SETTINGS_DATE_TIME,
+        "settings-item": SpreadsheetHistoryHash.SETTINGS_DATE_TIME,
     }
 );
 
@@ -1319,7 +1319,7 @@ testParseAndStringify(
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
         "settings": true,
-        "settings-section": SpreadsheetHistoryHash.SETTINGS_STYLE,
+        "settings-item": SpreadsheetHistoryHash.SETTINGS_STYLE,
     }
 );
 
@@ -1353,7 +1353,7 @@ testParseAndStringify(
         "selection": SpreadsheetCellReference.parse("B2"),
         "selection-action": new SpreadsheetFormulaLoadAndEditHistoryHashToken(),
         "settings": true,
-        "settings-section": "metadata",
+        "settings-item": "metadata",
     }
 );
 
@@ -1365,7 +1365,7 @@ testParseAndStringify(
         "selection": SpreadsheetCellReference.parse("B2"),
         "selection-action": new SpreadsheetFormulaLoadAndEditHistoryHashToken(),
         "settings": true,
-        "settings-section": "text",
+        "settings-item": "text",
     }
 );
 
@@ -1377,7 +1377,7 @@ testParseAndStringify(
         "selection": SpreadsheetCellReference.parse("B2"),
         "selection-action": new SpreadsheetFormulaLoadAndEditHistoryHashToken(),
         "settings": true,
-        "settings-section": "number",
+        "settings-item": "number",
     }
 );
 
@@ -1389,7 +1389,7 @@ testParseAndStringify(
         "selection": SpreadsheetCellReference.parse("B2"),
         "selection-action": new SpreadsheetFormulaLoadAndEditHistoryHashToken(),
         "settings": true,
-        "settings-section": "date-time",
+        "settings-item": "date-time",
     }
 );
 
@@ -1401,7 +1401,7 @@ testParseAndStringify(
         "selection": SpreadsheetCellReference.parse("B2"),
         "selection-action": new SpreadsheetFormulaLoadAndEditHistoryHashToken(),
         "settings": true,
-        "settings-section": "style",
+        "settings-item": "style",
     }
 );
 testParseAndStringify(
@@ -1411,7 +1411,7 @@ testParseAndStringify(
         "spreadsheet-name": SPREADSHEET_NAME,
         "label": LABEL,
         "settings": true,
-        "settings-section": "style",
+        "settings-item": "style",
     }
 );
 
@@ -1423,7 +1423,7 @@ testParseAndStringify(
         "selection": CELL,
         "selection-action": new SpreadsheetFormulaLoadAndEditHistoryHashToken(),
         "settings": true,
-        "settings-section": SpreadsheetHistoryHash.SETTINGS_METADATA,
+        "settings-item": SpreadsheetHistoryHash.SETTINGS_METADATA,
     }
 );
 
@@ -2059,7 +2059,7 @@ testMerge(
     "/123abc/Untitled456/settings",
     {
         "settings": true,
-        "settings-section": "!invalid",
+        "settings-item": "!invalid",
     },
     "/123abc/Untitled456/settings"
 );
@@ -2068,7 +2068,7 @@ testMerge(
     "/123abc/Untitled456/settings",
     {
         "settings": true,
-        "settings-section": SpreadsheetHistoryHash.SETTINGS_METADATA,
+        "settings-item": SpreadsheetHistoryHash.SETTINGS_METADATA,
     },
     "/123abc/Untitled456/settings/metadata"
 );
@@ -2077,7 +2077,7 @@ testMerge(
     "/123abc/Untitled456/settings",
     {
         "settings": true,
-        "settings-section": SpreadsheetHistoryHash.SETTINGS_TEXT,
+        "settings-item": SpreadsheetHistoryHash.SETTINGS_TEXT,
     },
     "/123abc/Untitled456/settings/text"
 );
@@ -2086,7 +2086,7 @@ testMerge(
     "/123abc/Untitled456/settings",
     {
         "settings": true,
-        "settings-section": SpreadsheetHistoryHash.SETTINGS_NUMBER,
+        "settings-item": SpreadsheetHistoryHash.SETTINGS_NUMBER,
     },
     "/123abc/Untitled456/settings/number"
 );
@@ -2095,7 +2095,7 @@ testMerge(
     "/123abc/Untitled456/settings",
     {
         "settings": true,
-        "settings-section": SpreadsheetHistoryHash.SETTINGS_DATE_TIME,
+        "settings-item": SpreadsheetHistoryHash.SETTINGS_DATE_TIME,
     },
     "/123abc/Untitled456/settings/date-time"
 );
@@ -2104,7 +2104,7 @@ testMerge(
     "/123abc/Untitled456/settings",
     {
         "settings": true,
-        "settings-section": SpreadsheetHistoryHash.SETTINGS_STYLE,
+        "settings-item": SpreadsheetHistoryHash.SETTINGS_STYLE,
     },
     "/123abc/Untitled456/settings/style"
 );
@@ -2137,7 +2137,7 @@ testMerge(
     "/123abc/Untitled456/name/settings",
     {
         "settings": true,
-        "settings-section": "invalid"
+        "settings-item": "invalid"
     },
     "/123abc/Untitled456/settings"
 );
@@ -2146,7 +2146,7 @@ testMerge(
     "/123abc/Untitled456/name/settings",
     {
         "settings": true,
-        "settings-section": SpreadsheetHistoryHash.SETTINGS_METADATA,
+        "settings-item": SpreadsheetHistoryHash.SETTINGS_METADATA,
     },
     "/123abc/Untitled456/settings/metadata"
 );
@@ -2155,7 +2155,7 @@ testMerge(
     "/123abc/Untitled456/name/settings",
     {
         "settings": true,
-        "settings-section": SpreadsheetHistoryHash.SETTINGS_TEXT,
+        "settings-item": SpreadsheetHistoryHash.SETTINGS_TEXT,
     },
     "/123abc/Untitled456/settings/text"
 );
@@ -2164,7 +2164,7 @@ testMerge(
     "/123abc/Untitled456/name/settings",
     {
         "settings": true,
-        "settings-section": SpreadsheetHistoryHash.SETTINGS_NUMBER,
+        "settings-item": SpreadsheetHistoryHash.SETTINGS_NUMBER,
     },
     "/123abc/Untitled456/settings/number"
 );
@@ -2173,7 +2173,7 @@ testMerge(
     "/123abc/Untitled456/name/settings",
     {
         "settings": true,
-        "settings-section": SpreadsheetHistoryHash.SETTINGS_DATE_TIME,
+        "settings-item": SpreadsheetHistoryHash.SETTINGS_DATE_TIME,
     },
     "/123abc/Untitled456/settings/date-time"
 );
@@ -2182,7 +2182,7 @@ testMerge(
     "/123abc/Untitled456/name/settings",
     {
         "settings": true,
-        "settings-section": SpreadsheetHistoryHash.SETTINGS_STYLE,
+        "settings-item": SpreadsheetHistoryHash.SETTINGS_STYLE,
     },
     "/123abc/Untitled456/settings/style"
 );
@@ -2239,7 +2239,7 @@ testMerge(
     "/123abc/Untitled456/cell/A1/formula/settings",
     {
         "settings": true,
-        "settings-section": "!invalid"
+        "settings-item": "!invalid"
     },
     "/123abc/Untitled456/cell/A1/formula/settings"
 );
@@ -2248,7 +2248,7 @@ testMerge(
     "/123abc/Untitled456/cell/A1/formula/settings",
     {
         "settings": true,
-        "settings-section": SpreadsheetHistoryHash.SETTINGS_METADATA,
+        "settings-item": SpreadsheetHistoryHash.SETTINGS_METADATA,
     },
     "/123abc/Untitled456/cell/A1/formula/settings/metadata"
 );
@@ -2257,7 +2257,7 @@ testMerge(
     "/123abc/Untitled456/cell/A1/formula/settings",
     {
         "settings": true,
-        "settings-section": SpreadsheetHistoryHash.SETTINGS_TEXT,
+        "settings-item": SpreadsheetHistoryHash.SETTINGS_TEXT,
     },
     "/123abc/Untitled456/cell/A1/formula/settings/text"
 );
@@ -2266,7 +2266,7 @@ testMerge(
     "/123abc/Untitled456/cell/A1/formula/settings",
     {
         "settings": true,
-        "settings-section": SpreadsheetHistoryHash.SETTINGS_NUMBER,
+        "settings-item": SpreadsheetHistoryHash.SETTINGS_NUMBER,
     },
     "/123abc/Untitled456/cell/A1/formula/settings/number"
 );
@@ -2275,7 +2275,7 @@ testMerge(
     "/123abc/Untitled456/cell/A1/formula/settings",
     {
         "settings": true,
-        "settings-section": SpreadsheetHistoryHash.SETTINGS_DATE_TIME,
+        "settings-item": SpreadsheetHistoryHash.SETTINGS_DATE_TIME,
     },
     "/123abc/Untitled456/cell/A1/formula/settings/date-time"
 );
@@ -2284,7 +2284,7 @@ testMerge(
     "/123abc/Untitled456/cell/A1/formula/settings",
     {
         "settings": true,
-        "settings-section": SpreadsheetHistoryHash.SETTINGS_STYLE,
+        "settings-item": SpreadsheetHistoryHash.SETTINGS_STYLE,
     },
     "/123abc/Untitled456/cell/A1/formula/settings/style"
 );
@@ -2301,7 +2301,7 @@ testMerge(
     "/123abc/Untitled456/cell/A1/formula/settings",
     {
         "settings": false,
-        "settings-section": SpreadsheetHistoryHash.SETTINGS_METADATA,
+        "settings-item": SpreadsheetHistoryHash.SETTINGS_METADATA,
     },
     "/123abc/Untitled456/cell/A1/formula"
 );

@@ -23,7 +23,7 @@ export default class SpreadsheetHistoryHashTokens {
 
     static SELECT = "select";
     static SETTINGS = "settings";
-    static SETTINGS_SECTION = "settings-section";
+    static SETTINGS_ITEM = "settings-item";
 
     // these tokens are optional and only one may appear after SETTINGS
     static SETTINGS_METADATA = "metadata";

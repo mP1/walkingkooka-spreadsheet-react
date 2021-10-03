@@ -1179,11 +1179,11 @@ describe(
          * Opens the settings section that includes the given SpreadsheetMetadata property
          */
         function settingsOpenSectionSpreadsheetMetadataProperty(property) {
-            settingsOpenSection(SpreadsheetSettingsWidget.section(property));
+            settingsOpenSection(SpreadsheetSettingsWidget.parentAccordion(property));
         }
 
         function settingsOpenSectionSpreadsheetMetadataStyleProperty(property) {
-            settingsOpenSection(SpreadsheetSettingsWidget.section(property));
+            settingsOpenSection(SpreadsheetSettingsWidget.parentAccordion(property));
         }
 
         function settingsOpenSection(section) {
