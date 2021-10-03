@@ -24,11 +24,4 @@ export default class SpreadsheetHistoryHashTokens {
     static SELECT = "select";
     static SETTINGS = "settings";
     static SETTINGS_ITEM = "settings-item";
-
-    // these tokens are optional and only one may appear after SETTINGS
-    static SETTINGS_METADATA = "metadata";
-    static SETTINGS_TEXT = "text";
-    static SETTINGS_NUMBER = "number";
-    static SETTINGS_DATE_TIME = "date-time";
-    static SETTINGS_STYLE = "style";
 }

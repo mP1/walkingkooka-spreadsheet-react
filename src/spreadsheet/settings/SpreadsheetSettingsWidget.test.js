@@ -1,13 +1,14 @@
 import SpreadsheetMetadata from "../meta/SpreadsheetMetadata.js";
 import SpreadsheetSettingsWidget from "./SpreadsheetSettingsWidget.js";
+import SpreadsheetSettingsWidgetItems from "./SpreadsheetSettingsWidgetItems.js";
 import TextStyle from "../../text/TextStyle.js";
 
 function allRows() {
-    return SpreadsheetSettingsWidget.metadataRows()
-        .concat(SpreadsheetSettingsWidget.spreadsheetDateTimeRows())
-        .concat(SpreadsheetSettingsWidget.spreadsheetNumberRows())
-        .concat(SpreadsheetSettingsWidget.spreadsheetStyleRows())
-        .concat(SpreadsheetSettingsWidget.spreadsheetTextRows());
+    return SpreadsheetSettingsWidgetItems.metadataRows()
+        .concat(SpreadsheetSettingsWidgetItems.spreadsheetDateTimeRows())
+        .concat(SpreadsheetSettingsWidgetItems.spreadsheetNumberRows())
+        .concat(SpreadsheetSettingsWidgetItems.spreadsheetStyleRows())
+        .concat(SpreadsheetSettingsWidgetItems.spreadsheetTextRows());
 }
 
 // tests................................................................................................................
@@ -22,11 +23,11 @@ function testSectionRowsIsSpreadsheetMetadataOrTextStyleProperty(sectionLabel, r
     });
 }
 
-testSectionRowsIsSpreadsheetMetadataOrTextStyleProperty("metadata", SpreadsheetSettingsWidget.metadataRows);
-testSectionRowsIsSpreadsheetMetadataOrTextStyleProperty("data/time", SpreadsheetSettingsWidget.spreadsheetDateTimeRows);
-testSectionRowsIsSpreadsheetMetadataOrTextStyleProperty("number", SpreadsheetSettingsWidget.spreadsheetNumberRows);
-testSectionRowsIsSpreadsheetMetadataOrTextStyleProperty("style", SpreadsheetSettingsWidget.spreadsheetStyleRows);
-testSectionRowsIsSpreadsheetMetadataOrTextStyleProperty("text", SpreadsheetSettingsWidget.spreadsheetTextRows);
+testSectionRowsIsSpreadsheetMetadataOrTextStyleProperty("metadata", SpreadsheetSettingsWidgetItems.metadataRows);
+testSectionRowsIsSpreadsheetMetadataOrTextStyleProperty("data/time", SpreadsheetSettingsWidgetItems.spreadsheetDateTimeRows);
+testSectionRowsIsSpreadsheetMetadataOrTextStyleProperty("number", SpreadsheetSettingsWidgetItems.spreadsheetNumberRows);
+testSectionRowsIsSpreadsheetMetadataOrTextStyleProperty("style", SpreadsheetSettingsWidgetItems.spreadsheetStyleRows);
+testSectionRowsIsSpreadsheetMetadataOrTextStyleProperty("text", SpreadsheetSettingsWidgetItems.spreadsheetTextRows);
 
 test("spreadsheetMetadataPropertyLabel", () => {
     const missing = allRows()
