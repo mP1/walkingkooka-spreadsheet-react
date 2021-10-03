@@ -1,5 +1,3 @@
-import React from 'react';
-import SpreadsheetHistoryHashTokens from "../history/SpreadsheetHistoryHashTokens.js";
 import SpreadsheetMetadata from "../meta/SpreadsheetMetadata.js";
 import TextStyle from "../../text/TextStyle.js";
 
@@ -7,6 +5,23 @@ import TextStyle from "../../text/TextStyle.js";
  * Helpers required by SpreadsheetSettingsWidget and SpreadsheetHistoryHash extracted to avoid cycles between classes.
  */
 export default class SpreadsheetSettingsWidgetItems {
+
+    // these tokens are optional and only one may appear after SETTINGS
+    static METADATA = "metadata";
+    static TEXT = "text";
+    static NUMBER = "number";
+    static DATE_TIME = "date-time";
+    static STYLE = "style";
+
+    static items() {
+        return [
+            SpreadsheetSettingsWidgetItems.METADATA,
+            SpreadsheetSettingsWidgetItems.TEXT,
+            SpreadsheetSettingsWidgetItems.NUMBER,
+            SpreadsheetSettingsWidgetItems.DATE_TIME,
+            SpreadsheetSettingsWidgetItems.STYLE
+        ];
+    }
 
     /**
      * Returns the settings accordion name for the given property.
@@ -16,23 +31,23 @@ export default class SpreadsheetSettingsWidgetItems {
 
         for(; ;) {
             if(SpreadsheetSettingsWidgetItems.metadataRows().includes(property)){
-                parentAccordion = SpreadsheetHistoryHashTokens.SETTINGS_METADATA;
+                parentAccordion = SpreadsheetSettingsWidgetItems.METADATA;
                 break;
             }
             if(SpreadsheetSettingsWidgetItems.spreadsheetTextRows().includes(property)){
-                parentAccordion = SpreadsheetHistoryHashTokens.SETTINGS_TEXT;
+                parentAccordion = SpreadsheetSettingsWidgetItems.TEXT;
                 break;
             }
             if(SpreadsheetSettingsWidgetItems.spreadsheetDateTimeRows().includes(property)){
-                parentAccordion = SpreadsheetHistoryHashTokens.SETTINGS_DATE_TIME;
+                parentAccordion = SpreadsheetSettingsWidgetItems.DATE_TIME;
                 break;
             }
             if(SpreadsheetSettingsWidgetItems.spreadsheetNumberRows().includes(property)){
-                parentAccordion = SpreadsheetHistoryHashTokens.SETTINGS_NUMBER;
+                parentAccordion = SpreadsheetSettingsWidgetItems.NUMBER;
                 break;
             }
             if(SpreadsheetSettingsWidgetItems.spreadsheetStyleRows().includes(property)){
-                parentAccordion = SpreadsheetHistoryHashTokens.SETTINGS_STYLE;
+                parentAccordion = SpreadsheetSettingsWidgetItems.STYLE;
                 break;
             }
             throw new Error("Unknown property \"" + property + "\"");

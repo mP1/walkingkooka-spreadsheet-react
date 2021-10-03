@@ -25,6 +25,7 @@ import SpreadsheetRowReferenceRange from "../reference/SpreadsheetRowReferenceRa
 import SpreadsheetSelection from "../reference/SpreadsheetSelection.js";
 import SpreadsheetSelectionActionHistoryHashToken from "./SpreadsheetSelectionActionHistoryHashToken.js";
 import SpreadsheetViewportSelectionAnchor from "../reference/SpreadsheetViewportSelectionAnchor.js";
+import SpreadsheetSettingsWidgetItems from "../settings/SpreadsheetSettingsWidgetItems.js";
 
 function tokenize(pathname) {
     return pathname && pathname.startsWith("/") ?
@@ -39,21 +40,8 @@ function split(pathname) {
 }
 
 function isSettingsToken(token) {
-    var valid;
-
-    switch(token) {
-        case SpreadsheetHistoryHashTokens.SETTINGS_METADATA:
-        case SpreadsheetHistoryHashTokens.SETTINGS_TEXT:
-        case SpreadsheetHistoryHashTokens.SETTINGS_NUMBER:
-        case SpreadsheetHistoryHashTokens.SETTINGS_DATE_TIME:
-        case SpreadsheetHistoryHashTokens.SETTINGS_STYLE:
-            valid = true;
-            break;
-        default:
-            valid = false;
-            break;
-    }
-    return valid;
+    return SpreadsheetSettingsWidgetItems.items()
+        .indexOf(token) > -1;
 }
 
 /**
