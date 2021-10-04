@@ -18,7 +18,7 @@ export default class SpreadsheetSettingsLoadAndEditHistoryHashToken extends Spre
     }
 
     toHistoryHashToken() {
-        return encodeURI(this.property());
+        return encodeURIComponent(this.property());
     }
 
     equals(other) {
