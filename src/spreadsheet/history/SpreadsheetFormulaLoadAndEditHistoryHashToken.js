@@ -24,7 +24,7 @@ export default class SpreadsheetFormulaLoadAndEditHistoryHashToken extends Sprea
 
         return SpreadsheetHistoryHashTokens.CELL_FORMULA +
             (formulaText != null ?
-                "/" + encodeURI(formulaText) :
+                "/" + encodeURIComponent(formulaText) :
             "");
     }
 
