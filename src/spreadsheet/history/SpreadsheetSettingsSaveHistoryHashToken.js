@@ -27,7 +27,7 @@ export default class SpreadsheetSettingsSaveHistoryHashToken extends Spreadsheet
     }
 
     toHistoryHashToken() {
-        return encodeURI(this.property());
+        return encodeURIComponent(this.property()) + "/" + encodeURIComponent(this.propertyValue())
     }
 
     equals(other) {
