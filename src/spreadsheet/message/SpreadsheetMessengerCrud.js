@@ -62,6 +62,24 @@ export default class SpreadsheetMessengerCrud {
     }
 
     /**
+     * Accepts an id & value and patches (PATCH) the value notifying the listeners on success.
+     */
+    patch(id, value, failure) {
+        Preconditions.requireNonNull(value, "value");
+
+        this.send(
+            this.url("PATCH", id, {}),
+            {
+                method: "PATCH",
+                body: value.toJson ? JSON.stringify(value.toJson()) : value.toString(),
+            },
+            id,
+            value,
+            failure
+        );
+    }
+    
+    /**
      * Accepts an id and deletes (DELETE) the value notifying the listeners on success.
      */
     delete(id, failure) {
