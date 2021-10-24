@@ -6,13 +6,14 @@ import Hyphens from "../../src/text/Hyphens.js";
 import RoundingMode from "../../src/math/RoundingMode.js";
 import SpreadsheetCellReference from "../../src/spreadsheet/reference/SpreadsheetCellReference.js";
 import SpreadsheetMetadata from "../../src/spreadsheet/meta/SpreadsheetMetadata.js";
+import SpreadsheetSettingsWidget from "../../src/spreadsheet/settings/SpreadsheetSettingsWidget.js";
+import SpreadsheetSettingsWidgetItems from "../../src/spreadsheet/settings/SpreadsheetSettingsWidgetItems.js";
 import SpreadsheetTesting from "./SpreadsheetTesting.js";
 import TextAlign from "../../src/text/TextAlign.js";
 import TextStyle from "../../src/text/TextStyle.js";
 import VerticalAlign from "../../src/text/VerticalAlign.js";
 import WordBreak from "../../src/text/WordBreak.js";
 import WordWrap from "../../src/text/WordWrap.js";
-import SpreadsheetSettingsWidgetItems from "../../src/spreadsheet/settings/SpreadsheetSettingsWidgetItems.js";
 
 const FORCE_TRUE = {
     force: true,
@@ -121,10 +122,10 @@ describe(
 
             const year = new Date().getFullYear();
 
-            cy.get("#settings-spreadsheet-metadata-create-date-time")
+            testing.settingsSpreadsheetMetadataProperty(SpreadsheetMetadata.CREATE_DATE_TIME)
                 .contains(year);
 
-            cy.get("#settings-spreadsheet-metadata-modified-date-time")
+            testing.settingsSpreadsheetMetadataProperty(SpreadsheetMetadata.MODIFIED_DATE_TIME)
                 .contains(year);
         });
 
@@ -144,24 +145,22 @@ describe(
 
                 settingsOpenAccordion(property);
 
-                const dateParsePatternsId = "settings-spreadsheet-metadata-" + SpreadsheetMetadata.DATE_PARSE_PATTERNS + "-TextField";
-                const dateFormatPatternId = "settings-spreadsheet-metadata-" + SpreadsheetMetadata.DATE_FORMAT_PATTERN + "-TextField";
                 switch(property) {
                     case SpreadsheetMetadata.DEFAULT_YEAR:
-                        testing.getById(dateParsePatternsId)
+                        testing.settingsSpreadsheetMetadataProperty(SpreadsheetMetadata.DATE_PARSE_PATTERNS, "-TextField")
                             .type("{selectall}dd:mm{enter}")
                             .blur();
 
-                        testing.getById(dateFormatPatternId)
+                        testing.settingsSpreadsheetMetadataProperty(SpreadsheetMetadata.DATE_FORMAT_PATTERN, "-TextField")
                             .type("{selectall}yyyy/mm/dd{enter}")
                             .blur();
                         break;
                     case SpreadsheetMetadata.TWO_DIGIT_YEAR:
-                        testing.getById(dateParsePatternsId)
+                        testing.settingsSpreadsheetMetadataProperty(SpreadsheetMetadata.DATE_PARSE_PATTERNS, "-TextField")
                             .type("{selectall}yy/mm/dd{enter}")
                             .blur();
 
-                        testing.getById(dateFormatPatternId)
+                        testing.settingsSpreadsheetMetadataProperty(SpreadsheetMetadata.DATE_FORMAT_PATTERN, "-TextField")
                             .type("{selectall}yyyy/mm/dd{enter}")
                             .blur();
                         break;
@@ -173,7 +172,7 @@ describe(
                     formulaTextEnterAndSave(a1Formula);
                 }
 
-                const textFieldId = "settings-spreadsheet-metadata-" + property + "-TextField";
+                const textFieldId = SpreadsheetSettingsWidget.spreadsheetMetadataPropertyId(property) + "-TextField";
 
                 testing.getById(textFieldId)
                     .then((input) => {
@@ -184,63 +183,62 @@ describe(
                         testing.getById(textFieldId)
                         .should("have.value", text);
 
-                    if(updatedA1Formula){
-                        testing.formulaText()
-                            .should("have.value", updatedA1Formula)
-                    }
+                        if(updatedA1Formula){
+                            testing.formulaText()
+                                .should("have.value", updatedA1Formula)
+                        }
 
-                    if(a1Formula){
-                        testing.cellFormattedTextCheck(A1, a1CellContent);
-                    }
+                        if(a1Formula){
+                            testing.cellFormattedTextCheck(A1, a1CellContent);
+                        }
 
-                    // restore original textField value.
+                        // restore original textField value.
                         testing.getById(textFieldId)
-                        .type("{selectall}" + input.text() + "{enter}");
+                            .type("{selectall}" + input.text() + "{enter}");
 
-                    // click default button...
-                    const buttonId = "settings-spreadsheet-metadata-" + property + "-default-Button";
-                    testing.getById(buttonId)
-                        .should("have.text", defaultText)
-                        .click();
+                        // click default button...
+                        testing.settingsSpreadsheetMetadataProperty(property, "-default-Button")
+                            .should("have.text", defaultText)
+                            .click();
 
-                    testing.getById(textFieldId)
-                        .should("have.value", "");
+                        testing.getById(textFieldId)
+                            .should("have.value", "");
 
-                    if(a1Formula){
-                        testing.formulaText()
-                            .should("have.value", a1Formula)
-                    }
+                        if(a1Formula){
+                            testing.formulaText()
+                                .should("have.value", a1Formula)
+                        }
 
-                    if(a1CellContentDefault){
-                        testing.cellClick(A1);
+                        if(a1CellContentDefault){
+                            testing.cellClick(A1);
 
-                        testing.cellFormattedTextCheck(A1, a1CellContentDefault);
-                    }
+                            testing.cellFormattedTextCheck(A1, a1CellContentDefault);
+                        }
 
-                    // type text and blur
-                    testing.getById(textFieldId)
-                        .type("{selectall}" + text)
-                        .blur();
+                        // type text and blur
+                        testing.getById(textFieldId)
+                            .type("{selectall}" + text)
+                            .blur();
 
-                    testing.getById(textFieldId)
-                        .should("have.value", text);
+                        testing.getById(textFieldId)
+                            .should("have.value", text);
 
-                    if(updatedA1Formula){
-                        testing.formulaText()
-                            .should("have.value", updatedA1Formula)
-                    }
+                        if(updatedA1Formula){
+                            testing.formulaText()
+                                .should("have.value", updatedA1Formula)
+                        }
 
-                    if(a1Formula){
-                        testing.cellFormattedTextCheck(A1, a1CellContent);
-                    }
+                        if(a1Formula){
+                            testing.cellFormattedTextCheck(A1, a1CellContent);
+                        }
 
-                    // type text and blur
-                    testing.getById(textFieldId)
-                        .type("{selectall}XYZ{esc}")
+                        // type text and blur
+                        testing.getById(textFieldId)
+                            .type("{selectall}XYZ{esc}")
 
-                    testing.getById(textFieldId)
-                        .should("have.value", text);
-                });
+                        testing.getById(textFieldId)
+                            .should("have.value", text);
+                    });
             });
         }
 
@@ -261,11 +259,11 @@ describe(
                     formulaTextEnterAndSave(a1Formula);
                 }
 
-                const sliderId = "#settings-spreadsheet-metadata-" + property + "-Slider";
+                const sliderId = SpreadsheetSettingsWidget.spreadsheetMetadataPropertyId(property) + "-Slider";
 
                 // the first slow of a Slider is reserved for "Default".
                 values.forEach((v, i) => {
-                    cy.get(sliderId + " *[data-index=\"" + (1 + i) + "\"][aria-hidden=\"true\"]")
+                    cy.get("#" + sliderId + " *[data-index=\"" + (1 + i) + "\"][aria-hidden=\"true\"]")
                         .should("have.text", v.nameCapitalCase())
                         .click();
 
@@ -293,12 +291,12 @@ describe(
                     formulaTextEnterAndSave(a1Formula);
                 }
 
-                const sliderId = "#settings-spreadsheet-metadata-" + property + "-Slider";
-                const numberTextFieldId = "settings-spreadsheet-metadata-" + property + "-NumberTextField";
+                const sliderId = SpreadsheetSettingsWidget.spreadsheetMetadataPropertyId(property) + "-Slider";
+                const numberTextFieldId = SpreadsheetSettingsWidget.spreadsheetMetadataPropertyId(property) + "-NumberTextField";
 
                 // click on the slider and verify number in TextField was updated
                 values.forEach((v, i) => {
-                    cy.get(sliderId + " *[data-index=\"" + i + "\"][aria-hidden=\"true\"]")
+                    cy.get("#" + sliderId + " *[data-index=\"" + i + "\"][aria-hidden=\"true\"]")
                         .should("have.text", v.text)
                         .click();
 
@@ -319,7 +317,7 @@ describe(
                         .type("{selectall}" + v.value + "{enter}")
                         .click();
 
-                    cy.get(sliderId + " *[data-index=\"" + i + "\"][aria-hidden=\"true\"]")
+                    cy.get("#" + sliderId + " *[data-index=\"" + i + "\"][aria-hidden=\"true\"]")
                         .should("have.class", "MuiSlider-markLabelActive");
 
                     if(a1Formula){
@@ -346,13 +344,13 @@ describe(
                     formulaTextEnterAndSave(a1Formula);
                 }
 
-                const dropDownListId = "#settings-spreadsheet-metadata-" + property + "-DropDownList";
+                const dropDownListId = SpreadsheetSettingsWidget.spreadsheetMetadataPropertyId(property) + "-DropDownList";
 
                 values.forEach((v, i) => {
-                    cy.get(dropDownListId)
+                    testing.getById(dropDownListId)
                         .select(v.toString());
 
-                    cy.get(dropDownListId)
+                    testing.getById(dropDownListId)
                         .should("have.value", v.toString());
 
                     if(a1Formula){
@@ -641,31 +639,31 @@ describe(
 
                 settingsOpenAccordion(property1);
 
-                const textFieldId1 = "#settings-spreadsheet-metadata-" + property1 + "-TextField";
-                cy.get(textFieldId1)
+                const textFieldId1 = SpreadsheetSettingsWidget.spreadsheetMetadataPropertyId(property1) + "-TextField";
+                testing.getById(textFieldId1)
                     .type("{selectall}" + text1)
                     .blur();
 
-                cy.get(textFieldId1)
+                testing.getById(textFieldId1)
                     .should("have.value", text1);
 
-                const textFieldId2 = "#settings-spreadsheet-metadata-" + property2 + "-TextField";
-                cy.get(textFieldId2)
+                const textFieldId2 = SpreadsheetSettingsWidget.spreadsheetMetadataPropertyId(property2) + "-TextField";
+                testing.getById(textFieldId2)
                     .type("{selectall}" + text2)
                     .blur();
 
-                cy.get(textFieldId2)
+                testing.getById(textFieldId2)
                     .should("have.value", text2);
 
                 // set property1 with text2, this should force property2 to have text1
-                cy.get(textFieldId1)
+                testing.getById(textFieldId1)
                     .type("{selectall}" + text2)
                     .blur();
 
-                cy.get(textFieldId1)
+                testing.getById(textFieldId1)
                     .should("have.value", text2);
 
-                cy.get(textFieldId2)
+                testing.getById(textFieldId2)
                     .should("have.value", text1);
             });
         }
@@ -709,26 +707,25 @@ describe(
 
                 formulaTextEnterAndSave("'ABC");
 
-                const textFieldId = "#settings-spreadsheet-metadata-style-" + property + "-TextField";
+                const textFieldId = SpreadsheetSettingsWidget.spreadsheetMetadataStylePropertyId(property) + "-TextField";
 
-                cy.get(textFieldId)
+                testing.getById(textFieldId)
                     .type("{selectall}!BAD")
                     .blur(); // TODO verify alert appears!
 
-                cy.get(textFieldId)
+                testing.getById(textFieldId)
                     .type("{selectall}#123456")
                     .blur();
 
                 testing.cellA1StyleCheck(property, "rgb(18, 52, 86)");
 
-                cy.get(textFieldId)
+                testing.getById(textFieldId)
                     .type("{selectall}#789abc{enter}");
 
                 testing.cellA1StyleCheck(property, "rgb(120, 154, 188)");
 
                 if(defaultColor){
-                    const defaultButtonId = "#settings-spreadsheet-metadata-style-" + property + "-default-Button";
-                    cy.get(defaultButtonId)
+                    testing.settingsSpreadsheetMetadataStyleProperty(property, "-default-Button")
                         .should("have.text", defaultColor)
                         .click();
 
@@ -752,11 +749,11 @@ describe(
 
                 formulaTextEnterAndSave("'ABC");
 
-                const sliderId = "#settings-spreadsheet-metadata-style-" + property + "-Slider";
+                const sliderId = SpreadsheetSettingsWidget.spreadsheetMetadataStylePropertyId(property) + "-Slider";
 
                 // the first slot of a Slider is reserved for "Default".
                 values.forEach((v, i) => {
-                    cy.get(sliderId + " *[data-index=\"" + (1 + i) + "\"][aria-hidden=\"true\"]")
+                    cy.get("#" + sliderId + " *[data-index=\"" + (1 + i) + "\"][aria-hidden=\"true\"]")
                         //.should("have.text", v.nameCapitalCase()) Element is not visible because it has CSS property: 'position: fixed' and its being covered by another element
                         .click(FORCE_TRUE);
 
@@ -764,8 +761,7 @@ describe(
                 });
 
                 if(defaultValue){
-                    const defaultButtonId = "#settings-spreadsheet-metadata-style-" + property + "-default-Button";
-                    cy.get(defaultButtonId)
+                    testing.settingsSpreadsheetMetadataStyleProperty(property, "-default-Button")
                         .should("have.text", defaultButtonText)// @see https://github.com/mP1/walkingkooka-spreadsheet-react/issues/695
                         .click();
 
@@ -786,8 +782,8 @@ describe(
 
                 formulaTextEnterAndSave("'ABC");
 
-                const sliderId = "#settings-spreadsheet-metadata-style-" + property + "-Slider";
-                const numberTextFieldId = "#settings-spreadsheet-metadata-style-" + property + "-NumberTextField";
+                const sliderId = SpreadsheetSettingsWidget.spreadsheetMetadataStylePropertyId(property) + "-Slider";
+                const numberTextFieldId = SpreadsheetSettingsWidget.spreadsheetMetadataStylePropertyId(property) + "-NumberTextField";
 
                 // type a number in TextField & verify slider moved.
                 const values = [
@@ -804,11 +800,11 @@ describe(
                 values.forEach((v, i) => {
                     console.log("value=" + JSON.stringify(v) + " i=" + i);
 
-                    cy.get(numberTextFieldId)
+                    testing.getById(numberTextFieldId)
                         .type("{selectall}" + v.value + "{enter}")
                         .click();
 
-                    cy.get(sliderId + " *[data-index=\"" + i + "\"][aria-hidden=\"true\"]");
+                    cy.get("#" + sliderId + " *[data-index=\"" + i + "\"][aria-hidden=\"true\"]");
                     //     .should("have.class", "MuiSlider-markLabelActive");
 
                     switch(property) {
@@ -822,8 +818,7 @@ describe(
                 });
 
                 if(null != defaultValue){
-                    const defaultButtonId = "#settings-spreadsheet-metadata-style-" + property + "-default-Button";
-                    cy.get(defaultButtonId)
+                    testing.settingsSpreadsheetMetadataStyleProperty(property, "-default-Button")
                         .should("have.text", defaultButtonText)
                         .click();
 
@@ -1021,7 +1016,7 @@ describe(
             testing.hash()
                 .should('match', /.*\/.*\/settings/) // => true
 
-            tabSection("text");
+            tabAccordion("text");
 
             tabColor(TextStyle.COLOR);
             tabSlider(TextStyle.TEXT_ALIGN);
@@ -1033,7 +1028,7 @@ describe(
 
             tabNumberSlider(SpreadsheetMetadata.CELL_CHARACTER_WIDTH);
 
-            tabSection("number");
+            tabAccordion("number");
 
             tabSlider(SpreadsheetMetadata.EXPRESSION_NUMBER_KIND);
             tabNumberSlider(SpreadsheetMetadata.PRECISION);
@@ -1049,7 +1044,7 @@ describe(
             tabText(SpreadsheetMetadata.NUMBER_PARSE_PATTERNS);
             tabText(SpreadsheetMetadata.VALUE_SEPARATOR);
 
-            tabSection("date-time");
+            tabAccordion("date-time");
 
             tabNumberSlider(SpreadsheetMetadata.DATETIME_OFFSET);
             tabNumber(SpreadsheetMetadata.DEFAULT_YEAR);
@@ -1061,7 +1056,7 @@ describe(
             tabText(SpreadsheetMetadata.TIME_FORMAT_PATTERN);
             tabText(SpreadsheetMetadata.TIME_PARSE_PATTERNS);
 
-            tabSection("style");
+            tabAccordion("style");
 
             tabColor(TextStyle.BACKGROUND_COLOR);
 
@@ -1090,15 +1085,15 @@ describe(
             tabNumberSlider(TextStyle.PADDING_BOTTOM);
         });
 
-        function tabSection(section) {
-            testing.getById("settings-spreadsheet-" + section)
+        function tabAccordion(accordion) {
+            testing.getById(SpreadsheetSettingsWidget.accordionId(accordion))
                 .tab()
                 .type("{enter}")
                 .scrollIntoView()
                 .tab();
 
             testing.hash()
-                .should('match', new RegExp(".*\/.*\/settings\/" + section));
+                .should('match', new RegExp(".*\/.*\/settings\/" + accordion));
         }
 
         function tabColor(property) {
@@ -1160,12 +1155,9 @@ describe(
         }
 
         function idPrefix(property) {
-            return "settings-spreadsheet-metadata-" +
-                (
-                    SpreadsheetMetadata.isProperty(property) ?
-                        property.toString().toLowerCase() :
-                        "style-" + property.toString().toLowerCase()
-                );
+            return SpreadsheetMetadata.isProperty(property) ?
+                SpreadsheetSettingsWidget.spreadsheetMetadataPropertyId(property) :
+                SpreadsheetSettingsWidget.spreadsheetMetadataStylePropertyId(property);
         }
 
         /**
@@ -1180,7 +1172,7 @@ describe(
          */
         function settingsOpenAccordion(property) {
             const accordion = SpreadsheetSettingsWidgetItems.parentAccordion(property);
-            if(!accordion) {
+            if(!accordion){
                 throw new Error("Unknown metadata property \"" + property + "\"");
             }
 
@@ -1188,12 +1180,12 @@ describe(
             //.scrollIntoView() // prevents cypress from complaining about content that is longer than the screen height.
             //.should('be.visible');
 
-            cy.get("#settings-spreadsheet-" + accordion + "-expand-more-icon")
+            testing.settingsAccordionExpandMoreIcon(accordion)
                 .click();
 
             testing.wait();
 
-            cy.get("#settings-spreadsheet-" + accordion + "-content");
+            testing.settingsAccordionContent(accordion);
             //.should('be.visible');
 
             testing.hash()

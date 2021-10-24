@@ -7,6 +7,7 @@ import SpreadsheetLabelMappingWidget from "../../src/spreadsheet/reference/Sprea
 import SpreadsheetSelectLinkWidget from "../../src/spreadsheet/reference/SpreadsheetSelectLinkWidget.js";
 import SpreadsheetSelectAutocompleteWidget
     from "../../src/spreadsheet/reference/SpreadsheetSelectAutocompleteWidget.js";
+import SpreadsheetSettingsWidget from "../../src/spreadsheet/settings/SpreadsheetSettingsWidget.js";
 import SpreadsheetViewportWidget from "../../src/spreadsheet/SpreadsheetViewportWidget.js";
 
 export default class SpreadsheetTesting {
@@ -308,6 +309,26 @@ export default class SpreadsheetTesting {
             SpreadsheetRowReference.parse(rowReference);
 
         return this.getById(spreadsheetRowReference.viewportId());
+    }
+
+    settingsAccordion(accordion) {
+        return this.getById(SpreadsheetSettingsWidget.accordionId(accordion));
+    }
+
+    settingsAccordionExpandMoreIcon(accordion) {
+        return this.getById(SpreadsheetSettingsWidget.accordionId(accordion) + "-expand-more-icon");
+    }
+
+    settingsAccordionContent(accordion) {
+        return this.getById(SpreadsheetSettingsWidget.accordionId(accordion) + "-content");
+    }
+
+    settingsSpreadsheetMetadataProperty(property, suffix) {
+        return this.getById(SpreadsheetSettingsWidget.spreadsheetMetadataPropertyId(property) + (suffix || ""));
+    }
+
+    settingsSpreadsheetMetadataStyleProperty(property, suffix) {
+        return this.getById(SpreadsheetSettingsWidget.spreadsheetMetadataStylePropertyId(property) + (suffix || ""));
     }
 
     /**
