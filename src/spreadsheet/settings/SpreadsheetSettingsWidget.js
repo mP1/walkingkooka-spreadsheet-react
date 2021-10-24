@@ -1101,7 +1101,7 @@ class SpreadsheetSettingsWidget extends SpreadsheetHistoryAwareStateWidget {
                                 component={Paper}>
                     <Table className={classes.table}
                            size={"small"}
-                           aria-label="{tableAriaLabel}">
+                           aria-label={tableAriaLabel}>
                         <TableBody>
                             {
                                 rows.map(r => this.renderRow(r, classes))
