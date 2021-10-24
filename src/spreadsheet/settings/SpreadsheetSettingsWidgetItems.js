@@ -24,7 +24,7 @@ export default class SpreadsheetSettingsWidgetItems {
     }
 
     /**
-     * Returns the settings accordion name for the given property.
+     * Returns the settings accordion name for the given property or null if not found.
      */
     static parentAccordion(property) {
         var parentAccordion;
@@ -50,7 +50,7 @@ export default class SpreadsheetSettingsWidgetItems {
                 parentAccordion = SpreadsheetSettingsWidgetItems.STYLE;
                 break;
             }
-            throw new Error("Unknown property \"" + property + "\"");
+            break;
         }
 
         return parentAccordion;
