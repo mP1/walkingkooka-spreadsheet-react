@@ -166,8 +166,8 @@ class SpreadsheetSettingsWidget extends SpreadsheetHistoryAwareStateWidget {
 
     onSpreadsheetMetadata(method, id, url, requestMetadata, responseMetadata) {
         this.setState({
-            createDateTimeFormatted: null, // clear forcing reformatting of create/modified timestamps.
-            modifiedDateTimeFormatted: null,
+            createDateTimeFormatted: "", // clear forcing reformatting of create/modified timestamps.
+            modifiedDateTimeFormatted: "",
             spreadsheetMetadata: responseMetadata,
         });
     }
