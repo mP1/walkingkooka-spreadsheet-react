@@ -117,7 +117,7 @@ describe(
         it("Metadata check creator-date-time/modified-date-time", () => {
             settingsToggle();
 
-            settingsOpenSectionSpreadsheetMetadataProperty(SpreadsheetMetadata.CREATE_DATE_TIME);
+            settingsOpenAccordion(SpreadsheetMetadata.CREATE_DATE_TIME);
 
             const year = new Date().getFullYear();
 
@@ -142,7 +142,7 @@ describe(
             it("Update SpreadsheetMetadata." + property, () => {
                 settingsToggle();
 
-                settingsOpenSectionSpreadsheetMetadataProperty(property);
+                settingsOpenAccordion(property);
 
                 const dateParsePatternsId = "settings-spreadsheet-metadata-" + SpreadsheetMetadata.DATE_PARSE_PATTERNS + "-TextField";
                 const dateFormatPatternId = "settings-spreadsheet-metadata-" + SpreadsheetMetadata.DATE_FORMAT_PATTERN + "-TextField";
@@ -255,7 +255,7 @@ describe(
             it("Update SpreadsheetMetadata." + property, () => {
                 settingsToggle();
 
-                settingsOpenSectionSpreadsheetMetadataProperty(property);
+                settingsOpenAccordion(property);
 
                 if(a1Formula){
                     formulaTextEnterAndSave(a1Formula);
@@ -287,7 +287,7 @@ describe(
             it("Update SpreadsheetMetadata." + property, () => {
                 settingsToggle();
 
-                settingsOpenSectionSpreadsheetMetadataProperty(property);
+                settingsOpenAccordion(property);
 
                 if(a1Formula){
                     formulaTextEnterAndSave(a1Formula);
@@ -340,7 +340,7 @@ describe(
             it("Update SpreadsheetMetadata." + property, () => {
                 settingsToggle();
 
-                settingsOpenSectionSpreadsheetMetadataProperty(property);
+                settingsOpenAccordion(property);
 
                 if(a1Formula){
                     formulaTextEnterAndSave(a1Formula);
@@ -639,7 +639,7 @@ describe(
             it("Update SpreadsheetMetadata." + property1 + "=" + text1 + " & " + property2 + "=" + text2 + " causing value swap", () => {
                 settingsToggle();
 
-                settingsOpenSectionSpreadsheetMetadataProperty(property1);
+                settingsOpenAccordion(property1);
 
                 const textFieldId1 = "#settings-spreadsheet-metadata-" + property1 + "-TextField";
                 cy.get(textFieldId1)
@@ -705,7 +705,7 @@ describe(
             it("Update SpreadsheetMetadata.style." + property, () => {
                 settingsToggle();
 
-                settingsOpenSectionSpreadsheetMetadataStyleProperty(property);
+                settingsOpenAccordion(property);
 
                 formulaTextEnterAndSave("'ABC");
 
@@ -748,7 +748,7 @@ describe(
             it("Update SpreadsheetMetadata.style." + property, () => {
                 settingsToggle();
 
-                settingsOpenSectionSpreadsheetMetadataStyleProperty(property);
+                settingsOpenAccordion(property);
 
                 formulaTextEnterAndSave("'ABC");
 
@@ -782,7 +782,7 @@ describe(
             it("Update SpreadsheetMetadata.style." + property, () => {
                 settingsToggle();
 
-                settingsOpenSectionSpreadsheetMetadataStyleProperty(property);
+                settingsOpenAccordion(property);
 
                 formulaTextEnterAndSave("'ABC");
 
@@ -1176,31 +1176,28 @@ describe(
         }
 
         /**
-         * Opens the settings section that includes the given SpreadsheetMetadata property
+         * Opens the settings accordion for the given metadata property.
          */
-        function settingsOpenSectionSpreadsheetMetadataProperty(property) {
-            settingsOpenSection(SpreadsheetSettingsWidgetItems.parentAccordion(property));
-        }
+        function settingsOpenAccordion(property) {
+            const accordion = SpreadsheetSettingsWidgetItems.parentAccordion(property);
+            if(!accordion) {
+                throw new Error("Unknown metadata property \"" + property + "\"");
+            }
 
-        function settingsOpenSectionSpreadsheetMetadataStyleProperty(property) {
-            settingsOpenSection(SpreadsheetSettingsWidgetItems.parentAccordion(property));
-        }
-
-        function settingsOpenSection(section) {
             settings();
             //.scrollIntoView() // prevents cypress from complaining about content that is longer than the screen height.
             //.should('be.visible');
 
-            cy.get("#settings-spreadsheet-" + section + "-expand-more-icon")
+            cy.get("#settings-spreadsheet-" + accordion + "-expand-more-icon")
                 .click();
 
             testing.wait();
 
-            cy.get("#settings-spreadsheet-" + section + "-content");
+            cy.get("#settings-spreadsheet-" + accordion + "-content");
             //.should('be.visible');
 
             testing.hash()
-                .should('match', new RegExp(".*\/.*\/settings\/" + section)) // => true
+                .should('match', new RegExp(".*\/.*\/settings\/" + accordion)) // => true
         }
 
         /**
