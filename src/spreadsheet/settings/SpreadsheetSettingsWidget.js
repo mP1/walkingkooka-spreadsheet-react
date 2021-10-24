@@ -94,6 +94,20 @@ class SpreadsheetSettingsWidget extends SpreadsheetHistoryAwareStateWidget {
      */
     static WIDTH = 500;
 
+    static ID = "settings";
+
+    static accordionId(accordion) {
+        return SpreadsheetSettingsWidget.ID + "-" + accordion;
+    }
+
+    static spreadsheetMetadataPropertyId(property) {
+        return SpreadsheetSettingsWidget.ID + "-" + property;
+    }
+
+    static spreadsheetMetadataStylePropertyId(property) {
+        return SpreadsheetSettingsWidget.ID + "-" + property;
+    }
+
     init() {
     }
 
@@ -215,7 +229,7 @@ class SpreadsheetSettingsWidget extends SpreadsheetHistoryAwareStateWidget {
                 this.spreadsheetStyleAccordion(classes, SpreadsheetSettingsWidgetItems.STYLE === settingsItem)
             ]);
 
-        return <Drawer id={"settings"}
+        return <Drawer id={SpreadsheetSettingsWidget.ID}
                        anchor={"right"}
                        variant={"persistent"}
                        open={Boolean(this.state.settings)}
@@ -305,7 +319,7 @@ class SpreadsheetSettingsWidget extends SpreadsheetHistoryAwareStateWidget {
      * Returns a react component for the given property.
      */
     renderDefaultStylePropertyRow(property, classes) {
-        const id = "settings-spreadsheet-metadata-style-" + property;
+        const id = SpreadsheetSettingsWidget.spreadsheetMetadataStylePropertyId(property);
 
         const state = this.state;
         const metadata = state.spreadsheetMetadata;
@@ -613,7 +627,7 @@ class SpreadsheetSettingsWidget extends SpreadsheetHistoryAwareStateWidget {
     }
 
     renderMetadataPropertyRow(property, classes) {
-        const id = "settings-spreadsheet-metadata-" + property;
+        const id = SpreadsheetSettingsWidget.spreadsheetMetadataPropertyId(property);
 
         const state = this.state;
         let render;
@@ -1080,7 +1094,7 @@ class SpreadsheetSettingsWidget extends SpreadsheetHistoryAwareStateWidget {
               secondaryHeading,
               tableAriaLabel,
               rows) {
-        const id = "settings-spreadsheet-" + settingsItem;
+        const id = SpreadsheetSettingsWidget.accordionId(settingsItem)
 
         const state = this.state;
         console.log("accordion: " + id + " settingsItem: " + settingsItem + " state.settingsItem: " + state.settingsItem + " expanded: " + (state.settingsItem === settingsItem), "state", state);
