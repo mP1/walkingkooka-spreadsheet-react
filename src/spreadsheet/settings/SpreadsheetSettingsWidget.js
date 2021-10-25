@@ -518,7 +518,7 @@ class SpreadsheetSettingsWidget extends SpreadsheetHistoryAwareStateWidget {
                                                                    max={max}
                                                                    marks={marks}
                                                                    step={1}
-                                                                   value={value ? value.pixelValue() : ""}
+                                                                   value={value ? value.pixelValue() : undefined}
                                                                    defaultValue={null != defaultValue ? defaultValue.pixelValue() : ""}
                                                                    defaultValueFormatter={DEFAULT_VALUE_FORMATTER_TOSTRING}
                                                                    defaultButtonTooltip={false}
@@ -931,7 +931,6 @@ class SpreadsheetSettingsWidget extends SpreadsheetHistoryAwareStateWidget {
      * Factory that creates a number widget customising based on the property.
      */
     number(property, value, id, defaultValue, setValue) {
-        const numberValue = Number.isNaN(Number(value)) ? null : Number(value);
         var length;
         var maxLength;
         var min;
@@ -964,7 +963,7 @@ class SpreadsheetSettingsWidget extends SpreadsheetHistoryAwareStateWidget {
                                                 maxLength={maxLength}
                                                 min={min}
                                                 max={max}
-                                                value={numberValue}
+                                                value={typeof value === "string" ? parseInt(value, 10) : value}
                                                 defaultValue={typeof defaultValue === "string" ? parseInt(defaultValue, 10) : defaultValue}
                                                 defaultValueFormatter={DEFAULT_VALUE_FORMATTER_TOSTRING}
                                                 defaultButtonTooltip={false}
@@ -976,7 +975,6 @@ class SpreadsheetSettingsWidget extends SpreadsheetHistoryAwareStateWidget {
      * Factory that creates a slider with number using the property to customized some properties.
      */
     sliderAndNumber(property, value, id, defaultValue, setValue) {
-        const numberValue = Number.isNaN(Number(value)) ? null : Number(value);
         var min;
         var max;
         var marks;
@@ -1062,7 +1060,7 @@ class SpreadsheetSettingsWidget extends SpreadsheetHistoryAwareStateWidget {
                                                                    max={max}
                                                                    marks={marks}
                                                                    step={step}
-                                                                   value={numberValue}
+                                                                   value={typeof value === "string" ? parseInt(value, 10) : value}
                                                                    defaultValue={typeof defaultValue === "string" ? parseInt(defaultValue, 10) : defaultValue}
                                                                    defaultValueFormatter={DEFAULT_VALUE_FORMATTER_TOSTRING}
                                                                    defaultButtonTooltip={false}
