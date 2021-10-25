@@ -89,7 +89,7 @@ export default class SpreadsheetSettingsWidgetSliderWithNumberTextField extends 
 
     onChange(value) {
         console.log("onChange " + value);
-        this.setValue(isNaN(value) ? null : value);
+        this.setValue(isNaN(value) ? undefined : value);
         this.setSliderAndTextField(value);
     }
 
