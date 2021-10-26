@@ -16,7 +16,7 @@ export default class SpreadsheetCellDeleteSelectionActionHistoryHashToken extend
     }
 
     /**
-     * Handles history hash token evens such as /column/A/delete or /column/B:C/delete
+     * Handles history hash token evens such as /cell/A1/delete or /cell/A1:B2/delete
      */
     onViewportSelectionAction(selection, viewportWidget) {
         viewportWidget.deleteSelection(selection);

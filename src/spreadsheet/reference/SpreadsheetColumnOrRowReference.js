@@ -1,6 +1,5 @@
 import Preconditions from "../../Preconditions.js";
 import React from "react";
-import SpreadsheetColumnOrRowDeleteHistoryHashToken from "../history/SpreadsheetColumnOrRowDeleteHistoryHashToken.js";
 import SpreadsheetColumnOrRowInsertAfterHistoryHashToken
     from "../history/SpreadsheetColumnOrRowInsertAfterHistoryHashToken.js";
 import SpreadsheetColumnOrRowInsertBeforeHistoryHashToken
@@ -103,10 +102,6 @@ export default class SpreadsheetColumnOrRowReference extends SpreadsheetSelectio
     }
 
     // selection........................................................................................................
-
-    deleteHistoryHashToken() {
-        return SpreadsheetColumnOrRowDeleteHistoryHashToken.INSTANCE;
-    }
 
     isColumnOrRowScalarOrRange() {
         return true;
