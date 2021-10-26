@@ -1,5 +1,3 @@
-import SpreadsheetCellDeleteSelectionActionHistoryHashToken
-    from "../history/SpreadsheetCellDeleteSelectionActionHistoryHashToken.js";
 import SpreadsheetExpressionReference from "./SpreadsheetExpressionReference.js";
 import SpreadsheetViewport from "../SpreadsheetViewport.js";
 
@@ -8,12 +6,12 @@ import SpreadsheetViewport from "../SpreadsheetViewport.js";
  */
 export default class SpreadsheetCellReferenceOrLabelName extends SpreadsheetExpressionReference {
 
-    isCellScalarOrRange() {
-        return true;
+    cellOrRange() {
+        return this;
     }
 
-    deleteHistoryHashToken() {
-        return SpreadsheetCellDeleteSelectionActionHistoryHashToken.INSTANCE;
+    isCellScalarOrRange() {
+        return true;
     }
 
     toDeleteUrl() {

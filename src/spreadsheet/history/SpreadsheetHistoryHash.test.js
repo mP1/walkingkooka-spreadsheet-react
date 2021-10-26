@@ -345,7 +345,8 @@ testParseAndStringify(
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
-    }
+    },
+    "Cell: Missing text",
 );
 
 testParseAndStringify(
@@ -552,15 +553,8 @@ testParseAndStringify(
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
-    }
-);
-
-testParseAndStringify(
-    "/spreadsheet-id-123/spreadsheet-name-456/label",
-    {
-        "spreadsheet-id": "spreadsheet-id-123",
-        "spreadsheet-name": SPREADSHEET_NAME,
-    }
+    },
+    "Label: Missing text",
 );
 
 testParseAndStringify(
@@ -596,7 +590,8 @@ testParseAndStringify(
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME
-    }
+    },
+    "Label save missing label or cell"
 );
 
 testParseAndStringify(
@@ -800,6 +795,22 @@ testParseAndStringify(
 );
 
 testParseAndStringify(
+    "/spreadsheet-id-123/spreadsheet-name-456/column/B/insert-after/",
+    {
+        "spreadsheet-id": "spreadsheet-id-123",
+        "spreadsheet-name": SPREADSHEET_NAME,
+    }
+);
+
+testParseAndStringify(
+    "/spreadsheet-id-123/spreadsheet-name-456/column/B/insert-after/X",
+    {
+        "spreadsheet-id": "spreadsheet-id-123",
+        "spreadsheet-name": SPREADSHEET_NAME,
+    }
+);
+
+testParseAndStringify(
     "/spreadsheet-id-123/spreadsheet-name-456/column/B/insert-after/123",
     {
         "spreadsheet-id": "spreadsheet-id-123",
@@ -811,6 +822,22 @@ testParseAndStringify(
 
 testParseAndStringify(
     "/spreadsheet-id-123/spreadsheet-name-456/column/B/insert-before",
+    {
+        "spreadsheet-id": "spreadsheet-id-123",
+        "spreadsheet-name": SPREADSHEET_NAME,
+    }
+);
+
+testParseAndStringify(
+    "/spreadsheet-id-123/spreadsheet-name-456/column/B/insert-before/",
+    {
+        "spreadsheet-id": "spreadsheet-id-123",
+        "spreadsheet-name": SPREADSHEET_NAME,
+    }
+);
+
+testParseAndStringify(
+    "/spreadsheet-id-123/spreadsheet-name-456/column/B/insert-before/X",
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
@@ -1041,6 +1068,22 @@ testParseAndStringify(
 );
 
 testParseAndStringify(
+    "/spreadsheet-id-123/spreadsheet-name-456/row/2/insert-before/",
+    {
+        "spreadsheet-id": "spreadsheet-id-123",
+        "spreadsheet-name": SPREADSHEET_NAME,
+    }
+);
+
+testParseAndStringify(
+    "/spreadsheet-id-123/spreadsheet-name-456/row/2/insert-before/X",
+    {
+        "spreadsheet-id": "spreadsheet-id-123",
+        "spreadsheet-name": SPREADSHEET_NAME,
+    }
+);
+
+testParseAndStringify(
     "/spreadsheet-id-123/spreadsheet-name-456/row/2/insert-before/123",
     {
         "spreadsheet-id": "spreadsheet-id-123",
@@ -1203,7 +1246,6 @@ testParseAndStringify(
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
-        "settings": true,
     }
 );
 
@@ -1271,7 +1313,6 @@ testParseAndStringify(
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
-        "settings": true,
     }
 );
 
@@ -1341,9 +1382,6 @@ testParseAndStringify(
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
-        "selection": SpreadsheetCellReference.parse("B2"),
-        "selection-action": new SpreadsheetFormulaLoadAndEditHistoryHashToken(),
-        "settings": true,
     }
 );
 
@@ -1648,12 +1686,6 @@ testMerge(
 // cell.................................................................................................................
 
 testMerge(
-    "/123abc/Untitled456/cell",
-    {},
-    "/123abc/Untitled456"
-);
-
-testMerge(
     "/123abc/Untitled456/cell/A1",
     {},
     "/123abc/Untitled456/cell/A1"
@@ -1676,11 +1708,11 @@ testMerge(
 );
 
 testMerge(
-    "/123abc/Untitled456/cell",
+    "/123abc/Untitled456/cell/A1",
     {
-        "selection": SpreadsheetCellReference.parse("A1"),
+        "selection": SpreadsheetCellReference.parse("B2"),
     },
-    "/123abc/Untitled456/cell/A1"
+    "/123abc/Untitled456/cell/B2"
 );
 
 testMerge(
@@ -1802,12 +1834,6 @@ testMerge(
 );
 
 // label.................................................................................................................
-
-testMerge(
-    "/123abc/Untitled456/label",
-    {},
-    "/123abc/Untitled456"
-);
 
 testMerge(
     "/123abc/Untitled456/label/LABEL123",
@@ -1967,7 +1993,7 @@ testMerge(
     "/123abc/Untitled456/label/Label123/save/Label999/Z9"
 );
 
-testMerge("/123abc/Untitled456/label/LabelOld/save",
+testMerge("/123abc/Untitled456/label/LabelOld/save/new/A1",
     {
         "label": LABEL,
         "label-action": null,

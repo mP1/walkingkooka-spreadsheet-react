@@ -1,4 +1,3 @@
-import SpreadsheetColumnOrRowDeleteHistoryHashToken from "../history/SpreadsheetColumnOrRowDeleteHistoryHashToken.js";
 import SpreadsheetSelection from "./SpreadsheetSelection.js";
 
 /**
@@ -31,10 +30,6 @@ export default class SpreadsheetColumnOrRowReferenceRange extends SpreadsheetSel
     }
 
     // selection........................................................................................................
-
-    deleteHistoryHashToken() {
-        return SpreadsheetColumnOrRowDeleteHistoryHashToken.INSTANCE;
-    }
 
     isColumnOrRowScalarOrRange() {
         return true;
