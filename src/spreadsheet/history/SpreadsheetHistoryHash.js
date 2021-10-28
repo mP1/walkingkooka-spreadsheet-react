@@ -544,19 +544,19 @@ export default class SpreadsheetHistoryHash extends SpreadsheetHistoryHashTokens
                 merged[SpreadsheetHistoryHashTokens.LABEL_ACTION] = labelAction;
             }
 
-            if(select){
+            if(null != select){
                 merged[SpreadsheetHistoryHashTokens.SELECT] = select;
             }
 
-            if(!!settings){
+            if(null != settings){
                 merged[SpreadsheetHistoryHashTokens.SETTINGS] = settings;
             }
-            if(settingsItem){
+            if(null != settingsItem){
                 merged[SpreadsheetHistoryHashTokens.SETTINGS_ITEM] = settingsItem;
             }
         }
 
-        return merged;
+        return SpreadsheetHistoryHash.validate(merged);
     }
 
     /**

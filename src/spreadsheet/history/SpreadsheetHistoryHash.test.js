@@ -2274,7 +2274,7 @@ testMerge(
 testMerge(
     "/123abc/Untitled456/cell/A1",
     {
-        "selection-action": SpreadsheetColumnOrRowDeleteHistoryHashToken.INSTANCE,
+        "selection-action": CELL_DELETE,
     },
     "/123abc/Untitled456/cell/A1/delete"
 );
