@@ -2113,7 +2113,23 @@ testMerge(
 testMerge(
     "/123abc/Untitled456/settings",
     {
+        "settings-item": SpreadsheetSettingsWidgetItems.TEXT,
+    },
+    "/123abc/Untitled456/settings/text"
+);
+
+testMerge(
+    "/123abc/Untitled456/settings",
+    {
         "settings": true,
+        "settings-item": SpreadsheetSettingsWidgetItems.NUMBER,
+    },
+    "/123abc/Untitled456/settings/number"
+);
+
+testMerge(
+    "/123abc/Untitled456/settings",
+    {
         "settings-item": SpreadsheetSettingsWidgetItems.NUMBER,
     },
     "/123abc/Untitled456/settings/number"
@@ -2131,10 +2147,34 @@ testMerge(
 testMerge(
     "/123abc/Untitled456/settings",
     {
+        "settings-item": SpreadsheetSettingsWidgetItems.DATE_TIME,
+    },
+    "/123abc/Untitled456/settings/date-time"
+);
+
+testMerge(
+    "/123abc/Untitled456/settings",
+    {
         "settings": true,
         "settings-item": SpreadsheetSettingsWidgetItems.STYLE,
     },
     "/123abc/Untitled456/settings/style"
+);
+
+testMerge(
+    "/123abc/Untitled456/settings",
+    {
+        "settings-item": SpreadsheetSettingsWidgetItems.STYLE,
+    },
+    "/123abc/Untitled456/settings/style"
+);
+
+testMerge(
+    "/123abc/Untitled456/settings/metadata",
+    {
+        "settings-item": SpreadsheetSettingsWidgetItems.TEXT,
+    },
+    "/123abc/Untitled456/settings/text"
 );
 
 testMerge(

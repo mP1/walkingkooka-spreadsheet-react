@@ -466,7 +466,6 @@ export default class SpreadsheetHistoryHash extends SpreadsheetHistoryHashTokens
 
         if(delta.hasOwnProperty(SpreadsheetHistoryHashTokens.LABEL)){
             label = delta[SpreadsheetHistoryHashTokens.LABEL];
-
             if(label){
                 nameEdit = false;
             }
@@ -488,9 +487,18 @@ export default class SpreadsheetHistoryHash extends SpreadsheetHistoryHashTokens
 
         if(delta.hasOwnProperty(SpreadsheetHistoryHashTokens.SETTINGS)){
             settings = delta[SpreadsheetHistoryHashTokens.SETTINGS];
+            if(settings){
+                nameEdit = false;
+            }
+        }
+
+        if(delta.hasOwnProperty(SpreadsheetHistoryHashTokens.SETTINGS_ITEM)){
             settingsItem = delta[SpreadsheetHistoryHashTokens.SETTINGS_ITEM];
-            if(settingsItem && !isSettingsToken(settingsItem)){
-                settingsItem = null;
+            if(settingsItem){
+                if(!isSettingsToken(settingsItem)){
+                    settingsItem = null;
+                }
+                nameEdit = false;
             }
         }
 
@@ -519,22 +527,21 @@ export default class SpreadsheetHistoryHash extends SpreadsheetHistoryHashTokens
 
             if(selection){
                 merged[SpreadsheetHistoryHashTokens.SELECTION] = selection;
+            }
+            if(selectionAnchor instanceof SpreadsheetViewportSelectionAnchor){
+                merged[SpreadsheetHistoryHashTokens.SELECTION_ANCHOR] = selectionAnchor;
+            }
 
-                if(selectionAnchor instanceof SpreadsheetViewportSelectionAnchor){
-                    merged[SpreadsheetHistoryHashTokens.SELECTION_ANCHOR] = selectionAnchor;
-                }
-
-                if(selectionAction instanceof SpreadsheetSelectionActionHistoryHashToken){
-                    merged[SpreadsheetHistoryHashTokens.SELECTION_ACTION] = selectionAction;
-                }
+            if(selectionAction instanceof SpreadsheetSelectionActionHistoryHashToken){
+                merged[SpreadsheetHistoryHashTokens.SELECTION_ACTION] = selectionAction;
             }
 
             if(label){
                 merged[SpreadsheetHistoryHashTokens.LABEL] = label;
+            }
 
-                if(labelAction instanceof SpreadsheetLabelMappingHistoryHashToken){
-                    merged[SpreadsheetHistoryHashTokens.LABEL_ACTION] = labelAction;
-                }
+            if(labelAction instanceof SpreadsheetLabelMappingHistoryHashToken){
+                merged[SpreadsheetHistoryHashTokens.LABEL_ACTION] = labelAction;
             }
 
             if(select){
@@ -543,10 +550,9 @@ export default class SpreadsheetHistoryHash extends SpreadsheetHistoryHashTokens
 
             if(!!settings){
                 merged[SpreadsheetHistoryHashTokens.SETTINGS] = settings;
-
-                if(settingsItem){
-                    merged[SpreadsheetHistoryHashTokens.SETTINGS_ITEM] = settingsItem;
-                }
+            }
+            if(settingsItem){
+                merged[SpreadsheetHistoryHashTokens.SETTINGS_ITEM] = settingsItem;
             }
         }
 
