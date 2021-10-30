@@ -290,6 +290,11 @@ export default class TextStyle extends SystemObject {
         ];
     }
 
+    static isProperty(property) {
+        return TextStyle.properties()
+            .includes(property);
+    }
+
     static fromJson(json) {
         Preconditions.requireObject(json, "json");
 
