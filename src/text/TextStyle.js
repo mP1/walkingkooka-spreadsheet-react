@@ -141,6 +141,17 @@ export default class TextStyle extends SystemObject {
     static WRITING_MODE = "writing-mode";
 
     /**
+     * Translates a style property value from a string (probably sourced from a history hash token) into its
+     * matching json type like a null, string or number.
+     */
+    static stringValueToJson(property, value) {
+        checkProperty(property);
+        Preconditions.optionalText(value, "value");
+
+        return value;
+    }
+
+    /**
      * Returns an array of all properties.
      */
     static properties() {

@@ -79,6 +79,37 @@ test("isProperty() true", () => {
         });
 });
 
+// stringValueToJson....................................................................................................
+
+test("stringValueToJson invalid property fails", () => {
+    expect(() => TextStyle.stringValueToJson("!invalid", 123))
+        .toThrow("Unknown property \"!invalid\"");
+});
+
+test("stringValueToJson non text value fails", () => {
+    expect(() => TextStyle.stringValueToJson(TextStyle.COLOR, 123))
+        .toThrow("Expected string value got 123");
+});
+
+test("stringValueToJson null", () => {
+    expect(TextStyle.stringValueToJson(TextStyle.COLOR, null))
+        .toBeNull();
+});
+
+test("stringValueToJson BORDER_TOP_WIDTH", () => {
+    const length = new PixelLength(123);
+
+    expect(TextStyle.stringValueToJson(TextStyle.BORDER_TOP_WIDTH, length.toJson()))
+        .toStrictEqual(length.toJson());
+});
+
+test("stringValueToJson COLOR", () => {
+    const color = Color.fromJson("#012345");
+
+    expect(TextStyle.stringValueToJson(TextStyle.COLOR, color.toJson()))
+        .toStrictEqual(color.toJson());
+});
+
 // create...............................................................................................................
 
 test("create without text fails", () => {
