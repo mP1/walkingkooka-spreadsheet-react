@@ -39,80 +39,8 @@ import WordBreak from "./WordBreak.js";
 function checkProperty(property) {
     Preconditions.requireText(property, "property");
 
-    switch(property) {
-        case TextStyle.BACKGROUND_COLOR:
-        case TextStyle.BORDER_BOTTOM_COLOR:
-        case TextStyle.BORDER_BOTTOM_STYLE:
-        case TextStyle.BORDER_BOTTOM_WIDTH:
-        case TextStyle.BORDER_COLLAPSE:
-        case TextStyle.BORDER_LEFT_COLOR:
-        case TextStyle.BORDER_LEFT_STYLE:
-        case TextStyle.BORDER_LEFT_WIDTH:
-        case TextStyle.BORDER_RIGHT_COLOR:
-        case TextStyle.BORDER_RIGHT_STYLE:
-        case TextStyle.BORDER_RIGHT_WIDTH:
-        case TextStyle.BORDER_SPACING:
-        case TextStyle.BORDER_TOP_COLOR:
-        case TextStyle.BORDER_TOP_STYLE:
-        case TextStyle.BORDER_TOP_WIDTH:
-        case TextStyle.COLOR:
-        case TextStyle.DIRECTION:
-        case TextStyle.FONT_FAMILY:
-        case TextStyle.FONT_KERNING:
-        case TextStyle.FONT_SIZE:
-        case TextStyle.FONT_STRETCH:
-        case TextStyle.FONT_STYLE:
-        case TextStyle.FONT_VARIANT:
-        case TextStyle.FONT_WEIGHT:
-        case TextStyle.HANGING_PUNCTUATION:
-        case TextStyle.HEIGHT:
-        case TextStyle.HYPHENS:
-        case TextStyle.LETTER_SPACING:
-        case TextStyle.LINE_HEIGHT:
-        case TextStyle.LIST_STYLE_POSITION:
-        case TextStyle.LIST_STYLE_TYPE:
-        case TextStyle.MARGIN_BOTTOM:
-        case TextStyle.MARGIN_LEFT:
-        case TextStyle.MARGIN_RIGHT:
-        case TextStyle.MARGIN_TOP:
-        case TextStyle.MAX_HEIGHT:
-        case TextStyle.MAX_WIDTH:
-        case TextStyle.MIN_HEIGHT:
-        case TextStyle.MIN_WIDTH:
-        case TextStyle.OPACITY:
-        case TextStyle.OUTLINE_COLOR:
-        case TextStyle.OUTLINE_OFFSET:
-        case TextStyle.OUTLINE_STYLE:
-        case TextStyle.OUTLINE_WIDTH:
-        case TextStyle.OVERFLOW_X:
-        case TextStyle.OVERFLOW_Y:
-        case TextStyle.PADDING_BOTTOM:
-        case TextStyle.PADDING_LEFT:
-        case TextStyle.PADDING_RIGHT:
-        case TextStyle.PADDING_TOP:
-        case TextStyle.TAB_SIZE:
-        case TextStyle.TEXT:
-        case TextStyle.TEXT_ALIGN:
-        case TextStyle.TEXT_DECORATION_COLOR:
-        case TextStyle.TEXT_DECORATION_LINE:
-        case TextStyle.TEXT_DECORATION_STYLE:
-        case TextStyle.TEXT_DECORATION_THICKNESS:
-        case TextStyle.TEXT_INDENT:
-        case TextStyle.TEXT_JUSTIFY:
-        case TextStyle.TEXT_OVERFLOW:
-        case TextStyle.TEXT_TRANSFORM:
-        case TextStyle.TEXT_WRAPPING:
-        case TextStyle.VERTICAL_ALIGN:
-        case TextStyle.VISIBILITY:
-        case TextStyle.WHITE_SPACE:
-        case TextStyle.WIDTH:
-        case TextStyle.WORD_BREAK:
-        case TextStyle.WORD_SPACING:
-        case TextStyle.WORD_WRAP:
-        case TextStyle.WRITING_MODE:
-            break;
-        default:
-            throw new Error("Unknown property \"" + property + "\"");
+    if(!TextStyle.isProperty(property)){
+        throw new Error("Unknown property \"" + property + "\"");
     }
 }
 
