@@ -50,7 +50,7 @@ function textStyle() {
 
 // properties...........................................................................................................
 
-test("isProperty using properties()", () => {
+test("properties()", () => {
     const missing = TextStyle.properties()
         .concat("Unknown123")
         .filter(property => {
@@ -66,6 +66,17 @@ test("isProperty using properties()", () => {
         });
 
     expect(missing).toStrictEqual(["Unknown123"]);
+});
+
+test("isProperty() false", () => {
+    expect(TextStyle.isProperty("UnknownProperty")).toBeFalse();
+});
+
+test("isProperty() true", () => {
+    TextStyle.properties()
+        .forEach(p => {
+            expect(TextStyle.isProperty(p)).toBeTrue();
+        });
 });
 
 // create...............................................................................................................
