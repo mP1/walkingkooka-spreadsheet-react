@@ -493,12 +493,7 @@ export default class TextStyle extends SystemObject {
 
     constructor(properties) {
         super();
-        if(!properties){
-            throw new Error("Missing properties");
-        }
-        if(typeof properties !== "object"){
-            throw new Error("Expected object properties got " + properties);
-        }
+        Preconditions.requireObject(properties, "properties");
         this.properties = Object.assign({}, properties);
     }
 
