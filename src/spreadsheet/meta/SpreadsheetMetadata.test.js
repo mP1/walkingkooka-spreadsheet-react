@@ -48,6 +48,31 @@ test("isProperty using properties()", () => {
     expect(missing).toStrictEqual(["Unknown123"]);
 });
 
+// stringValueToJson....................................................................................................
+
+test("stringValueToJson invalid property fails", () => {
+    expect(() => SpreadsheetMetadata.stringValueToJson("!invalid", 123))
+        .toThrow("Unknown propertyName \"!invalid\"");
+});
+
+test("stringValueToJson non text value fails", () => {
+    expect(() => SpreadsheetMetadata.stringValueToJson(SpreadsheetMetadata.CELL_CHARACTER_WIDTH, 123))
+        .toThrow("Expected string value got 123");
+});
+
+function teststringValueToJson(propertyName, value, json) {
+    test("stringValueToJson " + propertyName + "=" + value, () => {
+        expect(SpreadsheetMetadata.stringValueToJson(propertyName, value))
+            .toStrictEqual(json);
+    });
+}
+
+teststringValueToJson(SpreadsheetMetadata.DATETIME_OFFSET, "123", 123);
+teststringValueToJson(SpreadsheetMetadata.TWO_DIGIT_YEAR, "20", 20);
+teststringValueToJson(SpreadsheetMetadata.CURRENCY_SYMBOL, "AUD", "AUD");
+teststringValueToJson(SpreadsheetMetadata.CREATOR, "user@example.com", "user@example.com");
+teststringValueToJson(SpreadsheetMetadata.POSITIVE_SIGN, "+", "+");
+
 // EMPTY................................................................................................................
 
 test("Empty", () => {
