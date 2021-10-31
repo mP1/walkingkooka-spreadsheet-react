@@ -886,6 +886,7 @@ SpreadsheetViewportWidget.propTypes = {
     dimensions: PropTypes.object,
     history: PropTypes.instanceOf(SpreadsheetHistoryHash).isRequired,
     insertAfterSelection: PropTypes.func.isRequired,
+    insertBeforeSelection: PropTypes.func.isRequired,
     messenger: PropTypes.instanceOf(SpreadsheetMessenger),
     spreadsheetDeltaCellCrud: PropTypes.instanceOf(SpreadsheetMessengerCrud),
     spreadsheetLabelCrud: PropTypes.instanceOf(SpreadsheetMessengerCrud),
