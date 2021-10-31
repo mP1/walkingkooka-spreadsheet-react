@@ -31,7 +31,7 @@ export default class SpreadsheetHistoryAwareWidget extends SpreadsheetWidget {
     }
 
     historyParseMergeAndPush(tokens) {
-        this.props.history.mergeAndPush(tokens);
+        return this.props.history.mergeAndPush(tokens);
     }
 
     showError(message, error) {

@@ -1,3 +1,4 @@
+import CharSequences from "../../CharSequences.js";
 import Equality from "../../Equality.js";
 import PropTypes from "prop-types";
 import SpreadsheetHistoryAwareWidget from "./SpreadsheetHistoryAwareWidget.js";
@@ -56,7 +57,11 @@ export default class SpreadsheetHistoryAwareStateWidget extends SpreadsheetHisto
         const state = this.state;
         console.log(this.prefix() +".componentDidUpdate", "prevState", prevState, "state", state);
 
-        this.historyParseMergeAndPush(this.historyTokensFromState(prevState));
+        const historyHashTokens = this.historyTokensFromState(prevState);
+        const newHash = this.historyParseMergeAndPush(historyHashTokens);
+        if(newHash) {
+            console.log(this.prefix() +".componentDidUpdate changed hash to " + CharSequences.quoteAndEscape(newHash), "tokens", historyHashTokens, "prevState", prevState, "state", state);
+        }
     }
 
     /**
