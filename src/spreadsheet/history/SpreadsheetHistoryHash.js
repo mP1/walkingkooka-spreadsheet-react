@@ -708,21 +708,30 @@ export default class SpreadsheetHistoryHash extends SpreadsheetHistoryHashTokens
     /**
      * Accepts some new history tokens and combines them with the current. This may result in some feature being cancelled,
      * eg editing the spreadsheet name turns off cell, label, select and settings.
+     * Note if the merge and push updated the hash that will be returned otherwise null is returned.
      */
     mergeAndPush(tokens) {
         return this.push(SpreadsheetHistoryHash.merge(this.tokens(), tokens));
     }
 
+    /**
+     * Pushes the given tokens after converting them to a string, returning the new hash if an update occured
+     * otherwise returns null;
+     */
     push(tokens) {
         const validated = SpreadsheetHistoryHash.validate(tokens);
         const tokensHash = SpreadsheetHistoryHash.stringify(validated);
         const hash = this.hash();
+
+        let changed = null;
         if(tokensHash !== hash){
             this.hashCounter++;
             this.currentTokens = null;
             this.setHash(tokensHash);
+
+            changed = tokensHash;
         }
-        return validated;
+        return changed;
     }
 
     mergeAndStringify(tokens) {
