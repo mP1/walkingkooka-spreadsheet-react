@@ -4,12 +4,13 @@ import List from '@material-ui/core/List';
 import ListItem from '@material-ui/core/ListItem';
 import PropTypes from "prop-types";
 import React from 'react';
+import SpreadsheetWidget from "../SpreadsheetWidget.js";
 import Tooltip from '@material-ui/core/Tooltip';
 
 /**
  * A base class that calls a renderInput method during a render adding a button to set the default value to the right.
  */
-export default class SpreadsheetSettingsWidgetValue extends React.Component {
+export default class SpreadsheetSettingsWidgetValue extends SpreadsheetWidget {
 
     // value and defaultValue are not required because the SpreadsheetMetadata property may be absent.
     static createPropTypes(valueType, extraProps) {
@@ -138,9 +139,7 @@ export default class SpreadsheetSettingsWidgetValue extends React.Component {
      * Handles the setDefault button is clicked.
      */
     onSetDefaultValue() {
-        const defaultValue = this.defaultValue;
-        console.log("onSetDefault " + defaultValue);
-        this.setValue(defaultValue);
+        this.setValue(this.defaultValue);
     }
 
     /**

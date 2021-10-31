@@ -1,11 +1,12 @@
 import PropTypes from "prop-types";
 import React from 'react';
 import SpreadsheetHistoryHash from "./SpreadsheetHistoryHash.js";
+import SpreadsheetWidget from "../SpreadsheetWidget.js";
 
 /**
  * A React.Component that is also interested in history change events. Some of the basics like registering a history
  */
-export default class SpreadsheetHistoryAwareWidget extends React.Component {
+export default class SpreadsheetHistoryAwareWidget extends SpreadsheetWidget {
 
     constructor(props) {
         super(props);
