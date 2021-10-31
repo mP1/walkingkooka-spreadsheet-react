@@ -187,7 +187,7 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetHistoryAwareSta
         return (
             <TextField ref={this.textField}
                        id={SpreadsheetFormulaWidget.TEXT_FIELD_ID}
-                       value={value}
+                       defaultValue={value}
                        disabled={!edit}
                        onBlur={this.onBlur.bind(this)}
                        onFocus={this.onFocus.bind(this)}
