@@ -1,8 +1,9 @@
 import Link from "@material-ui/core/Link";
 import PropTypes from 'prop-types';
 import React from 'react';
-import SpreadsheetHistoryHash from "../history/SpreadsheetHistoryHash.js";
 import SpreadsheetHistoryAwareStateWidget from "../history/SpreadsheetHistoryAwareStateWidget.js";
+import SpreadsheetHistoryHash from "../history/SpreadsheetHistoryHash.js";
+import SpreadsheetHistoryHashTokens from "../history/SpreadsheetHistoryHashTokens.js";
 
 /**
  * A widget that updates the href of a Link to which when clicked will display the navigate modal.
@@ -26,11 +27,11 @@ export default class SpreadsheetSelectLinkWidget extends SpreadsheetHistoryAware
      * Recreate the target of the link.
      */
     stateFromHistoryTokens(tokens) {
-        tokens[SpreadsheetHistoryHash.SELECT] = true;
+        tokens[SpreadsheetHistoryHashTokens.SELECT] = true;
 
         return {
             target: '#' + this.props.history.mergeAndStringify(tokens),
-            cell: tokens[SpreadsheetHistoryHash.SELECTION],
+            cell: tokens[SpreadsheetHistoryHashTokens.SELECTION],
         };
     }
 

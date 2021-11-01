@@ -775,7 +775,7 @@ export default class SpreadsheetHistoryHash extends SpreadsheetHistoryHashTokens
      */
     settingsToggle() {
         const tokens = this.tokens();
-        tokens[SpreadsheetHistoryHash.SETTINGS] = !Boolean(tokens[SpreadsheetHistoryHash.SETTINGS]);
+        tokens[SpreadsheetHistoryHashTokens.SETTINGS] = !Boolean(tokens[SpreadsheetHistoryHashTokens.SETTINGS]);
         this.push(tokens);
     }
 }

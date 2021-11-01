@@ -8,8 +8,9 @@ import SpreadsheetCellReference from "./SpreadsheetCellReference.js";
 import SpreadsheetColumnReference from "./SpreadsheetColumnReference.js";
 import SpreadsheetColumnReferenceRange from "./SpreadsheetColumnReferenceRange.js";
 import SpreadsheetDialog from "../../widget/SpreadsheetDialog.js";
-import SpreadsheetHistoryHash from "../history/SpreadsheetHistoryHash.js";
 import SpreadsheetHistoryAwareStateWidget from "../history/SpreadsheetHistoryAwareStateWidget.js";
+import SpreadsheetHistoryHash from "../history/SpreadsheetHistoryHash.js";
+import SpreadsheetHistoryHashTokens from "../history/SpreadsheetHistoryHashTokens.js";
 import SpreadsheetLabelMapping from "./SpreadsheetLabelMapping.js";
 import SpreadsheetLabelName from "./SpreadsheetLabelName.js";
 import SpreadsheetRowReference from "./SpreadsheetRowReference.js";
@@ -79,15 +80,15 @@ export default class SpreadsheetSelectAutocompleteWidget extends SpreadsheetHist
      * Need to watch selectionXXX & label hash tokens so button links can be rebuilt.
      */
     stateFromHistoryTokens(tokens) {
-        const select = tokens[SpreadsheetHistoryHash.SELECT];
+        const select = tokens[SpreadsheetHistoryHashTokens.SELECT];
 
         const state = {
             select: select,
-            selection: tokens[SpreadsheetHistoryHash.SELECTION],
-            selectionAction: tokens[SpreadsheetHistoryHash.SELECTION_ACTION],
-            selectionAnchor: tokens[SpreadsheetHistoryHash.SELECTION_ANCHOR],
-            label: tokens[SpreadsheetHistoryHash.LABEL],
-            labelAction: tokens[SpreadsheetHistoryHash.LABEL_ACTION],
+            selection: tokens[SpreadsheetHistoryHashTokens.SELECTION],
+            selectionAction: tokens[SpreadsheetHistoryHashTokens.SELECTION_ACTION],
+            selectionAnchor: tokens[SpreadsheetHistoryHashTokens.SELECTION_ANCHOR],
+            label: tokens[SpreadsheetHistoryHashTokens.LABEL],
+            labelAction: tokens[SpreadsheetHistoryHashTokens.LABEL_ACTION],
         };
 
         if(!select){
@@ -305,16 +306,16 @@ export default class SpreadsheetSelectAutocompleteWidget extends SpreadsheetHist
         if(!disabled){
             const tokens = this.props.history.tokens();
 
-            tokens[SpreadsheetHistoryHash.SELECT] = null; // close the navigate modal
+            tokens[SpreadsheetHistoryHashTokens.SELECT] = null; // close the navigate modal
 
             if(goto){
-                tokens[SpreadsheetHistoryHash.SELECTION] = goto;
-                tokens[SpreadsheetHistoryHash.SELECTION_ACTION] = null;
+                tokens[SpreadsheetHistoryHashTokens.SELECTION] = goto;
+                tokens[SpreadsheetHistoryHashTokens.SELECTION_ACTION] = null;
             }
 
             if(label){
-                tokens[SpreadsheetHistoryHash.LABEL] = label;
-                tokens[SpreadsheetHistoryHash.LABEL_ACTION] = null;
+                tokens[SpreadsheetHistoryHashTokens.LABEL] = label;
+                tokens[SpreadsheetHistoryHashTokens.LABEL_ACTION] = null;
             }
 
             link = "#" + SpreadsheetHistoryHash.stringify(tokens);
@@ -435,7 +436,7 @@ export default class SpreadsheetSelectAutocompleteWidget extends SpreadsheetHist
         console.log("close");
 
         const tokens = {};
-        tokens[SpreadsheetHistoryHash.SELECT] = null;
+        tokens[SpreadsheetHistoryHashTokens.SELECT] = null;
         this.historyParseMergeAndPush(tokens);
     }
 }

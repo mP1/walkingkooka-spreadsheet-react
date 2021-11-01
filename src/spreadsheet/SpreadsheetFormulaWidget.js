@@ -11,6 +11,7 @@ import SpreadsheetFormula from "./SpreadsheetFormula.js";
 import SpreadsheetFormulaLoadAndEditHistoryHashToken from "./history/SpreadsheetFormulaLoadAndEditHistoryHashToken.js";
 import SpreadsheetFormulaSaveHistoryHashToken from "./history/SpreadsheetFormulaSaveHistoryHashToken.js";
 import SpreadsheetHistoryHash from "./history/SpreadsheetHistoryHash.js";
+import SpreadsheetHistoryHashTokens from "./history/SpreadsheetHistoryHashTokens.js";
 import SpreadsheetHistoryAwareStateWidget from "./history/SpreadsheetHistoryAwareStateWidget.js";
 import SpreadsheetLabelName from "./reference/SpreadsheetLabelName.js";
 import SpreadsheetMessengerCrud from "./message/SpreadsheetMessengerCrud.js";
@@ -59,8 +60,8 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetHistoryAwareSta
         console.log("historyTokens: " + SpreadsheetHistoryHash.stringify(historyTokens));
 
         return {
-            selection: historyTokens[SpreadsheetHistoryHash.SELECTION],
-            selectionAction: historyTokens[SpreadsheetHistoryHash.SELECTION_ACTION],
+            selection: historyTokens[SpreadsheetHistoryHashTokens.SELECTION],
+            selectionAction: historyTokens[SpreadsheetHistoryHashTokens.SELECTION_ACTION],
         }
     }
 
@@ -107,8 +108,8 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetHistoryAwareSta
                 }
             }
 
-            historyTokens[SpreadsheetHistoryHash.SELECTION] = selection;
-            historyTokens[SpreadsheetHistoryHash.SELECTION_ACTION] = selectionAction;
+            historyTokens[SpreadsheetHistoryHashTokens.SELECTION] = selection;
+            historyTokens[SpreadsheetHistoryHashTokens.SELECTION_ACTION] = selectionAction;
         }
 
         return historyTokens;
@@ -150,7 +151,7 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetHistoryAwareSta
         }
 
         const tokens = {};
-        tokens[SpreadsheetHistoryHash.SELECTION_ACTION] = new SpreadsheetFormulaLoadAndEditHistoryHashToken();
+        tokens[SpreadsheetHistoryHashTokens.SELECTION_ACTION] = new SpreadsheetFormulaLoadAndEditHistoryHashToken();
         this.historyParseMergeAndPush(tokens);
 
         const props = this.props;
@@ -212,7 +213,7 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetHistoryAwareSta
      */
     onBlur(e) {
         const tokens = {};
-        tokens[SpreadsheetHistoryHash.SELECTION_ACTION] = null;
+        tokens[SpreadsheetHistoryHashTokens.SELECTION_ACTION] = null;
 
         this.historyParseMergeAndPush(tokens);
     }
@@ -222,7 +223,7 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetHistoryAwareSta
      */
     onFocus(e) {
         const tokens = {};
-        tokens[SpreadsheetHistoryHash.SELECTION_ACTION] = new SpreadsheetFormulaLoadAndEditHistoryHashToken();
+        tokens[SpreadsheetHistoryHashTokens.SELECTION_ACTION] = new SpreadsheetFormulaLoadAndEditHistoryHashToken();
 
         this.historyParseMergeAndPush(tokens);
     }
@@ -265,8 +266,8 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetHistoryAwareSta
         e.preventDefault();
 
         const historyTokens = {};
-        historyTokens[SpreadsheetHistoryHash.SELECTION] = this.state.selection;
-        historyTokens[SpreadsheetHistoryHash.SELECTION_ACTION] = new SpreadsheetFormulaSaveHistoryHashToken(e.target.value);
+        historyTokens[SpreadsheetHistoryHashTokens.SELECTION] = this.state.selection;
+        historyTokens[SpreadsheetHistoryHashTokens.SELECTION_ACTION] = new SpreadsheetFormulaSaveHistoryHashToken(e.target.value);
         this.historyParseMergeAndPush(historyTokens);
     }
 
