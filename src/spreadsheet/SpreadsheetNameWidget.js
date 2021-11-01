@@ -1,8 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import SpreadsheetButtonTextField from '../widget/SpreadsheetButtonTextField.js';
-import SpreadsheetHistoryHash from "./history/SpreadsheetHistoryHash.js";
 import SpreadsheetHistoryAwareStateWidget from "./history/SpreadsheetHistoryAwareStateWidget.js";
+import SpreadsheetHistoryHash from "./history/SpreadsheetHistoryHash.js";
+import SpreadsheetHistoryHashTokens from "./history/SpreadsheetHistoryHashTokens.js";
 import SpreadsheetName from "./SpreadsheetName.js";
 import SpreadsheetMessengerCrud from "./message/SpreadsheetMessengerCrud.js";
 import SpreadsheetMetadata from "./meta/SpreadsheetMetadata.js";
@@ -50,7 +51,7 @@ export default class SpreadsheetNameWidget extends SpreadsheetHistoryAwareStateW
 
     stateFromHistoryTokens(tokens) {
         return {
-            edit: !!tokens[SpreadsheetHistoryHash.SPREADSHEET_NAME_EDIT],
+            edit: !!tokens[SpreadsheetHistoryHashTokens.SPREADSHEET_NAME_EDIT],
         };
     }
 
@@ -71,7 +72,7 @@ export default class SpreadsheetNameWidget extends SpreadsheetHistoryAwareStateW
         document.title = nameText;
 
         const historyTokens = {};
-        historyTokens[SpreadsheetHistoryHash.SPREADSHEET_NAME_EDIT] = edit;
+        historyTokens[SpreadsheetHistoryHashTokens.SPREADSHEET_NAME_EDIT] = edit;
         return historyTokens;
     }
 

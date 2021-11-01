@@ -19,6 +19,7 @@ import SpreadsheetFormulaLoadAndEditHistoryHashToken from "./history/Spreadsheet
 import SpreadsheetHistoryAwareStateWidget from "./history/SpreadsheetHistoryAwareStateWidget.js";
 import SpreadsheetHistoryHash from "./history/SpreadsheetHistoryHash.js";
 import SpreadsheetHistoryHashToken from "./history/SpreadsheetHistoryHashToken.js";
+import SpreadsheetHistoryHashTokens from "./history/SpreadsheetHistoryHashTokens.js";
 import SpreadsheetLabelName from "./reference/SpreadsheetLabelName.js";
 import SpreadsheetMessenger from "./message/SpreadsheetMessenger.js";
 import SpreadsheetMessengerCrud from "./message/SpreadsheetMessengerCrud.js";
@@ -176,7 +177,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
                     break;
                 case "POST":
                     const historyTokens = this.props.history.tokens();
-                    const selectionAction = historyTokens[SpreadsheetHistoryHash.SELECTION_ACTION];
+                    const selectionAction = historyTokens[SpreadsheetHistoryHashTokens.SELECTION_ACTION];
                     if(selectionAction instanceof SpreadsheetColumnOrRowInsertBeforeHistoryHashToken){
                         const urlPaths = url.path().split("/");
                         if(urlPaths.length === 7){
@@ -187,8 +188,8 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
                             // 4 == column == Selection
                             // 5 == $selection
                             // 6 == before == insert-action.toUrl
-                            if(urlPaths[3] === historyTokens[SpreadsheetHistoryHash.SPREADSHEET_ID].toString()){
-                                const selection = historyTokens[SpreadsheetHistoryHash.SELECTION];
+                            if(urlPaths[3] === historyTokens[SpreadsheetHistoryHashTokens.SPREADSHEET_ID].toString()){
+                                const selection = historyTokens[SpreadsheetHistoryHashTokens.SELECTION];
                                 if(selection && selection.isInsertBeforePostUrl(urlPaths)){
                                     Object.assign(
                                         newState,
@@ -212,8 +213,8 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
                             // 4 == column == Selection
                             // 5 == $selection
                             // 6 == before == insert-action.toUrl
-                            if(urlPaths[3] === historyTokens[SpreadsheetHistoryHash.SPREADSHEET_ID].toString()){
-                                const selection = historyTokens[SpreadsheetHistoryHash.SELECTION];
+                            if(urlPaths[3] === historyTokens[SpreadsheetHistoryHashTokens.SPREADSHEET_ID].toString()){
+                                const selection = historyTokens[SpreadsheetHistoryHashTokens.SELECTION];
                                 if(selection && selection.isInsertAfterPostUrl(urlPaths)){
                                     Object.assign(
                                         newState,
@@ -299,9 +300,9 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
 
     stateFromHistoryTokens(tokens) {
         return {
-            selection: tokens[SpreadsheetHistoryHash.SELECTION],
-            selectionAnchor: tokens[SpreadsheetHistoryHash.SELECTION_ANCHOR],
-            selectionAction: tokens[SpreadsheetHistoryHash.SELECTION_ACTION],
+            selection: tokens[SpreadsheetHistoryHashTokens.SELECTION],
+            selectionAnchor: tokens[SpreadsheetHistoryHashTokens.SELECTION_ANCHOR],
+            selectionAction: tokens[SpreadsheetHistoryHashTokens.SELECTION_ACTION],
             contextMenu: {}, // close context menu
         };
     }
@@ -397,8 +398,8 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
                 }
             }
 
-            historyTokens[SpreadsheetHistoryHash.SELECTION] = selectionNew;
-            historyTokens[SpreadsheetHistoryHash.SELECTION_ACTION] = selectionActionNew;
+            historyTokens[SpreadsheetHistoryHashTokens.SELECTION] = selectionNew;
+            historyTokens[SpreadsheetHistoryHashTokens.SELECTION_ACTION] = selectionActionNew;
             
             if(!Equality.safeEquals(selectionNew, selectionOld)){
                 if(!state.formula){
@@ -631,9 +632,9 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
         const selection = this.findEventTargetSelection(e.target);
         if(selection){
             const tokens = {};
-            tokens[SpreadsheetHistoryHash.SELECTION] = selection;
-            tokens[SpreadsheetHistoryHash.SELECTION_ANCHOR] = null;
-            tokens[SpreadsheetHistoryHash.SELECTION_ACTION] = null;
+            tokens[SpreadsheetHistoryHashTokens.SELECTION] = selection;
+            tokens[SpreadsheetHistoryHashTokens.SELECTION_ANCHOR] = null;
+            tokens[SpreadsheetHistoryHashTokens.SELECTION_ACTION] = null;
             
             this.historyParseMergeAndPush(tokens);
         }
@@ -873,9 +874,9 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
 
         const tokens = {};
 
-        tokens[SpreadsheetHistoryHash.SELECTION] = selection;
-        tokens[SpreadsheetHistoryHash.SELECTION_ANCHOR] = anchor
-        tokens[SpreadsheetHistoryHash.SELECTION_ACTION] = action;
+        tokens[SpreadsheetHistoryHashTokens.SELECTION] = selection;
+        tokens[SpreadsheetHistoryHashTokens.SELECTION_ANCHOR] = anchor
+        tokens[SpreadsheetHistoryHashTokens.SELECTION_ACTION] = action;
 
         this.historyParseMergeAndPush(tokens);
     }

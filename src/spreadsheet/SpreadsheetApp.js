@@ -14,7 +14,7 @@ import SpreadsheetEngineEvaluation from "./engine/SpreadsheetEngineEvaluation.js
 import SpreadsheetExpressionReferenceSimilarities from "./SpreadsheetExpressionReferenceSimilarities.js";
 import SpreadsheetFormulaWidget from "./SpreadsheetFormulaWidget.js";
 import SpreadsheetHistoryAwareStateWidget from "./history/SpreadsheetHistoryAwareStateWidget.js";
-import SpreadsheetHistoryHash from "./history/SpreadsheetHistoryHash.js";
+import SpreadsheetHistoryHashTokens from "./history/SpreadsheetHistoryHashTokens.js";
 import SpreadsheetLabelMapping from "./reference/SpreadsheetLabelMapping.js";
 import SpreadsheetLabelName from "./reference/SpreadsheetLabelName.js";
 import SpreadsheetLabelMappingWidget from "./reference/SpreadsheetLabelMappingWidget.js";
@@ -140,8 +140,8 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
      */
     stateFromHistoryTokens(tokens) {
         return {
-            spreadsheetId: tokens[SpreadsheetHistoryHash.SPREADSHEET_ID],
-            spreadsheetName: tokens[SpreadsheetHistoryHash.SPREADSHEET_NAME],
+            spreadsheetId: tokens[SpreadsheetHistoryHashTokens.SPREADSHEET_ID],
+            spreadsheetName: tokens[SpreadsheetHistoryHashTokens.SPREADSHEET_NAME],
         };
     }
 
@@ -175,13 +175,13 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
                 if(name){
                     document.title = name.toString();
                 }
-                historyTokens[SpreadsheetHistoryHash.SPREADSHEET_NAME] = name;
+                historyTokens[SpreadsheetHistoryHashTokens.SPREADSHEET_NAME] = name;
             }else {
                 this.spreadsheetEmptyCreate();
             }
         }
 
-        historyTokens[SpreadsheetHistoryHash.SPREADSHEET_ID] = id;
+        historyTokens[SpreadsheetHistoryHashTokens.SPREADSHEET_ID] = id;
 
         // sync windowDimensions with the viewport widget
         const windowDimensions = state.windowDimensions;

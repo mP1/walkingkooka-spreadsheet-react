@@ -7,6 +7,7 @@ import spreadsheetCellRangeCellReferenceOrLabelParse from "./SpreadsheetCellRang
 import SpreadsheetDialog from "../../widget/SpreadsheetDialog.js";
 import SpreadsheetHistoryAwareStateWidget from "../history/SpreadsheetHistoryAwareStateWidget.js";
 import SpreadsheetHistoryHash from "../history/SpreadsheetHistoryHash.js";
+import SpreadsheetHistoryHashTokens from "../history/SpreadsheetHistoryHashTokens.js";
 import SpreadsheetLabelMapping from "./SpreadsheetLabelMapping.js";
 import SpreadsheetLabelMappingDeleteHistoryHashToken from "../history/SpreadsheetLabelMappingDeleteHistoryHashToken.js";
 import SpreadsheetLabelMappingSaveHistoryHashToken from "../history/SpreadsheetLabelMappingSaveHistoryHashToken.js";
@@ -69,9 +70,9 @@ export default class SpreadsheetLabelMappingWidget extends SpreadsheetHistoryAwa
 
     stateFromHistoryTokens(tokens) {
         return {
-            spreadsheetId: tokens[SpreadsheetHistoryHash.SPREADSHEET_ID],
-            label: tokens[SpreadsheetHistoryHash.LABEL],
-            labelAction: tokens[SpreadsheetHistoryHash.LABEL_ACTION],
+            spreadsheetId: tokens[SpreadsheetHistoryHashTokens.SPREADSHEET_ID],
+            label: tokens[SpreadsheetHistoryHashTokens.LABEL],
+            labelAction: tokens[SpreadsheetHistoryHashTokens.LABEL_ACTION],
         };
     }
 
@@ -143,11 +144,11 @@ export default class SpreadsheetLabelMappingWidget extends SpreadsheetHistoryAwa
         var labelSave;
 
         if(newLabel && reference){
-            tokens[SpreadsheetHistoryHash.LABEL_ACTION] = new SpreadsheetLabelMappingSaveHistoryHashToken(newLabel, reference);
+            tokens[SpreadsheetHistoryHashTokens.LABEL_ACTION] = new SpreadsheetLabelMappingSaveHistoryHashToken(newLabel, reference);
             labelSave = "#" + SpreadsheetHistoryHash.stringify(tokens);
         }
 
-        tokens[SpreadsheetHistoryHash.LABEL_ACTION] = new SpreadsheetLabelMappingDeleteHistoryHashToken();
+        tokens[SpreadsheetHistoryHashTokens.LABEL_ACTION] = new SpreadsheetLabelMappingDeleteHistoryHashToken();
         const labelDelete = "#" + SpreadsheetHistoryHash.stringify(tokens);
 
         console.log("render: ", "label:" + label, "newLabel:" + newLabel + ", labelHelper:" + labelHelper, ", reference:" + reference, "referenceHelper" + referenceHelper, "saveButton", labelSave, "labelDelete", labelDelete);
@@ -256,8 +257,8 @@ export default class SpreadsheetLabelMappingWidget extends SpreadsheetHistoryAwa
      */
     close() {
         const tokens = {};
-        tokens[SpreadsheetHistoryHash.LABEL] = null;
-        tokens[SpreadsheetHistoryHash.LABEL_ACTION] = null;
+        tokens[SpreadsheetHistoryHashTokens.LABEL] = null;
+        tokens[SpreadsheetHistoryHashTokens.LABEL_ACTION] = null;
 
         this.historyParseMergeAndPush(tokens);
     }
@@ -343,8 +344,8 @@ export default class SpreadsheetLabelMappingWidget extends SpreadsheetHistoryAwa
      */
     onLabelMappingSaveSuccess(mapping) {
         const tokens = {};
-        tokens[SpreadsheetHistoryHash.LABEL] = mapping.label();
-        tokens[SpreadsheetHistoryHash.LABEL_ACTION] = null;
+        tokens[SpreadsheetHistoryHashTokens.LABEL] = mapping.label();
+        tokens[SpreadsheetHistoryHashTokens.LABEL_ACTION] = null;
         this.historyParseMergeAndPush(tokens);
 
         this.setState({
