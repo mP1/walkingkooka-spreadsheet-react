@@ -216,12 +216,6 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
     spreadsheetEmptyCreate() {
         console.log("spreadsheetEmptyCreate");
 
-        this.setState({
-            creatingEmptySpreadsheet: true,
-            spreadsheetMetadata: SpreadsheetMetadata.EMPTY,
-            spreadsheetId: null,
-        });
-
         this.spreadsheetMetadataCrud.post(
             null,
             "",
