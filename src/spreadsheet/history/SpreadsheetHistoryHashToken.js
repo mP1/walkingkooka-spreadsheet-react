@@ -13,6 +13,10 @@ export default class SpreadsheetHistoryHashToken {
         SystemObject.throwUnsupportedOperation();
     }
 
+    toJSON() {
+        return this.toString();
+    }
+
     toString() {
         return this.toHistoryHashToken();
     }
