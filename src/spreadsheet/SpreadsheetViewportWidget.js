@@ -312,7 +312,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
      * if cell or range change.
      */
     historyTokensFromState(prevState) {
-        const historyTokens = SpreadsheetHistoryHash.emptyTokens();
+        const historyTokens = SpreadsheetHistoryHashTokens.emptyTokens();
 
         const state = this.state;
         let metadata = state.spreadsheetMetadata;
@@ -631,7 +631,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
     onClick(e) {
         const selection = this.findEventTargetSelection(e.target);
         if(selection){
-            const tokens = SpreadsheetHistoryHash.emptyTokens();
+            const tokens = SpreadsheetHistoryHashTokens.emptyTokens();
             tokens[SpreadsheetHistoryHashTokens.SELECTION] = selection;
             tokens[SpreadsheetHistoryHashTokens.SELECTION_ANCHOR] = null;
             tokens[SpreadsheetHistoryHashTokens.SELECTION_ACTION] = null;
@@ -872,7 +872,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
         Preconditions.optionalInstance(anchor, SpreadsheetViewportSelectionAnchor, "anchor");
         Preconditions.optionalInstance(action, SpreadsheetHistoryHashToken, "action");
 
-        const tokens = SpreadsheetHistoryHash.emptyTokens();
+        const tokens = SpreadsheetHistoryHashTokens.emptyTokens();
 
         tokens[SpreadsheetHistoryHashTokens.SELECTION] = selection;
         tokens[SpreadsheetHistoryHashTokens.SELECTION_ANCHOR] = anchor

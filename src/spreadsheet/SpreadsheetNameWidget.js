@@ -71,7 +71,7 @@ export default class SpreadsheetNameWidget extends SpreadsheetHistoryAwareStateW
         }
         document.title = nameText;
 
-        const historyTokens = SpreadsheetHistoryHash.emptyTokens();
+        const historyTokens = SpreadsheetHistoryHashTokens.emptyTokens();
         historyTokens[SpreadsheetHistoryHashTokens.SPREADSHEET_NAME_EDIT] = edit;
         return historyTokens;
     }

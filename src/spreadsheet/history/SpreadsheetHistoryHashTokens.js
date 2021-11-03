@@ -1,4 +1,16 @@
+var txId = 0;
+
 export default class SpreadsheetHistoryHashTokens {
+
+    static emptyTokens() {
+        const tokens = {};
+        tokens[SpreadsheetHistoryHashTokens.TX_ID] = txId;
+        return tokens;
+    }
+
+    static newTxId() {
+        return txId++;
+    }
 
     static SPREADSHEET_ID = "spreadsheet-id";
     static SPREADSHEET_NAME = "spreadsheet-name";

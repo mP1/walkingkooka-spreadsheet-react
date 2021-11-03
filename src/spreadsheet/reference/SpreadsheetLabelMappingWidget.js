@@ -256,7 +256,7 @@ export default class SpreadsheetLabelMappingWidget extends SpreadsheetHistoryAwa
      * Closes the dialog by clearing the label and label action history hash tokens.
      */
     close() {
-        const tokens = SpreadsheetHistoryHash.emptyTokens();
+        const tokens = SpreadsheetHistoryHashTokens.emptyTokens();
         tokens[SpreadsheetHistoryHashTokens.LABEL] = null;
         tokens[SpreadsheetHistoryHashTokens.LABEL_ACTION] = null;
 
@@ -343,7 +343,7 @@ export default class SpreadsheetLabelMappingWidget extends SpreadsheetHistoryAwa
      * Updates the state.label, this means future operations will reference this label to save.
      */
     onLabelMappingSaveSuccess(mapping) {
-        const tokens = SpreadsheetHistoryHash.emptyTokens();
+        const tokens = SpreadsheetHistoryHashTokens.emptyTokens();
         tokens[SpreadsheetHistoryHashTokens.LABEL] = mapping.label();
         tokens[SpreadsheetHistoryHashTokens.LABEL_ACTION] = null;
         this.historyParseMergeAndPush(tokens);
