@@ -120,6 +120,10 @@ export default class SystemObject {
         return this === other;
     }
 
+    toJSON() {
+        return this.toJson();
+    }
+
     toJson() {
         SystemObject.throwUnsupportedOperation();
     }
