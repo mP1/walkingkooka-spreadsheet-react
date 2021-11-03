@@ -99,7 +99,7 @@ export default class SpreadsheetLabelMappingWidget extends SpreadsheetHistoryAwa
             }
         }
 
-        return {};
+        return SpreadsheetHistoryHashTokens.emptyTokens();
     }
 
     saveLabelMapping(newLabel, reference) {

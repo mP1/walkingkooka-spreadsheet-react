@@ -36,7 +36,7 @@ export default class SpreadsheetSelectLinkWidget extends SpreadsheetHistoryAware
     }
 
     historyTokensFromState(prevState) {
-        return {}; // never update history from state.
+        return SpreadsheetHistoryHashTokens.emptyTokens(); // never update history from state.
     }
 
     render() {

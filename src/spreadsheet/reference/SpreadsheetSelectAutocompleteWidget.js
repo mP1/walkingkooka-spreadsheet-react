@@ -113,7 +113,7 @@ export default class SpreadsheetSelectAutocompleteWidget extends SpreadsheetHist
      * Copies the select hash to state.open and also updates the AutoComplete widget to match state.option
      */
     historyTokensFromState(prevState) {
-        return {};
+        return SpreadsheetHistoryHashTokens.emptyTokens();
     }
 
     render() {
