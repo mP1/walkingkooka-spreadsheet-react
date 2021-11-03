@@ -16,7 +16,7 @@ export default class SpreadsheetColumnOrRowInsertAfterHistoryHashToken extends S
     onViewportSelectionAction(selection, viewportWidget) {
         viewportWidget.insertAfterSelection(selection, this.count());
 
-        const tokens = {};
+        const tokens = SpreadsheetHistoryHash.emptyTokens();
         tokens[SpreadsheetHistoryHashTokens.SELECTION_ACTION] = null;
         viewportWidget.historyParseMergeAndPush(tokens);
     }
