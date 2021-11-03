@@ -152,7 +152,7 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
      * creating a new spreadsheet, loading a new id, correcting the name and also updating the viewport dimensions.
      */
     historyTokensFromState(prevState) {
-        const historyTokens = {};
+        const historyTokens = SpreadsheetHistoryHash.emptyTokens();
 
         const previousId = prevState.spreadsheetId;
         const state = this.state;

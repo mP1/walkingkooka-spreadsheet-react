@@ -66,7 +66,7 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetHistoryAwareSta
     }
 
     historyTokensFromState(prevState) {
-        const historyTokens = {};
+        const historyTokens = SpreadsheetHistoryHash.emptyTokens();
 
         const state = this.state;
         const {selection, cellReference, focused} = state;
@@ -150,7 +150,7 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetHistoryAwareSta
             cell = new SpreadsheetCell(cellReference, new SpreadsheetFormula(formulaText), TextStyle.EMPTY);
         }
 
-        const tokens = {};
+        const tokens = SpreadsheetHistoryHash.emptyTokens();
         tokens[SpreadsheetHistoryHashTokens.SELECTION_ACTION] = new SpreadsheetFormulaLoadAndEditHistoryHashToken();
         this.historyParseMergeAndPush(tokens);
 
@@ -212,7 +212,7 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetHistoryAwareSta
      * Remove the formula portion of history hash
      */
     onBlur(e) {
-        const tokens = {};
+        const tokens = SpreadsheetHistoryHash.emptyTokens();
         tokens[SpreadsheetHistoryHashTokens.SELECTION_ACTION] = null;
 
         this.historyParseMergeAndPush(tokens);
@@ -222,7 +222,7 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetHistoryAwareSta
      * Add the formula portion to the history hash
      */
     onFocus(e) {
-        const tokens = {};
+        const tokens = SpreadsheetHistoryHash.emptyTokens();
         tokens[SpreadsheetHistoryHashTokens.SELECTION_ACTION] = new SpreadsheetFormulaLoadAndEditHistoryHashToken();
 
         this.historyParseMergeAndPush(tokens);
@@ -265,7 +265,7 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetHistoryAwareSta
     onEnterKey(e) {
         e.preventDefault();
 
-        const historyTokens = {};
+        const historyTokens = SpreadsheetHistoryHash.emptyTokens();
         historyTokens[SpreadsheetHistoryHashTokens.SELECTION] = this.state.selection;
         historyTokens[SpreadsheetHistoryHashTokens.SELECTION_ACTION] = new SpreadsheetFormulaSaveHistoryHashToken(e.target.value);
         this.historyParseMergeAndPush(historyTokens);

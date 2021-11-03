@@ -20,6 +20,7 @@ import SpreadsheetRowReference from "../reference/SpreadsheetRowReference.js";
 import SpreadsheetRowReferenceRange from "../reference/SpreadsheetRowReferenceRange.js"
 import SpreadsheetSettingsWidgetItems from "../settings/SpreadsheetSettingsWidgetItems.js";
 import SpreadsheetViewportSelectionAnchor from "../reference/SpreadsheetViewportSelectionAnchor.js";
+import SpreadsheetHistoryHashTokens from "./SpreadsheetHistoryHashTokens.js";
 
 const ID = "spreadsheet-id-123";
 const SPREADSHEET_NAME = new SpreadsheetName("spreadsheet-name-456");
@@ -41,6 +42,15 @@ const LABEL_SAVE = new SpreadsheetLabelMappingSaveHistoryHashToken(
     NEW_LABEL,
     CELL_RANGE
 );
+
+// emptyTokens................................................................................................................
+
+test("emptyTokens", () => {
+    expect(SpreadsheetHistoryHash.emptyTokens())
+        .toStrictEqual({
+            "_tx-id": 0,
+        });
+});
 
 // validate................................................................................................................
 
@@ -1470,6 +1480,8 @@ testParseAndStringify(
 function testParseAndStringify(hash, expected, expectedError) {
     test("parse " + CharSequences.quoteAndEscape(hash), () => {
         let errors = [];
+        expected[SpreadsheetHistoryHashTokens.TX_ID] = 0;
+
         expect(SpreadsheetHistoryHash.parse(hash, e => errors.push(e)))
             .toStrictEqual(expected);
         if(errors.length > 0){
@@ -2449,6 +2461,7 @@ test("spreadsheetIdAndName", () => {
             }
         )
     ).toStrictEqual({
+        "_tx-id": 0,
         "spreadsheet-id": ID,
         "spreadsheet-name": SPREADSHEET_NAME,
     });
