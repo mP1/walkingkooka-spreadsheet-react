@@ -143,7 +143,7 @@ class SpreadsheetSettingsWidget extends SpreadsheetHistoryAwareStateWidget {
      * Translates the state to history tokens and performs some other updates and checks.
      */
     historyTokensFromState(prevState) {
-        const historyTokens = SpreadsheetHistoryHash.emptyTokens();
+        const historyTokens = SpreadsheetHistoryHashTokens.emptyTokens();
         const state = this.state;
 
         console.log("componentDidUpdate", "prevState", prevState, "state", state);
@@ -244,7 +244,7 @@ class SpreadsheetSettingsWidget extends SpreadsheetHistoryAwareStateWidget {
     }
 
     onDrawerClose() {
-        const tokens = SpreadsheetHistoryHash.emptyTokens();
+        const tokens = SpreadsheetHistoryHashTokens.emptyTokens();
         tokens[SpreadsheetHistoryHashTokens.SETTINGS] = false;
 
         this.historyParseMergeAndPush(tokens);

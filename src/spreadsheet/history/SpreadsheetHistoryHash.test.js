@@ -46,7 +46,7 @@ const LABEL_SAVE = new SpreadsheetLabelMappingSaveHistoryHashToken(
 // emptyTokens................................................................................................................
 
 test("emptyTokens", () => {
-    expect(SpreadsheetHistoryHash.emptyTokens())
+    expect(SpreadsheetHistoryHashTokens.emptyTokens())
         .toStrictEqual({
             "_tx-id": 0,
         });

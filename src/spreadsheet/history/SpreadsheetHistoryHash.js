@@ -55,18 +55,10 @@ function copyTx(from, to) {
     return to;
 }
 
-var txId = 0;
-
 /**
  * A collection of utilities that support history hash.
  */
 export default class SpreadsheetHistoryHash extends SpreadsheetHistoryHashTokens {
-
-    static emptyTokens() {
-        const tokens = SpreadsheetHistoryHash.emptyTokens();
-        tokens[SpreadsheetHistoryHashTokens.TX_ID] = txId;
-        return tokens;
-    }
 
     /**
      * Parsers the path extracting tokens returning an object with valid tokens. Invalid combination will be removed.
@@ -75,7 +67,7 @@ export default class SpreadsheetHistoryHash extends SpreadsheetHistoryHashTokens
         Preconditions.requireText(hash, "hash");
         Preconditions.requireFunction(errors, "errors");
 
-        const historyHashTokens = SpreadsheetHistoryHash.emptyTokens();
+        const historyHashTokens = SpreadsheetHistoryHashTokens.emptyTokens();
 
         const tokens = tokenize(hash);
         const spreadsheetId = tokens.shift();
@@ -517,7 +509,7 @@ export default class SpreadsheetHistoryHash extends SpreadsheetHistoryHashTokens
             }
         }
 
-        const merged = SpreadsheetHistoryHash.emptyTokens();
+        const merged = SpreadsheetHistoryHashTokens.emptyTokens();
         let valid = false;
 
         if(null != spreadsheetId){
@@ -676,7 +668,7 @@ export default class SpreadsheetHistoryHash extends SpreadsheetHistoryHashTokens
     }
 
     onHistoryChange(e) {
-        txId++;
+        SpreadsheetHistoryHashTokens.newTxId();
 
         const hash = this.hash();
         const tokens = SpreadsheetHistoryHash.parse(
@@ -761,7 +753,7 @@ export default class SpreadsheetHistoryHash extends SpreadsheetHistoryHashTokens
      * Filters the given tokens and returns just the spreadsheet id and name if present.
      */
     static spreadsheetIdAndName(tokens) {
-        const only = SpreadsheetHistoryHash.emptyTokens();
+        const only = SpreadsheetHistoryHashTokens.emptyTokens();
 
         only[SpreadsheetHistoryHashTokens.SPREADSHEET_ID] = tokens[SpreadsheetHistoryHashTokens.SPREADSHEET_ID];
         only[SpreadsheetHistoryHashTokens.SPREADSHEET_NAME] = tokens[SpreadsheetHistoryHashTokens.SPREADSHEET_NAME];
