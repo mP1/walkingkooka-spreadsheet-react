@@ -267,9 +267,28 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
     }
 
     onSpreadsheetMetadata(method, id, url, requestMetadata, responseMetadata) {
-        this.setState({
+        const newState = {
             spreadsheetMetadata: responseMetadata,
-        });
+        };
+
+        const previousMetadata = this.state.spreadsheetMetadata;
+        if(previousMetadata){
+            const previousId = previousMetadata.getIgnoringDefaults(SpreadsheetMetadata.SPREADSHEET_ID);
+
+            // if id changed clear caches...
+            if(!Equality.safeEquals(previousId, responseMetadata.getIgnoringDefaults(SpreadsheetMetadata.SPREADSHEET_ID))){
+                Object.assign(
+                    newState,
+                    {
+                        cells: ImmutableMap.EMPTY,
+                        columnWidths: ImmutableMap.EMPTY,
+                        rowHeights: ImmutableMap.EMPTY,
+                        cellToLabels: ImmutableMap.EMPTY,
+                    });
+            }
+        }
+
+        this.setState(newState);
     }
 
     componentWillUnmount() {
@@ -321,8 +340,6 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
         const props = this.props;
 
         const viewportTable = this.viewportTable.current;
-
-        let newState = {};
 
         if(viewportTable){
             const viewportRange = state.viewportRange;
@@ -407,20 +424,6 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
                 }
             }
         }
-
-        // clear caches if spreadsheet-id changed.
-        if(previousMetadata){
-            if(!Equality.safeEquals(metadata.getIgnoringDefaults(SpreadsheetMetadata.SPREADSHEET_ID), previousMetadata.getIgnoringDefaults(SpreadsheetMetadata.SPREADSHEET_ID))){
-                newState = {
-                    cells: ImmutableMap.EMPTY,
-                    columnWidths: ImmutableMap.EMPTY,
-                    rowHeights: ImmutableMap.EMPTY,
-                    cellToLabels: ImmutableMap.EMPTY,
-                };
-            }
-        }
-
-        this.setState(newState);
 
         if(!Equality.safeEquals(metadata, previousMetadata)){
             props.spreadsheetMetadataCrud.post(
