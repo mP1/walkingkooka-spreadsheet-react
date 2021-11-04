@@ -35,6 +35,8 @@ import TableCell from '@material-ui/core/TableCell';
 import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from '@material-ui/core/TableHead';
 import TableRow from '@material-ui/core/TableRow';
+import SpreadsheetFormulaSelectionActionHistoryHashToken
+    from "./history/SpreadsheetFormulaSelectionActionHistoryHashToken.js";
 
 const SCROLL_DEBOUNCE = 100;
 
@@ -617,15 +619,22 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
     static VIEWPORT_CONTEXT_MENU_ID = "viewport-context-Menu";
 
     onFocus(e) {
-        this.setState({
-            focused: true,
-        });
+        // only update state if formula not active and focus changed.
+        const {selectionAction, focused} = this.state;
+        if(!(selectionAction instanceof SpreadsheetFormulaSelectionActionHistoryHashToken) || !focused){
+            this.setState({
+                focused: true
+            });
+        }
     }
 
     onBlur(e) {
-        this.setState({
-            focused: false,
-        });
+        // only set focused to false if new focus is outside viewport table.
+        if(!this.viewportTable.current.contains(e.relatedTarget)){
+            this.setState({
+                focused: false,
+            });
+        }
     }
 
     /**
