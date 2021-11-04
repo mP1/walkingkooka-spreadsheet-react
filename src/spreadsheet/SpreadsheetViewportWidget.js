@@ -465,7 +465,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
 
         props.spreadsheetDeltaCellCrud.get(
             "*",
-            viewport.toLoadCellsQueryStringParameters(selection),
+            viewport.toLoadCellsQueryStringParameters(selection, anchor),
             props.showError
         );
 

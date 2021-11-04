@@ -9,7 +9,8 @@ import SpreadsheetRowReference from "../reference/SpreadsheetRowReference";
 import systemObjectTesting from "../../SystemObjectTesting.js";
 
 function selection() {
-    return SpreadsheetCellReference.parse("Z9");
+    return SpreadsheetCellReference.parse("Z9")
+        .setAnchor()
 }
 
 function a1() {
@@ -130,7 +131,7 @@ systemObjectTesting(
     "Missing json",
     "spreadsheet-delta",
     {
-        "selection": selection().toJsonWithType(),
+        "selection": selection().toJson(),
         "cells": {
             "A1": {
                 "formula": {
@@ -289,7 +290,7 @@ test("create", () => {
         mrh,
         w,
         {
-            selection: s.toJsonWithType(),
+            selection: s.toJson(),
             cells: {
                 "A1": {
                     formula: {
@@ -692,7 +693,7 @@ test("fromJson all properties", () => {
     const w = window();
 
     expect(SpreadsheetDelta.fromJson({
-        selection: s.toJsonWithType(),
+        selection: s.toJson(),
         cells: {
             "A1": {
                 formula: {
@@ -748,7 +749,7 @@ test("equals different selection false", () => {
 
     expect(new SpreadsheetDelta(s, c, l, d, mcw, mrh, w)
         .equals(
-            new SpreadsheetDelta(SpreadsheetColumnReference.parse("Z"), c, l, d, mcw, mrh, w)
+            new SpreadsheetDelta(SpreadsheetColumnReference.parse("Z").setAnchor(), c, l, d, mcw, mrh, w)
         )
     ).toBeFalse();
 });

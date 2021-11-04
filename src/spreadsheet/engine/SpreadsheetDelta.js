@@ -9,7 +9,7 @@ import SpreadsheetColumnReference from "../reference/SpreadsheetColumnReference"
 import SpreadsheetLabelMapping from "../reference/SpreadsheetLabelMapping.js";
 import SpreadsheetLabelName from "../reference/SpreadsheetLabelName.js";
 import SpreadsheetRowReference from "../reference/SpreadsheetRowReference";
-import SpreadsheetSelection from "../reference/SpreadsheetSelection.js";
+import SpreadsheetViewportSelection from "../reference/SpreadsheetViewportSelection.js";
 import SystemObject from "../../SystemObject.js";
 
 /**
@@ -30,7 +30,7 @@ export default class SpreadsheetDelta extends SystemObject {
     static fromJson(json) {
         Preconditions.requireObject(json, "json");
 
-        const selection = json.selection && SystemObject.fromJsonWithType(json.selection);
+        const selection = json.selection && SpreadsheetViewportSelection.fromJson(json.selection);
 
         let cells = [];
         for(const referenceToValues of Object.entries(json.cells || {})) {
@@ -68,7 +68,7 @@ export default class SpreadsheetDelta extends SystemObject {
 
     constructor(selection, cells, labels, deletedCells, columnWidths, rowHeights, window) {
         super();
-        Preconditions.optionalInstance(selection, SpreadsheetSelection, "selection");
+        Preconditions.optionalInstance(selection, SpreadsheetViewportSelection, "selection");
         Preconditions.requireArray(cells, "cells");
         Preconditions.requireArray(labels, "labels");
         Preconditions.requireArray(deletedCells, "deletedCells");
@@ -212,7 +212,7 @@ export default class SpreadsheetDelta extends SystemObject {
 
         const selection = this.selection();
         if(selection) {
-            json.selection = selection.toJsonWithType();
+            json.selection = selection.toJson();
         }
 
         const cellsArray = this.cells();
