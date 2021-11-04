@@ -4,6 +4,7 @@
 import Preconditions from "../Preconditions.js";
 import SpreadsheetCellReference from "./reference/SpreadsheetCellReference.js";
 import SpreadsheetSelection from "./reference/SpreadsheetSelection.js";
+import SpreadsheetViewportSelectionAnchor from "./reference/SpreadsheetViewportSelectionAnchor.js";
 import SystemObject from "../SystemObject.js";
 
 const SEPARATOR = ":";
@@ -73,21 +74,28 @@ export default class SpreadsheetViewport extends SystemObject {
     /**
      * Returns a query parameters map that will be used to load all the cells for the viewport widget.
      */
-    toLoadCellsQueryStringParameters(selection) {
+    toLoadCellsQueryStringParameters(selection, anchor) {
         Preconditions.optionalInstance(selection, SpreadsheetSelection, "selection");
+        Preconditions.optionalInstance(anchor, SpreadsheetViewportSelectionAnchor, "anchor");
 
-        return Object.assign(
-            {
-                home: [this.cellOrLabel()],
-                xOffset: [this.xOffset()],
-                yOffset: [this.yOffset()],
-                width: [this.width()],
-                height: [this.height()],
-            },
-            selection ? {
-                selectionType: [selection.toLoadCellsQueryStringParameterSelectionType()],
-                selection: [selection],
-            } : {});
+        const parameters = {
+            home: [this.cellOrLabel()],
+            xOffset: [this.xOffset()],
+            yOffset: [this.yOffset()],
+            width: [this.width()],
+            height: [this.height()],
+        };
+
+        if(selection) {
+            parameters.selectionType = [selection.toLoadCellsQueryStringParameterSelectionType()];
+            parameters.selection = [selection];
+        }
+
+        if(anchor) {
+            parameters.selectionAnchor = [anchor];
+        }
+
+        return parameters;
     }
 
     toJson() {

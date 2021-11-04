@@ -5,6 +5,7 @@ import SpreadsheetColumnReferenceRange from "./reference/SpreadsheetColumnRefere
 import SpreadsheetRowReferenceRange from "./reference/SpreadsheetRowReferenceRange.js";
 import SpreadsheetRowReference from "./reference/SpreadsheetRowReference.js";
 import SpreadsheetViewport from "./SpreadsheetViewport.js";
+import SpreadsheetViewportSelectionAnchor from "./reference/SpreadsheetViewportSelectionAnchor.js";
 import systemObjectTesting from "../SystemObjectTesting.js";
 
 function cellOrLabel() {
@@ -162,10 +163,10 @@ test("new 0 height", () => {
 
 // toLoadCellsQueryStringParameters..............................................................................................
 
-function toLoadCellsQueryStringParametersAndCheck(c, x, y, w, h, s, expected) {
-    test("toLoadCellsQueryStringParametersAndCheck " + c + " " + x + " " + y + " " + w + " " + h + " " + s, () => {
+function toLoadCellsQueryStringParametersAndCheck(c, x, y, w, h, s, a, expected) {
+    test("toLoadCellsQueryStringParametersAndCheck " + c + " " + x + " " + y + " " + w + " " + h + " " + s + " " + a, () => {
         expect(expected)
-            .toStrictEqual(new SpreadsheetViewport(c, x, y, w, h, s).toLoadCellsQueryStringParameters(s));
+            .toStrictEqual(new SpreadsheetViewport(c, x, y, w, h).toLoadCellsQueryStringParameters(s, a));
     });
 }
 
@@ -175,6 +176,7 @@ toLoadCellsQueryStringParametersAndCheck(
     yOffset(),
     width(),
     height(),
+    null,
     null,
     {
         home: [cellOrLabel()],
@@ -191,7 +193,27 @@ toLoadCellsQueryStringParametersAndCheck(
     yOffset(),
     width(),
     height(),
+    SpreadsheetCellReference.parse("B2"),
+    null,
+    {
+        home: [cellOrLabel()],
+        xOffset: [xOffset()],
+        yOffset: [yOffset()],
+        width: [width()],
+        height: [height()],
+        selectionType: ["cell"],
+        selection: [SpreadsheetCellReference.parse("B2")],
+    }
+);
+
+toLoadCellsQueryStringParametersAndCheck(
+    cellOrLabel(),
+    xOffset(),
+    yOffset(),
+    width(),
+    height(),
     SpreadsheetCellRange.parse("B2:C3"),
+    SpreadsheetViewportSelectionAnchor.TOP_LEFT,
     {
         home: [cellOrLabel()],
         xOffset: [xOffset()],
@@ -200,6 +222,7 @@ toLoadCellsQueryStringParametersAndCheck(
         height: [height()],
         selectionType: ["cell-range"],
         selection: [SpreadsheetCellRange.parse("B2:C3")],
+        selectionAnchor: [SpreadsheetViewportSelectionAnchor.TOP_LEFT],
     }
 );
 
@@ -210,6 +233,7 @@ toLoadCellsQueryStringParametersAndCheck(
     width(),
     height(),
     SpreadsheetCellReference.parse("B2"),
+    null,
     {
         home: [cellOrLabel()],
         xOffset: [xOffset()],
@@ -228,6 +252,7 @@ toLoadCellsQueryStringParametersAndCheck(
     width(),
     height(),
     SpreadsheetColumnReference.parse("B"),
+    null,
     {
         home: [cellOrLabel()],
         xOffset: [xOffset()],
@@ -246,6 +271,7 @@ toLoadCellsQueryStringParametersAndCheck(
     width(),
     height(),
     SpreadsheetColumnReferenceRange.parse("B:C"),
+    SpreadsheetViewportSelectionAnchor.LEFT,
     {
         home: [cellOrLabel()],
         xOffset: [xOffset()],
@@ -254,6 +280,7 @@ toLoadCellsQueryStringParametersAndCheck(
         height: [height()],
         selectionType: ["column-range"],
         selection: [SpreadsheetColumnReferenceRange.parse("B:C")],
+        selectionAnchor: [SpreadsheetViewportSelectionAnchor.LEFT],
     }
 );
 
@@ -264,6 +291,7 @@ toLoadCellsQueryStringParametersAndCheck(
     width(),
     height(),
     SpreadsheetRowReference.parse("99"),
+    null,
     {
         home: [cellOrLabel()],
         xOffset: [xOffset()],
@@ -282,6 +310,7 @@ toLoadCellsQueryStringParametersAndCheck(
     width(),
     height(),
     SpreadsheetRowReferenceRange.parse("98:99"),
+    SpreadsheetViewportSelectionAnchor.TOP,
     {
         home: [cellOrLabel()],
         xOffset: [xOffset()],
@@ -290,6 +319,7 @@ toLoadCellsQueryStringParametersAndCheck(
         height: [height()],
         selectionType: ["row-range"],
         selection: [SpreadsheetRowReferenceRange.parse("98:99")],
+        selectionAnchor: [SpreadsheetViewportSelectionAnchor.TOP],
     }
 );
 // equals...............................................................................................................
