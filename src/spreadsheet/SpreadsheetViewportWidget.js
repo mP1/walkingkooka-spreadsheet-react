@@ -421,9 +421,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
             historyTokens[SpreadsheetHistoryHashTokens.SELECTION_ACTION] = selectionActionNew;
             
             if(!Equality.safeEquals(selectionNew, selectionOld)){
-                if(!state.formula){
-                    this.giveSelectionFocus(selectionNew, selectionAnchor);
-                }
+                this.giveSelectionFocus(selectionNew, selectionAnchor);
             }
         }
 
@@ -471,9 +469,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
             props.showError
         );
 
-        if(!this.state.formula){
-            this.giveSelectionFocus(selection, anchor);
-        }
+        this.giveSelectionFocus(selection, anchor);
     }
 
     /**
