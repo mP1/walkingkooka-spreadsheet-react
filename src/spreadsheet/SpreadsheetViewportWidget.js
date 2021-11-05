@@ -237,6 +237,8 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
 
             this.setState(newState);
         }
+
+        this.giveDeltaSelectionFocus(responseDelta);
     }
 
     /**
@@ -468,8 +470,17 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
             viewport.toLoadCellsQueryStringParameters(selection, anchor),
             props.showError
         );
+    }
 
-        this.giveSelectionFocus(selection, anchor);
+    giveDeltaSelectionFocus(delta) {
+        var viewportSelection = delta.selection();
+
+        if(viewportSelection){
+            this.giveSelectionFocus(
+                viewportSelection.selection(),
+                viewportSelection.anchor()
+            );
+        }
     }
 
     /**
@@ -477,17 +488,19 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
      * actual cell or column or row within a range etc.
      */
     giveSelectionFocus(selection, anchor) {
-        if(selection){
-            const cellColumnOrRow = selection.viewportFocus(
-                this.state.labelToReference,
-                anchor
-            );
+        if(!(this.state.selectionAction instanceof SpreadsheetFormulaSelectionActionHistoryHashToken)){
+            if(selection){
+                const cellColumnOrRow = selection.viewportFocus(
+                    this.state.labelToReference,
+                    anchor
+                );
 
-            if(cellColumnOrRow){
-                const element = document.getElementById(cellColumnOrRow.viewportId());
-                if(element){
-                    console.log("Missing " + SpreadsheetHistoryHash.SELECTION_ACTION + " token giving focus to ..." + cellColumnOrRow);
-                    element.focus();
+                if(cellColumnOrRow){
+                    const element = document.getElementById(cellColumnOrRow.viewportId());
+                    if(element){
+                        console.log("Missing " + SpreadsheetHistoryHash.SELECTION_ACTION + " token giving focus to ..." + cellColumnOrRow);
+                        element.focus();
+                    }
                 }
             }
         }
