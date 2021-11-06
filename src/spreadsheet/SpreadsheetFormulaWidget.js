@@ -104,7 +104,7 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetHistoryAwareSta
 
                 // if textField does not have focus and not save -> load give focus.
                 if(!focused && load && !previousSave) {
-                    this.giveInputFocus();
+                    this.giveFocus(this.input.current);
                 }
             }
 
@@ -168,13 +168,6 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetHistoryAwareSta
             ),
             props.showError,
         );
-    }
-    
-    giveInputFocus() {
-        const input = this.input.current;
-        input && setTimeout(() => {
-            input.focus();
-        }, 10);
     }
 
     render() {
