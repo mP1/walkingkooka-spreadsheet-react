@@ -499,7 +499,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
                     const element = document.getElementById(cellColumnOrRow.viewportId());
                     if(element){
                         console.log("Missing " + SpreadsheetHistoryHash.SELECTION_ACTION + " token giving focus to ..." + cellColumnOrRow);
-                        element.focus();
+                        this.giveFocus(element);
                     }
                 }
             }
