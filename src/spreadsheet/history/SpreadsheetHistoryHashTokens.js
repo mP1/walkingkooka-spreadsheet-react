@@ -8,6 +8,10 @@ export default class SpreadsheetHistoryHashTokens {
         return tokens;
     }
 
+    static currentTxId() {
+        return txId;
+    }
+
     static newTxId() {
         return txId++;
     }
