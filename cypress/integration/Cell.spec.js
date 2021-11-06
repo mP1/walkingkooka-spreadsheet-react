@@ -74,10 +74,7 @@ describe(
                     win.location.hash = hash.replace("/cell/C3/formula", "/cell/D4/formula");
                 });
 
-            testing.wait();
-
-            testing.formulaText()
-                .type("{selectall}=4+5{enter}");
+            testing.formulaTextEnterAndSave("{selectall}=4+5{enter}");
 
             testing.cellFormattedTextCheck(D4, "9.");
         });
@@ -133,7 +130,7 @@ describe(
             testing.cell(C3)
                 .type("{leftarrow}");
 
-            testing.wait(50);
+            testing.historyWait();
 
             testing.hash()
                 .should('match', /.*\/.*\/cell\/B3/);
@@ -141,7 +138,7 @@ describe(
             testing.cell(B3)
                 .type("{rightarrow}");
 
-            testing.wait(50);
+            testing.historyWait();
 
             testing.hash()
                 .should('match', /.*\/.*\/cell\/C3/);
@@ -149,7 +146,7 @@ describe(
             testing.cell(C3)
                 .type("{uparrow}");
 
-            testing.wait(50);
+            testing.historyWait();
 
             testing.hash()
                 .should('match', /.*\/.*\/cell\/C2/);
@@ -157,7 +154,7 @@ describe(
             testing.cell(C2)
                 .type("{downarrow}");
 
-            testing.wait(50);
+            testing.historyWait();
 
             testing.hash()
                 .should('match', /.*\/.*\/cell\/C3/);
@@ -231,7 +228,7 @@ describe(
 
             testing.hashOnlyIdAndName();
 
-            testing.wait(100);
+            testing.historyWait();
 
             testing.hashAppend("/cell/T1");
 
@@ -255,7 +252,7 @@ describe(
 
             testing.hashOnlyIdAndName();
 
-            testing.wait(100);
+            testing.historyWait();
 
             testing.hashAppend("/cell/T20");
 
