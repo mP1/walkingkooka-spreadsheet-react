@@ -94,6 +94,10 @@ export default class SpreadsheetTesting {
             });
     }
 
+    historyWait() {
+        this.wait(100);
+    }
+
     spreadsheetName() {
         return this.getById(SpreadsheetNameWidget.SPREADSHEET_NAME_ID);
     }
@@ -274,7 +278,7 @@ export default class SpreadsheetTesting {
         this.hash()
             .should('match', new RegExp("\/.*\/.*\/cell\/" + cellReference + "(\/.*)*"));
 
-        this.wait(100);
+        this.formulaTextLoadWait();
     }
 
     cellFormattedTextCheck(cellReference, text) {
