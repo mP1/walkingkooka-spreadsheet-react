@@ -8,4 +8,13 @@ export default class SpreadsheetWidget extends React.Component {
     prefix() {
         return this.constructor.name
     }
+
+    /**
+     * Gives focus to the given element after a short delay.
+     */
+    giveFocus(element) {
+        element && setTimeout(() => {
+            element.focus();
+        }, 10);
+    }
 }
