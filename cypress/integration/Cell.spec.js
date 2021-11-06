@@ -312,8 +312,12 @@ describe(
             testing.hash()
                 .should('match', /.*\/.*\/cell\/D4:E5/);
 
+            testing.historyWait();
+
             testing.cell(D4)
                 .type("{shift+leftarrow}");
+
+            testing.historyWait();
 
             testing.hash()
                 .should('match', /.*\/.*\/cell\/C4:E5/);
@@ -348,6 +352,8 @@ describe(
                 .should("have.focus")
                 .type("{shift+rightarrow}");
 
+            testing.historyWait();
+
             testing.hash()
                 .should('match', /.*\/.*\/cell\/E4:F5/);
 
@@ -375,9 +381,13 @@ describe(
                 .should("have.focus")
                 .type("{shift+rightarrow}");
 
+            testing.historyWait();
+
             testing.cell("E4")
                 .should("have.focus")
                 .type("{shift+rightarrow}");
+
+            testing.historyWait();
 
             testing.hash()
                 .should('match', /.*\/.*\/cell\/E4:F5/);
@@ -385,6 +395,8 @@ describe(
             testing.cell("F4")
                 .should("have.focus")
                 .type("{shift+rightarrow}");
+
+            testing.historyWait();
 
             testing.hash()
                 .should('match', /.*\/.*\/cell\/E4:G5/);
@@ -411,8 +423,12 @@ describe(
             testing.hash()
                 .should('match', /.*\/.*\/cell\/D4:E5/);
 
+            testing.historyWait();
+
             testing.cell(D4)
                 .type("{shift+uparrow}");
+
+            testing.historyWait();
 
             testing.hash()
                 .should('match', /.*\/.*\/cell\/D3:E5/);

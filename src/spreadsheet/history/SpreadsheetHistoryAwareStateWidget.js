@@ -43,6 +43,13 @@ export default class SpreadsheetHistoryAwareStateWidget extends SpreadsheetHisto
         throw new Error("Sub classes must override stateFromHistoryTokens");
     }
 
+    setState(newState) {
+        if(this.insideHistoryTokensFromState) {
+            throw new Error("Cannot call setState inside historyTokensFromState(), state:" + JSON.stringify(this.state) + ", newState: " + JSON.stringify(newState));
+        }
+        return super.setState(newState);
+    }
+
     /**
      * Only perform an update if the state actually changed.
      */
@@ -57,7 +64,13 @@ export default class SpreadsheetHistoryAwareStateWidget extends SpreadsheetHisto
         const state = this.state;
         console.log(this.prefix() +".componentDidUpdate", "prevState", prevState, "state", state);
 
-        const historyHashTokens = this.historyTokensFromState(prevState);
+        this.insideHistoryTokensFromState = true;
+        var historyHashTokens;
+        try {
+            historyHashTokens = this.historyTokensFromState(prevState);
+        } finally {
+            delete this.insideHistoryTokensFromState;
+        }
         const newHash = this.historyParseMergeAndPush(historyHashTokens);
         if(newHash) {
             console.log(this.prefix() +".componentDidUpdate changed hash to " + CharSequences.quoteAndEscape(newHash), "tokens", historyHashTokens, "prevState", prevState, "state", state);
