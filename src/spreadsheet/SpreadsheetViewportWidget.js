@@ -338,7 +338,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
         const historyTokens = SpreadsheetHistoryHashTokens.emptyTokens();
 
         const state = this.state;
-        let metadata = state.spreadsheetMetadata;
+        const metadata = state.spreadsheetMetadata;
         const previousMetadata = prevState.spreadsheetMetadata;
 
         const props = this.props;
@@ -419,9 +419,11 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
                 }
             }
 
-            historyTokens[SpreadsheetHistoryHashTokens.SELECTION] = selectionNew;
-            historyTokens[SpreadsheetHistoryHashTokens.SELECTION_ACTION] = selectionActionNew;
-            
+            if(state.focused) {
+                historyTokens[SpreadsheetHistoryHashTokens.SELECTION] = selectionNew;
+                historyTokens[SpreadsheetHistoryHashTokens.SELECTION_ACTION] = selectionActionNew;
+            }
+
             if(!Equality.safeEquals(selectionNew, selectionOld)){
                 this.giveSelectionFocus(selectionNew, selectionAnchor);
             }
@@ -534,7 +536,8 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
         const contextMenuOpen = !!menuItems;
 
         return [
-            <TableContainer key="viewport-TableContainer"
+            <TableContainer id={SpreadsheetViewportWidget.VIEWPORT_ID}
+                            key="viewport-TableContainer"
                             ref={this.viewportTable}
                             component={Paper}
                             onFocus={this.onFocus.bind(this)}

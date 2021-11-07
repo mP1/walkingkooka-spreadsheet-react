@@ -15,6 +15,7 @@ import SpreadsheetHistoryHashTokens from "./history/SpreadsheetHistoryHashTokens
 import SpreadsheetHistoryAwareStateWidget from "./history/SpreadsheetHistoryAwareStateWidget.js";
 import SpreadsheetLabelName from "./reference/SpreadsheetLabelName.js";
 import SpreadsheetMessengerCrud from "./message/SpreadsheetMessengerCrud.js";
+import SpreadsheetViewportWidget from "./SpreadsheetViewportWidget.js";
 import TextField from '@material-ui/core/TextField';
 import TextStyle from "../text/TextStyle.js";
 
@@ -199,16 +200,20 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetHistoryAwareSta
         );
     }
 
-    // KEY HANDLING.....................................................................................................
+    // EVENTS..........................................................................................................
 
     /**
-     * Remove the formula portion of history hash
+     * Remove the formula portion of history hash, only if the new focus target is not the viewport widget.
      */
     onBlur(e) {
-        const tokens = SpreadsheetHistoryHashTokens.emptyTokens();
-        tokens[SpreadsheetHistoryHashTokens.SELECTION_ACTION] = null;
+        const viewport = document.getElementById(SpreadsheetViewportWidget.VIEWPORT_ID);
+        if(!(viewport.contains(e.relatedTarget))){
+            const tokens = SpreadsheetHistoryHashTokens.emptyTokens();
 
-        this.historyParseMergeAndPush(tokens);
+            tokens[SpreadsheetHistoryHashTokens.SELECTION_ACTION] = null;
+
+            this.historyParseMergeAndPush(tokens);
+        }
     }
 
     /**
