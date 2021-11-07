@@ -34,10 +34,13 @@ export default class SpreadsheetHistoryAwareWidget extends SpreadsheetWidget {
     historyParseMergeAndPush(tokens) {
         const copy = Object.assign({}, tokens);
 
-        setTimeout(() => {
-            console.log(this.prefix() + ".historyParseMergeAndPush: txId: " + SpreadsheetHistoryHashTokens.currentTxId() + " ", copy);
-            this.props.history.mergeAndPush(copy);
-        }, 1);
+        const propertyCount = Object.keys(copy).length;
+        if(propertyCount > (copy[SpreadsheetHistoryHashTokens.TX_ID] != null ? 1 : 0)){
+            setTimeout(() => {
+                console.log(this.prefix() + ".historyParseMergeAndPush: txId: " + SpreadsheetHistoryHashTokens.currentTxId() + " ", copy);
+                this.props.history.mergeAndPush(copy);
+            }, 1);
+        }
     }
 
     showError(message, error) {
