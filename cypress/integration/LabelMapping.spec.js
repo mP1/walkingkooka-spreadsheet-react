@@ -362,10 +362,14 @@ describe(
             testing.labelMappingLabelSaveButton()
                 .click();
 
+            testing.historyWait();
+
             testing.hashLabel();
 
             testing.labelMappingLabelDeleteButton()
                 .click();
+
+            testing.historyWait();
 
             testing.hashLabel();
 

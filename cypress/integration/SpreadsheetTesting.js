@@ -171,6 +171,8 @@ export default class SpreadsheetTesting {
 
     hashLabel() {
         this.hashAppend("/label/" + SpreadsheetTesting.LABEL);
+
+        this.historyWait();
     }
 
     selectHistoryHash() {
