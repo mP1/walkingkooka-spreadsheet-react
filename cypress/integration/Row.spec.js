@@ -75,29 +75,10 @@ describe("Row",
 
         // row range...................................................................................................
 
-        it("Row range history hash", () => {
-            testing.hashAppend("/row/2:3");
-
-            testing.row("2")
-                .should("have.css", "background-color", SELECTED_COLOR);
-            testing.row("3")
-                .should("have.css", "background-color", SELECTED_COLOR);
-        });
-
-        it("Row range out of viewport history hash", () => {
-            testing.hashAppend("/row/30:31");
-
-            testing.hash()
-                .should('match', /.*\/.*\/row\/30:31/);
-
-            testing.row("30")
-                .should("have.css", "background-color", SELECTED_COLOR);
-            testing.row("31")
-                .should("have.css", "background-color", SELECTED_COLOR);
-        });
-
-        it("Row range extend top", () => {
+        it("Column range extend up", () => {
             testing.hashAppend("/row/5");
+
+            testing.historyWait();
 
             testing.row("5")
                 .type("{shift+uparrow}");
@@ -112,14 +93,38 @@ describe("Row",
                 .should("have.css", "background-color", SELECTED_COLOR);
         });
 
-        it("Row range extend top twice", () => {
+        it("Column range extend down", () => {
             testing.hashAppend("/row/5");
+
+            testing.historyWait();
+
+            testing.row("5")
+                .type("{shift+downarrow}");
+
+            testing.historyWait();
+
+            testing.hash()
+                .should('match', /.*\/.*\/row\/5:6/);
+
+            testing.row("6")
+                .should("have.focus")
+                .should("have.css", "background-color", SELECTED_COLOR);
+            testing.row("5")
+                .should("have.css", "background-color", SELECTED_COLOR);
+        });
+
+        it("Column range extend up twice", () => {
+            testing.hashAppend("/row/5:6");
+
+            testing.historyWait();
 
             testing.row("5")
                 .type("{shift+uparrow}");
 
             testing.row("4")
                 .type("{shift+uparrow}");
+
+            testing.historyWait();
 
             testing.hash()
                 .should('match', /.*\/.*\/row\/3:5/);
@@ -133,40 +138,28 @@ describe("Row",
                 .should("have.css", "background-color", SELECTED_COLOR);
         });
 
-        it("Row range extend bottom", () => {
-            testing.hashAppend("/row/5");
+        it("Column range extend down twice", () => {
+            testing.hashAppend("/row/5:6");
 
-            testing.row("5")
-                .type("{shift+downarrow}");
-
-            testing.hash()
-                .should('match', /.*\/.*\/row\/5:6/);
-
-            testing.row("6")
-                .should("have.focus")
-                .should("have.css", "background-color", SELECTED_COLOR);
-            testing.row("5")
-                .should("have.css", "background-color", SELECTED_COLOR);
-        });
-
-        it("Row range extend bottom twice", () => {
-            testing.hashAppend("/row/5");
-
-            testing.row("5")
-                .type("{shift+downarrow}");
+            testing.historyWait();
 
             testing.row("6")
                 .type("{shift+downarrow}");
-
-            testing.hash()
-                .should('match', /.*\/.*\/row\/5:7/);
 
             testing.row("7")
+                .type("{shift+downarrow}");
+
+            testing.historyWait();
+
+            testing.hash()
+                .should('match', /.*\/.*\/row\/5:8/);
+
+            testing.row("8")
                 .should("have.focus")
                 .should("have.css", "background-color", SELECTED_COLOR);
-            testing.row("6")
+            testing.row("7")
                 .should("have.css", "background-color", SELECTED_COLOR);
-            testing.row("5")
+            testing.row("6")
                 .should("have.css", "background-color", SELECTED_COLOR);
         });
 
@@ -178,7 +171,11 @@ describe("Row",
             testing.row("2")
                 .click();
 
+            testing.historyWait();
+
             testing.hashAppend("/delete");
+
+            testing.historyWait();
 
             testing.hash()
                 .should('match', /.*\/.*/);
@@ -193,7 +190,11 @@ describe("Row",
             testing.row("2")
                 .click();
 
+            testing.historyWait();
+
             testing.hashAppend(":3/delete");
+
+            testing.historyWait();
 
             testing.hash()
                 .should('match', /.*\/.*/);
@@ -210,7 +211,11 @@ describe("Row",
             testing.row("2")
                 .click();
 
+            testing.historyWait();
+
             testing.hashAppendWithoutCheck("/insert-after/1");
+
+            testing.historyWait();
 
             testing.hash()
                 .should('match', /.*\/.*\/row\/2/);
@@ -224,6 +229,8 @@ describe("Row",
 
             testing.row("2")
                 .click();
+
+            testing.historyWait();
 
             testing.hashAppendWithoutCheck(":3/insert-after/2");
 
@@ -242,6 +249,8 @@ describe("Row",
             testing.row("2")
                 .click();
 
+            testing.historyWait();
+
             testing.hashAppendWithoutCheck("/insert-before/1");
 
             testing.hash()
@@ -256,6 +265,8 @@ describe("Row",
 
             testing.row("2")
                 .click();
+
+            testing.historyWait();
 
             testing.hashAppendWithoutCheck(":3/insert-before/2");
 

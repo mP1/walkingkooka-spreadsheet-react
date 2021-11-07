@@ -1,5 +1,6 @@
 import PropTypes from "prop-types";
 import SpreadsheetHistoryHash from "./SpreadsheetHistoryHash.js";
+import SpreadsheetHistoryHashTokens from "./SpreadsheetHistoryHashTokens.js";
 import SpreadsheetWidget from "../SpreadsheetWidget.js";
 
 /**
@@ -31,7 +32,12 @@ export default class SpreadsheetHistoryAwareWidget extends SpreadsheetWidget {
     }
 
     historyParseMergeAndPush(tokens) {
-        return this.props.history.mergeAndPush(tokens);
+        const copy = Object.assign({}, tokens);
+
+        setTimeout(() => {
+            console.log(this.prefix() + ".historyParseMergeAndPush: txId: " + SpreadsheetHistoryHashTokens.currentTxId() + " ", copy);
+            this.props.history.mergeAndPush(copy);
+        }, 1);
     }
 
     showError(message, error) {
