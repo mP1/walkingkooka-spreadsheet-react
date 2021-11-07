@@ -660,51 +660,33 @@ export default class SpreadsheetHistoryHash extends SpreadsheetHistoryHashTokens
         this.showError = showError;
 
         this.listeners = new ListenerCollection();
-        this.hashCounter = 0;
-        this.currentTokens = SpreadsheetHistoryHash.parse(
-            hash(),
-            this.showError
-        );
     }
 
     onHistoryChange(e) {
         SpreadsheetHistoryHashTokens.newTxId();
 
-        const hash = this.hash();
+        const newURL = e.newURL;
+        const hashStart = newURL.indexOf("#");
+        const hash = hashStart > -1 ? newURL.substring(hashStart + 1) : "";
+
         const tokens = SpreadsheetHistoryHash.parse(
             hash,
             this.showError
         );
 
-        const merged = SpreadsheetHistoryHash.merge(
-            tokens,
-            {}
-        );
-        this.push(merged);
-
-        this.currentTokens = merged;
-
-        const hashCounter = this.hashCounter;
+        console.log("onHistoryChange txId:" + tokens[SpreadsheetHistoryHashTokens.TX_ID] + " newUrl: " + newURL + " WAS " + e.oldURL + " " +  hash + " tokens: ", tokens );
         for(const listener of this.listeners.listeners.slice()) {
-            if(this.hashCounter !== hashCounter){
-                break;
-            }
-            listener(Object.assign({}, merged));
+            listener(Object.assign({}, tokens));
         }
     }
 
     tokens() {
-        let currentTokens = this.currentTokens;
-        if(null == currentTokens){
-            const hash = this.hash();
-            const tokens = SpreadsheetHistoryHash.parse(
-                hash,
-                this.showError
-            );
-            this.push(tokens);
-            this.currentTokens = tokens;
-        }
-        return Object.assign({}, this.currentTokens);
+        const hash = this.hash();
+        const tokens = SpreadsheetHistoryHash.parse(
+            hash,
+            this.showError
+        );
+        return tokens;
     }
 
     /**
@@ -724,23 +706,15 @@ export default class SpreadsheetHistoryHash extends SpreadsheetHistoryHashTokens
     }
 
     /**
-     * Pushes the given tokens after converting them to a string, returning the new hash if an update occured
-     * otherwise returns null;
+     * Pushes the given tokens after converting them to a string, returning the hash that was pushed.
      */
     push(tokens) {
         const validated = SpreadsheetHistoryHash.validate(tokens);
         const tokensHash = SpreadsheetHistoryHash.stringify(validated);
-        const hash = this.hash();
 
-        let changed = null;
-        if(tokensHash !== hash){
-            this.hashCounter++;
-            this.currentTokens = null;
-            this.setHash(tokensHash);
+        this.setHash(tokensHash);
 
-            changed = tokensHash;
-        }
-        return changed;
+        return tokensHash;
     }
 
     mergeAndStringify(tokens) {

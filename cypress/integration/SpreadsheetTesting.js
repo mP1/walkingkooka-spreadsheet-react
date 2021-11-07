@@ -40,6 +40,8 @@ export default class SpreadsheetTesting {
     spreadsheetEmptyReady() {
         this.hash()
             .should('match', /.*\/Untitled/); // wait for /$id/$name
+
+        this.historyWait();
     }
 
     hash() {
@@ -126,8 +128,6 @@ export default class SpreadsheetTesting {
 
     cellFormulaEnterAndSave(cell, text) {
         this.cellClick(cell);
-
-        this.wait(100); // wait for formula text to load.
 
         this.formulaTextEnterAndSave(text);
     }
@@ -272,11 +272,13 @@ export default class SpreadsheetTesting {
      */
     cellClick(cellReference) {
         this.cell(cellReference)
-            .click(SpreadsheetTesting.FORCE_TRUE)
-            .should("have.focus");
+            .click(SpreadsheetTesting.FORCE_TRUE);
 
         this.hash()
             .should('match', new RegExp("\/.*\/.*\/cell\/" + cellReference + "(\/.*)*"));
+
+        this.cell(cellReference)
+            .should("have.focus");
 
         this.formulaTextLoadWait();
     }

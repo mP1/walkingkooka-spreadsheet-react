@@ -221,6 +221,7 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetHistoryAwareSta
      */
     onFocus(e) {
         const tokens = SpreadsheetHistoryHashTokens.emptyTokens();
+        tokens[SpreadsheetHistoryHashTokens.SELECTION] = this.state.selection;
         tokens[SpreadsheetHistoryHashTokens.SELECTION_ACTION] = new SpreadsheetFormulaLoadAndEditHistoryHashToken();
 
         this.historyParseMergeAndPush(tokens);

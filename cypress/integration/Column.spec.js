@@ -97,6 +97,8 @@ describe(
         it("Column range extend left", () => {
             testing.hashAppend("/column/E");
 
+            testing.historyWait();
+
             testing.column("E")
                 .type("{shift+leftarrow}");
 
@@ -110,17 +112,38 @@ describe(
                 .should("have.css", "background-color", SELECTED_COLOR);
         });
 
+        it("Column range extend right", () => {
+            testing.hashAppend("/column/E");
+
+            testing.historyWait();
+
+            testing.column("E")
+                .type("{shift+rightarrow}");
+
+            testing.historyWait();
+
+            testing.hash()
+                .should('match', /.*\/.*\/column\/E:F/);
+
+            testing.column("F")
+                .should("have.focus")
+                .should("have.css", "background-color", SELECTED_COLOR);
+            testing.column("E")
+                .should("have.css", "background-color", SELECTED_COLOR);
+        });
+
         it("Column range extend left twice", () => {
             testing.hashAppend("/column/E:F");
 
-            testing.hash()
-                .should('match', /.*\/.*\/column\/E/);
+            testing.historyWait();
 
             testing.column("E")
                 .type("{shift+leftarrow}");
 
             testing.column("D")
                 .type("{shift+leftarrow}");
+
+            testing.historyWait();
 
             testing.hash()
                 .should('match', /.*\/.*\/column\/C:E/);
@@ -134,46 +157,28 @@ describe(
                 .should("have.css", "background-color", SELECTED_COLOR);
         });
 
-        it("Column range extend right", () => {
-            testing.hashAppend("/column/E:F");
-
-            testing.hash()
-                .should('match', /.*\/.*\/column\/E/);
-
-            testing.column("E")
-                .type("{shift+rightarrow}");
-
-            testing.hash()
-                .should('match', /.*\/.*\/column\/E:F/);
-
-            testing.column("F")
-                .should("have.focus")
-                .should("have.css", "background-color", SELECTED_COLOR);
-            testing.column("E")
-                .should("have.css", "background-color", SELECTED_COLOR);
-        });
-
         it("Column range extend right twice", () => {
             testing.hashAppend("/column/E:F");
 
-            testing.hash()
-                .should('match', /.*\/.*\/column\/E/);
-
-            testing.column("E")
-                .type("{shift+rightarrow}");
+            testing.historyWait();
 
             testing.column("F")
                 .type("{shift+rightarrow}");
-
-            testing.hash()
-                .should('match', /.*\/.*\/column\/E:G/);
 
             testing.column("G")
+                .type("{shift+rightarrow}");
+
+            testing.historyWait();
+
+            testing.hash()
+                .should('match', /.*\/.*\/column\/E:H/);
+
+            testing.column("H")
                 .should("have.focus")
                 .should("have.css", "background-color", SELECTED_COLOR);
-            testing.column("F")
+            testing.column("G")
                 .should("have.css", "background-color", SELECTED_COLOR);
-            testing.column("E")
+            testing.column("F")
                 .should("have.css", "background-color", SELECTED_COLOR);
         });
 
@@ -185,7 +190,11 @@ describe(
             testing.column("B")
                 .click();
 
+            testing.historyWait();
+
             testing.hashAppend("/delete");
+
+            testing.historyWait();
 
             testing.hash()
                 .should('match', /.*\/.*/);
@@ -200,7 +209,11 @@ describe(
             testing.column("B")
                 .click();
 
+            testing.historyWait();
+
             testing.hashAppend(":C/delete");
+
+            testing.historyWait();
 
             testing.hash()
                 .should('match', /.*\/.*/);
@@ -217,6 +230,8 @@ describe(
             testing.column("B")
                 .click();
 
+            testing.historyWait();
+
             testing.hashAppendWithoutCheck("/insert-after/1");
 
             testing.hash()
@@ -231,6 +246,8 @@ describe(
 
             testing.column("B")
                 .click();
+
+            testing.historyWait();
 
             testing.hashAppendWithoutCheck(":C/insert-after/2");
 
@@ -249,6 +266,8 @@ describe(
             testing.column("B")
                 .click();
 
+            testing.historyWait();
+
             testing.hashAppendWithoutCheck("/insert-before/1");
 
             testing.hash()
@@ -263,6 +282,8 @@ describe(
 
             testing.column("B")
                 .click();
+
+            testing.historyWait();
 
             testing.hashAppendWithoutCheck(":C/insert-before/2");
 

@@ -1,4 +1,3 @@
-import CharSequences from "../../CharSequences.js";
 import Equality from "../../Equality.js";
 import PropTypes from "prop-types";
 import SpreadsheetHistoryAwareWidget from "./SpreadsheetHistoryAwareWidget.js";
@@ -44,7 +43,7 @@ export default class SpreadsheetHistoryAwareStateWidget extends SpreadsheetHisto
     }
 
     setState(newState) {
-        if(this.insideHistoryTokensFromState) {
+        if(this.insideHistoryTokensFromState){
             throw new Error("Cannot call setState inside historyTokensFromState(), state:" + JSON.stringify(this.state) + ", newState: " + JSON.stringify(newState));
         }
         return super.setState(newState);
@@ -61,19 +60,12 @@ export default class SpreadsheetHistoryAwareStateWidget extends SpreadsheetHisto
      * Handles a state change, invoking {@link #historyTokensFromState} and updating the history hash with the result.
      */
     componentDidUpdate(prevProps, prevState, snapshot) {
-        const state = this.state;
-        console.log(this.prefix() +".componentDidUpdate", "prevState", prevState, "state", state);
-
         this.insideHistoryTokensFromState = true;
-        var historyHashTokens;
         try {
-            historyHashTokens = this.historyTokensFromState(prevState);
+            const historyHashTokens = this.historyTokensFromState(prevState);
+            this.historyParseMergeAndPush(historyHashTokens);
         } finally {
             delete this.insideHistoryTokensFromState;
-        }
-        const newHash = this.historyParseMergeAndPush(historyHashTokens);
-        if(newHash) {
-            console.log(this.prefix() +".componentDidUpdate changed hash to " + CharSequences.quoteAndEscape(newHash), "tokens", historyHashTokens, "prevState", prevState, "state", state);
         }
     }
 
