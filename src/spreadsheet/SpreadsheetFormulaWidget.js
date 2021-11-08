@@ -81,12 +81,8 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetHistoryAwareSta
             const previousLoad = previousSelectionAction instanceof SpreadsheetFormulaLoadAndEditHistoryHashToken;
             const previousSave = previousSelectionAction instanceof SpreadsheetFormulaSaveHistoryHashToken;
 
-            const differentCell = !Equality.safeEquals(selection, prevState.selection);
-            if(differentCell) {
-                console.log("historyTokensFromState formula from " + prevState.selection + " to " + selection + " state", state);
-            }
-
             // if load but not save OR different cell
+            const differentCell = !Equality.safeEquals(selection, prevState.selection);
             if((load && ((!previousLoad & !previousSave) | differentCell))) {
                 this.loadFormulaText(selection);
             }
@@ -107,8 +103,10 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetHistoryAwareSta
                 }
             }
 
-            historyTokens[SpreadsheetHistoryHashTokens.SELECTION] = selection;
-            historyTokens[SpreadsheetHistoryHashTokens.SELECTION_ACTION] = selectionAction;
+            if(!(Equality.safeEquals(selectionAction, previousSelectionAction))){
+                historyTokens[SpreadsheetHistoryHashTokens.SELECTION] = selection;
+                historyTokens[SpreadsheetHistoryHashTokens.SELECTION_ACTION] = selectionAction;
+            }
         }
 
         return historyTokens;
