@@ -261,8 +261,6 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
             state,
         } = this;
 
-        console.log("render", state);
-
         return (
             <WindowResizer dimensions={this.onWindowResized.bind(this)}>
                 <SpreadsheetSelectAutocompleteWidget key="navigateAutocompleteWidget"
