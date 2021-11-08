@@ -58,8 +58,6 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetHistoryAwareSta
      * Filter only interested in cell or labels and load/edit or save formula actions.
      */
     stateFromHistoryTokens(historyTokens) {
-        console.log("historyTokens: " + SpreadsheetHistoryHash.stringify(historyTokens));
-
         return {
             selection: historyTokens[SpreadsheetHistoryHashTokens.SELECTION],
             selectionAction: historyTokens[SpreadsheetHistoryHashTokens.SELECTION_ACTION],
