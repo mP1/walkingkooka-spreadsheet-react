@@ -419,7 +419,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
                 }
             }
 
-            if(state.focused) {
+            if(state.focused && viewportLoadCells) {
                 historyTokens[SpreadsheetHistoryHashTokens.SELECTION] = selectionNew;
                 historyTokens[SpreadsheetHistoryHashTokens.SELECTION_ACTION] = selectionActionNew;
             }
