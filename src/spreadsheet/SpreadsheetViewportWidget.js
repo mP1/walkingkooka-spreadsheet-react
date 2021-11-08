@@ -358,20 +358,22 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
                 }
             }
 
-            const width = viewportTable.offsetWidth;
-            const height = viewportTable.offsetHeight;
-
             const selectionOld = prevState.selection;
             const selectionNew = state.selection;
-            const selectionAnchor = state.selectionAnchor;
 
-            const selectionActionOld = prevState.selectionAction;
-            const selectionActionNew = state.selectionAction;
-
-            let viewportLoadCells = false;
             const viewportCell = metadata.getIgnoringDefaults(SpreadsheetMetadata.VIEWPORT_CELL);
 
             if(viewportCell){
+                const width = viewportTable.offsetWidth;
+                const height = viewportTable.offsetHeight;
+
+                const selectionAnchor = state.selectionAnchor;
+
+                const selectionActionOld = prevState.selectionAction;
+                const selectionActionNew = state.selectionAction;
+
+                let viewportLoadCells = false;
+
                 do {
                     if(!Equality.safeEquals(selectionActionNew, selectionActionOld)){
                         // new action perform
@@ -416,16 +418,16 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
                         selectionNew,
                         selectionAnchor
                     );
+
+                    if(state.focused) {
+                        historyTokens[SpreadsheetHistoryHashTokens.SELECTION] = selectionNew;
+                        historyTokens[SpreadsheetHistoryHashTokens.SELECTION_ACTION] = selectionActionNew;
+                    }
                 }
-            }
 
-            if(state.focused && viewportLoadCells) {
-                historyTokens[SpreadsheetHistoryHashTokens.SELECTION] = selectionNew;
-                historyTokens[SpreadsheetHistoryHashTokens.SELECTION_ACTION] = selectionActionNew;
-            }
-
-            if(!Equality.safeEquals(selectionNew, selectionOld)){
-                this.giveSelectionFocus(selectionNew, selectionAnchor);
+                if(!Equality.safeEquals(selectionNew, selectionOld)){
+                    this.giveSelectionFocus(selectionNew, selectionAnchor);
+                }
             }
         }
 
