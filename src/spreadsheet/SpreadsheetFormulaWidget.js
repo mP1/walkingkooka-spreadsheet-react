@@ -73,8 +73,6 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetHistoryAwareSta
         const {selection, cellReference, focused} = state;
         var {selectionAction} = state;
 
-        console.log("historyTokensFromState: " + selection + " " + selectionAction, state);
-
         if(selection instanceof SpreadsheetCellReferenceOrLabelName) {
             const load = selectionAction instanceof SpreadsheetFormulaLoadAndEditHistoryHashToken;
             const save = selectionAction instanceof SpreadsheetFormulaSaveHistoryHashToken;
@@ -176,8 +174,6 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetHistoryAwareSta
         const {selection, value} = state;
 
         const edit = selection;
-
-        console.log("render " + (!edit ? "disabled" : "enabled") + " formula: \"" + (value || "") + "\"", state);
 
         return (
             <TextField ref={this.textField}
