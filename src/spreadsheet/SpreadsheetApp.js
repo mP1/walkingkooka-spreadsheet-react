@@ -155,13 +155,15 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
         const historyTokens = SpreadsheetHistoryHashTokens.emptyTokens();
 
         const previousId = prevState.spreadsheetId;
+
         const state = this.state;
         const id = state.spreadsheetId;
+        const differentId = !(Equality.safeEquals(id, previousId));
 
         if(!state.creatingEmptySpreadsheet){
             if(id){
                 const metadata = state.spreadsheetMetadata;
-                if(metadata.isEmpty() || !(Equality.safeEquals(id, previousId))){
+                if(metadata.isEmpty() || differentId){
                     console.log("stateSpreadsheetMetadataSpreadsheetId spreadsheetId changed from " + previousId + " to " + id);
 
                     this.spreadsheetMetadataCrud.get(
@@ -176,17 +178,13 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
                     document.title = name.toString();
                 }
 
-                if(!(Equality.safeEquals(name, prevState.spreadsheetMetadata.getIgnoringDefaults(SpreadsheetMetadata.SPREADSHEET_NAME)))){
+                if(differentId || !(Equality.safeEquals(name, prevState.spreadsheetMetadata.getIgnoringDefaults(SpreadsheetMetadata.SPREADSHEET_NAME)))){
                     historyTokens[SpreadsheetHistoryHashTokens.SPREADSHEET_ID] = id;
                     historyTokens[SpreadsheetHistoryHashTokens.SPREADSHEET_NAME] = name;
                 }
             }else {
                 this.spreadsheetEmptyCreate();
             }
-        }
-
-        if(id!==prevState.spreadsheetId){
-            historyTokens[SpreadsheetHistoryHashTokens.SPREADSHEET_ID] = id;
         }
 
         // sync windowDimensions with the viewport widget
