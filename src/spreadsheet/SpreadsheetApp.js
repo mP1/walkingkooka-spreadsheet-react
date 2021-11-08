@@ -175,13 +175,19 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
                 if(name){
                     document.title = name.toString();
                 }
-                historyTokens[SpreadsheetHistoryHashTokens.SPREADSHEET_NAME] = name;
+
+                if(!(Equality.safeEquals(name, prevState.spreadsheetMetadata.getIgnoringDefaults(SpreadsheetMetadata.SPREADSHEET_NAME)))){
+                    historyTokens[SpreadsheetHistoryHashTokens.SPREADSHEET_ID] = id;
+                    historyTokens[SpreadsheetHistoryHashTokens.SPREADSHEET_NAME] = name;
+                }
             }else {
                 this.spreadsheetEmptyCreate();
             }
         }
 
-        historyTokens[SpreadsheetHistoryHashTokens.SPREADSHEET_ID] = id;
+        if(id!==prevState.spreadsheetId){
+            historyTokens[SpreadsheetHistoryHashTokens.SPREADSHEET_ID] = id;
+        }
 
         // sync windowDimensions with the viewport widget
         const windowDimensions = state.windowDimensions;
