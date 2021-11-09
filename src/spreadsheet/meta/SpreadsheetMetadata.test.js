@@ -1105,179 +1105,140 @@ test("equals same property values with defaults", () => {
     ))).toEqual(true);
 });
 
-// shouldUpdateViewport...............................................................................................................
+// viewportEquals.......................................................................................................
 
-test("shouldUpdateViewport missing true", () => {
-    expect(SpreadsheetMetadata.EMPTY.shouldUpdateViewport(undefined))
-        .toBeTrue();
-});
+function testViewportEquals(titleSuffix, left, right, result) {
+    test("viewportEquals " + titleSuffix + " " + result, () => {
+        expect(SpreadsheetMetadata.fromJson(left)
+            .viewportEquals(SpreadsheetMetadata.fromJson(right))
+        ).toBe(result);
+    });
+}
 
-test("shouldUpdateViewport EMPTY true", () => {
-    expect(SpreadsheetMetadata.EMPTY.shouldUpdateViewport(SpreadsheetMetadata.EMPTY))
-        .toBeFalse();
-});
+testViewportEquals(
+    "id different",
+    {
+        "spreadsheet-id": "123",
+    },
+    {
+        "spreadsheet-id": "456",
+    },
+    false
+);
 
-test("shouldUpdateViewport same ignoring ignored properties", () => {
-    expect(SpreadsheetMetadata.fromJson(
-        {
-            "create-date-time": "123",
-        }
-    ).shouldUpdateViewport(SpreadsheetMetadata.fromJson(
-        {
-            "create-date-time": "456",
-        }
-    ))).toBeFalse();
-});
+testViewportEquals(
+    "id same",
+    {
+        "spreadsheet-id": "123",
+    },
+    {
+        "spreadsheet-id": "123",
+    },
+    true
+);
 
-test("shouldUpdateViewport different ids", () => {
-    expect(SpreadsheetMetadata.fromJson(
-        {
-            "spreadsheet-id": "123",
-        }
-    ).shouldUpdateViewport(SpreadsheetMetadata.fromJson(
-        {
-            "spreadsheet-id": "456",
-        }
-    ))).toBeTrue();
-});
+testViewportEquals(
+    "id & name same",
+    {
+        "spreadsheet-id": "123",
+        "spreadsheet-name": "SpreadsheetName456",
+    },
+    {
+        "spreadsheet-id": "123",
+        "spreadsheet-name": "SpreadsheetName456",
+    },
+    true
+);
 
-test("shouldUpdateViewport property values different true", () => {
-    expect(SpreadsheetMetadata.fromJson(
-        {
-            "currency-symbol": "AUD",
-        }
-    ).shouldUpdateViewport(SpreadsheetMetadata.fromJson(
-        {
-            "currency-symbol": "NZD",
-        }
-    ))).toBeTrue();
-});
+testViewportEquals(
+    "id & name different",
+    {
+        "spreadsheet-id": "123",
+        "spreadsheet-name": "SpreadsheetName456",
+    },
+    {
+        "spreadsheet-id": "123",
+        "spreadsheet-name": "SpreadsheetName999",
+    },
+    true
+);
 
-test("shouldUpdateViewport property values different true #2", () => {
-    expect(SpreadsheetMetadata.fromJson(
-        {
-            "currency-symbol": "AUD",
-            "decimal-separator": ".",
-        }
-    ).shouldUpdateViewport(SpreadsheetMetadata.fromJson(
-        {
-            "currency-symbol": "AUD",
-            "decimal-separator": "D",
-        }
-    ))).toBeTrue();
-});
+testViewportEquals(
+    "id & name different",
+    {
+        "spreadsheet-id": "123",
+        "spreadsheet-name": "SpreadsheetName456",
+    },
+    {
+        "spreadsheet-id": "456",
+        "spreadsheet-name": "SpreadsheetName999",
+    },
+    false
+);
 
-test("shouldUpdateViewport property values different " + SpreadsheetMetadata.SELECTION, () => {
-    expect(SpreadsheetMetadata.fromJson(
-        {
-            "currency-symbol": "AUD",
-            "decimal-separator": ".",
-            "selection": SpreadsheetCellReference.parse("A1").setAnchor().toJson(),
-        }
-    ).shouldUpdateViewport(SpreadsheetMetadata.fromJson(
-        {
-            "currency-symbol": "AUD",
-            "decimal-separator": ".",
-            "selection": SpreadsheetCellReference.parse("Z99").setAnchor().toJson(),
-        }
-    ))).toBeFalse();
-});
+testViewportEquals(
+    "currency different",
+    {
+        "spreadsheet-id": "123",
+        "currency-symbol": "$AUD",
+    },
+    {
+        "spreadsheet-id": "123",
+        "currency-symbol": "Different",
+    },
+    false
+);
 
-test("shouldUpdateViewport property values different " + SpreadsheetMetadata.VIEWPORT_CELL, () => {
-    expect(SpreadsheetMetadata.fromJson(
-        {
-            "viewport-cell": "A1",
-            "currency-symbol": "AUD",
-            "decimal-separator": ".",
-        }
-    ).shouldUpdateViewport(SpreadsheetMetadata.fromJson(
-        {
-            "viewport-cell": "Z99",
-            "currency-symbol": "AUD",
-            "decimal-separator": ".",
-        }
-    ))).toBeFalse();
-});
+testViewportEquals(
+    "currency different 2",
+    {
+        "spreadsheet-id": "123",
+        "currency-symbol": "$AUD",
+    },
+    {
+        "spreadsheet-id": "123",
+    },
+    false
+);
 
-test("shouldUpdateViewport property values", () => {
-    expect(SpreadsheetMetadata.fromJson(
-        {
-            "currency-symbol": "AUD",
-            "decimal-separator": ".",
-        }
-    ).shouldUpdateViewport(SpreadsheetMetadata.fromJson(
-        {
-            "currency-symbol": "AUD",
-            "decimal-separator": ".",
-        }
-    ))).toBeFalse();
-});
+testViewportEquals(
+    "currency same",
+    {
+        "spreadsheet-id": "123",
+        "currency-symbol": "$AUD",
+    },
+    {
+        "spreadsheet-id": "123",
+        "currency-symbol": "$AUD",
+    },
+    true
+);
 
-test("shouldUpdateViewport with defaults", () => {
-    expect(SpreadsheetMetadata.fromJson(
-        {
-            "spreadsheet-id": "111",
-            "currency-symbol": "AUD",
-            "_defaults": {
-                "decimal-separator": ".",
-                "spreadsheet-name": "Spreadsheet-name-567",
-            }
-        }
-    ).shouldUpdateViewport(SpreadsheetMetadata.fromJson(
-        {
-            "spreadsheet-id": "111",
-            "currency-symbol": "AUD",
-            "_defaults": {
-                "decimal-separator": ".",
-                "spreadsheet-name": "Spreadsheet-name-567",
-            }
-        }
-    ))).toBeFalse();
-});
+testViewportEquals(
+    "different selection",
+    {
+        "spreadsheet-id": "123",
+        "selection": SpreadsheetCellReference.parse("A1").setAnchor().toJson(),
+    },
+    {
+        "spreadsheet-id": "123",
+        "selection": SpreadsheetCellReference.parse("B2").setAnchor().toJson(),
+    },
+    true
+);
 
-test("shouldUpdateViewport with defaults different", () => {
-    expect(SpreadsheetMetadata.fromJson(
-        {
-            "spreadsheet-id": "111",
-            "currency-symbol": "AUD",
-            "_defaults": {
-                "decimal-separator": ".",
-                "spreadsheet-name": "Spreadsheet-name-567",
-            }
-        }
-    ).shouldUpdateViewport(SpreadsheetMetadata.fromJson(
-        {
-            "spreadsheet-id": "222",
-            "currency-symbol": "NZD",
-            "_defaults": {
-                "decimal-separator": ".",
-                "spreadsheet-name": "different-Spreadsheet-name",
-            }
-        }
-    ))).toBeTrue();
-});
-
-test("shouldUpdateViewport with defaults different default", () => {
-    expect(SpreadsheetMetadata.fromJson(
-        {
-            "spreadsheet-id": "111",
-            "currency-symbol": "AUD",
-            "_defaults": {
-                "decimal-separator": ".",
-                "spreadsheet-name": "Spreadsheet-name-567",
-            }
-        }
-    ).shouldUpdateViewport(SpreadsheetMetadata.fromJson(
-        {
-            "spreadsheet-id": "111",
-            "currency-symbol": "NZD",
-            "_defaults": {
-                "decimal-separator": "D",
-                "spreadsheet-name": "different-Spreadsheet-name",
-            }
-        }
-    ))).toBeTrue();
-});
+testViewportEquals(
+    "different viewport-cell",
+    {
+        "spreadsheet-id": "123",
+        "viewport-cell": SpreadsheetCellReference.parse("A1").toJson(),
+    },
+    {
+        "spreadsheet-id": "123",
+        "viewport-cell": SpreadsheetCellReference.parse("B2").toJson(),
+    },
+    false
+);
 
 // helpers..............................................................................................................
 
