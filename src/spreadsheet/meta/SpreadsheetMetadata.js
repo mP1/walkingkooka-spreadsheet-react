@@ -777,10 +777,10 @@ export default class SpreadsheetMetadata extends SystemObject {
     }
 
     /**
-     * Returns true if any of the #VIEWPORT_SHOULD_UPDATE_PROPERTY_NAMES properties are different.
+     * Returns true if any of the #VIEWPORT_EQUALS_PROPERTY_NAMES properties are different.
      */
-    shouldUpdateViewport(other) {
-        return !equals0(this, other, VIEWPORT_SHOULD_UPDATE_PROPERTY_NAMES);
+    viewportEquals(other) {
+        return equals0(this, other, VIEWPORT_EQUALS_PROPERTY_NAMES);
     }
 
     toString() {
@@ -832,8 +832,9 @@ const PROPERTY_NAMES = [
 /**
  * Used when comparing two metadata ignoring a few properties that are unimportant when deciding if a viewport cells should be reloaded.
  */
-const VIEWPORT_SHOULD_UPDATE_PROPERTY_NAMES = PROPERTY_NAMES.filter(p => {
+const VIEWPORT_EQUALS_PROPERTY_NAMES = PROPERTY_NAMES.filter(p => {
     var keep;
+
     switch(p) {
         case SpreadsheetMetadata.CREATOR:
         case SpreadsheetMetadata.CREATE_DATE_TIME:
@@ -841,7 +842,6 @@ const VIEWPORT_SHOULD_UPDATE_PROPERTY_NAMES = PROPERTY_NAMES.filter(p => {
         case SpreadsheetMetadata.MODIFIED_DATE_TIME:
         case SpreadsheetMetadata.SELECTION:
         case SpreadsheetMetadata.SPREADSHEET_NAME:
-        case SpreadsheetMetadata.VIEWPORT_CELL:
             keep = false;
             break;
         default:
@@ -864,7 +864,7 @@ function equals1(metadata, other, required) {
     const otherProperties = other.properties;
 
     // if required === IGNORED_PROPERTIES must test all individual properties...
-    if(required === VIEWPORT_SHOULD_UPDATE_PROPERTY_NAMES || Object.keys(properties).length === Object.keys(otherProperties).length){
+    if(required === VIEWPORT_EQUALS_PROPERTY_NAMES || Object.keys(properties).length === Object.keys(otherProperties).length){
         equals = true;
 
         for(const property of required) {

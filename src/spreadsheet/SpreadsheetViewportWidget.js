@@ -399,7 +399,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
                     }
 
                     // some metadata properties changed that will mean formatting of values changed so reload
-                    if(metadata.shouldUpdateViewport(previousMetadata)){
+                    if(!metadata.viewportEquals(previousMetadata)){
                         console.log("Metadata change need to format all viewport cells", metadata);
                         viewportLoadCells = true;
                         break;
