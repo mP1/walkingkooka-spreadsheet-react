@@ -242,7 +242,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
     }
 
     /**
-     * If a label was saved o deleted refresh the viewport.
+     * If a label was saved or deleted refresh the viewport.
      */
     onSpreadsheetLabel(method, id, url, requestLabel, responseLabel) {
         switch(method) {
@@ -250,18 +250,16 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
             case "POST":
                 const viewportTable = this.viewportTable.current;
                 if(viewportTable){
-                    const {selection, anchor, spreadsheetMetadata} = this.state;
-
                     this.loadCells(
                         new SpreadsheetViewport(
-                            spreadsheetMetadata.getIgnoringDefaults(SpreadsheetMetadata.VIEWPORT_CELL),
+                            this.state.spreadsheetMetadata.getIgnoringDefaults(SpreadsheetMetadata.VIEWPORT_CELL),
                             0,
                             0,
                             viewportTable.offsetWidth,
                             viewportTable.offsetHeight,
                         ),
-                        selection,
-                        anchor
+                        null,
+                        null
                     );
                 }
                 break;
@@ -373,6 +371,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
                 const selectionActionNew = state.selectionAction;
 
                 let viewportLoadCells = false;
+                var giveFocus = false;
 
                 do {
                     if(!Equality.safeEquals(selectionActionNew, selectionActionOld)){
@@ -386,6 +385,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
                         console.log("New selection " + selectionOld + " to " + selectionNew);
 
                         viewportLoadCells = true;
+                        giveFocus = true; // only give focus if selection changed
                         break;
                     }
 
@@ -415,8 +415,8 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
                             width,
                             height
                         ),
-                        selectionNew,
-                        selectionAnchor
+                        giveFocus ? selectionNew : null,
+                        giveFocus ? selectionAnchor : null
                     );
 
                     if(state.focused) {
