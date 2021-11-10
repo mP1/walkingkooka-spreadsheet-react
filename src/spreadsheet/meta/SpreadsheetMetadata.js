@@ -777,10 +777,10 @@ export default class SpreadsheetMetadata extends SystemObject {
     }
 
     /**
-     * Returns true if any of the #VIEWPORT_EQUALS_PROPERTY_NAMES properties are different.
+     * Returns true if any of the #VIEWPORT_SHOULD_LOAD_CELLS_PROPERTY_NAMES properties are different.
      */
-    viewportEquals(other) {
-        return equals0(this, other, VIEWPORT_EQUALS_PROPERTY_NAMES);
+    viewportShouldLoadCells(other) {
+        return !equals0(this, other, VIEWPORT_SHOULD_LOAD_CELLS_PROPERTY_NAMES);
     }
 
     toString() {
@@ -832,7 +832,7 @@ const PROPERTY_NAMES = [
 /**
  * Used when comparing two metadata ignoring a few properties that are unimportant when deciding if a viewport cells should be reloaded.
  */
-const VIEWPORT_EQUALS_PROPERTY_NAMES = PROPERTY_NAMES.filter(p => {
+const VIEWPORT_SHOULD_LOAD_CELLS_PROPERTY_NAMES = PROPERTY_NAMES.filter(p => {
     var keep;
 
     switch(p) {
@@ -864,7 +864,7 @@ function equals1(metadata, other, required) {
     const otherProperties = other.properties;
 
     // if required === IGNORED_PROPERTIES must test all individual properties...
-    if(required === VIEWPORT_EQUALS_PROPERTY_NAMES || Object.keys(properties).length === Object.keys(otherProperties).length){
+    if(required === VIEWPORT_SHOULD_LOAD_CELLS_PROPERTY_NAMES || Object.keys(properties).length === Object.keys(otherProperties).length){
         equals = true;
 
         for(const property of required) {
