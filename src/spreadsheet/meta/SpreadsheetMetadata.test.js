@@ -1107,15 +1107,15 @@ test("equals same property values with defaults", () => {
 
 // viewportEquals.......................................................................................................
 
-function testViewportEquals(titleSuffix, left, right, result) {
-    test("viewportEquals " + titleSuffix + " " + result, () => {
+function testViewportShouldLoadCells(titleSuffix, left, right, result) {
+    test("viewportShouldLoadCells " + titleSuffix + " " + result, () => {
         expect(SpreadsheetMetadata.fromJson(left)
-            .viewportEquals(SpreadsheetMetadata.fromJson(right))
+            .viewportShouldLoadCells(SpreadsheetMetadata.fromJson(right))
         ).toBe(result);
     });
 }
 
-testViewportEquals(
+testViewportShouldLoadCells(
     "id different",
     {
         "spreadsheet-id": "123",
@@ -1123,10 +1123,10 @@ testViewportEquals(
     {
         "spreadsheet-id": "456",
     },
-    false
+    true
 );
 
-testViewportEquals(
+testViewportShouldLoadCells(
     "id same",
     {
         "spreadsheet-id": "123",
@@ -1134,10 +1134,10 @@ testViewportEquals(
     {
         "spreadsheet-id": "123",
     },
-    true
+    false
 );
 
-testViewportEquals(
+testViewportShouldLoadCells(
     "id & name same",
     {
         "spreadsheet-id": "123",
@@ -1147,10 +1147,10 @@ testViewportEquals(
         "spreadsheet-id": "123",
         "spreadsheet-name": "SpreadsheetName456",
     },
-    true
+    false
 );
 
-testViewportEquals(
+testViewportShouldLoadCells(
     "id & name different",
     {
         "spreadsheet-id": "123",
@@ -1160,10 +1160,10 @@ testViewportEquals(
         "spreadsheet-id": "123",
         "spreadsheet-name": "SpreadsheetName999",
     },
-    true
+    false
 );
 
-testViewportEquals(
+testViewportShouldLoadCells(
     "id & name different",
     {
         "spreadsheet-id": "123",
@@ -1173,10 +1173,10 @@ testViewportEquals(
         "spreadsheet-id": "456",
         "spreadsheet-name": "SpreadsheetName999",
     },
-    false
+    true
 );
 
-testViewportEquals(
+testViewportShouldLoadCells(
     "currency different",
     {
         "spreadsheet-id": "123",
@@ -1186,10 +1186,10 @@ testViewportEquals(
         "spreadsheet-id": "123",
         "currency-symbol": "Different",
     },
-    false
+    true
 );
 
-testViewportEquals(
+testViewportShouldLoadCells(
     "currency different 2",
     {
         "spreadsheet-id": "123",
@@ -1198,10 +1198,10 @@ testViewportEquals(
     {
         "spreadsheet-id": "123",
     },
-    false
+    true
 );
 
-testViewportEquals(
+testViewportShouldLoadCells(
     "currency same",
     {
         "spreadsheet-id": "123",
@@ -1211,10 +1211,10 @@ testViewportEquals(
         "spreadsheet-id": "123",
         "currency-symbol": "$AUD",
     },
-    true
+    false
 );
 
-testViewportEquals(
+testViewportShouldLoadCells(
     "different selection",
     {
         "spreadsheet-id": "123",
@@ -1224,10 +1224,10 @@ testViewportEquals(
         "spreadsheet-id": "123",
         "selection": SpreadsheetCellReference.parse("B2").setAnchor().toJson(),
     },
-    true
+    false
 );
 
-testViewportEquals(
+testViewportShouldLoadCells(
     "different viewport-cell",
     {
         "spreadsheet-id": "123",
@@ -1237,7 +1237,7 @@ testViewportEquals(
         "spreadsheet-id": "123",
         "viewport-cell": SpreadsheetCellReference.parse("B2").toJson(),
     },
-    false
+    true
 );
 
 // helpers..............................................................................................................
