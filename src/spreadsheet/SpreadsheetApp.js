@@ -28,6 +28,7 @@ import SpreadsheetSelectLinkWidget from "./reference/SpreadsheetSelectLinkWidget
 import SpreadsheetSettingsWidget from "./settings/SpreadsheetSettingsWidget.js";
 import SpreadsheetViewportWidget from "./SpreadsheetViewportWidget.js";
 import WindowResizer from "../widget/WindowResizer.js";
+import SpreadsheetHistoryHash from "./history/SpreadsheetHistoryHash.js";
 
 const useStyles = theme => ({
     header: {
@@ -109,8 +110,11 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
      * Creates a state with some defaults and empty values.
      */
     initialStateFromProps(props) {
+        const historyHashTokens = props.history.tokens();
+
         return {
             creatingEmptySpreadsheet: false,
+            spreadsheetId: historyHashTokens[SpreadsheetHistoryHash.SPREADSHEET_ID],
             spreadsheetMetadata: SpreadsheetMetadata.EMPTY,
             windowDimensions: {
                 width: window.innerWidth,

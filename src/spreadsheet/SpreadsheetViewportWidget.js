@@ -307,7 +307,10 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
     }
 
     initialStateFromProps(props) {
+        const historyHashTokens = props.history.tokens();
+
         return {
+            spreadsheetId: historyHashTokens[SpreadsheetHistoryHash.SPREADSHEET_ID],
             cells: ImmutableMap.EMPTY,
             columnWidths: ImmutableMap.EMPTY,
             rowHeights: ImmutableMap.EMPTY,

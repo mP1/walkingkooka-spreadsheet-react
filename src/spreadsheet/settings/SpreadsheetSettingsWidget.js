@@ -112,7 +112,10 @@ class SpreadsheetSettingsWidget extends SpreadsheetHistoryAwareStateWidget {
     }
 
     initialStateFromProps(props) {
+        const historyHashTokens = props.history.tokens();
+
         return {
+            spreadsheetId: historyHashTokens[SpreadsheetHistoryHash.SPREADSHEET_ID],
             spreadsheetMetadata: null, //props.spreadsheetMetadata,
             createDateTimeFormatted: "",
             modifiedDateTimeFormatted: "",

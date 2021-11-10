@@ -20,7 +20,11 @@ export default class SpreadsheetSelectLinkWidget extends SpreadsheetHistoryAware
     }
 
     initialStateFromProps(props) {
-        return {};
+        const historyHashTokens = props.history.tokens();
+
+        return {
+            spreadsheetId: historyHashTokens[SpreadsheetHistoryHash.SPREADSHEET_ID],
+        };
     }
 
     /**

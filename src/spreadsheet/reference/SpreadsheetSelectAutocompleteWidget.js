@@ -69,7 +69,10 @@ export default class SpreadsheetSelectAutocompleteWidget extends SpreadsheetHist
     static ROW_RANGE_SELECT_BUTTON_ID = SpreadsheetSelectAutocompleteWidget.ID_PREFIX + "-row-range-select-Button";
 
     initialStateFromProps(props) {
+        const historyHashTokens = props.history.tokens();
+
         return {
+            spreadsheetId: historyHashTokens[SpreadsheetHistoryHash.SPREADSHEET_ID],
             text: null,
             queryHelperText: null,
             options: [],
