@@ -1105,7 +1105,7 @@ test("equals same property values with defaults", () => {
     ))).toEqual(true);
 });
 
-// viewportEquals.......................................................................................................
+// viewportShouldLoadCells...............................................................................................
 
 function testViewportShouldLoadCells(titleSuffix, left, right, result) {
     test("viewportShouldLoadCells " + titleSuffix + " " + result, () => {
@@ -1228,6 +1228,167 @@ testViewportShouldLoadCells(
 );
 
 testViewportShouldLoadCells(
+    "different viewport-cell",
+    {
+        "spreadsheet-id": "123",
+        "viewport-cell": SpreadsheetCellReference.parse("A1").toJson(),
+    },
+    {
+        "spreadsheet-id": "123",
+        "viewport-cell": SpreadsheetCellReference.parse("B2").toJson(),
+    },
+    true
+);
+
+// viewportShouldSaveMetadata...............................................................................................
+
+function testViewportShouldSaveMetadata(titleSuffix, left, right, result) {
+    test("viewportShouldSaveMetadata " + titleSuffix + " " + result, () => {
+        expect(SpreadsheetMetadata.fromJson(left)
+            .viewportShouldSaveMetadata(SpreadsheetMetadata.fromJson(right))
+        ).toBe(result);
+    });
+}
+
+testViewportShouldSaveMetadata(
+    "id different",
+    {
+        "spreadsheet-id": "123",
+    },
+    {
+        "spreadsheet-id": "456",
+    },
+    false
+);
+
+testViewportShouldSaveMetadata(
+    "id same",
+    {
+        "spreadsheet-id": "123",
+    },
+    {
+        "spreadsheet-id": "123",
+    },
+    false
+);
+
+testViewportShouldSaveMetadata(
+    "id & name same",
+    {
+        "spreadsheet-id": "123",
+        "spreadsheet-name": "SpreadsheetName456",
+    },
+    {
+        "spreadsheet-id": "123",
+        "spreadsheet-name": "SpreadsheetName456",
+    },
+    false
+);
+
+testViewportShouldSaveMetadata(
+    "id & name different",
+    {
+        "spreadsheet-id": "123",
+        "spreadsheet-name": "SpreadsheetName456",
+    },
+    {
+        "spreadsheet-id": "123",
+        "spreadsheet-name": "SpreadsheetName999",
+    },
+    false
+);
+
+testViewportShouldSaveMetadata(
+    "id & name different",
+    {
+        "spreadsheet-id": "123",
+        "spreadsheet-name": "SpreadsheetName456",
+    },
+    {
+        "spreadsheet-id": "456",
+        "spreadsheet-name": "SpreadsheetName999",
+    },
+    false
+);
+
+testViewportShouldSaveMetadata(
+    "currency different",
+    {
+        "spreadsheet-id": "123",
+        "currency-symbol": "$AUD",
+    },
+    {
+        "spreadsheet-id": "123",
+        "currency-symbol": "Different",
+    },
+    false
+);
+
+testViewportShouldSaveMetadata(
+    "currency different 2",
+    {
+        "spreadsheet-id": "123",
+        "currency-symbol": "$AUD",
+    },
+    {
+        "spreadsheet-id": "123",
+    },
+    false
+);
+
+testViewportShouldSaveMetadata(
+    "currency same",
+    {
+        "spreadsheet-id": "123",
+        "currency-symbol": "$AUD",
+    },
+    {
+        "spreadsheet-id": "123",
+        "currency-symbol": "$AUD",
+    },
+    false
+);
+
+testViewportShouldSaveMetadata(
+    "same selection",
+    {
+        "spreadsheet-id": "123",
+        "selection": SpreadsheetCellReference.parse("A1").setAnchor().toJson(),
+    },
+    {
+        "spreadsheet-id": "123",
+        "selection": SpreadsheetCellReference.parse("A1").setAnchor().toJson(),
+    },
+    false
+);
+
+testViewportShouldSaveMetadata(
+    "different selection",
+    {
+        "spreadsheet-id": "123",
+        "selection": SpreadsheetCellReference.parse("A1").setAnchor().toJson(),
+    },
+    {
+        "spreadsheet-id": "123",
+        "selection": SpreadsheetCellReference.parse("B2").setAnchor().toJson(),
+    },
+    true
+);
+
+testViewportShouldSaveMetadata(
+    "same viewport-cell",
+    {
+        "spreadsheet-id": "123",
+        "viewport-cell": SpreadsheetCellReference.parse("A1").toJson(),
+    },
+    {
+        "spreadsheet-id": "123",
+        "viewport-cell": SpreadsheetCellReference.parse("A1").toJson(),
+    },
+    false
+);
+
+testViewportShouldSaveMetadata(
     "different viewport-cell",
     {
         "spreadsheet-id": "123",
