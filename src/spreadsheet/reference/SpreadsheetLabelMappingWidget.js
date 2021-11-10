@@ -42,7 +42,11 @@ export default class SpreadsheetLabelMappingWidget extends SpreadsheetHistoryAwa
     static SAVE_BUTTON_ID = SpreadsheetLabelMappingWidget.ID_PREFIX + "-save-Button";
 
     initialStateFromProps(props) {
-        return {};
+        const historyHashTokens = props.history.tokens();
+
+        return {
+            spreadsheetId: historyHashTokens[SpreadsheetHistoryHash.SPREADSHEET_ID],
+        };
     }
 
     init() {

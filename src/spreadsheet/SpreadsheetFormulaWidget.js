@@ -38,7 +38,11 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetHistoryAwareSta
     }
 
     initialStateFromProps(props) {
-        return {};
+        const historyHashTokens = props.history.tokens();
+
+        return {
+            spreadsheetId: historyHashTokens[SpreadsheetHistoryHash.SPREADSHEET_ID],
+        }
     }
 
     componentDidMount() {

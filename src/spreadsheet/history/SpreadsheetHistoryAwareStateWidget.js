@@ -17,10 +17,9 @@ export default class SpreadsheetHistoryAwareStateWidget extends SpreadsheetHisto
     initializeState() {
         const props = this.props;
 
-        this.state = Object.assign(
-            this.initialStateFromProps(props),
-            props.history.tokens()
-        );
+        const historyHashTokens = props.history.tokens();
+
+        this.state = this.initialStateFromProps(props);
     }
 
     /**
