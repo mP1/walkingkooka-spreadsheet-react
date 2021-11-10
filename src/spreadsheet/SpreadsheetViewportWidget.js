@@ -434,7 +434,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
             }
         }
 
-        if(!Equality.safeEquals(metadata, previousMetadata)){
+        if(metadata.viewportShouldSaveMetadata(previousMetadata)){
             props.spreadsheetMetadataCrud.post(
                 metadata.getIgnoringDefaults(SpreadsheetMetadata.SPREADSHEET_ID),
                 metadata,

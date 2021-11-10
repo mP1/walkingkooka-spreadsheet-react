@@ -783,6 +783,13 @@ export default class SpreadsheetMetadata extends SystemObject {
         return !equals0(this, other, VIEWPORT_SHOULD_LOAD_CELLS_PROPERTY_NAMES);
     }
 
+    /**
+     * When true, the viewport widget should save its local copy of metadata, which will have updated selection and viewport-cell.
+     */
+    viewportShouldSaveMetadata(other) {
+        return !equals0(this, other, VIEWPORT_SHOULD_SAVE_METADATA_PROPERTY_NAMES);
+    }
+
     toString() {
         return JSON.stringify(this.toJson());
     }
@@ -850,6 +857,14 @@ const VIEWPORT_SHOULD_LOAD_CELLS_PROPERTY_NAMES = PROPERTY_NAMES.filter(p => {
     return keep;
 });
 
+/**
+ * Used when comparing two metadata ignoring a few properties that are unimportant when deciding if a viewport cells should be reloaded.
+ */
+const VIEWPORT_SHOULD_SAVE_METADATA_PROPERTY_NAMES = [
+    SpreadsheetMetadata.SELECTION,
+    SpreadsheetMetadata.VIEWPORT_CELL,
+];
+
 function equals0(self, other, required) {
     return self === other || (other instanceof SpreadsheetMetadata && equals1(self, other, required));
 }
@@ -858,20 +873,15 @@ function equals0(self, other, required) {
  * Tests the required entries in both SpreadsheetMetadata for equality.
  */
 function equals1(metadata, other, required) {
-    var equals = false;
-
     const properties = metadata.properties;
     const otherProperties = other.properties;
 
-    // if required === IGNORED_PROPERTIES must test all individual properties...
-    if(required === VIEWPORT_SHOULD_LOAD_CELLS_PROPERTY_NAMES || Object.keys(properties).length === Object.keys(otherProperties).length){
-        equals = true;
+    var equals = true;
 
-        for(const property of required) {
-            equals = Equality.safeEquals(properties[property], otherProperties[property]);
-            if(!equals){
-                break;
-            }
+    for(const property of required) {
+        equals = Equality.safeEquals(properties[property], otherProperties[property]);
+        if(!equals){
+            break;
         }
     }
 
