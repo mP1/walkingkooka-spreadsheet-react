@@ -439,7 +439,8 @@ export default class SpreadsheetMetadata extends SystemObject {
      */
     getIgnoringDefaults(propertyName) {
         checkPropertyName(propertyName);
-        return this.properties[propertyName];
+        const value = this.properties[propertyName];
+        return null == value ? null : value;
     }
 
     get(propertyName) {
@@ -448,7 +449,7 @@ export default class SpreadsheetMetadata extends SystemObject {
             const defaults = this.properties._defaults;
             value = defaults && defaults.getIgnoringDefaults(propertyName);
         }
-        return value;
+        return null == value ? null : value;
     }
 
     /**
