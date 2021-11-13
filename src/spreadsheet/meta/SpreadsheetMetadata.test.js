@@ -80,7 +80,7 @@ test("Empty", () => {
     expect(metadata).toBeDefined();
 
     checkJson(metadata, {});
-    checkSpreadsheetId(metadata);
+    checkSpreadsheetId(metadata, null);
 });
 
 // fromJson.............................................................................................................
@@ -91,7 +91,7 @@ test("from json empty", () => {
     const metadata = SpreadsheetMetadata.fromJson(json);
 
     checkJson(metadata, json);
-    checkSpreadsheetId(metadata);
+    checkSpreadsheetId(metadata, null);
 });
 
 test("from json with spreadsheet-id", () => {
@@ -110,7 +110,7 @@ test("from json with spreadsheet-name", () => {
     const metadata = SpreadsheetMetadata.fromJson(json);
 
     checkJson(metadata, json);
-    checkSpreadsheetId(metadata);
+    checkSpreadsheetId(metadata, null);
     checkSpreadsheetName(metadata, name);
 })
 
@@ -193,7 +193,7 @@ test("getIgnoringDefaults present without defaults", () => {
 
 test("getIgnoringDefaults missing without defaults", () => {
     const metadata = new SpreadsheetMetadata({});
-    expect(metadata.getIgnoringDefaults("creator")).toBeUndefined();
+    expect(metadata.getIgnoringDefaults("creator")).toBeNull();
 })
 
 test("getIgnoringDefaults missing but ignoring default", () => {
@@ -201,7 +201,7 @@ test("getIgnoringDefaults missing but ignoring default", () => {
     const propertyValue = "1234";
 
     const metadata = SpreadsheetMetadata.fromJson({_defaults: {"spreadsheet-id": propertyValue}});
-    expect(metadata.getIgnoringDefaults(propertyName)).toBeUndefined();
+    expect(metadata.getIgnoringDefaults(propertyName)).toBeNull();
 })
 
 // get..................................................................................................................
@@ -220,7 +220,7 @@ test("get present without defaults", () => {
 
 test("get missing without defaults", () => {
     const metadata = new SpreadsheetMetadata({});
-    expect(metadata.get("creator")).toBeUndefined();
+    expect(metadata.get("creator")).toBeNull();
 })
 
 test("get from default", () => {
@@ -748,7 +748,7 @@ function getIgnoringDefaultsTest0(propertyName, propertyValue) {
     test("getIgnoringDefaults " + propertyName + " missing", () => {
         expect(SpreadsheetMetadata.EMPTY
             .getIgnoringDefaults(propertyName))
-            .toBeUndefined();
+            .toBeNull();
     });
 
     test("getIgnoringDefaults " + propertyName, () => {
@@ -765,7 +765,7 @@ function setPropertyTest(propertyName, propertyValue) {
     test("set " + propertyName + " missing", () => {
         expect(SpreadsheetMetadata.EMPTY
             .getIgnoringDefaults(propertyName))
-            .toBeUndefined();
+            .toBeNull();
     });
 
     test("set " + propertyName, () => {
@@ -809,7 +809,7 @@ test("setOrRemove null", () => {
     const metadata = SpreadsheetMetadata.EMPTY
         .set(SpreadsheetMetadata.SELECTION, viewportSelection);
     const metadata2 = metadata.setOrRemove(SpreadsheetMetadata.SELECTION, null)
-    expect(metadata2.getIgnoringDefaults(SpreadsheetMetadata.SELECTION)).toBeUndefined();
+    expect(metadata2.getIgnoringDefaults(SpreadsheetMetadata.SELECTION)).toBeNull();
 });
 
 // all..................................................................................................................
