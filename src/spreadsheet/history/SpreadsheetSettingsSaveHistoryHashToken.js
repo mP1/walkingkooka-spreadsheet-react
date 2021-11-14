@@ -1,22 +1,15 @@
 import Equality from "../../Equality.js";
+import SpreadsheetHistoryHashTokens from "./SpreadsheetHistoryHashTokens.js";
 import SpreadsheetSettingsHistoryHashToken from "./SpreadsheetSettingsHistoryHashToken.js";
 
 /**
- * Saves the metadata or text style property with a new value.
+ * Saves the metadata or text style property with a new value, which may be null if the property should be removed.
  */
 export default class SpreadsheetSettingsSaveHistoryHashToken extends SpreadsheetSettingsHistoryHashToken {
 
-    constructor(property, value) {
+    constructor(value) {
         super();
-        this.propertyValue = property;
         this.valueValue = value;
-    }
-
-    /**
-     * The metadata or text style property
-     */
-    property() {
-        return this.propertyValue;
     }
 
     /**
@@ -27,10 +20,17 @@ export default class SpreadsheetSettingsSaveHistoryHashToken extends Spreadsheet
     }
 
     toHistoryHashToken() {
-        return encodeURIComponent(this.property()) + "/" + encodeURIComponent(this.propertyValue())
+        const value = this.value();
+
+        return "/" + SpreadsheetHistoryHashTokens.SAVE + "/" + (null != value ? encodeURIComponent(value) : "");
     }
 
+    onSettingsAction(settingsWidget) {
+        settingsWidget.patchSpreadsheetMetadata(this.value());
+    }
+
+
     equals(other) {
-        return this === other || (other instanceof SpreadsheetSettingsSaveHistoryHashToken && this.property() === other.property() && Equality.safeEquals(this.value(), other.value()));
+        return this === other || (other instanceof SpreadsheetSettingsSaveHistoryHashToken && Equality.safeEquals(this.value(), other.value()));
     }
 }

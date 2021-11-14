@@ -5,90 +5,61 @@ import SpreadsheetSettingsWidgetValue from "./SpreadsheetSettingsWidgetValue.js"
 import SystemEnum from "../../SystemEnum.js";
 
 /**
- * Shows the enum values using a drop down list. This is preferred because over slider because of too many options.
+ * Shows the enum values using a drop down list. This is preferred because over slider when there are too many values,
+ * which would not fit on a slider.
  */
 export default class SpreadsheetSettingsWidgetDropDownList extends SpreadsheetSettingsWidgetValue {
 
     constructor(props) {
         super(props);
 
-        this.values = props.values;
-
-        this.state = {
-            open: false,
-            value: props.value,
-        }
-
         this.selectRef = React.createRef();
     }
 
-    onStateValueChange(value) {
-        const select = this.selectRef.current;
-        if(select){
-            select.value = value;
-        }
+    focus() {
+        this.giveFocus(this.selectRef.current);
     }
 
-    renderInput(id, value) {
+    renderValue(id, value) {
         const dropDownListId = id + "-DropDownList";
+
+        const {props, state} = this;
+
+        const setOpen = (open) => {
+            this.setState({
+                open: open,
+            });
+        };
+
+        const onChange = (e) => {
+            const value = e.target.value;
+
+            this.setState({
+                value: this.props.values.find(v => v.toString() === value)
+            });
+        };
 
         return <Select id={dropDownListId}
                        key={dropDownListId}
                        native={true}
                        fullWidth={true}
-                       open={this.state.open}
-                       onClose={this.onClose.bind(this)}
-                       onOpen={this.onOpen.bind(this)}
-                       value={this.state.value}
-                       onChange={this.onChange.bind(this)}>
+                       open={Boolean(state.open)}
+                       onClose={() => setOpen(false)}
+                       onOpen={() => setOpen(true)}
+                       value={value || ""}
+                       onChange={onChange}>
             {
-                this.defaultValue ? <option aria-label="" value=""/> : undefined
+                state.defaultValue ? <option aria-label="" value=""/> : undefined
             }
             {
-                this.values.map(v => <option key={v.nameCapitalCase()} value={v}>{v.nameCapitalCase()}</option>)
+                props.values.map(v => <option key={v.nameCapitalCase()} value={v}>{v.nameCapitalCase()}</option>)
             }
         </Select>;
-    }
-
-    onOpen() {
-        this.setOpen(true);
-    }
-
-    onClose() {
-        this.setOpen(false);
-    }
-
-    setOpen(open) {
-        this.setState(
-            {
-                open: open,
-            }
-        )
-    }
-
-    onChange(e) {
-        const value = e.target.value;
-        this.setValue(this.values.find(v => v.toString() === value));
-    }
-
-    /**
-     * Handles the setDefault button being clicked, clearing the value, which lets the default be used and also clears the TextField.
-     */
-    onSetDefaultValue() {
-        console.log("onSetDefaultValue");
-        this.setValue(this.defaultValue);
     }
 }
 
 SpreadsheetSettingsWidgetDropDownList.propTypes = Object.assign(
     SpreadsheetSettingsWidgetValue.createPropTypes(PropTypes.instanceOf(SystemEnum)),
-    {
-        values: PropTypes.arrayOf(SystemEnum),
-    }
-);
-
-SpreadsheetSettingsWidgetDropDownList.propTypes = SpreadsheetSettingsWidgetValue.createPropTypes(
-    PropTypes.instanceOf(SystemEnum),
     {
         values: PropTypes.array.isRequired,
     }

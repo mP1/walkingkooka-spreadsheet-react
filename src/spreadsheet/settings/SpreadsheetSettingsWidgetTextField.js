@@ -1,10 +1,11 @@
- import Keys from "../../Keys.js";
+import Keys from "../../Keys.js";
 import React from 'react';
 import SpreadsheetSettingsWidgetValue from "./SpreadsheetSettingsWidgetValue.js";
 import TextField from "@material-ui/core/TextField";
 
 /**
- * A widget which displays a value for editing using a TextField. Edits are immediately applies upon blur.
+ * A widget which displays a value for editing using a TextField. Edits are delayed and only saved when ENTER is
+ * entered or a blur event.
  */
 export default class SpreadsheetSettingsWidgetTextField extends SpreadsheetSettingsWidgetValue {
 
@@ -13,26 +14,61 @@ export default class SpreadsheetSettingsWidgetTextField extends SpreadsheetSetti
         this.inputField = React.createRef();
     }
 
-    /**
-     * Update the TextField value.
-     */
-    onStateValueChange(value) {
-        const inputField = this.inputField.current;
-        if(inputField){
-            inputField.value = null != value ? value.toString() : "";
-        }
+    focus() {
+        this.giveFocus(this.inputField.current);
     }
 
-    renderInput(id, value) {
+    renderValue(id, value) {
         const textFieldId = id + "-TextField";
         const placeholder = this.placeholder();
         const size = this.size();
         const maxLength = this.maxLength();
         const type = this.type();
 
-        return <TextField inputRef={this.inputField}
-                          id={textFieldId}
+        const onBlur = (e) => {
+            const string = e.target.value;
+            const value = this.stringToValue(string);
+
+            try {
+                this.setState({
+                    value: value,
+                    value2: value,
+                });
+            } catch(e) {
+                this.onError(string, e);
+            }
+        }
+
+        const onChange = (e) => {
+            this.setState({
+                value2: e.target.value,
+            });
+        };
+
+        const onKeyDown = (e) => {
+            switch(e.key) {
+                case Keys.ESCAPE:
+                    this.setState({
+                        value2: this.state.savedValue,
+                    });
+                    break;
+                case Keys.ENTER:
+                    const value = this.stringToValue(e.target.value);
+
+                    this.setState({
+                        value: value,
+                        value2: value,
+                    });
+                    break;
+                default:
+                    // nothing special to do for other keys
+                    break;
+            }
+        };
+
+        return <TextField id={textFieldId}
                           key={textFieldId}
+                          inputRef={this.inputField}
                           style={
                               {
                                   marginRight: "4px",
@@ -47,7 +83,7 @@ export default class SpreadsheetSettingsWidgetTextField extends SpreadsheetSetti
                                   shrink: true,
                               }
                           }
-                          defaultValue={value}
+                          value={this.state.value2 || ""}
                           inputProps={
                               {
                                   size: size,
@@ -55,8 +91,9 @@ export default class SpreadsheetSettingsWidgetTextField extends SpreadsheetSetti
                                   type: type,
                               }
                           }
-                          onBlur={this.onBlur.bind(this)}
-                          onKeyDown={this.onKeyDown.bind(this)}
+                          onBlur={onBlur}
+                          onChange={onChange}
+                          onKeyDown={onKeyDown}
         />
     }
 
@@ -80,64 +117,9 @@ export default class SpreadsheetSettingsWidgetTextField extends SpreadsheetSetti
     }
 
     /**
-     * When the TextField is blurred update the SpreadsheetMetadata.
-     */
-    onBlur(e) {
-        const string = e.target.value;
-        console.log("onBlur " + string);
-
-        try {
-            this.setValue(this.createValue(string));
-        } catch (e) {
-            this.onError(string, e);
-        }
-    }
-
-    /**
-     * Useful event handler for TextFields, the current value of the text field is converted into a value and then
-     * setValue called.
-     */
-    onKeyDown(e) {
-        switch(e.key) {
-            case Keys.ESCAPE:
-                this.resetValue();
-                break;
-            case Keys.ENTER:
-                this.setValue(this.createValue(e.target.value));
-                break;
-            default:
-                // nothing special to do for other keys
-                break;
-        }
-    }
-
-    /**
-     * This method reloads the text field whenever
-     */
-    resetValue() {
-        const value = this.state.value;
-        this.inputField.current.value = null != value ? value.toString() : "";
-    }
-
-    /**
-     * This is called whenever createValue fails to parse or create a value from the entered string.
-     */
-    onError(text, errorMessage) {
-    }
-
-    /**
      * Takes the given string which may be empty and creates a value.
      */
-    createValue(string) {
-        throw new Error("Not yet implemented: createValue");
-    }
-
-    /**
-     * Handles the setDefault button being clicked, clearing the value, which lets the default be used and also clears the TextField.
-     */
-    onSetDefaultValue() {
-        console.log("onSetDefaultValue");
-        this.setValue();
-        this.inputField.current.value = "";
+    stringToValue(string) {
+        throw new Error("Not yet implemented: stringToValue");
     }
 }

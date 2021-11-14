@@ -12,15 +12,17 @@ import SpreadsheetColumnReferenceRange from "../reference/SpreadsheetColumnRefer
 import SpreadsheetFormulaLoadAndEditHistoryHashToken from "./SpreadsheetFormulaLoadAndEditHistoryHashToken.js";
 import SpreadsheetFormulaSaveHistoryHashToken from "./SpreadsheetFormulaSaveHistoryHashToken.js";
 import SpreadsheetHistoryHash from "./SpreadsheetHistoryHash.js";
+import SpreadsheetHistoryHashTokens from "./SpreadsheetHistoryHashTokens.js";
 import SpreadsheetLabelMappingDeleteHistoryHashToken from "./SpreadsheetLabelMappingDeleteHistoryHashToken.js";
 import SpreadsheetLabelMappingSaveHistoryHashToken from "./SpreadsheetLabelMappingSaveHistoryHashToken.js";
 import SpreadsheetLabelName from "../reference/SpreadsheetLabelName.js";
 import SpreadsheetName from "../SpreadsheetName.js";
 import SpreadsheetRowReference from "../reference/SpreadsheetRowReference.js";
 import SpreadsheetRowReferenceRange from "../reference/SpreadsheetRowReferenceRange.js"
-import SpreadsheetSettingsWidgetItems from "../settings/SpreadsheetSettingsWidgetItems.js";
+import SpreadsheetSettingsSaveHistoryHashToken from "./SpreadsheetSettingsSaveHistoryHashToken.js";
+import SpreadsheetSettingsWidgetHistoryHashTokens from "../settings/SpreadsheetSettingsWidgetHistoryHashTokens.js";
 import SpreadsheetViewportSelectionAnchor from "../reference/SpreadsheetViewportSelectionAnchor.js";
-import SpreadsheetHistoryHashTokens from "./SpreadsheetHistoryHashTokens.js";
+import TextStyle from "../../text/TextStyle.js";
 
 const ID = "spreadsheet-id-123";
 const SPREADSHEET_NAME = new SpreadsheetName("spreadsheet-name-456");
@@ -281,6 +283,27 @@ testValidate(
         "spreadsheet-id": ID,
         "spreadsheet-name": SPREADSHEET_NAME,
         "settings": true,
+    }
+);
+
+testValidate(
+    "validate id & name & settings & settings-item",
+    {
+        "spreadsheet-id": ID,
+        "spreadsheet-name": SPREADSHEET_NAME,
+        "settings": true,
+        "settings-item": TextStyle.COLOR,
+    }
+);
+
+testValidate(
+    "validate id & name & settings & settings-item & settings-action=save",
+    {
+        "spreadsheet-id": ID,
+        "spreadsheet-name": SPREADSHEET_NAME,
+        "settings": true,
+        "settings-item": TextStyle.COLOR,
+        "settings-action": new SpreadsheetSettingsSaveHistoryHashToken("#012345"),
     }
 );
 
@@ -1232,13 +1255,26 @@ testParseAndStringify(
 );
 
 testParseAndStringify(
+    "/spreadsheet-id-123/spreadsheet-name-456/select/settings/color",
+    {
+        "spreadsheet-id": "spreadsheet-id-123",
+        "spreadsheet-name": SPREADSHEET_NAME,
+        "select": true,
+        "settings": true,
+        "settings-item": TextStyle.COLOR,
+
+    }
+);
+
+testParseAndStringify(
     "/spreadsheet-id-123/spreadsheet-name-456/select/settings/number",
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
         "select": true,
         "settings": true,
-        "settings-item": SpreadsheetSettingsWidgetItems.NUMBER,
+        "settings-item": SpreadsheetSettingsWidgetHistoryHashTokens.NUMBER,
+
     }
 );
 
@@ -1248,6 +1284,7 @@ testParseAndStringify(
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
         "settings": true,
+
     }
 );
 
@@ -1265,7 +1302,8 @@ testParseAndStringify(
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
         "settings": true,
-        "settings-item": SpreadsheetSettingsWidgetItems.METADATA,
+        "settings-item": SpreadsheetSettingsWidgetHistoryHashTokens.METADATA,
+
     }
 );
 
@@ -1275,7 +1313,8 @@ testParseAndStringify(
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
         "settings": true,
-        "settings-item": SpreadsheetSettingsWidgetItems.TEXT,
+        "settings-item": SpreadsheetSettingsWidgetHistoryHashTokens.TEXT,
+
     }
 );
 
@@ -1285,7 +1324,8 @@ testParseAndStringify(
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
         "settings": true,
-        "settings-item": SpreadsheetSettingsWidgetItems.NUMBER,
+        "settings-item": SpreadsheetSettingsWidgetHistoryHashTokens.NUMBER,
+
     }
 );
 
@@ -1295,7 +1335,8 @@ testParseAndStringify(
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
         "settings": true,
-        "settings-item": SpreadsheetSettingsWidgetItems.DATE_TIME,
+        "settings-item": SpreadsheetSettingsWidgetHistoryHashTokens.DATE_TIME,
+
     }
 );
 
@@ -1305,7 +1346,8 @@ testParseAndStringify(
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
         "settings": true,
-        "settings-item": SpreadsheetSettingsWidgetItems.STYLE,
+        "settings-item": SpreadsheetSettingsWidgetHistoryHashTokens.STYLE,
+
     }
 );
 
@@ -1315,6 +1357,7 @@ testParseAndStringify(
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
         "settings": true,
+
     }
 );
 
@@ -1332,7 +1375,8 @@ testParseAndStringify(
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
         "settings": true,
-        "settings-item": SpreadsheetSettingsWidgetItems.METADATA,
+        "settings-item": SpreadsheetSettingsWidgetHistoryHashTokens.METADATA,
+
     }
 );
 
@@ -1342,7 +1386,8 @@ testParseAndStringify(
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
         "settings": true,
-        "settings-item": SpreadsheetSettingsWidgetItems.TEXT,
+        "settings-item": SpreadsheetSettingsWidgetHistoryHashTokens.TEXT,
+
     }
 );
 
@@ -1352,7 +1397,8 @@ testParseAndStringify(
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
         "settings": true,
-        "settings-item": SpreadsheetSettingsWidgetItems.NUMBER,
+        "settings-item": SpreadsheetSettingsWidgetHistoryHashTokens.NUMBER,
+
     }
 );
 
@@ -1362,7 +1408,8 @@ testParseAndStringify(
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
         "settings": true,
-        "settings-item": SpreadsheetSettingsWidgetItems.DATE_TIME,
+        "settings-item": SpreadsheetSettingsWidgetHistoryHashTokens.DATE_TIME,
+
     }
 );
 
@@ -1372,7 +1419,73 @@ testParseAndStringify(
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
         "settings": true,
-        "settings-item": SpreadsheetSettingsWidgetItems.STYLE,
+        "settings-item": SpreadsheetSettingsWidgetHistoryHashTokens.STYLE,
+
+    }
+);
+
+testParseAndStringify(
+    "/spreadsheet-id-123/spreadsheet-name-456/name/settings/style/save",
+    {
+        "spreadsheet-id": "spreadsheet-id-123",
+        "spreadsheet-name": SPREADSHEET_NAME,
+    }
+);
+
+testParseAndStringify(
+    "/spreadsheet-id-123/spreadsheet-name-456/name/settings/style/save/",
+    {
+        "spreadsheet-id": "spreadsheet-id-123",
+        "spreadsheet-name": SPREADSHEET_NAME,
+    }
+);
+
+testParseAndStringify(
+    "/spreadsheet-id-123/spreadsheet-name-456/name/settings/style/save/1",
+    {
+        "spreadsheet-id": "spreadsheet-id-123",
+        "spreadsheet-name": SPREADSHEET_NAME,
+    }
+);
+
+testParseAndStringify(
+    "/spreadsheet-id-123/spreadsheet-name-456/name/settings/color",
+    {
+        "spreadsheet-id": "spreadsheet-id-123",
+        "spreadsheet-name": SPREADSHEET_NAME,
+        "settings": true,
+        "settings-item": TextStyle.COLOR,
+
+    }
+);
+
+testParseAndStringify(
+    "/spreadsheet-id-123/spreadsheet-name-456/name/settings/color/save",
+    {
+        "spreadsheet-id": "spreadsheet-id-123",
+        "spreadsheet-name": SPREADSHEET_NAME
+    }
+);
+
+testParseAndStringify(
+    "/spreadsheet-id-123/spreadsheet-name-456/name/settings/color/save/",
+    {
+        "spreadsheet-id": "spreadsheet-id-123",
+        "spreadsheet-name": SPREADSHEET_NAME,
+        "settings": true,
+        "settings-item": TextStyle.COLOR,
+        "settings-action": new SpreadsheetSettingsSaveHistoryHashToken(null),
+    }
+);
+
+testParseAndStringify(
+    "/spreadsheet-id-123/spreadsheet-name-456/name/settings/color/save/012345",
+    {
+        "spreadsheet-id": "spreadsheet-id-123",
+        "spreadsheet-name": SPREADSHEET_NAME,
+        "settings": true,
+        "settings-item": TextStyle.COLOR,
+        "settings-action": new SpreadsheetSettingsSaveHistoryHashToken("012345"),
     }
 );
 
@@ -1384,6 +1497,7 @@ testParseAndStringify(
         "selection": SpreadsheetCellReference.parse("B2"),
         "selection-action": new SpreadsheetFormulaLoadAndEditHistoryHashToken(),
         "settings": true,
+
     }
 );
 
@@ -1404,6 +1518,7 @@ testParseAndStringify(
         "selection-action": new SpreadsheetFormulaLoadAndEditHistoryHashToken(),
         "settings": true,
         "settings-item": "metadata",
+
     }
 );
 
@@ -1416,6 +1531,7 @@ testParseAndStringify(
         "selection-action": new SpreadsheetFormulaLoadAndEditHistoryHashToken(),
         "settings": true,
         "settings-item": "text",
+
     }
 );
 
@@ -1428,6 +1544,7 @@ testParseAndStringify(
         "selection-action": new SpreadsheetFormulaLoadAndEditHistoryHashToken(),
         "settings": true,
         "settings-item": "number",
+
     }
 );
 
@@ -1440,6 +1557,7 @@ testParseAndStringify(
         "selection-action": new SpreadsheetFormulaLoadAndEditHistoryHashToken(),
         "settings": true,
         "settings-item": "date-time",
+
     }
 );
 
@@ -1452,6 +1570,7 @@ testParseAndStringify(
         "selection-action": new SpreadsheetFormulaLoadAndEditHistoryHashToken(),
         "settings": true,
         "settings-item": "style",
+
     }
 );
 testParseAndStringify(
@@ -1462,6 +1581,7 @@ testParseAndStringify(
         "label": LABEL,
         "settings": true,
         "settings-item": "style",
+
     }
 );
 
@@ -1473,7 +1593,8 @@ testParseAndStringify(
         "selection": CELL,
         "selection-action": new SpreadsheetFormulaLoadAndEditHistoryHashToken(),
         "settings": true,
-        "settings-item": SpreadsheetSettingsWidgetItems.METADATA,
+        "settings-item": SpreadsheetSettingsWidgetHistoryHashTokens.METADATA,
+
     }
 );
 
@@ -2107,8 +2228,7 @@ testMerge(
 testMerge(
     "/123abc/Untitled456/settings",
     {
-        "settings": true,
-        "settings-item": SpreadsheetSettingsWidgetItems.METADATA,
+        "settings-item": SpreadsheetSettingsWidgetHistoryHashTokens.METADATA,
     },
     "/123abc/Untitled456/settings/metadata"
 );
@@ -2117,7 +2237,16 @@ testMerge(
     "/123abc/Untitled456/settings",
     {
         "settings": true,
-        "settings-item": SpreadsheetSettingsWidgetItems.TEXT,
+        "settings-item": SpreadsheetSettingsWidgetHistoryHashTokens.METADATA,
+    },
+    "/123abc/Untitled456/settings/metadata"
+);
+
+testMerge(
+    "/123abc/Untitled456/settings",
+    {
+        "settings": true,
+        "settings-item": SpreadsheetSettingsWidgetHistoryHashTokens.TEXT,
     },
     "/123abc/Untitled456/settings/text"
 );
@@ -2125,7 +2254,7 @@ testMerge(
 testMerge(
     "/123abc/Untitled456/settings",
     {
-        "settings-item": SpreadsheetSettingsWidgetItems.TEXT,
+        "settings-item": SpreadsheetSettingsWidgetHistoryHashTokens.TEXT,
     },
     "/123abc/Untitled456/settings/text"
 );
@@ -2134,7 +2263,7 @@ testMerge(
     "/123abc/Untitled456/settings",
     {
         "settings": true,
-        "settings-item": SpreadsheetSettingsWidgetItems.NUMBER,
+        "settings-item": SpreadsheetSettingsWidgetHistoryHashTokens.NUMBER,
     },
     "/123abc/Untitled456/settings/number"
 );
@@ -2142,7 +2271,7 @@ testMerge(
 testMerge(
     "/123abc/Untitled456/settings",
     {
-        "settings-item": SpreadsheetSettingsWidgetItems.NUMBER,
+        "settings-item": SpreadsheetSettingsWidgetHistoryHashTokens.NUMBER,
     },
     "/123abc/Untitled456/settings/number"
 );
@@ -2151,7 +2280,7 @@ testMerge(
     "/123abc/Untitled456/settings",
     {
         "settings": true,
-        "settings-item": SpreadsheetSettingsWidgetItems.DATE_TIME,
+        "settings-item": SpreadsheetSettingsWidgetHistoryHashTokens.DATE_TIME,
     },
     "/123abc/Untitled456/settings/date-time"
 );
@@ -2159,7 +2288,7 @@ testMerge(
 testMerge(
     "/123abc/Untitled456/settings",
     {
-        "settings-item": SpreadsheetSettingsWidgetItems.DATE_TIME,
+        "settings-item": SpreadsheetSettingsWidgetHistoryHashTokens.DATE_TIME,
     },
     "/123abc/Untitled456/settings/date-time"
 );
@@ -2168,7 +2297,7 @@ testMerge(
     "/123abc/Untitled456/settings",
     {
         "settings": true,
-        "settings-item": SpreadsheetSettingsWidgetItems.STYLE,
+        "settings-item": SpreadsheetSettingsWidgetHistoryHashTokens.STYLE,
     },
     "/123abc/Untitled456/settings/style"
 );
@@ -2176,7 +2305,7 @@ testMerge(
 testMerge(
     "/123abc/Untitled456/settings",
     {
-        "settings-item": SpreadsheetSettingsWidgetItems.STYLE,
+        "settings-item": SpreadsheetSettingsWidgetHistoryHashTokens.STYLE,
     },
     "/123abc/Untitled456/settings/style"
 );
@@ -2184,9 +2313,41 @@ testMerge(
 testMerge(
     "/123abc/Untitled456/settings/metadata",
     {
-        "settings-item": SpreadsheetSettingsWidgetItems.TEXT,
+        "settings-item": SpreadsheetSettingsWidgetHistoryHashTokens.TEXT,
     },
     "/123abc/Untitled456/settings/text"
+);
+
+testMerge(
+    "/123abc/Untitled456/settings/color",
+    {
+        "settings-action": null,
+    },
+    "/123abc/Untitled456/settings/color"
+);
+
+testMerge(
+    "/123abc/Untitled456/settings/color",
+    {
+        "settings-action": new SpreadsheetSettingsSaveHistoryHashToken("#012345"),
+    },
+    "/123abc/Untitled456/settings/color/save/#012345"
+);
+
+testMerge(
+    "/123abc/Untitled456/settings/color/save/#012345",
+    {
+        "settings-action": null,
+    },
+    "/123abc/Untitled456/settings/color"
+);
+
+testMerge(
+    "/123abc/Untitled456/settings/color/save/#012345",
+    {
+        "settings-action": new SpreadsheetSettingsSaveHistoryHashToken("#abcdef"),
+    },
+    "/123abc/Untitled456/settings/color/save/#abcdef"
 );
 
 testMerge(
@@ -2226,7 +2387,7 @@ testMerge(
     "/123abc/Untitled456/name/settings",
     {
         "settings": true,
-        "settings-item": SpreadsheetSettingsWidgetItems.METADATA,
+        "settings-item": SpreadsheetSettingsWidgetHistoryHashTokens.METADATA,
     },
     "/123abc/Untitled456/settings/metadata"
 );
@@ -2235,7 +2396,7 @@ testMerge(
     "/123abc/Untitled456/name/settings",
     {
         "settings": true,
-        "settings-item": SpreadsheetSettingsWidgetItems.TEXT,
+        "settings-item": SpreadsheetSettingsWidgetHistoryHashTokens.TEXT,
     },
     "/123abc/Untitled456/settings/text"
 );
@@ -2244,7 +2405,7 @@ testMerge(
     "/123abc/Untitled456/name/settings",
     {
         "settings": true,
-        "settings-item": SpreadsheetSettingsWidgetItems.NUMBER,
+        "settings-item": SpreadsheetSettingsWidgetHistoryHashTokens.NUMBER,
     },
     "/123abc/Untitled456/settings/number"
 );
@@ -2253,7 +2414,7 @@ testMerge(
     "/123abc/Untitled456/name/settings",
     {
         "settings": true,
-        "settings-item": SpreadsheetSettingsWidgetItems.DATE_TIME,
+        "settings-item": SpreadsheetSettingsWidgetHistoryHashTokens.DATE_TIME,
     },
     "/123abc/Untitled456/settings/date-time"
 );
@@ -2262,9 +2423,17 @@ testMerge(
     "/123abc/Untitled456/name/settings",
     {
         "settings": true,
-        "settings-item": SpreadsheetSettingsWidgetItems.STYLE,
+        "settings-item": SpreadsheetSettingsWidgetHistoryHashTokens.STYLE,
     },
     "/123abc/Untitled456/settings/style"
+);
+
+testMerge(
+    "/123abc/Untitled456/name/settings/color/save/#012345",
+    {
+        "settings-action": null,
+    },
+    "/123abc/Untitled456/name/settings/color"
 );
 
 testMerge(
@@ -2328,7 +2497,7 @@ testMerge(
     "/123abc/Untitled456/cell/A1/formula/settings",
     {
         "settings": true,
-        "settings-item": SpreadsheetSettingsWidgetItems.METADATA,
+        "settings-item": SpreadsheetSettingsWidgetHistoryHashTokens.METADATA,
     },
     "/123abc/Untitled456/cell/A1/formula/settings/metadata"
 );
@@ -2337,7 +2506,7 @@ testMerge(
     "/123abc/Untitled456/cell/A1/formula/settings",
     {
         "settings": true,
-        "settings-item": SpreadsheetSettingsWidgetItems.TEXT,
+        "settings-item": SpreadsheetSettingsWidgetHistoryHashTokens.TEXT,
     },
     "/123abc/Untitled456/cell/A1/formula/settings/text"
 );
@@ -2346,7 +2515,7 @@ testMerge(
     "/123abc/Untitled456/cell/A1/formula/settings",
     {
         "settings": true,
-        "settings-item": SpreadsheetSettingsWidgetItems.NUMBER,
+        "settings-item": SpreadsheetSettingsWidgetHistoryHashTokens.NUMBER,
     },
     "/123abc/Untitled456/cell/A1/formula/settings/number"
 );
@@ -2355,7 +2524,7 @@ testMerge(
     "/123abc/Untitled456/cell/A1/formula/settings",
     {
         "settings": true,
-        "settings-item": SpreadsheetSettingsWidgetItems.DATE_TIME,
+        "settings-item": SpreadsheetSettingsWidgetHistoryHashTokens.DATE_TIME,
     },
     "/123abc/Untitled456/cell/A1/formula/settings/date-time"
 );
@@ -2364,7 +2533,7 @@ testMerge(
     "/123abc/Untitled456/cell/A1/formula/settings",
     {
         "settings": true,
-        "settings-item": SpreadsheetSettingsWidgetItems.STYLE,
+        "settings-item": SpreadsheetSettingsWidgetHistoryHashTokens.STYLE,
     },
     "/123abc/Untitled456/cell/A1/formula/settings/style"
 );
@@ -2381,7 +2550,7 @@ testMerge(
     "/123abc/Untitled456/cell/A1/formula/settings",
     {
         "settings": false,
-        "settings-item": SpreadsheetSettingsWidgetItems.METADATA,
+        "settings-item": SpreadsheetSettingsWidgetHistoryHashTokens.METADATA,
     },
     "/123abc/Untitled456/cell/A1/formula"
 );

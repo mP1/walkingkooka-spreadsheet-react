@@ -573,6 +573,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
                 </Table>
                 <Slider ref={this.horizontalSlider}
                         id={SpreadsheetViewportWidget.VIEWPORT_HORIZONTAL_SLIDER_ID}
+                        key={SpreadsheetViewportWidget.VIEWPORT_HORIZONTAL_SLIDER_ID}
                         orientation="horizontal"
                         aria-labelledby="horizontal-slider"
                         track={false}
@@ -594,6 +595,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
                 />
                 <Slider ref={this.verticalSlider}
                         id={SpreadsheetViewportWidget.VIEWPORT_VERTICAL_SLIDER_ID}
+                        key={SpreadsheetViewportWidget.VIEWPORT_VERTICAL_SLIDER_ID}
                         orientation="vertical"
                         aria-labelledby="vertical-slider"
                         track={false}
