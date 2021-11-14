@@ -40,6 +40,7 @@ export default class SpreadsheetHistoryHashTokens {
     static SELECT = "select";
     static SETTINGS = "settings";
     static SETTINGS_ITEM = "settings-item";
+    static SETTINGS_ACTION = "settings-action";
 
     static TX_ID = "_tx-id";
 }

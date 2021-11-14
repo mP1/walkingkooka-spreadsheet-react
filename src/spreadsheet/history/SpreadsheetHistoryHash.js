@@ -27,9 +27,10 @@ import SpreadsheetName from "../SpreadsheetName.js";
 import SpreadsheetRowReferenceRange from "../reference/SpreadsheetRowReferenceRange.js";
 import SpreadsheetSelection from "../reference/SpreadsheetSelection.js";
 import SpreadsheetSelectionActionHistoryHashToken from "./SpreadsheetSelectionActionHistoryHashToken.js";
-import SpreadsheetSettingsWidgetItems from "../settings/SpreadsheetSettingsWidgetItems.js";
+import SpreadsheetSettingsHistoryHashToken from "./SpreadsheetSettingsHistoryHashToken.js";
+import SpreadsheetSettingsSaveHistoryHashToken from "./SpreadsheetSettingsSaveHistoryHashToken.js";
+import SpreadsheetSettingsWidgetHistoryHashTokens from "../settings/SpreadsheetSettingsWidgetHistoryHashTokens.js";
 import SpreadsheetViewportSelectionAnchor from "../reference/SpreadsheetViewportSelectionAnchor.js";
-
 
 function tokenize(pathname) {
     return pathname && pathname.startsWith("/") ?
@@ -44,8 +45,13 @@ function split(pathname) {
 }
 
 function isSettingsToken(token) {
-    return SpreadsheetSettingsWidgetItems.items()
-        .indexOf(token) > -1;
+    return SpreadsheetSettingsWidgetHistoryHashTokens.accordions()
+            .indexOf(token) > -1 ||
+        isSettingsSaveableToken(token);
+}
+
+function isSettingsSaveableToken(token) {
+    return Boolean(SpreadsheetSettingsWidgetHistoryHashTokens.parentAccordion(token));
 }
 
 function copyTx(from, to) {
@@ -95,6 +101,7 @@ export default class SpreadsheetHistoryHash extends SpreadsheetHistoryHashTokens
                 var select = null;
                 var settings = null;
                 var settingsItem = null;
+                var settingsAction = null;
 
                 do {
                     var token = tokens.shift();
@@ -263,11 +270,28 @@ export default class SpreadsheetHistoryHash extends SpreadsheetHistoryHashTokens
                     // /settings/
                     if(SpreadsheetHistoryHashTokens.SETTINGS === token){
                         settings = true;
+                        settingsItem = undefined;
+                        settingsAction = null;
+
                         token = tokens.shift();
                         if(null != token){
                             if(isSettingsToken(token)){
                                 settingsItem = token;
                                 token = tokens.shift();
+
+                                // /settings/$property/save/$value
+                                if(isSettingsSaveableToken(settingsItem)){
+                                    if(SpreadsheetHistoryHashTokens.SAVE === token) {
+                                        if(tokens.length === 0) {
+                                            break;
+                                        }
+                                        token = tokens.shift();
+                                        settingsAction = new SpreadsheetSettingsSaveHistoryHashToken(
+                                            "" === token ? null : decodeURIComponent(token)
+                                        );
+                                        token = tokens.shift();
+                                    }
+                                }
                             }else {
                                 break;
                             }
@@ -306,6 +330,9 @@ export default class SpreadsheetHistoryHash extends SpreadsheetHistoryHashTokens
                         if(settingsItem){
                             historyHashTokens[SpreadsheetHistoryHashTokens.SETTINGS_ITEM] = settingsItem;
                         }
+                        if(settingsAction){
+                            historyHashTokens[SpreadsheetHistoryHashTokens.SETTINGS_ACTION] = settingsAction;
+                        }
                     }
                 } while(false);
             }
@@ -332,6 +359,7 @@ export default class SpreadsheetHistoryHash extends SpreadsheetHistoryHashTokens
         var select = tokens[SpreadsheetHistoryHashTokens.SELECT];
         var settings = tokens[SpreadsheetHistoryHashTokens.SETTINGS];
         var settingsItem = tokens[SpreadsheetHistoryHashTokens.SETTINGS_ITEM];
+        var settingsAction = tokens[SpreadsheetHistoryHashTokens.SETTINGS_ACTION];
 
         const verified = {};
 
@@ -398,6 +426,24 @@ export default class SpreadsheetHistoryHash extends SpreadsheetHistoryHashTokens
 
                     if(settingsItem){
                         verified[SpreadsheetHistoryHashTokens.SETTINGS_ITEM] = settingsItem;
+
+                        let verifiedSettingsAction = null;
+
+                        if(isSettingsToken(settingsItem)){
+                            if(settingsAction instanceof SpreadsheetSettingsHistoryHashToken){
+                                verifiedSettingsAction = settingsAction;
+                            }
+                        }
+                        if(isSettingsToken(settingsItem) && settingsAction instanceof SpreadsheetSettingsHistoryHashToken){
+                            verifiedSettingsAction = settingsAction;
+                        }
+                        if(isSettingsSaveableToken(settingsItem) && settingsAction instanceof SpreadsheetSettingsHistoryHashToken){
+                            verifiedSettingsAction = settingsAction;
+                        }
+
+                        if(verifiedSettingsAction) {
+                            verified[SpreadsheetHistoryHashTokens.SETTINGS_ACTION] = verifiedSettingsAction;
+                        }
                     }
                 }
             }
@@ -429,6 +475,7 @@ export default class SpreadsheetHistoryHash extends SpreadsheetHistoryHashTokens
 
         var settings = current[SpreadsheetHistoryHashTokens.SETTINGS];
         var settingsItem = current[SpreadsheetHistoryHashTokens.SETTINGS_ITEM];
+        var settingsAction = current[SpreadsheetHistoryHashTokens.SETTINGS_ACTION];
 
         // try replacing...
         if(delta.hasOwnProperty(SpreadsheetHistoryHashTokens.SPREADSHEET_ID)){
@@ -447,6 +494,8 @@ export default class SpreadsheetHistoryHash extends SpreadsheetHistoryHashTokens
                 label = null;
                 select = null;
                 settings = null;
+                settingsItem = null;
+                settingsAction = null;
             }
         }
 
@@ -509,6 +558,16 @@ export default class SpreadsheetHistoryHash extends SpreadsheetHistoryHashTokens
             }
         }
 
+        if(delta.hasOwnProperty(SpreadsheetHistoryHashTokens.SETTINGS_ACTION)){
+            settingsAction = delta[SpreadsheetHistoryHashTokens.SETTINGS_ACTION];
+            if(settingsAction){
+                if(!isSettingsSaveableToken(settingsItem)){
+                    settingsAction = null;
+                }
+                nameEdit = false;
+            }
+        }
+
         const merged = SpreadsheetHistoryHashTokens.emptyTokens();
         let valid = false;
 
@@ -558,8 +617,11 @@ export default class SpreadsheetHistoryHash extends SpreadsheetHistoryHashTokens
             if(null != settings){
                 merged[SpreadsheetHistoryHashTokens.SETTINGS] = settings;
             }
-            if(null != settingsItem){
+            if(typeof settingsItem !== "undefined"){
                 merged[SpreadsheetHistoryHashTokens.SETTINGS_ITEM] = settingsItem;
+            }
+            if(typeof settingsAction !== "undefined"){
+                merged[SpreadsheetHistoryHashTokens.SETTINGS_ACTION] = settingsAction;
             }
         }
 
@@ -585,6 +647,7 @@ export default class SpreadsheetHistoryHash extends SpreadsheetHistoryHashTokens
 
         var settings = tokens[SpreadsheetHistoryHashTokens.SETTINGS];
         var settingsItem = tokens[SpreadsheetHistoryHashTokens.SETTINGS_ITEM];
+        var settingsAction = tokens[SpreadsheetHistoryHashTokens.SETTINGS_ACTION];
 
         let hash = "";
         let valid = false;
@@ -642,6 +705,10 @@ export default class SpreadsheetHistoryHash extends SpreadsheetHistoryHashTokens
 
                 if(settingsItem){
                     hash = hash + "/" + settingsItem;
+
+                    if(settingsAction){
+                        hash = hash + settingsAction.toHistoryHashToken();
+                    }
                 }
             }
         }

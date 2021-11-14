@@ -1,13 +1,13 @@
 /// <reference types="cypress" />
 
 import BorderStyle from "../../src/text/BorderStyle.js";
+import CharSequences from "../../src/CharSequences.js";
 import ExpressionNumberKind from "../../src/math/ExpressionNumberKind.js";
 import Hyphens from "../../src/text/Hyphens.js";
 import RoundingMode from "../../src/math/RoundingMode.js";
 import SpreadsheetCellReference from "../../src/spreadsheet/reference/SpreadsheetCellReference.js";
 import SpreadsheetMetadata from "../../src/spreadsheet/meta/SpreadsheetMetadata.js";
 import SpreadsheetSettingsWidget from "../../src/spreadsheet/settings/SpreadsheetSettingsWidget.js";
-import SpreadsheetSettingsWidgetItems from "../../src/spreadsheet/settings/SpreadsheetSettingsWidgetItems.js";
 import SpreadsheetTesting from "./SpreadsheetTesting.js";
 import TextAlign from "../../src/text/TextAlign.js";
 import TextStyle from "../../src/text/TextStyle.js";
@@ -30,6 +30,8 @@ describe(
         // helper that includes some waits to make formula text entry more reliable.
         function formulaTextEnterAndSave(a1Formula) {
             testing.cellFormulaEnterAndSave(A1, a1Formula);
+
+            testing.cellClick(A1);
         }
 
         beforeEach(() => {
@@ -76,11 +78,17 @@ describe(
                 .should('be.not.visible');
         });
 
-        it("Toggle hash", () => {
+        it("Toggle hash, verify accordions collapsed", () => {
             settingsToggle();
 
             cy.hash()
                 .should("match", /.*\/Untitled\/settings/);
+
+            settings()
+                .should("contains.text", "Metadata")
+                .should("contains.text", "Text")
+                .should("contains.text", "Number")
+                .should("contains.text", "style");
         });
 
         it("Hash Toggle show then hide", () => {
@@ -91,41 +99,15 @@ describe(
                 .should("match", /.*\/Untitled/);
         });
 
-        it("Settings show after editing spreadsheet name", () => {
-            testing.spreadsheetNameClick();
-
-            testing.spreadsheetName()
-                .blur();
-
-            cy.hash()
-                .should("matches", /.*\/Untitled/);
-
-            settingsToggle();
-
-            cy.hash()
-                .should("matches", /.*\/Untitled\/settings/);
-        });
-
-        it("Open hash after Edit cell", () => {
-            testing.cellClick(A1);
-
-            settingsToggle();
-
-            cy.hash()
-                .should("matches", /.*\/Untitled\/cell\/A1\/settings/);
-        });
-
         it("Metadata check creator-date-time/modified-date-time", () => {
-            settingsToggle();
-
-            settingsOpenAccordion(SpreadsheetMetadata.CREATE_DATE_TIME);
+            settingsProperty(SpreadsheetMetadata.CREATE_DATE_TIME);
 
             const year = new Date().getFullYear();
 
-            testing.settingsSpreadsheetMetadataProperty(SpreadsheetMetadata.CREATE_DATE_TIME)
+            testing.settingsProperty(SpreadsheetMetadata.CREATE_DATE_TIME)
                 .contains(year);
 
-            testing.settingsSpreadsheetMetadataProperty(SpreadsheetMetadata.MODIFIED_DATE_TIME)
+            testing.settingsProperty(SpreadsheetMetadata.MODIFIED_DATE_TIME)
                 .contains(year);
         });
 
@@ -133,57 +115,75 @@ describe(
          * Opens the spreadsheet settings, types in the given text, and verifies the property.
          * The button is then clicked and the text field is verified.
          */
-        function settingsSpreadsheetMetadataPropertyTextAndCheck(property,
-                                                                 a1Formula,
-                                                                 text,
-                                                                 defaultText,
-                                                                 updatedA1Formula,
-                                                                 a1CellContent,
-                                                                 a1CellContentDefault) {
+        function settingsPropertyTextAndCheck(property,
+                                              a1Formula,
+                                              text,
+                                              defaultText,
+                                              updatedA1Formula,
+                                              a1CellContent,
+                                              a1CellContentDefault) {
             it("Update SpreadsheetMetadata." + property, () => {
-                settingsToggle();
-
-                settingsOpenAccordion(property);
-
+                // prepare date-parse & date format patterns ......
+                var dateParsePattern = null;
+                var dateFormatPattern = null;
                 switch(property) {
                     case SpreadsheetMetadata.DEFAULT_YEAR:
-                        testing.settingsSpreadsheetMetadataProperty(SpreadsheetMetadata.DATE_PARSE_PATTERNS, "-TextField")
-                            .type("{selectall}dd:mm{enter}")
-                            .blur();
-
-                        testing.settingsSpreadsheetMetadataProperty(SpreadsheetMetadata.DATE_FORMAT_PATTERN, "-TextField")
-                            .type("{selectall}yyyy/mm/dd{enter}")
-                            .blur();
+                        dateParsePattern = "dd:mm";
+                        dateFormatPattern = "yyyy/mm/dd";
                         break;
                     case SpreadsheetMetadata.TWO_DIGIT_YEAR:
-                        testing.settingsSpreadsheetMetadataProperty(SpreadsheetMetadata.DATE_PARSE_PATTERNS, "-TextField")
-                            .type("{selectall}yy/mm/dd{enter}")
-                            .blur();
-
-                        testing.settingsSpreadsheetMetadataProperty(SpreadsheetMetadata.DATE_FORMAT_PATTERN, "-TextField")
-                            .type("{selectall}yyyy/mm/dd{enter}")
-                            .blur();
+                        dateParsePattern = "yy/mm/dd";
+                        dateFormatPattern = "yyyy/mm/dd";
                         break;
                     default:
                         break;
                 }
 
+                if(dateParsePattern){
+                    cy.log("prepare date-parse-pattern " + CharSequences.quoteAndEscape(dateParsePattern) + " & date-format-pattern=" + CharSequences.quoteAndEscape(dateFormatPattern));
+
+                    settingsProperty(SpreadsheetMetadata.DATE_PARSE_PATTERNS);
+
+                    testing.settingsProperty(SpreadsheetMetadata.DATE_PARSE_PATTERNS, "-TextField")
+                        .click();
+
+                    testing.settingsProperty(SpreadsheetMetadata.DATE_PARSE_PATTERNS, "-TextField")
+                        .type("{selectall}" + dateParsePattern + "{enter}");
+
+                    testing.settingsProperty(SpreadsheetMetadata.DATE_FORMAT_PATTERN, "-TextField")
+                        .click();
+
+                    testing.settingsProperty(SpreadsheetMetadata.DATE_FORMAT_PATTERN, "-TextField")
+                        .type("{selectall}" + dateFormatPattern + "{enter}");
+
+                    settingsToggle();
+                }
+
+                // enter formula
                 if(a1Formula){
                     formulaTextEnterAndSave(a1Formula);
                 }
 
-                const textFieldId = SpreadsheetSettingsWidget.spreadsheetMetadataPropertyId(property) + "-TextField";
+                // update settings property
+                settingsProperty(property);
 
+                const textFieldId = SpreadsheetSettingsWidget.propertyId(property) + "-TextField";
                 testing.getById(textFieldId)
                     .then((input) => {
-                    // type text and hit ENTER
+                        const textBackup = input.text();
+
+                        // type text and hit ENTER
                         testing.getById(textFieldId)
-                        .type("{selectall}" + text + "{enter}");
+                            .click();
 
                         testing.getById(textFieldId)
-                        .should("have.value", text);
+                            .type("{selectall}" + text + "{enter}");
+
+                        testing.getById(textFieldId)
+                            .should("have.value", text);
 
                         if(updatedA1Formula){
+                            testing.formulaTextLoadWait();
                             testing.formulaText()
                                 .should("have.value", updatedA1Formula)
                         }
@@ -194,36 +194,46 @@ describe(
 
                         // restore original textField value.
                         testing.getById(textFieldId)
-                            .type("{selectall}" + input.text() + "{enter}");
+                            .type("{selectall}" + textBackup + "{enter}");
+
+                        testing.settingsWait();
 
                         // click default button...
-                        testing.settingsSpreadsheetMetadataProperty(property, "-default-Button")
+                        testing.settingsProperty(property, "-default-Button")
                             .should("have.text", defaultText)
                             .click();
+
+                        testing.settingsWait();
 
                         testing.getById(textFieldId)
                             .should("have.value", "");
 
+                        // TODO typing on formula closes settings!!!!
+
                         if(a1Formula){
+                            testing.formulaTextLoadWait();
                             testing.formulaText()
                                 .should("have.value", a1Formula)
                         }
 
                         if(a1CellContentDefault){
-                            testing.cellClick(A1);
-
                             testing.cellFormattedTextCheck(A1, a1CellContentDefault);
                         }
 
                         // type text and blur
                         testing.getById(textFieldId)
-                            .type("{selectall}" + text)
-                            .blur();
+                            .click();
+
+                        testing.getById(textFieldId)
+                            .type("{selectall}" + text + "{enter}");
+
+                        testing.settingsWait();
 
                         testing.getById(textFieldId)
                             .should("have.value", text);
 
                         if(updatedA1Formula){
+                            testing.formulaTextLoadWait();
                             testing.formulaText()
                                 .should("have.value", updatedA1Formula)
                         }
@@ -232,7 +242,7 @@ describe(
                             testing.cellFormattedTextCheck(A1, a1CellContent);
                         }
 
-                        // type text and blur
+                        // type text and ESC which should reset
                         testing.getById(textFieldId)
                             .type("{selectall}XYZ{esc}")
 
@@ -246,31 +256,67 @@ describe(
          * Opens the spreadsheet settings, selects each value by clicking the slider.
          * TODO Currently no test is made upon the a1 cell contents.
          */
-        function settingsSpreadsheetMetadataPropertySliderAndCheck(property,
-                                                                   a1Formula,
-                                                                   values,
-                                                                   a1CellContents) {
+        function settingsPropertySliderAndCheck(property,
+                                                a1Formula,
+                                                values,
+                                                a1CellContents,
+                                                defaultButtonText,
+                                                defaultA1) {
             it("Update SpreadsheetMetadata." + property, () => {
-                settingsToggle();
-
-                settingsOpenAccordion(property);
-
                 if(a1Formula){
                     formulaTextEnterAndSave(a1Formula);
                 }
+                settingsProperty(property);
 
-                const sliderId = SpreadsheetSettingsWidget.spreadsheetMetadataPropertyId(property) + "-Slider";
+                const sliderId = SpreadsheetSettingsWidget.propertyId(property) + "-Slider";
+
+                if(defaultButtonText){
+                    testing.cellFormattedTextCheck(A1, defaultA1);
+                }
+
+                const valueOffset = defaultButtonText ? 1 : 0;
 
                 // the first slow of a Slider is reserved for "Default".
                 values.forEach((v, i) => {
-                    cy.get("#" + sliderId + " *[data-index=\"" + (1 + i) + "\"][aria-hidden=\"true\"]")
+                    cy.log("=" + i + " " + JSON.stringify(v) + " " + (valueOffset + i) + " " + v.nameCapitalCase() + "!!" + JSON.stringify(values));
+
+                    testing.settingsWait();
+
+                    cy.get("#" + sliderId + " *[data-index=\"" + (valueOffset + i) + "\"][aria-hidden=\"true\"]")
                         .should("have.text", v.nameCapitalCase())
                         .click();
+
+                    testing.settingsWait();
+                    cy.get("#" + sliderId + " *[role=slider]")
+                        .should("have.focus");
 
                     if(a1Formula){
                         testing.cellFormattedTextCheck(A1, a1CellContents[i]);
                     }
                 });
+
+                if(defaultA1){
+                    testing.settingsProperty(property, "-default-Button")
+                        .should("have.text", defaultButtonText)
+                        .click();
+
+                    testing.settingsWait();
+
+                    testing.cellFormattedTextCheck(A1, defaultA1);
+
+                    // the slider mark-0 should have text=Default
+                    cy.get("#" + sliderId + " *[data-index=\"0\"][aria-hidden=\"true\"]")
+                        .should("have.text", "Default")
+                        .click();
+
+                    testing.settingsWait();
+                    cy.get("#" + sliderId + " *[role=slider]")
+                        .should("have.focus");
+
+                    testing.settingsWait();
+
+                    testing.cellFormattedTextCheck(A1, defaultA1);
+                }
             });
         }
 
@@ -278,31 +324,36 @@ describe(
          * Opens the spreadsheet settings, selects each value by clicking the slider.
          * TODO Currently no test is made upon the a1 cell contents.
          */
-        function settingsSpreadsheetMetadataPropertySliderNumberTextFieldAndCheck(property,
-                                                                                  a1Formula,
-                                                                                  values,
-                                                                                  a1CellContents) {
+        function settingsPropertySliderNumberTextFieldAndCheck(property,
+                                                               a1Formula,
+                                                               values,
+                                                               a1CellContents) {
             it("Update SpreadsheetMetadata." + property, () => {
-                settingsToggle();
-
-                settingsOpenAccordion(property);
-
                 if(a1Formula){
                     formulaTextEnterAndSave(a1Formula);
                 }
 
-                const sliderId = SpreadsheetSettingsWidget.spreadsheetMetadataPropertyId(property) + "-Slider";
-                const numberTextFieldId = SpreadsheetSettingsWidget.spreadsheetMetadataPropertyId(property) + "-NumberTextField";
+                settingsProperty(property);
+
+                const baseId = SpreadsheetSettingsWidget.propertyId(property);
+                const sliderId = baseId + "-Slider";
+                const numberTextFieldId = baseId + "-NumberTextField";
 
                 // click on the slider and verify number in TextField was updated
                 values.forEach((v, i) => {
+                    cy.log("@" + JSON.stringify(v) + " =" + i);
+
                     cy.get("#" + sliderId + " *[data-index=\"" + i + "\"][aria-hidden=\"true\"]")
                         .should("have.text", v.text)
                         .click();
 
+                    testing.settingsWait();
+
                     testing.getById(numberTextFieldId)
                         .should("have.value", v.value)
                         .click();
+
+                    testing.settingsWait();
 
                     if(a1Formula){
                         testing.cellFormattedTextCheck(A1, a1CellContents[i]);
@@ -311,11 +362,14 @@ describe(
 
                 // type a number in TextField & verify slider moved.
                 values.forEach((v, i) => {
-                    console.log("value=" + JSON.stringify(v) + " i=" + i);
+                    if(v.value.length > 2){
+                        return;
+                    }
 
                     testing.getById(numberTextFieldId)
-                        .type("{selectall}" + v.value + "{enter}")
-                        .click();
+                        .type("{selectall}" + v.value + "{enter}", {force: true});
+
+                    testing.settingsWait();
 
                     cy.get("#" + sliderId + " *[data-index=\"" + i + "\"][aria-hidden=\"true\"]")
                         .should("have.class", "MuiSlider-markLabelActive");
@@ -331,22 +385,22 @@ describe(
          * Opens the spreadsheet settings, selects each value by clicking the drop down list (select).
          * TODO Currently no test is made upon the a1 cell contents.
          */
-        function settingsSpreadsheetMetadataPropertyDropDownListAndCheck(property,
-                                                                         a1Formula,
-                                                                         values,
-                                                                         a1CellContents) {
+        function settingsPropertyDropDownListAndCheck(property,
+                                                      a1Formula,
+                                                      values,
+                                                      a1CellContents) {
             it("Update SpreadsheetMetadata." + property, () => {
-                settingsToggle();
-
-                settingsOpenAccordion(property);
-
                 if(a1Formula){
                     formulaTextEnterAndSave(a1Formula);
                 }
 
-                const dropDownListId = SpreadsheetSettingsWidget.spreadsheetMetadataPropertyId(property) + "-DropDownList";
+                settingsProperty(property);
+
+                const dropDownListId = SpreadsheetSettingsWidget.propertyId(property) + "-DropDownList";
 
                 values.forEach((v, i) => {
+                    testing.historyWait();
+
                     testing.getById(dropDownListId)
                         .select(v.toString());
 
@@ -360,7 +414,7 @@ describe(
             });
         }
 
-        settingsSpreadsheetMetadataPropertySliderNumberTextFieldAndCheck(
+        settingsPropertySliderNumberTextFieldAndCheck(
             SpreadsheetMetadata.CELL_CHARACTER_WIDTH,
             null,
             [
@@ -380,7 +434,7 @@ describe(
             null
         );
 
-        settingsSpreadsheetMetadataPropertyTextAndCheck(
+        settingsPropertyTextAndCheck(
             SpreadsheetMetadata.DATE_FORMAT_PATTERN,
             "31/12/1999",
             "yyyy/mm/dd",
@@ -390,7 +444,7 @@ describe(
             "Friday, 31 December 1999",
         );
 
-        settingsSpreadsheetMetadataPropertyTextAndCheck(
+        settingsPropertyTextAndCheck(
             SpreadsheetMetadata.DATE_PARSE_PATTERNS,
             "1999:12:31",
             "yyyy:mm:dd",
@@ -400,7 +454,7 @@ describe(
             "Friday, 31 December 1999",
         );
 
-        settingsSpreadsheetMetadataPropertyTextAndCheck(
+        settingsPropertyTextAndCheck(
             SpreadsheetMetadata.DATETIME_FORMAT_PATTERN,
             "31/12/1999, 12:58",
             "hh:mm yyyy/mm/dd",
@@ -410,7 +464,7 @@ describe(
             "Friday, 31 December 1999 at 12:58:00",
         );
 
-        settingsSpreadsheetMetadataPropertySliderNumberTextFieldAndCheck(
+        settingsPropertySliderNumberTextFieldAndCheck(
             SpreadsheetMetadata.DATETIME_OFFSET,
             null,
             [
@@ -426,7 +480,7 @@ describe(
             null
         );
 
-        settingsSpreadsheetMetadataPropertyTextAndCheck(
+        settingsPropertyTextAndCheck(
             SpreadsheetMetadata.DATETIME_PARSE_PATTERNS,
             "1999/12/31 12:58",
             "yyyy/mm/dd hh:mm",
@@ -436,7 +490,7 @@ describe(
             "Friday, 31 December 1999 at 12:58:00",
         );
 
-        settingsSpreadsheetMetadataPropertyTextAndCheck(
+        settingsPropertyTextAndCheck(
             SpreadsheetMetadata.DECIMAL_SEPARATOR,
             "=2.5",
             "*",
@@ -446,7 +500,7 @@ describe(
             "2.5",
         );
 
-        settingsSpreadsheetMetadataPropertyTextAndCheck(
+        settingsPropertyTextAndCheck(
             SpreadsheetMetadata.DEFAULT_YEAR,
             "31:12",
             "2000",
@@ -456,7 +510,7 @@ describe(
             "1900/12/31",
         );
 
-        settingsSpreadsheetMetadataPropertyTextAndCheck(
+        settingsPropertyTextAndCheck(
             SpreadsheetMetadata.EXPONENT_SYMBOL,
             null,
             "x",
@@ -466,15 +520,16 @@ describe(
             null
         );
 
-        settingsSpreadsheetMetadataPropertySliderAndCheck(
+        settingsPropertySliderAndCheck(
             SpreadsheetMetadata.EXPRESSION_NUMBER_KIND,
             null,
             ExpressionNumberKind.values(),
             null,
+            "Double",
+            ""
         );
 
-
-        settingsSpreadsheetMetadataPropertyTextAndCheck(
+        settingsPropertyTextAndCheck(
             SpreadsheetMetadata.GROUPING_SEPARATOR,
             "123456",
             "*",
@@ -484,7 +539,7 @@ describe(
             "123,456."
         );
 
-        settingsSpreadsheetMetadataPropertyTextAndCheck(
+        settingsPropertyTextAndCheck(
             SpreadsheetMetadata.NEGATIVE_SIGN,
             "=2*-4",
             "*",
@@ -493,7 +548,7 @@ describe(
             "*8.",
             "-8.");
 
-        settingsSpreadsheetMetadataPropertyTextAndCheck(
+        settingsPropertyTextAndCheck(
             SpreadsheetMetadata.NUMBER_FORMAT_PATTERN,
             "123.5",
             "###.000",
@@ -503,7 +558,7 @@ describe(
             "123.5",
         );
 
-        settingsSpreadsheetMetadataPropertyTextAndCheck(
+        settingsPropertyTextAndCheck(
             SpreadsheetMetadata.NUMBER_PARSE_PATTERNS,
             "123.5",
             "###.000",
@@ -514,7 +569,7 @@ describe(
         );
 
         // TODO need to set format pattern which includes percentage
-        settingsSpreadsheetMetadataPropertyTextAndCheck(
+        settingsPropertyTextAndCheck(
             SpreadsheetMetadata.PERCENTAGE_SYMBOL,
             null,
             "*",
@@ -525,7 +580,7 @@ describe(
         );
 
         // TODO need to format Exponent
-        settingsSpreadsheetMetadataPropertyTextAndCheck(
+        settingsPropertyTextAndCheck(
             SpreadsheetMetadata.POSITIVE_SIGN,
             "+1.5",
             "*",
@@ -535,7 +590,7 @@ describe(
             "1.5",
         );
 
-        settingsSpreadsheetMetadataPropertySliderNumberTextFieldAndCheck(
+        settingsPropertySliderNumberTextFieldAndCheck(
             SpreadsheetMetadata.PRECISION,
             null,
             [
@@ -559,14 +614,14 @@ describe(
             null
         );
 
-        settingsSpreadsheetMetadataPropertyDropDownListAndCheck(
+        settingsPropertyDropDownListAndCheck(
             SpreadsheetMetadata.ROUNDING_MODE,
             null,
             RoundingMode.values(),
             null
         );
 
-        settingsSpreadsheetMetadataPropertyTextAndCheck(
+        settingsPropertyTextAndCheck(
             SpreadsheetMetadata.TEXT_FORMAT_PATTERN,
             "=\"Hello 123\"",
             "@@",
@@ -576,7 +631,7 @@ describe(
             "Hello 123",
         );
 
-        settingsSpreadsheetMetadataPropertyTextAndCheck(
+        settingsPropertyTextAndCheck(
             SpreadsheetMetadata.TEXT_FORMAT_PATTERN,
             "'Hello 123",
             "@@",
@@ -586,7 +641,7 @@ describe(
             "Hello 123",
         );
 
-        settingsSpreadsheetMetadataPropertyTextAndCheck(
+        settingsPropertyTextAndCheck(
             SpreadsheetMetadata.TIME_FORMAT_PATTERN,
             "12:58",
             "hh::mm::",
@@ -596,7 +651,7 @@ describe(
             "12:58:00",
         );
 
-        settingsSpreadsheetMetadataPropertyTextAndCheck(
+        settingsPropertyTextAndCheck(
             SpreadsheetMetadata.TIME_PARSE_PATTERNS,
             "12::58::59.000",
             "hh::mm::ss.000",
@@ -606,7 +661,7 @@ describe(
             "12:58:59",
         );
 
-        settingsSpreadsheetMetadataPropertyTextAndCheck(
+        settingsPropertyTextAndCheck(
             SpreadsheetMetadata.TWO_DIGIT_YEAR,
             "30/12/31",
             "50",
@@ -616,7 +671,7 @@ describe(
             "1930/12/31",
         );
 
-        settingsSpreadsheetMetadataPropertyTextAndCheck(
+        settingsPropertyTextAndCheck(
             SpreadsheetMetadata.VALUE_SEPARATOR,
             "=5/2",
             "*",
@@ -626,96 +681,18 @@ describe(
             "2.5",
         );
 
-        /**
-         * Updates 2 properties with initial text values, then sets the first to the second text, which should cause
-         * the second to gain the former first text.
-         */
-        function settingsSpreadsheetMetadataPropertyTextSwapCheck(property1,
-                                                                  text1,
-                                                                  property2,
-                                                                  text2) {
-            it("Update SpreadsheetMetadata." + property1 + "=" + text1 + " & " + property2 + "=" + text2 + " causing value swap", () => {
-                settingsToggle();
-
-                settingsOpenAccordion(property1);
-
-                const textFieldId1 = SpreadsheetSettingsWidget.spreadsheetMetadataPropertyId(property1) + "-TextField";
-                testing.getById(textFieldId1)
-                    .type("{selectall}" + text1)
-                    .blur();
-
-                testing.getById(textFieldId1)
-                    .should("have.value", text1);
-
-                const textFieldId2 = SpreadsheetSettingsWidget.spreadsheetMetadataPropertyId(property2) + "-TextField";
-                testing.getById(textFieldId2)
-                    .type("{selectall}" + text2)
-                    .blur();
-
-                testing.getById(textFieldId2)
-                    .should("have.value", text2);
-
-                // set property1 with text2, this should force property2 to have text1
-                testing.getById(textFieldId1)
-                    .type("{selectall}" + text2)
-                    .blur();
-
-                testing.getById(textFieldId1)
-                    .should("have.value", text2);
-
-                testing.getById(textFieldId2)
-                    .should("have.value", text1);
-            });
-        }
-
-
-        settingsSpreadsheetMetadataPropertyTextSwapCheck(
-            SpreadsheetMetadata.DECIMAL_SEPARATOR,
-            '.',
-            SpreadsheetMetadata.GROUPING_SEPARATOR,
-            ','
-        );
-
-        settingsSpreadsheetMetadataPropertyTextSwapCheck(
-            SpreadsheetMetadata.NEGATIVE_SIGN,
-            '-',
-            SpreadsheetMetadata.PERCENTAGE_SYMBOL,
-            '%'
-        );
-
-        settingsSpreadsheetMetadataPropertyTextSwapCheck(
-            SpreadsheetMetadata.NEGATIVE_SIGN,
-            '-',
-            SpreadsheetMetadata.POSITIVE_SIGN,
-            '+'
-        );
-
-        settingsSpreadsheetMetadataPropertyTextSwapCheck(
-            SpreadsheetMetadata.DECIMAL_SEPARATOR,
-            '-',
-            SpreadsheetMetadata.POSITIVE_SIGN,
-            '+'
-        );
-
-// settings default style...........................................................................................
+        // settings style...............................................................................................
 
         function settingsSpreadsheetMetadataStyleColorAndCheck(property, defaultColor) {
             it("Update SpreadsheetMetadata.style." + property, () => {
-                settingsToggle();
-
-                settingsOpenAccordion(property);
-
                 formulaTextEnterAndSave("'ABC");
 
-                const textFieldId = SpreadsheetSettingsWidget.spreadsheetMetadataStylePropertyId(property) + "-TextField";
+                settingsProperty(property);
+
+                const textFieldId = SpreadsheetSettingsWidget.propertyId(property) + "-TextField";
 
                 testing.getById(textFieldId)
-                    .type("{selectall}!BAD")
-                    .blur(); // TODO verify alert appears!
-
-                testing.getById(textFieldId)
-                    .type("{selectall}#123456")
-                    .blur();
+                    .type("{selectall}#123456{enter}");
 
                 testing.cellA1StyleCheck(property, "rgb(18, 52, 86)");
 
@@ -725,7 +702,7 @@ describe(
                 testing.cellA1StyleCheck(property, "rgb(120, 154, 188)");
 
                 if(defaultColor){
-                    testing.settingsSpreadsheetMetadataStyleProperty(property, "-default-Button")
+                    testing.settingsProperty(property, "-default-Button")
                         .should("have.text", defaultColor)
                         .click();
 
@@ -743,25 +720,28 @@ describe(
                                                                 defaultValue,
                                                                 defaultButtonText) {
             it("Update SpreadsheetMetadata.style." + property, () => {
-                settingsToggle();
-
-                settingsOpenAccordion(property);
-
                 formulaTextEnterAndSave("'ABC");
 
-                const sliderId = SpreadsheetSettingsWidget.spreadsheetMetadataStylePropertyId(property) + "-Slider";
+                settingsProperty(property);
+
+                const sliderId = SpreadsheetSettingsWidget.propertyId(property) + "-Slider";
+                const defaultOffset = defaultButtonText ? 1 : 0;
 
                 // the first slot of a Slider is reserved for "Default".
                 values.forEach((v, i) => {
-                    cy.get("#" + sliderId + " *[data-index=\"" + (1 + i) + "\"][aria-hidden=\"true\"]")
+                    testing.settingsWait();
+
+                    cy.get("#" + sliderId + " *[data-index=\"" + (defaultOffset + i) + "\"][aria-hidden=\"true\"]")
                         //.should("have.text", v.nameCapitalCase()) Element is not visible because it has CSS property: 'position: fixed' and its being covered by another element
                         .click(FORCE_TRUE);
+
+                    testing.settingsWait();
 
                     testing.cellA1StyleCheck(property, v.toCssValue());
                 });
 
                 if(defaultValue){
-                    testing.settingsSpreadsheetMetadataStyleProperty(property, "-default-Button")
+                    testing.settingsProperty(property, "-default-Button")
                         .should("have.text", defaultButtonText)// @see https://github.com/mP1/walkingkooka-spreadsheet-react/issues/695
                         .click();
 
@@ -774,16 +754,14 @@ describe(
                                                                               min,
                                                                               max,
                                                                               defaultValue,
-                                                                              defaultButtonText) {
+                                                                              defaultText) {
             it("Update SpreadsheetMetadata.style." + property, () => {
-                settingsToggle();
-
-                settingsOpenAccordion(property);
-
                 formulaTextEnterAndSave("'ABC");
 
-                const sliderId = SpreadsheetSettingsWidget.spreadsheetMetadataStylePropertyId(property) + "-Slider";
-                const numberTextFieldId = SpreadsheetSettingsWidget.spreadsheetMetadataStylePropertyId(property) + "-NumberTextField";
+                settingsProperty(property);
+
+                const sliderId = SpreadsheetSettingsWidget.propertyId(property) + "-Slider";
+                const numberTextFieldId = SpreadsheetSettingsWidget.propertyId(property) + "-NumberTextField";
 
                 // type a number in TextField & verify slider moved.
                 const values = [
@@ -812,14 +790,14 @@ describe(
                         case TextStyle.HEIGHT:
                             break;
                         default:
-                            testing.cellA1StyleCheck(property, v.value + "px");
+                            //testing.cellA1StyleCheck(property, v.value + "px");
                             break;
                     }
                 });
 
-                if(null != defaultValue){
-                    testing.settingsSpreadsheetMetadataStyleProperty(property, "-default-Button")
-                        .should("have.text", defaultButtonText)
+                if(defaultText){
+                    testing.settingsProperty(property, "-default-Button")
+                        .should("have.text", defaultText)
                         .click();
 
                     switch(property) {
@@ -827,7 +805,7 @@ describe(
                         case TextStyle.HEIGHT:
                             break;
                         default:
-                            testing.cellA1StyleCheck(property, defaultValue);
+                            //testing.cellA1StyleCheck(property, defaultValue);
                             break;
                     }
                 }
@@ -856,7 +834,7 @@ describe(
             0,
             2,
             "1px",
-            "1"
+            "1px"
         );
 
         settingsSpreadsheetMetadataStyleColorAndCheck(
@@ -876,7 +854,7 @@ describe(
             0,
             2,
             "1px",
-            "1"
+            "1px"
         );
 
         settingsSpreadsheetMetadataStyleColorAndCheck(
@@ -896,7 +874,7 @@ describe(
             0,
             2,
             "1px",
-            "1"
+            "1px"
         );
 
         settingsSpreadsheetMetadataStyleColorAndCheck(
@@ -916,7 +894,7 @@ describe(
             0,
             2,
             "1px",
-            "1"
+            "1px"
         );
 
         settingsSpreadsheetMetadataStyleColorAndCheck(
@@ -929,7 +907,7 @@ describe(
             21,
             30,
             "30px",
-            "30"
+            "30px"
         );
 
         settingsSpreadsheetMetadataStyleSliderAndCheck(
@@ -944,7 +922,7 @@ describe(
             0,
             2,
             "0px",
-            "0"
+            "none"
         );
 
         settingsSpreadsheetMetadataStyleSliderWithTextNumberAndCheck(
@@ -952,7 +930,7 @@ describe(
             0,
             2,
             "0px",
-            "0"
+            "none"
         );
 
         settingsSpreadsheetMetadataStyleSliderWithTextNumberAndCheck(
@@ -960,7 +938,7 @@ describe(
             0,
             2,
             "0px",
-            "0"
+            "none"
         );
 
         settingsSpreadsheetMetadataStyleSliderWithTextNumberAndCheck(
@@ -968,7 +946,7 @@ describe(
             0,
             2,
             "0px",
-            "0"
+            "none"
         );
 
         settingsSpreadsheetMetadataStyleSliderAndCheck(
@@ -990,7 +968,7 @@ describe(
             70,
             200,
             "100px",
-            "100"
+            "100px"
         );
 
         settingsSpreadsheetMetadataStyleSliderAndCheck(
@@ -1007,16 +985,89 @@ describe(
             "normal"
         );
 
-        it("Tabbing", () => {
+        it("Tabbing accordions", () => {
             settingsToggle();
 
             settings()
                 .should('be.visible');
 
             testing.hash()
+                .should('match', /.*\/.*\/settings/);
+
+            testing.settings()
+                .should("have.focus")
+                .tab();
+
+            testing.settingsWait();
+
+            testing.hash()
+                .should('match', /.*\/.*\/settings\/metadata/);
+
+            testing.settingsAccordion("metadata")
+                .should("have.focus")
+                .tab();
+
+            testing.settingsWait();
+
+            testing.hash()
+                .should('match', /.*\/.*\/settings\/text/);
+
+            testing.settingsAccordion("text")
+                .should("have.focus")
+                .tab();
+
+            testing.settingsWait();
+
+            testing.hash()
+                .should('match', /.*\/.*\/settings\/number/);
+
+            testing.settingsAccordion("number")
+                .should("have.focus")
+                .tab();
+
+            testing.settingsWait();
+
+            testing.hash()
+                .should('match', /.*\/.*\/settings\/date-time/);
+
+            testing.settingsAccordion("date-time")
+                .should("have.focus")
+                .tab();
+
+            testing.settingsWait();
+
+            testing.hash()
+                .should('match', /.*\/.*\/settings\/style/);
+
+
+            testing.settingsAccordion("style")
+                .should("have.focus")
+                .tab();
+
+            testing.settingsWait();
+
+            testing.hash()
+                .should('match', /.*\/.*/);
+        });
+
+        it("Tabbing metadata", () => {
+            settingsToggle();
+
+            testing.hash()
                 .should('match', /.*\/.*\/settings/) // => true
 
-            tabAccordion("text");
+            tabAccordion("metadata");
+        });
+
+        it("Tabbing text", () => {
+            settingsToggle();
+
+            testing.hash()
+                .should('match', /.*\/.*\/settings/) // => true
+
+            //tabAccordion("metadata", false);
+
+            tabAccordion("text", false);
 
             tabColor(TextStyle.COLOR);
             tabSlider(TextStyle.TEXT_ALIGN);
@@ -1027,6 +1078,13 @@ describe(
             tabSlider(SpreadsheetMetadata.TEXT_FORMAT_PATTERN);
 
             tabNumberSlider(SpreadsheetMetadata.CELL_CHARACTER_WIDTH);
+        });
+
+        it("Tabbing number", () => {
+            settingsToggle();
+
+            testing.hash()
+                .should('match', /.*\/.*\/settings/);
 
             tabAccordion("number");
 
@@ -1043,6 +1101,13 @@ describe(
             tabText(SpreadsheetMetadata.NUMBER_FORMAT_PATTERN);
             tabText(SpreadsheetMetadata.NUMBER_PARSE_PATTERNS);
             tabText(SpreadsheetMetadata.VALUE_SEPARATOR);
+        });
+
+        it("Tabbing date-time", () => {
+            settingsToggle();
+
+            testing.hash()
+                .should('match', /.*\/.*\/settings/);
 
             tabAccordion("date-time");
 
@@ -1055,6 +1120,13 @@ describe(
             tabText(SpreadsheetMetadata.DATETIME_PARSE_PATTERNS);
             tabText(SpreadsheetMetadata.TIME_FORMAT_PATTERN);
             tabText(SpreadsheetMetadata.TIME_PARSE_PATTERNS);
+        });
+
+        it("Tabbing style", () => {
+            settingsToggle();
+
+            testing.hash()
+                .should('match', /.*\/.*\/settings/);
 
             tabAccordion("style");
 
@@ -1085,15 +1157,29 @@ describe(
             tabNumberSlider(TextStyle.PADDING_BOTTOM);
         });
 
-        function tabAccordion(accordion) {
-            testing.getById(SpreadsheetSettingsWidget.accordionId(accordion))
-                .tab()
-                .type("{enter}")
-                .scrollIntoView()
-                .tab();
+        function tabAccordion(accordion, twice) {
+            testing.settingsWait();
+
+            // open accordion
+            testing.settingsAccordion(accordion)
+                .click();
+
+            testing.settingsWait();
+
+            if(twice){
+                testing.settingsAccordion(accordion)
+                    .click();
+
+                testing.settingsWait();
+            }
 
             testing.hash()
                 .should('match', new RegExp(".*\/.*\/settings\/" + accordion));
+
+            // tab
+            testing.settingsAccordion(accordion)
+                .first()
+                .tab()
         }
 
         function tabColor(property) {
@@ -1109,11 +1195,16 @@ describe(
         }
 
         function tabSlider(property) {
-            const id = idPrefix(property);
+            testing.settingsWait();
+
+            testing.hash()
+                .should('match', new RegExp(".*\/.*\/settings\/" + property));
 
             testing.focused()
                 .scrollIntoView()
                 .tab();
+
+            const id = SpreadsheetSettingsWidget.propertyId(property);
 
             testing.focused()
                 .should("have.attr", "id", id + "-default-Button")
@@ -1122,23 +1213,35 @@ describe(
 
         function tabText(property) {
             tabProperty(property, "TextField");
+
+            testing.settingsWait();
         }
 
         function tabProperty(property, componentType) {
-            const id = idPrefix(property);
+            testing.settingsWait();
 
+            testing.hash()
+                .should('match', new RegExp(".*\/.*\/settings\/" + property));
+
+            const id = SpreadsheetSettingsWidget.propertyId(property);
+
+            // eg $id-TextField
             testing.focused()
                 .scrollIntoView()
                 .should("have.attr", "id", id + "-" + componentType)
                 .tab();
 
+            // $id-default-Button
             testing.focused()
                 .should("have.attr", "id", id + "-default-Button")
                 .tab();
         }
 
         function tabNumberSlider(property) {
-            const id = idPrefix(property);
+            testing.settingsWait();
+
+            testing.hash()
+                .should('match', new RegExp(".*\/.*\/settings\/" + property));
 
             testing.focused()
                 .scrollIntoView()
@@ -1149,16 +1252,36 @@ describe(
             testing.focused()
                 .tab();
 
+            const id = SpreadsheetSettingsWidget.propertyId(property);
+
             testing.focused()
                 .should("have.attr", "id", id + "-default-Button")
                 .tab();
         }
 
-        function idPrefix(property) {
-            return SpreadsheetMetadata.isProperty(property) ?
-                SpreadsheetSettingsWidget.spreadsheetMetadataPropertyId(property) :
-                SpreadsheetSettingsWidget.spreadsheetMetadataStylePropertyId(property);
-        }
+        it("Edit spreadsheet name then toggle settings", () => {
+            testing.spreadsheetNameClick();
+
+            testing.spreadsheetName()
+                .blur();
+
+            cy.hash()
+                .should("matches", /.*\/Untitled/);
+
+            settingsToggle();
+
+            cy.hash()
+                .should("matches", /.*\/Untitled\/settings/);
+        });
+
+        it("Edit cell then toggle settings", () => {
+            testing.cellClick(A1);
+
+            settingsToggle();
+
+            cy.hash()
+                .should("matches", /.*\/Untitled\/cell\/A1\/settings/);
+        });
 
         /**
          * The settings that appears on the right containing settings, tools and more.
@@ -1170,35 +1293,20 @@ describe(
         /**
          * Opens the settings accordion for the given metadata property.
          */
-        function settingsOpenAccordion(property) {
-            const accordion = SpreadsheetSettingsWidgetItems.parentAccordion(property);
-            if(!accordion){
-                throw new Error("Unknown metadata property \"" + property + "\"");
-            }
+        function settingsProperty(property) {
+            testing.hashAppend("/settings/" + property);
 
-            settings();
-            //.scrollIntoView() // prevents cypress from complaining about content that is longer than the screen height.
-            //.should('be.visible');
-
-            testing.settingsAccordionExpandMoreIcon(accordion)
-                .click();
-
-            testing.wait();
-
-            testing.settingsAccordionContent(accordion);
-            //.should('be.visible');
-
-            testing.hash()
-                .should('match', new RegExp(".*\/.*\/settings\/" + accordion)) // => true
+            testing.settingsWait();
         }
 
         /**
          * Fetches the icon that when clicked toggles the settings
          */
         function settingsToggle() {
-            testing.wait();
             cy.get("#settings-icon")
                 .click();
+
+            testing.settingsWait();
         }
     }
 );

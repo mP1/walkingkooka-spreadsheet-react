@@ -26,7 +26,9 @@ export default class SpreadsheetHistoryAwareStateWidget extends SpreadsheetHisto
     }
 
     onHistoryChange(tokens) {
-        this.setState(this.stateFromHistoryTokens(tokens));
+        if(this.historyUnlisten) {
+            this.setState(this.stateFromHistoryTokens(tokens));
+        }
     }
 
     /**

@@ -1,87 +1,70 @@
 import Equality from "../../Equality.js";
+import PropTypes from "prop-types";
 import React from 'react';
 import Slider from "@material-ui/core/Slider";
 import SpreadsheetSettingsWidgetValue from "./SpreadsheetSettingsWidgetValue.js";
-import PropTypes from "prop-types";
 import SystemEnum from "../../SystemEnum.js";
 
 /**
- * Shows the enum values of an SystemEnum as a slider.
- * Note the marks and values for the slider will have the first slot reserved for the "Default" value. Clicking
- * default will result in setValue being called with null.
+ * Shows the enum values of an SystemEnum as a slider, and inserts an extra mark called Default if a default value is also present in the metadata.
  */
 export default class SpreadsheetSettingsWidgetSlider extends SpreadsheetSettingsWidgetValue {
 
     constructor(props) {
         super(props);
 
-        const values = props.values;
-        const marks = [];
-
-        const defaultValue = props.defaultValue;
-        const defaultValueOffset = defaultValue ? 1 : 0;
-        this.defaultValueOffset = defaultValueOffset;
-
-        if(defaultValue) {
-            marks.push({
-                label: "Default",
-                value: 0,
-            });
-        }
-
-        props.values.forEach((v, i) => {
-            marks.push({
-                label: v.nameCapitalCase(),
-                value: i + defaultValueOffset,
-            });
-        });
-        this.values = values;
-        this.marks = marks;
-        this.style = props.style;
-
         this.sliderRef = React.createRef();
     }
 
-    /**
-     * Update the Slider value.
-     */
-    onStateValueChange(value) {
-        const slider = this.sliderRef.current;
-        if(slider){
-            slider.value = value;
-        }
+    focus() {
+        // slider.focus doesnt work, give focus to the thumb
+        this.giveFocus(this.sliderRef.current.querySelector("[role=slider]"));
     }
 
-    renderInput(id, value) {
-        const {defaultValueOffset, marks} = this;
+    renderValue(id, value, defaultValue) {
+        const {props} = this;
+
+        const includeDefaultValue = null != defaultValue;
+        const valueOffset = includeDefaultValue ? 1 : 0;
+
+        const marks = [];
+
+        if(includeDefaultValue){
+            marks.push({
+                label: "Default",
+                value: 0,
+            })
+        }
+
+        const values = props.values;
+        values.forEach((v, i) => {
+            marks.push({
+                label: v.nameCapitalCase(),
+                value: i + valueOffset,
+            });
+        });
+
         const sliderId = id + "-Slider";
-        const sliderValue = this.props.values.findIndex((e) => Equality.safeEquals(e, value)) + defaultValueOffset;
+        const sliderValue = valueOffset + values.findIndex((e) => Equality.safeEquals(e, value));
+
+        const onChange = (e, newValue) => {
+            this.setState({
+                value: includeDefaultValue ?
+                    newValue == 0 ? null : values[newValue - valueOffset] :
+                    this.values[newValue]
+            });
+        }
 
         return <Slider id={sliderId}
                        key={sliderId}
-                       defaultValue={0}
+                       ref={this.sliderRef}
                        min={0}
-                       max={marks.length - 1}
+                       max={marks.length - valueOffset}
                        marks={marks}
                        value={sliderValue}
-                       onChange={this.onChange.bind(this)}
-                       style={this.style}
+                       onChange={onChange}
+                       style={props.style}
         />;
-    }
-
-    onChange(e, newValue) {
-        this.setValue(
-            newValue > 0 ?
-                this.values[newValue - this.defaultValueOffset] :
-                null
-        );
-    }
-
-    /**
-     * Handles the setDefault button being clicked, clearing the value, which lets the default be used and also clears the TextField.
-     */
-    onSetDefaultValue() {
-        this.setValue(null);
     }
 }
 

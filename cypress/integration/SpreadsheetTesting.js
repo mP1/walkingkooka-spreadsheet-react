@@ -319,8 +319,16 @@ export default class SpreadsheetTesting {
         return this.getById(spreadsheetRowReference.viewportId());
     }
 
+    settingsWait() {
+        this.wait(100);
+    }
+
+    settings() {
+        return this.getById(SpreadsheetSettingsWidget.drawerId());
+    }
+
     settingsAccordion(accordion) {
-        return this.getById(SpreadsheetSettingsWidget.accordionId(accordion));
+        return this.get(SpreadsheetSettingsWidget.accordionElementSelector(accordion));
     }
 
     settingsAccordionExpandMoreIcon(accordion) {
@@ -331,12 +339,8 @@ export default class SpreadsheetTesting {
         return this.getById(SpreadsheetSettingsWidget.accordionId(accordion) + "-content");
     }
 
-    settingsSpreadsheetMetadataProperty(property, suffix) {
-        return this.getById(SpreadsheetSettingsWidget.spreadsheetMetadataPropertyId(property) + (suffix || ""));
-    }
-
-    settingsSpreadsheetMetadataStyleProperty(property, suffix) {
-        return this.getById(SpreadsheetSettingsWidget.spreadsheetMetadataStylePropertyId(property) + (suffix || ""));
+    settingsProperty(property, suffix) {
+        return this.getById(SpreadsheetSettingsWidget.propertyId(property) + (suffix || ""));
     }
 
     /**
@@ -383,6 +387,10 @@ export default class SpreadsheetTesting {
     }
     
     getById(id) {
-        return this.cy.get("#" + id);
+        return this.get("#" + id);
+    }
+
+    get(selector) {
+        return this.cy.get(selector);
     }
 }
