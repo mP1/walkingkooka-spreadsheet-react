@@ -273,7 +273,7 @@ export default class SpreadsheetMetadata extends SystemObject {
                 case SpreadsheetMetadata.SPREADSHEET_ID :
                 case SpreadsheetMetadata.STYLE :
                 case SpreadsheetMetadata.VIEWPORT_CELL :
-                    throw new Error("Invalid property " + SpreadsheetMetadata.STYLE);
+                    throw new Error("Invalid property " + propertyName);
                 default:
                     break;
             }
