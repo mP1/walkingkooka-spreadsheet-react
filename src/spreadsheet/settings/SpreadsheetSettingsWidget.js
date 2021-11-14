@@ -480,7 +480,8 @@ class SpreadsheetSettingsWidget extends SpreadsheetHistoryAwareStateWidget {
         const getValue = (metadata) => {
             const style = metadata.getIgnoringDefaults(SpreadsheetMetadata.STYLE);
             return style && style.get(property);
-        }
+        };
+
         const setValue = this.saveProperty(property);
 
         const {history, notificationShow, spreadsheetMetadataCrud} = this.props;
