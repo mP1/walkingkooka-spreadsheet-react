@@ -16,7 +16,7 @@ import SpreadsheetHistoryAwareStateWidget from "./history/SpreadsheetHistoryAwar
 import SpreadsheetLabelName from "./reference/SpreadsheetLabelName.js";
 import SpreadsheetMessengerCrud from "./message/SpreadsheetMessengerCrud.js";
 import SpreadsheetViewportWidget from "./SpreadsheetViewportWidget.js";
-import TextField from '@material-ui/core/TextField';
+import TextField from '@mui/material/TextField';
 import TextStyle from "../text/TextStyle.js";
 
 /**

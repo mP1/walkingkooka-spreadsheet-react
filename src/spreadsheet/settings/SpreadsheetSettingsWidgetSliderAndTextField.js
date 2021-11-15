@@ -1,9 +1,9 @@
 import Keys from "../../Keys.js";
 import PropTypes from "prop-types";
 import React from 'react';
-import Slider from "@material-ui/core/Slider";
+import Slider from "@mui/material/Slider";
 import SpreadsheetSettingsWidgetValue from "./SpreadsheetSettingsWidgetValue.js";
-import TextField from "@material-ui/core/TextField";
+import TextField from "@mui/material/TextField";
 
 /**
  * Shows a slider that allows editing of a number including min/max support and translation to a similar number value

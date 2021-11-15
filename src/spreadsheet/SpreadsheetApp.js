@@ -1,7 +1,7 @@
 import './SpreadsheetApp.css';
 
-import {withStyles} from '@material-ui/core/styles';
-import Divider from '@material-ui/core/Divider';
+import {withStyles} from '@mui/styles';
+import Divider from '@mui/material/Divider';
 import Equality from "../Equality.js";
 import ListenerCollection from "../event/ListenerCollection.js";
 import Preconditions from "../Preconditions.js";

@@ -1,6 +1,6 @@
 import PropTypes from "prop-types";
 import React from 'react';
-import Select from '@material-ui/core/Select';
+import Select from '@mui/material/Select';
 import SpreadsheetSettingsWidgetValue from "./SpreadsheetSettingsWidgetValue.js";
 import SystemEnum from "../../SystemEnum.js";
 

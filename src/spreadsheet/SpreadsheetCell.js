@@ -8,10 +8,10 @@ import SpreadsheetCellReferenceOrLabelName from "./reference/SpreadsheetCellRefe
 import SpreadsheetFormula from "./SpreadsheetFormula";
 import SpreadsheetLabelName from "./reference/SpreadsheetLabelName.js";
 import SystemObject from "../SystemObject.js";
-import TableCell from "@material-ui/core/TableCell";
+import TableCell from "@mui/material/TableCell";
 import TextNode from "../text/TextNode";
 import TextStyle from "../text/TextStyle";
-import Tooltip from "@material-ui/core/Tooltip";
+import Tooltip from "@mui/material/Tooltip";
 
 const TYPE_NAME = "spreadsheet-cell";
 

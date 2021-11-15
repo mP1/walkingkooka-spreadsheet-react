@@ -2,7 +2,7 @@
  * Holds a cell reference. Note the reference is not validated in anyway.
  */
 import CharSequences from "../../CharSequences.js";
-import MenuItem from "@material-ui/core/MenuItem";
+import MenuItem from "@mui/material/MenuItem";
 import Preconditions from "../../Preconditions.js";
 import React from 'react';
 import SpreadsheetCell from "../SpreadsheetCell.js";
