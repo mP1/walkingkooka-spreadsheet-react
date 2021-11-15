@@ -50,7 +50,7 @@ export default class SpreadsheetSettingsWidgetSlider extends SpreadsheetSettings
         const onChange = (e, newValue) => {
             this.setState({
                 value: includeDefaultValue ?
-                    newValue == 0 ? null : values[newValue - valueOffset] :
+                    newValue === 0 ? null : values[newValue - valueOffset] :
                     this.values[newValue]
             });
         }
