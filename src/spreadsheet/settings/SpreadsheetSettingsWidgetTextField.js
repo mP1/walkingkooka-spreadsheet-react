@@ -74,6 +74,7 @@ export default class SpreadsheetSettingsWidgetTextField extends SpreadsheetSetti
                                   marginRight: "4px",
                               }
                           }
+                          variant={"filled"}
                           placeholder={placeholder}
                           fullWidth
                           margin="none"
@@ -89,6 +90,10 @@ export default class SpreadsheetSettingsWidgetTextField extends SpreadsheetSetti
                                   size: size,
                                   maxLength: maxLength,
                                   type: type,
+
+                                  style: {
+                                      paddingTop: "8px",
+                                  }
                               }
                           }
                           onBlur={onBlur}

@@ -55,6 +55,11 @@ export default class SpreadsheetSettingsWidgetSliderAndTextField extends Spreads
                                max: max,
                                type: "number",
                                maxLength: 2,
+
+                               style: {
+                                   paddingTop: "8px",
+                                   paddingBottom: "8px",
+                               }
                            }
                        }
                        onChange={(e) => {
