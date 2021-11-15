@@ -6,11 +6,11 @@ import PropTypes from "prop-types";
 import React from 'react';
 import SpreadsheetHistoryAwareStateWidget from "../history/SpreadsheetHistoryAwareStateWidget.js";
 import SpreadsheetHistoryHash from "../history/SpreadsheetHistoryHash.js";
-import Tooltip from '@material-ui/core/Tooltip';
 import SpreadsheetHistoryHashTokens from "../history/SpreadsheetHistoryHashTokens.js";
 import SpreadsheetMetadata from "../meta/SpreadsheetMetadata.js";
-import SpreadsheetSettingsSaveHistoryHashToken from "../history/SpreadsheetSettingsSaveHistoryHashToken.js";
 import SpreadsheetMessengerCrud from "../message/SpreadsheetMessengerCrud.js";
+import SpreadsheetSettingsSaveHistoryHashToken from "../history/SpreadsheetSettingsSaveHistoryHashToken.js";
+import Tooltip from '@material-ui/core/Tooltip';
 
 /**
  * A base class that calls a renderInput method during a render adding a button to set the default value to the right.
@@ -34,17 +34,6 @@ export default class SpreadsheetSettingsWidgetValue extends SpreadsheetHistoryAw
         );
     }
 
-    // historyParseMergeAndPush(tokens) {
-    //     if(tokens[SpreadsheetHistoryHashTokens.TX_ID] && Object.keys(tokens).length == 1) {
-    //         return;
-    //     }
-    //     if(Object.keys(tokens).length == 0) {
-    //         return;
-    //     }
-    //     console.log("@" + this.props.property+ " history push: " + JSON.stringify(tokens), tokens, "state", this.state);
-    //     return super.historyParseMergeAndPush(tokens);
-    // }
-
     init() {
     }
 
@@ -64,7 +53,6 @@ export default class SpreadsheetSettingsWidgetValue extends SpreadsheetHistoryAw
     }
 
     componentDidMount() {
-        console.log("@" + this.props.property + " mount: " + this.props.property);
         super.componentDidMount();
 
         this.onSpreadsheetMetadataRemover = this.props.spreadsheetMetadataCrud.addListener(this.onSpreadsheetMetadata.bind(this));
@@ -75,8 +63,6 @@ export default class SpreadsheetSettingsWidgetValue extends SpreadsheetHistoryAw
 
         this.onSpreadsheetMetadataRemover && this.onSpreadsheetMetadataRemover();
         delete this.onSpreadsheetMetadataRemover;
-
-        console.log("@" + this.props.property + " unmount: " + this.props.property);
     }
 
     stateFromHistoryTokens(historyHashTokens) {
@@ -99,10 +85,6 @@ export default class SpreadsheetSettingsWidgetValue extends SpreadsheetHistoryAw
         const newFocused = state.focused;
         const property = props.property;
 
-        console.log("@" + this.props.property + "$$$.historyTokensFromState component did update " + typeof (prevState.value) + " " + prevState.value + " TO " + typeof (state.value) + " " + state.value + " same ? " + (!Equality.safeEquals(prevState.value, state.value) + " Equality.safeEquals(0, 0): " + Equality.safeEquals(0, 0)) + " prevState: " + JSON.stringify(prevState) + " to state: " + JSON.stringify(this.state));
-
-//        console.log("@@@!" + property + ".focus: newFocused: " + newFocused + " settingsItem: " + state.settingsItem + " prev.settingsItem: " + prevState.settingsItem + " give focus ===" + (state.settingsItem === property && property !== prevState.settingsItem) + " state:", this.state );
-
         if(newFocused){
             if(newFocused !== prevState.focused){
                 historyTokens[SpreadsheetHistoryHashTokens.SETTINGS] = true;
@@ -114,15 +96,12 @@ export default class SpreadsheetSettingsWidgetValue extends SpreadsheetHistoryAw
             if(!Equality.safeEquals(prevState.value, value)){
                 const savedEquals = Equality.safeEquals(state.savedValue, value);
 
-                console.log("@" + property + "$ state change VALUE CHANGE from " + prevState.value + " to " + value + " state.savedValue: " + savedEquals + " save different " + (savedEquals ? " SAME" : " DIFF"));
-
                 if(!savedEquals){
                     this.props.setValue(value);
                 }
             }
         }else {
             if(state.settingsItem === property && state.focused !== property){
-                console.log("@@@" + property + "$ give focus to !!!!");
                 this.focus();
             }
         }
@@ -145,9 +124,11 @@ export default class SpreadsheetSettingsWidgetValue extends SpreadsheetHistoryAw
 
         const ref = React.createRef();
 
+        const prefix = this.prefix() + "." + property
+
         const onFocus = (e) => {
             if(!state.focused){
-                console.log("@" + property + "!.onFocus: e.target:", e.target);
+                console.log(prefix + ".onFocus: e.target:", e.target);
 
                 this.setState({
                     focused: true,
@@ -161,7 +142,7 @@ export default class SpreadsheetSettingsWidgetValue extends SpreadsheetHistoryAw
         const onBlur = (e) => {
             // new focus belongs does not belong to property
             if(ref.current && !ref.current.contains(e.relatedTarget)){
-                console.log("@" + property + "!.onBlur: state", this.state,
+                console.log(prefix + ".onBlur: state", this.state,
                     "e.target:", e.target,
                     "e.relatedTarget", e.relatedTarget, "!!OUTSIDE", (ref.current && !ref.current.contains(e.relatedTarget)));
 
@@ -171,7 +152,7 @@ export default class SpreadsheetSettingsWidgetValue extends SpreadsheetHistoryAw
                     const tokens = SpreadsheetHistoryHashTokens.emptyTokens();
                     tokens[SpreadsheetHistoryHashTokens.SETTINGS_ITEM] = property;
                     tokens[SpreadsheetHistoryHashTokens.SETTINGS_ACTION] = new SpreadsheetSettingsSaveHistoryHashToken(null == value ? null : "" + value);
-                    console.log("@" + property + ".save " + property + "=" + value + " last saved: " + state.savedValue, tokens, JSON.stringify(tokens));
+                    console.log(prefix + ".save " + property + "=" + value + " last saved: " + state.savedValue, tokens, JSON.stringify(tokens));
 
                     this.historyParseMergeAndPush(tokens);
                 }
@@ -184,7 +165,6 @@ export default class SpreadsheetSettingsWidgetValue extends SpreadsheetHistoryAw
             }
         };
 
-        console.log("@" + this.props.property + " render value=" + value, value);
         return (
             <List style={
                 {
@@ -263,12 +243,12 @@ export default class SpreadsheetSettingsWidgetValue extends SpreadsheetHistoryAw
      * Updates the value and default value whenever a new SpreadsheetMetadata is loaded.
      */
     onSpreadsheetMetadata(method, id, url, requestMetadata, responseMetadata) {
-        const getValue = this.props.getValue;
+        const {getValue, property} = this.props;
 
         const value = getValue(responseMetadata);
         const defaultValue = getValue(responseMetadata.getIgnoringDefaults(SpreadsheetMetadata.DEFAULTS));
 
-        console.log("@" + this.props.property + "$.onSpreadsheetMetadata got value: " + value + " default=" + defaultValue + " " + JSON.stringify(responseMetadata));
+        console.log(this.prefix() + "." + property + ".onSpreadsheetMetadata got value: " + value + " default=" + defaultValue, responseMetadata);
 
         this.setState({
             value: value,
