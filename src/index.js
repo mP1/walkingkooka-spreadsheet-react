@@ -1,4 +1,5 @@
 import './index.css';
+import {createMuiTheme, ThemeProvider} from '@material-ui/core/styles';
 import * as serviceWorker from './serviceWorker';
 import Preconditions from "./Preconditions.js";
 import React from 'react';
@@ -46,12 +47,16 @@ window.addEventListener(
     false
 );
 
+const theme = createMuiTheme();
+
 ReactDOM.render(
-    <React.StrictMode>
-        <SpreadsheetApp history={spreadsheetHistoryHash}
-                        notificationShow={notificationShow}
-                        showError={showError}/>
-    </React.StrictMode>,
+    <ThemeProvider theme={theme}>
+        <React.StrictMode>
+            <SpreadsheetApp history={spreadsheetHistoryHash}
+                            notificationShow={notificationShow}
+                            showError={showError}/>
+        </React.StrictMode>
+    </ThemeProvider>,
     document.getElementById('root')
 );
 
