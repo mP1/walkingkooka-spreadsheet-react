@@ -557,7 +557,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
                                 borderRadius: 0, // cancel paper rounding.
                                 cursor: contextMenuOpen && "context-menu",
                             }}>
-                <Table>
+                <Table key={"viewport-table"}>
                     <TableHead>
                         <TableRow>
                             {
