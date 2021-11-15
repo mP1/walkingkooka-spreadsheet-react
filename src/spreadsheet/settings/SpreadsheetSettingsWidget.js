@@ -186,16 +186,8 @@ class SpreadsheetSettingsWidget extends SpreadsheetHistoryAwareStateWidget {
         if(newSettings){
             const oldSettings = prevState.settings;
 
-            const settingsItemNew = state.settingsItem;
-            const settingsItemOld = prevState.settingsItem;
-
-            var loadMetadata = false;
             if(newSettings !== oldSettings){
-                loadMetadata = true;
-            }else {
-                if(!(Equality.safeEquals(settingsItemNew, settingsItemOld))){
-                    loadMetadata = true;
-                }
+                this.loadSpreadsheetMetadata(); // load spreadsheet metadata when the settings drawer opens
             }
 
             const settingsActionNew = state.settingsAction;
@@ -206,10 +198,6 @@ class SpreadsheetSettingsWidget extends SpreadsheetHistoryAwareStateWidget {
                 if(!Equality.safeEquals(settingsActionNew, settingsActionOld)){
                     settingsActionNew.onSettingsAction(this);
                 }
-            }
-
-            if(loadMetadata){
-                this.loadSpreadsheetMetadata();
             }
         }
 
