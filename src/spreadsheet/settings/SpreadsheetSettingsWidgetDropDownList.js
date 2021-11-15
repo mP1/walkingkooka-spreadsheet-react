@@ -47,7 +47,14 @@ export default class SpreadsheetSettingsWidgetDropDownList extends SpreadsheetSe
                        onClose={() => setOpen(false)}
                        onOpen={() => setOpen(true)}
                        value={value || ""}
-                       onChange={onChange}>
+                       onChange={onChange}
+                       inputProps={{
+                           style: {
+                               paddingTop: "8px",
+                               paddingBottom: "8px",
+                           }
+                       }}
+        >
             {
                 state.defaultValue ? <option aria-label="" value=""/> : undefined
             }
