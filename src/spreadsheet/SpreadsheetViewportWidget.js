@@ -1,12 +1,12 @@
 import _ from "lodash";
 import Equality from "../Equality.js";
 import ImmutableMap from "../util/ImmutableMap.js";
-import Menu from "@material-ui/core/Menu";
-import Paper from '@material-ui/core/Paper';
+import Menu from "@mui/material/Menu";
+import Paper from '@mui/material/Paper';
 import Preconditions from "../Preconditions.js";
 import PropTypes from "prop-types";
 import React from 'react';
-import Slider from "@material-ui/core/Slider";
+import Slider from "@mui/material/Slider";
 import SpreadsheetCellColumnOrRowParse from "./reference/SpreadsheetCellColumnOrRowParse.js";
 import SpreadsheetCellRange from "./reference/SpreadsheetCellRange.js";
 import SpreadsheetCellReference from "./reference/SpreadsheetCellReference.js";
@@ -29,12 +29,12 @@ import SpreadsheetRowReference from "./reference/SpreadsheetRowReference.js";
 import SpreadsheetSelection from "./reference/SpreadsheetSelection.js";
 import SpreadsheetViewport from "./SpreadsheetViewport.js";
 import SpreadsheetViewportSelectionAnchor from "./reference/SpreadsheetViewportSelectionAnchor.js";
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableContainer from '@material-ui/core/TableContainer';
-import TableHead from '@material-ui/core/TableHead';
-import TableRow from '@material-ui/core/TableRow';
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
 import SpreadsheetFormulaSelectionActionHistoryHashToken
     from "./history/SpreadsheetFormulaSelectionActionHistoryHashToken.js";
 

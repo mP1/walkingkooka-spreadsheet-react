@@ -1,16 +1,16 @@
-import {withStyles} from "@material-ui/core/styles";
+import {withStyles} from "@mui/styles";
 
-import Accordion from '@material-ui/core/Accordion';
-import AccordionDetails from '@material-ui/core/AccordionDetails';
-import AccordionSummary from '@material-ui/core/AccordionSummary';
-import Drawer from "@material-ui/core/Drawer";
+import Accordion from '@mui/material/Accordion';
+import AccordionDetails from '@mui/material/AccordionDetails';
+import AccordionSummary from '@mui/material/AccordionSummary';
+import Drawer from "@mui/material/Drawer";
 import Equality from "../../Equality.js";
-import ExpandMoreIcon from '@material-ui/icons/ExpandMore';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ExpressionNumberKind from "../../math/ExpressionNumberKind.js";
 import FontFamily from "../../text/FontFamily.js";
 import lengthFromJson from "../../text/LengthFromJson.js";
 import NoneLength from "../../text/NoneLength.js";
-import Paper from '@material-ui/core/Paper';
+import Paper from '@mui/material/Paper';
 import PropTypes from 'prop-types';
 import React from 'react';
 import RelativeUrl from "../../net/RelativeUrl.js";
@@ -52,13 +52,13 @@ import SpreadsheetSettingsWidgetTextFieldSpreadsheetTimeParsePatterns
     from "./SpreadsheetSettingsWidgetTextFieldSpreadsheetTimeParsePatterns.js";
 import SpreadsheetSettingsWidgetTextFieldString from "./SpreadsheetSettingsWidgetTextFieldString.js";
 import stylePropertyNameToEnum from "../../text/stylePropertyNameToEnum.js";
-import Table from '@material-ui/core/Table';
-import TableBody from '@material-ui/core/TableBody';
-import TableCell from '@material-ui/core/TableCell';
-import TableContainer from '@material-ui/core/TableContainer';
-import TableRow from '@material-ui/core/TableRow';
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableRow from '@mui/material/TableRow';
 import TextStyle from "../../text/TextStyle.js";
-import Typography from '@material-ui/core/Typography';
+import Typography from '@mui/material/Typography';
 
 const DEFAULT_VALUE_FORMATTER_ENUM = (v) => v ? v.nameKebabCase() : "";
 const DEFAULT_VALUE_FORMATTER_LABEL = (v) => v ? v.nameCapitalCase().replace("Half", "½") : "";

@@ -1,7 +1,7 @@
 import Keys from "../../Keys.js";
 import React from 'react';
 import SpreadsheetSettingsWidgetValue from "./SpreadsheetSettingsWidgetValue.js";
-import TextField from "@material-ui/core/TextField";
+import TextField from "@mui/material/TextField";
 
 /**
  * A widget which displays a value for editing using a TextField. Edits are delayed and only saved when ENTER is

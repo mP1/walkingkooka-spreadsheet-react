@@ -9,7 +9,7 @@ import SpreadsheetHistoryHashTokens from "../history/SpreadsheetHistoryHashToken
 import SpreadsheetReferenceKind from "./SpreadsheetReferenceKind";
 import SpreadsheetSelection from "./SpreadsheetSelection.js";
 import SystemObject from "../../SystemObject.js";
-import TableCell from "@material-ui/core/TableCell";
+import TableCell from "@mui/material/TableCell";
 
 
 // default header cell styles

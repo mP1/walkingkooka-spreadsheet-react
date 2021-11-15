@@ -1,7 +1,7 @@
-import Button from "@material-ui/core/Button";
+import Button from "@mui/material/Button";
 import Equality from "../../Equality.js";
-import List from '@material-ui/core/List';
-import ListItem from '@material-ui/core/ListItem';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
 import PropTypes from "prop-types";
 import React from 'react';
 import SpreadsheetHistoryAwareStateWidget from "../history/SpreadsheetHistoryAwareStateWidget.js";
@@ -10,7 +10,7 @@ import SpreadsheetHistoryHashTokens from "../history/SpreadsheetHistoryHashToken
 import SpreadsheetMetadata from "../meta/SpreadsheetMetadata.js";
 import SpreadsheetMessengerCrud from "../message/SpreadsheetMessengerCrud.js";
 import SpreadsheetSettingsSaveHistoryHashToken from "../history/SpreadsheetSettingsSaveHistoryHashToken.js";
-import Tooltip from '@material-ui/core/Tooltip';
+import Tooltip from '@mui/material/Tooltip';
 
 /**
  * A base class that calls a renderInput method during a render adding a button to set the default value to the right.

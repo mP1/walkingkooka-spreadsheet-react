@@ -1,4 +1,4 @@
-import Link from "@material-ui/core/Link";
+import Link from "@mui/material/Link";
 import PropTypes from 'prop-types';
 import React from 'react';
 import SpreadsheetHistoryAwareStateWidget from "../history/SpreadsheetHistoryAwareStateWidget.js";

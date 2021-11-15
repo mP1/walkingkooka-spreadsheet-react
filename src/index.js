@@ -1,5 +1,5 @@
 import './index.css';
-import {createMuiTheme, ThemeProvider} from '@material-ui/core/styles';
+import {createMuiTheme, ThemeProvider} from '@mui/material/styles';
 import * as serviceWorker from './serviceWorker';
 import Preconditions from "./Preconditions.js";
 import React from 'react';

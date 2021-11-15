@@ -1,14 +1,14 @@
-import CloseIcon from '@material-ui/icons/Close';
-import Dialog from '@material-ui/core/Dialog';
-import DialogActions from '@material-ui/core/DialogActions';
-import DialogContent from '@material-ui/core/DialogContent';
-import DialogTitle from '@material-ui/core/DialogTitle';
-import IconButton from '@material-ui/core/IconButton';
+import {withStyles} from "@mui/styles";
+import CloseIcon from '@mui/icons-material/Close';
+import Dialog from '@mui/material/Dialog';
+import DialogActions from '@mui/material/DialogActions';
+import DialogContent from '@mui/material/DialogContent';
+import DialogTitle from '@mui/material/DialogTitle';
+import IconButton from '@mui/material/IconButton';
 import Keys from "../Keys.js";
 import PropTypes from 'prop-types';
 import React from 'react';
-import Slide from "@material-ui/core/Slide";
-import {withStyles} from "@material-ui/core/styles";
+import Slide from "@mui/material/Slide";
 
 const useStyles = (theme) => ({
     root: {

@@ -1,5 +1,5 @@
-import Autocomplete from '@material-ui/lab/Autocomplete';
-import Button from "@material-ui/core/Button";
+import Autocomplete from '@mui/lab/Autocomplete';
+import Button from "@mui/material/Button";
 import Preconditions from "../../Preconditions.js";
 import PropTypes from 'prop-types';
 import React from 'react';
@@ -16,7 +16,7 @@ import SpreadsheetLabelName from "./SpreadsheetLabelName.js";
 import SpreadsheetRowReference from "./SpreadsheetRowReference.js";
 import SpreadsheetRowReferenceRange from "./SpreadsheetRowReferenceRange.js";
 import SpreadsheetSelection from "./SpreadsheetSelection.js";
-import TextField from '@material-ui/core/TextField';
+import TextField from '@mui/material/TextField';
 
 /**
  * The maximum number of similar matches requested against the entered text.

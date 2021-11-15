@@ -1,4 +1,4 @@
-import Button from '@material-ui/core/Button';
+import Button from '@mui/material/Button';
 import Equality from "../../Equality.js";
 import Keys from "../../Keys.js";
 import PropTypes from 'prop-types';
@@ -14,7 +14,7 @@ import SpreadsheetLabelMappingSaveHistoryHashToken from "../history/SpreadsheetL
 import SpreadsheetLabelName from "./SpreadsheetLabelName.js";
 import SpreadsheetMessengerCrud from "../message/SpreadsheetMessengerCrud.js";
 import SpreadsheetNotification from "../notification/SpreadsheetNotification.js";
-import TextField from '@material-ui/core/TextField';
+import TextField from '@mui/material/TextField';
 
 /**
  * A dialog with some text fields to enter the label and reference and buttons to save, delete, cancel the edit.

@@ -7,10 +7,10 @@ import SpreadsheetCellReferenceOrLabelName from "./reference/SpreadsheetCellRefe
 import SpreadsheetFormula from "./SpreadsheetFormula";
 import SpreadsheetLabelName from "./reference/SpreadsheetLabelName.js";
 import systemObjectTesting from "../SystemObjectTesting.js";
-import TableCell from "@material-ui/core/TableCell";
+import TableCell from "@mui/material/TableCell";
 import Text from "../text/Text";
 import TextStyle from "../text/TextStyle";
-import Tooltip from "@material-ui/core/Tooltip";
+import Tooltip from "@mui/material/Tooltip";
 
 function cell() {
     return new SpreadsheetCell(reference(),

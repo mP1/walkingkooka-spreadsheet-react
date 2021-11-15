@@ -1,7 +1,7 @@
-import MuiAlert from "@material-ui/lab/Alert";
+import MuiAlert from "@mui/lab/Alert";
 import Preconditions from "../../Preconditions.js";
 import React from "react";
-import Snackbar from '@material-ui/core/Snackbar';
+import Snackbar from '@mui/material/Snackbar';
 
 export default class SpreadsheetNotification {
 

@@ -1,7 +1,7 @@
 import Equality from "../../Equality.js";
 import PropTypes from "prop-types";
 import React from 'react';
-import Slider from "@material-ui/core/Slider";
+import Slider from "@mui/material/Slider";
 import SpreadsheetSettingsWidgetValue from "./SpreadsheetSettingsWidgetValue.js";
 import SystemEnum from "../../SystemEnum.js";
 
