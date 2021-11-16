@@ -1,4 +1,4 @@
-import MuiAlert from "@mui/lab/Alert";
+import Alert from "@mui/material/Alert";
 import Preconditions from "../../Preconditions.js";
 import React from "react";
 import Snackbar from '@mui/material/Snackbar';
@@ -50,14 +50,14 @@ export default class SpreadsheetNotification {
                       autoHideDuration={1500}
                       onClose={onClose}
                       anchorOrigin={{ vertical: "top", horizontal: "center" }}>
-                <MuiAlert key={"muialert"}
+                <Alert key={"muialert"}
                           open={open}
                           onClose={onClose}
                           severity={severity}
                           elevation={6}
                           variant="filled">
                     {text}
-                </MuiAlert>
+                </Alert>
             </Snackbar>
         );
     }
