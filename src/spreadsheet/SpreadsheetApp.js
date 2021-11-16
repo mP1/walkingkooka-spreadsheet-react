@@ -13,6 +13,7 @@ import SpreadsheetDelta from "./engine/SpreadsheetDelta.js";
 import SpreadsheetEngineEvaluation from "./engine/SpreadsheetEngineEvaluation.js";
 import SpreadsheetExpressionReferenceSimilarities from "./SpreadsheetExpressionReferenceSimilarities.js";
 import SpreadsheetFormulaWidget from "./SpreadsheetFormulaWidget.js";
+import SpreadsheetHistoryHash from "./history/SpreadsheetHistoryHash.js";
 import SpreadsheetHistoryAwareStateWidget from "./history/SpreadsheetHistoryAwareStateWidget.js";
 import SpreadsheetHistoryHashTokens from "./history/SpreadsheetHistoryHashTokens.js";
 import SpreadsheetLabelMapping from "./reference/SpreadsheetLabelMapping.js";
@@ -28,7 +29,6 @@ import SpreadsheetSelectLinkWidget from "./reference/SpreadsheetSelectLinkWidget
 import SpreadsheetSettingsWidget from "./settings/SpreadsheetSettingsWidget.js";
 import SpreadsheetViewportWidget from "./SpreadsheetViewportWidget.js";
 import WindowResizer from "../widget/WindowResizer.js";
-import SpreadsheetHistoryHash from "./history/SpreadsheetHistoryHash.js";
 
 const useStyles = theme => ({
     header: {
@@ -288,7 +288,8 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
                                 dimensions={this.onAboveViewportResize.bind(this)}
                                 className={classes.header}
                 >
-                    <SpreadsheetAppBar menuClickListener={this.settingsToggle.bind(this)}>
+                    <SpreadsheetAppBar key={"AppBar"}
+                                       history={history}>
                         <SpreadsheetNameWidget key={"SpreadsheetName"}
                                                history={history}
                                                spreadsheetMetadataCrud={spreadsheetMetadataCrud}
@@ -405,12 +406,6 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
             response,
             error || this.props.showError,
         )
-    }
-
-    // settings.........................................................................................................
-
-    settingsToggle() {
-        this.props.history.settingsToggle();
     }
 
     // similarities.....................................................................................................
