@@ -9,7 +9,8 @@ import SpreadsheetHistoryHash from "./spreadsheet/history/SpreadsheetHistoryHash
 import SpreadsheetNotificationWidget from "./spreadsheet/notification/SpreadsheetNotificationWidget.js";
 import SpreadsheetNotification from "./spreadsheet/notification/SpreadsheetNotification.js";
 
-const notificationWidget = new SpreadsheetNotificationWidget();
+const notificationRef = React.createRef();
+
 const showError = function(message, error) {
     notificationShow(SpreadsheetNotification.error(message));
     console.error(message, error);
@@ -19,7 +20,7 @@ const notificationShow = function(notification) {
     Preconditions.optionalInstance(notification, SpreadsheetNotification, "notification");
     console.log("notificationShow ", notification);
 
-    notificationWidget.setState(
+    notificationRef && notificationRef.current.setState(
         {
             notification: notification
         }
@@ -52,9 +53,13 @@ const theme = createMuiTheme();
 ReactDOM.render(
     <ThemeProvider theme={theme}>
         <React.StrictMode>
+            <SpreadsheetNotificationWidget ref={notificationRef}
+                                           key={"notifications"}/>
             <SpreadsheetApp history={spreadsheetHistoryHash}
                             notificationShow={notificationShow}
-                            showError={showError}/>
+                            showError={showError}
+                            key={"app"}
+            />
         </React.StrictMode>
     </ThemeProvider>,
     document.getElementById('root')
