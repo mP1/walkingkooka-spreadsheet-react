@@ -69,9 +69,17 @@ class SpreadsheetDialog extends React.Component {
             <DialogTitle id={id + "-DialogTitle"}>
                 {title}
                 <IconButton id={id + "-close-Button"}
+                            disableTypography
                             aria-label="close"
                             className={classes.closeButton}
-                            onClick={close}>
+                            onClick={close}
+                            style={{
+                                float: "right",
+                                padding: 0,
+                                marginTop: "-6px",
+                                marginRight: "-8px",
+                            //}
+                            }}>
                     <CloseIcon/>
                 </IconButton>
             </DialogTitle>
