@@ -4,12 +4,20 @@ import IconButton from '@mui/material/IconButton';
 import MenuIcon from '@mui/icons-material/Menu';
 import PropTypes from "prop-types";
 import React from 'react';
+import SpreadsheetHistoryAwareStateWidget from "../spreadsheet/history/SpreadsheetHistoryAwareStateWidget.js";
+import SpreadsheetHistoryHash from "../spreadsheet/history/SpreadsheetHistoryHash.js";
+import SpreadsheetHistoryHashTokens from "../spreadsheet/history/SpreadsheetHistoryHashTokens.js";
 import Toolbar from '@mui/material/Toolbar';
+
+function computeSettingsLink(historyHashTokens) {
+    historyHashTokens[SpreadsheetHistoryHashTokens.SETTINGS] = !(historyHashTokens[SpreadsheetHistoryHashTokens.SETTINGS]);
+    return "#" + SpreadsheetHistoryHash.stringify(historyHashTokens);
+}
 
 /**
  * An header that displays a menu, followed by an any children which will include the spreadsheet name.
  */
-export default class SpreadsheetAppBar extends React.Component {
+export default class SpreadsheetAppBar extends SpreadsheetHistoryAwareStateWidget {
 
     static classes = makeStyles((theme) => ({
         root: {
@@ -23,9 +31,29 @@ export default class SpreadsheetAppBar extends React.Component {
         },
     }));
 
-    constructor(props) {
-        super(props);
-        this.menuClickListener = props.menuClickListener;
+    init() {
+    }
+
+    initialStateFromProps(props) {
+        return {
+            settingsLink: computeSettingsLink(props.history.tokens())
+        };
+    }
+
+    /**
+     * Re-compute the settings link url.
+     */
+    stateFromHistoryTokens(historyHashTokens) {
+        return {
+            settingsLink: computeSettingsLink(historyHashTokens)
+        };
+    }
+
+    /**
+     * Never updates the history tokens.
+     */
+    historyTokensFromState(prevState) {
+        return SpreadsheetHistoryHashTokens.emptyTokens();
     }
 
     render() {
@@ -36,7 +64,7 @@ export default class SpreadsheetAppBar extends React.Component {
                             className={SpreadsheetAppBar.classes.menuButton}
                             color="inherit"
                             aria-label="menu"
-                            onClick={this.menuClickListener}>
+                            href={this.state.settingsLink}>
                     <MenuIcon/>
                 </IconButton>
                 {this.props.children}
@@ -46,5 +74,5 @@ export default class SpreadsheetAppBar extends React.Component {
 }
 
 SpreadsheetAppBar.propTypes = {
-    menuClickListener: PropTypes.func.isRequired, // this is fired when the menu (settings/tools) icon is selected
+    history: PropTypes.instanceOf(SpreadsheetHistoryHash).isRequired,
 }
