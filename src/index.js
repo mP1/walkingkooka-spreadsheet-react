@@ -20,7 +20,7 @@ const notificationShow = function(notification) {
     Preconditions.optionalInstance(notification, SpreadsheetNotification, "notification");
     console.log("notificationShow ", notification);
 
-    notificationRef && notificationRef.current.setState(
+    notificationRef.current && notificationRef.current.setState(
         {
             notification: notification
         }
