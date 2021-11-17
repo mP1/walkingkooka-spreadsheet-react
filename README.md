@@ -205,21 +205,25 @@ Opens the right panel that holds global or shared settings for this spreadsheet.
 - Text
 - Number
 - Date/Time
-- Default Cell style(s)
+- Style
 
 Each of these sections will hold appropriate key/values. For example Number will have default parsing and formatting patterns.
 
 > /#123/Untitled/settings/
 > 
-> /#123/Untitled/settings/Metadata
+> /#123/Untitled/settings/metadata
 >
-> /#123/Untitled/settings/Text
+> /#123/Untitled/settings/text
 > 
-> /#123/Untitled/settings/Number
+> /#123/Untitled/settings/number
 >
-> /#123/Untitled/settings/Date-Time
+> /#123/Untitled/settings/date-Time
 >
-> /#123/Untitled/settings/Style
+> /#123/Untitled/settings/style
+>
+> /#123/Untitled/settings/$property-name eg: color, background-color, text-align etc.
+> 
+> /#123/Untitled/settings/$property-name/save/$property-value or empty to remove and use default.
 
 ## Value types
 
