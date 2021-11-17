@@ -1338,13 +1338,14 @@ class SpreadsheetSettingsWidget extends SpreadsheetHistoryAwareStateWidget {
                           ref={accordingRef}
                           onFocus={e => onFocus(e)}
                           expanded={accordionSelected || accordionPropertySelected}
-                          onChange={onChange}>
-            <AccordionSummary ref={expandIconRef}
-                              expandIcon={
-                                  <ExpandMoreIcon id={SpreadsheetSettingsWidget.expandIconId(id)}/>
-                              }
-            ><Typography className={classes.heading}>{heading}</Typography>
-            </AccordionSummary>
+                          onChange={onChange}
+                          disableGutters
+        ><AccordionSummary ref={expandIconRef}
+                           expandIcon={
+                               <ExpandMoreIcon id={SpreadsheetSettingsWidget.expandIconId(id)}/>
+                           }
+        ><Typography className={classes.heading}>{heading}</Typography>
+        </AccordionSummary>
             <AccordionDetails id={id + "-content"}>
                 <TableContainer key={rows}
                                 component={Paper}>
