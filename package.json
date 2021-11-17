@@ -44,6 +44,6 @@
   "devDependencies": {
     "cypress": "^9.0.0",
     "cypress-plugin-tab": "^1.0.5",
-    "jest-extended": "^1.1.0"
+    "jest-extended": "^0.11.5"
   }
 }
