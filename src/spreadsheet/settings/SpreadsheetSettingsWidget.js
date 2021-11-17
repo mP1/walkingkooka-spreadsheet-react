@@ -90,7 +90,7 @@ const useStyles = theme => ({
 /**
  * Debug option that when false means the drawer will not close when it loses focus to something outside.
  */
-const BLUR_CLOSES_DRAWER = true;
+const BLUR_CLOSES_DRAWER = false;
 
 class SpreadsheetSettingsWidget extends SpreadsheetHistoryAwareStateWidget {
 
@@ -1320,7 +1320,6 @@ class SpreadsheetSettingsWidget extends SpreadsheetHistoryAwareStateWidget {
             setTimeout(() => {
                 console.log("settings giving focus to " + accordion);
 
-                //this.giveFocus(document.querySelector("#" + SpreadsheetSettingsWidget.accordionId(accordion) + " [tabIndex]"));
                 this.giveFocus(document.querySelector(SpreadsheetSettingsWidget.accordionElementSelector(accordion)))
             }, 1);
         }
