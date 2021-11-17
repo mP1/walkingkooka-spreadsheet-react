@@ -1,3 +1,4 @@
+import CharSequences from "../../CharSequences.js";
 import ListenerCollection from "../../event/ListenerCollection.js";
 import MenuItem from "@mui/material/MenuItem";
 import Preconditions from "../../Preconditions.js";
@@ -297,8 +298,14 @@ export default class SpreadsheetHistoryHash extends SpreadsheetHistoryHashTokens
                             }
                         }
                     }
-                    if(token || tokens.length > 0){
+                    if(null != token){
+                        errors("Invalid token: " + CharSequences.quoteAndEscape(token));
                         break;
+                    } else {
+                        if(tokens.length > 0){
+                            errors("Invalid token: " + CharSequences.quoteAndEscape(tokens.shift()));
+                            break;
+                        }
                     }
 
                     // populate history tokens.........................................................................
@@ -736,10 +743,18 @@ export default class SpreadsheetHistoryHash extends SpreadsheetHistoryHashTokens
         const hashStart = newURL.indexOf("#");
         const hash = hashStart > -1 ? newURL.substring(hashStart + 1) : "";
 
+        var errors = false;
         const tokens = SpreadsheetHistoryHash.parse(
             hash,
-            this.showError
+            (e) => {
+                this.showError(e);
+                errors = true;
+            }
         );
+
+        if(errors) {
+            this.push(tokens);
+        }
 
         console.log("onHistoryChange txId:" + tokens[SpreadsheetHistoryHashTokens.TX_ID] + " newUrl: " + newURL + " WAS " + e.oldURL + " " +  hash + " tokens: ", tokens );
         for(const listener of this.listeners.listeners.slice()) {

@@ -353,7 +353,8 @@ testParseAndStringify(
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
-    }
+    },
+    "Invalid token: \"!invalid4\""
 );
 
 testParseAndStringify(
@@ -396,7 +397,8 @@ testParseAndStringify(
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
-    }
+    },
+    "Invalid token: \"A2\""
 );
 
 testParseAndStringify(
@@ -413,8 +415,8 @@ testParseAndStringify(
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
-        "selection": CELL,
-    }
+    },
+    "Invalid token: \"\""
 );
 
 testParseAndStringify(
@@ -509,7 +511,8 @@ testParseAndStringify(
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
-    }
+    },
+    "Invalid token: \"formula\""
 );
 
 testParseAndStringify(
@@ -517,7 +520,8 @@ testParseAndStringify(
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
-    }
+    },
+    "Invalid token: \"delete\""
 );
 
 testParseAndStringify(
@@ -525,7 +529,8 @@ testParseAndStringify(
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
-    }
+    },
+    "Invalid token: \"formula\""
 );
 
 testParseAndStringify(
@@ -533,7 +538,8 @@ testParseAndStringify(
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
-    }
+    },
+    "Invalid token: \"insert-before\""
 );
 
 testParseAndStringify(
@@ -541,7 +547,8 @@ testParseAndStringify(
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
-    }
+    },
+    "Invalid token: \"insert-after\""
 );
 
 testParseAndStringify(
@@ -791,8 +798,9 @@ testParseAndStringify(
     "/spreadsheet-id-123/spreadsheet-name-456/column/B/delete/delete",
     {
         "spreadsheet-id": "spreadsheet-id-123",
-        "spreadsheet-name": SPREADSHEET_NAME
-    }
+        "spreadsheet-name": SPREADSHEET_NAME,
+    },
+    "Invalid token: \"delete\""
 );
 
 testParseAndStringify(
@@ -800,7 +808,8 @@ testParseAndStringify(
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME
-    }
+    },
+    "Invalid token: \"formula\""
 );
 
 testParseAndStringify(
@@ -808,7 +817,8 @@ testParseAndStringify(
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME
-    }
+    },
+    "Invalid token: \"insert-after\""
 );
 
 testParseAndStringify(
@@ -816,7 +826,8 @@ testParseAndStringify(
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME
-    }
+    },
+    "Invalid token: \"insert-before\""
 );
 
 testParseAndStringify(
@@ -892,7 +903,8 @@ testParseAndStringify(
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME
-    }
+    },
+    "Invalid token: \"delete\""
 );
 
 testParseAndStringify(
@@ -900,7 +912,8 @@ testParseAndStringify(
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
-    }
+    },
+    "Invalid token: \"formula\""
 );
 
 testParseAndStringify(
@@ -1015,7 +1028,8 @@ testParseAndStringify(
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME
-    }
+    },
+    "Invalid token: \"formula\""
 );
 
 testParseAndStringify(
@@ -1023,7 +1037,8 @@ testParseAndStringify(
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME
-    }
+    },
+    "Invalid token: \"insert-after\""
 );
 
 testParseAndStringify(
@@ -1031,7 +1046,8 @@ testParseAndStringify(
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME
-    }
+    },
+    "Invalid token: \"insert-before\""
 );
 
 testParseAndStringify(
@@ -1056,40 +1072,36 @@ testParseAndStringify(
     "/spreadsheet-id-123/spreadsheet-name-456/row/2/insert-after/123/delete",
     {
         "spreadsheet-id": "spreadsheet-id-123",
-        "spreadsheet-name": SPREADSHEET_NAME
-    }
-);
-
-testParseAndStringify(
-    "/spreadsheet-id-123/spreadsheet-name-456/row/2/insert-after/123/delete",
-    {
-        "spreadsheet-id": "spreadsheet-id-123",
-        "spreadsheet-name": SPREADSHEET_NAME
-    }
+        "spreadsheet-name": SPREADSHEET_NAME,
+    },
+    "Invalid token: \"delete\""
 );
 
 testParseAndStringify(
     "/spreadsheet-id-123/spreadsheet-name-456/row/2/insert-after/123/formula",
     {
         "spreadsheet-id": "spreadsheet-id-123",
-        "spreadsheet-name": SPREADSHEET_NAME
-    }
+        "spreadsheet-name": SPREADSHEET_NAME,
+    },
+    "Invalid token: \"formula\""
 );
 
 testParseAndStringify(
     "/spreadsheet-id-123/spreadsheet-name-456/row/2/insert-after/123/insert-after",
     {
         "spreadsheet-id": "spreadsheet-id-123",
-        "spreadsheet-name": SPREADSHEET_NAME
-    }
+        "spreadsheet-name": SPREADSHEET_NAME,
+    },
+    "Invalid token: \"insert-after\""
 );
 
 testParseAndStringify(
     "/spreadsheet-id-123/spreadsheet-name-456/row/2/insert-after/123/insert-before",
     {
         "spreadsheet-id": "spreadsheet-id-123",
-        "spreadsheet-name": SPREADSHEET_NAME
-    }
+        "spreadsheet-name": SPREADSHEET_NAME,
+    },
+    "Invalid token: \"insert-before\""
 );
 
 testParseAndStringify(
@@ -1097,7 +1109,8 @@ testParseAndStringify(
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
-    }
+    },
+    "Invalid token: \"insert-before\""
 );
 
 testParseAndStringify(
@@ -1131,7 +1144,8 @@ testParseAndStringify(
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
-    }
+    },
+    "Invalid token: \"delete\""
 );
 
 testParseAndStringify(
@@ -1139,7 +1153,8 @@ testParseAndStringify(
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
-    }
+    },
+    "Invalid token: \"formula\""
 );
 
 testParseAndStringify(
@@ -1147,7 +1162,8 @@ testParseAndStringify(
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
-    }
+    },
+    "Invalid token: \"insert-before\""
 );
 
 testParseAndStringify(
@@ -1155,7 +1171,8 @@ testParseAndStringify(
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
-    }
+    },
+    "Invalid token: \"insert-after\""
 );
 
 testParseAndStringify(
@@ -1231,7 +1248,8 @@ testParseAndStringify(
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
-    }
+    },
+    "Invalid token: \"formula\""
 );
 
 testParseAndStringify(
@@ -1429,7 +1447,8 @@ testParseAndStringify(
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
-    }
+    },
+    "Invalid token: \"save\""
 );
 
 testParseAndStringify(
@@ -1437,7 +1456,8 @@ testParseAndStringify(
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
-    }
+    },
+    "Invalid token: \"save\""
 );
 
 testParseAndStringify(
@@ -1445,7 +1465,8 @@ testParseAndStringify(
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
-    }
+    },
+    "Invalid token: \"save\""
 );
 
 testParseAndStringify(
@@ -1598,6 +1619,16 @@ testParseAndStringify(
     }
 );
 
+testParseAndStringify(
+    "/spreadsheet-id-123/spreadsheet-name-456/!invalid",
+    {
+        "spreadsheet-id": "spreadsheet-id-123",
+        "spreadsheet-name": SPREADSHEET_NAME,
+    },
+    "Invalid token: \"!invalid\"",
+);
+
+
 function testParseAndStringify(hash, expected, expectedError) {
     test("parse " + CharSequences.quoteAndEscape(hash), () => {
         let errors = [];
@@ -1686,7 +1717,7 @@ testMerge(
 );
 
 testMerge(
-    "/123abc/Untitled456/!invalid",
+    "/123abc/Untitled456",
     {},
     "/123abc/Untitled456"
 );
@@ -1754,13 +1785,7 @@ testMerge(
 );
 
 testMerge(
-    "/123abc/Untitled456/name/!invalid2",
-    {},
-    "/123abc/Untitled456"
-);
-
-testMerge(
-    "/123abc/Untitled456/name/!invalid",
+    "/123abc/Untitled456/name",
     {
         "selection": SpreadsheetCellReference.parse("A1")
     },
@@ -1879,14 +1904,6 @@ testMerge(
 );
 
 testMerge(
-    "/123abc/Untitled456/cell/A1/formula/!invalid3",
-    {
-        "selection-action": null,
-    },
-    "/123abc/Untitled456"
-);
-
-testMerge(
     "/123abc/Untitled456/cell/A1",
     {
         "selection": null,
@@ -1999,7 +2016,7 @@ testMerge(
 // column...........................................................................................................
 
 testMerge(
-    "/123abc/Untitled456/",
+    "/123abc/Untitled456",
     {
         selection: COLUMN,
     },
@@ -2034,7 +2051,7 @@ testMerge(
 // row...........................................................................................................
 
 testMerge(
-    "/123abc/Untitled456/",
+    "/123abc/Untitled456",
     {
         selection: ROW,
     },
@@ -2161,7 +2178,7 @@ testMerge(
 );
 
 testMerge(
-    "/123abc/Untitled456/",
+    "/123abc/Untitled456",
     {
         "select": true,
     },
