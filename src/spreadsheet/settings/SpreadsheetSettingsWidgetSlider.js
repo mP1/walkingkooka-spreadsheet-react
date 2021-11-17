@@ -63,7 +63,10 @@ export default class SpreadsheetSettingsWidgetSlider extends SpreadsheetSettings
                        marks={marks}
                        value={sliderValue}
                        onChange={onChange}
-                       style={props.style}
+                       style={{
+                            marginLeft: "2.5em",
+                            marginRight: "2.5em",
+                        }}
         />;
     }
 }
@@ -71,7 +74,6 @@ export default class SpreadsheetSettingsWidgetSlider extends SpreadsheetSettings
 SpreadsheetSettingsWidgetSlider.propTypes = SpreadsheetSettingsWidgetValue.createPropTypes(
     PropTypes.instanceOf(SystemEnum),
     {
-        style: PropTypes.object.isRequired,
         values: PropTypes.array.isRequired,
     }
 );

@@ -544,10 +544,6 @@ class SpreadsheetSettingsWidget extends SpreadsheetHistoryAwareStateWidget {
                                                                   history={history}
                                                                   notificationShow={notificationShow}
                                                                   spreadsheetMetadataCrud={spreadsheetMetadataCrud}
-                                                                  style={{
-                                                                      marginLeft: "2.5em",
-                                                                      marginRight: "2.5em",
-                                                                  }}
                         />;
                         break;
                     case TextStyle.FONT_FAMILY:
@@ -562,10 +558,6 @@ class SpreadsheetSettingsWidget extends SpreadsheetHistoryAwareStateWidget {
                                                                   history={history}
                                                                   notificationShow={notificationShow}
                                                                   spreadsheetMetadataCrud={spreadsheetMetadataCrud}
-                                                                  style={{
-                                                                      marginLeft: "2.5em",
-                                                                      marginRight: "2.5em",
-                                                                  }}
                         />;
                         break;
                     default:
@@ -907,10 +899,6 @@ class SpreadsheetSettingsWidget extends SpreadsheetHistoryAwareStateWidget {
                                                                           history={history}
                                                                           notificationShow={notificationShow}
                                                                           spreadsheetMetadataCrud={spreadsheetMetadataCrud}
-                                                                          style={{
-                                                                              marginLeft: "2.5em",
-                                                                              marginRight: "2.5em",
-                                                                          }}
                                 />;
                                 break;
                             case SpreadsheetMetadata.DEFAULT_YEAR:
