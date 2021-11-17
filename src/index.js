@@ -1,5 +1,5 @@
 import './index.css';
-import {createMuiTheme, ThemeProvider} from '@mui/material/styles';
+import {createTheme, ThemeProvider} from '@mui/material/styles';
 import * as serviceWorker from './serviceWorker';
 import Preconditions from "./Preconditions.js";
 import React from 'react';
@@ -48,7 +48,7 @@ window.addEventListener(
     false
 );
 
-const theme = createMuiTheme();
+const theme = createTheme();
 
 ReactDOM.render(
     <ThemeProvider theme={theme}>
