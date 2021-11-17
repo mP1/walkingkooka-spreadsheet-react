@@ -26,7 +26,7 @@ export default class SpreadsheetSettingsWidgetSliderAndTextField extends Spreads
         const numberTextFieldId = id + "-NumberTextField";
 
         const props = this.props;
-        const {valueToNumber, min, max, marks, step, style} = props;
+        const {valueToNumber, min, max, marks, step} = props;
 
         const numericValue = valueToNumber(value);
 
@@ -36,8 +36,7 @@ export default class SpreadsheetSettingsWidgetSliderAndTextField extends Spreads
                        ref={this.textFieldRef}
                        style={
                            {
-                               marginRight: "4px",
-                               width: "100px",
+                               width: "200px",
                            }
                        }
                        margin="none"
@@ -76,7 +75,11 @@ export default class SpreadsheetSettingsWidgetSliderAndTextField extends Spreads
                     marks={marks}
                     value={numericValue}
                     onChange={(e, newValue) => this.onChangeNumber(newValue)}
-                    style={style}/>,
+                    style={{
+                        marginLeft: "1.5em",
+                        marginRight: "2.5em",
+                    }}
+            />,
         ];
     }
 
