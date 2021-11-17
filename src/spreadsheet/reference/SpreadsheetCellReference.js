@@ -248,7 +248,9 @@ export default class SpreadsheetCellReference extends SpreadsheetCellReferenceOr
 
     buildContextMenuItems(historyTokens){
         return [
-            <MenuItem onClick={() => alert(this.toString())}>Click!</MenuItem>
+            <MenuItem key="click"
+                      onClick={() => alert(this.toString())}
+            >Click!</MenuItem>
         ];
     }
 
