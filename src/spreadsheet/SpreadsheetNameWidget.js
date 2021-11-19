@@ -100,9 +100,12 @@ export default class SpreadsheetNameWidget extends SpreadsheetHistoryAwareStateW
         try {
             const metadata = this.state.metadata;
 
-            this.props.spreadsheetMetadataCrud.post(
+            const patch = {};
+            patch[SpreadsheetMetadata.SPREADSHEET_NAME] = new SpreadsheetName(v);
+
+            this.props.spreadsheetMetadataCrud.patch(
                 metadata.get(SpreadsheetMetadata.SPREADSHEET_ID),
-                metadata.set(SpreadsheetMetadata.SPREADSHEET_NAME, new SpreadsheetName(v)),
+                JSON.stringify(patch),
                 this.resetValueAndShowError.bind(this)
             );
         } catch(e) {
