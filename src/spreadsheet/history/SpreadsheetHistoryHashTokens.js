@@ -21,6 +21,7 @@ export default class SpreadsheetHistoryHashTokens {
 
     static SPREADSHEET_NAME_EDIT_TOKEN = "name";
     static SPREADSHEET_NAME_EDIT = "spreadsheet-name-edit";
+    static SPREADSHEET_NAME_EDIT_ACTION = "spreadsheet-name-edit-action";
 
     static SELECTION = "selection";
     static SELECTION_ANCHOR = "selection-anchor";

@@ -26,7 +26,7 @@ export default class SpreadsheetSettingsSaveHistoryHashToken extends Spreadsheet
     }
 
     onSettingsAction(settingsWidget) {
-        settingsWidget.patchSpreadsheetMetadata(this.value());
+        settingsWidget.patchMetadataWithName(this.value());
     }
 
 
