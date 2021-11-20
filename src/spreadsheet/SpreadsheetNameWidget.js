@@ -1,45 +1,41 @@
+import Button from "@mui/material/Button";
+import Keys from "../Keys.js";
 import React from 'react';
 import PropTypes from 'prop-types';
-import SpreadsheetButtonTextField from '../widget/SpreadsheetButtonTextField.js';
 import SpreadsheetHistoryAwareStateWidget from "./history/SpreadsheetHistoryAwareStateWidget.js";
 import SpreadsheetHistoryHash from "./history/SpreadsheetHistoryHash.js";
 import SpreadsheetHistoryHashTokens from "./history/SpreadsheetHistoryHashTokens.js";
-import SpreadsheetName from "./SpreadsheetName.js";
 import SpreadsheetMessengerCrud from "./message/SpreadsheetMessengerCrud.js";
 import SpreadsheetMetadata from "./meta/SpreadsheetMetadata.js";
+import SpreadsheetName from "./SpreadsheetName.js";
+import TextField from "@mui/material/TextField";
 
 /**
- * A wrapper that is a bridge between SpreadsheetMetadata's spreadsheet name and a text field.
- * State<br>
- * <ul>
- * <li>String value holds the spreadsheet name as text</li>
- * <li>boolean edit true means the name is currently being edited</li>
- * <li>SpreadsheetMetadata metadata: Holds the initial value which is used when reset</li>
- * </ul>
+ * A widget that displays the spreadsheet name as a button which when clicked turns into a text field and may be edited.
  */
 export default class SpreadsheetNameWidget extends SpreadsheetHistoryAwareStateWidget {
 
     static SPREADSHEET_NAME_ID = "spreadsheet-name";
 
+    static BUTTON_ID = SpreadsheetNameWidget.SPREADSHEET_NAME_ID + "-Button";
+
+    static TEXT_FIELD_ID = SpreadsheetNameWidget.SPREADSHEET_NAME_ID + "-TextField";
+
     init() {
-        this.textField = React.createRef();
     }
 
     initialStateFromProps(props) {
-        return {};
+        return {
+            name: null,
+            value: "",
+            edit: false,
+        };
     }
 
     componentDidMount() {
         super.componentDidMount();
 
         this.spreadsheetMetadataCrudRemover = this.props.spreadsheetMetadataCrud.addListener(this.onSpreadsheetMetadata.bind(this));
-    }
-
-    onSpreadsheetMetadata(method, id, url, requestMetadata, responseMetadata) {
-        this.setState({
-            metadata: responseMetadata,
-            value: responseMetadata && responseMetadata.getIgnoringDefaults(SpreadsheetMetadata.SPREADSHEET_NAME),
-        });
     }
 
     componentWillUnmount() {
@@ -51,87 +47,118 @@ export default class SpreadsheetNameWidget extends SpreadsheetHistoryAwareStateW
 
     stateFromHistoryTokens(tokens) {
         return {
+            id: tokens[SpreadsheetHistoryHashTokens.SPREADSHEET_ID],
+            name: tokens[SpreadsheetHistoryHashTokens.SPREADSHEET_NAME],
             edit: !!tokens[SpreadsheetHistoryHashTokens.SPREADSHEET_NAME_EDIT],
         };
     }
 
     historyTokensFromState(prevState) {
-        const state = this.state;
-        const edit = !!state.edit;
-        const name = state.value;
-        const nameText = name ? name.toString() : "";
-
-        const widget = this.textField.current;
-        if(widget){
-            widget.edit(edit);
-
-            this.textField.current.setState({
-                value: nameText,
-            });
-        }
-        document.title = nameText;
+        const edit = !!this.state.edit;
 
         const historyTokens = SpreadsheetHistoryHashTokens.emptyTokens();
 
-        if(edit !== prevState.edit) {
+        if(edit !== prevState.edit){
             historyTokens[SpreadsheetHistoryHashTokens.SPREADSHEET_NAME_EDIT] = edit;
         }
         return historyTokens;
     }
 
     render() {
-        const spreadsheetName = this.state.value;
-        const value = (spreadsheetName && spreadsheetName.value()) || "";
+        const {edit, name, value} = this.state;
 
-        // TODO add a validator to verify spreadsheetName characters
-        return <SpreadsheetButtonTextField ref={this.textField}
-                                           key={value}
-                                           id={SpreadsheetNameWidget.SPREADSHEET_NAME_ID}
-                                           className={"spreadsheet-name"}
-                                           value={value}
-                                           setValue={this.onValue.bind(this)}
-                                           setEdit={this.onTextFieldEdit.bind(this)}/>
+        const text = edit ?
+            value :
+            name ? name.value() : "";
+
+        document.title = text;
+console.log("@name edit: " + edit + " name: " + name + " value: " + value + " -> " + text);
+        const tokens = this.props.history.tokens();
+        tokens[ SpreadsheetHistoryHashTokens.SPREADSHEET_NAME_EDIT] = true;
+        const buttonLink = "#" + SpreadsheetHistoryHash.stringify(tokens);
+
+        const textOnBlur = () => {
+            // const tokens = SpreadsheetHistoryHashTokens.emptyTokens();
+            // tokens[SpreadsheetHistoryHashTokens.SPREADSHEET_NAME_EDIT] = false;
+            // this.historyParseMergeAndPush(tokens);
+            this.setState({
+                edit: false,
+                value: this.state.name,
+            });
+        };
+
+        const textOnChange = (e) => {
+            this.setState({
+                value: e.target.value || "",
+            });
+        };
+
+        const textOnKeyDown = (e) => {
+            switch(e.key) {
+                case Keys.ESCAPE:
+                    e.preventDefault();
+                    this.setState({
+                        edit: false,
+                    });
+                    break;
+                case Keys.ENTER:
+                    e.preventDefault();
+                    this.saveNewSpreadsheetName();
+                    break;
+                default:
+                // ignore other keys
+            }
+        };
+
+        return !edit ?
+            <Button
+                id={SpreadsheetNameWidget.BUTTON_ID}
+                href={buttonLink}
+                style={{
+                    color: "#000",
+                    textTransform: "none",
+                }}
+            >{text}</Button> :
+            <TextField ref={this.textField}
+                       id={SpreadsheetNameWidget.TEXT_FIELD_ID}
+                       fullWidth={true}
+                       margin={"none"}
+                       onBlur={textOnBlur}
+                       onKeyDown={textOnKeyDown}
+                       value={value}
+                       onChange={textOnChange}
+                       autoFocus
+            />
+    }
+
+    saveNewSpreadsheetName() {
+        this.patchMetadata();
     }
 
     /**
-     * If the text value from the text field is invalid or failures validation the original loaded value is restored.
+     * Performs a PATCH to the server with the new name.
      */
-    onValue(v) {
-        try {
-            const metadata = this.state.metadata;
+    patchMetadata() {
+        const {id, value} = this.state;
 
-            const patch = {};
-            patch[SpreadsheetMetadata.SPREADSHEET_NAME] = new SpreadsheetName(v);
+        const patch = {};
+        patch[SpreadsheetMetadata.SPREADSHEET_NAME] = new SpreadsheetName(value);
 
-            this.props.spreadsheetMetadataCrud.patch(
-                metadata.get(SpreadsheetMetadata.SPREADSHEET_ID),
-                JSON.stringify(patch),
-                this.resetValueAndShowError.bind(this)
-            );
-        } catch(e) {
-            this.resetValueAndShowError(e.message);
-        }
-        this.onTextFieldEdit(false);
+        this.props.spreadsheetMetadataCrud.patch(
+            id,
+            JSON.stringify(patch),
+            this.props.showError
+        );
     }
 
-    /**
-     * If an invalid spreadsheet name has been entered or saving failures, reload the original {@link SpreadsheetName}.
-     */
-    resetValueAndShowError(message, error) {
-        const value = this.state.metadata.getIgnoringDefaults(SpreadsheetMetadata.SPREADSHEET_NAME);
-        console.log("resetValueAndShowError" + value);
+    onSpreadsheetMetadata(method, id, url, requestMetadata, responseMetadata) {
+        const spreadsheetName = responseMetadata ? responseMetadata.getIgnoringDefaults(SpreadsheetMetadata.SPREADSHEET_NAME) : null;
+
         this.setState({
-            value: value,
+            id: id, // SpreadsheetId
+            name: spreadsheetName,
+            value: spreadsheetName ? spreadsheetName.value() : "",
         });
-        if(message || error){
-            this.showError(message, error);
-        }
-    }
-
-    onTextFieldEdit(newEdit) {
-        this.setState({
-            edit: newEdit,
-        })
     }
 }
 

@@ -100,16 +100,29 @@ export default class SpreadsheetTesting {
         this.wait(100);
     }
 
-    spreadsheetName() {
-        return this.getById(SpreadsheetNameWidget.SPREADSHEET_NAME_ID);
+    spreadsheetNameButton() {
+        return this.getById(SpreadsheetNameWidget.BUTTON_ID);
     }
 
-    spreadsheetNameClick() {
-        this.spreadsheetName()
+    spreadsheetNameButtonClick() {
+        this.spreadsheetNameButton()
             .click();
 
+        this.spreadsheetNameWait();
+
         this.hash()
-            .should('match', /.*\/.*\/name/) // => true
+            .should('match', /.*\/.*\/name/);
+    }
+
+    spreadsheetNameTextField() {
+        this.hash()
+            .should('match', /.*\/.*\/name/);
+
+        return this.getById(SpreadsheetNameWidget.TEXT_FIELD_ID);
+    }
+
+    spreadsheetNameWait() {
+        this.wait(100);
     }
 
     formulaText() {
