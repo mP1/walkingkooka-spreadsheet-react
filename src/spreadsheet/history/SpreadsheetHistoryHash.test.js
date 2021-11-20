@@ -81,7 +81,7 @@ testValidate(
     {
         "spreadsheet-id": ID,
         "spreadsheet-name": SPREADSHEET_NAME,
-        "name": true,
+        "spreadsheet-name-edit": true,
     }
 );
 
@@ -108,7 +108,7 @@ testValidate(
     {
         "spreadsheet-id": ID,
         "spreadsheet-name": SPREADSHEET_NAME,
-        "name": true,
+        "spreadsheet-name-edit": true,
         "selection": CELL,
     },
     {
@@ -122,7 +122,7 @@ testValidate(
     {
         "spreadsheet-id": ID,
         "spreadsheet-name": SPREADSHEET_NAME,
-        "name": true,
+        "spreadsheet-name-edit": true,
         "label": LABEL,
     },
     {
@@ -136,7 +136,7 @@ testValidate(
     {
         "spreadsheet-id": ID,
         "spreadsheet-name": SPREADSHEET_NAME,
-        "name": true,
+        "spreadsheet-name-edit": true,
         "select": true,
     },
     {
@@ -362,7 +362,7 @@ testParseAndStringify(
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
-        "name": true,
+        "spreadsheet-name-edit": true,
     }
 );
 
@@ -693,7 +693,7 @@ testParseAndStringify(
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
-        "name": true,
+        "spreadsheet-name-edit": true,
     }
 );
 
@@ -1733,7 +1733,7 @@ testMerge(
 testMerge(
     "/123abc/Untitled456",
     {
-        name: true,
+        "spreadsheet-name-edit": true,
     },
     "/123abc/Untitled456/name"
 );
@@ -1741,7 +1741,7 @@ testMerge(
 testMerge(
     "/123abc/Untitled456",
     {
-        name: false,
+        "spreadsheet-name-edit": false,
     },
     "/123abc/Untitled456"
 );
@@ -1749,7 +1749,7 @@ testMerge(
 testMerge(
     "/123abc/Untitled456/name",
     {
-        "name": true,
+        "spreadsheet-name-edit": true,
     },
     "/123abc/Untitled456/name"
 );
@@ -1757,7 +1757,7 @@ testMerge(
 testMerge(
     "/123abc/Untitled456/name",
     {
-        "name": false,
+        "spreadsheet-name-edit": false,
     },
     "/123abc/Untitled456"
 );
@@ -1765,7 +1765,7 @@ testMerge(
 testMerge(
     "/123abc/Untitled456/name",
     {
-        "name": true,
+        "spreadsheet-name-edit": true,
     },
     "/123abc/Untitled456/name"
 );
@@ -1773,7 +1773,7 @@ testMerge(
 testMerge(
     "/123abc/Untitled456/name",
     {
-        "name": false,
+        "spreadsheet-name-edit": false,
     },
     "/123abc/Untitled456"
 );
@@ -1922,7 +1922,7 @@ testMerge(
 testMerge(
     "/123abc/Untitled456/cell/A2",
     {
-        "name": false,
+        "spreadsheet-name-edit": false,
     },
     "/123abc/Untitled456/cell/A2"
 );
@@ -1930,7 +1930,7 @@ testMerge(
 testMerge(
     "/123abc/Untitled456/cell/A2",
     {
-        "name": true,
+        "spreadsheet-name-edit": true,
     },
     "/123abc/Untitled456/name"
 );
@@ -1938,7 +1938,7 @@ testMerge(
 testMerge(
     "/123abc/Untitled456/cell/A2/formula",
     {
-        "name": false,
+        "spreadsheet-name-edit": false,
     },
     "/123abc/Untitled456/cell/A2/formula"
 );
@@ -1946,7 +1946,7 @@ testMerge(
 testMerge(
     "/123abc/Untitled456/cell/A2/formula",
     {
-        "name": true,
+        "spreadsheet-name-edit": true,
     },
     "/123abc/Untitled456/name"
 );
@@ -2000,7 +2000,7 @@ testMerge(
 testMerge(
     "/123abc/Untitled456/label/LABEL123",
     {
-        name: false,
+        "spreadsheet-name-edit": false,
     },
     "/123abc/Untitled456/label/LABEL123"
 );
@@ -2008,7 +2008,7 @@ testMerge(
 testMerge(
     "/123abc/Untitled456/label/LABEL123",
     {
-        name: true,
+        "spreadsheet-name-edit": true,
     },
     "/123abc/Untitled456/name"
 );
@@ -2204,7 +2204,7 @@ testMerge(
 testMerge(
     "/123abc/Untitled456/select",
     {
-        "name": false,
+        "spreadsheet-name-edit": false,
     },
     "/123abc/Untitled456/select",
 );
@@ -2212,7 +2212,7 @@ testMerge(
 testMerge(
     "/123abc/Untitled456/select",
     {
-        "name": true,
+        "spreadsheet-name-edit": true,
     },
     "/123abc/Untitled456/name",
 );

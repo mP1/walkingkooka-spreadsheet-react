@@ -106,7 +106,7 @@ export default class SpreadsheetHistoryHash extends SpreadsheetHistoryHashTokens
 
                 do {
                     var token = tokens.shift();
-                    if(SpreadsheetHistoryHashTokens.SPREADSHEET_NAME_EDIT === token){
+                    if(SpreadsheetHistoryHashTokens.SPREADSHEET_NAME_EDIT_KEY === token){
                         nameEdit = true;
                         token = tokens.shift();
                     }
@@ -676,7 +676,7 @@ export default class SpreadsheetHistoryHash extends SpreadsheetHistoryHashTokens
 
         if(valid){
             if(nameEdit){
-                hash = hash + "/" + SpreadsheetHistoryHashTokens.SPREADSHEET_NAME_EDIT;
+                hash = hash + "/" + SpreadsheetHistoryHashTokens.SPREADSHEET_NAME_EDIT_KEY;
                 selection = null;
                 selectionAction = null;
                 label = null;
