@@ -1,4 +1,5 @@
 import Button from "@mui/material/Button";
+import Equality from "../Equality.js";
 import Keys from "../Keys.js";
 import React from 'react';
 import PropTypes from 'prop-types';
@@ -8,7 +9,9 @@ import SpreadsheetHistoryHashTokens from "./history/SpreadsheetHistoryHashTokens
 import SpreadsheetMessengerCrud from "./message/SpreadsheetMessengerCrud.js";
 import SpreadsheetMetadata from "./meta/SpreadsheetMetadata.js";
 import SpreadsheetName from "./SpreadsheetName.js";
+import SpreadsheetNameSaveHistoryHashToken from "./history/SpreadsheetNameSaveHistoryHashToken.js";
 import TextField from "@mui/material/TextField";
+
 
 /**
  * A widget that displays the spreadsheet name as a button which when clicked turns into a text field and may be edited.
@@ -29,6 +32,7 @@ export default class SpreadsheetNameWidget extends SpreadsheetHistoryAwareStateW
             name: null,
             value: "",
             edit: false,
+            action: null,
         };
     }
 
@@ -50,17 +54,27 @@ export default class SpreadsheetNameWidget extends SpreadsheetHistoryAwareStateW
             id: tokens[SpreadsheetHistoryHashTokens.SPREADSHEET_ID],
             name: tokens[SpreadsheetHistoryHashTokens.SPREADSHEET_NAME],
             edit: !!tokens[SpreadsheetHistoryHashTokens.SPREADSHEET_NAME_EDIT],
+            action: tokens[SpreadsheetHistoryHashTokens.SPREADSHEET_NAME_EDIT_ACTION],
         };
     }
 
     historyTokensFromState(prevState) {
-        const edit = !!this.state.edit;
+        const state = this.state;
+        const newEdit = state.edit;
 
         const historyTokens = SpreadsheetHistoryHashTokens.emptyTokens();
 
-        if(edit !== prevState.edit){
-            historyTokens[SpreadsheetHistoryHashTokens.SPREADSHEET_NAME_EDIT] = edit;
+        if(newEdit !== prevState.edit){
+            historyTokens[SpreadsheetHistoryHashTokens.SPREADSHEET_NAME_EDIT] = newEdit;
         }
+
+        if(newEdit) {
+            const newAction = state.action;
+            if(!(Equality.safeEquals(newAction, prevState.action)) && newAction) {
+                newAction.onNameAction(this);
+            }
+        }
+
         return historyTokens;
     }
 
@@ -129,23 +143,31 @@ export default class SpreadsheetNameWidget extends SpreadsheetHistoryAwareStateW
     }
 
     saveNewSpreadsheetName() {
-        this.patchMetadata();
+        const historyHashTokens = SpreadsheetHistoryHash.emptyTokens();
+        historyHashTokens[SpreadsheetHistoryHashTokens.SPREADSHEET_NAME_EDIT_ACTION] = new SpreadsheetNameSaveHistoryHashToken(
+            new SpreadsheetName(this.state.value)
+        );
+        this.historyParseMergeAndPush(historyHashTokens);
     }
 
     /**
      * Performs a PATCH to the server with the new name.
      */
-    patchMetadata() {
-        const {id, value} = this.state;
+    patchSpreadsheetMetadataWithName(name) {
+        const {id} = this.state;
 
         const patch = {};
-        patch[SpreadsheetMetadata.SPREADSHEET_NAME] = new SpreadsheetName(value);
+        patch[SpreadsheetMetadata.SPREADSHEET_NAME] = name;
 
         this.props.spreadsheetMetadataCrud.patch(
             id,
             JSON.stringify(patch),
             this.props.showError
         );
+
+        const tokens = SpreadsheetHistoryHashTokens.emptyTokens();
+        tokens[SpreadsheetHistoryHashTokens.SPREADSHEET_NAME_EDIT_ACTION] = null;
+        this.historyParseMergeAndPush(tokens);
     }
 
     onSpreadsheetMetadata(method, id, url, requestMetadata, responseMetadata) {
