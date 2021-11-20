@@ -125,7 +125,7 @@ export default class SpreadsheetNameWidget extends SpreadsheetHistoryAwareStateW
                        value={value}
                        onChange={textOnChange}
                        autoFocus
-            />
+            />;
     }
 
     saveNewSpreadsheetName() {
