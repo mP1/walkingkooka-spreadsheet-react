@@ -72,15 +72,12 @@ export default class SpreadsheetNameWidget extends SpreadsheetHistoryAwareStateW
             name ? name.value() : "";
 
         document.title = text;
-console.log("@name edit: " + edit + " name: " + name + " value: " + value + " -> " + text);
+
         const tokens = this.props.history.tokens();
-        tokens[ SpreadsheetHistoryHashTokens.SPREADSHEET_NAME_EDIT] = true;
+        tokens[SpreadsheetHistoryHashTokens.SPREADSHEET_NAME_EDIT] = true;
         const buttonLink = "#" + SpreadsheetHistoryHash.stringify(tokens);
 
         const textOnBlur = () => {
-            // const tokens = SpreadsheetHistoryHashTokens.emptyTokens();
-            // tokens[SpreadsheetHistoryHashTokens.SPREADSHEET_NAME_EDIT] = false;
-            // this.historyParseMergeAndPush(tokens);
             this.setState({
                 edit: false,
                 value: this.state.name,
