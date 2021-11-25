@@ -680,17 +680,31 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
 
         let contextMenuState = {};
 
-        const selection = this.findEventTargetSelection(e.target);
-        if(selection){
+        const clickedSelection = this.findEventTargetSelection(e.target);
+        if(clickedSelection){
             const history = this.props.history;
+            const historyHashTokens = history.tokens();
+            const historyHashTokenSelection = historyHashTokens[SpreadsheetHistoryHashTokens.SELECTION];
+
+            const selection = historyHashTokenSelection && historyHashTokenSelection.viewportContextMenuClick(clickedSelection) ?
+                historyHashTokenSelection :
+                clickedSelection;
+
+            console.log("@@historyHashTokenSelection: " + historyHashTokenSelection +
+                " viewportContextMenuClick: " + clickedSelection +  " -> " +
+                (historyHashTokenSelection && historyHashTokenSelection.viewportContextMenuClick(clickedSelection)) +
+            " selection: " + selection + " items -> " +  selection.viewportContextMenuItems(
+                    SpreadsheetHistoryHash.spreadsheetIdAndName(historyHashTokens),
+                    history
+                ));
 
             contextMenuState = {
                 anchorPosition: {
                     left: e.clientX - 2,
                     top: e.clientY - 4,
                 },
-                menuItems: selection.buildContextMenuItems(
-                    SpreadsheetHistoryHash.spreadsheetIdAndName(history.tokens()),
+                menuItems: selection.viewportContextMenuItems(
+                    SpreadsheetHistoryHash.spreadsheetIdAndName(historyHashTokens),
                     history
                 ),
             }

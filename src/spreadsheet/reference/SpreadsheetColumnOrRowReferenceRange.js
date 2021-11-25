@@ -37,6 +37,10 @@ export default class SpreadsheetColumnOrRowReferenceRange extends SpreadsheetSel
 
     // viewport.........................................................................................................
 
+    viewportContextMenuItems(historyTokens, history) {
+        return this.viewportContextMenuItemsColumnOrRow(historyTokens, history);
+    }
+
     viewportEnter(giveFormulaFocus) {
         // ENTER currently is a NOP but will change to perhaps popup a menu
     }
