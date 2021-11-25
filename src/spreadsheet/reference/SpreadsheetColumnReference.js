@@ -78,42 +78,27 @@ export default class SpreadsheetColumnReference extends SpreadsheetColumnOrRowRe
 
     // context menu events..............................................................................................
 
-    viewportInsertAfter1Id() {
-        return SpreadsheetColumnReference.VIEWPORT_INSERT_AFTER_1_ID;
-    }
+    static VIEWPORT_INSERT_AFTER_1_TEXT = "Insert 1 after";
+    static VIEWPORT_INSERT_AFTER_2_TEXT = "Insert 2 after";
+
+    static VIEWPORT_INSERT_BEFORE_1_TEXT = "Insert 1 before";
+    static VIEWPORT_INSERT_BEFORE_2_TEXT = "Insert 2 before";
 
     viewportInsertAfter1Text() {
-        return "Insert 1 after";
-    }
-
-    viewportInsertAfter2Id() {
-        return SpreadsheetColumnReference.VIEWPORT_INSERT_AFTER_2_ID;
+        return SpreadsheetColumnReference.VIEWPORT_INSERT_AFTER_1_TEXT;
     }
 
     viewportInsertAfter2Text() {
-        return "Insert 2 after";
-    }
-
-    viewportInsertBefore1Id() {
-        return SpreadsheetColumnReference.VIEWPORT_INSERT_BEFORE_1_ID;
+        return SpreadsheetColumnReference.VIEWPORT_INSERT_AFTER_2_TEXT;
     }
 
     viewportInsertBefore1Text() {
-        return "Insert 1 before";
-    }
-
-    viewportInsertBefore2Id() {
-        return SpreadsheetColumnReference.VIEWPORT_INSERT_BEFORE_2_ID;
+        return SpreadsheetColumnReference.VIEWPORT_INSERT_BEFORE_1_TEXT;
     }
 
     viewportInsertBefore2Text() {
-        return "Insert 2 before";
+        return SpreadsheetColumnReference.VIEWPORT_INSERT_BEFORE_2_TEXT;
     }
-
-    static VIEWPORT_INSERT_BEFORE_2_ID = "viewport-column-insert-before-2";
-    static VIEWPORT_INSERT_BEFORE_1_ID = "viewport-column-insert-before-1";
-    static VIEWPORT_INSERT_AFTER_1_ID = "viewport-column-insert-after-1";
-    static VIEWPORT_INSERT_AFTER_2_ID = "viewport-column-insert-after-2";
 
     viewportId() {
         return "viewport-column-" + this.toString().toUpperCase();

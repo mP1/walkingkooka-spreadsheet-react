@@ -75,12 +75,6 @@ export default class SpreadsheetRowReferenceRange extends SpreadsheetColumnOrRow
             this.end().compareTo(rowReference) >= 0;
     }
 
-    // context menu events..............................................................................................
-
-    buildContextMenuItems(historyTokens) {
-        // nop
-    }
-
     toLoadCellsQueryStringParameterSelectionType() {
         return "row-range";
     }
@@ -129,6 +123,29 @@ export default class SpreadsheetRowReferenceRange extends SpreadsheetColumnOrRow
 
     // viewport.........................................................................................................
 
+    /**
+     * Only returns true if the given clicked is a row within this range.
+     */
+    viewportContextMenuClick(clicked) {
+        return clicked instanceof SpreadsheetRowReference && this.testRow(clicked);
+    }
+
+    viewportInsertAfter1Text() {
+        return SpreadsheetRowReference.VIEWPORT_INSERT_AFTER_1_TEXT;
+    }
+
+    viewportInsertAfter2Text() {
+        return SpreadsheetRowReference.VIEWPORT_INSERT_AFTER_2_TEXT;
+    }
+
+    viewportInsertBefore1Text() {
+        return SpreadsheetRowReference.VIEWPORT_INSERT_BEFORE_1_TEXT;
+    }
+
+    viewportInsertBefore2Text() {
+        return SpreadsheetRowReference.VIEWPORT_INSERT_BEFORE_2_TEXT;
+    }
+    
     viewportFocus(labelToReference, anchor) {
         let focus;
 

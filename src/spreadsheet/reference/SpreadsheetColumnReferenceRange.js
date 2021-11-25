@@ -75,12 +75,6 @@ export default class SpreadsheetColumnReferenceRange extends SpreadsheetColumnOr
         return false;
     }
 
-    // context menu events..............................................................................................
-
-    buildContextMenuItems(historyTokens){
-        // nop
-    }
-
     toLoadCellsQueryStringParameterSelectionType() {
         return "column-range";
     }
@@ -128,6 +122,29 @@ export default class SpreadsheetColumnReferenceRange extends SpreadsheetColumnOr
     }
 
     // viewport.........................................................................................................
+
+    /**
+     * Only returns true if the given clicked is a column within this range.
+     */
+    viewportContextMenuClick(clicked) {
+        return clicked instanceof SpreadsheetColumnReference && this.testColumn(clicked);
+    }
+
+    viewportInsertAfter1Text() {
+        return SpreadsheetColumnReference.VIEWPORT_INSERT_AFTER_1_TEXT;
+    }
+
+    viewportInsertAfter2Text() {
+        return SpreadsheetColumnReference.VIEWPORT_INSERT_AFTER_2_TEXT;
+    }
+
+    viewportInsertBefore1Text() {
+        return SpreadsheetColumnReference.VIEWPORT_INSERT_BEFORE_1_TEXT;
+    }
+
+    viewportInsertBefore2Text() {
+        return SpreadsheetColumnReference.VIEWPORT_INSERT_BEFORE_2_TEXT;
+    }
 
     viewportFocus(labelToReference, anchor) {
         let focus;

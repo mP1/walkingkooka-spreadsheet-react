@@ -246,7 +246,7 @@ export default class SpreadsheetCellReference extends SpreadsheetCellReferenceOr
 
     // context menu events..............................................................................................
 
-    buildContextMenuItems(historyTokens){
+    viewportContextMenuItems(historyTokens){
         return [
             <MenuItem key="click"
                       onClick={() => alert(this.toString())}
@@ -255,6 +255,13 @@ export default class SpreadsheetCellReference extends SpreadsheetCellReferenceOr
     }
 
     // viewport.........................................................................................................
+
+    /**
+     * Only returns true if the given clicked is a cell and m
+     */
+    viewportContextMenuClick(clicked) {
+        return this.equals(clicked);
+    }
 
     viewportEnter(giveFormulaFocus) {
         giveFormulaFocus();

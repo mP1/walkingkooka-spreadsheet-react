@@ -2,6 +2,7 @@
 
 import SpreadsheetCellReference from "../../src/spreadsheet/reference/SpreadsheetCellReference.js";
 import SpreadsheetRowReference from "../../src/spreadsheet/reference/SpreadsheetRowReference.js";
+import SpreadsheetSelection from "../../src/spreadsheet/reference/SpreadsheetSelection.js";
 import SpreadsheetTesting from "./SpreadsheetTesting.js";
 
 const A1 = SpreadsheetCellReference.parse("A1");
@@ -24,7 +25,7 @@ describe("Row",
 
             testing.spreadsheetEmptyReady();
         });
-
+        
         // row click.................................................................................................
 
         it("Row click should have focus and be selected", () => {
@@ -307,10 +308,10 @@ describe("Row",
 
             testing.viewportContextMenu()
                 .should("be.visible")
-                .find("#" + SpreadsheetRowReference.VIEWPORT_INSERT_BEFORE_2_ID)
+                .find("#" + SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_INSERT_BEFORE_2_ID)
                 .should("include.text", "Insert 2 before");
 
-            testing.getById(SpreadsheetRowReference.VIEWPORT_INSERT_BEFORE_2_ID)
+            testing.getById(SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_INSERT_BEFORE_2_ID)
                 .click();
 
             testing.viewportContextMenu()
@@ -327,10 +328,10 @@ describe("Row",
 
             testing.viewportContextMenu()
                 .should("be.visible")
-                .find("#" + SpreadsheetRowReference.VIEWPORT_INSERT_BEFORE_1_ID)
+                .find("#" + SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_INSERT_BEFORE_1_ID)
                 .should("include.text", "Insert 1 before");
 
-            testing.getById(SpreadsheetRowReference.VIEWPORT_INSERT_BEFORE_1_ID)
+            testing.getById(SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_INSERT_BEFORE_1_ID)
                 .click();
 
             testing.viewportContextMenu()
@@ -348,10 +349,10 @@ describe("Row",
 
             testing.viewportContextMenu()
                 .should("be.visible")
-                .find("#" + SpreadsheetRowReference.VIEWPORT_INSERT_AFTER_1_ID)
+                .find("#" + SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_INSERT_AFTER_1_ID)
                 .should("include.text", "Insert 1 after");
 
-            testing.getById(SpreadsheetRowReference.VIEWPORT_INSERT_AFTER_1_ID)
+            testing.getById(SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_INSERT_AFTER_1_ID)
                 .click();
 
             testing.viewportContextMenu()
@@ -370,10 +371,10 @@ describe("Row",
 
             testing.viewportContextMenu()
                 .should("be.visible")
-                .find("#" + SpreadsheetRowReference.VIEWPORT_INSERT_AFTER_2_ID)
+                .find("#" + SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_INSERT_AFTER_2_ID)
                 .should("include.text", "Insert 2 after");
 
-            testing.getById(SpreadsheetRowReference.VIEWPORT_INSERT_AFTER_2_ID)
+            testing.getById(SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_INSERT_AFTER_2_ID)
                 .click();
 
             testing.viewportContextMenu()
@@ -397,10 +398,10 @@ describe("Row",
 
             testing.viewportContextMenu()
                 .should("be.visible")
-                .find("#" + SpreadsheetRowReference.VIEWPORT_INSERT_BEFORE_2_ID)
+                .find("#" + SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_INSERT_BEFORE_2_ID)
                 .should("include.text", "Insert 2 before");
 
-            testing.getById(SpreadsheetRowReference.VIEWPORT_INSERT_BEFORE_2_ID)
+            testing.getById(SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_INSERT_BEFORE_2_ID)
                 .click();
 
             testing.viewportContextMenu()
@@ -426,10 +427,10 @@ describe("Row",
 
             testing.viewportContextMenu()
                 .should("be.visible")
-                .find("#" + SpreadsheetRowReference.VIEWPORT_INSERT_BEFORE_1_ID)
+                .find("#" + SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_INSERT_BEFORE_1_ID)
                 .should("include.text", "Insert 1 before");
 
-            testing.getById(SpreadsheetRowReference.VIEWPORT_INSERT_BEFORE_1_ID)
+            testing.getById(SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_INSERT_BEFORE_1_ID)
                 .click();
 
             testing.viewportContextMenu()
@@ -456,10 +457,10 @@ describe("Row",
 
             testing.viewportContextMenu()
                 .should("be.visible")
-                .find("#" + SpreadsheetRowReference.VIEWPORT_INSERT_AFTER_1_ID)
+                .find("#" + SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_INSERT_AFTER_1_ID)
                 .should("include.text", "Insert 1 after");
 
-            testing.getById(SpreadsheetRowReference.VIEWPORT_INSERT_AFTER_1_ID)
+            testing.getById(SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_INSERT_AFTER_1_ID)
                 .click();
 
             testing.viewportContextMenu()
@@ -487,10 +488,10 @@ describe("Row",
 
             testing.viewportContextMenu()
                 .should("be.visible")
-                .find("#" + SpreadsheetRowReference.VIEWPORT_INSERT_AFTER_2_ID)
+                .find("#" + SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_INSERT_AFTER_2_ID)
                 .should("include.text", "Insert 2 after");
 
-            testing.getById(SpreadsheetRowReference.VIEWPORT_INSERT_AFTER_2_ID)
+            testing.getById(SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_INSERT_AFTER_2_ID)
                 .click();
 
             testing.viewportContextMenu()
@@ -502,6 +503,31 @@ describe("Row",
             testing.cellFormattedTextCheck("A1", "Never");
             testing.cellFormattedTextCheck("C5", "Moved");
             testing.cellFormattedTextCheck(C3, "");
+        });
+
+        it("Row range context menu links", () => {
+            testing.hashAppend("/row/2:3");
+
+            testing.contextMenu(ROW_2.viewportId());
+
+            testing.viewportContextMenu()
+                .should("be.visible");
+
+            testing.getById(SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_INSERT_AFTER_1_ID)
+                .should("have.attr", "href")
+                .and('match', /#*\/*\/row\/2:3\/insert-after\/1/);
+
+            testing.getById(SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_INSERT_AFTER_2_ID)
+                .should("have.attr", "href")
+                .and('match', /#*\/*\/row\/2:3\/insert-after\/2/);
+
+            testing.getById(SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_INSERT_BEFORE_1_ID)
+                .should("have.attr", "href")
+                .and('match', /#*\/*\/row\/2:3\/insert-before\/1/);
+
+            testing.getById(SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_INSERT_BEFORE_2_ID)
+                .should("have.attr", "href")
+                .and('match', /#*\/*\/row\/2:3\/insert-before\/2/);
         });
     }
 );

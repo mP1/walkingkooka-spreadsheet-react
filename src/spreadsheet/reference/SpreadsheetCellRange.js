@@ -116,11 +116,18 @@ export default class SpreadsheetCellRange extends SpreadsheetExpressionReference
 
     // context menu events..............................................................................................
 
-    buildContextMenuItems(historyTokens) {
+    viewportContextMenuItems(historyTokens) {
         // nop
     }
 
     // viewport.........................................................................................................
+
+    /**
+     * Only returns true if the given clicked is a cell and within this range.
+     */
+    viewportContextMenuClick(clicked) {
+        return clicked instanceof SpreadsheetCellReference && this.testCell(clicked);
+    }
 
     viewportEnter(giveFormulaFocus) {
         // nop TODO later perhaps popup menu

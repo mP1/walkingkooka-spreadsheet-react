@@ -1,6 +1,11 @@
 import CharSequences from "../../CharSequences.js";
 import Character from "../../Character.js";
 import Keys from "../../Keys.js";
+import SpreadsheetColumnOrRowInsertBeforeHistoryHashToken
+    from "../history/SpreadsheetColumnOrRowInsertBeforeHistoryHashToken.js";
+import SpreadsheetColumnOrRowInsertAfterHistoryHashToken
+    from "../history/SpreadsheetColumnOrRowInsertAfterHistoryHashToken.js";
+import SpreadsheetHistoryHashTokens from "../history/SpreadsheetHistoryHashTokens.js";
 import SpreadsheetViewportSelection from "./SpreadsheetViewportSelection.js";
 import SystemObject from "../../SystemObject.js";
 
@@ -77,16 +82,6 @@ export default class SpreadsheetSelection extends SystemObject {
         SystemObject.throwUnsupportedOperation();
     }
 
-    // context menu events..............................................................................................
-
-    /**
-     * This method is called whenever the element for this selection is clicked, providing an opportunity to
-     * build the context menu items that will be displayed ready for clicking.
-     */
-    buildContextMenuItems(historyTokens){
-        SystemObject.throwUnsupportedOperation();
-    }
-
     // key events.......................................................................................................
 
     /**
@@ -138,6 +133,79 @@ export default class SpreadsheetSelection extends SystemObject {
         }
     }
 
+    viewportContextMenuClick(clicked) {
+        SystemObject.throwUnsupportedOperation();
+    }
+
+    /**
+     * This method is called whenever the element for this selection is clicked, providing an opportunity to
+     * build the context menu items that will be displayed ready for clicking.
+     */
+    viewportContextMenuItems(historyTokens){
+        SystemObject.throwUnsupportedOperation();
+    }
+
+    static VIEWPORT_CONTEXT_MENU_ID = "viewport-context-menu";
+    static VIEWPORT_CONTEXT_MENU_INSERT_AFTER_2_ID = SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_ID + "-insert-after-2";
+    static VIEWPORT_CONTEXT_MENU_INSERT_AFTER_1_ID = SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_ID + "-insert-after-1"
+    static VIEWPORT_CONTEXT_MENU_INSERT_BEFORE_2_ID = SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_ID + "-insert-before-2";
+    static VIEWPORT_CONTEXT_MENU_INSERT_BEFORE_1_ID = SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_ID + "-insert-before-1";
+
+    // delete
+    // insert 1 before
+    // insert 2 before
+    // insert 1 after
+    // insert 2 after
+    viewportContextMenuItemsColumnOrRow(historyTokens, history) {
+        historyTokens[SpreadsheetHistoryHashTokens.SELECTION] = this;
+        historyTokens[SpreadsheetHistoryHashTokens.SELECTION_ACTION] = null;
+        historyTokens[SpreadsheetHistoryHashTokens.SELECTION_ANCHOR] = null;
+
+        const menuItems = [];
+
+        historyTokens[SpreadsheetHistoryHashTokens.SELECTION_ACTION] = new SpreadsheetColumnOrRowInsertBeforeHistoryHashToken(2);
+
+        menuItems.push(
+            history.menuItem(
+                this.viewportInsertBefore2Text(),
+                SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_INSERT_BEFORE_2_ID,
+                historyTokens
+            )
+        );
+
+        historyTokens[SpreadsheetHistoryHashTokens.SELECTION_ACTION] = new SpreadsheetColumnOrRowInsertBeforeHistoryHashToken(1);
+
+        menuItems.push(
+            history.menuItem(
+                this.viewportInsertBefore1Text(),
+                SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_INSERT_BEFORE_1_ID,
+                historyTokens
+            )
+        );
+
+        historyTokens[SpreadsheetHistoryHashTokens.SELECTION_ACTION] = new SpreadsheetColumnOrRowInsertAfterHistoryHashToken(1);
+
+        menuItems.push(
+            history.menuItem(
+                this.viewportInsertAfter1Text(),
+                SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_INSERT_AFTER_1_ID,
+                historyTokens
+            )
+        );
+
+        historyTokens[SpreadsheetHistoryHashTokens.SELECTION_ACTION] = new SpreadsheetColumnOrRowInsertAfterHistoryHashToken(2);
+
+        menuItems.push(
+            history.menuItem(
+                this.viewportInsertAfter2Text(),
+                SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_INSERT_AFTER_2_ID,
+                historyTokens
+            )
+        );
+
+        return menuItems;
+    }
+
     viewportEnter(giveFormulaFocus) {
         SystemObject.throwUnsupportedOperation();
     }
@@ -176,6 +244,38 @@ export default class SpreadsheetSelection extends SystemObject {
 
     viewportDownExtend(start) {
         SystemObject.throwUnsupportedOperation()
+    }
+
+    viewportInsertAfter1Id() {
+        SystemObject.throwUnsupportedOperation();
+    }
+
+    viewportInsertAfter1Text() {
+        SystemObject.throwUnsupportedOperation();
+    }
+
+    viewportInsertAfter2Id() {
+        SystemObject.throwUnsupportedOperation();
+    }
+
+    viewportInsertAfter2Text() {
+        SystemObject.throwUnsupportedOperation();
+    }
+
+    viewportInsertBefore1Id() {
+        SystemObject.throwUnsupportedOperation();
+    }
+
+    viewportInsertBefore1Text() {
+        SystemObject.throwUnsupportedOperation();
+    }
+
+    viewportInsertBefore2Id() {
+        SystemObject.throwUnsupportedOperation();
+    }
+
+    viewportInsertBefore2Text() {
+        SystemObject.throwUnsupportedOperation();
     }
 
     static reportInvalidAnchor(anchor) {
