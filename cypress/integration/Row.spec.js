@@ -76,7 +76,7 @@ describe("Row",
 
         // row range...................................................................................................
 
-        it("Column range extend up", () => {
+        it("Row range extend up", () => {
             testing.hashAppend("/row/5");
 
             testing.historyWait();
@@ -94,7 +94,7 @@ describe("Row",
                 .should("have.css", "background-color", SELECTED_COLOR);
         });
 
-        it("Column range extend down", () => {
+        it("Row range extend down", () => {
             testing.hashAppend("/row/5");
 
             testing.historyWait();
@@ -114,7 +114,7 @@ describe("Row",
                 .should("have.css", "background-color", SELECTED_COLOR);
         });
 
-        it("Column range extend up twice", () => {
+        it("Row range extend up twice", () => {
             testing.hashAppend("/row/5:6");
 
             testing.historyWait();
@@ -139,7 +139,7 @@ describe("Row",
                 .should("have.css", "background-color", SELECTED_COLOR);
         });
 
-        it("Column range extend down twice", () => {
+        it("Row range extend down twice", () => {
             testing.hashAppend("/row/5:6");
 
             testing.historyWait();
