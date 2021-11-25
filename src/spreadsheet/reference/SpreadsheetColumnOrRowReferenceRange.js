@@ -50,7 +50,7 @@ export default class SpreadsheetColumnOrRowReferenceRange extends SpreadsheetSel
     }
 
     // move the begin and end column or row to the right/down by count.
-    viewportInsertBeforePostSucessSelection(count) {
+    viewportInsertBeforePostSucesssSelection(count) {
         const begin = this.begin();
         const end = this.end();
 
