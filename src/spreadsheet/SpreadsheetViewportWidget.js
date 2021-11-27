@@ -699,7 +699,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
                     SpreadsheetHistoryHash.spreadsheetIdAndName(historyHashTokens),
                     history
                 ),
-            }
+            };
         }
 
         this.setState({
