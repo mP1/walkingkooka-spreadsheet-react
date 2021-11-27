@@ -36,6 +36,8 @@ const COLUMN = SpreadsheetColumnReference.parse("B");
 const COLUMN_RANGE = SpreadsheetColumnReferenceRange.parse("B:C");
 const ROW = SpreadsheetRowReference.parse("2");
 const ROW_RANGE = SpreadsheetRowReferenceRange.parse("2:3");
+const COLUMN_ROW_DELETE = SpreadsheetColumnOrRowDeleteHistoryHashToken.INSTANCE;
+
 const LABEL = SpreadsheetLabelName.parse("Label123");
 const NEW_LABEL = SpreadsheetLabelName.parse("Label999");
 
@@ -220,6 +222,16 @@ testValidate(
         "spreadsheet-name": SPREADSHEET_NAME,
         "selection": CELL,
         "selection-action": CELL_FORMULA_SAVE,
+    }
+);
+
+testValidate(
+    "validate id & name & selection=COLUMN & action=DELETE",
+    {
+        "spreadsheet-id": ID,
+        "spreadsheet-name": SPREADSHEET_NAME,
+        "selection": COLUMN,
+        "selection-action": COLUMN_ROW_DELETE,
     }
 );
 
@@ -816,7 +828,7 @@ testParseAndStringify(
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
         "selection": COLUMN,
-        "selection-action": SpreadsheetColumnOrRowDeleteHistoryHashToken.INSTANCE,
+        "selection-action": COLUMN_ROW_DELETE,
     }
 );
 
@@ -826,7 +838,7 @@ testParseAndStringify(
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
         "selection": COLUMN_RANGE,
-        "selection-action": SpreadsheetColumnOrRowDeleteHistoryHashToken.INSTANCE,
+        "selection-action": COLUMN_ROW_DELETE,
     }
 );
 
@@ -996,7 +1008,7 @@ testParseAndStringify(
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
         "selection": COLUMN_RANGE,
-        "selection-action": SpreadsheetColumnOrRowDeleteHistoryHashToken.INSTANCE,
+        "selection-action": COLUMN_ROW_DELETE,
     }
 );
 
@@ -1045,7 +1057,7 @@ testParseAndStringify(
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
         "selection": ROW,
-        "selection-action": SpreadsheetColumnOrRowDeleteHistoryHashToken.INSTANCE,
+        "selection-action": COLUMN_ROW_DELETE,
     }
 );
 
@@ -1055,7 +1067,7 @@ testParseAndStringify(
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
         "selection": ROW_RANGE,
-        "selection-action": SpreadsheetColumnOrRowDeleteHistoryHashToken.INSTANCE,
+        "selection-action": COLUMN_ROW_DELETE,
     }
 );
 
@@ -1255,7 +1267,7 @@ testParseAndStringify(
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
         "selection": ROW_RANGE,
-        "selection-action": SpreadsheetColumnOrRowDeleteHistoryHashToken.INSTANCE,
+        "selection-action": COLUMN_ROW_DELETE,
     }
 );
 
@@ -2110,6 +2122,22 @@ testMerge(
     "/123abc/Untitled456/column/B"
 );
 
+testMerge(
+    "/123abc/Untitled456/column/B",
+    {
+        "selection-action": COLUMN_ROW_DELETE,
+    },
+    "/123abc/Untitled456/column/B/delete"
+);
+
+testMerge(
+    "/123abc/Untitled456/column/C:D",
+    {
+        "selection-action": COLUMN_ROW_DELETE,
+    },
+    "/123abc/Untitled456/column/C:D/delete"
+);
+
 // row...........................................................................................................
 
 testMerge(
@@ -2143,6 +2171,22 @@ testMerge(
         selection: ROW,
     },
     "/123abc/Untitled456/row/2"
+);
+
+testMerge(
+    "/123abc/Untitled456/row/45",
+    {
+        "selection-action": COLUMN_ROW_DELETE,
+    },
+    "/123abc/Untitled456/row/45/delete"
+);
+
+testMerge(
+    "/123abc/Untitled456/row/45:67",
+    {
+        "selection-action": COLUMN_ROW_DELETE,
+    },
+    "/123abc/Untitled456/row/45:67/delete"
 );
 
 // label...........................................................................................................
