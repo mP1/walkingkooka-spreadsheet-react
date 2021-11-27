@@ -83,6 +83,10 @@ export default class SpreadsheetRowReferenceRange extends SpreadsheetColumnOrRow
         return SpreadsheetHistoryHash.ROW + "/" + this;
     }
 
+    toClearUrl() {
+        return "/row/" + this + "/clear";
+    }
+
     toDeleteUrl() {
         return "/row/" + this;
     }

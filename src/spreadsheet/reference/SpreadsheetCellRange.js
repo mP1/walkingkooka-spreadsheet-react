@@ -433,6 +433,10 @@ export default class SpreadsheetCellRange extends SpreadsheetExpressionReference
         return SpreadsheetCellRange.DEFAULT_ANCHOR;
     }
 
+    toClearUrl() {
+        return "/cell/" + this + "/clear";
+    }
+
     toDeleteUrl() {
         return "/cell/" + this;
     }
