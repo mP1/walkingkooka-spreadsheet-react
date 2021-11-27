@@ -369,8 +369,7 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
     }
     
     /**
-     * Invokes a service which will return a SpreadsheetDelta. On both success and failure the history hash the
-     * selection & selection-action tokens will be cleared.
+     * Invokes a service which will return a SpreadsheetDelta.
      */
     performSpreadsheetDelta(method, url, id) {
         const crud = this.spreadsheetDeltaCellCrud;
