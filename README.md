@@ -124,9 +124,14 @@ Selects the column or column range.
 
 Following the selection of a column or column range, the following commands are possible
 
+- /clear Clears the selected column or column range
 - /delete Deletes the selected column or column range
 - /insert-after/$count Inserts the requested number of columns after the column/column range
 - /insert-before/$count Inserts the requested number of columns before the column/column range. Once the operation completes the selected column/column-range will be updated to account for the insertion.
+
+> /#123/Untitled/column/A/clear
+>
+> /#123/Untitled/column/B:C/clear
 
 > /#123/Untitled/column/A/delete
 > 
@@ -168,10 +173,15 @@ Selects the row or row range.
 
 Following the selection of a row or row range, the following commands are possible
 
+- /clear Clears the selected row or row range
 - /delete Deletes the selected row or row range
 - /insert-after/$count Inserts the requested number of rows after the row/row range
 - /insert-before/$count Inserts the requested number of rows before the row/row range. Once the operation completes the selected row/row-range will be updated to account for the insertion.
 
+> /#123/Untitled/row/1/clear
+>
+> /#123/Untitled/row/2:3/clear
+> 
 > /#123/Untitled/row/1/delete
 > 
 > /#123/Untitled/row/2:3/delete
