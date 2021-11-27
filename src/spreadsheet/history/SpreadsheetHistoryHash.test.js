@@ -60,11 +60,14 @@ test("emptyTokens", () => {
 
 // validate................................................................................................................
 
-function testValidate(label, tokens, expected) {
-    test(label, () => {
-        expect(SpreadsheetHistoryHash.validate(tokens))
-            .toStrictEqual(null != expected ? expected : tokens);
-    });
+function testValidate(title, tokens, expected) {
+    test(
+        title,
+        () => {
+            expect(SpreadsheetHistoryHash.validate(tokens))
+                .toStrictEqual(null != expected ? expected : tokens);
+        }
+    );
 }
 
 testValidate(
@@ -100,7 +103,7 @@ testValidate(
 );
 
 testValidate(
-    "validate id & name & cell=cell",
+    "validate id & name & selection=cell",
     {
         "spreadsheet-id": ID,
         "spreadsheet-name": SPREADSHEET_NAME,
@@ -109,7 +112,7 @@ testValidate(
 );
 
 testValidate(
-    "validate id & name & cell=label",
+    "validate id & name & selection=label",
     {
         "spreadsheet-id": ID,
         "spreadsheet-name": SPREADSHEET_NAME,
@@ -160,7 +163,7 @@ testValidate(
 );
 
 testValidate(
-    "validate id & name & cell=CELL",
+    "validate id & name & selection=CELL",
     {
         "spreadsheet-id": ID,
         "spreadsheet-name": SPREADSHEET_NAME,
@@ -169,7 +172,7 @@ testValidate(
 );
 
 testValidate(
-    "validate id & name & cell=invalid",
+    "validate id & name & selection=invalid",
     {
         "spreadsheet-id": ID,
         "spreadsheet-name": SPREADSHEET_NAME,
@@ -182,7 +185,7 @@ testValidate(
 );
 
 testValidate(
-    "validate id & name & cell=CELL",
+    "validate id & name & selection=CELL",
     {
         "spreadsheet-id": ID,
         "spreadsheet-name": SPREADSHEET_NAME,
@@ -192,7 +195,7 @@ testValidate(
 );
 
 testValidate(
-    "validate id & name & cell=LABEL",
+    "validate id & name & selection=LABEL",
     {
         "spreadsheet-id": ID,
         "spreadsheet-name": SPREADSHEET_NAME,
@@ -201,7 +204,7 @@ testValidate(
 );
 
 testValidate(
-    "validate id & name & cell=CELL & delete",
+    "validate id & name & selection=CELL & delete",
     {
         "spreadsheet-id": ID,
         "spreadsheet-name": SPREADSHEET_NAME,
@@ -211,7 +214,7 @@ testValidate(
 );
 
 testValidate(
-    "validate id & name & cell=CELL & formula-save",
+    "validate id & name & selection=CELL & formula-save",
     {
         "spreadsheet-id": ID,
         "spreadsheet-name": SPREADSHEET_NAME,
@@ -243,7 +246,7 @@ testValidate(
 );
 
 testValidate(
-    "validate id & name & cell=LABEL & formula-save",
+    "validate id & name & selection=LABEL & formula-save",
     {
         "spreadsheet-id": ID,
         "spreadsheet-name": SPREADSHEET_NAME,
@@ -253,7 +256,7 @@ testValidate(
 );
 
 testValidate(
-    "validate id & name & cell=CELL_RANGE & TOP_LEFT",
+    "validate id & name & selection=CELL_RANGE & TOP_LEFT",
     {
         "spreadsheet-id": ID,
         "spreadsheet-name": SPREADSHEET_NAME,
@@ -263,7 +266,7 @@ testValidate(
 );
 
 testValidate(
-    "validate id & name & cell=COLUMN_RANGE & LEFT",
+    "validate id & name & selection=COLUMN_RANGE & LEFT",
     {
         "spreadsheet-id": ID,
         "spreadsheet-name": SPREADSHEET_NAME,
@@ -273,7 +276,7 @@ testValidate(
 );
 
 testValidate(
-    "validate id & name & cell=ROW_RANGE & TOP",
+    "validate id & name & selection=ROW_RANGE & TOP",
     {
         "spreadsheet-id": ID,
         "spreadsheet-name": SPREADSHEET_NAME,
