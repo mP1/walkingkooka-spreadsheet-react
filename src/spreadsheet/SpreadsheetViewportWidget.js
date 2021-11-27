@@ -690,14 +690,6 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
                 historyHashTokenSelection :
                 clickedSelection;
 
-            console.log("@@historyHashTokenSelection: " + historyHashTokenSelection +
-                " viewportContextMenuClick: " + clickedSelection +  " -> " +
-                (historyHashTokenSelection && historyHashTokenSelection.viewportContextMenuClick(clickedSelection)) +
-            " selection: " + selection + " items -> " +  selection.viewportContextMenuItems(
-                    SpreadsheetHistoryHash.spreadsheetIdAndName(historyHashTokens),
-                    history
-                ));
-
             contextMenuState = {
                 anchorPosition: {
                     left: e.clientX - 2,
