@@ -236,6 +236,16 @@ testValidate(
 );
 
 testValidate(
+    "validate id & name & selection=COLUMN & action=DELETE",
+    {
+        "spreadsheet-id": ID,
+        "spreadsheet-name": SPREADSHEET_NAME,
+        "selection": COLUMN,
+        "selection-action": COLUMN_ROW_DELETE,
+    }
+);
+
+testValidate(
     "validate id & name & label=LABEL",
     {
         "spreadsheet-id": ID,

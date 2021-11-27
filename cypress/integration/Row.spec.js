@@ -7,7 +7,9 @@ import SpreadsheetTesting from "./SpreadsheetTesting.js";
 
 const A1 = SpreadsheetCellReference.parse("A1");
 const A2 = SpreadsheetCellReference.parse("A2");
+const B2 = SpreadsheetCellReference.parse("B2");
 const C3 = SpreadsheetCellReference.parse("C3");
+const D4 = SpreadsheetCellReference.parse("D4");
 const E5 = SpreadsheetCellReference.parse("E5");
 
 const ROW_2 = SpreadsheetRowReference.parse("2");
@@ -25,7 +27,7 @@ describe("Row",
 
             testing.spreadsheetEmptyReady();
         });
-        
+
         // row click.................................................................................................
 
         it("Row click should have focus and be selected", () => {
@@ -298,7 +300,111 @@ describe("Row",
             testing.viewportContextMenu()
                 .should("be.visible")
                 .find("LI")
-                .should("have.length", 4);
+                .should("have.length", 5);
+        });
+
+        it("Row context menu links", () => {
+            testing.hashAppend("/row/2");
+
+            testing.contextMenu(ROW_2.viewportId());
+
+            testing.viewportContextMenu()
+                .should("be.visible");
+
+            testing.getById(SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_INSERT_AFTER_1_ID)
+                .should("have.attr", "href")
+                .and('match', /#*\/*\/row\/2\/insert-after\/1/);
+
+            testing.getById(SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_INSERT_AFTER_2_ID)
+                .should("have.attr", "href")
+                .and('match', /#*\/*\/row\/2\/insert-after\/2/);
+
+            testing.getById(SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_INSERT_BEFORE_1_ID)
+                .should("have.attr", "href")
+                .and('match', /#*\/*\/row\/2\/insert-before\/1/);
+
+            testing.getById(SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_INSERT_BEFORE_2_ID)
+                .should("have.attr", "href")
+                .and('match', /#*\/*\/row\/2\/insert-before\/2/);
+        });
+
+        it("Row range context menu links", () => {
+            testing.hashAppend("/row/2:3");
+
+            testing.contextMenu(ROW_2.viewportId());
+
+            testing.viewportContextMenu()
+                .should("be.visible");
+
+            testing.getById(SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_INSERT_AFTER_1_ID)
+                .should("have.attr", "href")
+                .and('match', /#*\/*\/row\/2:3\/insert-after\/1/);
+
+            testing.getById(SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_INSERT_AFTER_2_ID)
+                .should("have.attr", "href")
+                .and('match', /#*\/*\/row\/2:3\/insert-after\/2/);
+
+            testing.getById(SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_INSERT_BEFORE_1_ID)
+                .should("have.attr", "href")
+                .and('match', /#*\/*\/row\/2:3\/insert-before\/1/);
+
+            testing.getById(SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_INSERT_BEFORE_2_ID)
+                .should("have.attr", "href")
+                .and('match', /#*\/*\/row\/2:3\/insert-before\/2/);
+        });
+
+        it("Row context menu click delete", () => {
+            testing.cellFormulaEnterAndSave(A1, "'Stationary");
+            testing.cellFormulaEnterAndSave(B2, "'Deleted");
+            testing.cellFormulaEnterAndSave(C3, "'Moved");
+
+            testing.contextMenu(ROW_2.viewportId());
+
+            testing.viewportContextMenu()
+                .should("be.visible")
+                .find("#" + SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_DELETE_ID)
+                .should("include.text", "Delete");
+
+            testing.getById(SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_DELETE_ID)
+                .click();
+
+            testing.viewportContextMenu()
+                .should("not.be.visible");
+
+            testing.cellFormattedTextCheck("C2", "Moved");
+            testing.cellFormattedTextCheck(A1, "Stationary");
+        });
+
+        it("Row range context menu click delete", () => {
+            testing.cellFormulaEnterAndSave(A1, "'Stationary");
+            testing.cellFormulaEnterAndSave(B2, "'Deleted");
+            testing.cellFormulaEnterAndSave(C3, "'Deleted");
+            testing.cellFormulaEnterAndSave(D4, "'Moved");
+
+            testing.row(ROW_2)
+                .click();
+
+            testing.row(ROW_2)
+                .type("{shift+downarrow}");
+
+            testing.hash()
+                .should('match', /.*\/.*\/row\/2:3\/top/);
+
+            testing.contextMenu(ROW_2.viewportId());
+
+            testing.viewportContextMenu()
+                .should("be.visible")
+                .find("#" + SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_DELETE_ID)
+                .should("include.text", "Delete");
+
+            testing.getById(SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_DELETE_ID)
+                .click();
+
+            testing.viewportContextMenu()
+                .should("not.be.visible");
+
+            testing.cellFormattedTextCheck("A1", "Stationary");
+            testing.cellFormattedTextCheck("D2", "Moved");
         });
 
         it("Row context menu click insert before 2", () => {
@@ -503,31 +609,6 @@ describe("Row",
             testing.cellFormattedTextCheck("A1", "Never");
             testing.cellFormattedTextCheck("C5", "Moved");
             testing.cellFormattedTextCheck(C3, "");
-        });
-
-        it("Row range context menu links", () => {
-            testing.hashAppend("/row/2:3");
-
-            testing.contextMenu(ROW_2.viewportId());
-
-            testing.viewportContextMenu()
-                .should("be.visible");
-
-            testing.getById(SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_INSERT_AFTER_1_ID)
-                .should("have.attr", "href")
-                .and('match', /#*\/*\/row\/2:3\/insert-after\/1/);
-
-            testing.getById(SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_INSERT_AFTER_2_ID)
-                .should("have.attr", "href")
-                .and('match', /#*\/*\/row\/2:3\/insert-after\/2/);
-
-            testing.getById(SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_INSERT_BEFORE_1_ID)
-                .should("have.attr", "href")
-                .and('match', /#*\/*\/row\/2:3\/insert-before\/1/);
-
-            testing.getById(SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_INSERT_BEFORE_2_ID)
-                .should("have.attr", "href")
-                .and('match', /#*\/*\/row\/2:3\/insert-before\/2/);
         });
     }
 );
