@@ -317,7 +317,7 @@ describe(
             testing.viewportContextMenu()
                 .should("be.visible")
                 .find("LI")
-                .should("have.length", 5); // insert before x2, insert after x2, delete
+                .should("have.length", 6);
         });
 
         it("Column context menu links", () => {
@@ -327,6 +327,10 @@ describe(
 
             testing.viewportContextMenu()
                 .should("be.visible");
+
+            testing.getById(SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_CLEAR_ID)
+                .should("have.attr", "href")
+                .and('match', /#*\/*\/column\/B\/clear/);
 
             testing.getById(SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_DELETE_ID)
                 .should("have.attr", "href")
@@ -357,6 +361,10 @@ describe(
             testing.viewportContextMenu()
                 .should("be.visible");
 
+            testing.getById(SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_CLEAR_ID)
+                .should("have.attr", "href")
+                .and('match', /#*\/*\/column\/B:C\/clear/);
+
             testing.getById(SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_DELETE_ID)
                 .should("have.attr", "href")
                 .and('match', /#*\/*\/column\/B:C\/delete/);
@@ -376,6 +384,60 @@ describe(
             testing.getById(SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_INSERT_BEFORE_2_ID)
                 .should("have.attr", "href")
                 .and('match', /#*\/*\/column\/B:C\/insert-before\/2/);
+        });
+
+        it("Column context menu click clear", () => {
+            testing.cellFormulaEnterAndSave(A1, "'Before");
+            testing.cellFormulaEnterAndSave(B2, "'Cleared");
+            testing.cellFormulaEnterAndSave(C3, "'After");
+
+            testing.contextMenu(B.viewportId());
+
+            testing.viewportContextMenu()
+                .should("be.visible")
+                .find("#" + SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_CLEAR_ID)
+                .should("include.text", "Clear");
+
+            testing.getById(SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_CLEAR_ID)
+                .click();
+
+            testing.viewportContextMenu()
+                .should("not.be.visible");
+
+            testing.cellFormattedTextCheck(A1, "Before");
+            testing.cellFormattedTextCheck("C3", "After");
+        });
+
+        it("Column range context menu click clear", () => {
+            testing.cellFormulaEnterAndSave(A1, "'Before");
+            testing.cellFormulaEnterAndSave(B2, "'Cleared");
+            testing.cellFormulaEnterAndSave(C3, "'Cleared");
+            testing.cellFormulaEnterAndSave(D4, "'After");
+
+            testing.column(B)
+                .click();
+
+            testing.column(B)
+                .type("{shift+rightarrow}");
+
+            testing.hash()
+                .should('match', /.*\/.*\/column\/B:C\/left/);
+
+            testing.contextMenu(B.viewportId());
+
+            testing.viewportContextMenu()
+                .should("be.visible")
+                .find("#" + SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_CLEAR_ID)
+                .should("include.text", "Clear");
+
+            testing.getById(SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_CLEAR_ID)
+                .click();
+
+            testing.viewportContextMenu()
+                .should("not.be.visible");
+
+            testing.cellFormattedTextCheck(A1, "Before");
+            testing.cellFormattedTextCheck(D4, "After");
         });
 
         it("Column context menu click delete", () => {

@@ -21,6 +21,10 @@ export default class SpreadsheetColumnOrRowClearHistoryHashToken extends Spreads
      */
     onViewportSelectionAction(selection, viewportWidget) {
         viewportWidget.clearSelection(selection);
+
+        const tokens = SpreadsheetHistoryHashTokens.emptyTokens();
+        tokens[SpreadsheetHistoryHashTokens.SELECTION_ACTION] = null;
+        viewportWidget.historyParseMergeAndPush(tokens);
     }
 
     equals(other) {
