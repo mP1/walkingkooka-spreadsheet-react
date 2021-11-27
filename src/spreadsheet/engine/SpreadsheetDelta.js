@@ -66,6 +66,8 @@ export default class SpreadsheetDelta extends SystemObject {
         );
     }
 
+    static EMPTY = SpreadsheetDelta.fromJson({});
+
     constructor(selection, cells, labels, deletedCells, columnWidths, rowHeights, window) {
         super();
         Preconditions.optionalInstance(selection, SpreadsheetViewportSelection, "selection");
