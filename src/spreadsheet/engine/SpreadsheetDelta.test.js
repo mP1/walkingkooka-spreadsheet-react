@@ -736,6 +736,21 @@ test("fromJson all properties", () => {
     })).toStrictEqual(new SpreadsheetDelta(s, c, l, d, mcw, mrh, w));
 });
 
+// EMPTY.............................................................................................................
+
+test("EMPTY", () => {
+    const s = undefined;
+    const c = [];
+    const l = [];
+    const d = [];
+    const mcw = ImmutableMap.EMPTY;
+    const mrh = ImmutableMap.EMPTY;
+    const w = undefined;
+
+    expect(SpreadsheetDelta.EMPTY)
+        .toStrictEqual(new SpreadsheetDelta(s, c, l, d, mcw, mrh, w));
+});
+
 // equals...............................................................................................................
 
 test("equals different selection false", () => {
