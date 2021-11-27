@@ -3,6 +3,8 @@ import ListenerCollection from "../../event/ListenerCollection.js";
 import MenuItem from "@mui/material/MenuItem";
 import Preconditions from "../../Preconditions.js";
 import React from 'react';
+import SpreadsheetCellClearSelectionActionHistoryHashToken
+    from "./SpreadsheetCellClearSelectionActionHistoryHashToken.js";
 import SpreadsheetCellDeleteSelectionActionHistoryHashToken
     from "./SpreadsheetCellDeleteSelectionActionHistoryHashToken.js";
 import spreadsheetCellRangeCellReferenceOrLabelParse
@@ -10,6 +12,7 @@ import spreadsheetCellRangeCellReferenceOrLabelParse
 import SpreadsheetCellReferenceOrLabelName from "../reference/SpreadsheetCellReferenceOrLabelName.js";
 import spreadsheetCellReferenceOrLabelNameParse from "../reference/SpreadsheetCellReferenceOrLabelNameParse.js";
 import SpreadsheetCellSelectionActionHistoryHashToken from "./SpreadsheetCellSelectionActionHistoryHashToken.js";
+import SpreadsheetColumnOrRowClearHistoryHashToken from "./SpreadsheetColumnOrRowClearHistoryHashToken.js";
 import SpreadsheetColumnOrRowDeleteHistoryHashToken from "./SpreadsheetColumnOrRowDeleteHistoryHashToken.js";
 import SpreadsheetColumnOrRowSelectionActionHistoryHashToken
     from "./SpreadsheetColumnOrRowSelectionActionHistoryHashToken.js";
@@ -149,24 +152,29 @@ export default class SpreadsheetHistoryHash extends SpreadsheetHistoryHashTokens
                         }
 
                         // /cell/A1/delete
-                        if(SpreadsheetHistoryHashTokens.DELETE === token){
-                            selectionAction = SpreadsheetCellDeleteSelectionActionHistoryHashToken.INSTANCE;
+                        if(SpreadsheetHistoryHashTokens.CLEAR === token){
+                            selectionAction = SpreadsheetCellClearSelectionActionHistoryHashToken.INSTANCE;
                             token = tokens.shift();
-                        }else {
-                            if(selection instanceof SpreadsheetCellReferenceOrLabelName){
-                                // /cell/A1/formula
-                                if(SpreadsheetHistoryHashTokens.CELL_FORMULA === token){
-                                    selectionAction = new SpreadsheetFormulaLoadAndEditHistoryHashToken();
-                                    token = tokens.shift();
+                        } else {
+                            if(SpreadsheetHistoryHashTokens.DELETE === token){
+                                selectionAction = SpreadsheetCellDeleteSelectionActionHistoryHashToken.INSTANCE;
+                                token = tokens.shift();
+                            }else {
+                                if(selection instanceof SpreadsheetCellReferenceOrLabelName){
+                                    // /cell/A1/formula
+                                    if(SpreadsheetHistoryHashTokens.CELL_FORMULA === token){
+                                        selectionAction = new SpreadsheetFormulaLoadAndEditHistoryHashToken();
+                                        token = tokens.shift();
 
-                                    // /cell/A1/formula/save/$formula-text
-                                    if(SpreadsheetHistoryHashTokens.SAVE === token){
-                                        token = tokens.shift();
-                                        if(null == token){
-                                            break;
+                                        // /cell/A1/formula/save/$formula-text
+                                        if(SpreadsheetHistoryHashTokens.SAVE === token){
+                                            token = tokens.shift();
+                                            if(null == token){
+                                                break;
+                                            }
+                                            selectionAction = new SpreadsheetFormulaSaveHistoryHashToken(decodeURIComponent(token));
+                                            token = tokens.shift();
                                         }
-                                        selectionAction = new SpreadsheetFormulaSaveHistoryHashToken(decodeURIComponent(token));
-                                        token = tokens.shift();
                                     }
                                 }
                             }
@@ -208,37 +216,42 @@ export default class SpreadsheetHistoryHash extends SpreadsheetHistoryHashTokens
                             }
 
                             // column | row / delete....................................................................
-                            if(SpreadsheetHistoryHashTokens.DELETE === token){
-                                selectionAction = SpreadsheetColumnOrRowDeleteHistoryHashToken.INSTANCE;
+                            if(SpreadsheetHistoryHashTokens.CLEAR === token){
+                                selectionAction = SpreadsheetColumnOrRowClearHistoryHashToken.INSTANCE;
                                 token = tokens.shift();
-                            }else {
-                                // column | row / insert-after / 123...................................................
-                                if(SpreadsheetHistoryHashTokens.INSERT_AFTER === token){
-                                    const insertAfterCount = tokens.shift();
-                                    if(!insertAfterCount || Number.isNaN(Number(insertAfterCount))){
-                                        break;
-                                    }
-                                    try {
-                                        selectionAction = new SpreadsheetColumnOrRowInsertAfterHistoryHashToken(Number(insertAfterCount));
-                                    } catch(invalid) {
-                                        errors("Insert after count: " + invalid.message);
-                                        break;
-                                    }
+                            } else {
+                                if(SpreadsheetHistoryHashTokens.DELETE === token){
+                                    selectionAction = SpreadsheetColumnOrRowDeleteHistoryHashToken.INSTANCE;
                                     token = tokens.shift();
                                 }else {
-                                    // column | row / insert-before / 123...............................................
-                                    if(SpreadsheetHistoryHashTokens.INSERT_BEFORE === token){
-                                        const insertBeforeCount = tokens.shift();
-                                        if(!insertBeforeCount || Number.isNaN(Number(insertBeforeCount))){
+                                    // column | row / insert-after / 123...................................................
+                                    if(SpreadsheetHistoryHashTokens.INSERT_AFTER === token){
+                                        const insertAfterCount = tokens.shift();
+                                        if(!insertAfterCount || Number.isNaN(Number(insertAfterCount))){
                                             break;
                                         }
                                         try {
-                                            selectionAction = new SpreadsheetColumnOrRowInsertBeforeHistoryHashToken(Number(insertBeforeCount));
+                                            selectionAction = new SpreadsheetColumnOrRowInsertAfterHistoryHashToken(Number(insertAfterCount));
                                         } catch(invalid) {
-                                            errors("Insert before count: " + invalid.message);
+                                            errors("Insert after count: " + invalid.message);
                                             break;
                                         }
                                         token = tokens.shift();
+                                    }else {
+                                        // column | row / insert-before / 123...............................................
+                                        if(SpreadsheetHistoryHashTokens.INSERT_BEFORE === token){
+                                            const insertBeforeCount = tokens.shift();
+                                            if(!insertBeforeCount || Number.isNaN(Number(insertBeforeCount))){
+                                                break;
+                                            }
+                                            try {
+                                                selectionAction = new SpreadsheetColumnOrRowInsertBeforeHistoryHashToken(Number(insertBeforeCount));
+                                            } catch(invalid) {
+                                                errors("Insert before count: " + invalid.message);
+                                                break;
+                                            }
+                                            token = tokens.shift();
+                                        }
                                     }
                                 }
                             }

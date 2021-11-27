@@ -112,6 +112,10 @@ export default class SpreadsheetColumnReference extends SpreadsheetColumnOrRowRe
         return "column";
     }
 
+    toClearUrl() {
+        return "/column/" + this + "/clear";
+    }
+
     toDeleteUrl() {
         return "/column/" + this;
     }
