@@ -315,6 +315,10 @@ describe("Row",
                 .should("have.attr", "href")
                 .and('match', /#*\/*\/row\/2\/clear/);
 
+            testing.getById(SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_DELETE_ID)
+                .should("have.attr", "href")
+                .and('match', /#*\/*\/row\/2\/delete/);
+
             testing.getById(SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_INSERT_AFTER_1_ID)
                 .should("have.attr", "href")
                 .and('match', /#*\/*\/row\/2\/insert-after\/1/);
@@ -343,6 +347,10 @@ describe("Row",
             testing.getById(SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_CLEAR_ID)
                 .should("have.attr", "href")
                 .and('match', /#*\/*\/row\/2:3\/clear/);
+
+            testing.getById(SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_DELETE_ID)
+                .should("have.attr", "href")
+                .and('match', /#*\/*\/row\/2:3\/delete/);
 
             testing.getById(SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_INSERT_AFTER_1_ID)
                 .should("have.attr", "href")
