@@ -1,5 +1,6 @@
 import Button from '@mui/material/Button';
 import Equality from "../../Equality.js";
+import HttpMethod from "../../net/HttpMethod.js";
 import Keys from "../../Keys.js";
 import PropTypes from 'prop-types';
 import React from 'react';
@@ -293,13 +294,13 @@ export default class SpreadsheetLabelMappingWidget extends SpreadsheetHistoryAwa
 
     onLabelMapping(method, label, queryParameters, requestMapping, responseMapping) {
         switch(method) {
-            case "GET":
+            case HttpMethod.GET:
                 this.onLabelMappingLoadSuccess(label, responseMapping);
                 break;
-            case "POST":
+            case HttpMethod.POST:
                 this.onLabelMappingSaveSuccess(responseMapping);
                 break;
-            case "DELETE":
+            case HttpMethod.DELETE:
                 this.onLabelMappingDeleteSuccess();
                 break;
             default:

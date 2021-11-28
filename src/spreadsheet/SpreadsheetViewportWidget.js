@@ -1,5 +1,6 @@
 import _ from "lodash";
 import Equality from "../Equality.js";
+import HttpMethod from "../net/HttpMethod.js";
 import ImmutableMap from "../util/ImmutableMap.js";
 import Menu from "@mui/material/Menu";
 import Paper from '@mui/material/Paper';
@@ -153,7 +154,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
             }
 
             switch(method) {
-                case "DELETE":
+                case HttpMethod.DELETE:
                     Object.assign(
                         newState,
                         {
@@ -162,7 +163,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
                         }
                     );
                     break;
-                case "POST":
+                case HttpMethod.POST:
                     const historyTokens = this.props.history.tokens();
                     const selectionAction = historyTokens[SpreadsheetHistoryHashTokens.SELECTION_ACTION];
                     if(selectionAction instanceof SpreadsheetColumnOrRowInsertBeforeHistoryHashToken){
@@ -231,8 +232,8 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
      */
     onSpreadsheetLabel(method, id, url, requestLabel, responseLabel) {
         switch(method) {
-            case "DELETE":
-            case "POST":
+            case HttpMethod.DELETE:
+            case HttpMethod.POST:
                 const viewportTable = this.viewportTable.current;
                 if(viewportTable){
                     this.loadCells(
