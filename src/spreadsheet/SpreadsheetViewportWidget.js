@@ -117,25 +117,10 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
                     cells = cells.remove(r)
                 });
 
-            // if a window was present on the response delta, clear any OLD cells etc.
+            // if a window was present on the response delta, clear any label mappings within the window space
             if(window){
-                var tempCells = new Map();
                 var tempCellToLabels = new Map();
 
-                // only copy cells that are not within the window.
-                for(var cell in cells.toMap().values()) {
-                    if(!window.testCell(cell)){
-                        const reference = cell.reference();
-                        tempCells.set(reference.toString(), cell);
-
-                        var label = cellToLabels.get(reference);
-                        if(label){
-                            tempCellToLabels.set(reference.toString(), label);
-                        }
-                    }
-                }
-
-                cells = new ImmutableMap(tempCells);
                 cellToLabels = new ImmutableMap(tempCellToLabels);
 
                 // only copy labels that are not within the window.
