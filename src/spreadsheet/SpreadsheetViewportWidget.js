@@ -431,6 +431,16 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
     }
 
     /**
+     * Remove the selection, the cleard column, row etc and then perform the clear API.
+     */
+    clearSelection(selection) {
+        this.props.clearSelection(
+            selection,
+            this.state.viewportRange
+        );
+    }
+    
+    /**
      * Remove the selection, the deleted column, row etc and then perform the delete API.
      */
     deleteSelection(selection) {
@@ -905,6 +915,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
 }
 
 SpreadsheetViewportWidget.propTypes = {
+    clearSelection: PropTypes.func.isRequired,
     deleteSelection: PropTypes.func.isRequired,
     dimensions: PropTypes.object,
     history: PropTypes.instanceOf(SpreadsheetHistoryHash).isRequired,

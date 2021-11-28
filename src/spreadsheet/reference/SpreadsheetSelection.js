@@ -1,6 +1,7 @@
 import CharSequences from "../../CharSequences.js";
 import Character from "../../Character.js";
 import Keys from "../../Keys.js";
+import SpreadsheetColumnOrRowClearHistoryHashToken from "../history/SpreadsheetColumnOrRowClearHistoryHashToken.js";
 import SpreadsheetColumnOrRowDeleteHistoryHashToken from "../history/SpreadsheetColumnOrRowDeleteHistoryHashToken.js";
 import SpreadsheetColumnOrRowInsertBeforeHistoryHashToken
     from "../history/SpreadsheetColumnOrRowInsertBeforeHistoryHashToken.js";
@@ -147,7 +148,11 @@ export default class SpreadsheetSelection extends SystemObject {
     }
 
     static VIEWPORT_CONTEXT_MENU_ID = "viewport-context-menu";
+
+    static VIEWPORT_CONTEXT_MENU_CLEAR_ID = SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_ID + "-clear";
+
     static VIEWPORT_CONTEXT_MENU_DELETE_ID = SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_ID + "-delete";
+
     static VIEWPORT_CONTEXT_MENU_INSERT_AFTER_2_ID = SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_ID + "-insert-after-2";
     static VIEWPORT_CONTEXT_MENU_INSERT_AFTER_1_ID = SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_ID + "-insert-after-1"
     static VIEWPORT_CONTEXT_MENU_INSERT_BEFORE_2_ID = SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_ID + "-insert-before-2";
@@ -164,6 +169,16 @@ export default class SpreadsheetSelection extends SystemObject {
         historyTokens[SpreadsheetHistoryHashTokens.SELECTION_ANCHOR] = null;
 
         const menuItems = [];
+
+        historyTokens[SpreadsheetHistoryHashTokens.SELECTION_ACTION] = SpreadsheetColumnOrRowClearHistoryHashToken.INSTANCE;
+
+        menuItems.push(
+            history.menuItem(
+                this.viewportClearText(),
+                SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_CLEAR_ID,
+                historyTokens
+            )
+        );
 
         historyTokens[SpreadsheetHistoryHashTokens.SELECTION_ACTION] = SpreadsheetColumnOrRowDeleteHistoryHashToken.INSTANCE;
 
@@ -256,6 +271,10 @@ export default class SpreadsheetSelection extends SystemObject {
 
     viewportDownExtend(start) {
         SystemObject.throwUnsupportedOperation()
+    }
+
+    viewportClearText() {
+        return "Clear";
     }
 
     viewportDeleteText() {

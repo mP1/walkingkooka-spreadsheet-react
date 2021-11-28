@@ -309,6 +309,7 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
                     <Divider/>
                 </SpreadsheetBox>
                 <SpreadsheetViewportWidget key={"viewport"}
+                                           clearSelection={this.clearSelection.bind(this)}
                                            deleteSelection={this.deleteSelection.bind(this)}
                                            history={history}
                                            insertAfterSelection={this.insertAfterSelection.bind(this)}
@@ -329,6 +330,20 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
         );
     }
 
+    /**
+     * Clears the given selection and appends the window if present as a query parameter.
+     */
+    clearSelection(selection, window) {
+        const query = window ? "?window=" + window : "";
+
+        this.performSpreadsheetDelta(
+            "POST",
+            RelativeUrl.parse(this.spreadsheetMetadataApiUrl() + selection.toClearUrl() + query),
+            selection,
+            JSON.stringify(SpreadsheetDelta.EMPTY.toJson()),
+        );
+    }
+    
     /**
      * Deletes the given selection and appends the window if present as a query parameter.
      */
@@ -371,11 +386,12 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
     /**
      * Invokes a service which will return a SpreadsheetDelta.
      */
-    performSpreadsheetDelta(method, url, id) {
+    performSpreadsheetDelta(method, url, id, body) {
         const crud = this.spreadsheetDeltaCellCrud;
 
         const parameters = {
             method: method,
+            body: body,
         };
         const requestValue = null;
 
