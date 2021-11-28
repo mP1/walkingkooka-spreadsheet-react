@@ -88,7 +88,7 @@ export default class SpreadsheetMessenger {
 
         this.webworker.postMessage({
             version: "HTTP/1.0",
-            method: parameters.methods,
+            method: parameters.method,
             url: url,
             headers: parameters.headers,
             body: parameters.body,
