@@ -1,3 +1,4 @@
+import HttpMethod from "../../net/HttpMethod.js";
 import ListenerCollection from "../../event/ListenerCollection.js";
 import Preconditions from "../../Preconditions.js";
 import SpreadsheetMessenger from "./SpreadsheetMessenger.js";
@@ -33,9 +34,9 @@ export default class SpreadsheetMessengerCrud {
         Preconditions.requireObject(queryParameters, "queryParameters");
 
         this.send(
-            this.url("GET", id, queryParameters),
+            this.url(HttpMethod.GET, id, queryParameters),
             {
-                method: "GET",
+                method: HttpMethod.GET.toString(),
             },
             id,
             null,
@@ -50,9 +51,9 @@ export default class SpreadsheetMessengerCrud {
         Preconditions.requireNonNull(value, "value");
 
         this.send(
-            this.url("POST", id, {}),
+            this.url(HttpMethod.POST, id, {}),
             {
-                method: "POST",
+                method: HttpMethod.POST.toString(),
                 body: value.toJson ? JSON.stringify(value.toJson()) : value.toString(),
             },
             id,
@@ -68,9 +69,9 @@ export default class SpreadsheetMessengerCrud {
         Preconditions.requireNonNull(value, "value");
 
         this.send(
-            this.url("PATCH", id, {}),
+            this.url(HttpMethod.PATCH, id, {}),
             {
-                method: "PATCH",
+                method: HttpMethod.PATCH.toString(),
                 body: value.toJson ? JSON.stringify(value.toJson()) : value.toString(),
             },
             id,
@@ -86,9 +87,9 @@ export default class SpreadsheetMessengerCrud {
         Preconditions.requireNonNull(id, "id");
 
         this.send(
-            this.url("DELETE", id, {}),
+            this.url(HttpMethod.DELETE, id, {}),
             {
-                method: "DELETE",
+                method: HttpMethod.DELETE.toString(),
             },
             id,
             null,

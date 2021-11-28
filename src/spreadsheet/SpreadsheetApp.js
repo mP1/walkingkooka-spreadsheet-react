@@ -3,6 +3,7 @@ import './SpreadsheetApp.css';
 import {withStyles} from '@mui/styles';
 import Divider from '@mui/material/Divider';
 import Equality from "../Equality.js";
+import HttpMethod from "../net/HttpMethod.js";
 import ListenerCollection from "../event/ListenerCollection.js";
 import Preconditions from "../Preconditions.js";
 import React from 'react';
@@ -67,7 +68,7 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
         this.spreadsheetDeltaCellCrud = new SpreadsheetMessengerCrud(
             (method, cellOrRange, queryStringParameters) => {
                 var url = this.spreadsheetMetadataApiUrl() + "/cell/" + cellOrRange;
-                if(method.toUpperCase() === "GET") {
+                if(method.equals(HttpMethod.GET)) {
                     url = url + "/" + SpreadsheetEngineEvaluation.FORCE_RECOMPUTE.nameKebabCase();
                 }
                 return new RelativeUrl(
@@ -240,7 +241,7 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
         });
 
         switch(method) {
-            case "POST":
+            case HttpMethod.POST:
                 this.props.notificationShow(SpreadsheetNotification.success("Spreadsheet metadata saved"));
                 break;
             default:
@@ -337,7 +338,7 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
         const query = window ? "?window=" + window : "";
 
         this.performSpreadsheetDelta(
-            "POST",
+            HttpMethod.POST,
             RelativeUrl.parse(this.spreadsheetMetadataApiUrl() + selection.toClearUrl() + query),
             selection,
             JSON.stringify(SpreadsheetDelta.EMPTY.toJson()),
@@ -351,7 +352,7 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
         const query = window ? "?window=" + window : "";
 
         this.performSpreadsheetDelta(
-            "DELETE",
+            HttpMethod.DELETE,
             RelativeUrl.parse(this.spreadsheetMetadataApiUrl() + selection.toDeleteUrl() + query),
             selection
         );
@@ -364,7 +365,7 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
         const query = window ? "?window=" + window : "";
 
         this.performSpreadsheetDelta(
-            "POST",
+            HttpMethod.POST,
             RelativeUrl.parse(this.spreadsheetMetadataApiUrl() + selection.toInsertAfterUrl(count) + query),
             selection
         );
@@ -377,7 +378,7 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
         const query = window ? "?window=" + window : "";
 
         this.performSpreadsheetDelta(
-            "POST",
+            HttpMethod.POST,
             RelativeUrl.parse(this.spreadsheetMetadataApiUrl() + selection.toInsertBeforeUrl(count) + query),
             selection
         );
@@ -434,7 +435,7 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
         this.messageSend(
             RelativeUrl.parse(this.spreadsheetMetadataApiUrl() + "/cell-reference/" + encodeURI(text) + "?count=" + count),
             {
-                method: "GET",
+                method: HttpMethod.GET,
             },
             (json) => success(SpreadsheetExpressionReferenceSimilarities.fromJson(json)),
             failure,

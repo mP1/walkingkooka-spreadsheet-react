@@ -8,6 +8,7 @@ import Equality from "../../Equality.js";
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import ExpressionNumberKind from "../../math/ExpressionNumberKind.js";
 import FontFamily from "../../text/FontFamily.js";
+import HttpMethod from "../../net/HttpMethod.js";
 import lengthFromJson from "../../text/LengthFromJson.js";
 import NoneLength from "../../text/NoneLength.js";
 import Paper from '@mui/material/Paper';
@@ -389,7 +390,7 @@ class SpreadsheetSettingsWidget extends SpreadsheetHistoryAwareStateWidget {
                 props.spreadsheetMetadataCrud.messenger.send(
                     new RelativeUrl("/api/spreadsheet/" + metadata.getIgnoringDefaults(SpreadsheetMetadata.SPREADSHEET_ID) + "/format", {}),
                     {
-                        method: "POST",
+                        method: HttpMethod.POST,
                         body: JSON.stringify(request.toJson()),
                     },
                     this.updateFormattedCreateDateTimeAndModifiedDateTime.bind(this),
