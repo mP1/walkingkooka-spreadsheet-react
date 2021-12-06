@@ -158,7 +158,7 @@ export default class SpreadsheetColumnOrRowReference extends SpreadsheetSelectio
     }
 
     // move the column or row to the right/down by count.
-    viewportInsertBeforePostSucesssSelection(count) {
+    viewportInsertBeforePostSucessSelection(count) {
         return this.addSaturated(count);
     }
 
