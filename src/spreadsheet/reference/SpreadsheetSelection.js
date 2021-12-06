@@ -360,7 +360,7 @@ export default class SpreadsheetSelection extends SystemObject {
         SystemObject.throwUnsupportedOperation();
     }
 
-    viewportInsertBeforePostSucesssSelection(count) {
+    viewportInsertBeforePostSucessSelection(count) {
         SystemObject.throwUnsupportedOperation();
     }
 
