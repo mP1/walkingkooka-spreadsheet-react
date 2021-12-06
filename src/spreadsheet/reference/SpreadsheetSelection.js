@@ -313,6 +313,10 @@ export default class SpreadsheetSelection extends SystemObject {
         SystemObject.throwUnsupportedOperation();
     }
 
+    viewportId() {
+        SystemObject.throwUnsupportedOperation();
+    }
+
     static reportInvalidAnchor(anchor) {
         throw new Error("Invalid anchor=" + anchor);
     }

@@ -57,6 +57,12 @@ export default class SpreadsheetColumnOrRowReferenceRange extends SpreadsheetSel
         return this.setEnd(end.addSaturated(count)).setBegin(begin.addSaturated(count));
     }
 
+    /**
+     * Return the begin.viewportId().
+     */
+    viewportId() {
+        return this.begin().viewportId();
+    }
 
     // JSON............................................................................................................
 
