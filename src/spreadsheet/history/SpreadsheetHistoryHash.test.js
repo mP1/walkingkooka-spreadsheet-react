@@ -10,6 +10,7 @@ import SpreadsheetColumnOrRowDeleteHistoryHashToken from "./SpreadsheetColumnOrR
 import SpreadsheetColumnOrRowInsertAfterHistoryHashToken from "./SpreadsheetColumnOrRowInsertAfterHistoryHashToken.js";
 import SpreadsheetColumnOrRowInsertBeforeHistoryHashToken
     from "./SpreadsheetColumnOrRowInsertBeforeHistoryHashToken.js";
+import SpreadsheetColumnOrRowMenuHistoryHashToken from "./SpreadsheetColumnOrRowMenuHistoryHashToken.js";
 import SpreadsheetColumnReference from "../reference/SpreadsheetColumnReference.js";
 import SpreadsheetColumnReferenceRange from "../reference/SpreadsheetColumnReferenceRange.js";
 import SpreadsheetFormulaLoadAndEditHistoryHashToken from "./SpreadsheetFormulaLoadAndEditHistoryHashToken.js";
@@ -45,6 +46,7 @@ const LABEL = SpreadsheetLabelName.parse("Label123");
 const NEW_LABEL = SpreadsheetLabelName.parse("Label999");
 
 const COLUMN_ROW_CLEAR = SpreadsheetColumnOrRowClearHistoryHashToken.INSTANCE;
+const COLUMN_ROW_MENU = SpreadsheetColumnOrRowMenuHistoryHashToken.INSTANCE;
 
 const CELL_CLEAR = SpreadsheetCellClearSelectionActionHistoryHashToken.INSTANCE;
 const CELL_DELETE = SpreadsheetCellDeleteSelectionActionHistoryHashToken.INSTANCE;
@@ -992,6 +994,16 @@ testParseAndStringify(
 );
 
 testParseAndStringify(
+    "/spreadsheet-id-123/spreadsheet-name-456/column/B/menu",
+    {
+        "spreadsheet-id": "spreadsheet-id-123",
+        "spreadsheet-name": SPREADSHEET_NAME,
+        "selection": COLUMN,
+        "selection-action": COLUMN_ROW_MENU,
+    }
+);
+
+testParseAndStringify(
     "/spreadsheet-id-123/spreadsheet-name-456/column/B/formula",
     {
         "spreadsheet-id": "spreadsheet-id-123",
@@ -1075,6 +1087,16 @@ testParseAndStringify(
         "spreadsheet-name": SPREADSHEET_NAME,
         "selection": COLUMN_RANGE,
         "selection-action": new SpreadsheetColumnOrRowInsertBeforeHistoryHashToken(2),
+    }
+);
+
+testParseAndStringify(
+    "/spreadsheet-id-123/spreadsheet-name-456/column/B:C/menu",
+    {
+        "spreadsheet-id": "spreadsheet-id-123",
+        "spreadsheet-name": SPREADSHEET_NAME,
+        "selection": COLUMN_RANGE,
+        "selection-action": COLUMN_ROW_MENU,
     }
 );
 
@@ -1290,6 +1312,16 @@ testParseAndStringify(
 );
 
 testParseAndStringify(
+    "/spreadsheet-id-123/spreadsheet-name-456/row/2/menu",
+    {
+        "spreadsheet-id": "spreadsheet-id-123",
+        "spreadsheet-name": SPREADSHEET_NAME,
+        "selection": ROW,
+        "selection-action": COLUMN_ROW_MENU,
+    }
+);
+
+testParseAndStringify(
     "/spreadsheet-id-123/spreadsheet-name-456/row/2:3",
     {
         "spreadsheet-id": "spreadsheet-id-123",
@@ -1354,6 +1386,16 @@ testParseAndStringify(
         "spreadsheet-name": SPREADSHEET_NAME,
         "selection": ROW_RANGE,
         "selection-action": new SpreadsheetColumnOrRowInsertBeforeHistoryHashToken(2),
+    }
+);
+
+testParseAndStringify(
+    "/spreadsheet-id-123/spreadsheet-name-456/row/2:3/menu",
+    {
+        "spreadsheet-id": "spreadsheet-id-123",
+        "spreadsheet-name": SPREADSHEET_NAME,
+        "selection": ROW_RANGE,
+        "selection-action": COLUMN_ROW_MENU,
     }
 );
 
@@ -2197,11 +2239,27 @@ testMerge(
 );
 
 testMerge(
+    "/123abc/Untitled456/column/B",
+    {
+        "selection-action": COLUMN_ROW_MENU,
+    },
+    "/123abc/Untitled456/column/B/menu"
+);
+
+testMerge(
     "/123abc/Untitled456/column/C:D",
     {
         "selection-action": COLUMN_ROW_DELETE,
     },
     "/123abc/Untitled456/column/C:D/delete"
+);
+
+testMerge(
+    "/123abc/Untitled456/column/C:D",
+    {
+        "selection-action": COLUMN_ROW_MENU,
+    },
+    "/123abc/Untitled456/column/C:D/menu"
 );
 
 // row...........................................................................................................
@@ -2248,11 +2306,27 @@ testMerge(
 );
 
 testMerge(
+    "/123abc/Untitled456/row/45",
+    {
+        "selection-action": COLUMN_ROW_MENU,
+    },
+    "/123abc/Untitled456/row/45/menu"
+);
+
+testMerge(
     "/123abc/Untitled456/row/45:67",
     {
         "selection-action": COLUMN_ROW_DELETE,
     },
     "/123abc/Untitled456/row/45:67/delete"
+);
+
+testMerge(
+    "/123abc/Untitled456/row/45:67",
+    {
+        "selection-action": COLUMN_ROW_MENU,
+    },
+    "/123abc/Untitled456/row/45:67/menu"
 );
 
 // label...........................................................................................................
