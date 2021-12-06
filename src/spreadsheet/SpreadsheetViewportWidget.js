@@ -465,6 +465,10 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
         this.props.insertBeforeSelection(selection, count);
     }
 
+    showContextMenu(selection) {
+        SystemObject.throwUnsupportedOperation();
+    }
+
     loadCells(viewport, selection, anchor) {
         const props = this.props;
 

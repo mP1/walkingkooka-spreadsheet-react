@@ -19,6 +19,7 @@ import SpreadsheetColumnOrRowSelectionActionHistoryHashToken
 import SpreadsheetColumnOrRowInsertAfterHistoryHashToken from "./SpreadsheetColumnOrRowInsertAfterHistoryHashToken.js";
 import SpreadsheetColumnOrRowInsertBeforeHistoryHashToken
     from "./SpreadsheetColumnOrRowInsertBeforeHistoryHashToken.js";
+import SpreadsheetColumnOrRowMenuHistoryHashToken from "./SpreadsheetColumnOrRowMenuHistoryHashToken.js";
 import SpreadsheetColumnReferenceRange from "../reference/SpreadsheetColumnReferenceRange.js";
 import SpreadsheetFormulaLoadAndEditHistoryHashToken from "./SpreadsheetFormulaLoadAndEditHistoryHashToken.js";
 import SpreadsheetFormulaSaveHistoryHashToken from "./SpreadsheetFormulaSaveHistoryHashToken.js";
@@ -37,6 +38,7 @@ import SpreadsheetSettingsHistoryHashToken from "./SpreadsheetSettingsHistoryHas
 import SpreadsheetSettingsSaveHistoryHashToken from "./SpreadsheetSettingsSaveHistoryHashToken.js";
 import SpreadsheetSettingsWidgetHistoryHashTokens from "../settings/SpreadsheetSettingsWidgetHistoryHashTokens.js";
 import SpreadsheetViewportSelectionAnchor from "../reference/SpreadsheetViewportSelectionAnchor.js";
+
 
 function tokenize(pathname) {
     return pathname && pathname.startsWith("/") ?
@@ -251,6 +253,11 @@ export default class SpreadsheetHistoryHash extends SpreadsheetHistoryHashTokens
                                                 break;
                                             }
                                             token = tokens.shift();
+                                        } else {
+                                            if(SpreadsheetHistoryHashTokens.MENU === token){
+                                                selectionAction = SpreadsheetColumnOrRowMenuHistoryHashToken.INSTANCE;
+                                                token = tokens.shift();
+                                            }
                                         }
                                     }
                                 }
