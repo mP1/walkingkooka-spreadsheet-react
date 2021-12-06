@@ -166,6 +166,10 @@ export default class SpreadsheetCellRange extends SpreadsheetExpressionReference
         return focus;
     }
 
+    viewportId() {
+        return this.begin().viewportId();
+    }
+
     viewportLeft(current) {
         return current.viewportLeft();
     }
