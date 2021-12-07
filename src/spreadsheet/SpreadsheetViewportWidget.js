@@ -15,6 +15,7 @@ import SpreadsheetColumnOrRowInsertAfterHistoryHashToken
     from "./history/SpreadsheetColumnOrRowInsertAfterHistoryHashToken.js";
 import SpreadsheetColumnOrRowInsertBeforeHistoryHashToken
     from "./history/SpreadsheetColumnOrRowInsertBeforeHistoryHashToken.js";
+import SpreadsheetColumnOrRowMenuHistoryHashToken from "./history/SpreadsheetColumnOrRowMenuHistoryHashToken.js";
 import SpreadsheetColumnReference from "./reference/SpreadsheetColumnReference.js";
 import SpreadsheetFormulaLoadAndEditHistoryHashToken from "./history/SpreadsheetFormulaLoadAndEditHistoryHashToken.js";
 import SpreadsheetFormulaSelectionActionHistoryHashToken
@@ -32,7 +33,6 @@ import SpreadsheetRowReference from "./reference/SpreadsheetRowReference.js";
 import SpreadsheetSelection from "./reference/SpreadsheetSelection.js";
 import SpreadsheetViewport from "./SpreadsheetViewport.js";
 import SpreadsheetViewportSelectionAnchor from "./reference/SpreadsheetViewportSelectionAnchor.js";
-import SystemObject from "../SystemObject.js";
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -41,6 +41,9 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 
 const SCROLL_DEBOUNCE = 100;
+
+const CONTEXT_MENU_X_OFFSET = 10;
+const CONTEXT_MENU_Y_OFFSET = 10;
 
 /**
  * This component holds the cells viewport as well as the column and row controls.
@@ -466,8 +469,33 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
         this.props.insertBeforeSelection(selection, count);
     }
 
+    /**
+     * Updates the state so the context menu will be shown.
+     */
     showContextMenu(selection) {
-        SystemObject.throwUnsupportedOperation();
+        const element = document.getElementById(selection.viewportId());
+        if(element) {
+            const history = this.props.history;
+
+            const {top, left} = element.getBoundingClientRect();
+
+            const contextMenuState = {
+                anchorPosition: {
+                    left: left + CONTEXT_MENU_X_OFFSET,
+                    top: top + CONTEXT_MENU_Y_OFFSET,
+                },
+                menuItems: selection.viewportContextMenuItems(
+                    SpreadsheetHistoryHash.spreadsheetIdAndName(history.tokens()),
+                    history
+                ),
+            };
+
+            setTimeout(() => {
+                this.setState({
+                    contextMenu: contextMenuState,
+                });
+            }, 1);
+        }
     }
 
     loadCells(viewport, selection, anchor) {
@@ -630,10 +658,16 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
         ];
     }
 
+    /**
+     * Closes the context menu by updating the history hash tokens to remove the menu token.
+     */
     closeContextMenu() {
-        this.setState({
-            contextMenu: {},
-        });
+        const history = this.props.history;
+        const tokens = history.tokens();
+        if(tokens[SpreadsheetHistoryHashTokens.SELECTION_ACTION] instanceof SpreadsheetColumnOrRowMenuHistoryHashToken){
+            tokens[SpreadsheetHistoryHashTokens.SELECTION_ACTION] = null;
+            this.historyParseMergeAndPush(tokens);
+        }
     }
 
     static VIEWPORT_CONTEXT_MENU_ID = "viewport-context-Menu";
@@ -673,13 +707,11 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
     }
 
     /**
-     * This method is invoked whenever any element within the viewport is right mouse clicked. When this
-     * happens the {@link SpreadsheetSelection} is asked to prepare the menu items and they are shown.
+     * This method is invoked whenever any element within the viewport is right mouse clicked updating the hash to menu
+     * which will trigger the context menu to be built and displayed.
      */
     onContextMenu(e) {
         e.preventDefault();
-
-        let contextMenuState = {};
 
         const clickedSelection = this.findEventTargetSelection(e.target);
         if(clickedSelection){
@@ -691,21 +723,11 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
                 historyHashTokenSelection :
                 clickedSelection;
 
-            contextMenuState = {
-                anchorPosition: {
-                    left: e.clientX - 2,
-                    top: e.clientY - 4,
-                },
-                menuItems: selection.viewportContextMenuItems(
-                    SpreadsheetHistoryHash.spreadsheetIdAndName(historyHashTokens),
-                    history
-                ),
-            };
-        }
+            historyHashTokens[SpreadsheetHistoryHashTokens.SELECTION] = selection;
+            historyHashTokens[SpreadsheetHistoryHashTokens.SELECTION_ACTION] = SpreadsheetColumnOrRowMenuHistoryHashToken.INSTANCE;
 
-        this.setState({
-            contextMenu: contextMenuState,
-        });
+            this.historyParseMergeAndPush(historyHashTokens);
+        }
     }
 
     onKeyDown(e) {
