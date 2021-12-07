@@ -311,8 +311,20 @@ describe(
 
         // column context menu...........................................................................................
 
+        it("/column/$column/menu", () => {
+            testing.hashAppend("/column/A/menu")
+
+            testing.viewportContextMenu()
+                .should("be.visible")
+                .find("LI")
+                .should("have.length", 6);
+        });
+
         it("Column context menu", () => {
             testing.contextMenu(C.viewportId());
+
+            testing.hash()
+                .should('match', /.*\/.*\/column\/C\/menu/);
 
             testing.viewportContextMenu()
                 .should("be.visible")

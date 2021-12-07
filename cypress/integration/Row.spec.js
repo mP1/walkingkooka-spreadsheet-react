@@ -294,8 +294,20 @@ describe("Row",
 
         // row context menu...........................................................................................
 
+        it("/row/$row/menu", () => {
+            testing.hashAppend("/row/1/menu")
+
+            testing.viewportContextMenu()
+                .should("be.visible")
+                .find("LI")
+                .should("have.length", 6);
+        });
+
         it("Row context menu", () => {
             testing.contextMenu(ROW_3.viewportId());
+
+            testing.hash()
+                .should('match', /.*\/.*\/row\/3\/menu/);
 
             testing.viewportContextMenu()
                 .should("be.visible")
