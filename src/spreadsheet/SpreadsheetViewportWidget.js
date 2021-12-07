@@ -571,7 +571,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
 
         return [
             <TableContainer id={SpreadsheetViewportWidget.VIEWPORT_ID}
-                            key="viewport-TableContainer"
+                            key={SpreadsheetViewportWidget.VIEWPORT_ID + "TableContainer"}
                             ref={this.viewportTable}
                             component={Paper}
                             onFocus={this.onFocus.bind(this)}
@@ -586,7 +586,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
                                 borderRadius: 0, // cancel paper rounding.
                                 cursor: contextMenuOpen && "context-menu",
                             }}>
-                <Table key={"viewport-table"}>
+                <Table key={SpreadsheetViewportWidget.VIEWPORT_ID + "Table"}>
                     <TableHead>
                         <TableRow>
                             {
@@ -670,7 +670,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
         }
     }
 
-    static VIEWPORT_CONTEXT_MENU_ID = "viewport-context-Menu";
+    static VIEWPORT_CONTEXT_MENU_ID = SpreadsheetViewportWidget.VIEWPORT_ID + "context-Menu";
 
     onFocus(e) {
         // only update state if formula not active and focus changed.
