@@ -7,6 +7,7 @@ import SpreadsheetCellClearSelectionActionHistoryHashToken
     from "./SpreadsheetCellClearSelectionActionHistoryHashToken.js";
 import SpreadsheetCellDeleteSelectionActionHistoryHashToken
     from "./SpreadsheetCellDeleteSelectionActionHistoryHashToken.js";
+import SpreadsheetCellMenuHistoryHashToken from "./SpreadsheetCellMenuHistoryHashToken.js";
 import spreadsheetCellRangeCellReferenceOrLabelParse
     from "../reference/SpreadsheetCellRangeCellReferenceOrLabelParse.js";
 import SpreadsheetCellReferenceOrLabelName from "../reference/SpreadsheetCellReferenceOrLabelName.js";
@@ -38,7 +39,6 @@ import SpreadsheetSettingsHistoryHashToken from "./SpreadsheetSettingsHistoryHas
 import SpreadsheetSettingsSaveHistoryHashToken from "./SpreadsheetSettingsSaveHistoryHashToken.js";
 import SpreadsheetSettingsWidgetHistoryHashTokens from "../settings/SpreadsheetSettingsWidgetHistoryHashTokens.js";
 import SpreadsheetViewportSelectionAnchor from "../reference/SpreadsheetViewportSelectionAnchor.js";
-
 
 function tokenize(pathname) {
     return pathname && pathname.startsWith("/") ?
@@ -174,6 +174,12 @@ export default class SpreadsheetHistoryHash extends SpreadsheetHistoryHashTokens
                                             break;
                                         }
                                         selectionAction = new SpreadsheetFormulaSaveHistoryHashToken(decodeURIComponent(token));
+                                        token = tokens.shift();
+                                    }
+                                } else {
+                                    // /cell/A1/menu OR /cell/A1:B2/menu
+                                    if(SpreadsheetHistoryHashTokens.MENU === token){
+                                        selectionAction = SpreadsheetCellMenuHistoryHashToken.INSTANCE;
                                         token = tokens.shift();
                                     }
                                 }

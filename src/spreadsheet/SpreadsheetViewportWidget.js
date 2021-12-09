@@ -9,6 +9,7 @@ import PropTypes from "prop-types";
 import React from 'react';
 import Slider from "@mui/material/Slider";
 import SpreadsheetCellColumnOrRowParse from "./reference/SpreadsheetCellColumnOrRowParse.js";
+import SpreadsheetCellMenuHistoryHashToken from "./history/SpreadsheetCellMenuHistoryHashToken.js";
 import SpreadsheetCellRange from "./reference/SpreadsheetCellRange.js";
 import SpreadsheetCellReference from "./reference/SpreadsheetCellReference.js";
 import SpreadsheetColumnOrRowInsertAfterHistoryHashToken
@@ -664,7 +665,9 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
     closeContextMenu() {
         const history = this.props.history;
         const tokens = history.tokens();
-        if(tokens[SpreadsheetHistoryHashTokens.SELECTION_ACTION] instanceof SpreadsheetColumnOrRowMenuHistoryHashToken){
+
+        const action = tokens[SpreadsheetHistoryHashTokens.SELECTION_ACTION];
+        if(action instanceof SpreadsheetCellMenuHistoryHashToken || action instanceof SpreadsheetColumnOrRowMenuHistoryHashToken){
             tokens[SpreadsheetHistoryHashTokens.SELECTION_ACTION] = null;
             this.historyParseMergeAndPush(tokens);
         }
@@ -724,7 +727,10 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
                 clickedSelection;
 
             historyHashTokens[SpreadsheetHistoryHashTokens.SELECTION] = selection;
-            historyHashTokens[SpreadsheetHistoryHashTokens.SELECTION_ACTION] = SpreadsheetColumnOrRowMenuHistoryHashToken.INSTANCE;
+            historyHashTokens[SpreadsheetHistoryHashTokens.SELECTION_ACTION] = selection instanceof SpreadsheetCellReference ||
+                selection instanceof SpreadsheetCellRange ?
+                SpreadsheetCellMenuHistoryHashToken.INSTANCE :
+                SpreadsheetColumnOrRowMenuHistoryHashToken.INSTANCE;
 
             this.historyParseMergeAndPush(historyHashTokens);
         }
