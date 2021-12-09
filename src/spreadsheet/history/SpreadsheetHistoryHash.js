@@ -162,21 +162,19 @@ export default class SpreadsheetHistoryHash extends SpreadsheetHistoryHashTokens
                                 selectionAction = SpreadsheetCellDeleteSelectionActionHistoryHashToken.INSTANCE;
                                 token = tokens.shift();
                             }else {
-                                if(selection instanceof SpreadsheetCellReferenceOrLabelName){
-                                    // /cell/A1/formula
-                                    if(SpreadsheetHistoryHashTokens.CELL_FORMULA === token){
-                                        selectionAction = new SpreadsheetFormulaLoadAndEditHistoryHashToken();
-                                        token = tokens.shift();
+                                // /cell/A1/formula
+                                if(SpreadsheetHistoryHashTokens.CELL_FORMULA === token && selection instanceof SpreadsheetCellReferenceOrLabelName){
+                                    selectionAction = new SpreadsheetFormulaLoadAndEditHistoryHashToken();
+                                    token = tokens.shift();
 
-                                        // /cell/A1/formula/save/$formula-text
-                                        if(SpreadsheetHistoryHashTokens.SAVE === token){
-                                            token = tokens.shift();
-                                            if(null == token){
-                                                break;
-                                            }
-                                            selectionAction = new SpreadsheetFormulaSaveHistoryHashToken(decodeURIComponent(token));
-                                            token = tokens.shift();
+                                    // /cell/A1/formula/save/$formula-text
+                                    if(SpreadsheetHistoryHashTokens.SAVE === token){
+                                        token = tokens.shift();
+                                        if(null == token){
+                                            break;
                                         }
+                                        selectionAction = new SpreadsheetFormulaSaveHistoryHashToken(decodeURIComponent(token));
+                                        token = tokens.shift();
                                     }
                                 }
                             }
