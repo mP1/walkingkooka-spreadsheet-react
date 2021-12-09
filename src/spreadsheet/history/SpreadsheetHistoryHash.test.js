@@ -3,6 +3,7 @@ import SpreadsheetCellClearSelectionActionHistoryHashToken
     from "./SpreadsheetCellClearSelectionActionHistoryHashToken.js";
 import SpreadsheetCellDeleteSelectionActionHistoryHashToken
     from "./SpreadsheetCellDeleteSelectionActionHistoryHashToken.js";
+import SpreadsheetCellMenuHistoryHashToken from "./SpreadsheetCellMenuHistoryHashToken.js";
 import SpreadsheetCellRange from "../reference/SpreadsheetCellRange.js";
 import SpreadsheetCellReference from "../reference/SpreadsheetCellReference.js";
 import SpreadsheetColumnOrRowClearHistoryHashToken from "./SpreadsheetColumnOrRowClearHistoryHashToken.js";
@@ -50,6 +51,7 @@ const COLUMN_ROW_MENU = SpreadsheetColumnOrRowMenuHistoryHashToken.INSTANCE;
 
 const CELL_CLEAR = SpreadsheetCellClearSelectionActionHistoryHashToken.INSTANCE;
 const CELL_DELETE = SpreadsheetCellDeleteSelectionActionHistoryHashToken.INSTANCE;
+const CELL_MENU = SpreadsheetCellMenuHistoryHashToken.INSTANCE;
 const FORMULA_LOAD_EDIT = new SpreadsheetFormulaLoadAndEditHistoryHashToken();
 const FORMULA_LOAD_EDIT_SAVE = new SpreadsheetFormulaSaveHistoryHashToken("Abc123");
 
@@ -230,6 +232,16 @@ testValidate(
         "spreadsheet-name": SPREADSHEET_NAME,
         "selection": CELL,
         "selection-action": FORMULA_LOAD_EDIT_SAVE,
+    }
+);
+
+testValidate(
+    "validate id & name & selection=CELL & menu",
+    {
+        "spreadsheet-id": ID,
+        "spreadsheet-name": SPREADSHEET_NAME,
+        "selection": CELL,
+        "selection-action": CELL_MENU,
     }
 );
 
@@ -554,6 +566,16 @@ testParseAndStringify(
 );
 
 testParseAndStringify(
+    "/spreadsheet-id-123/spreadsheet-name-456/cell/A1/menu",
+    {
+        "spreadsheet-id": "spreadsheet-id-123",
+        "spreadsheet-name": SPREADSHEET_NAME,
+        "selection": CELL,
+        "selection-action": CELL_MENU,
+    }
+);
+
+testParseAndStringify(
     "/spreadsheet-id-123/spreadsheet-name-456/cell/C3:D4",
     {
         "spreadsheet-id": "spreadsheet-id-123",
@@ -625,6 +647,16 @@ testParseAndStringify(
         "spreadsheet-name": SPREADSHEET_NAME,
     },
     "Invalid token: \"insert-after\""
+);
+
+testParseAndStringify(
+    "/spreadsheet-id-123/spreadsheet-name-456/cell/C3:D4/menu",
+    {
+        "spreadsheet-id": "spreadsheet-id-123",
+        "spreadsheet-name": SPREADSHEET_NAME,
+        "selection": CELL_RANGE,
+        "selection-action": CELL_MENU,
+    }
 );
 
 testParseAndStringify(
@@ -2148,6 +2180,14 @@ testMerge(
         "selection-action": null,
     },
     "/123abc/Untitled456/cell/C3:D4"
+);
+
+testMerge(
+    "/123abc/Untitled456/cell/A1",
+    {
+        "selection-action": CELL_MENU,
+    },
+    "/123abc/Untitled456/cell/A1/menu"
 );
 
 testMerge(

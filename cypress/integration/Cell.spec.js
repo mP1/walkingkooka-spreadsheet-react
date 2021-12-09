@@ -596,5 +596,57 @@ describe(
             testing.hash()
                 .should('match', /.*\/.*\/cell\/C3/);
         });
+
+        // context menu.................................................................................................
+
+        it("/cell/$cell/menu", () => {
+            testing.hashAppend("/cell/A1/menu")
+
+            testing.viewportContextMenu()
+                .should("be.visible")
+                .find("LI")
+                .should("have.length", 1);
+        });
+
+        it("/cell/$cell-range/menu", () => {
+            testing.hashAppend("/cell/A1:B2/menu")
+
+            testing.viewportContextMenu()
+                .should("be.visible")
+                .find("LI")
+                .should("have.length", 1);
+        });
+
+        it("Cell context menu", () => {
+            testing.contextMenu(A1.viewportId());
+
+            testing.hash()
+                .should('match', /.*\/.*\/cell\/A1\/menu/);
+
+            testing.viewportContextMenu()
+                .should("be.visible")
+                .find("LI")
+                .should("have.length", 1);
+        });
+
+        it("Cell context menu links", () => {
+            testing.hashAppend("/cell/A1");
+
+            testing.contextMenu(A1.viewportId());
+
+            testing.viewportContextMenu()
+                .should("be.visible");
+        });
+
+        it("Cell range context menu links", () => {
+            testing.hashAppend("/cell/A1:B2");
+
+            testing.contextMenu(A1.viewportId());
+
+            testing.viewportContextMenu()
+                .should("be.visible")
+                .find("LI")
+                .should("have.length", 1);
+        });
     }
 );
