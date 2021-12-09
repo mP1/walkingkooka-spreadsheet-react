@@ -103,6 +103,7 @@ Following the selection of a cell, the following commands are possible
 - /delete Deletes the cell or cell-range
 - /formula Loads the formula text box with the current value for this cell
 - /formula/save/$formula Saves the given $formula for the cell.
+- /menu Displays a context menu
 
 > /#123/Untitled/cell/D4/delete
 > 
@@ -112,6 +113,9 @@ Following the selection of a cell, the following commands are possible
 > 
 > /#123/Untitled/cell/H8/formula/save/=1+2
 
+> /#123/Untitled/cell/I9/menu
+>
+> /#123/Untitled/cell/J10:K11/menu
 
 
 #### /spreadsheet-id/spreadsheet-name/column/column-or-column-range
@@ -128,7 +132,8 @@ Following the selection of a column or column range, the following commands are 
 - /delete Deletes the selected column or column range
 - /insert-after/$count Inserts the requested number of columns after the column/column range
 - /insert-before/$count Inserts the requested number of columns before the column/column range. Once the operation completes the selected column/column-range will be updated to account for the insertion.
-
+- /menu Displays a context menu
+- 
 > /#123/Untitled/column/A/clear
 >
 > /#123/Untitled/column/B:C/clear
@@ -144,6 +149,10 @@ Following the selection of a column or column range, the following commands are 
 > /#123/Untitled/column/A/insert-before/3
 > 
 > /#123/Untitled/column/B:C/insert-before/3
+
+> /#123/Untitled/column/A/menu
+>
+> /#123/Untitled/column/B:C/menu
 
 
 
@@ -177,6 +186,7 @@ Following the selection of a row or row range, the following commands are possib
 - /delete Deletes the selected row or row range
 - /insert-after/$count Inserts the requested number of rows after the row/row range
 - /insert-before/$count Inserts the requested number of rows before the row/row range. Once the operation completes the selected row/row-range will be updated to account for the insertion.
+- /menu Displays a context menu
 
 > /#123/Untitled/row/1/clear
 >
@@ -193,6 +203,10 @@ Following the selection of a row or row range, the following commands are possib
 > /#123/Untitled/row/1/insert-before/3
 > 
 > /#123/Untitled/row/2:3/insert-before/3
+
+> /#123/Untitled/row/1/menu
+>
+> /#123/Untitled/row/2:3/menu
 
 
 
