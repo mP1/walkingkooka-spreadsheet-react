@@ -134,6 +134,10 @@ export default class SpreadsheetColumnReferenceRange extends SpreadsheetColumnOr
         return clicked instanceof SpreadsheetColumnReference && this.testColumn(clicked);
     }
 
+    viewportDeleteCellColumnText() {
+        return "Delete columns";
+    }
+
     viewportInsertAfter1Text() {
         return SpreadsheetColumnReference.VIEWPORT_INSERT_AFTER_1_TEXT;
     }

@@ -58,6 +58,10 @@ export default class SpreadsheetColumnReference extends SpreadsheetColumnOrRowRe
         return new SpreadsheetCellReference(this, row);
     }
 
+    columnOrRange() {
+        return this;
+    }
+
     testCell(cellReference) {
         Preconditions.requireInstance(cellReference, SpreadsheetCellReference, "cellReference");
 
@@ -77,6 +81,10 @@ export default class SpreadsheetColumnReference extends SpreadsheetColumnOrRowRe
     }
 
     // context menu events..............................................................................................
+
+    viewportDeleteCellColumnText() {
+        return "Delete column";
+    }
 
     static VIEWPORT_INSERT_AFTER_1_TEXT = "Insert 1 after";
     static VIEWPORT_INSERT_AFTER_2_TEXT = "Insert 2 after";

@@ -69,6 +69,20 @@ export default class SpreadsheetCellRange extends SpreadsheetExpressionReference
             this;
     }
 
+    columnOrRange() {
+        return new SpreadsheetColumnReferenceRange(
+            this.begin().column(),
+            this.end().column()
+        ).columnOrRange();
+    }
+
+    rowOrRange() {
+        return new SpreadsheetRowReferenceRange(
+            this.begin().row(),
+            this.end().row()
+        ).rowOrRange();
+    }
+
     width() {
         return this.end().column().value() - this.begin().column().value() + 1;
     }
@@ -122,6 +136,10 @@ export default class SpreadsheetCellRange extends SpreadsheetExpressionReference
      */
     viewportContextMenuClick(clicked) {
         return clicked instanceof SpreadsheetCellReference && this.testCell(clicked);
+    }
+
+    viewportDeleteCellText() {
+        return "Delete cells";
     }
 
     viewportEnter(giveFormulaFocus) {

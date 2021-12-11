@@ -198,6 +198,14 @@ export default class SpreadsheetCellReference extends SpreadsheetCellReferenceOr
         return this.setRow(this.row().addSaturated(delta));
     }
 
+    columnOrRange() {
+        return this.column();
+    }
+
+    rowOrRange() {
+        return this.row();
+    }
+
     testCell(cellReference) {
         return this.column().testCell(cellReference) &&
             this.row().testCell(cellReference);
@@ -250,6 +258,10 @@ export default class SpreadsheetCellReference extends SpreadsheetCellReferenceOr
      */
     viewportContextMenuClick(clicked) {
         return this.equals(clicked);
+    }
+
+    viewportDeleteCellText() {
+        return "Delete cell";
     }
 
     viewportEnter(giveFormulaFocus) {

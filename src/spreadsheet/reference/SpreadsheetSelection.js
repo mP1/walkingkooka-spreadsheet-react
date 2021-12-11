@@ -22,6 +22,14 @@ export default class SpreadsheetSelection extends SystemObject {
         throw new Error("Invalid character " + CharSequences.quoteAndEscape(Character.fromJson(c)) + " at " + pos);
     }
 
+    columnOrRange() {
+        SystemObject.throwUnsupportedOperation();
+    }
+
+    rowOrRange() {
+        SystemObject.throwUnsupportedOperation();
+    }
+
     /**
      * Returns true if the selection is a cell or cell-range
      */
@@ -155,6 +163,12 @@ export default class SpreadsheetSelection extends SystemObject {
 
     static VIEWPORT_CONTEXT_MENU_DELETE_ID = SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_ID + "-delete";
 
+    // the id for the "delete column" menu item
+    static VIEWPORT_CONTEXT_MENU_DELETE_COLUMN_ID = SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_ID + "-delete-column";
+
+    // the id for the "delete row" menu item
+    static VIEWPORT_CONTEXT_MENU_DELETE_ROW_ID = SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_ID + "-delete-row";
+
     static VIEWPORT_CONTEXT_MENU_INSERT_AFTER_2_ID = SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_ID + "-insert-after-2";
     static VIEWPORT_CONTEXT_MENU_INSERT_AFTER_1_ID = SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_ID + "-insert-after-1"
     static VIEWPORT_CONTEXT_MENU_INSERT_BEFORE_2_ID = SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_ID + "-insert-before-2";
@@ -170,13 +184,39 @@ export default class SpreadsheetSelection extends SystemObject {
 
         const menuItems = [];
 
+        // delete cells
         historyTokens[SpreadsheetHistoryHashTokens.SELECTION_ACTION] = SpreadsheetCellDeleteSelectionActionHistoryHashToken.INSTANCE;
 
-        // delete
         menuItems.push(
             history.menuItem(
-                this.viewportDeleteText(),
+                this.viewportDeleteCellText(),
                 SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_DELETE_ID,
+                historyTokens
+            )
+        );
+
+        // delete column
+        const columnOrRange = this.columnOrRange();
+        historyTokens[SpreadsheetHistoryHashTokens.SELECTION] = columnOrRange;
+        historyTokens[SpreadsheetHistoryHashTokens.SELECTION_ACTION] = SpreadsheetColumnOrRowDeleteHistoryHashToken.INSTANCE;
+
+        menuItems.push(
+            history.menuItem(
+                columnOrRange.viewportDeleteCellColumnText(),
+                SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_DELETE_COLUMN_ID,
+                historyTokens
+            )
+        );
+
+        // delete row
+        const rowOrRange = this.rowOrRange();
+        historyTokens[SpreadsheetHistoryHashTokens.SELECTION] = rowOrRange;
+        historyTokens[SpreadsheetHistoryHashTokens.SELECTION_ACTION] = SpreadsheetColumnOrRowDeleteHistoryHashToken.INSTANCE;
+
+        menuItems.push(
+            history.menuItem(
+                rowOrRange.viewportDeleteCellRowText(),
+                SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_DELETE_ROW_ID,
                 historyTokens
             )
         );
@@ -305,6 +345,18 @@ export default class SpreadsheetSelection extends SystemObject {
 
     viewportDeleteText() {
         return "Delete";
+    }
+
+    viewportDeleteCellText() {
+        SystemObject.throwUnsupportedOperation();
+    }
+
+    viewportDeleteColumnText() {
+        SystemObject.throwUnsupportedOperation();
+    }
+
+    viewportDeleteRowText() {
+        SystemObject.throwUnsupportedOperation();
     }
 
     viewportInsertAfter1Id() {
