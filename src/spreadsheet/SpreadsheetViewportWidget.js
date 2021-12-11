@@ -444,6 +444,8 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
             selection,
             this.state.viewportRange
         );
+
+        this.removeHistoryHashSelectionAction();
     }
     
     /**
@@ -454,6 +456,8 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
             selection,
             this.state.viewportRange
         );
+
+        this.removeHistoryHashSelectionAction();
     }
 
     /**
@@ -468,6 +472,15 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
      */
     insertBeforeSelection(selection, count) {
         this.props.insertBeforeSelection(selection, count);
+    }
+
+    /**
+     * Clears the selection action from the history hash. This is done after a clear and other similar actions.
+     */
+    removeHistoryHashSelectionAction() {
+        const tokens = SpreadsheetHistoryHashTokens.emptyTokens();
+        tokens[SpreadsheetHistoryHashTokens.SELECTION_ACTION] = null;
+        this.historyParseMergeAndPush(tokens);
     }
 
     /**
