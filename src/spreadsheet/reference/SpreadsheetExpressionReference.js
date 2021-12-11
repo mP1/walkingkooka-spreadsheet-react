@@ -18,4 +18,8 @@ export default class SpreadsheetExpressionReference extends SpreadsheetSelection
         // avoid referencing constant to avoid runtime TypeErrors.
         return /*SpreadsheetHistoryHash.CELL*/ "cell/" + this;
     }
+
+    viewportContextMenuItems(historyTokens, history) {
+        return this.viewportContextMenuItemsCell(historyTokens, history);
+    }
 }

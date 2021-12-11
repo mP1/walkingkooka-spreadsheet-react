@@ -1,6 +1,7 @@
 /// <reference types="cypress" />
 
 import SpreadsheetCellReference from "../../src/spreadsheet/reference/SpreadsheetCellReference.js";
+import SpreadsheetSelection from "../../src/spreadsheet/reference/SpreadsheetSelection.js";
 import SpreadsheetTesting from "./SpreadsheetTesting.js";
 
 const A1 = SpreadsheetCellReference.parse("A1");
@@ -606,6 +607,10 @@ describe(
                 .should("be.visible")
                 .find("LI")
                 .should("have.length", 1);
+
+            testing.getById(SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_DELETE_ID)
+                .should("have.attr", "href")
+                .and('match', /#*\/*\/cell\/A1\/delete/);
         });
 
         it("/cell/$cell-range/menu", () => {
@@ -615,6 +620,10 @@ describe(
                 .should("be.visible")
                 .find("LI")
                 .should("have.length", 1);
+
+            testing.getById(SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_DELETE_ID)
+                .should("have.attr", "href")
+                .and('match', /#*\/*\/cell\/A1:B2\/delete/);
         });
 
         it("Cell context menu", () => {
@@ -627,6 +636,10 @@ describe(
                 .should("be.visible")
                 .find("LI")
                 .should("have.length", 1);
+
+            testing.getById(SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_DELETE_ID)
+                .should("have.attr", "href")
+                .and('match', /#*\/*\/cell\/A1\/delete/);
         });
 
         it("Cell context menu links", () => {
@@ -636,6 +649,10 @@ describe(
 
             testing.viewportContextMenu()
                 .should("be.visible");
+
+            testing.getById(SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_DELETE_ID)
+                .should("have.attr", "href")
+                .and('match', /#*\/*\/cell\/A1\/delete/);
         });
 
         it("Cell range context menu links", () => {
@@ -647,6 +664,10 @@ describe(
                 .should("be.visible")
                 .find("LI")
                 .should("have.length", 1);
+
+            testing.getById(SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_DELETE_ID)
+                .should("have.attr", "href")
+                .and('match', /#*\/*\/cell\/A1:B2\/delete/);
         });
     }
 );
