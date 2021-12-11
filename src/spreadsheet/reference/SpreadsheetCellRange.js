@@ -9,7 +9,6 @@ import SpreadsheetRowReferenceRange from "./SpreadsheetRowReferenceRange.js";
 import SpreadsheetSelection from "./SpreadsheetSelection.js";
 import SpreadsheetViewportSelectionAnchor from "./SpreadsheetViewportSelectionAnchor.js";
 import SystemObject from "../../SystemObject.js";
-import MenuItem from "@mui/material/MenuItem";
 import React from "react";
 
 const TYPE_NAME = "spreadsheet-cell-range";
@@ -116,12 +115,6 @@ export default class SpreadsheetCellRange extends SpreadsheetExpressionReference
         return "cell-range";
     }
 
-    // context menu events..............................................................................................
-
-    viewportContextMenuItems(historyTokens) {
-        // nop
-    }
-
     // viewport.........................................................................................................
 
     /**
@@ -129,14 +122,6 @@ export default class SpreadsheetCellRange extends SpreadsheetExpressionReference
      */
     viewportContextMenuClick(clicked) {
         return clicked instanceof SpreadsheetCellReference && this.testCell(clicked);
-    }
-
-    viewportContextMenuItems(historyTokens){
-        return [
-            <MenuItem key="click"
-                      onClick={() => alert(this.toString())}
-            >Click!</MenuItem>
-        ];
     }
 
     viewportEnter(giveFormulaFocus) {

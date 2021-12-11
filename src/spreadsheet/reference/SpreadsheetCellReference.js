@@ -2,7 +2,6 @@
  * Holds a cell reference. Note the reference is not validated in anyway.
  */
 import CharSequences from "../../CharSequences.js";
-import MenuItem from "@mui/material/MenuItem";
 import Preconditions from "../../Preconditions.js";
 import React from 'react';
 import SpreadsheetCell from "../SpreadsheetCell.js";
@@ -242,16 +241,6 @@ export default class SpreadsheetCellReference extends SpreadsheetCellReferenceOr
 
     viewportTooltipId() {
         return this.viewportId() + "-Tooltip";
-    }
-
-    // context menu events..............................................................................................
-
-    viewportContextMenuItems(historyTokens){
-        return [
-            <MenuItem key="click"
-                      onClick={() => alert(this.toString())}
-            >Click!</MenuItem>
-        ];
     }
 
     // viewport.........................................................................................................

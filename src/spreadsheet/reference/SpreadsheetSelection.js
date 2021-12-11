@@ -1,6 +1,8 @@
 import CharSequences from "../../CharSequences.js";
 import Character from "../../Character.js";
 import Keys from "../../Keys.js";
+import SpreadsheetCellDeleteSelectionActionHistoryHashToken
+    from "../history/SpreadsheetCellDeleteSelectionActionHistoryHashToken.js";
 import SpreadsheetColumnOrRowClearHistoryHashToken from "../history/SpreadsheetColumnOrRowClearHistoryHashToken.js";
 import SpreadsheetColumnOrRowDeleteHistoryHashToken from "../history/SpreadsheetColumnOrRowDeleteHistoryHashToken.js";
 import SpreadsheetColumnOrRowInsertBeforeHistoryHashToken
@@ -157,6 +159,30 @@ export default class SpreadsheetSelection extends SystemObject {
     static VIEWPORT_CONTEXT_MENU_INSERT_AFTER_1_ID = SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_ID + "-insert-after-1"
     static VIEWPORT_CONTEXT_MENU_INSERT_BEFORE_2_ID = SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_ID + "-insert-before-2";
     static VIEWPORT_CONTEXT_MENU_INSERT_BEFORE_1_ID = SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_ID + "-insert-before-1";
+
+    /**
+     * Builds the context menu items for a cell or cell-range.
+     */
+    viewportContextMenuItemsCell(historyTokens, history) {
+        historyTokens[SpreadsheetHistoryHashTokens.SELECTION] = this;
+        historyTokens[SpreadsheetHistoryHashTokens.SELECTION_ACTION] = null;
+        historyTokens[SpreadsheetHistoryHashTokens.SELECTION_ANCHOR] = null;
+
+        const menuItems = [];
+
+        historyTokens[SpreadsheetHistoryHashTokens.SELECTION_ACTION] = SpreadsheetCellDeleteSelectionActionHistoryHashToken.INSTANCE;
+
+        // delete
+        menuItems.push(
+            history.menuItem(
+                this.viewportDeleteText(),
+                SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_DELETE_ID,
+                historyTokens
+            )
+        );
+
+        return menuItems;
+    }
 
     // delete
     // insert 1 before
