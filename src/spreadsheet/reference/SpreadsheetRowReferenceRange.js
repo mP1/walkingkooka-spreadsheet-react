@@ -134,6 +134,10 @@ export default class SpreadsheetRowReferenceRange extends SpreadsheetColumnOrRow
         return clicked instanceof SpreadsheetRowReference && this.testRow(clicked);
     }
 
+    viewportDeleteCellRowText() {
+        return "Delete rows";
+    }
+
     viewportInsertAfter1Text() {
         return SpreadsheetRowReference.VIEWPORT_INSERT_AFTER_1_TEXT;
     }
