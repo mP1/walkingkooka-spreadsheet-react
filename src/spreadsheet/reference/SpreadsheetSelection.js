@@ -59,20 +59,20 @@ export default class SpreadsheetSelection extends SystemObject {
     testRow(rowReference) {
         SystemObject.throwUnsupportedOperation();
     }
-
-    toLoadCellsQueryStringParameterSelectionType() {
-        SystemObject.throwUnsupportedOperation();
-    }
-
+    
     toHistoryHashToken() {
         SystemObject.throwUnsupportedOperation();
     }
 
-    toDeleteUrl() {
+    apiLoadCellsQueryStringParameterSelectionType() {
+        SystemObject.throwUnsupportedOperation();
+    }
+    
+    apiDeleteUrl() {
         SystemObject.throwUnsupportedOperation();
     }
 
-    toInsertAfterUrl(count) {
+    apiInsertAfterUrl(count) {
         SystemObject.throwUnsupportedOperation();
     }
 
@@ -83,7 +83,7 @@ export default class SpreadsheetSelection extends SystemObject {
     // 4 == column == Selection
     // 5 == $selection
     // 6 == before == insert-action.toUrl
-    isInsertBeforePostUrl(urlPaths) {
+    apiInsertBeforePostUrl(urlPaths) {
         SystemObject.throwUnsupportedOperation();
     }
 

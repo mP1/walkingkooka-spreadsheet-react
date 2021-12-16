@@ -75,7 +75,7 @@ export default class SpreadsheetRowReferenceRange extends SpreadsheetColumnOrRow
             this.end().compareTo(rowReference) >= 0;
     }
 
-    toLoadCellsQueryStringParameterSelectionType() {
+    apiLoadCellsQueryStringParameterSelectionType() {
         return "row-range";
     }
 
@@ -83,19 +83,19 @@ export default class SpreadsheetRowReferenceRange extends SpreadsheetColumnOrRow
         return SpreadsheetHistoryHash.ROW + "/" + this;
     }
 
-    toClearUrl() {
+    apiClearUrl() {
         return "/row/" + this + "/clear";
     }
 
-    toDeleteUrl() {
+    apiDeleteUrl() {
         return "/row/" + this;
     }
 
-    toInsertAfterUrl(count) {
+    apiInsertAfterUrl(count) {
         return "/row/" + this + "/after?count=" + count;
     }
 
-    toInsertBeforeUrl(count) {
+    apiInsertBeforeUrl(count) {
         return "/row/" + this + "/before?count=" + count;
     }
 
@@ -119,7 +119,7 @@ export default class SpreadsheetRowReferenceRange extends SpreadsheetColumnOrRow
     // 4 == column == Selection
     // 5 == $selection
     // 6 == before == insert-action.toUrl
-    isInsertBeforePostUrl(urlPaths) {
+    apiInsertBeforePostUrl(urlPaths) {
         return urlPaths[4] === "row" &&
             urlPaths[5] === this.toString() &&
             urlPaths[6] === "before";

@@ -14,11 +14,11 @@ export default class SpreadsheetCellReferenceOrLabelName extends SpreadsheetExpr
         return true;
     }
 
-    toClearUrl() {
+    apiClearUrl() {
         return "/cell/" + this + "/clear";
     }
 
-    toDeleteUrl() {
+    apiDeleteUrl() {
         return "/cell/" + this;
     }
 

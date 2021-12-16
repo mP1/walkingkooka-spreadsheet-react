@@ -161,16 +161,16 @@ test("new 0 height", () => {
         height);
 });
 
-// toLoadCellsQueryStringParameters..............................................................................................
+// apiLoadCellsQueryStringParameters..............................................................................................
 
-function toLoadCellsQueryStringParametersAndCheck(c, x, y, w, h, s, a, expected) {
-    test("toLoadCellsQueryStringParametersAndCheck " + c + " " + x + " " + y + " " + w + " " + h + " " + s + " " + a, () => {
+function apiLoadCellsQueryStringParametersAndCheck(c, x, y, w, h, s, a, expected) {
+    test("apiLoadCellsQueryStringParametersAndCheck " + c + " " + x + " " + y + " " + w + " " + h + " " + s + " " + a, () => {
         expect(expected)
-            .toStrictEqual(new SpreadsheetViewport(c, x, y, w, h).toLoadCellsQueryStringParameters(s, a));
+            .toStrictEqual(new SpreadsheetViewport(c, x, y, w, h).apiLoadCellsQueryStringParameters(s, a));
     });
 }
 
-toLoadCellsQueryStringParametersAndCheck(
+apiLoadCellsQueryStringParametersAndCheck(
     cellOrLabel(),
     xOffset(),
     yOffset(),
@@ -187,7 +187,7 @@ toLoadCellsQueryStringParametersAndCheck(
     }
 );
 
-toLoadCellsQueryStringParametersAndCheck(
+apiLoadCellsQueryStringParametersAndCheck(
     cellOrLabel(),
     xOffset(),
     yOffset(),
@@ -206,7 +206,7 @@ toLoadCellsQueryStringParametersAndCheck(
     }
 );
 
-toLoadCellsQueryStringParametersAndCheck(
+apiLoadCellsQueryStringParametersAndCheck(
     cellOrLabel(),
     xOffset(),
     yOffset(),
@@ -226,7 +226,7 @@ toLoadCellsQueryStringParametersAndCheck(
     }
 );
 
-toLoadCellsQueryStringParametersAndCheck(
+apiLoadCellsQueryStringParametersAndCheck(
     cellOrLabel(),
     xOffset(),
     yOffset(),
@@ -245,7 +245,7 @@ toLoadCellsQueryStringParametersAndCheck(
     }
 );
 
-toLoadCellsQueryStringParametersAndCheck(
+apiLoadCellsQueryStringParametersAndCheck(
     cellOrLabel(),
     xOffset(),
     yOffset(),
@@ -264,7 +264,7 @@ toLoadCellsQueryStringParametersAndCheck(
     }
 );
 
-toLoadCellsQueryStringParametersAndCheck(
+apiLoadCellsQueryStringParametersAndCheck(
     cellOrLabel(),
     xOffset(),
     yOffset(),
@@ -284,7 +284,7 @@ toLoadCellsQueryStringParametersAndCheck(
     }
 );
 
-toLoadCellsQueryStringParametersAndCheck(
+apiLoadCellsQueryStringParametersAndCheck(
     cellOrLabel(),
     xOffset(),
     yOffset(),
@@ -303,7 +303,7 @@ toLoadCellsQueryStringParametersAndCheck(
     }
 );
 
-toLoadCellsQueryStringParametersAndCheck(
+apiLoadCellsQueryStringParametersAndCheck(
     cellOrLabel(),
     xOffset(),
     yOffset(),

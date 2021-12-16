@@ -116,23 +116,23 @@ export default class SpreadsheetColumnReference extends SpreadsheetColumnOrRowRe
         return SpreadsheetHistoryHashTokens.COLUMN + "/" + this;
     }
 
-    toLoadCellsQueryStringParameterSelectionType() {
+    apiLoadCellsQueryStringParameterSelectionType() {
         return "column";
     }
 
-    toClearUrl() {
+    apiClearUrl() {
         return "/column/" + this + "/clear";
     }
 
-    toDeleteUrl() {
+    apiDeleteUrl() {
         return "/column/" + this;
     }
 
-    toInsertAfterUrl(count) {
+    apiInsertAfterUrl(count) {
         return "/column/" + this + "/after?count=" + count;
     }
 
-    toInsertBeforeUrl(count) {
+    apiInsertBeforeUrl(count) {
         return "/column/" + this + "/before?count=" + count;
     }
 
@@ -156,7 +156,7 @@ export default class SpreadsheetColumnReference extends SpreadsheetColumnOrRowRe
     // 4 == column == Selection
     // 5 == $selection
     // 6 == before == insert-action.toUrl
-    isInsertBeforePostUrl(urlPaths) {
+    apiInsertBeforePostUrl(urlPaths) {
         return urlPaths[4] === "column" &&
             urlPaths[5] === this.toString() &&
             urlPaths[6] === "before";

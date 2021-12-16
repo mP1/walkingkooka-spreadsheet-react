@@ -6,7 +6,7 @@ import SpreadsheetSelection from "./SpreadsheetSelection.js";
 export default class SpreadsheetExpressionReference extends SpreadsheetSelection {
 
     // insertBefore not supported by cell or cell range or label
-    isInsertBeforePostUrl(urlPaths) {
+    apiInsertBeforePostUrl(urlPaths) {
         return false;
     }
 

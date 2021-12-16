@@ -67,7 +67,7 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
 
         this.spreadsheetDeltaCellCrud = new SpreadsheetMessengerCrud(
             (method, cellOrRange, queryStringParameters) => {
-                var url = this.spreadsheetMetadataApiUrl() + "/cell/" + cellOrRange;
+                var url = this.apiSpreadsheetMetadataUrl() + "/cell/" + cellOrRange;
                 if(method.equals(HttpMethod.GET)) {
                     url = url + "/" + SpreadsheetEngineEvaluation.FORCE_RECOMPUTE.nameKebabCase();
                 }
@@ -85,7 +85,7 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
             (method, label) => {
                 Preconditions.requireInstance(label, SpreadsheetLabelName, "label");
                 return new RelativeUrl(
-                    this.spreadsheetMetadataApiUrl() + "/label/" + label,
+                    this.apiSpreadsheetMetadataUrl() + "/label/" + label,
                     {}
                 );
             },
@@ -127,7 +127,7 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
     /**
      * Uses the provided spreadsheetid or falls back to the current {@Link SpreadsheetMetadata} spreadsheet id
      */
-    spreadsheetMetadataApiUrl(spreadsheetId) {
+    apiSpreadsheetMetadataUrl(spreadsheetId) {
         const id = spreadsheetId || this.state.spreadsheetMetadata.getIgnoringDefaults(SpreadsheetMetadata.SPREADSHEET_ID);
         if(!id){
             throw new Error("Missing spreadsheetId parameter and current SpreadsheetMetadata.spreadsheetId");
@@ -339,7 +339,7 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
 
         this.performSpreadsheetDelta(
             HttpMethod.POST,
-            RelativeUrl.parse(this.spreadsheetMetadataApiUrl() + selection.toClearUrl() + query),
+            RelativeUrl.parse(this.apiSpreadsheetMetadataUrl() + selection.apiClearUrl() + query),
             selection,
             JSON.stringify(SpreadsheetDelta.EMPTY.toJson()),
         );
@@ -353,7 +353,7 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
 
         this.performSpreadsheetDelta(
             HttpMethod.DELETE,
-            RelativeUrl.parse(this.spreadsheetMetadataApiUrl() + selection.toDeleteUrl() + query),
+            RelativeUrl.parse(this.apiSpreadsheetMetadataUrl() + selection.apiDeleteUrl() + query),
             selection
         );
     }
@@ -366,7 +366,7 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
 
         this.performSpreadsheetDelta(
             HttpMethod.POST,
-            RelativeUrl.parse(this.spreadsheetMetadataApiUrl() + selection.toInsertAfterUrl(count) + query),
+            RelativeUrl.parse(this.apiSpreadsheetMetadataUrl() + selection.apiInsertAfterUrl(count) + query),
             selection
         );
     }
@@ -379,7 +379,7 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
 
         this.performSpreadsheetDelta(
             HttpMethod.POST,
-            RelativeUrl.parse(this.spreadsheetMetadataApiUrl() + selection.toInsertBeforeUrl(count) + query),
+            RelativeUrl.parse(this.apiSpreadsheetMetadataUrl() + selection.apiInsertBeforeUrl(count) + query),
             selection
         );
     }
@@ -433,7 +433,7 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
         Preconditions.requireFunction(failure, "failure");
 
         this.messageSend(
-            RelativeUrl.parse(this.spreadsheetMetadataApiUrl() + "/cell-reference/" + encodeURI(text) + "?count=" + count),
+            RelativeUrl.parse(this.apiSpreadsheetMetadataUrl() + "/cell-reference/" + encodeURI(text) + "?count=" + count),
             {
                 method: HttpMethod.GET,
             },

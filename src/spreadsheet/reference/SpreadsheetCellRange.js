@@ -124,7 +124,7 @@ export default class SpreadsheetCellRange extends SpreadsheetExpressionReference
             rowReference.compareTo(end.row()) <= 0;
     }
 
-    toLoadCellsQueryStringParameterSelectionType() {
+    apiLoadCellsQueryStringParameterSelectionType() {
         return "cell-range";
     }
 
@@ -449,11 +449,11 @@ export default class SpreadsheetCellRange extends SpreadsheetExpressionReference
         return SpreadsheetCellRange.DEFAULT_ANCHOR;
     }
 
-    toClearUrl() {
+    apiClearUrl() {
         return "/cell/" + this + "/clear";
     }
 
-    toDeleteUrl() {
+    apiDeleteUrl() {
         return "/cell/" + this;
     }
 
