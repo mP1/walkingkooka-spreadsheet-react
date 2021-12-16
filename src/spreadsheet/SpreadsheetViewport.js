@@ -74,7 +74,7 @@ export default class SpreadsheetViewport extends SystemObject {
     /**
      * Returns a query parameters map that will be used to load all the cells for the viewport widget.
      */
-    toLoadCellsQueryStringParameters(selection, anchor) {
+    apiLoadCellsQueryStringParameters(selection, anchor) {
         Preconditions.optionalInstance(selection, SpreadsheetSelection, "selection");
         Preconditions.optionalInstance(anchor, SpreadsheetViewportSelectionAnchor, "anchor");
 
@@ -87,7 +87,7 @@ export default class SpreadsheetViewport extends SystemObject {
         };
 
         if(selection) {
-            parameters.selectionType = [selection.toLoadCellsQueryStringParameterSelectionType()];
+            parameters.selectionType = [selection.apiLoadCellsQueryStringParameterSelectionType()];
             parameters.selection = [selection];
         }
 

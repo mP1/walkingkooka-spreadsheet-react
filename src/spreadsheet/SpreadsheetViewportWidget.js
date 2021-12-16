@@ -148,7 +148,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
                 rowHeights: state.rowHeights.setAll(responseDelta.rowHeights()),
             };
 
-            if(window && Equality.safeEquals(url.queryParameters(), viewport.toLoadCellsQueryStringParameters(selection))){
+            if(window && Equality.safeEquals(url.queryParameters(), viewport.apiLoadCellsQueryStringParameters(selection))){
                 Object.assign(
                     newState,
                     {
@@ -183,7 +183,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
                             // 6 == before == insert-action.toUrl
                             if(urlPaths[3] === historyTokens[SpreadsheetHistoryHashTokens.SPREADSHEET_ID].toString()){
                                 const selection = historyTokens[SpreadsheetHistoryHashTokens.SELECTION];
-                                if(selection && selection.isInsertBeforePostUrl(urlPaths)){
+                                if(selection && selection.apiInsertBeforePostUrl(urlPaths)){
                                     Object.assign(
                                         newState,
                                         {
@@ -517,7 +517,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
 
         props.spreadsheetDeltaCellCrud.get(
             "*",
-            viewport.toLoadCellsQueryStringParameters(selection, anchor),
+            viewport.apiLoadCellsQueryStringParameters(selection, anchor),
             props.showError
         );
     }
