@@ -3,7 +3,6 @@
  */
 import CharSequences from "../../CharSequences.js";
 import Preconditions from "../../Preconditions.js";
-import React from 'react';
 import SpreadsheetCell from "../SpreadsheetCell.js";
 import SpreadsheetCellRange from "./SpreadsheetCellRange.js";
 import SpreadsheetCellReferenceOrLabelName from "./SpreadsheetCellReferenceOrLabelName.js";
