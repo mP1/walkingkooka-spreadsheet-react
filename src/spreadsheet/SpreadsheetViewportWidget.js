@@ -567,6 +567,8 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
             this.renderTableEmpty();
     }
 
+    static VIEWPORT_CONTEXT_MENU_ID = SpreadsheetViewportWidget.VIEWPORT_ID + "context-Menu";
+
     renderTable(dimensions, home) {
         const column = home.column().value();
         const row = home.row().value();
@@ -583,24 +585,139 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
         const {anchorPosition, menuItems} = contextMenu;
         const contextMenuOpen = !!menuItems;
 
+
+        const onBlur = (e) => {
+            // only set focused to false if new focus is outside viewport table.
+            if(!this.viewportTable.current.contains(e.relatedTarget)){
+                this.setState({
+                    focused: false,
+                });
+            }
+        }
+
+        const onClick = (e) => {
+            const selection = this.findEventTargetSelection(e.target);
+            if(selection){
+                const tokens = SpreadsheetHistoryHashTokens.emptyTokens();
+                tokens[SpreadsheetHistoryHashTokens.SELECTION] = selection;
+                tokens[SpreadsheetHistoryHashTokens.SELECTION_ANCHOR] = null;
+                tokens[SpreadsheetHistoryHashTokens.SELECTION_ACTION] = null;
+
+                this.historyParseMergeAndPush(tokens);
+            }
+        };
+
+        const onContextMenu = (e) => {
+            e.preventDefault();
+
+            const clickedSelection = this.findEventTargetSelection(e.target);
+            if(clickedSelection){
+                const history = this.props.history;
+                const historyHashTokens = history.tokens();
+                const historyHashTokenSelection = historyHashTokens[SpreadsheetHistoryHashTokens.SELECTION];
+
+                const selection = historyHashTokenSelection && historyHashTokenSelection.viewportContextMenuClick(clickedSelection) ?
+                    historyHashTokenSelection :
+                    clickedSelection;
+
+                historyHashTokens[SpreadsheetHistoryHashTokens.SELECTION] = selection;
+                historyHashTokens[SpreadsheetHistoryHashTokens.SELECTION_ACTION] = selection instanceof SpreadsheetCellReference ||
+                selection instanceof SpreadsheetCellRange ?
+                    SpreadsheetCellMenuHistoryHashToken.INSTANCE :
+                    SpreadsheetColumnOrRowMenuHistoryHashToken.INSTANCE;
+
+                this.historyParseMergeAndPush(historyHashTokens);
+            }
+        };
+
+        const onFocus = (e) => {
+            // only update state if formula not active and focus changed.
+            const {selectionAction, focused} = state;
+            if(!(selectionAction instanceof SpreadsheetFormulaSelectionActionHistoryHashToken) || !focused){
+                this.setState({
+                    focused: true
+                });
+            }
+        };
+
+        const onKeyDown = (e) => {
+            e.preventDefault();
+
+            const selection = this.findEventTargetSelection(e.target);
+            if(selection){
+                const state = this.state;
+
+                selection.onViewportKeyDown(
+                    e.key, // key
+                    e.shiftKey, // selectRange
+                    state.selection, // current selection may be null
+                    state.selectionAnchor, // anchor
+                    state.spreadsheetMetadata.getIgnoringDefaults(SpreadsheetMetadata.VIEWPORT_CELL), // viewportHome
+                    (s) => this.saveSelection(s && s.selection(), s && s.anchor(), null), // setSelection
+                    () => this.saveSelection(selection, null, new SpreadsheetFormulaLoadAndEditHistoryHashToken()),
+                );
+            }
+        };
+
+        const onHorizontalVerticalSliderChange = (newColumn, newRow) => {
+
+            const viewportRange = state.viewportRange;
+            if(viewportRange) {
+                const begin = viewportRange.begin();
+
+                let topLeft = begin;
+                if(null != newColumn){
+                    topLeft = topLeft.setColumn(newColumn);
+                }
+                if(null != newRow){
+                    topLeft = topLeft.setRow(newRow);
+                }
+
+                // updating will force a reload of viewport
+                if(!begin.equals(topLeft)){
+                    console.log("onHorizontalVerticalSliderChange " + viewportRange + " TO " + new SpreadsheetCellRange(topLeft, topLeft));
+
+                    const viewportTable = this.viewportTable.current;
+
+                    const width = viewportTable.offsetWidth;
+                    const height = viewportTable.offsetHeight;
+
+                    this.loadCells(
+                        new SpreadsheetViewport(
+                            topLeft,
+                            0,
+                            0,
+                            width,
+                            height
+                        ),
+                        null, // ignore selection, unnecessary to keep it within view etc.
+                        null // no anchor
+                    );
+                    this.setState({
+                        spreadsheetMetadata: state.spreadsheetMetadata.set(SpreadsheetMetadata.VIEWPORT_CELL, topLeft),
+                    });
+                }
+            }
+        };
+
         return [
             <TableContainer id={SpreadsheetViewportWidget.VIEWPORT_ID}
                             key={SpreadsheetViewportWidget.VIEWPORT_ID + "TableContainer"}
                             ref={this.viewportTable}
                             component={Paper}
-                            onFocus={this.onFocus.bind(this)}
-                            onBlur={this.onBlur.bind(this)}
-                            onClick={this.onClick.bind(this)}
-                            onContextMenu={this.onContextMenu.bind(this)}
-                            onKeyDown={this.onKeyDown.bind(this)}
                             style={{
                                 width: dimensions.width,
                                 height: dimensions.height,
                                 overflow: "hidden",
                                 borderRadius: 0, // cancel paper rounding.
                                 cursor: contextMenuOpen && "context-menu",
-                            }}>
-                <Table key={SpreadsheetViewportWidget.VIEWPORT_ID + "Table"}>
+                            }}
+                            onBlur={onBlur}
+                            onClick={onClick}
+                            onContextMenu={onContextMenu}
+                            onFocus={onFocus}
+                            onKeyDown={onKeyDown}
+            ><Table key={SpreadsheetViewportWidget.VIEWPORT_ID + "Table"}>
                     <TableHead>
                         <TableRow>
                             {
@@ -633,7 +750,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
                         }}
                         value={column}
                         onChange={_.debounce((e, newColumn) => {
-                            this.onHorizontalSliderChange(newColumn)
+                            onHorizontalVerticalSliderChange(new SpreadsheetColumnReference(newColumn, SpreadsheetReferenceKind.RELATIVE), null)
                         }, SCROLL_DEBOUNCE)}
                 />
                 <Slider ref={this.verticalSlider}
@@ -654,8 +771,8 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
                             height: dimensions.height - 60,
                         }}
                         value={SpreadsheetViewportWidget.toVerticalSliderValue(row)}
-                        onChange={_.debounce((e, newColumn) => {
-                            this.onVerticalSliderChange(newColumn)
+                        onChange={_.debounce((e, newRow) => {
+                            onHorizontalVerticalSliderChange(null, new SpreadsheetRowReference(1048576 - 1 - newRow, SpreadsheetReferenceKind.RELATIVE));
                         }, SCROLL_DEBOUNCE)}
                 />
             </TableContainer>,
@@ -686,88 +803,6 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
         }
     }
 
-    static VIEWPORT_CONTEXT_MENU_ID = SpreadsheetViewportWidget.VIEWPORT_ID + "context-Menu";
-
-    onFocus(e) {
-        // only update state if formula not active and focus changed.
-        const {selectionAction, focused} = this.state;
-        if(!(selectionAction instanceof SpreadsheetFormulaSelectionActionHistoryHashToken) || !focused){
-            this.setState({
-                focused: true
-            });
-        }
-    }
-
-    onBlur(e) {
-        // only set focused to false if new focus is outside viewport table.
-        if(!this.viewportTable.current.contains(e.relatedTarget)){
-            this.setState({
-                focused: false,
-            });
-        }
-    }
-
-    /**
-     * Clicking on any selection component within a viewport updates the history hash and clears the selection action.
-     */
-    onClick(e) {
-        const selection = this.findEventTargetSelection(e.target);
-        if(selection){
-            const tokens = SpreadsheetHistoryHashTokens.emptyTokens();
-            tokens[SpreadsheetHistoryHashTokens.SELECTION] = selection;
-            tokens[SpreadsheetHistoryHashTokens.SELECTION_ANCHOR] = null;
-            tokens[SpreadsheetHistoryHashTokens.SELECTION_ACTION] = null;
-            
-            this.historyParseMergeAndPush(tokens);
-        }
-    }
-
-    /**
-     * This method is invoked whenever any element within the viewport is right mouse clicked updating the hash to menu
-     * which will trigger the context menu to be built and displayed.
-     */
-    onContextMenu(e) {
-        e.preventDefault();
-
-        const clickedSelection = this.findEventTargetSelection(e.target);
-        if(clickedSelection){
-            const history = this.props.history;
-            const historyHashTokens = history.tokens();
-            const historyHashTokenSelection = historyHashTokens[SpreadsheetHistoryHashTokens.SELECTION];
-
-            const selection = historyHashTokenSelection && historyHashTokenSelection.viewportContextMenuClick(clickedSelection) ?
-                historyHashTokenSelection :
-                clickedSelection;
-
-            historyHashTokens[SpreadsheetHistoryHashTokens.SELECTION] = selection;
-            historyHashTokens[SpreadsheetHistoryHashTokens.SELECTION_ACTION] = selection instanceof SpreadsheetCellReference ||
-                selection instanceof SpreadsheetCellRange ?
-                SpreadsheetCellMenuHistoryHashToken.INSTANCE :
-                SpreadsheetColumnOrRowMenuHistoryHashToken.INSTANCE;
-
-            this.historyParseMergeAndPush(historyHashTokens);
-        }
-    }
-
-    onKeyDown(e) {
-        e.preventDefault();
-
-        const selection = this.findEventTargetSelection(e.target);
-        if(selection){
-            const state = this.state;
-
-            selection.onViewportKeyDown(
-                e.key, // key
-                e.shiftKey, // selectRange
-                state.selection, // current selection may be null
-                state.selectionAnchor, // anchor
-                state.spreadsheetMetadata.getIgnoringDefaults(SpreadsheetMetadata.VIEWPORT_CELL), // viewportHome
-                (s) => this.saveSelection(s && s.selection(), s && s.anchor(), null), // setSelection
-                () => this.saveSelection(selection, null, new SpreadsheetFormulaLoadAndEditHistoryHashToken()),
-            );
-        }
-    }
-
     /**
      * Accepts an event target and attempts to locate the {@link SpreadsheetSelection}
      */
@@ -793,56 +828,6 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
      */
     static toVerticalSliderValue(value) {
         return SpreadsheetRowReference.MAX -1 - value;
-    }
-
-    onHorizontalSliderChange(newColumn) {
-        this.onHorizontalVerticalSliderChange(new SpreadsheetColumnReference(newColumn, SpreadsheetReferenceKind.RELATIVE), null);
-    }
-
-    onVerticalSliderChange(newRow) {
-        this.onHorizontalVerticalSliderChange(null, new SpreadsheetRowReference(1048576 - 1 - newRow, SpreadsheetReferenceKind.RELATIVE));
-    }
-
-    onHorizontalVerticalSliderChange(newColumn, newRow) {
-        const state = this.state;
-
-        const viewportRange = state.viewportRange;
-        if(viewportRange) {
-            const begin = viewportRange.begin();
-
-            let topLeft = begin;
-            if(null != newColumn){
-                topLeft = topLeft.setColumn(newColumn);
-            }
-            if(null != newRow){
-                topLeft = topLeft.setRow(newRow);
-            }
-
-            // updating will force a reload of viewport
-            if(!begin.equals(topLeft)){
-                console.log("onHorizontalVerticalSliderChange " + viewportRange + " TO " + new SpreadsheetCellRange(topLeft, topLeft));
-
-                const viewportTable = this.viewportTable.current;
-
-                const width = viewportTable.offsetWidth;
-                const height = viewportTable.offsetHeight;
-
-                this.loadCells(
-                    new SpreadsheetViewport(
-                        topLeft,
-                        0,
-                        0,
-                        width,
-                        height
-                    ),
-                    null, // ignore selection, unnecessary to keep it within view etc.
-                    null // no anchor
-                );
-                this.setState({
-                    spreadsheetMetadata: state.spreadsheetMetadata.set(SpreadsheetMetadata.VIEWPORT_CELL, topLeft),
-                });
-            }
-        }
     }
 
     /**
