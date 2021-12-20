@@ -41,6 +41,32 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 
+// default header cell styles
+const HEADER = {
+    minWidth: "4ex",
+
+    margin: "0",
+    borderColor: "#000",
+    borderStyle: "solid",
+    borderWidth: "1px",
+    padding: "0",
+    fontWeight: "bold",
+
+    textAlign: "center",
+    verticalAlign: "middle",
+
+    backgroundColor: "#ccc", // TODO take colours from theme
+    color: "#333",
+};
+
+const HEADER_SELECTED = Object.assign({},
+    HEADER,
+    {
+        backgroundColor: "#444", // TODO take colours from theme
+        color: "#bbb",
+    },
+);
+
 const SCROLL_DEBOUNCE = 100;
 
 const CONTEXT_MENU_X_OFFSET = 10;
@@ -850,7 +876,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
 
         while(x < viewportWidth) {
             headers.push(
-                column.renderViewport(selection && selection.testColumn(column))
+                this.renderTableColumnOrRowHeader(column, selection && selection.testColumn(column))
             );
 
             x = x + (columnWidths.get(column) || defaultColumnWidth);
@@ -886,7 +912,9 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
             let x = 0;
             let column = home.column();
 
-            tableCells.push(row.renderViewport(selection && selection.testRow(row)));
+            tableCells.push(
+                this.renderTableColumnOrRowHeader(row, selection && selection.testRow(row))
+            );
 
             // reference, formula, style, format, formatted
             while(x < viewportWidth) {
@@ -917,6 +945,14 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
         }
 
         return tableRows;
+    }
+
+    renderTableColumnOrRowHeader(columnOrRow, selected) {
+        return columnOrRow.renderViewport(
+            selected ?
+                HEADER_SELECTED :
+                HEADER
+        );
     }
 
     /**
