@@ -585,7 +585,6 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
         const {anchorPosition, menuItems} = contextMenu;
         const contextMenuOpen = !!menuItems;
 
-
         const onBlur = (e) => {
             // only set focused to false if new focus is outside viewport table.
             if(!this.viewportTable.current.contains(e.relatedTarget)){
@@ -593,7 +592,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
                     focused: false,
                 });
             }
-        }
+        };
 
         const onClick = (e) => {
             const selection = this.findEventTargetSelection(e.target);
