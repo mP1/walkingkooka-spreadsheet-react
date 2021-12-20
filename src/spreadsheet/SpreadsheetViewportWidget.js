@@ -611,6 +611,8 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
         const {anchorPosition, menuItems} = contextMenu;
         const contextMenuOpen = !!menuItems;
 
+        const history = this.props.history;
+
         const onBlur = (e) => {
             // only set focused to false if new focus is outside viewport table.
             if(!this.viewportTable.current.contains(e.relatedTarget)){
@@ -632,12 +634,21 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
             }
         };
 
+        const onCloseContextMenu = () => {
+            const tokens = history.tokens();
+
+            const action = tokens[SpreadsheetHistoryHashTokens.SELECTION_ACTION];
+            if(action instanceof SpreadsheetCellMenuHistoryHashToken || action instanceof SpreadsheetColumnOrRowMenuHistoryHashToken){
+                tokens[SpreadsheetHistoryHashTokens.SELECTION_ACTION] = null;
+                this.historyParseMergeAndPush(tokens);
+            }
+        };
+
         const onContextMenu = (e) => {
             e.preventDefault();
 
             const clickedSelection = this.findEventTargetSelection(e.target);
             if(clickedSelection){
-                const history = this.props.history;
                 const historyHashTokens = history.tokens();
                 const historyHashTokenSelection = historyHashTokens[SpreadsheetHistoryHashTokens.SELECTION];
 
@@ -805,27 +816,13 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
                   id={SpreadsheetViewportWidget.VIEWPORT_CONTEXT_MENU_ID}
                   keepMounted
                   open={contextMenuOpen}
-                  onClose={this.closeContextMenu.bind(this)}
+                  onClose={onCloseContextMenu}
                   anchorReference="anchorPosition"
                   anchorPosition={anchorPosition || {left: 0, top: 0}}
             >
                 {menuItems}
             </Menu>
         ];
-    }
-
-    /**
-     * Closes the context menu by updating the history hash tokens to remove the menu token.
-     */
-    closeContextMenu() {
-        const history = this.props.history;
-        const tokens = history.tokens();
-
-        const action = tokens[SpreadsheetHistoryHashTokens.SELECTION_ACTION];
-        if(action instanceof SpreadsheetCellMenuHistoryHashToken || action instanceof SpreadsheetColumnOrRowMenuHistoryHashToken){
-            tokens[SpreadsheetHistoryHashTokens.SELECTION_ACTION] = null;
-            this.historyParseMergeAndPush(tokens);
-        }
     }
 
     /**
