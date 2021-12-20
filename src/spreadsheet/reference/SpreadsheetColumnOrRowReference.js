@@ -1,6 +1,5 @@
 import Preconditions from "../../Preconditions.js";
 import React from "react";
-import SpreadsheetColumnReference from "./SpreadsheetColumnReference.js";
 import SpreadsheetReferenceKind from "./SpreadsheetReferenceKind";
 import SpreadsheetSelection from "./SpreadsheetSelection.js";
 import TableCell from "@mui/material/TableCell";
@@ -104,16 +103,13 @@ export default class SpreadsheetColumnOrRowReference extends SpreadsheetSelectio
     // selection........................................................................................................
 
     /**
-     * Renders a TABLE that may be highlighted.
+     * Renders a TABLE CELL that may be highlighted.
      */
     renderViewport(highlighted) {
-        const isColumn = this instanceof SpreadsheetColumnReference;
-        const columnOrRow = isColumn ? "column" : "row";
         const id = this.viewportId();
 
         return <TableCell key={id}
                           id={id}
-                          className={(columnOrRow) + (highlighted ? " selected" : "")}
                           style={highlighted ? headerCellSelected : headerCell}
                           tabIndex={0}
                           data-selection={this}
