@@ -4,33 +4,6 @@ import SpreadsheetReferenceKind from "./SpreadsheetReferenceKind";
 import SpreadsheetSelection from "./SpreadsheetSelection.js";
 import TableCell from "@mui/material/TableCell";
 
-
-// default header cell styles
-const headerCell = {
-    minWidth: "4ex",
-
-    margin: "0",
-    borderColor: "#000",
-    borderStyle: "solid",
-    borderWidth: "1px",
-    padding: "0",
-    fontWeight: "bold",
-
-    textAlign: "center",
-    verticalAlign: "middle",
-
-    backgroundColor: "#ccc", // TODO take colours from theme
-    color: "#333",
-};
-
-const headerCellSelected = Object.assign({},
-    headerCell,
-    {
-        backgroundColor: "#444", // TODO take colours from theme
-        color: "#bbb",
-    },
-);
-
 export default class SpreadsheetColumnOrRowReference extends SpreadsheetSelection {
 
     constructor(value, kind) {
@@ -105,12 +78,12 @@ export default class SpreadsheetColumnOrRowReference extends SpreadsheetSelectio
     /**
      * Renders a TABLE CELL that may be highlighted.
      */
-    renderViewport(highlighted) {
+    renderViewport(style) {
         const id = this.viewportId();
 
         return <TableCell key={id}
                           id={id}
-                          style={highlighted ? headerCellSelected : headerCell}
+                          style={style}
                           tabIndex={0}
                           data-selection={this}
         >{
