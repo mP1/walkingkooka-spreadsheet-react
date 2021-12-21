@@ -42,15 +42,24 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 
 // default header cell styles
+
+const ROW_WIDTH = 80; // approximately 10ex
+const ROW_WIDTH_PX = ROW_WIDTH + "px";
+
+const COLUMN_HEIGHT = 25;
+const COLUMN_HEIGHT_PX = COLUMN_HEIGHT + "px";
+
 const HEADER = {
     minWidth: "4ex",
+
+    boxSizing: "border-box",
 
     margin: "0",
     borderColor: "#000",
     borderStyle: "solid",
     borderWidth: "1px",
     padding: "0",
-    fontWeight: "bold",
+    fontWeight: "normal",
 
     textAlign: "center",
     verticalAlign: "middle",
@@ -59,13 +68,43 @@ const HEADER = {
     color: "#333",
 };
 
-const HEADER_SELECTED = Object.assign({},
+const SELECTED = {
+    backgroundColor: "#444", // TODO take colours from theme
+    color: "#bbb",
+};
+
+const SELECT_ALL = Object.assign(
+    {},
     HEADER,
     {
-        backgroundColor: "#444", // TODO take colours from theme
-        color: "#bbb",
+        width: ROW_WIDTH_PX,
+        height: COLUMN_HEIGHT_PX,
     },
 );
+
+const COLUMN_HEADER = (width, selected) => {
+    return Object.assign(
+        {},
+        HEADER,
+        {
+            width: width,
+            height: COLUMN_HEIGHT_PX,
+        },
+        selected ? SELECTED: {},
+    )
+};
+
+const ROW_HEADER = (height, selected) => {
+    return Object.assign(
+        {},
+        HEADER,
+        {
+            width: ROW_WIDTH_PX,
+            height: height,
+        },
+        selected ? SELECTED: {},
+    )
+};
 
 const SCROLL_DEBOUNCE = 100;
 
@@ -124,8 +163,8 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
 
         const viewportTable = this.viewportTable.current;
         if(viewportTable){
-            const width = viewportTable.offsetWidth;
-            const height = viewportTable.offsetHeight;
+            const width = viewportTable.offsetWidth - ROW_WIDTH;
+            const height = viewportTable.offsetHeight - COLUMN_HEIGHT;
 
             const metadata = state.spreadsheetMetadata;
             const selection = state.selection;
@@ -272,8 +311,8 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
                             this.state.spreadsheetMetadata.getIgnoringDefaults(SpreadsheetMetadata.VIEWPORT_CELL),
                             0,
                             0,
-                            viewportTable.offsetWidth,
-                            viewportTable.offsetHeight,
+                            viewportTable.offsetWidth - ROW_WIDTH,
+                            viewportTable.offsetHeight - COLUMN_HEIGHT,
                         ),
                         null,
                         null
@@ -382,8 +421,8 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
             const viewportCell = metadata.getIgnoringDefaults(SpreadsheetMetadata.VIEWPORT_CELL);
 
             if(viewportCell){
-                const width = viewportTable.offsetWidth;
-                const height = viewportTable.offsetHeight;
+                const width = viewportTable.offsetWidth - ROW_WIDTH;
+                const height = viewportTable.offsetHeight - COLUMN_HEIGHT;
 
                 const selectionAnchor = state.selectionAnchor;
 
@@ -715,8 +754,8 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
 
                     const viewportTable = this.viewportTable.current;
 
-                    const width = viewportTable.offsetWidth;
-                    const height = viewportTable.offsetHeight;
+                    const width = viewportTable.offsetWidth - ROW_WIDTH;
+                    const height = viewportTable.offsetHeight - COLUMN_HEIGHT;
 
                     this.loadCells(
                         new SpreadsheetViewport(
@@ -736,15 +775,18 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
             }
         };
 
+        const width =  dimensions.width;
+        const height = dimensions.height;
+
         return [
             <TableContainer id={SpreadsheetViewportWidget.VIEWPORT_ID}
                             key={SpreadsheetViewportWidget.VIEWPORT_ID + "TableContainer"}
                             ref={this.viewportTable}
                             component={Paper}
                             style={{
-                                width: dimensions.width,
-                                height: dimensions.height,
-                                overflow: "hidden",
+                                width: width,
+                                height: height,
+                                overflow: "clip",
                                 borderRadius: 0, // cancel paper rounding.
                                 cursor: contextMenuOpen && "context-menu",
                             }}
@@ -753,7 +795,13 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
                             onContextMenu={onContextMenu}
                             onFocus={onFocus}
                             onKeyDown={onKeyDown}
-            ><Table key={SpreadsheetViewportWidget.VIEWPORT_ID + "Table"}>
+            ><Table key={SpreadsheetViewportWidget.VIEWPORT_ID + "Table"}
+                    style={{
+                        tableLayout: "fixed",
+                        width: width,
+                        //height: height,
+                        //overflow: "hidden",
+                    }}>
                     <TableHead>
                         <TableRow>
                             {
@@ -763,7 +811,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
                     </TableHead>
                     <TableBody>
                         {
-                            this.renderTableContent(selectionNotLabel)
+                            this.renderTableBody(selectionNotLabel)
                         }
                     </TableBody>
                 </Table>
@@ -865,18 +913,30 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
         const defaultColumnWidth = defaultStyle.width().value();
 
         let headers = [
-            <TableCell key={SpreadsheetViewportWidget.VIEWPORT_SELECT_ALL_ID} id={SpreadsheetViewportWidget.VIEWPORT_SELECT_ALL_ID}></TableCell> // TODO add select all support when range support is ready
+            <TableCell key={SpreadsheetViewportWidget.VIEWPORT_SELECT_ALL_ID}
+                       id={SpreadsheetViewportWidget.VIEWPORT_SELECT_ALL_ID}
+                       style={SELECT_ALL}
+            >
+                &nbsp;
+            </TableCell> // TODO add select all support when range support is ready
         ];
 
-        let x = 0;
+        let x = ROW_WIDTH;
         let column = home.column();
 
         while(x < viewportWidth) {
+            const width = columnWidths.get(column) | defaultColumnWidth;
+
             headers.push(
-                this.renderTableColumnOrRowHeader(column, selection && selection.testColumn(column))
+                column.renderViewport(
+                    COLUMN_HEADER(
+                        width,
+                        selection && selection.testColumn(column)
+                    )
+                )
             );
 
-            x = x + (columnWidths.get(column) || defaultColumnWidth);
+            x = x + width;
             column = column.add(1);
         }
 
@@ -886,7 +946,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
     /**
      * Render the required TABLE ROW each filled with available or empty TABLE CELL cells.
      */
-    renderTableContent(selection) {
+    renderTableBody(selection) {
         const {cells, columnWidths, rowHeights, spreadsheetMetadata, dimensions, cellToLabels} = this.state;
 
         const home = spreadsheetMetadata.getIgnoringDefaults(SpreadsheetMetadata.VIEWPORT_CELL);
@@ -900,7 +960,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
 
         const tableRows = [];
 
-        let y = 0;
+        let y = COLUMN_HEIGHT;
         let row = home.row();
 
         while(y < viewportHeight) {
@@ -909,8 +969,15 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
             let x = 0;
             let column = home.column();
 
+            const height = (rowHeights.get(row) | defaultRowHeight);
+
             tableCells.push(
-                this.renderTableColumnOrRowHeader(row, selection && selection.testRow(row))
+                row.renderViewport(
+                    ROW_HEADER(
+                        height,
+                        selection && selection.testRow(row)
+                    )
+                )
             );
 
             // reference, formula, style, format, formatted
@@ -937,19 +1004,11 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
                 </TableRow>
             );
 
-            y = y + (rowHeights.get(row) || defaultRowHeight);
+            y = y + height;
             row = row.add(1);
         }
 
         return tableRows;
-    }
-
-    renderTableColumnOrRowHeader(columnOrRow, selected) {
-        return columnOrRow.renderViewport(
-            selected ?
-                HEADER_SELECTED :
-                HEADER
-        );
     }
 
     /**
