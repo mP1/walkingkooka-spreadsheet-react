@@ -364,7 +364,7 @@ export default class SpreadsheetTesting {
             .should('match', /.*\/Untitled/) // => true
 
         // Verify spreadsheet name is "Untitled"
-        this.spreadsheetName()
+        this.spreadsheetNameButton()
             .should("have.class", "MuiButton-root")
             .should("have.text", "Untitled");
 
