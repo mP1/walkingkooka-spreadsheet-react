@@ -1049,4 +1049,4 @@ SpreadsheetViewportWidget.propTypes = {
     spreadsheetLabelCrud: PropTypes.instanceOf(SpreadsheetMessengerCrud),
     spreadsheetMetadataCrud: PropTypes.instanceOf(SpreadsheetMessengerCrud),
     showError: PropTypes.func.isRequired,
-}
+};
