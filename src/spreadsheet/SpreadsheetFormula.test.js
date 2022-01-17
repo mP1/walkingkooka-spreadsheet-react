@@ -48,7 +48,6 @@ test("create text, value", () => {
         new SpreadsheetFormula(text, value),
         text,
         value,
-        undefined,
         {
             text: text,
             value: SystemObject.toJsonWithType(value)
@@ -59,13 +58,23 @@ test("create text, value", () => {
 test("create text, error", () => {
     const error = new SpreadsheetError("Error message #1");
 
-    check(new SpreadsheetFormula(text, undefined, error), text, undefined, error, {text: text, error: error.toJson()})
+    check(
+        new SpreadsheetFormula(text, error),
+        text,
+        error,
+        {text: text, value: error.toJsonWithType()}
+    );
 });
 
 // EMPTY.................................................................................................................
 
 test("EMPTY", () => {
-    check(SpreadsheetFormula.EMPTY, "", undefined, undefined, {text: ""})
+    check(
+        SpreadsheetFormula.EMPTY,
+        "",
+        undefined,
+        {text: ""}
+    );
 });
 
 // text.................................................................................................................
@@ -104,7 +113,6 @@ test("json only text", () => {
         spreadsheetFormula,
         text,
         undefined,
-        undefined,
         {
             text: text
         }
@@ -118,7 +126,6 @@ test("json text & value", () => {
         spreadsheetFormula,
         text,
         value,
-        undefined,
         {
             text: text,
             value: SystemObject.toJsonWithType(value),
@@ -134,7 +141,6 @@ test("json text & empty string value", () => {
         spreadsheetFormula,
         text,
         value,
-        undefined,
         {
             text: text,
             value: SystemObject.toJsonWithType(value),
@@ -144,32 +150,26 @@ test("json text & empty string value", () => {
 
 test("json text & error", () => {
     const error = new SpreadsheetError("Error message #1");
-    const spreadsheetFormula = new SpreadsheetFormula(text, undefined, error);
+    const spreadsheetFormula = new SpreadsheetFormula(text, error);
 
     check(
         spreadsheetFormula,
         text,
-        undefined,
         error,
         {
             text: text,
-            error: error.toJson()
+            value: error.toJsonWithType()
         }
     );
 });
 
 // helpers..............................................................................................................
 
-function check(spreadsheetFormula, text, value, error, json) {
+function check(spreadsheetFormula, text, value, json) {
     expect(spreadsheetFormula.text()).toStrictEqual(text);
     expect(spreadsheetFormula.text()).toBeString();
 
     expect(spreadsheetFormula.value()).toStrictEqual(value);
-
-    expect(spreadsheetFormula.error()).toStrictEqual(error);
-    if(error){
-        expect(spreadsheetFormula.error()).toBeInstanceOf(SpreadsheetError);
-    }
 
     expect(spreadsheetFormula.toJson()).toStrictEqual(json);
     expect(spreadsheetFormula.toString()).toBe(JSON.stringify(json));
