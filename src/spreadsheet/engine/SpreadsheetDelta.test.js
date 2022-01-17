@@ -18,7 +18,10 @@ function a1() {
         "A1": {
             formula: {
                 text: "1+2",
-                error: "Custom error #1"
+                value: {
+                    type: "spreadsheet-error",
+                    value: "Custom error #1"
+                }
             }
         }
     });
@@ -29,7 +32,10 @@ function b2() {
         "B2": {
             formula: {
                 text: "3+4",
-                error: "Custom error #2"
+                value: {
+                    type: "spreadsheet-error",
+                    value: "Custom error #2"
+                }
             }
         }
     });
@@ -116,7 +122,10 @@ systemObjectTesting(
                 "Z9": {
                     formula: {
                         text: "99",
-                        error: "Different custom error #9"
+                        value: {
+                            type: "spreadsheet-error",
+                            value: "Different custom error #9"
+                        }
                     }
                 }
             })
@@ -135,14 +144,20 @@ systemObjectTesting(
         "cells": {
             "A1": {
                 "formula": {
-                    "error": "Custom error #1",
-                    "text": "1+2"
+                    "text": "1+2",
+                    "value": {
+                        "type": "spreadsheet-error",
+                        "value": "Custom error #1"
+                    }
                 }
             },
             "B2": {
                 "formula": {
-                    "error": "Custom error #2",
-                    "text": "3+4"
+                    "text": "3+4",
+                    "value": {
+                        "type": "spreadsheet-error",
+                        "value": "Custom error #2"
+                    }
                 }
             }
         },
@@ -295,13 +310,19 @@ test("create", () => {
                 "A1": {
                     formula: {
                         text: "1+2",
-                        error: "Custom error #1"
+                        value: {
+                            type: "spreadsheet-error",
+                            value: "Custom error #1"
+                        }
                     }
                 },
                 "B2": {
                     formula: {
                         text: "3+4",
-                        error: "Custom error #2"
+                        value: {
+                            type: "spreadsheet-error",
+                            value: "Custom error #2"
+                        }
                     }
                 }
             },
@@ -532,7 +553,10 @@ test("toJson only 1 cell", () => {
                 "A1": {
                     formula: {
                         text: "1+2",
-                        error: "Custom error #1"
+                        value: {
+                            type: "spreadsheet-error",
+                            value: "Custom error #1"
+                        }
                     }
                 }
             }
@@ -555,13 +579,19 @@ test("toJson only 2 cells", () => {
                 "A1": {
                     formula: {
                         text: "1+2",
-                        error: "Custom error #1"
+                        value: {
+                            type: "spreadsheet-error",
+                            value: "Custom error #1"
+                        }
                     }
                 },
                 "B2": {
                     formula: {
                         text: "3+4",
-                        error: "Custom error #2"
+                        value: {
+                            type: "spreadsheet-error",
+                            value: "Custom error #2"
+                        }
                     }
                 },
             }
@@ -583,13 +613,19 @@ test("toJson all properties", () => {
                 "A1": {
                     formula: {
                         text: "1+2",
-                        error: "Custom error #1"
+                        value: {
+                            type: "spreadsheet-error",
+                            value: "Custom error #1",
+                        }
                     }
                 },
                 "B2": {
                     formula: {
                         text: "3+4",
-                        error: "Custom error #2"
+                        value: {
+                            type: "spreadsheet-error",
+                            value: "Custom error #2",
+                        }
                     }
                 },
             },
@@ -649,7 +685,10 @@ test("fromJson 1 cell", () => {
             "A1": {
                 formula: {
                     text: "1+2",
-                    error: "Custom error #1"
+                    value: {
+                        type: "spreadsheet-error",
+                        value: "Custom error #1"
+                    }
                 }
             }
         }
@@ -670,13 +709,19 @@ test("fromJson 2 cells only", () => {
             "A1": {
                 formula: {
                     text: "1+2",
-                    error: "Custom error #1"
+                    value: {
+                        type: "spreadsheet-error",
+                        value: "Custom error #1"
+                    }
                 }
             },
             "B2": {
                 formula: {
                     text: "3+4",
-                    error: "Custom error #2"
+                    value: {
+                        type: "spreadsheet-error",
+                        value: "Custom error #2"
+                    }
                 }
             }
         }
@@ -698,13 +743,19 @@ test("fromJson all properties", () => {
             "A1": {
                 formula: {
                     text: "1+2",
-                    error: "Custom error #1"
+                    value: {
+                        type: "spreadsheet-error",
+                        value: "Custom error #1"
+                    }
                 }
             },
             "B2": {
                 formula: {
                     text: "3+4",
-                    error: "Custom error #2"
+                    value: {
+                        type: "spreadsheet-error",
+                        value: "Custom error #2"
+                    }
                 }
             }
         },
@@ -786,7 +837,10 @@ test("equals different cells false", () => {
                     "Z9": {
                         formula: {
                             text: "999",
-                            error: "Custom error #999"
+                            value: {
+                                type: "spreadsheet-error",
+                                value: "Custom error #999"
+                            }
                         }
                     }
                 })],
