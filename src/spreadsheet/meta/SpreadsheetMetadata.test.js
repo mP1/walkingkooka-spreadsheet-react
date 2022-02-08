@@ -162,6 +162,8 @@ test("from json all properties", () => {
         "decimal-separator": "D",
         "exponent-symbol": "E",
         "expression-number-kind": "DOUBLE",
+        "frozen-columns": 1,
+        "frozen-rows": 2,
         "grouping-separator": "G",
         "locale": "en-AU",
         "modified-by": "modified@example.com",
@@ -641,6 +643,10 @@ getSetRemoveTest(SpreadsheetMetadata.EXPONENT_SYMBOL, Character.fromJson(","));
 
 getSetRemoveTest(SpreadsheetMetadata.EXPRESSION_NUMBER_KIND, ExpressionNumberKind.BIG_DECIMAL);
 
+getSetRemoveTest(SpreadsheetMetadata.FROZEN_COLUMNS, 1);
+
+getSetRemoveTest(SpreadsheetMetadata.FROZEN_ROWS, 2);
+
 getSetRemoveTest(SpreadsheetMetadata.GROUPING_SEPARATOR, Character.fromJson(","));
 
 getSetTest(SpreadsheetMetadata.LOCALE, Locale.fromJson("EN-AU"));
@@ -659,7 +665,7 @@ getSetRemoveTest(SpreadsheetMetadata.PERCENTAGE_SYMBOL, Character.fromJson("%"))
 
 getSetRemoveTest(SpreadsheetMetadata.POSITIVE_SIGN, Character.fromJson("+"));
 
-getSetRemoveTest(SpreadsheetMetadata.PRECISION, 2);
+getSetRemoveTest(SpreadsheetMetadata.PRECISION, 3);
 
 test("set precision 0 pass", () => {
     expect(() => SpreadsheetMetadata.EMPTY.set(SpreadsheetMetadata.PRECISION, 0));

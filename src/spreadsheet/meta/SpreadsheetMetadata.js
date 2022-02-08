@@ -44,6 +44,8 @@ function checkPropertyName(propertyName) {
         case SpreadsheetMetadata.DEFAULT_YEAR:
         case SpreadsheetMetadata.EXPONENT_SYMBOL:
         case SpreadsheetMetadata.EXPRESSION_NUMBER_KIND:
+        case SpreadsheetMetadata.FROZEN_COLUMNS:
+        case SpreadsheetMetadata.FROZEN_ROWS:
         case SpreadsheetMetadata.GROUPING_SEPARATOR:
         case SpreadsheetMetadata.LOCALE:
         case SpreadsheetMetadata.MODIFIED_BY:
@@ -106,6 +108,8 @@ export default class SpreadsheetMetadata extends SystemObject {
     static DEFAULT_YEAR = "default-year";
     static EXPONENT_SYMBOL = "exponent-symbol";
     static EXPRESSION_NUMBER_KIND = "expression-number-kind";
+    static FROZEN_COLUMNS = "frozen-columns";
+    static FROZEN_ROWS = "frozen-rows";
     static GROUPING_SEPARATOR = "grouping-separator";
     static LOCALE = "locale";
     static MODIFIED_BY = "modified-by";
@@ -147,6 +151,8 @@ export default class SpreadsheetMetadata extends SystemObject {
             SpreadsheetMetadata.DEFAULT_YEAR,
             SpreadsheetMetadata.EXPONENT_SYMBOL,
             SpreadsheetMetadata.EXPRESSION_NUMBER_KIND,
+            SpreadsheetMetadata.FROZEN_COLUMNS,
+            SpreadsheetMetadata.FROZEN_ROWS,
             SpreadsheetMetadata.GROUPING_SEPARATOR,
             SpreadsheetMetadata.LOCALE,
             SpreadsheetMetadata.MODIFIED_BY,
@@ -192,6 +198,8 @@ export default class SpreadsheetMetadata extends SystemObject {
             case SpreadsheetMetadata.DEFAULT_YEAR :
             case SpreadsheetMetadata.EXPONENT_SYMBOL :
             case SpreadsheetMetadata.EXPRESSION_NUMBER_KIND :
+            case SpreadsheetMetadata.FROZEN_COLUMNS :
+            case SpreadsheetMetadata.FROZEN_ROWS :
             case SpreadsheetMetadata.GROUPING_SEPARATOR :
             case SpreadsheetMetadata.LOCALE :
             case SpreadsheetMetadata.MODIFIED_BY :
@@ -238,6 +246,8 @@ export default class SpreadsheetMetadata extends SystemObject {
                 case SpreadsheetMetadata.CELL_CHARACTER_WIDTH :
                 case SpreadsheetMetadata.DATETIME_OFFSET :
                 case SpreadsheetMetadata.DEFAULT_YEAR :
+                case SpreadsheetMetadata.FROZEN_COLUMNS:
+                case SpreadsheetMetadata.FROZEN_ROWS:
                 case SpreadsheetMetadata.PRECISION :
                 case SpreadsheetMetadata.TWO_DIGIT_YEAR :
                     jsonValue = Number(value);
@@ -336,6 +346,11 @@ export default class SpreadsheetMetadata extends SystemObject {
                     break;
                 case SpreadsheetMetadata.EXPRESSION_NUMBER_KIND:
                     unmarshaller = ExpressionNumberKind.fromJson;
+                    break;
+                case SpreadsheetMetadata.FROZEN_COLUMNS:
+                case SpreadsheetMetadata.FROZEN_ROWS:
+                    checkFrozenColumnsRows(value, key);
+                    typed = value;
                     break;
                 case SpreadsheetMetadata.GROUPING_SEPARATOR:
                     unmarshaller = Character.fromJson;
@@ -518,6 +533,11 @@ export default class SpreadsheetMetadata extends SystemObject {
             case SpreadsheetMetadata.EXPRESSION_NUMBER_KIND:
                 expectedClass = ExpressionNumberKind;
                 break;
+            case SpreadsheetMetadata.FROZEN_COLUMNS:
+            case SpreadsheetMetadata.FROZEN_ROWS:
+                checkFrozenColumnsRows(value, propertyName);
+                expectedTypeOf = "number";
+                break;
             case SpreadsheetMetadata.GROUPING_SEPARATOR:
                 checkCharacter(value);
                 break;
@@ -692,6 +712,8 @@ export default class SpreadsheetMetadata extends SystemObject {
             case SpreadsheetMetadata.DEFAULT_YEAR:
             case SpreadsheetMetadata.EXPONENT_SYMBOL:
             case SpreadsheetMetadata.EXPRESSION_NUMBER_KIND:
+            case SpreadsheetMetadata.FROZEN_COLUMNS:
+            case SpreadsheetMetadata.FROZEN_ROWS:
             case SpreadsheetMetadata.GROUPING_SEPARATOR:
             case SpreadsheetMetadata.NEGATIVE_SIGN:
             case SpreadsheetMetadata.NUMBER_FORMAT_PATTERN:
@@ -814,6 +836,8 @@ const PROPERTY_NAMES = [
     SpreadsheetMetadata.DEFAULT_YEAR,
     SpreadsheetMetadata.EXPONENT_SYMBOL,
     SpreadsheetMetadata.EXPRESSION_NUMBER_KIND,
+    SpreadsheetMetadata.FROZEN_COLUMNS,
+    SpreadsheetMetadata.FROZEN_ROWS,
     SpreadsheetMetadata.GROUPING_SEPARATOR,
     SpreadsheetMetadata.LOCALE,
     SpreadsheetMetadata.MODIFIED_BY,
@@ -897,6 +921,13 @@ function checkCharacter(character) {
 
 function checkCurrencySymbol(currencySymbol) {
     Preconditions.requireText(currencySymbol, "currencySymbol");
+}
+
+function checkFrozenColumnsRows(count, property) {
+    Preconditions.requireNumber(count, "count");
+    if(count < 0){
+        throw new Error("Expected " + property + " >= 0 got " + count);
+    }
 }
 
 function checkPrecision(precision) {
