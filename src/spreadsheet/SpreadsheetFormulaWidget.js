@@ -141,20 +141,18 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetHistoryAwareSta
     saveFormulaText(cellReference, selection, formulaText) {
         console.log("saving formula for " + selection + " with " + CharSequences.quoteAndEscape(formulaText));
 
-        var cell = this.state.cell;
-        if(cell){
-            const formula = cell.formula();
-            cell = cell.setFormula(formula.setText(formulaText));
-        }else {
-            cell = new SpreadsheetCell(cellReference, new SpreadsheetFormula(formulaText), TextStyle.EMPTY);
-        }
+        var cell = new SpreadsheetCell(
+            cellReference,
+            new SpreadsheetFormula(formulaText),
+            TextStyle.EMPTY
+        );
 
         const tokens = SpreadsheetHistoryHashTokens.emptyTokens();
         tokens[SpreadsheetHistoryHashTokens.SELECTION_ACTION] = new SpreadsheetFormulaLoadAndEditHistoryHashToken();
         this.historyParseMergeAndPush(tokens);
 
         const props = this.props;
-        props.spreadsheetDeltaCellCrud.post(
+        props.spreadsheetDeltaCellCrud.patch(
             cellReference,
             new SpreadsheetDelta(
                 null,
