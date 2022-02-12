@@ -1,34 +1,44 @@
 import SpreadsheetError from "./SpreadsheetError";
 import systemObjectTesting from "../SystemObjectTesting.js";
+import SpreadsheetErrorKind from "./SpreadsheetErrorKind.js";
 
-const message = "spreadsheetError-123-abc";
+const KIND = SpreadsheetErrorKind.DIV0;
+const MESSAGE = "spreadsheetError-123-abc";
 
 function error() {
-    return new SpreadsheetError(message);
+    return new SpreadsheetError(KIND, MESSAGE);
 }
 
 systemObjectTesting(
-    new SpreadsheetError(message),
-    new SpreadsheetError("different"),
+    new SpreadsheetError(KIND, MESSAGE),
+    new SpreadsheetError(KIND, "different"),
     SpreadsheetError.fromJson,
-    "Missing message",
+    "Missing json",
     "spreadsheet-error",
-    message
+    {
+        "kind": KIND.toJson(),
+        "message": MESSAGE,
+    }
 );
 
 // create................................................................................................................
 
+test("create without kind fails", () => {
+    expect(() => new SpreadsheetError(null, MESSAGE)).toThrow("Missing kind");
+});
+
 test("create without message fails", () => {
-    expect(() => new SpreadsheetError(null)).toThrow("Missing message");
+    expect(() => new SpreadsheetError(KIND, null)).toThrow("Missing message");
 });
 
 test("create with non string fails", () => {
-    expect(() => new SpreadsheetError(1.5)).toThrow("Expected string message got 1.5");
+    expect(() => new SpreadsheetError(KIND, 1.5)).toThrow("Expected string message got 1.5");
 });
 
 test("create", () => {
-    const spreadsheetError = new SpreadsheetError(message);
-    expect(spreadsheetError.message()).toBe(message);
+    const spreadsheetError = new SpreadsheetError(KIND, MESSAGE);
+    expect(spreadsheetError.kind()).toBe(KIND);
+    expect(spreadsheetError.message()).toBe(MESSAGE);
 });
 
 // equals...............................................................................................................
@@ -40,17 +50,18 @@ test("equals equivalent true", () => {
 
 test("equals equivalent true #2", () => {
     const message = "different";
-    const e = new SpreadsheetError(message);
-    expect(e.equals(new SpreadsheetError(message))).toBeTrue();
+    const e = new SpreadsheetError(KIND, message);
+    expect(e.equals(new SpreadsheetError(KIND, message))).toBeTrue();
 });
 
 // helpers..............................................................................................................
 
-function check(spreadsheetError, message) {
+function check(spreadsheetError, kind, message) {
     expect(spreadsheetError.message()).toStrictEqual(message);
+    expect(spreadsheetError.kind()).toStrictEqual(kind);
     expect(spreadsheetError.message()).toBeString();
 
     expect(spreadsheetError.toJson()).toStrictEqual(message);
-    expect(spreadsheetError.toString()).toBe(message);
+    expect(spreadsheetError.toString()).toBe(kind + " " + message);
     expect(SpreadsheetError.fromJson(spreadsheetError.toJson())).toStrictEqual(spreadsheetError);
 }

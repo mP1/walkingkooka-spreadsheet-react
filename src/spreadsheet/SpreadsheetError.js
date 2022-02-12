@@ -3,19 +3,32 @@
  */
 import Preconditions from "../Preconditions.js";
 import SystemObject from "../SystemObject.js";
+import SpreadsheetErrorKind from "./SpreadsheetErrorKind.js";
 
 const TYPE_NAME = "spreadsheet-error";
 
 export default class SpreadsheetError extends SystemObject {
 
-    static fromJson(message) {
-        return new SpreadsheetError(message);
+    static fromJson(json) {
+        Preconditions.requireNonNull(json, "json");
+
+        return new SpreadsheetError(
+            SpreadsheetErrorKind.fromJson(json.kind),
+            json.message
+        );
     }
 
-    constructor(message) {
+    constructor(kind, message) {
         super();
+        Preconditions.requireInstance(kind, SpreadsheetErrorKind, "kind");
         Preconditions.requireNonEmptyText(message, "message");
+
+        this.kindValue = kind;
         this.messageValue = message;
+    }
+
+    kind() {
+        return this.kindValue;
     }
 
     message() {
@@ -23,7 +36,10 @@ export default class SpreadsheetError extends SystemObject {
     }
 
     toJson() {
-        return this.message();
+        return {
+            "kind": this.kind().toString(),
+            "message": this.message(),
+        }
     }
 
     typeName() {
@@ -37,7 +53,7 @@ export default class SpreadsheetError extends SystemObject {
     }
 
     toString() {
-        return this.message();
+        return this.kind + " " + this.message();
     }
 }
 
