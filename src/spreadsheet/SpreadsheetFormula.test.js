@@ -2,6 +2,7 @@ import SpreadsheetError from "./SpreadsheetError";
 import SpreadsheetFormula from "./SpreadsheetFormula";
 import SystemObject from "../SystemObject.js";
 import systemObjectTesting from "../SystemObjectTesting.js";
+import SpreadsheetErrorKind from "./SpreadsheetErrorKind.js";
 
 const text = "###-123-abc";
 const value = 1.5;
@@ -56,7 +57,7 @@ test("create text, value", () => {
 });
 
 test("create text, error", () => {
-    const error = new SpreadsheetError("Error message #1");
+    const error = new SpreadsheetError(SpreadsheetErrorKind.DIV0, "Error message #1");
 
     check(
         new SpreadsheetFormula(text, error),
@@ -149,7 +150,7 @@ test("json text & empty string value", () => {
 });
 
 test("json text & error", () => {
-    const error = new SpreadsheetError("Error message #1");
+    const error = new SpreadsheetError(SpreadsheetErrorKind.DIV0, "Error message #1");
     const spreadsheetFormula = new SpreadsheetFormula(text, error);
 
     check(

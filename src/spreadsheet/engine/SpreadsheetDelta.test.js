@@ -20,7 +20,10 @@ function a1() {
                 text: "1+2",
                 value: {
                     type: "spreadsheet-error",
-                    value: "Custom error #1"
+                    value: {
+                        kind: "DIV0",
+                        message: "Custom error #1"
+                    }
                 }
             }
         }
@@ -34,7 +37,10 @@ function b2() {
                 text: "3+4",
                 value: {
                     type: "spreadsheet-error",
-                    value: "Custom error #2"
+                    value: {
+                        kind: "DIV0",
+                        message: "Custom error #2"
+                    }
                 }
             }
         }
@@ -124,7 +130,10 @@ systemObjectTesting(
                         text: "99",
                         value: {
                             type: "spreadsheet-error",
-                            value: "Different custom error #9"
+                            value: {
+                                kind: "DIV0",
+                                message: "Different custom error #9"
+                            }
                         }
                     }
                 }
@@ -147,7 +156,10 @@ systemObjectTesting(
                     "text": "1+2",
                     "value": {
                         "type": "spreadsheet-error",
-                        "value": "Custom error #1"
+                        "value": {
+                            "kind": "DIV0",
+                            "message": "Custom error #1"
+                        }
                     }
                 }
             },
@@ -156,7 +168,10 @@ systemObjectTesting(
                     "text": "3+4",
                     "value": {
                         "type": "spreadsheet-error",
-                        "value": "Custom error #2"
+                        "value": {
+                            "kind": "DIV0",
+                            "message": "Custom error #2"
+                        }
                     }
                 }
             }
