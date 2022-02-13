@@ -327,7 +327,10 @@ test("create", () => {
                         text: "1+2",
                         value: {
                             type: "spreadsheet-error",
-                            value: "Custom error #1"
+                            value: {
+                                kind: "DIV0",
+                                message: "Custom error #1",
+                            }
                         }
                     }
                 },
@@ -336,7 +339,10 @@ test("create", () => {
                         text: "3+4",
                         value: {
                             type: "spreadsheet-error",
-                            value: "Custom error #2"
+                            value: {
+                                kind: "DIV0",
+                                message: "Custom error #2",
+                            }
                         }
                     }
                 }
@@ -570,7 +576,10 @@ test("toJson only 1 cell", () => {
                         text: "1+2",
                         value: {
                             type: "spreadsheet-error",
-                            value: "Custom error #1"
+                            value: {
+                                kind: "DIV0",
+                                message: "Custom error #1",
+                            }
                         }
                     }
                 }
@@ -596,7 +605,10 @@ test("toJson only 2 cells", () => {
                         text: "1+2",
                         value: {
                             type: "spreadsheet-error",
-                            value: "Custom error #1"
+                            value: {
+                                kind: "DIV0",
+                                message: "Custom error #1",
+                            }
                         }
                     }
                 },
@@ -605,7 +617,10 @@ test("toJson only 2 cells", () => {
                         text: "3+4",
                         value: {
                             type: "spreadsheet-error",
-                            value: "Custom error #2"
+                            value: {
+                                kind: "DIV0",
+                                message: "Custom error #2",
+                            }
                         }
                     }
                 },
@@ -630,7 +645,10 @@ test("toJson all properties", () => {
                         text: "1+2",
                         value: {
                             type: "spreadsheet-error",
-                            value: "Custom error #1",
+                            value: {
+                                kind: "DIV0",
+                                message: "Custom error #1",
+                            }
                         }
                     }
                 },
@@ -639,7 +657,10 @@ test("toJson all properties", () => {
                         text: "3+4",
                         value: {
                             type: "spreadsheet-error",
-                            value: "Custom error #2",
+                            value: {
+                                kind: "DIV0",
+                                message: "Custom error #2",
+                            }
                         }
                     }
                 },
@@ -702,7 +723,10 @@ test("fromJson 1 cell", () => {
                     text: "1+2",
                     value: {
                         type: "spreadsheet-error",
-                        value: "Custom error #1"
+                        value: {
+                            kind: "DIV0",
+                            message: "Custom error #1",
+                        }
                     }
                 }
             }
@@ -726,7 +750,10 @@ test("fromJson 2 cells only", () => {
                     text: "1+2",
                     value: {
                         type: "spreadsheet-error",
-                        value: "Custom error #1"
+                        value: {
+                            kind: "DIV0",
+                            message: "Custom error #1",
+                        }
                     }
                 }
             },
@@ -735,7 +762,10 @@ test("fromJson 2 cells only", () => {
                     text: "3+4",
                     value: {
                         type: "spreadsheet-error",
-                        value: "Custom error #2"
+                        value: {
+                            kind: "DIV0",
+                            message: "Custom error #2",
+                        }
                     }
                 }
             }
@@ -760,7 +790,10 @@ test("fromJson all properties", () => {
                     text: "1+2",
                     value: {
                         type: "spreadsheet-error",
-                        value: "Custom error #1"
+                        value: {
+                            kind: "DIV0",
+                            message: "Custom error #1",
+                        }
                     }
                 }
             },
@@ -769,7 +802,10 @@ test("fromJson all properties", () => {
                     text: "3+4",
                     value: {
                         type: "spreadsheet-error",
-                        value: "Custom error #2"
+                        value: {
+                            kind: "DIV0",
+                            message: "Custom error #2",
+                        }
                     }
                 }
             }
@@ -854,7 +890,10 @@ test("equals different cells false", () => {
                             text: "999",
                             value: {
                                 type: "spreadsheet-error",
-                                value: "Custom error #999"
+                                value: {
+                                    kind: "DIV0",
+                                    message: "Custom error #999",
+                                }
                             }
                         }
                     }
