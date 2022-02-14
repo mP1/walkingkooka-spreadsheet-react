@@ -16,7 +16,7 @@ export default class SpreadsheetRow extends SpreadsheetColumnOrRow {
             case 1:
                 const reference = keys[0];
                 const {hidden} = json[reference];
-                console.log("@reference: " + reference + " hidden: " + hidden);
+
                 return new SpreadsheetRow(
                     SpreadsheetRowReference.fromJson(reference),
                     hidden,
