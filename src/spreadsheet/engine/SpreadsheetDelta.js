@@ -5,9 +5,11 @@ import SpreadsheetCell from "../SpreadsheetCell";
 import SpreadsheetCellRange from "../reference/SpreadsheetCellRange.js";
 import SpreadsheetCellReference from "../reference/SpreadsheetCellReference.js";
 import SpreadsheetCellReferenceOrLabelName from "../reference/SpreadsheetCellReferenceOrLabelName.js";
+import SpreadsheetColumn from "../reference/SpreadsheetColumn.js";
 import SpreadsheetColumnReference from "../reference/SpreadsheetColumnReference";
 import SpreadsheetLabelMapping from "../reference/SpreadsheetLabelMapping.js";
 import SpreadsheetLabelName from "../reference/SpreadsheetLabelName.js";
+import SpreadsheetRow from "../reference/SpreadsheetRow.js";
 import SpreadsheetRowReference from "../reference/SpreadsheetRowReference";
 import SpreadsheetViewportSelection from "../reference/SpreadsheetViewportSelection.js";
 import SystemObject from "../../SystemObject.js";
@@ -22,6 +24,23 @@ const NUMBER = (value) => {
 
 const TYPE_NAME = "spreadsheet-delta";
 
+function unmarshallHash(hash, elementUnmarshaller) {
+    let unmarshalled = [];
+
+    for(const referenceAndValue of Object.entries(hash || {})) {
+        let reference = {};
+        reference[referenceAndValue[0]] = referenceAndValue[1];
+
+        unmarshalled.push(elementUnmarshaller(reference));
+    }
+
+    return unmarshalled;
+}
+
+function marshallArray(array) {
+    return Object.assign({}, ...array.map(e => e.toJson()));
+}
+
 /**
  * Holds cells and window that have been updated following one or more cells being saved/updated
  */
@@ -32,19 +51,26 @@ export default class SpreadsheetDelta extends SystemObject {
 
         const selection = json.selection && SpreadsheetViewportSelection.fromJson(json.selection);
 
-        let cells = [];
-        for(const referenceToValues of Object.entries(json.cells || {})) {
-            let reference = {};
-            reference[referenceToValues[0]] = referenceToValues[1];
+        const cells = unmarshallHash(
+            json.cells || {},
+            SpreadsheetCell.fromJson
+        );
 
-            cells.push(SpreadsheetCell.fromJson(reference));
-        }
+        const columns = unmarshallHash(
+            json.columns || {},
+            SpreadsheetColumn.fromJson
+        );
 
         const labels = json.labels ?
             json.labels.map(m => {
                 return SpreadsheetLabelMapping.fromJson(m)
             }) :
             [];
+
+        const rows = unmarshallHash(
+            json.rows || {},
+            SpreadsheetRow.fromJson
+        );
 
         let deletedCells = [];
         for(const deleted of (json.deletedCells || [])) {
@@ -58,7 +84,9 @@ export default class SpreadsheetDelta extends SystemObject {
         return new SpreadsheetDelta(
             selection,
             cells,
+            columns,
             labels,
+            rows,
             deletedCells,
             columnWidths,
             rowHeights,
@@ -68,11 +96,14 @@ export default class SpreadsheetDelta extends SystemObject {
 
     static EMPTY = SpreadsheetDelta.fromJson({});
 
-    constructor(selection, cells, labels, deletedCells, columnWidths, rowHeights, window) {
+    constructor(selection, cells, columns, labels, rows, deletedCells, columnWidths, rowHeights, window) {
         super();
         Preconditions.optionalInstance(selection, SpreadsheetViewportSelection, "selection");
         Preconditions.requireArray(cells, "cells");
+        Preconditions.requireArray(columns, "columns");
         Preconditions.requireArray(labels, "labels");
+        Preconditions.requireArray(rows, "rows");
+
         Preconditions.requireArray(deletedCells, "deletedCells");
         Preconditions.requireInstance(columnWidths, ImmutableMap, "columnWidths");
         Preconditions.requireInstance(rowHeights, ImmutableMap, "rowHeights");
@@ -80,7 +111,10 @@ export default class SpreadsheetDelta extends SystemObject {
 
         this.selectionValue = selection;
         this.cellsValue = cells.slice();
+        this.columnsValue = columns.slice();
         this.labelsValue = labels.slice();
+        this.rowsValue = rows.slice();
+
         this.deletedCellsValue = deletedCells.slice();
         this.columnWidthsValue = columnWidths;
         this.rowHeightsValue = rowHeights;
@@ -133,6 +167,10 @@ export default class SpreadsheetDelta extends SystemObject {
         return new ImmutableMap(referenceToCell);
     }
 
+    columns() {
+        return this.columnsValue.slice();
+    }
+
     labels() {
         return this.labelsValue.slice();
     }
@@ -162,6 +200,10 @@ export default class SpreadsheetDelta extends SystemObject {
             });
 
         return new ImmutableMap(cellToLabels);
+    }
+
+    rows() {
+        return this.rowsValue.slice();
     }
 
     deletedCells() {
@@ -217,14 +259,24 @@ export default class SpreadsheetDelta extends SystemObject {
             json.selection = selection.toJson();
         }
 
-        const cellsArray = this.cells();
-        if(cellsArray.length > 0){
-            json.cells = Object.assign({}, ...cellsArray.map(c => c.toJson()));
+        const cells = this.cells();
+        if(cells.length > 0){
+            json.cells = marshallArray(cells);
+        }
+
+        const columns = this.columns();
+        if(columns.length > 0){
+            json.columns = marshallArray(columns);
         }
 
         const labels = this.labels();
         if(labels.length > 0){
             json.labels = labels.map(l => l.toJson());
+        }
+
+        const rows = this.rows();
+        if(rows.length > 0){
+            json.rows = marshallArray(rows);
         }
 
         const deletedCells = this.deletedCells();
@@ -258,7 +310,9 @@ export default class SpreadsheetDelta extends SystemObject {
             (other instanceof SpreadsheetDelta &&
                 Equality.safeEquals(this.selection(), other.selection()) &&
                 Equality.safeEquals(this.cells(), other.cells()) &&
+                Equality.safeEquals(this.columns(), other.columns()) &&
                 Equality.safeEquals(this.labels(), other.labels()) &&
+                Equality.safeEquals(this.rows(), other.rows()) &&
                 Equality.safeEquals(this.deletedCells(), other.deletedCells()) &&
                 this.columnWidths().equals(other.columnWidths()) &&
                 this.rowHeights().equals(other.rowHeights()) &&

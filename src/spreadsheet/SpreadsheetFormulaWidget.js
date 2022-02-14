@@ -159,6 +159,8 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetHistoryAwareSta
                 [cell],
                 [],
                 [],
+                [],
+                [],
                 ImmutableMap.EMPTY,
                 ImmutableMap.EMPTY,
                 null
