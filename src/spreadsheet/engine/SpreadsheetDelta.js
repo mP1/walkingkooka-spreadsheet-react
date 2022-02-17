@@ -72,11 +72,15 @@ export default class SpreadsheetDelta extends SystemObject {
             SpreadsheetRow.fromJson
         );
 
-        let deletedCells = [];
-        for(const deleted of (json.deletedCells || [])) {
-            deletedCells.push(SpreadsheetCellReference.fromJson(deleted));
-        }
-        
+        const deletedCells = (json.deletedCells || [])
+            .map(r => SpreadsheetCellReference.fromJson(r));
+
+        const deletedColumns = (json.deletedColumns || [])
+            .map(r => SpreadsheetColumnReference.fromJson(r));
+
+        const deletedRows = (json.deletedRows || [])
+            .map(r => SpreadsheetRowReference.fromJson(r));
+
         const columnWidths = ImmutableMap.fromJson(json.columnWidths || {}, SpreadsheetColumnReference.fromJson, NUMBER);
         const rowHeights = ImmutableMap.fromJson(json.rowHeights || {}, SpreadsheetRowReference.fromJson, NUMBER);
         const windowJson = json["window"];
@@ -88,6 +92,8 @@ export default class SpreadsheetDelta extends SystemObject {
             labels,
             rows,
             deletedCells,
+            deletedColumns,
+            deletedRows,
             columnWidths,
             rowHeights,
             (windowJson && SpreadsheetCellRange.fromJson(windowJson))
@@ -96,7 +102,7 @@ export default class SpreadsheetDelta extends SystemObject {
 
     static EMPTY = SpreadsheetDelta.fromJson({});
 
-    constructor(selection, cells, columns, labels, rows, deletedCells, columnWidths, rowHeights, window) {
+    constructor(selection, cells, columns, labels, rows, deletedCells, deletedColumns, deletedRows, columnWidths, rowHeights, window) {
         super();
         Preconditions.optionalInstance(selection, SpreadsheetViewportSelection, "selection");
         Preconditions.requireArray(cells, "cells");
@@ -105,17 +111,24 @@ export default class SpreadsheetDelta extends SystemObject {
         Preconditions.requireArray(rows, "rows");
 
         Preconditions.requireArray(deletedCells, "deletedCells");
+        Preconditions.requireArray(deletedColumns, "deletedColumns");
+        Preconditions.requireArray(deletedRows, "deletedRows");
+
         Preconditions.requireInstance(columnWidths, ImmutableMap, "columnWidths");
         Preconditions.requireInstance(rowHeights, ImmutableMap, "rowHeights");
         Preconditions.optionalInstance(window, SpreadsheetCellRange, "window");
 
         this.selectionValue = selection;
+
         this.cellsValue = cells.slice();
         this.columnsValue = columns.slice();
         this.labelsValue = labels.slice();
         this.rowsValue = rows.slice();
 
         this.deletedCellsValue = deletedCells.slice();
+        this.deletedColumnsValue = deletedColumns.slice();
+        this.deletedRowsValue = deletedRows.slice();
+
         this.columnWidthsValue = columnWidths;
         this.rowHeightsValue = rowHeights;
         this.windowValue = window;
@@ -210,6 +223,14 @@ export default class SpreadsheetDelta extends SystemObject {
         return this.deletedCellsValue.slice();
     }
 
+    deletedColumns() {
+        return this.deletedColumnsValue.slice();
+    }
+
+    deletedRows() {
+        return this.deletedRowsValue.slice();
+    }
+    
     columnWidths() {
         return this.columnWidthsValue;
     }
@@ -222,35 +243,6 @@ export default class SpreadsheetDelta extends SystemObject {
         return this.windowValue;
     }
 
-    /**
-     * <pre>
-     * {
-     *   "selection": {
-     *       "type": "spreadsheet-cell-reference",
-     *       "value": "A1",
-     *   }
-     *   "cells": {
-     *     "A1": {
-     *       "formula": {
-     *         "text": "1"
-     *       }
-     *     },
-     *     "B2": {
-     *       "formula": {
-     *         "text": "2"
-     *        }
-     *     }
-     *    },
-     *    "columnWidths": {
-     *      "A": 150
-     *    },
-     *    "rowHeights": {
-     *      "1": 75
-     *    },
-     *    "window": "B2:Z99"
-     * }
-     * </pre>
-     */
     toJson() {
         let json = {};
 
@@ -284,6 +276,16 @@ export default class SpreadsheetDelta extends SystemObject {
             json.deletedCells = deletedCells.map(deleted => deleted.toJson());
         }
 
+        const deletedColumns = this.deletedColumns();
+        if(deletedColumns.length > 0){
+            json.deletedColumns = deletedColumns.map(deleted => deleted.toJson());
+        }
+
+        const deletedRows = this.deletedRows();
+        if(deletedRows.length > 0){
+            json.deletedRows = deletedRows.map(deleted => deleted.toJson());
+        }
+
         const columnWidths = this.columnWidths();
         if(columnWidths.size() > 0){
             json.columnWidths = columnWidths.toJson();
@@ -314,6 +316,8 @@ export default class SpreadsheetDelta extends SystemObject {
                 Equality.safeEquals(this.labels(), other.labels()) &&
                 Equality.safeEquals(this.rows(), other.rows()) &&
                 Equality.safeEquals(this.deletedCells(), other.deletedCells()) &&
+                Equality.safeEquals(this.deletedColumns(), other.deletedColumns()) &&
+                Equality.safeEquals(this.deletedRows(), other.deletedRows()) &&
                 this.columnWidths().equals(other.columnWidths()) &&
                 this.rowHeights().equals(other.rowHeights()) &&
                 Equality.safeEquals(this.window(), other.window())

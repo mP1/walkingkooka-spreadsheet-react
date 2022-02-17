@@ -1,11 +1,11 @@
 import ImmutableMap from "../../util/ImmutableMap";
 import SpreadsheetCell from "../SpreadsheetCell";
 import SpreadsheetCellReference from "../reference/SpreadsheetCellReference.js";
+import SpreadsheetCellRange from "../reference/SpreadsheetCellRange.js";
+import SpreadsheetColumn from "../reference/SpreadsheetColumn.js";
 import SpreadsheetColumnReference from "../reference/SpreadsheetColumnReference";
 import SpreadsheetDelta from "./SpreadsheetDelta";
 import SpreadsheetLabelName from "../reference/SpreadsheetLabelName.js";
-import SpreadsheetCellRange from "../reference/SpreadsheetCellRange.js";
-import SpreadsheetColumn from "../reference/SpreadsheetColumn.js";
 import SpreadsheetRow from "../reference/SpreadsheetRow.js";
 import SpreadsheetRowReference from "../reference/SpreadsheetRowReference";
 import systemObjectTesting from "../../SystemObjectTesting.js";
@@ -130,15 +130,45 @@ function row2() {
 }
 
 function deletedCells() {
-    return [deletedCell1(), deletedCell2()];
+    return [deletedCells1(), deletedCells2()];
 }
 
-function deletedCell1() {
+function deletedCells1() {
     return SpreadsheetCellReference.parse("C1");
 }
 
-function deletedCell2() {
+function deletedCells2() {
     return SpreadsheetCellReference.parse("C2");
+}
+
+function deletedColumns() {
+    return [
+        deletedColumn1(),
+        deletedColumn2()
+    ];
+}
+
+function deletedColumn1() {
+    return SpreadsheetColumnReference.parse("D");
+}
+
+function deletedColumn2() {
+    return SpreadsheetColumnReference.parse("E");
+}
+
+function deletedRows() {
+    return [
+        deletedRow1(),
+        deletedRow2()
+    ];
+}
+
+function deletedRow1() {
+    return SpreadsheetRowReference.parse("6");
+}
+
+function deletedRow2() {
+    return SpreadsheetRowReference.parse("7");
 }
 
 function columnWidths() {
@@ -171,6 +201,8 @@ function delta() {
         labels(),
         rows(),
         deletedCells(),
+        deletedColumns(),
+        deletedRows(),
         columnWidths(),
         rowHeights(),
         window()
@@ -201,6 +233,8 @@ systemObjectTesting(
         labels(),
         rows(),
         deletedCells(),
+        deletedColumns(),
+        deletedRows(),
         columnWidths(),
         rowHeights(),
         window()
@@ -209,74 +243,82 @@ systemObjectTesting(
     "Missing json",
     "spreadsheet-delta",
     {
-        "selection": selection().toJson(),
-        "cells": {
+        selection: selection().toJson(),
+        cells: {
             "A1": {
-                "formula": {
-                    "text": "1+2",
-                    "value": {
-                        "type": "spreadsheet-error",
-                        "value": {
-                            "kind": "DIV0",
-                            "message": "Custom error #1"
+                formula: {
+                    text: "1+2",
+                    value: {
+                        type: "spreadsheet-error",
+                        value: {
+                            kind: "DIV0",
+                            message: "Custom error #1"
                         }
                     }
                 }
             },
             "B2": {
-                "formula": {
-                    "text": "3+4",
-                    "value": {
-                        "type": "spreadsheet-error",
-                        "value": {
-                            "kind": "DIV0",
-                            "message": "Custom error #2"
+                formula: {
+                    text: "3+4",
+                    value: {
+                        type: "spreadsheet-error",
+                        value: {
+                            kind: "DIV0",
+                            message: "Custom error #2"
                         }
                     }
                 }
             }
         },
-        "columns": {
+        columns: {
             "A": {
-                "hidden": true,
+                hidden: true,
             },
             "B": {
-                "hidden": false,
+                hidden: false,
             },
         },
-        "labels": [
+        labels: [
             {
-                "label": "Label1",
-                "reference": "A1"
+                label: "Label1",
+                reference: "A1"
             },
             {
-                "label": "Label2",
-                "reference": "A1"
+                label: "Label2",
+                reference: "A1"
             },
             {
-                "label": "Label3",
-                "reference": "B2"
+                label: "Label3",
+                reference: "B2"
             }
         ],
-        "rows": {
+        rows: {
             "1": {
-                "hidden": true,
+                hidden: true,
             },
             "2": {
-                "hidden": false,
+                hidden: false,
             },
         },
-        "deletedCells": [
+        deletedCells: [
             "C1",
             "C2",
         ],
-        "columnWidths": {
+        deletedColumns: [
+            "D",
+            "E",
+        ],
+        deletedRows: [
+            "6",
+            "7",
+        ],
+        columnWidths: {
             "A": 100
         },
-        "rowHeights": {
+        rowHeights: {
             "1": 20
         },
-        "window": "A1:B2"
+        window: "A1:B2",
     }
 );
 
@@ -288,12 +330,14 @@ test("create without cells fails", () => {
     const col = columns();
     const l = labels();
     const r = rows();
-    const d = deletedCells();
+    const dcell = deletedCells();
+    const dcol = deletedColumns();
+    const drow = deletedRows();
     const mcw = columnWidths();
     const mrh = rowHeights();
     const w = window();
 
-    expect(() => new SpreadsheetDelta(s, c, col, l, r, d, mcw, mrh, w)).toThrow("Missing cells");
+    expect(() => new SpreadsheetDelta(s, c, col, l, r, dcell, dcol, drow, mcw, mrh, w)).toThrow("Missing cells");
 });
 
 test("create with cell non array fails", () => {
@@ -302,12 +346,14 @@ test("create with cell non array fails", () => {
     const col = columns();
     const l = labels();
     const r = rows();
-    const d = deletedCells();
+    const dcell = deletedCells();
+    const dcol = deletedColumns();
+    const drow = deletedRows();
     const mcw = columnWidths();
     const mrh = rowHeights();
     const w = window();
 
-    expect(() => new SpreadsheetDelta(s, c, col, l, r, d, mcw, mrh, w)).toThrow("Expected array cells got !invalid");
+    expect(() => new SpreadsheetDelta(s, c, col, l, r, dcell, dcol, drow, mcw, mrh, w)).toThrow("Expected array cells got !invalid");
 });
 
 test("create without columns fails", () => {
@@ -316,12 +362,14 @@ test("create without columns fails", () => {
     const col = undefined;
     const l = labels();
     const r = rows();
-    const d = deletedCells();
+    const dcell = deletedCells();
+    const dcol = deletedColumns();
+    const drow = deletedRows();
     const mcw = columnWidths();
     const mrh = rowHeights();
     const w = window();
 
-    expect(() => new SpreadsheetDelta(s, c, col, l, r, d, mcw, mrh, w)).toThrow("Missing columns");
+    expect(() => new SpreadsheetDelta(s, c, col, l, r, dcell, dcol, drow, mcw, mrh, w)).toThrow("Missing columns");
 });
 
 test("create with columns non array fails", () => {
@@ -330,12 +378,14 @@ test("create with columns non array fails", () => {
     const col = "!invalid";
     const l = labels();
     const r = rows();
-    const d = deletedCells();
+    const dcell = deletedCells();
+    const dcol = deletedColumns();
+    const drow = deletedRows();
     const mcw = columnWidths();
     const mrh = rowHeights();
     const w = window();
 
-    expect(() => new SpreadsheetDelta(s, c, col, l, r, d, mcw, mrh, w)).toThrow("Expected array columns got !invalid");
+    expect(() => new SpreadsheetDelta(s, c, col, l, r, dcell, dcol, drow, mcw, mrh, w)).toThrow("Expected array columns got !invalid");
 });
 
 test("create without labels fails", () => {
@@ -344,12 +394,14 @@ test("create without labels fails", () => {
     const col = columns();
     const l = undefined;
     const r = rows();
-    const d = deletedCells();
+    const dcell = deletedCells();
+    const dcol = deletedColumns();
+    const drow = deletedRows();
     const mcw = columnWidths();
     const mrh = rowHeights();
     const w = window();
 
-    expect(() => new SpreadsheetDelta(s, c, col, l, r, d, mcw, mrh, w)).toThrow("Missing labels");
+    expect(() => new SpreadsheetDelta(s, c, col, l, r, dcell, dcol, drow, mcw, mrh, w)).toThrow("Missing labels");
 });
 
 test("create with labels non array fails", () => {
@@ -358,12 +410,14 @@ test("create with labels non array fails", () => {
     const col = columns();
     const l = "!invalid";
     const r = rows();
-    const d = deletedCells();
+    const dcell = deletedCells();
+    const dcol = deletedColumns();
+    const drow = deletedRows();
     const mcw = columnWidths();
     const mrh = rowHeights();
     const w = window();
 
-    expect(() => new SpreadsheetDelta(s, c, col, l, r, d, mcw, mrh, w)).toThrow("Expected array labels got !invalid");
+    expect(() => new SpreadsheetDelta(s, c, col, l, r, dcell, dcol, drow, mcw, mrh, w)).toThrow("Expected array labels got !invalid");
 });
 
 test("create without rows fails", () => {
@@ -372,12 +426,14 @@ test("create without rows fails", () => {
     const col = columns();
     const l = labels();
     const r = undefined;
-    const d = deletedCells();
+    const dcell = deletedCells();
+    const dcol = deletedColumns();
+    const drow = deletedRows();
     const mcw = columnWidths();
     const mrh = rowHeights();
     const w = window();
 
-    expect(() => new SpreadsheetDelta(s, c, col, l, r, d, mcw, mrh, w)).toThrow("Missing rows");
+    expect(() => new SpreadsheetDelta(s, c, col, l, r, dcell, dcol, drow, mcw, mrh, w)).toThrow("Missing rows");
 });
 
 test("create with rows non array fails", () => {
@@ -386,12 +442,14 @@ test("create with rows non array fails", () => {
     const col = columns();
     const l = labels();
     const r = "!invalid";
-    const d = deletedCells();
+    const dcell = deletedCells();
+    const dcol = deletedColumns();
+    const drow = deletedRows();
     const mcw = columnWidths();
     const mrh = rowHeights();
     const w = window();
 
-    expect(() => new SpreadsheetDelta(s, c, col, l, r, d, mcw, mrh, w)).toThrow("Expected array rows got !invalid");
+    expect(() => new SpreadsheetDelta(s, c, col, l, r, dcell, dcol, drow, mcw, mrh, w)).toThrow("Expected array rows got !invalid");
 });
 
 test("create without columnWidths fails", () => {
@@ -400,12 +458,14 @@ test("create without columnWidths fails", () => {
     const col = columns();
     const l = labels();
     const r = rows();
-    const d = deletedCells();
+    const dcell = deletedCells();
+    const dcol = deletedColumns();
+    const drow = deletedRows();
     const mcw = undefined;
     const mrh = rowHeights();
     const w = window();
 
-    expect(() => new SpreadsheetDelta(s, c, col, l, r, d, mcw, mrh, w)).toThrow("Missing columnWidths");
+    expect(() => new SpreadsheetDelta(s, c, col, l, r, dcell, dcol, drow, mcw, mrh, w)).toThrow("Missing columnWidths");
 });
 
 test("create with columnWidths non object fails", () => {
@@ -414,12 +474,14 @@ test("create with columnWidths non object fails", () => {
     const col = columns();
     const l = labels();
     const r = rows();
-    const d = deletedCells();
+    const dcell = deletedCells();
+    const dcol = deletedColumns();
+    const drow = deletedRows();
     const mcw = "!invalid";
     const mrh = rowHeights();
     const w = window();
 
-    expect(() => new SpreadsheetDelta(s, c, col, l, r, d, mcw, mrh, w)).toThrow("Expected ImmutableMap columnWidths got !invalid");
+    expect(() => new SpreadsheetDelta(s, c, col, l, r, dcell, dcol, drow, mcw, mrh, w)).toThrow("Expected ImmutableMap columnWidths got !invalid");
 });
 
 test("create without rowHeights fails", () => {
@@ -428,12 +490,14 @@ test("create without rowHeights fails", () => {
     const col = columns();
     const l = labels();
     const r = rows();
-    const d = deletedCells();
+    const dcell = deletedCells();
+    const dcol = deletedColumns();
+    const drow = deletedRows();
     const mcw = columnWidths();
     const mrh = undefined;
     const w = window();
 
-    expect(() => new SpreadsheetDelta(s, c, col, l, r, d, mcw, mrh, w)).toThrow("Missing rowHeights");
+    expect(() => new SpreadsheetDelta(s, c, col, l, r, dcell, dcol, drow, mcw, mrh, w)).toThrow("Missing rowHeights");
 });
 
 test("create with rowHeights non object fails", () => {
@@ -442,12 +506,14 @@ test("create with rowHeights non object fails", () => {
     const col = columns();
     const l = labels();
     const r = rows();
-    const d = deletedCells();
+    const dcell = deletedCells();
+    const dcol = deletedColumns();
+    const drow = deletedRows();
     const mcw = columnWidths();
     const mrh = "!invalid";
     const w = window();
 
-    expect(() => new SpreadsheetDelta(s, c, col, l, r, d, mcw, mrh, w)).toThrow("Expected ImmutableMap rowHeights got !invalid");
+    expect(() => new SpreadsheetDelta(s, c, col, l, r, dcell, dcol, drow, mcw, mrh, w)).toThrow("Expected ImmutableMap rowHeights got !invalid");
 });
 
 test("create", () => {
@@ -456,19 +522,23 @@ test("create", () => {
     const col = columns();
     const l = labels();
     const r = rows();
-    const d = deletedCells();
+    const dcell = deletedCells();
+    const dcol = deletedColumns();
+    const drow = deletedRows();
     const mcw = columnWidths();
     const mrh = rowHeights();
     const w = window();
 
     check(
-        new SpreadsheetDelta(s, c, col, l, r, d, mcw, mrh, w),
+        new SpreadsheetDelta(s, c, col, l, r, dcell, dcol, drow, mcw, mrh, w),
         s,
         c,
         col,
         l,
         r,
-        d,
+        dcell,
+        dcol,
+        drow,
         mcw,
         mrh,
         w,
@@ -510,16 +580,16 @@ test("create", () => {
             },
             labels: [
                 {
-                    "label": "Label1",
-                    "reference": "A1"
+                    label: "Label1",
+                    reference: "A1"
                 },
                 {
-                    "label": "Label2",
-                    "reference": "A1"
+                    label: "Label2",
+                    reference: "A1"
                 },
                 {
-                    "label": "Label3",
-                    "reference": "B2"
+                    label: "Label3",
+                    reference: "B2"
                 }
             ],
             rows: {
@@ -533,6 +603,14 @@ test("create", () => {
             deletedCells: [
                 "C1",
                 "C2",
+            ],
+            deletedColumns: [
+                "D",
+                "E",
+            ],
+            deletedRows: [
+                "6",
+                "7",
             ],
             columnWidths: {
                 "A": 100
@@ -550,19 +628,23 @@ test("create empty all properties", () => {
     const col = [];
     const l = [];
     const r = [];
-    const d = [];
+    const dcell = [];
+    const dcol = [];
+    const drow = [];
     const mcw = ImmutableMap.EMPTY;
     const mrh = ImmutableMap.EMPTY;
     const w = undefined;
 
     check(
-        new SpreadsheetDelta(s, c, col, l, r, d, mcw, mrh, w),
+        new SpreadsheetDelta(s, c, col, l, r, dcell, dcol, drow, mcw, mrh, w),
         s,
         c,
         col,
         l,
         r,
-        d,
+        dcell,
+        dcol,
+        drow,
         mcw,
         mrh,
         w,
@@ -578,13 +660,15 @@ test("referenceToCellMap, no cells", () => {
     const col = [];
     const l = [];
     const r = [];
-    const d = [];
+    const dcell = [];
+    const dcol = [];
+    const drow = [];
     const mcw = ImmutableMap.EMPTY;
     const mrh = ImmutableMap.EMPTY;
     const w = null;
 
     expect(
-        new SpreadsheetDelta(s, c, col, l, r, d, mcw, mrh, w)
+        new SpreadsheetDelta(s, c, col, l, r, dcell, dcol, drow, mcw, mrh, w)
             .referenceToCellMap()
     ).toStrictEqual(ImmutableMap.EMPTY);
 });
@@ -598,13 +682,15 @@ test("referenceToCellMap, 1 cell", () => {
     const col = [];
     const l = [];
     const r = [];
-    const d = [];
+    const dcell = [];
+    const dcol = [];
+    const drow = [];
     const mcw = ImmutableMap.EMPTY;
     const mrh = ImmutableMap.EMPTY;
     const w = null;
 
     expect(
-        new SpreadsheetDelta(s, c, col, l, r, d, mcw, mrh, w)
+        new SpreadsheetDelta(s, c, col, l, r, dcell, dcol, drow, mcw, mrh, w)
             .referenceToCellMap()
     ).toStrictEqual(
         new ImmutableMap(new Map([
@@ -623,13 +709,15 @@ test("referenceToCellMap, 2 cells", () => {
     const col = [];
     const l = [];
     const r = [];
-    const d = [];
+    const dcell = [];
+    const dcol = [];
+    const drow = [];
     const mcw = ImmutableMap.EMPTY;
     const mrh = ImmutableMap.EMPTY;
     const w = null;
 
     expect(
-        new SpreadsheetDelta(s, c, col, l, r, d, mcw, mrh, w)
+        new SpreadsheetDelta(s, c, col, l, r, dcell, dcol, drow, mcw, mrh, w)
             .referenceToCellMap())
         .toStrictEqual(
             new ImmutableMap(
@@ -756,13 +844,15 @@ test("toJson only 1 cell", () => {
     const col = [];
     const l = [];
     const r = [];
-    const d = [];
+    const dcell = [];
+    const dcol = [];
+    const drow = [];
     const mcw = ImmutableMap.EMPTY;
     const mrh = ImmutableMap.EMPTY;
     const w = null;
 
     expect(
-        new SpreadsheetDelta(s, c, col, l, r, d, mcw, mrh, w)
+        new SpreadsheetDelta(s, c, col, l, r, dcell, dcol, drow, mcw, mrh, w)
             .toJson())
         .toStrictEqual({
             cells: {
@@ -788,13 +878,15 @@ test("toJson only 2 cells", () => {
     const col = [];
     const l = [];
     const r = [];
-    const d = [];
+    const dcell = [];
+    const dcol = [];
+    const drow = [];
     const mcw = ImmutableMap.EMPTY;
     const mrh = ImmutableMap.EMPTY;
     const w = undefined;
 
     expect(
-        new SpreadsheetDelta(s, c, col, l, r, d, mcw, mrh, w).toJson())
+        new SpreadsheetDelta(s, c, col, l, r, dcell, dcol, drow, mcw, mrh, w).toJson())
         .toStrictEqual({
             "cells": {
                 "A1": {
@@ -831,12 +923,14 @@ test("toJson all properties", () => {
     const col = columns();
     const l = labels();
     const r = rows();
-    const d = deletedCells();
+    const dcell = deletedCells();
+    const dcol = deletedColumns();
+    const drow = deletedRows();
     const mcw = columnWidths();
     const mrh = rowHeights();
     const w = window();
 
-    expect(new SpreadsheetDelta(s, c, col, l, r, d, mcw, mrh, w).toJson())
+    expect(new SpreadsheetDelta(s, c, col, l, r, dcell, dcol, drow, mcw, mrh, w).toJson())
         .toStrictEqual({
             cells: {
                 "A1": {
@@ -874,16 +968,16 @@ test("toJson all properties", () => {
             },
             labels: [
                 {
-                    "label": "Label1",
-                    "reference": "A1"
+                    label: "Label1",
+                    reference: "A1"
                 },
                 {
-                    "label": "Label2",
-                    "reference": "A1"
+                    label: "Label2",
+                    reference: "A1"
                 },
                 {
-                    "label": "Label3",
-                    "reference": "B2"
+                    label: "Label3",
+                    reference: "B2"
                 }
             ],
             rows: {
@@ -897,6 +991,14 @@ test("toJson all properties", () => {
             deletedCells: [
                 "C1",
                 "C2",
+            ],
+            deletedColumns: [
+                "D",
+                "E",
+            ],
+            deletedRows: [
+                "6",
+                "7",
             ],
             columnWidths: {
                 "A": 100
@@ -916,7 +1018,9 @@ test("fromJson empty", () => {
     const col = [];
     const l = [];
     const r = [];
-    const d = [];
+    const dcell = [];
+    const dcol = [];
+    const drow = [];
     const mcw = ImmutableMap.EMPTY;
     const mrh = ImmutableMap.EMPTY;
     const w = undefined;
@@ -924,7 +1028,7 @@ test("fromJson empty", () => {
     expect(
         SpreadsheetDelta.fromJson({})
     ).toStrictEqual(
-        new SpreadsheetDelta(s, c, col, l, r, d, mcw, mrh, w)
+        new SpreadsheetDelta(s, c, col, l, r, dcell, dcol, drow, mcw, mrh, w)
     );
 });
 
@@ -934,7 +1038,9 @@ test("fromJson 1 cell", () => {
     const col = [];
     const l = [];
     const r = [];
-    const d = [];
+    const dcell = [];
+    const dcol = [];
+    const drow = [];
     const mcw = ImmutableMap.EMPTY;
     const mrh = ImmutableMap.EMPTY;
     const w = undefined;
@@ -959,7 +1065,7 @@ test("fromJson 1 cell", () => {
             }
         )
     ).toStrictEqual(
-        new SpreadsheetDelta(s, c, col, l, r, d, mcw, mrh, w)
+        new SpreadsheetDelta(s, c, col, l, r, dcell, dcol, drow, mcw, mrh, w)
     );
 });
 
@@ -969,7 +1075,9 @@ test("fromJson 2 cells only", () => {
     const col = [];
     const l = [];
     const r = [];
-    const d = [];
+    const dcell = [];
+    const dcol = [];
+    const drow = [];
     const mcw = ImmutableMap.EMPTY;
     const mrh = ImmutableMap.EMPTY;
     const w = undefined;
@@ -1006,7 +1114,7 @@ test("fromJson 2 cells only", () => {
             }
         )
     ).toStrictEqual(
-        new SpreadsheetDelta(s, c, col, l, r, d, mcw, mrh, w)
+        new SpreadsheetDelta(s, c, col, l, r, dcell, dcol, drow, mcw, mrh, w)
     );
 });
 
@@ -1016,7 +1124,9 @@ test("fromJson all properties", () => {
     const col = columns();
     const l = labels();
     const r = rows();
-    const d = deletedCells();
+    const dcell = deletedCells();
+    const dcol = deletedColumns();
+    const drow = deletedRows();
     const mcw = columnWidths();
     const mrh = rowHeights();
     const w = window();
@@ -1061,16 +1171,16 @@ test("fromJson all properties", () => {
                 },
                 labels: [
                     {
-                        "label": "Label1",
-                        "reference": "A1"
+                        label: "Label1",
+                        reference: "A1"
                     },
                     {
-                        "label": "Label2",
-                        "reference": "A1"
+                        label: "Label2",
+                        reference: "A1"
                     },
                     {
-                        "label": "Label3",
-                        "reference": "B2"
+                        label: "Label3",
+                        reference: "B2"
                     }
                 ],
                 rows: {
@@ -1085,6 +1195,14 @@ test("fromJson all properties", () => {
                     "C1",
                     "C2",
                 ],
+                deletedColumns: [
+                    "D",
+                    "E",
+                ],
+                deletedRows: [
+                    "6",
+                    "7",
+                ],
                 columnWidths: {
                     "A": 100
                 },
@@ -1094,7 +1212,7 @@ test("fromJson all properties", () => {
                 window: windowJson
             })
     ).toStrictEqual(
-        new SpreadsheetDelta(s, c, col, l, r, d, mcw, mrh, w)
+        new SpreadsheetDelta(s, c, col, l, r, dcell, dcol, drow, mcw, mrh, w)
     );
 });
 
@@ -1106,7 +1224,9 @@ test("EMPTY", () => {
     const col = [];
     const l = [];
     const r = [];
-    const d = [];
+    const dcell = [];
+    const dcol = [];
+    const drow = [];
     const mcw = ImmutableMap.EMPTY;
     const mrh = ImmutableMap.EMPTY;
     const w = undefined;
@@ -1114,7 +1234,7 @@ test("EMPTY", () => {
     expect(
         SpreadsheetDelta.EMPTY
     ).toStrictEqual(
-        new SpreadsheetDelta(s, c, col, l, r, d, mcw, mrh, w)
+        new SpreadsheetDelta(s, c, col, l, r, dcell, dcol, drow, mcw, mrh, w)
     );
 });
 
@@ -1126,13 +1246,15 @@ test("equals different selection false", () => {
     const col = columns();
     const l = labels();
     const r = rows();
-    const d = deletedCells();
+    const dcell = deletedCells();
+    const dcol = deletedColumns();
+    const drow = deletedRows();
     const mcw = columnWidths();
     const mrh = rowHeights();
     const w = window();
 
     expect(
-        new SpreadsheetDelta(s, c, col, l, r, d, mcw, mrh, w)
+        new SpreadsheetDelta(s, c, col, l, r, dcell, dcol, drow, mcw, mrh, w)
             .equals(
                 new SpreadsheetDelta(
                     SpreadsheetColumnReference.parse("Z").setAnchor(),
@@ -1140,7 +1262,9 @@ test("equals different selection false", () => {
                     col,
                     l,
                     r,
-                    d,
+                    dcell,
+                    dcol,
+                    drow,
                     mcw,
                     mrh,
                     w
@@ -1155,13 +1279,15 @@ test("equals different cells false", () => {
     const col = columns();
     const l = labels();
     const r = rows();
-    const d = deletedCells();
+    const dcell = deletedCells();
+    const dcol = deletedColumns();
+    const drow = deletedRows();
     const mcw = columnWidths();
     const mrh = rowHeights();
     const w = window();
 
     expect(
-        new SpreadsheetDelta(s, c, col, l, r, d, mcw, mrh, w)
+        new SpreadsheetDelta(s, c, col, l, r, dcell, dcol, drow, mcw, mrh, w)
             .equals(
                 new SpreadsheetDelta(
                     s,
@@ -1185,7 +1311,9 @@ test("equals different cells false", () => {
                     col,
                     l,
                     r,
-                    d,
+                    dcell,
+                    dcol,
+                    drow,
                     mcw,
                     mrh,
                     w
@@ -1200,13 +1328,15 @@ test("equals different columns false", () => {
     const col = columns();
     const l = labels();
     const r = rows();
-    const d = deletedCells();
+    const dcell = deletedCells();
+    const dcol = deletedColumns();
+    const drow = deletedRows();
     const mcw = columnWidths();
     const mrh = rowHeights();
     const w = window();
 
     expect(
-        new SpreadsheetDelta(s, c, col, l, r, d, mcw, mrh, w)
+        new SpreadsheetDelta(s, c, col, l, r, dcell, dcol, drow, mcw, mrh, w)
             .equals(
                 new SpreadsheetDelta(
                     s,
@@ -1214,7 +1344,9 @@ test("equals different columns false", () => {
                     [],
                     l,
                     r,
-                    d,
+                    dcell,
+                    dcol,
+                    drow,
                     mcw,
                     mrh,
                     w
@@ -1229,15 +1361,17 @@ test("equals different labels false", () => {
     const col = columns();
     const l = labels();
     const r = rows();
-    const d = deletedCells();
+    const dcell = deletedCells();
+    const dcol = deletedColumns();
+    const drow = deletedRows();
     const mcw = columnWidths();
     const mrh = rowHeights();
     const w = window();
 
     expect(
-        new SpreadsheetDelta(s, c, col, l, r, d, mcw, mrh, w)
+        new SpreadsheetDelta(s, c, col, l, r, dcell, dcol, drow, mcw, mrh, w)
             .equals(
-                new SpreadsheetDelta(s, c, col, [], r, d, mcw, mrh, w)
+                new SpreadsheetDelta(s, c, col, [], r, dcell, dcol, drow, mcw, mrh, w)
             )
     ).toBeFalse();
 });
@@ -1248,13 +1382,15 @@ test("equals different rows false", () => {
     const col = columns();
     const l = labels();
     const r = rows();
-    const d = deletedCells();
+    const dcell = deletedCells();
+    const dcol = deletedColumns();
+    const drow = deletedRows();
     const mcw = columnWidths();
     const mrh = rowHeights();
     const w = window();
 
     expect(
-        new SpreadsheetDelta(s, c, col, l, r, d, mcw, mrh, w)
+        new SpreadsheetDelta(s, c, col, l, r, dcell, dcol, drow, mcw, mrh, w)
             .equals(
                 new SpreadsheetDelta(
                     s,
@@ -1262,7 +1398,9 @@ test("equals different rows false", () => {
                     col,
                     l,
                     [],
-                    d,
+                    dcell,
+                    dcol,
+                    drow,
                     mcw,
                     mrh,
                     w
@@ -1277,15 +1415,59 @@ test("equals different deletedCells false", () => {
     const col = columns();
     const l = labels();
     const r = rows();
-    const d = deletedCells();
+    const dcell = deletedCells();
+    const dcol = deletedColumns();
+    const drow = deletedRows();
     const mcw = columnWidths();
     const mrh = rowHeights();
     const w = window();
 
     expect(
-        new SpreadsheetDelta(s, c, col, l, r, d, mcw, mrh, w)
+        new SpreadsheetDelta(s, c, col, l, r, dcell, dcol, drow, mcw, mrh, w)
             .equals(
-                new SpreadsheetDelta(s, c, col, l, r, ["c3"], mcw, mrh, w)
+                new SpreadsheetDelta(s, c, col, l, r, ["c3"], dcol, drow, mcw, mrh, w)
+            )
+    ).toBeFalse();
+});
+
+test("equals different deletedColumns false", () => {
+    const s = selection();
+    const c = cells();
+    const col = columns();
+    const l = labels();
+    const r = rows();
+    const dcell = deletedCells();
+    const dcol = deletedColumns();
+    const drow = deletedRows();
+    const mcw = columnWidths();
+    const mrh = rowHeights();
+    const w = window();
+
+    expect(
+        new SpreadsheetDelta(s, c, col, l, r, dcell, dcol, drow, mcw, mrh, w)
+            .equals(
+                new SpreadsheetDelta(s, c, col, l, r, dcell, ["Z"], drow, mcw, mrh, w)
+            )
+    ).toBeFalse();
+});
+
+test("equals different deletedRows false", () => {
+    const s = selection();
+    const c = cells();
+    const col = columns();
+    const l = labels();
+    const r = rows();
+    const dcell = deletedCells();
+    const dcol = deletedColumns();
+    const drow = deletedRows();
+    const mcw = columnWidths();
+    const mrh = rowHeights();
+    const w = window();
+
+    expect(
+        new SpreadsheetDelta(s, c, col, l, r, dcell, dcol, drow, mcw, mrh, w)
+            .equals(
+                new SpreadsheetDelta(s, c, col, l, r, dcell, dcol, ["999"], mcw, mrh, w)
             )
     ).toBeFalse();
 });
@@ -1296,15 +1478,17 @@ test("equals different columnWidths false", () => {
     const col = columns();
     const l = labels();
     const r = rows();
-    const d = deletedCells();
+    const dcell = deletedCells();
+    const dcol = deletedColumns();
+    const drow = deletedRows();
     const mcw = columnWidths();
     const mrh = rowHeights();
     const w = window();
 
     expect(
-        new SpreadsheetDelta(s, c, col, l, r, d, mcw, mrh, w)
+        new SpreadsheetDelta(s, c, col, l, r, dcell, dcol, drow, mcw, mrh, w)
             .equals(
-                new SpreadsheetDelta(s, c, col, l, r, d, ImmutableMap.EMPTY, mrh, w)
+                new SpreadsheetDelta(s, c, col, l, r, dcell, dcol, drow, ImmutableMap.EMPTY, mrh, w)
             )
     ).toBeFalse();
 });
@@ -1315,15 +1499,17 @@ test("equals different rowHeights false", () => {
     const col = columns();
     const l = labels();
     const r = rows();
-    const d = deletedCells();
+    const dcell = deletedCells();
+    const dcol = deletedColumns();
+    const drow = deletedRows();
     const mcw = columnWidths();
     const mrh = rowHeights();
     const w = window();
 
     expect(
-        new SpreadsheetDelta(s, c, col, l, r, d, mcw, mrh, w)
+        new SpreadsheetDelta(s, c, col, l, r, dcell, dcol, drow, mcw, mrh, w)
             .equals(
-                new SpreadsheetDelta(s, c, col, l, r, d, mcw, ImmutableMap.EMPTY, w)
+                new SpreadsheetDelta(s, c, col, l, r, dcell, dcol, drow, mcw, ImmutableMap.EMPTY, w)
             )
     ).toBeFalse();
 });
@@ -1334,15 +1520,17 @@ test("equals different window false", () => {
     const col = columns();
     const l = labels();
     const r = rows();
-    const d = deletedCells();
+    const dcell = deletedCells();
+    const dcol = deletedColumns();
+    const drow = deletedRows();
     const mcw = columnWidths();
     const mrh = rowHeights();
     const w = window();
 
     expect(
-        new SpreadsheetDelta(s, c, col, l, r, d, mcw, mrh, w)
+        new SpreadsheetDelta(s, c, col, l, r, dcell, dcol, drow, mcw, mrh, w)
             .equals(
-                new SpreadsheetDelta(s, c, col, l, r, d, mcw, mrh, null)
+                new SpreadsheetDelta(s, c, col, l, r, dcell, dcol, drow, mcw, mrh, null)
             )
     ).toBeFalse();
 });
@@ -1354,7 +1542,7 @@ test("equals equivalent true", () => {
 
 // helpers..............................................................................................................
 
-function check(delta, selection, cells, columns, labels, rows, deletedCells, columnWidths, rowHeights, window, json) {
+function check(delta, selection, cells, columns, labels, rows, deletedCells, deletedColumns, deletedRows, columnWidths, rowHeights, window, json) {
     expect(delta.selection()).toStrictEqual(selection);
 
     expect(delta.cells()).toStrictEqual(cells);
@@ -1363,6 +1551,9 @@ function check(delta, selection, cells, columns, labels, rows, deletedCells, col
     expect(delta.rows()).toStrictEqual(rows);
 
     expect(delta.deletedCells()).toStrictEqual(deletedCells);
+    expect(delta.deletedColumns()).toStrictEqual(deletedColumns);
+    expect(delta.deletedRows()).toStrictEqual(deletedRows);
+
     expect(delta.columnWidths()).toStrictEqual(columnWidths);
     expect(delta.rowHeights()).toStrictEqual(rowHeights);
 
