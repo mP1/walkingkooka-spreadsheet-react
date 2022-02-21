@@ -307,35 +307,35 @@ export default class SpreadsheetSelection extends SystemObject {
         SystemObject.throwUnsupportedOperation();
     }
 
-    viewportLeft(start) {
+    viewportLeft(home) {
         SystemObject.throwUnsupportedOperation()
     }
 
-    viewportRight(start) {
+    viewportRight(home) {
         SystemObject.throwUnsupportedOperation()
     }
 
-    viewportUp(start) {
+    viewportUp(home) {
         SystemObject.throwUnsupportedOperation()
     }
 
-    viewportDown(start) {
+    viewportDown(home) {
         SystemObject.throwUnsupportedOperation()
     }
 
-    viewportLeftExtend(start) {
+    viewportLeftExtend(anchor, current, home) {
         SystemObject.throwUnsupportedOperation()
     }
 
-    viewportRightExtend(start) {
+    viewportRightExtend(anchor, current, home) {
         SystemObject.throwUnsupportedOperation()
     }
 
-    viewportUpExtend(start) {
+    viewportUpExtend(anchor, current, home) {
         SystemObject.throwUnsupportedOperation()
     }
 
-    viewportDownExtend(start) {
+    viewportDownExtend(anchor, current, home) {
         SystemObject.throwUnsupportedOperation()
     }
 
