@@ -182,25 +182,25 @@ export default class SpreadsheetCellRange extends SpreadsheetExpressionReference
         return this.begin().viewportId();
     }
 
-    viewportLeft(current) {
-        return current.viewportLeft();
+    viewportLeft(home) {
+        return home.viewportLeft();
     }
 
-    viewportRight(current) {
-        return current.viewportRight();
+    viewportRight(home) {
+        return home.viewportRight();
     }
 
-    viewportUp(current) {
-        return current.viewportUp();
+    viewportUp(home) {
+        return home.viewportUp();
     }
 
-    viewportDown(current) {
-        return current.viewportDown();
+    viewportDown(home) {
+        return home.viewportDown();
     }
 
     static DEFAULT_ANCHOR = SpreadsheetViewportSelectionAnchor.BOTTOM_RIGHT;
 
-    viewportLeftExtend(anchor, current, viewportHome) {
+    viewportLeftExtend(anchor, current, home) {
         var begin;
         var newAnchor;
 
@@ -228,7 +228,7 @@ export default class SpreadsheetCellRange extends SpreadsheetExpressionReference
             result = this.setBegin(
                 this.begin()
                     .setColumn(
-                        current.viewportLeft(viewportHome)
+                        current.viewportLeft(home)
                             .column()
                     )
             );
@@ -236,7 +236,7 @@ export default class SpreadsheetCellRange extends SpreadsheetExpressionReference
             result = this.setEnd(
                 this.end()
                     .setColumn(
-                        current.viewportLeft(viewportHome)
+                        current.viewportLeft(home)
                             .column()
                     )
             );
@@ -258,7 +258,7 @@ export default class SpreadsheetCellRange extends SpreadsheetExpressionReference
         return result.setAnchorConditional(newAnchor);
     }
 
-    viewportRightExtend(anchor, current, viewportHome) {
+    viewportRightExtend(anchor, current, home) {
         var begin;
         var newAnchor;
 
@@ -286,7 +286,7 @@ export default class SpreadsheetCellRange extends SpreadsheetExpressionReference
             result = this.setBegin(
                 this.begin()
                     .setColumn(
-                        current.viewportRight(viewportHome)
+                        current.viewportRight(home)
                             .column()
                     )
             );
@@ -294,7 +294,7 @@ export default class SpreadsheetCellRange extends SpreadsheetExpressionReference
             result = this.setEnd(
                 this.end()
                     .setColumn(
-                        current.viewportRight(viewportHome)
+                        current.viewportRight(home)
                             .column()
                     )
             );
@@ -316,7 +316,7 @@ export default class SpreadsheetCellRange extends SpreadsheetExpressionReference
         return result.setAnchorConditional(newAnchor);
     }
 
-    viewportUpExtend(anchor, current, viewportHome) {
+    viewportUpExtend(anchor, current, home) {
         var begin;
         var newAnchor;
 
@@ -344,7 +344,7 @@ export default class SpreadsheetCellRange extends SpreadsheetExpressionReference
             result = this.setBegin(
                 this.begin()
                     .setRow(
-                        current.viewportUp(viewportHome)
+                        current.viewportUp(home)
                             .row()
                     )
             );
@@ -352,7 +352,7 @@ export default class SpreadsheetCellRange extends SpreadsheetExpressionReference
             result = this.setEnd(
                 this.end()
                     .setRow(
-                        current.viewportUp(viewportHome)
+                        current.viewportUp(home)
                             .row()
                     )
             );
@@ -374,7 +374,7 @@ export default class SpreadsheetCellRange extends SpreadsheetExpressionReference
         return result.setAnchorConditional(newAnchor);
     }
 
-    viewportDownExtend(anchor, current, viewportHome) {
+    viewportDownExtend(anchor, current, home) {
         var begin;
         var newAnchor;
 
@@ -402,7 +402,7 @@ export default class SpreadsheetCellRange extends SpreadsheetExpressionReference
             result = this.setBegin(
                 this.begin()
                     .setRow(
-                        current.viewportDown(viewportHome)
+                        current.viewportDown(home)
                             .row()
                     )
             );
@@ -410,7 +410,7 @@ export default class SpreadsheetCellRange extends SpreadsheetExpressionReference
             result = this.setEnd(
                 this.end()
                     .setRow(
-                        current.viewportDown(viewportHome)
+                        current.viewportDown(home)
                             .row()
                     )
             );

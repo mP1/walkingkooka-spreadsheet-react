@@ -171,19 +171,19 @@ export default class SpreadsheetColumnReferenceRange extends SpreadsheetColumnOr
         return focus;
     }
 
-    viewportLeft(current) {
-        return current.viewportLeft();
+    viewportLeft(home) {
+        return home.viewportLeft();
     }
 
-    viewportRight(current) {
-        return current.viewportRight();
+    viewportRight(home) {
+        return home.viewportRight();
     }
 
-    viewportUp(start) {
+    viewportUp(home) {
         return this;
     }
 
-    viewportDown(start) {
+    viewportDown(home) {
         return this;
     }
 
@@ -192,7 +192,7 @@ export default class SpreadsheetColumnReferenceRange extends SpreadsheetColumnOr
     /**
      * Increases/decreases the column range depending on the anchor
      */
-    viewportLeftExtend(anchor, current, viewportHome) {
+    viewportLeftExtend(anchor, current, home) {
         const anchorOrDefault = anchor ? anchor : SpreadsheetColumnReferenceRange.DEFAULT_ANCHOR;
         var range;
 
@@ -220,7 +220,7 @@ export default class SpreadsheetColumnReferenceRange extends SpreadsheetColumnOr
     /**
      * Increases/decreases the column range depending on the anchor
      */
-    viewportRightExtend(anchor, current, viewportHome) {
+    viewportRightExtend(anchor, current, home) {
         const anchorOrDefault = anchor ? anchor : SpreadsheetColumnReferenceRange.DEFAULT_ANCHOR;
         var range;
 
@@ -245,11 +245,11 @@ export default class SpreadsheetColumnReferenceRange extends SpreadsheetColumnOr
             .setAnchorConditional(anchorOrDefault);
     }
 
-    viewportUpExtend(anchor, current, viewportHome) {
+    viewportUpExtend(anchor, current, home) {
         return this.columnOrRange();
     }
 
-    viewportDownExtend(anchor, current, viewportHome) {
+    viewportDownExtend(anchor, current, home) {
         return this.columnOrRange();
     }
 

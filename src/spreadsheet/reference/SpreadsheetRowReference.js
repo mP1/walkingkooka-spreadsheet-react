@@ -177,8 +177,8 @@ export default class SpreadsheetRowReference extends SpreadsheetColumnOrRowRefer
         return this;
     }
 
-    viewportRight(viewportHome) {
-        return this.setColumn(viewportHome.column());
+    viewportRight(home) {
+        return this.setColumn(home.column());
     }
 
     viewportUp() {
@@ -189,17 +189,17 @@ export default class SpreadsheetRowReference extends SpreadsheetColumnOrRowRefer
         return this.addSaturated(+1);
     }
 
-    viewportLeftExtend(anchor, current, viewportHome) {
+    viewportLeftExtend(anchor, current, home) {
         return this.setAnchor();
     }
 
-    viewportRightExtend(anchor, current, viewportHome) {
-        return viewportHome.column()
+    viewportRightExtend(anchor, current, home) {
+        return home.column()
             .setRow(this)
             .setAnchor()
     }
 
-    viewportUpExtend(anchor, current, viewportHome) {
+    viewportUpExtend(anchor, current, home) {
         return new SpreadsheetRowReferenceRange(
             this.viewportUp(),
             this
@@ -207,7 +207,7 @@ export default class SpreadsheetRowReference extends SpreadsheetColumnOrRowRefer
             .setAnchorConditional(SpreadsheetViewportSelectionAnchor.BOTTOM)
     }
 
-    viewportDownExtend(anchor, current, viewportHome) {
+    viewportDownExtend(anchor, current, home) {
         return new SpreadsheetRowReferenceRange(
             this,
             this.viewportDown(),

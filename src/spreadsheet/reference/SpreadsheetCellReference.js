@@ -287,7 +287,7 @@ export default class SpreadsheetCellReference extends SpreadsheetCellReferenceOr
         return this.setRow(this.row().viewportDown());
     }
 
-    viewportLeftExtend(anchor, viewportHome) {
+    viewportLeftExtend() {
         const c = this.column();
         const r = this.row();
 
@@ -298,7 +298,7 @@ export default class SpreadsheetCellReference extends SpreadsheetCellReferenceOr
             .setAnchorConditional(SpreadsheetViewportSelectionAnchor.TOP_RIGHT)
     }
 
-    viewportRightExtend(anchor, viewportHome) {
+    viewportRightExtend() {
         const c = this.column();
         const r = this.row();
 
@@ -309,7 +309,7 @@ export default class SpreadsheetCellReference extends SpreadsheetCellReferenceOr
             .setAnchorConditional(SpreadsheetViewportSelectionAnchor.TOP_LEFT)
     }
 
-    viewportUpExtend(anchor, viewportHome) {
+    viewportUpExtend() {
         const c = this.column();
         const r = this.row();
 
@@ -320,7 +320,7 @@ export default class SpreadsheetCellReference extends SpreadsheetCellReferenceOr
             .setAnchorConditional(SpreadsheetViewportSelectionAnchor.BOTTOM_LEFT)
     }
 
-    viewportDownExtend(anchor, viewportHome) {
+    viewportDownExtend() {
         const c = this.column();
         const r = this.row();
 

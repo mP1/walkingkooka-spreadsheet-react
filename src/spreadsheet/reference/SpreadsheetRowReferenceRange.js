@@ -171,36 +171,36 @@ export default class SpreadsheetRowReferenceRange extends SpreadsheetColumnOrRow
         return focus;
     }
 
-    viewportLeft(current) {
+    viewportLeft(home) {
         return this;
     }
 
-    viewportRight(current) {
+    viewportRight(home) {
         return this;
     }
 
-    viewportUp(current) {
-        return current.viewportUp();
+    viewportUp(home) {
+        return home.viewportUp();
     }
 
-    viewportDown(current) {
-        return current.viewportDown();
+    viewportDown(home) {
+        return home.viewportDown();
     }
 
     static DEFAULT_ANCHOR = SpreadsheetViewportSelectionAnchor.TOP;
 
-    viewportLeftExtend(anchor, current, viewportHome) {
+    viewportLeftExtend(anchor, current, home) {
         return this.rowOrRange();
     }
 
-    viewportRightExtend(anchor, current, viewportHome) {
+    viewportRightExtend(anchor, current, home) {
         return this.rowOrRange();
     }
 
     /**
      * Increases/decreases the row range depending on the anchor
      */
-    viewportUpExtend(anchor, current, viewportHome) {
+    viewportUpExtend(anchor, current, home) {
         const anchorOrDefault = anchor ? anchor : SpreadsheetRowReferenceRange.DEFAULT_ANCHOR;
         var range;
 
@@ -228,7 +228,7 @@ export default class SpreadsheetRowReferenceRange extends SpreadsheetColumnOrRow
     /**
      * Increases/decreases the row range depending on the anchor
      */
-    viewportDownExtend(anchor, current, viewportHome) {
+    viewportDownExtend(anchor, current, home) {
         const anchorOrDefault = anchor ? anchor : SpreadsheetRowReferenceRange.DEFAULT_ANCHOR;
         var range;
 
