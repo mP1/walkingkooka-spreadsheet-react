@@ -34,6 +34,7 @@ import SpreadsheetRowReference from "./reference/SpreadsheetRowReference.js";
 import SpreadsheetSelection from "./reference/SpreadsheetSelection.js";
 import SpreadsheetViewport from "./SpreadsheetViewport.js";
 import SpreadsheetViewportSelectionAnchor from "./reference/SpreadsheetViewportSelectionAnchor.js";
+import SystemObject from "../SystemObject.js";
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -546,6 +547,10 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
         const tokens = SpreadsheetHistoryHashTokens.emptyTokens();
         tokens[SpreadsheetHistoryHashTokens.SELECTION_ACTION] = null;
         this.historyParseMergeAndPush(tokens);
+    }
+
+    patchColumnOrRow(selection, property, value) {
+        SystemObject.throwUnsupportedOperation();
     }
 
     /**

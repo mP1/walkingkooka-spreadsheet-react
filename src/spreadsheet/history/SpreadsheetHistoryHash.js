@@ -21,6 +21,7 @@ import SpreadsheetColumnOrRowInsertAfterHistoryHashToken from "./SpreadsheetColu
 import SpreadsheetColumnOrRowInsertBeforeHistoryHashToken
     from "./SpreadsheetColumnOrRowInsertBeforeHistoryHashToken.js";
 import SpreadsheetColumnOrRowMenuHistoryHashToken from "./SpreadsheetColumnOrRowMenuHistoryHashToken.js";
+import SpreadsheetColumnOrRowSaveHistoryHashToken from "./SpreadsheetColumnOrRowSaveHistoryHashToken.js";
 import SpreadsheetColumnReferenceRange from "../reference/SpreadsheetColumnReferenceRange.js";
 import SpreadsheetFormulaLoadAndEditHistoryHashToken from "./SpreadsheetFormulaLoadAndEditHistoryHashToken.js";
 import SpreadsheetFormulaSaveHistoryHashToken from "./SpreadsheetFormulaSaveHistoryHashToken.js";
@@ -230,37 +231,47 @@ export default class SpreadsheetHistoryHash extends SpreadsheetHistoryHashTokens
                                     selectionAction = SpreadsheetColumnOrRowDeleteHistoryHashToken.INSTANCE;
                                     token = tokens.shift();
                                 }else {
-                                    // column | row / insert-after / 123...................................................
-                                    if(SpreadsheetHistoryHashTokens.INSERT_AFTER === token){
-                                        const insertAfterCount = tokens.shift();
-                                        if(!insertAfterCount || Number.isNaN(Number(insertAfterCount))){
-                                            break;
+                                    // column/A/hidden/true OR /row/1/hidden/true
+                                    if(SpreadsheetHistoryHashTokens.HIDDEN === token){
+                                        const value = tokens.shift();
+                                        if(!value){
+                                            break; // value required but missing.
                                         }
-                                        try {
-                                            selectionAction = new SpreadsheetColumnOrRowInsertAfterHistoryHashToken(Number(insertAfterCount));
-                                        } catch(invalid) {
-                                            errors("Insert after count: " + invalid.message);
-                                            break;
-                                        }
+                                        selectionAction = new SpreadsheetColumnOrRowSaveHistoryHashToken(token, "true" === value);
                                         token = tokens.shift();
                                     }else {
-                                        // column | row / insert-before / 123...............................................
-                                        if(SpreadsheetHistoryHashTokens.INSERT_BEFORE === token){
-                                            const insertBeforeCount = tokens.shift();
-                                            if(!insertBeforeCount || Number.isNaN(Number(insertBeforeCount))){
+                                        // column | row / insert-after / 123...................................................
+                                        if(SpreadsheetHistoryHashTokens.INSERT_AFTER === token){
+                                            const insertAfterCount = tokens.shift();
+                                            if(!insertAfterCount || Number.isNaN(Number(insertAfterCount))){
                                                 break;
                                             }
                                             try {
-                                                selectionAction = new SpreadsheetColumnOrRowInsertBeforeHistoryHashToken(Number(insertBeforeCount));
+                                                selectionAction = new SpreadsheetColumnOrRowInsertAfterHistoryHashToken(Number(insertAfterCount));
                                             } catch(invalid) {
-                                                errors("Insert before count: " + invalid.message);
+                                                errors("Insert after count: " + invalid.message);
                                                 break;
                                             }
                                             token = tokens.shift();
-                                        } else {
-                                            if(SpreadsheetHistoryHashTokens.MENU === token){
-                                                selectionAction = SpreadsheetColumnOrRowMenuHistoryHashToken.INSTANCE;
+                                        }else {
+                                            // column | row / insert-before / 123...............................................
+                                            if(SpreadsheetHistoryHashTokens.INSERT_BEFORE === token){
+                                                const insertBeforeCount = tokens.shift();
+                                                if(!insertBeforeCount || Number.isNaN(Number(insertBeforeCount))){
+                                                    break;
+                                                }
+                                                try {
+                                                    selectionAction = new SpreadsheetColumnOrRowInsertBeforeHistoryHashToken(Number(insertBeforeCount));
+                                                } catch(invalid) {
+                                                    errors("Insert before count: " + invalid.message);
+                                                    break;
+                                                }
                                                 token = tokens.shift();
+                                            }else {
+                                                if(SpreadsheetHistoryHashTokens.MENU === token){
+                                                    selectionAction = SpreadsheetColumnOrRowMenuHistoryHashToken.INSTANCE;
+                                                    token = tokens.shift();
+                                                }
                                             }
                                         }
                                     }
