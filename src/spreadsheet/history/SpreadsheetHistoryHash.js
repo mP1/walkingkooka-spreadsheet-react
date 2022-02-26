@@ -240,7 +240,7 @@ export default class SpreadsheetHistoryHash extends SpreadsheetHistoryHashTokens
                                         selectionAction = new SpreadsheetColumnOrRowSaveHistoryHashToken(
                                             token,
                                             "true" === value ? true :
-                                                "false" == value ? false :
+                                                "false" === value ? false :
                                                     value
                                         );
                                         token = tokens.shift();
