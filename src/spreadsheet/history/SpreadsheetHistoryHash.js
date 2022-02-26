@@ -237,7 +237,12 @@ export default class SpreadsheetHistoryHash extends SpreadsheetHistoryHashTokens
                                         if(!value){
                                             break; // value required but missing.
                                         }
-                                        selectionAction = new SpreadsheetColumnOrRowSaveHistoryHashToken(token, "true" === value);
+                                        selectionAction = new SpreadsheetColumnOrRowSaveHistoryHashToken(
+                                            token,
+                                            "true" === value ? true :
+                                                "false" == value ? false :
+                                                    value
+                                        );
                                         token = tokens.shift();
                                     }else {
                                         // column | row / insert-after / 123...................................................
