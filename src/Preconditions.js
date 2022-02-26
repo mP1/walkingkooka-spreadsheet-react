@@ -49,7 +49,20 @@ export default class Preconditions {
 
         return value;
     }
-    
+
+    /**
+     * Throws an exception if the value is not a boolean.
+     */
+    static requireBoolean(value, label) {
+        Preconditions.requireNonNull(value, label);
+
+        if(typeof value !== "boolean"){
+            reportError("Expected boolean " + label + " got " + value);
+        }
+
+        return value;
+    }
+
     /**
      * Throws an exception if the value is not a number
      */

@@ -45,6 +45,19 @@ testThrows("requireArray function", Preconditions.requireArray, FUNCTION, "Label
 testThrows("requireArray object", Preconditions.requireArray, {}, "Label123", "Expected array Label123 got [object Object]");
 testNotThrows("requireArray array", Preconditions.requireArray, ARRAY);
 
+// requireBoolean.......................................................................................................
+
+testThrows("requireBoolean undefined", Preconditions.requireBoolean, undefined, "Label123", "Missing Label123");
+testThrows("requireBoolean null", Preconditions.requireBoolean, null, "Label123", "Missing Label123");
+testNotThrows("requireBoolean false", Preconditions.requireBoolean, false);
+testNotThrows("requireBoolean true", Preconditions.requireBoolean, true);
+testThrows("requireBoolean 0", Preconditions.requireBoolean, 0, "Label123", "Expected boolean Label123 got 0");
+testThrows("requireBoolean empty string", Preconditions.requireBoolean, "", "Label123", "Expected boolean Label123 got ");
+testThrows("requireBoolean string", Preconditions.requireBoolean, "ABC123", "Label123", "Expected boolean Label123 got ABC123");
+testThrows("requireBoolean function", Preconditions.requireBoolean, FUNCTION, "Label123", "Expected boolean Label123 got function () {}");
+testThrows("requireBoolean object", Preconditions.requireBoolean, {}, "Label123", "Expected boolean Label123 got [object Object]");
+testThrows("requireBoolean array", Preconditions.requireBoolean, [], "Label123", "Expected boolean Label123 got ");
+
 // requireFunction.......................................................................................................
 
 testThrows("requireFunction undefined", Preconditions.requireFunction, undefined, "Label123", "Missing Label123");
