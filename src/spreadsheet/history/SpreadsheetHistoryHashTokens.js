@@ -34,9 +34,11 @@ export default class SpreadsheetHistoryHashTokens {
 
     static CLEAR = "clear";
     static DELETE = "delete";
+    static HIDDEN = "hidden";
     static INSERT_AFTER = "insert-after";
     static INSERT_BEFORE = "insert-before";
     static MENU = "menu";
+
     static SAVE = "save";
 
     static LABEL = "label";

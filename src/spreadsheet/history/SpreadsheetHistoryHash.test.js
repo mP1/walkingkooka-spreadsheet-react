@@ -29,6 +29,7 @@ import SpreadsheetSettingsSaveHistoryHashToken from "./SpreadsheetSettingsSaveHi
 import SpreadsheetSettingsWidgetHistoryHashTokens from "../settings/SpreadsheetSettingsWidgetHistoryHashTokens.js";
 import SpreadsheetViewportSelectionAnchor from "../reference/SpreadsheetViewportSelectionAnchor.js";
 import TextStyle from "../../text/TextStyle.js";
+import SpreadsheetColumnOrRowSaveHistoryHashToken from "./SpreadsheetColumnOrRowSaveHistoryHashToken.js";
 
 const ID = "spreadsheet-id-123";
 const SPREADSHEET_NAME = new SpreadsheetName("spreadsheet-name-456");
@@ -42,6 +43,8 @@ const COLUMN_RANGE = SpreadsheetColumnReferenceRange.parse("B:C");
 const ROW = SpreadsheetRowReference.parse("2");
 const ROW_RANGE = SpreadsheetRowReferenceRange.parse("2:3");
 const COLUMN_ROW_DELETE = SpreadsheetColumnOrRowDeleteHistoryHashToken.INSTANCE;
+const HIDDEN_TRUE = new SpreadsheetColumnOrRowSaveHistoryHashToken("hidden", true);
+const HIDDEN_FALSE = new SpreadsheetColumnOrRowSaveHistoryHashToken("hidden", false);
 
 const LABEL = SpreadsheetLabelName.parse("Label123");
 const NEW_LABEL = SpreadsheetLabelName.parse("Label999");
@@ -949,6 +952,35 @@ testParseAndStringify(
 );
 
 testParseAndStringify(
+    "/spreadsheet-id-123/spreadsheet-name-456/column/B/hidden",
+    {
+        "spreadsheet-id": "spreadsheet-id-123",
+        "spreadsheet-name": SPREADSHEET_NAME
+    },
+    "Invalid token: \"hidden\""
+);
+
+testParseAndStringify(
+    "/spreadsheet-id-123/spreadsheet-name-456/column/B/hidden/false",
+    {
+        "spreadsheet-id": "spreadsheet-id-123",
+        "spreadsheet-name": SPREADSHEET_NAME,
+        "selection": COLUMN,
+        "selection-action": HIDDEN_FALSE,
+    }
+);
+
+testParseAndStringify(
+    "/spreadsheet-id-123/spreadsheet-name-456/column/B/hidden/true",
+    {
+        "spreadsheet-id": "spreadsheet-id-123",
+        "spreadsheet-name": SPREADSHEET_NAME,
+        "selection": COLUMN,
+        "selection-action": HIDDEN_TRUE,
+    }
+);
+
+testParseAndStringify(
     "/spreadsheet-id-123/spreadsheet-name-456/column/B/insert-after",
     {
         "spreadsheet-id": "spreadsheet-id-123",
@@ -1198,6 +1230,35 @@ testParseAndStringify(
         "spreadsheet-name": SPREADSHEET_NAME
     },
     "Invalid token: \"formula\""
+);
+
+testParseAndStringify(
+    "/spreadsheet-id-123/spreadsheet-name-456/row/2/hidden",
+    {
+        "spreadsheet-id": "spreadsheet-id-123",
+        "spreadsheet-name": SPREADSHEET_NAME
+    },
+    "Invalid token: \"hidden\""
+);
+
+testParseAndStringify(
+    "/spreadsheet-id-123/spreadsheet-name-456/row/2/hidden/false",
+    {
+        "spreadsheet-id": "spreadsheet-id-123",
+        "spreadsheet-name": SPREADSHEET_NAME,
+        "selection": ROW,
+        "selection-action": HIDDEN_FALSE,
+    }
+);
+
+testParseAndStringify(
+    "/spreadsheet-id-123/spreadsheet-name-456/row/2/hidden/true",
+    {
+        "spreadsheet-id": "spreadsheet-id-123",
+        "spreadsheet-name": SPREADSHEET_NAME,
+        "selection": ROW,
+        "selection-action": HIDDEN_TRUE,
+    }
 );
 
 testParseAndStringify(
@@ -2281,6 +2342,14 @@ testMerge(
 testMerge(
     "/123abc/Untitled456/column/B",
     {
+        "selection-action": HIDDEN_TRUE,
+    },
+    "/123abc/Untitled456/column/B/hidden/true"
+);
+
+testMerge(
+    "/123abc/Untitled456/column/B",
+    {
         "selection-action": COLUMN_ROW_MENU,
     },
     "/123abc/Untitled456/column/B/menu"
@@ -2359,6 +2428,14 @@ testMerge(
         "selection-action": COLUMN_ROW_DELETE,
     },
     "/123abc/Untitled456/row/45:67/delete"
+);
+
+testMerge(
+    "/123abc/Untitled456/row/2",
+    {
+        "selection-action": HIDDEN_TRUE,
+    },
+    "/123abc/Untitled456/row/2/hidden/true"
 );
 
 testMerge(
