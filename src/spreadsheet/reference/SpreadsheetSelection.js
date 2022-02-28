@@ -48,6 +48,10 @@ export default class SpreadsheetSelection extends SystemObject {
         SystemObject.throwUnsupportedOperation();
     }
 
+    patch(property, value) {
+        SystemObject.throwUnsupportedOperation();
+    }
+
     testCell(cellReference) {
         SystemObject.throwUnsupportedOperation();
     }
