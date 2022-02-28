@@ -2,6 +2,7 @@ import Keys from "../../Keys.js";
 import SpreadsheetCellReference from "./SpreadsheetCellReference.js";
 import SpreadsheetColumnReference from "./SpreadsheetColumnReference";
 import SpreadsheetReferenceKind from "./SpreadsheetReferenceKind";
+import SpreadsheetRow from "./SpreadsheetRow.js";
 import SpreadsheetRowReference from "./SpreadsheetRowReference";
 import SpreadsheetRowReferenceRange from "./SpreadsheetRowReferenceRange.js";
 import SpreadsheetViewportSelectionAnchor from "./SpreadsheetViewportSelectionAnchor.js";
@@ -241,6 +242,39 @@ test("setColumn", () => {
     expect(row.setColumn(column))
         .toStrictEqual(new SpreadsheetCellReference(column, row));
 });
+
+// patch................................................................................................................
+
+function testPatchAndCheck(reference, property, value, expected) {
+    test("testPatchAndCheck " + reference + " " + property + " " + value,
+        () => {
+            expect(
+                SpreadsheetRowReference.parse(reference)
+                    .patch(property, value)
+            ).toStrictEqual(expected);
+        }
+    );
+}
+
+testPatchAndCheck(
+    "2",
+    "hidden",
+    true,
+    new SpreadsheetRow(
+        SpreadsheetRowReference.parse("2"),
+        true
+    )
+);
+
+testPatchAndCheck(
+    "3",
+    "hidden",
+    false,
+    new SpreadsheetRow(
+        SpreadsheetRowReference.parse("3"),
+        false
+    )
+);
 
 // testCell SpreadsheetCellReference....................................................................................
 
