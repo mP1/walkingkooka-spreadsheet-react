@@ -5,6 +5,7 @@ import SpreadsheetColumnOrRowReference from "./SpreadsheetColumnOrRowReference";
 import SpreadsheetColumnReference from "./SpreadsheetColumnReference.js";
 import SpreadsheetHistoryHashTokens from "../history/SpreadsheetHistoryHashTokens.js";
 import SpreadsheetReferenceKind from "./SpreadsheetReferenceKind";
+import SpreadsheetRow from "./SpreadsheetRow.js";
 import SpreadsheetRowReferenceRange from "./SpreadsheetRowReferenceRange.js";
 import SpreadsheetSelection from "./SpreadsheetSelection.js";
 import SpreadsheetViewportSelectionAnchor from "./SpreadsheetViewportSelectionAnchor.js";
@@ -63,6 +64,11 @@ export default class SpreadsheetRowReference extends SpreadsheetColumnOrRowRefer
 
     rowOrRange() {
         return this;
+    }
+
+    patch(property, value) {
+        return new SpreadsheetRow(this, false)
+            .patch(property, value);
     }
 
     testCell(cellReference) {
