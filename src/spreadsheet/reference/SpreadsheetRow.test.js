@@ -54,15 +54,12 @@ test("create", () => {
 // fromJson.............................................................................................................
 
 test("from missing reference fails", () => {
-    expect(() => SpreadsheetRow.fromJson({
-    })).toThrow("Missing reference");
+    expect(() => SpreadsheetRow.fromJson({})).toThrow("Missing reference");
 });
 
 test("from missing hidden fails", () => {
     expect(() => SpreadsheetRow.fromJson({
-        "2": {
-
-        }
+        "2": {}
     })).toThrow("Missing hidden");
 });
 
@@ -75,6 +72,33 @@ test("fromJson", () => {
         json()
     );
 });
+
+// patch................................................................................................................
+
+function testPatchAndCheck(row, property, value, expected) {
+    test("testPatchAndCheck " + row + " " + property + " " + value,
+        () => {
+            expect(
+                row
+                    .patch(property, value)
+            ).toStrictEqual(expected);
+        }
+    );
+}
+
+testPatchAndCheck(
+    new SpreadsheetRow(reference(), false),
+    "hidden",
+    true,
+    new SpreadsheetRow(reference(), true)
+);
+
+testPatchAndCheck(
+    new SpreadsheetRow(reference(), true),
+    "hidden",
+    false,
+    new SpreadsheetRow(reference(), false)
+);
 
 function check(column, reference, hidden, json) {
     expect(column.reference()).toStrictEqual(reference);

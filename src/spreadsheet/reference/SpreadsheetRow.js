@@ -33,6 +33,19 @@ export default class SpreadsheetRow extends SpreadsheetColumnOrRow {
         )
     }
 
+    patch(property, value) {
+        let patched;
+
+        switch(property) {
+            case "hidden":
+                patched = new SpreadsheetRow(this.reference(), value);
+            default:
+                break;
+        }
+
+        return patched;
+    }
+
     // JSON.............................................................................................................
 
     toJson() {
