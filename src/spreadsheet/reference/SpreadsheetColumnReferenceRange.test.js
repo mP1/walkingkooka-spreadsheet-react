@@ -1,4 +1,5 @@
 import SpreadsheetCellReference from "./SpreadsheetCellReference.js";
+import SpreadsheetColumn from "./SpreadsheetColumn.js";
 import SpreadsheetColumnReferenceRange from "./SpreadsheetColumnReferenceRange.js";
 import SpreadsheetColumnReference from "./SpreadsheetColumnReference.js";
 import SpreadsheetRowReference from "./SpreadsheetRowReference.js";
@@ -244,6 +245,83 @@ testValues(
         SpreadsheetColumnReference.parse("F"),
         SpreadsheetColumnReference.parse("G"),
         SpreadsheetColumnReference.parse("H")
+    ]
+);
+
+// patch................................................................................................................
+
+function testPatchAndCheck(reference, property, value, expected) {
+    test("testPatchAndCheck " + reference + " " + property + " " + value,
+        () => {
+            expect(
+                SpreadsheetColumnReferenceRange.parse(reference)
+                    .patch(property, value)
+            ).toStrictEqual(expected);
+        }
+    );
+}
+
+testPatchAndCheck(
+    "B",
+    "hidden",
+    true,
+    [
+        new SpreadsheetColumn(
+            SpreadsheetColumnReference.parse("B"),
+            true
+        )
+    ]
+);
+
+testPatchAndCheck(
+    "C",
+    "hidden",
+    false,
+    [
+        new SpreadsheetColumn(
+            SpreadsheetColumnReference.parse("C"),
+            false
+        )
+    ]
+);
+
+testPatchAndCheck(
+    "D:F",
+    "hidden",
+    false,
+    [
+        new SpreadsheetColumn(
+            SpreadsheetColumnReference.parse("D"),
+            false
+        ),
+        new SpreadsheetColumn(
+            SpreadsheetColumnReference.parse("E"),
+            false
+        ),
+        new SpreadsheetColumn(
+            SpreadsheetColumnReference.parse("F"),
+            false
+        )
+    ]
+);
+
+testPatchAndCheck(
+    "G:I",
+    "hidden",
+    true,
+    [
+        new SpreadsheetColumn(
+            SpreadsheetColumnReference.parse("G"),
+            true
+        ),
+        new SpreadsheetColumn(
+            SpreadsheetColumnReference.parse("H"),
+            true
+        ),
+        new SpreadsheetColumn(
+            SpreadsheetColumnReference.parse("I"),
+            true
+        )
     ]
 );
 

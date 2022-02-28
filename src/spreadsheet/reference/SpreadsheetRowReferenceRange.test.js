@@ -4,6 +4,7 @@ import SpreadsheetRowReferenceRange from "./SpreadsheetRowReferenceRange.js";
 import SpreadsheetRowReference from "./SpreadsheetRowReference.js";
 import SpreadsheetViewportSelectionAnchor from "./SpreadsheetViewportSelectionAnchor.js";
 import systemObjectTesting from "../../SystemObjectTesting.js";
+import SpreadsheetRow from "./SpreadsheetRow.js";
 
 const JSON = "2:4";
 
@@ -249,6 +250,83 @@ testValues(
         SpreadsheetRowReference.parse("6"),
         SpreadsheetRowReference.parse("7"),
         SpreadsheetRowReference.parse("8")
+    ]
+);
+
+// patch................................................................................................................
+
+function testPatchAndCheck(reference, property, value, expected) {
+    test("testPatchAndCheck " + reference + " " + property + " " + value,
+        () => {
+            expect(
+                SpreadsheetRowReferenceRange.parse(reference)
+                    .patch(property, value)
+            ).toStrictEqual(expected);
+        }
+    );
+}
+
+testPatchAndCheck(
+    "2",
+    "hidden",
+    true,
+    [
+        new SpreadsheetRow(
+            SpreadsheetRowReference.parse("2"),
+            true
+        )
+    ]
+);
+
+testPatchAndCheck(
+    "3",
+    "hidden",
+    false,
+    [
+        new SpreadsheetRow(
+            SpreadsheetRowReference.parse("3"),
+            false
+        )
+    ]
+);
+
+testPatchAndCheck(
+    "4:6",
+    "hidden",
+    false,
+    [
+        new SpreadsheetRow(
+            SpreadsheetRowReference.parse("4"),
+            false
+        ),
+        new SpreadsheetRow(
+            SpreadsheetRowReference.parse("5"),
+            false
+        ),
+        new SpreadsheetRow(
+            SpreadsheetRowReference.parse("6"),
+            false
+        )
+    ]
+);
+
+testPatchAndCheck(
+    "7:9",
+    "hidden",
+    true,
+    [
+        new SpreadsheetRow(
+            SpreadsheetRowReference.parse("7"),
+            true
+        ),
+        new SpreadsheetRow(
+            SpreadsheetRowReference.parse("8"),
+            true
+        ),
+        new SpreadsheetRow(
+            SpreadsheetRowReference.parse("9"),
+            true
+        )
     ]
 );
 

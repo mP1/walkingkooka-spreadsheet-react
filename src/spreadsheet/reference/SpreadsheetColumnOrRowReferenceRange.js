@@ -1,4 +1,5 @@
 import SpreadsheetSelection from "./SpreadsheetSelection.js";
+import SystemObject from "../../SystemObject.js";
 
 /**
  * Base class for both column or row ranges.
@@ -33,6 +34,17 @@ export default class SpreadsheetColumnOrRowReferenceRange extends SpreadsheetSel
 
     isColumnOrRowScalarOrRange() {
         return true;
+    }
+
+    // patch.........................................................................................................
+
+    patch(property, value) {
+        return this.values()
+            .map((element) => element.patch(property, value));
+    }
+
+    values() {
+        return SystemObject.throwUnsupportedOperation();
     }
 
     // viewport.........................................................................................................
