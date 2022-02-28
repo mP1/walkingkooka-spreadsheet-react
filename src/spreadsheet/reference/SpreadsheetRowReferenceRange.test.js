@@ -217,6 +217,41 @@ function testRowOrRange(range, expected) {
 testRowOrRange("2:3", "2:3");
 testRowOrRange("4:4", "4");
 
+// values...............................................................................................................
+
+function testValues(range, expected) {
+    test("values " + range, () => {
+        expect(
+            SpreadsheetRowReferenceRange.parse(range).values()
+        ).toStrictEqual(expected);
+    });
+}
+
+testValues(
+    "2",
+    [
+        SpreadsheetRowReference.parse("2")
+    ]
+);
+
+testValues(
+    "3:4",
+    [
+        SpreadsheetRowReference.parse("3"),
+        SpreadsheetRowReference.parse("4")
+    ]
+);
+
+testValues(
+    "5:8",
+    [
+        SpreadsheetRowReference.parse("5"),
+        SpreadsheetRowReference.parse("6"),
+        SpreadsheetRowReference.parse("7"),
+        SpreadsheetRowReference.parse("8")
+    ]
+);
+
 // testCell.............................................................................................................
 
 test("testCell missing fails", () => {

@@ -8,6 +8,7 @@ import SpreadsheetRowReference from "./SpreadsheetRowReference.js";
 import SpreadsheetSelection from "./SpreadsheetSelection.js";
 import SpreadsheetViewportSelectionAnchor from "./SpreadsheetViewportSelectionAnchor.js";
 import SystemObject from "../../SystemObject.js";
+import SpreadsheetReferenceKind from "./SpreadsheetReferenceKind.js";
 
 const TYPE_NAME = "spreadsheet-row-reference-range";
 /**
@@ -51,6 +52,25 @@ export default class SpreadsheetRowReferenceRange extends SpreadsheetColumnOrRow
         return begin.equals(this.end()) ?
             begin :
             this;
+    }
+
+    /**
+     * Returns all the individual {@link SpreadsheetRowReference} in this range.
+     */
+    values() {
+        const values = [];
+
+        const last = this.end().value();
+        for(var value = this.begin().value(); value <= last; value++ ){
+            values.push(
+                new SpreadsheetRowReference(
+                    value,
+                    SpreadsheetReferenceKind.RELATIVE
+                )
+            );
+        }
+
+        return values;
     }
 
     /**
