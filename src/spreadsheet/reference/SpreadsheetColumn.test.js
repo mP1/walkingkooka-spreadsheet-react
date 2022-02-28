@@ -76,6 +76,33 @@ test("fromJson", () => {
     );
 });
 
+// patch................................................................................................................
+
+function testPatchAndCheck(column, property, value, expected) {
+    test("testPatchAndCheck " + column + " " + property + " " + value,
+        () => {
+            expect(
+                column
+                    .patch(property, value)
+            ).toStrictEqual(expected);
+        }
+    );
+}
+
+testPatchAndCheck(
+    new SpreadsheetColumn(reference(), false),
+    "hidden",
+    true,
+    new SpreadsheetColumn(reference(), true)
+);
+
+testPatchAndCheck(
+    new SpreadsheetColumn(reference(), true),
+    "hidden",
+    false,
+    new SpreadsheetColumn(reference(), false)
+);
+
 function check(column, reference, hidden, json) {
     expect(column.reference()).toStrictEqual(reference);
     expect(column.reference()).toBeInstanceOf(SpreadsheetColumnReference);
