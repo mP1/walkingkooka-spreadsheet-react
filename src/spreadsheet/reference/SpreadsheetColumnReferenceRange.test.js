@@ -212,6 +212,41 @@ function testColumnOrRange(range, expected) {
 testColumnOrRange("A:B", "A:B");
 testColumnOrRange("C:C", "C");
 
+// values...............................................................................................................
+
+function testValues(range, expected) {
+    test("values " + range, () => {
+        expect(
+            SpreadsheetColumnReferenceRange.parse(range).values()
+        ).toStrictEqual(expected);
+    });
+}
+
+testValues(
+    "B",
+    [
+        SpreadsheetColumnReference.parse("B")
+    ]
+);
+
+testValues(
+    "C:D",
+    [
+        SpreadsheetColumnReference.parse("C"),
+        SpreadsheetColumnReference.parse("D")
+    ]
+);
+
+testValues(
+    "E:H",
+    [
+        SpreadsheetColumnReference.parse("E"),
+        SpreadsheetColumnReference.parse("F"),
+        SpreadsheetColumnReference.parse("G"),
+        SpreadsheetColumnReference.parse("H")
+    ]
+);
+
 // testCell.............................................................................................................
 
 test("testCell missing fails", () => {

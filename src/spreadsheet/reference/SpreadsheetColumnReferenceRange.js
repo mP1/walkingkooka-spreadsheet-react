@@ -4,6 +4,7 @@ import SpreadsheetColumnReference from "./SpreadsheetColumnReference.js";
 import SpreadsheetColumnOrRowReferenceRange from "./SpreadsheetColumnOrRowReferenceRange.js";
 import SpreadsheetHistoryHash from "../history/SpreadsheetHistoryHash.js";
 import spreadsheetRangeParse from "./SpreadsheetRangeParser.js";
+import SpreadsheetReferenceKind from "./SpreadsheetReferenceKind.js";
 import SpreadsheetRowReference from "./SpreadsheetRowReference.js";
 import SpreadsheetSelection from "./SpreadsheetSelection.js";
 import SpreadsheetViewportSelectionAnchor from "./SpreadsheetViewportSelectionAnchor.js";
@@ -51,6 +52,25 @@ export default class SpreadsheetColumnReferenceRange extends SpreadsheetColumnOr
         return begin.equals(this.end()) ?
             begin :
             this;
+    }
+
+    /**
+     * Returns all the individual {@link SpreadsheetColumnReference} in this range.
+     */
+    values() {
+        const values = [];
+
+        const last = this.end().value();
+        for(var value = this.begin().value(); value <= last; value++) {
+            values.push(
+                new SpreadsheetColumnReference(
+                    value,
+                    SpreadsheetReferenceKind.RELATIVE
+                )
+            );
+        }
+
+        return values;
     }
 
     /**
