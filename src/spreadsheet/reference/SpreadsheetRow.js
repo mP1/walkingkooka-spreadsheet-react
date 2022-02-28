@@ -39,8 +39,9 @@ export default class SpreadsheetRow extends SpreadsheetColumnOrRow {
         switch(property) {
             case "hidden":
                 patched = new SpreadsheetRow(this.reference(), value);
-            default:
                 break;
+            default:
+                throw new Error("Unknown property: " + property);
         }
 
         return patched;
