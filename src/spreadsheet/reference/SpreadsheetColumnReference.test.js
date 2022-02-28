@@ -6,6 +6,7 @@ import SpreadsheetReferenceKind from "./SpreadsheetReferenceKind";
 import SpreadsheetRowReference from "./SpreadsheetRowReference";
 import SpreadsheetViewportSelectionAnchor from "./SpreadsheetViewportSelectionAnchor.js";
 import systemObjectTesting from "../../SystemObjectTesting.js";
+import SpreadsheetColumn from "./SpreadsheetColumn.js";
 
 function home() {
     return SpreadsheetCellReference.parse("Z99");
@@ -312,6 +313,39 @@ test("setRow", () => {
     expect(column.setRow(row))
         .toStrictEqual(new SpreadsheetCellReference(column, row));
 });
+
+// patch................................................................................................................
+
+function testPatchAndCheck(reference, property, value, expected) {
+    test("testPatchAndCheck " + reference + " " + property + " " + value,
+        () => {
+            expect(
+                SpreadsheetColumnReference.parse(reference)
+                    .patch(property, value)
+            ).toStrictEqual(expected);
+        }
+    );
+}
+
+testPatchAndCheck(
+    "B",
+    "hidden",
+    true,
+    new SpreadsheetColumn(
+        SpreadsheetColumnReference.parse("B"),
+        true
+    )
+);
+
+testPatchAndCheck(
+    "C",
+    "hidden",
+    false,
+    new SpreadsheetColumn(
+        SpreadsheetColumnReference.parse("C"),
+        false
+    )
+);
 
 // test SpreadsheetCellReference........................................................................................
 
