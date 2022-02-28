@@ -1,5 +1,6 @@
 import Preconditions from "../../Preconditions.js";
 import SpreadsheetCellReference from "./SpreadsheetCellReference.js";
+import SpreadsheetColumn from "./SpreadsheetColumn.js";
 import SpreadsheetColumnOrRowReference from "./SpreadsheetColumnOrRowReference";
 import SpreadsheetColumnReferenceRange from "./SpreadsheetColumnReferenceRange.js";
 import SpreadsheetHistoryHashTokens from "../history/SpreadsheetHistoryHashTokens.js";
@@ -60,6 +61,11 @@ export default class SpreadsheetColumnReference extends SpreadsheetColumnOrRowRe
 
     columnOrRange() {
         return this;
+    }
+
+    patch(property, value) {
+        return new SpreadsheetColumn(this)
+            .patch(property, value);
     }
 
     testCell(cellReference) {
