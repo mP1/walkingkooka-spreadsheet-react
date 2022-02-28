@@ -64,7 +64,7 @@ export default class SpreadsheetColumnReference extends SpreadsheetColumnOrRowRe
     }
 
     patch(property, value) {
-        return new SpreadsheetColumn(this)
+        return new SpreadsheetColumn(this, false)
             .patch(property, value);
     }
 
