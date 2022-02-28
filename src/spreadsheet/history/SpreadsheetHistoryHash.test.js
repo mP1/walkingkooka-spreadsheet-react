@@ -2366,6 +2366,14 @@ testMerge(
 testMerge(
     "/123abc/Untitled456/column/C:D",
     {
+        "selection-action": HIDDEN_TRUE,
+    },
+    "/123abc/Untitled456/column/C:D/hidden/true"
+);
+
+testMerge(
+    "/123abc/Untitled456/column/C:D",
+    {
         "selection-action": COLUMN_ROW_MENU,
     },
     "/123abc/Untitled456/column/C:D/menu"
@@ -2436,6 +2444,14 @@ testMerge(
         "selection-action": HIDDEN_TRUE,
     },
     "/123abc/Untitled456/row/2/hidden/true"
+);
+
+testMerge(
+    "/123abc/Untitled456/row/45:67",
+    {
+        "selection-action": HIDDEN_TRUE,
+    },
+    "/123abc/Untitled456/row/45:67/hidden/true"
 );
 
 testMerge(
