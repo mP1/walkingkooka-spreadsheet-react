@@ -890,6 +890,54 @@ test("labelToReference() no labels", () => {
         .toBeUndefined();
 });
 
+// row.................................................................................................................
+
+function testRowAndCheck(rows, row, expected) {
+    test("row " + row,
+        () => {
+            const delta = new SpreadsheetDelta(
+                null,
+                [], // cells
+                [], // columns
+                [], // labels
+                rows, // rows
+                [], // deletedCells
+                [], // deletedRows
+                [], // deletedRows
+                ImmutableMap.EMPTY, // rowWidths
+                ImmutableMap.EMPTY, // rowHeights
+                null, // window
+            );
+
+            const rowReference = SpreadsheetRowReference.parse(row);
+            expect(
+                delta.row(rowReference)
+            ).toStrictEqual(expected);
+            expect(
+                delta.row(rowReference)
+            ).toStrictEqual(expected);
+        }
+    );
+}
+
+testRowAndCheck(
+    rows(),
+    "99",
+    undefined
+);
+
+testRowAndCheck(
+    rows(),
+    "1",
+    row1()
+);
+
+testRowAndCheck(
+    rows(),
+    "2",
+    row2()
+);
+
 // toJson...............................................................................................................
 
 test("toJson only 1 cell", () => {
