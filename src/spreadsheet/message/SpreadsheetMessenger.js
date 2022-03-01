@@ -1,3 +1,4 @@
+import HttpMethod from "../../net/HttpMethod.js";
 import Preconditions from "../../Preconditions.js";
 import RelativeUrl from "../../net/RelativeUrl.js";
 import timeoutPromise from "./FetchTimeoutPromise.js";
@@ -52,7 +53,10 @@ export default class SpreadsheetMessenger {
 
     send(url, parameters, success, failure) {
         Preconditions.requireInstance(url, RelativeUrl, "url");
+
         Preconditions.requireObject(parameters, "parameters");
+        Preconditions.requireInstance(parameters.method, HttpMethod, "method");
+
         Preconditions.requireFunction(success, "success");
         Preconditions.requireFunction(failure, "failure");
 
