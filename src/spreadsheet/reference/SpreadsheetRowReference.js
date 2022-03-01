@@ -99,6 +99,10 @@ export default class SpreadsheetRowReference extends SpreadsheetColumnOrRowRefer
         return "Delete row";
     }
 
+    viewportHideText() {
+        return "Hide";
+    }
+
     static VIEWPORT_INSERT_AFTER_1_TEXT = "Insert 1 after";
     static VIEWPORT_INSERT_AFTER_2_TEXT = "Insert 2 after";
 

@@ -170,6 +170,10 @@ export default class SpreadsheetColumnReference extends SpreadsheetColumnOrRowRe
 
     // viewport.........................................................................................................
 
+    viewportHideText() {
+        return "Hide";
+    }
+
     viewportLeft() {
         return this.addSaturated(-1);
     }

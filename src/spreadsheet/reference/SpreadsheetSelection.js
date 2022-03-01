@@ -9,6 +9,7 @@ import SpreadsheetColumnOrRowInsertBeforeHistoryHashToken
     from "../history/SpreadsheetColumnOrRowInsertBeforeHistoryHashToken.js";
 import SpreadsheetColumnOrRowInsertAfterHistoryHashToken
     from "../history/SpreadsheetColumnOrRowInsertAfterHistoryHashToken.js";
+import SpreadsheetColumnOrRowSaveHistoryHashToken from "../history/SpreadsheetColumnOrRowSaveHistoryHashToken.js";
 import SpreadsheetHistoryHashTokens from "../history/SpreadsheetHistoryHashTokens.js";
 import SpreadsheetViewportSelection from "./SpreadsheetViewportSelection.js";
 import SystemObject from "../../SystemObject.js";
@@ -173,6 +174,9 @@ export default class SpreadsheetSelection extends SystemObject {
     // the id for the "delete row" menu item
     static VIEWPORT_CONTEXT_MENU_DELETE_ROW_ID = SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_ID + "-delete-row";
 
+    // the id for the hide column or row menu item.
+    static VIEWPORT_CONTEXT_MENU_HIDE_ID = SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_ID + "-hide";
+
     static VIEWPORT_CONTEXT_MENU_INSERT_AFTER_2_ID = SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_ID + "-insert-after-2";
     static VIEWPORT_CONTEXT_MENU_INSERT_AFTER_1_ID = SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_ID + "-insert-after-1"
     static VIEWPORT_CONTEXT_MENU_INSERT_BEFORE_2_ID = SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_ID + "-insert-before-2";
@@ -300,6 +304,16 @@ export default class SpreadsheetSelection extends SystemObject {
             )
         );
 
+        historyTokens[SpreadsheetHistoryHashTokens.SELECTION_ACTION] = new SpreadsheetColumnOrRowSaveHistoryHashToken("hidden", true);
+
+        menuItems.push(
+            history.menuItem(
+                this.viewportHideText(),
+                SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_HIDE_ID,
+                historyTokens
+            )
+        );
+
         return menuItems;
     }
 
@@ -360,6 +374,10 @@ export default class SpreadsheetSelection extends SystemObject {
     }
 
     viewportDeleteRowText() {
+        SystemObject.throwUnsupportedOperation();
+    }
+
+    viewportHideText() {
         SystemObject.throwUnsupportedOperation();
     }
 

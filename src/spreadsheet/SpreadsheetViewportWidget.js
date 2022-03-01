@@ -18,6 +18,8 @@ import SpreadsheetColumnOrRowInsertBeforeHistoryHashToken
     from "./history/SpreadsheetColumnOrRowInsertBeforeHistoryHashToken.js";
 import SpreadsheetColumnOrRowMenuHistoryHashToken from "./history/SpreadsheetColumnOrRowMenuHistoryHashToken.js";
 import SpreadsheetColumnReference from "./reference/SpreadsheetColumnReference.js";
+import SpreadsheetColumnReferenceRange from "./reference/SpreadsheetColumnReferenceRange.js";
+import SpreadsheetDelta from "./engine/SpreadsheetDelta.js";
 import SpreadsheetFormulaLoadAndEditHistoryHashToken from "./history/SpreadsheetFormulaLoadAndEditHistoryHashToken.js";
 import SpreadsheetFormulaSelectionActionHistoryHashToken
     from "./history/SpreadsheetFormulaSelectionActionHistoryHashToken.js";
@@ -31,10 +33,10 @@ import SpreadsheetMessengerCrud from "./message/SpreadsheetMessengerCrud.js";
 import SpreadsheetMetadata from "./meta/SpreadsheetMetadata.js";
 import SpreadsheetReferenceKind from "./reference/SpreadsheetReferenceKind.js";
 import SpreadsheetRowReference from "./reference/SpreadsheetRowReference.js";
+import SpreadsheetRowReferenceRange from "./reference/SpreadsheetRowReferenceRange.js";
 import SpreadsheetSelection from "./reference/SpreadsheetSelection.js";
 import SpreadsheetViewport from "./SpreadsheetViewport.js";
 import SpreadsheetViewportSelectionAnchor from "./reference/SpreadsheetViewportSelectionAnchor.js";
-import SystemObject from "../SystemObject.js";
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -150,7 +152,10 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
         super.componentDidMount();
 
         const props = this.props;
-        this.onSpreadsheetDeltaRemover = props.spreadsheetDeltaCellCrud.addListener(this.onSpreadsheetDelta.bind(this));
+        this.onSpreadsheetDeltaCellRemover = props.spreadsheetDeltaCellCrud.addListener(this.onSpreadsheetDelta.bind(this));
+        this.onSpreadsheetDeltaColumnRemover = props.spreadsheetDeltaColumnCrud.addListener(this.onSpreadsheetDelta.bind(this));
+        this.onSpreadsheetDeltaRowRemover = props.spreadsheetDeltaRowCrud.addListener(this.onSpreadsheetDelta.bind(this));
+
         this.onSpreadsheetLabelCrudRemover = props.spreadsheetLabelCrud.addListener(this.onSpreadsheetLabel.bind(this));
         this.onSpreadsheetMetadataRemover = props.spreadsheetMetadataCrud.addListener(this.onSpreadsheetMetadata.bind(this));
     }
@@ -353,8 +358,14 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
     componentWillUnmount() {
         super.componentWillUnmount();
 
-        this.onSpreadsheetDeltaRemover && this.onSpreadsheetDeltaRemover();
-        delete this.onSpreadsheetDeltaRemover;
+        this.onSpreadsheetDeltaCellRemover && this.onSpreadsheetDeltaCellRemover();
+        delete this.onSpreadsheetDeltaCellRemover;
+
+        this.onSpreadsheetDeltaColumnRemover && this.onSpreadsheetDeltaColumnRemover();
+        delete this.onSpreadsheetDeltaColumnRemover;
+
+        this.onSpreadsheetDeltaRowRemover && this.onSpreadsheetDeltaRowRemover();
+        delete this.onSpreadsheetDeltaRowRemover;
 
         this.onSpreadsheetLabelCrudRemover && this.onSpreadsheetLabelCrudRemover();
         delete this.onSpreadsheetLabelCrudRemover;
@@ -550,7 +561,50 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
     }
 
     patchColumnOrRow(selection, property, value) {
-        SystemObject.throwUnsupportedOperation();
+        const props = this.props;
+
+        const patched = selection.patch(property, value);
+        const window = this.state.viewportRange;
+
+        if(selection instanceof SpreadsheetColumnReference || selection instanceof SpreadsheetColumnReferenceRange){
+            props.spreadsheetDeltaColumnCrud.patch(
+                selection,
+                new SpreadsheetDelta(
+                    null,
+                    [], // cells
+                    Array.isArray(patched) ? patched : [patched], // columns
+                    [], // labels
+                    [], // rows
+                    [], // deletedCells
+                    [], // deletedColumns
+                    [], // deletedRows
+                    ImmutableMap.EMPTY, // columnWidths
+                    ImmutableMap.EMPTY, // rowHeights
+                    window // window
+                ),
+                props.showError,
+            );
+        }
+
+        if(selection instanceof SpreadsheetRowReference || selection instanceof SpreadsheetRowReferenceRange){
+            props.spreadsheetDeltaRowCrud.patch(
+                selection,
+                new SpreadsheetDelta(
+                    null,
+                    [], // cells
+                    [], // columns
+                    [], // labels
+                    Array.isArray(patched) ? patched : [patched], // rows
+                    [], // deletedCells
+                    [], // deletedColumns
+                    [], // deletedRows
+                    ImmutableMap.EMPTY, // columnWidths
+                    ImmutableMap.EMPTY, // rowHeights
+                    window // window
+                ),
+                props.showError,
+            );
+        }
     }
 
     /**
@@ -1051,6 +1105,8 @@ SpreadsheetViewportWidget.propTypes = {
     insertBeforeSelection: PropTypes.func.isRequired,
     messenger: PropTypes.instanceOf(SpreadsheetMessenger),
     spreadsheetDeltaCellCrud: PropTypes.instanceOf(SpreadsheetMessengerCrud),
+    spreadsheetDeltaColumnCrud: PropTypes.instanceOf(SpreadsheetMessengerCrud),
+    spreadsheetDeltaRowCrud: PropTypes.instanceOf(SpreadsheetMessengerCrud),
     spreadsheetLabelCrud: PropTypes.instanceOf(SpreadsheetMessengerCrud),
     spreadsheetMetadataCrud: PropTypes.instanceOf(SpreadsheetMessengerCrud),
     showError: PropTypes.func.isRequired,

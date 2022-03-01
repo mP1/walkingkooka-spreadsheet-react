@@ -158,6 +158,10 @@ export default class SpreadsheetRowReferenceRange extends SpreadsheetColumnOrRow
         return "Delete rows";
     }
 
+    viewportHideText() {
+        return "Hide";
+    }
+
     viewportInsertAfter1Text() {
         return SpreadsheetRowReference.VIEWPORT_INSERT_AFTER_1_TEXT;
     }

@@ -81,6 +81,20 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
             new ListenerCollection()
         );
 
+        this.spreadsheetDeltaColumnCrud = new SpreadsheetMessengerCrud(
+            (method, columnOrRange, queryStringParameters) => {
+                const url = this.apiSpreadsheetMetadataUrl() + "/column/" + columnOrRange;
+
+                return new RelativeUrl(
+                    url,
+                    queryStringParameters
+                );
+            },
+            messenger,
+            SpreadsheetDelta.fromJson,
+            new ListenerCollection()
+        );
+
         this.spreadsheetLabelCrud = new SpreadsheetMessengerCrud(
             (method, label) => {
                 Preconditions.requireInstance(label, SpreadsheetLabelName, "label");
@@ -101,6 +115,20 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
             ),
             messenger,
             SpreadsheetMetadata.fromJson,
+            new ListenerCollection()
+        );
+
+        this.spreadsheetDeltaRowCrud = new SpreadsheetMessengerCrud(
+            (method, rowOrRange, queryStringParameters) => {
+                const url = this.apiSpreadsheetMetadataUrl() + "/row/" + rowOrRange;
+
+                return new RelativeUrl(
+                    url,
+                    queryStringParameters
+                );
+            },
+            messenger,
+            SpreadsheetDelta.fromJson,
             new ListenerCollection()
         );
 
@@ -265,8 +293,10 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
         const {
             messenger,
             spreadsheetDeltaCellCrud,
+            spreadsheetDeltaColumnCrud,
             spreadsheetLabelCrud,
             spreadsheetMetadataCrud,
+            spreadsheetDeltaRowCrud,
             state,
         } = this;
 
@@ -318,6 +348,8 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
                                            ref={this.viewport}
                                            messenger={messenger}
                                            spreadsheetDeltaCellCrud={spreadsheetDeltaCellCrud}
+                                           spreadsheetDeltaColumnCrud={spreadsheetDeltaColumnCrud}
+                                           spreadsheetDeltaRowCrud={spreadsheetDeltaRowCrud}
                                            spreadsheetLabelCrud={spreadsheetLabelCrud}
                                            spreadsheetMetadataCrud={spreadsheetMetadataCrud}
                                            showError={showError}

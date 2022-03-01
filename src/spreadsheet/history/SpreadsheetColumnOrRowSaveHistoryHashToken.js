@@ -1,6 +1,7 @@
 import Equality from "../../Equality.js";
 import SpreadsheetColumnOrRowSelectionActionHistoryHashToken
     from "./SpreadsheetColumnOrRowSelectionActionHistoryHashToken.js";
+import SpreadsheetHistoryHashTokens from "./SpreadsheetHistoryHashTokens.js";
 
 /**
  * Represents a save column/row property with value history hash token.
@@ -35,6 +36,11 @@ export default class SpreadsheetColumnOrRowSaveHistoryHashToken extends Spreadsh
             this.property(),
             this.value()
         );
+
+        // remove the saved property and value from the history hash
+        const tokens = SpreadsheetHistoryHashTokens.emptyTokens();
+        tokens[SpreadsheetHistoryHashTokens.SELECTION_ACTION] = null;
+        viewportWidget.historyParseMergeAndPush(tokens);
     }
 
     equals(other) {
