@@ -188,6 +188,8 @@ export default class SpreadsheetDelta extends SystemObject {
      * Gets the {@link SpreadsheetColumn} at the given {@link SpreadsheetColumnReference}.
      */
     column(columnReference) {
+        Preconditions.requireInstance(columnReference, SpreadsheetColumnReference, "column");
+
         var referenceToColumn = this.referenceToColumn;
         if(!referenceToColumn) {
             referenceToColumn = new Map();
