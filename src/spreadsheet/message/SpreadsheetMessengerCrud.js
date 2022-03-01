@@ -36,7 +36,7 @@ export default class SpreadsheetMessengerCrud {
         this.send(
             this.url(HttpMethod.GET, id, queryParameters),
             {
-                method: HttpMethod.GET.toString(),
+                method: HttpMethod.GET,
             },
             id,
             null,
@@ -53,7 +53,7 @@ export default class SpreadsheetMessengerCrud {
         this.send(
             this.url(HttpMethod.POST, id, {}),
             {
-                method: HttpMethod.POST.toString(),
+                method: HttpMethod.POST,
                 body: value.toJson ? JSON.stringify(value.toJson()) : value.toString(),
             },
             id,
@@ -71,7 +71,7 @@ export default class SpreadsheetMessengerCrud {
         this.send(
             this.url(HttpMethod.PATCH, id, {}),
             {
-                method: HttpMethod.PATCH.toString(),
+                method: HttpMethod.PATCH,
                 body: value.toJson ? JSON.stringify(value.toJson()) : value.toString(),
             },
             id,
@@ -89,7 +89,7 @@ export default class SpreadsheetMessengerCrud {
         this.send(
             this.url(HttpMethod.DELETE, id, {}),
             {
-                method: HttpMethod.DELETE.toString(),
+                method: HttpMethod.DELETE,
             },
             id,
             null,
