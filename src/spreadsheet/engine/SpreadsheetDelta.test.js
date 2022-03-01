@@ -9,6 +9,7 @@ import SpreadsheetLabelName from "../reference/SpreadsheetLabelName.js";
 import SpreadsheetRow from "../reference/SpreadsheetRow.js";
 import SpreadsheetRowReference from "../reference/SpreadsheetRowReference";
 import systemObjectTesting from "../../SystemObjectTesting.js";
+import spreadsheetCellReferenceOrLabelNameParse from "../reference/SpreadsheetCellReferenceOrLabelNameParse.js";
 
 function selection() {
     return SpreadsheetCellReference.parse("Z9")
@@ -731,34 +732,87 @@ test("referenceToCellMap, 2 cells", () => {
 // cell.................................................................................................................
 
 test("cell() missing cellOrLabel fails", () => {
-    expect(() => delta().cell(undefined)).toThrow("Missing cellOrLabel");
+    expect(
+        () => delta().cell(undefined)
+    ).toThrow("Missing cellOrLabel");
 });
 
 test("cell() invalid cellOrLabel fails", () => {
-    expect(() => delta().cell("!invalid")).toThrow("Expected SpreadsheetCellReferenceOrLabelName cellOrLabel got !invalid");
+    expect(
+        () => delta().cell("!invalid")
+    ).toThrow("Expected SpreadsheetCellReferenceOrLabelName cellOrLabel got !invalid");
 });
 
-test("cell() with present cell-reference", () => {
-    const cell = a1();
-    expect(delta().cell(cell.reference()))
-        .toStrictEqual(cell);
-});
+function testCellAndCheck(cells, labels, cellOrLabel, expected) {
+    test("cell " + cellOrLabel,
+        () => {
+            const delta = new SpreadsheetDelta(
+                null,
+                cells, // cells
+                [], // columns
+                labels, // labels
+                [], // rows
+                [], // deletedCells
+                [], // deletedCells
+                [], // deletedCells
+                ImmutableMap.EMPTY, // cellWidths
+                ImmutableMap.EMPTY, // cellHeights
+                null, // window
+            );
 
-test("cell() absent cell-reference", () => {
-    expect(delta().cell(SpreadsheetCellReference.parse("Z99")))
-        .toBeUndefined();
-});
+            const cellOrLabelReference = spreadsheetCellReferenceOrLabelNameParse(cellOrLabel);
 
-test("cell() with present label", () => {
-    const cell = a1();
-    expect(delta().cell(SpreadsheetLabelName.parse("Label1")))
-        .toStrictEqual(cell);
-});
+            expect(
+                delta.cell(cellOrLabelReference)
+            ).toStrictEqual(expected);
+            expect(
+                delta.cell(cellOrLabelReference)
+            ).toStrictEqual(expected);
+        }
+    );
+}
 
-test("cell() with absent label", () => {
-    expect(delta().cell(SpreadsheetLabelName.parse("Unknown")))
-        .toBeUndefined();
-});
+testCellAndCheck(
+    cells(),
+    [],
+    "Z99",
+    undefined
+);
+
+testCellAndCheck(
+    cells(),
+    [],
+    "UnknownLabel",
+    undefined
+);
+
+testCellAndCheck(
+    cells(),
+    [],
+    "A1",
+    a1()
+);
+
+testCellAndCheck(
+    cells(),
+    [],
+    "a1",
+    a1()
+);
+
+testCellAndCheck(
+    cells(),
+    labels(),
+    "b2",
+    b2()
+);
+
+testCellAndCheck(
+    cells(),
+    labels(),
+    "Label1",
+    a1()
+);
 
 // cellReference........................................................................................................
 
