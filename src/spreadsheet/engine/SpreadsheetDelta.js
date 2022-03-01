@@ -184,6 +184,24 @@ export default class SpreadsheetDelta extends SystemObject {
         return this.columnsValue.slice();
     }
 
+    /**
+     * Gets the {@link SpreadsheetColumn} at the given {@link SpreadsheetColumnReference}.
+     */
+    column(columnReference) {
+        var referenceToColumn = this.referenceToColumn;
+        if(!referenceToColumn) {
+            referenceToColumn = new Map();
+
+            this.columns().forEach(c => {
+                referenceToColumn.set(
+                    c.reference().toString(),
+                    c
+                );
+            });
+        }
+        return referenceToColumn.get(columnReference.toString());
+    }
+
     labels() {
         return this.labelsValue.slice();
     }

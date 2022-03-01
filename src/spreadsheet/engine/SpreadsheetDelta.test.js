@@ -810,6 +810,60 @@ test("cellToLabels() no labels", () => {
         .toBeUndefined();
 });
 
+// column.................................................................................................................
+
+function testColumnAndCheck(columns, column, expected) {
+    test("column " + column,
+        () => {
+            const delta = new SpreadsheetDelta(
+                null,
+                [], // cells
+                columns,
+                [], // labels
+                [], // rows
+                [], // deletedCells
+                [], // deletedColumns
+                [], // deletedRows
+                ImmutableMap.EMPTY, // columnWidths
+                ImmutableMap.EMPTY, // rowHeights
+                null, // window
+            );
+
+            const columnReference = SpreadsheetColumnReference.parse(column);
+            expect(
+                delta.column(columnReference)
+            ).toStrictEqual(expected);
+            expect(
+                delta.column(columnReference)
+            ).toStrictEqual(expected);
+        }
+    );
+}
+
+testColumnAndCheck(
+    columns(),
+    "Z",
+    undefined
+);
+
+testColumnAndCheck(
+    columns(),
+    "A",
+    a()
+);
+
+testColumnAndCheck(
+    columns(),
+    "a",
+    a()
+);
+
+testColumnAndCheck(
+    columns(),
+    "b",
+    b()
+);
+
 // labelToReference.........................................................................................................
 
 test("labelToReference() several labels", () => {
