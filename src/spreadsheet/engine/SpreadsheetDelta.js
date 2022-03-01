@@ -237,6 +237,26 @@ export default class SpreadsheetDelta extends SystemObject {
         return this.rowsValue.slice();
     }
 
+    /**
+     * Gets the {@link SpreadsheetRow} at the given {@link SpreadsheetRowReference}.
+     */
+    row(rowReference) {
+        Preconditions.requireInstance(rowReference, SpreadsheetRowReference, "row");
+
+        var referenceToRow = this.referenceToRow;
+        if(!referenceToRow) {
+            referenceToRow = new Map();
+
+            this.rows().forEach(r => {
+                referenceToRow.set(
+                    r.reference().toString(),
+                    r
+                );
+            });
+        }
+        return referenceToRow.get(rowReference.toString());
+    }
+
     deletedCells() {
         return this.deletedCellsValue.slice();
     }
