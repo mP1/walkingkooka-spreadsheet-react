@@ -901,6 +901,64 @@ testColumnAndCheck(
     b()
 );
 
+// columnReferenceToColumn...................................................................................................
+
+function testColumnReferenceToColumnAndCheck(columns, expected) {
+    test("columnReferenceToColumn " + columns,
+        () => {
+            const delta = new SpreadsheetDelta(
+                null,
+                [], // cells
+                columns, // columns
+                [], // labels
+                [], // rows
+                [], // deletedCells
+                [], // deletedColumns
+                [], // deletedRows
+                ImmutableMap.EMPTY, // columnWidths
+                ImmutableMap.EMPTY, // rowsHeights
+                null, // window
+            );
+
+            expect(
+                delta.columnReferenceToColumn()
+            ).toStrictEqual(expected);
+        }
+    );
+}
+
+testColumnReferenceToColumnAndCheck(
+    [],
+    ImmutableMap.EMPTY
+);
+
+testColumnReferenceToColumnAndCheck(
+    [
+        a()
+    ],
+    new ImmutableMap(
+        new Map(
+            [
+                ["A", a()]
+            ]
+        )
+    )
+);
+
+testColumnReferenceToColumnAndCheck(
+    [
+        a(),
+        b()
+    ],
+    new ImmutableMap(
+        new Map([
+                ["A", a()],
+                ["B", b()]
+            ]
+        )
+    )
+);
+
 // labelToReference.........................................................................................................
 
 test("labelToReference() several labels", () => {
