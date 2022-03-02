@@ -72,30 +72,6 @@ describe(
             // next tab gives focus to close
         });
 
-        it("Hash show label mapping after editing name", () => {
-            testing.spreadsheetNameClick();
-
-            testing.spreadsheetName()
-                .type("{selectall}Lost")
-                .blur();
-
-            cy.window()
-                .then((win) => {
-                    win.location.hash = win.location.hash + "/label/Label123";
-                });
-
-            testing.hash()
-                .should('match', /.*\/Untitled\/label\/Label123/);
-
-            labelMappingDialogCheck(
-                "Label: " + LABEL,
-                LABEL,
-                "",
-                "",
-                "Missing text"
-            );
-        });
-
         // LABEL MAPPING LABEL..........................................................................................
 
         it("Edit label empty text", () => {
@@ -364,12 +340,10 @@ describe(
 
             testing.historyWait();
 
-            testing.hashLabel();
-
             testing.labelMappingLabelDeleteButton()
                 .click();
 
-            testing.historyWait();
+            testing.labelMappingCloseWait();
 
             testing.hashLabel();
 
@@ -488,6 +462,32 @@ describe(
                 .should("contain.text", "HoverLabel1, HoverLabel2");
         });
 
+        it("History hash navigate to label", () => {
+            // create a new label
+            testing.hashAppend("/label/NavigateToLabel123");
+
+            testing.labelMappingReferenceTextField()
+                .type("{selectall}A1");
+
+            testing.labelMappingLabelSaveButton()
+                .click();
+
+            testing.labelMappingLabelCloseButton()
+                .click();
+
+            // navigate
+            testing.hashAppend("/cell/NavigateToLabel123");
+
+            testing.cell(A1)
+                .should("have.focus");
+
+            testing.column("A")
+                .should("have.css", "background-color", SELECTED_COLOR);
+
+            testing.row("1")
+                .should("have.css", "background-color", SELECTED_COLOR);
+        });
+
         it("Label mapping update, refreshes viewport", () => {
             testing.cellFormulaEnterAndSave(A1, "=11");
             testing.cellFormulaEnterAndSave(B2, "=22");
@@ -518,32 +518,6 @@ describe(
                 .click();
 
             testing.cellFormattedTextCheck(C3, "88."); // 4 * 22
-        });
-
-        it("History hash navigate to label", () => {
-            // create a new label
-            testing.hashAppend("/label/NavigateToLabel123");
-
-            testing.labelMappingReferenceTextField()
-                .type("{selectall}A1");
-
-            testing.labelMappingLabelSaveButton()
-                .click();
-
-            testing.labelMappingLabelCloseButton()
-                .click();
-
-            // navigate
-            testing.hashAppend("/cell/NavigateToLabel123");
-
-            testing.cell(A1)
-                .should("have.focus");
-
-            testing.column("A")
-                .should("have.css", "background-color", SELECTED_COLOR);
-
-            testing.row("1")
-                .should("have.css", "background-color", SELECTED_COLOR);
         });
 
         function labelMappingDialogCheck(title,
