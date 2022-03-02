@@ -193,20 +193,27 @@ export default class SpreadsheetDelta extends SystemObject {
     column(columnReference) {
         Preconditions.requireInstance(columnReference, SpreadsheetColumnReference, "column");
 
-        var referenceToColumn = this.referenceToColumn;
-        if(!referenceToColumn) {
-            referenceToColumn = new Map();
+        return this.columnReferenceToColumns()
+            .get(
+            columnReference
+        );
+    }
+
+    columnReferenceToColumns() {
+        if(!this.columnReferenceToColumnsMap) {
+            const map = new Map();
 
             this.columns().forEach(c => {
-                referenceToColumn.set(
+                map.set(
                     c.reference().toMapKey(),
                     c
                 );
             });
+
+            this.columnReferenceToColumnsMap = new ImmutableMap(map);
         }
-        return referenceToColumn.get(
-            columnReference.toMapKey()
-        );
+
+        return this.columnReferenceToColumnsMap;
     }
 
     labels() {
