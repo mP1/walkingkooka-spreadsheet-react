@@ -317,7 +317,7 @@ describe(
             testing.viewportContextMenu()
                 .should("be.visible")
                 .find("LI")
-                .should("have.length", 6);
+                .should("have.length", 7);
         });
 
         it("Column context menu", () => {
@@ -329,7 +329,7 @@ describe(
             testing.viewportContextMenu()
                 .should("be.visible")
                 .find("LI")
-                .should("have.length", 6);
+                .should("have.length", 7);
         });
 
         it("Column context menu links", () => {
@@ -363,6 +363,10 @@ describe(
             testing.getById(SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_INSERT_BEFORE_2_ID)
                 .should("have.attr", "href")
                 .and('match', /#*\/*\/column\/B\/insert-before\/2/);
+
+            testing.getById(SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_HIDE_ID)
+                .should("have.attr", "href")
+                .and('match', /#*\/*\/column\/B\/hidden\/true/);
         });
 
         it("Column range context menu links", () => {
@@ -396,6 +400,10 @@ describe(
             testing.getById(SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_INSERT_BEFORE_2_ID)
                 .should("have.attr", "href")
                 .and('match', /#*\/*\/column\/B:C\/insert-before\/2/);
+
+            testing.getById(SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_HIDE_ID)
+                .should("have.attr", "href")
+                .and('match', /#*\/*\/column\/B:C\/hidden\/true/);
         });
 
         it("Column context menu click clear", () => {
