@@ -182,6 +182,10 @@ export default class SpreadsheetTesting {
         return this.getById(SpreadsheetLabelMappingWidget.DIALOG_CLOSE_BUTTON_ID);
     }
 
+    labelMappingCloseWait() {
+        this.wait(200);
+    }
+
     hashLabel() {
         this.hashAppend("/label/" + SpreadsheetTesting.LABEL);
 
