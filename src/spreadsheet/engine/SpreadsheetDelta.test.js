@@ -655,79 +655,61 @@ test("create empty all properties", () => {
 
 // referenceToCellMap...................................................................................................
 
-test("referenceToCellMap, no cells", () => {
-    const s = undefined;
-    const c = [];
-    const col = [];
-    const l = [];
-    const r = [];
-    const dcell = [];
-    const dcol = [];
-    const drow = [];
-    const mcw = ImmutableMap.EMPTY;
-    const mrh = ImmutableMap.EMPTY;
-    const w = null;
+function testReferenceToCellMapAndCheck(cells, expected) {
+    test("cell " + cells,
+        () => {
+            const delta = new SpreadsheetDelta(
+                null,
+                cells, // cells
+                [], // columns
+                [], // labels
+                [], // rows
+                [], // deletedCells
+                [], // deletedCells
+                [], // deletedCells
+                ImmutableMap.EMPTY, // cellWidths
+                ImmutableMap.EMPTY, // cellHeights
+                null, // window
+            );
 
-    expect(
-        new SpreadsheetDelta(s, c, col, l, r, dcell, dcol, drow, mcw, mrh, w)
-            .referenceToCellMap()
-    ).toStrictEqual(ImmutableMap.EMPTY);
-});
-
-test("referenceToCellMap, 1 cell", () => {
-    const s = undefined;
-
-    const cell = a1();
-
-    const c = [cell];
-    const col = [];
-    const l = [];
-    const r = [];
-    const dcell = [];
-    const dcol = [];
-    const drow = [];
-    const mcw = ImmutableMap.EMPTY;
-    const mrh = ImmutableMap.EMPTY;
-    const w = null;
-
-    expect(
-        new SpreadsheetDelta(s, c, col, l, r, dcell, dcol, drow, mcw, mrh, w)
-            .referenceToCellMap()
-    ).toStrictEqual(
-        new ImmutableMap(new Map([
-            [cell.reference().toString(), cell]
-        ]))
+            expect(
+                delta.referenceToCellMap()
+            ).toStrictEqual(expected);
+        }
     );
-});
+}
 
-test("referenceToCellMap, 2 cells", () => {
-    const s = undefined;
+testReferenceToCellMapAndCheck(
+    [],
+    ImmutableMap.EMPTY
+);
 
-    const cell = a1();
-    const cell2 = b2();
+testReferenceToCellMapAndCheck(
+    [
+        a1()
+    ],
+    new ImmutableMap(
+        new Map(
+            [
+                ["A1", a1()]
+            ]
+        )
+    )
+);
 
-    const c = [cell, cell2];
-    const col = [];
-    const l = [];
-    const r = [];
-    const dcell = [];
-    const dcol = [];
-    const drow = [];
-    const mcw = ImmutableMap.EMPTY;
-    const mrh = ImmutableMap.EMPTY;
-    const w = null;
-
-    expect(
-        new SpreadsheetDelta(s, c, col, l, r, dcell, dcol, drow, mcw, mrh, w)
-            .referenceToCellMap())
-        .toStrictEqual(
-            new ImmutableMap(
-                new Map([
-                    [cell.reference().toString(), cell],
-                    [cell2.reference().toString(), cell2]
-                ]))
-        );
-});
+testReferenceToCellMapAndCheck(
+    [
+        a1(),
+        b2()
+    ],
+    new ImmutableMap(
+        new Map([
+                ["A1", a1()],
+                ["B2", b2()]
+            ]
+        )
+    )
+);
 
 // cell.................................................................................................................
 
