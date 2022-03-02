@@ -152,7 +152,7 @@ export default class SpreadsheetDelta extends SystemObject {
             this.cellReference(cellOrLabel) :
             cellOrLabel;
 
-        return cellReference && this.cellReferenceToCell().get(cellReference);
+        return cellReference && this.cellReferenceToCells().get(cellReference);
     }
 
     /**
@@ -170,7 +170,7 @@ export default class SpreadsheetDelta extends SystemObject {
     /**
      * Returns an {@link ImmutableMap} where the {@link SpreadsheetCellReference} is the key and the cell the value.
      */
-    cellReferenceToCell() {
+    cellReferenceToCells() {
         const referenceToCell = new Map();
 
         this.cells().forEach(c => {
