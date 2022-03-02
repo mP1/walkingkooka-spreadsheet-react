@@ -1033,6 +1033,64 @@ testRowAndCheck(
     row2()
 );
 
+// rowReferenceToRows...................................................................................................
+
+function testRowReferenceToRowsAndCheck(rows, expected) {
+    test("rowReferenceToRows " + rows,
+        () => {
+            const delta = new SpreadsheetDelta(
+                null,
+                [], // cells
+                [], // columns
+                [], // labels
+                rows, // rows
+                [], // deletedCells
+                [], // deletedColumns
+                [], // deletedRows
+                ImmutableMap.EMPTY, // columnWidths
+                ImmutableMap.EMPTY, // rowsHeights
+                null, // window
+            );
+
+            expect(
+                delta.rowReferenceToRows()
+            ).toStrictEqual(expected);
+        }
+    );
+}
+
+testRowReferenceToRowsAndCheck(
+    [],
+    ImmutableMap.EMPTY
+);
+
+testRowReferenceToRowsAndCheck(
+    [
+        row1()
+    ],
+    new ImmutableMap(
+        new Map(
+            [
+                ["1", row1()]
+            ]
+        )
+    )
+);
+
+testRowReferenceToRowsAndCheck(
+    [
+        row1(),
+        row2()
+    ],
+    new ImmutableMap(
+        new Map([
+                ["1", row1()],
+                ["2", row2()]
+            ]
+        )
+    )
+);
+
 // toJson...............................................................................................................
 
 test("toJson only 1 cell", () => {

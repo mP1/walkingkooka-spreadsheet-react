@@ -260,20 +260,27 @@ export default class SpreadsheetDelta extends SystemObject {
     row(rowReference) {
         Preconditions.requireInstance(rowReference, SpreadsheetRowReference, "row");
 
-        var referenceToRow = this.referenceToRow;
-        if(!referenceToRow) {
-            referenceToRow = new Map();
+        return this.rowReferenceToRows()
+            .get(
+                rowReference
+            );
+    }
+
+    rowReferenceToRows() {
+        if(!this.rowReferenceToRowsMap) {
+            const map = new Map();
 
             this.rows().forEach(r => {
-                referenceToRow.set(
+                map.set(
                     r.reference().toMapKey(),
                     r
                 );
             });
+
+            this.rowReferenceToRowsMap = new ImmutableMap(map);
         }
-        return referenceToRow.get(
-            rowReference.toMapKey()
-        );
+
+        return this.rowReferenceToRowsMap;
     }
 
     deletedCells() {
