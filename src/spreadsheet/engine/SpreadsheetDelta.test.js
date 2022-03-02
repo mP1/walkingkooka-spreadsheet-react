@@ -654,9 +654,9 @@ test("create empty all properties", () => {
     );
 });
 
-// referenceToCellMap...................................................................................................
+// cellReferenceToCell...................................................................................................
 
-function testReferenceToCellMapAndCheck(cells, expected) {
+function testCellReferenceToCellAndCheck(cells, expected) {
     test("cell " + cells,
         () => {
             const delta = new SpreadsheetDelta(
@@ -674,18 +674,18 @@ function testReferenceToCellMapAndCheck(cells, expected) {
             );
 
             expect(
-                delta.referenceToCellMap()
+                delta.cellReferenceToCell()
             ).toStrictEqual(expected);
         }
     );
 }
 
-testReferenceToCellMapAndCheck(
+testCellReferenceToCellAndCheck(
     [],
     ImmutableMap.EMPTY
 );
 
-testReferenceToCellMapAndCheck(
+testCellReferenceToCellAndCheck(
     [
         a1()
     ],
@@ -698,7 +698,7 @@ testReferenceToCellMapAndCheck(
     )
 );
 
-testReferenceToCellMapAndCheck(
+testCellReferenceToCellAndCheck(
     [
         a1(),
         b2()
