@@ -10,8 +10,6 @@ const C3 = SpreadsheetCellReference.parse("C3");
 
 const LABEL = "Label123";
 
-const FORMULA_TEXT_CLICK_WAIT = 50;
-
 const SELECTED_COLOR = "rgb(68, 68, 68)";
 
 describe(
