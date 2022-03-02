@@ -901,10 +901,10 @@ testColumnAndCheck(
     b()
 );
 
-// columnReferenceToColumn...................................................................................................
+// columnReferenceToColumns...................................................................................................
 
-function testColumnReferenceToColumnAndCheck(columns, expected) {
-    test("columnReferenceToColumn " + columns,
+function testColumnReferenceToColumnsAndCheck(columns, expected) {
+    test("columnReferenceToColumns " + columns,
         () => {
             const delta = new SpreadsheetDelta(
                 null,
@@ -921,18 +921,18 @@ function testColumnReferenceToColumnAndCheck(columns, expected) {
             );
 
             expect(
-                delta.columnReferenceToColumn()
+                delta.columnReferenceToColumns()
             ).toStrictEqual(expected);
         }
     );
 }
 
-testColumnReferenceToColumnAndCheck(
+testColumnReferenceToColumnsAndCheck(
     [],
     ImmutableMap.EMPTY
 );
 
-testColumnReferenceToColumnAndCheck(
+testColumnReferenceToColumnsAndCheck(
     [
         a()
     ],
@@ -945,7 +945,7 @@ testColumnReferenceToColumnAndCheck(
     )
 );
 
-testColumnReferenceToColumnAndCheck(
+testColumnReferenceToColumnsAndCheck(
     [
         a(),
         b()
