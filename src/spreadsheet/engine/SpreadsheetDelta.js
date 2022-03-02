@@ -174,7 +174,10 @@ export default class SpreadsheetDelta extends SystemObject {
         const referenceToCell = new Map();
 
         this.cells().forEach(c => {
-            referenceToCell.set(c.reference().toString(), c);
+            referenceToCell.set(
+                c.reference().toMapKey(),
+                c
+            );
         });
 
         return new ImmutableMap(referenceToCell);
@@ -196,12 +199,14 @@ export default class SpreadsheetDelta extends SystemObject {
 
             this.columns().forEach(c => {
                 referenceToColumn.set(
-                    c.reference().toString(),
+                    c.reference().toMapKey(),
                     c
                 );
             });
         }
-        return referenceToColumn.get(columnReference.toString());
+        return referenceToColumn.get(
+            columnReference.toMapKey()
+        );
     }
 
     labels() {
@@ -212,7 +217,10 @@ export default class SpreadsheetDelta extends SystemObject {
         const map = new Map();
 
         this.labels().forEach(m => {
-            map.set(m.label().toString(), m.reference());
+            map.set(
+                m.label().toMapKey(),
+                m.reference()
+            );
         });
 
         return new ImmutableMap(map);
@@ -223,7 +231,7 @@ export default class SpreadsheetDelta extends SystemObject {
 
         this.labels()
             .forEach(m => {
-                const key = m.reference().toString();
+                const key = m.reference().toMapKey();
                 var labels = cellToLabels.get(key);
                 if(null == labels){
                     labels = [];
@@ -251,12 +259,14 @@ export default class SpreadsheetDelta extends SystemObject {
 
             this.rows().forEach(r => {
                 referenceToRow.set(
-                    r.reference().toString(),
+                    r.reference().toMapKey(),
                     r
                 );
             });
         }
-        return referenceToRow.get(rowReference.toString());
+        return referenceToRow.get(
+            rowReference.toMapKey()
+        );
     }
 
     deletedCells() {
