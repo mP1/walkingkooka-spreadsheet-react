@@ -25,9 +25,11 @@ export default class ImmutableMap {
         Preconditions.requireFunction(valueUnmarshaller, "valueUnmarshaller");
 
         const map = new Map();
-        for(const [key, value] of Object.entries(json)) {
-            keyParser(key);
-            map.set(key, valueUnmarshaller(value));
+        for(const [key, value] of Object.entries(json)) {;
+            map.set(
+                keyParser(key).toMapKey(),
+                valueUnmarshaller(value)
+            );
         }
 
         return new ImmutableMap(map);
@@ -46,7 +48,7 @@ export default class ImmutableMap {
      * Returns the value for the given key.
      */
     get(key) {
-        return this.map.get(key.toString());
+        return this.map.get(key.toMapKey());
     }
 
     /**
@@ -54,7 +56,7 @@ export default class ImmutableMap {
      */
     remove(key) {
         const copy = new Map([...this.map]);
-        copy.delete(key.toString());
+        copy.delete(key.toMapKey());
         return new ImmutableMap(copy);
     }
 

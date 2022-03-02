@@ -23,6 +23,12 @@ export default class SpreadsheetSelection extends SystemObject {
         throw new Error("Invalid character " + CharSequences.quoteAndEscape(Character.fromJson(c)) + " at " + pos);
     }
 
+    toMapKey() {
+        return this.toString()
+            .replaceAll("$", "")
+            .toUpperCase();
+    }
+
     columnOrRange() {
         SystemObject.throwUnsupportedOperation();
     }

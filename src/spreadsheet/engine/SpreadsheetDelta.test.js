@@ -758,7 +758,7 @@ function testCellAndCheck(cells, labels, cellOrLabel, expected) {
 testCellAndCheck(
     cells(),
     [],
-    "Z99",
+    "z99",
     undefined
 );
 
