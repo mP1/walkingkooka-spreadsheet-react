@@ -117,7 +117,7 @@ const CONTEXT_MENU_Y_OFFSET = 10;
 /**
  * This component holds the cells viewport as well as the column and row controls.
  * <ul>
- * <li>ImmutableMap cells: A cache of the cells within the visible viewport</li>
+ * <li>ImmutableMap cellReferenceToCells: A cache of the cells within the visible viewport</li>
  * <li>ImmutableMap cellReferenceToLabels: cell to Label lookup</li>
  * <li>ImmutableMap columnReferenceToColumns: column reference to the column</li>
  * <li>ImmutableMap labelsToReference: Used to map a label to reference</li>
@@ -189,8 +189,8 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
             const window = responseDelta.window();
 
             var {
-                cells,
-                cellReferenceToLabels, 
+                cellReferenceToCells,
+                cellReferenceToLabels,
                 columnReferenceToColumns,
                 labelToReferences, 
                 rowReferenceToRows
@@ -199,14 +199,14 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
             // first remove any deleted cells.
             responseDelta.deletedCells()
                 .forEach(r => {
-                    cells = cells.remove(r)
+                    cellReferenceToCells = cellReferenceToCells.remove(r)
                 });
 
             // if a window was present on the response delta, clear any label mappings within the window space
             if(window){
-                var tempCellToLabels = new Map();
+                var tempCellReferenceToLabels = new Map();
 
-                cellReferenceToLabels = new ImmutableMap(tempCellToLabels);
+                cellReferenceToLabels = new ImmutableMap(tempCellReferenceToLabels);
 
                 // only copy labels that are not within the window.
                 var tempLabelToReferences = new Map();
@@ -220,7 +220,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
             }
 
             const newState = { // lgtm [js/react/inconsistent-state-update]
-                cells: cells.setAll(responseDelta.cellReferenceToCells()),
+                cellReferenceToCells: cellReferenceToCells.setAll(responseDelta.cellReferenceToCells()),
                 cellReferenceToLabels: cellReferenceToLabels.setAll(responseDelta.cellReferenceToLabels()),
                 columnReferenceToColumns: columnReferenceToColumns.setAll(responseDelta.columnReferenceToColumns()),
                 labelToReferences: labelToReferences.setAll(responseDelta.labelToReferences()),
@@ -354,7 +354,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
                 Object.assign(
                     newState,
                     {
-                        cells: ImmutableMap.EMPTY,
+                        cellReferenceToCells: ImmutableMap.EMPTY,
                         cellReferenceToLabels: ImmutableMap.EMPTY,
                         columnReferenceToColumns: ImmutableMap.EMPTY,
                         labelToReferences: ImmutableMap.EMPTY,
@@ -392,13 +392,15 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
 
         return {
             spreadsheetId: historyHashTokens[SpreadsheetHistoryHash.SPREADSHEET_ID],
-            cells: ImmutableMap.EMPTY,
+            cellReferenceToCells: ImmutableMap.EMPTY,
+            cellReferenceToLabels: ImmutableMap.EMPTY,
+            columnReferenceToColumns: ImmutableMap.EMPTY,
+            labelToReferences: ImmutableMap.EMPTY,
+            rowReferenceToRows: ImmutableMap.EMPTY,
             columnWidths: ImmutableMap.EMPTY,
             rowHeights: ImmutableMap.EMPTY,
             dimensions: props.dimensions,
             spreadsheetMetadata: SpreadsheetMetadata.EMPTY,
-            cellReferenceToLabels: ImmutableMap.EMPTY,
-            labelToReferences: ImmutableMap.EMPTY,
             contextMenu: {},
         };
     }
@@ -1019,7 +1021,14 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
      * Render the required TABLE ROW each filled with available or empty TABLE CELL cells.
      */
     renderTableBody(selection) {
-        const {cells, columnWidths, rowHeights, spreadsheetMetadata, dimensions, cellReferenceToLabels} = this.state;
+        const {
+            cellReferenceToCells,
+            cellReferenceToLabels,
+            columnWidths,
+            rowHeights,
+            spreadsheetMetadata,
+            dimensions
+        } = this.state;
 
         const home = spreadsheetMetadata.getIgnoringDefaults(SpreadsheetMetadata.VIEWPORT_CELL);
         const defaultStyle = spreadsheetMetadata.effectiveStyle();
@@ -1055,7 +1064,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
             // reference, formula, style, format, formatted
             while(x < viewportWidth) {
                 const cellReference = new SpreadsheetCellReference(column, row);
-                const cell = cells.get(cellReference) || cellReference.emptyCell();
+                const cell = cellReferenceToCells.get(cellReference) || cellReference.emptyCell();
 
                 tableCells.push(
                     cell.renderViewport(
