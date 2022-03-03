@@ -700,5 +700,61 @@ describe("Row",
             testing.cellFormattedTextCheck("C5", "Moved");
             testing.cellFormattedTextCheck(C3, "");
         });
+
+        it("Row context menu click hide", () => {
+            testing.cellFormulaEnterAndSave(A1, "'Before");
+            testing.cellFormulaEnterAndSave(B2, "'Hidden");
+            testing.cellFormulaEnterAndSave(C3, "'After");
+
+            testing.contextMenu(ROW_2.viewportId());
+
+            testing.viewportContextMenu()
+                .should("be.visible")
+                .find("#" + SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_HIDE_ID)
+                .should("include.text", "Hide");
+
+            testing.getById(SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_HIDE_ID)
+                .click();
+
+            testing.viewportContextMenu()
+                .should("not.be.visible");
+
+            testing.cellFormattedTextCheck(A1, "Before");
+            testing.get(B2.viewportId())
+                .should("not.exist");
+            testing.cellFormattedTextCheck("C3", "After");
+        });
+
+        it("Row range context menu click hide", () => {
+            testing.cellFormulaEnterAndSave(A1, "'Before");
+            testing.cellFormulaEnterAndSave(B2, "'Hidden");
+            testing.cellFormulaEnterAndSave(C3, "'Hidden");
+            testing.cellFormulaEnterAndSave(D4, "'After");
+
+            testing.row("2")
+                .click();
+            testing.historyWait();
+            testing.hashAppend(":3");
+
+            testing.contextMenu(ROW_2.viewportId());
+
+            testing.viewportContextMenu()
+                .should("be.visible")
+                .find("#" + SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_HIDE_ID)
+                .should("include.text", "Hide");
+
+            testing.getById(SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_HIDE_ID)
+                .click();
+
+            testing.viewportContextMenu()
+                .should("not.be.visible");
+
+            testing.cellFormattedTextCheck(A1, "Before");
+            testing.get(B2.viewportId())
+                .should("not.exist");
+            testing.get(C3.viewportId())
+                .should("not.exist");
+            testing.cellFormattedTextCheck("D4", "After");
+        });
     }
 );

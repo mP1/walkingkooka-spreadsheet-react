@@ -978,7 +978,12 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
      * Returns an array of TableCell, one for each column header.
      */
     renderTableColumnHeaders(selection) {
-        const {columnWidths, dimensions, spreadsheetMetadata} = this.state;
+        const {
+            columnReferenceToColumns,
+            columnWidths,
+            dimensions,
+            spreadsheetMetadata
+        } = this.state;
 
         const home = spreadsheetMetadata.getIgnoringDefaults(SpreadsheetMetadata.VIEWPORT_CELL);
         const defaultStyle = spreadsheetMetadata.effectiveStyle();
@@ -996,22 +1001,32 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
         ];
 
         let x = ROW_WIDTH;
-        let column = home.column();
+        let columnReference = home.column();
 
         while(x < viewportWidth) {
-            const width = columnWidths.get(column) | defaultColumnWidth;
+            const column = columnReferenceToColumns.get(columnReference);
 
-            headers.push(
-                column.renderViewport(
-                    COLUMN_HEADER(
-                        width,
-                        selection && selection.testColumn(column)
+            // only render non hidden columns....
+            if(null == column || !column.hidden()) {
+                const width = columnWidths.get(columnReference) | defaultColumnWidth;
+
+                headers.push(
+                    columnReference.renderViewport(
+                        COLUMN_HEADER(
+                            width,
+                            selection && selection.testColumn(columnReference)
+                        )
                     )
-                )
-            );
+                );
 
-            x = x + width;
-            column = column.add(1);
+                x = x + width;
+            }
+
+            const nextColumnReference = columnReference.addSaturated(1);
+            if(nextColumnReference.equals(columnReference)) {
+                break;
+            }
+            columnReference = nextColumnReference;
         }
 
         return headers;
@@ -1024,8 +1039,10 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
         const {
             cellReferenceToCells,
             cellReferenceToLabels,
+            columnReferenceToColumns,
             columnWidths,
             rowHeights,
+            rowReferenceToRows,
             spreadsheetMetadata,
             dimensions
         } = this.state;
@@ -1042,51 +1059,70 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
         const tableRows = [];
 
         let y = COLUMN_HEIGHT;
-        let row = home.row();
+        let rowReference = home.row();
 
         while(y < viewportHeight) {
+            const row = rowReferenceToRows.get(rowReference);
 
-            const tableCells = [];
-            let x = 0;
-            let column = home.column();
+            // skip rendering cells in hidden columns
+            if(null == row || !row.hidden()) {
+                const tableCells = [];
+                let x = 0;
+                let columnReference = home.column();
 
-            const height = (rowHeights.get(row) | defaultRowHeight);
-
-            tableCells.push(
-                row.renderViewport(
-                    ROW_HEADER(
-                        height,
-                        selection && selection.testRow(row)
-                    )
-                )
-            );
-
-            // reference, formula, style, format, formatted
-            while(x < viewportWidth) {
-                const cellReference = new SpreadsheetCellReference(column, row);
-                const cell = cellReferenceToCells.get(cellReference) || cellReference.emptyCell();
+                const height = (rowHeights.get(rowReference) | defaultRowHeight);
 
                 tableCells.push(
-                    cell.renderViewport(
-                        defaultStyle,
-                        cellReferenceToLabels.get(cellReference) || [],
+                    rowReference.renderViewport(
+                        ROW_HEADER(
+                            height,
+                            selection && selection.testRow(rowReference)
+                        )
                     )
                 );
 
-                x = x + (columnWidths.get(row) || defaultColumnWidth);
-                column = column.add(1);
+                // reference, formula, style, format, formatted
+                while(x < viewportWidth) {
+                    const column = columnReferenceToColumns.get(columnReference);
+
+                    // skip rendering cells in hidden columns
+                    if(null == column || !column.hidden()) {
+                        const cellReference = new SpreadsheetCellReference(columnReference, rowReference);
+                        const cell = cellReferenceToCells.get(cellReference) || cellReference.emptyCell();
+
+                        tableCells.push(
+                            cell.renderViewport(
+                                defaultStyle,
+                                cellReferenceToLabels.get(cellReference) || [],
+                            )
+                        );
+
+                        x = x + (columnWidths.get(rowReference) || defaultColumnWidth);
+                    }
+
+                    const nextColumnReference = columnReference.addSaturated(1);
+                    if(nextColumnReference.equals(columnReference)) {
+                        break;
+                    }
+                    columnReference = nextColumnReference;
+                }
+
+                tableRows.push(
+                    <TableRow key={"row-" + rowReference}>
+                        {
+                            tableCells
+                        }
+                    </TableRow>
+                );
+
+                y = y + height;
             }
 
-            tableRows.push(
-                <TableRow key={"row-" + row}>
-                    {
-                        tableCells
-                    }
-                </TableRow>
-            );
-
-            y = y + height;
-            row = row.add(1);
+            const nextRowReference = rowReference.addSaturated(1);
+            if(nextRowReference.equals(rowReference)) {
+                break;
+            }
+            rowReference = nextRowReference;
         }
 
         return tableRows;
