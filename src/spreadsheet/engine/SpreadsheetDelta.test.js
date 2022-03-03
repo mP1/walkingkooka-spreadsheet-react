@@ -819,31 +819,31 @@ test("cellReference() with absent label", () => {
         .toBeUndefined();
 });
 
-// cellToLabels.........................................................................................................
+// cellReferenceToLabels.........................................................................................................
 
-test("cellToLabels() several labels", () => {
-    const cellToLabels = delta().cellToLabels();
+test("cellReferenceToLabels() several labels", () => {
+    const cellReferenceToLabels = delta().cellReferenceToLabels();
 
-    expect(cellToLabels.get(a1().reference()))
+    expect(cellReferenceToLabels.get(a1().reference()))
         .toStrictEqual([
             label1(),
             label2(),
         ]);
 });
 
-test("cellToLabels() 1 label", () => {
-    const cellToLabels = delta().cellToLabels();
+test("cellReferenceToLabels() 1 label", () => {
+    const cellReferenceToLabels = delta().cellReferenceToLabels();
 
-    expect(cellToLabels.get(b2().reference()))
+    expect(cellReferenceToLabels.get(b2().reference()))
         .toStrictEqual([
             label3(),
         ]);
 });
 
-test("cellToLabels() no labels", () => {
-    const cellToLabels = delta().cellToLabels();
+test("cellReferenceToLabels() no labels", () => {
+    const cellReferenceToLabels = delta().cellReferenceToLabels();
 
-    expect(cellToLabels.get(SpreadsheetCellReference.parse("Z99")))
+    expect(cellReferenceToLabels.get(SpreadsheetCellReference.parse("Z99")))
         .toBeUndefined();
 });
 
