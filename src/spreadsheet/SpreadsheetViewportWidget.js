@@ -118,7 +118,7 @@ const CONTEXT_MENU_Y_OFFSET = 10;
  * This component holds the cells viewport as well as the column and row controls.
  * <ul>
  * <li>ImmutableMap cells: A cache of the cells within the visible viewport</li>
- * <li>ImmutableMap cellToLabels: cell to Label lookup</li>
+ * <li>ImmutableMap cellReferenceToLabels: cell to Label lookup</li>
  * <li>ImmutableMap columnReferenceToColumns: column reference to the column</li>
  * <li>ImmutableMap labelsToReference: Used to map a label to reference</li>
  * <li>ImmutableMap rowReferenceToRows: row reference to row</li>
@@ -190,7 +190,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
 
             var {
                 cells,
-                cellToLabels, 
+                cellReferenceToLabels, 
                 columnReferenceToColumns,
                 labelToReferences, 
                 rowReferenceToRows
@@ -206,7 +206,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
             if(window){
                 var tempCellToLabels = new Map();
 
-                cellToLabels = new ImmutableMap(tempCellToLabels);
+                cellReferenceToLabels = new ImmutableMap(tempCellToLabels);
 
                 // only copy labels that are not within the window.
                 var tempLabelToReferences = new Map();
@@ -221,7 +221,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
 
             const newState = { // lgtm [js/react/inconsistent-state-update]
                 cells: cells.setAll(responseDelta.cellReferenceToCells()),
-                cellToLabels: cellToLabels.setAll(responseDelta.cellToLabels()),
+                cellReferenceToLabels: cellReferenceToLabels.setAll(responseDelta.cellReferenceToLabels()),
                 columnReferenceToColumns: columnReferenceToColumns.setAll(responseDelta.columnReferenceToColumns()),
                 labelToReferences: labelToReferences.setAll(responseDelta.labelToReferences()),
                 rowReferenceToRows: rowReferenceToRows.setAll(responseDelta.rowReferenceToRows()),
@@ -355,7 +355,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
                     newState,
                     {
                         cells: ImmutableMap.EMPTY,
-                        cellToLabels: ImmutableMap.EMPTY,
+                        cellReferenceToLabels: ImmutableMap.EMPTY,
                         columnReferenceToColumns: ImmutableMap.EMPTY,
                         labelToReferences: ImmutableMap.EMPTY,
                         rowReferenceToRows: ImmutableMap.EMPTY,
@@ -397,7 +397,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
             rowHeights: ImmutableMap.EMPTY,
             dimensions: props.dimensions,
             spreadsheetMetadata: SpreadsheetMetadata.EMPTY,
-            cellToLabels: ImmutableMap.EMPTY,
+            cellReferenceToLabels: ImmutableMap.EMPTY,
             labelToReferences: ImmutableMap.EMPTY,
             contextMenu: {},
         };
@@ -1019,7 +1019,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
      * Render the required TABLE ROW each filled with available or empty TABLE CELL cells.
      */
     renderTableBody(selection) {
-        const {cells, columnWidths, rowHeights, spreadsheetMetadata, dimensions, cellToLabels} = this.state;
+        const {cells, columnWidths, rowHeights, spreadsheetMetadata, dimensions, cellReferenceToLabels} = this.state;
 
         const home = spreadsheetMetadata.getIgnoringDefaults(SpreadsheetMetadata.VIEWPORT_CELL);
         const defaultStyle = spreadsheetMetadata.effectiveStyle();
@@ -1060,7 +1060,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
                 tableCells.push(
                     cell.renderViewport(
                         defaultStyle,
-                        cellToLabels.get(cellReference) || [],
+                        cellReferenceToLabels.get(cellReference) || [],
                     )
                 );
 

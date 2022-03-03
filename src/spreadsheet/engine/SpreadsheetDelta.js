@@ -233,21 +233,21 @@ export default class SpreadsheetDelta extends SystemObject {
         return new ImmutableMap(map);
     }
 
-    cellToLabels() {
-        const cellToLabels = new Map();
+    cellReferenceToLabels() {
+        const cellReferenceToLabels = new Map();
 
         this.labels()
             .forEach(m => {
                 const key = m.reference().toMapKey();
-                var labels = cellToLabels.get(key);
+                var labels = cellReferenceToLabels.get(key);
                 if(null == labels){
                     labels = [];
-                    cellToLabels.set(key, labels);
+                    cellReferenceToLabels.set(key, labels);
                 }
                 labels.push(m.label());
             });
 
-        return new ImmutableMap(cellToLabels);
+        return new ImmutableMap(cellReferenceToLabels);
     }
 
     rows() {
