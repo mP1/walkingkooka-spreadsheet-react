@@ -186,7 +186,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
 
             const window = responseDelta.window();
 
-            var {cells, cellToLabels, labelToReference} = state;
+            var {cells, cellToLabels, labelToReferences} = state;
 
             // first remove any deleted cells.
             responseDelta.deletedCells()
@@ -201,20 +201,20 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
                 cellToLabels = new ImmutableMap(tempCellToLabels);
 
                 // only copy labels that are not within the window.
-                var tempLabelToReference = new Map();
-                for(const [label, reference] of labelToReference.toMap().entries()) {
+                var tempLabelToReferences = new Map();
+                for(const [label, reference] of labelToReferences.toMap().entries()) {
                     if(!window.testCell(reference)){
-                        tempLabelToReference.set(reference.toString(), label);
+                        tempLabelToReferences.set(reference.toString(), label);
                     }
                 }
 
-                labelToReference = new ImmutableMap(tempLabelToReference);
+                labelToReferences = new ImmutableMap(tempLabelToReferences);
             }
 
             const newState = { // lgtm [js/react/inconsistent-state-update]
                 cells: cells.setAll(responseDelta.cellReferenceToCells()),
                 cellToLabels: cellToLabels.setAll(responseDelta.cellToLabels()),
-                labelToReference: labelToReference.setAll(responseDelta.labelToReference()),
+                labelToReferences: labelToReferences.setAll(responseDelta.labelToReferences()),
                 columnWidths: state.columnWidths.setAll(responseDelta.columnWidths()),
                 rowHeights: state.rowHeights.setAll(responseDelta.rowHeights()),
             };
@@ -385,7 +385,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
             dimensions: props.dimensions,
             spreadsheetMetadata: SpreadsheetMetadata.EMPTY,
             cellToLabels: ImmutableMap.EMPTY,
-            labelToReference: ImmutableMap.EMPTY,
+            labelToReferences: ImmutableMap.EMPTY,
             contextMenu: {},
         };
     }
@@ -665,7 +665,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
         if(!(this.state.selectionAction instanceof SpreadsheetFormulaSelectionActionHistoryHashToken)){
             if(selection){
                 const cellColumnOrRow = selection.viewportFocus(
-                    this.state.labelToReference,
+                    this.state.labelToReferences,
                     anchor
                 );
 
@@ -702,7 +702,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
 
         // need to resolve the selection to an actual cell or range so these may be highlighted
         let selectionNotLabel = selection instanceof SpreadsheetLabelName ?
-            state.labelToReference.get(selection) :
+            state.labelToReferences.get(selection) :
             selection;
 
         const contextMenu = state.contextMenu;

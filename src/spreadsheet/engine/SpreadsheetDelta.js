@@ -220,7 +220,7 @@ export default class SpreadsheetDelta extends SystemObject {
         return this.labelsValue.slice();
     }
 
-    labelToReference() {
+    labelToReferences() {
         const map = new Map();
 
         this.labels().forEach(m => {

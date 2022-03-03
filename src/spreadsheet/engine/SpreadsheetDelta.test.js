@@ -959,29 +959,29 @@ testColumnReferenceToColumnsAndCheck(
     )
 );
 
-// labelToReference.........................................................................................................
+// labelToReferences.........................................................................................................
 
-test("labelToReference() several labels", () => {
-    const labelToReference = delta().labelToReference();
+test("labelToReferences() several labels", () => {
+    const labelToReferences = delta().labelToReferences();
 
-    expect(labelToReference.get(label1()))
+    expect(labelToReferences.get(label1()))
         .toStrictEqual(a1().reference());
 
-    expect(labelToReference.get(label2()))
+    expect(labelToReferences.get(label2()))
         .toStrictEqual(a1().reference());
 });
 
-test("labelToReference() 1 label", () => {
-    const labelToReference = delta().labelToReference();
+test("labelToReferences() 1 label", () => {
+    const labelToReferences = delta().labelToReferences();
 
-    expect(labelToReference.get(label3()))
+    expect(labelToReferences.get(label3()))
         .toStrictEqual(b2().reference());
 });
 
-test("labelToReference() no labels", () => {
-    const labelToReference = delta().labelToReference();
+test("labelToReferences() no labels", () => {
+    const labelToReferences = delta().labelToReferences();
 
-    expect(labelToReference.get(SpreadsheetLabelName.parse("Unknown")))
+    expect(labelToReferences.get(SpreadsheetLabelName.parse("Unknown")))
         .toBeUndefined();
 });
 
