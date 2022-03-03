@@ -119,7 +119,9 @@ const CONTEXT_MENU_Y_OFFSET = 10;
  * <ul>
  * <li>ImmutableMap cells: A cache of the cells within the visible viewport</li>
  * <li>ImmutableMap cellToLabels: cell to Label lookup</li>
+ * <li>ImmutableMap columnReferenceToColumns: column reference to the column</li>
  * <li>ImmutableMap labelsToReference: Used to map a label to reference</li>
+ * <li>ImmutableMap rowReferenceToRows: row reference to row</li>
  * <li>ImmutableMap columnWidths: A cache of the column widths within the visible viewport</li>
  * <li>ImmutableMap rowHeights: A cache of the row heights within the visible viewport</li>
  * <li>object dimensions: Holds the width and height of the viewport in pixels</li>
@@ -186,7 +188,13 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
 
             const window = responseDelta.window();
 
-            var {cells, cellToLabels, labelToReferences} = state;
+            var {
+                cells,
+                cellToLabels, 
+                columnReferenceToColumns,
+                labelToReferences, 
+                rowReferenceToRows
+            } = state;
 
             // first remove any deleted cells.
             responseDelta.deletedCells()
@@ -214,7 +222,9 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
             const newState = { // lgtm [js/react/inconsistent-state-update]
                 cells: cells.setAll(responseDelta.cellReferenceToCells()),
                 cellToLabels: cellToLabels.setAll(responseDelta.cellToLabels()),
+                columnReferenceToColumns: columnReferenceToColumns.setAll(responseDelta.columnReferenceToColumns()),
                 labelToReferences: labelToReferences.setAll(responseDelta.labelToReferences()),
+                rowReferenceToRows: rowReferenceToRows.setAll(responseDelta.rowReferenceToRows()),
                 columnWidths: state.columnWidths.setAll(responseDelta.columnWidths()),
                 rowHeights: state.rowHeights.setAll(responseDelta.rowHeights()),
             };
@@ -345,9 +355,12 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
                     newState,
                     {
                         cells: ImmutableMap.EMPTY,
+                        cellToLabels: ImmutableMap.EMPTY,
+                        columnReferenceToColumns: ImmutableMap.EMPTY,
+                        labelToReferences: ImmutableMap.EMPTY,
+                        rowReferenceToRows: ImmutableMap.EMPTY,
                         columnWidths: ImmutableMap.EMPTY,
                         rowHeights: ImmutableMap.EMPTY,
-                        cellToLabels: ImmutableMap.EMPTY,
                     });
             }
         }
