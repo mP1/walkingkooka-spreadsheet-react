@@ -222,7 +222,7 @@ apiLoadCellsQueryStringParametersAndCheck(
         height: [height()],
         selectionType: ["cell-range"],
         selection: [SpreadsheetCellRange.parse("B2:C3")],
-        selectionAnchor: [SpreadsheetViewportSelectionAnchor.TOP_LEFT],
+        selectionAnchor: ["top-left"],
     }
 );
 
@@ -280,7 +280,7 @@ apiLoadCellsQueryStringParametersAndCheck(
         height: [height()],
         selectionType: ["column-range"],
         selection: [SpreadsheetColumnReferenceRange.parse("B:C")],
-        selectionAnchor: [SpreadsheetViewportSelectionAnchor.LEFT],
+        selectionAnchor: ["left"],
     }
 );
 
@@ -319,7 +319,7 @@ apiLoadCellsQueryStringParametersAndCheck(
         height: [height()],
         selectionType: ["row-range"],
         selection: [SpreadsheetRowReferenceRange.parse("98:99")],
-        selectionAnchor: [SpreadsheetViewportSelectionAnchor.TOP],
+        selectionAnchor: ["top"],
     }
 );
 // equals...............................................................................................................

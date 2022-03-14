@@ -2,6 +2,8 @@
 
 import SystemEnum from "../../SystemEnum.js";
 import SystemObject from "../../SystemObject.js";
+import Preconditions from "../../Preconditions.js";
+import CharSequences from "../../CharSequences.js";
 
 const TYPE_NAME = "spreadsheet-viewport-selection-anchor";
 
@@ -35,6 +37,18 @@ export default class SpreadsheetViewportSelectionAnchor extends SystemEnum {
   
   static fromJson(name) {
     return SpreadsheetViewportSelectionAnchor.valueOf(name);
+  }
+
+  static from(text) {
+    Preconditions.requireNonEmptyText(text, "text");
+
+    for(const possible of SpreadsheetViewportSelectionAnchor.values()) {
+      if(possible.name().toLowerCase().replaceAll("_", "-") === text){
+        return possible;
+      }
+    }
+
+    throw new Error("Invalid anchor=" + CharSequences.quoteAndEscape(text));
   }
 
   /**

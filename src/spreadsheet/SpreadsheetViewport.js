@@ -92,7 +92,7 @@ export default class SpreadsheetViewport extends SystemObject {
         }
 
         if(anchor) {
-            parameters.selectionAnchor = [anchor];
+            parameters.selectionAnchor = [anchor.nameKebabCase()];
         }
 
         return parameters;
