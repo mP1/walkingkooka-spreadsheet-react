@@ -50,15 +50,6 @@ export default class SpreadsheetViewportSelectionAnchor extends SystemEnum {
 
     throw new Error("Invalid anchor=" + CharSequences.quoteAndEscape(text));
   }
-
-  /**
-   * TOP_LEFT -> top-left, TOP_RIGHT -> top-right
-   */
-  toHistoryHashToken() {
-    return this.name()
-        .toLowerCase()
-        .replace("_", "-")
-  }
   
   typeName() {
     return TYPE_NAME;
