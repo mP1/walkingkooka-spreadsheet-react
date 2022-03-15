@@ -68,6 +68,13 @@ export default class SystemEnum extends SystemObject {
         return this.nameKebabCase();
     }
 
+    /**
+     * TOP_LEFT -> top-left, TOP_RIGHT -> top-right
+     */
+    toHistoryHashToken() {
+        return this.nameKebabCase();
+    }
+
     equals(other) {
         return this === other;
     }
