@@ -3,6 +3,7 @@ import './SpreadsheetApp.css';
 import {withStyles} from '@mui/styles';
 import Divider from '@mui/material/Divider';
 import Equality from "../Equality.js";
+import ExpressionNumber from "../math/ExpressionNumber.js";
 import HttpMethod from "../net/HttpMethod.js";
 import ListenerCollection from "../event/ListenerCollection.js";
 import Preconditions from "../Preconditions.js";
@@ -52,6 +53,8 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
     // init.............................................................................................................
 
     init() {
+        ExpressionNumber.fromJson("0"); // force json unmarshaller registry
+
         const showError = this.props.showError;
 
         const messenger = new SpreadsheetMessenger(showError);
