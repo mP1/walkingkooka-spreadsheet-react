@@ -3,6 +3,7 @@
  */
 import Preconditions from "./Preconditions.js";
 import SystemObject from "./SystemObject.js";
+import CharSequences from "./CharSequences.js";
 
 export default class SystemEnum extends SystemObject {
 
@@ -19,6 +20,18 @@ export default class SystemEnum extends SystemObject {
             }
         }
         throw new Error("Unknown enum got " + name);
+    }
+
+    static from(text, enumValues, label) {
+        Preconditions.requireNonEmptyText(text, "text");
+
+        for(var i = 0; i < enumValues.length; i++) {
+            const possible = enumValues[i];
+            if(possible.nameKebabCase() === text){
+                return possible;
+            }
+        }
+        throw new Error("Unknown " + label + " got " + CharSequences.quoteAndEscape(text));
     }
 
     // eslint-disable-next-line no-useless-constructor
