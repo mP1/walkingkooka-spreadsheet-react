@@ -1,9 +1,9 @@
 /**
  * Base class for all enums.
  */
+import CharSequences from "./CharSequences.js";
 import Preconditions from "./Preconditions.js";
 import SystemObject from "./SystemObject.js";
-import CharSequences from "./CharSequences.js";
 
 export default class SystemEnum extends SystemObject {
 
