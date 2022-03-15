@@ -107,10 +107,6 @@ export default class SpreadsheetColumnOrRowReference extends SpreadsheetSelectio
         return this.equals(clicked);
     }
 
-    viewportEnter(giveFormulaFocus) {
-        // do nothing if ENTER selected on column or row.
-    }
-
     viewportFocus(labelToReference, anchor) {
         return this;
     }

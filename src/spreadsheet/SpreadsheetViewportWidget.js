@@ -2,6 +2,7 @@ import _ from "lodash";
 import Equality from "../Equality.js";
 import HttpMethod from "../net/HttpMethod.js";
 import ImmutableMap from "../util/ImmutableMap.js";
+import Keys from "../Keys.js";
 import Menu from "@mui/material/Menu";
 import Paper from '@mui/material/Paper';
 import Preconditions from "../Preconditions.js";
@@ -37,6 +38,7 @@ import SpreadsheetRowReferenceRange from "./reference/SpreadsheetRowReferenceRan
 import SpreadsheetSelection from "./reference/SpreadsheetSelection.js";
 import SpreadsheetViewport from "./SpreadsheetViewport.js";
 import SpreadsheetViewportSelectionAnchor from "./reference/SpreadsheetViewportSelectionAnchor.js";
+import SpreadsheetViewportSelectionNavigation from "./reference/SpreadsheetViewportSelectionNavigation.js";
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -130,7 +132,8 @@ const CONTEXT_MENU_Y_OFFSET = 10;
  * <li>boolean giveFocus: if cells changed give focus to the selected cell. This helps giving focus after a delta load.</li>
  * <li>boolean focused: When true the viewport has focus, and cleared when the blur event happens.</li>
  * <li>SpreadsheetSelection selection: The currently active selection including ranges</li>
- * <li>SpreadsheetViewportSelectionAnchor anchor: When a range is the current selection this will hold the anchor.</li>
+ * <li>SpreadsheetViewportSelectionAnchor selectionAnchor: When a range is the current selection this will hold the anchor.</li>
+ * <li>SpreadsheetViewportSelectionNavigation selectionNavigation: Tracks the last navigation entry from the keyboard</li>
  * <li>contextMenu object an object with two properties anchorPosition and menuList both which are given to the Menu to present itself.</li>
  * </ul>
  */
@@ -171,20 +174,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
 
         const viewportTable = this.viewportTable.current;
         if(viewportTable){
-            const width = viewportTable.offsetWidth - ROW_WIDTH;
-            const height = viewportTable.offsetHeight - COLUMN_HEIGHT;
-
             const metadata = state.spreadsheetMetadata;
-            const selection = state.selection;
-            const viewportCell = metadata.getIgnoringDefaults(SpreadsheetMetadata.VIEWPORT_CELL);
-
-            const viewport = new SpreadsheetViewport(
-                viewportCell,
-                0,
-                0,
-                width,
-                height
-            );
 
             const window = responseDelta.window();
 
@@ -192,7 +182,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
                 cellReferenceToCells,
                 cellReferenceToLabels,
                 columnReferenceToColumns,
-                labelToReferences, 
+                labelToReferences,
                 rowReferenceToRows
             } = state;
 
@@ -229,7 +219,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
                 rowHeights: state.rowHeights.setAll(responseDelta.rowHeights()),
             };
 
-            if(window && Equality.safeEquals(url.queryParameters(), viewport.apiLoadCellsQueryStringParameters(selection))){
+            if(window && url.queryParameters().selection){
                 Object.assign(
                     newState,
                     {
@@ -237,6 +227,18 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
                         spreadsheetMetadata: metadata.set(SpreadsheetMetadata.VIEWPORT_CELL, window.begin())
                     }
                 );
+
+                const viewportSelection = responseDelta.selection();
+                if(viewportSelection){
+                    Object.assign(
+                        newState,
+                        {
+                            selection: viewportSelection.selection(),
+                            selectionAnchor: viewportSelection.anchor(),
+                            selectionNavigation: viewportSelection.navigation(),
+                        }
+                    );
+                }
             }
 
             switch(method) {
@@ -246,6 +248,8 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
                         {
                             selection: null,
                             selectionAction: null,
+                            selectionAnchor: null,
+                            selectionNavigation: null,
                         }
                     );
                     break;
@@ -270,6 +274,8 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
                                         {
                                             selection: selection.viewportInsertBeforePostSuccessSelection(selectionAction.count()),
                                             selectionAction: null,
+                                            selectionAnchor: historyTokens[SpreadsheetHistoryHashTokens.SELECTION_ANCHOR],
+                                            selectionNavigation: null,
                                         }
                                     );
                                 }
@@ -295,6 +301,8 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
                                         {
                                             selection: selection,
                                             selectionAction: null,
+                                            selectionAnchor: historyTokens[SpreadsheetHistoryHashTokens.SELECTION_ANCHOR],
+                                            selectionNavigation: null,
                                         }
                                     );
                                 }
@@ -309,8 +317,6 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
 
             this.setState(newState);
         }
-
-        this.giveDeltaSelectionFocus(responseDelta);
     }
 
     /**
@@ -330,8 +336,9 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
                             viewportTable.offsetWidth - ROW_WIDTH,
                             viewportTable.offsetHeight - COLUMN_HEIGHT,
                         ),
-                        null,
-                        null
+                        null, // selection
+                        null, // selectionAnchor
+                        null, // selectionNavigation
                     );
                 }
                 break;
@@ -408,8 +415,9 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
     stateFromHistoryTokens(tokens) {
         return {
             selection: tokens[SpreadsheetHistoryHashTokens.SELECTION],
-            selectionAnchor: tokens[SpreadsheetHistoryHashTokens.SELECTION_ANCHOR],
             selectionAction: tokens[SpreadsheetHistoryHashTokens.SELECTION_ACTION],
+            selectionAnchor: tokens[SpreadsheetHistoryHashTokens.SELECTION_ANCHOR],
+            selectionNavigation: null, // TODO maybe add history hash support for navigation
             contextMenu: {}, // close context menu
         };
     }
@@ -456,8 +464,10 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
                 const selectionActionOld = prevState.selectionAction;
                 const selectionActionNew = state.selectionAction;
 
+                const selectionNavigationOld = prevState.selectionNavigation;
+                const selectionNavigationNew = state.selectionNavigation;
+
                 let viewportLoadCells = false;
-                var giveFocus = false;
 
                 do {
                     if(!Equality.safeEquals(selectionActionNew, selectionActionOld)){
@@ -471,7 +481,13 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
                         console.log("New selection " + selectionOld + " to " + selectionNew);
 
                         viewportLoadCells = true;
-                        giveFocus = true; // only give focus if selection changed
+                        break;
+                    }
+
+                    if(selectionNavigationNew && !Equality.safeEquals(selectionNavigationNew, selectionNavigationOld)) {
+                        console.log("New selection navigation " + selectionNavigationOld + " to " + selectionNavigationNew);
+
+                        viewportLoadCells = true;
                         break;
                     }
 
@@ -501,13 +517,15 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
                             width,
                             height
                         ),
-                        giveFocus ? selectionNew : null,
-                        giveFocus ? selectionAnchor : null
+                        selectionNew,
+                        selectionAnchor,
+                        selectionNavigationNew,
                     );
 
                     if(state.focused) {
                         historyTokens[SpreadsheetHistoryHashTokens.SELECTION] = selectionNew;
                         historyTokens[SpreadsheetHistoryHashTokens.SELECTION_ACTION] = selectionActionNew;
+                        historyTokens[SpreadsheetHistoryHashTokens.SELECTION_ANCHOR] = selectionAnchor;
                     }
                 }
 
@@ -651,12 +669,15 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
         }
     }
 
-    loadCells(viewport, selection, anchor) {
+    /**
+     * Loads the requested cells, and includes the selection, anchor and any recently entered navigation.
+     */
+    loadCells(viewport, selection, anchor, navigation) {
         const props = this.props;
 
         props.spreadsheetDeltaCellCrud.get(
             "*",
-            viewport.apiLoadCellsQueryStringParameters(selection, anchor),
+            viewport.apiLoadCellsQueryStringParameters(selection, anchor, navigation),
             props.showError
         );
     }
@@ -792,19 +813,54 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
         const onKeyDown = (e) => {
             e.preventDefault();
 
-            const selection = this.findEventTargetSelection(e.target);
-            if(selection){
-                const state = this.state;
+            const eventSelection = this.findEventTargetSelection(e.target);
+            if(eventSelection){
+                var {
+                    selection,
+                    selectionAnchor
+                } = this.state;
 
-                selection.onViewportKeyDown(
-                    e.key, // key
-                    e.shiftKey, // selectRange
-                    state.selection, // current selection may be null
-                    state.selectionAnchor, // anchor
-                    state.spreadsheetMetadata.getIgnoringDefaults(SpreadsheetMetadata.VIEWPORT_CELL), // viewportHome
-                    (s) => this.saveSelection(s && s.selection(), s && s.anchor(), null), // setSelection
-                    () => this.saveSelection(selection, null, new SpreadsheetFormulaLoadAndEditHistoryHashToken()),
-                );
+                var selectionNavigation = null;
+                const shifted = e.shiftKey;
+
+                switch(e.key) {
+                    case Keys.ARROW_LEFT:
+                        selectionNavigation = shifted ? SpreadsheetViewportSelectionNavigation.EXTEND_LEFT : SpreadsheetViewportSelectionNavigation.LEFT;
+                        break;
+                    case Keys.ARROW_UP:
+                        selectionNavigation = shifted ? SpreadsheetViewportSelectionNavigation.EXTEND_UP : SpreadsheetViewportSelectionNavigation.UP;
+                        break;
+                    case Keys.ARROW_RIGHT:
+                        selectionNavigation = shifted ? SpreadsheetViewportSelectionNavigation.EXTEND_RIGHT : SpreadsheetViewportSelectionNavigation.RIGHT;
+                        break;
+                    case Keys.ARROW_DOWN:
+                        selectionNavigation = shifted ? SpreadsheetViewportSelectionNavigation.EXTEND_DOWN : SpreadsheetViewportSelectionNavigation.DOWN;
+                        break;
+                    case Keys.ENTER:
+                        // ENTER on a cell selection gives focus to formula text box
+                        if(selection instanceof SpreadsheetCellReference) {
+                            this.saveSelection(
+                                selection,
+                                null,
+                                new SpreadsheetFormulaLoadAndEditHistoryHashToken()
+                            );
+                        }
+                        break;
+                        // ESCAPE clears any selection
+                    case Keys.ESCAPE:
+                        selection = null;
+                        selectionAnchor = null;
+                        selectionNavigation = null;
+                        break;
+                    default:
+                        break;
+                }
+
+                this.setState({
+                   selection: selection,
+                   selectionAnchor: selectionAnchor,
+                   selectionNavigation: selectionNavigation,
+                });
             }
         };
 

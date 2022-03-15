@@ -6,9 +6,7 @@ import SpreadsheetColumnReference from "./SpreadsheetColumnReference.js";
 import SpreadsheetHistoryHashTokens from "../history/SpreadsheetHistoryHashTokens.js";
 import SpreadsheetReferenceKind from "./SpreadsheetReferenceKind";
 import SpreadsheetRow from "./SpreadsheetRow.js";
-import SpreadsheetRowReferenceRange from "./SpreadsheetRowReferenceRange.js";
 import SpreadsheetSelection from "./SpreadsheetSelection.js";
-import SpreadsheetViewportSelectionAnchor from "./SpreadsheetViewportSelectionAnchor.js";
 import SystemObject from "../../SystemObject.js";
 
 const TYPE_NAME = "spreadsheet-row-reference";
@@ -179,50 +177,6 @@ export default class SpreadsheetRowReference extends SpreadsheetColumnOrRowRefer
         return urlPaths[4] === "row" &&
             urlPaths[5] === this.toString() &&
             urlPaths[6] === "before";
-    }
-
-    // viewport.........................................................................................................
-
-    viewportLeft() {
-        return this;
-    }
-
-    viewportRight(home) {
-        return this.setColumn(home.column());
-    }
-
-    viewportUp() {
-        return this.addSaturated(-1);
-    }
-
-    viewportDown() {
-        return this.addSaturated(+1);
-    }
-
-    viewportLeftExtend(anchor, current, home) {
-        return this.setAnchor();
-    }
-
-    viewportRightExtend(anchor, current, home) {
-        return home.column()
-            .setRow(this)
-            .setAnchor()
-    }
-
-    viewportUpExtend(anchor, current, home) {
-        return new SpreadsheetRowReferenceRange(
-            this.viewportUp(),
-            this
-        ).rowOrRange()
-            .setAnchorConditional(SpreadsheetViewportSelectionAnchor.BOTTOM)
-    }
-
-    viewportDownExtend(anchor, current, home) {
-        return new SpreadsheetRowReferenceRange(
-            this,
-            this.viewportDown(),
-        ).rowOrRange()
-            .setAnchorConditional(SpreadsheetViewportSelectionAnchor.TOP)
     }
 
     // JSON............................................................................................................

@@ -6,6 +6,7 @@ import SpreadsheetRowReferenceRange from "./reference/SpreadsheetRowReferenceRan
 import SpreadsheetRowReference from "./reference/SpreadsheetRowReference.js";
 import SpreadsheetViewport from "./SpreadsheetViewport.js";
 import SpreadsheetViewportSelectionAnchor from "./reference/SpreadsheetViewportSelectionAnchor.js";
+import SpreadsheetViewportSelectionNavigation from "./reference/SpreadsheetViewportSelectionNavigation.js";
 import systemObjectTesting from "../SystemObjectTesting.js";
 
 function cellOrLabel() {
@@ -163,10 +164,12 @@ test("new 0 height", () => {
 
 // apiLoadCellsQueryStringParameters..............................................................................................
 
-function apiLoadCellsQueryStringParametersAndCheck(c, x, y, w, h, s, a, expected) {
-    test("apiLoadCellsQueryStringParametersAndCheck " + c + " " + x + " " + y + " " + w + " " + h + " " + s + " " + a, () => {
+function apiLoadCellsQueryStringParametersAndCheck(c, x, y, w, h, s, a, n, expected) {
+    test("apiLoadCellsQueryStringParametersAndCheck " + c + " " + x + " " + y + " " + w + " " + h + " " + s + " anchor=" + a + " navigation=" + n, () => {
         expect(expected)
-            .toStrictEqual(new SpreadsheetViewport(c, x, y, w, h).apiLoadCellsQueryStringParameters(s, a));
+            .toStrictEqual(new SpreadsheetViewport(c, x, y, w, h)
+                .apiLoadCellsQueryStringParameters(s, a, n)
+            );
     });
 }
 
@@ -176,6 +179,7 @@ apiLoadCellsQueryStringParametersAndCheck(
     yOffset(),
     width(),
     height(),
+    null,
     null,
     null,
     {
@@ -194,6 +198,7 @@ apiLoadCellsQueryStringParametersAndCheck(
     width(),
     height(),
     SpreadsheetCellReference.parse("B2"),
+    null,
     null,
     {
         home: [cellOrLabel()],
@@ -214,6 +219,7 @@ apiLoadCellsQueryStringParametersAndCheck(
     height(),
     SpreadsheetCellRange.parse("B2:C3"),
     SpreadsheetViewportSelectionAnchor.TOP_LEFT,
+    null,
     {
         home: [cellOrLabel()],
         xOffset: [xOffset()],
@@ -234,6 +240,7 @@ apiLoadCellsQueryStringParametersAndCheck(
     height(),
     SpreadsheetCellReference.parse("B2"),
     null,
+    null,
     {
         home: [cellOrLabel()],
         xOffset: [xOffset()],
@@ -252,6 +259,7 @@ apiLoadCellsQueryStringParametersAndCheck(
     width(),
     height(),
     SpreadsheetColumnReference.parse("B"),
+    null,
     null,
     {
         home: [cellOrLabel()],
@@ -272,6 +280,7 @@ apiLoadCellsQueryStringParametersAndCheck(
     height(),
     SpreadsheetColumnReferenceRange.parse("B:C"),
     SpreadsheetViewportSelectionAnchor.LEFT,
+    null,
     {
         home: [cellOrLabel()],
         xOffset: [xOffset()],
@@ -292,6 +301,7 @@ apiLoadCellsQueryStringParametersAndCheck(
     height(),
     SpreadsheetRowReference.parse("99"),
     null,
+    null,
     {
         home: [cellOrLabel()],
         xOffset: [xOffset()],
@@ -311,6 +321,7 @@ apiLoadCellsQueryStringParametersAndCheck(
     height(),
     SpreadsheetRowReferenceRange.parse("98:99"),
     SpreadsheetViewportSelectionAnchor.TOP,
+    null,
     {
         home: [cellOrLabel()],
         xOffset: [xOffset()],
@@ -320,6 +331,28 @@ apiLoadCellsQueryStringParametersAndCheck(
         selectionType: ["row-range"],
         selection: [SpreadsheetRowReferenceRange.parse("98:99")],
         selectionAnchor: ["top"],
+    }
+);
+
+apiLoadCellsQueryStringParametersAndCheck(
+    cellOrLabel(),
+    xOffset(),
+    yOffset(),
+    width(),
+    height(),
+    SpreadsheetRowReferenceRange.parse("98:99"),
+    SpreadsheetViewportSelectionAnchor.TOP,
+    SpreadsheetViewportSelectionNavigation.UP,
+    {
+        home: [cellOrLabel()],
+        xOffset: [xOffset()],
+        yOffset: [yOffset()],
+        width: [width()],
+        height: [height()],
+        selectionType: ["row-range"],
+        selection: [SpreadsheetRowReferenceRange.parse("98:99")],
+        selectionAnchor: ["top"],
+        selectionNavigation: ["up"]
     }
 );
 // equals...............................................................................................................

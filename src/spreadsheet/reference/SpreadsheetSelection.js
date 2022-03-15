@@ -1,6 +1,5 @@
 import CharSequences from "../../CharSequences.js";
 import Character from "../../Character.js";
-import Keys from "../../Keys.js";
 import SpreadsheetCellDeleteSelectionActionHistoryHashToken
     from "../history/SpreadsheetCellDeleteSelectionActionHistoryHashToken.js";
 import SpreadsheetColumnOrRowClearHistoryHashToken from "../history/SpreadsheetColumnOrRowClearHistoryHashToken.js";
@@ -106,55 +105,6 @@ export default class SpreadsheetSelection extends SystemObject {
     }
 
     // key events.......................................................................................................
-
-    /**
-     *
-     */
-    onViewportKeyDown(key, selectRange, selection, anchor, viewportHome, saveSelection, giveFormulaFocus) {
-        console.log("onViewportKeyDown: " + key + " " + (selectRange ? "selecting range ": "") + this + " " + (selection ? selection + " ":  "") + (anchor ? anchor + " ": "") + (viewportHome ? " home=" + viewportHome : ""));
-
-        const selectionOrThis = selection ? selection : this;
-
-        switch(key) {
-            case Keys.ARROW_LEFT:
-                saveSelection(
-                    selectRange ?
-                        selectionOrThis.viewportLeftExtend(anchor, this, viewportHome):
-                        this.viewportLeft(viewportHome).setAnchor()
-                );
-                break;
-            case Keys.ARROW_RIGHT:
-                saveSelection(
-                    selectRange ?
-                        selectionOrThis.viewportRightExtend(anchor, this, viewportHome):
-                        this.viewportRight(viewportHome).setAnchor()
-                );
-                break;
-            case Keys.ARROW_UP:
-                saveSelection(
-                    selectRange ?
-                        selectionOrThis.viewportUpExtend(anchor, this, viewportHome):
-                        this.viewportUp(viewportHome).setAnchor()
-                );
-                break;
-            case Keys.ARROW_DOWN:
-                saveSelection(
-                    selectRange ?
-                        selectionOrThis.viewportDownExtend(anchor, this, viewportHome):
-                        this.viewportDown(viewportHome).setAnchor()
-                );
-                break;
-            case Keys.ENTER:
-                selectionOrThis.viewportEnter(giveFormulaFocus);
-                break;
-            case Keys.ESCAPE:
-                saveSelection(null);
-                break;
-            default:
-                // ignore other keys
-                break;
-        }
-    }
 
     viewportContextMenuClick(clicked) {
         SystemObject.throwUnsupportedOperation();
@@ -323,44 +273,8 @@ export default class SpreadsheetSelection extends SystemObject {
         return menuItems;
     }
 
-    viewportEnter(giveFormulaFocus) {
-        SystemObject.throwUnsupportedOperation();
-    }
-
     viewportFocus(giveFormulaFocus) {
         SystemObject.throwUnsupportedOperation();
-    }
-
-    viewportLeft(home) {
-        SystemObject.throwUnsupportedOperation()
-    }
-
-    viewportRight(home) {
-        SystemObject.throwUnsupportedOperation()
-    }
-
-    viewportUp(home) {
-        SystemObject.throwUnsupportedOperation()
-    }
-
-    viewportDown(home) {
-        SystemObject.throwUnsupportedOperation()
-    }
-
-    viewportLeftExtend(anchor, current, home) {
-        SystemObject.throwUnsupportedOperation()
-    }
-
-    viewportRightExtend(anchor, current, home) {
-        SystemObject.throwUnsupportedOperation()
-    }
-
-    viewportUpExtend(anchor, current, home) {
-        SystemObject.throwUnsupportedOperation()
-    }
-
-    viewportDownExtend(anchor, current, home) {
-        SystemObject.throwUnsupportedOperation()
     }
 
     viewportClearText() {
