@@ -15,7 +15,7 @@ export default class SpreadsheetReferenceKind extends SystemEnum {
     }
 
     static valueOf(name) {
-        return SystemEnum.valueOf(name, SpreadsheetReferenceKind.values());
+        return SystemEnum.valueOf(name, "SpreadsheetReferenceKind", SpreadsheetReferenceKind.values());
     }
 
     static fromJson(name) {
