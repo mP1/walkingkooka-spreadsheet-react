@@ -10,7 +10,7 @@ export default class SystemEnum extends SystemObject {
     /**
      * Helper that finds an enum with the given text(name) or throws an Error.
      */
-    static valueOf(name, enumValues) {
+    static valueOf(name, label, enumValues) {
         Preconditions.requireNonEmptyText(name, "name");
 
         for(var i = 0; i < enumValues.length; i++) {
@@ -19,7 +19,7 @@ export default class SystemEnum extends SystemObject {
                 return possible;
             }
         }
-        throw new Error("Unknown enum got " + name);
+        throw new Error("Unknown " + label + " got " + name);
     }
 
     static from(text, enumValues, label) {
