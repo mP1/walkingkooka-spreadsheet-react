@@ -24,7 +24,13 @@ export default class SpreadsheetReferenceKind extends SystemEnum {
   static fromJson(name) {
     return SpreadsheetReferenceKind.valueOf(name);
   }
-  
+
+  prefix() {
+    return SpreadsheetReferenceKind.ABSOLUTE === this ?
+        "$" :
+        "";
+  }
+
   typeName() {
     return TYPE_NAME;
   }
