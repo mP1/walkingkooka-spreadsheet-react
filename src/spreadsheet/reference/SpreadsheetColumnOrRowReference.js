@@ -2,6 +2,7 @@ import Preconditions from "../../Preconditions.js";
 import React from "react";
 import SpreadsheetReferenceKind from "./SpreadsheetReferenceKind";
 import SpreadsheetSelection from "./SpreadsheetSelection.js";
+import SpreadsheetViewportSelectionAnchor from "./SpreadsheetViewportSelectionAnchor.js";
 import TableCell from "@mui/material/TableCell";
 
 export default class SpreadsheetColumnOrRowReference extends SpreadsheetSelection {
@@ -118,12 +119,14 @@ export default class SpreadsheetColumnOrRowReference extends SpreadsheetSelectio
         return this.setAnchor(); // not a range ignore anchor
     }
 
-    anchors() {
-        return [];
+    defaultAnchor() {
+        return SpreadsheetViewportSelectionAnchor.NONE;
     }
 
-    defaultAnchor() {
-        return null;
+    anchors() {
+        return [
+            SpreadsheetViewportSelectionAnchor.NONE,
+        ];
     }
 
     // move the column or row to the right/down by count.
