@@ -2,6 +2,7 @@ import Equality from "../../Equality.js";
 import Preconditions from "../../Preconditions.js";
 import SpreadsheetSelection from "./SpreadsheetSelection.js";
 import SpreadsheetViewportSelectionAnchor from "./SpreadsheetViewportSelectionAnchor.js";
+import SpreadsheetViewportSelectionNavigation from "./SpreadsheetViewportSelectionNavigation.js";
 import SystemObject from "../../SystemObject.js";
 
 const TYPE_NAME = "spreadsheet-viewport-selection";
@@ -11,22 +12,30 @@ export default class SpreadsheetViewportSelection extends SystemObject {
     static fromJson(json) {
         Preconditions.requireObject(json, "json");
 
-        const {selection, anchor} = json;
+        const {
+            selection,
+            anchor,
+            navigation
+        } = json;
         return new SpreadsheetViewportSelection(
             SystemObject.fromJsonWithType(selection),
-            anchor && SpreadsheetViewportSelectionAnchor.fromJson(anchor)
+            anchor && SpreadsheetViewportSelectionAnchor.fromJson(anchor),
+            navigation && SpreadsheetViewportSelectionNavigation.fromJson(navigation)
         );
     }
 
-    constructor(selection, anchor) {
+    constructor(selection, anchor, navigation) {
         super();
         Preconditions.requireInstance(selection, SpreadsheetSelection, "selection");
         Preconditions.optionalInstance(anchor, SpreadsheetViewportSelectionAnchor, "anchor");
 
         anchor && selection.checkAnchor(anchor);
 
+        Preconditions.optionalInstance(navigation, SpreadsheetViewportSelectionNavigation, "navigation");
+
         this.selectionValue = selection;
         this.anchorValue = anchor;
+        this.navigationValue = navigation;
     }
 
     selection() {
@@ -37,18 +46,36 @@ export default class SpreadsheetViewportSelection extends SystemObject {
         return this.anchorValue;
     }
 
+    navigation() {
+        return this.navigationValue;
+    }
+
     toJson() {
         const json = {
             selection: this.selection().toJsonWithType(),
         }
 
         const anchor = this.anchor();
+        if(anchor) {
+            Object.assign(
+                json,
+                {
+                    anchor: anchor.toJson(),
+                }
+            );
+        }
 
-        return anchor ?
-            Object.assign(json, {
-                anchor: anchor.toString(),
-            }) :
-            json;
+        const navigation = this.navigation();
+        if(navigation) {
+            Object.assign(
+                json,
+                {
+                    navigation: navigation.toJson(),
+                }
+            );
+        }
+
+        return json;
     }
 
     typeName() {
@@ -56,12 +83,19 @@ export default class SpreadsheetViewportSelection extends SystemObject {
     }
 
     equals(other) {
-        return this === other || (other instanceof SpreadsheetViewportSelection && this.selection().equals(other.selection()) && Equality.safeEquals(this.anchor(), other.anchor()));
+        return this === other ||
+            (other instanceof SpreadsheetViewportSelection &&
+                this.selection().equals(other.selection()) &&
+                Equality.safeEquals(this.anchor(), other.anchor()) &&
+                Equality.safeEquals(this.navigation(), other.navigation())
+            );
     }
 
     toString() {
         const anchor = this.anchor();
-        return this.selection() + (anchor ? " " + anchor : "");
+        const navigation = this.navigation();
+
+        return this.selection() + (anchor ? " " + anchor : "") + (navigation ? " " + navigation : "");
     }
 }
 

@@ -1,13 +1,14 @@
 import SpreadsheetCellRange from "./SpreadsheetCellRange.js";
 import SpreadsheetCellReference from "./SpreadsheetCellReference.js";
+import SpreadsheetColumnReference from "./SpreadsheetColumnReference.js";
+import SpreadsheetColumnReferenceRange from "./SpreadsheetColumnReferenceRange.js";
+import SpreadsheetLabelName from "./SpreadsheetLabelName.js";
+import SpreadsheetRowReference from "./SpreadsheetRowReference.js";
+import SpreadsheetRowReferenceRange from "./SpreadsheetRowReferenceRange.js";
 import SpreadsheetViewportSelection from "./SpreadsheetViewportSelection.js";
 import SpreadsheetViewportSelectionAnchor from "./SpreadsheetViewportSelectionAnchor.js";
+import SpreadsheetViewportSelectionNavigation from "./SpreadsheetViewportSelectionNavigation.js";
 import systemObjectTesting from "../../SystemObjectTesting.js";
-import SpreadsheetColumnReference from "./SpreadsheetColumnReference.js";
-import SpreadsheetRowReference from "./SpreadsheetRowReference.js";
-import SpreadsheetColumnReferenceRange from "./SpreadsheetColumnReferenceRange.js";
-import SpreadsheetRowReferenceRange from "./SpreadsheetRowReferenceRange.js";
-import SpreadsheetLabelName from "./SpreadsheetLabelName.js";
 
 function selection() {
     return cellRange();
@@ -45,10 +46,15 @@ function anchor() {
     return SpreadsheetViewportSelectionAnchor.TOP_LEFT;
 }
 
+function navigation() {
+    return SpreadsheetViewportSelectionNavigation.LEFT;
+}
+
 systemObjectTesting(
-    new SpreadsheetViewportSelection(selection(), anchor()),
+    new SpreadsheetViewportSelection(selection(), anchor(), navigation()),
     new SpreadsheetViewportSelection(
         SpreadsheetCellReference.parse("Z99"),
+        null,
         null
     ),
     SpreadsheetViewportSelection.fromJson,
@@ -57,24 +63,33 @@ systemObjectTesting(
     {
         selection: selection().toJsonWithType(),
         anchor: anchor().toJson(),
+        navigation: navigation().toJson(),
     }
 );
 
 // create...............................................................................................................
 
-function testNewFails(selection, anchor, message) {
-    test("new selection=" + selection + " anchor=" + anchor + " fails", () => {
-        expect(() => new SpreadsheetViewportSelection(selection, anchor)).toThrow(message);
+function testNewFails(selection, anchor, navigation, message) {
+    test("new selection=" + selection + " anchor=" + anchor + " navigation: " + navigation + " fails", () => {
+        expect(
+            () => new SpreadsheetViewportSelection(
+                selection,
+                anchor,
+                navigation
+            )
+        ).toThrow(message);
     });
 }
 
-function testNew(selection, anchor) {
+function testNew(selection, anchor, navigation) {
     test("new selection=" + selection + " anchor=" + anchor, () => {
-        const viewportSelection = new SpreadsheetViewportSelection(selection, anchor);
+        const viewportSelection = new SpreadsheetViewportSelection(selection, anchor, navigation);
         expect(viewportSelection.selection())
             .toStrictEqual(selection);
         expect(viewportSelection.anchor())
             .toStrictEqual(anchor);
+        expect(viewportSelection.navigation())
+            .toStrictEqual(navigation);
     });
 }
 
@@ -90,6 +105,7 @@ testNewFails(cell(), SpreadsheetViewportSelectionAnchor.BOTTOM_RIGHT);
 testNewFails(cell(), SpreadsheetViewportSelectionAnchor.LEFT);
 testNewFails(cell(), SpreadsheetViewportSelectionAnchor.RIGHT);
 testNew(cell(), null);
+testNew(cell(), null, SpreadsheetViewportSelectionNavigation.LEFT);
 
 // cellRange
 testNewFails(cellRange(), SpreadsheetViewportSelectionAnchor.TOP);
@@ -158,16 +174,21 @@ testNew(label(), null);
 
 // fromJson.............................................................................................................
 
-function testFromJson(selection, anchor) {
-    test("fromJson selection=" + selection + " anchor=" + anchor, () => {
-        const viewportSelection = SpreadsheetViewportSelection.fromJson({
-            selection: selection.toJsonWithType(),
-            anchor: anchor && anchor.toJson()
-        });
+function testFromJson(selection, anchor, navigation) {
+    test("fromJson selection=" + selection + " anchor=" + anchor + " navigation=" + navigation, () => {
+        const viewportSelection = SpreadsheetViewportSelection.fromJson(
+            {
+                selection: selection.toJsonWithType(),
+                anchor: anchor && anchor.toJson(),
+                navigation: navigation && navigation.toJson(),
+            }
+        );
         expect(viewportSelection.selection())
             .toStrictEqual(selection);
         expect(viewportSelection.anchor())
             .toStrictEqual(anchor);
+        expect(viewportSelection.navigation())
+            .toStrictEqual(navigation);
     });
 }
 
@@ -177,15 +198,20 @@ testFromJson(cellRange(), SpreadsheetViewportSelectionAnchor.TOP_LEFT);
 testFromJson(cellRange(), SpreadsheetViewportSelectionAnchor.TOP_RIGHT);
 testFromJson(cellRange(), SpreadsheetViewportSelectionAnchor.BOTTOM_LEFT);
 testFromJson(cellRange(), SpreadsheetViewportSelectionAnchor.BOTTOM_RIGHT);
+testFromJson(cellRange(), SpreadsheetViewportSelectionAnchor.BOTTOM_RIGHT, SpreadsheetViewportSelectionNavigation.LEFT);
+testFromJson(cellRange(), SpreadsheetViewportSelectionAnchor.BOTTOM_RIGHT, SpreadsheetViewportSelectionNavigation.EXTEND_RIGHT);
 
 testFromJson(column(), null);
+testFromJson(column(), SpreadsheetViewportSelectionAnchor.NONE, SpreadsheetViewportSelectionNavigation.LEFT);
 
 testFromJson(columnRange(), SpreadsheetViewportSelectionAnchor.LEFT);
 testFromJson(columnRange(), SpreadsheetViewportSelectionAnchor.RIGHT);
+testFromJson(columnRange(), SpreadsheetViewportSelectionAnchor.RIGHT, SpreadsheetViewportSelectionNavigation.LEFT);
 
-testFromJson(row(), null);
+testFromJson(row());
 testFromJson(rowRange(), SpreadsheetViewportSelectionAnchor.TOP);
 testFromJson(rowRange(), SpreadsheetViewportSelectionAnchor.BOTTOM);
+testFromJson(rowRange(), SpreadsheetViewportSelectionAnchor.BOTTOM, SpreadsheetViewportSelectionNavigation.UP);
 
 // toJson.............................................................................................................
 
