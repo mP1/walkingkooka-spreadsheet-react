@@ -336,7 +336,13 @@ export default class SpreadsheetCellReference extends SpreadsheetCellReferenceOr
     }
 
     anchors() {
-        return [];
+        return [
+            SpreadsheetViewportSelectionAnchor.NONE,
+        ];
+    }
+
+    defaultAnchor() {
+        return SpreadsheetViewportSelectionAnchor.NONE;
     }
 
     // json............................................................................................................

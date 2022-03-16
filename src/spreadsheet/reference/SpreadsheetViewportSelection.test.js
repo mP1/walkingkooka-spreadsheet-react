@@ -81,7 +81,7 @@ function testNew(selection, anchor) {
 testNewFails(null, null, "Missing selection");
 
 // cell
-testNewFails(cell(), SpreadsheetViewportSelectionAnchor.TOP, "Expected no anchor got TOP");
+testNewFails(cell(), SpreadsheetViewportSelectionAnchor.TOP, "Unknown anchor TOP, expected any of NONE for " + cell());
 testNewFails(cell(), SpreadsheetViewportSelectionAnchor.TOP_LEFT);
 testNewFails(cell(), SpreadsheetViewportSelectionAnchor.TOP_RIGHT);
 testNewFails(cell(), SpreadsheetViewportSelectionAnchor.BOTTOM);
@@ -100,10 +100,9 @@ testNew(cellRange(), SpreadsheetViewportSelectionAnchor.BOTTOM_LEFT);
 testNew(cellRange(), SpreadsheetViewportSelectionAnchor.BOTTOM_RIGHT);
 testNewFails(cellRange(), SpreadsheetViewportSelectionAnchor.LEFT);
 testNewFails(cellRange(), SpreadsheetViewportSelectionAnchor.RIGHT);
-testNewFails(cellRange(), null, "Missing anchor");
 
 // column
-testNewFails(column(), SpreadsheetViewportSelectionAnchor.TOP, "Expected no anchor got TOP");
+testNewFails(column(), SpreadsheetViewportSelectionAnchor.TOP, "Unknown anchor TOP, expected any of NONE for " + column());
 testNewFails(column(), SpreadsheetViewportSelectionAnchor.TOP_LEFT);
 testNewFails(column(), SpreadsheetViewportSelectionAnchor.TOP_RIGHT);
 testNewFails(column(), SpreadsheetViewportSelectionAnchor.BOTTOM);
@@ -114,7 +113,7 @@ testNewFails(column(), SpreadsheetViewportSelectionAnchor.RIGHT);
 testNew(column(), null);
 
 // columnRange
-testNewFails(columnRange(), SpreadsheetViewportSelectionAnchor.TOP, "Unknown anchor TOP, expected any of LEFT, RIGHT");
+testNewFails(columnRange(), SpreadsheetViewportSelectionAnchor.TOP, "Unknown anchor TOP, expected any of LEFT, RIGHT for " + columnRange());
 testNewFails(columnRange(), SpreadsheetViewportSelectionAnchor.TOP_LEFT);
 testNewFails(columnRange(), SpreadsheetViewportSelectionAnchor.TOP_RIGHT);
 testNewFails(columnRange(), SpreadsheetViewportSelectionAnchor.BOTTOM);
@@ -122,10 +121,10 @@ testNewFails(columnRange(), SpreadsheetViewportSelectionAnchor.BOTTOM_LEFT);
 testNewFails(columnRange(), SpreadsheetViewportSelectionAnchor.BOTTOM_RIGHT);
 testNew(columnRange(), SpreadsheetViewportSelectionAnchor.LEFT);
 testNew(columnRange(), SpreadsheetViewportSelectionAnchor.RIGHT);
-testNewFails(columnRange(), null, "Missing anchor");
+testNew(columnRange(), null);
 
 // row
-testNewFails(row(), SpreadsheetViewportSelectionAnchor.TOP, "Expected no anchor got TOP");
+testNewFails(row(), SpreadsheetViewportSelectionAnchor.TOP, "Unknown anchor TOP, expected any of NONE for " + row());
 testNewFails(row(), SpreadsheetViewportSelectionAnchor.TOP_LEFT);
 testNewFails(row(), SpreadsheetViewportSelectionAnchor.TOP_RIGHT);
 testNewFails(row(), SpreadsheetViewportSelectionAnchor.BOTTOM);
@@ -137,14 +136,14 @@ testNew(row(), null);
 
 // rowRange
 testNew(rowRange(), SpreadsheetViewportSelectionAnchor.TOP);
-testNewFails(rowRange(), SpreadsheetViewportSelectionAnchor.TOP_LEFT, "Unknown anchor TOP_LEFT, expected any of TOP, BOTTOM");
+testNewFails(rowRange(), SpreadsheetViewportSelectionAnchor.TOP_LEFT, "Unknown anchor TOP_LEFT, expected any of TOP, BOTTOM for " + rowRange());
 testNewFails(rowRange(), SpreadsheetViewportSelectionAnchor.TOP_RIGHT);
 testNew(rowRange(), SpreadsheetViewportSelectionAnchor.BOTTOM);
 testNewFails(rowRange(), SpreadsheetViewportSelectionAnchor.BOTTOM_LEFT);
 testNewFails(rowRange(), SpreadsheetViewportSelectionAnchor.BOTTOM_RIGHT);
 testNewFails(rowRange(), SpreadsheetViewportSelectionAnchor.LEFT);
 testNewFails(rowRange(), SpreadsheetViewportSelectionAnchor.RIGHT);
-testNewFails(rowRange(), null, "Missing anchor");
+testNew(rowRange(), null);
 
 // label
 testNew(label(), SpreadsheetViewportSelectionAnchor.TOP);

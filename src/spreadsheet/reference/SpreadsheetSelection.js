@@ -439,23 +439,12 @@ export default class SpreadsheetSelection extends SystemObject {
     }
 
     checkAnchor(anchor) {
-        const anchors = this.anchors();
+        if(anchor) {
+            const anchors = this.anchors();
 
-        switch(anchors.length) {
-            case 0:
-                if(null != anchor){
-                    throw new Error("Expected no anchor got " + anchor);
-                }
-                break;
-            default:
-                if(null == anchor){
-                    throw new Error("Missing anchor");
-                }
-
-                if(anchors.findIndex(a => a.equals(anchor)) === -1){
-                    throw new Error("Unknown anchor " + anchor + ", expected any of " + anchors.join(", "));
-                }
-                break;
+            if(anchors.findIndex(a => a.equals(anchor)) === -1){
+                throw new Error("Unknown anchor " + anchor + ", expected any of " + anchors.join(", ") + " for " + this);
+            }
         }
     }
 

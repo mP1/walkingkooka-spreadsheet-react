@@ -21,7 +21,9 @@ export default class SpreadsheetViewportSelection extends SystemObject {
     constructor(selection, anchor) {
         super();
         Preconditions.requireInstance(selection, SpreadsheetSelection, "selection");
-        selection.checkAnchor(anchor);
+        Preconditions.optionalInstance(anchor, SpreadsheetViewportSelectionAnchor, "anchor");
+
+        anchor && selection.checkAnchor(anchor);
 
         this.selectionValue = selection;
         this.anchorValue = anchor;
