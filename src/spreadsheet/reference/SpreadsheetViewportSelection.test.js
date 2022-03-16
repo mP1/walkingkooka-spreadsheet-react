@@ -11,11 +11,11 @@ import SpreadsheetLabelName from "./SpreadsheetLabelName.js";
 
 function selection() {
     return cellRange();
-};
+}
 
 function cell() {
     return SpreadsheetCellReference.parse("B2");
-};
+}
 
 function cellRange() {
     return SpreadsheetCellRange.parse("B2:C3");
@@ -23,7 +23,7 @@ function cellRange() {
 
 function column() {
     return SpreadsheetColumnReference.parse("B");
-};
+}
 
 function columnRange() {
     return SpreadsheetColumnReferenceRange.parse("B:C");
@@ -31,7 +31,7 @@ function columnRange() {
 
 function row() {
     return SpreadsheetRowReference.parse("2");
-};
+}
 
 function rowRange() {
     return SpreadsheetRowReferenceRange.parse("2:3");
@@ -43,7 +43,7 @@ function label() {
 
 function anchor() {
     return SpreadsheetViewportSelectionAnchor.TOP_LEFT;
-};
+}
 
 systemObjectTesting(
     new SpreadsheetViewportSelection(selection(), anchor()),
