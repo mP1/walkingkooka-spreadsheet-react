@@ -7,7 +7,7 @@ export default class Equality {
         return (Array.isArray(left) && equalsArray(left, right)) ||
             (typeof left === "object" && equalsObject(left, right)) ||
             left === right ||
-            isNullOrEquality(left) && isNullOrEquality(right);
+            (isNullOrEquality(left) && isNullOrEquality(right));
     }
 }
 
