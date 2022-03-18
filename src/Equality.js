@@ -6,8 +6,14 @@ export default class Equality {
     static safeEquals(left, right) {
         return (Array.isArray(left) && equalsArray(left, right)) ||
             (typeof left === "object" && equalsObject(left, right)) ||
-            left === right;
+            left === right ||
+            isNullOrEquality(left) && isNullOrEquality(right);
     }
+}
+
+// null and undefined are considered equal.
+function isNullOrEquality(value) {
+    return null === value || undefined === value;
 }
 
 function equalsArray(left, right) {

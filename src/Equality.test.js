@@ -7,6 +7,18 @@ test("safeEquals undefined/undefined true", () => {
     expect(Equality.safeEquals(left, right)).toBeTrue();
 });
 
+test("safeEquals undefined/null true", () => {
+    const left = undefined;
+    const right = null;
+    expect(Equality.safeEquals(left, right)).toBeTrue();
+});
+
+test("safeEquals undefined/0 false", () => {
+    const left = undefined;
+    const right = 9;
+    expect(Equality.safeEquals(left, right)).toBeFalse();
+});
+
 test("safeEquals null/null true", () => {
     const left = null;
     const right = null;
