@@ -7,12 +7,12 @@ export default class Equality {
         return (Array.isArray(left) && equalsArray(left, right)) ||
             (typeof left === "object" && equalsObject(left, right)) ||
             left === right ||
-            (isNullOrEquality(left) && isNullOrEquality(right));
+            (isUndefinedOrNull(left) && isUndefinedOrNull(right));
     }
 }
 
 // null and undefined are considered equal.
-function isNullOrEquality(value) {
+function isUndefinedOrNull(value) {
     return null === value || undefined === value;
 }
 
