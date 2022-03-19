@@ -648,24 +648,16 @@ class SpreadsheetSettingsWidget extends SpreadsheetHistoryAwareStateWidget {
                                                             getValue={getValue}
                                                             valueToNumber={
                                                                 (value) => {
-                                                                    try {
-                                                                        return value ? value.pixelValue() : 0;
-                                                                    } catch(e) {
-                                                                        debugger;
-                                                                    }
+                                                                    return value ? value.pixelValue() : 0;
                                                                 }
                                                             }
                                                             numberToValue={
                                                                 (value) => {
-                                                                    try {
-                                                                        return value === null ?
-                                                                            null :
-                                                                            isNaN(value) ?
-                                                                                NoneLength.INSTANCE :
-                                                                                lengthFromJson(value + "px");
-                                                                    } catch(e) {
-                                                                        debugger;
-                                                                    }
+                                                                    return value === null ?
+                                                                        null :
+                                                                        isNaN(value) ?
+                                                                            NoneLength.INSTANCE :
+                                                                            lengthFromJson(value + "px");
                                                                 }
                                                             }
                                                             setValue={setValue}
