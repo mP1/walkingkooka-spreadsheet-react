@@ -5,6 +5,7 @@ import Preconditions from "../Preconditions.js";
 import SpreadsheetCellReference from "./reference/SpreadsheetCellReference.js";
 import SpreadsheetSelection from "./reference/SpreadsheetSelection.js";
 import SpreadsheetViewportSelectionAnchor from "./reference/SpreadsheetViewportSelectionAnchor.js";
+import SpreadsheetViewportSelectionNavigation from "./reference/SpreadsheetViewportSelectionNavigation.js";
 import SystemObject from "../SystemObject.js";
 
 const SEPARATOR = ":";
@@ -74,9 +75,10 @@ export default class SpreadsheetViewport extends SystemObject {
     /**
      * Returns a query parameters map that will be used to load all the cells for the viewport widget.
      */
-    apiLoadCellsQueryStringParameters(selection, anchor) {
+    apiLoadCellsQueryStringParameters(selection, anchor, navigation) {
         Preconditions.optionalInstance(selection, SpreadsheetSelection, "selection");
         Preconditions.optionalInstance(anchor, SpreadsheetViewportSelectionAnchor, "anchor");
+        Preconditions.optionalInstance(navigation, SpreadsheetViewportSelectionNavigation, "navigation");
 
         const parameters = {
             home: [this.cellOrLabel()],
@@ -89,6 +91,10 @@ export default class SpreadsheetViewport extends SystemObject {
         if(selection) {
             parameters.selectionType = [selection.apiLoadCellsQueryStringParameterSelectionType()];
             parameters.selection = [selection];
+
+            if(navigation) {
+                parameters.selectionNavigation = [navigation.nameKebabCase()];
+            }
         }
 
         if(anchor) {

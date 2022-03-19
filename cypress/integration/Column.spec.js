@@ -59,24 +59,6 @@ describe(
                 .should("have.css", "background-color", SELECTED_COLOR);
         });
 
-        it("Column click and cursor DOWN", () => {
-            testing.column("B")
-                .click();
-
-            testing.column("B")
-                .type("{downarrow}")
-
-            testing.hash()
-                .should('match', /.*\/.*\/cell\/B1/);
-
-            testing.column("B")
-                .should("have.css", "background-color", SELECTED_COLOR);
-            testing.row("1")
-                .should("have.css", "background-color", SELECTED_COLOR);
-            testing.cell(B1)
-                .should("have.focus");
-        });
-
         // column range...................................................................................................
 
         it("Column range history hash", () => {
@@ -149,7 +131,7 @@ describe(
             testing.historyWait();
 
             testing.hash()
-                .should('match', /.*\/.*\/column\/C:E/);
+                .should('match', /.*\/.*\/column\/C:F\/right/);
 
             testing.column("C")
                 .should("have.focus")
@@ -157,6 +139,8 @@ describe(
             testing.column("D")
                 .should("have.css", "background-color", SELECTED_COLOR);
             testing.column("E")
+                .should("have.css", "background-color", SELECTED_COLOR);
+            testing.column("F")
                 .should("have.css", "background-color", SELECTED_COLOR);
         });
 
@@ -174,7 +158,7 @@ describe(
             testing.historyWait();
 
             testing.hash()
-                .should('match', /.*\/.*\/column\/E:H/);
+                .should('match', /.*\/.*\/column\/F:H\/left/);
 
             testing.column("H")
                 .should("have.focus")

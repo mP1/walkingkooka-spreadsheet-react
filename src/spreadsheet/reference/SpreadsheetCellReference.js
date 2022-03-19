@@ -4,7 +4,6 @@
 import CharSequences from "../../CharSequences.js";
 import Preconditions from "../../Preconditions.js";
 import SpreadsheetCell from "../SpreadsheetCell.js";
-import SpreadsheetCellRange from "./SpreadsheetCellRange.js";
 import SpreadsheetCellReferenceOrLabelName from "./SpreadsheetCellReferenceOrLabelName.js";
 import SpreadsheetColumnReference from "./SpreadsheetColumnReference";
 import SpreadsheetFormula from "../SpreadsheetFormula.js";
@@ -250,8 +249,6 @@ export default class SpreadsheetCellReference extends SpreadsheetCellReferenceOr
         return this.viewportId() + "-Tooltip";
     }
 
-    // viewport.........................................................................................................
-
     /**
      * Only returns true if the given clicked is a cell and m
      */
@@ -263,74 +260,9 @@ export default class SpreadsheetCellReference extends SpreadsheetCellReferenceOr
         return "Delete cell";
     }
 
-    viewportEnter(giveFormulaFocus) {
-        giveFormulaFocus();
-    }
-
     viewportFocus(labelToReference, anchor) {
         return this;
     }
-
-    viewportLeft() {
-        return this.setColumn(this.column().viewportLeft());
-    }
-
-    viewportRight() {
-        return this.setColumn(this.column().viewportRight());
-    }
-
-    viewportUp() {
-        return this.setRow(this.row().viewportUp());
-    }
-
-    viewportDown() {
-        return this.setRow(this.row().viewportDown());
-    }
-
-    viewportLeftExtend() {
-        const c = this.column();
-        const r = this.row();
-
-        return new SpreadsheetCellRange(
-            c.viewportLeft().setRow(r),
-            c.setRow(r)
-        ).cellOrRange()
-            .setAnchorConditional(SpreadsheetViewportSelectionAnchor.TOP_RIGHT)
-    }
-
-    viewportRightExtend() {
-        const c = this.column();
-        const r = this.row();
-
-        return new SpreadsheetCellRange(
-            c.setRow(r),
-            c.viewportRight().setRow(r),
-        ).cellOrRange()
-            .setAnchorConditional(SpreadsheetViewportSelectionAnchor.TOP_LEFT)
-    }
-
-    viewportUpExtend() {
-        const c = this.column();
-        const r = this.row();
-
-        return new SpreadsheetCellRange(
-            r.viewportUp().setColumn(c),
-            c.setRow(r)
-        ).cellOrRange()
-            .setAnchorConditional(SpreadsheetViewportSelectionAnchor.BOTTOM_LEFT)
-    }
-
-    viewportDownExtend() {
-        const c = this.column();
-        const r = this.row();
-
-        return new SpreadsheetCellRange(
-            c.setRow(r),
-            r.viewportDown().setColumn(c),
-        ).cellOrRange()
-            .setAnchorConditional(SpreadsheetViewportSelectionAnchor.TOP_LEFT)
-    }
-
     setAnchorConditional(anchor) {
         return this.setAnchor(); // ignore anchor
     }

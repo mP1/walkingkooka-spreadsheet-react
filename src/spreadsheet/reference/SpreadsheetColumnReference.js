@@ -2,12 +2,10 @@ import Preconditions from "../../Preconditions.js";
 import SpreadsheetCellReference from "./SpreadsheetCellReference.js";
 import SpreadsheetColumn from "./SpreadsheetColumn.js";
 import SpreadsheetColumnOrRowReference from "./SpreadsheetColumnOrRowReference";
-import SpreadsheetColumnReferenceRange from "./SpreadsheetColumnReferenceRange.js";
 import SpreadsheetHistoryHashTokens from "../history/SpreadsheetHistoryHashTokens.js";
 import SpreadsheetReferenceKind from "./SpreadsheetReferenceKind";
 import SpreadsheetRowReference from "./SpreadsheetRowReference.js";
 import SpreadsheetSelection from "./SpreadsheetSelection.js";
-import SpreadsheetViewportSelectionAnchor from "./SpreadsheetViewportSelectionAnchor.js";
 import SystemObject from "../../SystemObject.js";
 
 const A = 65;
@@ -172,49 +170,6 @@ export default class SpreadsheetColumnReference extends SpreadsheetColumnOrRowRe
 
     viewportHideText() {
         return "Hide";
-    }
-
-    viewportLeft() {
-        return this.addSaturated(-1);
-    }
-
-    viewportRight() {
-        return this.addSaturated(+1);
-    }
-
-    viewportUp(home) {
-        return this;
-    }
-
-    viewportDown(home) {
-        return home.row()
-            .setColumn(this);
-    }
-
-    viewportLeftExtend(anchor, current, home) {
-        return new SpreadsheetColumnReferenceRange(
-            this.viewportLeft(),
-            this
-        ).columnOrRange()
-            .setAnchorConditional(SpreadsheetViewportSelectionAnchor.RIGHT);
-    }
-
-    viewportRightExtend(anchor, current, home) {
-        return new SpreadsheetColumnReferenceRange(
-            this,
-            this.viewportRight()
-        ).columnOrRange()
-            .setAnchorConditional(SpreadsheetViewportSelectionAnchor.LEFT);
-    }
-
-    viewportUpExtend(anchor, current, home) {
-        return this.setAnchor();
-    }
-
-    viewportDownExtend(anchor, current, home) {
-        return home.row()
-            .setColumn(this)
-            .setAnchor();
     }
     
     // JSON.............................................................................................................

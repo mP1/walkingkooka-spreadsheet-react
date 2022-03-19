@@ -58,24 +58,6 @@ describe("Row",
                 .should('match', /.*\/.*\/row\/3/);
         });
 
-        it("Row click and cursor RIGHT", () => {
-            testing.row("2")
-                .click();
-
-            testing.row("2")
-                .type("{rightarrow}");
-
-            testing.hash()
-                .should('match', /.*\/.*\/cell\/A2/);
-
-            testing.column("A")
-                .should("have.css", "background-color", SELECTED_COLOR);
-            testing.row("2")
-                .should("have.css", "background-color", SELECTED_COLOR);
-            testing.cell(A2)
-                .should("have.focus");
-        });
-
         // row range...................................................................................................
 
         it("Row range extend up", () => {
@@ -130,7 +112,7 @@ describe("Row",
             testing.historyWait();
 
             testing.hash()
-                .should('match', /.*\/.*\/row\/3:5/);
+                .should('match', /.*\/.*\/row\/3:6/);
 
             testing.row("3")
                 .should("have.focus")
@@ -139,12 +121,17 @@ describe("Row",
                 .should("have.css", "background-color", SELECTED_COLOR);
             testing.row("5")
                 .should("have.css", "background-color", SELECTED_COLOR);
+            testing.row("6")
+                .should("have.css", "background-color", SELECTED_COLOR);
         });
 
         it("Row range extend down twice", () => {
             testing.hashAppend("/row/5:6");
 
             testing.historyWait();
+
+            testing.row("5")
+                .type("{shift+downarrow}");
 
             testing.row("6")
                 .type("{shift+downarrow}");
@@ -155,7 +142,7 @@ describe("Row",
             testing.historyWait();
 
             testing.hash()
-                .should('match', /.*\/.*\/row\/5:8/);
+                .should('match', /.*\/.*\/row\/6:8/);
 
             testing.row("8")
                 .should("have.focus")

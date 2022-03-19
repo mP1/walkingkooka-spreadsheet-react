@@ -6,7 +6,6 @@ import SpreadsheetHistoryHash from "../history/SpreadsheetHistoryHash.js";
 import spreadsheetRangeParse from "./SpreadsheetRangeParser.js";
 import SpreadsheetReferenceKind from "./SpreadsheetReferenceKind.js";
 import SpreadsheetRowReference from "./SpreadsheetRowReference.js";
-import SpreadsheetSelection from "./SpreadsheetSelection.js";
 import SpreadsheetViewportSelectionAnchor from "./SpreadsheetViewportSelectionAnchor.js";
 import SystemObject from "../../SystemObject.js";
 
@@ -195,87 +194,7 @@ export default class SpreadsheetColumnReferenceRange extends SpreadsheetColumnOr
         return focus;
     }
 
-    viewportLeft(home) {
-        return home.viewportLeft();
-    }
-
-    viewportRight(home) {
-        return home.viewportRight();
-    }
-
-    viewportUp(home) {
-        return this;
-    }
-
-    viewportDown(home) {
-        return this;
-    }
-
-    static DEFAULT_ANCHOR = SpreadsheetViewportSelectionAnchor.LEFT;
-
-    /**
-     * Increases/decreases the column range depending on the anchor
-     */
-    viewportLeftExtend(anchor, current, home) {
-        const anchorOrDefault = anchor ? anchor : SpreadsheetColumnReferenceRange.DEFAULT_ANCHOR;
-        var range;
-
-        switch(anchorOrDefault.name()) {
-            case "LEFT":
-                range = new SpreadsheetColumnReferenceRange(
-                    this.begin(),
-                    current.viewportLeft(),
-                );
-                break;
-            case "RIGHT":
-                range = new SpreadsheetColumnReferenceRange(
-                    current.viewportLeft(),
-                    this.end()
-                );
-                break;
-            default:
-                SpreadsheetSelection.reportInvalidAnchor(anchor);
-        }
-
-        return range.columnOrRange()
-            .setAnchorConditional(anchorOrDefault);
-    }
-
-    /**
-     * Increases/decreases the column range depending on the anchor
-     */
-    viewportRightExtend(anchor, current, home) {
-        const anchorOrDefault = anchor ? anchor : SpreadsheetColumnReferenceRange.DEFAULT_ANCHOR;
-        var range;
-
-        switch(anchorOrDefault.name()) {
-            case "LEFT":
-                range = new SpreadsheetColumnReferenceRange(
-                    this.begin(),
-                    current.viewportRight(),
-                );
-                break;
-            case "RIGHT":
-                range = new SpreadsheetColumnReferenceRange(
-                    current.viewportRight(),
-                    this.end()
-                );
-                break;
-            default:
-                SpreadsheetSelection.reportInvalidAnchor(anchor);
-        }
-
-        return range.columnOrRange()
-            .setAnchorConditional(anchorOrDefault);
-    }
-
-    viewportUpExtend(anchor, current, home) {
-        return this.columnOrRange();
-    }
-
-    viewportDownExtend(anchor, current, home) {
-        return this.columnOrRange();
-    }
+    static DEFAULT_ANCHOR = SpreadsheetViewportSelectionAnchor.RIGHT;
 
     anchors() {
         return [
