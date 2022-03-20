@@ -1115,10 +1115,8 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
         let rowReference = home.row();
 
         while(y < viewportHeight) {
-            const row = rowReferenceToRows.get(rowReference);
-
-            // skip rendering cells in hidden columns
-            if(null == row || !row.hidden()) {
+            // skip rendering cells in hidden rows
+            if(!this.isRowHidden(rowReference)) {
                 const tableCells = [];
                 let x = 0;
                 let columnReference = home.column();
@@ -1194,6 +1192,14 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
     isColumnHidden(columnReference) {
         const column = this.state.columnReferenceToColumns.get(columnReference);
         return null != column && column.hidden();
+    }
+
+    /**
+     * Tests if the given {@link SpreadsheetRowReference row} is hidden.
+     */
+    isRowHidden(rowReference) {
+        const row = this.state.rowReferenceToRows.get(rowReference);
+        return null != row && row.hidden();
     }
 
     /**
