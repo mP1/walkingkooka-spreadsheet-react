@@ -7,12 +7,12 @@ import SpreadsheetCellClearSelectionActionHistoryHashToken
     from "./SpreadsheetCellClearSelectionActionHistoryHashToken.js";
 import SpreadsheetCellDeleteSelectionActionHistoryHashToken
     from "./SpreadsheetCellDeleteSelectionActionHistoryHashToken.js";
+import SpreadsheetCellHistoryHashToken from "./SpreadsheetCellHistoryHashToken.js";
 import SpreadsheetCellMenuHistoryHashToken from "./SpreadsheetCellMenuHistoryHashToken.js";
 import spreadsheetCellRangeCellReferenceOrLabelParse
     from "../reference/SpreadsheetCellRangeCellReferenceOrLabelParse.js";
 import SpreadsheetCellReferenceOrLabelName from "../reference/SpreadsheetCellReferenceOrLabelName.js";
 import spreadsheetCellReferenceOrLabelNameParse from "../reference/SpreadsheetCellReferenceOrLabelNameParse.js";
-import SpreadsheetCellSelectionActionHistoryHashToken from "./SpreadsheetCellSelectionActionHistoryHashToken.js";
 import SpreadsheetColumnOrRowClearHistoryHashToken from "./SpreadsheetColumnOrRowClearHistoryHashToken.js";
 import SpreadsheetColumnOrRowDeleteHistoryHashToken from "./SpreadsheetColumnOrRowDeleteHistoryHashToken.js";
 import SpreadsheetColumnOrRowSelectionActionHistoryHashToken
@@ -476,7 +476,7 @@ export default class SpreadsheetHistoryHash extends SpreadsheetHistoryHashTokens
                             verified[SpreadsheetHistoryHashTokens.SELECTION_ANCHOR] = selectionAnchor;
                         }
 
-                        if(selection.isCellScalarOrRange() && selectionAction instanceof SpreadsheetCellSelectionActionHistoryHashToken){
+                        if(selection.isCellScalarOrRange() && selectionAction instanceof SpreadsheetCellHistoryHashToken){
                             verified[SpreadsheetHistoryHashTokens.SELECTION_ACTION] = selectionAction;
                         }
 
