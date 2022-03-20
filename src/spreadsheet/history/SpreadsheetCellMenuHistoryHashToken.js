@@ -1,10 +1,10 @@
+import SpreadsheetCellHistoryHashToken from "./SpreadsheetCellHistoryHashToken.js";
 import SpreadsheetHistoryHashTokens from "./SpreadsheetHistoryHashTokens.js";
-import SpreadsheetCellSelectionActionHistoryHashToken from "./SpreadsheetCellSelectionActionHistoryHashToken.js";
 
 /**
  * Represents a cell open menu history hash token.
  */
-export default class SpreadsheetCellMenuHistoryHashToken extends SpreadsheetCellSelectionActionHistoryHashToken {
+export default class SpreadsheetCellMenuHistoryHashToken extends SpreadsheetCellHistoryHashToken {
 
     /**
      * Singleton instance.
