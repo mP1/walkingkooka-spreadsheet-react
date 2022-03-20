@@ -7,6 +7,7 @@ import SpreadsheetLabelMappingWidget from "../../src/spreadsheet/reference/Sprea
 import SpreadsheetSelectLinkWidget from "../../src/spreadsheet/reference/SpreadsheetSelectLinkWidget.js";
 import SpreadsheetSelectAutocompleteWidget
     from "../../src/spreadsheet/reference/SpreadsheetSelectAutocompleteWidget.js";
+import SpreadsheetSelection from "../../src/spreadsheet/reference/SpreadsheetSelection.js";
 import SpreadsheetSettingsWidget from "../../src/spreadsheet/settings/SpreadsheetSettingsWidget.js";
 import SpreadsheetViewportWidget from "../../src/spreadsheet/SpreadsheetViewportWidget.js";
 
@@ -42,6 +43,29 @@ export default class SpreadsheetTesting {
             .should('match', /.*\/Untitled/); // wait for /$id/$name
 
         this.historyWait();
+    }
+
+    columnHide(columnOrRange) {
+        this.hashAppendAfterSpreadsheetName("/column/" + columnOrRange);
+
+        this.contextMenu(columnOrRange.viewportId());
+
+        this.viewportContextMenu()
+            .should("be.visible")
+            .find("#" + SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_HIDE_ID)
+            .should("include.text", "Hide");
+
+        this.getById(SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_HIDE_ID)
+            .click();
+
+        this.viewportContextMenu()
+            .should("not.be.visible");
+
+        this.columnWait();
+    }
+
+    columnWait() {
+        this.wait(100);
     }
 
     hash() {
@@ -102,6 +126,29 @@ export default class SpreadsheetTesting {
     }
 
     historyWait() {
+        this.wait(100);
+    }
+
+    rowHide(rowOrRange) {
+        this.hashAppendAfterSpreadsheetName("/row/" + rowOrRange);
+
+        this.contextMenu(rowOrRange.viewportId());
+
+        this.viewportContextMenu()
+            .should("be.visible")
+            .find("#" + SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_HIDE_ID)
+            .should("include.text", "Hide");
+
+        this.getById(SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_HIDE_ID)
+            .click();
+
+        this.viewportContextMenu()
+            .should("not.be.visible");
+
+        this.rowWait();
+    }
+    
+    rowWait() {
         this.wait(100);
     }
 

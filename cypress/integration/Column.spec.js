@@ -12,8 +12,10 @@ const C3 = SpreadsheetCellReference.parse("C3");
 const D4 = SpreadsheetCellReference.parse("D4");
 const E5 = SpreadsheetCellReference.parse("E5");
 
+const A = SpreadsheetColumnReference.parse("A");
 const B = SpreadsheetColumnReference.parse("B");
 const C = SpreadsheetColumnReference.parse("C");
+const D = SpreadsheetColumnReference.parse("D");
 
 const SELECTED_COLOR = "rgb(68, 68, 68)";
 
@@ -720,6 +722,8 @@ describe(
             testing.viewportContextMenu()
                 .should("not.be.visible");
 
+            testing.columnWait();
+
             testing.cellFormattedTextCheck(A1, "Before");
             testing.get(B2.viewportId())
                 .should("not.exist");
@@ -750,12 +754,136 @@ describe(
             testing.viewportContextMenu()
                 .should("not.be.visible");
 
+            testing.columnWait();
+
             testing.cellFormattedTextCheck(A1, "Before");
             testing.get(B2.viewportId())
                 .should("not.exist");
             testing.get(C3.viewportId())
                 .should("not.exist");
             testing.cellFormattedTextCheck("D4", "After");
+        });
+
+        // unhide ......................................................................................................
+
+        it("Column context menu click unhide column after", () => {
+            testing.cellFormulaEnterAndSave(A1, "'Before");
+            testing.cellFormulaEnterAndSave(B2, "'Hidden");
+            testing.cellFormulaEnterAndSave(C3, "'After");
+
+            testing.columnHide(B);
+
+            // column A context menu should have a Unhide column B menu item...
+            testing.contextMenu(A.viewportId());
+
+            testing.viewportContextMenu()
+                .should("be.visible")
+                .find("#" + SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_UNHIDE_AFTER_ID)
+                .should("include.text", "Unhide column B");
+
+            testing.getById(SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_UNHIDE_AFTER_ID)
+                .click();
+
+            testing.viewportContextMenu()
+                .should("not.be.visible");
+
+            testing.columnWait();
+
+            // verify columns A, B, C are visible.
+            testing.cellFormattedTextCheck(A1, "Before");
+            testing.cellFormattedTextCheck(B2, "Hidden");
+            testing.cellFormattedTextCheck(C3, "After");
+        });
+
+        it("Column context menu click unhide column before", () => {
+            testing.cellFormulaEnterAndSave(A1, "'Before");
+            testing.cellFormulaEnterAndSave(B2, "'Hidden");
+            testing.cellFormulaEnterAndSave(C3, "'After");
+
+            testing.columnHide(B);
+
+            // column C context menu should have a Unhide column B menu item...
+            testing.contextMenu(C.viewportId());
+
+            testing.viewportContextMenu()
+                .should("be.visible")
+                .find("#" + SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_UNHIDE_BEFORE_ID)
+                .should("include.text", "Unhide column B");
+
+            testing.getById(SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_UNHIDE_BEFORE_ID)
+                .click();
+
+            testing.viewportContextMenu()
+                .should("not.be.visible");
+
+            testing.columnWait();
+
+            // verify columns A, B, C are visible.
+            testing.cellFormattedTextCheck(A1, "Before");
+            testing.cellFormattedTextCheck(B2, "Hidden");
+            testing.cellFormattedTextCheck(C3, "After");
+        });
+
+        it("Column range context menu click unhide column after", () => {
+            testing.cellFormulaEnterAndSave(A1, "'Before1");
+            testing.cellFormulaEnterAndSave(B2, "'Before2");
+            testing.cellFormulaEnterAndSave(C3, "'Hidden");
+            testing.cellFormulaEnterAndSave(D4, "'After");
+
+            testing.columnHide(SpreadsheetColumnReference.parse("C"));
+
+            // column C context menu should have a Unhide column B menu item...
+            testing.contextMenu(B.viewportId());
+
+            testing.viewportContextMenu()
+                .should("be.visible")
+                .find("#" + SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_UNHIDE_AFTER_ID)
+                .should("include.text", "Unhide column C");
+
+            testing.getById(SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_UNHIDE_AFTER_ID)
+                .click();
+
+            testing.viewportContextMenu()
+                .should("not.be.visible");
+
+            testing.columnWait();
+
+            // verify columns A, B, C, D are visible.
+            testing.cellFormattedTextCheck(A1, "Before1");
+            testing.cellFormattedTextCheck(B2, "Before2");
+            testing.cellFormattedTextCheck(C3, "Hidden");
+            testing.cellFormattedTextCheck(D4, "After");
+        });
+
+        it("Column range context menu click unhide column before", () => {
+            testing.cellFormulaEnterAndSave(A1, "'Before");
+            testing.cellFormulaEnterAndSave(B2, "'Hidden");
+            testing.cellFormulaEnterAndSave(C3, "'After1");
+            testing.cellFormulaEnterAndSave(D4, "'After2");
+
+            testing.columnHide(SpreadsheetColumnReference.parse("B"));
+
+            // column C context menu should have a Unhide column B menu item...
+            testing.contextMenu(C.viewportId());
+
+            testing.viewportContextMenu()
+                .should("be.visible")
+                .find("#" + SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_UNHIDE_BEFORE_ID)
+                .should("include.text", "Unhide column B");
+
+            testing.getById(SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_UNHIDE_BEFORE_ID)
+                .click();
+
+            testing.viewportContextMenu()
+                .should("not.be.visible");
+
+            testing.columnWait();
+
+            // verify columns A, B, C, D are visible.
+            testing.cellFormattedTextCheck(A1, "Before");
+            testing.cellFormattedTextCheck(B2, "Hidden");
+            testing.cellFormattedTextCheck(C3, "After1");
+            testing.cellFormattedTextCheck(D4, "After2");
         });
     }
 );

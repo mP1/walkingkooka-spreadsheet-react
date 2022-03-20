@@ -12,6 +12,7 @@ const C3 = SpreadsheetCellReference.parse("C3");
 const D4 = SpreadsheetCellReference.parse("D4");
 const E5 = SpreadsheetCellReference.parse("E5");
 
+const ROW_1 = SpreadsheetRowReference.parse("1");
 const ROW_2 = SpreadsheetRowReference.parse("2");
 const ROW_3 = SpreadsheetRowReference.parse("3");
 
@@ -742,6 +743,128 @@ describe("Row",
             testing.get(C3.viewportId())
                 .should("not.exist");
             testing.cellFormattedTextCheck("D4", "After");
+        });
+
+        // unhide ......................................................................................................
+
+        it("Row context menu click unhide row after", () => {
+            testing.cellFormulaEnterAndSave(A1, "'Before");
+            testing.cellFormulaEnterAndSave(B2, "'Hidden");
+            testing.cellFormulaEnterAndSave(C3, "'After");
+
+            testing.rowHide(ROW_2);
+
+            // row 1 context menu should have a Unhide row 2 menu item...
+            testing.contextMenu(ROW_1.viewportId());
+
+            testing.viewportContextMenu()
+                .should("be.visible")
+                .find("#" + SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_UNHIDE_AFTER_ID)
+                .should("include.text", "Unhide row 2");
+
+            testing.getById(SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_UNHIDE_AFTER_ID)
+                .click();
+
+            testing.viewportContextMenu()
+                .should("not.be.visible");
+
+            testing.rowWait();
+
+            // verify rows 1, 2, 3 are visible.
+            testing.cellFormattedTextCheck(A1, "Before");
+            testing.cellFormattedTextCheck(B2, "Hidden");
+            testing.cellFormattedTextCheck(C3, "After");
+        });
+
+        it("Row context menu click unhide row before", () => {
+            testing.cellFormulaEnterAndSave(A1, "'Before");
+            testing.cellFormulaEnterAndSave(B2, "'Hidden");
+            testing.cellFormulaEnterAndSave(C3, "'After");
+
+            testing.rowHide(ROW_2);
+
+            // row C context menu should have a Unhide row B menu item...
+            testing.contextMenu(ROW_3.viewportId());
+
+            testing.viewportContextMenu()
+                .should("be.visible")
+                .find("#" + SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_UNHIDE_BEFORE_ID)
+                .should("include.text", "Unhide row 2");
+
+            testing.getById(SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_UNHIDE_BEFORE_ID)
+                .click();
+
+            testing.viewportContextMenu()
+                .should("not.be.visible");
+
+            testing.rowWait();
+
+            // verify rows 1, 2, 3 are visible.
+            testing.cellFormattedTextCheck(A1, "Before");
+            testing.cellFormattedTextCheck(B2, "Hidden");
+            testing.cellFormattedTextCheck(C3, "After");
+        });
+
+        it("Row range context menu click unhide row after", () => {
+            testing.cellFormulaEnterAndSave(A1, "'Before1");
+            testing.cellFormulaEnterAndSave(B2, "'Before2");
+            testing.cellFormulaEnterAndSave(C3, "'Hidden");
+            testing.cellFormulaEnterAndSave(D4, "'After");
+
+            testing.rowHide(SpreadsheetRowReference.parse("3"));
+
+            // row 2 context menu should have a Unhide row 2 menu item...
+            testing.contextMenu(ROW_2.viewportId());
+
+            testing.viewportContextMenu()
+                .should("be.visible")
+                .find("#" + SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_UNHIDE_AFTER_ID)
+                .should("include.text", "Unhide row 3");
+
+            testing.getById(SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_UNHIDE_AFTER_ID)
+                .click();
+
+            testing.viewportContextMenu()
+                .should("not.be.visible");
+
+            testing.rowWait();
+
+            // verify rows 1, 2, 3, 4 are visible.
+            testing.cellFormattedTextCheck(A1, "Before1");
+            testing.cellFormattedTextCheck(B2, "Before2");
+            testing.cellFormattedTextCheck(C3, "Hidden");
+            testing.cellFormattedTextCheck(D4, "After");
+        });
+
+        it("Row range context menu click unhide row before", () => {
+            testing.cellFormulaEnterAndSave(A1, "'Before");
+            testing.cellFormulaEnterAndSave(B2, "'Hidden");
+            testing.cellFormulaEnterAndSave(C3, "'After1");
+            testing.cellFormulaEnterAndSave(D4, "'After2");
+
+            testing.rowHide(SpreadsheetRowReference.parse("2"));
+
+            // row 3 context menu should have a Unhide row 2 menu item...
+            testing.contextMenu(ROW_3.viewportId());
+
+            testing.viewportContextMenu()
+                .should("be.visible")
+                .find("#" + SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_UNHIDE_BEFORE_ID)
+                .should("include.text", "Unhide row 2");
+
+            testing.getById(SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_UNHIDE_BEFORE_ID)
+                .click();
+
+            testing.viewportContextMenu()
+                .should("not.be.visible");
+
+            testing.rowWait();
+
+            // verify rows 1, 2, 3, 4 are visible.
+            testing.cellFormattedTextCheck(A1, "Before");
+            testing.cellFormattedTextCheck(B2, "Hidden");
+            testing.cellFormattedTextCheck(C3, "After1");
+            testing.cellFormattedTextCheck(D4, "After2");
         });
     }
 );

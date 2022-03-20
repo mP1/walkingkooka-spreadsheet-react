@@ -86,6 +86,16 @@ export default class SpreadsheetColumnReference extends SpreadsheetColumnOrRowRe
 
     // context menu events..............................................................................................
 
+    viewportContextMenuItems(historyTokens, isColumnHidden, isRowHidden, history) {
+        return this.viewportContextMenuItemsColumnOrRow(
+            historyTokens,
+            this.addSaturated(-1),
+            this.addSaturated(+1),
+            isColumnHidden,
+            history
+        );
+    }
+
     viewportDeleteCellColumnText() {
         return "Delete column";
     }
@@ -171,7 +181,11 @@ export default class SpreadsheetColumnReference extends SpreadsheetColumnOrRowRe
     viewportHideText() {
         return "Hide";
     }
-    
+
+    viewportUnHideText() {
+        return "Unhide column " + this;
+    }
+
     // JSON.............................................................................................................
 
     toJson() {

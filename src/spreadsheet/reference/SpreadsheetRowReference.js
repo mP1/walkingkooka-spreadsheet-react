@@ -93,6 +93,16 @@ export default class SpreadsheetRowReference extends SpreadsheetColumnOrRowRefer
         return "row";
     }
 
+    viewportContextMenuItems(historyTokens, isColumnHidden, isRowHidden, history) {
+        return this.viewportContextMenuItemsColumnOrRow(
+            historyTokens,
+            this.addSaturated(-1),
+            this.addSaturated(+1),
+            isRowHidden,
+            history
+        );
+    }
+
     viewportDeleteCellRowText() {
         return "Delete row";
     }
@@ -127,6 +137,10 @@ export default class SpreadsheetRowReference extends SpreadsheetColumnOrRowRefer
 
     viewportInsertBefore2Text() {
         return SpreadsheetRowReference.VIEWPORT_INSERT_BEFORE_2_TEXT;
+    }
+
+    viewportUnHideText() {
+        return "Unhide row " + this;
     }
 
     viewportId() {
