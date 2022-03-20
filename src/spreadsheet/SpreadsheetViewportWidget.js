@@ -1034,7 +1034,6 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
      */
     renderTableColumnHeaders(selection) {
         const {
-            columnReferenceToColumns,
             columnWidths,
             dimensions,
             spreadsheetMetadata
@@ -1092,10 +1091,8 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
         const {
             cellReferenceToCells,
             cellReferenceToLabels,
-            columnReferenceToColumns,
             columnWidths,
             rowHeights,
-            rowReferenceToRows,
             spreadsheetMetadata,
             dimensions
         } = this.state;
@@ -1134,10 +1131,8 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
 
                 // reference, formula, style, format, formatted
                 while(x < viewportWidth) {
-                    const column = columnReferenceToColumns.get(columnReference);
-
                     // skip rendering cells in hidden columns
-                    if(null == column || !column.hidden()) {
+                    if(!this.isColumnHidden(columnReference)) {
                         const cellReference = new SpreadsheetCellReference(columnReference, rowReference);
                         const cell = cellReferenceToCells.get(cellReference) || cellReference.emptyCell();
 
