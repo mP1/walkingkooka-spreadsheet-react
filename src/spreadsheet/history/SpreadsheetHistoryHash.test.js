@@ -1,6 +1,5 @@
 import CharSequences from "../../CharSequences.js";
-import SpreadsheetCellClearSelectionActionHistoryHashToken
-    from "./SpreadsheetCellClearSelectionActionHistoryHashToken.js";
+import SpreadsheetCellClearHistoryHashToken from "./SpreadsheetCellClearHistoryHashToken.js";
 import SpreadsheetCellDeleteHistoryHashToken from "./SpreadsheetCellDeleteHistoryHashToken.js";
 import SpreadsheetCellMenuHistoryHashToken from "./SpreadsheetCellMenuHistoryHashToken.js";
 import SpreadsheetCellRange from "../reference/SpreadsheetCellRange.js";
@@ -51,7 +50,7 @@ const NEW_LABEL = SpreadsheetLabelName.parse("Label999");
 const COLUMN_ROW_CLEAR = SpreadsheetColumnOrRowClearHistoryHashToken.INSTANCE;
 const COLUMN_ROW_MENU = SpreadsheetColumnOrRowMenuHistoryHashToken.INSTANCE;
 
-const CELL_CLEAR = SpreadsheetCellClearSelectionActionHistoryHashToken.INSTANCE;
+const CELL_CLEAR = SpreadsheetCellClearHistoryHashToken.INSTANCE;
 const CELL_DELETE = SpreadsheetCellDeleteHistoryHashToken.INSTANCE;
 const CELL_MENU = SpreadsheetCellMenuHistoryHashToken.INSTANCE;
 const FORMULA_LOAD_EDIT = new SpreadsheetFormulaLoadAndEditHistoryHashToken();
