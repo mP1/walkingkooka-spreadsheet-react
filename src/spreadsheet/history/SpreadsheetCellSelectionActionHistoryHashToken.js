@@ -1,9 +1,9 @@
-import SpreadsheetSelectionActionHistoryHashToken from "./SpreadsheetSelectionActionHistoryHashToken.js";
+import SpreadsheetSelectionHistoryHashToken from "./SpreadsheetSelectionHistoryHashToken.js";
 
 /**
  * Base for all cell actions
  */
-export default class SpreadsheetCellSelectionActionHistoryHashToken extends SpreadsheetSelectionActionHistoryHashToken {
+export default class SpreadsheetCellSelectionActionHistoryHashToken extends SpreadsheetSelectionHistoryHashToken {
 
     static INSTANCE = new SpreadsheetCellSelectionActionHistoryHashToken();
 }

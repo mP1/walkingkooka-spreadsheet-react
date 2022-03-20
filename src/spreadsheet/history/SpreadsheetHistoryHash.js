@@ -35,7 +35,7 @@ import SpreadsheetNameHistoryHashToken from "./SpreadsheetNameHistoryHashToken.j
 import SpreadsheetNameSaveHistoryHashToken from "./SpreadsheetNameSaveHistoryHashToken.js";
 import SpreadsheetRowReferenceRange from "../reference/SpreadsheetRowReferenceRange.js";
 import SpreadsheetSelection from "../reference/SpreadsheetSelection.js";
-import SpreadsheetSelectionActionHistoryHashToken from "./SpreadsheetSelectionActionHistoryHashToken.js";
+import SpreadsheetSelectionHistoryHashToken from "./SpreadsheetSelectionHistoryHashToken.js";
 import SpreadsheetSettingsHistoryHashToken from "./SpreadsheetSettingsHistoryHashToken.js";
 import SpreadsheetSettingsSaveHistoryHashToken from "./SpreadsheetSettingsSaveHistoryHashToken.js";
 import SpreadsheetSettingsWidgetHistoryHashTokens from "../settings/SpreadsheetSettingsWidgetHistoryHashTokens.js";
@@ -597,7 +597,7 @@ export default class SpreadsheetHistoryHash extends SpreadsheetHistoryHashTokens
 
         if(delta.hasOwnProperty(SpreadsheetHistoryHashTokens.SELECTION_ACTION)){
             selectionAction = delta[SpreadsheetHistoryHashTokens.SELECTION_ACTION];
-            if(selectionAction instanceof SpreadsheetSelectionActionHistoryHashToken){
+            if(selectionAction instanceof SpreadsheetSelectionHistoryHashToken){
                 spreadsheetNameEdit = false;
             }
         }
@@ -684,7 +684,7 @@ export default class SpreadsheetHistoryHash extends SpreadsheetHistoryHashTokens
                 merged[SpreadsheetHistoryHashTokens.SELECTION_ANCHOR] = selectionAnchor;
             }
 
-            if(selectionAction instanceof SpreadsheetSelectionActionHistoryHashToken){
+            if(selectionAction instanceof SpreadsheetSelectionHistoryHashToken){
                 merged[SpreadsheetHistoryHashTokens.SELECTION_ACTION] = selectionAction;
             }
 
@@ -776,7 +776,7 @@ export default class SpreadsheetHistoryHash extends SpreadsheetHistoryHashTokens
                     hash = hash + "/" + selectionAnchor.toHistoryHashToken();
                 }
 
-                if(selectionAction instanceof SpreadsheetSelectionActionHistoryHashToken){
+                if(selectionAction instanceof SpreadsheetSelectionHistoryHashToken){
                     hash = hash + "/" + selectionAction.toHistoryHashToken();
                 }
             }
