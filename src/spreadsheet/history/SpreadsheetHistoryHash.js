@@ -13,8 +13,7 @@ import SpreadsheetCellReferenceOrLabelName from "../reference/SpreadsheetCellRef
 import spreadsheetCellReferenceOrLabelNameParse from "../reference/SpreadsheetCellReferenceOrLabelNameParse.js";
 import SpreadsheetColumnOrRowClearHistoryHashToken from "./SpreadsheetColumnOrRowClearHistoryHashToken.js";
 import SpreadsheetColumnOrRowDeleteHistoryHashToken from "./SpreadsheetColumnOrRowDeleteHistoryHashToken.js";
-import SpreadsheetColumnOrRowSelectionActionHistoryHashToken
-    from "./SpreadsheetColumnOrRowSelectionActionHistoryHashToken.js";
+import SpreadsheetColumnOrRowHistoryHashToken from "./SpreadsheetColumnOrRowHistoryHashToken.js";
 import SpreadsheetColumnOrRowInsertAfterHistoryHashToken from "./SpreadsheetColumnOrRowInsertAfterHistoryHashToken.js";
 import SpreadsheetColumnOrRowInsertBeforeHistoryHashToken
     from "./SpreadsheetColumnOrRowInsertBeforeHistoryHashToken.js";
@@ -478,7 +477,7 @@ export default class SpreadsheetHistoryHash extends SpreadsheetHistoryHashTokens
                             verified[SpreadsheetHistoryHashTokens.SELECTION_ACTION] = selectionAction;
                         }
 
-                        if(selection.isColumnOrRowScalarOrRange() && selectionAction instanceof SpreadsheetColumnOrRowSelectionActionHistoryHashToken){
+                        if(selection.isColumnOrRowScalarOrRange() && selectionAction instanceof SpreadsheetColumnOrRowHistoryHashToken){
                             verified[SpreadsheetHistoryHashTokens.SELECTION_ACTION] = selectionAction;
                         }
                     }

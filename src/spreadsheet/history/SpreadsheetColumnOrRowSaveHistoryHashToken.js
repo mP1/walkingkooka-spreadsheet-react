@@ -1,12 +1,11 @@
 import Equality from "../../Equality.js";
-import SpreadsheetColumnOrRowSelectionActionHistoryHashToken
-    from "./SpreadsheetColumnOrRowSelectionActionHistoryHashToken.js";
+import SpreadsheetColumnOrRowHistoryHashToken from "./SpreadsheetColumnOrRowHistoryHashToken.js";
 import SpreadsheetHistoryHashTokens from "./SpreadsheetHistoryHashTokens.js";
 
 /**
  * Represents a save column/row property with value history hash token.
  */
-export default class SpreadsheetColumnOrRowSaveHistoryHashToken extends SpreadsheetColumnOrRowSelectionActionHistoryHashToken {
+export default class SpreadsheetColumnOrRowSaveHistoryHashToken extends SpreadsheetColumnOrRowHistoryHashToken {
 
     constructor(property, value) {
         super();
