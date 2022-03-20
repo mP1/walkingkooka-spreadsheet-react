@@ -61,6 +61,11 @@ export default class SpreadsheetTesting {
             });
     }
 
+    hashAppendAfterSpreadsheetName(append) {
+        this.hashOnlyIdAndName();
+        this.hashAppend(append);
+    }
+
     hashAppendWithoutCheck(append) {
         this.cy.window()
             .then((win) => {
