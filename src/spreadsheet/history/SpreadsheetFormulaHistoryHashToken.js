@@ -3,5 +3,5 @@ import SpreadsheetCellHistoryHashToken from "./SpreadsheetCellHistoryHashToken.j
 /**
  * Base for all formula actions
  */
-export default class SpreadsheetFormulaSelectionActionHistoryHashToken extends SpreadsheetCellHistoryHashToken {
+export default class SpreadsheetFormulaHistoryHashToken extends SpreadsheetCellHistoryHashToken {
 }

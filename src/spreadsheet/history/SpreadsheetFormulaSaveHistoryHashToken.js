@@ -1,11 +1,11 @@
 import Preconditions from "../../Preconditions.js";
-import SpreadsheetFormulaSelectionActionHistoryHashToken from "./SpreadsheetFormulaSelectionActionHistoryHashToken.js";
+import SpreadsheetFormulaHistoryHashToken from "./SpreadsheetFormulaHistoryHashToken.js";
 import SpreadsheetHistoryHashTokens from "./SpreadsheetHistoryHashTokens.js";
 
 /**
  * A history hash token that saves the given formula text for the current cell.
  */
-export default class SpreadsheetFormulaSaveHistoryHashToken extends SpreadsheetFormulaSelectionActionHistoryHashToken {
+export default class SpreadsheetFormulaSaveHistoryHashToken extends SpreadsheetFormulaHistoryHashToken {
 
     constructor(formulaText) {
         super();
