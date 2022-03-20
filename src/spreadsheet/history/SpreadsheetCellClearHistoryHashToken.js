@@ -4,12 +4,12 @@ import SpreadsheetHistoryHashTokens from "./SpreadsheetHistoryHashTokens.js";
 /**
  * A history hash token that represents a cell or cell-range clear
  */
-export default class SpreadsheetCellClearSelectionActionHistoryHashToken extends SpreadsheetCellHistoryHashToken {
+export default class SpreadsheetCellClearHistoryHashToken extends SpreadsheetCellHistoryHashToken {
 
     /**
      * Singleton instance.
      */
-    static INSTANCE = new SpreadsheetCellClearSelectionActionHistoryHashToken();
+    static INSTANCE = new SpreadsheetCellClearHistoryHashToken();
 
     toHistoryHashToken() {
         return SpreadsheetHistoryHashTokens.CLEAR;
@@ -23,6 +23,6 @@ export default class SpreadsheetCellClearSelectionActionHistoryHashToken extends
     }
 
     equals(other) {
-        return this === other || (other instanceof SpreadsheetCellClearSelectionActionHistoryHashToken);
+        return this === other || (other instanceof SpreadsheetCellClearHistoryHashToken);
     }
 }

@@ -3,8 +3,7 @@ import ListenerCollection from "../../event/ListenerCollection.js";
 import MenuItem from "@mui/material/MenuItem";
 import Preconditions from "../../Preconditions.js";
 import React from 'react';
-import SpreadsheetCellClearSelectionActionHistoryHashToken
-    from "./SpreadsheetCellClearSelectionActionHistoryHashToken.js";
+import SpreadsheetCellClearHistoryHashToken from "./SpreadsheetCellClearHistoryHashToken.js";
 import SpreadsheetCellDeleteHistoryHashToken from "./SpreadsheetCellDeleteHistoryHashToken.js";
 import SpreadsheetCellHistoryHashToken from "./SpreadsheetCellHistoryHashToken.js";
 import SpreadsheetCellMenuHistoryHashToken from "./SpreadsheetCellMenuHistoryHashToken.js";
@@ -155,7 +154,7 @@ export default class SpreadsheetHistoryHash extends SpreadsheetHistoryHashTokens
 
                         // /cell/A1/delete
                         if(SpreadsheetHistoryHashTokens.CLEAR === token){
-                            selectionAction = SpreadsheetCellClearSelectionActionHistoryHashToken.INSTANCE;
+                            selectionAction = SpreadsheetCellClearHistoryHashToken.INSTANCE;
                             token = tokens.shift();
                         } else {
                             if(SpreadsheetHistoryHashTokens.DELETE === token){
