@@ -130,6 +130,7 @@ Following the selection of a column or column range, the following commands are 
 
 - /clear Clears the selected column or column range
 - /delete Deletes the selected column or column range
+- /hidden/true|false Updates the hidden property for the column or column range to the new value.
 - /insert-after/$count Inserts the requested number of columns after the column/column range
 - /insert-before/$count Inserts the requested number of columns before the column/column range. Once the operation completes the selected column/column-range will be updated to account for the insertion.
 - /menu Displays a context menu
@@ -141,6 +142,10 @@ Following the selection of a column or column range, the following commands are 
 > /#123/Untitled/column/A/delete
 > 
 > /#123/Untitled/column/B:C/delete
+
+> /#123/Untitled/column/A/hidden/false
+>
+> /#123/Untitled/column/B:C/hidden/true
 
 > /#123/Untitled/column/A/insert-after/2
 > 
@@ -184,6 +189,7 @@ Following the selection of a row or row range, the following commands are possib
 
 - /clear Clears the selected row or row range
 - /delete Deletes the selected row or row range
+- /hidden/true|false Updates the hidden property for the row or row range to the new value.
 - /insert-after/$count Inserts the requested number of rows after the row/row range
 - /insert-before/$count Inserts the requested number of rows before the row/row range. Once the operation completes the selected row/row-range will be updated to account for the insertion.
 - /menu Displays a context menu
@@ -195,6 +201,10 @@ Following the selection of a row or row range, the following commands are possib
 > /#123/Untitled/row/1/delete
 > 
 > /#123/Untitled/row/2:3/delete
+
+> /#123/Untitled/row/1/hidden/false
+>
+> /#123/Untitled/row/2:3/hidden/true
 
 > /#123/Untitled/row/1/insert-after/2
 > 
