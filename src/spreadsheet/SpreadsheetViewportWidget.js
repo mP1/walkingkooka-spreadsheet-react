@@ -1059,10 +1059,8 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
         let columnReference = home.column();
 
         while(x < viewportWidth) {
-            const column = columnReferenceToColumns.get(columnReference);
-
             // only render non hidden columns....
-            if(null == column || !column.hidden()) {
+            if(!this.isColumnHidden(columnReference)) {
                 const width = columnWidths.get(columnReference) | defaultColumnWidth;
 
                 headers.push(
@@ -1188,6 +1186,14 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
      */
     renderTableEmpty() {
         return <TableContainer/>;
+    }
+
+    /**
+     * Tests if the given {@link SpreadsheetColumnReference column} is hidden.
+     */
+    isColumnHidden(columnReference) {
+        const column = this.state.columnReferenceToColumns.get(columnReference);
+        return null != column && column.hidden();
     }
 
     /**
