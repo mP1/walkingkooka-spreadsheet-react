@@ -1,8 +1,7 @@
 import CharSequences from "../../CharSequences.js";
 import SpreadsheetCellClearSelectionActionHistoryHashToken
     from "./SpreadsheetCellClearSelectionActionHistoryHashToken.js";
-import SpreadsheetCellDeleteSelectionActionHistoryHashToken
-    from "./SpreadsheetCellDeleteSelectionActionHistoryHashToken.js";
+import SpreadsheetCellDeleteHistoryHashToken from "./SpreadsheetCellDeleteHistoryHashToken.js";
 import SpreadsheetCellMenuHistoryHashToken from "./SpreadsheetCellMenuHistoryHashToken.js";
 import SpreadsheetCellRange from "../reference/SpreadsheetCellRange.js";
 import SpreadsheetCellReference from "../reference/SpreadsheetCellReference.js";
@@ -53,7 +52,7 @@ const COLUMN_ROW_CLEAR = SpreadsheetColumnOrRowClearHistoryHashToken.INSTANCE;
 const COLUMN_ROW_MENU = SpreadsheetColumnOrRowMenuHistoryHashToken.INSTANCE;
 
 const CELL_CLEAR = SpreadsheetCellClearSelectionActionHistoryHashToken.INSTANCE;
-const CELL_DELETE = SpreadsheetCellDeleteSelectionActionHistoryHashToken.INSTANCE;
+const CELL_DELETE = SpreadsheetCellDeleteHistoryHashToken.INSTANCE;
 const CELL_MENU = SpreadsheetCellMenuHistoryHashToken.INSTANCE;
 const FORMULA_LOAD_EDIT = new SpreadsheetFormulaLoadAndEditHistoryHashToken();
 const FORMULA_LOAD_EDIT_SAVE = new SpreadsheetFormulaSaveHistoryHashToken("Abc123");

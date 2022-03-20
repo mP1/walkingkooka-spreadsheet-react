@@ -5,8 +5,7 @@ import Preconditions from "../../Preconditions.js";
 import React from 'react';
 import SpreadsheetCellClearSelectionActionHistoryHashToken
     from "./SpreadsheetCellClearSelectionActionHistoryHashToken.js";
-import SpreadsheetCellDeleteSelectionActionHistoryHashToken
-    from "./SpreadsheetCellDeleteSelectionActionHistoryHashToken.js";
+import SpreadsheetCellDeleteHistoryHashToken from "./SpreadsheetCellDeleteHistoryHashToken.js";
 import SpreadsheetCellHistoryHashToken from "./SpreadsheetCellHistoryHashToken.js";
 import SpreadsheetCellMenuHistoryHashToken from "./SpreadsheetCellMenuHistoryHashToken.js";
 import spreadsheetCellRangeCellReferenceOrLabelParse
@@ -160,7 +159,7 @@ export default class SpreadsheetHistoryHash extends SpreadsheetHistoryHashTokens
                             token = tokens.shift();
                         } else {
                             if(SpreadsheetHistoryHashTokens.DELETE === token){
-                                selectionAction = SpreadsheetCellDeleteSelectionActionHistoryHashToken.INSTANCE;
+                                selectionAction = SpreadsheetCellDeleteHistoryHashToken.INSTANCE;
                                 token = tokens.shift();
                             }else {
                                 // /cell/A1/formula

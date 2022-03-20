@@ -1,7 +1,6 @@
 import CharSequences from "../../CharSequences.js";
 import Character from "../../Character.js";
-import SpreadsheetCellDeleteSelectionActionHistoryHashToken
-    from "../history/SpreadsheetCellDeleteSelectionActionHistoryHashToken.js";
+import SpreadsheetCellDeleteHistoryHashToken from "../history/SpreadsheetCellDeleteHistoryHashToken.js";
 import SpreadsheetColumnOrRowClearHistoryHashToken from "../history/SpreadsheetColumnOrRowClearHistoryHashToken.js";
 import SpreadsheetColumnOrRowDeleteHistoryHashToken from "../history/SpreadsheetColumnOrRowDeleteHistoryHashToken.js";
 import SpreadsheetColumnOrRowInsertBeforeHistoryHashToken
@@ -149,7 +148,7 @@ export default class SpreadsheetSelection extends SystemObject {
         const menuItems = [];
 
         // delete cells
-        historyTokens[SpreadsheetHistoryHashTokens.SELECTION_ACTION] = SpreadsheetCellDeleteSelectionActionHistoryHashToken.INSTANCE;
+        historyTokens[SpreadsheetHistoryHashTokens.SELECTION_ACTION] = SpreadsheetCellDeleteHistoryHashToken.INSTANCE;
 
         menuItems.push(
             history.menuItem(
