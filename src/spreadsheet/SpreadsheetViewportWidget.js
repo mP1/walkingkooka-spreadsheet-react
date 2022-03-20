@@ -21,9 +21,8 @@ import SpreadsheetColumnOrRowMenuHistoryHashToken from "./history/SpreadsheetCol
 import SpreadsheetColumnReference from "./reference/SpreadsheetColumnReference.js";
 import SpreadsheetColumnReferenceRange from "./reference/SpreadsheetColumnReferenceRange.js";
 import SpreadsheetDelta from "./engine/SpreadsheetDelta.js";
+import SpreadsheetFormulaHistoryHashToken from "./history/SpreadsheetFormulaHistoryHashToken.js";
 import SpreadsheetFormulaLoadAndEditHistoryHashToken from "./history/SpreadsheetFormulaLoadAndEditHistoryHashToken.js";
-import SpreadsheetFormulaSelectionActionHistoryHashToken
-    from "./history/SpreadsheetFormulaSelectionActionHistoryHashToken.js";
 import SpreadsheetHistoryAwareStateWidget from "./history/SpreadsheetHistoryAwareStateWidget.js";
 import SpreadsheetHistoryHash from "./history/SpreadsheetHistoryHash.js";
 import SpreadsheetHistoryHashToken from "./history/SpreadsheetHistoryHashToken.js";
@@ -698,7 +697,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
      * actual cell or column or row within a range etc.
      */
     giveSelectionFocus(selection, anchor) {
-        if(!(this.state.selectionAction instanceof SpreadsheetFormulaSelectionActionHistoryHashToken)){
+        if(!(this.state.selectionAction instanceof SpreadsheetFormulaHistoryHashToken)){
             if(selection){
                 const cellColumnOrRow = selection.viewportFocus(
                     this.state.labelToReferences,
@@ -803,7 +802,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
         const onFocus = (e) => {
             // only update state if formula not active and focus changed.
             const {selectionAction, focused} = state;
-            if(!(selectionAction instanceof SpreadsheetFormulaSelectionActionHistoryHashToken) || !focused){
+            if(!(selectionAction instanceof SpreadsheetFormulaHistoryHashToken) || !focused){
                 this.setState({
                     focused: true
                 });
