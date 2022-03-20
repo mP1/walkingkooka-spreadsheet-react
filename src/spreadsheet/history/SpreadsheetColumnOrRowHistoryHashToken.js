@@ -3,5 +3,5 @@ import SpreadsheetSelectionHistoryHashToken from "./SpreadsheetSelectionHistoryH
 /**
  * Base for all selection actions belonging to a column or row.
  */
-export default class SpreadsheetColumnOrRowSelectionActionHistoryHashToken extends SpreadsheetSelectionHistoryHashToken {
+export default class SpreadsheetColumnOrRowHistoryHashToken extends SpreadsheetSelectionHistoryHashToken {
 }
