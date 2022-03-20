@@ -49,8 +49,8 @@ export default class SpreadsheetColumnOrRowReferenceRange extends SpreadsheetSel
 
     // viewport.........................................................................................................
 
-    viewportContextMenuItems(historyTokens, history) {
-        return this.viewportContextMenuItemsColumnOrRow(historyTokens, history);
+    viewportContextMenuItems(historyTokens, isColumnHidden, isRowHidden, history) {
+        return this.viewportContextMenuItemsColumnOrRow(historyTokens, isColumnHidden, isRowHidden, history);
     }
 
     setAnchorConditional(anchor) {

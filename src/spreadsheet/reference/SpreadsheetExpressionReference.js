@@ -19,7 +19,7 @@ export default class SpreadsheetExpressionReference extends SpreadsheetSelection
         return /*SpreadsheetHistoryHash.CELL*/ "cell/" + this;
     }
 
-    viewportContextMenuItems(historyTokens, history) {
+    viewportContextMenuItems(historyTokens, isColumnHidden, isRowHidden, history) {
         return this.viewportContextMenuItemsCell(historyTokens, history);
     }
 }

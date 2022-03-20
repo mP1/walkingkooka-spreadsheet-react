@@ -113,7 +113,7 @@ export default class SpreadsheetSelection extends SystemObject {
      * This method is called whenever the element for this selection is clicked, providing an opportunity to
      * build the context menu items that will be displayed ready for clicking.
      */
-    viewportContextMenuItems(historyTokens){
+    viewportContextMenuItems(historyTokens, isColumnHidden, isRowHidden, history){
         SystemObject.throwUnsupportedOperation();
     }
 
@@ -136,6 +136,9 @@ export default class SpreadsheetSelection extends SystemObject {
     static VIEWPORT_CONTEXT_MENU_INSERT_AFTER_1_ID = SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_ID + "-insert-after-1"
     static VIEWPORT_CONTEXT_MENU_INSERT_BEFORE_2_ID = SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_ID + "-insert-before-2";
     static VIEWPORT_CONTEXT_MENU_INSERT_BEFORE_1_ID = SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_ID + "-insert-before-1";
+
+    static VIEWPORT_CONTEXT_MENU_UNHIDE_AFTER_ID = SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_ID + "-unhide-after";
+    static VIEWPORT_CONTEXT_MENU_UNHIDE_BEFORE_ID = SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_ID + "-unhide-before";
 
     /**
      * Builds the context menu items for a cell or cell-range.
@@ -192,7 +195,7 @@ export default class SpreadsheetSelection extends SystemObject {
     // insert 2 before
     // insert 1 after
     // insert 2 after
-    viewportContextMenuItemsColumnOrRow(historyTokens, history) {
+    viewportContextMenuItemsColumnOrRow(historyTokens, before, after, isHidden, history) {
         historyTokens[SpreadsheetHistoryHashTokens.SELECTION] = this;
         historyTokens[SpreadsheetHistoryHashTokens.SELECTION_ACTION] = null;
         historyTokens[SpreadsheetHistoryHashTokens.SELECTION_ANCHOR] = null;
@@ -269,6 +272,34 @@ export default class SpreadsheetSelection extends SystemObject {
             )
         );
 
+        // if the column/row BEFORE is hidden add Unhide column/row
+        if(!before.equals(this) && isHidden(before)){
+            historyTokens[SpreadsheetHistoryHashTokens.SELECTION] = before;
+            historyTokens[SpreadsheetHistoryHashTokens.SELECTION_ACTION] = new SpreadsheetColumnOrRowSaveHistoryHashToken("hidden", false);
+
+            menuItems.push(
+                history.menuItem(
+                    before.viewportUnHideText(),
+                    SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_UNHIDE_BEFORE_ID,
+                    historyTokens
+                )
+            );
+        }
+
+        // if the column/row AFTER is hidden add Unhide column/row
+        if(!after.equals(this) && isHidden(after)){
+            historyTokens[SpreadsheetHistoryHashTokens.SELECTION] = after;
+            historyTokens[SpreadsheetHistoryHashTokens.SELECTION_ACTION] = new SpreadsheetColumnOrRowSaveHistoryHashToken("hidden", false);
+
+            menuItems.push(
+                history.menuItem(
+                    after.viewportUnHideText(),
+                    SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_UNHIDE_AFTER_ID,
+                    historyTokens
+                )
+            );
+        }
+
         return menuItems;
     }
 
@@ -329,6 +360,10 @@ export default class SpreadsheetSelection extends SystemObject {
     }
 
     viewportInsertBefore2Text() {
+        SystemObject.throwUnsupportedOperation();
+    }
+
+    viewportUnHideText() {
         SystemObject.throwUnsupportedOperation();
     }
 

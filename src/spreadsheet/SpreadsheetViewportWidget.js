@@ -656,6 +656,8 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
                 },
                 menuItems: selection.viewportContextMenuItems(
                     SpreadsheetHistoryHash.spreadsheetIdAndName(history.tokens()),
+                    (c) => this.isColumnHidden(c),
+                    (r) => this.isRowHidden(r),
                     history
                 ),
             };

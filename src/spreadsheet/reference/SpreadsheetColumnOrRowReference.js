@@ -96,10 +96,6 @@ export default class SpreadsheetColumnOrRowReference extends SpreadsheetSelectio
 
     // context menu events..............................................................................................
 
-    viewportContextMenuItems(historyTokens, history) {
-        return this.viewportContextMenuItemsColumnOrRow(historyTokens, history);
-    }
-
     /**
      * Only returns true if the given clicked is equal to this column or row
      */

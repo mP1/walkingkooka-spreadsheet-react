@@ -147,6 +147,16 @@ export default class SpreadsheetRowReferenceRange extends SpreadsheetColumnOrRow
 
     // viewport.........................................................................................................
 
+    viewportContextMenuItems(historyTokens, isColumnHidden, isRowHidden, history) {
+        return this.viewportContextMenuItemsColumnOrRow(
+            historyTokens,
+            this.begin().addSaturated(-1),
+            this.end().addSaturated(+1),
+            isRowHidden,
+            history
+        );
+    }
+
     /**
      * Only returns true if the given clicked is a row within this range.
      */
@@ -177,7 +187,11 @@ export default class SpreadsheetRowReferenceRange extends SpreadsheetColumnOrRow
     viewportInsertBefore2Text() {
         return SpreadsheetRowReference.VIEWPORT_INSERT_BEFORE_2_TEXT;
     }
-    
+
+    viewportUnHideText() {
+        return "Unhide rows " + this;
+    }
+
     viewportFocus(labelToReference, anchor) {
         let focus;
 
