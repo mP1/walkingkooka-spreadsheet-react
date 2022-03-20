@@ -4,12 +4,12 @@ import SpreadsheetHistoryHashTokens from "./SpreadsheetHistoryHashTokens.js";
 /**
  * A history hash token that represents a cell or cell-range delete
  */
-export default class SpreadsheetCellDeleteSelectionActionHistoryHashToken extends SpreadsheetCellHistoryHashToken {
+export default class SpreadsheetCellDeleteHistoryHashToken extends SpreadsheetCellHistoryHashToken {
 
     /**
      * Singleton instance.
      */
-    static INSTANCE = new SpreadsheetCellDeleteSelectionActionHistoryHashToken();
+    static INSTANCE = new SpreadsheetCellDeleteHistoryHashToken();
 
     toHistoryHashToken() {
         return SpreadsheetHistoryHashTokens.DELETE;
@@ -27,6 +27,6 @@ export default class SpreadsheetCellDeleteSelectionActionHistoryHashToken extend
     }
 
     equals(other) {
-        return this === other || (other instanceof SpreadsheetCellDeleteSelectionActionHistoryHashToken);
+        return this === other || (other instanceof SpreadsheetCellDeleteHistoryHashToken);
     }
 }
