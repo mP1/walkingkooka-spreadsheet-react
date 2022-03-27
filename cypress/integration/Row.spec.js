@@ -107,6 +107,8 @@ describe("Row",
             testing.row("5")
                 .type("{shift+uparrow}");
 
+            testing.historyWait();
+
             testing.row("4")
                 .type("{shift+uparrow}");
 
@@ -134,8 +136,12 @@ describe("Row",
             testing.row("5")
                 .type("{shift+downarrow}");
 
+            testing.historyWait();
+
             testing.row("6")
                 .type("{shift+downarrow}");
+
+            testing.historyWait();
 
             testing.row("7")
                 .type("{shift+downarrow}");
