@@ -127,6 +127,8 @@ describe(
             testing.column("E")
                 .type("{shift+leftarrow}");
 
+            testing.historyWait();
+
             testing.column("D")
                 .type("{shift+leftarrow}");
 
@@ -153,6 +155,8 @@ describe(
 
             testing.column("F")
                 .type("{shift+rightarrow}");
+
+            testing.historyWait();
 
             testing.column("G")
                 .type("{shift+rightarrow}");
