@@ -79,7 +79,7 @@ export default class SpreadsheetViewportSelection extends SystemObject {
         return json;
     }
 
-    toQueryString() {
+    toQueryString(firstSeparator) {
         const selection = this.selection();
         const parameters = {
             selection: [selection.toString()],
@@ -106,7 +106,7 @@ export default class SpreadsheetViewportSelection extends SystemObject {
             )
         }
 
-        return RelativeUrl.toQueryString(parameters);
+        return RelativeUrl.toQueryString(firstSeparator, parameters);
     }
 
     typeName() {
