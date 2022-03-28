@@ -397,7 +397,7 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
      * Does a POST to a url which will insert after the requested count columns or rows.
      */
     insertAfterSelection(selection, count, window) {
-        const query = window ? "?window=" + window : "";
+        const query = window ? "&window=" + window : "";
 
         this.performSpreadsheetDelta(
             HttpMethod.POST,
@@ -410,7 +410,7 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
      * Does a POST to a url which will insert before the requested count columns or rows.
      */
     insertBeforeSelection(selection, count, window) {
-        const query = window ? "?window=" + window : "";
+        const query = window ? "&window=" + window : "";
 
         this.performSpreadsheetDelta(
             HttpMethod.POST,

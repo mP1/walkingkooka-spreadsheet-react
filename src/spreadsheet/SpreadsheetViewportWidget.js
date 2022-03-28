@@ -573,14 +573,22 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
      * Performs the insertAfter operation, leaving the selection unchanged.
      */
     insertAfterSelection(selection, count) {
-        this.props.insertAfterSelection(selection, count);
+        this.props.insertAfterSelection(
+            selection,
+            count,
+            this.state.viewportRange
+        );
     }
 
     /**
      * Performs the insert-before operation, leaving the selection unchanged.
      */
     insertBeforeSelection(selection, count) {
-        this.props.insertBeforeSelection(selection, count);
+        this.props.insertBeforeSelection(
+            selection,
+            count,
+            this.state.viewportRange
+        );
     }
 
     /**
