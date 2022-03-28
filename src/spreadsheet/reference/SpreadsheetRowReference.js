@@ -89,10 +89,6 @@ export default class SpreadsheetRowReference extends SpreadsheetColumnOrRowRefer
 
     // context menu events..............................................................................................
 
-    apiLoadCellsQueryStringParameterSelectionType() {
-        return "row";
-    }
-
     viewportContextMenuItems(historyTokens, isColumnHidden, isRowHidden, history) {
         return this.viewportContextMenuItemsColumnOrRow(
             historyTokens,
@@ -191,6 +187,10 @@ export default class SpreadsheetRowReference extends SpreadsheetColumnOrRowRefer
         return urlPaths[4] === "row" &&
             urlPaths[5] === this.toString() &&
             urlPaths[6] === "before";
+    }
+
+    kebabClassName() {
+        return "row";
     }
 
     // JSON............................................................................................................

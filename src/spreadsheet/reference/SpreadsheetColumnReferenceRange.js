@@ -94,10 +94,6 @@ export default class SpreadsheetColumnReferenceRange extends SpreadsheetColumnOr
         return false;
     }
 
-    apiLoadCellsQueryStringParameterSelectionType() {
-        return "column-range";
-    }
-
     toHistoryHashToken() {
         return SpreadsheetHistoryHash.COLUMN + "/" + this;
     }
@@ -219,6 +215,10 @@ export default class SpreadsheetColumnReferenceRange extends SpreadsheetColumnOr
 
     defaultAnchor() {
         return SpreadsheetColumnOrRowReferenceRange.DEFAULT_ANCHOR;
+    }
+
+    kebabClassName() {
+        return "column-range";
     }
 
     // JSON............................................................................................................

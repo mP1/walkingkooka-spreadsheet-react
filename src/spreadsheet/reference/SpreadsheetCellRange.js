@@ -124,10 +124,6 @@ export default class SpreadsheetCellRange extends SpreadsheetExpressionReference
             rowReference.compareTo(end.row()) <= 0;
     }
 
-    apiLoadCellsQueryStringParameterSelectionType() {
-        return "cell-range";
-    }
-
     // viewport.........................................................................................................
 
     /**
@@ -203,6 +199,10 @@ export default class SpreadsheetCellRange extends SpreadsheetExpressionReference
 
     apiDeleteUrl() {
         return "/cell/" + this;
+    }
+
+    kebabClassName() {
+        return "cell-range";
     }
 
     // json............................................................................................................

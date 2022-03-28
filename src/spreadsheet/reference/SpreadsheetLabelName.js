@@ -85,10 +85,6 @@ export default class SpreadsheetLabelName extends SpreadsheetCellReferenceOrLabe
         return false;
     }
 
-    apiLoadCellsQueryStringParameterSelectionType() {
-        return "label";
-    }
-
     toRelative() {
         return this;
     }
@@ -110,6 +106,10 @@ export default class SpreadsheetLabelName extends SpreadsheetCellReferenceOrLabe
 
     anchors() {
         return [];
+    }
+
+    kebabClassName() {
+        return "label";
     }
 
     // JSON.............................................................................................................
