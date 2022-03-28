@@ -130,10 +130,6 @@ export default class SpreadsheetColumnReference extends SpreadsheetColumnOrRowRe
         return SpreadsheetHistoryHashTokens.COLUMN + "/" + this;
     }
 
-    apiLoadCellsQueryStringParameterSelectionType() {
-        return "column";
-    }
-
     apiClearUrl() {
         return "/column/" + this + "/clear";
     }
@@ -184,6 +180,10 @@ export default class SpreadsheetColumnReference extends SpreadsheetColumnOrRowRe
 
     viewportUnHideText() {
         return "Unhide column " + this;
+    }
+
+    kebabClassName() {
+        return "column";
     }
 
     // JSON.............................................................................................................

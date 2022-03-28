@@ -95,10 +95,6 @@ export default class SpreadsheetRowReferenceRange extends SpreadsheetColumnOrRow
             this.end().compareTo(rowReference) >= 0;
     }
 
-    apiLoadCellsQueryStringParameterSelectionType() {
-        return "row-range";
-    }
-
     toHistoryHashToken() {
         return SpreadsheetHistoryHash.ROW + "/" + this;
     }
@@ -220,6 +216,10 @@ export default class SpreadsheetRowReferenceRange extends SpreadsheetColumnOrRow
 
     defaultAnchor() {
         return SpreadsheetRowReferenceRange.DEFAULT_ANCHOR;
+    }
+
+    kebabClassName() {
+        return "row-range";
     }
 
     // JSON............................................................................................................

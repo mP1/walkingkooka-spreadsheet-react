@@ -89,7 +89,7 @@ export default class SpreadsheetViewport extends SystemObject {
         };
 
         if(selection) {
-            parameters.selectionType = [selection.apiLoadCellsQueryStringParameterSelectionType()];
+            parameters.selectionType = [selection.kebabClassName()];
             parameters.selection = [selection];
 
             if(navigation) {

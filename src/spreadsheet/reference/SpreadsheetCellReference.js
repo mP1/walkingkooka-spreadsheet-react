@@ -217,10 +217,6 @@ export default class SpreadsheetCellReference extends SpreadsheetCellReferenceOr
         return this.row().testRow(rowReference);
     }
 
-    apiLoadCellsQueryStringParameterSelectionType() {
-        return "cell";
-    }
-
     toRelative() {
         return this.setColumn(this.column()
             .setKind(SpreadsheetReferenceKind.RELATIVE))
@@ -275,6 +271,10 @@ export default class SpreadsheetCellReference extends SpreadsheetCellReferenceOr
 
     defaultAnchor() {
         return SpreadsheetViewportSelectionAnchor.NONE;
+    }
+
+    kebabClassName() {
+        return "cell";
     }
 
     // json............................................................................................................

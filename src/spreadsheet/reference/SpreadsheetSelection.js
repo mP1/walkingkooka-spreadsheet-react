@@ -72,10 +72,6 @@ export default class SpreadsheetSelection extends SystemObject {
     toHistoryHashToken() {
         SystemObject.throwUnsupportedOperation();
     }
-
-    apiLoadCellsQueryStringParameterSelectionType() {
-        SystemObject.throwUnsupportedOperation();
-    }
     
     apiDeleteUrl() {
         SystemObject.throwUnsupportedOperation();
@@ -408,6 +404,10 @@ export default class SpreadsheetSelection extends SystemObject {
     }
 
     viewportInsertBeforePostSuccessSelection(count) {
+        SystemObject.throwUnsupportedOperation();
+    }
+
+    kebabClassName() {
         SystemObject.throwUnsupportedOperation();
     }
 
