@@ -69,19 +69,21 @@ testParse("/abc?def=ghi&def=1",
 
 // toQuerystring...............................................................................................................
 
-function testToQueryString(queryParameters, queryString) {
-    test("toQueryString " + JSON.stringify(queryParameters), () => {
-        expect(RelativeUrl.toQueryString(queryParameters))
+function testToQueryString(firstSeparator, queryParameters, queryString) {
+    test("toQueryString firstSeparator" + firstSeparator + " " + JSON.stringify(queryParameters), () => {
+        expect(RelativeUrl.toQueryString(firstSeparator, queryParameters))
             .toStrictEqual(queryString);
     });
 }
 
 testToQueryString(
+    "?",
     {},
     ""
 );
 
 testToQueryString(
+    "?",
     {
         "a": []
     },
@@ -89,6 +91,7 @@ testToQueryString(
 );
 
 testToQueryString(
+    "?",
     {
         "a": ["1"]
     },
@@ -96,6 +99,7 @@ testToQueryString(
 );
 
 testToQueryString(
+    "?",
     {
         "x y": ["3 4"]
     },
@@ -103,6 +107,7 @@ testToQueryString(
 );
 
 testToQueryString(
+    "?",
     {
         "a": ["11", "22"]
     },
@@ -110,6 +115,7 @@ testToQueryString(
 );
 
 testToQueryString(
+    "?",
     {
         "x": ["1234"],
         "y": ["5678"]
@@ -118,6 +124,7 @@ testToQueryString(
 );
 
 testToQueryString(
+    "?",
     {
         "a": ["1", "2"],
         "b": ["99"]

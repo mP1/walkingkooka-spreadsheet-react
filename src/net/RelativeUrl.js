@@ -7,7 +7,8 @@ import SystemObject from "../SystemObject.js";
  */
 export default class RelativeUrl extends SystemObject {
 
-    static toQueryString(parameters) {
+    static toQueryString(firstSeparator, parameters) {
+        Preconditions.requireText(firstSeparator, "firstSeparator");
         Preconditions.requireObject(parameters, "parameters");
 
         const components = [];
@@ -17,14 +18,14 @@ export default class RelativeUrl extends SystemObject {
 
             if(values.length > 0) {
                 values.forEach((v) => {
-                    components.push(components.length > 0 ? "&" : "?");
+                    components.push(components.length > 0 ? "&" : firstSeparator);
 
                     components.push(encodedName);
                     components.push("=");
                     components.push(encodeURIComponent(v));
                 });
             } else {
-                components.push(components.length > 0 ? "&" : "?");
+                components.push(components.length > 0 ? "&" : firstSeparator);
 
                 components.push(encodedName);
             }
@@ -130,6 +131,6 @@ export default class RelativeUrl extends SystemObject {
     }
 
     toString() {
-        return this.path() + RelativeUrl.toQueryString(this.queryParameters());
+        return this.path() + RelativeUrl.toQueryString("?", this.queryParameters());
     }
 }

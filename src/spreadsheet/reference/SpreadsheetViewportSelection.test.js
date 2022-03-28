@@ -174,8 +174,8 @@ testNew(label(), null);
 
 // toQueryString........................................................................................................
 
-function testToQueryString(selection, anchor, navigation, queryString) {
-    test("toQueryString: " + selection + " anchor=" + anchor + " navigation=" + navigation,
+function testToQueryString(selection, anchor, navigation, firstSeparator, queryString) {
+    test("toQueryString: " + selection + " anchor=" + anchor + " navigation=" + navigation + " firstSeparator=" + firstSeparator,
         () => {
             const viewportSelection = SpreadsheetViewportSelection.fromJson(
                 {
@@ -185,8 +185,8 @@ function testToQueryString(selection, anchor, navigation, queryString) {
                 }
             );
 
-            expect(queryString)
-                .toStrictEqual(viewportSelection.toQueryString());
+            expect(viewportSelection.toQueryString(firstSeparator))
+                .toStrictEqual(queryString);
         });
 }
 
@@ -194,6 +194,15 @@ testToQueryString(
     column(),
     SpreadsheetViewportSelectionAnchor.NONE,
     null,
+    "",
+    "selection=" + column() + "&selectionType=column&selectionAnchor=none"
+);
+
+testToQueryString(
+    column(),
+    SpreadsheetViewportSelectionAnchor.NONE,
+    null,
+    "?",
     "?selection=" + column() + "&selectionType=column&selectionAnchor=none"
 );
 
@@ -201,6 +210,7 @@ testToQueryString(
     cell(),
     SpreadsheetViewportSelectionAnchor.NONE,
     null,
+    "?",
     "?selection=" + cell() + "&selectionType=cell&selectionAnchor=none"
 );
 
@@ -208,6 +218,7 @@ testToQueryString(
     cellRange(),
     SpreadsheetViewportSelectionAnchor.TOP_LEFT,
     null,
+    "?",
     "?selection=B2%3AC3&selectionType=cell-range&selectionAnchor=top-left"
 );
 
@@ -215,6 +226,7 @@ testToQueryString(
     cellRange(),
     SpreadsheetViewportSelectionAnchor.BOTTOM_LEFT,
     null,
+    "?",
     "?selection=B2%3AC3&selectionType=cell-range&selectionAnchor=bottom-left"
 );
 
