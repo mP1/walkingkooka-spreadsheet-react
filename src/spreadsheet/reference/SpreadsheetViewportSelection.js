@@ -1,5 +1,6 @@
 import Equality from "../../Equality.js";
 import Preconditions from "../../Preconditions.js";
+import RelativeUrl from "../../net/RelativeUrl.js";
 import SpreadsheetSelection from "./SpreadsheetSelection.js";
 import SpreadsheetViewportSelectionAnchor from "./SpreadsheetViewportSelectionAnchor.js";
 import SpreadsheetViewportSelectionNavigation from "./SpreadsheetViewportSelectionNavigation.js";
@@ -76,6 +77,36 @@ export default class SpreadsheetViewportSelection extends SystemObject {
         }
 
         return json;
+    }
+
+    toQueryString() {
+        const selection = this.selection();
+        const parameters = {
+            selection: [selection.toString()],
+            selectionType: [selection.kebabClassName()],
+        };
+
+        const anchor = this.anchor();
+        if(anchor){
+            Object.assign(
+                parameters,
+                {
+                    selectionAnchor: [anchor.nameKebabCase()]
+                }
+            )
+        }
+
+        const navigation = this.navigation();
+        if(navigation){
+            Object.assign(
+                parameters,
+                {
+                    selectionNavigation: [navigation.nameKebabCase()]
+                }
+            )
+        }
+
+        return RelativeUrl.toQueryString(parameters);
     }
 
     typeName() {

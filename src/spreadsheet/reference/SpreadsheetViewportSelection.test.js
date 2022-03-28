@@ -172,6 +172,52 @@ testNew(label(), SpreadsheetViewportSelectionAnchor.LEFT);
 testNew(label(), SpreadsheetViewportSelectionAnchor.RIGHT);
 testNew(label(), null);
 
+// toQueryString........................................................................................................
+
+function testToQueryString(selection, anchor, navigation, queryString) {
+    test("toQueryString: " + selection + " anchor=" + anchor + " navigation=" + navigation,
+        () => {
+            const viewportSelection = SpreadsheetViewportSelection.fromJson(
+                {
+                    selection: selection.toJsonWithType(),
+                    anchor: anchor && anchor.toJson(),
+                    navigation: navigation && navigation.toJson(),
+                }
+            );
+
+            expect(queryString)
+                .toStrictEqual(viewportSelection.toQueryString());
+        });
+}
+
+testToQueryString(
+    column(),
+    SpreadsheetViewportSelectionAnchor.NONE,
+    null,
+    "?selection=" + column() + "&selectionType=column&selectionAnchor=none"
+);
+
+testToQueryString(
+    cell(),
+    SpreadsheetViewportSelectionAnchor.NONE,
+    null,
+    "?selection=" + cell() + "&selectionType=cell&selectionAnchor=none"
+);
+
+testToQueryString(
+    cellRange(),
+    SpreadsheetViewportSelectionAnchor.TOP_LEFT,
+    null,
+    "?selection=B2%3AC3&selectionType=cell-range&selectionAnchor=top-left"
+);
+
+testToQueryString(
+    cellRange(),
+    SpreadsheetViewportSelectionAnchor.BOTTOM_LEFT,
+    null,
+    "?selection=B2%3AC3&selectionType=cell-range&selectionAnchor=bottom-left"
+);
+
 // fromJson.............................................................................................................
 
 function testFromJson(selection, anchor, navigation) {
