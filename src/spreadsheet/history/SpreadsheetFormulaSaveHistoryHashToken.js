@@ -21,8 +21,8 @@ export default class SpreadsheetFormulaSaveHistoryHashToken extends SpreadsheetF
         return SpreadsheetHistoryHashTokens.CELL_FORMULA + "/" + SpreadsheetHistoryHashTokens.SAVE + "/" + encodeURIComponent(this.formulaText());
     }
 
-    onViewportSelectionAction(selection, viewportWidget) {
-
+    onViewportSelectionAction(viewportSelection, viewportWidget) {
+        // nop
     }
 
     equals(other) {

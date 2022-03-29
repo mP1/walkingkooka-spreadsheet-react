@@ -369,12 +369,23 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
     /**
      * Clears the given selection and appends the window if present as a query parameter.
      */
-    clearSelection(selection, window) {
-        const query = window ? "?window=" + window : "";
+    clearSelection(viewportSelection, window) {
+        var queryString = "";
+
+        if(window) {
+            queryString = "?window=" + window;
+        }
+        queryString = queryString + viewportSelection.toQueryString(window ? "&": "?");
+
+        const selection = viewportSelection.selection();
 
         this.performSpreadsheetDelta(
             HttpMethod.POST,
-            RelativeUrl.parse(this.apiSpreadsheetMetadataUrl() + selection.apiClearUrl() + query),
+            RelativeUrl.parse(
+                this.apiSpreadsheetMetadataUrl() +
+                selection.apiClearUrl() +
+                queryString
+            ),
             selection,
             JSON.stringify(SpreadsheetDelta.EMPTY.toJson()),
         );
@@ -383,12 +394,23 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
     /**
      * Deletes the given selection and appends the window if present as a query parameter.
      */
-    deleteSelection(selection, window) {
-        const query = window ? "?window=" + window : "";
+    deleteSelection(viewportSelection, window) {
+        var queryString = "";
+
+        if(window) {
+            queryString = "?window=" + window;
+        }
+        queryString = queryString + viewportSelection.toQueryString(window ? "&": "?");
+
+        const selection = viewportSelection.selection();
 
         this.performSpreadsheetDelta(
             HttpMethod.DELETE,
-            RelativeUrl.parse(this.apiSpreadsheetMetadataUrl() + selection.apiDeleteUrl() + query),
+            RelativeUrl.parse(
+                this.apiSpreadsheetMetadataUrl() +
+                selection.apiDeleteUrl() +
+                queryString
+            ),
             selection
         );
     }
@@ -396,12 +418,23 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
     /**
      * Does a POST to a url which will insert after the requested count columns or rows.
      */
-    insertAfterSelection(selection, count, window) {
-        const query = window ? "&window=" + window : "";
+    insertAfterSelection(viewportSelection, count, window) {
+        var queryString = "";
+
+        if(window) {
+            queryString = "&window=" + window;
+        }
+        queryString = queryString + viewportSelection.toQueryString("&");
+
+        const selection = viewportSelection.selection();
 
         this.performSpreadsheetDelta(
             HttpMethod.POST,
-            RelativeUrl.parse(this.apiSpreadsheetMetadataUrl() + selection.apiInsertAfterUrl(count) + query),
+            RelativeUrl.parse(
+                this.apiSpreadsheetMetadataUrl() +
+                selection.apiInsertAfterUrl(count) +
+                queryString
+            ),
             selection
         );
     }
@@ -409,16 +442,27 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
     /**
      * Does a POST to a url which will insert before the requested count columns or rows.
      */
-    insertBeforeSelection(selection, count, window) {
-        const query = window ? "&window=" + window : "";
+    insertBeforeSelection(viewportSelection, count, window) {
+        var queryString = "";
+
+        if(window) {
+            queryString = "&window=" + window;
+        }
+        queryString = queryString + viewportSelection.toQueryString("&");
+
+        const selection = viewportSelection.selection();
 
         this.performSpreadsheetDelta(
             HttpMethod.POST,
-            RelativeUrl.parse(this.apiSpreadsheetMetadataUrl() + selection.apiInsertBeforeUrl(count) + query),
+            RelativeUrl.parse(
+                this.apiSpreadsheetMetadataUrl() +
+                selection.apiInsertBeforeUrl(count) +
+                queryString
+            ),
             selection
         );
     }
-    
+
     /**
      * Invokes a service which will return a SpreadsheetDelta.
      */

@@ -713,6 +713,9 @@ describe("Row",
             testing.viewportContextMenu()
                 .should("not.be.visible");
 
+            testing.hash()
+                .should('match', /.*\/.*/);
+
             testing.cellFormattedTextCheck(A1, "Before");
             testing.get(B2.viewportId())
                 .should("not.exist");
@@ -742,6 +745,9 @@ describe("Row",
 
             testing.viewportContextMenu()
                 .should("not.be.visible");
+
+            testing.hash()
+                .should('match', /.*\/.*/);
 
             testing.cellFormattedTextCheck(A1, "Before");
             testing.get(B2.viewportId())

@@ -15,7 +15,7 @@ export default class SpreadsheetFormulaLoadAndEditHistoryHashToken extends Sprea
         return this.formulaTextValue;
     }
 
-    onViewportSelectionAction(selection, viewportWidget) {
+    onViewportSelectionAction(viewportSelection, viewportWidget) {
         // viewport is not interested in formula token.
     }
 

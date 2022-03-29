@@ -36,6 +36,7 @@ import SpreadsheetRowReference from "./reference/SpreadsheetRowReference.js";
 import SpreadsheetRowReferenceRange from "./reference/SpreadsheetRowReferenceRange.js";
 import SpreadsheetSelection from "./reference/SpreadsheetSelection.js";
 import SpreadsheetViewport from "./SpreadsheetViewport.js";
+import SpreadsheetViewportSelection from "./reference/SpreadsheetViewportSelection.js";
 import SpreadsheetViewportSelectionAnchor from "./reference/SpreadsheetViewportSelectionAnchor.js";
 import SpreadsheetViewportSelectionNavigation from "./reference/SpreadsheetViewportSelectionNavigation.js";
 import Table from '@mui/material/Table';
@@ -218,25 +219,30 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
                 rowHeights: state.rowHeights.setAll(responseDelta.rowHeights()),
             };
 
-            if(window && url.queryParameters().selection){
-                Object.assign(
-                    newState,
-                    {
-                        viewportRange: window,
-                        spreadsheetMetadata: metadata.set(SpreadsheetMetadata.VIEWPORT_CELL, window.begin())
-                    }
-                );
-
-                const viewportSelection = responseDelta.selection();
-                if(viewportSelection){
+            if(window){
+                const queryParameterSelection = url.queryParameters().selection;
+                if(queryParameterSelection){
                     Object.assign(
                         newState,
                         {
-                            selection: viewportSelection.selection(),
-                            selectionAnchor: viewportSelection.anchor(),
-                            selectionNavigation: viewportSelection.navigation(),
+                            viewportRange: window,
+                            spreadsheetMetadata: metadata.set(SpreadsheetMetadata.VIEWPORT_CELL, window.begin())
                         }
                     );
+                }
+
+                if(queryParameterSelection || requestDelta && requestDelta.selection()) {
+                    const viewportSelection = responseDelta.selection();
+                    if(viewportSelection){
+                        Object.assign(
+                            newState,
+                            {
+                                selection: viewportSelection ? viewportSelection.selection() : null,
+                                selectionAnchor: viewportSelection ? viewportSelection.anchor() : null,
+                                selectionNavigation: viewportSelection ? viewportSelection.navigation() : null,
+                            }
+                        );
+                    }
                 }
             }
 
@@ -472,7 +478,10 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
                     if(!Equality.safeEquals(selectionActionNew, selectionActionOld)){
                         // new action perform
                         if(selectionActionNew){
-                            selectionActionNew.onViewportSelectionAction(selectionNew, this); // perform delete/insert etc.
+                            selectionActionNew.onViewportSelectionAction(
+                                new SpreadsheetViewportSelection(selectionNew, selectionAnchor, selectionNavigationNew),
+                                this
+                            ); // perform delete/insert etc.
                             break;
                         }
                     }
@@ -548,9 +557,9 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
     /**
      * Remove the selection, the cleard column, row etc and then perform the clear API.
      */
-    clearSelection(selection) {
+    clearSelection(viewportSelection) {
         this.props.clearSelection(
-            selection,
+            viewportSelection,
             this.state.viewportRange
         );
 
@@ -560,9 +569,9 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
     /**
      * Remove the selection, the deleted column, row etc and then perform the delete API.
      */
-    deleteSelection(selection) {
+    deleteSelection(viewportSelection) {
         this.props.deleteSelection(
-            selection,
+            viewportSelection,
             this.state.viewportRange
         );
 
@@ -572,9 +581,9 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
     /**
      * Performs the insertAfter operation, leaving the selection unchanged.
      */
-    insertAfterSelection(selection, count) {
+    insertAfterSelection(viewportSelection, count) {
         this.props.insertAfterSelection(
-            selection,
+            viewportSelection,
             count,
             this.state.viewportRange
         );
@@ -583,9 +592,9 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
     /**
      * Performs the insert-before operation, leaving the selection unchanged.
      */
-    insertBeforeSelection(selection, count) {
+    insertBeforeSelection(viewportSelection, count) {
         this.props.insertBeforeSelection(
-            selection,
+            viewportSelection,
             count,
             this.state.viewportRange
         );
@@ -600,17 +609,20 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
         this.historyParseMergeAndPush(tokens);
     }
 
-    patchColumnOrRow(selection, property, value) {
-        const props = this.props;
+    patchColumnOrRow(viewportSelection, property, value) {
+        Preconditions.requireInstance(viewportSelection, SpreadsheetViewportSelection, "viewportSelection");
+        Preconditions.requireText(property, "property");
 
+        const selection = viewportSelection.selection();
         const patched = selection.patch(property, value);
         const window = this.state.viewportRange;
+        const props = this.props;
 
         if(selection instanceof SpreadsheetColumnReference || selection instanceof SpreadsheetColumnReferenceRange){
             props.spreadsheetDeltaColumnCrud.patch(
                 selection,
                 new SpreadsheetDelta(
-                    null,
+                    viewportSelection,
                     [], // cells
                     Array.isArray(patched) ? patched : [patched], // columns
                     [], // labels
@@ -630,7 +642,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
             props.spreadsheetDeltaRowCrud.patch(
                 selection,
                 new SpreadsheetDelta(
-                    null,
+                    viewportSelection,
                     [], // cells
                     [], // columns
                     [], // labels
@@ -650,7 +662,9 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
     /**
      * Updates the state so the context menu will be shown.
      */
-    showContextMenu(selection) {
+    showContextMenu(viewportSelection) {
+        const selection = viewportSelection.selection();
+
         const element = document.getElementById(selection.viewportId());
         if(element) {
             const history = this.props.history;

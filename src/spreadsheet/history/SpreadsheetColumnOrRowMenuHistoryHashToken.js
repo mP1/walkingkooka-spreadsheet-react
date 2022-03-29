@@ -18,8 +18,8 @@ export default class SpreadsheetColumnOrRowMenuHistoryHashToken extends Spreadsh
     /**
      * Opens the context menu for the given column/row
      */
-    onViewportSelectionAction(selection, viewportWidget) {
-        viewportWidget.showContextMenu(selection);
+    onViewportSelectionAction(viewportSelection, viewportWidget) {
+        viewportWidget.showContextMenu(viewportSelection);
     }
 
     equals(other) {
