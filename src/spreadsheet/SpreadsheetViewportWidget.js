@@ -232,7 +232,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
                 }
 
                 // if the request SpreadsheetDelta#viewportSelection was present then update the state with the response SpreadsheetDelta#viewportSelection
-                if(queryParameterSelection || requestDelta && requestDelta.selection()){
+                if(queryParameterSelection || (requestDelta && requestDelta.selection())){
                     const viewportSelection = responseDelta.selection();
                     Object.assign(
                         newState,
