@@ -131,7 +131,7 @@ const CONTEXT_MENU_Y_OFFSET = 10;
  * <li>SpreadsheetCellRange viewportRange: holds a range of all the cells within the viewport</li>
  * <li>boolean giveFocus: if cells changed give focus to the selected cell. This helps giving focus after a delta load.</li>
  * <li>boolean focused: When true the viewport has focus, and cleared when the blur event happens.</li>
- * <li>SpreadsheetSelection selection: The currently active selection including ranges</li>
+ * <li>SpreadsheetViewportSelection selection: The currently active selection including ranges</li>
  * <li>SpreadsheetViewportSelectionAnchor selectionAnchor: When a range is the current selection this will hold the anchor.</li>
  * <li>SpreadsheetViewportSelectionNavigation selectionNavigation: Tracks the last navigation entry from the keyboard</li>
  * <li>contextMenu object an object with two properties anchorPosition and menuList both which are given to the Menu to present itself.</li>
