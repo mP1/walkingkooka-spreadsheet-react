@@ -29,9 +29,9 @@ export default class SpreadsheetColumnOrRowSaveHistoryHashToken extends Spreadsh
     /**
      * Handles history hash token evens such as /column/A/hidden/true or /row/1/hidden/false
      */
-    onViewportSelectionAction(selection, viewportWidget) {
+    onViewportSelectionAction(viewportSelection, viewportWidget) {
         viewportWidget.patchColumnOrRow(
-            selection,
+            viewportSelection,
             this.property(),
             this.value()
         );

@@ -5,7 +5,7 @@ import SystemObject from "../../SystemObject.js";
 
 export default class SpreadsheetHistoryHashToken {
 
-    onViewportSelectionAction(selection, viewportWidget) {
+    onViewportSelectionAction(viewportSelection, viewportWidget) {
         SystemObject.throwUnsupportedOperation();
     }
 

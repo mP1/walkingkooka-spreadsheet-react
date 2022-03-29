@@ -728,6 +728,9 @@ describe(
 
             testing.columnWait();
 
+            testing.hash()
+                .should('match', /.*\/.*/);
+
             testing.cellFormattedTextCheck(A1, "Before");
             testing.get(B2.viewportId())
                 .should("not.exist");
@@ -759,6 +762,9 @@ describe(
                 .should("not.be.visible");
 
             testing.columnWait();
+
+            testing.hash()
+                .should('match', /.*\/.*/);
 
             testing.cellFormattedTextCheck(A1, "Before");
             testing.get(B2.viewportId())

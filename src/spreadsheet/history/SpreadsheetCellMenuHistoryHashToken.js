@@ -18,8 +18,8 @@ export default class SpreadsheetCellMenuHistoryHashToken extends SpreadsheetCell
     /**
      * Opens the context menu for the given cell
      */
-    onViewportSelectionAction(selection, viewportWidget) {
-        viewportWidget.showContextMenu(selection);
+    onViewportSelectionAction(viewportSelection, viewportWidget) {
+        viewportWidget.showContextMenu(viewportSelection);
     }
 
     equals(other) {
