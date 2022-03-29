@@ -231,18 +231,17 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
                     );
                 }
 
-                if(queryParameterSelection || requestDelta && requestDelta.selection()) {
+                // if the request SpreadsheetDelta#viewportSelection was present then update the state with the response SpreadsheetDelta#viewportSelection
+                if(queryParameterSelection || requestDelta && requestDelta.selection()){
                     const viewportSelection = responseDelta.selection();
-                    if(viewportSelection){
-                        Object.assign(
-                            newState,
-                            {
-                                selection: viewportSelection ? viewportSelection.selection() : null,
-                                selectionAnchor: viewportSelection ? viewportSelection.anchor() : null,
-                                selectionNavigation: viewportSelection ? viewportSelection.navigation() : null,
-                            }
-                        );
-                    }
+                    Object.assign(
+                        newState,
+                        {
+                            selection: viewportSelection ? viewportSelection.selection() : null,
+                            selectionAnchor: viewportSelection ? viewportSelection.anchor() : null,
+                            selectionNavigation: viewportSelection ? viewportSelection.navigation() : null,
+                        }
+                    );
                 }
             }
 

@@ -774,6 +774,60 @@ describe(
             testing.cellFormattedTextCheck("D4", "After");
         });
 
+        it("Attempt to history hash select hidden column cleared", () => {
+            testing.contextMenu(B.viewportId());
+
+            testing.viewportContextMenu()
+                .should("be.visible")
+                .find("#" + SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_HIDE_ID)
+                .should("include.text", "Hide");
+
+            testing.getById(SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_HIDE_ID)
+                .click();
+
+            testing.viewportContextMenu()
+                .should("not.be.visible");
+
+            testing.columnWait();
+
+            testing.hash()
+                .should('match', /.*\/.*/);
+
+            testing.hashAppend("/column/B");
+
+            testing.columnWait();
+
+            testing.hash()
+                .should('match', /.*\/.*/);
+        });
+
+        it("Attempt to history hash select cell in hidden column cleared", () => {
+            testing.contextMenu(B.viewportId());
+
+            testing.viewportContextMenu()
+                .should("be.visible")
+                .find("#" + SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_HIDE_ID)
+                .should("include.text", "Hide");
+
+            testing.getById(SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_HIDE_ID)
+                .click();
+
+            testing.viewportContextMenu()
+                .should("not.be.visible");
+
+            testing.columnWait();
+
+            testing.hash()
+                .should('match', /.*\/.*/);
+
+            testing.hashAppend("/cell/B2");
+
+            testing.columnWait();
+
+            testing.hash()
+                .should('match', /.*\/.*/);
+        });
+
         // unhide ......................................................................................................
 
         it("Column context menu click unhide column after", () => {
