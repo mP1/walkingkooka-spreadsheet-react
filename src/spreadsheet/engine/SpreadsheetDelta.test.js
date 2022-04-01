@@ -302,18 +302,9 @@ systemObjectTesting(
                 hidden: false,
             },
         },
-        deletedCells: [
-            "C1",
-            "C2",
-        ],
-        deletedColumns: [
-            "D",
-            "E",
-        ],
-        deletedRows: [
-            "6",
-            "7",
-        ],
+        deletedCells: "C1,C2",
+        deletedColumns: "D,E",
+        deletedRows: "6,7",
         columnWidths: {
             "A": 100
         },
@@ -602,18 +593,9 @@ test("create", () => {
                     hidden: false,
                 }
             },
-            deletedCells: [
-                "C1",
-                "C2",
-            ],
-            deletedColumns: [
-                "D",
-                "E",
-            ],
-            deletedRows: [
-                "6",
-                "7",
-            ],
+            deletedCells: "C1,C2",
+            deletedColumns: "D,E",
+            deletedRows: "6,7",
             columnWidths: {
                 "A": 100
             },
@@ -1243,18 +1225,9 @@ test("toJson all properties", () => {
                     hidden: false,
                 },
             },
-            deletedCells: [
-                "C1",
-                "C2",
-            ],
-            deletedColumns: [
-                "D",
-                "E",
-            ],
-            deletedRows: [
-                "6",
-                "7",
-            ],
+            deletedCells: "C1,C2",
+            deletedColumns: "D,E",
+            deletedRows: "6,7",
             columnWidths: {
                 "A": 100
             },
@@ -1446,18 +1419,9 @@ test("fromJson all properties", () => {
                         hidden: false,
                     }
                 },
-                deletedCells: [
-                    "C1",
-                    "C2",
-                ],
-                deletedColumns: [
-                    "D",
-                    "E",
-                ],
-                deletedRows: [
-                    "6",
-                    "7",
-                ],
+                deletedCells: "C1,C2",
+                deletedColumns: "D,E",
+                deletedRows: "6,7",
                 columnWidths: {
                     "A": 100
                 },

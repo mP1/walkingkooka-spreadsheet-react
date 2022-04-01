@@ -24,6 +24,18 @@ const NUMBER = (value) => {
 
 const TYPE_NAME = "spreadsheet-delta";
 
+function unmarshallCsv(csv, selectionParser) {
+    let unmarshalled = [];
+
+    if(csv) {
+        for(const reference of csv.split(",")) {
+            unmarshalled.push(selectionParser(reference));
+        }
+    }
+
+    return unmarshalled;
+}
+
 function unmarshallHash(hash, elementUnmarshaller) {
     let unmarshalled = [];
 
@@ -39,6 +51,10 @@ function unmarshallHash(hash, elementUnmarshaller) {
 
 function marshallArray(array) {
     return Object.assign({}, ...array.map(e => e.toJson()));
+}
+
+function toCsv(array) {
+    return array.join(",");
 }
 
 /**
@@ -72,14 +88,9 @@ export default class SpreadsheetDelta extends SystemObject {
             SpreadsheetRow.fromJson
         );
 
-        const deletedCells = (json.deletedCells || [])
-            .map(r => SpreadsheetCellReference.fromJson(r));
-
-        const deletedColumns = (json.deletedColumns || [])
-            .map(r => SpreadsheetColumnReference.fromJson(r));
-
-        const deletedRows = (json.deletedRows || [])
-            .map(r => SpreadsheetRowReference.fromJson(r));
+        const deletedCells = unmarshallCsv(json.deletedCells, SpreadsheetCellReference.fromJson);
+        const deletedColumns = unmarshallCsv(json.deletedColumns, SpreadsheetColumnReference.fromJson);
+        const deletedRows = unmarshallCsv(json.deletedRows, SpreadsheetRowReference.fromJson);
 
         const columnWidths = ImmutableMap.fromJson(json.columnWidths || {}, SpreadsheetColumnReference.fromJson, NUMBER);
         const rowHeights = ImmutableMap.fromJson(json.rowHeights || {}, SpreadsheetRowReference.fromJson, NUMBER);
@@ -337,17 +348,17 @@ export default class SpreadsheetDelta extends SystemObject {
 
         const deletedCells = this.deletedCells();
         if(deletedCells.length > 0){
-            json.deletedCells = deletedCells.map(deleted => deleted.toJson());
+            json.deletedCells = toCsv(deletedCells);
         }
 
         const deletedColumns = this.deletedColumns();
         if(deletedColumns.length > 0){
-            json.deletedColumns = deletedColumns.map(deleted => deleted.toJson());
+            json.deletedColumns = toCsv(deletedColumns);
         }
 
         const deletedRows = this.deletedRows();
         if(deletedRows.length > 0){
-            json.deletedRows = deletedRows.map(deleted => deleted.toJson());
+            json.deletedRows = toCsv(deletedRows);
         }
 
         const columnWidths = this.columnWidths();
