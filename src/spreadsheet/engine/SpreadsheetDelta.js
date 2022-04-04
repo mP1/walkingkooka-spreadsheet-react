@@ -1,3 +1,4 @@
+import CharSequences from "../../CharSequences.js";
 import Equality from "../../Equality.js";
 import ImmutableMap from "../../util/ImmutableMap";
 import Preconditions from "../../Preconditions.js";
@@ -51,10 +52,6 @@ function unmarshallHash(hash, elementUnmarshaller) {
 
 function marshallArray(array) {
     return Object.assign({}, ...array.map(e => e.toJson()));
-}
-
-function toCsv(array) {
-    return array.join(",");
 }
 
 /**
@@ -348,17 +345,17 @@ export default class SpreadsheetDelta extends SystemObject {
 
         const deletedCells = this.deletedCells();
         if(deletedCells.length > 0){
-            json.deletedCells = toCsv(deletedCells);
+            json.deletedCells = CharSequences.csv(deletedCells);
         }
 
         const deletedColumns = this.deletedColumns();
         if(deletedColumns.length > 0){
-            json.deletedColumns = toCsv(deletedColumns);
+            json.deletedColumns = CharSequences.csv(deletedColumns);
         }
 
         const deletedRows = this.deletedRows();
         if(deletedRows.length > 0){
-            json.deletedRows = toCsv(deletedRows);
+            json.deletedRows = CharSequences.csv(deletedRows);
         }
 
         const columnWidths = this.columnWidths();

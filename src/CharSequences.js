@@ -2,6 +2,7 @@
  * A variety of general purpose text functions
  */
 import Character from "./Character.js";
+import Preconditions from "./Preconditions.js";
 
 function escapeText(text) {
     var s = "";
@@ -44,6 +45,11 @@ function escapeText(text) {
 }
 
 export default class CharSequences {
+
+    static csv(array) {
+        Preconditions.requireArray(array, "array");
+        return array.join(",");
+    }
 
     /**
      * Escapes the given text

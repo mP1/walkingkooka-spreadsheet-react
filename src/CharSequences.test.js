@@ -1,6 +1,19 @@
 import Character from "./Character.js";
 import CharSequences from "./CharSequences.js";
+import SpreadsheetCellRange from "./spreadsheet/reference/SpreadsheetCellRange.js";
 
+
+// csv...........................................................................................................
+
+function csv(array, expected) {
+    test("csv " + array, () => {
+        expect(
+            CharSequences.csv(array)
+        ).toStrictEqual(expected);
+    });
+}
+
+csv([SpreadsheetCellRange.fromJson("A1:B2"),SpreadsheetCellRange.fromJson("C3:D4"),], "A1:B2,C3:D4");
 
 // toCssValue...........................................................................................................
 
