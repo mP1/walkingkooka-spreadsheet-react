@@ -128,7 +128,7 @@ const CONTEXT_MENU_Y_OFFSET = 10;
  * <li>ImmutableMap rowHeights: A cache of the row heights within the visible viewport</li>
  * <li>object dimensions: Holds the width and height of the viewport in pixels</li>
  * <li>SpreadsheetMetadata spreadsheetMetadata: holds the viewport home cell & default style</li>
- * <li>SpreadsheetCellRange viewportRange: holds a range of all the cells within the viewport</li>
+ * <li>Array of SpreadsheetCellRange window: One or more ranges that will hold any frozen column/rows and the actual viewport</li>
  * <li>boolean giveFocus: if cells changed give focus to the selected cell. This helps giving focus after a delta load.</li>
  * <li>boolean focused: When true the viewport has focus, and cleared when the blur event happens.</li>
  * <li>SpreadsheetViewportSelection selection: The currently active selection including ranges</li>
@@ -193,15 +193,24 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
                 });
 
             // if a window was present on the response delta, clear any label mappings within the window space
-            if(window){
+            if(window.length){
                 var tempCellReferenceToLabels = new Map();
 
                 cellReferenceToLabels = new ImmutableMap(tempCellReferenceToLabels);
 
                 // only copy labels that are not within the window.
                 var tempLabelToReferences = new Map();
+
                 for(const [label, reference] of labelToReferences.toMap().entries()) {
-                    if(!window.testCell(reference)){
+                    var all = true;
+                    for(const windowCellRange of window) {
+                        if(windowCellRange.testCell(reference)){
+                            all = false;
+                            break;
+                        }
+                    }
+
+                    if(!all){
                         tempLabelToReferences.set(reference.toString(), label);
                     }
                 }
@@ -219,14 +228,18 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
                 rowHeights: state.rowHeights.setAll(responseDelta.rowHeights()),
             };
 
-            if(window){
+            if(window.length){
                 const queryParameterSelection = url.queryParameters().selection;
                 if(queryParameterSelection){
                     Object.assign(
                         newState,
                         {
-                            viewportRange: window,
-                            spreadsheetMetadata: metadata.set(SpreadsheetMetadata.VIEWPORT_CELL, window.begin())
+                            window: window,
+                            spreadsheetMetadata: metadata.set(
+                                SpreadsheetMetadata.VIEWPORT_CELL,
+                                SpreadsheetDelta.viewportRange(window)
+                                    .begin()
+                            )
                         }
                     );
                 }
@@ -412,6 +425,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
             rowHeights: ImmutableMap.EMPTY,
             dimensions: props.dimensions,
             spreadsheetMetadata: SpreadsheetMetadata.EMPTY,
+            window: [],
             contextMenu: {},
         };
     }
@@ -442,13 +456,14 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
         const viewportTable = this.viewportTable.current;
 
         if(viewportTable){
-            const viewportRange = state.viewportRange;
-            const prevViewportRange = prevState.viewportRange;
+            const window = state.window;
+            const prevWindow = prevState.window;
 
             // if viewport range changed update the scrollbar values.
-            if(prevViewportRange && viewportRange){
-                const begin = viewportRange.begin();
-                if(!begin.equals(prevViewportRange.begin())){
+            if(prevWindow.length && window.length){
+                const begin = SpreadsheetDelta.viewportRange(window)
+                    .begin();
+                if(!begin.equals(SpreadsheetDelta.viewportRange(prevWindow).begin())){
                     this.horizontalSlider.current.value = (begin.column().value());
                     this.verticalSlider.current.value = (SpreadsheetViewportWidget.toVerticalSliderValue(begin.column().value()));
                 }
@@ -559,7 +574,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
     clearSelection(viewportSelection) {
         this.props.clearSelection(
             viewportSelection,
-            this.state.viewportRange
+            this.state.window
         );
 
         this.removeHistoryHashSelectionAction();
@@ -571,7 +586,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
     deleteSelection(viewportSelection) {
         this.props.deleteSelection(
             viewportSelection,
-            this.state.viewportRange
+            this.state.window
         );
 
         this.removeHistoryHashSelectionAction();
@@ -584,7 +599,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
         this.props.insertAfterSelection(
             viewportSelection,
             count,
-            this.state.viewportRange
+            this.state.window
         );
     }
 
@@ -595,7 +610,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
         this.props.insertBeforeSelection(
             viewportSelection,
             count,
-            this.state.viewportRange
+            this.state.window
         );
     }
 
@@ -614,7 +629,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
 
         const selection = viewportSelection.selection();
         const patched = selection.patch(property, value);
-        const window = this.state.viewportRange;
+        const window = this.state.window;
         const props = this.props;
 
         if(selection instanceof SpreadsheetColumnReference || selection instanceof SpreadsheetColumnReferenceRange){
@@ -631,7 +646,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
                     [], // deletedRows
                     ImmutableMap.EMPTY, // columnWidths
                     ImmutableMap.EMPTY, // rowHeights
-                    window // window
+                    window
                 ),
                 props.showError,
             );
@@ -651,7 +666,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
                     [], // deletedRows
                     ImmutableMap.EMPTY, // columnWidths
                     ImmutableMap.EMPTY, // rowHeights
-                    window // window
+                    window
                 ),
                 props.showError,
             );
@@ -887,10 +902,10 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
         };
 
         const onHorizontalVerticalSliderChange = (newColumn, newRow) => {
-
-            const viewportRange = state.viewportRange;
-            if(viewportRange) {
-                const begin = viewportRange.begin();
+            const window = state.window;
+            if(window.length) {
+                const viewport = SpreadsheetDelta.viewportRange(window);
+                const begin = viewport.begin();
 
                 let topLeft = begin;
                 if(null != newColumn){
@@ -902,7 +917,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
 
                 // updating will force a reload of viewport
                 if(!begin.equals(topLeft)){
-                    console.log("onHorizontalVerticalSliderChange " + viewportRange + " TO " + new SpreadsheetCellRange(topLeft, topLeft));
+                    console.log("onHorizontalVerticalSliderChange " + viewport + " TO " + new SpreadsheetCellRange(topLeft, topLeft));
 
                     const viewportTable = this.viewportTable.current;
 

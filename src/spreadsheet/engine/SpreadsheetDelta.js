@@ -26,15 +26,9 @@ const NUMBER = (value) => {
 const TYPE_NAME = "spreadsheet-delta";
 
 function unmarshallCsv(csv, selectionParser) {
-    let unmarshalled = [];
-
-    if(csv) {
-        for(const reference of csv.split(",")) {
-            unmarshalled.push(selectionParser(reference));
-        }
-    }
-
-    return unmarshalled;
+    return csv ?
+        csv.split(",").map(s => selectionParser(s)) :
+        [];
 }
 
 function unmarshallHash(hash, elementUnmarshaller) {
@@ -58,6 +52,14 @@ function marshallArray(array) {
  * Holds cells and window that have been updated following one or more cells being saved/updated
  */
 export default class SpreadsheetDelta extends SystemObject {
+
+    /**
+     * The last {@link SpreadsheetCellRange} will be the viewport range. If a frozen column or row is present
+     * they will occupy the beginning slots.
+     */
+    static viewportRange(window) {
+        return window[window.length -1];
+    }
 
     static fromJson(json) {
         Preconditions.requireObject(json, "json");
@@ -91,7 +93,7 @@ export default class SpreadsheetDelta extends SystemObject {
 
         const columnWidths = ImmutableMap.fromJson(json.columnWidths || {}, SpreadsheetColumnReference.fromJson, NUMBER);
         const rowHeights = ImmutableMap.fromJson(json.rowHeights || {}, SpreadsheetRowReference.fromJson, NUMBER);
-        const windowJson = json["window"];
+        const window = unmarshallCsv(json.window, SpreadsheetCellRange.fromJson);
 
         return new SpreadsheetDelta(
             selection,
@@ -104,7 +106,7 @@ export default class SpreadsheetDelta extends SystemObject {
             deletedRows,
             columnWidths,
             rowHeights,
-            (windowJson && SpreadsheetCellRange.fromJson(windowJson))
+            window
         );
     }
 
@@ -124,7 +126,7 @@ export default class SpreadsheetDelta extends SystemObject {
 
         Preconditions.requireInstance(columnWidths, ImmutableMap, "columnWidths");
         Preconditions.requireInstance(rowHeights, ImmutableMap, "rowHeights");
-        Preconditions.optionalInstance(window, SpreadsheetCellRange, "window");
+        Preconditions.requireArray(window, "window");
 
         this.selectionValue = selection;
 
@@ -139,7 +141,7 @@ export default class SpreadsheetDelta extends SystemObject {
 
         this.columnWidthsValue = columnWidths;
         this.rowHeightsValue = rowHeights;
-        this.windowValue = window;
+        this.windowValue = window.slice();
     }
 
     selection() {
@@ -312,7 +314,7 @@ export default class SpreadsheetDelta extends SystemObject {
     }
 
     window() {
-        return this.windowValue;
+        return this.windowValue.slice();
     }
 
     toJson() {
@@ -369,8 +371,8 @@ export default class SpreadsheetDelta extends SystemObject {
         }
 
         const window = this.window();
-        if(window){
-            json.window = window.toJson();
+        if(rowHeights.size() > 0){
+            json.window = CharSequences.csv(window);
         }
         return json;
     }

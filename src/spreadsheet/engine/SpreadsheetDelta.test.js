@@ -190,10 +190,15 @@ function rowHeights() {
 }
 
 function window() {
-    return SpreadsheetCellRange.fromJson("A1:B2");
+    return [
+        SpreadsheetCellRange.fromJson("A1:B2"),
+        SpreadsheetCellRange.fromJson("C3:D4")
+    ];
 }
 
-const windowJson = "A1:B2";
+function windowJson() {
+    return "A1:B2,C3:D4";
+};
 
 function delta() {
     return new SpreadsheetDelta(
@@ -311,7 +316,7 @@ systemObjectTesting(
         rowHeights: {
             "1": 20
         },
-        window: "A1:B2",
+        window: windowJson(),
     }
 );
 
@@ -602,7 +607,7 @@ test("create", () => {
             rowHeights: {
                 "1": 20
             },
-            window: windowJson
+            window: windowJson()
         });
 });
 
@@ -617,7 +622,7 @@ test("create empty all properties", () => {
     const drow = [];
     const mcw = ImmutableMap.EMPTY;
     const mrh = ImmutableMap.EMPTY;
-    const w = undefined;
+    const w = [];
 
     check(
         new SpreadsheetDelta(s, c, col, l, r, dcell, dcol, drow, mcw, mrh, w),
@@ -652,7 +657,7 @@ function testCellReferenceToCellsAndCheck(cells, expected) {
                 [], // deletedCells
                 ImmutableMap.EMPTY, // cellWidths
                 ImmutableMap.EMPTY, // cellHeights
-                null, // window
+                [], // window
             );
 
             expect(
@@ -722,7 +727,7 @@ function testCellAndCheck(cells, labels, cellOrLabel, expected) {
                 [], // deletedCells
                 ImmutableMap.EMPTY, // cellWidths
                 ImmutableMap.EMPTY, // cellHeights
-                null, // window
+                [], // window
             );
 
             const cellOrLabelReference = spreadsheetCellReferenceOrLabelNameParse(cellOrLabel);
@@ -845,7 +850,7 @@ function testColumnAndCheck(columns, column, expected) {
                 [], // deletedRows
                 ImmutableMap.EMPTY, // columnWidths
                 ImmutableMap.EMPTY, // rowHeights
-                null, // window
+                [], // window
             );
 
             const columnReference = SpreadsheetColumnReference.parse(column);
@@ -899,7 +904,7 @@ function testColumnReferenceToColumnsAndCheck(columns, expected) {
                 [], // deletedRows
                 ImmutableMap.EMPTY, // columnWidths
                 ImmutableMap.EMPTY, // rowsHeights
-                null, // window
+                [], // window
             );
 
             expect(
@@ -983,7 +988,7 @@ function testRowAndCheck(rows, row, expected) {
                 [], // deletedRows
                 ImmutableMap.EMPTY, // rowWidths
                 ImmutableMap.EMPTY, // rowHeights
-                null, // window
+                [], // window
             );
 
             const rowReference = SpreadsheetRowReference.parse(row);
@@ -1031,7 +1036,7 @@ function testRowReferenceToRowsAndCheck(rows, expected) {
                 [], // deletedRows
                 ImmutableMap.EMPTY, // columnWidths
                 ImmutableMap.EMPTY, // rowsHeights
-                null, // window
+                [], // window
             );
 
             expect(
@@ -1086,7 +1091,7 @@ test("toJson only 1 cell", () => {
     const drow = [];
     const mcw = ImmutableMap.EMPTY;
     const mrh = ImmutableMap.EMPTY;
-    const w = null;
+    const w = [];
 
     expect(
         new SpreadsheetDelta(s, c, col, l, r, dcell, dcol, drow, mcw, mrh, w)
@@ -1120,7 +1125,7 @@ test("toJson only 2 cells", () => {
     const drow = [];
     const mcw = ImmutableMap.EMPTY;
     const mrh = ImmutableMap.EMPTY;
-    const w = undefined;
+    const w = [];
 
     expect(
         new SpreadsheetDelta(s, c, col, l, r, dcell, dcol, drow, mcw, mrh, w).toJson())
@@ -1234,7 +1239,7 @@ test("toJson all properties", () => {
             rowHeights: {
                 "1": 20
             },
-            window: windowJson
+            window: windowJson()
         });
 });
 
@@ -1251,7 +1256,7 @@ test("fromJson empty", () => {
     const drow = [];
     const mcw = ImmutableMap.EMPTY;
     const mrh = ImmutableMap.EMPTY;
-    const w = undefined;
+    const w = [];
 
     expect(
         SpreadsheetDelta.fromJson({})
@@ -1271,7 +1276,7 @@ test("fromJson 1 cell", () => {
     const drow = [];
     const mcw = ImmutableMap.EMPTY;
     const mrh = ImmutableMap.EMPTY;
-    const w = undefined;
+    const w = [];
 
     expect(
         SpreadsheetDelta.fromJson(
@@ -1308,7 +1313,7 @@ test("fromJson 2 cells only", () => {
     const drow = [];
     const mcw = ImmutableMap.EMPTY;
     const mrh = ImmutableMap.EMPTY;
-    const w = undefined;
+    const w = [];
 
     expect(
         SpreadsheetDelta.fromJson(
@@ -1428,7 +1433,7 @@ test("fromJson all properties", () => {
                 rowHeights: {
                     "1": 20
                 },
-                window: windowJson
+                window: windowJson()
             })
     ).toStrictEqual(
         new SpreadsheetDelta(s, c, col, l, r, dcell, dcol, drow, mcw, mrh, w)
@@ -1448,7 +1453,7 @@ test("EMPTY", () => {
     const drow = [];
     const mcw = ImmutableMap.EMPTY;
     const mrh = ImmutableMap.EMPTY;
-    const w = undefined;
+    const w = [];
 
     expect(
         SpreadsheetDelta.EMPTY
@@ -1749,7 +1754,7 @@ test("equals different window false", () => {
     expect(
         new SpreadsheetDelta(s, c, col, l, r, dcell, dcol, drow, mcw, mrh, w)
             .equals(
-                new SpreadsheetDelta(s, c, col, l, r, dcell, dcol, drow, mcw, mrh, null)
+                new SpreadsheetDelta(s, c, col, l, r, dcell, dcol, drow, mcw, mrh, [])
             )
     ).toBeFalse();
 });
