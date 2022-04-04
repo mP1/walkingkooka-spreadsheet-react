@@ -31,6 +31,7 @@ import SpreadsheetSelectLinkWidget from "./reference/SpreadsheetSelectLinkWidget
 import SpreadsheetSettingsWidget from "./settings/SpreadsheetSettingsWidget.js";
 import SpreadsheetViewportWidget from "./SpreadsheetViewportWidget.js";
 import WindowResizer from "../widget/WindowResizer.js";
+import CharSequences from "../CharSequences.js";
 
 const useStyles = theme => ({
     header: {
@@ -370,13 +371,6 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
      * Clears the given selection and appends the window if present as a query parameter.
      */
     clearSelection(viewportSelection, window) {
-        var queryString = "";
-
-        if(window) {
-            queryString = "?window=" + window;
-        }
-        queryString = queryString + viewportSelection.toQueryString(window ? "&": "?");
-
         const selection = viewportSelection.selection();
 
         this.performSpreadsheetDelta(
@@ -384,7 +378,8 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
             RelativeUrl.parse(
                 this.apiSpreadsheetMetadataUrl() +
                 selection.apiClearUrl() +
-                queryString
+                "?window=" + CharSequences.csv(window) +
+                viewportSelection.toQueryString("&")
             ),
             selection,
             JSON.stringify(SpreadsheetDelta.EMPTY.toJson()),
@@ -395,13 +390,6 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
      * Deletes the given selection and appends the window if present as a query parameter.
      */
     deleteSelection(viewportSelection, window) {
-        var queryString = "";
-
-        if(window) {
-            queryString = "?window=" + window;
-        }
-        queryString = queryString + viewportSelection.toQueryString(window ? "&": "?");
-
         const selection = viewportSelection.selection();
 
         this.performSpreadsheetDelta(
@@ -409,7 +397,8 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
             RelativeUrl.parse(
                 this.apiSpreadsheetMetadataUrl() +
                 selection.apiDeleteUrl() +
-                queryString
+                "?window=" + CharSequences.csv(window) +
+                viewportSelection.toQueryString("&")
             ),
             selection
         );
@@ -419,13 +408,6 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
      * Does a POST to a url which will insert after the requested count columns or rows.
      */
     insertAfterSelection(viewportSelection, count, window) {
-        var queryString = "";
-
-        if(window) {
-            queryString = "&window=" + window;
-        }
-        queryString = queryString + viewportSelection.toQueryString("&");
-
         const selection = viewportSelection.selection();
 
         this.performSpreadsheetDelta(
@@ -433,7 +415,8 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
             RelativeUrl.parse(
                 this.apiSpreadsheetMetadataUrl() +
                 selection.apiInsertAfterUrl(count) +
-                queryString
+                "&window=" + CharSequences.csv(window) +
+                viewportSelection.toQueryString("&")
             ),
             selection
         );
@@ -443,13 +426,6 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
      * Does a POST to a url which will insert before the requested count columns or rows.
      */
     insertBeforeSelection(viewportSelection, count, window) {
-        var queryString = "";
-
-        if(window) {
-            queryString = "&window=" + window;
-        }
-        queryString = queryString + viewportSelection.toQueryString("&");
-
         const selection = viewportSelection.selection();
 
         this.performSpreadsheetDelta(
@@ -457,7 +433,8 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
             RelativeUrl.parse(
                 this.apiSpreadsheetMetadataUrl() +
                 selection.apiInsertBeforeUrl(count) +
-                queryString
+                "&window=" + CharSequences.csv(window) +
+                viewportSelection.toQueryString("&")
             ),
             selection
         );
