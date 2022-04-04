@@ -68,6 +68,13 @@ export default class SpreadsheetColumnOrRowReference extends SpreadsheetSelectio
         return this.value() - other.value();
     }
 
+    /**
+     * Only COLUMN A or ROW 1 can be frozen.
+     */
+    canFreeze() {
+        return this.value() == 0;
+    }
+
     // selection........................................................................................................
 
     isColumnOrRowScalarOrRange() {

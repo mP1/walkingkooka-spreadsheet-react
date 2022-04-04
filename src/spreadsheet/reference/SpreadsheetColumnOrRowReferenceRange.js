@@ -30,6 +30,13 @@ export default class SpreadsheetColumnOrRowReferenceRange extends SpreadsheetSel
         return this.end().value() - this.begin().value() + 1;
     }
 
+    /**
+     * The begin COLUMN or ROW must be canFreeze=true
+     */
+    canFreeze() {
+        return this.begin().canFreeze();
+    }
+
     // selection........................................................................................................
 
     isColumnOrRowScalarOrRange() {

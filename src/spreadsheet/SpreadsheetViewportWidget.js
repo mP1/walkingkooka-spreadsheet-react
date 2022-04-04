@@ -39,6 +39,7 @@ import SpreadsheetViewport from "./SpreadsheetViewport.js";
 import SpreadsheetViewportSelection from "./reference/SpreadsheetViewportSelection.js";
 import SpreadsheetViewportSelectionAnchor from "./reference/SpreadsheetViewportSelectionAnchor.js";
 import SpreadsheetViewportSelectionNavigation from "./reference/SpreadsheetViewportSelectionNavigation.js";
+import SystemObject from "../SystemObject.js";
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -590,6 +591,10 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
         );
 
         this.removeHistoryHashSelectionAction();
+    }
+
+    freezeSelection(viewportSelection) {
+        SystemObject.throwUnsupportedOperation(); // TODO Update SpreadsheetMetadata.FROZEN_COLUMNS or FROZEN_ROWS
     }
 
     /**
