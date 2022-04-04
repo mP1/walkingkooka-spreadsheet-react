@@ -6,10 +6,12 @@ import SpreadsheetCellRange from "../reference/SpreadsheetCellRange.js";
 import SpreadsheetCellReference from "../reference/SpreadsheetCellReference.js";
 import SpreadsheetColumnOrRowClearHistoryHashToken from "./SpreadsheetColumnOrRowClearHistoryHashToken.js";
 import SpreadsheetColumnOrRowDeleteHistoryHashToken from "./SpreadsheetColumnOrRowDeleteHistoryHashToken.js";
+import SpreadsheetColumnOrRowFreezeHistoryHashToken from "./SpreadsheetColumnOrRowFreezeHistoryHashToken.js";
 import SpreadsheetColumnOrRowInsertAfterHistoryHashToken from "./SpreadsheetColumnOrRowInsertAfterHistoryHashToken.js";
 import SpreadsheetColumnOrRowInsertBeforeHistoryHashToken
     from "./SpreadsheetColumnOrRowInsertBeforeHistoryHashToken.js";
 import SpreadsheetColumnOrRowMenuHistoryHashToken from "./SpreadsheetColumnOrRowMenuHistoryHashToken.js";
+import SpreadsheetColumnOrRowSaveHistoryHashToken from "./SpreadsheetColumnOrRowSaveHistoryHashToken.js";
 import SpreadsheetColumnReference from "../reference/SpreadsheetColumnReference.js";
 import SpreadsheetColumnReferenceRange from "../reference/SpreadsheetColumnReferenceRange.js";
 import SpreadsheetFormulaLoadAndEditHistoryHashToken from "./SpreadsheetFormulaLoadAndEditHistoryHashToken.js";
@@ -27,7 +29,6 @@ import SpreadsheetSettingsSaveHistoryHashToken from "./SpreadsheetSettingsSaveHi
 import SpreadsheetSettingsWidgetHistoryHashTokens from "../settings/SpreadsheetSettingsWidgetHistoryHashTokens.js";
 import SpreadsheetViewportSelectionAnchor from "../reference/SpreadsheetViewportSelectionAnchor.js";
 import TextStyle from "../../text/TextStyle.js";
-import SpreadsheetColumnOrRowSaveHistoryHashToken from "./SpreadsheetColumnOrRowSaveHistoryHashToken.js";
 
 const ID = "spreadsheet-id-123";
 const SPREADSHEET_NAME = new SpreadsheetName("spreadsheet-name-456");
@@ -37,9 +38,13 @@ const SPREADSHEET_NAME_SAVE = new SpreadsheetNameSaveHistoryHashToken(new Spread
 const CELL = SpreadsheetCellReference.parse("A1");
 const CELL_RANGE = SpreadsheetCellRange.parse("C3:D4");
 const COLUMN = SpreadsheetColumnReference.parse("B");
+const COLUMN_A = SpreadsheetColumnReference.parse("A");
 const COLUMN_RANGE = SpreadsheetColumnReferenceRange.parse("B:C");
+const COLUMN_RANGE_AC = SpreadsheetColumnReferenceRange.parse("A:C");
 const ROW = SpreadsheetRowReference.parse("2");
+const ROW_1 = SpreadsheetRowReference.parse("1");
 const ROW_RANGE = SpreadsheetRowReferenceRange.parse("2:3");
+const ROW_RANGE_1_3 = SpreadsheetRowReferenceRange.parse("1:3");
 const COLUMN_ROW_DELETE = SpreadsheetColumnOrRowDeleteHistoryHashToken.INSTANCE;
 const HIDDEN_TRUE = new SpreadsheetColumnOrRowSaveHistoryHashToken("hidden", true);
 const HIDDEN_FALSE = new SpreadsheetColumnOrRowSaveHistoryHashToken("hidden", false);
@@ -48,6 +53,7 @@ const LABEL = SpreadsheetLabelName.parse("Label123");
 const NEW_LABEL = SpreadsheetLabelName.parse("Label999");
 
 const COLUMN_ROW_CLEAR = SpreadsheetColumnOrRowClearHistoryHashToken.INSTANCE;
+const COLUMN_ROW_FREEZE = SpreadsheetColumnOrRowFreezeHistoryHashToken.INSTANCE;
 const COLUMN_ROW_MENU = SpreadsheetColumnOrRowMenuHistoryHashToken.INSTANCE;
 
 const CELL_CLEAR = SpreadsheetCellClearHistoryHashToken.INSTANCE;
@@ -263,6 +269,24 @@ testValidate(
         "spreadsheet-name": SPREADSHEET_NAME,
         "selection": COLUMN,
         "selection-action": COLUMN_ROW_DELETE,
+    }
+);
+
+testValidate(
+    "validate id & name & selection=COLUMN_A & action=FREEZE",
+    {
+        "spreadsheet-id": ID,
+        "spreadsheet-name": SPREADSHEET_NAME,
+        "selection": COLUMN_A,
+        "selection-action": COLUMN_ROW_FREEZE,
+    }
+);
+
+testValidate(
+    "validate id & name & selection=COLUMN_B & action=FREEZE",
+    {
+        "spreadsheet-id": ID,
+        "spreadsheet-name": SPREADSHEET_NAME,
     }
 );
 
@@ -950,6 +974,34 @@ testParseAndStringify(
 );
 
 testParseAndStringify(
+    "/spreadsheet-id-123/spreadsheet-name-456/column/A/freeze",
+    {
+        "spreadsheet-id": "spreadsheet-id-123",
+        "spreadsheet-name": SPREADSHEET_NAME,
+        "selection": COLUMN_A,
+        "selection-action": COLUMN_ROW_FREEZE,
+    }
+);
+
+testParseAndStringify(
+    "/spreadsheet-id-123/spreadsheet-name-456/column/A:C/freeze",
+    {
+        "spreadsheet-id": "spreadsheet-id-123",
+        "spreadsheet-name": SPREADSHEET_NAME,
+        "selection": COLUMN_RANGE_AC,
+        "selection-action": COLUMN_ROW_FREEZE,
+    }
+);
+
+testParseAndStringify(
+    "/spreadsheet-id-123/spreadsheet-name-456/column/B:C/freeze",
+    {
+        "spreadsheet-id": "spreadsheet-id-123",
+        "spreadsheet-name": SPREADSHEET_NAME,
+    }
+);
+
+testParseAndStringify(
     "/spreadsheet-id-123/spreadsheet-name-456/column/B/hidden",
     {
         "spreadsheet-id": "spreadsheet-id-123",
@@ -1198,6 +1250,42 @@ testParseAndStringify(
         "spreadsheet-name": SPREADSHEET_NAME,
         "selection": ROW,
         "selection-action": COLUMN_ROW_DELETE,
+    }
+);
+
+testParseAndStringify(
+    "/spreadsheet-id-123/spreadsheet-name-456/row/1/freeze",
+    {
+        "spreadsheet-id": "spreadsheet-id-123",
+        "spreadsheet-name": SPREADSHEET_NAME,
+        "selection": ROW_1,
+        "selection-action": COLUMN_ROW_FREEZE,
+    }
+);
+
+testParseAndStringify(
+    "/spreadsheet-id-123/spreadsheet-name-456/row/2/freeze",
+    {
+        "spreadsheet-id": "spreadsheet-id-123",
+        "spreadsheet-name": SPREADSHEET_NAME,
+    }
+);
+
+testParseAndStringify(
+    "/spreadsheet-id-123/spreadsheet-name-456/row/1:3/freeze",
+    {
+        "spreadsheet-id": "spreadsheet-id-123",
+        "spreadsheet-name": SPREADSHEET_NAME,
+        "selection": ROW_RANGE_1_3,
+        "selection-action": COLUMN_ROW_FREEZE,
+    }
+);
+
+testParseAndStringify(
+    "/spreadsheet-id-123/spreadsheet-name-456/row/2:3/freeze",
+    {
+        "spreadsheet-id": "spreadsheet-id-123",
+        "spreadsheet-name": SPREADSHEET_NAME
     }
 );
 
