@@ -81,6 +81,14 @@ export default class SpreadsheetSelection extends SystemObject {
         SystemObject.throwUnsupportedOperation();
     }
 
+    apiFreezeMetadataPropertyName() {
+        SystemObject.throwUnsupportedOperation();
+    }
+
+    apiFreezeMetadataPropertyValue() {
+        SystemObject.throwUnsupportedOperation();
+    }
+
     apiInsertAfterUrl(count) {
         SystemObject.throwUnsupportedOperation();
     }
