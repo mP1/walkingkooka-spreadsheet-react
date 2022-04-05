@@ -1,4 +1,5 @@
 import _ from "lodash";
+import CharSequences from "../CharSequences.js";
 import Equality from "../Equality.js";
 import HttpMethod from "../net/HttpMethod.js";
 import ImmutableMap from "../util/ImmutableMap.js";
@@ -9,6 +10,7 @@ import Preconditions from "../Preconditions.js";
 import PropTypes from "prop-types";
 import React from 'react';
 import Slider from "@mui/material/Slider";
+import SpreadsheetCell from "./SpreadsheetCell.js";
 import SpreadsheetCellColumnOrRowParse from "./reference/SpreadsheetCellColumnOrRowParse.js";
 import SpreadsheetCellMenuHistoryHashToken from "./history/SpreadsheetCellMenuHistoryHashToken.js";
 import SpreadsheetCellRange from "./reference/SpreadsheetCellRange.js";
@@ -21,6 +23,7 @@ import SpreadsheetColumnOrRowMenuHistoryHashToken from "./history/SpreadsheetCol
 import SpreadsheetColumnReference from "./reference/SpreadsheetColumnReference.js";
 import SpreadsheetColumnReferenceRange from "./reference/SpreadsheetColumnReferenceRange.js";
 import SpreadsheetDelta from "./engine/SpreadsheetDelta.js";
+import SpreadsheetFormula from "./SpreadsheetFormula.js";
 import SpreadsheetFormulaHistoryHashToken from "./history/SpreadsheetFormulaHistoryHashToken.js";
 import SpreadsheetFormulaLoadAndEditHistoryHashToken from "./history/SpreadsheetFormulaLoadAndEditHistoryHashToken.js";
 import SpreadsheetHistoryAwareStateWidget from "./history/SpreadsheetHistoryAwareStateWidget.js";
@@ -46,6 +49,7 @@ import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
+import TextStyle from "../text/TextStyle.js";
 
 // default header cell styles
 
@@ -676,6 +680,43 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
                 props.showError,
             );
         }
+    }
+
+    /**
+     * Saves the given formula text to the given cell, including the creation of new cells that were previously empty.
+     * This assumes that the cell being saved has been loaded.
+     */
+    saveFormulaText(cellReference, selection, formulaText) {
+        console.log("saving formula for " + selection + " with " + CharSequences.quoteAndEscape(formulaText));
+
+        var cell = new SpreadsheetCell(
+            cellReference,
+            new SpreadsheetFormula(formulaText),
+            TextStyle.EMPTY
+        );
+
+        const tokens = SpreadsheetHistoryHashTokens.emptyTokens();
+        tokens[SpreadsheetHistoryHashTokens.SELECTION_ACTION] = new SpreadsheetFormulaLoadAndEditHistoryHashToken();
+        this.historyParseMergeAndPush(tokens);
+
+        const props = this.props;
+        props.spreadsheetDeltaCellCrud.patch(
+            cellReference,
+            new SpreadsheetDelta(
+                null,
+                [cell],
+                [],
+                [],
+                [],
+                [],
+                [],
+                [],
+                ImmutableMap.EMPTY,
+                ImmutableMap.EMPTY,
+                this.state.window,
+            ),
+            props.showError,
+        );
     }
 
     /**

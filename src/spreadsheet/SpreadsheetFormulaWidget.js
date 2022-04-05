@@ -1,13 +1,9 @@
 import CharSequences from "../CharSequences.js";
 import Equality from "../Equality.js";
-import ImmutableMap from "../util/ImmutableMap.js";
 import Keys from "../Keys.js";
 import PropTypes from "prop-types";
 import React from 'react';
-import SpreadsheetCell from "./SpreadsheetCell.js";
 import SpreadsheetCellReferenceOrLabelName from "./reference/SpreadsheetCellReferenceOrLabelName.js";
-import SpreadsheetDelta from "./engine/SpreadsheetDelta.js";
-import SpreadsheetFormula from "./SpreadsheetFormula.js";
 import SpreadsheetFormulaLoadAndEditHistoryHashToken from "./history/SpreadsheetFormulaLoadAndEditHistoryHashToken.js";
 import SpreadsheetFormulaSaveHistoryHashToken from "./history/SpreadsheetFormulaSaveHistoryHashToken.js";
 import SpreadsheetHistoryHash from "./history/SpreadsheetHistoryHash.js";
@@ -17,7 +13,6 @@ import SpreadsheetLabelName from "./reference/SpreadsheetLabelName.js";
 import SpreadsheetMessengerCrud from "./message/SpreadsheetMessengerCrud.js";
 import SpreadsheetViewportWidget from "./SpreadsheetViewportWidget.js";
 import TextField from '@mui/material/TextField';
-import TextStyle from "../text/TextStyle.js";
 
 /**
  * A widget that supports editing formula text.
@@ -134,40 +129,11 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetHistoryAwareSta
         );
     }
 
-    /**
-     * Saves the given formula text to the given cell, including the creation of new cells that were previously empty.
-     * This assumes that the cell being saved has been loaded.
-     */
     saveFormulaText(cellReference, selection, formulaText) {
-        console.log("saving formula for " + selection + " with " + CharSequences.quoteAndEscape(formulaText));
-
-        var cell = new SpreadsheetCell(
+        this.props.spreadsheetViewportWidget.current.saveFormulaText(
             cellReference,
-            new SpreadsheetFormula(formulaText),
-            TextStyle.EMPTY
-        );
-
-        const tokens = SpreadsheetHistoryHashTokens.emptyTokens();
-        tokens[SpreadsheetHistoryHashTokens.SELECTION_ACTION] = new SpreadsheetFormulaLoadAndEditHistoryHashToken();
-        this.historyParseMergeAndPush(tokens);
-
-        const props = this.props;
-        props.spreadsheetDeltaCellCrud.patch(
-            cellReference,
-            new SpreadsheetDelta(
-                null,
-                [cell],
-                [],
-                [],
-                [],
-                [],
-                [],
-                [],
-                ImmutableMap.EMPTY,
-                ImmutableMap.EMPTY,
-                []
-            ),
-            props.showError,
+            selection,
+            formulaText
         );
     }
 
@@ -307,5 +273,6 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetHistoryAwareSta
 SpreadsheetFormulaWidget.propTypes = {
     history: PropTypes.instanceOf(SpreadsheetHistoryHash).isRequired,
     spreadsheetDeltaCellCrud: PropTypes.instanceOf(SpreadsheetMessengerCrud),
+    spreadsheetViewportWidget: PropTypes.instanceOf(SpreadsheetViewportWidget),
     showError: PropTypes.func.isRequired,
 }
