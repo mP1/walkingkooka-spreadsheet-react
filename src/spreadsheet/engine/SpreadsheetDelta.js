@@ -371,7 +371,7 @@ export default class SpreadsheetDelta extends SystemObject {
         }
 
         const window = this.window();
-        if(rowHeights.size() > 0){
+        if(window.length > 0){
             json.window = CharSequences.csv(window);
         }
         return json;
