@@ -338,6 +338,7 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
                     <SpreadsheetFormulaWidget ref={this.formula}
                                               key={"spreadsheetFormula"}
                                               history={history}
+                                              spreadsheetViewportWidget={this.viewport}
                                               spreadsheetDeltaCellCrud={spreadsheetDeltaCellCrud}
                                               showError={showError}
                     />
