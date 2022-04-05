@@ -42,7 +42,6 @@ import SpreadsheetViewport from "./SpreadsheetViewport.js";
 import SpreadsheetViewportSelection from "./reference/SpreadsheetViewportSelection.js";
 import SpreadsheetViewportSelectionAnchor from "./reference/SpreadsheetViewportSelectionAnchor.js";
 import SpreadsheetViewportSelectionNavigation from "./reference/SpreadsheetViewportSelectionNavigation.js";
-import SystemObject from "../SystemObject.js";
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -598,7 +597,14 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
     }
 
     freezeSelection(viewportSelection) {
-        SystemObject.throwUnsupportedOperation(); // TODO Update SpreadsheetMetadata.FROZEN_COLUMNS or FROZEN_ROWS
+        const selection = viewportSelection.selection();
+
+        this.patchSpreadsheetMetadata(
+            selection.apiFreezeMetadataPropertyName(),
+            selection.apiFreezeMetadataPropertyValue()
+        );
+
+        this.removeHistoryHashSelectionAction();
     }
 
     /**
@@ -680,6 +686,20 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
                 props.showError,
             );
         }
+    }
+
+    /**
+     * Does a PATCH with the given property and value
+     */
+    patchSpreadsheetMetadata(property, value) {
+        const patch = {};
+        patch[property] = value;
+
+        this.props.spreadsheetMetadataCrud.patch(
+            this.state.spreadsheetMetadata.getIgnoringDefaults(SpreadsheetMetadata.SPREADSHEET_ID),
+            JSON.stringify(patch),
+            this.props.showError
+        );
     }
 
     /**

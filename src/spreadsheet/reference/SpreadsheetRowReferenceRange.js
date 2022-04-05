@@ -9,6 +9,7 @@ import SpreadsheetSelection from "./SpreadsheetSelection.js";
 import SpreadsheetViewportSelectionAnchor from "./SpreadsheetViewportSelectionAnchor.js";
 import SystemObject from "../../SystemObject.js";
 import SpreadsheetReferenceKind from "./SpreadsheetReferenceKind.js";
+import SpreadsheetMetadata from "../meta/SpreadsheetMetadata.js";
 
 const TYPE_NAME = "spreadsheet-row-reference-range";
 /**
@@ -105,6 +106,10 @@ export default class SpreadsheetRowReferenceRange extends SpreadsheetColumnOrRow
 
     apiDeleteUrl() {
         return "/row/" + this;
+    }
+
+    apiFreezeMetadataPropertyName() {
+        return SpreadsheetMetadata.FROZEN_ROWS;
     }
 
     apiInsertAfterUrl(count) {

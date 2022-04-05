@@ -8,6 +8,7 @@ import SpreadsheetReferenceKind from "./SpreadsheetReferenceKind";
 import SpreadsheetRow from "./SpreadsheetRow.js";
 import SpreadsheetSelection from "./SpreadsheetSelection.js";
 import SystemObject from "../../SystemObject.js";
+import SpreadsheetMetadata from "../meta/SpreadsheetMetadata.js";
 
 const TYPE_NAME = "spreadsheet-row-reference";
 
@@ -153,6 +154,14 @@ export default class SpreadsheetRowReference extends SpreadsheetColumnOrRowRefer
 
     apiDeleteUrl() {
         return "/row/" + this;
+    }
+
+    apiFreezeMetadataPropertyName() {
+        return SpreadsheetMetadata.FROZEN_ROWS;
+    }
+
+    apiFreezeMetadataPropertyValue() {
+        return this.value();
     }
 
     apiInsertAfterUrl(count) {
