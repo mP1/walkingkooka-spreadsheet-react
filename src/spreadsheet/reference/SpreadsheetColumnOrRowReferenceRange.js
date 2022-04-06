@@ -54,10 +54,6 @@ export default class SpreadsheetColumnOrRowReferenceRange extends SpreadsheetSel
         return SystemObject.throwUnsupportedOperation();
     }
 
-    apiFreezeMetadataPropertyValue() {
-        return this.end().value();
-    }
-
     // viewport.........................................................................................................
 
     viewportContextMenuItems(historyTokens, isColumnHidden, isRowHidden, history) {

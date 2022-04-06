@@ -601,7 +601,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
 
         this.patchSpreadsheetMetadata(
             selection.apiFreezeMetadataPropertyName(),
-            selection.apiFreezeMetadataPropertyValue()
+            selection.toString()
         );
 
         this.removeHistoryHashSelectionAction();
