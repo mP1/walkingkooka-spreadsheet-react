@@ -143,10 +143,6 @@ export default class SpreadsheetColumnReference extends SpreadsheetColumnOrRowRe
         return SpreadsheetMetadata.FROZEN_COLUMNS;
     }
 
-    apiFreezeMetadataPropertyValue() {
-        return this.value();
-    }
-
     apiInsertAfterUrl(count) {
         return "/column/" + this + "/after?count=" + count;
     }

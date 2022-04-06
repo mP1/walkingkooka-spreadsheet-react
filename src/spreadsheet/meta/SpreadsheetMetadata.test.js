@@ -20,6 +20,8 @@ import SpreadsheetTimeFormatPattern from "../format/SpreadsheetTimeFormatPattern
 import SpreadsheetTimeParsePatterns from "../format/SpreadsheetTimeParsePatterns.js";
 import systemObjectTesting from "../../SystemObjectTesting.js";
 import TextStyle from "../../text/TextStyle";
+import SpreadsheetColumnReferenceRange from "../reference/SpreadsheetColumnReferenceRange.js";
+import SpreadsheetRowReferenceRange from "../reference/SpreadsheetRowReferenceRange.js";
 
 systemObjectTesting(
     new SpreadsheetMetadata(
@@ -162,8 +164,8 @@ test("from json all properties", () => {
         "decimal-separator": "D",
         "exponent-symbol": "E",
         "expression-number-kind": "DOUBLE",
-        "frozen-columns": 1,
-        "frozen-rows": 2,
+        "frozen-columns": "A:B",
+        "frozen-rows": "1:2",
         "grouping-separator": "G",
         "locale": "en-AU",
         "modified-by": "modified@example.com",
@@ -643,9 +645,9 @@ getSetRemoveTest(SpreadsheetMetadata.EXPONENT_SYMBOL, Character.fromJson(","));
 
 getSetRemoveTest(SpreadsheetMetadata.EXPRESSION_NUMBER_KIND, ExpressionNumberKind.BIG_DECIMAL);
 
-getSetRemoveTest(SpreadsheetMetadata.FROZEN_COLUMNS, 1);
+getSetRemoveTest(SpreadsheetMetadata.FROZEN_COLUMNS, SpreadsheetColumnReferenceRange.parse("A:B"));
 
-getSetRemoveTest(SpreadsheetMetadata.FROZEN_ROWS, 2);
+getSetRemoveTest(SpreadsheetMetadata.FROZEN_ROWS, SpreadsheetRowReferenceRange.parse("1:2"));
 
 getSetRemoveTest(SpreadsheetMetadata.GROUPING_SEPARATOR, Character.fromJson(","));
 

@@ -9,6 +9,7 @@ import Locale from "../../util/Locale.js";
 import Preconditions from "../../Preconditions.js";
 import RoundingMode from "../../math/RoundingMode.js";
 import SpreadsheetCellReference from "../reference/SpreadsheetCellReference";
+import SpreadsheetColumnReferenceRange from "../reference/SpreadsheetColumnReferenceRange.js";
 import SpreadsheetName from "../SpreadsheetName";
 import SpreadsheetDateFormatPattern from "../format/SpreadsheetDateFormatPattern.js";
 import SpreadsheetDateParsePatterns from "../format/SpreadsheetDateParsePatterns.js";
@@ -16,6 +17,7 @@ import SpreadsheetDateTimeFormatPattern from "../format/SpreadsheetDateTimeForma
 import SpreadsheetDateTimeParsePatterns from "../format/SpreadsheetDateTimeParsePatterns.js";
 import SpreadsheetNumberFormatPattern from "../format/SpreadsheetNumberFormatPattern.js";
 import SpreadsheetNumberParsePatterns from "../format/SpreadsheetNumberParsePatterns.js";
+import SpreadsheetRowReferenceRange from "../reference/SpreadsheetRowReferenceRange.js";
 import SpreadsheetTextFormatPattern from "../format/SpreadsheetTextFormatPattern.js";
 import SpreadsheetTimeFormatPattern from "../format/SpreadsheetTimeFormatPattern.js";
 import SpreadsheetTimeParsePatterns from "../format/SpreadsheetTimeParsePatterns.js";
@@ -246,8 +248,6 @@ export default class SpreadsheetMetadata extends SystemObject {
                 case SpreadsheetMetadata.CELL_CHARACTER_WIDTH :
                 case SpreadsheetMetadata.DATETIME_OFFSET :
                 case SpreadsheetMetadata.DEFAULT_YEAR :
-                case SpreadsheetMetadata.FROZEN_COLUMNS:
-                case SpreadsheetMetadata.FROZEN_ROWS:
                 case SpreadsheetMetadata.PRECISION :
                 case SpreadsheetMetadata.TWO_DIGIT_YEAR :
                     jsonValue = Number(value);
@@ -262,6 +262,8 @@ export default class SpreadsheetMetadata extends SystemObject {
                 case SpreadsheetMetadata.DECIMAL_SEPARATOR :
                 case SpreadsheetMetadata.EXPONENT_SYMBOL :
                 case SpreadsheetMetadata.EXPRESSION_NUMBER_KIND :
+                case SpreadsheetMetadata.FROZEN_COLUMNS:
+                case SpreadsheetMetadata.FROZEN_ROWS:
                 case SpreadsheetMetadata.GROUPING_SEPARATOR :
                 case SpreadsheetMetadata.LOCALE :
                 case SpreadsheetMetadata.MODIFIED_BY :
@@ -348,9 +350,10 @@ export default class SpreadsheetMetadata extends SystemObject {
                     unmarshaller = ExpressionNumberKind.fromJson;
                     break;
                 case SpreadsheetMetadata.FROZEN_COLUMNS:
+                    unmarshaller = SpreadsheetColumnReferenceRange.fromJson;
+                    break;
                 case SpreadsheetMetadata.FROZEN_ROWS:
-                    checkFrozenColumnsRows(value, key);
-                    typed = value;
+                    unmarshaller = SpreadsheetRowReferenceRange.fromJson;
                     break;
                 case SpreadsheetMetadata.GROUPING_SEPARATOR:
                     unmarshaller = Character.fromJson;
@@ -534,9 +537,12 @@ export default class SpreadsheetMetadata extends SystemObject {
                 expectedClass = ExpressionNumberKind;
                 break;
             case SpreadsheetMetadata.FROZEN_COLUMNS:
+                checkFrozenColumns(value);
+                expectedClass = SpreadsheetColumnReferenceRange;
+                break;
             case SpreadsheetMetadata.FROZEN_ROWS:
-                checkFrozenColumnsRows(value, propertyName);
-                expectedTypeOf = "number";
+                checkFrozenRows(value);
+                expectedClass = SpreadsheetRowReferenceRange;
                 break;
             case SpreadsheetMetadata.GROUPING_SEPARATOR:
                 checkCharacter(value);
@@ -923,10 +929,17 @@ function checkCurrencySymbol(currencySymbol) {
     Preconditions.requireText(currencySymbol, "currencySymbol");
 }
 
-function checkFrozenColumnsRows(count, property) {
-    Preconditions.requireNumber(count, "count");
-    if(count < 0){
-        throw new Error("Expected " + property + " >= 0 got " + count);
+function checkFrozenColumns(range) {
+    Preconditions.requireInstance(range, SpreadsheetColumnReferenceRange, "frozenColumn");
+    if(range.begin().value() != 0){
+        throw new Error("Frozen column begin must be column A: " + range);
+    }
+}
+
+function checkFrozenRows(range) {
+    Preconditions.requireInstance(range, SpreadsheetRowReferenceRange, "frozenRow");
+    if(range.begin().value() != 0){
+        throw new Error("Frozen row begin must be row 1: " + range);
     }
 }
 
