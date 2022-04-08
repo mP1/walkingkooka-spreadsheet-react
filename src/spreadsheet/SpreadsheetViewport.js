@@ -86,6 +86,7 @@ export default class SpreadsheetViewport extends SystemObject {
             yOffset: [this.yOffset()],
             width: [this.width()],
             height: [this.height()],
+            includeFrozenColumnsRows: [true],
         };
 
         if(selection) {
