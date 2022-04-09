@@ -826,13 +826,13 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
         const {dimensions, spreadsheetMetadata} = this.state;
         const home = spreadsheetMetadata && spreadsheetMetadata.getIgnoringDefaults(SpreadsheetMetadata.VIEWPORT_CELL);
 
-        return (dimensions && home && this.renderTable(dimensions, home)) ||
-            this.renderTableEmpty();
+        return (dimensions && home && this.renderViewport(dimensions, home)) ||
+            this.renderViewportEmpty();
     }
 
     static VIEWPORT_CONTEXT_MENU_ID = SpreadsheetViewportWidget.VIEWPORT_ID + "context-Menu";
 
-    renderTable(dimensions, home) {
+    renderViewport(dimensions, home) {
         const column = home.column().value();
         const row = home.row().value();
 
@@ -1038,13 +1038,13 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
                     <TableHead>
                         <TableRow>
                             {
-                                this.renderTableColumnHeaders(selectionNotLabel)
+                                this.renderViewportColumnHeaders(selectionNotLabel)
                             }
                         </TableRow>
                     </TableHead>
                     <TableBody>
                         {
-                            this.renderTableBody(selectionNotLabel)
+                            this.renderViewportRowsAndBody(selectionNotLabel)
                         }
                     </TableBody>
                 </Table>
@@ -1136,7 +1136,16 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
     /**
      * Returns an array of TableCell, one for each column header.
      */
-    renderTableColumnHeaders(selection) {
+    renderViewportColumnHeaders(selection) {
+        let headers = [
+            <TableCell key={SpreadsheetViewportWidget.VIEWPORT_SELECT_ALL_ID}
+                       id={SpreadsheetViewportWidget.VIEWPORT_SELECT_ALL_ID}
+                       style={SELECT_ALL}
+            >
+                &nbsp;
+            </TableCell> // TODO add select all support when range support is ready
+        ];
+
         const {
             columnWidths,
             dimensions,
@@ -1148,15 +1157,6 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
 
         const viewportWidth = dimensions.width;
         const defaultColumnWidth = defaultStyle.width().value();
-
-        let headers = [
-            <TableCell key={SpreadsheetViewportWidget.VIEWPORT_SELECT_ALL_ID}
-                       id={SpreadsheetViewportWidget.VIEWPORT_SELECT_ALL_ID}
-                       style={SELECT_ALL}
-            >
-                &nbsp;
-            </TableCell> // TODO add select all support when range support is ready
-        ];
 
         let x = ROW_WIDTH;
         let columnReference = home.column();
@@ -1191,7 +1191,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
     /**
      * Render the required TABLE ROW each filled with available or empty TABLE CELL cells.
      */
-    renderTableBody(selection) {
+    renderViewportRowsAndBody(selection) {
         const {
             cellReferenceToCells,
             cellReferenceToLabels,
@@ -1281,7 +1281,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
     /**
      * Renders an empty table, this happens when ALL requirements are not yet available.
      */
-    renderTableEmpty() {
+    renderViewportEmpty() {
         return <TableContainer/>;
     }
 
