@@ -273,6 +273,6 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetHistoryAwareSta
 SpreadsheetFormulaWidget.propTypes = {
     history: PropTypes.instanceOf(SpreadsheetHistoryHash).isRequired,
     spreadsheetDeltaCellCrud: PropTypes.instanceOf(SpreadsheetMessengerCrud),
-    spreadsheetViewportWidget: PropTypes.instanceOf(SpreadsheetViewportWidget),
+    spreadsheetViewportWidget: PropTypes.object, // Ref with SpreadsheetViewportWidget
     showError: PropTypes.func.isRequired,
 }
