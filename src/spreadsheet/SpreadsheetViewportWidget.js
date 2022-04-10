@@ -760,6 +760,14 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
                     SpreadsheetHistoryHash.spreadsheetIdAndName(history.tokens()),
                     (c) => this.isColumnHidden(c),
                     (r) => this.isRowHidden(r),
+                    (c) => new SpreadsheetColumnReferenceRange(
+                        new SpreadsheetColumnReference(0, SpreadsheetReferenceKind.RELATIVE),
+                        new SpreadsheetColumnReference(c, SpreadsheetReferenceKind.RELATIVE)
+                    ),
+                    (r) => new SpreadsheetRowReferenceRange(
+                        new SpreadsheetRowReference(0, SpreadsheetReferenceKind.RELATIVE),
+                        new SpreadsheetRowReference(r, SpreadsheetReferenceKind.RELATIVE)
+                    ),
                     history
                 ),
             };

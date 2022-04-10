@@ -3,6 +3,7 @@ import Character from "../../Character.js";
 import SpreadsheetCellDeleteHistoryHashToken from "../history/SpreadsheetCellDeleteHistoryHashToken.js";
 import SpreadsheetColumnOrRowClearHistoryHashToken from "../history/SpreadsheetColumnOrRowClearHistoryHashToken.js";
 import SpreadsheetColumnOrRowDeleteHistoryHashToken from "../history/SpreadsheetColumnOrRowDeleteHistoryHashToken.js";
+import SpreadsheetColumnOrRowFreezeHistoryHashToken from "../history/SpreadsheetColumnOrRowFreezeHistoryHashToken.js";
 import SpreadsheetColumnOrRowInsertBeforeHistoryHashToken
     from "../history/SpreadsheetColumnOrRowInsertBeforeHistoryHashToken.js";
 import SpreadsheetColumnOrRowInsertAfterHistoryHashToken
@@ -117,7 +118,7 @@ export default class SpreadsheetSelection extends SystemObject {
      * This method is called whenever the element for this selection is clicked, providing an opportunity to
      * build the context menu items that will be displayed ready for clicking.
      */
-    viewportContextMenuItems(historyTokens, isColumnHidden, isRowHidden, history){
+    viewportContextMenuItems(historyTokens, isColumnHidden, isRowHidden, columnRange, rowRange, history){
         SystemObject.throwUnsupportedOperation();
     }
 
@@ -132,6 +133,12 @@ export default class SpreadsheetSelection extends SystemObject {
 
     // the id for the "delete row" menu item
     static VIEWPORT_CONTEXT_MENU_DELETE_ROW_ID = SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_ID + "-delete-row";
+
+    // the id for the freeze column or row menu item.
+    static VIEWPORT_CONTEXT_MENU_FREEZE_1_ID = SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_ID + "-freeze-1";
+    static VIEWPORT_CONTEXT_MENU_FREEZE_2_ID = SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_ID + "-freeze-2";
+    static VIEWPORT_CONTEXT_MENU_FREEZE_3_ID = SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_ID + "-freeze-3";
+    static VIEWPORT_CONTEXT_MENU_FREEZE_RANGE_ID = SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_ID + "-freeze-range";
 
     // the id for the hide column or row menu item.
     static VIEWPORT_CONTEXT_MENU_HIDE_ID = SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_ID + "-hide";
@@ -199,7 +206,7 @@ export default class SpreadsheetSelection extends SystemObject {
     // insert 2 before
     // insert 1 after
     // insert 2 after
-    viewportContextMenuItemsColumnOrRow(historyTokens, before, after, isHidden, history) {
+    viewportContextMenuItemsColumnOrRow(historyTokens, before, after, isHidden, range, history) {
         historyTokens[SpreadsheetHistoryHashTokens.SELECTION] = this;
         historyTokens[SpreadsheetHistoryHashTokens.SELECTION_ACTION] = null;
         historyTokens[SpreadsheetHistoryHashTokens.SELECTION_ANCHOR] = null;
@@ -274,8 +281,48 @@ export default class SpreadsheetSelection extends SystemObject {
             )
         );
 
+        // freeze.......................................................................................................
+
+        historyTokens[SpreadsheetHistoryHashTokens.SELECTION_ACTION] = SpreadsheetColumnOrRowFreezeHistoryHashToken.INSTANCE;
+
+        const range1 = range(0);
+        historyTokens[SpreadsheetHistoryHashTokens.SELECTION] = range1;
+
+        menuItems.push(
+            history.menuItem(
+                this.viewportFreezeColumnsRowsText(range1),
+                SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_FREEZE_1_ID,
+                historyTokens
+            )
+        );
+
+        // freeze columns A:B / row 1:2
+        const range2 = range(1);
+        historyTokens[SpreadsheetHistoryHashTokens.SELECTION] = range2;
+
+        menuItems.push(
+            history.menuItem(
+                this.viewportFreezeColumnsRowsText(range2),
+                SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_FREEZE_2_ID,
+                historyTokens
+            )
+        );
+
+        // freeze columns A:C / row 1:3
+        const range3 = range(2);
+        historyTokens[SpreadsheetHistoryHashTokens.SELECTION] = range3;
+
+        menuItems.push(
+            history.menuItem(
+                this.viewportFreezeColumnsRowsText(range3),
+                SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_FREEZE_3_ID,
+                historyTokens
+            )
+        );
+
         // hide........................................................................................................
 
+        historyTokens[SpreadsheetHistoryHashTokens.SELECTION] = this;
         historyTokens[SpreadsheetHistoryHashTokens.SELECTION_ACTION] = new SpreadsheetColumnOrRowSaveHistoryHashToken("hidden", true);
 
         menuItems.push(
@@ -339,6 +386,10 @@ export default class SpreadsheetSelection extends SystemObject {
 
     viewportDeleteRowText() {
         SystemObject.throwUnsupportedOperation();
+    }
+
+    viewportFreezeColumnsRowsText(columns) {
+        return "Freeze " + columns;
     }
 
     viewportHideText() {

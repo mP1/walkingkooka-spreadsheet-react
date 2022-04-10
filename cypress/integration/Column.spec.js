@@ -307,7 +307,7 @@ describe(
             testing.viewportContextMenu()
                 .should("be.visible")
                 .find("LI")
-                .should("have.length", 7);
+                .should("have.length", 10);
         });
 
         it("Column context menu", () => {
@@ -319,7 +319,7 @@ describe(
             testing.viewportContextMenu()
                 .should("be.visible")
                 .find("LI")
-                .should("have.length", 7);
+                .should("have.length", 10);
         });
 
         it("Column context menu links", () => {
@@ -353,6 +353,18 @@ describe(
             testing.getById(SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_INSERT_BEFORE_2_ID)
                 .should("have.attr", "href")
                 .and('match', /#*\/*\/column\/B\/insert-before\/2/);
+
+            testing.getById(SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_FREEZE_1_ID)
+                .should("have.attr", "href")
+                .and('match', /#*\/*\/column\/A\/freeze/);
+
+            testing.getById(SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_FREEZE_2_ID)
+                .should("have.attr", "href")
+                .and('match', /#*\/*\/column\/A:B\/freeze/);
+
+            testing.getById(SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_FREEZE_3_ID)
+                .should("have.attr", "href")
+                .and('match', /#*\/*\/column\/A:C\/freeze/);
 
             testing.getById(SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_HIDE_ID)
                 .should("have.attr", "href")
@@ -390,6 +402,18 @@ describe(
             testing.getById(SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_INSERT_BEFORE_2_ID)
                 .should("have.attr", "href")
                 .and('match', /#*\/*\/column\/B:C\/insert-before\/2/);
+
+            testing.getById(SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_FREEZE_1_ID)
+                .should("have.attr", "href")
+                .and('match', /#*\/*\/column\/A\/freeze/);
+
+            testing.getById(SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_FREEZE_2_ID)
+                .should("have.attr", "href")
+                .and('match', /#*\/*\/column\/A:B\/freeze/);
+
+            testing.getById(SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_FREEZE_3_ID)
+                .should("have.attr", "href")
+                .and('match', /#*\/*\/column\/A:C\/freeze/);
 
             testing.getById(SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_HIDE_ID)
                 .should("have.attr", "href")
