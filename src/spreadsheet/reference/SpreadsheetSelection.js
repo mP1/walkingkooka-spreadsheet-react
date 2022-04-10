@@ -206,6 +206,8 @@ export default class SpreadsheetSelection extends SystemObject {
 
         const menuItems = [];
 
+        // clear........................................................................................................
+
         historyTokens[SpreadsheetHistoryHashTokens.SELECTION_ACTION] = SpreadsheetColumnOrRowClearHistoryHashToken.INSTANCE;
 
         menuItems.push(
@@ -216,6 +218,8 @@ export default class SpreadsheetSelection extends SystemObject {
             )
         );
 
+        // delete.......................................................................................................
+
         historyTokens[SpreadsheetHistoryHashTokens.SELECTION_ACTION] = SpreadsheetColumnOrRowDeleteHistoryHashToken.INSTANCE;
 
         menuItems.push(
@@ -225,6 +229,8 @@ export default class SpreadsheetSelection extends SystemObject {
                 historyTokens
             )
         );
+
+        // insertBefore.................................................................................................
 
         historyTokens[SpreadsheetHistoryHashTokens.SELECTION_ACTION] = new SpreadsheetColumnOrRowInsertBeforeHistoryHashToken(2);
 
@@ -246,6 +252,8 @@ export default class SpreadsheetSelection extends SystemObject {
             )
         );
 
+        // insertAfter..................................................................................................
+
         historyTokens[SpreadsheetHistoryHashTokens.SELECTION_ACTION] = new SpreadsheetColumnOrRowInsertAfterHistoryHashToken(1);
 
         menuItems.push(
@@ -265,6 +273,8 @@ export default class SpreadsheetSelection extends SystemObject {
                 historyTokens
             )
         );
+
+        // hide........................................................................................................
 
         historyTokens[SpreadsheetHistoryHashTokens.SELECTION_ACTION] = new SpreadsheetColumnOrRowSaveHistoryHashToken("hidden", true);
 
