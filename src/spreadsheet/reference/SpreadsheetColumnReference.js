@@ -87,12 +87,13 @@ export default class SpreadsheetColumnReference extends SpreadsheetColumnOrRowRe
 
     // context menu events..............................................................................................
 
-    viewportContextMenuItems(historyTokens, isColumnHidden, isRowHidden, history) {
+    viewportContextMenuItems(historyTokens, isColumnHidden, isRowHidden, columnRange, rowRange, history) {
         return this.viewportContextMenuItemsColumnOrRow(
             historyTokens,
             this.addSaturated(-1),
             this.addSaturated(+1),
             isColumnHidden,
+            columnRange,
             history
         );
     }
