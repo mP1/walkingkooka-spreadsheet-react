@@ -118,7 +118,7 @@ export default class SpreadsheetSelection extends SystemObject {
      * This method is called whenever the element for this selection is clicked, providing an opportunity to
      * build the context menu items that will be displayed ready for clicking.
      */
-    viewportContextMenuItems(historyTokens, isColumnHidden, isRowHidden, columnRange, rowRange, history){
+    viewportContextMenuItems(historyTokens, frozenColumns, frozenRows, isColumnHidden, isRowHidden, columnRange, rowRange, history){
         SystemObject.throwUnsupportedOperation();
     }
 
@@ -209,7 +209,7 @@ export default class SpreadsheetSelection extends SystemObject {
     // insert 2 before
     // insert 1 after
     // insert 2 after
-    viewportContextMenuItemsColumnOrRow(historyTokens, before, after, isHidden, range, history) {
+    viewportContextMenuItemsColumnOrRow(historyTokens, before, after, frozenColumnOrRows, isHidden, range, history) {
         historyTokens[SpreadsheetHistoryHashTokens.SELECTION] = this;
         historyTokens[SpreadsheetHistoryHashTokens.SELECTION_ACTION] = null;
         historyTokens[SpreadsheetHistoryHashTokens.SELECTION_ANCHOR] = null;
@@ -295,6 +295,7 @@ export default class SpreadsheetSelection extends SystemObject {
         this.viewportContextMenuItemsColumnOrRowFreeze(
             range(0),
             historyTokens,
+            frozenColumnOrRows,
             menuItems,
             SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_FREEZE_1_ID,
             history
@@ -303,6 +304,7 @@ export default class SpreadsheetSelection extends SystemObject {
         this.viewportContextMenuItemsColumnOrRowFreeze(
             range(1),
             historyTokens,
+            frozenColumnOrRows,
             menuItems,
             SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_FREEZE_2_ID,
             history
@@ -311,6 +313,7 @@ export default class SpreadsheetSelection extends SystemObject {
         this.viewportContextMenuItemsColumnOrRowFreeze(
             range(2),
             historyTokens,
+            frozenColumnOrRows,
             menuItems,
             SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_FREEZE_3_ID,
             history
@@ -363,16 +366,15 @@ export default class SpreadsheetSelection extends SystemObject {
         return menuItems;
     }
 
-    viewportContextMenuItemsColumnOrRowFreeze(columnOrRowRange, historyTokens, menuItems, menuItemId, history) {
-        historyTokens[SpreadsheetHistoryHashTokens.SELECTION_ACTION] = SpreadsheetColumnOrRowFreezeHistoryHashToken.INSTANCE;
-
+    viewportContextMenuItemsColumnOrRowFreeze(columnOrRowRange, historyTokens, frozenColumnOrRows, menuItems, menuItemId, history) {
         historyTokens[SpreadsheetHistoryHashTokens.SELECTION] = columnOrRowRange;
+        historyTokens[SpreadsheetHistoryHashTokens.SELECTION_ACTION] = SpreadsheetColumnOrRowFreezeHistoryHashToken.INSTANCE;
 
         menuItems.push(
             history.menuItem(
                 this.viewportFreezeColumnsRowsText(columnOrRowRange),
                 menuItemId,
-                false, // menuItemDisabled TODO will be disabled if selection matches $columnOrRowRange
+                columnOrRowRange.equals(frozenColumnOrRows()), // menuItemDisabled skip if given $columnOrRowRange already frozen
                 historyTokens
             )
         );

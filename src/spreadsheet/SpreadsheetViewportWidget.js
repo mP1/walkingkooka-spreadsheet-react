@@ -750,6 +750,9 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
             const history = this.props.history;
 
             const {top, left} = element.getBoundingClientRect();
+            const {
+                spreadsheetMetadata
+            } = this.state;
 
             const contextMenuState = {
                 anchorPosition: {
@@ -758,6 +761,8 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
                 },
                 menuItems: selection.viewportContextMenuItems(
                     SpreadsheetHistoryHash.spreadsheetIdAndName(history.tokens()),
+                    () => spreadsheetMetadata.getIgnoringDefaults(SpreadsheetMetadata.FROZEN_COLUMNS),
+                    () => spreadsheetMetadata.getIgnoringDefaults(SpreadsheetMetadata.FROZEN_ROWS),
                     (c) => this.isColumnHidden(c),
                     (r) => this.isRowHidden(r),
                     (c) => new SpreadsheetColumnReferenceRange(
