@@ -168,6 +168,7 @@ export default class SpreadsheetSelection extends SystemObject {
             history.menuItem(
                 this.viewportDeleteCellText(),
                 SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_DELETE_ID,
+                false, // disabled
                 historyTokens
             )
         );
@@ -181,6 +182,7 @@ export default class SpreadsheetSelection extends SystemObject {
             history.menuItem(
                 columnOrRange.viewportDeleteCellColumnText(),
                 SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_DELETE_COLUMN_ID,
+                false, // disabled
                 historyTokens
             )
         );
@@ -194,6 +196,7 @@ export default class SpreadsheetSelection extends SystemObject {
             history.menuItem(
                 rowOrRange.viewportDeleteCellRowText(),
                 SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_DELETE_ROW_ID,
+                false, // disabled
                 historyTokens
             )
         );
@@ -221,6 +224,7 @@ export default class SpreadsheetSelection extends SystemObject {
             history.menuItem(
                 this.viewportClearText(),
                 SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_CLEAR_ID,
+                false, // disabled
                 historyTokens
             )
         );
@@ -233,6 +237,7 @@ export default class SpreadsheetSelection extends SystemObject {
             history.menuItem(
                 this.viewportDeleteText(),
                 SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_DELETE_ID,
+                false, // disabled
                 historyTokens
             )
         );
@@ -245,6 +250,7 @@ export default class SpreadsheetSelection extends SystemObject {
             history.menuItem(
                 this.viewportInsertBefore2Text(),
                 SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_INSERT_BEFORE_2_ID,
+                false, // disabled
                 historyTokens
             )
         );
@@ -255,6 +261,7 @@ export default class SpreadsheetSelection extends SystemObject {
             history.menuItem(
                 this.viewportInsertBefore1Text(),
                 SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_INSERT_BEFORE_1_ID,
+                false, // disabled
                 historyTokens
             )
         );
@@ -267,6 +274,7 @@ export default class SpreadsheetSelection extends SystemObject {
             history.menuItem(
                 this.viewportInsertAfter1Text(),
                 SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_INSERT_AFTER_1_ID,
+                false, // disabled
                 historyTokens
             )
         );
@@ -277,6 +285,7 @@ export default class SpreadsheetSelection extends SystemObject {
             history.menuItem(
                 this.viewportInsertAfter2Text(),
                 SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_INSERT_AFTER_2_ID,
+                false, // disabled
                 historyTokens
             )
         );
@@ -316,6 +325,7 @@ export default class SpreadsheetSelection extends SystemObject {
             history.menuItem(
                 this.viewportHideText(),
                 SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_HIDE_ID,
+                false, // disabled
                 historyTokens
             )
         );
@@ -329,6 +339,7 @@ export default class SpreadsheetSelection extends SystemObject {
                 history.menuItem(
                     before.viewportUnHideText(),
                     SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_UNHIDE_BEFORE_ID,
+                    false, // disabled
                     historyTokens
                 )
             );
@@ -343,6 +354,7 @@ export default class SpreadsheetSelection extends SystemObject {
                 history.menuItem(
                     after.viewportUnHideText(),
                     SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_UNHIDE_AFTER_ID,
+                    false, // disabled
                     historyTokens
                 )
             );
@@ -360,6 +372,7 @@ export default class SpreadsheetSelection extends SystemObject {
             history.menuItem(
                 this.viewportFreezeColumnsRowsText(columnOrRowRange),
                 menuItemId,
+                false, // menuItemDisabled TODO will be disabled if selection matches $columnOrRowRange
                 historyTokens
             )
         );
