@@ -89,6 +89,10 @@ test("equals", () => {
     expect(SpreadsheetLabelName.parse(NAME).equals(SpreadsheetLabelName.parse(NAME))).toStrictEqual(true);
 });
 
+test("equals different case", () => {
+    expect(SpreadsheetLabelName.parse(NAME.toLowerCase()).equals(SpreadsheetLabelName.parse(NAME.toUpperCase()))).toStrictEqual(true);
+});
+
 // equalsIgnoringKind...................................................................................................
 
 function testEqualsIgnoringKind(label, other, expected) {
@@ -102,4 +106,5 @@ function testEqualsIgnoringKind(label, other, expected) {
         });
 }
 testEqualsIgnoringKind("LABEL123", "LABEL123", true);
+testEqualsIgnoringKind("LABEL123", "label123", true);
 testEqualsIgnoringKind("LABEL123", "DIFFERENT", false);
