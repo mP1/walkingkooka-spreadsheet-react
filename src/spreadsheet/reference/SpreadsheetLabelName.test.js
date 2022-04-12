@@ -88,3 +88,18 @@ test("equals different", () => {
 test("equals", () => {
     expect(SpreadsheetLabelName.parse(NAME).equals(SpreadsheetLabelName.parse(NAME))).toStrictEqual(true);
 });
+
+// equalsIgnoringKind...................................................................................................
+
+function testEqualsIgnoringKind(label, other, expected) {
+    test("equalsIgnoringKind " + label + " " + other,
+        () => {
+            expect(SpreadsheetLabelName.parse(label)
+                .equalsIgnoringKind(SpreadsheetLabelName.parse(other))
+            ).toStrictEqual(
+                expected
+            )
+        });
+}
+testEqualsIgnoringKind("LABEL123", "LABEL123", true);
+testEqualsIgnoringKind("LABEL123", "DIFFERENT", false);

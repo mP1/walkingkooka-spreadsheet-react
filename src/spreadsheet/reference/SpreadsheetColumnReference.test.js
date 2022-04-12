@@ -403,6 +403,22 @@ test("equals I true", () => {
     expect(SpreadsheetColumnReference.parse("I").equals(SpreadsheetColumnReference.parse("I"))).toStrictEqual(true);
 });
 
+// equalsIgnoringKind...................................................................................................
+
+function testEqualsIgnoringKind(column, other, expected) {
+    test("equalsIgnoringKind " + column + " " + other,
+        () => {
+            expect(SpreadsheetColumnReference.parse(column)
+                .equalsIgnoringKind(SpreadsheetColumnReference.parse(other))
+            ).toStrictEqual(
+                expected
+            )
+        });
+}
+testEqualsIgnoringKind("A", "A", true);
+testEqualsIgnoringKind("$A", "A", true);
+testEqualsIgnoringKind("A", "B", false);
+
 // toString.............................................................................................................
 
 test("toStringAbsolute", () => {

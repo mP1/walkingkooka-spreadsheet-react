@@ -1,11 +1,8 @@
-import Keys from "../../Keys.js";
 import SpreadsheetCellReference from "./SpreadsheetCellReference.js";
 import SpreadsheetColumnReference from "./SpreadsheetColumnReference";
 import SpreadsheetReferenceKind from "./SpreadsheetReferenceKind";
 import SpreadsheetRow from "./SpreadsheetRow.js";
 import SpreadsheetRowReference from "./SpreadsheetRowReference";
-import SpreadsheetRowReferenceRange from "./SpreadsheetRowReferenceRange.js";
-import SpreadsheetViewportSelectionAnchor from "./SpreadsheetViewportSelectionAnchor.js";
 import systemObjectTesting from "../../SystemObjectTesting.js";
 
 systemObjectTesting(
@@ -382,6 +379,22 @@ test("equals H true", () => {
 test("equals I true", () => {
     expect(SpreadsheetRowReference.parse("9").equals(SpreadsheetRowReference.parse("9"))).toStrictEqual(true);
 });
+
+// equalsIgnoringKind...................................................................................................
+
+function testEqualsIgnoringKind(row, other, expected) {
+    test("equalsIgnoringKind " + row + " " + other,
+        () => {
+            expect(SpreadsheetRowReference.parse(row)
+                .equalsIgnoringKind(SpreadsheetRowReference.parse(other))
+            ).toStrictEqual(
+                expected
+            )
+        });
+}
+testEqualsIgnoringKind("1", "1", true);
+testEqualsIgnoringKind("$1", "1", true);
+testEqualsIgnoringKind("1", "2", false);
 
 // toString.............................................................................................................
 

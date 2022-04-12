@@ -140,4 +140,8 @@ export default class SpreadsheetColumnOrRowReference extends SpreadsheetSelectio
     equals(other) {
         return this === other || (other instanceof this.constructor && this.kind().equals(other.kind()) && this.value() === other.value());
     }
+
+    equalsIgnoringKind(other) {
+        return this === other || (other instanceof this.constructor && this.value() === other.value());
+    }
 }

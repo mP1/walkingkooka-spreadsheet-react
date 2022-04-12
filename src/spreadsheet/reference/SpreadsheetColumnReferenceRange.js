@@ -237,6 +237,10 @@ export default class SpreadsheetColumnReferenceRange extends SpreadsheetColumnOr
     equals(other) {
         return this === other || (other instanceof SpreadsheetColumnReferenceRange && this.begin().equals(other.begin()) && this.end().equals(other.end()));
     }
+
+    equalsIgnoringKind(other) {
+        return this === other || (other instanceof SpreadsheetColumnReferenceRange && this.begin().equalsIgnoringKind(other.begin()) && this.end().equalsIgnoringKind(other.end()));
+    }
 }
 
 SystemObject.register(TYPE_NAME, SpreadsheetColumnReferenceRange.fromJson);

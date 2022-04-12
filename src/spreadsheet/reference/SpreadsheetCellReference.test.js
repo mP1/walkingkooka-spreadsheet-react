@@ -1,9 +1,6 @@
-import Keys from "../../Keys.js";
-import SpreadsheetCellRange from "./SpreadsheetCellRange.js";
 import SpreadsheetCellReference from "./SpreadsheetCellReference";
 import SpreadsheetColumnReference from "./SpreadsheetColumnReference";
 import SpreadsheetRowReference from "./SpreadsheetRowReference";
-import SpreadsheetViewportSelectionAnchor from "./SpreadsheetViewportSelectionAnchor.js";
 import systemObjectTesting from "../../SystemObjectTesting.js";
 
 
@@ -484,6 +481,22 @@ test("equals absolute #3", () => {
     const reference = "$L$13";
     expect(SpreadsheetCellReference.parse(reference).equals(SpreadsheetCellReference.parse(reference))).toStrictEqual(true);
 });
+
+// equalsIgnoringKind...................................................................................................
+
+function testEqualsIgnoringKind(cell, other, expected) {
+    test("equalsIgnoringKind " + cell + " " + other,
+        () => {
+            expect(SpreadsheetCellReference.parse(cell)
+                .equalsIgnoringKind(SpreadsheetCellReference.parse(other))
+            ).toStrictEqual(
+                expected
+            )
+        });
+}
+testEqualsIgnoringKind("A1", "A1", true);
+testEqualsIgnoringKind("$A$1", "A1", true);
+testEqualsIgnoringKind("A1", "B2", false);
 
 // helpers..............................................................................................................
 
