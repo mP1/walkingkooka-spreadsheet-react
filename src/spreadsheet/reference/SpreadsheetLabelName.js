@@ -126,6 +126,10 @@ export default class SpreadsheetLabelName extends SpreadsheetCellReferenceOrLabe
         return this === other || (other instanceof SpreadsheetLabelName && this.value() === other.value());
     }
 
+    equalsIgnoringKind(other) {
+        return this.equals(other);
+    }
+
     toString() {
         return this.value();
     }

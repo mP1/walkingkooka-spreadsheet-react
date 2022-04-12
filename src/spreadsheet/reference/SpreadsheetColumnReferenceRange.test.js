@@ -3,7 +3,6 @@ import SpreadsheetColumn from "./SpreadsheetColumn.js";
 import SpreadsheetColumnReferenceRange from "./SpreadsheetColumnReferenceRange.js";
 import SpreadsheetColumnReference from "./SpreadsheetColumnReference.js";
 import SpreadsheetRowReference from "./SpreadsheetRowReference.js";
-import SpreadsheetViewportSelectionAnchor from "./SpreadsheetViewportSelectionAnchor.js";
 import systemObjectTesting from "../../SystemObjectTesting.js";
 
 const JSON = "B:D";
@@ -412,6 +411,23 @@ function testRowAndCheck(label, range, rowReference, expected) {
 testRowAndCheck("left", JSON, "1", false);
 testRowAndCheck("left", JSON, "2", false);
 testRowAndCheck("left", JSON, "3", false);
+
+// equalsIgnoringKind...................................................................................................
+
+function testEqualsIgnoringKind(range, other, expected) {
+    test("equalsIgnoringKind " + range + " " + other,
+        () => {
+            expect(SpreadsheetColumnReferenceRange.parse(range)
+                .equalsIgnoringKind(SpreadsheetColumnReferenceRange.parse(other))
+            ).toStrictEqual(
+                expected
+            )
+        });
+}
+testEqualsIgnoringKind("A:B", "A:B", true);
+testEqualsIgnoringKind("$A:B", "A:B", true);
+testEqualsIgnoringKind("A:$B", "A:B", true);
+testEqualsIgnoringKind("A:B", "B:C", false);
 
 // helpers..............................................................................................................
 

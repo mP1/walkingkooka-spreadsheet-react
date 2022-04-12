@@ -501,6 +501,10 @@ export default class SpreadsheetSelection extends SystemObject {
         SystemObject.throwUnsupportedOperation();
     }
 
+    equalsIgnoringKind(other) {
+        return SystemObject.throwUnsupportedOperation();
+    }
+
     toString() {
         return this.toJson();
     }

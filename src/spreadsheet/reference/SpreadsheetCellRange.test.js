@@ -1,4 +1,3 @@
-import Keys from "../../Keys.js";
 import SpreadsheetCellRange from "./SpreadsheetCellRange.js";
 import SpreadsheetCellReference from "./SpreadsheetCellReference";
 import SpreadsheetColumnReference from "./SpreadsheetColumnReference.js";
@@ -427,6 +426,23 @@ test("equals equivalent true", () => {
     expect(range().equals(SpreadsheetCellRange.fromJson("A1:B2")))
         .toBeTrue();
 });
+
+// equalsIgnoringKind...................................................................................................
+
+function testEqualsIgnoringKind(range, other, expected) {
+    test("equalsIgnoringKind " + range + " " + other,
+        () => {
+            expect(SpreadsheetCellRange.parse(range)
+                .equalsIgnoringKind(SpreadsheetCellRange.parse(other))
+            ).toStrictEqual(
+                expected
+            )
+        });
+}
+testEqualsIgnoringKind("A1:B2", "A1:B2", true);
+testEqualsIgnoringKind("$A$1:B2", "A1:B2", true);
+testEqualsIgnoringKind("A1:$B$2", "A1:B2", true);
+testEqualsIgnoringKind("A1:B2", "B2:C3", false);
 
 // helpers..............................................................................................................
 

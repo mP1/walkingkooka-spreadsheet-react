@@ -294,6 +294,10 @@ export default class SpreadsheetCellReference extends SpreadsheetCellReferenceOr
         return this === other || (other instanceof SpreadsheetCellReference && this.column().equals(other.column()) && this.row().equals(other.row()));
     }
 
+    equalsIgnoringKind(other) {
+        return this === other || (other instanceof SpreadsheetCellReference && this.column().equalsIgnoringKind(other.column()) && this.row().equalsIgnoringKind(other.row()));
+    }
+
     toString() {
         return this.toJson();
     }

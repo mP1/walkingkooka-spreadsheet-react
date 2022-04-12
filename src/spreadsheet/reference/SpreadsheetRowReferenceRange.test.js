@@ -2,7 +2,6 @@ import SpreadsheetCellReference from "./SpreadsheetCellReference.js";
 import SpreadsheetColumnReference from "./SpreadsheetColumnReference.js";
 import SpreadsheetRowReferenceRange from "./SpreadsheetRowReferenceRange.js";
 import SpreadsheetRowReference from "./SpreadsheetRowReference.js";
-import SpreadsheetViewportSelectionAnchor from "./SpreadsheetViewportSelectionAnchor.js";
 import systemObjectTesting from "../../SystemObjectTesting.js";
 import SpreadsheetRow from "./SpreadsheetRow.js";
 
@@ -416,6 +415,23 @@ testRowAndCheck("top edge", JSON, "2", true);
 testRowAndCheck("center", JSON, "3", true);
 testRowAndCheck("bottom edge", JSON, "4", true);
 testRowAndCheck("below", JSON, "5", false);
+
+// equalsIgnoringKind...................................................................................................
+
+function testEqualsIgnoringKind(range, other, expected) {
+    test("equalsIgnoringKind " + range + " " + other,
+        () => {
+            expect(SpreadsheetRowReferenceRange.parse(range)
+                .equalsIgnoringKind(SpreadsheetRowReferenceRange.parse(other))
+            ).toStrictEqual(
+                expected
+            )
+        });
+}
+testEqualsIgnoringKind("1:2", "1:2", true);
+testEqualsIgnoringKind("$1:2", "1:2", true);
+testEqualsIgnoringKind("1:$2", "1:2", true);
+testEqualsIgnoringKind("1:2", "2:3", false);
 
 // helpers..............................................................................................................
 
