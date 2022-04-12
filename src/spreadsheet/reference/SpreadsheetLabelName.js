@@ -123,7 +123,7 @@ export default class SpreadsheetLabelName extends SpreadsheetCellReferenceOrLabe
     }
 
     equals(other) {
-        return this === other || (other instanceof SpreadsheetLabelName && this.value() === other.value());
+        return this === other || (other instanceof SpreadsheetLabelName && this.value().toLocaleLowerCase() === other.value().toLocaleLowerCase());
     }
 
     equalsIgnoringKind(other) {
