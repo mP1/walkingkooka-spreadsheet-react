@@ -334,34 +334,23 @@ export default class SpreadsheetSelection extends SystemObject {
         );
 
         // if the column/row BEFORE is hidden add Unhide column/row
-        if(!before.equals(this) && isHidden(before)){
-            historyTokens[SpreadsheetHistoryHashTokens.SELECTION] = before;
-            historyTokens[SpreadsheetHistoryHashTokens.SELECTION_ACTION] = new SpreadsheetColumnOrRowSaveHistoryHashToken("hidden", false);
+        this.viewportContextMenuItemsColumnOrRowUnHide(
+            before,
+            isHidden,
+            historyTokens,
+            menuItems,
+            SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_UNHIDE_BEFORE_ID,
+            history
+        );
 
-            menuItems.push(
-                history.menuItem(
-                    before.viewportUnHideText(),
-                    SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_UNHIDE_BEFORE_ID,
-                    false, // disabled
-                    historyTokens
-                )
-            );
-        }
-
-        // if the column/row AFTER is hidden add Unhide column/row
-        if(!after.equals(this) && isHidden(after)){
-            historyTokens[SpreadsheetHistoryHashTokens.SELECTION] = after;
-            historyTokens[SpreadsheetHistoryHashTokens.SELECTION_ACTION] = new SpreadsheetColumnOrRowSaveHistoryHashToken("hidden", false);
-
-            menuItems.push(
-                history.menuItem(
-                    after.viewportUnHideText(),
-                    SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_UNHIDE_AFTER_ID,
-                    false, // disabled
-                    historyTokens
-                )
-            );
-        }
+        this.viewportContextMenuItemsColumnOrRowUnHide(
+            after,
+            isHidden,
+            historyTokens,
+            menuItems,
+            SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_UNHIDE_AFTER_ID,
+            history
+        );
 
         return menuItems;
     }
@@ -378,6 +367,22 @@ export default class SpreadsheetSelection extends SystemObject {
                 historyTokens
             )
         );
+    }
+
+    viewportContextMenuItemsColumnOrRowUnHide(columnOrRowRange, isHidden, historyTokens, menuItems, menuItemId, history) {
+        if(!columnOrRowRange.equals(this) && isHidden(columnOrRowRange)){
+            historyTokens[SpreadsheetHistoryHashTokens.SELECTION] = columnOrRowRange;
+            historyTokens[SpreadsheetHistoryHashTokens.SELECTION_ACTION] = new SpreadsheetColumnOrRowSaveHistoryHashToken("hidden", false);
+
+            menuItems.push(
+                history.menuItem(
+                    columnOrRowRange.viewportUnHideText(),
+                    menuItemId,
+                    false, // disabled
+                    historyTokens
+                )
+            );
+        }
     }
 
     viewportFocus(giveFormulaFocus) {
