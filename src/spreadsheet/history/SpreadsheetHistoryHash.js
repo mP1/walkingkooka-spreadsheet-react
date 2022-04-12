@@ -913,7 +913,7 @@ export default class SpreadsheetHistoryHash extends SpreadsheetHistoryHashTokens
     /**
      * Factory that builds a MenuItem with the given text and a link created from the given history hash tokens.
      */
-    menuItem(text, id, historyTokens) {
+    menuItem(text, id, disabled, historyTokens) {
         const copy = Object.assign({}, historyTokens);
 
         const href = "#" + SpreadsheetHistoryHash.stringify(historyTokens);
@@ -921,6 +921,7 @@ export default class SpreadsheetHistoryHash extends SpreadsheetHistoryHashTokens
         // unfortunately href is not honoured and does not update history
         return <MenuItem key={href}
                          id={id}
+                         disabled={disabled}
                          href={href}
                          onClick={() => this.mergeAndPush(copy)}
                          tabIndex={0}>{
