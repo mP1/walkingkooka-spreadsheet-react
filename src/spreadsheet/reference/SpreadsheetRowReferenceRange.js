@@ -148,11 +148,12 @@ export default class SpreadsheetRowReferenceRange extends SpreadsheetColumnOrRow
 
     // viewport.........................................................................................................
 
-    viewportContextMenuItems(historyTokens, isColumnHidden, isRowHidden, columnRange, rowRange, history) {
+    viewportContextMenuItems(historyTokens, frozenColumns, frozenRows, isColumnHidden, isRowHidden, columnRange, rowRange, history) {
         return this.viewportContextMenuItemsColumnOrRow(
             historyTokens,
             this.begin().addSaturated(-1),
             this.end().addSaturated(+1),
+            frozenRows,
             isRowHidden,
             rowRange,
             history
