@@ -283,41 +283,28 @@ export default class SpreadsheetSelection extends SystemObject {
 
         // freeze.......................................................................................................
 
-        historyTokens[SpreadsheetHistoryHashTokens.SELECTION_ACTION] = SpreadsheetColumnOrRowFreezeHistoryHashToken.INSTANCE;
-
-        const range1 = range(0);
-        historyTokens[SpreadsheetHistoryHashTokens.SELECTION] = range1;
-
-        menuItems.push(
-            history.menuItem(
-                this.viewportFreezeColumnsRowsText(range1),
-                SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_FREEZE_1_ID,
-                historyTokens
-            )
+        this.viewportContextMenuItemsColumnOrRowFreeze(
+            range(0),
+            historyTokens,
+            menuItems,
+            SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_FREEZE_1_ID,
+            history
         );
 
-        // freeze columns A:B / row 1:2
-        const range2 = range(1);
-        historyTokens[SpreadsheetHistoryHashTokens.SELECTION] = range2;
-
-        menuItems.push(
-            history.menuItem(
-                this.viewportFreezeColumnsRowsText(range2),
-                SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_FREEZE_2_ID,
-                historyTokens
-            )
+        this.viewportContextMenuItemsColumnOrRowFreeze(
+            range(1),
+            historyTokens,
+            menuItems,
+            SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_FREEZE_2_ID,
+            history
         );
 
-        // freeze columns A:C / row 1:3
-        const range3 = range(2);
-        historyTokens[SpreadsheetHistoryHashTokens.SELECTION] = range3;
-
-        menuItems.push(
-            history.menuItem(
-                this.viewportFreezeColumnsRowsText(range3),
-                SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_FREEZE_3_ID,
-                historyTokens
-            )
+        this.viewportContextMenuItemsColumnOrRowFreeze(
+            range(2),
+            historyTokens,
+            menuItems,
+            SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_FREEZE_3_ID,
+            history
         );
 
         // hide........................................................................................................
@@ -362,6 +349,20 @@ export default class SpreadsheetSelection extends SystemObject {
         }
 
         return menuItems;
+    }
+
+    viewportContextMenuItemsColumnOrRowFreeze(columnOrRowRange, historyTokens, menuItems, menuItemId, history) {
+        historyTokens[SpreadsheetHistoryHashTokens.SELECTION_ACTION] = SpreadsheetColumnOrRowFreezeHistoryHashToken.INSTANCE;
+
+        historyTokens[SpreadsheetHistoryHashTokens.SELECTION] = columnOrRowRange;
+
+        menuItems.push(
+            history.menuItem(
+                this.viewportFreezeColumnsRowsText(columnOrRowRange),
+                menuItemId,
+                historyTokens
+            )
+        );
     }
 
     viewportFocus(giveFormulaFocus) {
