@@ -124,13 +124,13 @@ Following the selection of a cell, the following commands are possible
 > 
 > /#123/Untitled/column/B:C
 
-Selects the column or row range.
+Selects the column or column range.
 
-Following the selection of a column or row range, the following commands are possible
+Following the selection of a column or column range, the following commands are possible
 
-- /clear Clears the selected column or row range
-- /delete Deletes the selected column or row range
-- /hidden/true|false Updates the hidden property for the column or row range to the new value.
+- /clear Clears the selected column or column range
+- /delete Deletes the selected column or column range
+- /hidden/true|false Updates the hidden property for the column or column range to the new value.
 - /insert-after/$count Inserts the requested number of columns after the column/column range
 - /insert-before/$count Inserts the requested number of columns before the column/column range. Once the operation completes the selected column/column-range will be updated to account for the insertion.
 - /menu Displays a context menu
@@ -183,13 +183,13 @@ Supports numerous actions relating to creating, updating or deleting a label map
 > 
 > /#123/Untitled/row/2:3
 
-Selects the column or row range.
+Selects the row or row range.
 
-Following the selection of a column or row range, the following commands are possible
+Following the selection of a row or row range, the following commands are possible
 
-- /clear Clears the selected column or row range
-- /delete Deletes the selected column or row range
-- /hidden/true|false Updates the hidden property for the column or row range to the new value.
+- /clear Clears the selected row or row range
+- /delete Deletes the selected row or row range
+- /hidden/true|false Updates the hidden property for the row or row range to the new value.
 - /insert-after/$count Inserts the requested number of rows after the row/row range
 - /insert-before/$count Inserts the requested number of rows before the row/row range. Once the operation completes the selected row/row-range will be updated to account for the insertion.
 - /menu Displays a context menu
@@ -222,7 +222,7 @@ Following the selection of a column or row range, the following commands are pos
 
 #### /spreadsheet-id/spreadsheet-name/select
 
-Opens a dialog that allows entering of a selection such as cell, cell-range, column, column-range, label, column or row-range. As text is entered
+Opens a dialog that allows entering of a selection such as cell, cell-range, column, column-range, label, row or row-range. As text is entered
 buttons with links will be enabled to select or edit (for labels).
 
 Note the labels will have links as described above for the various label components. The Goto Label button will have a link of
