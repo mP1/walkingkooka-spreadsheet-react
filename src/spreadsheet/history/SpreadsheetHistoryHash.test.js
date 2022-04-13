@@ -12,6 +12,7 @@ import SpreadsheetColumnOrRowInsertBeforeHistoryHashToken
     from "./SpreadsheetColumnOrRowInsertBeforeHistoryHashToken.js";
 import SpreadsheetColumnOrRowMenuHistoryHashToken from "./SpreadsheetColumnOrRowMenuHistoryHashToken.js";
 import SpreadsheetColumnOrRowSaveHistoryHashToken from "./SpreadsheetColumnOrRowSaveHistoryHashToken.js";
+import SpreadsheetColumnOrRowUnFreezeHistoryHashToken from "./SpreadsheetColumnOrRowUnFreezeHistoryHashToken.js";
 import SpreadsheetColumnReference from "../reference/SpreadsheetColumnReference.js";
 import SpreadsheetColumnReferenceRange from "../reference/SpreadsheetColumnReferenceRange.js";
 import SpreadsheetFormulaLoadAndEditHistoryHashToken from "./SpreadsheetFormulaLoadAndEditHistoryHashToken.js";
@@ -55,6 +56,7 @@ const NEW_LABEL = SpreadsheetLabelName.parse("Label999");
 const COLUMN_ROW_CLEAR = SpreadsheetColumnOrRowClearHistoryHashToken.INSTANCE;
 const COLUMN_ROW_FREEZE = SpreadsheetColumnOrRowFreezeHistoryHashToken.INSTANCE;
 const COLUMN_ROW_MENU = SpreadsheetColumnOrRowMenuHistoryHashToken.INSTANCE;
+const COLUMN_ROW_UNFREEZE = SpreadsheetColumnOrRowUnFreezeHistoryHashToken.INSTANCE;
 
 const CELL_CLEAR = SpreadsheetCellClearHistoryHashToken.INSTANCE;
 const CELL_DELETE = SpreadsheetCellDeleteHistoryHashToken.INSTANCE;
@@ -1118,6 +1120,34 @@ testParseAndStringify(
 );
 
 testParseAndStringify(
+    "/spreadsheet-id-123/spreadsheet-name-456/column/A/unfreeze",
+    {
+        "spreadsheet-id": "spreadsheet-id-123",
+        "spreadsheet-name": SPREADSHEET_NAME,
+        "selection": COLUMN_A,
+        "selection-action": COLUMN_ROW_UNFREEZE,
+    }
+);
+
+testParseAndStringify(
+    "/spreadsheet-id-123/spreadsheet-name-456/column/A:C/unfreeze",
+    {
+        "spreadsheet-id": "spreadsheet-id-123",
+        "spreadsheet-name": SPREADSHEET_NAME,
+        "selection": COLUMN_RANGE_AC,
+        "selection-action": COLUMN_ROW_UNFREEZE,
+    }
+);
+
+testParseAndStringify(
+    "/spreadsheet-id-123/spreadsheet-name-456/column/B:C/unfreeze",
+    {
+        "spreadsheet-id": "spreadsheet-id-123",
+        "spreadsheet-name": SPREADSHEET_NAME,
+    }
+);
+
+testParseAndStringify(
     "/spreadsheet-id-123/spreadsheet-name-456/column/B/formula",
     {
         "spreadsheet-id": "spreadsheet-id-123",
@@ -1497,6 +1527,42 @@ testParseAndStringify(
         "spreadsheet-name": SPREADSHEET_NAME,
         "selection": ROW,
         "selection-action": COLUMN_ROW_MENU,
+    }
+);
+
+testParseAndStringify(
+    "/spreadsheet-id-123/spreadsheet-name-456/row/1/unfreeze",
+    {
+        "spreadsheet-id": "spreadsheet-id-123",
+        "spreadsheet-name": SPREADSHEET_NAME,
+        "selection": ROW_1,
+        "selection-action": COLUMN_ROW_UNFREEZE,
+    }
+);
+
+testParseAndStringify(
+    "/spreadsheet-id-123/spreadsheet-name-456/row/2/unfreeze",
+    {
+        "spreadsheet-id": "spreadsheet-id-123",
+        "spreadsheet-name": SPREADSHEET_NAME,
+    }
+);
+
+testParseAndStringify(
+    "/spreadsheet-id-123/spreadsheet-name-456/row/1:3/unfreeze",
+    {
+        "spreadsheet-id": "spreadsheet-id-123",
+        "spreadsheet-name": SPREADSHEET_NAME,
+        "selection": ROW_RANGE_1_3,
+        "selection-action": COLUMN_ROW_UNFREEZE,
+    }
+);
+
+testParseAndStringify(
+    "/spreadsheet-id-123/spreadsheet-name-456/row/2:3/unfreeze",
+    {
+        "spreadsheet-id": "spreadsheet-id-123",
+        "spreadsheet-name": SPREADSHEET_NAME
     }
 );
 

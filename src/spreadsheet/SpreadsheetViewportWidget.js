@@ -739,6 +739,17 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
         );
     }
 
+    unFreezeSelection(viewportSelection) {
+        const selection = viewportSelection.selection();
+
+        this.patchSpreadsheetMetadata(
+            selection.apiFreezeMetadataPropertyName(),
+            null
+        );
+
+        this.removeHistoryHashSelectionAction();
+    }
+
     /**
      * Updates the state so the context menu will be shown.
      */
