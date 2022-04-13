@@ -20,6 +20,7 @@ import SpreadsheetColumnOrRowInsertBeforeHistoryHashToken
     from "./SpreadsheetColumnOrRowInsertBeforeHistoryHashToken.js";
 import SpreadsheetColumnOrRowMenuHistoryHashToken from "./SpreadsheetColumnOrRowMenuHistoryHashToken.js";
 import SpreadsheetColumnOrRowSaveHistoryHashToken from "./SpreadsheetColumnOrRowSaveHistoryHashToken.js";
+import SpreadsheetColumnOrRowUnFreezeHistoryHashToken from "./SpreadsheetColumnOrRowUnFreezeHistoryHashToken.js";
 import SpreadsheetColumnReferenceRange from "../reference/SpreadsheetColumnReferenceRange.js";
 import SpreadsheetFormulaLoadAndEditHistoryHashToken from "./SpreadsheetFormulaLoadAndEditHistoryHashToken.js";
 import SpreadsheetFormulaSaveHistoryHashToken from "./SpreadsheetFormulaSaveHistoryHashToken.js";
@@ -282,6 +283,15 @@ export default class SpreadsheetHistoryHash extends SpreadsheetHistoryHashTokens
                                                     if(SpreadsheetHistoryHashTokens.MENU === token){
                                                         selectionAction = SpreadsheetColumnOrRowMenuHistoryHashToken.INSTANCE;
                                                         token = tokens.shift();
+                                                    } else {
+                                                        if(SpreadsheetHistoryHashTokens.UNFREEZE === token){
+                                                            if(!selection.canFreeze()){
+                                                                selection = null;
+                                                            }else {
+                                                                selectionAction = SpreadsheetColumnOrRowUnFreezeHistoryHashToken.INSTANCE;
+                                                            }
+                                                            token = tokens.shift();
+                                                        }
                                                     }
                                                 }
                                             }

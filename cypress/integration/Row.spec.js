@@ -294,7 +294,7 @@ describe("Row",
             testing.viewportContextMenu()
                 .should("be.visible")
                 .find("LI")
-                .should("have.length", 10);
+                .should("have.length", 11);
         });
 
         it("Row context menu", () => {
@@ -306,7 +306,7 @@ describe("Row",
             testing.viewportContextMenu()
                 .should("be.visible")
                 .find("LI")
-                .should("have.length", 10);
+                .should("have.length", 11);
         });
 
         it("Row context menu links", () => {
@@ -356,6 +356,8 @@ describe("Row",
             testing.getById(SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_HIDE_ID)
                 .should("have.attr", "href")
                 .and('match', /#*\/*\/row\/2\/hidden\/true/);
+
+            testing.getById(SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_UNFREEZE_ID);
         });
 
         it("Row range context menu links", () => {
@@ -405,6 +407,8 @@ describe("Row",
             testing.getById(SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_HIDE_ID)
                 .should("have.attr", "href")
                 .and('match', /#*\/*\/row\/2:3\/hidden\/true/);
+
+            testing.getById(SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_UNFREEZE_ID);
         });
 
         it("Row context menu click clear", () => {

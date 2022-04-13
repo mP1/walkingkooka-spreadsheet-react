@@ -9,6 +9,8 @@ import SpreadsheetColumnOrRowInsertBeforeHistoryHashToken
 import SpreadsheetColumnOrRowInsertAfterHistoryHashToken
     from "../history/SpreadsheetColumnOrRowInsertAfterHistoryHashToken.js";
 import SpreadsheetColumnOrRowSaveHistoryHashToken from "../history/SpreadsheetColumnOrRowSaveHistoryHashToken.js";
+import SpreadsheetColumnOrRowUnFreezeHistoryHashToken
+    from "../history/SpreadsheetColumnOrRowUnFreezeHistoryHashToken.js";
 import SpreadsheetHistoryHashTokens from "../history/SpreadsheetHistoryHashTokens.js";
 import SpreadsheetViewportSelection from "./SpreadsheetViewportSelection.js";
 import SystemObject from "../../SystemObject.js";
@@ -147,6 +149,8 @@ export default class SpreadsheetSelection extends SystemObject {
     static VIEWPORT_CONTEXT_MENU_INSERT_AFTER_1_ID = SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_ID + "-insert-after-1"
     static VIEWPORT_CONTEXT_MENU_INSERT_BEFORE_2_ID = SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_ID + "-insert-before-2";
     static VIEWPORT_CONTEXT_MENU_INSERT_BEFORE_1_ID = SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_ID + "-insert-before-1";
+
+    static VIEWPORT_CONTEXT_MENU_UNFREEZE_ID = SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_ID + "-unfreeze";
 
     static VIEWPORT_CONTEXT_MENU_UNHIDE_AFTER_ID = SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_ID + "-unhide-after";
     static VIEWPORT_CONTEXT_MENU_UNHIDE_BEFORE_ID = SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_ID + "-unhide-before";
@@ -319,6 +323,14 @@ export default class SpreadsheetSelection extends SystemObject {
             history
         );
 
+        this.viewportContextMenuItemsColumnOrRowUnFreeze(
+            historyTokens,
+            frozenColumnOrRows,
+            menuItems,
+            SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_UNFREEZE_ID,
+            history
+        );
+
         // hide........................................................................................................
 
         historyTokens[SpreadsheetHistoryHashTokens.SELECTION] = this;
@@ -365,6 +377,22 @@ export default class SpreadsheetSelection extends SystemObject {
                 menuItemId,
                 columnOrRowRange.equals(frozenColumnOrRows()), // menuItemDisabled skip if given $columnOrRowRange already frozen
                 historyTokens
+            )
+        );
+    }
+
+    viewportContextMenuItemsColumnOrRowUnFreeze(historyTokens, frozenColumnOrRows, menuItems, menuItemId, history) {
+        const frozen = frozenColumnOrRows();
+
+        historyTokens[SpreadsheetHistoryHashTokens.SELECTION] = frozen;
+        historyTokens[SpreadsheetHistoryHashTokens.SELECTION_ACTION] = SpreadsheetColumnOrRowUnFreezeHistoryHashToken.INSTANCE;
+
+        menuItems.push(
+            history.menuItem(
+                this.viewportUnFreezeColumnsRowsText(frozen),
+                menuItemId,
+                !Boolean(frozen), // menuItemDisabled skip if nothing is frozen
+                frozen && historyTokens
             )
         );
     }
@@ -447,6 +475,14 @@ export default class SpreadsheetSelection extends SystemObject {
 
     viewportInsertBefore2Text() {
         SystemObject.throwUnsupportedOperation();
+    }
+
+    viewportUnFreezeColumnsRowsText(columnsRowRange) {
+        return "Un Freeze" + (
+            columnsRowRange ?
+                " " + columnsRowRange :
+                ""
+        );
     }
 
     viewportUnHideText() {

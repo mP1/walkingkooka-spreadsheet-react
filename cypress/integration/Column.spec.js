@@ -307,7 +307,7 @@ describe(
             testing.viewportContextMenu()
                 .should("be.visible")
                 .find("LI")
-                .should("have.length", 10);
+                .should("have.length", 11);
         });
 
         it("Column context menu", () => {
@@ -319,7 +319,7 @@ describe(
             testing.viewportContextMenu()
                 .should("be.visible")
                 .find("LI")
-                .should("have.length", 10);
+                .should("have.length", 11);
         });
 
         it("Column context menu links", () => {
@@ -369,6 +369,8 @@ describe(
             testing.getById(SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_HIDE_ID)
                 .should("have.attr", "href")
                 .and('match', /#*\/*\/column\/B\/hidden\/true/);
+
+            testing.getById(SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_UNFREEZE_ID);
         });
 
         it("Column range context menu links", () => {
@@ -418,6 +420,8 @@ describe(
             testing.getById(SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_HIDE_ID)
                 .should("have.attr", "href")
                 .and('match', /#*\/*\/column\/B:C\/hidden\/true/);
+
+            testing.getById(SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_UNFREEZE_ID);
         });
 
         it("Column context menu click clear", () => {

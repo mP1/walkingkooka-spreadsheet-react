@@ -39,6 +39,7 @@ export default class SpreadsheetHistoryHashTokens {
     static INSERT_AFTER = "insert-after";
     static INSERT_BEFORE = "insert-before";
     static MENU = "menu";
+    static UNFREEZE = "unfreeze";
 
     static SAVE = "save";
 
