@@ -919,7 +919,7 @@ export default class SpreadsheetHistoryHash extends SpreadsheetHistoryHashTokens
         const href = "#" + SpreadsheetHistoryHash.stringify(historyTokens);
 
         // unfortunately href is not honoured and does not update history
-        return <MenuItem key={href}
+        return <MenuItem key={id}
                          id={id}
                          disabled={disabled}
                          href={href}
