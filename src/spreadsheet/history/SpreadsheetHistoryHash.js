@@ -916,7 +916,7 @@ export default class SpreadsheetHistoryHash extends SpreadsheetHistoryHashTokens
     menuItem(text, id, disabled, historyTokens) {
         const copy = Object.assign({}, historyTokens);
 
-        const href = "#" + SpreadsheetHistoryHash.stringify(historyTokens);
+        const href = historyTokens && "#" + SpreadsheetHistoryHash.stringify(historyTokens);
 
         // unfortunately href is not honoured and does not update history
         return <MenuItem key={id}
