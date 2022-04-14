@@ -931,14 +931,14 @@ function checkCurrencySymbol(currencySymbol) {
 
 function checkFrozenColumns(range) {
     Preconditions.requireInstance(range, SpreadsheetColumnReferenceRange, "frozenColumn");
-    if(range.begin().value() != 0){
+    if(range.begin().value() !== 0){
         throw new Error("Frozen column begin must be column A: " + range);
     }
 }
 
 function checkFrozenRows(range) {
     Preconditions.requireInstance(range, SpreadsheetRowReferenceRange, "frozenRow");
-    if(range.begin().value() != 0){
+    if(range.begin().value() !== 0){
         throw new Error("Frozen row begin must be row 1: " + range);
     }
 }
