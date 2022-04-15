@@ -468,8 +468,8 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
                 const begin = SpreadsheetDelta.viewportRange(window)
                     .begin();
                 if(!begin.equals(SpreadsheetDelta.viewportRange(prevWindow).begin())){
-                    this.horizontalSlider.current.value = (begin.column().value());
-                    this.verticalSlider.current.value = (SpreadsheetViewportWidget.toVerticalSliderValue(begin.column().value()));
+                    this.horizontalSlider.current.value = begin.column().value();
+                    this.verticalSlider.current.value = SpreadsheetViewportWidget.toVerticalSliderValue(begin.column().value());
                 }
             }
 
