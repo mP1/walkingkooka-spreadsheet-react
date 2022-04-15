@@ -21,29 +21,21 @@ export default class SpreadsheetViewport extends SystemObject {
         Preconditions.requireText(text, "text");
 
         let tokens = text.split(SEPARATOR);
-        if(5 !== tokens.length){
-            throw new Error("Expected 5 tokens got " + text);
+        if(3 !== tokens.length){
+            throw new Error("Expected 3 tokens got " + text);
         }
 
         return new SpreadsheetViewport(
             SpreadsheetCellReference.parse(tokens[0]),
             Number(tokens[1]),
-            Number(tokens[2]),
-            Number(tokens[3]),
-            Number(tokens[4])
+            Number(tokens[2])
         );
     }
 
-    constructor(cellOrLabel, xOffset, yOffset, width, height) {
+    constructor(cellOrLabel, width, height) {
         super();
         Preconditions.requireInstance(cellOrLabel, SpreadsheetCellReference, "cellOrLabel");
         this.cellOrLabelValue = cellOrLabel;
-
-        Preconditions.requireNumber(xOffset, "xOffset");
-        this.xOffsetValue = xOffset;
-
-        Preconditions.requireNumber(yOffset, "yOffset");
-        this.yOffsetValue = yOffset;
 
         Preconditions.requirePositiveNumber(width, "width");
         this.widthValue = width;
@@ -54,14 +46,6 @@ export default class SpreadsheetViewport extends SystemObject {
 
     cellOrLabel() {
         return this.cellOrLabelValue;
-    }
-
-    xOffset() {
-        return this.xOffsetValue;
-    }
-
-    yOffset() {
-        return this.yOffsetValue;
     }
 
     width() {
@@ -82,8 +66,6 @@ export default class SpreadsheetViewport extends SystemObject {
 
         const parameters = {
             home: [this.cellOrLabel()],
-            xOffset: [this.xOffset()],
-            yOffset: [this.yOffset()],
             width: [this.width()],
             height: [this.height()],
             includeFrozenColumnsRows: [false],
@@ -106,7 +88,7 @@ export default class SpreadsheetViewport extends SystemObject {
     }
 
     toJson() {
-        return this.cellOrLabel() + SEPARATOR + this.xOffset() + SEPARATOR + this.yOffset() + SEPARATOR + this.width() + SEPARATOR + this.height();
+        return this.cellOrLabel() + SEPARATOR + this.width() + SEPARATOR + this.height();
     }
 
     typeName() {
@@ -117,8 +99,6 @@ export default class SpreadsheetViewport extends SystemObject {
         return this === other ||
             (other instanceof SpreadsheetViewport &&
                 this.cellOrLabel().equals(other.cellOrLabel()) &&
-                this.xOffset() === other.xOffset() &&
-                this.yOffset() === other.yOffset() &&
                 this.width() === other.width() &&
                 this.height() === other.height());
     }

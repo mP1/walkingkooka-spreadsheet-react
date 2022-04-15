@@ -22,8 +22,8 @@ export default class SpreadsheetCellReferenceOrLabelName extends SpreadsheetExpr
         return "/cell/" + this;
     }
 
-    viewport(xOffset, yOffset, width, height) {
-        return new SpreadsheetViewport(this, xOffset, yOffset, width, height);
+    viewport(width, height) {
+        return new SpreadsheetViewport(this, width, height);
     }
 
     defaultAnchor() {
