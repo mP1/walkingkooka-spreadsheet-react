@@ -233,8 +233,8 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
             };
 
             if(window.length){
-                const queryParameterSelection = url.queryParameters().selection;
-                if(queryParameterSelection){
+                const queryParameters = url.queryParameters();
+                if(queryParameters.home){
                     Object.assign(
                         newState,
                         {
@@ -249,6 +249,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
                 }
 
                 // if the request SpreadsheetDelta#viewportSelection was present then update the state with the response SpreadsheetDelta#viewportSelection
+                const queryParameterSelection = queryParameters.selection;
                 if(queryParameterSelection || (requestDelta && requestDelta.selection())){
                     const viewportSelection = responseDelta.selection();
                     Object.assign(
