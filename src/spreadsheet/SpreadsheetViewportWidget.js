@@ -537,8 +537,6 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
                 if(viewportLoadCells){
                     this.loadCells(
                         viewportCell.viewport(
-                            0,
-                            0,
                             width,
                             height
                         ),
@@ -1015,8 +1013,6 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
 
                     this.loadCells(
                         topLeft.viewport(
-                            0,
-                            0,
                             width,
                             height
                         ),
