@@ -38,7 +38,6 @@ import SpreadsheetReferenceKind from "./reference/SpreadsheetReferenceKind.js";
 import SpreadsheetRowReference from "./reference/SpreadsheetRowReference.js";
 import SpreadsheetRowReferenceRange from "./reference/SpreadsheetRowReferenceRange.js";
 import SpreadsheetSelection from "./reference/SpreadsheetSelection.js";
-import SpreadsheetViewport from "./SpreadsheetViewport.js";
 import SpreadsheetViewportSelection from "./reference/SpreadsheetViewportSelection.js";
 import SpreadsheetViewportSelectionAnchor from "./reference/SpreadsheetViewportSelectionAnchor.js";
 import SpreadsheetViewportSelectionNavigation from "./reference/SpreadsheetViewportSelectionNavigation.js";
@@ -351,13 +350,13 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
                 const viewportTable = this.viewportTable.current;
                 if(viewportTable){
                     this.loadCells(
-                        new SpreadsheetViewport(
-                            this.state.spreadsheetMetadata.getIgnoringDefaults(SpreadsheetMetadata.VIEWPORT_CELL),
-                            0,
-                            0,
-                            viewportTable.offsetWidth - ROW_WIDTH,
-                            viewportTable.offsetHeight - COLUMN_HEIGHT,
-                        ),
+                        this.state.spreadsheetMetadata.getIgnoringDefaults(SpreadsheetMetadata.VIEWPORT_CELL)
+                            .viewport(
+                                0,
+                                0,
+                                viewportTable.offsetWidth - ROW_WIDTH,
+                                viewportTable.offsetHeight - COLUMN_HEIGHT,
+                            ),
                         null, // selection
                         null, // selectionAnchor
                         null, // selectionNavigation
@@ -537,8 +536,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
 
                 if(viewportLoadCells){
                     this.loadCells(
-                        new SpreadsheetViewport(
-                            viewportCell,
+                        viewportCell.viewport(
                             0,
                             0,
                             width,
@@ -1016,8 +1014,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
                     const height = viewportTable.offsetHeight - COLUMN_HEIGHT;
 
                     this.loadCells(
-                        new SpreadsheetViewport(
-                            topLeft,
+                        topLeft.viewport(
                             0,
                             0,
                             width,
