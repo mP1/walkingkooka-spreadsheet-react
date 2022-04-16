@@ -116,8 +116,13 @@ export default class SpreadsheetColumnReferenceRange extends SpreadsheetColumnOr
 
     freezePatch() {
         return {
-            "frozen-columns": this.toString(),
-            "frozen-rows": "1:" + SpreadsheetColumnReference.MAX,
+            "frozen-columns": this.toString()
+        };
+    }
+
+    unFreezePatch() {
+        return {
+            "frozen-columns": null
         };
     }
 

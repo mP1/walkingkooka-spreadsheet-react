@@ -97,7 +97,14 @@ export default class SpreadsheetCellRange extends SpreadsheetExpressionReference
     freezePatch() {
         return {
             "frozen-columns": this.columnOrRange().toString(),
-            "frozen-rows": this.rowOrRange().toString(),
+            "frozen-rows": this.rowOrRange().toString()
+        };
+    }
+
+    unFreezePatch() {
+        return {
+            "frozen-columns": null,
+            "frozen-rows": null
         };
     }
 

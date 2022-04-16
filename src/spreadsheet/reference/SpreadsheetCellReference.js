@@ -207,7 +207,14 @@ export default class SpreadsheetCellReference extends SpreadsheetCellReferenceOr
     freezePatch() {
         return {
             "frozen-columns": this.column().toString(),
-            "frozen-rows": this.row().toString(),
+            "frozen-rows": this.row().toString()
+        };
+    }
+
+    unFreezePatch() {
+        return {
+            "frozen-columns": null,
+            "frozen-rows": null
         };
     }
 
