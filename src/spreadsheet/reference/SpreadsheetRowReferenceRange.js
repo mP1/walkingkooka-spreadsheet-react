@@ -4,12 +4,11 @@ import SpreadsheetColumnReference from "./SpreadsheetColumnReference.js";
 import SpreadsheetColumnOrRowReferenceRange from "./SpreadsheetColumnOrRowReferenceRange.js";
 import SpreadsheetHistoryHash from "../history/SpreadsheetHistoryHash.js";
 import spreadsheetRangeParse from "./SpreadsheetRangeParser.js";
+import SpreadsheetReferenceKind from "./SpreadsheetReferenceKind.js";
 import SpreadsheetRowReference from "./SpreadsheetRowReference.js";
 import SpreadsheetSelection from "./SpreadsheetSelection.js";
 import SpreadsheetViewportSelectionAnchor from "./SpreadsheetViewportSelectionAnchor.js";
 import SystemObject from "../../SystemObject.js";
-import SpreadsheetReferenceKind from "./SpreadsheetReferenceKind.js";
-import SpreadsheetMetadata from "../meta/SpreadsheetMetadata.js";
 
 const TYPE_NAME = "spreadsheet-row-reference-range";
 /**
@@ -108,16 +107,19 @@ export default class SpreadsheetRowReferenceRange extends SpreadsheetColumnOrRow
         return "/row/" + this;
     }
 
-    apiFreezeMetadataPropertyName() {
-        return SpreadsheetMetadata.FROZEN_ROWS;
-    }
-
     apiInsertAfterUrl(count) {
         return "/row/" + this + "/after?count=" + count;
     }
 
     apiInsertBeforeUrl(count) {
         return "/row/" + this + "/before?count=" + count;
+    }
+
+    freezePatch() {
+        return {
+            "frozen-columns": "A:" + SpreadsheetColumnReference.MAX,
+            "frozen-rows": this.toString(),
+        };
     }
 
     // 0 = ""

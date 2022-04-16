@@ -84,10 +84,6 @@ export default class SpreadsheetSelection extends SystemObject {
         SystemObject.throwUnsupportedOperation();
     }
 
-    apiFreezeMetadataPropertyName() {
-        SystemObject.throwUnsupportedOperation();
-    }
-
     apiInsertAfterUrl(count) {
         SystemObject.throwUnsupportedOperation();
     }
@@ -101,6 +97,17 @@ export default class SpreadsheetSelection extends SystemObject {
     // 6 == before == insert-action.toUrl
     apiInsertBeforePostUrl(urlPaths) {
         SystemObject.throwUnsupportedOperation();
+    }
+
+    freezePatch() {
+        SystemObject.throwUnsupportedOperation();
+    }
+
+    unFreezePatch() {
+        return {
+            "frozen-columns": null,
+            "frozen-rows": null,
+        };
     }
 
     /**

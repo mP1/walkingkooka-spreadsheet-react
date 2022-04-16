@@ -7,7 +7,6 @@ import SpreadsheetReferenceKind from "./SpreadsheetReferenceKind";
 import SpreadsheetRowReference from "./SpreadsheetRowReference.js";
 import SpreadsheetSelection from "./SpreadsheetSelection.js";
 import SystemObject from "../../SystemObject.js";
-import SpreadsheetMetadata from "../meta/SpreadsheetMetadata.js";
 
 const A = 65;
 const TYPE_NAME = "spreadsheet-column-reference";
@@ -141,16 +140,19 @@ export default class SpreadsheetColumnReference extends SpreadsheetColumnOrRowRe
         return "/column/" + this;
     }
 
-    apiFreezeMetadataPropertyName() {
-        return SpreadsheetMetadata.FROZEN_COLUMNS;
-    }
-
     apiInsertAfterUrl(count) {
         return "/column/" + this + "/after?count=" + count;
     }
 
     apiInsertBeforeUrl(count) {
         return "/column/" + this + "/before?count=" + count;
+    }
+
+    freezePatch() {
+        return {
+            "frozen-columns": this.toString(),
+            "frozen-rows": "1:" + SpreadsheetColumnReference.MAX,
+        };
     }
 
     // 0 = ""

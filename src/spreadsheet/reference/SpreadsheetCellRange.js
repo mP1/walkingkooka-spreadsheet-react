@@ -94,6 +94,13 @@ export default class SpreadsheetCellRange extends SpreadsheetExpressionReference
         return true;
     }
 
+    freezePatch() {
+        return {
+            "frozen-columns": this.columnOrRange().toString(),
+            "frozen-rows": this.rowOrRange().toString(),
+        };
+    }
+
     /**
      * Tests if the given {@link SpreadsheetCellReference} is within this range.
      */

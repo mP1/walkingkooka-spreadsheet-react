@@ -594,11 +594,8 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
     }
 
     freezeSelection(viewportSelection) {
-        const selection = viewportSelection.selection();
-
         this.patchSpreadsheetMetadata(
-            selection.apiFreezeMetadataPropertyName(),
-            selection.toString()
+            viewportSelection.selection().freezePatch()
         );
 
         this.removeHistoryHashSelectionAction();
@@ -688,10 +685,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
     /**
      * Does a PATCH with the given property and value
      */
-    patchSpreadsheetMetadata(property, value) {
-        const patch = {};
-        patch[property] = value;
-
+    patchSpreadsheetMetadata(patch) {
         this.props.spreadsheetMetadataCrud.patch(
             this.state.spreadsheetMetadata.getIgnoringDefaults(SpreadsheetMetadata.SPREADSHEET_ID),
             JSON.stringify(patch),
@@ -737,11 +731,8 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
     }
 
     unFreezeSelection(viewportSelection) {
-        const selection = viewportSelection.selection();
-
         this.patchSpreadsheetMetadata(
-            selection.apiFreezeMetadataPropertyName(),
-            null
+            viewportSelection.selection().unFreezePatch()
         );
 
         this.removeHistoryHashSelectionAction();
