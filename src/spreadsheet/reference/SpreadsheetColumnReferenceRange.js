@@ -8,7 +8,6 @@ import SpreadsheetReferenceKind from "./SpreadsheetReferenceKind.js";
 import SpreadsheetRowReference from "./SpreadsheetRowReference.js";
 import SpreadsheetViewportSelectionAnchor from "./SpreadsheetViewportSelectionAnchor.js";
 import SystemObject from "../../SystemObject.js";
-import SpreadsheetMetadata from "../meta/SpreadsheetMetadata.js";
 
 const TYPE_NAME = "spreadsheet-column-reference-range";
 /**
@@ -107,16 +106,19 @@ export default class SpreadsheetColumnReferenceRange extends SpreadsheetColumnOr
         return "/column/" + this;
     }
 
-    apiFreezeMetadataPropertyName() {
-        return SpreadsheetMetadata.FROZEN_COLUMNS;
-    }
-
     apiInsertAfterUrl(count) {
         return "/column/" + this + "/after?count=" + count;
     }
 
     apiInsertBeforeUrl(count) {
         return "/column/" + this + "/before?count=" + count;
+    }
+
+    freezePatch() {
+        return {
+            "frozen-columns": this.toString(),
+            "frozen-rows": "1:" + SpreadsheetColumnReference.MAX,
+        };
     }
 
     // 0 = ""

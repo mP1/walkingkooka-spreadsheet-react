@@ -4,11 +4,11 @@ import SpreadsheetCellReference from "./SpreadsheetCellReference.js";
 import SpreadsheetColumnOrRowReference from "./SpreadsheetColumnOrRowReference";
 import SpreadsheetColumnReference from "./SpreadsheetColumnReference.js";
 import SpreadsheetHistoryHashTokens from "../history/SpreadsheetHistoryHashTokens.js";
+import SpreadsheetMetadata from "../meta/SpreadsheetMetadata.js";
 import SpreadsheetReferenceKind from "./SpreadsheetReferenceKind";
 import SpreadsheetRow from "./SpreadsheetRow.js";
 import SpreadsheetSelection from "./SpreadsheetSelection.js";
 import SystemObject from "../../SystemObject.js";
-import SpreadsheetMetadata from "../meta/SpreadsheetMetadata.js";
 
 const TYPE_NAME = "spreadsheet-row-reference";
 
@@ -168,6 +168,13 @@ export default class SpreadsheetRowReference extends SpreadsheetColumnOrRowRefer
 
     apiInsertBeforeUrl(count) {
         return "/row/" + this + "/before?count=" + count;
+    }
+
+    freezePatch() {
+        return {
+            "frozen-columns": "1:" + SpreadsheetColumnReference.MAX,
+            "frozen-rows": this.toString(),
+        };
     }
 
     // 0 = ""
