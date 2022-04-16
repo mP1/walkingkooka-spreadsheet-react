@@ -104,10 +104,7 @@ export default class SpreadsheetSelection extends SystemObject {
     }
 
     unFreezePatch() {
-        return {
-            "frozen-columns": null,
-            "frozen-rows": null,
-        };
+        SystemObject.throwUnsupportedOperation();
     }
 
     /**
