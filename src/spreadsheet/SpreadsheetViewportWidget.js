@@ -1031,21 +1031,25 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
         const rows = [];
 
         state.window.forEach(w => {
-            w.columnRange().values().forEach(column => {
-                if(!this.isColumnHidden(column)){
-                    if(columns.findIndex(c => column.equalsIgnoringKind(c)) === -1){
-                        columns.push(column);
+            w.columnRange()
+                .values()
+                .forEach(c => {
+                    if(!this.isColumnHidden(c)){
+                        if(columns.findIndex(cc => c.equalsIgnoringKind(cc)) === -1){
+                            columns.push(c);
+                        }
                     }
-                }
-            });
+                });
 
-            w.rowRange().values().forEach(row => {
-                if(!this.isRowHidden(row)){
-                    if(rows.findIndex(r => row.equalsIgnoringKind(r)) === -1){
-                        rows.push(row);
+            w.rowRange()
+                .values()
+                .forEach(r => {
+                    if(!this.isRowHidden(r)){
+                        if(rows.findIndex(rr => r.equalsIgnoringKind(rr)) === -1){
+                            rows.push(r);
+                        }
                     }
-                }
-            });
+                });
         });
 
         const comparator = (left, right) => left.compareTo(right);
@@ -1103,7 +1107,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
                 </TableHead>
                 <TableBody>
                     {
-                        this.renderViewportRowsAndBody(columns, rows, columnWidthsFn, rowHeightFn, selectionNotLabel, defaultStyle)
+                        this.renderViewportRowsAndBody(columns, rows, rowHeightFn, selectionNotLabel, defaultStyle)
                     }
                 </TableBody>
             </Table>
@@ -1222,7 +1226,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
     /**
      * Renders the TABLE BODY where each TR represents a spreadsheet viewport row
      */
-    renderViewportRowsAndBody(columns, rows, columnWidthsFn, rowHeightFn, selection, defaultStyle) {
+    renderViewportRowsAndBody(columns, rows, rowHeightFn, selection, defaultStyle) {
         const {
             cellReferenceToCells,
             cellReferenceToLabels,
