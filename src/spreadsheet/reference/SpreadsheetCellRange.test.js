@@ -293,6 +293,23 @@ function testCellOrRange(range, expected) {
 testCellOrRange("A1:B2", "A1:B2");
 testCellOrRange("C3:C3", "C3");
 
+// rowOrRange........................................................................................................
+
+function testRowOrRange(range, expected) {
+    test("rowOrRange " + range, () => {
+        expect(SpreadsheetCellRange.parse(range)
+            .rowOrRange()
+        ).toStrictEqual(
+            expected.indexOf(":") > 0 ?
+                SpreadsheetRowReferenceRange.parse(expected) :
+                SpreadsheetRowReference.parse(expected)
+        );
+    });
+}
+
+testRowOrRange("A1:B2", "1:2");
+testRowOrRange("C3:C3", "3");
+
 // rowRange........................................................................................................
 
 function testRowRange(range, expected) {
