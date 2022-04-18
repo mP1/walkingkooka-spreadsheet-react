@@ -134,7 +134,7 @@ apiLoadCellsQueryStringParametersAndCheck(
         home: [cellOrLabel()],
         width: [width()],
         height: [height()],
-        includeFrozenColumnsRows: [false],
+        includeFrozenColumnsRows: [true],
     }
 );
 
@@ -151,7 +151,7 @@ apiLoadCellsQueryStringParametersAndCheck(
         height: [height()],
         selectionType: ["cell"],
         selection: [SpreadsheetCellReference.parse("B2")],
-        includeFrozenColumnsRows: [false],
+        includeFrozenColumnsRows: [true],
     }
 );
 
@@ -169,7 +169,7 @@ apiLoadCellsQueryStringParametersAndCheck(
         selectionType: ["cell-range"],
         selection: [SpreadsheetCellRange.parse("B2:C3")],
         selectionAnchor: ["top-left"],
-        includeFrozenColumnsRows: [false],
+        includeFrozenColumnsRows: [true],
     }
 );
 
@@ -186,7 +186,7 @@ apiLoadCellsQueryStringParametersAndCheck(
         height: [height()],
         selectionType: ["cell"],
         selection: [SpreadsheetCellReference.parse("B2")],
-        includeFrozenColumnsRows: [false],
+        includeFrozenColumnsRows: [true],
     }
 );
 
@@ -203,7 +203,7 @@ apiLoadCellsQueryStringParametersAndCheck(
         height: [height()],
         selectionType: ["column"],
         selection: [SpreadsheetColumnReference.parse("B")],
-        includeFrozenColumnsRows: [false],
+        includeFrozenColumnsRows: [true],
     }
 );
 
@@ -221,7 +221,7 @@ apiLoadCellsQueryStringParametersAndCheck(
         selectionType: ["column-range"],
         selection: [SpreadsheetColumnReferenceRange.parse("B:C")],
         selectionAnchor: ["left"],
-        includeFrozenColumnsRows: [false],
+        includeFrozenColumnsRows: [true],
     }
 );
 
@@ -238,7 +238,7 @@ apiLoadCellsQueryStringParametersAndCheck(
         height: [height()],
         selectionType: ["row"],
         selection: [SpreadsheetRowReference.parse("99")],
-        includeFrozenColumnsRows: [false],
+        includeFrozenColumnsRows: [true],
     }
 );
 
@@ -256,7 +256,7 @@ apiLoadCellsQueryStringParametersAndCheck(
         selectionType: ["row-range"],
         selection: [SpreadsheetRowReferenceRange.parse("98:99")],
         selectionAnchor: ["top"],
-        includeFrozenColumnsRows: [false],
+        includeFrozenColumnsRows: [true],
     }
 );
 
@@ -275,7 +275,7 @@ apiLoadCellsQueryStringParametersAndCheck(
         selection: [SpreadsheetRowReferenceRange.parse("98:99")],
         selectionAnchor: ["top"],
         selectionNavigation: ["up"],
-        includeFrozenColumnsRows: [false],
+        includeFrozenColumnsRows: [true],
     }
 );
 // equals...............................................................................................................

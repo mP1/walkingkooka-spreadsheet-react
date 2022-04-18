@@ -68,7 +68,7 @@ export default class SpreadsheetViewport extends SystemObject {
             home: [this.cellOrLabel()],
             width: [this.width()],
             height: [this.height()],
-            includeFrozenColumnsRows: [false],
+            includeFrozenColumnsRows: [true],
         };
 
         if(selection) {

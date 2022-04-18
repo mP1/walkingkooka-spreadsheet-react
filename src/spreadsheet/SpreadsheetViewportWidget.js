@@ -832,26 +832,27 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
     }
 
     /**
-     * Renders a TABLE CONTAINER which contains the header and cells to fill the table body.
+     * Renders a TABLE which will hold all the columns, rows and cells visible in the spreadsheet viewport.
      */
     render() {
         const {dimensions, spreadsheetMetadata} = this.state;
         const home = spreadsheetMetadata && spreadsheetMetadata.getIgnoringDefaults(SpreadsheetMetadata.VIEWPORT_CELL);
 
-        return (dimensions && home && this.renderViewport(dimensions, home)) ||
-            this.renderViewportEmpty();
+        return (dimensions && home) ?
+                this.renderViewport(dimensions, spreadsheetMetadata, home) :
+                this.renderViewportEmpty();
     }
 
     static VIEWPORT_CONTEXT_MENU_ID = SpreadsheetViewportWidget.VIEWPORT_ID + "context-Menu";
 
-    renderViewport(dimensions, home) {
-        const column = home.column().value();
-        const row = home.row().value();
-
+    /**
+     * Renders the column and row gutters and cells within the viewport.
+     */
+    renderViewport(dimensions, spreadsheetMetadata, home) {
         const state = this.state;
         const selection = state.selection;
 
-        // need to resolve the selection to an actual cell or range so these may be highlighted
+        // need to resolve the selection to an actual cell or range so these may be highlighted.........................
         let selectionNotLabel = selection instanceof SpreadsheetLabelName ?
             state.labelToReferences.get(selection) :
             selection;
@@ -862,6 +863,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
 
         const history = this.props.history;
 
+        // handles any viewport blur events, clearing the state.focused flag............................................
         const onBlur = (e) => {
             // only set focused to false if new focus is outside viewport table.
             if(!this.viewportTable.current.contains(e.relatedTarget)){
@@ -871,6 +873,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
             }
         };
 
+        // translates any viewport clicks into selection history updates................................................
         const onClick = (e) => {
             const selection = this.findEventTargetSelection(e.target);
             if(selection){
@@ -883,6 +886,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
             }
         };
 
+        // handles closing any previously open context menu.............................................................
         const onCloseContextMenu = () => {
             const tokens = history.tokens();
 
@@ -893,6 +897,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
             }
         };
 
+        // handles context menu clicks..................................................................................
         const onContextMenu = (e) => {
             e.preventDefault();
 
@@ -915,6 +920,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
             }
         };
 
+        // records that the viewport has just received focus...........................................................
         const onFocus = (e) => {
             // only update state if formula not active and focus changed.
             const {selectionAction, focused} = state;
@@ -925,6 +931,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
             }
         };
 
+        // handles translating keyboard events often into selection navigation actions.................................
         const onKeyDown = (e) => {
             e.preventDefault();
 
@@ -953,7 +960,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
                         break;
                     case Keys.ENTER:
                         // ENTER on a cell selection gives focus to formula text box
-                        if(selection instanceof SpreadsheetCellReference) {
+                        if(selection instanceof SpreadsheetCellReference){
                             this.saveSelection(
                                 selection,
                                 null,
@@ -961,7 +968,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
                             );
                         }
                         break;
-                        // ESCAPE clears any selection
+                    // ESCAPE clears any selection
                     case Keys.ESCAPE:
                         selection = null;
                         selectionAnchor = null;
@@ -972,16 +979,18 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
                 }
 
                 this.setState({
-                   selection: selection,
-                   selectionAnchor: selectionAnchor,
-                   selectionNavigation: selectionNavigation,
+                    selection: selection,
+                    selectionAnchor: selectionAnchor,
+                    selectionNavigation: selectionNavigation,
                 });
             }
         };
 
+        // handles any slider change events............................................................................
         const onHorizontalVerticalSliderChange = (newColumn, newRow) => {
             const window = state.window;
-            if(window.length) {
+
+            if(window.length){
                 const viewport = SpreadsheetDelta.viewportRange(window);
                 const begin = viewport.begin();
 
@@ -1017,8 +1026,49 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
             }
         };
 
-        const width =  dimensions.width;
+        // first collect all columns and rows visible within the viewport, hidden columns and rows will be filtered.....
+        const columns = [];
+        const rows = [];
+
+        state.window.forEach(w => {
+            w.columnRange().values().forEach(column => {
+                if(!this.isColumnHidden(column)){
+                    if(columns.findIndex(c => column.equalsIgnoringKind(c)) === -1){
+                        columns.push(column);
+                    }
+                }
+            });
+
+            w.rowRange().values().forEach(row => {
+                if(!this.isRowHidden(row)){
+                    if(rows.findIndex(r => row.equalsIgnoringKind(r)) === -1){
+                        rows.push(row);
+                    }
+                }
+            });
+        });
+
+        const comparator = (left, right) => left.compareTo(right);
+        columns.sort(comparator);
+        rows.sort(comparator);
+
+        // create all the layout........................................................................................
+        const {
+            columnWidths,
+            rowHeights
+        } = this.state;
+
+        const width = dimensions.width;
         const height = dimensions.height;
+        const column = home.column().value();
+        const row = home.row().value();
+
+        const defaultStyle = spreadsheetMetadata.effectiveStyle();
+        const defaultColumnWidth = defaultStyle.width().value();
+        const defaultRowHeight = defaultStyle.height().value();
+
+        const columnWidthsFn = (c) => columnWidths.get(c) | defaultColumnWidth;
+        const rowHeightFn = (r) => rowHeights.get(r) | defaultRowHeight;
 
         return [
             <TableContainer id={SpreadsheetViewportWidget.VIEWPORT_ID}
@@ -1044,19 +1094,19 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
                         //height: height,
                         //overflow: "hidden",
                     }}>
-                    <TableHead>
-                        <TableRow>
-                            {
-                                this.renderViewportColumnHeaders(selectionNotLabel)
-                            }
-                        </TableRow>
-                    </TableHead>
-                    <TableBody>
+                <TableHead>
+                    <TableRow>
                         {
-                            this.renderViewportRowsAndBody(selectionNotLabel)
+                            this.renderViewportColumnHeaders(columns, columnWidthsFn, selectionNotLabel)
                         }
-                    </TableBody>
-                </Table>
+                    </TableRow>
+                </TableHead>
+                <TableBody>
+                    {
+                        this.renderViewportRowsAndBody(columns, rows, columnWidthsFn, rowHeightFn, selectionNotLabel, defaultStyle)
+                    }
+                </TableBody>
+            </Table>
                 <Slider ref={this.horizontalSlider}
                         id={SpreadsheetViewportWidget.VIEWPORT_HORIZONTAL_SLIDER_ID}
                         key={SpreadsheetViewportWidget.VIEWPORT_HORIZONTAL_SLIDER_ID}
@@ -1145,7 +1195,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
     /**
      * Returns an array of TableCell, one for each column header.
      */
-    renderViewportColumnHeaders(selection) {
+    renderViewportColumnHeaders(columns, columnWidth, selection) {
         let headers = [
             <TableCell key={SpreadsheetViewportWidget.VIEWPORT_SELECT_ALL_ID}
                        id={SpreadsheetViewportWidget.VIEWPORT_SELECT_ALL_ID}
@@ -1155,136 +1205,64 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
             </TableCell> // TODO add select all support when range support is ready
         ];
 
-        const {
-            columnWidths,
-            dimensions,
-            spreadsheetMetadata
-        } = this.state;
-
-        const home = spreadsheetMetadata.getIgnoringDefaults(SpreadsheetMetadata.VIEWPORT_CELL);
-        const defaultStyle = spreadsheetMetadata.effectiveStyle();
-
-        const viewportWidth = dimensions.width;
-        const defaultColumnWidth = defaultStyle.width().value();
-
-        let x = ROW_WIDTH;
-        let columnReference = home.column();
-
-        while(x < viewportWidth) {
-            // only render non hidden columns....
-            if(!this.isColumnHidden(columnReference)) {
-                const width = columnWidths.get(columnReference) | defaultColumnWidth;
-
-                headers.push(
-                    columnReference.renderViewport(
-                        COLUMN_HEADER(
-                            width,
-                            selection && selection.testColumn(columnReference)
-                        )
+        columns.forEach(c => {
+            headers.push(
+                c.renderViewport(
+                    COLUMN_HEADER(
+                        columnWidth(c),
+                        selection && selection.testColumn(c)
                     )
-                );
-
-                x = x + width;
-            }
-
-            const nextColumnReference = columnReference.addSaturated(1);
-            if(nextColumnReference.equals(columnReference)) {
-                break;
-            }
-            columnReference = nextColumnReference;
-        }
+                )
+            );
+        });
 
         return headers;
     }
 
     /**
-     * Render the required TABLE ROW each filled with available or empty TABLE CELL cells.
+     * Renders the TABLE BODY where each TR represents a spreadsheet viewport row
      */
-    renderViewportRowsAndBody(selection) {
+    renderViewportRowsAndBody(columns, rows, columnWidthsFn, rowHeightFn, selection, defaultStyle) {
         const {
             cellReferenceToCells,
             cellReferenceToLabels,
-            columnWidths,
-            rowHeights,
-            spreadsheetMetadata,
-            dimensions
         } = this.state;
 
-        const home = spreadsheetMetadata.getIgnoringDefaults(SpreadsheetMetadata.VIEWPORT_CELL);
-        const defaultStyle = spreadsheetMetadata.effectiveStyle();
+        return rows.map(
+            r => {
+                const tableRowCells = [];
+                const height = rowHeightFn(r);
 
-        const defaultColumnWidth = defaultStyle.width().value();
-        const defaultRowHeight = defaultStyle.height().value();
-
-        const viewportWidth = dimensions.width;
-        const viewportHeight = dimensions.height;
-
-        const tableRows = [];
-
-        let y = COLUMN_HEIGHT;
-        let rowReference = home.row();
-
-        while(y < viewportHeight) {
-            // skip rendering cells in hidden rows
-            if(!this.isRowHidden(rowReference)) {
-                const tableCells = [];
-                let x = 0;
-                let columnReference = home.column();
-
-                const height = (rowHeights.get(rowReference) | defaultRowHeight);
-
-                tableCells.push(
-                    rowReference.renderViewport(
+                // render ROW gutter widget with row number.
+                tableRowCells.push(
+                    r.renderViewport(
                         ROW_HEADER(
                             height,
-                            selection && selection.testRow(rowReference)
+                            selection && selection.testRow(r)
                         )
                     )
                 );
 
-                // reference, formula, style, format, formatted
-                while(x < viewportWidth) {
-                    // skip rendering cells in hidden columns
-                    if(!this.isColumnHidden(columnReference)) {
-                        const cellReference = new SpreadsheetCellReference(columnReference, rowReference);
-                        const cell = cellReferenceToCells.get(cellReference) || cellReference.emptyCell();
+                // render all the cells in the row.
+                columns.forEach( c => {
+                    const cellReference = new SpreadsheetCellReference(c, r);
+                    const cell = cellReferenceToCells.get(cellReference) || cellReference.emptyCell();
 
-                        tableCells.push(
-                            cell.renderViewport(
-                                defaultStyle,
-                                cellReferenceToLabels.get(cellReference) || [],
-                            )
-                        );
+                    tableRowCells.push(
+                        cell.renderViewport(
+                            defaultStyle,
+                            cellReferenceToLabels.get(cellReference) || [],
+                        )
+                    );
+                });
 
-                        x = x + (columnWidths.get(rowReference) || defaultColumnWidth);
+                return <TableRow key={"row-" + r}>
+                    {
+                        tableRowCells
                     }
-
-                    const nextColumnReference = columnReference.addSaturated(1);
-                    if(nextColumnReference.equals(columnReference)) {
-                        break;
-                    }
-                    columnReference = nextColumnReference;
-                }
-
-                tableRows.push(
-                    <TableRow key={"row-" + rowReference}>
-                        {
-                            tableCells
-                        }
-                    </TableRow>
-                );
-
-                y = y + height;
+                </TableRow>
             }
-
-            const nextRowReference = rowReference.addSaturated(1);
-            if(nextRowReference.equals(rowReference)) {
-                break;
-            }
-            rowReference = nextRowReference;
-        }
-
-        return tableRows;
+        );
     }
 
     /**

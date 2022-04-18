@@ -739,5 +739,57 @@ describe(
                 .should("have.attr", "href")
                 .and('match', /#*\/*\/cell\/A1:B2\/delete/);
         });
+
+        // Freeze.......................................................................................................
+
+        it("Freeze columns and navigate away", () => {
+            testing.cellFormulaEnterAndSave(A1, "'FrozenA1");
+
+            const away = SpreadsheetCellReference.parse("T1");
+
+            testing.hashOnlyIdAndName();
+            testing.historyWait();
+
+            testing.hashAppend("/cell/" + away);
+            testing.cellFormulaEnterAndSave(away, "'NonFrozen" + away);
+
+            testing.hashOnlyIdAndName();
+            testing.historyWait();
+
+            testing.hashAppend("/column/A/freeze");
+
+            testing.hashOnlyIdAndName();
+            testing.historyWait();
+
+            testing.hashAppend("/cell/" + away);
+
+            testing.cellFormattedTextCheck(A1, "FrozenA1");
+            testing.cellFormattedTextCheck(away, "NonFrozen" + away);
+        });
+
+        it("Freeze rows and navigate away", () => {
+            testing.cellFormulaEnterAndSave(A1, "'FrozenA1");
+
+            const away = SpreadsheetCellReference.parse("A30");
+
+            testing.hashOnlyIdAndName();
+            testing.historyWait();
+
+            testing.hashAppend("/cell/" + away);
+            testing.cellFormulaEnterAndSave(away, "'NonFrozen" + away);
+
+            testing.hashOnlyIdAndName();
+            testing.historyWait();
+
+            testing.hashAppend("/row/1/freeze");
+
+            testing.hashOnlyIdAndName();
+            testing.historyWait();
+
+            testing.hashAppend("/cell/" + away);
+
+            testing.cellFormattedTextCheck(A1, "FrozenA1");
+            testing.cellFormattedTextCheck(away, "NonFrozen" + away);
+        });
     }
 );
