@@ -312,6 +312,23 @@ testColumnOrRange("A1:B2", "A:B");
 testColumnOrRange("$A$1:B2", "$A:B");
 testColumnOrRange("C3:C4", "C");
 
+// columnRange........................................................................................................
+
+function testColumnRange(range, expected) {
+    test("columnRange " + range, () => {
+        expect(SpreadsheetCellRange.parse(range)
+            .columnRange()
+        ).toStrictEqual(
+            SpreadsheetColumnReferenceRange.parse(expected)
+        );
+    });
+}
+
+testColumnRange("A1:B2", "A:B");
+testColumnRange("$A1:B2", "$A:B");
+testColumnRange("C3:C4", "C:C");
+testColumnRange("C3:C3", "C:C");
+
 // rowOrRange........................................................................................................
 
 function testRowOrRange(range, expected) {
