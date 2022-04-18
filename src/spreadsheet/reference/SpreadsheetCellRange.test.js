@@ -1,6 +1,7 @@
 import SpreadsheetCellRange from "./SpreadsheetCellRange.js";
 import SpreadsheetCellReference from "./SpreadsheetCellReference";
 import SpreadsheetColumnReference from "./SpreadsheetColumnReference.js";
+import SpreadsheetColumnReferenceRange from "./SpreadsheetColumnReferenceRange.js";
 import SpreadsheetRowReference from "./SpreadsheetRowReference.js";
 import SpreadsheetRowReferenceRange from "./SpreadsheetRowReferenceRange.js";
 import SpreadsheetViewportSelectionAnchor from "./SpreadsheetViewportSelectionAnchor.js";
@@ -293,6 +294,24 @@ function testCellOrRange(range, expected) {
 testCellOrRange("A1:B2", "A1:B2");
 testCellOrRange("C3:C3", "C3");
 
+// columnOrRange........................................................................................................
+
+function testColumnOrRange(range, expected) {
+    test("columnOrRange " + range, () => {
+        expect(SpreadsheetCellRange.parse(range)
+            .columnOrRange()
+        ).toStrictEqual(
+            expected.indexOf(":") > 0 ?
+                SpreadsheetColumnReferenceRange.parse(expected) :
+                SpreadsheetColumnReference.parse(expected)
+        );
+    });
+}
+
+testColumnOrRange("A1:B2", "A:B");
+testColumnOrRange("$A$1:B2", "$A:B");
+testColumnOrRange("C3:C4", "C");
+
 // rowOrRange........................................................................................................
 
 function testRowOrRange(range, expected) {
@@ -428,6 +447,7 @@ function testViewportFocus(range, anchor, expected) {
             )
         });
 }
+
 testViewportFocus("B2:B3", SpreadsheetViewportSelectionAnchor.LEFT, "B3");
 testViewportFocus("B2:C3", SpreadsheetViewportSelectionAnchor.LEFT, "C3");
 
@@ -472,6 +492,7 @@ function testEqualsIgnoringKind(range, other, expected) {
             )
         });
 }
+
 testEqualsIgnoringKind("A1:B2", "A1:B2", true);
 testEqualsIgnoringKind("$A$1:B2", "A1:B2", true);
 testEqualsIgnoringKind("A1:$B$2", "A1:B2", true);
