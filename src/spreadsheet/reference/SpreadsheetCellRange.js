@@ -147,6 +147,13 @@ export default class SpreadsheetCellRange extends SpreadsheetExpressionReference
             rowReference.compareTo(end.row()) <= 0;
     }
 
+    toRelative() {
+        return new SpreadsheetCellRange(
+            this.begin().toRelative(),
+            this.end().toRelative()
+        );
+    }
+
     // viewport.........................................................................................................
 
     /**

@@ -52,6 +52,10 @@ export default class SpreadsheetSelection extends SystemObject {
         return false;
     }
 
+    toRelative() {
+        SystemObject.throwUnsupportedOperation();
+    }
+
     canFreeze() {
         SystemObject.throwUnsupportedOperation();
     }

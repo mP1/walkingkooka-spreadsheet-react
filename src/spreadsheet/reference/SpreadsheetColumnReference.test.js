@@ -380,6 +380,21 @@ testRowAndCheck("A", "1", false);
 testRowAndCheck("B", "$2", false);
 testRowAndCheck("$C", "3", false);
 
+// toRelative............................................................................................................
+
+function toRelativeAndCheck(selection, expected) {
+    test("toRelative " + selection, () => {
+        expect(SpreadsheetColumnReference.parse(selection)
+            .toRelative()
+        ).toStrictEqual(
+            SpreadsheetColumnReference.parse(expected)
+        );
+    });
+}
+
+toRelativeAndCheck("A", "A");
+toRelativeAndCheck("$B", "B");
+
 // equals................................................................................................................
 
 test("equals SpreadsheetColumnReference false", () => {

@@ -416,6 +416,23 @@ testRowAndCheck("center", JSON, "3", true);
 testRowAndCheck("bottom edge", JSON, "4", true);
 testRowAndCheck("below", JSON, "5", false);
 
+// toRelative............................................................................................................
+
+function toRelativeAndCheck(selection, expected) {
+    test("toRelative " + selection, () => {
+        expect(SpreadsheetRowReferenceRange.parse(selection)
+            .toRelative()
+        ).toStrictEqual(
+            SpreadsheetRowReferenceRange.parse(expected)
+        );
+    });
+}
+
+toRelativeAndCheck("1:2", "1:2");
+toRelativeAndCheck("2:2", "2:2");
+toRelativeAndCheck("$3:$3", "3:3");
+toRelativeAndCheck("$4:$5", "4:5");
+
 // equalsIgnoringKind...................................................................................................
 
 function testEqualsIgnoringKind(range, other, expected) {

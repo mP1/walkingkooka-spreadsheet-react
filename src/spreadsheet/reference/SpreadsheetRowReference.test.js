@@ -314,6 +314,21 @@ testRowAndCheck("B2", "2", true);
 testRowAndCheck("C3", "$3", true);
 testRowAndCheck("D$4", "4", true);
 
+// toRelative............................................................................................................
+
+function toRelativeAndCheck(selection, expected) {
+    test("toRelative " + selection, () => {
+        expect(SpreadsheetRowReference.parse(selection)
+            .toRelative()
+        ).toStrictEqual(
+            SpreadsheetRowReference.parse(expected)
+        );
+    });
+}
+
+toRelativeAndCheck("1", "1");
+toRelativeAndCheck("$2", "2");
+
 // compareTo..............................................................................................................
 
 test("compareTo missing fails", () => {

@@ -433,17 +433,19 @@ testRowAndCheck("D$4", "$4", true);
 
 // toRelative............................................................................................................
 
-test("toRelative", () => {
-    expect(SpreadsheetCellReference.parse("A1").toRelative()).toEqual(SpreadsheetCellReference.parse("A1"));
-});
+function toRelativeAndCheck(selection, expected) {
+    test("toRelative " + selection, () => {
+        expect(SpreadsheetCellReference.parse(selection)
+            .toRelative()
+        ).toStrictEqual(
+            SpreadsheetCellReference.parse(expected)
+        );
+    });
+}
 
-test("toRelative absolute", () => {
-    expect(SpreadsheetCellReference.parse("$B$2").toRelative()).toEqual(SpreadsheetCellReference.parse("B2"));
-});
-
-test("toRelative absolute2", () => {
-    expect(SpreadsheetCellReference.parse("$C3").toRelative()).toEqual(SpreadsheetCellReference.parse("C3"));
-});
+toRelativeAndCheck("A1", "A1");
+toRelativeAndCheck("$B$2", "B2");
+toRelativeAndCheck("$C3", "C3");
 
 // equals................................................................................................................
 
