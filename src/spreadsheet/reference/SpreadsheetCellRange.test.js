@@ -2,6 +2,7 @@ import SpreadsheetCellRange from "./SpreadsheetCellRange.js";
 import SpreadsheetCellReference from "./SpreadsheetCellReference";
 import SpreadsheetColumnReference from "./SpreadsheetColumnReference.js";
 import SpreadsheetRowReference from "./SpreadsheetRowReference.js";
+import SpreadsheetRowReferenceRange from "./SpreadsheetRowReferenceRange.js";
 import SpreadsheetViewportSelectionAnchor from "./SpreadsheetViewportSelectionAnchor.js";
 import systemObjectTesting from "../../SystemObjectTesting.js";
 
@@ -291,6 +292,21 @@ function testCellOrRange(range, expected) {
 
 testCellOrRange("A1:B2", "A1:B2");
 testCellOrRange("C3:C3", "C3");
+
+// rowRange........................................................................................................
+
+function testRowRange(range, expected) {
+    test("rowRange " + range, () => {
+        expect(SpreadsheetCellRange.parse(range)
+            .rowRange()
+        ).toStrictEqual(
+            SpreadsheetRowReferenceRange.parse(expected)
+        );
+    });
+}
+
+testRowRange("A1:B2", "1:2");
+testRowRange("C3:C3", "3:3");
 
 // testCell.............................................................................................................
 

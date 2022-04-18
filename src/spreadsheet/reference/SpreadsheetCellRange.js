@@ -75,11 +75,15 @@ export default class SpreadsheetCellRange extends SpreadsheetExpressionReference
         ).columnOrRange();
     }
 
-    rowOrRange() {
+    rowRange() {
         return new SpreadsheetRowReferenceRange(
             this.begin().row(),
             this.end().row()
-        ).rowOrRange();
+        );
+    }
+
+    rowOrRange() {
+        return this.rowRange().rowOrRange();
     }
 
     width() {
