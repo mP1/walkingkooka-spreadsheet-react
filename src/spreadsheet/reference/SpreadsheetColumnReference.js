@@ -84,6 +84,13 @@ export default class SpreadsheetColumnReference extends SpreadsheetColumnOrRowRe
         return false;
     }
 
+    toRelative() {
+        return new SpreadsheetColumnReference(
+            this.value(),
+            SpreadsheetReferenceKind.RELATIVE
+        );
+    }
+
     // context menu events..............................................................................................
 
     viewportContextMenuItems(historyTokens, frozenColumns, frozenRows, isColumnHidden, isRowHidden, columnRange, rowRange, history) {

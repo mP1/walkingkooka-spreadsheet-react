@@ -451,6 +451,21 @@ testRowAndCheck("center", "B2:D4", "3", true);
 testRowAndCheck("right edge", "B2:D4", "4", true);
 testRowAndCheck("right", "B2:D4", "5", false);
 
+// toRelative..........................................................................................................
+
+function toRelativeAndCheck(selection, expected) {
+    test("toRelative " + selection, () => {
+        expect(SpreadsheetCellRange.parse(selection)
+            .toRelative()
+        ).toStrictEqual(
+            SpreadsheetCellRange.parse(expected)
+        );
+    });
+}
+
+toRelativeAndCheck("A1:B2", "A1:B2");
+toRelativeAndCheck("$C$3:$D$4", "C3:D4");
+
 // viewportFocus......................................................................................................
 
 function testViewportFocus(range, anchor, expected) {

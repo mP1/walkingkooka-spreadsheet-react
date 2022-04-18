@@ -99,6 +99,13 @@ export default class SpreadsheetRowReferenceRange extends SpreadsheetColumnOrRow
         return SpreadsheetHistoryHash.ROW + "/" + this;
     }
 
+    toRelative() {
+        return new SpreadsheetRowReferenceRange(
+            this.begin().toRelative(),
+            this.end().toRelative()
+        );
+    }
+
     apiClearUrl() {
         return "/row/" + this + "/clear";
     }
