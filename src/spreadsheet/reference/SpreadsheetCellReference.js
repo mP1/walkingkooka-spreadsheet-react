@@ -204,6 +204,11 @@ export default class SpreadsheetCellReference extends SpreadsheetCellReferenceOr
         return this.row();
     }
 
+    canFreeze() {
+        return this.column().canFreeze() &&
+            this.row().canFreeze();
+    }
+
     freezePatch() {
         return {
             "frozen-columns": this.column().toString(),
