@@ -2551,6 +2551,30 @@ testMerge(
 );
 
 testMerge(
+    "/123abc/Untitled456/column/A",
+    {
+        "selection-action": COLUMN_ROW_FREEZE,
+    },
+    "/123abc/Untitled456/column/A/freeze"
+);
+
+testMerge(
+    "/123abc/Untitled456/column/A:B",
+    {
+        "selection-action": COLUMN_ROW_FREEZE,
+    },
+    "/123abc/Untitled456/column/A:B/freeze"
+);
+
+testMerge(
+    "/123abc/Untitled456/column/B",
+    {
+        "selection-action": COLUMN_ROW_FREEZE,
+    },
+    "/123abc/Untitled456"
+);
+
+testMerge(
     "/123abc/Untitled456/column/B",
     {
         "selection-action": HIDDEN_TRUE,
@@ -2631,6 +2655,38 @@ testMerge(
         "selection-action": COLUMN_ROW_DELETE,
     },
     "/123abc/Untitled456/row/45/delete"
+);
+
+testMerge(
+    "/123abc/Untitled456/row/45",
+    {
+        "selection-action": COLUMN_ROW_FREEZE,
+    },
+    "/123abc/Untitled456"
+);
+
+testMerge(
+    "/123abc/Untitled456/row/45:67",
+    {
+        "selection-action": COLUMN_ROW_FREEZE,
+    },
+    "/123abc/Untitled456"
+);
+
+testMerge(
+    "/123abc/Untitled456/row/1",
+    {
+        "selection-action": COLUMN_ROW_FREEZE,
+    },
+    "/123abc/Untitled456/row/1/freeze"
+);
+
+testMerge(
+    "/123abc/Untitled456/row/1:2",
+    {
+        "selection-action": COLUMN_ROW_FREEZE,
+    },
+    "/123abc/Untitled456/row/1:2/freeze"
 );
 
 testMerge(

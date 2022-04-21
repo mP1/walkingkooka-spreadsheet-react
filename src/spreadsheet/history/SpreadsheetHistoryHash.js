@@ -517,7 +517,15 @@ export default class SpreadsheetHistoryHash extends SpreadsheetHistoryHashTokens
                         }
 
                         if(selection.isColumnOrRowScalarOrRange() && selectionAction instanceof SpreadsheetColumnOrRowHistoryHashToken){
-                            verified[SpreadsheetHistoryHashTokens.SELECTION_ACTION] = selectionAction;
+                            if(selectionAction instanceof SpreadsheetColumnOrRowFreezeHistoryHashToken) {
+                                if(selection.canFreeze()) {
+                                    verified[SpreadsheetHistoryHashTokens.SELECTION_ACTION] = selectionAction;
+                                } else {
+                                    verified[SpreadsheetHistoryHashTokens.SELECTION] = null;
+                                }
+                            } else {
+                                verified[SpreadsheetHistoryHashTokens.SELECTION_ACTION] = selectionAction;
+                            }
                         }
                     }
                 }
