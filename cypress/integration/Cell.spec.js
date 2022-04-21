@@ -279,6 +279,8 @@ describe(
             testing.hash()
                 .should('match', /.*\/.*\/cell\/B2:C3/);
 
+            testing.historyWait();
+
             testing.column("B")
                 .should("have.css", "background-color", SELECTED_COLOR);
             testing.column("C")
@@ -295,6 +297,8 @@ describe(
 
             testing.hash()
                 .should('match', /.*\/.*\/cell\/X2:Y3/);
+
+            testing.historyWait();
 
             testing.column("X")
                 .should("have.css", "background-color", SELECTED_COLOR);
@@ -345,6 +349,8 @@ describe(
             testing.hash()
                 .should('match', /.*\/.*\/cell\/D4:E5/);
 
+            testing.historyWait();
+
             testing.cell("D4")
                 .should("have.focus")
                 .type("{shift+rightarrow}");
@@ -377,6 +383,8 @@ describe(
 
             testing.hash()
                 .should('match', /.*\/.*\/cell\/D4:E5/);
+
+            testing.historyWait();
 
             testing.cell("D4")
                 .should("have.focus")
@@ -456,6 +464,8 @@ describe(
             testing.hash()
                 .should('match', /.*\/.*\/cell\/D4:E5/);
 
+            testing.historyWait();
+
             testing.cell("D4")
                 .should("have.focus")
                 .type("{shift+downarrow}");
@@ -489,6 +499,8 @@ describe(
 
             testing.hash()
                 .should('match', /.*\/.*\/cell\/D4:E5/);
+
+            testing.historyWait();
 
             testing.cell("D4")
                 .should("have.focus")
