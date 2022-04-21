@@ -5,6 +5,7 @@ import Preconditions from "../../Preconditions.js";
 import React from 'react';
 import SpreadsheetCellClearHistoryHashToken from "./SpreadsheetCellClearHistoryHashToken.js";
 import SpreadsheetCellDeleteHistoryHashToken from "./SpreadsheetCellDeleteHistoryHashToken.js";
+import SpreadsheetCellFreezeHistoryHashToken from "./SpreadsheetCellFreezeHistoryHashToken.js";
 import SpreadsheetCellHistoryHashToken from "./SpreadsheetCellHistoryHashToken.js";
 import SpreadsheetCellMenuHistoryHashToken from "./SpreadsheetCellMenuHistoryHashToken.js";
 import spreadsheetCellRangeCellReferenceOrLabelParse
@@ -177,10 +178,20 @@ export default class SpreadsheetHistoryHash extends SpreadsheetHistoryHashTokens
                                         token = tokens.shift();
                                     }
                                 } else {
-                                    // /cell/A1/menu OR /cell/A1:B2/menu
-                                    if(SpreadsheetHistoryHashTokens.MENU === token){
-                                        selectionAction = SpreadsheetCellMenuHistoryHashToken.INSTANCE;
+                                    // /cell/A1/freeze OR /cell/B2:C3/freeze
+                                    if(SpreadsheetHistoryHashTokens.FREEZE === token) {
+                                        if(selection.canFreeze()) {
+                                            selectionAction = SpreadsheetCellFreezeHistoryHashToken.INSTANCE;
+                                        } else {
+                                            selection = null;
+                                        }
                                         token = tokens.shift();
+                                    } else {
+                                        // /cell/A1/menu OR /cell/A1:B2/menu
+                                        if(SpreadsheetHistoryHashTokens.MENU === token){
+                                            selectionAction = SpreadsheetCellMenuHistoryHashToken.INSTANCE;
+                                            token = tokens.shift();
+                                        }
                                     }
                                 }
                             }
@@ -494,7 +505,15 @@ export default class SpreadsheetHistoryHash extends SpreadsheetHistoryHashTokens
                         }
 
                         if(selection.isCellScalarOrRange() && selectionAction instanceof SpreadsheetCellHistoryHashToken){
-                            verified[SpreadsheetHistoryHashTokens.SELECTION_ACTION] = selectionAction;
+                            if(selectionAction instanceof SpreadsheetCellFreezeHistoryHashToken) {
+                                if(selection.canFreeze()) {
+                                    verified[SpreadsheetHistoryHashTokens.SELECTION_ACTION] = selectionAction;
+                                } else {
+                                    verified[SpreadsheetHistoryHashTokens.SELECTION] = null;
+                                }
+                            } else {
+                                verified[SpreadsheetHistoryHashTokens.SELECTION_ACTION] = selectionAction;
+                            }
                         }
 
                         if(selection.isColumnOrRowScalarOrRange() && selectionAction instanceof SpreadsheetColumnOrRowHistoryHashToken){

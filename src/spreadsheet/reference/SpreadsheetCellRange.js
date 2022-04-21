@@ -103,6 +103,10 @@ export default class SpreadsheetCellRange extends SpreadsheetExpressionReference
         return true;
     }
 
+    canFreeze() {
+        return this.begin().canFreeze();
+    }
+
     freezePatch() {
         return {
             "frozen-columns": this.columnOrRange().toString(),

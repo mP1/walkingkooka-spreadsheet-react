@@ -1,6 +1,7 @@
 import CharSequences from "../../CharSequences.js";
 import SpreadsheetCellClearHistoryHashToken from "./SpreadsheetCellClearHistoryHashToken.js";
 import SpreadsheetCellDeleteHistoryHashToken from "./SpreadsheetCellDeleteHistoryHashToken.js";
+import SpreadsheetCellFreezeHistoryHashToken from "./SpreadsheetCellFreezeHistoryHashToken.js";
 import SpreadsheetCellMenuHistoryHashToken from "./SpreadsheetCellMenuHistoryHashToken.js";
 import SpreadsheetCellRange from "../reference/SpreadsheetCellRange.js";
 import SpreadsheetCellReference from "../reference/SpreadsheetCellReference.js";
@@ -38,6 +39,7 @@ const SPREADSHEET_NAME_SAVE = new SpreadsheetNameSaveHistoryHashToken(new Spread
 
 const CELL = SpreadsheetCellReference.parse("A1");
 const CELL_RANGE = SpreadsheetCellRange.parse("C3:D4");
+const CELL_RANGE_A1C3 = SpreadsheetCellRange.parse("A1:C3");
 const COLUMN = SpreadsheetColumnReference.parse("B");
 const COLUMN_A = SpreadsheetColumnReference.parse("A");
 const COLUMN_RANGE = SpreadsheetColumnReferenceRange.parse("B:C");
@@ -60,6 +62,7 @@ const COLUMN_ROW_UNFREEZE = SpreadsheetColumnOrRowUnFreezeHistoryHashToken.INSTA
 
 const CELL_CLEAR = SpreadsheetCellClearHistoryHashToken.INSTANCE;
 const CELL_DELETE = SpreadsheetCellDeleteHistoryHashToken.INSTANCE;
+const CELL_FREEZE = SpreadsheetCellFreezeHistoryHashToken.INSTANCE;
 const CELL_MENU = SpreadsheetCellMenuHistoryHashToken.INSTANCE;
 const FORMULA_LOAD_EDIT = new SpreadsheetFormulaLoadAndEditHistoryHashToken();
 const FORMULA_LOAD_EDIT_SAVE = new SpreadsheetFormulaSaveHistoryHashToken("Abc123");
@@ -241,6 +244,16 @@ testValidate(
         "spreadsheet-name": SPREADSHEET_NAME,
         "selection": CELL,
         "selection-action": FORMULA_LOAD_EDIT_SAVE,
+    }
+);
+
+testValidate(
+    "validate id & name & selection=CELL & freeze",
+    {
+        "spreadsheet-id": ID,
+        "spreadsheet-name": SPREADSHEET_NAME,
+        "selection": CELL,
+        "selection-action": CELL_FREEZE,
     }
 );
 
@@ -1999,6 +2012,42 @@ testParseAndStringify(
 );
 
 testParseAndStringify(
+    "/spreadsheet-id-123/spreadsheet-name-456/cell/A1/freeze",
+    {
+        "spreadsheet-id": "spreadsheet-id-123",
+        "spreadsheet-name": SPREADSHEET_NAME,
+        "selection": CELL,
+        "selection-action": CELL_FREEZE,
+    }
+);
+
+testParseAndStringify(
+    "/spreadsheet-id-123/spreadsheet-name-456/cell/B2/freeze",
+    {
+        "spreadsheet-id": "spreadsheet-id-123",
+        "spreadsheet-name": SPREADSHEET_NAME,
+    }
+);
+
+testParseAndStringify(
+    "/spreadsheet-id-123/spreadsheet-name-456/cell/A1:C3/freeze",
+    {
+        "spreadsheet-id": "spreadsheet-id-123",
+        "spreadsheet-name": SPREADSHEET_NAME,
+        "selection": CELL_RANGE_A1C3,
+        "selection-action": CELL_FREEZE,
+    }
+);
+
+testParseAndStringify(
+    "/spreadsheet-id-123/spreadsheet-name-456/cell/B1:C3/freeze",
+    {
+        "spreadsheet-id": "spreadsheet-id-123",
+        "spreadsheet-name": SPREADSHEET_NAME
+    }
+);
+
+testParseAndStringify(
     "/spreadsheet-id-123/spreadsheet-name-456/!invalid",
     {
         "spreadsheet-id": "spreadsheet-id-123",
@@ -2371,6 +2420,38 @@ testMerge(
         "selection-action": null,
     },
     "/123abc/Untitled456/cell/C3:D4"
+);
+
+testMerge(
+    "/123abc/Untitled456/cell/A1/freeze",
+    {
+        "selection": CELL,
+    },
+    "/123abc/Untitled456/cell/A1/freeze"
+);
+
+testMerge(
+    "/123abc/Untitled456/cell/A1/freeze",
+    {
+        "selection": SpreadsheetCellReference.parse("A2"),
+    },
+    "/123abc/Untitled456"
+);
+
+testMerge(
+    "/123abc/Untitled456/cell/A1:B2/freeze",
+    {
+        "selection": CELL_RANGE_A1C3,
+    },
+    "/123abc/Untitled456/cell/A1:C3/freeze"
+);
+
+testMerge(
+    "/123abc/Untitled456/cell/A1:B2/freeze",
+    {
+        "selection": SpreadsheetCellRange.parse("B2:C3"),
+    },
+    "/123abc/Untitled456"
 );
 
 testMerge(
