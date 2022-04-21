@@ -12,6 +12,7 @@ import spreadsheetCellRangeCellReferenceOrLabelParse
     from "../reference/SpreadsheetCellRangeCellReferenceOrLabelParse.js";
 import SpreadsheetCellReferenceOrLabelName from "../reference/SpreadsheetCellReferenceOrLabelName.js";
 import spreadsheetCellReferenceOrLabelNameParse from "../reference/SpreadsheetCellReferenceOrLabelNameParse.js";
+import SpreadsheetCellUnFreezeHistoryHashToken from "./SpreadsheetCellUnFreezeHistoryHashToken.js";
 import SpreadsheetColumnOrRowClearHistoryHashToken from "./SpreadsheetColumnOrRowClearHistoryHashToken.js";
 import SpreadsheetColumnOrRowDeleteHistoryHashToken from "./SpreadsheetColumnOrRowDeleteHistoryHashToken.js";
 import SpreadsheetColumnOrRowFreezeHistoryHashToken from "./SpreadsheetColumnOrRowFreezeHistoryHashToken.js";
@@ -191,6 +192,15 @@ export default class SpreadsheetHistoryHash extends SpreadsheetHistoryHashTokens
                                         if(SpreadsheetHistoryHashTokens.MENU === token){
                                             selectionAction = SpreadsheetCellMenuHistoryHashToken.INSTANCE;
                                             token = tokens.shift();
+                                        } else {
+                                            if(SpreadsheetHistoryHashTokens.UNFREEZE === token){
+                                                if(selection.canFreeze()){
+                                                    selectionAction = SpreadsheetCellUnFreezeHistoryHashToken.INSTANCE;
+                                                }else {
+                                                    selection = null;
+                                                }
+                                                token = tokens.shift();
+                                            }
                                         }
                                     }
                                 }
@@ -505,7 +515,7 @@ export default class SpreadsheetHistoryHash extends SpreadsheetHistoryHashTokens
                         }
 
                         if(selection.isCellScalarOrRange() && selectionAction instanceof SpreadsheetCellHistoryHashToken){
-                            if(selectionAction instanceof SpreadsheetCellFreezeHistoryHashToken) {
+                            if(selectionAction instanceof SpreadsheetCellFreezeHistoryHashToken || selectionAction instanceof SpreadsheetCellUnFreezeHistoryHashToken) {
                                 if(selection.canFreeze()) {
                                     verified[SpreadsheetHistoryHashTokens.SELECTION_ACTION] = selectionAction;
                                 } else {
