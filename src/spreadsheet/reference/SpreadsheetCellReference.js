@@ -4,6 +4,7 @@
 import CharSequences from "../../CharSequences.js";
 import Preconditions from "../../Preconditions.js";
 import SpreadsheetCell from "../SpreadsheetCell.js";
+import SpreadsheetCellRange from "./SpreadsheetCellRange.js";
 import SpreadsheetCellReferenceOrLabelName from "./SpreadsheetCellReferenceOrLabelName.js";
 import SpreadsheetColumnReference from "./SpreadsheetColumnReference";
 import SpreadsheetFormula from "../SpreadsheetFormula.js";
@@ -262,6 +263,18 @@ export default class SpreadsheetCellReference extends SpreadsheetCellReferenceOr
 
     viewportTooltipId() {
         return this.viewportId() + "-Tooltip";
+    }
+
+    viewportContextMenu(historyTokens, frozenColumns, frozenRows, isColumnHidden, isRowHidden, columnRange, rowRange, history) {
+        const fc = frozenColumns();
+        const fr = frozenRows();
+
+        return this.viewportContextMenuCell(
+            new SpreadsheetCellRange(this, this), // asRange
+            fc && fr && fc.setRows(fr),
+            historyTokens,
+            history
+        );
     }
 
     /**

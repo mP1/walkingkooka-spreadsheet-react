@@ -234,7 +234,7 @@ describe(
             testing.hashAppend("/cell/T1");
 
             testing.formulaTextLoadWait();
-            
+
             testing.formulaTextEnterAndSave("=234");
 
             testing.hashOnlyIdAndName();
@@ -612,13 +612,13 @@ describe(
 
         // context menu.................................................................................................
 
-        it("/cell/$cell/menu", () => {
+        it("hash /cell/A1/menu", () => {
             testing.hashAppend("/cell/A1/menu")
 
             testing.viewportContextMenu()
                 .should("be.visible")
                 .find("LI")
-                .should("have.length", 3);
+                .should("have.length", 5);
 
             testing.getById(SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_DELETE_CELL_ID)
                 .should("have.text", "Delete cell")
@@ -634,15 +634,62 @@ describe(
                 .should("have.text", "Delete row")
                 .should("have.attr", "href")
                 .and('match', /#*\/*\/row\/1\/delete/);
+
+            testing.getById(SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_FREEZE_RANGE_ID)
+                .should("have.text", "Freeze A1")
+                .should("have.attr", "href")
+                .and('match', /#*\/*\/cell\/A1\/freeze/);
+
+            testing.getById(SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_UNFREEZE_ID)
+                .should("have.text", "Un Freeze A1")
+                .should("have.attr", "aria-disabled", "true")
+                .should("have.attr", "href")
+                .and('match', /#*\/*\/cell\/A1\/unfreeze/);
         });
 
-        it("/cell/$cell-range/menu", () => {
+        it("hash /cell/B2/menu", () => {
+            testing.hashAppend("/cell/B2/menu")
+
+            testing.viewportContextMenu()
+                .should("be.visible")
+                .find("LI")
+                .should("have.length", 5);
+
+            testing.getById(SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_DELETE_CELL_ID)
+                .should("have.text", "Delete cell")
+                .should("have.attr", "href")
+                .and('match', /#*\/*\/cell\/B2\/delete/)
+
+            testing.getById(SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_DELETE_COLUMN_ID)
+                .should("have.text", "Delete column")
+                .should("have.attr", "href")
+                .and('match', /#*\/*\/column\/B\/delete/);
+
+            testing.getById(SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_DELETE_ROW_ID)
+                .should("have.text", "Delete row")
+                .should("have.attr", "href")
+                .and('match', /#*\/*\/row\/2\/delete/);
+
+            testing.getById(SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_FREEZE_RANGE_ID)
+                .should("have.text", "Freeze B2")
+                .should("have.attr", "aria-disabled", "true")
+                .should("have.attr", "href")
+                .and('match', /#*\/*\/cell\/B2\/freeze/);
+
+            testing.getById(SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_UNFREEZE_ID)
+                .should("have.text", "Un Freeze B2")
+                .should("have.attr", "aria-disabled", "true")
+                .should("have.attr", "href")
+                .and('match', /#*\/*\/cell\/B2\/unfreeze/);
+        });
+
+        it("hash /cell/A1:B2/menu", () => {
             testing.hashAppend("/cell/A1:B1/menu")
 
             testing.viewportContextMenu()
                 .should("be.visible")
                 .find("LI")
-                .should("have.length", 3);
+                .should("have.length", 5);
 
             testing.getById(SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_DELETE_CELL_ID)
                 .should("have.text", "Delete cells")
@@ -658,15 +705,26 @@ describe(
                 .should("have.text", "Delete row")
                 .should("have.attr", "href")
                 .and('match', /#*\/*\/row\/1\/delete/);
+
+            testing.getById(SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_FREEZE_RANGE_ID)
+                .should("have.text", "Freeze A1:B1")
+                .should("have.attr", "href")
+                .and('match', /#*\/*\/cell\/A1:B1\/freeze/);
+
+            testing.getById(SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_UNFREEZE_ID)
+                .should("have.text", "Un Freeze A1:B1")
+                .should("have.attr", "aria-disabled", "true")
+                .should("have.attr", "href")
+                .and('match', /#*\/*\/cell\/A1:B1\/unfreeze/);
         });
 
-        it("/cell/$cell-range/menu", () => {
+        it("hash /cell/A1:A2/menu", () => {
             testing.hashAppend("/cell/A1:A2/menu")
 
             testing.viewportContextMenu()
                 .should("be.visible")
                 .find("LI")
-                .should("have.length", 3);
+                .should("have.length", 5);
 
             testing.getById(SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_DELETE_CELL_ID)
                 .should("have.text", "Delete cells")
@@ -682,15 +740,26 @@ describe(
                 .should("have.text", "Delete rows")
                 .should("have.attr", "href")
                 .and('match', /#*\/*\/row\/1:2\/delete/);
+
+            testing.getById(SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_FREEZE_RANGE_ID)
+                .should("have.text", "Freeze A1:A2")
+                .should("have.attr", "href")
+                .and('match', /#*\/*\/cell\/A1:A2\/freeze/);
+
+            testing.getById(SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_UNFREEZE_ID)
+                .should("have.text", "Un Freeze A1:A2")
+                .should("have.attr", "aria-disabled", "true")
+                .should("have.attr", "href")
+                .and('match', /#*\/*\/cell\/A1:A2\/unfreeze/);
         });
 
-        it("/cell/$cell-range/menu", () => {
+        it("hash /cell/A1:B2/menu", () => {
             testing.hashAppend("/cell/A1:B2/menu")
 
             testing.viewportContextMenu()
                 .should("be.visible")
                 .find("LI")
-                .should("have.length", 3);
+                .should("have.length", 5);
 
             testing.getById(SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_DELETE_CELL_ID)
                 .should("have.text", "Delete cells")
@@ -706,9 +775,41 @@ describe(
                 .should("have.text", "Delete rows")
                 .should("have.attr", "href")
                 .and('match', /#*\/*\/row\/1:2\/delete/);
+
+            testing.getById(SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_FREEZE_RANGE_ID)
+                .should("have.text", "Freeze A1:B2")
+                .should("have.attr", "href")
+                .and('match', /#*\/*\/cell\/A1:B2\/freeze/);
+
+            testing.getById(SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_UNFREEZE_ID)
+                .should("have.text", "Un Freeze A1:B2")
+                .should("have.attr", "aria-disabled", "true")
+                .should("have.attr", "href")
+                .and('match', /#*\/*\/cell\/A1:B2\/unfreeze/);
         });
 
-        it("Cell context menu", () => {
+        it("hash /cell/B2:C3/menu", () => {
+            testing.hashAppend("/cell/B2:C3/menu")
+
+            testing.viewportContextMenu()
+                .should("be.visible")
+                .find("LI")
+                .should("have.length", 5);
+
+            testing.getById(SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_FREEZE_RANGE_ID)
+                .should("have.text", "Freeze B2:C3")
+                .should("have.attr", "aria-disabled", "true")
+                .should("have.attr", "href")
+                .and('match', /#*\/*\/cell\/B2:C3\/freeze/);
+
+            testing.getById(SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_UNFREEZE_ID)
+                .should("have.text", "Un Freeze B2:C3")
+                .should("have.attr", "aria-disabled", "true")
+                .should("have.attr", "href")
+                .and('match', /#*\/*\/cell\/B2:C3\/unfreeze/);
+        });
+
+        it("Cell context menu A1", () => {
             testing.contextMenu(A1.viewportId());
 
             testing.hash()
@@ -717,39 +818,33 @@ describe(
             testing.viewportContextMenu()
                 .should("be.visible")
                 .find("LI")
-                .should("have.length", 3);
+                .should("have.length", 5);
 
             testing.getById(SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_DELETE_CELL_ID)
+                .should("have.text", "Delete cell")
                 .should("have.attr", "href")
                 .and('match', /#*\/*\/cell\/A1\/delete/);
-        });
 
-        it("Cell context menu links", () => {
-            testing.hashAppend("/cell/A1");
-
-            testing.contextMenu(A1.viewportId());
-
-            testing.viewportContextMenu()
-                .should("be.visible");
-
-            testing.getById(SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_DELETE_CELL_ID)
+            testing.getById(SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_DELETE_COLUMN_ID)
+                .should("have.text", "Delete column")
                 .should("have.attr", "href")
-                .and('match', /#*\/*\/cell\/A1\/delete/);
-        });
+                .and('match', /#*\/*\/column\/A\/delete/);
 
-        it("Cell range context menu links", () => {
-            testing.hashAppend("/cell/A1:B2");
-
-            testing.contextMenu(A1.viewportId());
-
-            testing.viewportContextMenu()
-                .should("be.visible")
-                .find("LI")
-                .should("have.length", 3);
-
-            testing.getById(SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_DELETE_CELL_ID)
+            testing.getById(SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_DELETE_ROW_ID)
+                .should("have.text", "Delete row")
                 .should("have.attr", "href")
-                .and('match', /#*\/*\/cell\/A1:B2\/delete/);
+                .and('match', /#*\/*\/row\/1\/delete/);
+
+            testing.getById(SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_FREEZE_RANGE_ID)
+                .should("have.text", "Freeze A1")
+                .should("have.attr", "href")
+                .and('match', /#*\/*\/cell\/A1\/freeze/);
+
+            testing.getById(SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_UNFREEZE_ID)
+                .should("have.text", "Un Freeze A1")
+                .should("have.attr", "aria-disabled", "true")
+                .should("have.attr", "href")
+                .and('match', /#*\/*\/cell\/A1\/unfreeze/);
         });
 
         // Freeze.......................................................................................................
