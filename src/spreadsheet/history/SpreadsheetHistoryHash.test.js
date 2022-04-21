@@ -1681,7 +1681,6 @@ testParseAndStringify(
         "select": true,
         "settings": true,
         "settings-item": TextStyle.COLOR,
-
     }
 );
 
@@ -1693,7 +1692,6 @@ testParseAndStringify(
         "select": true,
         "settings": true,
         "settings-item": SpreadsheetSettingsWidgetHistoryHashTokens.NUMBER,
-
     }
 );
 
@@ -1703,7 +1701,6 @@ testParseAndStringify(
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
         "settings": true,
-
     }
 );
 
@@ -1722,7 +1719,6 @@ testParseAndStringify(
         "spreadsheet-name": SPREADSHEET_NAME,
         "settings": true,
         "settings-item": SpreadsheetSettingsWidgetHistoryHashTokens.METADATA,
-
     }
 );
 
@@ -1733,7 +1729,6 @@ testParseAndStringify(
         "spreadsheet-name": SPREADSHEET_NAME,
         "settings": true,
         "settings-item": SpreadsheetSettingsWidgetHistoryHashTokens.TEXT,
-
     }
 );
 
@@ -1744,7 +1739,6 @@ testParseAndStringify(
         "spreadsheet-name": SPREADSHEET_NAME,
         "settings": true,
         "settings-item": SpreadsheetSettingsWidgetHistoryHashTokens.NUMBER,
-
     }
 );
 
@@ -1755,7 +1749,6 @@ testParseAndStringify(
         "spreadsheet-name": SPREADSHEET_NAME,
         "settings": true,
         "settings-item": SpreadsheetSettingsWidgetHistoryHashTokens.DATE_TIME,
-
     }
 );
 
@@ -1766,7 +1759,6 @@ testParseAndStringify(
         "spreadsheet-name": SPREADSHEET_NAME,
         "settings": true,
         "settings-item": SpreadsheetSettingsWidgetHistoryHashTokens.STYLE,
-
     }
 );
 
@@ -1776,7 +1768,6 @@ testParseAndStringify(
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
         "settings": true,
-
     }
 );
 
@@ -1795,7 +1786,6 @@ testParseAndStringify(
         "spreadsheet-name": SPREADSHEET_NAME,
         "settings": true,
         "settings-item": SpreadsheetSettingsWidgetHistoryHashTokens.METADATA,
-
     }
 );
 
@@ -1806,7 +1796,6 @@ testParseAndStringify(
         "spreadsheet-name": SPREADSHEET_NAME,
         "settings": true,
         "settings-item": SpreadsheetSettingsWidgetHistoryHashTokens.TEXT,
-
     }
 );
 
@@ -1828,7 +1817,6 @@ testParseAndStringify(
         "spreadsheet-name": SPREADSHEET_NAME,
         "settings": true,
         "settings-item": SpreadsheetSettingsWidgetHistoryHashTokens.DATE_TIME,
-
     }
 );
 
@@ -1839,7 +1827,6 @@ testParseAndStringify(
         "spreadsheet-name": SPREADSHEET_NAME,
         "settings": true,
         "settings-item": SpreadsheetSettingsWidgetHistoryHashTokens.STYLE,
-
     }
 );
 
@@ -1877,7 +1864,6 @@ testParseAndStringify(
         "spreadsheet-name": SPREADSHEET_NAME,
         "settings": true,
         "settings-item": TextStyle.COLOR,
-
     }
 );
 
@@ -1919,7 +1905,6 @@ testParseAndStringify(
         "selection": SpreadsheetCellReference.parse("B2"),
         "selection-action": FORMULA_LOAD_EDIT,
         "settings": true,
-
     }
 );
 
@@ -1940,7 +1925,6 @@ testParseAndStringify(
         "selection-action": FORMULA_LOAD_EDIT,
         "settings": true,
         "settings-item": "metadata",
-
     }
 );
 
@@ -1953,7 +1937,6 @@ testParseAndStringify(
         "selection-action": FORMULA_LOAD_EDIT,
         "settings": true,
         "settings-item": "text",
-
     }
 );
 
@@ -1966,7 +1949,6 @@ testParseAndStringify(
         "selection-action": FORMULA_LOAD_EDIT,
         "settings": true,
         "settings-item": "number",
-
     }
 );
 
@@ -1979,7 +1961,6 @@ testParseAndStringify(
         "selection-action": FORMULA_LOAD_EDIT,
         "settings": true,
         "settings-item": "date-time",
-
     }
 );
 
@@ -1992,7 +1973,6 @@ testParseAndStringify(
         "selection-action": FORMULA_LOAD_EDIT,
         "settings": true,
         "settings-item": "style",
-
     }
 );
 testParseAndStringify(
@@ -2003,7 +1983,6 @@ testParseAndStringify(
         "label": LABEL,
         "settings": true,
         "settings-item": "style",
-
     }
 );
 
@@ -2016,7 +1995,6 @@ testParseAndStringify(
         "selection-action": FORMULA_LOAD_EDIT,
         "settings": true,
         "settings-item": SpreadsheetSettingsWidgetHistoryHashTokens.METADATA,
-
     }
 );
 
