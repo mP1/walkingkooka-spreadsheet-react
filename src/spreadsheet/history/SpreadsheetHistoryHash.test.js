@@ -318,6 +318,24 @@ testValidate(
 );
 
 testValidate(
+    "validate id & name & selection=COLUMN_A & action=UNFREEZE",
+    {
+        "spreadsheet-id": ID,
+        "spreadsheet-name": SPREADSHEET_NAME,
+        "selection": COLUMN_A,
+        "selection-action": COLUMN_ROW_UNFREEZE,
+    }
+);
+
+testValidate(
+    "validate id & name & selection=COLUMN_B & action=UNFREEZE",
+    {
+        "spreadsheet-id": ID,
+        "spreadsheet-name": SPREADSHEET_NAME,
+    }
+);
+
+testValidate(
     "validate id & name & label=LABEL",
     {
         "spreadsheet-id": ID,
