@@ -527,7 +527,7 @@ export default class SpreadsheetHistoryHash extends SpreadsheetHistoryHashTokens
                         }
 
                         if(selection.isColumnOrRowScalarOrRange() && selectionAction instanceof SpreadsheetColumnOrRowHistoryHashToken){
-                            if(selectionAction instanceof SpreadsheetColumnOrRowFreezeHistoryHashToken) {
+                            if(selectionAction instanceof SpreadsheetColumnOrRowFreezeHistoryHashToken || selectionAction instanceof SpreadsheetColumnOrRowUnFreezeHistoryHashToken) {
                                 if(selection.canFreeze()) {
                                     verified[SpreadsheetHistoryHashTokens.SELECTION_ACTION] = selectionAction;
                                 } else {
