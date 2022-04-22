@@ -1,6 +1,5 @@
 import CharSequences from "../../CharSequences.js";
 import Character from "../../Character.js";
-import SpreadsheetCellDeleteHistoryHashToken from "../history/SpreadsheetCellDeleteHistoryHashToken.js";
 import SpreadsheetColumnOrRowClearHistoryHashToken from "../history/SpreadsheetColumnOrRowClearHistoryHashToken.js";
 import SpreadsheetColumnOrRowDeleteHistoryHashToken from "../history/SpreadsheetColumnOrRowDeleteHistoryHashToken.js";
 import SpreadsheetColumnOrRowFreezeHistoryHashToken from "../history/SpreadsheetColumnOrRowFreezeHistoryHashToken.js";
@@ -173,8 +172,16 @@ export default class SpreadsheetSelection extends SystemObject {
 
         const menuItems = [];
 
-        // delete cells
-        historyTokens[SpreadsheetHistoryHashTokens.SELECTION_ACTION] = SpreadsheetCellDeleteHistoryHashToken.INSTANCE;
+        this.viewportContextMenuCellDelete(historyTokens, menuItems, history);
+        this.viewportContextMenuColumnDelete(historyTokens, menuItems, history);
+        this.viewportContextMenuRowDelete(historyTokens, menuItems, history);
+
+        return menuItems;
+    }
+
+    viewportContextMenuCellDelete(historyTokens, menuItems, history) {
+        historyTokens[SpreadsheetHistoryHashTokens.SELECTION] = this;
+        historyTokens[SpreadsheetHistoryHashTokens.SELECTION_ACTION] = SpreadsheetColumnOrRowDeleteHistoryHashToken.INSTANCE;
 
         menuItems.push(
             history.menuItem(
@@ -184,8 +191,9 @@ export default class SpreadsheetSelection extends SystemObject {
                 historyTokens
             )
         );
+    }
 
-        // delete column
+    viewportContextMenuColumnDelete(historyTokens, menuItems, history) {
         const columnOrRange = this.columnOrRange();
         historyTokens[SpreadsheetHistoryHashTokens.SELECTION] = columnOrRange;
         historyTokens[SpreadsheetHistoryHashTokens.SELECTION_ACTION] = SpreadsheetColumnOrRowDeleteHistoryHashToken.INSTANCE;
@@ -198,29 +206,8 @@ export default class SpreadsheetSelection extends SystemObject {
                 historyTokens
             )
         );
-
-        // delete row
-        const rowOrRange = this.rowOrRange();
-        historyTokens[SpreadsheetHistoryHashTokens.SELECTION] = rowOrRange;
-        historyTokens[SpreadsheetHistoryHashTokens.SELECTION_ACTION] = SpreadsheetColumnOrRowDeleteHistoryHashToken.INSTANCE;
-
-        menuItems.push(
-            history.menuItem(
-                rowOrRange.viewportDeleteCellRowText(),
-                SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_DELETE_ROW_ID,
-                false, // disabled
-                historyTokens
-            )
-        );
-
-        return menuItems;
     }
 
-    // delete
-    // insert 1 before
-    // insert 2 before
-    // insert 1 after
-    // insert 2 after
     viewportContextMenuColumnOrRow(historyTokens, before, after, frozenColumnOrRows, isHidden, range, history) {
         historyTokens[SpreadsheetHistoryHashTokens.SELECTION] = this;
         historyTokens[SpreadsheetHistoryHashTokens.SELECTION_ACTION] = null;
@@ -230,6 +217,31 @@ export default class SpreadsheetSelection extends SystemObject {
 
         // clear........................................................................................................
 
+        this.viewportContextMenuColumnOrRowClear(historyTokens, menuItems, history);
+        this.viewportContextMenuCellDelete(historyTokens, menuItems, history);
+        this.viewportContextMenuColumnOrRowInsertBefore(historyTokens, menuItems, history);
+        this.viewportContextMenuColumnOrRowInsertAfter(historyTokens, menuItems, history);
+
+        // freeze.......................................................................................................
+
+        this.viewportContextMenuColumnOrRowFreeze(range, historyTokens, frozenColumnOrRows, menuItems, history);
+
+        this.viewportContextMenuColumnOrRowUnFreeze(
+            historyTokens,
+            frozenColumnOrRows,
+            menuItems,
+            SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_UNFREEZE_ID,
+            history
+        );
+
+        this.viewportContextMenuColumnOrRowHide(historyTokens, menuItems, history);
+        this.viewportContextMenuColumnOrRowUnHide(before, isHidden, historyTokens, menuItems, history, after);
+
+        return menuItems;
+    }
+
+    viewportContextMenuColumnOrRowClear(historyTokens, menuItems, history) {
+        historyTokens[SpreadsheetHistoryHashTokens.SELECTION] = this;
         historyTokens[SpreadsheetHistoryHashTokens.SELECTION_ACTION] = SpreadsheetColumnOrRowClearHistoryHashToken.INSTANCE;
 
         menuItems.push(
@@ -240,46 +252,67 @@ export default class SpreadsheetSelection extends SystemObject {
                 historyTokens
             )
         );
+    }
 
-        // delete.......................................................................................................
+    viewportContextMenuColumnOrRowFreeze(range, historyTokens, frozenColumnOrRows, menuItems, history) {
+        this.viewportContextMenuColumnOrRowFreeze0(
+            range(0),
+            historyTokens,
+            frozenColumnOrRows,
+            menuItems,
+            SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_FREEZE_1_ID,
+            history
+        );
 
-        historyTokens[SpreadsheetHistoryHashTokens.SELECTION_ACTION] = SpreadsheetColumnOrRowDeleteHistoryHashToken.INSTANCE;
+        this.viewportContextMenuColumnOrRowFreeze0(
+            range(1),
+            historyTokens,
+            frozenColumnOrRows,
+            menuItems,
+            SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_FREEZE_2_ID,
+            history
+        );
+
+        this.viewportContextMenuColumnOrRowFreeze0(
+            range(2),
+            historyTokens,
+            frozenColumnOrRows,
+            menuItems,
+            SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_FREEZE_3_ID,
+            history
+        );
+    }
+
+    viewportContextMenuColumnOrRowFreeze0(columnOrRowRange, historyTokens, frozenColumnOrRows, menuItems, menuItemId, history) {
+        historyTokens[SpreadsheetHistoryHashTokens.SELECTION] = columnOrRowRange;
+        historyTokens[SpreadsheetHistoryHashTokens.SELECTION_ACTION] = SpreadsheetColumnOrRowFreezeHistoryHashToken.INSTANCE;
 
         menuItems.push(
             history.menuItem(
-                this.viewportDeleteText(),
-                SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_DELETE_CELL_ID,
+                this.viewportFreezeColumnsRowsText(columnOrRowRange),
+                menuItemId,
+                columnOrRowRange.equals(frozenColumnOrRows()), // menuItemDisabled skip if given $columnOrRowRange already frozen
+                historyTokens
+            )
+        );
+    }
+
+    viewportContextMenuColumnOrRowHide(historyTokens, menuItems, history) {
+        historyTokens[SpreadsheetHistoryHashTokens.SELECTION] = this;
+        historyTokens[SpreadsheetHistoryHashTokens.SELECTION_ACTION] = new SpreadsheetColumnOrRowSaveHistoryHashToken("hidden", true);
+
+        menuItems.push(
+            history.menuItem(
+                this.viewportHideText(),
+                SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_HIDE_ID,
                 false, // disabled
                 historyTokens
             )
         );
+    }
 
-        // insertBefore.................................................................................................
-
-        historyTokens[SpreadsheetHistoryHashTokens.SELECTION_ACTION] = new SpreadsheetColumnOrRowInsertBeforeHistoryHashToken(2);
-
-        menuItems.push(
-            history.menuItem(
-                this.viewportInsertBefore2Text(),
-                SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_INSERT_BEFORE_2_ID,
-                false, // disabled
-                historyTokens
-            )
-        );
-
-        historyTokens[SpreadsheetHistoryHashTokens.SELECTION_ACTION] = new SpreadsheetColumnOrRowInsertBeforeHistoryHashToken(1);
-
-        menuItems.push(
-            history.menuItem(
-                this.viewportInsertBefore1Text(),
-                SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_INSERT_BEFORE_1_ID,
-                false, // disabled
-                historyTokens
-            )
-        );
-
-        // insertAfter..................................................................................................
-
+    viewportContextMenuColumnOrRowInsertAfter(historyTokens, menuItems, history) {
+        historyTokens[SpreadsheetHistoryHashTokens.SELECTION] = this;
         historyTokens[SpreadsheetHistoryHashTokens.SELECTION_ACTION] = new SpreadsheetColumnOrRowInsertAfterHistoryHashToken(1);
 
         menuItems.push(
@@ -301,89 +334,28 @@ export default class SpreadsheetSelection extends SystemObject {
                 historyTokens
             )
         );
+    }
 
-        // freeze.......................................................................................................
-
-        this.viewportContextMenuColumnOrRowFreeze(
-            range(0),
-            historyTokens,
-            frozenColumnOrRows,
-            menuItems,
-            SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_FREEZE_1_ID,
-            history
-        );
-
-        this.viewportContextMenuColumnOrRowFreeze(
-            range(1),
-            historyTokens,
-            frozenColumnOrRows,
-            menuItems,
-            SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_FREEZE_2_ID,
-            history
-        );
-
-        this.viewportContextMenuColumnOrRowFreeze(
-            range(2),
-            historyTokens,
-            frozenColumnOrRows,
-            menuItems,
-            SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_FREEZE_3_ID,
-            history
-        );
-
-        this.viewportContextMenuColumnOrRowUnFreeze(
-            historyTokens,
-            frozenColumnOrRows,
-            menuItems,
-            SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_UNFREEZE_ID,
-            history
-        );
-
-        // hide........................................................................................................
-
+    viewportContextMenuColumnOrRowInsertBefore(historyTokens, menuItems, history) {
         historyTokens[SpreadsheetHistoryHashTokens.SELECTION] = this;
-        historyTokens[SpreadsheetHistoryHashTokens.SELECTION_ACTION] = new SpreadsheetColumnOrRowSaveHistoryHashToken("hidden", true);
+        historyTokens[SpreadsheetHistoryHashTokens.SELECTION_ACTION] = new SpreadsheetColumnOrRowInsertBeforeHistoryHashToken(2);
 
         menuItems.push(
             history.menuItem(
-                this.viewportHideText(),
-                SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_HIDE_ID,
+                this.viewportInsertBefore2Text(),
+                SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_INSERT_BEFORE_2_ID,
                 false, // disabled
                 historyTokens
             )
         );
 
-        // if the column/row BEFORE is hidden add Unhide column/row
-        this.viewportContextMenuColumnOrRowUnHide(
-            before,
-            isHidden,
-            historyTokens,
-            menuItems,
-            SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_UNHIDE_BEFORE_ID,
-            history
-        );
-
-        this.viewportContextMenuColumnOrRowUnHide(
-            after,
-            isHidden,
-            historyTokens,
-            menuItems,
-            SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_UNHIDE_AFTER_ID,
-            history
-        );
-
-        return menuItems;
-    }
-
-    viewportContextMenuColumnOrRowFreeze(columnOrRowRange, historyTokens, frozenColumnOrRows, menuItems, menuItemId, history) {
-        historyTokens[SpreadsheetHistoryHashTokens.SELECTION] = columnOrRowRange;
-        historyTokens[SpreadsheetHistoryHashTokens.SELECTION_ACTION] = SpreadsheetColumnOrRowFreezeHistoryHashToken.INSTANCE;
+        historyTokens[SpreadsheetHistoryHashTokens.SELECTION_ACTION] = new SpreadsheetColumnOrRowInsertBeforeHistoryHashToken(1);
 
         menuItems.push(
             history.menuItem(
-                this.viewportFreezeColumnsRowsText(columnOrRowRange),
-                menuItemId,
-                columnOrRowRange.equals(frozenColumnOrRows()), // menuItemDisabled skip if given $columnOrRowRange already frozen
+                this.viewportInsertBefore1Text(),
+                SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_INSERT_BEFORE_1_ID,
+                false, // disabled
                 historyTokens
             )
         );
@@ -405,7 +377,28 @@ export default class SpreadsheetSelection extends SystemObject {
         );
     }
 
-    viewportContextMenuColumnOrRowUnHide(columnOrRowRange, isHidden, historyTokens, menuItems, menuItemId, history) {
+    viewportContextMenuColumnOrRowUnHide(before, isHidden, historyTokens, menuItems, history, after) {
+        // if the column/row BEFORE is hidden add Unhide column/row
+        this.viewportContextMenuColumnOrRowUnHide0(
+            before,
+            isHidden,
+            historyTokens,
+            menuItems,
+            SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_UNHIDE_BEFORE_ID,
+            history
+        );
+
+        this.viewportContextMenuColumnOrRowUnHide0(
+            after,
+            isHidden,
+            historyTokens,
+            menuItems,
+            SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_UNHIDE_AFTER_ID,
+            history
+        );
+    }
+
+    viewportContextMenuColumnOrRowUnHide0(columnOrRowRange, isHidden, historyTokens, menuItems, menuItemId, history) {
         if(!columnOrRowRange.equals(this) && isHidden(columnOrRowRange)){
             historyTokens[SpreadsheetHistoryHashTokens.SELECTION] = columnOrRowRange;
             historyTokens[SpreadsheetHistoryHashTokens.SELECTION_ACTION] = new SpreadsheetColumnOrRowSaveHistoryHashToken("hidden", false);
@@ -421,6 +414,21 @@ export default class SpreadsheetSelection extends SystemObject {
         }
     }
 
+    viewportContextMenuRowDelete(historyTokens, menuItems, history) {
+        const rowOrRange = this.rowOrRange();
+        historyTokens[SpreadsheetHistoryHashTokens.SELECTION] = rowOrRange;
+        historyTokens[SpreadsheetHistoryHashTokens.SELECTION_ACTION] = SpreadsheetColumnOrRowDeleteHistoryHashToken.INSTANCE;
+
+        menuItems.push(
+            history.menuItem(
+                rowOrRange.viewportDeleteCellRowText(),
+                SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_DELETE_ROW_ID,
+                false, // disabled
+                historyTokens
+            )
+        );
+    }
+
     viewportFocus(giveFormulaFocus) {
         SystemObject.throwUnsupportedOperation();
     }
@@ -429,12 +437,8 @@ export default class SpreadsheetSelection extends SystemObject {
         return "Clear";
     }
 
-    viewportDeleteText() {
-        return "Delete";
-    }
-
     viewportDeleteCellText() {
-        SystemObject.throwUnsupportedOperation();
+        return "Delete";
     }
 
     viewportDeleteColumnText() {
