@@ -321,7 +321,7 @@ describe("Row",
                 .should("have.attr", "href")
                 .and('match', /#*\/*\/row\/2\/clear/);
 
-            testing.getById(SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_DELETE_ID)
+            testing.getById(SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_DELETE_CELL_ID)
                 .should("have.attr", "href")
                 .and('match', /#*\/*\/row\/2\/delete/);
 
@@ -372,7 +372,7 @@ describe("Row",
                 .should("have.attr", "href")
                 .and('match', /#*\/*\/row\/2:3\/clear/);
 
-            testing.getById(SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_DELETE_ID)
+            testing.getById(SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_DELETE_CELL_ID)
                 .should("have.attr", "href")
                 .and('match', /#*\/*\/row\/2:3\/delete/);
 
@@ -474,10 +474,10 @@ describe("Row",
 
             testing.viewportContextMenu()
                 .should("be.visible")
-                .find("#" + SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_DELETE_ID)
+                .find("#" + SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_DELETE_CELL_ID)
                 .should("include.text", "Delete");
 
-            testing.getById(SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_DELETE_ID)
+            testing.getById(SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_DELETE_CELL_ID)
                 .click();
 
             testing.viewportContextMenu()
@@ -506,10 +506,10 @@ describe("Row",
 
             testing.viewportContextMenu()
                 .should("be.visible")
-                .find("#" + SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_DELETE_ID)
+                .find("#" + SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_DELETE_CELL_ID)
                 .should("include.text", "Delete");
 
-            testing.getById(SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_DELETE_ID)
+            testing.getById(SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_DELETE_CELL_ID)
                 .click();
 
             testing.viewportContextMenu()
