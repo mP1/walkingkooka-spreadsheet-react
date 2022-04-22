@@ -620,7 +620,7 @@ describe(
                 .find("LI")
                 .should("have.length", 3);
 
-            testing.getById(SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_DELETE_ID)
+            testing.getById(SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_DELETE_CELL_ID)
                 .should("have.text", "Delete cell")
                 .should("have.attr", "href")
                 .and('match', /#*\/*\/cell\/A1\/delete/)
@@ -644,7 +644,7 @@ describe(
                 .find("LI")
                 .should("have.length", 3);
 
-            testing.getById(SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_DELETE_ID)
+            testing.getById(SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_DELETE_CELL_ID)
                 .should("have.text", "Delete cells")
                 .should("have.attr", "href")
                 .and('match', /#*\/*\/cell\/A1:B1\/delete/);
@@ -668,7 +668,7 @@ describe(
                 .find("LI")
                 .should("have.length", 3);
 
-            testing.getById(SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_DELETE_ID)
+            testing.getById(SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_DELETE_CELL_ID)
                 .should("have.text", "Delete cells")
                 .should("have.attr", "href")
                 .and('match', /#*\/*\/cell\/A1:A2\/delete/);
@@ -692,7 +692,7 @@ describe(
                 .find("LI")
                 .should("have.length", 3);
 
-            testing.getById(SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_DELETE_ID)
+            testing.getById(SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_DELETE_CELL_ID)
                 .should("have.text", "Delete cells")
                 .should("have.attr", "href")
                 .and('match', /#*\/*\/cell\/A1:B2\/delete/);
@@ -719,7 +719,7 @@ describe(
                 .find("LI")
                 .should("have.length", 3);
 
-            testing.getById(SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_DELETE_ID)
+            testing.getById(SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_DELETE_CELL_ID)
                 .should("have.attr", "href")
                 .and('match', /#*\/*\/cell\/A1\/delete/);
         });
@@ -732,7 +732,7 @@ describe(
             testing.viewportContextMenu()
                 .should("be.visible");
 
-            testing.getById(SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_DELETE_ID)
+            testing.getById(SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_DELETE_CELL_ID)
                 .should("have.attr", "href")
                 .and('match', /#*\/*\/cell\/A1\/delete/);
         });
@@ -747,7 +747,7 @@ describe(
                 .find("LI")
                 .should("have.length", 3);
 
-            testing.getById(SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_DELETE_ID)
+            testing.getById(SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_DELETE_CELL_ID)
                 .should("have.attr", "href")
                 .and('match', /#*\/*\/cell\/A1:B2\/delete/);
         });

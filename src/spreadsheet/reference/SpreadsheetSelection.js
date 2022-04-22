@@ -136,7 +136,7 @@ export default class SpreadsheetSelection extends SystemObject {
 
     static VIEWPORT_CONTEXT_MENU_CLEAR_ID = SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_ID + "-clear";
 
-    static VIEWPORT_CONTEXT_MENU_DELETE_ID = SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_ID + "-delete";
+    static VIEWPORT_CONTEXT_MENU_DELETE_CELL_ID = SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_ID + "-delete-cell";
 
     // the id for the "delete column" menu item
     static VIEWPORT_CONTEXT_MENU_DELETE_COLUMN_ID = SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_ID + "-delete-column";
@@ -179,7 +179,7 @@ export default class SpreadsheetSelection extends SystemObject {
         menuItems.push(
             history.menuItem(
                 this.viewportDeleteCellText(),
-                SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_DELETE_ID,
+                SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_DELETE_CELL_ID,
                 false, // disabled
                 historyTokens
             )
@@ -248,7 +248,7 @@ export default class SpreadsheetSelection extends SystemObject {
         menuItems.push(
             history.menuItem(
                 this.viewportDeleteText(),
-                SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_DELETE_ID,
+                SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_DELETE_CELL_ID,
                 false, // disabled
                 historyTokens
             )
