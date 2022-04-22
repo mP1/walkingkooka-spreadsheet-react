@@ -128,7 +128,7 @@ export default class SpreadsheetSelection extends SystemObject {
      * This method is called whenever the element for this selection is clicked, providing an opportunity to
      * build the context menu items that will be displayed ready for clicking.
      */
-    viewportContextMenuItems(historyTokens, frozenColumns, frozenRows, isColumnHidden, isRowHidden, columnRange, rowRange, history){
+    viewportContextMenu(historyTokens, frozenColumns, frozenRows, isColumnHidden, isRowHidden, columnRange, rowRange, history){
         SystemObject.throwUnsupportedOperation();
     }
 
@@ -166,7 +166,7 @@ export default class SpreadsheetSelection extends SystemObject {
     /**
      * Builds the context menu items for a cell or cell-range.
      */
-    viewportContextMenuItemsCell(historyTokens, history) {
+    viewportContextMenuCell(historyTokens, history) {
         historyTokens[SpreadsheetHistoryHashTokens.SELECTION] = this;
         historyTokens[SpreadsheetHistoryHashTokens.SELECTION_ACTION] = null;
         historyTokens[SpreadsheetHistoryHashTokens.SELECTION_ANCHOR] = null;
@@ -221,7 +221,7 @@ export default class SpreadsheetSelection extends SystemObject {
     // insert 2 before
     // insert 1 after
     // insert 2 after
-    viewportContextMenuItemsColumnOrRow(historyTokens, before, after, frozenColumnOrRows, isHidden, range, history) {
+    viewportContextMenuColumnOrRow(historyTokens, before, after, frozenColumnOrRows, isHidden, range, history) {
         historyTokens[SpreadsheetHistoryHashTokens.SELECTION] = this;
         historyTokens[SpreadsheetHistoryHashTokens.SELECTION_ACTION] = null;
         historyTokens[SpreadsheetHistoryHashTokens.SELECTION_ANCHOR] = null;
@@ -304,7 +304,7 @@ export default class SpreadsheetSelection extends SystemObject {
 
         // freeze.......................................................................................................
 
-        this.viewportContextMenuItemsColumnOrRowFreeze(
+        this.viewportContextMenuColumnOrRowFreeze(
             range(0),
             historyTokens,
             frozenColumnOrRows,
@@ -313,7 +313,7 @@ export default class SpreadsheetSelection extends SystemObject {
             history
         );
 
-        this.viewportContextMenuItemsColumnOrRowFreeze(
+        this.viewportContextMenuColumnOrRowFreeze(
             range(1),
             historyTokens,
             frozenColumnOrRows,
@@ -322,7 +322,7 @@ export default class SpreadsheetSelection extends SystemObject {
             history
         );
 
-        this.viewportContextMenuItemsColumnOrRowFreeze(
+        this.viewportContextMenuColumnOrRowFreeze(
             range(2),
             historyTokens,
             frozenColumnOrRows,
@@ -331,7 +331,7 @@ export default class SpreadsheetSelection extends SystemObject {
             history
         );
 
-        this.viewportContextMenuItemsColumnOrRowUnFreeze(
+        this.viewportContextMenuColumnOrRowUnFreeze(
             historyTokens,
             frozenColumnOrRows,
             menuItems,
@@ -354,7 +354,7 @@ export default class SpreadsheetSelection extends SystemObject {
         );
 
         // if the column/row BEFORE is hidden add Unhide column/row
-        this.viewportContextMenuItemsColumnOrRowUnHide(
+        this.viewportContextMenuColumnOrRowUnHide(
             before,
             isHidden,
             historyTokens,
@@ -363,7 +363,7 @@ export default class SpreadsheetSelection extends SystemObject {
             history
         );
 
-        this.viewportContextMenuItemsColumnOrRowUnHide(
+        this.viewportContextMenuColumnOrRowUnHide(
             after,
             isHidden,
             historyTokens,
@@ -375,7 +375,7 @@ export default class SpreadsheetSelection extends SystemObject {
         return menuItems;
     }
 
-    viewportContextMenuItemsColumnOrRowFreeze(columnOrRowRange, historyTokens, frozenColumnOrRows, menuItems, menuItemId, history) {
+    viewportContextMenuColumnOrRowFreeze(columnOrRowRange, historyTokens, frozenColumnOrRows, menuItems, menuItemId, history) {
         historyTokens[SpreadsheetHistoryHashTokens.SELECTION] = columnOrRowRange;
         historyTokens[SpreadsheetHistoryHashTokens.SELECTION_ACTION] = SpreadsheetColumnOrRowFreezeHistoryHashToken.INSTANCE;
 
@@ -389,7 +389,7 @@ export default class SpreadsheetSelection extends SystemObject {
         );
     }
 
-    viewportContextMenuItemsColumnOrRowUnFreeze(historyTokens, frozenColumnOrRows, menuItems, menuItemId, history) {
+    viewportContextMenuColumnOrRowUnFreeze(historyTokens, frozenColumnOrRows, menuItems, menuItemId, history) {
         const frozen = frozenColumnOrRows();
 
         historyTokens[SpreadsheetHistoryHashTokens.SELECTION] = frozen;
@@ -405,7 +405,7 @@ export default class SpreadsheetSelection extends SystemObject {
         );
     }
 
-    viewportContextMenuItemsColumnOrRowUnHide(columnOrRowRange, isHidden, historyTokens, menuItems, menuItemId, history) {
+    viewportContextMenuColumnOrRowUnHide(columnOrRowRange, isHidden, historyTokens, menuItems, menuItemId, history) {
         if(!columnOrRowRange.equals(this) && isHidden(columnOrRowRange)){
             historyTokens[SpreadsheetHistoryHashTokens.SELECTION] = columnOrRowRange;
             historyTokens[SpreadsheetHistoryHashTokens.SELECTION_ACTION] = new SpreadsheetColumnOrRowSaveHistoryHashToken("hidden", false);

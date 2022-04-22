@@ -97,8 +97,8 @@ export default class SpreadsheetRowReference extends SpreadsheetColumnOrRowRefer
 
     // context menu events..............................................................................................
 
-    viewportContextMenuItems(historyTokens, frozenColumns, frozenRows, isColumnHidden, isRowHidden, columnRange, rowRange, history) {
-        return this.viewportContextMenuItemsColumnOrRow(
+    viewportContextMenu(historyTokens, frozenColumns, frozenRows, isColumnHidden, isRowHidden, columnRange, rowRange, history) {
+        return this.viewportContextMenuColumnOrRow(
             historyTokens,
             this.addSaturated(-1),
             this.addSaturated(+1),

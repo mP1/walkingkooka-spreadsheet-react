@@ -758,7 +758,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
                     left: left + CONTEXT_MENU_X_OFFSET,
                     top: top + CONTEXT_MENU_Y_OFFSET,
                 },
-                menuItems: selection.viewportContextMenuItems(
+                menuItems: selection.viewportContextMenu(
                     SpreadsheetHistoryHash.spreadsheetIdAndName(history.tokens()),
                     () => spreadsheetMetadata.getIgnoringDefaults(SpreadsheetMetadata.FROZEN_COLUMNS),
                     () => spreadsheetMetadata.getIgnoringDefaults(SpreadsheetMetadata.FROZEN_ROWS),
