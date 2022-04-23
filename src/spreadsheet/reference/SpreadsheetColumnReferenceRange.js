@@ -8,6 +8,8 @@ import SpreadsheetReferenceKind from "./SpreadsheetReferenceKind.js";
 import SpreadsheetRowReference from "./SpreadsheetRowReference.js";
 import SpreadsheetViewportSelectionAnchor from "./SpreadsheetViewportSelectionAnchor.js";
 import SystemObject from "../../SystemObject.js";
+import SpreadsheetCellRange from "./SpreadsheetCellRange.js";
+import SpreadsheetRowReferenceRange from "./SpreadsheetRowReferenceRange.js";
 
 const TYPE_NAME = "spreadsheet-column-reference-range";
 /**
@@ -44,6 +46,21 @@ export default class SpreadsheetColumnReferenceRange extends SpreadsheetColumnOr
         return this.end().equals(end) ?
             this :
             new SpreadsheetColumnReferenceRange(this.begin(), end);
+    }
+
+    setRows(rows) {
+        Preconditions.requireInstance(rows, SpreadsheetRowReferenceRange, "rows");
+
+        const columnBegin = this.begin();
+        const rowBegin = rows.begin();
+
+        const columnEnd = this.end();
+        const rowEnd = rows.end();
+
+        return new SpreadsheetCellRange(
+            columnBegin.setRow(rowBegin),
+            columnEnd.setRow(rowEnd)
+        );
     }
 
     columnOrRange() {

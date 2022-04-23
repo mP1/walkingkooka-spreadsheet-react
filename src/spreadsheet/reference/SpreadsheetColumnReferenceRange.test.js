@@ -1,8 +1,10 @@
+import SpreadsheetCellRange from "./SpreadsheetCellRange.js";
 import SpreadsheetCellReference from "./SpreadsheetCellReference.js";
 import SpreadsheetColumn from "./SpreadsheetColumn.js";
 import SpreadsheetColumnReferenceRange from "./SpreadsheetColumnReferenceRange.js";
 import SpreadsheetColumnReference from "./SpreadsheetColumnReference.js";
 import SpreadsheetRowReference from "./SpreadsheetRowReference.js";
+import SpreadsheetRowReferenceRange from "./SpreadsheetRowReferenceRange.js";
 import systemObjectTesting from "../../SystemObjectTesting.js";
 
 const JSON = "B:D";
@@ -196,6 +198,22 @@ testSetEnd("A:B", "A", "A:A");
 testSetEnd("A:B", "B", "A:B");
 testSetEnd("C:E", "A", "A:C");
 testSetEnd("C:E", "G", "C:G");
+
+// setRows..............................................................................................................
+
+function testSetRows(columns, rows, expected) {
+    test(columns + ".setRows " + rows, () => {
+        expect(
+            SpreadsheetColumnReferenceRange.parse(columns)
+                .setRows(SpreadsheetRowReferenceRange.parse(rows))
+        ).toStrictEqual(SpreadsheetCellRange.parse(expected));
+    });
+}
+
+testSetRows("A", "1:2", "A1:A2");
+testSetRows("B:C", "3", "B3:C3");
+testSetRows("D:E", "4:5", "D4:E5");
+testSetRows("F", "6", "F6");
 
 // columnOrRange........................................................................................................
 
