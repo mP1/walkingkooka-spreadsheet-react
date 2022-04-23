@@ -4,6 +4,8 @@ import SpreadsheetRowReferenceRange from "./SpreadsheetRowReferenceRange.js";
 import SpreadsheetRowReference from "./SpreadsheetRowReference.js";
 import systemObjectTesting from "../../SystemObjectTesting.js";
 import SpreadsheetRow from "./SpreadsheetRow.js";
+import SpreadsheetColumnReferenceRange from "./SpreadsheetColumnReferenceRange.js";
+import SpreadsheetCellRange from "./SpreadsheetCellRange.js";
 
 const JSON = "2:4";
 
@@ -201,6 +203,22 @@ testSetEnd("1:2", "1", "1:1");
 testSetEnd("1:2", "2", "1:2");
 testSetEnd("3:5", "1", "1:3");
 testSetEnd("3:5", "7", "3:7");
+
+// setColumns..........................................................................................................
+
+function testSetColumns(rows, columns, expected) {
+    test(rows + ".setColumns " + columns, () => {
+        expect(
+            SpreadsheetRowReferenceRange.parse(rows)
+                .setColumns(SpreadsheetColumnReferenceRange.parse(columns))
+        ).toStrictEqual(SpreadsheetCellRange.parse(expected));
+    });
+}
+
+testSetColumns("1:2", "A", "A1:A2");
+testSetColumns("3", "B:C", "B3:C3");
+testSetColumns("4:5", "D:E", "D4:E5");
+testSetColumns("6", "F", "F6");
 
 // rowOrRange........................................................................................................
 

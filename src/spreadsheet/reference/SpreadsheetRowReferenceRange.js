@@ -1,7 +1,9 @@
 import Preconditions from "../../Preconditions.js";
+import SpreadsheetCellRange from "./SpreadsheetCellRange.js";
 import SpreadsheetCellReference from "./SpreadsheetCellReference";
-import SpreadsheetColumnReference from "./SpreadsheetColumnReference.js";
 import SpreadsheetColumnOrRowReferenceRange from "./SpreadsheetColumnOrRowReferenceRange.js";
+import SpreadsheetColumnReference from "./SpreadsheetColumnReference.js";
+import SpreadsheetColumnReferenceRange from "./SpreadsheetColumnReferenceRange.js";
 import SpreadsheetHistoryHash from "../history/SpreadsheetHistoryHash.js";
 import spreadsheetRangeParse from "./SpreadsheetRangeParser.js";
 import SpreadsheetReferenceKind from "./SpreadsheetReferenceKind.js";
@@ -47,6 +49,21 @@ export default class SpreadsheetRowReferenceRange extends SpreadsheetColumnOrRow
             new SpreadsheetRowReferenceRange(this.begin(), end);
     }
 
+    setColumns(columns) {
+        Preconditions.requireInstance(columns, SpreadsheetColumnReferenceRange, "columns");
+
+        const rowBegin = this.begin();
+        const columnBegin = columns.begin();
+
+        const rowEnd = this.end();
+        const columnEnd = columns.end();
+
+        return new SpreadsheetCellRange(
+            columnBegin.setRow(rowBegin),
+            columnEnd.setRow(rowEnd)
+        );
+    }
+    
     rowOrRange() {
         const begin = this.begin();
         return begin.equals(this.end()) ?
