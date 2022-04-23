@@ -1,5 +1,7 @@
 import CharSequences from "../../CharSequences.js";
 import Character from "../../Character.js";
+import SpreadsheetCellFreezeHistoryHashToken from "../history/SpreadsheetCellFreezeHistoryHashToken.js";
+import SpreadsheetCellUnFreezeHistoryHashToken from "../history/SpreadsheetCellUnFreezeHistoryHashToken.js";
 import SpreadsheetColumnOrRowClearHistoryHashToken from "../history/SpreadsheetColumnOrRowClearHistoryHashToken.js";
 import SpreadsheetColumnOrRowDeleteHistoryHashToken from "../history/SpreadsheetColumnOrRowDeleteHistoryHashToken.js";
 import SpreadsheetColumnOrRowFreezeHistoryHashToken from "../history/SpreadsheetColumnOrRowFreezeHistoryHashToken.js";
@@ -165,7 +167,8 @@ export default class SpreadsheetSelection extends SystemObject {
     /**
      * Builds the context menu items for a cell or cell-range.
      */
-    viewportContextMenuCell(historyTokens, history) {
+    // viewportContextMenuColumnOrRow(historyTokens, before, after, frozenColumnOrRows, isHidden, range, history)
+    viewportContextMenuCell(asRange, frozenRange, historyTokens, history) {
         historyTokens[SpreadsheetHistoryHashTokens.SELECTION] = this;
         historyTokens[SpreadsheetHistoryHashTokens.SELECTION_ACTION] = null;
         historyTokens[SpreadsheetHistoryHashTokens.SELECTION_ANCHOR] = null;
@@ -175,6 +178,9 @@ export default class SpreadsheetSelection extends SystemObject {
         this.viewportContextMenuCellDelete(historyTokens, menuItems, history);
         this.viewportContextMenuColumnDelete(historyTokens, menuItems, history);
         this.viewportContextMenuRowDelete(historyTokens, menuItems, history);
+
+        this.viewportContextMenuCellFreeze(asRange, historyTokens, menuItems, history);
+        this.viewportContextMenuCellUnFreeze(asRange, frozenRange, historyTokens, menuItems, history);
 
         return menuItems;
     }
@@ -188,6 +194,38 @@ export default class SpreadsheetSelection extends SystemObject {
                 this.viewportDeleteCellText(),
                 SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_DELETE_CELL_ID,
                 false, // disabled
+                historyTokens
+            )
+        );
+    }
+
+    viewportContextMenuCellFreeze(range, historyTokens, menuItems, history) {
+        const canFreeze = range.canFreeze();
+
+        historyTokens[SpreadsheetHistoryHashTokens.SELECTION] = range;
+        historyTokens[SpreadsheetHistoryHashTokens.SELECTION_ACTION] = SpreadsheetCellFreezeHistoryHashToken.INSTANCE;
+
+        menuItems.push(
+            history.menuItem(
+                this.viewportFreezeCellsText(range),
+                SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_FREEZE_RANGE_ID,
+                !canFreeze, // disabled
+                historyTokens
+            )
+        );
+    }
+
+    viewportContextMenuCellUnFreeze(range, frozenRange, historyTokens, menuItems, history) {
+        const unfreeze = range.equalsIgnoringKind(frozenRange);
+
+        historyTokens[SpreadsheetHistoryHashTokens.SELECTION] = this;
+        historyTokens[SpreadsheetHistoryHashTokens.SELECTION_ACTION] = SpreadsheetCellUnFreezeHistoryHashToken.INSTANCE;
+
+        menuItems.push(
+            history.menuItem(
+                this.viewportUnFreezeCellText(),
+                SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_UNFREEZE_ID,
+                !unfreeze, // disabled, enable if range == frozen
                 historyTokens
             )
         );
@@ -449,6 +487,10 @@ export default class SpreadsheetSelection extends SystemObject {
         SystemObject.throwUnsupportedOperation();
     }
 
+    viewportFreezeCellsText(cells) {
+        return "Freeze " + cells;
+    }
+
     viewportFreezeColumnsRowsText(columns) {
         return "Freeze " + columns;
     }
@@ -487,6 +529,10 @@ export default class SpreadsheetSelection extends SystemObject {
 
     viewportInsertBefore2Text() {
         SystemObject.throwUnsupportedOperation();
+    }
+
+    viewportUnFreezeCellText() {
+        return "Un Freeze " + this;
     }
 
     viewportUnFreezeColumnsRowsText(columnsRowRange) {

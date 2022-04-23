@@ -18,8 +18,4 @@ export default class SpreadsheetExpressionReference extends SpreadsheetSelection
         // avoid referencing constant to avoid runtime TypeErrors.
         return /*SpreadsheetHistoryHash.CELL*/ "cell/" + this;
     }
-
-    viewportContextMenu(historyTokens, frozenColumns, frozenRows, isColumnHidden, isRowHidden, columnRange, rowRange, history) {
-        return this.viewportContextMenuCell(historyTokens, history);
-    }
 }

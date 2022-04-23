@@ -160,6 +160,18 @@ export default class SpreadsheetCellRange extends SpreadsheetExpressionReference
 
     // viewport.........................................................................................................
 
+    viewportContextMenu(historyTokens, frozenColumns, frozenRows, isColumnHidden, isRowHidden, columnRange, rowRange, history) {
+        const fc = frozenColumns();
+        const fr = frozenRows();
+
+        return this.viewportContextMenuCell(
+            this,
+            fc && fr && fc.setRows(fr),
+            historyTokens,
+            history
+        );
+    }
+
     /**
      * Only returns true if the given clicked is a cell and within this range.
      */
