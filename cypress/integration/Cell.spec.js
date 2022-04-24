@@ -635,7 +635,7 @@ describe(
                 .should("have.attr", "href")
                 .and('match', /#*\/*\/row\/1\/delete/);
 
-            testing.getById(SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_FREEZE_RANGE_ID)
+            testing.getById(SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_FREEZE_ID)
                 .should("have.text", "Freeze A1")
                 .should("have.attr", "href")
                 .and('match', /#*\/*\/cell\/A1\/freeze/);
@@ -670,7 +670,7 @@ describe(
                 .should("have.attr", "href")
                 .and('match', /#*\/*\/row\/2\/delete/);
 
-            testing.getById(SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_FREEZE_RANGE_ID)
+            testing.getById(SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_FREEZE_ID)
                 .should("have.text", "Freeze B2")
                 .should("have.attr", "aria-disabled", "true")
                 .should("have.attr", "href")
@@ -706,7 +706,7 @@ describe(
                 .should("have.attr", "href")
                 .and('match', /#*\/*\/row\/1\/delete/);
 
-            testing.getById(SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_FREEZE_RANGE_ID)
+            testing.getById(SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_FREEZE_ID)
                 .should("have.text", "Freeze A1:B1")
                 .should("have.attr", "href")
                 .and('match', /#*\/*\/cell\/A1:B1\/freeze/);
@@ -741,7 +741,7 @@ describe(
                 .should("have.attr", "href")
                 .and('match', /#*\/*\/row\/1:2\/delete/);
 
-            testing.getById(SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_FREEZE_RANGE_ID)
+            testing.getById(SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_FREEZE_ID)
                 .should("have.text", "Freeze A1:A2")
                 .should("have.attr", "href")
                 .and('match', /#*\/*\/cell\/A1:A2\/freeze/);
@@ -776,7 +776,7 @@ describe(
                 .should("have.attr", "href")
                 .and('match', /#*\/*\/row\/1:2\/delete/);
 
-            testing.getById(SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_FREEZE_RANGE_ID)
+            testing.getById(SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_FREEZE_ID)
                 .should("have.text", "Freeze A1:B2")
                 .should("have.attr", "href")
                 .and('match', /#*\/*\/cell\/A1:B2\/freeze/);
@@ -796,7 +796,7 @@ describe(
                 .find("LI")
                 .should("have.length", 5);
 
-            testing.getById(SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_FREEZE_RANGE_ID)
+            testing.getById(SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_FREEZE_ID)
                 .should("have.text", "Freeze B2:C3")
                 .should("have.attr", "aria-disabled", "true")
                 .should("have.attr", "href")
@@ -835,7 +835,7 @@ describe(
                 .should("have.attr", "href")
                 .and('match', /#*\/*\/row\/1\/delete/);
 
-            testing.getById(SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_FREEZE_RANGE_ID)
+            testing.getById(SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_FREEZE_ID)
                 .should("have.text", "Freeze A1")
                 .should("have.attr", "href")
                 .and('match', /#*\/*\/cell\/A1\/freeze/);
