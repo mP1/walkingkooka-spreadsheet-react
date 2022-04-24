@@ -149,7 +149,7 @@ export default class SpreadsheetSelection extends SystemObject {
     static VIEWPORT_CONTEXT_MENU_FREEZE_1_ID = SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_ID + "-freeze-1";
     static VIEWPORT_CONTEXT_MENU_FREEZE_2_ID = SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_ID + "-freeze-2";
     static VIEWPORT_CONTEXT_MENU_FREEZE_3_ID = SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_ID + "-freeze-3";
-    static VIEWPORT_CONTEXT_MENU_FREEZE_RANGE_ID = SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_ID + "-freeze-range";
+    static VIEWPORT_CONTEXT_MENU_FREEZE_ID = SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_ID + "-freeze";
 
     // the id for the hide column or row menu item.
     static VIEWPORT_CONTEXT_MENU_HIDE_ID = SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_ID + "-hide";
@@ -208,7 +208,7 @@ export default class SpreadsheetSelection extends SystemObject {
         menuItems.push(
             history.menuItem(
                 this.viewportFreezeCellsText(range),
-                SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_FREEZE_RANGE_ID,
+                SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_FREEZE_ID,
                 !canFreeze, // disabled
                 historyTokens
             )
