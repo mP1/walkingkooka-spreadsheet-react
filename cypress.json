@@ -1,9 +1,0 @@
-{
-  "baseUrl": "http://localhost:3000/",
-  "numTestsKeptInMemory": 200,
-  "retries": {
-    "runMode": 1,
-    "openMode": 1
-  },
-  "projectId": "q93cje"
-}
