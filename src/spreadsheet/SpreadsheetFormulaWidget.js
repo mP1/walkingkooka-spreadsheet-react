@@ -3,6 +3,7 @@ import Equality from "../Equality.js";
 import Keys from "../Keys.js";
 import PropTypes from "prop-types";
 import React from 'react';
+import SpreadsheetCellRange from "./reference/SpreadsheetCellRange.js";
 import SpreadsheetCellReferenceOrLabelName from "./reference/SpreadsheetCellReferenceOrLabelName.js";
 import SpreadsheetFormulaLoadAndEditHistoryHashToken from "./history/SpreadsheetFormulaLoadAndEditHistoryHashToken.js";
 import SpreadsheetFormulaSaveHistoryHashToken from "./history/SpreadsheetFormulaSaveHistoryHashToken.js";
@@ -139,7 +140,21 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetHistoryAwareSta
 
     render() {
         const state = this.state;
-        const {selection, value} = state;
+        const {
+            cellReference,
+            selection,
+            value
+        } = state;
+
+        // only enable if cell reference and not a range...
+        // const disabled = !(
+        //     //Boolean(cellReference) &&
+        //     !(selection instanceof SpreadsheetCellRange)
+        // );
+        const disabled = !(
+            Boolean(selection) &&
+            !(selection instanceof SpreadsheetCellRange)
+        );
 
         const edit = selection;
 
@@ -147,7 +162,7 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetHistoryAwareSta
             <TextField ref={this.textField}
                        id={SpreadsheetFormulaWidget.TEXT_FIELD_ID}
                        defaultValue={value}
-                       disabled={!edit}
+                       disabled={disabled}
                        onBlur={this.onBlur.bind(this)}
                        onFocus={this.onFocus.bind(this)}
                        onChange={this.onChange.bind(this)}

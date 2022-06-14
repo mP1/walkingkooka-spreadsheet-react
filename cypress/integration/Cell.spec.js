@@ -59,6 +59,16 @@ describe(
             testing.cellFormattedTextCheck(B2, "6.");
         });
 
+        it("Cell formula not editable with selection range", () => {
+            testing.cellFormulaEnterAndSave(A1, "=1+2+3");
+            testing.hashAppendAfterSpreadsheetName("/cell/A1:A2");
+
+            testing.formulaText()
+                .should("be.disabled")
+                .should("have.text", "")
+                .should("not.have.focus");
+        });
+
         it("Cell formula edit with reference", () => {
             testing.cellFormulaEnterAndSave(C3, "=1+2+3");
             testing.cellFormulaEnterAndSave(D4, "=C3+10");
