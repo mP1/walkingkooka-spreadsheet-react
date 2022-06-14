@@ -141,22 +141,14 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetHistoryAwareSta
     render() {
         const state = this.state;
         const {
-            cellReference,
             selection,
             value
         } = state;
 
-        // only enable if cell reference and not a range...
-        // const disabled = !(
-        //     //Boolean(cellReference) &&
-        //     !(selection instanceof SpreadsheetCellRange)
-        // );
         const disabled = !(
             Boolean(selection) &&
             !(selection instanceof SpreadsheetCellRange)
         );
-
-        const edit = selection;
 
         return (
             <TextField ref={this.textField}
