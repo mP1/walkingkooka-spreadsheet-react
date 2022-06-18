@@ -331,17 +331,24 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
                                                showError={showError}
                         />
                     </SpreadsheetAppBar>
-                    <SpreadsheetSelectLinkWidget key="SpreadsheetSelectLinkWidget"
-                                                 history={history}
-                                                 showError={showError}
-                    />
-                    <SpreadsheetFormulaWidget ref={this.formula}
-                                              key={"spreadsheetFormula"}
-                                              history={history}
-                                              spreadsheetViewportWidget={this.viewport}
-                                              spreadsheetDeltaCellCrud={spreadsheetDeltaCellCrud}
-                                              showError={showError}
-                    />
+                    <div style={{
+                        display: "flex",
+                        flexDirection: "row",
+                        flexWrap: "nowrap",
+                        width: "100%"
+                    }}>
+                        <SpreadsheetSelectLinkWidget key="SpreadsheetSelectLinkWidget"
+                                                     history={history}
+                                                     showError={showError}
+                        />
+                        <SpreadsheetFormulaWidget ref={this.formula}
+                                                  key={"spreadsheetFormula"}
+                                                  history={history}
+                                                  spreadsheetViewportWidget={this.viewport}
+                                                  spreadsheetDeltaCellCrud={spreadsheetDeltaCellCrud}
+                                                  showError={showError}
+                        />
+                    </div>
                     <Divider/>
                 </SpreadsheetBox>
                 <SpreadsheetViewportWidget key={"viewport"}

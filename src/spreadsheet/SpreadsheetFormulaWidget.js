@@ -162,11 +162,14 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetHistoryAwareSta
                        inputProps={{
                            maxLength: 8192,
                            style: {
-                               minWidth: "500px",
+                               width: "100%",
                                padding: "2px",
                            }
                        }}
                        inputRef={this.input}
+                       style={{
+                           flexGrow: 1,
+                       }}
             />
         );
     }
