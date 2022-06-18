@@ -64,7 +64,7 @@ describe(
             testing.hashAppendAfterSpreadsheetName("/cell/A1:A2");
 
             testing.formulaText()
-                .should("be.disabled")
+                .should("be.hidden")
                 .should("have.text", "")
                 .should("not.have.focus");
         });
