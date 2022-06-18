@@ -145,16 +145,14 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetHistoryAwareSta
             value
         } = state;
 
-        const disabled = !(
-            Boolean(selection) &&
-            !(selection instanceof SpreadsheetCellRange)
-        );
+        // the cell could be selected via a SpreadsheetCellReference or a Label pointing to a cell.
+        const cellSelected = Boolean(selection) &&
+            !(selection instanceof SpreadsheetCellRange);
 
         return (
             <TextField ref={this.textField}
                        id={SpreadsheetFormulaWidget.TEXT_FIELD_ID}
                        defaultValue={value}
-                       disabled={disabled}
                        onBlur={this.onBlur.bind(this)}
                        onFocus={this.onFocus.bind(this)}
                        onChange={this.onChange.bind(this)}
@@ -169,6 +167,7 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetHistoryAwareSta
                        inputRef={this.input}
                        style={{
                            flexGrow: 1,
+                           visibility: cellSelected ? "visible" : "hidden",
                        }}
             />
         );
