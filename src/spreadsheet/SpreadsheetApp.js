@@ -321,7 +321,6 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
                 <SpreadsheetBox ref={this.aboveViewport}
                                 key={{windowDimensions: state.windowDimensions}}
                                 dimensions={this.onAboveViewportResize.bind(this)}
-                                className={classes.header}
                 >
                     <SpreadsheetAppBar key={"AppBar"}
                                        history={history}>
