@@ -11,7 +11,6 @@ import Preconditions from "../Preconditions.js";
 import React from 'react';
 import RelativeUrl from "../net/RelativeUrl.js";
 import SpreadsheetAppBar from "../widget/SpreadsheetAppBar.js";
-import SpreadsheetBox from "../widget/SpreadsheetBox.js";
 import SpreadsheetDelta from "./engine/SpreadsheetDelta.js";
 import SpreadsheetEngineEvaluation from "./engine/SpreadsheetEngineEvaluation.js";
 import SpreadsheetExpressionReferenceSimilarities from "./SpreadsheetExpressionReferenceSimilarities.js";
@@ -31,7 +30,6 @@ import SpreadsheetSelectAutocompleteWidget from "./reference/SpreadsheetSelectAu
 import SpreadsheetSelectLinkWidget from "./reference/SpreadsheetSelectLinkWidget.js";
 import SpreadsheetSettingsWidget from "./settings/SpreadsheetSettingsWidget.js";
 import SpreadsheetViewportWidget from "./SpreadsheetViewportWidget.js";
-import WindowResizer from "../widget/WindowResizer.js";
 
 const useStyles = theme => ({
     header: {
@@ -46,7 +44,6 @@ const useStyles = theme => ({
  *      <li>spreadsheetName: The current spreadsheet name</li>
  *      <li>boolean creatingEmptySpreadsheet: when true indicates a new spreadsheet is being created</li>
  *      <li>SpreadsheetMetadata spreadsheetMetadata: The current SpreadsheetMetadata</li>
- *      <li>{} windowDimensions: Holds the width and height of the viewport</li>
  * </ul>
  */
 class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
@@ -63,7 +60,6 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
         this.messenger = messenger;
 
         this.notification = React.createRef();
-        this.aboveViewport = React.createRef();
         this.formula = React.createRef();
         this.viewport = React.createRef();
 
@@ -137,6 +133,12 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
         );
 
         this.onSpreadsheetMetadataRemover = this.spreadsheetMetadataCrud.addListener(this.onSpreadsheetMetadata.bind(this));
+
+        // initiate an empty spreadsheet
+        setTimeout(
+            () => this.spreadsheetEmptyCreate(),
+            1
+        );
     }
 
     /**
@@ -149,10 +151,6 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
             creatingEmptySpreadsheet: false,
             spreadsheetId: historyHashTokens[SpreadsheetHistoryHash.SPREADSHEET_ID],
             spreadsheetMetadata: SpreadsheetMetadata.EMPTY,
-            windowDimensions: {
-                width: window.innerWidth,
-                height: window.innerHeight,
-            },
         };
     }
 
@@ -186,7 +184,7 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
 
     /**
      * This is called when the state changes and returns the history tokens equivalent. This may involve
-     * creating a new spreadsheet, loading a new id, correcting the name and also updating the viewport dimensions.
+     * creating a new spreadsheet, loading a new id, correcting the name so the history hash matches what has been saved etc.
      */
     historyTokensFromState(prevState) {
         const historyTokens = SpreadsheetHistoryHashTokens.emptyTokens();
@@ -221,30 +219,6 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
                 }
             }else {
                 this.spreadsheetEmptyCreate();
-            }
-        }
-
-        // sync windowDimensions with the viewport widget
-        const windowDimensions = state.windowDimensions;
-        const aboveViewportDimensions = state.aboveViewportDimensions;
-
-        const viewport = this.viewport.current;
-
-        if(windowDimensions && aboveViewportDimensions && viewport){
-            const previous = viewport.state.dimensions || {
-                width: 0,
-                height: 0,
-            };
-            const width = windowDimensions.width;
-            const height = windowDimensions.height - aboveViewportDimensions.height;
-
-            if(previous.width !== width || previous.height !== height){
-                viewport.setState({
-                    dimensions: {
-                        width: width,
-                        height: height,
-                    }
-                });
             }
         }
 
@@ -288,7 +262,6 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
      */
     render() {
         const {
-            classes,
             history,
             notificationShow,
             showError,
@@ -301,51 +274,51 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
             spreadsheetLabelCrud,
             spreadsheetMetadataCrud,
             spreadsheetDeltaRowCrud,
-            state,
         } = this;
 
         return (
             <React.Fragment>
-                <WindowResizer dimensions={this.onWindowResized.bind(this)}>
-                    <SpreadsheetBox ref={this.aboveViewport}
-                                    key={{windowDimensions: state.windowDimensions}}
-                                    dimensions={this.onAboveViewportResize.bind(this)}
-                    >
-                        <SpreadsheetAppBar key={"AppBar"}
-                                           history={history}>
-                            <SpreadsheetNameWidget key={"SpreadsheetName"}
-                                                   history={history}
-                                                   spreadsheetMetadataCrud={spreadsheetMetadataCrud}
-                                                   showError={showError}
-                            />
-                        </SpreadsheetAppBar>
-                        <div style={{
-                            display: "flex",
-                            flexDirection: "row",
-                            flexWrap: "nowrap",
-                            width: "100%"
-                        }}>
-                            <SpreadsheetSelectLinkWidget key="SpreadsheetSelectLinkWidget"
-                                                         history={history}
-                                                         showError={showError}
-                            />
-                            <SpreadsheetFormulaWidget ref={this.formula}
-                                                      key={"spreadsheetFormula"}
-                                                      history={history}
-                                                      spreadsheetViewportWidget={this.viewport}
-                                                      spreadsheetDeltaCellCrud={spreadsheetDeltaCellCrud}
-                                                      showError={showError}
-                            />
-                        </div>
-                        <Divider/>
-                    </SpreadsheetBox>
-                    <SpreadsheetViewportWidget key={"viewport"}
+                <div style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    flexWrap: "nowrap",
+                    width: "100%",
+                    height: "100vh",
+                }}>
+                    <SpreadsheetAppBar key={"AppBar"}
+                                       history={history}>
+                        <SpreadsheetNameWidget key={"SpreadsheetName"}
+                                               history={history}
+                                               spreadsheetMetadataCrud={spreadsheetMetadataCrud}
+                                               showError={showError}
+                        />
+                    </SpreadsheetAppBar>
+                    <div style={{
+                        display: "flex",
+                        flexDirection: "row",
+                        flexWrap: "nowrap",
+                        width: "100%"
+                    }}>
+                        <SpreadsheetSelectLinkWidget key="SpreadsheetSelectLinkWidget"
+                                                     history={history}
+                                                     showError={showError}
+                        />
+                        <SpreadsheetFormulaWidget ref={this.formula}
+                                                  key={"spreadsheetFormula"}
+                                                  history={history}
+                                                  spreadsheetViewportWidget={this.viewport}
+                                                  spreadsheetDeltaCellCrud={spreadsheetDeltaCellCrud}
+                                                  showError={showError}
+                        />
+                    </div>
+                    <Divider/>
+                    <SpreadsheetViewportWidget ref={this.viewport}
+                                               key={"viewport"}
                                                clearSelection={this.clearSelection.bind(this)}
                                                deleteSelection={this.deleteSelection.bind(this)}
                                                history={history}
                                                insertAfterSelection={this.insertAfterSelection.bind(this)}
                                                insertBeforeSelection={this.insertBeforeSelection.bind(this)}
-                                               ref={this.viewport}
                                                messenger={messenger}
                                                spreadsheetDeltaCellCrud={spreadsheetDeltaCellCrud}
                                                spreadsheetDeltaColumnCrud={spreadsheetDeltaColumnCrud}
@@ -354,7 +327,7 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
                                                spreadsheetMetadataCrud={spreadsheetMetadataCrud}
                                                showError={showError}
                     />
-                </WindowResizer>
+                </div>
                 <SpreadsheetSelectAutocompleteWidget key="navigateAutocompleteWidget"
                                                      history={history}
                                                      getSimilarities={this.similaritiesGet.bind(this)}
@@ -505,34 +478,6 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
             (json) => success(SpreadsheetExpressionReferenceSimilarities.fromJson(json)),
             failure,
         );
-    }
-
-    // resizing.........................................................................................................
-
-    /**
-     * Updates the state windowDimensions which will triggers a redraw of the spreadsheet content and reloading of
-     * the viewport cells
-     */
-    onWindowResized(dimensions) {
-        console.log("onWindowResized", dimensions);
-
-        this.setState({
-            windowDimensions: dimensions,
-        });
-
-        const widget = this.aboveViewport.current;
-        widget && widget.fireResize();
-    }
-
-    /**
-     * Fired whenever the header and other tools above the cells viewport know their new size
-     */
-    onAboveViewportResize(dimensions) {
-        console.log("onAboveViewportResize", dimensions);
-
-        this.setState({
-            aboveViewportDimensions: dimensions,
-        });
     }
 
     // toString.........................................................................................................
