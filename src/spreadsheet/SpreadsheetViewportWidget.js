@@ -153,7 +153,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
     init() {
         this.horizontalSlider = React.createRef();
         this.verticalSlider = React.createRef();
-        this.viewportTable = React.createRef();
+        this.viewportElement = React.createRef();
     }
 
     componentDidMount() {
@@ -166,6 +166,23 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
 
         this.onSpreadsheetLabelCrudRemover = props.spreadsheetLabelCrud.addListener(this.onSpreadsheetLabel.bind(this));
         this.onSpreadsheetMetadataRemover = props.spreadsheetMetadataCrud.addListener(this.onSpreadsheetMetadata.bind(this));
+
+        this.resizeObserver = new ResizeObserver(
+            (entries) => {
+
+                for (const entry of entries) {
+                    this.setState({
+                        dimensions: {
+                            width: entry.contentRect.width,
+                            height: entry.contentRect.height,
+                        }
+                    });
+                }
+            }
+        );
+
+        // need to watch viewport resizing because size changes require a reload of the viewport cells.
+        this.resizeObserver.observe(this.viewportElement.current);
     }
 
     /**
@@ -175,8 +192,8 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
     onSpreadsheetDelta(method, id, url, requestDelta, responseDelta) {
         const state = this.state;
 
-        const viewportTable = this.viewportTable.current;
-        if(viewportTable){
+        const viewportElement = this.viewportElement.current;
+        if(viewportElement){
             const metadata = state.spreadsheetMetadata;
 
             const window = responseDelta.window();
@@ -347,15 +364,15 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
         switch(method) {
             case HttpMethod.DELETE:
             case HttpMethod.POST:
-                const viewportTable = this.viewportTable.current;
-                if(viewportTable){
+                const viewportElement = this.viewportElement.current;
+                if(viewportElement){
                     this.loadCells(
                         this.state.spreadsheetMetadata.getIgnoringDefaults(SpreadsheetMetadata.VIEWPORT_CELL)
                             .viewport(
                                 0,
                                 0,
-                                viewportTable.offsetWidth - ROW_WIDTH,
-                                viewportTable.offsetHeight - COLUMN_HEIGHT,
+                                viewportElement.offsetWidth - ROW_WIDTH,
+                                viewportElement.offsetHeight - COLUMN_HEIGHT,
                             ),
                         null, // selection
                         null, // selectionAnchor
@@ -413,8 +430,12 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
 
         this.onSpreadsheetMetadataRemover && this.onSpreadsheetMetadataRemover();
         delete this.onSpreadsheetMetadataRemover;
-    }
 
+        if (this.resizeObserver) {
+            this.resizeObserver.disconnect();
+        }
+    }
+    
     initialStateFromProps(props) {
         const historyHashTokens = props.history.tokens();
 
@@ -427,7 +448,8 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
             rowReferenceToRows: ImmutableMap.EMPTY,
             columnWidths: ImmutableMap.EMPTY,
             rowHeights: ImmutableMap.EMPTY,
-            dimensions: props.dimensions,
+            dimensions: {
+            },
             spreadsheetMetadata: SpreadsheetMetadata.EMPTY,
             window: [],
             contextMenu: {},
@@ -457,9 +479,9 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
 
         const props = this.props;
 
-        const viewportTable = this.viewportTable.current;
+        const viewportElement = this.viewportElement.current;
 
-        if(viewportTable){
+        if(viewportElement){
             const window = state.window;
             const prevWindow = prevState.window;
 
@@ -479,8 +501,8 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
             const viewportCell = metadata.getIgnoringDefaults(SpreadsheetMetadata.VIEWPORT_CELL);
 
             if(viewportCell){
-                const width = viewportTable.offsetWidth - ROW_WIDTH;
-                const height = viewportTable.offsetHeight - COLUMN_HEIGHT;
+                const width = viewportElement.offsetWidth - ROW_WIDTH;
+                const height = viewportElement.offsetHeight - COLUMN_HEIGHT;
 
                 const selectionAnchor = state.selectionAnchor;
 
@@ -835,12 +857,20 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
      * Renders a TABLE which will hold all the columns, rows and cells visible in the spreadsheet viewport.
      */
     render() {
-        const {dimensions, spreadsheetMetadata} = this.state;
+        const {spreadsheetMetadata} = this.state;
         const home = spreadsheetMetadata && spreadsheetMetadata.getIgnoringDefaults(SpreadsheetMetadata.VIEWPORT_CELL);
 
-        return (dimensions && home) ?
-                this.renderViewport(dimensions, spreadsheetMetadata, home) :
-                this.renderViewportEmpty();
+        return <div ref={this.viewportElement} style={
+            {
+                flexGrow: 1,
+                width: "100%",
+                //height: "100%",
+            }}>
+            {(home) ?
+                this.renderViewport(spreadsheetMetadata, home) :
+                this.renderViewportEmpty()
+            }
+        </div>;
     }
 
     static VIEWPORT_CONTEXT_MENU_ID = SpreadsheetViewportWidget.VIEWPORT_ID + "context-Menu";
@@ -848,16 +878,19 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
     /**
      * Renders the column and row gutters and cells within the viewport.
      */
-    renderViewport(dimensions, spreadsheetMetadata, home) {
+    renderViewport(spreadsheetMetadata, home) {
         const state = this.state;
-        const selection = state.selection;
+        const {
+            contextMenu,
+            dimensions,
+            selection
+        } = state;
 
         // need to resolve the selection to an actual cell or range so these may be highlighted.........................
         let selectionNotLabel = selection instanceof SpreadsheetLabelName ?
             state.labelToReferences.get(selection) :
             selection;
 
-        const contextMenu = state.contextMenu;
         const {anchorPosition, menuItems} = contextMenu;
         const contextMenuOpen = !!menuItems;
 
@@ -866,7 +899,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
         // handles any viewport blur events, clearing the state.focused flag............................................
         const onBlur = (e) => {
             // only set focused to false if new focus is outside viewport table.
-            if(!this.viewportTable.current.contains(e.relatedTarget)){
+            if(!this.viewportElement.current.contains(e.relatedTarget)){
                 this.setState({
                     focused: false,
                 });
@@ -1006,10 +1039,10 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
                 if(!begin.equals(topLeft)){
                     console.log("onHorizontalVerticalSliderChange " + viewport + " TO " + new SpreadsheetCellRange(topLeft, topLeft));
 
-                    const viewportTable = this.viewportTable.current;
+                    const viewportElement = this.viewportElement.current;
 
-                    const width = viewportTable.offsetWidth - ROW_WIDTH;
-                    const height = viewportTable.offsetHeight - COLUMN_HEIGHT;
+                    const width = viewportElement.offsetWidth - ROW_WIDTH;
+                    const height = viewportElement.offsetHeight - COLUMN_HEIGHT;
 
                     this.loadCells(
                         topLeft.viewport(
@@ -1077,7 +1110,6 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
         return [
             <TableContainer id={SpreadsheetViewportWidget.VIEWPORT_ID}
                             key={SpreadsheetViewportWidget.VIEWPORT_ID + "TableContainer"}
-                            ref={this.viewportTable}
                             component={Paper}
                             style={{
                                 width: width,
@@ -1314,7 +1346,6 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
 SpreadsheetViewportWidget.propTypes = {
     clearSelection: PropTypes.func.isRequired,
     deleteSelection: PropTypes.func.isRequired,
-    dimensions: PropTypes.object,
     history: PropTypes.instanceOf(SpreadsheetHistoryHash).isRequired,
     insertAfterSelection: PropTypes.func.isRequired,
     insertBeforeSelection: PropTypes.func.isRequired,
