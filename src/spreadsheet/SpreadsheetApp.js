@@ -1,6 +1,7 @@
 import './SpreadsheetApp.css';
 
 import {withStyles} from '@mui/styles';
+import CharSequences from "../CharSequences.js";
 import Divider from '@mui/material/Divider';
 import Equality from "../Equality.js";
 import ExpressionNumber from "../math/ExpressionNumber.js";
@@ -31,7 +32,6 @@ import SpreadsheetSelectLinkWidget from "./reference/SpreadsheetSelectLinkWidget
 import SpreadsheetSettingsWidget from "./settings/SpreadsheetSettingsWidget.js";
 import SpreadsheetViewportWidget from "./SpreadsheetViewportWidget.js";
 import WindowResizer from "../widget/WindowResizer.js";
-import CharSequences from "../CharSequences.js";
 
 const useStyles = theme => ({
     header: {
