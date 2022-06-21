@@ -359,25 +359,27 @@ export default class SpreadsheetHistoryHash extends SpreadsheetHistoryHashTokens
                         token = tokens.shift();
                     }
 
-                    // /settings/
-                    if(SpreadsheetHistoryHashTokens.SETTINGS === token){
-                        settings = true;
-                        settingsItem = undefined;
-                        settingsAction = null;
+                    // /settings/ cannot follow selectionAction
+                    if(!selectionAction) {
+                        if(SpreadsheetHistoryHashTokens.SETTINGS === token){
+                            settings = true;
+                            settingsItem = undefined;
+                            settingsAction = null;
 
-                        token = tokens.shift();
-                        if(null != token){
-                            if(isSettingsToken(token)){
-                                settingsItem = token;
-                                token = tokens.shift();
-                                if(null != token){
-                                    settingsAction = new SpreadsheetSettingsSaveHistoryHashToken(
-                                        "" === token ? null : decodeURIComponent(token)
-                                    );
+                            token = tokens.shift();
+                            if(null != token){
+                                if(isSettingsToken(token)){
+                                    settingsItem = token;
                                     token = tokens.shift();
+                                    if(null != token){
+                                        settingsAction = new SpreadsheetSettingsSaveHistoryHashToken(
+                                            "" === token ? null : decodeURIComponent(token)
+                                        );
+                                        token = tokens.shift();
+                                    }
+                                }else {
+                                    break;
                                 }
-                            }else {
-                                break;
                             }
                         }
                     }
@@ -512,6 +514,7 @@ export default class SpreadsheetHistoryHash extends SpreadsheetHistoryHashTokens
                             } else {
                                 verified[SpreadsheetHistoryHashTokens.SELECTION_ACTION] = selectionAction;
                             }
+                            settings = null;
                         }
 
                         if(selection.isColumnOrRowScalarOrRange() && selectionAction instanceof SpreadsheetColumnOrRowHistoryHashToken){
