@@ -926,11 +926,8 @@ testParseAndStringify(
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
-        "selection": CELL,
-        "selection-action": FORMULA_LOAD_EDIT,
-        "select": true,
-        "settings": true,
-    }
+    },
+    "Invalid token: \"settings\""
 );
 
 testParseAndStringify(
@@ -1921,79 +1918,10 @@ testParseAndStringify(
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
-        "selection": SpreadsheetCellReference.parse("B2"),
-        "selection-action": FORMULA_LOAD_EDIT,
-        "settings": true,
-    }
+    },
+    "Invalid token: \"settings\""
 );
 
-testParseAndStringify(
-    "/spreadsheet-id-123/spreadsheet-name-456/cell/B2/formula/settings/!invalid",
-    {
-        "spreadsheet-id": "spreadsheet-id-123",
-        "spreadsheet-name": SPREADSHEET_NAME,
-    }
-);
-
-testParseAndStringify(
-    "/spreadsheet-id-123/spreadsheet-name-456/cell/B2/formula/settings/metadata",
-    {
-        "spreadsheet-id": "spreadsheet-id-123",
-        "spreadsheet-name": SPREADSHEET_NAME,
-        "selection": SpreadsheetCellReference.parse("B2"),
-        "selection-action": FORMULA_LOAD_EDIT,
-        "settings": true,
-        "settings-item": "metadata",
-    }
-);
-
-testParseAndStringify(
-    "/spreadsheet-id-123/spreadsheet-name-456/cell/B2/formula/settings/text",
-    {
-        "spreadsheet-id": "spreadsheet-id-123",
-        "spreadsheet-name": SPREADSHEET_NAME,
-        "selection": SpreadsheetCellReference.parse("B2"),
-        "selection-action": FORMULA_LOAD_EDIT,
-        "settings": true,
-        "settings-item": "text",
-    }
-);
-
-testParseAndStringify(
-    "/spreadsheet-id-123/spreadsheet-name-456/cell/B2/formula/settings/number",
-    {
-        "spreadsheet-id": "spreadsheet-id-123",
-        "spreadsheet-name": SPREADSHEET_NAME,
-        "selection": SpreadsheetCellReference.parse("B2"),
-        "selection-action": FORMULA_LOAD_EDIT,
-        "settings": true,
-        "settings-item": "number",
-    }
-);
-
-testParseAndStringify(
-    "/spreadsheet-id-123/spreadsheet-name-456/cell/B2/formula/settings/date-time",
-    {
-        "spreadsheet-id": "spreadsheet-id-123",
-        "spreadsheet-name": SPREADSHEET_NAME,
-        "selection": SpreadsheetCellReference.parse("B2"),
-        "selection-action": FORMULA_LOAD_EDIT,
-        "settings": true,
-        "settings-item": "date-time",
-    }
-);
-
-testParseAndStringify(
-    "/spreadsheet-id-123/spreadsheet-name-456/cell/B2/formula/settings/style",
-    {
-        "spreadsheet-id": "spreadsheet-id-123",
-        "spreadsheet-name": SPREADSHEET_NAME,
-        "selection": SpreadsheetCellReference.parse("B2"),
-        "selection-action": FORMULA_LOAD_EDIT,
-        "settings": true,
-        "settings-item": "style",
-    }
-);
 testParseAndStringify(
     "/spreadsheet-id-123/spreadsheet-name-456/label/Label123/settings/style",
     {
@@ -2002,18 +1930,6 @@ testParseAndStringify(
         "label": LABEL,
         "settings": true,
         "settings-item": "style",
-    }
-);
-
-testParseAndStringify(
-    "/spreadsheet-id-123/spreadsheet-name-456/cell/A1/formula/settings/metadata",
-    {
-        "spreadsheet-id": "spreadsheet-id-123",
-        "spreadsheet-name": SPREADSHEET_NAME,
-        "selection": CELL,
-        "selection-action": FORMULA_LOAD_EDIT,
-        "settings": true,
-        "settings-item": SpreadsheetSettingsWidgetHistoryHashTokens.METADATA,
     }
 );
 
@@ -3202,7 +3118,7 @@ testMerge(
     {
         "settings": true,
     },
-    "/123abc/Untitled456/cell/A1/delete/settings"
+    "/123abc/Untitled456/cell/A1/delete"
 );
 
 testMerge(
@@ -3210,110 +3126,7 @@ testMerge(
     {
         "settings": true,
     },
-    "/123abc/Untitled456/cell/A1/formula/settings"
-);
-
-testMerge(
-    "/123abc/Untitled456/cell/A1/formula/settings",
-    {
-        "settings": true,
-    },
-    "/123abc/Untitled456/cell/A1/formula/settings"
-);
-
-testMerge(
-    "/123abc/Untitled456/cell/A1/formula/settings",
-    {
-        "settings": true,
-        "settings-item": "!invalid"
-    },
-    "/123abc/Untitled456/cell/A1/formula/settings"
-);
-
-testMerge(
-    "/123abc/Untitled456/cell/A1/formula/settings",
-    {
-        "settings": true,
-        "settings-item": SpreadsheetSettingsWidgetHistoryHashTokens.METADATA,
-    },
-    "/123abc/Untitled456/cell/A1/formula/settings/metadata"
-);
-
-testMerge(
-    "/123abc/Untitled456/cell/A1/formula/settings",
-    {
-        "settings": true,
-        "settings-item": SpreadsheetSettingsWidgetHistoryHashTokens.TEXT,
-    },
-    "/123abc/Untitled456/cell/A1/formula/settings/text"
-);
-
-testMerge(
-    "/123abc/Untitled456/cell/A1/formula/settings",
-    {
-        "settings": true,
-        "settings-item": SpreadsheetSettingsWidgetHistoryHashTokens.NUMBER,
-    },
-    "/123abc/Untitled456/cell/A1/formula/settings/number"
-);
-
-testMerge(
-    "/123abc/Untitled456/cell/A1/formula/settings",
-    {
-        "settings": true,
-        "settings-item": SpreadsheetSettingsWidgetHistoryHashTokens.DATE_TIME,
-    },
-    "/123abc/Untitled456/cell/A1/formula/settings/date-time"
-);
-
-testMerge(
-    "/123abc/Untitled456/cell/A1/formula/settings",
-    {
-        "settings": true,
-        "settings-item": SpreadsheetSettingsWidgetHistoryHashTokens.STYLE,
-    },
-    "/123abc/Untitled456/cell/A1/formula/settings/style"
-);
-
-testMerge(
-    "/123abc/Untitled456/cell/A1/formula/settings",
-    {
-        "settings": false,
-    },
     "/123abc/Untitled456/cell/A1/formula"
-);
-
-testMerge(
-    "/123abc/Untitled456/cell/A1/formula/settings",
-    {
-        "settings": false,
-        "settings-item": SpreadsheetSettingsWidgetHistoryHashTokens.METADATA,
-    },
-    "/123abc/Untitled456/cell/A1/formula"
-);
-
-testMerge(
-    "/123abc/Untitled456/cell/A1/formula/settings",
-    {
-        "spreadsheet-id": "456def",
-        "spreadsheet-name": "new-spreadsheet-name-456",
-        "selection": SpreadsheetCellReference.parse("B2"),
-        "selection-action": FORMULA_LOAD_EDIT,
-        "settings": true,
-    },
-    "/456def/new-spreadsheet-name-456/cell/B2/formula/settings"
-);
-
-testMerge(
-    "/123abc/Untitled456/cell/A1/formula/settings",
-    {
-        "spreadsheet-id": "456def",
-        "spreadsheet-name": "new-spreadsheet-name-456",
-        "selection": SpreadsheetCellReference.parse("B2"),
-        "selection-action": FORMULA_LOAD_EDIT,
-        "settings": false,
-    },
-    "/456def/new-spreadsheet-name-456/cell/B2/formula"
 );
 
 testMerge(
