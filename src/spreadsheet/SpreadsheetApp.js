@@ -305,7 +305,56 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
         } = this;
 
         return (
-            <WindowResizer dimensions={this.onWindowResized.bind(this)}>
+            <React.Fragment>
+                <WindowResizer dimensions={this.onWindowResized.bind(this)}>
+                    <SpreadsheetBox ref={this.aboveViewport}
+                                    key={{windowDimensions: state.windowDimensions}}
+                                    dimensions={this.onAboveViewportResize.bind(this)}
+                    >
+                        <SpreadsheetAppBar key={"AppBar"}
+                                           history={history}>
+                            <SpreadsheetNameWidget key={"SpreadsheetName"}
+                                                   history={history}
+                                                   spreadsheetMetadataCrud={spreadsheetMetadataCrud}
+                                                   showError={showError}
+                            />
+                        </SpreadsheetAppBar>
+                        <div style={{
+                            display: "flex",
+                            flexDirection: "row",
+                            flexWrap: "nowrap",
+                            width: "100%"
+                        }}>
+                            <SpreadsheetSelectLinkWidget key="SpreadsheetSelectLinkWidget"
+                                                         history={history}
+                                                         showError={showError}
+                            />
+                            <SpreadsheetFormulaWidget ref={this.formula}
+                                                      key={"spreadsheetFormula"}
+                                                      history={history}
+                                                      spreadsheetViewportWidget={this.viewport}
+                                                      spreadsheetDeltaCellCrud={spreadsheetDeltaCellCrud}
+                                                      showError={showError}
+                            />
+                        </div>
+                        <Divider/>
+                    </SpreadsheetBox>
+                    <SpreadsheetViewportWidget key={"viewport"}
+                                               clearSelection={this.clearSelection.bind(this)}
+                                               deleteSelection={this.deleteSelection.bind(this)}
+                                               history={history}
+                                               insertAfterSelection={this.insertAfterSelection.bind(this)}
+                                               insertBeforeSelection={this.insertBeforeSelection.bind(this)}
+                                               ref={this.viewport}
+                                               messenger={messenger}
+                                               spreadsheetDeltaCellCrud={spreadsheetDeltaCellCrud}
+                                               spreadsheetDeltaColumnCrud={spreadsheetDeltaColumnCrud}
+                                               spreadsheetDeltaRowCrud={spreadsheetDeltaRowCrud}
+                                               spreadsheetLabelCrud={spreadsheetLabelCrud}
+                                               spreadsheetMetadataCrud={spreadsheetMetadataCrud}
+                                               showError={showError}
+                    />
+                </WindowResizer>
                 <SpreadsheetSelectAutocompleteWidget key="navigateAutocompleteWidget"
                                                      history={history}
                                                      getSimilarities={this.similaritiesGet.bind(this)}
@@ -318,59 +367,12 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
                                                notificationShow={notificationShow}
                                                showError={showError}
                 />
-                <SpreadsheetBox ref={this.aboveViewport}
-                                key={{windowDimensions: state.windowDimensions}}
-                                dimensions={this.onAboveViewportResize.bind(this)}
-                >
-                    <SpreadsheetAppBar key={"AppBar"}
-                                       history={history}>
-                        <SpreadsheetNameWidget key={"SpreadsheetName"}
-                                               history={history}
-                                               spreadsheetMetadataCrud={spreadsheetMetadataCrud}
-                                               showError={showError}
-                        />
-                    </SpreadsheetAppBar>
-                    <div style={{
-                        display: "flex",
-                        flexDirection: "row",
-                        flexWrap: "nowrap",
-                        width: "100%"
-                    }}>
-                        <SpreadsheetSelectLinkWidget key="SpreadsheetSelectLinkWidget"
-                                                     history={history}
-                                                     showError={showError}
-                        />
-                        <SpreadsheetFormulaWidget ref={this.formula}
-                                                  key={"spreadsheetFormula"}
-                                                  history={history}
-                                                  spreadsheetViewportWidget={this.viewport}
-                                                  spreadsheetDeltaCellCrud={spreadsheetDeltaCellCrud}
-                                                  showError={showError}
-                        />
-                    </div>
-                    <Divider/>
-                </SpreadsheetBox>
-                <SpreadsheetViewportWidget key={"viewport"}
-                                           clearSelection={this.clearSelection.bind(this)}
-                                           deleteSelection={this.deleteSelection.bind(this)}
-                                           history={history}
-                                           insertAfterSelection={this.insertAfterSelection.bind(this)}
-                                           insertBeforeSelection={this.insertBeforeSelection.bind(this)}
-                                           ref={this.viewport}
-                                           messenger={messenger}
-                                           spreadsheetDeltaCellCrud={spreadsheetDeltaCellCrud}
-                                           spreadsheetDeltaColumnCrud={spreadsheetDeltaColumnCrud}
-                                           spreadsheetDeltaRowCrud={spreadsheetDeltaRowCrud}
-                                           spreadsheetLabelCrud={spreadsheetLabelCrud}
-                                           spreadsheetMetadataCrud={spreadsheetMetadataCrud}
-                                           showError={showError}
-                />
                 <SpreadsheetSettingsWidget history={history}
                                            spreadsheetMetadataCrud={spreadsheetMetadataCrud}
                                            notificationShow={notificationShow}
                                            showError={showError}
                 />
-            </WindowResizer>
+            </React.Fragment>
         );
     }
 
