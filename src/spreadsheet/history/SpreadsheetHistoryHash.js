@@ -57,11 +57,7 @@ function split(pathname) {
 function isSettingsToken(token) {
     return SpreadsheetSettingsWidgetHistoryHashTokens.accordions()
             .indexOf(token) > -1 ||
-        isSettingsSaveableToken(token);
-}
-
-function isSettingsSaveableToken(token) {
-    return Boolean(SpreadsheetSettingsWidgetHistoryHashTokens.parentAccordion(token));
+        Boolean(SpreadsheetSettingsWidgetHistoryHashTokens.parentAccordion(token));
 }
 
 function copyTx(from, to) {
@@ -374,19 +370,11 @@ export default class SpreadsheetHistoryHash extends SpreadsheetHistoryHashTokens
                             if(isSettingsToken(token)){
                                 settingsItem = token;
                                 token = tokens.shift();
-
-                                // /settings/$property/save/$value
-                                if(isSettingsSaveableToken(settingsItem)){
-                                    if(SpreadsheetHistoryHashTokens.SAVE === token){
-                                        if(tokens.length === 0){
-                                            break;
-                                        }
-                                        token = tokens.shift();
-                                        settingsAction = new SpreadsheetSettingsSaveHistoryHashToken(
-                                            "" === token ? null : decodeURIComponent(token)
-                                        );
-                                        token = tokens.shift();
-                                    }
+                                if(null != token){
+                                    settingsAction = new SpreadsheetSettingsSaveHistoryHashToken(
+                                        "" === token ? null : decodeURIComponent(token)
+                                    );
+                                    token = tokens.shift();
                                 }
                             }else {
                                 break;
@@ -555,22 +543,10 @@ export default class SpreadsheetHistoryHash extends SpreadsheetHistoryHashTokens
                     if(settingsItem){
                         verified[SpreadsheetHistoryHashTokens.SETTINGS_ITEM] = settingsItem;
 
-                        let verifiedSettingsAction = null;
-
                         if(isSettingsToken(settingsItem)){
                             if(settingsAction instanceof SpreadsheetSettingsHistoryHashToken){
-                                verifiedSettingsAction = settingsAction;
+                                verified[SpreadsheetHistoryHashTokens.SETTINGS_ACTION] = settingsAction;
                             }
-                        }
-                        if(isSettingsToken(settingsItem) && settingsAction instanceof SpreadsheetSettingsHistoryHashToken){
-                            verifiedSettingsAction = settingsAction;
-                        }
-                        if(isSettingsSaveableToken(settingsItem) && settingsAction instanceof SpreadsheetSettingsHistoryHashToken){
-                            verifiedSettingsAction = settingsAction;
-                        }
-
-                        if(verifiedSettingsAction){
-                            verified[SpreadsheetHistoryHashTokens.SETTINGS_ACTION] = verifiedSettingsAction;
                         }
                     }
                 }
@@ -697,7 +673,7 @@ export default class SpreadsheetHistoryHash extends SpreadsheetHistoryHashTokens
         if(delta.hasOwnProperty(SpreadsheetHistoryHashTokens.SETTINGS_ACTION)){
             settingsAction = delta[SpreadsheetHistoryHashTokens.SETTINGS_ACTION];
             if(settingsAction){
-                if(!isSettingsSaveableToken(settingsItem)){
+                if(!isSettingsToken(settingsItem)){
                     settingsAction = null;
                 }
                 spreadsheetNameEdit = false;
