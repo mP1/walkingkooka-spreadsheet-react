@@ -1,5 +1,4 @@
 import Equality from "../../Equality.js";
-import SpreadsheetHistoryHashTokens from "./SpreadsheetHistoryHashTokens.js";
 import SpreadsheetSettingsHistoryHashToken from "./SpreadsheetSettingsHistoryHashToken.js";
 
 /**
@@ -22,7 +21,7 @@ export default class SpreadsheetSettingsSaveHistoryHashToken extends Spreadsheet
     toHistoryHashToken() {
         const value = this.value();
 
-        return "/" + SpreadsheetHistoryHashTokens.SAVE + "/" + (null != value ? encodeURIComponent(value) : "");
+        return "/" + (null != value ? encodeURIComponent(value) : "");
     }
 
     onSettingsAction(settingsWidget) {

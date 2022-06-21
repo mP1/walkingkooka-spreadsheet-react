@@ -1874,30 +1874,14 @@ testParseAndStringify(
 );
 
 testParseAndStringify(
-    "/spreadsheet-id-123/spreadsheet-name-456/name/settings/style/save",
+    "/spreadsheet-id-123/spreadsheet-name-456/name/settings/style/",
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
-    },
-    "Invalid token: \"save\""
-);
-
-testParseAndStringify(
-    "/spreadsheet-id-123/spreadsheet-name-456/name/settings/style/save/",
-    {
-        "spreadsheet-id": "spreadsheet-id-123",
-        "spreadsheet-name": SPREADSHEET_NAME,
-    },
-    "Invalid token: \"save\""
-);
-
-testParseAndStringify(
-    "/spreadsheet-id-123/spreadsheet-name-456/name/settings/style/save/1",
-    {
-        "spreadsheet-id": "spreadsheet-id-123",
-        "spreadsheet-name": SPREADSHEET_NAME,
-    },
-    "Invalid token: \"save\""
+        "settings": true,
+        "settings-item": SpreadsheetSettingsWidgetHistoryHashTokens.STYLE,
+        "settings-action": new SpreadsheetSettingsSaveHistoryHashToken(null),
+    }
 );
 
 testParseAndStringify(
@@ -1911,15 +1895,7 @@ testParseAndStringify(
 );
 
 testParseAndStringify(
-    "/spreadsheet-id-123/spreadsheet-name-456/name/settings/color/save",
-    {
-        "spreadsheet-id": "spreadsheet-id-123",
-        "spreadsheet-name": SPREADSHEET_NAME
-    }
-);
-
-testParseAndStringify(
-    "/spreadsheet-id-123/spreadsheet-name-456/name/settings/color/save/",
+    "/spreadsheet-id-123/spreadsheet-name-456/name/settings/color/",
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
@@ -1930,7 +1906,7 @@ testParseAndStringify(
 );
 
 testParseAndStringify(
-    "/spreadsheet-id-123/spreadsheet-name-456/name/settings/color/save/012345",
+    "/spreadsheet-id-123/spreadsheet-name-456/name/settings/color/012345",
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
@@ -3092,11 +3068,11 @@ testMerge(
     {
         "settings-action": new SpreadsheetSettingsSaveHistoryHashToken("#012345"),
     },
-    "/123abc/Untitled456/settings/color/save/#012345"
+    "/123abc/Untitled456/settings/color/#012345"
 );
 
 testMerge(
-    "/123abc/Untitled456/settings/color/save/#012345",
+    "/123abc/Untitled456/settings/color/#012345",
     {
         "settings-action": null,
     },
@@ -3104,11 +3080,11 @@ testMerge(
 );
 
 testMerge(
-    "/123abc/Untitled456/settings/color/save/#012345",
+    "/123abc/Untitled456/settings/color/#012345",
     {
         "settings-action": new SpreadsheetSettingsSaveHistoryHashToken("#abcdef"),
     },
-    "/123abc/Untitled456/settings/color/save/#abcdef"
+    "/123abc/Untitled456/settings/color/#abcdef"
 );
 
 testMerge(
@@ -3190,7 +3166,7 @@ testMerge(
 );
 
 testMerge(
-    "/123abc/Untitled456/name/settings/color/save/#012345",
+    "/123abc/Untitled456/name/settings/color/#012345",
     {
         "settings-action": null,
     },
