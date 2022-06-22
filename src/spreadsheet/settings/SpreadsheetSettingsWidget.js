@@ -80,7 +80,7 @@ const useStyles = theme => ({
     },
     label: {
         fontWeight: 700,
-        width: "125px",
+        width: "175px",
         verticalAlign: "middle",
     },
     value: {
@@ -98,7 +98,7 @@ class SpreadsheetSettingsWidget extends SpreadsheetHistoryAwareStateWidget {
     /**
      * The width of the settings in pixels holding settings and tools.
      */
-    static WIDTH = 500;
+    static WIDTH = 750;
 
     static ID = "settings";
 
