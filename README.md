@@ -273,7 +273,7 @@ Each of these sections will hold appropriate key/values. For example Number will
 >
 > /#123/Untitled/settings/$property-name eg: color, background-color, text-align etc.
 > 
-> /#123/Untitled/settings/$property-name/save/$property-value or empty to remove and use default.
+> /#123/Untitled/settings/$property-name/$property-value or empty to remove and use default.
 
 ## Value types
 
