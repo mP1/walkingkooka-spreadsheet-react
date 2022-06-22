@@ -46,7 +46,7 @@ export default class SpreadsheetSelectAutocompleteWidget extends SpreadsheetHist
 
     static TEXT_FIELD_HELPER_TEXT_ID = SpreadsheetSelectAutocompleteWidget.TEXT_FIELD_ID + "-helper-text"
 
-    static TEXT_FIELD_POPUP_ID = SpreadsheetSelectAutocompleteWidget.TEXT_FIELD_ID + "-popup"
+    static TEXT_FIELD_LISTBOX_ID = SpreadsheetSelectAutocompleteWidget.TEXT_FIELD_ID + "-listbox"
 
     static TEXT_FIELD_OPTION_ID = SpreadsheetSelectAutocompleteWidget.TEXT_FIELD_ID + "-option-"
 
