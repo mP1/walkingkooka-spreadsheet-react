@@ -120,7 +120,7 @@ describe(
             testing.selectAutocompleteTextFieldHelper()
                 .should("not.exist");
 
-            testing.selectAutocompletePopup()
+            testing.selectAutocompletePopupListbox()
                 .should("not.exist");
 
             testing.selectCellRangeSelectButton(DISABLED);
@@ -148,7 +148,7 @@ describe(
             testing.selectAutocompleteTextFieldHelper()
                 .should("not.exist");
 
-            testing.selectAutocompletePopup()
+            testing.selectAutocompletePopupListbox()
                 .should("not.exist");
 
             testing.selectCellGotoButton(DISABLED);
@@ -176,7 +176,7 @@ describe(
             testing.selectAutocompleteTextFieldHelper()
                 .should("not.exist");
 
-            testing.selectAutocompletePopup()
+            testing.selectAutocompletePopupListbox()
                 .should("not.exist");
 
             testing.selectCellGotoButton(DISABLED);
@@ -221,7 +221,7 @@ describe(
             testing.selectAutocompleteTextFieldHelper()
                 .should("not.exist");
 
-            testing.selectAutocompletePopup()
+            testing.selectAutocompletePopupListbox()
                 .should("not.exist");
 
             testing.selectCellGotoButton(DISABLED);
@@ -255,7 +255,7 @@ describe(
             testing.selectAutocompleteTextFieldHelper()
                 .should("not.exist");
 
-            testing.selectAutocompletePopup()
+            testing.selectAutocompletePopupListbox()
                 .should("not.exist");
 
             testing.selectCellGotoButton(DISABLED);
@@ -283,7 +283,7 @@ describe(
             testing.selectAutocompleteTextFieldHelper()
                 .should("not.exist");
 
-            testing.selectAutocompletePopup()
+            testing.selectAutocompletePopupListbox()
                 .should("exist");
 
             testing.selectAutocompletePopupOption(0)
@@ -319,7 +319,7 @@ describe(
             testing.selectAutocompleteTextFieldHelper()
                 .should("not.exist");
 
-            testing.selectAutocompletePopup()
+            testing.selectAutocompletePopupListbox()
                 .should("exist");
 
             testing.selectAutocompletePopupOption(0)
@@ -353,7 +353,7 @@ describe(
             testing.selectAutocompleteTextFieldHelper()
                 .should("not.exist");
 
-            testing.selectAutocompletePopup()
+            testing.selectAutocompletePopupListbox()
                 .should("exist");
 
             testing.selectAutocompletePopupOption(0)
@@ -398,7 +398,7 @@ describe(
             testing.selectAutocompleteTextFieldHelper()
                 .should("not.exist");
 
-            testing.selectAutocompletePopup()
+            testing.selectAutocompletePopupListbox()
                 .should("not.exist");
 
             testing.selectCellGotoButton(DISABLED);
@@ -437,7 +437,7 @@ describe(
             testing.selectAutocompleteTextFieldHelper()
                 .should("not.exist");
 
-            testing.selectAutocompletePopup()
+            testing.selectAutocompletePopupListbox()
                 .should("exist");
 
             testing.selectAutocompletePopupOption(0)
@@ -474,7 +474,7 @@ describe(
             testing.selectAutocompleteTextFieldHelper()
                 .should("not.exist");
 
-            testing.selectAutocompletePopup()
+            testing.selectAutocompletePopupListbox()
                 .should("exist");
 
             testing.selectAutocompletePopupOption(0)
@@ -508,7 +508,7 @@ describe(
             testing.selectAutocompleteTextFieldHelper()
                 .should("not.exist");
 
-            testing.selectAutocompletePopup()
+            testing.selectAutocompletePopupListbox()
                 .should("exist");
 
             testing.selectAutocompletePopupOption(0)

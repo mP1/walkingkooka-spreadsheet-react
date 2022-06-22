@@ -274,8 +274,13 @@ export default class SpreadsheetTesting {
         return this.getById(SpreadsheetSelectAutocompleteWidget.TEXT_FIELD_HELPER_TEXT_ID);
     }
 
-    selectAutocompletePopup() {
-        return this.getById(SpreadsheetSelectAutocompleteWidget.TEXT_FIELD_POPUP_ID);
+    /**
+     * Originally this selected the div of the popup component which contained all the individual items.
+     * Unfortunately the popup is no longer assigned any id, previously it was an id computed from the AutoComplete id
+     * + a known suffix. The next best is to select the ListBox that holds all the items.
+     */
+    selectAutocompletePopupListbox() {
+        return this.getById(SpreadsheetSelectAutocompleteWidget.TEXT_FIELD_LISTBOX_ID);
     }
 
     selectAutocompletePopupOption(nth) {
