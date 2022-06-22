@@ -355,7 +355,7 @@ export default class SpreadsheetHistoryHash extends SpreadsheetHistoryHashTokens
                     }
 
                     // settings
-                    if(!(settingsAction || settingsItem || label || select)) {
+                    if(!(selectionAction || label || select)) {
                         if(SpreadsheetHistoryHashTokens.SETTINGS === token){
                             settings = true;
                             settingsItem = undefined;
