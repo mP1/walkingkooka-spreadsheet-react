@@ -270,6 +270,16 @@ testValidate(
 );
 
 testValidate(
+    "validate id & name & selection=CELL & settings",
+    {
+        "spreadsheet-id": ID,
+        "spreadsheet-name": SPREADSHEET_NAME,
+        "selection": CELL,
+        "settings": true,
+    }
+);
+
+testValidate(
     "validate id & name & selection=CELL & unfreeze",
     {
         "spreadsheet-id": ID,
@@ -358,6 +368,17 @@ testValidate(
 );
 
 testValidate(
+    "validate id & name & label=LABEL & settings",
+    {
+        "spreadsheet-id": ID,
+        "spreadsheet-name": SPREADSHEET_NAME,
+        "label": LABEL,
+        "settings": true,
+    }
+);
+
+
+testValidate(
     "validate id & name & selection=LABEL & formula-save",
     {
         "spreadsheet-id": ID,
@@ -403,6 +424,16 @@ testValidate(
         "spreadsheet-id": ID,
         "spreadsheet-name": SPREADSHEET_NAME,
         "select": true,
+    }
+);
+
+testValidate(
+    "validate id & name & select & settings",
+    {
+        "spreadsheet-id": ID,
+        "spreadsheet-name": SPREADSHEET_NAME,
+        "select": true,
+        "settings": true,
     }
 );
 
@@ -598,15 +629,7 @@ testParseAndStringify(
 );
 
 testParseAndStringify(
-    "/spreadsheet-id-123/spreadsheet-name-456/cell/A1/formula/save",
-    {
-        "spreadsheet-id": "spreadsheet-id-123",
-        "spreadsheet-name": SPREADSHEET_NAME,
-    }
-);
-
-testParseAndStringify(
-    "/spreadsheet-id-123/spreadsheet-name-456/cell/A1/formula/save/",
+    "/spreadsheet-id-123/spreadsheet-name-456/cell/A1/formula/",
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
@@ -616,7 +639,7 @@ testParseAndStringify(
 );
 
 testParseAndStringify(
-    "/spreadsheet-id-123/spreadsheet-name-456/cell/A1/formula/save/ABC%20123",
+    "/spreadsheet-id-123/spreadsheet-name-456/cell/A1/formula/ABC%20123",
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
@@ -626,7 +649,7 @@ testParseAndStringify(
 );
 
 testParseAndStringify(
-    "/spreadsheet-id-123/spreadsheet-name-456/cell/A1/formula/save/=12%2F34",
+    "/spreadsheet-id-123/spreadsheet-name-456/cell/A1/formula/=12%2F34",
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
@@ -684,42 +707,6 @@ testParseAndStringify(
 );
 
 testParseAndStringify(
-    "/spreadsheet-id-123/spreadsheet-name-456/cell/C3/formula/delete",
-    {
-        "spreadsheet-id": "spreadsheet-id-123",
-        "spreadsheet-name": SPREADSHEET_NAME,
-    },
-    "Invalid token: \"delete\""
-);
-
-testParseAndStringify(
-    "/spreadsheet-id-123/spreadsheet-name-456/cell/C3/formula/formula",
-    {
-        "spreadsheet-id": "spreadsheet-id-123",
-        "spreadsheet-name": SPREADSHEET_NAME,
-    },
-    "Invalid token: \"formula\""
-);
-
-testParseAndStringify(
-    "/spreadsheet-id-123/spreadsheet-name-456/cell/C3/formula/insert-before",
-    {
-        "spreadsheet-id": "spreadsheet-id-123",
-        "spreadsheet-name": SPREADSHEET_NAME,
-    },
-    "Invalid token: \"insert-before\""
-);
-
-testParseAndStringify(
-    "/spreadsheet-id-123/spreadsheet-name-456/cell/C3/formula/insert-after",
-    {
-        "spreadsheet-id": "spreadsheet-id-123",
-        "spreadsheet-name": SPREADSHEET_NAME,
-    },
-    "Invalid token: \"insert-after\""
-);
-
-testParseAndStringify(
     "/spreadsheet-id-123/spreadsheet-name-456/cell/C3:D4/menu",
     {
         "spreadsheet-id": "spreadsheet-id-123",
@@ -749,15 +736,7 @@ testParseAndStringify(
 );
 
 testParseAndStringify(
-    "/spreadsheet-id-123/spreadsheet-name-456/cell/Label123/formula/save",
-    {
-        "spreadsheet-id": "spreadsheet-id-123",
-        "spreadsheet-name": SPREADSHEET_NAME,
-    }
-);
-
-testParseAndStringify(
-    "/spreadsheet-id-123/spreadsheet-name-456/cell/Label123/formula/save/ABC%20123",
+    "/spreadsheet-id-123/spreadsheet-name-456/cell/Label123/formula/ABC%20123",
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
@@ -856,17 +835,6 @@ testParseAndStringify(
 );
 
 testParseAndStringify(
-    "/spreadsheet-id-123/spreadsheet-name-456/cell/A2/formula/label/Label123",
-    {
-        "spreadsheet-id": "spreadsheet-id-123",
-        "spreadsheet-name": SPREADSHEET_NAME,
-        "selection": SpreadsheetCellReference.parse("A2"),
-        "selection-action": FORMULA_LOAD_EDIT,
-        "label": LABEL,
-    }
-);
-
-testParseAndStringify(
     "/spreadsheet-id-123/spreadsheet-name-456/name",
     {
         "spreadsheet-id": "spreadsheet-id-123",
@@ -908,26 +876,6 @@ testParseAndStringify(
         "selection": CELL,
         "select": true,
     }
-);
-
-testParseAndStringify(
-    "/spreadsheet-id-123/spreadsheet-name-456/cell/A1/formula/select",
-    {
-        "spreadsheet-id": "spreadsheet-id-123",
-        "spreadsheet-name": SPREADSHEET_NAME,
-        "selection": CELL,
-        "selection-action": FORMULA_LOAD_EDIT,
-        "select": true,
-    }
-);
-
-testParseAndStringify(
-    "/spreadsheet-id-123/spreadsheet-name-456/cell/A1/formula/select/settings",
-    {
-        "spreadsheet-id": "spreadsheet-id-123",
-        "spreadsheet-name": SPREADSHEET_NAME,
-    },
-    "Invalid token: \"settings\""
 );
 
 testParseAndStringify(
@@ -1704,36 +1652,23 @@ testParseAndStringify(
 );
 
 testParseAndStringify(
+    "/spreadsheet-id-123/spreadsheet-name-456/select",
+    {
+        "spreadsheet-id": "spreadsheet-id-123",
+        "spreadsheet-name": SPREADSHEET_NAME,
+        "select": true,
+    }
+);
+
+testParseAndStringify(
     "/spreadsheet-id-123/spreadsheet-name-456/select/settings",
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
-        "select": true,
-        "settings": true,
-    }
+    },
+    "Invalid token: \"settings\""
 );
 
-testParseAndStringify(
-    "/spreadsheet-id-123/spreadsheet-name-456/select/settings/color",
-    {
-        "spreadsheet-id": "spreadsheet-id-123",
-        "spreadsheet-name": SPREADSHEET_NAME,
-        "select": true,
-        "settings": true,
-        "settings-item": TextStyle.COLOR,
-    }
-);
-
-testParseAndStringify(
-    "/spreadsheet-id-123/spreadsheet-name-456/select/settings/number",
-    {
-        "spreadsheet-id": "spreadsheet-id-123",
-        "spreadsheet-name": SPREADSHEET_NAME,
-        "select": true,
-        "settings": true,
-        "settings-item": SpreadsheetSettingsWidgetHistoryHashTokens.NUMBER,
-    }
-);
 
 testParseAndStringify(
     "/spreadsheet-id-123/spreadsheet-name-456/settings",
@@ -1914,26 +1849,6 @@ testParseAndStringify(
 );
 
 testParseAndStringify(
-    "/spreadsheet-id-123/spreadsheet-name-456/cell/B2/formula/settings",
-    {
-        "spreadsheet-id": "spreadsheet-id-123",
-        "spreadsheet-name": SPREADSHEET_NAME,
-    },
-    "Invalid token: \"settings\""
-);
-
-testParseAndStringify(
-    "/spreadsheet-id-123/spreadsheet-name-456/label/Label123/settings/style",
-    {
-        "spreadsheet-id": "spreadsheet-id-123",
-        "spreadsheet-name": SPREADSHEET_NAME,
-        "label": LABEL,
-        "settings": true,
-        "settings-item": "style",
-    }
-);
-
-testParseAndStringify(
     "/spreadsheet-id-123/spreadsheet-name-456/cell/A1/freeze",
     {
         "spreadsheet-id": "spreadsheet-id-123",
@@ -2023,8 +1938,8 @@ function testParseAndStringify(hash, expected, expectedError) {
         expect(SpreadsheetHistoryHash.parse(hash, e => errors.push(e)))
             .toStrictEqual(expected);
         if(errors.length > 0){
-            expect([expectedError])
-                .toStrictEqual(errors);
+            expect(errors)
+                .toStrictEqual([expectedError]);
         }
     });
 
@@ -2808,12 +2723,6 @@ testMerge(
 );
 
 testMerge(
-    "/123abc/Untitled456/select/settings",
-    {},
-    "/123abc/Untitled456/select/settings",
-);
-
-testMerge(
     "/123abc/Untitled456",
     {
         "select": true,
@@ -3098,14 +3007,6 @@ testMerge(
 );
 
 testMerge(
-    "/123abc/Untitled456/cell/A1/settings",
-    {
-        "settings": false,
-    },
-    "/123abc/Untitled456/cell/A1"
-);
-
-testMerge(
     "/123abc/Untitled456/cell/A1",
     {
         "selection-action": CELL_DELETE,
@@ -3118,7 +3019,7 @@ testMerge(
     {
         "settings": true,
     },
-    "/123abc/Untitled456/cell/A1/delete"
+    "/123abc/Untitled456/cell/A1/settings"
 );
 
 testMerge(
@@ -3126,7 +3027,7 @@ testMerge(
     {
         "settings": true,
     },
-    "/123abc/Untitled456/cell/A1/formula"
+    "/123abc/Untitled456/cell/A1/settings"
 );
 
 testMerge(

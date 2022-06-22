@@ -155,40 +155,37 @@ export default class SpreadsheetHistoryHash extends SpreadsheetHistoryHashTokens
                         if(SpreadsheetHistoryHashTokens.CLEAR === token){
                             selectionAction = SpreadsheetCellClearHistoryHashToken.INSTANCE;
                             token = tokens.shift();
-                        } else {
+                        }else {
                             if(SpreadsheetHistoryHashTokens.DELETE === token){
                                 selectionAction = SpreadsheetCellDeleteHistoryHashToken.INSTANCE;
                                 token = tokens.shift();
                             }else {
                                 // /cell/A1/formula
                                 if(SpreadsheetHistoryHashTokens.CELL_FORMULA === token && selection instanceof SpreadsheetCellReferenceOrLabelName){
-                                    selectionAction = new SpreadsheetFormulaLoadAndEditHistoryHashToken();
                                     token = tokens.shift();
 
-                                    // /cell/A1/formula/save/$formula-text
-                                    if(SpreadsheetHistoryHashTokens.SAVE === token){
-                                        token = tokens.shift();
-                                        if(null == token){
-                                            break;
-                                        }
+                                    // /cell/A1/formula
+                                    if(null == token){
+                                        selectionAction = new SpreadsheetFormulaLoadAndEditHistoryHashToken();
+                                    }else {
                                         selectionAction = new SpreadsheetFormulaSaveHistoryHashToken(decodeURIComponent(token));
                                         token = tokens.shift();
                                     }
-                                } else {
+                                }else {
                                     // /cell/A1/freeze OR /cell/B2:C3/freeze
-                                    if(SpreadsheetHistoryHashTokens.FREEZE === token) {
-                                        if(selection.canFreeze()) {
+                                    if(SpreadsheetHistoryHashTokens.FREEZE === token){
+                                        if(selection.canFreeze()){
                                             selectionAction = SpreadsheetCellFreezeHistoryHashToken.INSTANCE;
-                                        } else {
+                                        }else {
                                             selection = null;
                                         }
                                         token = tokens.shift();
-                                    } else {
+                                    }else {
                                         // /cell/A1/menu OR /cell/A1:B2/menu
                                         if(SpreadsheetHistoryHashTokens.MENU === token){
                                             selectionAction = SpreadsheetCellMenuHistoryHashToken.INSTANCE;
                                             token = tokens.shift();
-                                        } else {
+                                        }else {
                                             if(SpreadsheetHistoryHashTokens.UNFREEZE === token){
                                                 if(selection.canFreeze()){
                                                     selectionAction = SpreadsheetCellUnFreezeHistoryHashToken.INSTANCE;
@@ -242,7 +239,7 @@ export default class SpreadsheetHistoryHash extends SpreadsheetHistoryHashTokens
                             if(SpreadsheetHistoryHashTokens.CLEAR === token){
                                 selectionAction = SpreadsheetColumnOrRowClearHistoryHashToken.INSTANCE;
                                 token = tokens.shift();
-                            } else {
+                            }else {
                                 if(SpreadsheetHistoryHashTokens.DELETE === token){
                                     selectionAction = SpreadsheetColumnOrRowDeleteHistoryHashToken.INSTANCE;
                                     token = tokens.shift();
@@ -300,7 +297,7 @@ export default class SpreadsheetHistoryHash extends SpreadsheetHistoryHashTokens
                                                     if(SpreadsheetHistoryHashTokens.MENU === token){
                                                         selectionAction = SpreadsheetColumnOrRowMenuHistoryHashToken.INSTANCE;
                                                         token = tokens.shift();
-                                                    } else {
+                                                    }else {
                                                         if(SpreadsheetHistoryHashTokens.UNFREEZE === token){
                                                             if(!selection.canFreeze()){
                                                                 selection = null;
@@ -318,7 +315,6 @@ export default class SpreadsheetHistoryHash extends SpreadsheetHistoryHashTokens
                             }
                         }
                     }
-
                     if(SpreadsheetHistoryHashTokens.LABEL === token){
                         try {
                             label = SpreadsheetLabelName.parse(tokens.shift());
@@ -352,15 +348,14 @@ export default class SpreadsheetHistoryHash extends SpreadsheetHistoryHashTokens
                             }
                         }
                     }
-
                     // select
                     if(SpreadsheetHistoryHashTokens.SELECT === token){
                         select = true;
                         token = tokens.shift();
                     }
 
-                    // /settings/ cannot follow selectionAction
-                    if(!selectionAction) {
+                    // settings
+                    if(!(settingsAction || settingsItem || label || select)) {
                         if(SpreadsheetHistoryHashTokens.SETTINGS === token){
                             settings = true;
                             settingsItem = undefined;
@@ -383,6 +378,7 @@ export default class SpreadsheetHistoryHash extends SpreadsheetHistoryHashTokens
                             }
                         }
                     }
+
                     if(null != token){
                         errors("Invalid token: " + CharSequences.quoteAndEscape(token));
                         break;
@@ -505,26 +501,26 @@ export default class SpreadsheetHistoryHash extends SpreadsheetHistoryHashTokens
                         }
 
                         if(selection.isCellScalarOrRange() && selectionAction instanceof SpreadsheetCellHistoryHashToken){
-                            if(selectionAction instanceof SpreadsheetCellFreezeHistoryHashToken || selectionAction instanceof SpreadsheetCellUnFreezeHistoryHashToken) {
-                                if(selection.canFreeze()) {
+                            if(selectionAction instanceof SpreadsheetCellFreezeHistoryHashToken || selectionAction instanceof SpreadsheetCellUnFreezeHistoryHashToken){
+                                if(selection.canFreeze()){
                                     verified[SpreadsheetHistoryHashTokens.SELECTION_ACTION] = selectionAction;
-                                } else {
+                                }else {
                                     verified[SpreadsheetHistoryHashTokens.SELECTION] = null;
                                 }
-                            } else {
+                            }else {
                                 verified[SpreadsheetHistoryHashTokens.SELECTION_ACTION] = selectionAction;
                             }
                             settings = null;
                         }
 
                         if(selection.isColumnOrRowScalarOrRange() && selectionAction instanceof SpreadsheetColumnOrRowHistoryHashToken){
-                            if(selectionAction instanceof SpreadsheetColumnOrRowFreezeHistoryHashToken || selectionAction instanceof SpreadsheetColumnOrRowUnFreezeHistoryHashToken) {
-                                if(selection.canFreeze()) {
+                            if(selectionAction instanceof SpreadsheetColumnOrRowFreezeHistoryHashToken || selectionAction instanceof SpreadsheetColumnOrRowUnFreezeHistoryHashToken){
+                                if(selection.canFreeze()){
                                     verified[SpreadsheetHistoryHashTokens.SELECTION_ACTION] = selectionAction;
-                                } else {
+                                }else {
                                     verified[SpreadsheetHistoryHashTokens.SELECTION] = null;
                                 }
-                            } else {
+                            }else {
                                 verified[SpreadsheetHistoryHashTokens.SELECTION_ACTION] = selectionAction;
                             }
                         }
@@ -660,6 +656,7 @@ export default class SpreadsheetHistoryHash extends SpreadsheetHistoryHashTokens
             settings = delta[SpreadsheetHistoryHashTokens.SETTINGS];
             if(settings){
                 spreadsheetNameEdit = false;
+                selectionAction = null;
             }
         }
 

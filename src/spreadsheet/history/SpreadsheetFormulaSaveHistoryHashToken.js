@@ -18,7 +18,7 @@ export default class SpreadsheetFormulaSaveHistoryHashToken extends SpreadsheetF
     }
 
     toHistoryHashToken() {
-        return SpreadsheetHistoryHashTokens.CELL_FORMULA + "/" + SpreadsheetHistoryHashTokens.SAVE + "/" + encodeURIComponent(this.formulaText());
+        return SpreadsheetHistoryHashTokens.CELL_FORMULA + "/" + encodeURIComponent(this.formulaText());
     }
 
     onViewportSelectionAction(viewportSelection, viewportWidget) {
@@ -27,5 +27,9 @@ export default class SpreadsheetFormulaSaveHistoryHashToken extends SpreadsheetF
 
     equals(other) {
         return this === other || (other instanceof SpreadsheetFormulaSaveHistoryHashToken && this.formulaText() === other.formulaText());
+    }
+
+    toString() {
+        return "save " + encodeURIComponent(this.formulaText());
     }
 }

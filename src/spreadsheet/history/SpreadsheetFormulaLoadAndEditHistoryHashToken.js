@@ -25,10 +25,19 @@ export default class SpreadsheetFormulaLoadAndEditHistoryHashToken extends Sprea
         return SpreadsheetHistoryHashTokens.CELL_FORMULA +
             (formulaText != null ?
                 "/" + encodeURIComponent(formulaText) :
-            "");
+                "");
     }
 
     equals(other) {
         return this === other || (other instanceof SpreadsheetFormulaLoadAndEditHistoryHashToken && this.formulaText() === other.formulaText());
+    }
+
+    toString() {
+        const formulaText = this.formulaText();
+
+        return "load " +
+            (formulaText != null ?
+                "/" + encodeURIComponent(formulaText) :
+                "");
     }
 }
