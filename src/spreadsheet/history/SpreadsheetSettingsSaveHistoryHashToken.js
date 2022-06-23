@@ -1,4 +1,5 @@
 import Equality from "../../Equality.js";
+import SpreadsheetHistoryHashTokens from "./SpreadsheetHistoryHashTokens.js";
 import SpreadsheetSettingsHistoryHashToken from "./SpreadsheetSettingsHistoryHashToken.js";
 
 /**
@@ -6,9 +7,18 @@ import SpreadsheetSettingsHistoryHashToken from "./SpreadsheetSettingsHistoryHas
  */
 export default class SpreadsheetSettingsSaveHistoryHashToken extends SpreadsheetSettingsHistoryHashToken {
 
-    constructor(value) {
+    constructor(property, value) {
         super();
+        this.propertyValue = property;
         this.valueValue = value;
+    }
+
+    item() {
+        return null;
+    }
+
+    property() {
+        return this.propertyValue;
     }
 
     /**
@@ -21,15 +31,23 @@ export default class SpreadsheetSettingsSaveHistoryHashToken extends Spreadsheet
     toHistoryHashToken() {
         const value = this.value();
 
-        return "/" + (null != value ? encodeURIComponent(value) : "");
+        return "/" +
+            SpreadsheetHistoryHashTokens.SETTINGS +
+            "/" +
+            this.property() +
+            "/" +
+            (value ? encodeURIComponent(value) : "");
     }
 
     onSettingsAction(settingsWidget) {
-        settingsWidget.patchSpreadsheetMetadata(this.value());
+        settingsWidget.patchSpreadsheetMetadata(
+            this.property(),
+            this.value()
+        );
     }
 
-
     equals(other) {
-        return this === other || (other instanceof SpreadsheetSettingsSaveHistoryHashToken && Equality.safeEquals(this.value(), other.value()));
+        return this === other ||
+            (other instanceof SpreadsheetSettingsSaveHistoryHashToken && this.property() === other.property() && Equality.safeEquals(this.value(), other.value()));
     }
 }
