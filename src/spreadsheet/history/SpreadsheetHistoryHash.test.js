@@ -988,7 +988,8 @@ testParseAndStringify(
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
-    }
+    },
+    "Invalid token: \"freeze\"",
 );
 
 testParseAndStringify(
@@ -1132,7 +1133,8 @@ testParseAndStringify(
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
-    }
+    },
+    "Invalid token: \"unfreeze\"",
 );
 
 testParseAndStringify(
@@ -1286,7 +1288,8 @@ testParseAndStringify(
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
-    }
+    },
+    "Invalid token: \"freeze\"",
 );
 
 testParseAndStringify(
@@ -1304,7 +1307,8 @@ testParseAndStringify(
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME
-    }
+    },
+    "Invalid token: \"freeze\"",
 );
 
 testParseAndStringify(
@@ -1533,7 +1537,8 @@ testParseAndStringify(
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
-    }
+    },
+    "Invalid token: \"unfreeze\"",
 );
 
 testParseAndStringify(
@@ -1551,7 +1556,8 @@ testParseAndStringify(
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME
-    }
+    },
+    "Invalid token: \"unfreeze\"",
 );
 
 testParseAndStringify(
@@ -1863,7 +1869,8 @@ testParseAndStringify(
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
-    }
+    },
+    "Invalid token: \"freeze\"",
 );
 
 testParseAndStringify(
@@ -1881,7 +1888,8 @@ testParseAndStringify(
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME
-    }
+    },
+    "Invalid token: \"freeze\"",
 );
 
 testParseAndStringify(
@@ -1899,7 +1907,8 @@ testParseAndStringify(
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
-    }
+    },
+    "Invalid token: \"unfreeze\"",
 );
 
 testParseAndStringify(
@@ -1917,7 +1926,8 @@ testParseAndStringify(
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME
-    }
+    },
+    "Invalid token: \"unfreeze\"",
 );
 
 testParseAndStringify(

@@ -73,6 +73,10 @@ export default class SpreadsheetLabelName extends SpreadsheetCellReferenceOrLabe
         return new SpreadsheetLabelMapping(this, reference);
     }
 
+    canFreeze() {
+        return true;
+    }
+
     testCell(cellReference) {
         return false;
     }
