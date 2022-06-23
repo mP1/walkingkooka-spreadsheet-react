@@ -66,8 +66,8 @@ const CELL_DELETE = SpreadsheetCellDeleteHistoryHashToken.INSTANCE;
 const CELL_FREEZE = SpreadsheetCellFreezeHistoryHashToken.INSTANCE;
 const CELL_MENU = SpreadsheetCellMenuHistoryHashToken.INSTANCE;
 const CELL_UNFREEZE = SpreadsheetCellUnFreezeHistoryHashToken.INSTANCE;
-const FORMULA_LOAD_EDIT = new SpreadsheetFormulaLoadAndEditHistoryHashToken();
-const FORMULA_LOAD_EDIT_SAVE = new SpreadsheetFormulaSaveHistoryHashToken("Abc123");
+const CELL_FORMULA_LOAD_EDIT = new SpreadsheetFormulaLoadAndEditHistoryHashToken();
+const CELL_FORMULA_SAVE = new SpreadsheetFormulaSaveHistoryHashToken("Abc123");
 
 const LABEL_DELETE = SpreadsheetLabelMappingDeleteHistoryHashToken.INSTANCE;
 const LABEL_SAVE = new SpreadsheetLabelMappingSaveHistoryHashToken(
@@ -216,7 +216,7 @@ testValidate(
         "spreadsheet-id": ID,
         "spreadsheet-name": SPREADSHEET_NAME,
         "selection": CELL,
-        "selection-action": FORMULA_LOAD_EDIT,
+        "selection-action": CELL_FORMULA_LOAD_EDIT,
     }
 );
 
@@ -245,7 +245,7 @@ testValidate(
         "spreadsheet-id": ID,
         "spreadsheet-name": SPREADSHEET_NAME,
         "selection": CELL,
-        "selection-action": FORMULA_LOAD_EDIT_SAVE,
+        "selection-action": CELL_FORMULA_SAVE,
     }
 );
 
@@ -384,7 +384,7 @@ testValidate(
         "spreadsheet-id": ID,
         "spreadsheet-name": SPREADSHEET_NAME,
         "selection": LABEL,
-        "selection-action": FORMULA_LOAD_EDIT_SAVE,
+        "selection-action": CELL_FORMULA_SAVE,
     }
 );
 
@@ -624,7 +624,7 @@ testParseAndStringify(
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
         "selection": CELL,
-        "selection-action": FORMULA_LOAD_EDIT,
+        "selection-action": CELL_FORMULA_LOAD_EDIT,
     }
 );
 
@@ -731,7 +731,7 @@ testParseAndStringify(
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
         "selection": LABEL,
-        "selection-action": FORMULA_LOAD_EDIT,
+        "selection-action": CELL_FORMULA_LOAD_EDIT,
     }
 );
 
@@ -2141,7 +2141,7 @@ testMerge(
     "/123abc/Untitled456/name",
     {
         "selection": SpreadsheetCellReference.parse("A1"),
-        "selection-action": FORMULA_LOAD_EDIT,
+        "selection-action": CELL_FORMULA_LOAD_EDIT,
     },
     "/123abc/Untitled456/cell/A1/formula"
 );
@@ -2197,7 +2197,7 @@ testMerge(
 testMerge(
     "/123abc/Untitled456/cell/A1",
     {
-        "selection-action": FORMULA_LOAD_EDIT,
+        "selection-action": CELL_FORMULA_LOAD_EDIT,
     },
     "/123abc/Untitled456/cell/A1/formula"
 );
@@ -3043,7 +3043,7 @@ testMerge(
 testMerge(
     "/123abc/Untitled456",
     {
-        "selection-action": FORMULA_LOAD_EDIT,
+        "selection-action": CELL_FORMULA_LOAD_EDIT,
     },
     "/123abc/Untitled456"
 );
@@ -3087,7 +3087,7 @@ test("spreadsheetIdAndName", () => {
                 "spreadsheet-id": ID,
                 "spreadsheet-name": SPREADSHEET_NAME,
                 "selection": CELL,
-                "selection-action": FORMULA_LOAD_EDIT,
+                "selection-action": CELL_FORMULA_LOAD_EDIT,
             }
         )
     ).toStrictEqual({
