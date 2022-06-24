@@ -88,6 +88,10 @@ The history hash tokens are evolving and more will be available shortly to make 
 
 Activates editing of the spreadsheet name.
 
+> /#123/Untitled/name/NewSpreadsheetName
+
+Saves a new spreadsheet name
+
 
 
 #### /spreadsheet-id/spreadsheet-name/cell/cell-or-cell-range-or-label
