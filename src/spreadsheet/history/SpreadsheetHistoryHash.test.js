@@ -22,9 +22,11 @@ import SpreadsheetFormulaSaveHistoryHashToken from "./SpreadsheetFormulaSaveHist
 import SpreadsheetHistoryHash from "./SpreadsheetHistoryHash.js";
 import SpreadsheetHistoryHashTokens from "./SpreadsheetHistoryHashTokens.js";
 import SpreadsheetLabelMappingDeleteHistoryHashToken from "./SpreadsheetLabelMappingDeleteHistoryHashToken.js";
+import SpreadsheetLabelMappingEditHistoryHashToken from "./SpreadsheetLabelMappingEditHistoryHashToken.js";
 import SpreadsheetLabelMappingSaveHistoryHashToken from "./SpreadsheetLabelMappingSaveHistoryHashToken.js";
 import SpreadsheetLabelName from "../reference/SpreadsheetLabelName.js";
 import SpreadsheetName from "../SpreadsheetName.js";
+import SpreadsheetNameEditHistoryHashToken from "./SpreadsheetNameEditHistoryHashToken.js";
 import SpreadsheetNameSaveHistoryHashToken from "./SpreadsheetNameSaveHistoryHashToken.js";
 import SpreadsheetRowReference from "../reference/SpreadsheetRowReference.js";
 import SpreadsheetRowReferenceRange from "../reference/SpreadsheetRowReferenceRange.js"
@@ -33,7 +35,6 @@ import SpreadsheetSettingsSelectHistoryHashToken from "./SpreadsheetSettingsSele
 import SpreadsheetSettingsWidgetHistoryHashTokens from "../settings/SpreadsheetSettingsWidgetHistoryHashTokens.js";
 import SpreadsheetViewportSelectionAnchor from "../reference/SpreadsheetViewportSelectionAnchor.js";
 import TextStyle from "../../text/TextStyle.js";
-import SpreadsheetNameEditHistoryHashToken from "./SpreadsheetNameEditHistoryHashToken.js";
 
 const ID = "spreadsheet-id-123";
 const SPREADSHEET_NAME = new SpreadsheetName("spreadsheet-name-456");
@@ -73,8 +74,10 @@ const CELL_UNFREEZE = SpreadsheetCellUnFreezeHistoryHashToken.INSTANCE;
 const CELL_FORMULA_LOAD_EDIT = new SpreadsheetFormulaLoadAndEditHistoryHashToken();
 const CELL_FORMULA_SAVE = new SpreadsheetFormulaSaveHistoryHashToken("Abc123");
 
-const LABEL_DELETE = SpreadsheetLabelMappingDeleteHistoryHashToken.INSTANCE;
+const LABEL_DELETE = new SpreadsheetLabelMappingDeleteHistoryHashToken(LABEL);
+const LABEL_EDIT = new SpreadsheetLabelMappingEditHistoryHashToken(LABEL);
 const LABEL_SAVE = new SpreadsheetLabelMappingSaveHistoryHashToken(
+    LABEL,
     NEW_LABEL,
     CELL_RANGE
 );
@@ -171,7 +174,7 @@ testValidate(
         "spreadsheet-id": ID,
         "spreadsheet-name": SPREADSHEET_NAME,
         "spreadsheet-name-edit": NAME_EDIT,
-        "label": LABEL,
+        "label": LABEL_EDIT,
     },
     {
         "spreadsheet-id": ID,
@@ -355,7 +358,7 @@ testValidate(
     {
         "spreadsheet-id": ID,
         "spreadsheet-name": SPREADSHEET_NAME,
-        "label": LABEL,
+        "label": LABEL_EDIT,
     }
 );
 
@@ -377,7 +380,7 @@ testValidate(
     {
         "spreadsheet-id": ID,
         "spreadsheet-name": SPREADSHEET_NAME,
-        "label": LABEL,
+        "label": LABEL_EDIT,
         "settings": SETTINGS_NOTHING,
     }
 );
@@ -420,6 +423,33 @@ testValidate(
         "spreadsheet-name": SPREADSHEET_NAME,
         "selection": ROW_RANGE,
         "selection-anchor": SpreadsheetViewportSelectionAnchor.TOP,
+    }
+);
+
+testValidate(
+    "validate id & name & label-edit",
+    {
+        "spreadsheet-id": ID,
+        "spreadsheet-name": SPREADSHEET_NAME,
+        "label": LABEL_EDIT,
+    }
+);
+
+testValidate(
+    "validate id & name & label-delete",
+    {
+        "spreadsheet-id": ID,
+        "spreadsheet-name": SPREADSHEET_NAME,
+        "label": LABEL_DELETE,
+    }
+);
+
+testValidate(
+    "validate id & name & label-save",
+    {
+        "spreadsheet-id": ID,
+        "spreadsheet-name": SPREADSHEET_NAME,
+        "label": LABEL_SAVE,
     }
 );
 
@@ -734,7 +764,7 @@ testParseAndStringify(
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
-        "label": LABEL,
+        "label": LABEL_EDIT,
     }
 );
 
@@ -743,8 +773,7 @@ testParseAndStringify(
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
-        "label": LABEL,
-        "label-action": LABEL_DELETE,
+        "label": LABEL_DELETE,
     }
 );
 
@@ -762,8 +791,7 @@ testParseAndStringify(
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
-        "label": LABEL,
-        "label-action": new SpreadsheetLabelMappingSaveHistoryHashToken(NEW_LABEL, CELL),
+        "label": new SpreadsheetLabelMappingSaveHistoryHashToken(LABEL, NEW_LABEL, CELL),
     }
 );
 
@@ -772,8 +800,7 @@ testParseAndStringify(
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
-        "label": LABEL,
-        "label-action": new SpreadsheetLabelMappingSaveHistoryHashToken(NEW_LABEL, CELL_RANGE),
+        "label": new SpreadsheetLabelMappingSaveHistoryHashToken(LABEL, NEW_LABEL, CELL_RANGE),
     }
 );
 
@@ -782,8 +809,8 @@ testParseAndStringify(
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
-        "label": LABEL,
-        "label-action": new SpreadsheetLabelMappingSaveHistoryHashToken(
+        "label": new SpreadsheetLabelMappingSaveHistoryHashToken(
+            LABEL,
             NEW_LABEL,
             SpreadsheetLabelName.parse("Label456")
         ),
@@ -796,7 +823,7 @@ testParseAndStringify(
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
         "selection": SpreadsheetCellReference.parse("A2"),
-        "label": LABEL,
+        "label": LABEL_EDIT,
     }
 );
 
@@ -833,16 +860,6 @@ testParseAndStringify(
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
         "selection": CELL,
-        "select": true,
-    }
-);
-
-testParseAndStringify(
-    "/spreadsheet-id-123/spreadsheet-name-456/label/Label123/select",
-    {
-        "spreadsheet-id": "spreadsheet-id-123",
-        "spreadsheet-name": SPREADSHEET_NAME,
-        "label": LABEL,
         "select": true,
     }
 );
@@ -1975,25 +1992,9 @@ testMerge(
 testMerge(
     "/123abc/Untitled456/name",
     {
-        "label": SpreadsheetLabelName.parse("LABEL123"),
-    },
-    "/123abc/Untitled456/label/LABEL123"
-);
-
-testMerge(
-    "/123abc/Untitled456/name",
-    {
         "label": null,
     },
     "/123abc/Untitled456/name"
-);
-
-testMerge(
-    "/123abc/Untitled456/name",
-    {
-        "label": SpreadsheetLabelName.parse("Label123"),
-    },
-    "/123abc/Untitled456/label/Label123"
 );
 
 testMerge(
@@ -2473,9 +2474,25 @@ testMerge(
 // label...........................................................................................................
 
 testMerge(
+    "/123abc456/Untitled456",
+    {
+        "label": new SpreadsheetLabelMappingEditHistoryHashToken(SpreadsheetLabelName.parse("LABEL123")),
+    },
+    "/123abc456/Untitled456/label/LABEL123"
+);
+
+testMerge(
+    "/123abc456/Untitled456",
+    {
+        "label": new SpreadsheetLabelMappingDeleteHistoryHashToken(SpreadsheetLabelName.parse("LABEL123")),
+    },
+    "/123abc456/Untitled456/label/LABEL123/delete"
+);
+
+testMerge(
     "/123abc/Untitled456/label/Label123",
     {
-        "label-action": LABEL_DELETE,
+        "label": LABEL_DELETE,
     },
     "/123abc/Untitled456/label/Label123/delete"
 );
@@ -2483,8 +2500,7 @@ testMerge(
 testMerge(
     "/123abc/Untitled456/label/LabelOld",
     {
-        "label": LABEL,
-        "label-action": LABEL_DELETE,
+        "label": LABEL_DELETE,
     },
     "/123abc/Untitled456/label/Label123/delete"
 );
@@ -2492,15 +2508,14 @@ testMerge(
 testMerge(
     "/123abc/Untitled456/label/LabelOld/delete",
     {
-        "label": LABEL,
+        "label": LABEL_EDIT,
     },
-    "/123abc/Untitled456/label/Label123/delete"
+    "/123abc/Untitled456/label/Label123"
 );
 
 testMerge("/123abc/Untitled456/label/LabelOld/delete",
     {
-        "label": LABEL,
-        "label-action": null,
+        "label": LABEL_EDIT,
     },
     "/123abc/Untitled456/label/Label123"
 );
@@ -2508,7 +2523,7 @@ testMerge("/123abc/Untitled456/label/LabelOld/delete",
 testMerge(
     "/123abc/Untitled456/label/Label123",
     {
-        "label-action": LABEL_SAVE,
+        "label": LABEL_SAVE,
     },
     "/123abc/Untitled456/label/Label123/save/Label999/C3:D4"
 );
@@ -2516,24 +2531,22 @@ testMerge(
 testMerge(
     "/123abc/Untitled456/label/LabelOld",
     {
-        "label": LABEL,
-        "label-action": LABEL_SAVE,
+        "label": LABEL_SAVE,
     },
     "/123abc/Untitled456/label/Label123/save/Label999/C3:D4"
 );
 
 testMerge(
-    "/123abc/Untitled456/label/LabelOld/save/Label999/Z9",
+    "/123abc/Untitled456/label/Label123/save/Label456/Z9",
     {
-        "label": LABEL,
+        "label": LABEL_SAVE,
     },
-    "/123abc/Untitled456/label/Label123/save/Label999/Z9"
+    "/123abc/Untitled456/label/Label123/save/Label999/C3:D4"
 );
 
 testMerge("/123abc/Untitled456/label/LabelOld/save/new/A1",
     {
-        "label": LABEL,
-        "label-action": null,
+        "label": LABEL_EDIT,
     },
     "/123abc/Untitled456/label/Label123"
 );

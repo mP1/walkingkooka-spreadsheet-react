@@ -28,6 +28,7 @@ import SpreadsheetFormulaLoadAndEditHistoryHashToken from "./SpreadsheetFormulaL
 import SpreadsheetFormulaSaveHistoryHashToken from "./SpreadsheetFormulaSaveHistoryHashToken.js";
 import SpreadsheetHistoryHashTokens from "./SpreadsheetHistoryHashTokens.js";
 import SpreadsheetLabelMappingDeleteHistoryHashToken from "./SpreadsheetLabelMappingDeleteHistoryHashToken.js";
+import SpreadsheetLabelMappingEditHistoryHashToken from "./SpreadsheetLabelMappingEditHistoryHashToken.js";
 import SpreadsheetLabelMappingHistoryHashToken from "./SpreadsheetLabelMappingHistoryHashToken.js";
 import SpreadsheetLabelMappingSaveHistoryHashToken from "./SpreadsheetLabelMappingSaveHistoryHashToken.js";
 import SpreadsheetLabelName from "../reference/SpreadsheetLabelName.js";
@@ -108,7 +109,6 @@ export default class SpreadsheetHistoryHash extends SpreadsheetHistoryHashTokens
                 var selectionAction = null;
 
                 var label = null;
-                var labelAction = null;
 
                 var select = null;
 
@@ -302,23 +302,27 @@ export default class SpreadsheetHistoryHash extends SpreadsheetHistoryHashTokens
                             }
                         }
                         if(SpreadsheetHistoryHashTokens.LABEL === token){
+                            var labelName;
                             try {
-                                label = SpreadsheetLabelName.parse(tokens.shift());
+                                labelName = SpreadsheetLabelName.parse(tokens.shift());
                             } catch(invalid) {
                                 errors("Label: " + invalid.message);
                                 break;
                             }
+                            label = new SpreadsheetLabelMappingEditHistoryHashToken(labelName);
+
                             token = tokens.shift();
                             if(SpreadsheetHistoryHashTokens.DELETE === token){
-                                labelAction = SpreadsheetLabelMappingDeleteHistoryHashToken.INSTANCE;
+                                label = new SpreadsheetLabelMappingDeleteHistoryHashToken(labelName);
                                 token = tokens.shift();
                             }else {
                                 if(SpreadsheetHistoryHashTokens.SAVE === token){
-                                    if(label && tokens.length < 2){
+                                    if(tokens.length < 2){
                                         errors("Label save missing label or cell");
                                         break;
                                     }
-                                    labelAction = new SpreadsheetLabelMappingSaveHistoryHashToken(
+                                    label = new SpreadsheetLabelMappingSaveHistoryHashToken(
+                                        labelName,
                                         SpreadsheetLabelName.parse(
                                             decodeURIComponent(
                                                 tokens.shift()
@@ -401,12 +405,8 @@ export default class SpreadsheetHistoryHash extends SpreadsheetHistoryHashTokens
                             historyHashTokens[SpreadsheetHistoryHashTokens.SELECTION_ACTION] = selectionAction;
                         }
                     }
-                    if(label){
+                    if(label instanceof SpreadsheetLabelMappingHistoryHashToken){
                         historyHashTokens[SpreadsheetHistoryHashTokens.LABEL] = label;
-
-                        if(labelAction){
-                            historyHashTokens[SpreadsheetHistoryHashTokens.LABEL_ACTION] = labelAction;
-                        }
                     }
                     if(select){
                         historyHashTokens[SpreadsheetHistoryHashTokens.SELECT] = select;
@@ -435,7 +435,6 @@ export default class SpreadsheetHistoryHash extends SpreadsheetHistoryHashTokens
         var selectionAction = tokens[SpreadsheetHistoryHashTokens.SELECTION_ACTION];
 
         var label = tokens[SpreadsheetHistoryHashTokens.LABEL];
-        var labelAction = tokens[SpreadsheetHistoryHashTokens.LABEL_ACTION];
 
         var select = tokens[SpreadsheetHistoryHashTokens.SELECT];
 
@@ -508,12 +507,8 @@ export default class SpreadsheetHistoryHash extends SpreadsheetHistoryHashTokens
                         }
                     }
                 }
-                if(label instanceof SpreadsheetLabelName){
+                if(label instanceof SpreadsheetLabelMappingHistoryHashToken){
                     verified[SpreadsheetHistoryHashTokens.LABEL] = label;
-
-                    if(labelAction instanceof SpreadsheetLabelMappingHistoryHashToken){
-                        verified[SpreadsheetHistoryHashTokens.LABEL_ACTION] = labelAction;
-                    }
                 }
                 if(select){
                     verified[SpreadsheetHistoryHashTokens.SELECT] = select;
@@ -545,7 +540,6 @@ export default class SpreadsheetHistoryHash extends SpreadsheetHistoryHashTokens
         var selectionAction = current[SpreadsheetHistoryHashTokens.SELECTION_ACTION];
 
         var label = current[SpreadsheetHistoryHashTokens.LABEL];
-        var labelAction = current[SpreadsheetHistoryHashTokens.LABEL_ACTION];
 
         var select = current[SpreadsheetHistoryHashTokens.SELECT];
 
@@ -594,14 +588,7 @@ export default class SpreadsheetHistoryHash extends SpreadsheetHistoryHashTokens
 
         if(delta.hasOwnProperty(SpreadsheetHistoryHashTokens.LABEL)){
             label = delta[SpreadsheetHistoryHashTokens.LABEL];
-            if(label){
-                spreadsheetNameEdit = false;
-            }
-        }
-
-        if(delta.hasOwnProperty(SpreadsheetHistoryHashTokens.LABEL_ACTION)){
-            labelAction = delta[SpreadsheetHistoryHashTokens.LABEL_ACTION];
-            if(labelAction instanceof SpreadsheetLabelMappingHistoryHashToken){
+            if(label instanceof SpreadsheetLabelMappingHistoryHashToken){
                 spreadsheetNameEdit = false;
             }
         }
@@ -659,10 +646,6 @@ export default class SpreadsheetHistoryHash extends SpreadsheetHistoryHashTokens
                 merged[SpreadsheetHistoryHashTokens.LABEL] = label;
             }
 
-            if(labelAction instanceof SpreadsheetLabelMappingHistoryHashToken){
-                merged[SpreadsheetHistoryHashTokens.LABEL_ACTION] = labelAction;
-            }
-
             if(null != select){
                 merged[SpreadsheetHistoryHashTokens.SELECT] = select;
             }
@@ -689,7 +672,6 @@ export default class SpreadsheetHistoryHash extends SpreadsheetHistoryHashTokens
         var selectionAction = tokens[SpreadsheetHistoryHashTokens.SELECTION_ACTION];
 
         var label = tokens[SpreadsheetHistoryHashTokens.LABEL];
-        var labelAction = tokens[SpreadsheetHistoryHashTokens.LABEL_ACTION];
 
         var select = tokens[SpreadsheetHistoryHashTokens.SELECT];
 
@@ -736,11 +718,7 @@ export default class SpreadsheetHistoryHash extends SpreadsheetHistoryHashTokens
             }
 
             if(label){
-                hash = hash + "/" + SpreadsheetHistoryHashTokens.LABEL + "/" + label;
-
-                if(labelAction instanceof SpreadsheetLabelMappingHistoryHashToken){
-                    hash = hash + "/" + labelAction.toHistoryHashToken();
-                }
+                hash = hash + label.toHistoryHashToken();
             }
 
             if(select){

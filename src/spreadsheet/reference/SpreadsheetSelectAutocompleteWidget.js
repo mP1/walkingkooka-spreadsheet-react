@@ -12,6 +12,7 @@ import SpreadsheetHistoryAwareStateWidget from "../history/SpreadsheetHistoryAwa
 import SpreadsheetHistoryHash from "../history/SpreadsheetHistoryHash.js";
 import SpreadsheetHistoryHashTokens from "../history/SpreadsheetHistoryHashTokens.js";
 import SpreadsheetLabelMapping from "./SpreadsheetLabelMapping.js";
+import SpreadsheetLabelMappingEditHistoryHashToken from "../history/SpreadsheetLabelMappingEditHistoryHashToken.js";
 import SpreadsheetLabelName from "./SpreadsheetLabelName.js";
 import SpreadsheetRowReference from "./SpreadsheetRowReference.js";
 import SpreadsheetRowReferenceRange from "./SpreadsheetRowReferenceRange.js";
@@ -91,7 +92,6 @@ export default class SpreadsheetSelectAutocompleteWidget extends SpreadsheetHist
             selectionAction: tokens[SpreadsheetHistoryHashTokens.SELECTION_ACTION],
             selectionAnchor: tokens[SpreadsheetHistoryHashTokens.SELECTION_ANCHOR],
             label: tokens[SpreadsheetHistoryHashTokens.LABEL],
-            labelAction: tokens[SpreadsheetHistoryHashTokens.LABEL_ACTION],
         };
 
         if(!select){
@@ -317,8 +317,7 @@ export default class SpreadsheetSelectAutocompleteWidget extends SpreadsheetHist
             }
 
             if(label){
-                tokens[SpreadsheetHistoryHashTokens.LABEL] = label;
-                tokens[SpreadsheetHistoryHashTokens.LABEL_ACTION] = null;
+                tokens[SpreadsheetHistoryHashTokens.LABEL] = new SpreadsheetLabelMappingEditHistoryHashToken(label);
             }
 
             link = "#" + SpreadsheetHistoryHash.stringify(tokens);

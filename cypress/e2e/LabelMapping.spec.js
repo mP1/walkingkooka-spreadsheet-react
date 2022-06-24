@@ -3,6 +3,7 @@
 import SpreadsheetCellReference from "../../src/spreadsheet/reference/SpreadsheetCellReference.js";
 import SpreadsheetLabelMappingWidget from "../../src/spreadsheet/reference/SpreadsheetLabelMappingWidget.js";
 import SpreadsheetTesting from "./SpreadsheetTesting.js";
+import SpreadsheetHistoryHashTokens from "../../src/spreadsheet/history/SpreadsheetHistoryHashTokens.js";
 
 const A1 = SpreadsheetCellReference.parse("A1");
 const B2 = SpreadsheetCellReference.parse("B2");
@@ -27,7 +28,7 @@ describe(
         it("Enter hash", () => {
             testing.hashLabel();
 
-            labelMappingDialogCheck(
+            labelMappingOpenDialogAndCheck(
                 "Label: " + LABEL,
                 LABEL,
                 "",
@@ -78,7 +79,7 @@ describe(
             testing.labelMappingLabelTextField()
                 .type("{selectall}{backspace}");
 
-            labelMappingDialogCheck(
+            labelMappingOpenDialogAndCheck(
                 "Label: " + LABEL,
                 "",
                 "Missing text",
@@ -95,7 +96,7 @@ describe(
             testing.labelMappingLabelTextField()
                 .type("{selectall}" + labelText);
 
-            labelMappingDialogCheck(
+            labelMappingOpenDialogAndCheck(
                 "Label: " + LABEL,
                 labelText,
                 "Invalid character '!' at 0",
@@ -112,7 +113,7 @@ describe(
             testing.labelMappingLabelTextField()
                 .type("{selectall}" + labelText);
 
-            labelMappingDialogCheck(
+            labelMappingOpenDialogAndCheck(
                 "Label: " + LABEL,
                 labelText,
                 "Invalid character '!' at 1",
@@ -129,7 +130,7 @@ describe(
             testing.labelMappingLabelTextField()
                 .type("{selectall}" + labelText + "{enter}");
 
-            labelMappingDialogCheck(
+            labelMappingOpenDialogAndCheck(
                 "Label: " + LABEL,
                 labelText,
                 "",
@@ -149,7 +150,7 @@ describe(
             testing.labelMappingLabelSaveButton()
                 .should("be.disabled");
 
-            labelMappingDialogCheck(
+            labelMappingOpenDialogAndCheck(
                 "Label: " + LABEL,
                 labelText,
                 "",
@@ -168,7 +169,7 @@ describe(
             testing.labelMappingReferenceTextField()
                 .type("{selectall}" + referenceText);
 
-            labelMappingDialogCheck(
+            labelMappingOpenDialogAndCheck(
                 "Label: " + LABEL,
                 LABEL,
                 "",
@@ -185,7 +186,7 @@ describe(
             testing.labelMappingReferenceTextField()
                 .type("{selectall}" + referenceText);
 
-            labelMappingDialogCheck(
+            labelMappingOpenDialogAndCheck(
                 "Label: " + LABEL,
                 LABEL,
                 "",
@@ -202,7 +203,7 @@ describe(
             testing.labelMappingReferenceTextField()
                 .type("{selectall}" + referenceText);
 
-            labelMappingDialogCheck(
+            labelMappingOpenDialogAndCheck(
                 "Label: " + LABEL,
                 LABEL,
                 "",
@@ -218,7 +219,7 @@ describe(
             testing.labelMappingReferenceTextField()
                 .type("{selectall}" + referenceText);
 
-            labelMappingDialogCheck(
+            labelMappingOpenDialogAndCheck(
                 "Label: " + LABEL,
                 LABEL,
                 "",
@@ -240,7 +241,7 @@ describe(
 
             testing.hashLabel();
 
-            labelMappingDialogCheck(
+            labelMappingOpenDialogAndCheck(
                 "Label: " + LABEL,
                 LABEL,
                 "",
@@ -257,7 +258,7 @@ describe(
 
             testing.hashLabel();
 
-            labelMappingDialogCheck(
+            labelMappingOpenDialogAndCheck(
                 "Label: " + LABEL,
                 LABEL,
                 "",
@@ -280,7 +281,9 @@ describe(
 
             testing.labelMappingLabelSaveButton().click();
 
-            labelMappingDialogCheck(
+            testing.labelMappingDialogClosedCheck();
+
+            labelMappingOpenDialogAndCheck(
                 "Label: " + labelText,
                 labelText,
                 "",
@@ -298,7 +301,9 @@ describe(
 
             testing.labelMappingLabelSaveButton().click();
 
-            labelMappingDialogCheck(
+            testing.labelMappingDialogClosedCheck();
+
+            labelMappingOpenDialogAndCheck(
                 "Label: " + LABEL,
                 LABEL,
                 "",
@@ -317,7 +322,9 @@ describe(
             testing.labelMappingLabelSaveButton()
                 .click();
 
-            labelMappingDialogCheck(
+            testing.labelMappingDialogClosedCheck();
+
+            labelMappingOpenDialogAndCheck(
                 "Label: " + LABEL,
                 LABEL,
                 "",
@@ -338,14 +345,16 @@ describe(
 
             testing.historyWait();
 
+            testing.hashAppendAfterSpreadsheetName("/label/Label123")
+
             testing.labelMappingLabelDeleteButton()
                 .click();
 
-            testing.labelMappingCloseWait();
+            testing.labelMappingDialogClosedCheck();
 
             testing.hashLabel();
 
-            labelMappingDialogCheck(
+            labelMappingOpenDialogAndCheck(
                 "Label: " + LABEL,
                 LABEL,
                 "",
@@ -359,6 +368,8 @@ describe(
 
             testing.labelMappingLabelCloseButton()
                 .click();
+
+            testing.labelMappingDialogClosedCheck();
 
             testing.hash()
                 .should('match', /.*\/Untitled/);
@@ -383,8 +394,7 @@ describe(
                     testing.labelMappingLabelSaveButton()
                         .click();
 
-                    testing.labelMappingLabelCloseButton()
-                        .click();
+                    testing.labelMappingDialogClosedCheck();
 
                     // navigate to label's formula
                     testing.hashEnter(nonEmptySpreadsheetHash + "/cell/Label456/formula");
@@ -410,8 +420,7 @@ describe(
             testing.labelMappingLabelSaveButton()
                 .click();
 
-            testing.labelMappingLabelCloseButton()
-                .click();
+            testing.labelMappingDialogClosedCheck();
 
             testing.getById(A1.viewportTooltipId())
                 .should("not.exist");
@@ -434,8 +443,7 @@ describe(
             testing.labelMappingLabelSaveButton()
                 .click();
 
-            testing.labelMappingLabelCloseButton()
-                .click();
+            testing.labelMappingDialogClosedCheck();
 
             // create a new label #2
             testing.hashAppend("/label/HoverLabel2");
@@ -446,8 +454,7 @@ describe(
             testing.labelMappingLabelSaveButton()
                 .click();
 
-            testing.labelMappingLabelCloseButton()
-                .click();
+            testing.labelMappingDialogClosedCheck();
 
             testing.getById(A1.viewportTooltipId())
                 .should("not.exist");
@@ -470,8 +477,7 @@ describe(
             testing.labelMappingLabelSaveButton()
                 .click();
 
-            testing.labelMappingLabelCloseButton()
-                .click();
+            testing.labelMappingDialogClosedCheck();
 
             // navigate
             testing.hashAppend("/cell/NavigateToLabel123");
@@ -499,8 +505,7 @@ describe(
             testing.labelMappingLabelSaveButton()
                 .click();
 
-            testing.labelMappingLabelCloseButton()
-                .click();
+            testing.labelMappingDialogClosedCheck();
 
             testing.cellFormulaEnterAndSave(C3, "=4*MovingLabel");
 
@@ -515,14 +520,18 @@ describe(
             testing.labelMappingLabelSaveButton()
                 .click();
 
+            testing.labelMappingDialogClosedCheck();
+
             testing.cellFormattedTextCheck(C3, "88."); // 4 * 22
         });
 
-        function labelMappingDialogCheck(title,
-                                         labelText,
-                                         labelHelperText,
-                                         referenceText,
-                                         referenceHelperText) {
+        function labelMappingOpenDialogAndCheck(title,
+                                                labelText,
+                                                labelHelperText,
+                                                referenceText,
+                                                referenceHelperText) {
+            testing.hashAppendAfterSpreadsheetName("/" + SpreadsheetHistoryHashTokens.LABEL + "/" + labelText);
+
             testing.getById(SpreadsheetLabelMappingWidget.DIALOG_TITLE_ID)
                 .contains(title);
 
