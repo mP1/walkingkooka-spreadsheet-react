@@ -9,6 +9,7 @@ import SpreadsheetHistoryHash from "../history/SpreadsheetHistoryHash.js";
 import SpreadsheetHistoryHashTokens from "../history/SpreadsheetHistoryHashTokens.js";
 import SpreadsheetMetadata from "../meta/SpreadsheetMetadata.js";
 import SpreadsheetMessengerCrud from "../message/SpreadsheetMessengerCrud.js";
+import SpreadsheetSettingsSelectHistoryHashToken from "../history/SpreadsheetSettingsSelectHistoryHashToken.js";
 import SpreadsheetSettingsSaveHistoryHashToken from "../history/SpreadsheetSettingsSaveHistoryHashToken.js";
 import Tooltip from '@mui/material/Tooltip';
 
@@ -39,12 +40,11 @@ export default class SpreadsheetSettingsWidgetValue extends SpreadsheetHistoryAw
 
     initialStateFromProps(props) {
         const historyHashTokens = props.history.tokens();
+        const settings = historyHashTokens[SpreadsheetHistoryHashTokens.SETTINGS];
 
         return {
             spreadsheetId: historyHashTokens[SpreadsheetHistoryHash.SPREADSHEET_ID],
-            settings: historyHashTokens[SpreadsheetHistoryHashTokens.SETTINGS],
-            settingsItem: historyHashTokens[SpreadsheetHistoryHashTokens.SETTINGS_ITEM],
-            settingsAction: historyHashTokens[SpreadsheetHistoryHashTokens.SETTINGS_ACTION],
+            settings: settings,
             focused: false, // when true this widget has focus
             spreadsheetMetadata: null,
             value: null,
@@ -66,11 +66,11 @@ export default class SpreadsheetSettingsWidgetValue extends SpreadsheetHistoryAw
     }
 
     stateFromHistoryTokens(historyHashTokens) {
+        const settings = historyHashTokens[SpreadsheetHistoryHashTokens.SETTINGS];
+
         return {
             spreadsheetId: historyHashTokens[SpreadsheetHistoryHashTokens.SPREADSHEET_ID],
-            settings: historyHashTokens[SpreadsheetHistoryHashTokens.SETTINGS],
-            settingsItem: historyHashTokens[SpreadsheetHistoryHashTokens.SETTINGS_ITEM],
-            settingsAction: historyHashTokens[SpreadsheetHistoryHashTokens.SETTINGS_ACTION],
+            settings: settings,
         };
     }
 
@@ -87,9 +87,7 @@ export default class SpreadsheetSettingsWidgetValue extends SpreadsheetHistoryAw
 
         if(newFocused){
             if(newFocused !== prevState.focused){
-                historyTokens[SpreadsheetHistoryHashTokens.SETTINGS] = true;
-                historyTokens[SpreadsheetHistoryHashTokens.SETTINGS_ITEM] = property;
-                historyTokens[SpreadsheetHistoryHashTokens.SETTINGS_ACTION] = state.settingsAction;
+                historyTokens[SpreadsheetHistoryHashTokens.SETTINGS] = new SpreadsheetSettingsSelectHistoryHashToken(property);
             }
 
             const value = state.value;
@@ -101,7 +99,8 @@ export default class SpreadsheetSettingsWidgetValue extends SpreadsheetHistoryAw
                 }
             }
         }else {
-            if(state.settingsItem === property && state.focused !== property){
+            const settings = state.settings;
+            if(settings && settings.item() === property && state.focused !== property){
                 this.focus();
             }
         }
@@ -132,9 +131,9 @@ export default class SpreadsheetSettingsWidgetValue extends SpreadsheetHistoryAw
 
                 this.setState({
                     focused: true,
-                    settings: true,
-                    settingsItem: property,
-                    settingsAction: null,
+                    settings: new SpreadsheetSettingsSelectHistoryHashToken(
+                        property
+                    ),
                 });
             }
         };
@@ -142,16 +141,20 @@ export default class SpreadsheetSettingsWidgetValue extends SpreadsheetHistoryAw
         const onBlur = (e) => {
             // new focus belongs does not belong to property
             if(ref.current && !ref.current.contains(e.relatedTarget)){
-                console.log(prefix + ".onBlur: state", this.state,
+                console.log(
+                    prefix + ".onBlur: state", this.state,
                     "e.target:", e.target,
-                    "e.relatedTarget", e.relatedTarget, "!!OUTSIDE", (ref.current && !ref.current.contains(e.relatedTarget)));
+                    "e.relatedTarget", e.relatedTarget
+                );
 
 
                 const value = state.value;
                 if(!Equality.safeEquals(value, state.savedValue)){
                     const tokens = SpreadsheetHistoryHashTokens.emptyTokens();
-                    tokens[SpreadsheetHistoryHashTokens.SETTINGS_ITEM] = property;
-                    tokens[SpreadsheetHistoryHashTokens.SETTINGS_ACTION] = new SpreadsheetSettingsSaveHistoryHashToken(null == value ? null : "" + value);
+                    tokens[SpreadsheetHistoryHashTokens.SETTINGS] = new SpreadsheetSettingsSaveHistoryHashToken(
+                        property,
+                        null == value ? null : "" + value
+                    );
                     console.log(prefix + ".save " + property + "=" + value + " last saved: " + state.savedValue, tokens, JSON.stringify(tokens));
 
                     this.historyParseMergeAndPush(tokens);
@@ -159,8 +162,7 @@ export default class SpreadsheetSettingsWidgetValue extends SpreadsheetHistoryAw
 
                 this.setState({
                     focused: false,
-                    settingsItem: null,
-                    settingsAction: null,
+                    settings: SpreadsheetSettingsSelectHistoryHashToken.NOTHING,
                 });
             }
         };
@@ -209,8 +211,10 @@ export default class SpreadsheetSettingsWidgetValue extends SpreadsheetHistoryAw
 
         // default button removes any assigned value
         const historyHashTokens = props.history.tokens();
-        historyHashTokens[SpreadsheetHistoryHashTokens.SETTINGS_ITEM] = props.property;
-        historyHashTokens[SpreadsheetHistoryHashTokens.SETTINGS_ACTION] = new SpreadsheetSettingsSaveHistoryHashToken();
+        historyHashTokens[SpreadsheetHistoryHashTokens.SETTINGS] = new SpreadsheetSettingsSaveHistoryHashToken(
+            props.property,
+            null
+        );
         const url = "#" + SpreadsheetHistoryHash.stringify(historyHashTokens);
 
         const button = <Button id={id}

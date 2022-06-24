@@ -39,6 +39,7 @@ import SpreadsheetSelection from "../reference/SpreadsheetSelection.js";
 import SpreadsheetSelectionHistoryHashToken from "./SpreadsheetSelectionHistoryHashToken.js";
 import SpreadsheetSettingsHistoryHashToken from "./SpreadsheetSettingsHistoryHashToken.js";
 import SpreadsheetSettingsSaveHistoryHashToken from "./SpreadsheetSettingsSaveHistoryHashToken.js";
+import SpreadsheetSettingsSelectHistoryHashToken from "./SpreadsheetSettingsSelectHistoryHashToken.js";
 import SpreadsheetSettingsWidgetHistoryHashTokens from "../settings/SpreadsheetSettingsWidgetHistoryHashTokens.js";
 import SpreadsheetViewportSelectionAnchor from "../reference/SpreadsheetViewportSelectionAnchor.js";
 
@@ -57,7 +58,11 @@ function split(pathname) {
 function isSettingsToken(token) {
     return SpreadsheetSettingsWidgetHistoryHashTokens.accordions()
             .indexOf(token) > -1 ||
-        Boolean(SpreadsheetSettingsWidgetHistoryHashTokens.parentAccordion(token));
+        isSettingsProperty(token);
+}
+
+function isSettingsProperty(token) {
+    return Boolean(SpreadsheetSettingsWidgetHistoryHashTokens.parentAccordion(token));
 }
 
 function copyTx(from, to) {
@@ -106,9 +111,8 @@ export default class SpreadsheetHistoryHash extends SpreadsheetHistoryHashTokens
                 var labelAction = null;
 
                 var select = null;
+
                 var settings = null;
-                var settingsItem = null;
-                var settingsAction = null;
 
                 do {
                     var token = tokens.shift();
@@ -339,24 +343,36 @@ export default class SpreadsheetHistoryHash extends SpreadsheetHistoryHashTokens
                     }
 
                     // settings
-                    if(!(selectionAction || label || select)) {
+                    if(!(selectionAction || label || select)){
                         if(SpreadsheetHistoryHashTokens.SETTINGS === token){
-                            settings = true;
-                            settingsItem = undefined;
-                            settingsAction = null;
-
                             token = tokens.shift();
-                            if(null != token){
+
+                            // /settings
+                            if(null == token){
+                                settings = SpreadsheetSettingsSelectHistoryHashToken.NOTHING;
+                            }else {
+                                // /settings/metadata
                                 if(isSettingsToken(token)){
-                                    settingsItem = token;
-                                    token = tokens.shift();
+                                    const settingsItemOrMetadataProperty = token;
+
+                                    // /settings/color/#123456
+                                    token = tokens.shift(); // property value
                                     if(null != token){
-                                        settingsAction = new SpreadsheetSettingsSaveHistoryHashToken(
-                                            "" === token ? null : decodeURIComponent(token)
-                                        );
-                                        token = tokens.shift();
+                                        if(isSettingsProperty(settingsItemOrMetadataProperty)){
+                                            settings = new SpreadsheetSettingsSaveHistoryHashToken(
+                                                settingsItemOrMetadataProperty,
+                                                "" === token ? null : decodeURIComponent(token)
+                                            );
+                                            token = tokens.shift();
+                                        }else {
+                                            settings = null;
+                                            tokens.unshift(token);
+                                        }
+                                    }else {
+                                        settings = new SpreadsheetSettingsSelectHistoryHashToken(settingsItemOrMetadataProperty);
                                     }
                                 }else {
+                                    settings = null;
                                     break;
                                 }
                             }
@@ -403,12 +419,6 @@ export default class SpreadsheetHistoryHash extends SpreadsheetHistoryHashTokens
                     }
                     if(settings){
                         historyHashTokens[SpreadsheetHistoryHashTokens.SETTINGS] = settings;
-                        if(settingsItem){
-                            historyHashTokens[SpreadsheetHistoryHashTokens.SETTINGS_ITEM] = settingsItem;
-                        }
-                        if(settingsAction){
-                            historyHashTokens[SpreadsheetHistoryHashTokens.SETTINGS_ACTION] = settingsAction;
-                        }
                     }
                 } while(false);
             }
@@ -435,9 +445,8 @@ export default class SpreadsheetHistoryHash extends SpreadsheetHistoryHashTokens
         var labelAction = tokens[SpreadsheetHistoryHashTokens.LABEL_ACTION];
 
         var select = tokens[SpreadsheetHistoryHashTokens.SELECT];
+
         var settings = tokens[SpreadsheetHistoryHashTokens.SETTINGS];
-        var settingsItem = tokens[SpreadsheetHistoryHashTokens.SETTINGS_ITEM];
-        var settingsAction = tokens[SpreadsheetHistoryHashTokens.SETTINGS_ACTION];
 
         const verified = {};
 
@@ -520,18 +529,8 @@ export default class SpreadsheetHistoryHash extends SpreadsheetHistoryHashTokens
                 if(select){
                     verified[SpreadsheetHistoryHashTokens.SELECT] = select;
                 }
-                if(settings){
+                if(settings instanceof SpreadsheetSettingsHistoryHashToken){
                     verified[SpreadsheetHistoryHashTokens.SETTINGS] = settings;
-
-                    if(settingsItem){
-                        verified[SpreadsheetHistoryHashTokens.SETTINGS_ITEM] = settingsItem;
-
-                        if(isSettingsToken(settingsItem)){
-                            if(settingsAction instanceof SpreadsheetSettingsHistoryHashToken){
-                                verified[SpreadsheetHistoryHashTokens.SETTINGS_ACTION] = settingsAction;
-                            }
-                        }
-                    }
                 }
             }
         }
@@ -563,8 +562,6 @@ export default class SpreadsheetHistoryHash extends SpreadsheetHistoryHashTokens
         var select = current[SpreadsheetHistoryHashTokens.SELECT];
 
         var settings = current[SpreadsheetHistoryHashTokens.SETTINGS];
-        var settingsItem = current[SpreadsheetHistoryHashTokens.SETTINGS_ITEM];
-        var settingsAction = current[SpreadsheetHistoryHashTokens.SETTINGS_ACTION];
 
         // try replacing...
         if(delta.hasOwnProperty(SpreadsheetHistoryHashTokens.SPREADSHEET_ID)){
@@ -589,8 +586,6 @@ export default class SpreadsheetHistoryHash extends SpreadsheetHistoryHashTokens
                 label = null;
                 select = null;
                 settings = null;
-                settingsItem = null;
-                settingsAction = null;
             }
         }
 
@@ -641,26 +636,6 @@ export default class SpreadsheetHistoryHash extends SpreadsheetHistoryHashTokens
             if(settings){
                 spreadsheetNameEdit = false;
                 selectionAction = null;
-            }
-        }
-
-        if(delta.hasOwnProperty(SpreadsheetHistoryHashTokens.SETTINGS_ITEM)){
-            settingsItem = delta[SpreadsheetHistoryHashTokens.SETTINGS_ITEM];
-            if(settingsItem){
-                if(!isSettingsToken(settingsItem)){
-                    settingsItem = null;
-                }
-                spreadsheetNameEdit = false;
-            }
-        }
-
-        if(delta.hasOwnProperty(SpreadsheetHistoryHashTokens.SETTINGS_ACTION)){
-            settingsAction = delta[SpreadsheetHistoryHashTokens.SETTINGS_ACTION];
-            if(settingsAction){
-                if(!isSettingsToken(settingsItem)){
-                    settingsAction = null;
-                }
-                spreadsheetNameEdit = false;
             }
         }
 
@@ -717,12 +692,6 @@ export default class SpreadsheetHistoryHash extends SpreadsheetHistoryHashTokens
             if(null != settings){
                 merged[SpreadsheetHistoryHashTokens.SETTINGS] = settings;
             }
-            if(typeof settingsItem !== "undefined"){
-                merged[SpreadsheetHistoryHashTokens.SETTINGS_ITEM] = settingsItem;
-            }
-            if(typeof settingsAction !== "undefined"){
-                merged[SpreadsheetHistoryHashTokens.SETTINGS_ACTION] = settingsAction;
-            }
         }
 
         return SpreadsheetHistoryHash.validate(merged);
@@ -748,8 +717,6 @@ export default class SpreadsheetHistoryHash extends SpreadsheetHistoryHashTokens
         var select = tokens[SpreadsheetHistoryHashTokens.SELECT];
 
         var settings = tokens[SpreadsheetHistoryHashTokens.SETTINGS];
-        var settingsItem = tokens[SpreadsheetHistoryHashTokens.SETTINGS_ITEM];
-        var settingsAction = tokens[SpreadsheetHistoryHashTokens.SETTINGS_ACTION];
 
         let hash = "";
         let valid = false;
@@ -807,16 +774,8 @@ export default class SpreadsheetHistoryHash extends SpreadsheetHistoryHashTokens
                 hash = hash + "/" + SpreadsheetHistoryHashTokens.SELECT;
             }
 
-            if(!!settings){
-                hash = hash + "/" + SpreadsheetHistoryHashTokens.SETTINGS;
-
-                if(settingsItem){
-                    hash = hash + "/" + settingsItem;
-
-                    if(settingsAction){
-                        hash = hash + settingsAction.toHistoryHashToken();
-                    }
-                }
+            if(settings){
+                hash = hash + settings.toHistoryHashToken();
             }
         }
 

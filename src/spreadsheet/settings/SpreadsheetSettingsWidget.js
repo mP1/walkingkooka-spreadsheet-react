@@ -26,6 +26,7 @@ import SpreadsheetMetadata from "../meta/SpreadsheetMetadata.js";
 import SpreadsheetMultiFormatRequest from "../server/format/SpreadsheetMultiFormatRequest.js";
 import SpreadsheetMultiFormatResponse from "../server/format/SpreadsheetMultiFormatResponse.js";
 import SpreadsheetSettingsSaveHistoryHashToken from "../history/SpreadsheetSettingsSaveHistoryHashToken.js";
+import SpreadsheetSettingsSelectHistoryHashToken from "../history/SpreadsheetSettingsSelectHistoryHashToken.js";
 import SpreadsheetSettingsWidgetTextFieldCharacter from "./SpreadsheetSettingsWidgetTextFieldCharacter.js";
 import SpreadsheetSettingsWidgetTextFieldColor from "./SpreadsheetSettingsWidgetTextFieldColor.js";
 import SpreadsheetSettingsWidgetDropDownList from "./SpreadsheetSettingsWidgetDropDownList.js";
@@ -165,11 +166,9 @@ class SpreadsheetSettingsWidget extends SpreadsheetHistoryAwareStateWidget {
         const state = {
             id: tokens[SpreadsheetHistoryHashTokens.SPREADSHEET_ID],
             settings: settings,
-            settingsItem: tokens[SpreadsheetHistoryHashTokens.SETTINGS_ITEM],
-            settingsAction: tokens[SpreadsheetHistoryHashTokens.SETTINGS_ACTION],
         };
 
-        if(!settings){
+        if(!Boolean(settings)){
             state.giveSettingsFocus = true;
         }
 
@@ -187,17 +186,13 @@ class SpreadsheetSettingsWidget extends SpreadsheetHistoryAwareStateWidget {
         if(newSettings){
             const oldSettings = prevState.settings;
 
-            if(newSettings !== oldSettings){
-                this.loadSpreadsheetMetadata(); // load spreadsheet metadata when the settings drawer opens
-            }
-
-            const settingsActionNew = state.settingsAction;
-            if(settingsActionNew){
-                const settingsActionOld = prevState.settingsAction;
-
-                // execute action if different but dont execute a load straight after a save
-                if(!Equality.safeEquals(settingsActionNew, settingsActionOld)){
-                    settingsActionNew.onSettingsAction(this);
+            if(!Equality.safeEquals(newSettings, oldSettings)){
+                if(newSettings){
+                    if(oldSettings){
+                        newSettings.onSettingsAction(this);
+                    }else {
+                        this.loadSpreadsheetMetadata(); // load spreadsheet metadata when the settings drawer opens
+                    }
                 }
             }
         }
@@ -229,24 +224,20 @@ class SpreadsheetSettingsWidget extends SpreadsheetHistoryAwareStateWidget {
     saveProperty(property) {
         return (value) => {
             const tokens = SpreadsheetHistoryHashTokens.emptyTokens();
-            tokens[SpreadsheetHistoryHashTokens.SETTINGS] = true;
-            tokens[SpreadsheetHistoryHashTokens.SETTINGS_ITEM] = property;
-            tokens[SpreadsheetHistoryHashTokens.SETTINGS_ACTION] = new SpreadsheetSettingsSaveHistoryHashToken(value);
+            tokens[SpreadsheetHistoryHashTokens.SETTINGS] = new SpreadsheetSettingsSaveHistoryHashToken(property, value);
+            this.historyParseMergeAndPush(tokens);
 
             console.log("settings save " + property + "=" + value, tokens);
-
-            this.historyParseMergeAndPush(tokens);
         };
     }
 
     /**
      * Performs a PATCH to save the current property and value to the server
      */
-    patchSpreadsheetMetadata(value) {
+    patchSpreadsheetMetadata(property, value) {
         const {state, props} = this;
 
         const patch = {};
-        const property = state.settingsItem;
 
         if(SpreadsheetMetadata.isProperty(property)){
             patch[property] = SpreadsheetMetadata.stringValueToJson(property, value);
@@ -263,12 +254,15 @@ class SpreadsheetSettingsWidget extends SpreadsheetHistoryAwareStateWidget {
 
         // clear the save action
         const historyHashTokens = SpreadsheetHistoryHashTokens.emptyTokens();
-        historyHashTokens[SpreadsheetHistoryHashTokens.SETTINGS_ACTION] = null;
+        historyHashTokens[SpreadsheetHistoryHashTokens.SETTINGS] = new SpreadsheetSettingsSelectHistoryHashToken(property);
         this.historyParseMergeAndPush(historyHashTokens);
     }
 
     onSpreadsheetMetadata(method, id, url, requestMetadata, responseMetadata) {
-        const {settings, settingsItem, giveSettingsFocus} = this.state;
+        const {
+            settings,
+            giveSettingsFocus
+        } = this.state;
 
         const newState = {
             createDateTimeFormatted: "", // clear forcing reformatting of create/modified timestamps.
@@ -276,7 +270,7 @@ class SpreadsheetSettingsWidget extends SpreadsheetHistoryAwareStateWidget {
             spreadsheetMetadata: responseMetadata,
         };
 
-        if(settings && giveSettingsFocus && !settingsItem){
+        if(settings && giveSettingsFocus && !settings.item()){
             newState.giveSettingsFocus = false;
             this.giveFocus(this.ref.current);
         }
@@ -286,7 +280,12 @@ class SpreadsheetSettingsWidget extends SpreadsheetHistoryAwareStateWidget {
 
     render() {
         const {classes} = this.props;
-        const {settings, settingsItem, spreadsheetMetadata} = this.state;
+        const {
+            settings,
+            spreadsheetMetadata
+        } = this.state;
+
+        const settingsItem = settings && settings.item();
 
         // if metadata is empty skip rendering content.
         const children = spreadsheetMetadata &&
@@ -302,12 +301,11 @@ class SpreadsheetSettingsWidget extends SpreadsheetHistoryAwareStateWidget {
         const onFocus = (e) => {
             const ref = this.ref;
 
-            if(!(this.state.settings) && ref.current && ref.current.isEqualNode(e.target)){
+            if(!(settings) && ref.current && ref.current.isEqualNode(e.target)){
                 console.log("settings.focus target: ", e.target);
 
                 const tokens = SpreadsheetHistoryHashTokens.emptyTokens();
-                tokens[SpreadsheetHistoryHashTokens.SETTINGS] = true;
-                tokens[SpreadsheetHistoryHashTokens.SETTINGS_ITEM] = null;
+                tokens[SpreadsheetHistoryHashTokens.SETTINGS] = SpreadsheetSettingsSelectHistoryHashToken.NOTHING;
                 this.historyParseMergeAndPush(tokens);
             }
         };
@@ -318,7 +316,7 @@ class SpreadsheetSettingsWidget extends SpreadsheetHistoryAwareStateWidget {
 
                 if(!ref.current.contains(target) && !(document.getElementById(SpreadsheetSettingsWidget.menuIcon()).contains(target))){
                     const tokens = SpreadsheetHistoryHashTokens.emptyTokens();
-                    tokens[SpreadsheetHistoryHashTokens.SETTINGS] = false;
+                    tokens[SpreadsheetHistoryHashTokens.SETTINGS] = null;
                     this.historyParseMergeAndPush(tokens);
 
                     console.log("settings.blur", target);
@@ -328,7 +326,7 @@ class SpreadsheetSettingsWidget extends SpreadsheetHistoryAwareStateWidget {
 
         const onClose = () => {
             const tokens = SpreadsheetHistoryHashTokens.emptyTokens();
-            tokens[SpreadsheetHistoryHashTokens.SETTINGS] = false;
+            tokens[SpreadsheetHistoryHashTokens.SETTINGS] = null;
 
             this.historyParseMergeAndPush(tokens);
         }
@@ -373,7 +371,8 @@ class SpreadsheetSettingsWidget extends SpreadsheetHistoryAwareStateWidget {
      */
     formatCreateDateTimeModifiedDateTime() {
         const state = this.state;
-        const settingsItem = state.settingsItem;
+        const settings = state.settings;
+        const settingsItem = settings.item();
 
         if(SpreadsheetSettingsWidgetHistoryHashTokens.METADATA === settingsItem || SpreadsheetSettingsWidgetHistoryHashTokens.METADATA === SpreadsheetSettingsWidgetHistoryHashTokens.parentAccordion(settingsItem)){
             if(!state.createDateTimeFormatted && !state.modifiedDateTimeFormatted){
@@ -1288,7 +1287,8 @@ class SpreadsheetSettingsWidget extends SpreadsheetHistoryAwareStateWidget {
         const id = SpreadsheetSettingsWidget.accordionId(accordion)
 
         const state = this.state;
-        const settingsItem = state.settingsItem;
+        const settings = state.settings;
+        const settingsItem = settings.item();
 
         const accordingRef = React.createRef();
         const expandIconRef = React.createRef();
@@ -1312,7 +1312,7 @@ class SpreadsheetSettingsWidget extends SpreadsheetHistoryAwareStateWidget {
                     console.log("settings accordion focus " + accordion);
 
                     const historyTokens = this.props.history.tokens();
-                    historyTokens[SpreadsheetHistoryHashTokens.SETTINGS_ITEM] = accordion;
+                    historyTokens[SpreadsheetHistoryHashTokens.SETTINGS] = new SpreadsheetSettingsSelectHistoryHashToken(accordion);
                     this.historyParseMergeAndPush(historyTokens);
                 }
             }
@@ -1322,7 +1322,7 @@ class SpreadsheetSettingsWidget extends SpreadsheetHistoryAwareStateWidget {
             console.log("settings accordion change " + accordion + " " + (expanded ? "expanding" : "collapsing"));
 
             const historyHashTokens = SpreadsheetHistoryHashTokens.emptyTokens();
-            historyHashTokens[SpreadsheetHistoryHashTokens.SETTINGS_ITEM] = expanded ? accordion : null;
+            historyHashTokens[SpreadsheetHistoryHashTokens.SETTINGS] = expanded && new SpreadsheetSettingsSelectHistoryHashToken(accordion);
             this.historyParseMergeAndPush(historyHashTokens);
         }
 
