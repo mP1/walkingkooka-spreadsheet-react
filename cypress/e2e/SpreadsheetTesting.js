@@ -234,6 +234,11 @@ export default class SpreadsheetTesting {
         return this.getById(SpreadsheetLabelMappingWidget.DIALOG_CLOSE_BUTTON_ID);
     }
 
+    labelMappingDialogClosedCheck() {
+        this.getById(SpreadsheetLabelMappingWidget.DIALOG_TITLE_ID)
+            .should("not.exist");
+    }
+
     labelMappingCloseWait() {
         this.wait(200);
     }

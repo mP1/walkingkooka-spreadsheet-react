@@ -1,7 +1,7 @@
-import SpreadsheetHistoryHash from "./SpreadsheetHistoryHash.js";
-import SpreadsheetLabelMappingHistoryHashToken from "./SpreadsheetLabelMappingHistoryHashToken.js";
 import Preconditions from "../../Preconditions.js";
 import SpreadsheetExpressionReference from "../reference/SpreadsheetExpressionReference.js";
+import SpreadsheetHistoryHash from "./SpreadsheetHistoryHash.js";
+import SpreadsheetLabelMappingHistoryHashToken from "./SpreadsheetLabelMappingHistoryHashToken.js";
 import SpreadsheetLabelName from "../reference/SpreadsheetLabelName.js";
 
 /**
@@ -9,14 +9,20 @@ import SpreadsheetLabelName from "../reference/SpreadsheetLabelName.js";
  */
 export default class SpreadsheetLabelMappingSaveHistoryHashToken extends SpreadsheetLabelMappingHistoryHashToken {
 
-    constructor(newLabel, reference) {
+    constructor(label, newLabel, reference) {
         super();
 
+        Preconditions.requireInstance(label, SpreadsheetLabelName, "label");
         Preconditions.requireInstance(newLabel, SpreadsheetLabelName, "newLabel");
         Preconditions.requireInstance(reference, SpreadsheetExpressionReference, "reference");
 
+        this.labelValue = label;
         this.newLabelValue = newLabel;
         this.referenceValue = reference;
+    }
+
+    label() {
+        return this.labelValue;
     }
 
     newLabel() {
@@ -27,15 +33,25 @@ export default class SpreadsheetLabelMappingSaveHistoryHashToken extends Spreads
         return this.referenceValue;
     }
 
+    // /label/$label/save/$newLabel/$newReference
     toHistoryHashToken() {
-        return SpreadsheetHistoryHash.SAVE + "/" + this.newLabel() + "/" + this.reference();
+        return "/" + SpreadsheetHistoryHash.LABEL + "/" + this.label() + "/" + SpreadsheetHistoryHash.SAVE + "/" + this.newLabel() + "/" + this.reference();
     }
 
-    labelMappingWidget(widget) {
-        widget.saveLabelMapping(this.newLabel(), this.reference());
+    execute(widget) {
+        widget.saveLabelMapping(
+            this.label(),
+            this.newLabel(),
+            this.reference()
+        );
     }
 
     equals(other) {
-        return this === other || (other instanceof SpreadsheetLabelMappingSaveHistoryHashToken && this.newLabel().equals(other.newLabel()) && this.reference().equals(other.reference()));
+        return this === other ||
+            (other instanceof SpreadsheetLabelMappingSaveHistoryHashToken &&
+                this.label().equals(other.label()) &&
+                this.newLabel().equals(other.newLabel()) &&
+                this.reference().equals(other.reference())
+            );
     }
 }

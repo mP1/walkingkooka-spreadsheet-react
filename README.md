@@ -178,8 +178,8 @@ Following the selection of a column or column range, the following commands are 
 Supports numerous actions relating to creating, updating or deleting a label mapping to another cell/cell-range or label.
 
 - /label-name Opens a dialog allowing entering of a new label mapping.
-- /$old-label-name/save/$new-label-name/$target Saves or updates the OLD label name with the new label name and target cell/cell-range or label.
-- /$old-label-name/delete Deletes $old-label-name if it exists.
+- /$old-label-name/save/$new-label-name/$target Saves or updates the OLD label name with the new label name and target cell/cell-range or label & closes the Dialog.
+- /$old-label-name/delete Deletes $old-label-name if it exists & closes the Dialog.
 
 > /#123/Untitled/label/Label123
 > 

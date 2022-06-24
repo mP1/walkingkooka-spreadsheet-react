@@ -4,9 +4,9 @@ import SpreadsheetLabelMappingHistoryHashToken from "./SpreadsheetLabelMappingHi
 import SpreadsheetLabelName from "../reference/SpreadsheetLabelName.js";
 
 /**
- * A history hash token that represents a label mapping delete
+ * A history hash token that represents a label mapping save including the reference or target of the mapping.
  */
-export default class SpreadsheetLabelMappingDeleteHistoryHashToken extends SpreadsheetLabelMappingHistoryHashToken {
+export default class SpreadsheetLabelMappingEditHistoryHashToken extends SpreadsheetLabelMappingHistoryHashToken {
 
     constructor(label) {
         super();
@@ -20,16 +20,16 @@ export default class SpreadsheetLabelMappingDeleteHistoryHashToken extends Sprea
         return this.labelValue;
     }
 
-    // /label/$label/delete
     toHistoryHashToken() {
-        return "/" + SpreadsheetHistoryHash.LABEL + "/" + this.label() + "/" + SpreadsheetHistoryHash.DELETE;
+        return "/" + SpreadsheetHistoryHash.LABEL + "/" + this.label();
     }
 
     execute(widget) {
-        widget.deleteLabelMapping(this.label());
+        widget.loadLabelMapping(this.label());
     }
 
     equals(other) {
-        return this === other || (other instanceof SpreadsheetLabelMappingDeleteHistoryHashToken);
+        return this === other ||
+            (other instanceof SpreadsheetLabelMappingEditHistoryHashToken && this.label().equals(other.label()));
     }
 }

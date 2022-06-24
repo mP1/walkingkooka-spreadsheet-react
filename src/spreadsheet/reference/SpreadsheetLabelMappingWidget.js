@@ -77,7 +77,6 @@ export default class SpreadsheetLabelMappingWidget extends SpreadsheetHistoryAwa
         return {
             spreadsheetId: tokens[SpreadsheetHistoryHashTokens.SPREADSHEET_ID],
             label: tokens[SpreadsheetHistoryHashTokens.LABEL],
-            labelAction: tokens[SpreadsheetHistoryHashTokens.LABEL_ACTION],
         };
     }
 
@@ -85,31 +84,29 @@ export default class SpreadsheetLabelMappingWidget extends SpreadsheetHistoryAwa
      * Updates the label within the history hash.
      */
     historyTokensFromState(prevState) {
-        const {label, labelAction} = this.state;
+        const {label} = this.state;
 
         if(null != label){
             const previousLabel = prevState.label;
-            const previousLabelAction = prevState.labelAction;
 
-            if(!Equality.safeEquals(previousLabel, label) || !Equality.safeEquals(previousLabelAction, labelAction)){
-                if(!labelAction){
-                    this.props.spreadsheetLabelCrud.get(
-                        label,
-                        {},
-                        this.onLabelMappingLoadFailure.bind(this)
-                    );
-                }else {
-                    labelAction.labelMappingWidget(this);
-                }
+            if(!Equality.safeEquals(previousLabel, label)){
+                label.execute(this);
             }
         }
 
         return SpreadsheetHistoryHashTokens.emptyTokens();
     }
 
-    saveLabelMapping(newLabel, reference) {
-        console.log("saveLabelMapping: " + newLabel + " " + reference);
-        const oldLabel = this.state.label;
+    loadLabelMapping(label) {
+        this.props.spreadsheetLabelCrud.get(
+            label,
+            {},
+            this.onLabelMappingLoadFailure.bind(this)
+        );
+    }
+
+    saveLabelMapping(oldLabel, newLabel, reference) {
+        console.log("saveLabelMapping: " + oldLabel, newLabel + " " + reference);
 
         const props = this.props;
 
@@ -120,9 +117,8 @@ export default class SpreadsheetLabelMappingWidget extends SpreadsheetHistoryAwa
         );
     }
 
-    deleteLabelMapping() {
-        const {state, props} = this;
-        const label = state.label;
+    deleteLabelMapping(label) {
+        const {props} = this;
 
         console.log("deleteLabelMapping: " + label);
 
@@ -142,28 +138,40 @@ export default class SpreadsheetLabelMappingWidget extends SpreadsheetHistoryAwa
 
     renderDialog() {
         const state = this.state;
-        const {label, newLabel, labelHelper, reference, referenceHelper} = state;
+        const {
+            label,
+            newLabel,
+            labelHelper,
+            reference,
+            referenceHelper
+        } = state;
+
+        const labelName = label.label();
 
         const tokens = this.props.history.tokens();
 
         var labelSave;
 
         if(newLabel && reference){
-            tokens[SpreadsheetHistoryHashTokens.LABEL_ACTION] = new SpreadsheetLabelMappingSaveHistoryHashToken(newLabel, reference);
+            tokens[SpreadsheetHistoryHashTokens.LABEL] = new SpreadsheetLabelMappingSaveHistoryHashToken(
+                label.label(),
+                newLabel,
+                reference
+            );
             labelSave = "#" + SpreadsheetHistoryHash.stringify(tokens);
         }
 
-        tokens[SpreadsheetHistoryHashTokens.LABEL_ACTION] = new SpreadsheetLabelMappingDeleteHistoryHashToken();
+        tokens[SpreadsheetHistoryHashTokens.LABEL] = new SpreadsheetLabelMappingDeleteHistoryHashToken(labelName);
         const labelDelete = "#" + SpreadsheetHistoryHash.stringify(tokens);
 
-        console.log("render: ", "label:" + label, "newLabel:" + newLabel + ", labelHelper:" + labelHelper, ", reference:" + reference, "referenceHelper" + referenceHelper, "saveButton", labelSave, "labelDelete", labelDelete);
+        console.log("render: ", "label:" + labelName, "newLabel:" + newLabel + ", labelHelper:" + labelHelper, ", reference:" + reference, "referenceHelper" + referenceHelper, "saveButton", labelSave, "labelDelete", labelDelete);
 
         return <SpreadsheetDialog id={SpreadsheetLabelMappingWidget.DIALOG_ID}
                                   key={"label-mapping"}
                                   open={true}
                                   onClose={this.close.bind(this)}
         >
-            <span id={SpreadsheetLabelMappingWidget.DIALOG_TITLE_ID}>{"Label: " + label}</span>
+            <span id={SpreadsheetLabelMappingWidget.DIALOG_TITLE_ID}>{"Label: " + labelName}</span>
             <span>
                 <TextField key={"label"}
                            inputRef={this.label}
@@ -172,7 +180,7 @@ export default class SpreadsheetLabelMappingWidget extends SpreadsheetHistoryAwa
                            label="Label"
                            type="text"
                            fullWidth
-                           defaultValue={label}
+                           defaultValue={labelName}
                            helperText={labelHelper}
                            onChange={this.onLabelTextFieldValueChange.bind(this)}
                            autoFocus
@@ -263,8 +271,6 @@ export default class SpreadsheetLabelMappingWidget extends SpreadsheetHistoryAwa
     close() {
         const tokens = SpreadsheetHistoryHashTokens.emptyTokens();
         tokens[SpreadsheetHistoryHashTokens.LABEL] = null;
-        tokens[SpreadsheetHistoryHashTokens.LABEL_ACTION] = null;
-
         this.historyParseMergeAndPush(tokens);
     }
 
@@ -344,24 +350,15 @@ export default class SpreadsheetLabelMappingWidget extends SpreadsheetHistoryAwa
         this.setState(state);
     }
 
-    /**
-     * Updates the state.label, this means future operations will reference this label to save.
-     */
     onLabelMappingSaveSuccess(mapping) {
-        const tokens = SpreadsheetHistoryHashTokens.emptyTokens();
-        tokens[SpreadsheetHistoryHashTokens.LABEL] = mapping.label();
-        tokens[SpreadsheetHistoryHashTokens.LABEL_ACTION] = null;
-        this.historyParseMergeAndPush(tokens);
-
-        this.setState({
-            reference: mapping.reference(),
-        });
-
         this.props.notificationShow(SpreadsheetNotification.success("Label saved"));
+
+        this.close();
     }
 
     onLabelMappingDeleteSuccess() {
         this.props.notificationShow(SpreadsheetNotification.success("Label deleted"));
+
         this.close();
     }
 }
