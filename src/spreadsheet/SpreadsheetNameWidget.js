@@ -1,17 +1,17 @@
 import Button from "@mui/material/Button";
 import Equality from "../Equality.js";
 import Keys from "../Keys.js";
-import React from 'react';
 import PropTypes from 'prop-types';
+import React from 'react';
 import SpreadsheetHistoryAwareStateWidget from "./history/SpreadsheetHistoryAwareStateWidget.js";
 import SpreadsheetHistoryHash from "./history/SpreadsheetHistoryHash.js";
 import SpreadsheetHistoryHashTokens from "./history/SpreadsheetHistoryHashTokens.js";
 import SpreadsheetMessengerCrud from "./message/SpreadsheetMessengerCrud.js";
 import SpreadsheetMetadata from "./meta/SpreadsheetMetadata.js";
 import SpreadsheetName from "./SpreadsheetName.js";
+import SpreadsheetNameEditHistoryHashToken from "./history/SpreadsheetNameEditHistoryHashToken.js";
 import SpreadsheetNameSaveHistoryHashToken from "./history/SpreadsheetNameSaveHistoryHashToken.js";
 import TextField from "@mui/material/TextField";
-
 
 /**
  * A widget that displays the spreadsheet name as a button which when clicked turns into a text field and may be edited.
@@ -31,8 +31,7 @@ export default class SpreadsheetNameWidget extends SpreadsheetHistoryAwareStateW
         return {
             name: null,
             value: "",
-            edit: false,
-            action: null,
+            edit: null,
         };
     }
 
@@ -53,8 +52,7 @@ export default class SpreadsheetNameWidget extends SpreadsheetHistoryAwareStateW
         return {
             id: tokens[SpreadsheetHistoryHashTokens.SPREADSHEET_ID],
             name: tokens[SpreadsheetHistoryHashTokens.SPREADSHEET_NAME],
-            edit: !!tokens[SpreadsheetHistoryHashTokens.SPREADSHEET_NAME_EDIT],
-            action: tokens[SpreadsheetHistoryHashTokens.SPREADSHEET_NAME_EDIT_ACTION],
+            edit: tokens[SpreadsheetHistoryHashTokens.SPREADSHEET_NAME_EDIT],
         };
     }
 
@@ -64,15 +62,10 @@ export default class SpreadsheetNameWidget extends SpreadsheetHistoryAwareStateW
 
         const historyTokens = SpreadsheetHistoryHashTokens.emptyTokens();
 
-        if(newEdit !== prevState.edit){
-            historyTokens[SpreadsheetHistoryHashTokens.SPREADSHEET_NAME_EDIT] = newEdit;
-        }
+        if(!Equality.safeEquals(newEdit, prevState.edit)){
+            newEdit && newEdit.execute(this);
 
-        if(newEdit) {
-            const newAction = state.action;
-            if(!(Equality.safeEquals(newAction, prevState.action)) && newAction) {
-                newAction.onNameAction(this);
-            }
+            historyTokens[SpreadsheetHistoryHashTokens.SPREADSHEET_NAME_EDIT] = newEdit;
         }
 
         return historyTokens;
@@ -88,12 +81,12 @@ export default class SpreadsheetNameWidget extends SpreadsheetHistoryAwareStateW
         document.title = text;
 
         const tokens = this.props.history.tokens();
-        tokens[SpreadsheetHistoryHashTokens.SPREADSHEET_NAME_EDIT] = true;
+        tokens[SpreadsheetHistoryHashTokens.SPREADSHEET_NAME_EDIT] = SpreadsheetNameEditHistoryHashToken.INSTANCE;
         const buttonLink = "#" + SpreadsheetHistoryHash.stringify(tokens);
 
         const textOnBlur = () => {
             this.setState({
-                edit: false,
+                edit: null,
                 value: this.state.name,
             });
         };
@@ -109,7 +102,7 @@ export default class SpreadsheetNameWidget extends SpreadsheetHistoryAwareStateW
                 case Keys.ESCAPE:
                     e.preventDefault();
                     this.setState({
-                        edit: false,
+                        edit: null,
                     });
                     break;
                 case Keys.ENTER:
@@ -144,7 +137,7 @@ export default class SpreadsheetNameWidget extends SpreadsheetHistoryAwareStateW
 
     saveNewSpreadsheetName() {
         const historyHashTokens = SpreadsheetHistoryHash.emptyTokens();
-        historyHashTokens[SpreadsheetHistoryHashTokens.SPREADSHEET_NAME_EDIT_ACTION] = new SpreadsheetNameSaveHistoryHashToken(
+        historyHashTokens[SpreadsheetHistoryHashTokens.SPREADSHEET_NAME_EDIT] = new SpreadsheetNameSaveHistoryHashToken(
             new SpreadsheetName(this.state.value)
         );
         this.historyParseMergeAndPush(historyHashTokens);
@@ -164,10 +157,6 @@ export default class SpreadsheetNameWidget extends SpreadsheetHistoryAwareStateW
             JSON.stringify(patch),
             this.props.showError
         );
-
-        const tokens = SpreadsheetHistoryHashTokens.emptyTokens();
-        tokens[SpreadsheetHistoryHashTokens.SPREADSHEET_NAME_EDIT_ACTION] = null;
-        this.historyParseMergeAndPush(tokens);
     }
 
     onSpreadsheetMetadata(method, id, url, requestMetadata, responseMetadata) {
@@ -178,6 +167,14 @@ export default class SpreadsheetNameWidget extends SpreadsheetHistoryAwareStateW
             name: spreadsheetName,
             value: spreadsheetName ? spreadsheetName.value() : "",
         });
+
+        // when the save completes clear any name save history hash token.
+        const tokens = this.props.history.tokens();
+        const edit = tokens[SpreadsheetHistoryHashTokens.SPREADSHEET_NAME_EDIT];
+        if(edit instanceof SpreadsheetNameSaveHistoryHashToken) {
+            tokens[SpreadsheetHistoryHashTokens.SPREADSHEET_NAME_EDIT] = SpreadsheetNameEditHistoryHashToken.INSTANCE;
+            this.historyParseMergeAndPush(tokens);
+        }
     }
 }
 
