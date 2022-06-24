@@ -23,10 +23,10 @@ export default class SpreadsheetNameSaveHistoryHashToken extends SpreadsheetName
     }
 
     toHistoryHashToken() {
-        return SpreadsheetHistoryHashTokens.SAVE + "/" + encodeURIComponent(this.value().value());
+        return "/" + SpreadsheetHistoryHashTokens.SPREADSHEET_NAME_PATH + "/" + encodeURIComponent(this.value().value());
     }
 
-    onNameAction(spreadsheetNameWidget) {
+    execute(spreadsheetNameWidget) {
         spreadsheetNameWidget.patchSpreadsheetMetadataWithName(this.value());
     }
 
