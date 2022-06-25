@@ -223,15 +223,31 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
 
                 for(const [label, reference] of labelToReferences.toMap().entries()) {
                     var all = true;
+
+                    // resolve label to a cell OR range
+                    var cellOrRange = reference;
+                    while(cellOrRange instanceof SpreadsheetLabelName) {
+                        cellOrRange = labelToReferences.get(cellOrRange);
+                    }
+
+                    if(!cellOrRange) {
+                        all = false;
+                        break;
+                    }
+
                     for(const windowCellRange of window) {
-                        if(windowCellRange.testCell(reference)){
+                        if(!cellOrRange.testCellRange) {
+                            console.log("@@@" + cellOrRange, cellOrRange);
+                            debugger;
+                        }
+                        if(cellOrRange.testCellRange(windowCellRange)){
                             all = false;
                             break;
                         }
                     }
 
                     if(!all){
-                        tempLabelToReferences.set(reference.toString(), label);
+                        tempLabelToReferences.set(label, reference);
                     }
                 }
 

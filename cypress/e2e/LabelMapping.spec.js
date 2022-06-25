@@ -467,6 +467,36 @@ describe(
                 .should("contain.text", "HoverLabel1, HoverLabel2");
         });
 
+        it("Save label with range, hover shows tooltip", () => {
+            // create a new label
+            testing.hashAppend("/label/HoverLabel");
+
+            testing.labelMappingReferenceTextField()
+                .type("{selectall}A1:B2");
+
+            testing.labelMappingLabelSaveButton()
+                .click();
+
+            testing.labelMappingDialogClosedCheck();
+
+            testing.getById(A1.viewportTooltipId())
+                .should("not.exist");
+
+            testing.cell(A1)
+                .trigger("mouseover");
+
+            testing.getById(A1.viewportTooltipId())
+                .should("exist")
+                .should("contain.text", "HoverLabel");
+
+            testing.cell(B2)
+                .trigger("mouseover");
+
+            testing.getById(B2.viewportTooltipId())
+                .should("exist")
+                .should("contain.text", "HoverLabel");
+        });
+
         it("History hash navigate to label", () => {
             // create a new label
             testing.hashAppend("/label/NavigateToLabel123");
@@ -497,7 +527,7 @@ describe(
             testing.cellFormulaEnterAndSave(B2, "=22");
 
             // create a new label
-            testing.hashAppend("/label/MovingLabel");
+            testing.hashAppendAfterSpreadsheetName("/label/MovingLabel");
 
             testing.labelMappingReferenceTextField()
                 .type("{selectall}A1");
@@ -512,7 +542,7 @@ describe(
             testing.cellFormattedTextCheck(C3, "44."); // 4 * 11
 
             // update existing label
-            testing.hashAppend("/label/MovingLabel");
+            testing.hashAppendAfterSpreadsheetName("/label/MovingLabel");
 
             testing.labelMappingReferenceTextField()
                 .type("{selectall}B2{enter}");
