@@ -34,18 +34,18 @@ Your app is ready to be deployed!
 See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
 
 
-## [walkingkooka-spreadsheet-server](https://github.com/mP1/walkingkooka-spreadsheet-server)
+## [walkingkooka-spreadsheet-server-platform](https://github.com/mP1/walkingkooka-spreadsheet-server-platform)
 
-Development assumes `npm-start` is running on http://localhost:3000 which include a proxy to [walkingkooka-spreadsheet-server](https://github.com/mP1/walkingkooka-spreadsheet-server).
+Development assumes `npm-start` is running on http://localhost:3000 which include a proxy to [walkingkooka-spreadsheet-server-platform](https://github.com/mP1/walkingkooka-spreadsheet-server-platform).
 
 
 ## Architecture
 
 This project aims to be as lightweight as possible implementing a true MVC design. Minimal if any business logic is performed 
-in javascript within code belonging to this project. This point is important as the [walking-spreadsheet-server](https://github.com/mP1/walkingkooka-spreadsheet-server) 
+in javascript within code belonging to this project. This point is important as the [walking-spreadsheet-server](https://github.com/mP1/walkingkooka-spreadsheet-server-platform) 
 can also be translated into javascript but its does not contain any presentation logic. This project only aims to build
 and display react components or widgets and react to events, which results in payloads to a messaging abstraction. The
-messaging abstraction may be a webworker or a java web server in both case the same project is executed [walkingkooka-spreadsheet-server](https://github.com/mP1/walkingkooka-spreadsheet-server)
+messaging abstraction may be a webworker or a java web server in both case the same project is executed [walkingkooka-spreadsheet-server-platform](https://github.com/mP1/walkingkooka-spreadsheet-server-platform)
 with different extras. Every service required to interact, update or view portions or other spreadsheet like functions
 are performed on the server via messages, each having its own separate rich type.
 
