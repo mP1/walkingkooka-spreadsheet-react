@@ -369,8 +369,6 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
                     this.loadCells(
                         this.state.spreadsheetMetadata.getIgnoringDefaults(SpreadsheetMetadata.VIEWPORT_CELL)
                             .viewport(
-                                0,
-                                0,
                                 viewportElement.offsetWidth - ROW_WIDTH,
                                 viewportElement.offsetHeight - COLUMN_HEIGHT,
                             ),
