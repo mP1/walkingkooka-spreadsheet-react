@@ -1,5 +1,6 @@
 import CharSequences from "../../CharSequences.js";
 import Preconditions from "../../Preconditions.js";
+import SpreadsheetCellRange from "./SpreadsheetCellRange.js";
 import SpreadsheetCellReference from "./SpreadsheetCellReference.js";
 import SpreadsheetColumnOrRowReference from "./SpreadsheetColumnOrRowReference";
 import SpreadsheetColumnReference from "./SpreadsheetColumnReference.js";
@@ -86,6 +87,13 @@ export default class SpreadsheetRowReference extends SpreadsheetColumnOrRowRefer
         Preconditions.requireInstance(rowReference, SpreadsheetRowReference, "rowReference");
 
         return this.value() === rowReference.value();
+    }
+
+    testCellRange(range) {
+        Preconditions.requireInstance(range, SpreadsheetCellRange, "range");
+
+        return this.compareTo(range.begin().row()) >= 0 &&
+            this.compareTo(range.end().row()) <= 0;
     }
 
     toRelative() {

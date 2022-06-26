@@ -378,6 +378,36 @@ testCellAndCheck("bottomLeft", JSON, "B4", true);
 testCellAndCheck("bottomEdge", JSON, "C4", true);
 testCellAndCheck("bottomRight", JSON, "D4", true);
 
+// testCellRange.............................................................................................................
+
+test("testCellRange missing fails", () => {
+    expect(() => SpreadsheetColumnReferenceRange.parse("A")
+        .testCellRange())
+        .toThrow("Missing range");
+});
+
+test("testCellRange non SpreadsheetCellRange fails", () => {
+    expect(() => SpreadsheetColumnReferenceRange.parse("A")
+        .testCellRange(123))
+        .toThrow("Expected SpreadsheetCellRange range got 123");
+});
+
+function testCellRangeAndCheck(label, range, testRange, expected) {
+    test("testCellRange " + label + " " + range + " testCellRange " + testRange, () => {
+        expect(SpreadsheetColumnReferenceRange.parse(range)
+            .testCellRange(SpreadsheetCellRange.parse(testRange))
+        ).toStrictEqual(expected);
+    });
+}
+
+testCellRangeAndCheck("left", "C:D", "A3:B3", false);
+testCellRangeAndCheck("right", "C:D", "E3:F3", false);
+
+testCellRangeAndCheck("center", "C:D", "C3", true);
+testCellRangeAndCheck("leftPartial", "C:D", "B2:C3", true);
+testCellRangeAndCheck("rightPartial", "C:D", "D3:E3", true);
+testCellRangeAndCheck("inside", "C:D", "B2:E5", true);
+
 // testColumn...........................................................................................................
 
 test("testColumn missing fails", () => {

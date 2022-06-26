@@ -2,6 +2,7 @@ import SpreadsheetCellReference from "./SpreadsheetCellReference";
 import SpreadsheetColumnReference from "./SpreadsheetColumnReference";
 import SpreadsheetRowReference from "./SpreadsheetRowReference";
 import systemObjectTesting from "../../SystemObjectTesting.js";
+import SpreadsheetCellRange from "./SpreadsheetCellRange.js";
 
 
 function column() {
@@ -405,6 +406,40 @@ function testCellAndCheck(cellReference, otherCellReference, expected) {
 testCellAndCheck("A1", "B1", false);
 testCellAndCheck("B2", "$B2", true);
 testCellAndCheck("B2", "B$2", true);
+
+// testCellRange.............................................................................................................
+
+test("testCellRange missing fails", () => {
+    expect(() => SpreadsheetCellReference.parse("A1")
+        .testCellRange())
+        .toThrow("Missing range");
+});
+
+test("testCellRange non SpreadsheetCellRange fails", () => {
+    expect(() => SpreadsheetCellReference.parse("A1")
+        .testCellRange(123))
+        .toThrow("Expected SpreadsheetCellRange range got 123");
+});
+
+function testCellRangeAndCheck(label, cell, testRange, expected) {
+    test("testCellRange " + label + " " + cell + " testCellRange " + testRange, () => {
+        expect(SpreadsheetCellReference.parse(cell)
+            .testCellRange(SpreadsheetCellRange.parse(testRange))
+        ).toStrictEqual(expected);
+    });
+}
+
+testCellRangeAndCheck("above", "C3", "C1:C2", false);
+testCellRangeAndCheck("below", "C3", "C4:C5", false);
+testCellRangeAndCheck("left", "C3", "A3:B3", false);
+testCellRangeAndCheck("right", "C3", "D3:E3", false);
+
+testCellRangeAndCheck("center", "C3", "C3", true);
+testCellRangeAndCheck("topLeftPartial", "C3", "B2:C3", true);
+testCellRangeAndCheck("topRightPartial", "C3", "C3:D3", true);
+testCellRangeAndCheck("bottomLeftPartial", "C3", "C2:C3", true);
+testCellRangeAndCheck("bottomRightPartial", "C3", "C3:C4", true);
+testCellRangeAndCheck("inside", "C3", "B2:D4", true);
 
 // testColumn SpreadsheetCellReference........................................................................................
 

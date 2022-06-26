@@ -4,6 +4,7 @@ import SpreadsheetColumnReference from "./SpreadsheetColumnReference";
 import SpreadsheetReferenceKind from "./SpreadsheetReferenceKind";
 import SpreadsheetRowReference from "./SpreadsheetRowReference";
 import systemObjectTesting from "../../SystemObjectTesting.js";
+import SpreadsheetCellRange from "./SpreadsheetCellRange.js";
 
 systemObjectTesting(
     new SpreadsheetColumnReference(0, SpreadsheetReferenceKind.ABSOLUTE),
@@ -355,6 +356,36 @@ testCellAndCheck("A", "B1", false);
 testCellAndCheck("B", "$B2", true);
 testCellAndCheck("C", "C$3", true);
 testCellAndCheck("$D", "D$4", true);
+
+// testCellRange.............................................................................................................
+
+test("testCellRange missing fails", () => {
+    expect(() => SpreadsheetColumnReference.parse("A")
+        .testCellRange())
+        .toThrow("Missing range");
+});
+
+test("testCellRange non SpreadsheetCellRange fails", () => {
+    expect(() => SpreadsheetColumnReference.parse("A")
+        .testCellRange(123))
+        .toThrow("Expected SpreadsheetCellRange range got 123");
+});
+
+function testCellRangeAndCheck(label, column, testRange, expected) {
+    test("testCellRange " + label + " " + column + " testCellRange " + testRange, () => {
+        expect(SpreadsheetColumnReference.parse(column)
+            .testCellRange(SpreadsheetCellRange.parse(testRange))
+        ).toStrictEqual(expected);
+    });
+}
+
+testCellRangeAndCheck("left", "C", "A3:B3", false);
+testCellRangeAndCheck("right", "C", "D3:E3", false);
+
+testCellRangeAndCheck("center", "C", "C3", true);
+testCellRangeAndCheck("leftPartial", "C", "B2:C3", true);
+testCellRangeAndCheck("rightPartial", "C", "C3:D3", true);
+testCellRangeAndCheck("inside", "C", "B2:D4", true);
 
 // testColumn SpreadsheetColumnReference........................................................................................
 
