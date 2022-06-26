@@ -99,6 +99,27 @@ export default class SpreadsheetCellRange extends SpreadsheetExpressionReference
         return this.end().row().value() - this.begin().row().value() + 1;
     }
 
+    /**
+     * Returns all the cells in this range, going left to right, top to bottom.
+     */
+    values() {
+        const keys = [];
+
+        this.rowRange()
+            .values()
+            .forEach(r => {
+                this.columnRange()
+                    .values()
+                    .forEach(c => {
+                        keys.push(
+                            c.setRow(r)
+                        )
+                    });
+            });
+
+        return keys;
+    }
+
     isCellScalarOrRange() {
         return true;
     }

@@ -279,6 +279,25 @@ test("height A3:C3", () => {
         .toStrictEqual(1);
 });
 
+// values..............................................................................................................
+
+function testValues(range, expected) {
+    test("values " + range,
+        () => {
+            expect(SpreadsheetCellRange.parse(range)
+                .values()
+            ).toStrictEqual(
+                expected.split(",")
+                    .map(c => SpreadsheetCellReference.parse(c))
+            )
+        });
+}
+
+testValues("B2", "B2");
+testValues("B2:B4", "B2,B3,B4");
+testValues("B2:C3", "B2,C2,B3,C3");
+testValues("B2:D2", "B2,C2,D2");
+
 // cellOrRange........................................................................................................
 
 function testCellOrRange(range, expected) {
