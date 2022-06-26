@@ -112,6 +112,13 @@ export default class SpreadsheetRowReferenceRange extends SpreadsheetColumnOrRow
             this.end().compareTo(rowReference) >= 0;
     }
 
+    testCellRange(range) {
+        Preconditions.requireInstance(range, SpreadsheetCellRange, "range");
+
+        return this.end().compareTo(range.begin().row()) >= 0 &&
+            this.begin().compareTo(range.end().row()) <= 0;
+    }
+
     toHistoryHashToken() {
         return SpreadsheetHistoryHash.ROW + "/" + this;
     }

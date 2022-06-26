@@ -398,6 +398,39 @@ testCellAndCheck("bottomLeft", "B2:D4", "B4", true);
 testCellAndCheck("bottomEdge", "B2:D4", "C4", true);
 testCellAndCheck("bottomRight", "B2:D4", "D4", true);
 
+// testCellRange.............................................................................................................
+
+test("testCellRange missing fails", () => {
+    expect(() => range()
+        .testCellRange())
+        .toThrow("Missing range");
+});
+
+test("testCellRange non SpreadsheetCellRange fails", () => {
+    expect(() => range()
+        .testCellRange(123))
+        .toThrow("Expected SpreadsheetCellRange range got 123");
+});
+
+function testCellRangeAndCheck(label, range, testRange, expected) {
+    test("testCellRange " + label + " " + range + " testCellRange " + testRange, () => {
+        expect(SpreadsheetCellRange.parse(range)
+            .testCellRange(SpreadsheetCellRange.parse(testRange))
+        ).toStrictEqual(expected);
+    });
+}
+
+testCellRangeAndCheck("above", "C3:D4", "C1:D2", false);
+testCellRangeAndCheck("below", "C3:D4", "C5:C6", false);
+testCellRangeAndCheck("left", "C3:D4", "A3:B4", false);
+testCellRangeAndCheck("right", "C3:D4", "F3:G4", false);
+
+testCellRangeAndCheck("center", "C3:D4", "C3", true);
+testCellRangeAndCheck("topLeftPartial", "C3:D4", "B2:C3", true);
+testCellRangeAndCheck("topRightPartial", "C3:D4", "D2:E3", true);
+testCellRangeAndCheck("bottomLeftPartial", "C3:D4", "B4:C5", true);
+testCellRangeAndCheck("bottomRightPartial", "C3:D4", "D4:E5", true);
+
 // testColumn...........................................................................................................
 
 test("testColumn missing fails", () => {

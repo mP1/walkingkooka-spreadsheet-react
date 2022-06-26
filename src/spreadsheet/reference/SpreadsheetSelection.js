@@ -80,6 +80,10 @@ export default class SpreadsheetSelection extends SystemObject {
     testRow(rowReference) {
         SystemObject.throwUnsupportedOperation();
     }
+
+    testCellRange(range) {
+        SystemObject.throwUnsupportedOperation();
+    }
     
     toHistoryHashToken() {
         SystemObject.throwUnsupportedOperation();

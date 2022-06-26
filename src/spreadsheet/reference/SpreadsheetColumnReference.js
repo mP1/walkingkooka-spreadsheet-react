@@ -1,4 +1,5 @@
 import Preconditions from "../../Preconditions.js";
+import SpreadsheetCellRange from "./SpreadsheetCellRange.js";
 import SpreadsheetCellReference from "./SpreadsheetCellReference.js";
 import SpreadsheetColumn from "./SpreadsheetColumn.js";
 import SpreadsheetColumnOrRowReference from "./SpreadsheetColumnOrRowReference";
@@ -82,6 +83,13 @@ export default class SpreadsheetColumnReference extends SpreadsheetColumnOrRowRe
         Preconditions.requireInstance(rowReference, SpreadsheetRowReference, "rowReference");
 
         return false;
+    }
+
+    testCellRange(range) {
+        Preconditions.requireInstance(range, SpreadsheetCellRange, "range");
+
+        return this.compareTo(range.begin().column()) >= 0 &&
+            this.compareTo(range.end().column()) <= 0;
     }
 
     toRelative() {

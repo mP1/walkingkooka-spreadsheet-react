@@ -237,6 +237,12 @@ export default class SpreadsheetCellReference extends SpreadsheetCellReferenceOr
         return this.row().testRow(rowReference);
     }
 
+    testCellRange(range) {
+        Preconditions.requireInstance(range, SpreadsheetCellRange, "range");
+
+        return range.testCell(this);
+    }
+
     toRelative() {
         return this.setColumn(this.column()
             .setKind(SpreadsheetReferenceKind.RELATIVE))
