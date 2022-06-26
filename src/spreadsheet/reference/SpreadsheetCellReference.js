@@ -224,6 +224,12 @@ export default class SpreadsheetCellReference extends SpreadsheetCellReferenceOr
         };
     }
 
+    cellMapKeys(labels) {
+        return [
+            this.toMapKey()
+        ];
+    }
+
     testCell(cellReference) {
         return this.column().testCell(cellReference) &&
             this.row().testCell(cellReference);

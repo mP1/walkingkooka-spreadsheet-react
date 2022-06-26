@@ -6,11 +6,11 @@ import SpreadsheetCellRange from "../reference/SpreadsheetCellRange.js";
 import SpreadsheetColumn from "../reference/SpreadsheetColumn.js";
 import SpreadsheetColumnReference from "../reference/SpreadsheetColumnReference";
 import SpreadsheetDelta from "./SpreadsheetDelta";
+import SpreadsheetLabelMapping from "../reference/SpreadsheetLabelMapping.js";
 import SpreadsheetLabelName from "../reference/SpreadsheetLabelName.js";
 import SpreadsheetRow from "../reference/SpreadsheetRow.js";
 import SpreadsheetRowReference from "../reference/SpreadsheetRowReference";
 import systemObjectTesting from "../../SystemObjectTesting.js";
-
 
 function selection() {
     return SpreadsheetCellReference.parse("Z9")
@@ -641,64 +641,6 @@ test("create empty all properties", () => {
     );
 });
 
-// cellReferenceToCells...................................................................................................
-
-function testCellReferenceToCellsAndCheck(cells, expected) {
-    test("cellReferenceToCells " + cells,
-        () => {
-            const delta = new SpreadsheetDelta(
-                null,
-                cells, // cells
-                [], // columns
-                [], // labels
-                [], // rows
-                [], // deletedCells
-                [], // deletedCells
-                [], // deletedCells
-                ImmutableMap.EMPTY, // cellWidths
-                ImmutableMap.EMPTY, // cellHeights
-                [], // window
-            );
-
-            expect(
-                delta.cellReferenceToCells()
-            ).toStrictEqual(expected);
-        }
-    );
-}
-
-testCellReferenceToCellsAndCheck(
-    [],
-    ImmutableMap.EMPTY
-);
-
-testCellReferenceToCellsAndCheck(
-    [
-        a1()
-    ],
-    new ImmutableMap(
-        new Map(
-            [
-                ["A1", a1()]
-            ]
-        )
-    )
-);
-
-testCellReferenceToCellsAndCheck(
-    [
-        a1(),
-        b2()
-    ],
-    new ImmutableMap(
-        new Map([
-                ["A1", a1()],
-                ["B2", b2()]
-            ]
-        )
-    )
-);
-
 // cell.................................................................................................................
 
 test("cell() missing cellOrLabel fails", () => {
@@ -803,34 +745,6 @@ test("cellReference() with present label", () => {
 test("cellReference() with absent label", () => {
     expect(delta()
         .cellReference(SpreadsheetLabelName.parse("Unknown")))
-        .toBeUndefined();
-});
-
-// cellReferenceToLabels.........................................................................................................
-
-test("cellReferenceToLabels() several labels", () => {
-    const cellReferenceToLabels = delta().cellReferenceToLabels();
-
-    expect(cellReferenceToLabels.get(a1().reference()))
-        .toStrictEqual([
-            label1(),
-            label2(),
-        ]);
-});
-
-test("cellReferenceToLabels() 1 label", () => {
-    const cellReferenceToLabels = delta().cellReferenceToLabels();
-
-    expect(cellReferenceToLabels.get(b2().reference()))
-        .toStrictEqual([
-            label3(),
-        ]);
-});
-
-test("cellReferenceToLabels() no labels", () => {
-    const cellReferenceToLabels = delta().cellReferenceToLabels();
-
-    expect(cellReferenceToLabels.get(SpreadsheetCellReference.parse("Z99")))
         .toBeUndefined();
 });
 
@@ -944,6 +858,193 @@ testColumnReferenceToColumnsAndCheck(
             ]
         )
     )
+);
+
+// cellReferencesToLabels.........................................................................................................
+
+function cellReferenceToLabelsAndCheck(label, labels, expected) {
+    test("cellReferenceToLabels " + label,
+        () => {
+            const delta = new SpreadsheetDelta(
+                null,
+                [], // cells
+                [], // columns
+                labels, // labels
+                [], // rows
+                [], // deletedCells
+                [], // deletedRows
+                [], // deletedRows
+                ImmutableMap.EMPTY, // rowWidths
+                ImmutableMap.EMPTY, // rowHeights
+                [], // window
+            );
+            expect(
+                delta.cellReferenceToLabels().toString()
+            ).toStrictEqual(expected().toString());
+        }
+    );
+}
+
+cellReferenceToLabelsAndCheck(
+    "no labels",
+    [],
+    () => new ImmutableMap(new Map())
+);
+
+cellReferenceToLabelsAndCheck(
+    "one label to cell",
+    [
+        new SpreadsheetLabelMapping(
+            label1(),
+            a1().reference()
+        )
+    ],
+    () => {
+        const map = new Map();
+        map.set(
+            "A1",
+            [
+                label1()
+            ]
+        );
+        return new ImmutableMap(map)
+    }
+);
+
+cellReferenceToLabelsAndCheck(
+    "two labels to cell",
+    [
+        new SpreadsheetLabelMapping(
+            label1(),
+            a1().reference()
+        ),
+        new SpreadsheetLabelMapping(
+            label2(),
+            b2().reference()
+        )
+    ],
+    () => {
+        const map = new Map();
+        map.set(
+            "A1",
+            [
+                label1()
+            ]
+        );
+        map.set(
+            "B2",
+            [
+                label2()
+            ]
+        );
+        return new ImmutableMap(map)
+    }
+);
+
+cellReferenceToLabelsAndCheck(
+    "one label to range",
+    [
+        new SpreadsheetLabelMapping(
+            label1(),
+            SpreadsheetCellRange.parse("A1:A2")
+        )
+    ],
+    () => {
+        const map = new Map();
+        map.set(
+            "A1",
+            [
+                label1()
+            ]
+        );
+        map.set(
+            "A2",
+            [
+                label1()
+            ]
+        );
+        return new ImmutableMap(map)
+    }
+);
+
+cellReferenceToLabelsAndCheck(
+    "one label to label to cell",
+    [
+        new SpreadsheetLabelMapping(
+            label1(),
+            label2()
+        ),
+        new SpreadsheetLabelMapping(
+            label2(),
+            a1().reference()
+        )
+    ],
+    () => {
+        const map = new Map();
+        map.set(
+            "A1",
+            [
+                label1(),
+                label2()
+            ]
+        );
+        return new ImmutableMap(map)
+    }
+);
+
+cellReferenceToLabelsAndCheck(
+    "one label to label to cell #2",
+    [
+        new SpreadsheetLabelMapping(
+            label2(),
+            a1().reference()
+        ),
+        new SpreadsheetLabelMapping(
+            label1(),
+            label2()
+        )
+    ],
+    () => {
+        const map = new Map();
+        map.set(
+            "A1",
+            [
+                label1(),
+                label2()
+            ]
+        );
+        return new ImmutableMap(map)
+    }
+);
+
+cellReferenceToLabelsAndCheck(
+    "one label to label to cell #3",
+    [
+        new SpreadsheetLabelMapping(
+            label2(),
+            a1().reference()
+        ),
+        new SpreadsheetLabelMapping(
+            label1(),
+            label2()
+        ),
+        new SpreadsheetLabelMapping(
+            label3(),
+            label2()
+        )
+    ],
+    () => {
+        const map = new Map();
+        map.set(
+            "A1",
+            [
+                label1(),
+                label2(),
+                label3()
+            ]
+        );
+        return new ImmutableMap(map)
+    }
 );
 
 // labelToReferences.........................................................................................................

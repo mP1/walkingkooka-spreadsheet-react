@@ -244,17 +244,22 @@ export default class SpreadsheetDelta extends SystemObject {
     }
 
     cellReferenceToLabels() {
+        const labels = this.labels();
         const cellReferenceToLabels = new Map();
 
-        this.labels()
-            .forEach(m => {
-                const key = m.reference().toMapKey();
-                var labels = cellReferenceToLabels.get(key);
-                if(null == labels){
-                    labels = [];
-                    cellReferenceToLabels.set(key, labels);
-                }
-                labels.push(m.label());
+        labels.forEach(
+            m => {
+                m.reference()
+                    .cellMapKeys(labels)
+                    .forEach(key => {
+                        var l = cellReferenceToLabels.get(key);
+                        if(l == null){
+                            l = [];
+                            cellReferenceToLabels.set(key, l);
+                        }
+                        l.push(m.label());
+                        l.sort();
+                    });
             });
 
         return new ImmutableMap(cellReferenceToLabels);

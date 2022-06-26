@@ -77,6 +77,20 @@ export default class SpreadsheetLabelName extends SpreadsheetCellReferenceOrLabe
         return true;
     }
 
+    cellMapKeys(labels) {
+        var keys = [];
+
+        labels.forEach(m => {
+            if(this.equals(m.label())){
+                keys =
+                    m.reference()
+                        .cellMapKeys(labels);
+            }
+        });
+
+        return keys;
+    }
+
     testCell(cellReference) {
         return false;
     }
