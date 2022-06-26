@@ -128,6 +128,11 @@ export default class SpreadsheetCellRange extends SpreadsheetExpressionReference
         return this.begin().canFreeze();
     }
 
+    cellMapKeys(labels) {
+       return this.values()
+           .map(v => v.toMapKey());
+    }
+
     freezePatch() {
         return {
             "frozen-columns": this.columnOrRange().toString(),
