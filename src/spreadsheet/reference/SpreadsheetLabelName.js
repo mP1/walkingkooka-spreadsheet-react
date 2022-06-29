@@ -130,6 +130,18 @@ export default class SpreadsheetLabelName extends SpreadsheetCellReferenceOrLabe
         return "label";
     }
 
+    compareTo(other) {
+        Preconditions.requireInstance(other, this.constructor, "other");
+
+        return this.value()
+            .toUpperCase()
+            .localeCompare(
+                other.value()
+                    .toUpperCase(),
+                "en"
+            );
+    }
+
     // JSON.............................................................................................................
 
     toJson() {
