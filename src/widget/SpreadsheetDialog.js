@@ -69,7 +69,7 @@ class SpreadsheetDialog extends React.Component {
             <DialogTitle id={id + "-DialogTitle"}>
                 {title}
                 <IconButton id={id + "-close-Button"}
-                            disableTypography
+                            disabletypography={"true"}
                             aria-label="close"
                             className={classes.closeButton}
                             onClick={close}
