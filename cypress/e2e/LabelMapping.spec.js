@@ -467,6 +467,28 @@ describe(
                 .should("contain.text", "HoverLabel1, HoverLabel2");
         });
 
+        it("Save, hover shows several tooltip case insensitive label sort", () => {
+            // create a new label
+            testing.hashAppendAfterSpreadsheetName("/label/HoverLabel1/save/HoverLabel1/A1");
+            testing.labelMappingSaveWait();
+
+            testing.hashAppendAfterSpreadsheetName("/label/HOVERLABEL2/save/HOVERLABEL2/A1");
+            testing.labelMappingSaveWait();
+
+            testing.hashAppendAfterSpreadsheetName("/label/HoverLabel3/save/HoverLabel3/A1");
+            testing.labelMappingSaveWait();
+
+            testing.getById(A1.viewportTooltipId())
+                .should("not.exist");
+
+            testing.cell(A1)
+                .trigger("mouseover");
+
+            testing.getById(A1.viewportTooltipId())
+                .should("exist")
+                .should("contain.text", "HoverLabel1, HOVERLABEL2, HoverLabel3");
+        });
+
         it("Save label with range, hover shows tooltip", () => {
             // create a new label
             testing.hashAppend("/label/HoverLabel");

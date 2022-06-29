@@ -258,7 +258,9 @@ export default class SpreadsheetDelta extends SystemObject {
                             cellReferenceToLabels.set(key, l);
                         }
                         l.push(m.label());
-                        l.sort();
+                        l.sort((left, right) => {
+                            return left.compareTo(right)
+                        });
                     });
             });
 

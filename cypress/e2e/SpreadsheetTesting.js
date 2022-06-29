@@ -241,6 +241,10 @@ export default class SpreadsheetTesting {
             .should("not.exist");
     }
 
+    labelMappingSaveWait() {
+        this.wait(200);
+    }
+
     labelMappingCloseWait() {
         this.wait(200);
     }
