@@ -9,6 +9,11 @@
 import Equality from "../Equality.js";
 import Preconditions from "../Preconditions.js";
 
+function toMapKey(key) {
+    Preconditions.requireObject(key, "key");
+    return key.toMapKey();
+}
+
 export default class ImmutableMap {
 
     /**
@@ -27,7 +32,7 @@ export default class ImmutableMap {
         const map = new Map();
         for(const [key, value] of Object.entries(json)) {;
             map.set(
-                keyParser(key).toMapKey(),
+                toMapKey(keyParser(key)),
                 valueUnmarshaller(value)
             );
         }
@@ -48,7 +53,7 @@ export default class ImmutableMap {
      * Returns the value for the given key.
      */
     get(key) {
-        return this.map.get(key.toMapKey());
+        return this.map.get(toMapKey(key));
     }
 
     /**
@@ -56,7 +61,7 @@ export default class ImmutableMap {
      */
     remove(key) {
         const copy = new Map([...this.map]);
-        copy.delete(key.toMapKey());
+        copy.delete(toMapKey(key));
         return new ImmutableMap(copy);
     }
 
