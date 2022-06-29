@@ -14,6 +14,8 @@ import SpreadsheetLabelName from "./reference/SpreadsheetLabelName.js";
 import SpreadsheetMessengerCrud from "./message/SpreadsheetMessengerCrud.js";
 import SpreadsheetViewportWidget from "./SpreadsheetViewportWidget.js";
 import TextField from '@mui/material/TextField';
+import SpreadsheetColumnOrRowReference from "./reference/SpreadsheetColumnOrRowReference.js";
+import SpreadsheetColumnOrRowReferenceRange from "./reference/SpreadsheetColumnOrRowReferenceRange.js";
 
 /**
  * A widget that supports editing formula text.
@@ -58,10 +60,18 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetHistoryAwareSta
      * Filter only interested in cell or labels and load/edit or save formula actions.
      */
     stateFromHistoryTokens(historyTokens) {
-        return {
-            selection: historyTokens[SpreadsheetHistoryHashTokens.SELECTION],
+        const selection = historyTokens[SpreadsheetHistoryHashTokens.SELECTION];
+        const state = {
+            selection: selection,
             selectionAction: historyTokens[SpreadsheetHistoryHashTokens.SELECTION_ACTION],
+        };
+
+        // clear clearReference which will also hide formula textbox if column | row | any range
+        if(!selection | selection instanceof SpreadsheetColumnOrRowReference || selection instanceof SpreadsheetColumnOrRowReferenceRange | selection instanceof SpreadsheetCellRange) {
+            state.cellReference = null;
         }
+
+        return state;
     }
 
     historyTokensFromState(prevState) {
@@ -121,6 +131,7 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetHistoryAwareSta
             {},
             (message, error) => {
                 this.setState({
+                    cellReference: null,
                     selection: null,
                     selectionAction: null,
                 });
@@ -139,15 +150,10 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetHistoryAwareSta
     }
 
     render() {
-        const state = this.state;
         const {
-            selection,
+            cellReference,
             value
-        } = state;
-
-        // the cell could be selected via a SpreadsheetCellReference or a Label pointing to a cell.
-        const cellSelected = Boolean(selection) &&
-            !(selection instanceof SpreadsheetCellRange);
+        } = this.state;
 
         return (
             <TextField ref={this.textField}
@@ -167,7 +173,7 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetHistoryAwareSta
                        inputRef={this.input}
                        style={{
                            flexGrow: 1,
-                           visibility: cellSelected ? "visible" : "hidden",
+                           visibility: cellReference ? "visible" : "hidden",
                        }}
             />
         );

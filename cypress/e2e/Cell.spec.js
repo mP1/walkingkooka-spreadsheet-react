@@ -300,6 +300,9 @@ describe(
                 .should("have.css", "background-color", SELECTED_COLOR);
             testing.row("3")
                 .should("have.css", "background-color", SELECTED_COLOR);
+
+            testing.formulaText()
+                .should('be.hidden');
         });
 
         it("Cell range out of viewport history hash", () => {
@@ -595,6 +598,9 @@ describe(
 
             testing.hash()
                 .should('match', /.*\/.*\/column\/C/);
+
+            testing.formulaText()
+                .should('be.hidden');
         });
 
         it("Cell formula edit then row click", () => {
