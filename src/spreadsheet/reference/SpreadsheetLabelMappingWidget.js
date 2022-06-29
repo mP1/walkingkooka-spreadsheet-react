@@ -11,6 +11,7 @@ import SpreadsheetHistoryHash from "../history/SpreadsheetHistoryHash.js";
 import SpreadsheetHistoryHashTokens from "../history/SpreadsheetHistoryHashTokens.js";
 import SpreadsheetLabelMapping from "./SpreadsheetLabelMapping.js";
 import SpreadsheetLabelMappingDeleteHistoryHashToken from "../history/SpreadsheetLabelMappingDeleteHistoryHashToken.js";
+import SpreadsheetLabelMappingEditHistoryHashToken from "../history/SpreadsheetLabelMappingEditHistoryHashToken.js";
 import SpreadsheetLabelMappingSaveHistoryHashToken from "../history/SpreadsheetLabelMappingSaveHistoryHashToken.js";
 import SpreadsheetLabelName from "./SpreadsheetLabelName.js";
 import SpreadsheetMessengerCrud from "../message/SpreadsheetMessengerCrud.js";
@@ -74,9 +75,12 @@ export default class SpreadsheetLabelMappingWidget extends SpreadsheetHistoryAwa
     // state / history.................................................................................................
 
     stateFromHistoryTokens(tokens) {
+        const label = tokens[SpreadsheetHistoryHashTokens.LABEL];
+
         return {
             spreadsheetId: tokens[SpreadsheetHistoryHashTokens.SPREADSHEET_ID],
-            label: tokens[SpreadsheetHistoryHashTokens.LABEL],
+            label: label,
+            previousLabel: label && this.state[SpreadsheetHistoryHashTokens.LABEL], // copy current $label to previous only if was present.
         };
     }
 
@@ -131,7 +135,17 @@ export default class SpreadsheetLabelMappingWidget extends SpreadsheetHistoryAwa
     // render ..........................................................................................................
 
     render() {
-        return this.state.label ?
+        const {
+            label,
+            previousLabel
+        } = this.state;
+
+        // dont want to show dialog if currently executing a save or delete label without first showing the dialog (a edit)
+        //
+        // https://github.com/mP1/walkingkooka-spreadsheet-react/issues/1855
+        // /label/$label/save/$new-label/$reference label editor flashes.
+        return label instanceof SpreadsheetLabelMappingEditHistoryHashToken ||
+            (label && previousLabel instanceof SpreadsheetLabelMappingEditHistoryHashToken) ?
             this.renderDialog() :
             null;
     }
