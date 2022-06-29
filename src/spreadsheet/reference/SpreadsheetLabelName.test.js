@@ -15,6 +15,10 @@ systemObjectTesting(
     NAME
 );
 
+function label() {
+    return new SpreadsheetLabelName(NAME);
+}
+
 // parse...............................................................................................................
 
 test("parse null text fails", () => {
@@ -108,3 +112,33 @@ function testEqualsIgnoringKind(label, other, expected) {
 testEqualsIgnoringKind("LABEL123", "LABEL123", true);
 testEqualsIgnoringKind("LABEL123", "label123", true);
 testEqualsIgnoringKind("LABEL123", "DIFFERENT", false);
+
+// compareTo............................................................................................................
+
+test("compareTo missing fails", () => {
+    expect(() => label().compareTo())
+        .toThrow("Missing other");
+});
+
+test("compareTo non SpreadsheetLabelName fails", () => {
+    expect(() => label().compareTo(2)
+        .toThrow("Expected SpreadsheetLabelName other got 2"));
+});
+
+function testCompareAndCheck(left, right, expected) {
+    test("compareTo " + left + " " + right,
+        () => {
+            expect(SpreadsheetLabelName.parse(left)
+                .compareTo(SpreadsheetLabelName.parse(right))
+            ).toStrictEqual(
+                expected
+            )
+        });
+}
+
+testCompareAndCheck("Label123", "Label123", 0);
+testCompareAndCheck("Label123", "LABEL123", 0);
+testCompareAndCheck("Label111", "Label222", -1);
+testCompareAndCheck("Label111", "LABEL222", -1);
+testCompareAndCheck("Label222", "LABEL111", +1);
+testCompareAndCheck("Label222", "Label111", +1);
