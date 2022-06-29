@@ -942,6 +942,36 @@ cellReferenceToLabelsAndCheck(
 );
 
 cellReferenceToLabelsAndCheck(
+    "two labels to cell (case insensitive sort)",
+    [
+        new SpreadsheetLabelMapping(
+            new SpreadsheetLabelName("Label111"),
+            a1().reference()
+        ),
+        new SpreadsheetLabelMapping(
+            new SpreadsheetLabelName("LABEL222"),
+            a1().reference()
+        ),
+        new SpreadsheetLabelMapping(
+            new SpreadsheetLabelName("Label333"),
+            a1().reference()
+        )
+    ],
+    () => {
+        const map = new Map();
+        map.set(
+            "A1",
+            [
+                new SpreadsheetLabelName("Label111"),
+                new SpreadsheetLabelName("LABEL222"),
+                new SpreadsheetLabelName("Label333")
+            ]
+        )
+        return new ImmutableMap(map)
+    }
+);
+
+cellReferenceToLabelsAndCheck(
     "one label to range",
     [
         new SpreadsheetLabelMapping(
