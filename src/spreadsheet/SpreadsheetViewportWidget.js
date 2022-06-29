@@ -231,7 +231,6 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
                     }
 
                     if(!cellOrRange) {
-                        all = false;
                         break;
                     }
 
