@@ -235,10 +235,6 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
                     }
 
                     for(const windowCellRange of window) {
-                        if(!cellOrRange.testCellRange) {
-                            console.log("@@@" + cellOrRange, cellOrRange);
-                            debugger;
-                        }
                         if(cellOrRange.testCellRange(windowCellRange)){
                             all = false;
                             break;
