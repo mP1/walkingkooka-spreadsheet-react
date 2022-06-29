@@ -235,6 +235,8 @@ export default class SpreadsheetTesting {
     }
 
     labelMappingDialogClosedCheck() {
+        this.labelMappingCloseWait();
+
         this.getById(SpreadsheetLabelMappingWidget.DIALOG_TITLE_ID)
             .should("not.exist");
     }
