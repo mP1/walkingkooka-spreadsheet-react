@@ -63,6 +63,18 @@ export default class SpreadsheetViewportSelection extends SystemObject {
         return this.navigationValue;
     }
 
+    setNavigation(navigation) {
+        Preconditions.optionalInstance(navigation, SpreadsheetViewportSelectionNavigation, "navigation");
+
+        return this.navigation().equals(navigation) ?
+            this :
+            new SpreadsheetViewportSelection(
+                this.selection(),
+                this.anchor(),
+                navigation
+            );
+    }
+
     toJson() {
         const json = {
             selection: this.selection().toJsonWithType(),
