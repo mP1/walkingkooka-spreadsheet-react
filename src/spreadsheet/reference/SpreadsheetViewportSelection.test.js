@@ -304,6 +304,65 @@ testToJson(row(), null);
 testToJson(rowRange(), SpreadsheetViewportSelectionAnchor.TOP);
 testToJson(rowRange(), SpreadsheetViewportSelectionAnchor.BOTTOM);
 
+// setAnchor.............................................................................................................
+
+test("setAnchor same", () => {
+    const viewport = new SpreadsheetViewportSelection(
+        selection(),
+        anchor(),
+        navigation()
+    );
+
+    expect(
+        viewport.setAnchor(anchor())
+            .equals(
+                viewport
+            )
+    ).toBeTrue();
+});
+
+test("setAnchor different", () => {
+    const viewport = new SpreadsheetViewportSelection(
+        selection(),
+        anchor(),
+        navigation()
+    );
+
+    const different = SpreadsheetViewportSelectionAnchor.TOP_RIGHT;
+
+    expect(
+        viewport.setAnchor(different)
+            .equals(
+                new SpreadsheetViewportSelection(
+                    selection(),
+                    different,
+                    navigation()
+                )
+            )
+    ).toBeTrue();
+});
+
+test("setAnchor different null", () => {
+    const viewport = new SpreadsheetViewportSelection(
+        selection(),
+        anchor(),
+        navigation()
+    );
+
+    const different = null;
+
+    expect(
+        viewport.setAnchor(different)
+            .equals(
+                new SpreadsheetViewportSelection(
+                    selection(),
+                    different,
+                    navigation()
+                )
+            )
+    ).toBeTrue();
+});
+
 // equals................................................................................................................
 
 test("equals selection without anchor", () => {
