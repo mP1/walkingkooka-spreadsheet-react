@@ -47,6 +47,18 @@ export default class SpreadsheetViewportSelection extends SystemObject {
         return this.anchorValue;
     }
 
+    setAnchor(anchor) {
+        Preconditions.optionalInstance(anchor, SpreadsheetViewportSelectionAnchor, "anchor");
+
+        return this.anchor().equals(anchor) ?
+            this :
+            new SpreadsheetViewportSelection(
+                this.selection(),
+                anchor,
+                this.navigation()
+            );
+    }
+
     navigation() {
         return this.navigationValue;
     }
