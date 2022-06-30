@@ -24,8 +24,8 @@ import SpreadsheetColumnReference from "./reference/SpreadsheetColumnReference.j
 import SpreadsheetColumnReferenceRange from "./reference/SpreadsheetColumnReferenceRange.js";
 import SpreadsheetDelta from "./engine/SpreadsheetDelta.js";
 import SpreadsheetFormula from "./SpreadsheetFormula.js";
+import SpreadsheetFormulaEditHistoryHashToken from "./history/SpreadsheetFormulaEditHistoryHashToken.js";
 import SpreadsheetFormulaHistoryHashToken from "./history/SpreadsheetFormulaHistoryHashToken.js";
-import SpreadsheetFormulaLoadAndEditHistoryHashToken from "./history/SpreadsheetFormulaLoadAndEditHistoryHashToken.js";
 import SpreadsheetHistoryAwareStateWidget from "./history/SpreadsheetHistoryAwareStateWidget.js";
 import SpreadsheetHistoryHash from "./history/SpreadsheetHistoryHash.js";
 import SpreadsheetHistoryHashToken from "./history/SpreadsheetHistoryHashToken.js";
@@ -738,7 +738,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
         );
 
         const tokens = SpreadsheetHistoryHashTokens.emptyTokens();
-        tokens[SpreadsheetHistoryHashTokens.SELECTION_ACTION] = new SpreadsheetFormulaLoadAndEditHistoryHashToken();
+        tokens[SpreadsheetHistoryHashTokens.SELECTION_ACTION] = new SpreadsheetFormulaEditHistoryHashToken();
         this.historyParseMergeAndPush(tokens);
 
         const props = this.props;
@@ -1006,7 +1006,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
                             this.saveSelection(
                                 selection,
                                 null,
-                                new SpreadsheetFormulaLoadAndEditHistoryHashToken()
+                                new SpreadsheetFormulaEditHistoryHashToken()
                             );
                         }
                         break;

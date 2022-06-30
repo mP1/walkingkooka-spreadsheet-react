@@ -5,7 +5,7 @@ import PropTypes from "prop-types";
 import React from 'react';
 import SpreadsheetCellRange from "./reference/SpreadsheetCellRange.js";
 import SpreadsheetCellReferenceOrLabelName from "./reference/SpreadsheetCellReferenceOrLabelName.js";
-import SpreadsheetFormulaLoadAndEditHistoryHashToken from "./history/SpreadsheetFormulaLoadAndEditHistoryHashToken.js";
+import SpreadsheetFormulaEditHistoryHashToken from "./history/SpreadsheetFormulaEditHistoryHashToken.js";
 import SpreadsheetFormulaSaveHistoryHashToken from "./history/SpreadsheetFormulaSaveHistoryHashToken.js";
 import SpreadsheetHistoryHash from "./history/SpreadsheetHistoryHash.js";
 import SpreadsheetHistoryHashTokens from "./history/SpreadsheetHistoryHashTokens.js";
@@ -82,11 +82,11 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetHistoryAwareSta
         var {selectionAction} = state;
 
         if(selection instanceof SpreadsheetCellReferenceOrLabelName) {
-            const load = selectionAction instanceof SpreadsheetFormulaLoadAndEditHistoryHashToken;
+            const load = selectionAction instanceof SpreadsheetFormulaEditHistoryHashToken;
             const save = selectionAction instanceof SpreadsheetFormulaSaveHistoryHashToken;
 
             const previousSelectionAction = prevState.selectionAction;
-            const previousLoad = previousSelectionAction instanceof SpreadsheetFormulaLoadAndEditHistoryHashToken;
+            const previousLoad = previousSelectionAction instanceof SpreadsheetFormulaEditHistoryHashToken;
             const previousSave = previousSelectionAction instanceof SpreadsheetFormulaSaveHistoryHashToken;
 
             // if load but not save OR different cell
@@ -97,7 +97,7 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetHistoryAwareSta
 
             if(save){
                 this.saveFormulaText(cellReference, selection, selectionAction.formulaText());
-                selectionAction = new SpreadsheetFormulaLoadAndEditHistoryHashToken();
+                selectionAction = new SpreadsheetFormulaEditHistoryHashToken();
             }
 
             // update UI, if not formula editing, disable textField
@@ -201,7 +201,7 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetHistoryAwareSta
     onFocus(e) {
         const tokens = SpreadsheetHistoryHashTokens.emptyTokens();
         tokens[SpreadsheetHistoryHashTokens.SELECTION] = this.state.selection;
-        tokens[SpreadsheetHistoryHashTokens.SELECTION_ACTION] = new SpreadsheetFormulaLoadAndEditHistoryHashToken();
+        tokens[SpreadsheetHistoryHashTokens.SELECTION_ACTION] = new SpreadsheetFormulaEditHistoryHashToken();
 
         this.historyParseMergeAndPush(tokens);
     }

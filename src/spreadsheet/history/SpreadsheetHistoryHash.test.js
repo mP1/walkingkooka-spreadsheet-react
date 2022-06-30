@@ -17,7 +17,7 @@ import SpreadsheetColumnOrRowSaveHistoryHashToken from "./SpreadsheetColumnOrRow
 import SpreadsheetColumnOrRowUnFreezeHistoryHashToken from "./SpreadsheetColumnOrRowUnFreezeHistoryHashToken.js";
 import SpreadsheetColumnReference from "../reference/SpreadsheetColumnReference.js";
 import SpreadsheetColumnReferenceRange from "../reference/SpreadsheetColumnReferenceRange.js";
-import SpreadsheetFormulaLoadAndEditHistoryHashToken from "./SpreadsheetFormulaLoadAndEditHistoryHashToken.js";
+import SpreadsheetFormulaEditHistoryHashToken from "./SpreadsheetFormulaEditHistoryHashToken.js";
 import SpreadsheetFormulaSaveHistoryHashToken from "./SpreadsheetFormulaSaveHistoryHashToken.js";
 import SpreadsheetHistoryHash from "./SpreadsheetHistoryHash.js";
 import SpreadsheetHistoryHashTokens from "./SpreadsheetHistoryHashTokens.js";
@@ -71,7 +71,7 @@ const CELL_DELETE = SpreadsheetCellDeleteHistoryHashToken.INSTANCE;
 const CELL_FREEZE = SpreadsheetCellFreezeHistoryHashToken.INSTANCE;
 const CELL_MENU = SpreadsheetCellMenuHistoryHashToken.INSTANCE;
 const CELL_UNFREEZE = SpreadsheetCellUnFreezeHistoryHashToken.INSTANCE;
-const CELL_FORMULA_LOAD_EDIT = new SpreadsheetFormulaLoadAndEditHistoryHashToken();
+const CELL_FORMULA_LOAD_EDIT = new SpreadsheetFormulaEditHistoryHashToken();
 const CELL_FORMULA_SAVE = new SpreadsheetFormulaSaveHistoryHashToken("Abc123");
 
 const LABEL_DELETE = new SpreadsheetLabelMappingDeleteHistoryHashToken(LABEL);
