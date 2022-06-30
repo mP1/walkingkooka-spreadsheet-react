@@ -24,7 +24,7 @@ import SpreadsheetColumnOrRowMenuHistoryHashToken from "./SpreadsheetColumnOrRow
 import SpreadsheetColumnOrRowSaveHistoryHashToken from "./SpreadsheetColumnOrRowSaveHistoryHashToken.js";
 import SpreadsheetColumnOrRowUnFreezeHistoryHashToken from "./SpreadsheetColumnOrRowUnFreezeHistoryHashToken.js";
 import SpreadsheetColumnReferenceRange from "../reference/SpreadsheetColumnReferenceRange.js";
-import SpreadsheetFormulaLoadAndEditHistoryHashToken from "./SpreadsheetFormulaLoadAndEditHistoryHashToken.js";
+import SpreadsheetFormulaEditHistoryHashToken from "./SpreadsheetFormulaEditHistoryHashToken.js";
 import SpreadsheetFormulaSaveHistoryHashToken from "./SpreadsheetFormulaSaveHistoryHashToken.js";
 import SpreadsheetHistoryHashTokens from "./SpreadsheetHistoryHashTokens.js";
 import SpreadsheetLabelMappingDeleteHistoryHashToken from "./SpreadsheetLabelMappingDeleteHistoryHashToken.js";
@@ -168,7 +168,7 @@ export default class SpreadsheetHistoryHash extends SpreadsheetHistoryHashTokens
 
                                         // /cell/A1/formula
                                         if(null == token){
-                                            selectionAction = new SpreadsheetFormulaLoadAndEditHistoryHashToken();
+                                            selectionAction = new SpreadsheetFormulaEditHistoryHashToken();
                                         }else {
                                             selectionAction = new SpreadsheetFormulaSaveHistoryHashToken(decodeURIComponent(token));
                                             token = tokens.shift();
