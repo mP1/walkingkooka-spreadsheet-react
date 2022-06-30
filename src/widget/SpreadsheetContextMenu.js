@@ -1,3 +1,5 @@
+import Equality from "../Equality.js";
+
 export default class SpreadsheetContextMenu {
 
     constructor(left, top, items) {
@@ -16,5 +18,12 @@ export default class SpreadsheetContextMenu {
 
     items() {
         return this.itemsValue;
+    }
+
+    equals(other) {
+        return other instanceof SpreadsheetContextMenu &&
+            this.left() === other.left() &&
+            this.top() === other.top() &&
+            Equality.safeEquals(this.items(), other.items());
     }
 }
