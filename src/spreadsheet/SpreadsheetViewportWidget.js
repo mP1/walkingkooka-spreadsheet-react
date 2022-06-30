@@ -22,6 +22,7 @@ import SpreadsheetColumnOrRowInsertBeforeHistoryHashToken
 import SpreadsheetColumnOrRowMenuHistoryHashToken from "./history/SpreadsheetColumnOrRowMenuHistoryHashToken.js";
 import SpreadsheetColumnReference from "./reference/SpreadsheetColumnReference.js";
 import SpreadsheetColumnReferenceRange from "./reference/SpreadsheetColumnReferenceRange.js";
+import SpreadsheetContextMenu from "../widget/SpreadsheetContextMenu.js";
 import SpreadsheetDelta from "./engine/SpreadsheetDelta.js";
 import SpreadsheetFormula from "./SpreadsheetFormula.js";
 import SpreadsheetFormulaEditHistoryHashToken from "./history/SpreadsheetFormulaEditHistoryHashToken.js";
@@ -134,10 +135,10 @@ const CONTEXT_MENU_Y_OFFSET = 10;
  * <li>Array of SpreadsheetCellRange window: One or more ranges that will hold any frozen column/rows and the actual viewport</li>
  * <li>boolean giveFocus: if cells changed give focus to the selected cell. This helps giving focus after a delta load.</li>
  * <li>boolean focused: When true the viewport has focus, and cleared when the blur event happens.</li>
+ * <li>SpreadsheetContextMenu contextMenu When present indicates an open context menu with its state.</li>
  * <li>SpreadsheetViewportSelection selection: The currently active selection including ranges</li>
  * <li>SpreadsheetViewportSelectionAnchor selectionAnchor: When a range is the current selection this will hold the anchor.</li>
  * <li>SpreadsheetViewportSelectionNavigation selectionNavigation: Tracks the last navigation entry from the keyboard</li>
- * <li>contextMenu object an object with two properties anchorPosition and menuList both which are given to the Menu to present itself.</li>
  * </ul>
  */
 export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareStateWidget {
@@ -461,7 +462,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
             },
             spreadsheetMetadata: SpreadsheetMetadata.EMPTY,
             window: [],
-            contextMenu: {},
+            contextMenu: null, // no open context menu
         };
     }
 
@@ -471,7 +472,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
             selectionAction: tokens[SpreadsheetHistoryHashTokens.SELECTION_ACTION],
             selectionAnchor: tokens[SpreadsheetHistoryHashTokens.SELECTION_ANCHOR],
             selectionNavigation: null,
-            contextMenu: {}, // close context menu
+            contextMenu: null, // close context menu
         };
     }
 
@@ -784,12 +785,10 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
                 spreadsheetMetadata
             } = this.state;
 
-            const contextMenuState = {
-                anchorPosition: {
-                    left: left + CONTEXT_MENU_X_OFFSET,
-                    top: top + CONTEXT_MENU_Y_OFFSET,
-                },
-                menuItems: selection.viewportContextMenu(
+            const contextMenu = new SpreadsheetContextMenu(
+                left + CONTEXT_MENU_X_OFFSET,
+                top + CONTEXT_MENU_Y_OFFSET,
+                selection.viewportContextMenu(
                     SpreadsheetHistoryHash.spreadsheetIdAndName(history.tokens()),
                     () => spreadsheetMetadata.getIgnoringDefaults(SpreadsheetMetadata.FROZEN_COLUMNS),
                     () => spreadsheetMetadata.getIgnoringDefaults(SpreadsheetMetadata.FROZEN_ROWS),
@@ -804,12 +803,12 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
                         new SpreadsheetRowReference(r, SpreadsheetReferenceKind.RELATIVE)
                     ),
                     history
-                ),
-            };
+                )
+            );
 
             setTimeout(() => {
                 this.setState({
-                    contextMenu: contextMenuState,
+                    contextMenu: contextMenu,
                 });
             }, 1);
         }
@@ -900,8 +899,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
             state.labelToReferences.get(selection) :
             selection;
 
-        const {anchorPosition, menuItems} = contextMenu;
-        const contextMenuOpen = !!menuItems;
+        const menuItems = contextMenu && contextMenu.items();
 
         const history = this.props.history;
 
@@ -1125,7 +1123,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
                                 height: height,
                                 overflow: "clip",
                                 borderRadius: 0, // cancel paper rounding.
-                                cursor: contextMenuOpen && "context-menu",
+                                cursor: menuItems && "context-menu",
                             }}
                             onBlur={onBlur}
                             onClick={onClick}
@@ -1200,10 +1198,13 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
             <Menu key={SpreadsheetViewportWidget.VIEWPORT_CONTEXT_MENU_ID}
                   id={SpreadsheetViewportWidget.VIEWPORT_CONTEXT_MENU_ID}
                   keepMounted
-                  open={contextMenuOpen}
+                  open={Boolean(contextMenu)}
                   onClose={onCloseContextMenu}
                   anchorReference="anchorPosition"
-                  anchorPosition={anchorPosition || {left: 0, top: 0}}
+                  anchorPosition={ contextMenu && {
+                      left: contextMenu.left(),
+                      top: contextMenu.top(),
+                  }}
             >
                 {menuItems}
             </Menu>
