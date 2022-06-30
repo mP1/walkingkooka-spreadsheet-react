@@ -19,12 +19,6 @@ export default class SpreadsheetDateTimeFormatPattern extends SpreadsheetFormatP
     typeName() {
         return SpreadsheetDateTimeFormatPattern.TYPE_NAME;
     }
-
-    equals(other) {
-        return this === other ||
-            (other instanceof SpreadsheetDateTimeFormatPattern &&
-                this.pattern() === other.pattern())
-    }
 }
 
 SystemObject.register(SpreadsheetDateTimeFormatPattern.TYPE_NAME, SpreadsheetDateTimeFormatPattern.fromJson);

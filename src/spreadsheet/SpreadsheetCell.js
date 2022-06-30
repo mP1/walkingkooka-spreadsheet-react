@@ -176,8 +176,7 @@ export default class SpreadsheetCell extends SystemObject {
     }
 
     equals(other) {
-        return this === other ||
-            (other instanceof SpreadsheetCell &&
+        return (other instanceof SpreadsheetCell &&
                 this.reference().equals(other.reference()) &&
                 this.formula().equals(other.formula()) &&
                 Equality.safeEquals(this.style(), other.style()) &&

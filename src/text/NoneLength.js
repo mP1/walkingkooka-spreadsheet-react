@@ -53,9 +53,8 @@ export default class NoneLength extends Length {
     }
 
     equals(other) {
-        return this === other ||
-            (other instanceof NoneLength &&
-                this.value() === other.value());
+        return other instanceof NoneLength &&
+            this.value() === other.value();
     }
 
     toString() {

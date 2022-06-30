@@ -748,7 +748,8 @@ export default class TextStyle extends SystemObject {
     }
 
     equals(other) {
-        return this === other || (other instanceof TextStyle && toJsonString(this) === toJsonString(other));
+        return other instanceof TextStyle &&
+            toJsonString(this) === toJsonString(other);
     }
 
     toString() {

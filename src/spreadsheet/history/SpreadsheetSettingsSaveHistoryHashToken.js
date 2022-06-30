@@ -47,7 +47,8 @@ export default class SpreadsheetSettingsSaveHistoryHashToken extends Spreadsheet
     }
 
     equals(other) {
-        return this === other ||
-            (other instanceof SpreadsheetSettingsSaveHistoryHashToken && this.property() === other.property() && Equality.safeEquals(this.value(), other.value()));
+        return super.equals(other) &&
+            this.property() === other.property() &&
+            Equality.safeEquals(this.value(), other.value());
     }
 }

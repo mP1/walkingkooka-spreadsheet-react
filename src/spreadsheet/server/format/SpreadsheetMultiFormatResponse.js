@@ -33,10 +33,8 @@ export default class SpreadsheetMultiFormatResponse extends SystemObject {
     }
 
     equals(other) {
-        return this === other ||
-            (other instanceof SpreadsheetMultiFormatResponse &&
-                Equality.safeEquals(this.responses(), other.responses())
-            );
+        return other instanceof SpreadsheetMultiFormatResponse &&
+                Equality.safeEquals(this.responses(), other.responses());
     }
 
     toString() {

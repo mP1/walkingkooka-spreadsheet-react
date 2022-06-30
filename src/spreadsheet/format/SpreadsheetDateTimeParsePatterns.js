@@ -19,12 +19,6 @@ export default class SpreadsheetDateTimeParsePatterns extends SpreadsheetParsePa
     typeName() {
         return SpreadsheetDateTimeParsePatterns.TYPE_NAME;
     }
-
-    equals(other) {
-        return this === other ||
-            (other instanceof SpreadsheetDateTimeParsePatterns &&
-                this.pattern() === other.pattern())
-    }
 }
 
 SystemObject.register(SpreadsheetDateTimeParsePatterns.TYPE_NAME, SpreadsheetDateTimeParsePatterns.fromJson);

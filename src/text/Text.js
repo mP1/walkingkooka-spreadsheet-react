@@ -34,9 +34,8 @@ export default class Text extends TextLeafNode {
     }
 
     equals(other) {
-        return this === other ||
-            (other instanceof Text &&
-                this.value() === other.value());
+        return other instanceof Text &&
+            this.value() === other.value();
     }
 }
 

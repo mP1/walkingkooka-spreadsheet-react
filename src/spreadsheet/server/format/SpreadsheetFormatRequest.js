@@ -50,11 +50,9 @@ export default class SpreadsheetFormatRequest extends SystemObject {
     }
 
     equals(other) {
-        return this === other ||
-            (other instanceof SpreadsheetFormatRequest &&
+        return other instanceof SpreadsheetFormatRequest &&
                 Equality.safeEquals(this.value(), other.value()) &&
-                Equality.safeEquals(this.pattern(), other.pattern())
-            );
+                Equality.safeEquals(this.pattern(), other.pattern());
     }
 
     toString() {

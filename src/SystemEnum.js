@@ -89,7 +89,7 @@ export default class SystemEnum extends SystemObject {
     }
 
     equals(other) {
-        return this === other;
+        return other instanceof this.constructor && this.name() === other.name();
     }
 
     toJson() {

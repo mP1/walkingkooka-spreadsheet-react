@@ -32,9 +32,8 @@ export default class EmailAddress extends SystemObject {
     }
 
     equals(other) {
-        return this === other ||
-            (other instanceof EmailAddress &&
-                this.text() === other.text());
+        return other instanceof EmailAddress &&
+            this.text() === other.text();
     }
 
     toString() {

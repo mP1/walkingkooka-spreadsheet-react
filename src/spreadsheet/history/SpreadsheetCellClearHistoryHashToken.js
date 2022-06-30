@@ -21,8 +21,4 @@ export default class SpreadsheetCellClearHistoryHashToken extends SpreadsheetCel
     onViewportSelectionAction(viewportSelection, viewportWidget) {
         viewportWidget.clearSelection(viewportSelection);
     }
-
-    equals(other) {
-        return this === other || (other instanceof SpreadsheetCellClearHistoryHashToken);
-    }
 }

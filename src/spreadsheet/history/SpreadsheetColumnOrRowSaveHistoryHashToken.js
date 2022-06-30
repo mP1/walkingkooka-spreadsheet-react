@@ -43,6 +43,8 @@ export default class SpreadsheetColumnOrRowSaveHistoryHashToken extends Spreadsh
     }
 
     equals(other) {
-        return this === other || (other instanceof SpreadsheetColumnOrRowSaveHistoryHashToken && this.property() === other.property() && Equality.safeEquals(this.value, other.value()));
+        return super.equals(other) &&
+            this.property() === other.property() &&
+            Equality.safeEquals(this.value, other.value());
     }
 }

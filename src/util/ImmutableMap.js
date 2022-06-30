@@ -112,7 +112,8 @@ export default class ImmutableMap {
     }
 
     equals(other) {
-        return this === other || (other instanceof ImmutableMap && equals0(this.map, other.map));
+        return other instanceof ImmutableMap &&
+            equals0(this.map, other.map);
     }
 
     toString() {

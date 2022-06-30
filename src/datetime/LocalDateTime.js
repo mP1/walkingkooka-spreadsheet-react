@@ -32,9 +32,8 @@ export default class LocalDateTime extends SystemObject {
     }
 
     equals(other) {
-        return this === other ||
-            (other instanceof LocalDateTime &&
-                this.text() === other.text());
+        return other instanceof LocalDateTime &&
+            this.text() === other.text();
     }
 
     toString() {

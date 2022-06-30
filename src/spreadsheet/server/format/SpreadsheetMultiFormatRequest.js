@@ -39,10 +39,8 @@ export default class SpreadsheetMultiFormatRequest extends SystemObject {
     }
 
     equals(other) {
-        return this === other ||
-            (other instanceof SpreadsheetMultiFormatRequest &&
-                Equality.safeEquals(this.requests(), other.requests())
-            );
+        return other instanceof SpreadsheetMultiFormatRequest &&
+                Equality.safeEquals(this.requests(), other.requests());
     }
 
     toString() {

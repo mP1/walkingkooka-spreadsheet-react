@@ -34,9 +34,8 @@ export default class FontWeight extends SystemObject {
     }
 
     equals(other) {
-        return this === other ||
-            (other instanceof FontWeight &&
-                this.value() === other.value());
+        return other instanceof FontWeight &&
+            this.value() === other.value();
     }
 
     toString() {

@@ -56,7 +56,9 @@ export default class SpreadsheetLabelMapping extends SystemObject {
     }
 
     equals(other) {
-        return this === other || (other instanceof SpreadsheetLabelMapping && this.label().equals(other.label()) && this.reference().equals(other.reference()));
+        return other instanceof SpreadsheetLabelMapping &&
+            this.label().equals(other.label()) &&
+            this.reference().equals(other.reference());
     }
 
     toString() {

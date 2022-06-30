@@ -24,12 +24,6 @@ export default class SpreadsheetTextFormatPattern extends SpreadsheetFormatPatte
     typeName() {
         return SpreadsheetTextFormatPattern.TYPE_NAME;
     }
-
-    equals(other) {
-        return this === other ||
-            (other instanceof SpreadsheetTextFormatPattern &&
-                this.pattern() === other.pattern())
-    }
 }
 
 SystemObject.register(SpreadsheetTextFormatPattern.TYPE_NAME, SpreadsheetTextFormatPattern.fromJson);

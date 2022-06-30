@@ -51,9 +51,8 @@ export default class PixelLength extends Length {
     }
 
     equals(other) {
-        return this === other ||
-            (other instanceof PixelLength &&
-                this.value() === other.value());
+        return other instanceof PixelLength &&
+            this.value() === other.value();
     }
 
     toString() {

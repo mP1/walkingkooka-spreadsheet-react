@@ -96,11 +96,10 @@ export default class SpreadsheetViewport extends SystemObject {
     }
 
     equals(other) {
-        return this === other ||
-            (other instanceof SpreadsheetViewport &&
-                this.cellOrLabel().equals(other.cellOrLabel()) &&
-                this.width() === other.width() &&
-                this.height() === other.height());
+        return other instanceof SpreadsheetViewport &&
+            this.cellOrLabel().equals(other.cellOrLabel()) &&
+            this.width() === other.width() &&
+            this.height() === other.height();
     }
 
     toString() {

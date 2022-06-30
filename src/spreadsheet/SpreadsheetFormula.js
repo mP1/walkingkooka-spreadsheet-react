@@ -70,19 +70,14 @@ export default class SpreadsheetFormula extends SystemObject {
     }
 
     equals(other) {
-        return this === other ||
-            (other instanceof SpreadsheetFormula &&
-                equals0(this, other));
+        return other instanceof SpreadsheetFormula &&
+            this.text() === other.text() &&
+            Equality.safeEquals(this.value(), other.value());
     }
 
     toString() {
         return JSON.stringify(this.toJson());
     }
-}
-
-function equals0(formula, other) {
-    return formula.text() === other.text() &&
-        Equality.safeEquals(formula.value(), other.value());
 }
 
 function checkText(text) {

@@ -34,9 +34,8 @@ export default class FontSize extends SystemObject {
     }
 
     equals(other) {
-        return this === other ||
-            (other instanceof FontSize &&
-                this.value() === other.value());
+        return other instanceof FontSize &&
+            this.value() === other.value();
     }
 
     toString() {

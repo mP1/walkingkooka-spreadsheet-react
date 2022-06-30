@@ -21,8 +21,4 @@ export default class SpreadsheetCellMenuHistoryHashToken extends SpreadsheetCell
     onViewportSelectionAction(viewportSelection, viewportWidget) {
         viewportWidget.showContextMenu(viewportSelection);
     }
-
-    equals(other) {
-        return this === other || (other instanceof SpreadsheetCellMenuHistoryHashToken);
-    }
 }

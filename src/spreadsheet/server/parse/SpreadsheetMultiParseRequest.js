@@ -40,10 +40,8 @@ export default class SpreadsheetMultiParseRequest extends SystemObject {
     }
 
     equals(other) {
-        return this === other ||
-            (other instanceof SpreadsheetMultiParseRequest &&
-                Equality.safeEquals(this.requests(), other.requests())
-            );
+        return other instanceof SpreadsheetMultiParseRequest &&
+            Equality.safeEquals(this.requests(), other.requests());
     }
 
     toString() {

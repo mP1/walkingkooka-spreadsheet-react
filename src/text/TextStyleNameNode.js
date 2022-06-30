@@ -50,9 +50,8 @@ export default class TextStyleNameNode extends TextNode {
     }
 
     equals(other) {
-        return this === other ||
-            (other instanceof TextStyleNameNode &&
-                this.styleName() === other.styleName() &&
-                Equality.safeEquals(this.children(), other.children()));
+        return other instanceof TextStyleNameNode &&
+            this.styleName() === other.styleName() &&
+            Equality.safeEquals(this.children(), other.children());
     }
 }

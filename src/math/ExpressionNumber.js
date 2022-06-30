@@ -31,9 +31,8 @@ export default class ExpressionNumber extends SystemObject {
     }
 
     equals(other) {
-        return this === other ||
-            (other instanceof ExpressionNumber &&
-                this.text() === other.text());
+        return other instanceof ExpressionNumber &&
+            this.text() === other.text();
     }
 
     toString() {

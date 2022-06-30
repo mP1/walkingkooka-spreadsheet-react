@@ -47,11 +47,9 @@ export default class SpreadsheetLabelMappingSaveHistoryHashToken extends Spreads
     }
 
     equals(other) {
-        return this === other ||
-            (other instanceof SpreadsheetLabelMappingSaveHistoryHashToken &&
+        return super.equals(other) &&
                 this.label().equals(other.label()) &&
                 this.newLabel().equals(other.newLabel()) &&
-                this.reference().equals(other.reference())
-            );
+                this.reference().equals(other.reference());
     }
 }

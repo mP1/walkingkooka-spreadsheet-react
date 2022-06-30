@@ -18,6 +18,8 @@ export default class SpreadsheetColumnOrRow extends SystemObject {
     }
 
     equals(other) {
-        return this === other || (other instanceof this.constructor && this.reference().equals(other.reference()) && this.hidden() === other.hidden());
+        return super.equals(other) &&
+            this.reference().equals(other.reference()) &&
+            this.hidden() === other.hidden();
     }
 }
