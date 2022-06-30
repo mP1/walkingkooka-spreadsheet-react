@@ -470,7 +470,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
             selection: tokens[SpreadsheetHistoryHashTokens.SELECTION],
             selectionAction: tokens[SpreadsheetHistoryHashTokens.SELECTION_ACTION],
             selectionAnchor: tokens[SpreadsheetHistoryHashTokens.SELECTION_ANCHOR],
-            selectionNavigation: null, // TODO maybe add history hash support for navigation
+            selectionNavigation: null,
             contextMenu: {}, // close context menu
         };
     }
