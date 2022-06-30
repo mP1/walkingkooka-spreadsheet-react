@@ -16,11 +16,6 @@ export default class SpreadsheetTimeFormatPattern extends SpreadsheetFormatPatte
         return new SpreadsheetTimeFormatPattern(pattern);
     }
 
-    // eslint-disable-next-line
-    constructor(pattern) {
-        super(pattern);
-    }
-
     typeName() {
         return SpreadsheetTimeFormatPattern.TYPE_NAME;
     }

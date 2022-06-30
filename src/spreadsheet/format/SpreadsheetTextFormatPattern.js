@@ -16,11 +16,6 @@ export default class SpreadsheetTextFormatPattern extends SpreadsheetFormatPatte
         return new SpreadsheetTextFormatPattern(pattern);
     }
 
-    // eslint-disable-next-line
-    constructor(pattern) {
-        super(pattern);
-    }
-
     typeName() {
         return SpreadsheetTextFormatPattern.TYPE_NAME;
     }
