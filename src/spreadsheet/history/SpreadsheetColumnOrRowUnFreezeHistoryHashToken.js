@@ -21,8 +21,4 @@ export default class SpreadsheetColumnOrRowUnFreezeHistoryHashToken extends Spre
     onViewportSelectionAction(viewportSelection, viewportWidget) {
         viewportWidget.unFreezeSelection(viewportSelection);
     }
-
-    equals(other) {
-        return this === other || (other instanceof SpreadsheetColumnOrRowUnFreezeHistoryHashToken);
-    }
 }

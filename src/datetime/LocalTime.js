@@ -32,9 +32,8 @@ export default class LocalTime extends SystemObject {
     }
 
     equals(other) {
-        return this === other ||
-            (other instanceof LocalTime &&
-                this.text() === other.text());
+        return other instanceof LocalTime &&
+            this.text() === other.text();
     }
 
     toString() {

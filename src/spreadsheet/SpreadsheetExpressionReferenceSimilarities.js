@@ -78,13 +78,10 @@ export default class SpreadsheetExpressionReferenceSimilarities extends SystemOb
     }
 
     equals(other) {
-        return this === other ||
-            (
-                other instanceof SpreadsheetExpressionReferenceSimilarities &&
-                Equality.safeEquals(this.cellReference(), other.cellReference()) &&
-                Equality.safeEquals(this.label(), other.label()) &&
-                Equality.safeEquals(this.labelMappings(), other.labelMappings())
-            );
+        return other instanceof SpreadsheetExpressionReferenceSimilarities &&
+            Equality.safeEquals(this.cellReference(), other.cellReference()) &&
+            Equality.safeEquals(this.label(), other.label()) &&
+            Equality.safeEquals(this.labelMappings(), other.labelMappings());
     }
 
     toString() {

@@ -29,7 +29,8 @@ export default class SpreadsheetFormulaEditHistoryHashToken extends SpreadsheetF
     }
 
     equals(other) {
-        return this === other || (other instanceof SpreadsheetFormulaEditHistoryHashToken && this.formulaText() === other.formulaText());
+        return super.equals(other) &&
+            this.formulaText() === other.formulaText();
     }
 
     toString() {

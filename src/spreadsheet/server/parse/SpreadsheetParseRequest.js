@@ -41,11 +41,9 @@ export default class SpreadsheetParseRequest extends SystemObject {
     }
 
     equals(other) {
-        return this === other ||
-            (other instanceof SpreadsheetParseRequest &&
-                this.text() === other.text() &&
-                this.parser() === other.parser()
-            );
+        return other instanceof SpreadsheetParseRequest &&
+            this.text() === other.text() &&
+            this.parser() === other.parser();
     }
 
     toString() {

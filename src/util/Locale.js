@@ -34,9 +34,8 @@ export default class Locale extends SystemObject {
     }
 
     equals(other) {
-        return this === other ||
-            (other instanceof Locale &&
-                this.text() === other.text());
+        return other instanceof Locale &&
+            this.text() === other.text();
     }
 
     toString() {

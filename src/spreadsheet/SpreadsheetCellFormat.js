@@ -31,9 +31,8 @@ export default class SpreadsheetCellFormat extends SystemObject {
     }
 
     equals(other) {
-        return this === other ||
-            (other instanceof SpreadsheetCellFormat &&
-                this.pattern() === other.pattern());
+        return other instanceof SpreadsheetCellFormat &&
+            this.pattern() === other.pattern();
     }
 
     toString() {

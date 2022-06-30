@@ -35,9 +35,8 @@ export default class Color extends SystemObject {
     }
 
     equals(other) {
-        return this === other ||
-            (other instanceof Color &&
-                this.text() === other.text())
+        return other instanceof Color &&
+                this.text() === other.text()
     }
 
     toString() {

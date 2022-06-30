@@ -19,12 +19,6 @@ export default class SpreadsheetNumberFormatPattern extends SpreadsheetFormatPat
     typeName() {
         return SpreadsheetNumberFormatPattern.TYPE_NAME;
     }
-
-    equals(other) {
-        return this === other ||
-            (other instanceof SpreadsheetNumberFormatPattern &&
-                this.pattern() === other.pattern())
-    }
 }
 
 SystemObject.register(SpreadsheetNumberFormatPattern.TYPE_NAME, SpreadsheetNumberFormatPattern.fromJson);

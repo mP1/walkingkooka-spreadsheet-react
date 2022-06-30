@@ -299,11 +299,15 @@ export default class SpreadsheetCellRange extends SpreadsheetExpressionReference
     }
 
     equals(other) {
-        return this === other || (other instanceof SpreadsheetCellRange && this.begin().equals(other.begin()) && this.end().equals(other.end()));
+        return super.equals(other) &&
+            this.begin().equals(other.begin()) &&
+            this.end().equals(other.end());
     }
 
     equalsIgnoringKind(other) {
-        return this === other || (other instanceof SpreadsheetCellRange && this.begin().equalsIgnoringKind(other.begin()) && this.end().equalsIgnoringKind(other.end()));
+        return super.equals(other) &&
+            this.begin().equalsIgnoringKind(other.begin()) &&
+            this.end().equalsIgnoringKind(other.end());
     }
 }
 

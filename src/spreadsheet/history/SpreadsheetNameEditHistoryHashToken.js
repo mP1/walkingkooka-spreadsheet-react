@@ -15,8 +15,4 @@ export default class SpreadsheetNameEditHistoryHashToken extends SpreadsheetName
     execute(spreadsheetNameWidget) {
         // nop
     }
-
-    equals(other) {
-        return this === other || other instanceof SpreadsheetNameEditHistoryHashToken;
-    }
 }

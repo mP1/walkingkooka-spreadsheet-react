@@ -35,7 +35,8 @@ export default class SpreadsheetName extends SystemObject {
     }
 
     equals(other) {
-        return this === other || (other instanceof SpreadsheetName && this.value() === other.value());
+        return other instanceof SpreadsheetName &&
+            this.value() === other.value();
     }
 
     toString() {

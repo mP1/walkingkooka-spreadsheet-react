@@ -389,8 +389,7 @@ export default class SpreadsheetDelta extends SystemObject {
     }
 
     equals(other) {
-        return this === other ||
-            (other instanceof SpreadsheetDelta &&
+        return other instanceof SpreadsheetDelta &&
                 Equality.safeEquals(this.selection(), other.selection()) &&
                 Equality.safeEquals(this.cells(), other.cells()) &&
                 Equality.safeEquals(this.columns(), other.columns()) &&
@@ -401,8 +400,7 @@ export default class SpreadsheetDelta extends SystemObject {
                 Equality.safeEquals(this.deletedRows(), other.deletedRows()) &&
                 this.columnWidths().equals(other.columnWidths()) &&
                 this.rowHeights().equals(other.rowHeights()) &&
-                Equality.safeEquals(this.window(), other.window())
-            );
+                Equality.safeEquals(this.window(), other.window());
     }
 
     toString() {

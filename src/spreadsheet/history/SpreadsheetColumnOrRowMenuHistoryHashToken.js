@@ -21,8 +21,4 @@ export default class SpreadsheetColumnOrRowMenuHistoryHashToken extends Spreadsh
     onViewportSelectionAction(viewportSelection, viewportWidget) {
         viewportWidget.showContextMenu(viewportSelection);
     }
-
-    equals(other) {
-        return this === other || (other instanceof SpreadsheetColumnOrRowMenuHistoryHashToken);
-    }
 }

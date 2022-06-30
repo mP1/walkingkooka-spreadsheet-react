@@ -35,9 +35,8 @@ export default class Character extends SystemObject {
     }
 
     equals(other) {
-        return this === other ||
-            (other instanceof Character &&
-                this.text() === other.text());
+        return other instanceof Character &&
+                this.text() === other.text();
     }
 
     toString() {

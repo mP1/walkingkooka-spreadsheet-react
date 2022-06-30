@@ -31,9 +31,8 @@ export default class FontFamily extends SystemObject {
     }
 
     equals(other) {
-        return this === other ||
-            (other instanceof FontFamily &&
-                this.name() === other.name());
+        return other instanceof FontFamily &&
+            this.name() === other.name();
     }
 
     toString() {

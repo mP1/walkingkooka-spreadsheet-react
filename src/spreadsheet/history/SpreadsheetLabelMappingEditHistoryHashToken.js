@@ -29,7 +29,7 @@ export default class SpreadsheetLabelMappingEditHistoryHashToken extends Spreads
     }
 
     equals(other) {
-        return this === other ||
-            (other instanceof SpreadsheetLabelMappingEditHistoryHashToken && this.label().equals(other.label()));
+        return super.equals(other) &&
+            this.label().equals(other.label());
     }
 }

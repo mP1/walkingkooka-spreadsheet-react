@@ -26,7 +26,8 @@ export default class SpreadsheetFormulaSaveHistoryHashToken extends SpreadsheetF
     }
 
     equals(other) {
-        return this === other || (other instanceof SpreadsheetFormulaSaveHistoryHashToken && this.formulaText() === other.formulaText());
+        return super.equals(other) &&
+            this.formulaText() === other.formulaText();
     }
 
     toString() {

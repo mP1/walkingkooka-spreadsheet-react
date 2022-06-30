@@ -32,9 +32,8 @@ export default class TextPlaceholderNode extends TextLeafNode {
     }
 
     equals(other) {
-        return this === other ||
-            (other instanceof TextPlaceholderNode &&
-                this.value() === other.value());
+        return other instanceof TextPlaceholderNode &&
+            this.value() === other.value();
     }
 }
 

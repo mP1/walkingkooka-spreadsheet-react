@@ -114,12 +114,10 @@ export default class SpreadsheetViewportSelection extends SystemObject {
     }
 
     equals(other) {
-        return this === other ||
-            (other instanceof SpreadsheetViewportSelection &&
+        return other instanceof SpreadsheetViewportSelection &&
                 this.selection().equals(other.selection()) &&
                 Equality.safeEquals(this.anchor(), other.anchor()) &&
-                Equality.safeEquals(this.navigation(), other.navigation())
-            );
+                Equality.safeEquals(this.navigation(), other.navigation());
     }
 
     toString() {

@@ -117,7 +117,7 @@ export default class SystemObject {
     }
 
     equals(other) {
-        return this === other;
+        return other instanceof this.constructor;
     }
 
     toJSON() {

@@ -21,8 +21,4 @@ export default class SpreadsheetCellUnFreezeHistoryHashToken extends Spreadsheet
     onViewportSelectionAction(viewportSelection, viewportWidget) {
         viewportWidget.unFreezeSelection(viewportSelection);
     }
-
-    equals(other) {
-        return this === other || (other instanceof SpreadsheetCellUnFreezeHistoryHashToken);
-    }
 }

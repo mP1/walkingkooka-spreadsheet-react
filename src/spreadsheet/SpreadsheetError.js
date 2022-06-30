@@ -47,9 +47,8 @@ export default class SpreadsheetError extends SystemObject {
     }
 
     equals(other) {
-        return this === other ||
-            (other instanceof SpreadsheetError &&
-                this.message() === other.message());
+        return other instanceof SpreadsheetError &&
+            this.message() === other.message();
     }
 
     toString() {

@@ -25,8 +25,4 @@ export default class SpreadsheetCellDeleteHistoryHashToken extends SpreadsheetCe
     labelMappingWidget(widget) {
         widget.deleteLabelMapping();
     }
-
-    equals(other) {
-        return this === other || (other instanceof SpreadsheetCellDeleteHistoryHashToken);
-    }
 }

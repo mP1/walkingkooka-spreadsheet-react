@@ -25,6 +25,7 @@ export default class SpreadsheetColumnOrRowInsertAfterHistoryHashToken extends S
     }
 
     equals(other) {
-        return this === other || (other instanceof SpreadsheetColumnOrRowInsertAfterHistoryHashToken && this.count() === other.count());
+        return super.equals(other) &&
+            this.count() === other.count();
     }
 }

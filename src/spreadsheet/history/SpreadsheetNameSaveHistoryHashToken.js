@@ -31,6 +31,7 @@ export default class SpreadsheetNameSaveHistoryHashToken extends SpreadsheetName
     }
 
     equals(other) {
-        return this === other || (other instanceof SpreadsheetNameSaveHistoryHashToken && Equality.safeEquals(this.value(), other.value()));
+        return super.equals(other) &&
+            Equality.safeEquals(this.value(), other.value());
     }
 }

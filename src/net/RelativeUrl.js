@@ -124,10 +124,9 @@ export default class RelativeUrl extends SystemObject {
     }
 
     equals(other) {
-        return this === other ||
-            (other instanceof RelativeUrl &&
+        return other instanceof RelativeUrl &&
                 this.path() === other.path() &&
-                Equality.safeEquals(this.queryParameters(), other.queryParameters()));
+                Equality.safeEquals(this.queryParameters(), other.queryParameters());
     }
 
     toString() {

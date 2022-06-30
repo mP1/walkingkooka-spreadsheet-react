@@ -24,12 +24,6 @@ export default class SpreadsheetNumberParsePatterns extends SpreadsheetParsePatt
     typeName() {
         return SpreadsheetNumberParsePatterns.TYPE_NAME;
     }
-
-    equals(other) {
-        return this === other ||
-            (other instanceof SpreadsheetNumberParsePatterns &&
-                this.pattern() === other.pattern())
-    }
 }
 
 SystemObject.register(SpreadsheetNumberParsePatterns.TYPE_NAME, SpreadsheetNumberParsePatterns.fromJson);

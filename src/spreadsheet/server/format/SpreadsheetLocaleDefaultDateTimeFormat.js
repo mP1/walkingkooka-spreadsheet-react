@@ -15,10 +15,6 @@ export default class SpreadsheetLocaleDefaultDateTimeFormat extends SystemObject
         return SpreadsheetLocaleDefaultDateTimeFormat.INSTANCE;
     }
 
-    equals(other) {
-        return this === other;
-    }
-
     toJson() {
         return 1;
     }

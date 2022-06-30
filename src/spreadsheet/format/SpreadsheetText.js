@@ -48,10 +48,9 @@ export default class SpreadsheetText extends SystemObject {
     }
 
     equals(other) {
-        return this === other ||
-            (other instanceof SpreadsheetText &&
-                this.color() === other.color() &&
-                this.text() === other.text())
+        return other instanceof SpreadsheetText &&
+                this.color().equals(other.color()) &&
+                this.text() === other.text();
     }
 
     toString() {

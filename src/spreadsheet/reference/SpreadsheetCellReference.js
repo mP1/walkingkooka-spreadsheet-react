@@ -335,11 +335,15 @@ export default class SpreadsheetCellReference extends SpreadsheetCellReferenceOr
     }
 
     equals(other) {
-        return this === other || (other instanceof SpreadsheetCellReference && this.column().equals(other.column()) && this.row().equals(other.row()));
+        return super.equals(other) &&
+            this.column().equals(other.column()) &&
+            this.row().equals(other.row());
     }
 
     equalsIgnoringKind(other) {
-        return this === other || (other instanceof SpreadsheetCellReference && this.column().equalsIgnoringKind(other.column()) && this.row().equalsIgnoringKind(other.row()));
+        return super.equals(other) &&
+            this.column().equalsIgnoringKind(other.column()) &&
+            this.row().equalsIgnoringKind(other.row());
     }
 
     toString() {

@@ -21,8 +21,4 @@ export default class SpreadsheetColumnOrRowClearHistoryHashToken extends Spreads
     onViewportSelectionAction(viewportSelection, viewportWidget) {
         viewportWidget.clearSelection(viewportSelection);
     }
-
-    equals(other) {
-        return this === other || (other instanceof SpreadsheetColumnOrRowClearHistoryHashToken);
-    }
 }

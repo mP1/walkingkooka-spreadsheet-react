@@ -23,9 +23,8 @@ export default class SpreadsheetPattern extends SystemObject {
     }
 
     equals(other) {
-        return this === other ||
-            (other instanceof SpreadsheetPattern &&
-                this.pattern() === other.pattern())
+        return other instanceof this.constructor &&
+                this.pattern() === other.pattern();
     }
 
     toString() {

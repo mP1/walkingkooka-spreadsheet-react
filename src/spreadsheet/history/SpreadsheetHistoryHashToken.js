@@ -3,7 +3,7 @@
  */
 import SystemObject from "../../SystemObject.js";
 
-export default class SpreadsheetHistoryHashToken {
+export default class SpreadsheetHistoryHashToken extends SystemObject {
 
     onViewportSelectionAction(viewportSelection, viewportWidget) {
         SystemObject.throwUnsupportedOperation();

@@ -32,9 +32,8 @@ export default class LocalDate extends SystemObject {
     }
 
     equals(other) {
-        return this === other ||
-            (other instanceof LocalDate &&
-                this.text() === other.text());
+        return other instanceof LocalDate &&
+            this.text() === other.text();
     }
 
     toString() {
