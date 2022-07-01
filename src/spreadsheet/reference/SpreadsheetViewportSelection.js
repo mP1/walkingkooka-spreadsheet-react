@@ -50,7 +50,7 @@ export default class SpreadsheetViewportSelection extends SystemObject {
     setAnchor(anchor) {
         Preconditions.optionalInstance(anchor, SpreadsheetViewportSelectionAnchor, "anchor");
 
-        return this.anchor().equals(anchor) ?
+        return Equality.safeEquals(this.anchor(), anchor) ?
             this :
             new SpreadsheetViewportSelection(
                 this.selection(),
@@ -66,7 +66,7 @@ export default class SpreadsheetViewportSelection extends SystemObject {
     setNavigation(navigation) {
         Preconditions.optionalInstance(navigation, SpreadsheetViewportSelectionNavigation, "navigation");
 
-        return this.navigation().equals(navigation) ?
+        return Equality.safeEquals(this.navigation(), navigation) ?
             this :
             new SpreadsheetViewportSelection(
                 this.selection(),

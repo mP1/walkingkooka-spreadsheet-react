@@ -363,6 +363,27 @@ test("setAnchor different null", () => {
     ).toBeTrue();
 });
 
+test("setAnchor different non null", () => {
+    const viewport = new SpreadsheetViewportSelection(
+        selection(),
+        null,
+        navigation()
+    );
+
+    const different = anchor();
+
+    expect(
+        viewport.setAnchor(different)
+            .equals(
+                new SpreadsheetViewportSelection(
+                    selection(),
+                    different,
+                    navigation()
+                )
+            )
+    ).toBeTrue();
+});
+
 // setNavigation.............................................................................................................
 
 test("setNavigation same", () => {
@@ -409,6 +430,26 @@ test("setNavigation different null", () => {
     );
 
     const different = null;
+
+    expect(
+        viewport.setNavigation(different)
+            .equals(
+                new SpreadsheetViewportSelection(
+                    selection(),
+                    anchor(),
+                    different
+                )
+            )
+    ).toBeTrue();
+});
+
+test("setNavigation different non null", () => {
+    const viewport = new SpreadsheetViewportSelection(
+        selection(),
+        anchor()
+    );
+
+    const different = navigation();
 
     expect(
         viewport.setNavigation(different)
