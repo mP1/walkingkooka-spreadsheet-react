@@ -401,6 +401,27 @@ test("setNavigation same", () => {
     ).toBeTrue();
 });
 
+test("setNavigation different was null", () => {
+    const viewport = new SpreadsheetViewportSelection(
+        selection(),
+        anchor(),
+        null
+    );
+
+    const different = SpreadsheetViewportSelectionNavigation.RIGHT;
+
+    expect(
+        viewport.setNavigation(different)
+            .equals(
+                new SpreadsheetViewportSelection(
+                    selection(),
+                    anchor(),
+                    different
+                )
+            )
+    ).toBeTrue();
+});
+
 test("setNavigation different", () => {
     const viewport = new SpreadsheetViewportSelection(
         selection(),
@@ -487,4 +508,28 @@ test("equals different anchor false", () => {
     expect(new SpreadsheetViewportSelection(cellRange(), SpreadsheetViewportSelectionAnchor.TOP_LEFT)
         .equals(new SpreadsheetViewportSelection(cellRange(), SpreadsheetViewportSelectionAnchor.BOTTOM_RIGHT)))
         .toBeFalse();
+});
+
+test("equals same anchor, different navigation false", () => {
+    expect(new SpreadsheetViewportSelection(cell(), SpreadsheetViewportSelectionAnchor.NONE, SpreadsheetViewportSelectionNavigation.LEFT)
+        .equals(new SpreadsheetViewportSelection(cell(), SpreadsheetViewportSelectionAnchor.NONE)))
+        .toBeFalse();
+});
+
+test("equals missing anchor, different navigation false", () => {
+    expect(new SpreadsheetViewportSelection(cell(), undefined, SpreadsheetViewportSelectionNavigation.LEFT)
+        .equals(new SpreadsheetViewportSelection(cell())))
+        .toBeFalse();
+});
+
+test("equals different navigation false", () => {
+    expect(new SpreadsheetViewportSelection(cell(), SpreadsheetViewportSelectionAnchor.NONE, SpreadsheetViewportSelectionNavigation.LEFT)
+        .equals(new SpreadsheetViewportSelection(cell(), SpreadsheetViewportSelectionAnchor.NONE, SpreadsheetViewportSelectionNavigation.RIGHT)))
+        .toBeFalse();
+});
+
+test("equals different navigation true", () => {
+    expect(new SpreadsheetViewportSelection(cell(), SpreadsheetViewportSelectionAnchor.NONE, SpreadsheetViewportSelectionNavigation.DOWN)
+        .equals(new SpreadsheetViewportSelection(cell(), SpreadsheetViewportSelectionAnchor.NONE, SpreadsheetViewportSelectionNavigation.DOWN)))
+        .toBeTrue();
 });
