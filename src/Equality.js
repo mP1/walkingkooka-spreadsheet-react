@@ -5,7 +5,7 @@ export default class Equality {
 
     static safeEquals(left, right) {
         return (Array.isArray(left) && equalsArray(left, right)) ||
-            (typeof left === "object" && equalsObject(left, right)) ||
+            (left && typeof left === "object" && equalsObject(left, right)) ||
             left === right ||
             (isUndefinedOrNull(left) && isUndefinedOrNull(right));
     }
@@ -34,11 +34,9 @@ function equalsArray(left, right) {
 }
 
 function equalsObject(left, right) {
-    return (left &&
-        left.equals ?
-            left.equals(right) :
-            false
-    ) || jsonStringify(left) === jsonStringify(right);
+    return left.equals ?
+        left.equals(right) :
+        jsonStringify(left) === jsonStringify(right);
 }
 
 /**
