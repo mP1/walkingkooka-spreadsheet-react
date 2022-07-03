@@ -34,7 +34,11 @@ function equalsArray(left, right) {
 }
 
 function equalsObject(left, right) {
-    return (left && left.equals && left.equals(right)) || jsonStringify(left) === jsonStringify(right);
+    return (left &&
+        left.equals ?
+            left.equals(right) :
+            false
+    ) || jsonStringify(left) === jsonStringify(right);
 }
 
 /**
