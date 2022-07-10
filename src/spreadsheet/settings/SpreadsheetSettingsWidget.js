@@ -258,7 +258,7 @@ class SpreadsheetSettingsWidget extends SpreadsheetHistoryAwareStateWidget {
         this.historyParseMergeAndPush(historyHashTokens);
     }
 
-    XXXonSpreadsheetMetadata(method, id, url, requestMetadata, responseMetadata) {
+    onSpreadsheetMetadata(method, id, url, requestMetadata, responseMetadata) {
         this.setState({
             createDateTimeFormatted: "", // clear forcing reformatting of create/modified timestamps.
             modifiedDateTimeFormatted: "",
@@ -284,26 +284,6 @@ class SpreadsheetSettingsWidget extends SpreadsheetHistoryAwareStateWidget {
                 return element;
             }
         );
-    }
-
-    onSpreadsheetMetadata(method, id, url, requestMetadata, responseMetadata) {
-        const {
-            settings,
-            giveSettingsFocus
-        } = this.state;
-
-        const newState = {
-            createDateTimeFormatted: "", // clear forcing reformatting of create/modified timestamps.
-            modifiedDateTimeFormatted: "",
-            spreadsheetMetadata: responseMetadata,
-        };
-
-        if(settings && giveSettingsFocus && !settings.item()){
-            newState.giveSettingsFocus = false;
-            this.giveFocus(() => this.ref.current);
-        }
-
-        this.setState(newState);
     }
 
     render() {

@@ -13,12 +13,12 @@ export default class SpreadsheetWidget extends React.Component {
     /**
      * Gives focus to the given element after a short delay.
      */
-    giveFocus(focusedElementSupplier) {
-        Preconditions.requireFunction(focusedElementSupplier, "focusedElementSupplier");
+    giveFocus(elementSupplier) {
+        Preconditions.requireFunction(elementSupplier, "elementSupplier");
 
         setTimeout(
             () => {
-                const element = focusedElementSupplier();
+                const element = elementSupplier();
                 if(element && element.focus) {
                     console.log(this.prefix() +".focused");
                     element.focus();
