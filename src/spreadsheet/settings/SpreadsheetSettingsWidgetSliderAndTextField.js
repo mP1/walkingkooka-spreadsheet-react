@@ -18,7 +18,9 @@ export default class SpreadsheetSettingsWidgetSliderAndTextField extends Spreads
     }
 
     focus() {
-        this.giveFocus(this.textFieldRef.current);
+        this.giveFocus(
+            () => this.textFieldRef.current
+        );
     }
 
     renderValue(id, value) {

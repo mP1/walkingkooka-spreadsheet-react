@@ -843,22 +843,26 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
      * actual cell or column or row within a range etc.
      */
     giveSelectionFocus(selection, anchor) {
-        if(!(this.state.selectionAction instanceof SpreadsheetFormulaHistoryHashToken)){
-            if(selection){
-                const cellColumnOrRow = selection.viewportFocus(
-                    this.state.labelToReferences,
-                    anchor
-                );
+        this.giveFocus(
+            () => {
+                var element;
 
-                if(cellColumnOrRow){
-                    const element = document.getElementById(cellColumnOrRow.viewportId());
-                    if(element){
-                        console.log("Missing " + SpreadsheetHistoryHash.SELECTION_ACTION + " token giving focus to ..." + cellColumnOrRow);
-                        this.giveFocus(element);
+                if(!(this.state.selectionAction instanceof SpreadsheetFormulaHistoryHashToken)){
+                    if(selection){
+                        const cellColumnOrRow = selection.viewportFocus(
+                            this.state.labelToReferences,
+                            anchor
+                        );
+
+                        if(cellColumnOrRow){
+                            element = document.getElementById(cellColumnOrRow.viewportId());
+                        }
                     }
                 }
+
+                return element;
             }
-        }
+        );
     }
 
     /**

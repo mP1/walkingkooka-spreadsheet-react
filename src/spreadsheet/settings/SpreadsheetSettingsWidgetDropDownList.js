@@ -17,7 +17,9 @@ export default class SpreadsheetSettingsWidgetDropDownList extends SpreadsheetSe
     }
 
     focus() {
-        this.giveFocus(this.selectRef.current);
+        this.giveFocus(
+            () => this.selectRef.current
+        );
     }
 
     renderValue(id, value) {

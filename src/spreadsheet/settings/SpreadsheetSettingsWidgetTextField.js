@@ -15,7 +15,9 @@ export default class SpreadsheetSettingsWidgetTextField extends SpreadsheetSetti
     }
 
     focus() {
-        this.giveFocus(this.inputField.current);
+        this.giveFocus(
+            () => this.inputField.current
+        );
     }
 
     renderValue(id, value) {
