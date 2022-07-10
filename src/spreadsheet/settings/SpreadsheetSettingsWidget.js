@@ -258,6 +258,34 @@ class SpreadsheetSettingsWidget extends SpreadsheetHistoryAwareStateWidget {
         this.historyParseMergeAndPush(historyHashTokens);
     }
 
+    XXXonSpreadsheetMetadata(method, id, url, requestMetadata, responseMetadata) {
+        this.setState({
+            createDateTimeFormatted: "", // clear forcing reformatting of create/modified timestamps.
+            modifiedDateTimeFormatted: "",
+            spreadsheetMetadata: responseMetadata,
+        });
+
+        this.giveFocus(
+            () => {
+                const {
+                    giveSettingsFocus,
+                    settings,
+                } = this.state;
+
+                var element;
+                if(giveSettingsFocus && settings && !settings.item()){
+                    this.setState({
+                        giveSettingsFocus: false,
+                    });
+
+                    element = this.ref.current;
+                }
+
+                return element;
+            }
+        );
+    }
+
     onSpreadsheetMetadata(method, id, url, requestMetadata, responseMetadata) {
         const {
             settings,
@@ -272,7 +300,7 @@ class SpreadsheetSettingsWidget extends SpreadsheetHistoryAwareStateWidget {
 
         if(settings && giveSettingsFocus && !settings.item()){
             newState.giveSettingsFocus = false;
-            this.giveFocus(this.ref.current);
+            this.giveFocus(() => this.ref.current);
         }
 
         this.setState(newState);
@@ -1298,11 +1326,11 @@ class SpreadsheetSettingsWidget extends SpreadsheetHistoryAwareStateWidget {
 
         // give focus to the heading text if history hash = /settings or /settings/$accordion
         if(accordionSelected){
-            setTimeout(() => {
-                console.log("settings giving focus to " + accordion);
-
-                this.giveFocus(document.querySelector(SpreadsheetSettingsWidget.accordionElementSelector(accordion)))
-            }, 1);
+            this.giveFocus(
+                () => document.querySelector(
+                    SpreadsheetSettingsWidget.accordionElementSelector(accordion)
+                )
+            );
         }
         //
         const onFocus = (e) => {

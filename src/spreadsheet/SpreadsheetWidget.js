@@ -1,4 +1,5 @@
 import React from 'react';
+import Preconditions from "../Preconditions.js";
 
 /**
  * A widget with some common or useful logic.
@@ -12,10 +13,18 @@ export default class SpreadsheetWidget extends React.Component {
     /**
      * Gives focus to the given element after a short delay.
      */
-    giveFocus(element) {
-        element && setTimeout(() => {
-            console.log(this.prefix() +".focused");
-            element.focus();
-        }, 10);
+    giveFocus(focusedElementSupplier) {
+        Preconditions.requireFunction(focusedElementSupplier, "focusedElementSupplier");
+
+        setTimeout(
+            () => {
+                const element = focusedElementSupplier();
+                if(element && element.focus) {
+                    console.log(this.prefix() +".focused");
+                    element.focus();
+                }
+            },
+            10
+        );
     }
 }

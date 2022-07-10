@@ -107,7 +107,7 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetHistoryAwareSta
 
                 // if textField does not have focus and not save -> load give focus.
                 if(!focused && load && !previousSave) {
-                    this.giveFocus(this.input.current);
+                    this.giveFocus(() => this.input.current);
                 }
             }
 
