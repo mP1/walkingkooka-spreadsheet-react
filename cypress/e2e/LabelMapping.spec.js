@@ -372,7 +372,7 @@ describe(
             testing.labelMappingDialogClosedCheck();
 
             testing.hash()
-                .should('match', /.*\/Untitled/);
+                .should("match", /^#\/.*\/Untitled$/);
         });
 
         it("Save, navigate to label", () => {
@@ -386,7 +386,7 @@ describe(
                     testing.hashEnter(nonEmptySpreadsheetHash + "/label/Label456");
 
                     testing.hash()
-                        .should('match', /.*\/Untitled\/label\/Label456/);
+                        .should("match", /^#\/.*\/Untitled\/label\/Label456$/);
 
                     testing.labelMappingReferenceTextField()
                         .type("{selectall}" + reference.toString());
@@ -400,7 +400,7 @@ describe(
                     testing.hashEnter(nonEmptySpreadsheetHash + "/cell/Label456/formula");
 
                     testing.hash()
-                        .should('match', /.*\/Untitled\/cell\/Label456\/formula/);
+                        .should("match", /^#\/.*\/Untitled\/cell\/Label456\/formula$/);
 
                     testing.wait(50); // wait for formula text box to become enabled.
 

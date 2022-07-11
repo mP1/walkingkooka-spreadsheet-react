@@ -82,7 +82,7 @@ describe(
                 .click();
 
             testing.hash()
-                .should('match', /.*\/Untitled/);
+                .should("match", /^#\/.*\/Untitled$/);
 
             testing.selectDialog()
                 .should("not.exist");
@@ -95,7 +95,7 @@ describe(
                 .type("{esc}");
 
             testing.hash()
-                .should('match', /.*\/Untitled/);
+                .should("match", /^#\/.*\/Untitled$/);
 
             testing.selectDialog()
                 .should("not.exist");
@@ -136,7 +136,7 @@ describe(
                 .click();
 
             testing.hash()
-                .should('match', /.*\/Untitled\/cell\/B2/);
+                .should("match", /^#\/.*\/Untitled\/cell\/B2$/);
         });
 
         it("Enter cell range and ENTER and click SELECT CELL RANGE", () => {
@@ -164,7 +164,7 @@ describe(
                 .click();
 
             testing.hash()
-                .should('match', /.*\/Untitled\/cell\/A1:B2/);
+                .should("match", /^#\/.*\/Untitled\/cell\/A1:B2$/);
         });
 
         it("Enter unknown label and ENTER and click CREATE", () => {
@@ -192,7 +192,7 @@ describe(
                 .click();
 
             testing.hash()
-                .should('match', /.*\/Untitled\/label\/Label123/);
+                .should("match", /^#\/.*\/Untitled\/label\/Label123$/);
         });
 
         it("Enter known label and ENTER and click LABEL EDIT", () => {
@@ -211,7 +211,7 @@ describe(
                 .click();
 
             testing.hash()
-                .should('match', /.*\/Untitled/);
+                .should("match", /^#\/.*\/Untitled$/);
 
             testing.selectHistoryHash();
 
@@ -237,7 +237,7 @@ describe(
                 .click();
 
             testing.hash()
-                .should('match', /.*\/Untitled\/label\/Label123/);
+                .should("match", /^#\/.*\/Untitled\/label\/Label123$/);
         });
 
         it("Click CELL then select create LABEL and ENTER, verify cell not lost from hash", () => {
@@ -245,7 +245,7 @@ describe(
                 .click();
 
             testing.hash()
-                .should('match', /.*\/Untitled\/cell\/A1/);
+                .should("match", /^#\/.*\/Untitled\/cell\/A1$/);
 
             testing.selectHistoryHash(); // TODO not sure WHY but select dialog doesnt appear in test.
 
@@ -271,7 +271,7 @@ describe(
                 .click();
 
             testing.hash()
-                .should('match', /.*\/Untitled\/cell\/A1\/label\/Label123/);
+                .should("match", /^#\/.*\/Untitled\/cell\/A1\/label\/Label123$/);
         });
 
         it("Enter cell, select from dropdown ENTER and click GOTO CELL", () => {
@@ -305,7 +305,7 @@ describe(
                 .click();
 
             testing.hash()
-                .should('match', /.*\/Untitled\/cell\/B2/);
+                .should("match", /^#\/.*\/Untitled\/cell\/B2$/);
         });
 
         it("Enter column, select from dropdown ENTER and click GOTO COLUMN", () => {
@@ -341,7 +341,7 @@ describe(
                 .click();
 
             testing.hash()
-                .should('match', /.*\/Untitled\/column\/C/);
+                .should("match", /^#\/.*\/Untitled\/column\/C$/);
         });
 
         it("Enter column range, select from dropdown ENTER and click SELECT COLUMN RANGE", () => {
@@ -375,7 +375,7 @@ describe(
                 .click();
 
             testing.hash()
-                .should('match', /.*\/Untitled\/column\/D:E/);
+                .should("match", /^#\/.*\/Untitled\/column\/D:E$/);
         });
 
         it("Enter known label ENTER and click LABEL EDIT", () => {
@@ -414,7 +414,7 @@ describe(
                 .click();
 
             testing.hash()
-                .should('match', /.*\/Untitled\/label\/Label123/);
+                .should("match", /^#\/.*\/Untitled\/label\/Label123$/);
         });
 
         it("Enter existing label, select from dropdown ENTER and click GOTO LABEL", () => {
@@ -462,7 +462,7 @@ describe(
                 .click();
 
             testing.hash()
-                .should('match', /.*\/Untitled\/cell\/Label123/);
+                .should("match", /^#\/.*\/Untitled\/cell\/Label123$/);
         });
 
         it("Enter row, select from dropdown ENTER and click GOTO ROW", () => {
@@ -496,7 +496,7 @@ describe(
                 .click();
 
             testing.hash()
-                .should('match', /.*\/Untitled\/row\/3/);
+                .should("match", /^#\/.*\/Untitled\/row\/3$/);
         });
 
         it("Enter row range, select from dropdown ENTER and click SELECT ROW RANGE", () => {
@@ -530,7 +530,7 @@ describe(
                 .click();
 
             testing.hash()
-                .should('match', /.*\/Untitled\/row\/4:6/);
+                .should("match", /^#\/.*\/Untitled\/row\/4:6$/);
         });
 
         it("Cell click then verify Select link", () => {
@@ -553,7 +553,7 @@ describe(
                 .click();
 
             testing.hash()
-                .should('match', /.*\/Untitled\/cell\/B1\/select/);
+                .should("match", /^#\/.*\/Untitled\/cell\/B1\/select$/);
 
             testing.selectAutocompleteTextField()
                 .should("have.value", "")
@@ -563,7 +563,7 @@ describe(
                 .click();
 
             testing.hash()
-                .should('match', /.*\/Untitled\/cell\/B2/);
+                .should("match", /^#\/.*\/Untitled\/cell\/B2$/);
         });
     }
 );

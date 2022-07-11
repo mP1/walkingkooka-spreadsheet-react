@@ -36,7 +36,7 @@ describe(
 
             testing.hashEnter("/");
 
-            testing.hash().should('match', /.*\/Untitled/) // => true
+            testing.hash().should("match", /^#\/.*\/Untitled$/) // => true
 
             testing.spreadsheetEmptyCheck();
         });
@@ -47,8 +47,6 @@ describe(
                     const nonEmptySpreadsheetHash = win.location.hash;
 
                     testing.cellFormulaEnterAndSave(A1, "=1+2+3");
-
-                    testing.spreadsheetEmptyReady();
 
                     // reload previous spreadsheet and verify viewport reloaded
                     testing.hashEnter(nonEmptySpreadsheetHash);

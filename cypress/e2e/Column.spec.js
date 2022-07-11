@@ -38,7 +38,7 @@ describe(
                 .click();
 
             testing.hash()
-                .should('match', /.*\/.*\/column\/B/);
+                .should("match", /^#\/.*\/.*\/column\/B$/);
 
             testing.column("B")
                 .should("have.focus")
@@ -54,7 +54,7 @@ describe(
                 .type("{rightarrow}")
 
             testing.hash()
-                .should('match', /.*\/.*\/column\/C/);
+                .should("match", /^#\/.*\/.*\/column\/C$/);
 
             testing.column("C")
                 .should("have.focus")
@@ -90,7 +90,7 @@ describe(
                 .type("{shift+leftarrow}");
 
             testing.hash()
-                .should('match', /.*\/.*\/column\/D:E/);
+                .should("match", /^#\/.*\/.*\/column\/D:E\/right$/);
 
             testing.column("D")
                 .should("have.focus")
@@ -110,7 +110,7 @@ describe(
             testing.historyWait();
 
             testing.hash()
-                .should('match', /.*\/.*\/column\/E:F/);
+                .should("match", /^#\/.*\/.*\/column\/E:F\/left$/);
 
             testing.column("F")
                 .should("have.focus")
@@ -135,7 +135,7 @@ describe(
             testing.historyWait();
 
             testing.hash()
-                .should('match', /.*\/.*\/column\/C:F\/right/);
+                .should("match", /^#\/.*\/.*\/column\/C:F\/right$/);
 
             testing.column("C")
                 .should("have.focus")
@@ -156,15 +156,14 @@ describe(
             testing.column("F")
                 .type("{shift+rightarrow}");
 
-            testing.historyWait();
+            testing.hash()
+                .should("match", /^#\/.*\/.*\/column\/F:G\/left$/);
 
             testing.column("G")
                 .type("{shift+rightarrow}");
 
-            testing.historyWait();
-
             testing.hash()
-                .should('match', /.*\/.*\/column\/F:H\/left/);
+                .should("match", /^#\/.*\/.*\/column\/F:H\/left$/);
 
             testing.column("H")
                 .should("have.focus")
@@ -190,7 +189,7 @@ describe(
             testing.historyWait();
 
             testing.hash()
-                .should('match', /.*\/.*/);
+                .should("match", /^#\/.*\/.*$/);
 
             testing.cellFormattedTextCheck("D5", "Moved");
             testing.cellFormattedTextCheck(E5, "");
@@ -209,7 +208,7 @@ describe(
             testing.historyWait();
 
             testing.hash()
-                .should('match', /.*\/.*/);
+                .should("match", /^#\/.*\/.*$/);
 
             testing.cellFormattedTextCheck("C5", "Moved");
             testing.cellFormattedTextCheck(E5, "");
@@ -228,7 +227,7 @@ describe(
             testing.hashAppendWithoutCheck("/insert-after/1");
 
             testing.hash()
-                .should('match', /.*\/.*\/column\/B/);
+                .should("match", /^#\/.*\/.*\/column\/B$/);
 
             testing.cellFormattedTextCheck("F5", "Moved");
             testing.cellFormattedTextCheck(E5, "");
@@ -245,7 +244,7 @@ describe(
             testing.hashAppendWithoutCheck(":C/insert-after/2");
 
             testing.hash()
-                .should('match', /.*\/.*\/column\/B:C/);
+                .should("match", /^#\/.*\/.*\/column\/B:C$/);
 
             testing.cellFormattedTextCheck("G5", "Moved");
             testing.cellFormattedTextCheck(E5, "");
@@ -264,7 +263,7 @@ describe(
             testing.hashAppendWithoutCheck("/insert-before/1");
 
             testing.hash()
-                .should('match', /.*\/.*\/column\/C/);
+                .should("match", /^#\/.*\/.*\/column\/C$/);
 
             testing.cellFormattedTextCheck("F5", "Moved");
             testing.cellFormattedTextCheck(E5, "");
@@ -281,7 +280,7 @@ describe(
             testing.hashAppendWithoutCheck(":C/insert-before/2");
 
             testing.hash()
-                .should('match', /.*\/.*\/column\/D:E/);
+                .should("match", /^#\/.*\/.*\/column\/D:E$/);
 
             testing.cellFormattedTextCheck("G5", "Moved");
             testing.cellFormattedTextCheck(E5, "");
@@ -296,7 +295,7 @@ describe(
                 .click();
 
             testing.hash()
-                .should('match', /.*\/.*\/cell\/A1/);
+                .should("match", /^#\/.*\/.*\/cell\/A1$/);
         });
 
         // column context menu...........................................................................................
@@ -314,7 +313,7 @@ describe(
             testing.contextMenu(C.viewportId());
 
             testing.hash()
-                .should('match', /.*\/.*\/column\/C\/menu/);
+                .should("match", /^#\/.*\/.*\/column\/C\/menu$/);
 
             testing.viewportContextMenu()
                 .should("be.visible")
@@ -332,43 +331,43 @@ describe(
 
             testing.getById(SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_CLEAR_ID)
                 .should("have.attr", "href")
-                .and('match', /#*\/*\/column\/B\/clear/);
+                .and("match", /#\/.*\/.*\/column\/B\/clear$/);
 
             testing.getById(SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_DELETE_CELL_ID)
                 .should("have.attr", "href")
-                .and('match', /#*\/*\/column\/B\/delete/);
+                .and("match", /#\/.*\/.*\/column\/B\/delete$/);
 
             testing.getById(SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_INSERT_AFTER_1_ID)
                 .should("have.attr", "href")
-                .and('match', /#*\/*\/column\/B\/insert-after\/1/);
+                .and("match", /#\/.*\/.*\/column\/B\/insert-after\/1$/);
 
             testing.getById(SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_INSERT_AFTER_2_ID)
                 .should("have.attr", "href")
-                .and('match', /#*\/*\/column\/B\/insert-after\/2/);
+                .and("match", /#\/.*\/.*\/column\/B\/insert-after\/2$/);
 
             testing.getById(SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_INSERT_BEFORE_1_ID)
                 .should("have.attr", "href")
-                .and('match', /#*\/*\/column\/B\/insert-before\/1/);
+                .and("match", /#\/.*\/.*\/column\/B\/insert-before\/1$/);
 
             testing.getById(SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_INSERT_BEFORE_2_ID)
                 .should("have.attr", "href")
-                .and('match', /#*\/*\/column\/B\/insert-before\/2/);
+                .and("match", /#\/.*\/.*\/column\/B\/insert-before\/2$/);
 
             testing.getById(SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_FREEZE_1_ID)
                 .should("have.attr", "href")
-                .and('match', /#*\/*\/column\/A\/freeze/);
+                .and("match", /#\/.*\/.*\/column\/A\/freeze$/);
 
             testing.getById(SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_FREEZE_2_ID)
                 .should("have.attr", "href")
-                .and('match', /#*\/*\/column\/A:B\/freeze/);
+                .and("match", /#\/.*\/.*\/column\/A:B\/freeze$/);
 
             testing.getById(SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_FREEZE_3_ID)
                 .should("have.attr", "href")
-                .and('match', /#*\/*\/column\/A:C\/freeze/);
+                .and("match", /#\/.*\/.*\/column\/A:C\/freeze$/);
 
             testing.getById(SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_HIDE_ID)
                 .should("have.attr", "href")
-                .and('match', /#*\/*\/column\/B\/hidden\/true/);
+                .and("match", /#\/.*\/.*\/column\/B\/hidden\/true$/);
 
             testing.getById(SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_UNFREEZE_ID);
         });
@@ -383,43 +382,43 @@ describe(
 
             testing.getById(SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_CLEAR_ID)
                 .should("have.attr", "href")
-                .and('match', /#*\/*\/column\/B:C\/clear/);
+                .and("match", /#\/.*\/.*\/column\/B:C\/clear$/);
 
             testing.getById(SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_DELETE_CELL_ID)
                 .should("have.attr", "href")
-                .and('match', /#*\/*\/column\/B:C\/delete/);
+                .and("match", /#\/.*\/.*\/column\/B:C\/delete$/);
 
             testing.getById(SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_INSERT_AFTER_1_ID)
                 .should("have.attr", "href")
-                .and('match', /#*\/*\/column\/B:C\/insert-after\/1/);
+                .and("match", /#\/.*\/.*\/column\/B:C\/insert-after\/1$/);
 
             testing.getById(SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_INSERT_AFTER_2_ID)
                 .should("have.attr", "href")
-                .and('match', /#*\/*\/column\/B:C\/insert-after\/2/);
+                .and("match", /#\/.*\/.*\/column\/B:C\/insert-after\/2$/);
 
             testing.getById(SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_INSERT_BEFORE_1_ID)
                 .should("have.attr", "href")
-                .and('match', /#*\/*\/column\/B:C\/insert-before\/1/);
+                .and("match", /#\/.*\/.*\/column\/B:C\/insert-before\/1$/);
 
             testing.getById(SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_INSERT_BEFORE_2_ID)
                 .should("have.attr", "href")
-                .and('match', /#*\/*\/column\/B:C\/insert-before\/2/);
+                .and("match", /#\/.*\/.*\/column\/B:C\/insert-before\/2$/);
 
             testing.getById(SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_FREEZE_1_ID)
                 .should("have.attr", "href")
-                .and('match', /#*\/*\/column\/A\/freeze/);
+                .and("match", /#\/.*\/.*\/column\/A\/freeze$/);
 
             testing.getById(SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_FREEZE_2_ID)
                 .should("have.attr", "href")
-                .and('match', /#*\/*\/column\/A:B\/freeze/);
+                .and("match", /#\/.*\/.*\/column\/A:B\/freeze$/);
 
             testing.getById(SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_FREEZE_3_ID)
                 .should("have.attr", "href")
-                .and('match', /#*\/*\/column\/A:C\/freeze/);
+                .and("match", /#\/.*\/.*\/column\/A:C\/freeze$/);
 
             testing.getById(SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_HIDE_ID)
                 .should("have.attr", "href")
-                .and('match', /#*\/*\/column\/B:C\/hidden\/true/);
+                .and("match", /#\/.*\/.*\/column\/B:C\/hidden\/true$/);
 
             testing.getById(SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_UNFREEZE_ID);
         });
@@ -459,7 +458,7 @@ describe(
                 .type("{shift+rightarrow}");
 
             testing.hash()
-                .should('match', /.*\/.*\/column\/B:C\/left/);
+                .should("match", /^#\/.*\/.*\/column\/B:C\/left$/);
 
             testing.contextMenu(B.viewportId());
 
@@ -513,7 +512,7 @@ describe(
                 .type("{shift+rightarrow}");
 
             testing.hash()
-                .should('match', /.*\/.*\/column\/B:C\/left/);
+                .should("match", /^#\/.*\/.*\/column\/B:C\/left$/);
 
             testing.contextMenu(B.viewportId());
 
@@ -623,7 +622,7 @@ describe(
                 .click();
 
             testing.hash()
-                .should('match', /.*\/Untitled\/column\/C/);
+                .should("match", /^#\/.*\/Untitled\/column\/C$/);
 
             testing.contextMenu(C.viewportId());
 
@@ -639,7 +638,7 @@ describe(
                 .should("not.be.visible");
 
             testing.hash()
-                .should('match', /.*\/Untitled\/column\/E/);
+                .should("match", /^#\/.*\/Untitled\/column\/E$/);
 
             testing.cellFormattedTextCheck("E3", "Moved");
             testing.cellFormattedTextCheck(C3, "");
@@ -652,7 +651,7 @@ describe(
                 .click();
 
             testing.hash()
-                .should('match', /.*\/Untitled\/column\/C/);
+                .should("match", /^#\/.*\/Untitled\/column\/C$/);
 
             testing.contextMenu(C.viewportId());
 
@@ -668,7 +667,7 @@ describe(
                 .should("not.be.visible");
 
             testing.hash()
-                .should('match', /.*\/Untitled\/column\/D/);
+                .should("match", /^#\/.*\/Untitled\/column\/D$/);
 
             testing.cellFormattedTextCheck("D3", "Moved");
             testing.cellFormattedTextCheck(C3, "");
@@ -682,7 +681,7 @@ describe(
                 .click();
 
             testing.hash()
-                .should('match', /.*\/Untitled\/column\/B/);
+                .should("match", /^#\/.*\/Untitled\/column\/B$/);
 
             testing.contextMenu(B.viewportId());
 
@@ -698,7 +697,7 @@ describe(
                 .should("not.be.visible");
 
             testing.hash()
-                .should('match', /.*\/Untitled\/column\/B/);
+                .should("match", /^#\/.*\/Untitled\/column\/B$/);
 
             testing.cellFormattedTextCheck("A1", "Never");
             testing.cellFormattedTextCheck("D3", "Moved");
@@ -713,7 +712,7 @@ describe(
                 .click();
 
             testing.hash()
-                .should('match', /.*\/Untitled\/column\/B/);
+                .should("match", /^#\/.*\/Untitled\/column\/B$/);
 
             testing.contextMenu(B.viewportId());
 
@@ -729,7 +728,7 @@ describe(
                 .should("not.be.visible");
 
             testing.hash()
-                .should('match', /.*\/Untitled\/column\/B/);
+                .should("match", /^#\/.*\/Untitled\/column\/B$/);
 
             testing.cellFormattedTextCheck("A1", "Never");
             testing.cellFormattedTextCheck("E3", "Moved");
@@ -757,7 +756,7 @@ describe(
             testing.columnWait();
 
             testing.hash()
-                .should('match', /.*\/.*/);
+                .should("match", /^#\/.*\/.*$/);
 
             testing.cellFormattedTextCheck(A1, "Before");
             testing.get(B2.viewportId())
@@ -792,7 +791,7 @@ describe(
             testing.columnWait();
 
             testing.hash()
-                .should('match', /.*\/.*/);
+                .should("match", /^#\/.*\/.*$/);
 
             testing.cellFormattedTextCheck(A1, "Before");
             testing.get(B2.viewportId())
@@ -819,14 +818,14 @@ describe(
             testing.columnWait();
 
             testing.hash()
-                .should('match', /.*\/.*/);
+                .should("match", /^#\/.*\/.*$/);
 
             testing.hashAppend("/column/B");
 
             testing.columnWait();
 
             testing.hash()
-                .should('match', /.*\/.*/);
+                .should("match", /^#\/.*\/.*$/);
         });
 
         it("Attempt to history hash select cell in hidden column cleared", () => {
@@ -846,14 +845,14 @@ describe(
             testing.columnWait();
 
             testing.hash()
-                .should('match', /.*\/.*/);
+                .should("match", /^#\/.*\/.*$/);
 
             testing.hashAppend("/cell/B2");
 
             testing.columnWait();
 
             testing.hash()
-                .should('match', /.*\/.*/);
+                .should("match", /^#\/.*\/.*$/);
         });
 
         // unhide ......................................................................................................

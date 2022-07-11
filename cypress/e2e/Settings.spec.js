@@ -47,7 +47,7 @@ describe(
                 .should('be.visible');
 
             testing.hash()
-                .should('match', /.*\/.*\/settings/) // => true
+                .should("match", /^#\/.*\/.*\/settings$/) // => true
 
             settingsToggle();
 
@@ -55,7 +55,7 @@ describe(
                 .should('be.not.visible');
 
             testing.hash()
-                .should('not.match', /.*\/.*\/settings/);
+                .should('not.match', /^#\/.*\/.*\/settings$/);
         });
 
         it("Hash show settings", () => {
@@ -82,7 +82,7 @@ describe(
             settingsToggle();
 
             cy.hash()
-                .should("match", /.*\/Untitled\/settings/);
+                .should("match", /^#\/.*\/Untitled\/settings$/);
 
             settings()
                 .should("contains.text", "Metadata")
@@ -96,7 +96,7 @@ describe(
             settingsToggle();
 
             cy.hash()
-                .should("match", /.*\/Untitled/);
+                .should("match", /^#\/.*\/Untitled$/);
         });
 
         it("Metadata check creator-date-time/modified-date-time", () => {
@@ -992,7 +992,7 @@ describe(
                 .should('be.visible');
 
             testing.hash()
-                .should('match', /.*\/.*\/settings/);
+                .should("match", /^#\/.*\/.*\/settings$/);
 
             testing.settings()
                 .should("have.focus")
@@ -1001,7 +1001,7 @@ describe(
             testing.settingsWait();
 
             testing.hash()
-                .should('match', /.*\/.*\/settings\/metadata/);
+                .should("match", /^#\/.*\/.*\/settings\/metadata$/);
 
             testing.settingsAccordion("metadata")
                 .should("have.focus")
@@ -1010,7 +1010,7 @@ describe(
             testing.settingsWait();
 
             testing.hash()
-                .should('match', /.*\/.*\/settings\/text/);
+                .should("match", /^#\/.*\/.*\/settings\/text$/);
 
             testing.settingsAccordion("text")
                 .should("have.focus")
@@ -1019,7 +1019,7 @@ describe(
             testing.settingsWait();
 
             testing.hash()
-                .should('match', /.*\/.*\/settings\/number/);
+                .should("match", /^#\/.*\/.*\/settings\/number$/);
 
             testing.settingsAccordion("number")
                 .should("have.focus")
@@ -1028,7 +1028,7 @@ describe(
             testing.settingsWait();
 
             testing.hash()
-                .should('match', /.*\/.*\/settings\/date-time/);
+                .should("match", /^#\/.*\/.*\/settings\/date-time$/);
 
             testing.settingsAccordion("date-time")
                 .should("have.focus")
@@ -1037,7 +1037,7 @@ describe(
             testing.settingsWait();
 
             testing.hash()
-                .should('match', /.*\/.*\/settings\/style/);
+                .should("match", /^#\/.*\/.*\/settings\/style$/);
 
 
             testing.settingsAccordion("style")
@@ -1047,14 +1047,14 @@ describe(
             testing.settingsWait();
 
             testing.hash()
-                .should('match', /.*\/.*/);
+                .should("match", /^#\/.*\/.*$/);
         });
 
         it("Tabbing metadata", () => {
             settingsToggle();
 
             testing.hash()
-                .should('match', /.*\/.*\/settings/) // => true
+                .should("match", /^#\/.*\/.*\/settings$/) // => true
 
             tabAccordion("metadata");
         });
@@ -1063,7 +1063,7 @@ describe(
             settingsToggle();
 
             testing.hash()
-                .should('match', /.*\/.*\/settings/) // => true
+                .should("match", /^#\/.*\/.*\/settings$/) // => true
 
             //tabAccordion("metadata", false);
 
@@ -1084,7 +1084,7 @@ describe(
             settingsToggle();
 
             testing.hash()
-                .should('match', /.*\/.*\/settings/);
+                .should("match", /^#\/.*\/.*\/settings$/);
 
             tabAccordion("number");
 
@@ -1107,7 +1107,7 @@ describe(
             settingsToggle();
 
             testing.hash()
-                .should('match', /.*\/.*\/settings/);
+                .should("match", /^#\/.*\/.*\/settings$/);
 
             tabAccordion("date-time");
 
@@ -1126,7 +1126,7 @@ describe(
             settingsToggle();
 
             testing.hash()
-                .should('match', /.*\/.*\/settings/);
+                .should("match", /^#\/.*\/.*\/settings$/);
 
             tabAccordion("style");
 
@@ -1174,7 +1174,7 @@ describe(
             }
 
             testing.hash()
-                .should('match', new RegExp(".*\/.*\/settings\/" + accordion));
+                .should("match", new RegExp(".*\/.*\/settings\/" + accordion));
 
             // tab
             testing.settingsAccordion(accordion)
@@ -1198,7 +1198,7 @@ describe(
             testing.settingsWait();
 
             testing.hash()
-                .should('match', new RegExp(".*\/.*\/settings\/" + property));
+                .should("match", new RegExp(".*\/.*\/settings\/" + property));
 
             testing.focused()
                 .scrollIntoView()
@@ -1221,7 +1221,7 @@ describe(
             testing.settingsWait();
 
             testing.hash()
-                .should('match', new RegExp(".*\/.*\/settings\/" + property));
+                .should("match", new RegExp(".*\/.*\/settings\/" + property));
 
             const id = SpreadsheetSettingsWidget.propertyId(property);
 
@@ -1241,7 +1241,7 @@ describe(
             testing.settingsWait();
 
             testing.hash()
-                .should('match', new RegExp(".*\/.*\/settings\/" + property));
+                .should("match", new RegExp(".*\/.*\/settings\/" + property));
 
             testing.focused()
                 .scrollIntoView()
@@ -1266,12 +1266,12 @@ describe(
                 .blur();
 
             cy.hash()
-                .should("matches", /.*\/Untitled/);
+                .should("matches", /^#\/.*\/Untitled$/);
 
             settingsToggle();
 
             cy.hash()
-                .should("matches", /.*\/Untitled\/settings/);
+                .should("matches", /^#\/.*\/Untitled\/settings$/);
         });
 
         it("Edit cell then toggle settings", () => {
@@ -1280,7 +1280,7 @@ describe(
             settingsToggle();
 
             cy.hash()
-                .should("matches", /.*\/Untitled\/cell\/A1\/settings/);
+                .should("matches", /^#\/.*\/Untitled\/cell\/A1\/settings$/);
         });
 
         /**
