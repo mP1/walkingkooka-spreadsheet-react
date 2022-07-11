@@ -48,7 +48,7 @@ context(
                 .should("eq", "Untitled");
 
             testing.hash()
-                .should('match', /.*\/Untitled/);
+                .should("match", /^#\/.*\/Untitled$/);
         });
 
         it("Edit & blur changes lost", () => {
@@ -68,7 +68,7 @@ context(
                 .should("eq", "Untitled");
 
             testing.hash()
-                .should('match', /.*\/Untitled/);
+                .should("match", /^#\/.*\/Untitled$/);
         });
 
         it("Edit, blur, edit again changes lost", () => {
@@ -88,7 +88,7 @@ context(
                 .should("eq", "Untitled");
 
             testing.hash()
-                .should('match', /.*\/Untitled/);
+                .should("match", /^#\/.*\/Untitled$/);
 
             // edit again
             testing.spreadsheetNameButtonClick();
@@ -118,7 +118,7 @@ context(
                 .should("eq", updatedSpreadsheetName.toString());
 
             testing.hash()
-                .should('match', /.*\/SpreadsheetName234/);
+                .should("match", /^#\/.*\/SpreadsheetName234$/);
         });
     }
 );

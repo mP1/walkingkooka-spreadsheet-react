@@ -54,7 +54,7 @@ describe(
                 .type("{selectall}=1+2+3{enter}");
 
             testing.hash()
-                .should('match', /.*\/Untitled\/cell\/B2\/formula/);
+                .should("match", /^#\/.*\/Untitled\/cell\/B2\/formula$/);
 
             testing.cellFormattedTextCheck(B2, "6.");
         });
@@ -115,7 +115,7 @@ describe(
             testing.hashAppend("/cell/" + LABEL);
 
             testing.hash()
-                .should('match', /.*\/Untitled/);
+                .should("match", /^#\/.*\/Untitled$/);
         });
 
         it("Cell click should have focus", () => {
@@ -144,7 +144,7 @@ describe(
             testing.historyWait();
 
             testing.hash()
-                .should('match', /.*\/.*\/cell\/B3/);
+                .should("match", /^#\/.*\/.*\/cell\/B3$/);
 
             testing.cell(B3)
                 .type("{rightarrow}");
@@ -152,7 +152,7 @@ describe(
             testing.historyWait();
 
             testing.hash()
-                .should('match', /.*\/.*\/cell\/C3/);
+                .should("match", /^#\/.*\/.*\/cell\/C3$/);
 
             testing.cell(C3)
                 .type("{uparrow}");
@@ -160,7 +160,7 @@ describe(
             testing.historyWait();
 
             testing.hash()
-                .should('match', /.*\/.*\/cell\/C2/);
+                .should("match", /^#\/.*\/.*\/cell\/C2$/);
 
             testing.cell(C2)
                 .type("{downarrow}");
@@ -168,7 +168,7 @@ describe(
             testing.historyWait();
 
             testing.hash()
-                .should('match', /.*\/.*\/cell\/C3/);
+                .should("match", /^#\/.*\/.*\/cell\/C3$/);
         });
 
         it("Cell click and hit ENTER gives formula text focus", () => {
@@ -178,7 +178,7 @@ describe(
                 .type("{enter}");
 
             testing.hash()
-                .should('match', /.*\/.*\/cell\/A3\/formula/);
+                .should("match", /^#\/.*\/.*\/cell\/A3\/formula$/);
 
             testing.formulaText()
                 .should("have.focus");
@@ -191,7 +191,7 @@ describe(
                 .type("{esc}");
 
             testing.hash()
-                .should('match', /.*\/.*/);
+                .should("match", /^#\/.*\/.*$/);
         });
 
         it("Cell outside viewport", () => {
@@ -287,7 +287,7 @@ describe(
             testing.hashAppend("/cell/B2:C3");
 
             testing.hash()
-                .should('match', /.*\/.*\/cell\/B2:C3/);
+                .should("match", /^#\/.*\/.*\/cell\/B2:C3$/);
 
             testing.historyWait();
 
@@ -309,7 +309,7 @@ describe(
             testing.hashAppend("/cell/X2:Y3");
 
             testing.hash()
-                .should('match', /.*\/.*\/cell\/X2:Y3/);
+                .should("match", /^#\/.*\/.*\/cell\/X2:Y3$/);
 
             testing.historyWait();
 
@@ -328,7 +328,7 @@ describe(
             testing.hashAppend("/cell/D4:E5");
 
             testing.hash()
-                .should('match', /.*\/.*\/cell\/D4:E5/);
+                .should("match", /^#\/.*\/.*\/cell\/D4:E5$/);
 
             testing.historyWait();
 
@@ -338,7 +338,7 @@ describe(
             testing.historyWait();
 
             testing.hash()
-                .should('match', /.*\/.*\/cell\/C4:E5/);
+                .should("match", /^#\/.*\/.*\/cell\/C4:E5\/bottom-right$/);
 
             testing.cell("C4")
                 .should("have.focus");
@@ -360,7 +360,7 @@ describe(
             testing.hashAppend("/cell/D4:E5");
 
             testing.hash()
-                .should('match', /.*\/.*\/cell\/D4:E5/);
+                .should("match", /^#\/.*\/.*\/cell\/D4:E5$/);
 
             testing.historyWait();
 
@@ -375,7 +375,7 @@ describe(
             testing.historyWait();
 
             testing.hash()
-                .should('match', /.*\/.*\/cell\/E4:F5/);
+                .should("match", /^#\/.*\/.*\/cell\/E4:F5\/bottom-left$/);
 
             testing.cell("F4")
                 .should("have.focus");
@@ -395,7 +395,7 @@ describe(
             testing.hashAppend("/cell/D4:E5");
 
             testing.hash()
-                .should('match', /.*\/.*\/cell\/D4:E5/);
+                .should("match", /^#\/.*\/.*\/cell\/D4:E5$/);
 
             testing.historyWait();
 
@@ -412,7 +412,7 @@ describe(
             testing.historyWait();
 
             testing.hash()
-                .should('match', /.*\/.*\/cell\/E4:F5/);
+                .should("match", /^#\/.*\/.*\/cell\/E4:F5\/bottom-left$/);
 
             testing.cell("F4")
                 .should("have.focus")
@@ -421,7 +421,7 @@ describe(
             testing.historyWait();
 
             testing.hash()
-                .should('match', /.*\/.*\/cell\/E4:G5/);
+                .should("match", /^#\/.*\/.*\/cell\/E4:G5\/bottom-left$/);
 
             testing.cell("G4")
                 .should("have.focus");
@@ -443,7 +443,7 @@ describe(
             testing.hashAppend("/cell/D4:E5");
 
             testing.hash()
-                .should('match', /.*\/.*\/cell\/D4:E5/);
+                .should("match", /^#\/.*\/.*\/cell\/D4:E5$/);
 
             testing.historyWait();
 
@@ -453,7 +453,7 @@ describe(
             testing.historyWait();
 
             testing.hash()
-                .should('match', /.*\/.*\/cell\/D3:E5/);
+                .should("match", /^#\/.*\/.*\/cell\/D3:E5\/bottom-right$/);
 
             testing.cell("D3")
                 .should("have.focus");
@@ -475,7 +475,7 @@ describe(
             testing.hashAppend("/cell/D4:E5");
 
             testing.hash()
-                .should('match', /.*\/.*\/cell\/D4:E5/);
+                .should("match", /^#\/.*\/.*\/cell\/D4:E5$/);
 
             testing.historyWait();
 
@@ -484,14 +484,14 @@ describe(
                 .type("{shift+downarrow}");
 
             testing.hash()
-                .should('match', /.*\/.*\/cell\/D5:E5/);
+                .should("match", /^#\/.*\/.*\/cell\/D5:E5\/bottom-right$/);
 
             testing.cell("D5")
                 .should("have.focus")
                 .type("{shift+downarrow}");
 
             testing.hash()
-                .should('match', /.*\/.*\/cell\/D5:E6/);
+                .should("match", /^#\/.*\/.*\/cell\/D5:E6\/top-right$/);
 
             testing.cell("D6")
                 .should("have.focus");
@@ -511,7 +511,7 @@ describe(
             testing.hashAppend("/cell/D4:E5");
 
             testing.hash()
-                .should('match', /.*\/.*\/cell\/D4:E5/);
+                .should("match", /^#\/.*\/.*\/cell\/D4:E5$/);
 
             testing.historyWait();
 
@@ -520,21 +520,21 @@ describe(
                 .type("{shift+downarrow}");
 
             testing.hash()
-                .should('match', /.*\/.*\/cell\/D5:E5/);
+                .should("match", /^#\/.*\/.*\/cell\/D5:E5\/bottom-right$/);
 
             testing.cell("D5")
                 .should("have.focus")
                 .type("{shift+downarrow}");
 
             testing.hash()
-                .should('match', /.*\/.*\/cell\/D5:E6/);
+                .should("match", /^#\/.*\/.*\/cell\/D5:E6\/top-right$/);
 
             testing.cell("D6")
                 .should("have.focus")
                 .type("{shift+downarrow}");
 
             testing.hash()
-                .should('match', /.*\/.*\/cell\/D5:E7/);
+                .should("match", /^#\/.*\/.*\/cell\/D5:E7\/top-right$/);
 
             testing.cell("D7")
                 .should("have.focus")
@@ -563,7 +563,7 @@ describe(
             testing.hashAppendWithoutCheck("/delete");
 
             testing.hash()
-                .should('match', /.*\/.*/);
+                .should("match", /^#\/.*\/.*$/);
 
             testing.cellFormattedTextCheck(B2, "");
 
@@ -581,7 +581,7 @@ describe(
             testing.hashAppendWithoutCheck(":C3/delete");
 
             testing.hash()
-                .should('match', /.*\/.*/);
+                .should("match", /^#\/.*\/.*$/);
 
             testing.cellFormattedTextCheck("A1", "NotDeleted");
             testing.cellFormattedTextCheck(B2, "");
@@ -597,7 +597,7 @@ describe(
                 .click();
 
             testing.hash()
-                .should('match', /.*\/.*\/column\/C/);
+                .should("match", /^#\/.*\/.*\/column\/C$/);
 
             testing.formulaText()
                 .should('be.hidden');
@@ -610,20 +610,20 @@ describe(
                 .click();
 
             testing.hash()
-                .should('match', /.*\/.*\/row\/3/);
+                .should("match", /^#\/.*\/.*\/row\/3$/);
         });
 
         it("Cell formula edit different formula edit", () => {
             testing.hashAppend("/cell/B2/formula");
 
             testing.hash()
-                .should('match', /.*\/.*\/cell\/B2\/formula/);
+                .should("match", /^#\/.*\/.*\/cell\/B2\/formula$/);
 
             testing.hashAppend("/cell/C3/formula"); // invalid removes cell from hash
             testing.hashAppend("/cell/C3/formula");
 
             testing.hash()
-                .should('match', /.*\/.*\/cell\/C3/);
+                .should("match", /^#\/.*\/.*\/cell\/B2\/formula$/);
         });
 
         // context menu.................................................................................................
@@ -639,28 +639,28 @@ describe(
             testing.getById(SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_DELETE_CELL_ID)
                 .should("have.text", "Delete cell")
                 .should("have.attr", "href")
-                .and('match', /#*\/*\/cell\/A1\/delete/)
+                .and("match", /#\/.*\/.*\/cell\/A1\/delete$/)
 
             testing.getById(SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_DELETE_COLUMN_ID)
                 .should("have.text", "Delete column")
                 .should("have.attr", "href")
-                .and('match', /#*\/*\/column\/A\/delete/);
+                .and("match", /#\/.*\/.*\/column\/A\/delete$/);
 
             testing.getById(SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_DELETE_ROW_ID)
                 .should("have.text", "Delete row")
                 .should("have.attr", "href")
-                .and('match', /#*\/*\/row\/1\/delete/);
+                .and("match", /#\/.*\/.*\/row\/1\/delete$/);
 
             testing.getById(SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_FREEZE_ID)
                 .should("have.text", "Freeze A1")
                 .should("have.attr", "href")
-                .and('match', /#*\/*\/cell\/A1\/freeze/);
+                .and("match", /#\/.*\/.*\/cell\/A1\/freeze$/);
 
             testing.getById(SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_UNFREEZE_ID)
                 .should("have.text", "Un Freeze A1")
                 .should("have.attr", "aria-disabled", "true")
                 .should("have.attr", "href")
-                .and('match', /#*\/*\/cell\/A1\/unfreeze/);
+                .and("match", /#\/.*\/.*\/cell\/A1\/unfreeze$/);
         });
 
         it("hash /cell/B2/menu", () => {
@@ -674,29 +674,29 @@ describe(
             testing.getById(SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_DELETE_CELL_ID)
                 .should("have.text", "Delete cell")
                 .should("have.attr", "href")
-                .and('match', /#*\/*\/cell\/B2\/delete/)
+                .and("match", /#\/.*\/.*\/cell\/B2\/delete$/)
 
             testing.getById(SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_DELETE_COLUMN_ID)
                 .should("have.text", "Delete column")
                 .should("have.attr", "href")
-                .and('match', /#*\/*\/column\/B\/delete/);
+                .and("match", /#\/.*\/.*\/column\/B\/delete$/);
 
             testing.getById(SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_DELETE_ROW_ID)
                 .should("have.text", "Delete row")
                 .should("have.attr", "href")
-                .and('match', /#*\/*\/row\/2\/delete/);
+                .and("match", /#\/.*\/.*\/row\/2\/delete$/);
 
             testing.getById(SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_FREEZE_ID)
                 .should("have.text", "Freeze B2")
                 .should("have.attr", "aria-disabled", "true")
                 .should("have.attr", "href")
-                .and('match', /#*\/*\/cell\/B2\/freeze/);
+                .and("match", /#\/.*\/.*\/cell\/B2\/freeze$/);
 
             testing.getById(SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_UNFREEZE_ID)
                 .should("have.text", "Un Freeze B2")
                 .should("have.attr", "aria-disabled", "true")
                 .should("have.attr", "href")
-                .and('match', /#*\/*\/cell\/B2\/unfreeze/);
+                .and("match", /#\/.*\/.*\/cell\/B2\/unfreeze$/);
         });
 
         it("hash /cell/A1:B2/menu", () => {
@@ -710,28 +710,28 @@ describe(
             testing.getById(SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_DELETE_CELL_ID)
                 .should("have.text", "Delete cells")
                 .should("have.attr", "href")
-                .and('match', /#*\/*\/cell\/A1:B1\/delete/);
+                .and("match", /#\/.*\/.*\/cell\/A1:B1\/delete$/);
 
             testing.getById(SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_DELETE_COLUMN_ID)
                 .should("have.text", "Delete columns")
                 .should("have.attr", "href")
-                .and('match', /#*\/*\/column\/A:B\/delete/);
+                .and("match", /#\/.*\/.*\/column\/A:B\/delete$/);
 
             testing.getById(SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_DELETE_ROW_ID)
                 .should("have.text", "Delete row")
                 .should("have.attr", "href")
-                .and('match', /#*\/*\/row\/1\/delete/);
+                .and("match", /#\/.*\/.*\/row\/1\/delete$/);
 
             testing.getById(SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_FREEZE_ID)
                 .should("have.text", "Freeze A1:B1")
                 .should("have.attr", "href")
-                .and('match', /#*\/*\/cell\/A1:B1\/freeze/);
+                .and("match", /#\/.*\/.*\/cell\/A1:B1\/freeze$/);
 
             testing.getById(SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_UNFREEZE_ID)
                 .should("have.text", "Un Freeze A1:B1")
                 .should("have.attr", "aria-disabled", "true")
                 .should("have.attr", "href")
-                .and('match', /#*\/*\/cell\/A1:B1\/unfreeze/);
+                .and("match", /#\/.*\/.*\/cell\/A1:B1\/unfreeze$/);
         });
 
         it("hash /cell/A1:A2/menu", () => {
@@ -745,28 +745,28 @@ describe(
             testing.getById(SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_DELETE_CELL_ID)
                 .should("have.text", "Delete cells")
                 .should("have.attr", "href")
-                .and('match', /#*\/*\/cell\/A1:A2\/delete/);
+                .and("match", /#\/.*\/.*\/cell\/A1:A2\/delete$/);
 
             testing.getById(SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_DELETE_COLUMN_ID)
                 .should("have.text", "Delete column")
                 .should("have.attr", "href")
-                .and('match', /#*\/*\/column\/A\/delete/);
+                .and("match", /#\/.*\/.*\/column\/A\/delete$/);
 
             testing.getById(SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_DELETE_ROW_ID)
                 .should("have.text", "Delete rows")
                 .should("have.attr", "href")
-                .and('match', /#*\/*\/row\/1:2\/delete/);
+                .and("match", /#\/.*\/.*\/row\/1:2\/delete$/);
 
             testing.getById(SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_FREEZE_ID)
                 .should("have.text", "Freeze A1:A2")
                 .should("have.attr", "href")
-                .and('match', /#*\/*\/cell\/A1:A2\/freeze/);
+                .and("match", /#\/.*\/.*\/cell\/A1:A2\/freeze$/);
 
             testing.getById(SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_UNFREEZE_ID)
                 .should("have.text", "Un Freeze A1:A2")
                 .should("have.attr", "aria-disabled", "true")
                 .should("have.attr", "href")
-                .and('match', /#*\/*\/cell\/A1:A2\/unfreeze/);
+                .and("match", /#\/.*\/.*\/cell\/A1:A2\/unfreeze$/);
         });
 
         it("hash /cell/A1:B2/menu", () => {
@@ -780,28 +780,28 @@ describe(
             testing.getById(SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_DELETE_CELL_ID)
                 .should("have.text", "Delete cells")
                 .should("have.attr", "href")
-                .and('match', /#*\/*\/cell\/A1:B2\/delete/);
+                .and("match", /#\/.*\/.*\/cell\/A1:B2\/delete$/);
 
             testing.getById(SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_DELETE_COLUMN_ID)
                 .should("have.text", "Delete columns")
                 .should("have.attr", "href")
-                .and('match', /#*\/*\/column\/A:B\/delete/);
+                .and("match", /#\/.*\/.*\/column\/A:B\/delete$/);
 
             testing.getById(SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_DELETE_ROW_ID)
                 .should("have.text", "Delete rows")
                 .should("have.attr", "href")
-                .and('match', /#*\/*\/row\/1:2\/delete/);
+                .and("match", /#\/.*\/.*\/row\/1:2\/delete$/);
 
             testing.getById(SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_FREEZE_ID)
                 .should("have.text", "Freeze A1:B2")
                 .should("have.attr", "href")
-                .and('match', /#*\/*\/cell\/A1:B2\/freeze/);
+                .and("match", /#\/.*\/.*\/cell\/A1:B2\/freeze$/);
 
             testing.getById(SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_UNFREEZE_ID)
                 .should("have.text", "Un Freeze A1:B2")
                 .should("have.attr", "aria-disabled", "true")
                 .should("have.attr", "href")
-                .and('match', /#*\/*\/cell\/A1:B2\/unfreeze/);
+                .and("match", /#\/.*\/.*\/cell\/A1:B2\/unfreeze$/);
         });
 
         it("hash /cell/B2:C3/menu", () => {
@@ -816,20 +816,20 @@ describe(
                 .should("have.text", "Freeze B2:C3")
                 .should("have.attr", "aria-disabled", "true")
                 .should("have.attr", "href")
-                .and('match', /#*\/*\/cell\/B2:C3\/freeze/);
+                .and("match", /#\/.*\/.*\/cell\/B2:C3\/freeze$/);
 
             testing.getById(SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_UNFREEZE_ID)
                 .should("have.text", "Un Freeze B2:C3")
                 .should("have.attr", "aria-disabled", "true")
                 .should("have.attr", "href")
-                .and('match', /#*\/*\/cell\/B2:C3\/unfreeze/);
+                .and("match", /#\/.*\/.*\/cell\/B2:C3\/unfreeze$/);
         });
 
         it("Cell context menu A1", () => {
             testing.contextMenu(A1.viewportId());
 
             testing.hash()
-                .should('match', /.*\/.*\/cell\/A1\/menu/);
+                .should("match", /^#\/.*\/.*\/cell\/A1\/menu$/);
 
             testing.viewportContextMenu()
                 .should("be.visible")
@@ -839,28 +839,28 @@ describe(
             testing.getById(SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_DELETE_CELL_ID)
                 .should("have.text", "Delete cell")
                 .should("have.attr", "href")
-                .and('match', /#*\/*\/cell\/A1\/delete/);
+                .and("match", /#\/.*\/.*\/cell\/A1\/delete$/);
 
             testing.getById(SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_DELETE_COLUMN_ID)
                 .should("have.text", "Delete column")
                 .should("have.attr", "href")
-                .and('match', /#*\/*\/column\/A\/delete/);
+                .and("match", /#\/.*\/.*\/column\/A\/delete$/);
 
             testing.getById(SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_DELETE_ROW_ID)
                 .should("have.text", "Delete row")
                 .should("have.attr", "href")
-                .and('match', /#*\/*\/row\/1\/delete/);
+                .and("match", /#\/.*\/.*\/row\/1\/delete$/);
 
             testing.getById(SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_FREEZE_ID)
                 .should("have.text", "Freeze A1")
                 .should("have.attr", "href")
-                .and('match', /#*\/*\/cell\/A1\/freeze/);
+                .and("match", /#\/.*\/.*\/cell\/A1\/freeze$/);
 
             testing.getById(SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_UNFREEZE_ID)
                 .should("have.text", "Un Freeze A1")
                 .should("have.attr", "aria-disabled", "true")
                 .should("have.attr", "href")
-                .and('match', /#*\/*\/cell\/A1\/unfreeze/);
+                .and("match", /#\/.*\/.*\/cell\/A1\/unfreeze$/);
         });
 
         // Freeze.......................................................................................................

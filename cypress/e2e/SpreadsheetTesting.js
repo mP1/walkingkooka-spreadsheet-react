@@ -40,7 +40,7 @@ export default class SpreadsheetTesting {
 
     spreadsheetEmptyReady() {
         this.hash()
-            .should('match', /.*\/Untitled/); // wait for /$id/$name
+            .should("match", /^#\/.*\/Untitled$/); // wait for /$id/$name
 
         this.historyWait();
     }
@@ -120,7 +120,7 @@ export default class SpreadsheetTesting {
                     this.hashEnter(h.substring(0, slash2));
 
                     this.hash()
-                        .should('match', /.*\/.*/);
+                        .should("match", /^#\/.*\/.*$/);
                 }
             });
     }
@@ -163,12 +163,12 @@ export default class SpreadsheetTesting {
         this.spreadsheetNameWait();
 
         this.hash()
-            .should('match', /.*\/.*\/name/);
+            .should("match", /^#\/.*\/.*\/name$/);
     }
 
     spreadsheetNameTextField() {
         this.hash()
-            .should('match', /.*\/.*\/name/);
+            .should("match", /^#\/.*\/.*\/name$/);
 
         return this.getById(SpreadsheetNameWidget.TEXT_FIELD_ID);
     }
@@ -186,7 +186,7 @@ export default class SpreadsheetTesting {
             .click();
 
         this.hash()
-            .should('match', /\/.*\/.*\/cell\/.*\/formula(\/.*)*/);
+            .should("match", /^#\/.*\/.*\/cell\/.*\/formula(\/.*)*$/);
 
         this.formulaTextLoadWait();
     }
@@ -362,7 +362,7 @@ export default class SpreadsheetTesting {
             .click(SpreadsheetTesting.FORCE_TRUE);
 
         this.hash()
-            .should('match', new RegExp("\/.*\/.*\/cell\/" + cellReference + "(\/.*)*"));
+            .should("match", new RegExp("^#\/.*\/.*\/cell\/" + cellReference + "(\/.*)*"));
 
         this.cell(cellReference)
             .should("have.focus");
@@ -433,7 +433,7 @@ export default class SpreadsheetTesting {
      */
     spreadsheetEmptyCheck() {
         this.hash()
-            .should('match', /.*\/Untitled/) // => true
+            .should("match", /^#\/.*\/Untitled$/) // => true
 
         // Verify spreadsheet name is "Untitled"
         this.spreadsheetNameButton()
@@ -445,8 +445,7 @@ export default class SpreadsheetTesting {
 
         // Verify formula is read only and empty
         this.formulaText()
-            .should("be.disabled")
-            .should("have.text", "");
+            .should("be.hidden");
 
         this.cy.get(SpreadsheetTesting.COLUMN + SpreadsheetTesting.SELECTED)
             .should("have.length", 0);
