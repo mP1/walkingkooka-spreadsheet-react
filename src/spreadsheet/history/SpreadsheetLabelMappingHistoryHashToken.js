@@ -6,7 +6,7 @@ import SystemObject from "../../SystemObject.js";
  */
 export default class SpreadsheetLabelMappingHistoryHashToken extends SpreadsheetHistoryHashToken {
 
-    execute(widget) {
+    spreadsheetLabelMappingWidgetExecute(widget) {
         SystemObject.throwUnsupportedOperation();
     }
 }

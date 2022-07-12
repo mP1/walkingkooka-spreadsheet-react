@@ -22,12 +22,12 @@ export default class SpreadsheetNameSaveHistoryHashToken extends SpreadsheetName
         return this.valueValue;
     }
 
-    toHistoryHashToken() {
-        return "/" + SpreadsheetHistoryHashTokens.SPREADSHEET_NAME_PATH + "/" + encodeURIComponent(this.value().value());
+    spreadsheetNameWidgetExecute(spreadsheetNameWidget) {
+        spreadsheetNameWidget.patchSpreadsheetMetadataWithName(this.value());
     }
 
-    execute(spreadsheetNameWidget) {
-        spreadsheetNameWidget.patchSpreadsheetMetadataWithName(this.value());
+    toHistoryHashToken() {
+        return "/" + SpreadsheetHistoryHashTokens.SPREADSHEET_NAME_PATH + "/" + encodeURIComponent(this.value().value());
     }
 
     equals(other) {

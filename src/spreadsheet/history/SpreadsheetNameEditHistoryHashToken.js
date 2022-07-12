@@ -8,11 +8,11 @@ export default class SpreadsheetNameEditHistoryHashToken extends SpreadsheetName
 
     static INSTANCE = new SpreadsheetNameEditHistoryHashToken();
 
-    toHistoryHashToken() {
-        return "/" + SpreadsheetHistoryHashTokens.SPREADSHEET_NAME_PATH;
+    spreadsheetNameWidgetExecute(spreadsheetNameWidget) {
+        // nop
     }
 
-    execute(spreadsheetNameWidget) {
-        // nop
+    toHistoryHashToken() {
+        return "/" + SpreadsheetHistoryHashTokens.SPREADSHEET_NAME_PATH;
     }
 }
