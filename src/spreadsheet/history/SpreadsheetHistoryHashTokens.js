@@ -24,8 +24,6 @@ export default class SpreadsheetHistoryHashTokens {
     static SPREADSHEET_NAME_PATH = "name";
 
     static SELECTION = "selection";
-    static SELECTION_ANCHOR = "selection-anchor";
-    static SELECTION_ACTION = "selection-action";
 
     static CELL = "cell";
     static CELL_FORMULA = "formula";

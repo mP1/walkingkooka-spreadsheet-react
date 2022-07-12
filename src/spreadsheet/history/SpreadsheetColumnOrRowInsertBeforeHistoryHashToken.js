@@ -7,15 +7,19 @@ import SpreadsheetHistoryHashTokens from "./SpreadsheetHistoryHashTokens.js";
 export default class SpreadsheetColumnOrRowInsertBeforeHistoryHashToken extends SpreadsheetColumnOrRowInsertHistoryHashToken {
 
     toHistoryHashToken() {
-        return SpreadsheetHistoryHashTokens.INSERT_BEFORE + "/" + this.count();
+        return super.toHistoryHashToken() +
+            "/" +
+            SpreadsheetHistoryHashTokens.INSERT_BEFORE +
+            "/" +
+            this.count();
     }
 
     /**
      * Handles history hash token evens such as /column/A/insertAfter/1 or /column/B:C/insertAfter/2
      */
-    onViewportSelectionAction(viewportSelection, viewportWidget) {
+    spreadsheetViewportWidgetExecute(viewportCell, width, height, viewportWidget) {
         viewportWidget.insertBeforeSelection(
-            viewportSelection,
+            this.viewportSelection(),
             this.count()
         );
     }

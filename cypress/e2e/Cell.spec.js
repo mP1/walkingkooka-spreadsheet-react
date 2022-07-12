@@ -619,11 +619,10 @@ describe(
             testing.hash()
                 .should("match", /^#\/.*\/.*\/cell\/B2\/formula$/);
 
-            testing.hashAppend("/cell/C3/formula"); // invalid removes cell from hash
-            testing.hashAppend("/cell/C3/formula");
+            testing.hashAppendAfterSpreadsheetName("/cell/C3/formula");
 
-            testing.hash()
-                .should("match", /^#\/.*\/.*\/cell\/B2\/formula$/);
+            testing.formulaText()
+                .should("have.focus");
         });
 
         // context menu.................................................................................................
@@ -826,13 +825,7 @@ describe(
         });
 
         it("Cell context menu A1", () => {
-            testing.contextMenu(A1.viewportId());
-
-            testing.hash()
-                .should("match", /^#\/.*\/.*\/cell\/A1\/menu$/);
-
-            testing.viewportContextMenu()
-                .should("be.visible")
+            testing.viewportContextMenuOpen(A1)
                 .find("LI")
                 .should("have.length", 5);
 

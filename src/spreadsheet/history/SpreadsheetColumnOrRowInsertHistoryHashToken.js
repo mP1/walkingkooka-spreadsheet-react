@@ -6,10 +6,10 @@ import SpreadsheetColumnOrRowHistoryHashToken from "./SpreadsheetColumnOrRowHist
  */
 export default class SpreadsheetColumnOrRowInsertHistoryHashToken extends SpreadsheetColumnOrRowHistoryHashToken {
 
-    constructor(count) {
-        super();
-        Preconditions.requirePositiveNumber(count, "count");
-        this.countValue = count;
+    constructor(spreadsheetViewport, count) {
+        super(spreadsheetViewport);
+
+        this.countValue = Preconditions.requirePositiveNumber(count, "count");
     }
 
     count() {

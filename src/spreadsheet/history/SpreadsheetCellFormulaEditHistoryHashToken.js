@@ -1,13 +1,13 @@
-import SpreadsheetFormulaHistoryHashToken from "./SpreadsheetFormulaHistoryHashToken.js";
+import SpreadsheetCellFormulaHistoryHashToken from "./SpreadsheetCellFormulaHistoryHashToken.js";
 import SpreadsheetHistoryHashTokens from "./SpreadsheetHistoryHashTokens.js";
 
 /**
  * Represent a token with the history hash that indicates the current (a cell or label pointing to a cell) selection formula should be loaded and edited.
  */
-export default class SpreadsheetFormulaEditHistoryHashToken extends SpreadsheetFormulaHistoryHashToken {
+export default class SpreadsheetCellFormulaEditHistoryHashToken extends SpreadsheetCellFormulaHistoryHashToken {
 
-    constructor(formulaText) {
-        super();
+    constructor(spreadsheetViewport, formulaText) {
+        super(spreadsheetViewport);
         this.formulaTextValue = formulaText;
     }
 
@@ -15,14 +15,16 @@ export default class SpreadsheetFormulaEditHistoryHashToken extends SpreadsheetF
         return this.formulaTextValue;
     }
 
-    onViewportSelectionAction(viewportSelection, viewportWidget) {
+    spreadsheetViewportWidgetExecute(viewportCell, width, height, viewportWidget) {
         // viewport is not interested in formula token.
     }
 
     toHistoryHashToken() {
         const formulaText = this.formulaText();
 
-        return SpreadsheetHistoryHashTokens.CELL_FORMULA +
+        return super.toHistoryHashToken() +
+            "/" +
+            SpreadsheetHistoryHashTokens.CELL_FORMULA +
             (formulaText != null ?
                 "/" + encodeURIComponent(formulaText) :
                 "");
@@ -31,14 +33,5 @@ export default class SpreadsheetFormulaEditHistoryHashToken extends SpreadsheetF
     equals(other) {
         return super.equals(other) &&
             this.formulaText() === other.formulaText();
-    }
-
-    toString() {
-        const formulaText = this.formulaText();
-
-        return "load " +
-            (formulaText != null ?
-                "/" + encodeURIComponent(formulaText) :
-                "");
     }
 }

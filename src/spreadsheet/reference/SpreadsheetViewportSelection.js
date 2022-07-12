@@ -75,6 +75,20 @@ export default class SpreadsheetViewportSelection extends SystemObject {
             );
     }
 
+    toHistoryHashToken() {
+        var tokens = this.selection()
+            .toHistoryHashToken();
+
+        const anchor = this.anchor();
+        if(anchor) {
+            tokens = tokens +
+                "/" +
+                anchor.toHistoryHashToken();
+        }
+
+        return tokens;
+    }
+
     toJson() {
         const json = {
             selection: this.selection().toJsonWithType(),

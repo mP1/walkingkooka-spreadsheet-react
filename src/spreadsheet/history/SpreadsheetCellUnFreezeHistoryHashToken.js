@@ -6,19 +6,18 @@ import SpreadsheetHistoryHashTokens from "./SpreadsheetHistoryHashTokens.js";
  */
 export default class SpreadsheetCellUnFreezeHistoryHashToken extends SpreadsheetCellHistoryHashToken {
 
-    /**
-     * Singleton instance.
-     */
-    static INSTANCE = new SpreadsheetCellUnFreezeHistoryHashToken();
-
     toHistoryHashToken() {
-        return SpreadsheetHistoryHashTokens.UNFREEZE;
+        return super.toHistoryHashToken() +
+            "/" +
+            SpreadsheetHistoryHashTokens.UNFREEZE;
     }
 
     /**
      * Handles history hash token evens such as /cell/A1/unfreeze or /cell/B2:C3/unfreeze
      */
-    onViewportSelectionAction(viewportSelection, viewportWidget) {
-        viewportWidget.unFreezeSelection(viewportSelection);
+    spreadsheetViewportWidgetExecute(viewportCell, width, height, viewportWidget) {
+        viewportWidget.unFreezeSelection(
+            this.viewportSelection()
+        );
     }
 }

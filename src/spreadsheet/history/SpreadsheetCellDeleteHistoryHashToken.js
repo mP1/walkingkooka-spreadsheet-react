@@ -6,20 +6,19 @@ import SpreadsheetHistoryHashTokens from "./SpreadsheetHistoryHashTokens.js";
  */
 export default class SpreadsheetCellDeleteHistoryHashToken extends SpreadsheetCellHistoryHashToken {
 
-    /**
-     * Singleton instance.
-     */
-    static INSTANCE = new SpreadsheetCellDeleteHistoryHashToken();
-
     toHistoryHashToken() {
-        return SpreadsheetHistoryHashTokens.DELETE;
+        return super.toHistoryHashToken() +
+            "/" +
+            SpreadsheetHistoryHashTokens.DELETE;
     }
 
     /**
      * Handles history hash token evens such as /cell/A1/delete or /cell/A1:B2/delete
      */
-    onViewportSelectionAction(viewportSelection, viewportWidget) {
-        viewportWidget.deleteSelection(viewportSelection);
+    spreadsheetViewportWidgetExecute(viewportCell, width, height, viewportWidget) {
+        viewportWidget.deleteSelection(
+            this.viewportSelection()
+        );
     }
 
     labelMappingWidget(widget) {

@@ -1,11 +1,8 @@
-/**
- * Base class for any {@link SpreadsheetHistoryHash#SELECTION_ACTION}.
- */
 import SystemObject from "../../SystemObject.js";
 
 export default class SpreadsheetHistoryHashToken extends SystemObject {
 
-    onViewportSelectionAction(viewportSelection, viewportWidget) {
+    spreadsheetViewportWidgetExecute(viewportCell, width, height, viewportWidget) {
         SystemObject.throwUnsupportedOperation();
     }
 

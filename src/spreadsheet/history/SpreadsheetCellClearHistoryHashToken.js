@@ -6,19 +6,18 @@ import SpreadsheetHistoryHashTokens from "./SpreadsheetHistoryHashTokens.js";
  */
 export default class SpreadsheetCellClearHistoryHashToken extends SpreadsheetCellHistoryHashToken {
 
-    /**
-     * Singleton instance.
-     */
-    static INSTANCE = new SpreadsheetCellClearHistoryHashToken();
-
     toHistoryHashToken() {
-        return SpreadsheetHistoryHashTokens.CLEAR;
+        return super.toHistoryHashToken() +
+            "/" +
+            SpreadsheetHistoryHashTokens.CLEAR;
     }
 
     /**
      * Handles history hash token evens such as /cell/A1/clear or /cell/A1:B2/clear
      */
-    onViewportSelectionAction(viewportSelection, viewportWidget) {
-        viewportWidget.clearSelection(viewportSelection);
+    spreadsheetViewportWidgetExecute(viewportCell, width, height, viewportWidget) {
+        viewportWidget.clearSelection(
+            this.viewportSelection()
+        );
     }
 }

@@ -46,17 +46,14 @@ export default class SpreadsheetTesting {
     }
 
     columnHide(columnOrRange) {
-        this.hashAppendAfterSpreadsheetName("/column/" + columnOrRange);
-
-        this.contextMenu(columnOrRange.viewportId());
-
-        this.viewportContextMenu()
-            .should("be.visible")
+        this.viewportContextMenuOpen(columnOrRange)
             .find("#" + SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_HIDE_ID)
             .should("include.text", "Hide");
 
         this.getById(SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_HIDE_ID)
             .click();
+
+        this.columnWait();
 
         this.viewportContextMenu()
             .should("not.be.visible");
@@ -130,17 +127,14 @@ export default class SpreadsheetTesting {
     }
 
     rowHide(rowOrRange) {
-        this.hashAppendAfterSpreadsheetName("/row/" + rowOrRange);
-
-        this.contextMenu(rowOrRange.viewportId());
-
-        this.viewportContextMenu()
-            .should("be.visible")
+        this.viewportContextMenuOpen(rowOrRange)
             .find("#" + SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_HIDE_ID)
             .should("include.text", "Hide");
 
         this.getById(SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_HIDE_ID)
             .click();
+
+        this.rowWait();
 
         this.viewportContextMenu()
             .should("not.be.visible");
@@ -352,6 +346,19 @@ export default class SpreadsheetTesting {
 
     viewportContextMenu() {
         return this.getById(SpreadsheetViewportWidget.VIEWPORT_CONTEXT_MENU_ID);
+    }
+
+    viewportContextMenuOpen(click, selection) {
+        this.contextMenu(click.viewportId());
+
+        this.hash()
+            .should(
+                'match',
+                new RegExp( "^#\/.*\/.*\/" + (selection || click).toHistoryHashToken() + "(\/.*)?\/menu$")
+            );
+
+        return this.viewportContextMenu()
+            .should("be.visible");
     }
 
     /**

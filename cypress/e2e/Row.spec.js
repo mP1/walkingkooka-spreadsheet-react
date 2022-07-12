@@ -4,6 +4,7 @@ import SpreadsheetCellReference from "../../src/spreadsheet/reference/Spreadshee
 import SpreadsheetRowReference from "../../src/spreadsheet/reference/SpreadsheetRowReference.js";
 import SpreadsheetSelection from "../../src/spreadsheet/reference/SpreadsheetSelection.js";
 import SpreadsheetTesting from "./SpreadsheetTesting.js";
+import SpreadsheetRowReferenceRange from "../../src/spreadsheet/reference/SpreadsheetRowReferenceRange.js";
 
 const A1 = SpreadsheetCellReference.parse("A1");
 const A2 = SpreadsheetCellReference.parse("A2");
@@ -720,26 +721,26 @@ describe("Row",
             testing.cellFormattedTextCheck(C3, "");
         });
 
+
         it("Row context menu click hide", () => {
             testing.cellFormulaEnterAndSave(A1, "'Before");
             testing.cellFormulaEnterAndSave(B2, "'Hidden");
             testing.cellFormulaEnterAndSave(C3, "'After");
 
-            testing.contextMenu(ROW_2.viewportId());
-
-            testing.viewportContextMenu()
-                .should("be.visible")
+            testing.viewportContextMenuOpen(ROW_2)
                 .find("#" + SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_HIDE_ID)
                 .should("include.text", "Hide");
 
             testing.getById(SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_HIDE_ID)
                 .click();
 
+            testing.hash()
+                .should("match", /^#\/.*\/.*$/);
+
             testing.viewportContextMenu()
                 .should("not.be.visible");
 
-            testing.hash()
-                .should("match", /^#\/.*\/.*$/);
+            testing.historyWait();
 
             testing.cellFormattedTextCheck(A1, "Before");
             testing.get(B2.viewportId())
@@ -758,21 +759,22 @@ describe("Row",
             testing.historyWait();
             testing.hashAppend(":3");
 
-            testing.contextMenu(ROW_2.viewportId());
+            testing.historyWait();
 
-            testing.viewportContextMenu()
-                .should("be.visible")
+            testing.viewportContextMenuOpen(ROW_2, SpreadsheetRowReferenceRange.parse("2:3"))
                 .find("#" + SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_HIDE_ID)
                 .should("include.text", "Hide");
 
             testing.getById(SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_HIDE_ID)
                 .click();
 
+            testing.hash()
+                .should("match", /^#\/.*\/.*$/);
+
             testing.viewportContextMenu()
                 .should("not.be.visible");
 
-            testing.hash()
-                .should("match", /^#\/.*\/.*$/);
+            testing.historyWait();
 
             testing.cellFormattedTextCheck(A1, "Before");
             testing.get(B2.viewportId())
@@ -793,15 +795,15 @@ describe("Row",
             testing.getById(SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_HIDE_ID)
                 .click();
 
+            testing.hash()
+                .should("match", /^#\/.*\/.*$/);
+
             testing.viewportContextMenu()
                 .should("not.be.visible");
 
             testing.columnWait();
 
-            testing.hash()
-                .should("match", /^#\/.*\/.*$/);
-
-            testing.hashAppend("/row/2");
+            testing.hashAppendAfterSpreadsheetName("/row/2");
 
             testing.columnWait();
 
@@ -820,13 +822,13 @@ describe("Row",
             testing.getById(SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_HIDE_ID)
                 .click();
 
+            testing.hash()
+                .should("match", /^#\/.*\/.*$/);
+
             testing.viewportContextMenu()
                 .should("not.be.visible");
 
             testing.columnWait();
-
-            testing.hash()
-                .should("match", /^#\/.*\/.*$/);
 
             testing.hashAppend("/cell/B2");
 
@@ -846,15 +848,15 @@ describe("Row",
             testing.rowHide(ROW_2);
 
             // row 1 context menu should have a Unhide row 2 menu item...
-            testing.contextMenu(ROW_1.viewportId());
-
-            testing.viewportContextMenu()
-                .should("be.visible")
+            testing.viewportContextMenuOpen(ROW_1)
                 .find("#" + SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_UNHIDE_AFTER_ID)
                 .should("include.text", "Unhide row 2");
 
             testing.getById(SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_UNHIDE_AFTER_ID)
                 .click();
+
+            testing.hash()
+                .should("match", /^#\/.*\/.*$/);
 
             testing.viewportContextMenu()
                 .should("not.be.visible");
@@ -875,15 +877,15 @@ describe("Row",
             testing.rowHide(ROW_2);
 
             // row C context menu should have a Unhide row B menu item...
-            testing.contextMenu(ROW_3.viewportId());
-
-            testing.viewportContextMenu()
-                .should("be.visible")
+            testing.viewportContextMenuOpen(ROW_3)
                 .find("#" + SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_UNHIDE_BEFORE_ID)
                 .should("include.text", "Unhide row 2");
 
             testing.getById(SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_UNHIDE_BEFORE_ID)
                 .click();
+
+            testing.hash()
+                .should("match", /^#\/.*\/.*$/);
 
             testing.viewportContextMenu()
                 .should("not.be.visible");
@@ -905,18 +907,19 @@ describe("Row",
             testing.rowHide(SpreadsheetRowReference.parse("3"));
 
             // row 2 context menu should have a Unhide row 2 menu item...
-            testing.contextMenu(ROW_2.viewportId());
-
-            testing.viewportContextMenu()
-                .should("be.visible")
+            testing.viewportContextMenuOpen(ROW_2)
                 .find("#" + SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_UNHIDE_AFTER_ID)
                 .should("include.text", "Unhide row 3");
 
             testing.getById(SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_UNHIDE_AFTER_ID)
                 .click();
 
+            testing.hash()
+                .should("match", /^#\/.*\/.*$/);
+
             testing.viewportContextMenu()
                 .should("not.be.visible");
+
 
             testing.rowWait();
 
@@ -936,15 +939,15 @@ describe("Row",
             testing.rowHide(SpreadsheetRowReference.parse("2"));
 
             // row 3 context menu should have a Unhide row 2 menu item...
-            testing.contextMenu(ROW_3.viewportId());
-
-            testing.viewportContextMenu()
-                .should("be.visible")
+            testing.viewportContextMenuOpen(ROW_3)
                 .find("#" + SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_UNHIDE_BEFORE_ID)
                 .should("include.text", "Unhide row 2");
 
             testing.getById(SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_UNHIDE_BEFORE_ID)
                 .click();
+
+            testing.hash()
+                .should("match", /^#\/.*\/.*$/);
 
             testing.viewportContextMenu()
                 .should("not.be.visible");

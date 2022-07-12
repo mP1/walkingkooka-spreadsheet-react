@@ -42,6 +42,10 @@ export default class SpreadsheetViewportSelectionAnchor extends SystemEnum {
   static from(text) {
     return SystemObject.from(text, "anchor", SpreadsheetViewportSelectionAnchor.value());
   }
+
+  toHistoryHashToken() {
+      return this.nameKebabCase();
+  }
   
   typeName() {
     return TYPE_NAME;

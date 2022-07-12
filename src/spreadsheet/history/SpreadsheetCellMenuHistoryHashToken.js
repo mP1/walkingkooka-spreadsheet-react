@@ -1,3 +1,4 @@
+import Preconditions from "../../Preconditions.js";
 import SpreadsheetCellHistoryHashToken from "./SpreadsheetCellHistoryHashToken.js";
 import SpreadsheetHistoryHashTokens from "./SpreadsheetHistoryHashTokens.js";
 
@@ -6,19 +7,30 @@ import SpreadsheetHistoryHashTokens from "./SpreadsheetHistoryHashTokens.js";
  */
 export default class SpreadsheetCellMenuHistoryHashToken extends SpreadsheetCellHistoryHashToken {
 
-    /**
-     * Singleton instance.
-     */
-    static INSTANCE = new SpreadsheetCellMenuHistoryHashToken();
+    constructor(viewportSelection, contextMenu) {
+        super(viewportSelection);
+        this.contextMenuValue = Preconditions.requireObject(contextMenu, "contextMenu");
+    }
+
+    contextMenu() {
+        return this.contextMenuValue;
+    }
 
     toHistoryHashToken() {
-        return SpreadsheetHistoryHashTokens.MENU;
+        return super.toHistoryHashToken() + "/" + SpreadsheetHistoryHashTokens.MENU;
     }
 
     /**
      * Opens the context menu for the given cell
      */
-    onViewportSelectionAction(viewportSelection, viewportWidget) {
-        viewportWidget.showContextMenu(viewportSelection);
+    spreadsheetViewportWidgetExecute(viewportCell, width, height, viewportWidget) {
+        viewportWidget.showContextMenu(
+            this.viewportSelection()
+        );
+    }
+
+    equals(other) {
+        return super.equals(other) &&
+            this.contextMenu().equals(other.contextMenu());
     }
 }
