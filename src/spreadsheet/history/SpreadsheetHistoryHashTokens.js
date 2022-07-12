@@ -42,7 +42,6 @@ export default class SpreadsheetHistoryHashTokens {
     static SAVE = "save";
 
     static LABEL = "label";
-    static LABEL_ACTION = "label-action";
 
     static SELECT = "select";
     static SETTINGS = "settings";
