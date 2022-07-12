@@ -1,5 +1,6 @@
 import Preconditions from "../../Preconditions.js";
 import SpreadsheetHistoryHashToken from "./SpreadsheetHistoryHashToken.js";
+import SystemObject from "../../SystemObject.js";
 
 /**
  * Base for all selection actions.
@@ -13,6 +14,10 @@ export default class SpreadsheetSelectionHistoryHashToken extends SpreadsheetHis
             viewportSelection,
             "viewportSelection"
         );
+    }
+
+    spreadsheetViewportWidgetExecute(viewportCell, width, height, viewportWidget) {
+        SystemObject.throwUnsupportedOperation();
     }
 
     toHistoryHashToken() {

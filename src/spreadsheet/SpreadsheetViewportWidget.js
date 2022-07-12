@@ -538,7 +538,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
 
                 do {
                     if(selectionNew && (!(selectionNew.equals(selectionOld)))){
-                        console.log(this.prefix() + " execute " + selectionNew);
+                        console.log(this.prefix() + " spreadsheetLabelMappingWidgetExecute " + selectionNew);
                         selectionNew.spreadsheetViewportWidgetExecute(
                             viewportCell,
                             width,

@@ -38,7 +38,7 @@ export default class SpreadsheetLabelMappingSaveHistoryHashToken extends Spreads
         return "/" + SpreadsheetHistoryHash.LABEL + "/" + this.label() + "/" + SpreadsheetHistoryHash.SAVE + "/" + this.newLabel() + "/" + this.reference();
     }
 
-    execute(widget) {
+    spreadsheetLabelMappingWidgetExecute(widget) {
         widget.saveLabelMapping(
             this.label(),
             this.newLabel(),

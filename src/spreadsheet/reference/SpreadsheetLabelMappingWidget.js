@@ -94,7 +94,7 @@ export default class SpreadsheetLabelMappingWidget extends SpreadsheetHistoryAwa
             const previousLabel = prevState.label;
 
             if(!Equality.safeEquals(previousLabel, label)){
-                label.execute(this);
+                label.spreadsheetLabelMappingWidgetExecute(this);
             }
         }
 

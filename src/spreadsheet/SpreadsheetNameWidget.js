@@ -63,7 +63,7 @@ export default class SpreadsheetNameWidget extends SpreadsheetHistoryAwareStateW
         const historyTokens = SpreadsheetHistoryHashTokens.emptyTokens();
 
         if(!Equality.safeEquals(newEdit, prevState.edit)){
-            newEdit && newEdit.execute(this);
+            newEdit && newEdit.spreadsheetNameWidgetExecute(this);
 
             historyTokens[SpreadsheetHistoryHashTokens.SPREADSHEET_NAME_EDIT] = newEdit;
         }
