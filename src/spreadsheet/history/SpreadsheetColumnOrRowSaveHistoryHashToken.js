@@ -1,4 +1,5 @@
 import Equality from "../../Equality.js";
+import selectHistoryHashToken from "./selectHistoryHashToken.js";
 import SpreadsheetColumnOrRowHistoryHashToken from "./SpreadsheetColumnOrRowHistoryHashToken.js";
 import SpreadsheetHistoryHashTokens from "./SpreadsheetHistoryHashTokens.js";
 
@@ -7,8 +8,9 @@ import SpreadsheetHistoryHashTokens from "./SpreadsheetHistoryHashTokens.js";
  */
 export default class SpreadsheetColumnOrRowSaveHistoryHashToken extends SpreadsheetColumnOrRowHistoryHashToken {
 
-    constructor(property, value) {
-        super();
+    constructor(viewportSelection, property, value) {
+        super(viewportSelection);
+
         this.propertyValue = property;
         this.valueValue = value;
     }
@@ -23,13 +25,19 @@ export default class SpreadsheetColumnOrRowSaveHistoryHashToken extends Spreadsh
 
     // /$property/value
     toHistoryHashToken() {
-        return this.property() + "/" + encodeURIComponent(this.value());
+        return super.toHistoryHashToken() +
+            "/" +
+            this.property() +
+            "/" +
+            encodeURIComponent(this.value());
     }
 
     /**
      * Handles history hash token evens such as /column/A/hidden/true or /row/1/hidden/false
      */
-    onViewportSelectionAction(viewportSelection, viewportWidget) {
+    spreadsheetViewportWidgetExecute(viewportCell, width, height, viewportWidget) {
+        const viewportSelection = this.viewportSelection();
+
         viewportWidget.patchColumnOrRow(
             viewportSelection,
             this.property(),
@@ -38,7 +46,7 @@ export default class SpreadsheetColumnOrRowSaveHistoryHashToken extends Spreadsh
 
         // remove the saved property and value from the history hash
         const tokens = SpreadsheetHistoryHashTokens.emptyTokens();
-        tokens[SpreadsheetHistoryHashTokens.SELECTION_ACTION] = null;
+        tokens[SpreadsheetHistoryHashTokens.SELECTION] = selectHistoryHashToken(viewportSelection);
         viewportWidget.historyParseMergeAndPush(tokens);
     }
 

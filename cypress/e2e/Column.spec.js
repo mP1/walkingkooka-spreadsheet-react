@@ -2,6 +2,7 @@
 
 import SpreadsheetCellReference from "../../src/spreadsheet/reference/SpreadsheetCellReference.js";
 import SpreadsheetColumnReference from "../../src/spreadsheet/reference/SpreadsheetColumnReference.js";
+import SpreadsheetColumnReferenceRange from "../../src/spreadsheet/reference/SpreadsheetColumnReferenceRange.js";
 import SpreadsheetSelection from "../../src/spreadsheet/reference/SpreadsheetSelection.js";
 import SpreadsheetTesting from "./SpreadsheetTesting.js";
 
@@ -16,6 +17,8 @@ const A = SpreadsheetColumnReference.parse("A");
 const B = SpreadsheetColumnReference.parse("B");
 const C = SpreadsheetColumnReference.parse("C");
 const D = SpreadsheetColumnReference.parse("D");
+
+const BC = SpreadsheetColumnReferenceRange.parse("B:C");
 
 const SELECTED_COLOR = "rgb(68, 68, 68)";
 
@@ -107,6 +110,9 @@ describe(
             testing.column("E")
                 .type("{shift+rightarrow}");
 
+            testing.hash()
+                .should("match", /.*\/.*\/column\/E:F\/left/);
+
             testing.historyWait();
 
             testing.hash()
@@ -127,7 +133,8 @@ describe(
             testing.column("E")
                 .type("{shift+leftarrow}");
 
-            testing.historyWait();
+            testing.hash()
+                .should("match", /^#\/.*\/.*\/column\/D:F\/right$/);
 
             testing.column("D")
                 .type("{shift+leftarrow}");
@@ -310,24 +317,13 @@ describe(
         });
 
         it("Column context menu", () => {
-            testing.contextMenu(C.viewportId());
-
-            testing.hash()
-                .should("match", /^#\/.*\/.*\/column\/C\/menu$/);
-
-            testing.viewportContextMenu()
-                .should("be.visible")
+            testing.viewportContextMenuOpen(C)
                 .find("LI")
                 .should("have.length", 11);
         });
 
         it("Column context menu links", () => {
-            testing.hashAppend("/column/B");
-
-            testing.contextMenu(B.viewportId());
-
-            testing.viewportContextMenu()
-                .should("be.visible");
+            testing.viewportContextMenuOpen(B);
 
             testing.getById(SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_CLEAR_ID)
                 .should("have.attr", "href")
@@ -375,10 +371,7 @@ describe(
         it("Column range context menu links", () => {
             testing.hashAppend("/column/B:C");
 
-            testing.contextMenu(C.viewportId());
-
-            testing.viewportContextMenu()
-                .should("be.visible");
+            testing.viewportContextMenuOpen(C, BC);
 
             testing.getById(SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_CLEAR_ID)
                 .should("have.attr", "href")
@@ -428,10 +421,7 @@ describe(
             testing.cellFormulaEnterAndSave(B2, "'Cleared");
             testing.cellFormulaEnterAndSave(C3, "'After");
 
-            testing.contextMenu(B.viewportId());
-
-            testing.viewportContextMenu()
-                .should("be.visible")
+            testing.viewportContextMenuOpen(B)
                 .find("#" + SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_CLEAR_ID)
                 .should("include.text", "Clear");
 
@@ -482,10 +472,7 @@ describe(
             testing.cellFormulaEnterAndSave(B2, "'Deleted");
             testing.cellFormulaEnterAndSave(C3, "'Moved");
 
-            testing.contextMenu(B.viewportId());
-
-            testing.viewportContextMenu()
-                .should("be.visible")
+            testing.viewportContextMenuOpen(B)
                 .find("#" + SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_DELETE_CELL_ID)
                 .should("include.text", "Delete");
 
@@ -534,10 +521,7 @@ describe(
         it("Column context menu click insert before 2", () => {
             testing.cellFormulaEnterAndSave(C3, "'Moved");
 
-            testing.contextMenu(C.viewportId());
-
-            testing.viewportContextMenu()
-                .should("be.visible")
+            testing.viewportContextMenuOpen(C)
                 .find("#" + SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_INSERT_BEFORE_2_ID)
                 .should("include.text", "Insert 2 before");
 
@@ -554,10 +538,7 @@ describe(
         it("Column context menu click insert before 1", () => {
             testing.cellFormulaEnterAndSave(C3, "'Moved");
 
-            testing.contextMenu(C.viewportId());
-
-            testing.viewportContextMenu()
-                .should("be.visible")
+            testing.viewportContextMenuOpen(C)
                 .find("#" + SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_INSERT_BEFORE_1_ID)
                 .should("include.text", "Insert 1 before");
 
@@ -575,10 +556,7 @@ describe(
             testing.cellFormulaEnterAndSave(A1, "'Never");
             testing.cellFormulaEnterAndSave(C3, "'Moved");
 
-            testing.contextMenu(B.viewportId());
-
-            testing.viewportContextMenu()
-                .should("be.visible")
+            testing.viewportContextMenuOpen(B)
                 .find("#" + SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_INSERT_AFTER_1_ID)
                 .should("include.text", "Insert 1 after");
 
@@ -597,10 +575,7 @@ describe(
             testing.cellFormulaEnterAndSave(A1, "'Never");
             testing.cellFormulaEnterAndSave(C3, "'Moved");
 
-            testing.contextMenu(B.viewportId());
-
-            testing.viewportContextMenu()
-                .should("be.visible")
+            testing.viewportContextMenuOpen(B)
                 .find("#" + SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_INSERT_AFTER_2_ID)
                 .should("include.text", "Insert 2 after");
 
@@ -624,10 +599,7 @@ describe(
             testing.hash()
                 .should("match", /^#\/.*\/Untitled\/column\/C$/);
 
-            testing.contextMenu(C.viewportId());
-
-            testing.viewportContextMenu()
-                .should("be.visible")
+            testing.viewportContextMenuOpen(C)
                 .find("#" + SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_INSERT_BEFORE_2_ID)
                 .should("include.text", "Insert 2 before");
 
@@ -653,10 +625,7 @@ describe(
             testing.hash()
                 .should("match", /^#\/.*\/Untitled\/column\/C$/);
 
-            testing.contextMenu(C.viewportId());
-
-            testing.viewportContextMenu()
-                .should("be.visible")
+            testing.viewportContextMenuOpen(C)
                 .find("#" + SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_INSERT_BEFORE_1_ID)
                 .should("include.text", "Insert 1 before");
 
@@ -683,10 +652,7 @@ describe(
             testing.hash()
                 .should("match", /^#\/.*\/Untitled\/column\/B$/);
 
-            testing.contextMenu(B.viewportId());
-
-            testing.viewportContextMenu()
-                .should("be.visible")
+            testing.viewportContextMenuOpen(B)
                 .find("#" + SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_INSERT_AFTER_1_ID)
                 .should("include.text", "Insert 1 after");
 
@@ -714,10 +680,7 @@ describe(
             testing.hash()
                 .should("match", /^#\/.*\/Untitled\/column\/B$/);
 
-            testing.contextMenu(B.viewportId());
-
-            testing.viewportContextMenu()
-                .should("be.visible")
+            testing.viewportContextMenuOpen(B)
                 .find("#" + SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_INSERT_AFTER_2_ID)
                 .should("include.text", "Insert 2 after");
 
@@ -740,23 +703,20 @@ describe(
             testing.cellFormulaEnterAndSave(B2, "'Hidden");
             testing.cellFormulaEnterAndSave(C3, "'After");
 
-            testing.contextMenu(B.viewportId());
-
-            testing.viewportContextMenu()
-                .should("be.visible")
+            testing.viewportContextMenuOpen(B)
                 .find("#" + SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_HIDE_ID)
                 .should("include.text", "Hide");
 
             testing.getById(SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_HIDE_ID)
                 .click();
 
-            testing.viewportContextMenu()
-                .should("not.be.visible");
-
             testing.columnWait();
 
             testing.hash()
                 .should("match", /^#\/.*\/.*$/);
+
+            testing.viewportContextMenu()
+                .should("not.be.visible");
 
             testing.cellFormattedTextCheck(A1, "Before");
             testing.get(B2.viewportId())
@@ -775,23 +735,22 @@ describe(
             testing.historyWait();
             testing.hashAppend(":C");
 
-            testing.contextMenu(B.viewportId());
+            testing.historyWait();
 
-            testing.viewportContextMenu()
-                .should("be.visible")
+            testing.viewportContextMenuOpen(B, BC)
                 .find("#" + SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_HIDE_ID)
                 .should("include.text", "Hide");
 
             testing.getById(SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_HIDE_ID)
                 .click();
 
-            testing.viewportContextMenu()
-                .should("not.be.visible");
-
             testing.columnWait();
 
             testing.hash()
                 .should("match", /^#\/.*\/.*$/);
+
+            testing.viewportContextMenu()
+                .should("not.be.visible");
 
             testing.cellFormattedTextCheck(A1, "Before");
             testing.get(B2.viewportId())
@@ -802,23 +761,18 @@ describe(
         });
 
         it("Attempt to history hash select hidden column cleared", () => {
-            testing.contextMenu(B.viewportId());
-
-            testing.viewportContextMenu()
-                .should("be.visible")
+            testing.viewportContextMenuOpen(B)
                 .find("#" + SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_HIDE_ID)
                 .should("include.text", "Hide");
 
             testing.getById(SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_HIDE_ID)
                 .click();
 
-            testing.viewportContextMenu()
-                .should("not.be.visible");
-
-            testing.columnWait();
-
             testing.hash()
                 .should("match", /^#\/.*\/.*$/);
+
+            testing.viewportContextMenu()
+                .should("not.be.visible");
 
             testing.hashAppend("/column/B");
 
@@ -829,23 +783,18 @@ describe(
         });
 
         it("Attempt to history hash select cell in hidden column cleared", () => {
-            testing.contextMenu(B.viewportId());
-
-            testing.viewportContextMenu()
-                .should("be.visible")
+            testing.viewportContextMenuOpen(B)
                 .find("#" + SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_HIDE_ID)
                 .should("include.text", "Hide");
 
             testing.getById(SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_HIDE_ID)
                 .click();
 
-            testing.viewportContextMenu()
-                .should("not.be.visible");
-
-            testing.columnWait();
-
             testing.hash()
                 .should("match", /^#\/.*\/.*$/);
+
+            testing.viewportContextMenu()
+                .should("not.be.visible");
 
             testing.hashAppend("/cell/B2");
 
@@ -865,15 +814,15 @@ describe(
             testing.columnHide(B);
 
             // column A context menu should have a Unhide column B menu item...
-            testing.contextMenu(A.viewportId());
-
-            testing.viewportContextMenu()
-                .should("be.visible")
+            testing.viewportContextMenuOpen(A)
                 .find("#" + SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_UNHIDE_AFTER_ID)
                 .should("include.text", "Unhide column B");
 
             testing.getById(SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_UNHIDE_AFTER_ID)
                 .click();
+
+            testing.hash()
+                .should("match", /^#\/.*\/.*$/);
 
             testing.viewportContextMenu()
                 .should("not.be.visible");
@@ -893,16 +842,15 @@ describe(
 
             testing.columnHide(B);
 
-            // column C context menu should have a Unhide column B menu item...
-            testing.contextMenu(C.viewportId());
-
-            testing.viewportContextMenu()
-                .should("be.visible")
+            testing.viewportContextMenuOpen(C)
                 .find("#" + SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_UNHIDE_BEFORE_ID)
                 .should("include.text", "Unhide column B");
 
             testing.getById(SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_UNHIDE_BEFORE_ID)
                 .click();
+
+            testing.hash()
+                .should("match", /^#\/.*\/.*$/);
 
             testing.viewportContextMenu()
                 .should("not.be.visible");
@@ -923,16 +871,15 @@ describe(
 
             testing.columnHide(SpreadsheetColumnReference.parse("C"));
 
-            // column C context menu should have a Unhide column B menu item...
-            testing.contextMenu(B.viewportId());
-
-            testing.viewportContextMenu()
-                .should("be.visible")
+            testing.viewportContextMenuOpen(B)
                 .find("#" + SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_UNHIDE_AFTER_ID)
                 .should("include.text", "Unhide column C");
 
             testing.getById(SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_UNHIDE_AFTER_ID)
                 .click();
+
+            testing.hash()
+                .should("match", /^#\/.*\/.*$/);
 
             testing.viewportContextMenu()
                 .should("not.be.visible");
@@ -954,21 +901,18 @@ describe(
 
             testing.columnHide(SpreadsheetColumnReference.parse("B"));
 
-            // column C context menu should have a Unhide column B menu item...
-            testing.contextMenu(C.viewportId());
-
-            testing.viewportContextMenu()
-                .should("be.visible")
+            testing.viewportContextMenuOpen(C)
                 .find("#" + SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_UNHIDE_BEFORE_ID)
                 .should("include.text", "Unhide column B");
 
             testing.getById(SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_UNHIDE_BEFORE_ID)
                 .click();
 
+            testing.hash()
+                .should("match", /^#\/.*\/.*$/);
+
             testing.viewportContextMenu()
                 .should("not.be.visible");
-
-            testing.columnWait();
 
             // verify columns A, B, C, D are visible.
             testing.cellFormattedTextCheck(A1, "Before");

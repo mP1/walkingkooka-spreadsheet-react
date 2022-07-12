@@ -1,10 +1,13 @@
 import CharSequences from "../../CharSequences.js";
 import SpreadsheetCellClearHistoryHashToken from "./SpreadsheetCellClearHistoryHashToken.js";
 import SpreadsheetCellDeleteHistoryHashToken from "./SpreadsheetCellDeleteHistoryHashToken.js";
+import SpreadsheetCellFormulaEditHistoryHashToken from "./SpreadsheetCellFormulaEditHistoryHashToken.js";
+import SpreadsheetCellFormulaSaveHistoryHashToken from "./SpreadsheetCellFormulaSaveHistoryHashToken.js";
 import SpreadsheetCellFreezeHistoryHashToken from "./SpreadsheetCellFreezeHistoryHashToken.js";
 import SpreadsheetCellMenuHistoryHashToken from "./SpreadsheetCellMenuHistoryHashToken.js";
 import SpreadsheetCellRange from "../reference/SpreadsheetCellRange.js";
 import SpreadsheetCellReference from "../reference/SpreadsheetCellReference.js";
+import SpreadsheetCellSelectHistoryHashToken from "./SpreadsheetCellSelectHistoryHashToken.js";
 import SpreadsheetCellUnFreezeHistoryHashToken from "./SpreadsheetCellUnFreezeHistoryHashToken.js";
 import SpreadsheetColumnOrRowClearHistoryHashToken from "./SpreadsheetColumnOrRowClearHistoryHashToken.js";
 import SpreadsheetColumnOrRowDeleteHistoryHashToken from "./SpreadsheetColumnOrRowDeleteHistoryHashToken.js";
@@ -14,11 +17,11 @@ import SpreadsheetColumnOrRowInsertBeforeHistoryHashToken
     from "./SpreadsheetColumnOrRowInsertBeforeHistoryHashToken.js";
 import SpreadsheetColumnOrRowMenuHistoryHashToken from "./SpreadsheetColumnOrRowMenuHistoryHashToken.js";
 import SpreadsheetColumnOrRowSaveHistoryHashToken from "./SpreadsheetColumnOrRowSaveHistoryHashToken.js";
+import SpreadsheetColumnOrRowSelectHistoryHashToken from "./SpreadsheetColumnOrRowSelectHistoryHashToken.js";
 import SpreadsheetColumnOrRowUnFreezeHistoryHashToken from "./SpreadsheetColumnOrRowUnFreezeHistoryHashToken.js";
 import SpreadsheetColumnReference from "../reference/SpreadsheetColumnReference.js";
 import SpreadsheetColumnReferenceRange from "../reference/SpreadsheetColumnReferenceRange.js";
-import SpreadsheetFormulaEditHistoryHashToken from "./SpreadsheetFormulaEditHistoryHashToken.js";
-import SpreadsheetFormulaSaveHistoryHashToken from "./SpreadsheetFormulaSaveHistoryHashToken.js";
+import SpreadsheetContextMenu from "../../widget/SpreadsheetContextMenu.js";
 import SpreadsheetHistoryHash from "./SpreadsheetHistoryHash.js";
 import SpreadsheetHistoryHashTokens from "./SpreadsheetHistoryHashTokens.js";
 import SpreadsheetLabelMappingDeleteHistoryHashToken from "./SpreadsheetLabelMappingDeleteHistoryHashToken.js";
@@ -33,6 +36,7 @@ import SpreadsheetRowReferenceRange from "../reference/SpreadsheetRowReferenceRa
 import SpreadsheetSettingsSaveHistoryHashToken from "./SpreadsheetSettingsSaveHistoryHashToken.js";
 import SpreadsheetSettingsSelectHistoryHashToken from "./SpreadsheetSettingsSelectHistoryHashToken.js";
 import SpreadsheetSettingsWidgetHistoryHashTokens from "../settings/SpreadsheetSettingsWidgetHistoryHashTokens.js";
+import SpreadsheetViewportSelection from "../reference/SpreadsheetViewportSelection.js";
 import SpreadsheetViewportSelectionAnchor from "../reference/SpreadsheetViewportSelectionAnchor.js";
 import TextStyle from "../../text/TextStyle.js";
 
@@ -43,36 +47,52 @@ const NAME_EDIT = SpreadsheetNameEditHistoryHashToken.INSTANCE;
 const SPREADSHEET_NAME_NEW = "new-spreadsheet-name-789";
 const NAME_SAVE = new SpreadsheetNameSaveHistoryHashToken(new SpreadsheetName(SPREADSHEET_NAME_NEW));
 
+const CONTEXT_MENU = new SpreadsheetContextMenu();
+
 const CELL = SpreadsheetCellReference.parse("A1");
 const CELL_RANGE = SpreadsheetCellRange.parse("C3:D4");
 const CELL_RANGE_A1C3 = SpreadsheetCellRange.parse("A1:C3");
-const COLUMN = SpreadsheetColumnReference.parse("B");
-const COLUMN_A = SpreadsheetColumnReference.parse("A");
-const COLUMN_RANGE = SpreadsheetColumnReferenceRange.parse("B:C");
-const COLUMN_RANGE_AC = SpreadsheetColumnReferenceRange.parse("A:C");
-const ROW = SpreadsheetRowReference.parse("2");
-const ROW_1 = SpreadsheetRowReference.parse("1");
-const ROW_RANGE = SpreadsheetRowReferenceRange.parse("2:3");
-const ROW_RANGE_1_3 = SpreadsheetRowReferenceRange.parse("1:3");
-const COLUMN_ROW_DELETE = SpreadsheetColumnOrRowDeleteHistoryHashToken.INSTANCE;
-const HIDDEN_TRUE = new SpreadsheetColumnOrRowSaveHistoryHashToken("hidden", true);
-const HIDDEN_FALSE = new SpreadsheetColumnOrRowSaveHistoryHashToken("hidden", false);
 
 const LABEL = SpreadsheetLabelName.parse("Label123");
 const NEW_LABEL = SpreadsheetLabelName.parse("Label999");
 
-const COLUMN_ROW_CLEAR = SpreadsheetColumnOrRowClearHistoryHashToken.INSTANCE;
-const COLUMN_ROW_FREEZE = SpreadsheetColumnOrRowFreezeHistoryHashToken.INSTANCE;
-const COLUMN_ROW_MENU = SpreadsheetColumnOrRowMenuHistoryHashToken.INSTANCE;
-const COLUMN_ROW_UNFREEZE = SpreadsheetColumnOrRowUnFreezeHistoryHashToken.INSTANCE;
+const CELL_CLEAR = new SpreadsheetCellClearHistoryHashToken(new SpreadsheetViewportSelection(CELL));
+const CELL_DELETE = new SpreadsheetCellDeleteHistoryHashToken(new SpreadsheetViewportSelection(CELL));
+const CELL_FREEZE = new SpreadsheetCellFreezeHistoryHashToken(new SpreadsheetViewportSelection(CELL));
+const CELL_MENU = new SpreadsheetCellMenuHistoryHashToken(new SpreadsheetViewportSelection(CELL), new SpreadsheetContextMenu());
+const CELL_SELECT = new SpreadsheetCellSelectHistoryHashToken(new SpreadsheetViewportSelection(CELL));
+const CELL_UNFREEZE = new SpreadsheetCellUnFreezeHistoryHashToken(new SpreadsheetViewportSelection(CELL));
+const CELL_FORMULA_LOAD_EDIT = new SpreadsheetCellFormulaEditHistoryHashToken(new SpreadsheetViewportSelection(CELL));
+const CELL_FORMULA_SAVE = new SpreadsheetCellFormulaSaveHistoryHashToken(new SpreadsheetViewportSelection(CELL), "Abc123");
+const CELL_LABEL_SELECT = new SpreadsheetCellSelectHistoryHashToken(new SpreadsheetViewportSelection(LABEL));
 
-const CELL_CLEAR = SpreadsheetCellClearHistoryHashToken.INSTANCE;
-const CELL_DELETE = SpreadsheetCellDeleteHistoryHashToken.INSTANCE;
-const CELL_FREEZE = SpreadsheetCellFreezeHistoryHashToken.INSTANCE;
-const CELL_MENU = SpreadsheetCellMenuHistoryHashToken.INSTANCE;
-const CELL_UNFREEZE = SpreadsheetCellUnFreezeHistoryHashToken.INSTANCE;
-const CELL_FORMULA_LOAD_EDIT = new SpreadsheetFormulaEditHistoryHashToken();
-const CELL_FORMULA_SAVE = new SpreadsheetFormulaSaveHistoryHashToken("Abc123");
+const COLUMN = SpreadsheetColumnReference.parse("B");
+const COLUMN_A = SpreadsheetColumnReference.parse("A");
+const COLUMN_RANGE = SpreadsheetColumnReferenceRange.parse("B:C");
+const COLUMN_RANGE_AC = SpreadsheetColumnReferenceRange.parse("A:C");
+const COLUMN_DELETE = new SpreadsheetColumnOrRowDeleteHistoryHashToken(new SpreadsheetViewportSelection(COLUMN));
+const COLUMN_HIDDEN_TRUE = new SpreadsheetColumnOrRowSaveHistoryHashToken(new SpreadsheetViewportSelection(COLUMN), "hidden", true);
+const COLUMN_HIDDEN_FALSE = new SpreadsheetColumnOrRowSaveHistoryHashToken(new SpreadsheetViewportSelection(COLUMN), "hidden", false);
+
+const COLUMN_CLEAR = new SpreadsheetColumnOrRowClearHistoryHashToken(new SpreadsheetViewportSelection(COLUMN));
+const COLUMN_FREEZE = new SpreadsheetColumnOrRowFreezeHistoryHashToken(new SpreadsheetViewportSelection(COLUMN_A));
+const COLUMN_MENU = new SpreadsheetColumnOrRowMenuHistoryHashToken(new SpreadsheetViewportSelection(COLUMN), CONTEXT_MENU);
+const COLUMN_SELECT = new SpreadsheetColumnOrRowSelectHistoryHashToken(new SpreadsheetViewportSelection(COLUMN));
+const COLUMN_UNFREEZE = new SpreadsheetColumnOrRowUnFreezeHistoryHashToken(new SpreadsheetViewportSelection(COLUMN_A));
+
+const ROW = SpreadsheetRowReference.parse("2");
+const ROW_1 = SpreadsheetRowReference.parse("1");
+const ROW_RANGE = SpreadsheetRowReferenceRange.parse("2:3");
+const ROW_RANGE_1_3 = SpreadsheetRowReferenceRange.parse("1:3");
+const ROW_DELETE = new SpreadsheetColumnOrRowDeleteHistoryHashToken(new SpreadsheetViewportSelection(ROW));
+const ROW_HIDDEN_TRUE = new SpreadsheetColumnOrRowSaveHistoryHashToken(new SpreadsheetViewportSelection(ROW), "hidden", true);
+const ROW_HIDDEN_FALSE = new SpreadsheetColumnOrRowSaveHistoryHashToken(new SpreadsheetViewportSelection(ROW), "hidden", false);
+
+const ROW_CLEAR = new SpreadsheetColumnOrRowClearHistoryHashToken(new SpreadsheetViewportSelection(ROW));
+const ROW_FREEZE = new SpreadsheetColumnOrRowFreezeHistoryHashToken(new SpreadsheetViewportSelection(ROW_1));
+const ROW_MENU = new SpreadsheetColumnOrRowMenuHistoryHashToken(new SpreadsheetViewportSelection(ROW), CONTEXT_MENU);
+const ROW_SELECT = new SpreadsheetColumnOrRowSelectHistoryHashToken(new SpreadsheetViewportSelection(ROW));
+const ROW_UNFREEZE = new SpreadsheetColumnOrRowUnFreezeHistoryHashToken(new SpreadsheetViewportSelection(ROW_1));
 
 const LABEL_DELETE = new SpreadsheetLabelMappingDeleteHistoryHashToken(LABEL);
 const LABEL_EDIT = new SpreadsheetLabelMappingEditHistoryHashToken(LABEL);
@@ -141,16 +161,16 @@ testValidate(
     {
         "spreadsheet-id": ID,
         "spreadsheet-name": SPREADSHEET_NAME,
-        "selection": CELL,
+        "selection": CELL_SELECT,
     }
 );
 
 testValidate(
-    "validate id & name & selection=label",
+    "validate id & name & selection=LABEL",
     {
         "spreadsheet-id": ID,
         "spreadsheet-name": SPREADSHEET_NAME,
-        "selection": LABEL,
+        "selection": CELL_LABEL_SELECT,
     }
 );
 
@@ -160,7 +180,7 @@ testValidate(
         "spreadsheet-id": ID,
         "spreadsheet-name": SPREADSHEET_NAME,
         "spreadsheet-name-edit": NAME_EDIT,
-        "selection": CELL,
+        "selection": CELL_SELECT,
     },
     {
         "spreadsheet-id": ID,
@@ -201,7 +221,7 @@ testValidate(
     {
         "spreadsheet-id": ID,
         "spreadsheet-name": SPREADSHEET_NAME,
-        "selection": CELL,
+        "selection": CELL_SELECT,
     }
 );
 
@@ -223,8 +243,7 @@ testValidate(
     {
         "spreadsheet-id": ID,
         "spreadsheet-name": SPREADSHEET_NAME,
-        "selection": CELL,
-        "selection-action": CELL_FORMULA_LOAD_EDIT,
+        "selection": CELL_FORMULA_LOAD_EDIT,
     }
 );
 
@@ -233,7 +252,7 @@ testValidate(
     {
         "spreadsheet-id": ID,
         "spreadsheet-name": SPREADSHEET_NAME,
-        "selection": LABEL,
+        "selection": CELL_LABEL_SELECT,
     }
 );
 
@@ -242,8 +261,7 @@ testValidate(
     {
         "spreadsheet-id": ID,
         "spreadsheet-name": SPREADSHEET_NAME,
-        "selection": CELL,
-        "selection-action": CELL_DELETE,
+        "selection": CELL_DELETE,
     }
 );
 
@@ -252,8 +270,7 @@ testValidate(
     {
         "spreadsheet-id": ID,
         "spreadsheet-name": SPREADSHEET_NAME,
-        "selection": CELL,
-        "selection-action": CELL_FORMULA_SAVE,
+        "selection": CELL_FORMULA_SAVE,
     }
 );
 
@@ -262,8 +279,7 @@ testValidate(
     {
         "spreadsheet-id": ID,
         "spreadsheet-name": SPREADSHEET_NAME,
-        "selection": CELL,
-        "selection-action": CELL_FREEZE,
+        "selection": CELL_FREEZE,
     }
 );
 
@@ -272,8 +288,7 @@ testValidate(
     {
         "spreadsheet-id": ID,
         "spreadsheet-name": SPREADSHEET_NAME,
-        "selection": CELL,
-        "selection-action": CELL_MENU,
+        "selection": CELL_MENU,
     }
 );
 
@@ -282,7 +297,7 @@ testValidate(
     {
         "spreadsheet-id": ID,
         "spreadsheet-name": SPREADSHEET_NAME,
-        "selection": CELL,
+        "selection": CELL_SELECT,
         "settings": SETTINGS_NOTHING,
     }
 );
@@ -292,8 +307,7 @@ testValidate(
     {
         "spreadsheet-id": ID,
         "spreadsheet-name": SPREADSHEET_NAME,
-        "selection": CELL,
-        "selection-action": CELL_UNFREEZE,
+        "selection": CELL_UNFREEZE,
     }
 );
 
@@ -302,8 +316,7 @@ testValidate(
     {
         "spreadsheet-id": ID,
         "spreadsheet-name": SPREADSHEET_NAME,
-        "selection": COLUMN,
-        "selection-action": COLUMN_ROW_DELETE,
+        "selection": COLUMN_DELETE,
     }
 );
 
@@ -312,8 +325,7 @@ testValidate(
     {
         "spreadsheet-id": ID,
         "spreadsheet-name": SPREADSHEET_NAME,
-        "selection": COLUMN,
-        "selection-action": COLUMN_ROW_DELETE,
+        "selection": COLUMN_DELETE,
     }
 );
 
@@ -322,8 +334,7 @@ testValidate(
     {
         "spreadsheet-id": ID,
         "spreadsheet-name": SPREADSHEET_NAME,
-        "selection": COLUMN_A,
-        "selection-action": COLUMN_ROW_FREEZE,
+        "selection": COLUMN_FREEZE,
     }
 );
 
@@ -340,13 +351,21 @@ testValidate(
     {
         "spreadsheet-id": ID,
         "spreadsheet-name": SPREADSHEET_NAME,
-        "selection": COLUMN_A,
-        "selection-action": COLUMN_ROW_UNFREEZE,
+        "selection": COLUMN_UNFREEZE,
     }
 );
 
 testValidate(
     "validate id & name & selection=COLUMN_B & action=UNFREEZE",
+    {
+        "spreadsheet-id": ID,
+        "spreadsheet-name": SPREADSHEET_NAME,
+        "selection": new SpreadsheetColumnOrRowUnFreezeHistoryHashToken(
+            new SpreadsheetViewportSelection(
+                SpreadsheetColumnReference.parse("B")
+            )
+        ),
+    },
     {
         "spreadsheet-id": ID,
         "spreadsheet-name": SPREADSHEET_NAME,
@@ -391,40 +410,14 @@ testValidate(
     {
         "spreadsheet-id": ID,
         "spreadsheet-name": SPREADSHEET_NAME,
-        "selection": LABEL,
-        "selection-action": CELL_FORMULA_SAVE,
+        "selection": new SpreadsheetCellFormulaSaveHistoryHashToken(
+            new SpreadsheetViewportSelection(
+                LABEL
+            ),
+            "=1+2"
+        )
     }
-);
-
-testValidate(
-    "validate id & name & selection=CELL_RANGE & TOP_LEFT",
-    {
-        "spreadsheet-id": ID,
-        "spreadsheet-name": SPREADSHEET_NAME,
-        "selection": CELL_RANGE,
-        "selection-anchor": SpreadsheetViewportSelectionAnchor.TOP_LEFT,
-    }
-);
-
-testValidate(
-    "validate id & name & selection=COLUMN_RANGE & LEFT",
-    {
-        "spreadsheet-id": ID,
-        "spreadsheet-name": SPREADSHEET_NAME,
-        "selection": COLUMN_RANGE,
-        "selection-anchor": SpreadsheetViewportSelectionAnchor.LEFT,
-    }
-);
-
-testValidate(
-    "validate id & name & selection=ROW_RANGE & TOP",
-    {
-        "spreadsheet-id": ID,
-        "spreadsheet-name": SPREADSHEET_NAME,
-        "selection": ROW_RANGE,
-        "selection-anchor": SpreadsheetViewportSelectionAnchor.TOP,
-    }
-);
+)
 
 testValidate(
     "validate id & name & label-edit",
@@ -581,7 +574,7 @@ testParseAndStringify(
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
-        "selection": CELL,
+        "selection": CELL_SELECT,
     }
 );
 
@@ -599,8 +592,7 @@ testParseAndStringify(
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
-        "selection": CELL,
-        "selection-action": CELL_CLEAR,
+        "selection": CELL_CLEAR,
     }
 );
 
@@ -609,8 +601,7 @@ testParseAndStringify(
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
-        "selection": CELL,
-        "selection-action": CELL_DELETE,
+        "selection": CELL_DELETE,
     }
 );
 
@@ -619,8 +610,7 @@ testParseAndStringify(
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
-        "selection": CELL,
-        "selection-action": CELL_FORMULA_LOAD_EDIT,
+        "selection": CELL_FORMULA_LOAD_EDIT,
     }
 );
 
@@ -629,8 +619,10 @@ testParseAndStringify(
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
-        "selection": CELL,
-        "selection-action": new SpreadsheetFormulaSaveHistoryHashToken(""),
+        "selection": new SpreadsheetCellFormulaSaveHistoryHashToken(
+            new SpreadsheetViewportSelection(CELL),
+            ""
+        ),
     }
 );
 
@@ -639,8 +631,10 @@ testParseAndStringify(
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
-        "selection": CELL,
-        "selection-action": new SpreadsheetFormulaSaveHistoryHashToken("ABC 123"),
+        "selection": new SpreadsheetCellFormulaSaveHistoryHashToken(
+            new SpreadsheetViewportSelection(CELL),
+            "ABC 123"
+        ),
     }
 );
 
@@ -649,8 +643,10 @@ testParseAndStringify(
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
-        "selection": CELL,
-        "selection-action": new SpreadsheetFormulaSaveHistoryHashToken("=12/34"),
+        "selection": new SpreadsheetCellFormulaSaveHistoryHashToken(
+            new SpreadsheetViewportSelection(CELL),
+            "=12/34"
+        ),
     }
 );
 
@@ -659,8 +655,17 @@ testParseAndStringify(
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
-        "selection": CELL,
-        "selection-action": CELL_MENU,
+        "selection": CELL_MENU,
+    }
+);
+
+testParseAndStringify(
+    "/spreadsheet-id-123/spreadsheet-name-456/cell/A1/settings",
+    {
+        "spreadsheet-id": "spreadsheet-id-123",
+        "spreadsheet-name": SPREADSHEET_NAME,
+        "selection": CELL_SELECT,
+        "settings": SETTINGS_NOTHING,
     }
 );
 
@@ -669,7 +674,9 @@ testParseAndStringify(
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
-        "selection": CELL_RANGE,
+        "selection": new SpreadsheetCellSelectHistoryHashToken(
+            new SpreadsheetViewportSelection(CELL_RANGE)
+        ),
     }
 );
 
@@ -678,8 +685,12 @@ testParseAndStringify(
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
-        "selection": CELL_RANGE,
-        "selection-anchor": SpreadsheetViewportSelectionAnchor.TOP_LEFT
+        "selection": new SpreadsheetCellSelectHistoryHashToken(
+            new SpreadsheetViewportSelection(
+                CELL_RANGE,
+                SpreadsheetViewportSelectionAnchor.TOP_LEFT
+            )
+        )
     }
 );
 
@@ -688,8 +699,12 @@ testParseAndStringify(
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
-        "selection": CELL_RANGE,
-        "selection-anchor": SpreadsheetViewportSelectionAnchor.BOTTOM_RIGHT
+        "selection": new SpreadsheetCellSelectHistoryHashToken(
+            new SpreadsheetViewportSelection(
+                CELL_RANGE,
+                SpreadsheetViewportSelectionAnchor.BOTTOM_RIGHT
+            )
+        )
     }
 );
 
@@ -707,8 +722,12 @@ testParseAndStringify(
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
-        "selection": CELL_RANGE,
-        "selection-action": CELL_MENU,
+        "selection": new SpreadsheetCellMenuHistoryHashToken(
+            new SpreadsheetViewportSelection(
+                CELL_RANGE
+            ),
+            CONTEXT_MENU
+        ),
     }
 );
 
@@ -717,7 +736,7 @@ testParseAndStringify(
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
-        "selection": LABEL,
+        "selection": CELL_LABEL_SELECT,
     }
 );
 
@@ -726,8 +745,11 @@ testParseAndStringify(
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
-        "selection": LABEL,
-        "selection-action": CELL_FORMULA_LOAD_EDIT,
+        "selection": new SpreadsheetCellFormulaEditHistoryHashToken(
+            new SpreadsheetViewportSelection(
+                LABEL
+            ),
+        ),
     }
 );
 
@@ -736,8 +758,12 @@ testParseAndStringify(
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
-        "selection": LABEL,
-        "selection-action": new SpreadsheetFormulaSaveHistoryHashToken("ABC 123"),
+        "selection": new SpreadsheetCellFormulaSaveHistoryHashToken(
+            new SpreadsheetViewportSelection(
+                LABEL
+            ),
+            "ABC 123"
+        ),
     }
 );
 
@@ -822,7 +848,11 @@ testParseAndStringify(
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
-        "selection": SpreadsheetCellReference.parse("A2"),
+        "selection": new SpreadsheetCellSelectHistoryHashToken(
+            new SpreadsheetViewportSelection(
+                SpreadsheetCellReference.parse("A2")
+            )
+        ),
         "label": LABEL_EDIT,
     }
 );
@@ -859,7 +889,7 @@ testParseAndStringify(
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
-        "selection": CELL,
+        "selection": CELL_SELECT,
         "select": true,
     }
 );
@@ -869,7 +899,7 @@ testParseAndStringify(
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
-        "selection": COLUMN,
+        "selection": COLUMN_SELECT,
     }
 );
 
@@ -878,8 +908,7 @@ testParseAndStringify(
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
-        "selection": COLUMN,
-        "selection-action": COLUMN_ROW_CLEAR,
+        "selection": COLUMN_CLEAR,
     }
 );
 
@@ -888,8 +917,7 @@ testParseAndStringify(
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
-        "selection": COLUMN,
-        "selection-action": COLUMN_ROW_DELETE,
+        "selection": COLUMN_DELETE,
     }
 );
 
@@ -898,8 +926,11 @@ testParseAndStringify(
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
-        "selection": COLUMN_RANGE,
-        "selection-action": COLUMN_ROW_DELETE,
+        "selection": new SpreadsheetColumnOrRowDeleteHistoryHashToken(
+            new SpreadsheetViewportSelection(
+                COLUMN_RANGE
+            )
+        )
     }
 );
 
@@ -944,8 +975,7 @@ testParseAndStringify(
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
-        "selection": COLUMN_A,
-        "selection-action": COLUMN_ROW_FREEZE,
+        "selection": COLUMN_FREEZE,
     }
 );
 
@@ -954,8 +984,11 @@ testParseAndStringify(
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
-        "selection": COLUMN_RANGE_AC,
-        "selection-action": COLUMN_ROW_FREEZE,
+        "selection": new SpreadsheetColumnOrRowFreezeHistoryHashToken(
+            new SpreadsheetViewportSelection(
+                COLUMN_RANGE_AC
+            )
+        )
     }
 );
 
@@ -982,8 +1015,7 @@ testParseAndStringify(
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
-        "selection": COLUMN,
-        "selection-action": HIDDEN_FALSE,
+        "selection": COLUMN_HIDDEN_FALSE,
     }
 );
 
@@ -992,8 +1024,7 @@ testParseAndStringify(
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
-        "selection": COLUMN,
-        "selection-action": HIDDEN_TRUE,
+        "selection": COLUMN_HIDDEN_TRUE,
     }
 );
 
@@ -1026,8 +1057,12 @@ testParseAndStringify(
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
-        "selection": COLUMN,
-        "selection-action": new SpreadsheetColumnOrRowInsertAfterHistoryHashToken(123),
+        "selection": new SpreadsheetColumnOrRowInsertAfterHistoryHashToken(
+            new SpreadsheetViewportSelection(
+                COLUMN
+            ),
+            123
+        ),
     }
 );
 
@@ -1060,8 +1095,12 @@ testParseAndStringify(
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
-        "selection": COLUMN,
-        "selection-action": new SpreadsheetColumnOrRowInsertBeforeHistoryHashToken(123),
+        "selection": new SpreadsheetColumnOrRowInsertBeforeHistoryHashToken(
+            new SpreadsheetViewportSelection(
+                COLUMN
+            ),
+            123
+        ),
     }
 );
 
@@ -1079,8 +1118,7 @@ testParseAndStringify(
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
-        "selection": COLUMN,
-        "selection-action": COLUMN_ROW_MENU,
+        "selection": COLUMN_MENU,
     }
 );
 
@@ -1089,8 +1127,7 @@ testParseAndStringify(
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
-        "selection": COLUMN_A,
-        "selection-action": COLUMN_ROW_UNFREEZE,
+        "selection": COLUMN_UNFREEZE,
     }
 );
 
@@ -1099,8 +1136,11 @@ testParseAndStringify(
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
-        "selection": COLUMN_RANGE_AC,
-        "selection-action": COLUMN_ROW_UNFREEZE,
+        "selection": new SpreadsheetColumnOrRowUnFreezeHistoryHashToken(
+            new SpreadsheetViewportSelection(
+                COLUMN_RANGE_AC
+            )
+        )
     }
 );
 
@@ -1123,20 +1163,28 @@ testParseAndStringify(
 );
 
 testParseAndStringify(
-    "/spreadsheet-id-123/spreadsheet-name-456/column/B:C",
-    {
-        "spreadsheet-id": "spreadsheet-id-123",
-        "spreadsheet-name": SPREADSHEET_NAME,
-        "selection": COLUMN_RANGE,
-    }
-);
-
-testParseAndStringify(
     "/spreadsheet-id-123/spreadsheet-name-456/column/B:B",
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
-        "selection": COLUMN,
+        "selection": new SpreadsheetColumnOrRowSelectHistoryHashToken(
+            new SpreadsheetViewportSelection(
+                SpreadsheetColumnReference.parse("B")
+            )
+        ),
+    }
+);
+
+testParseAndStringify(
+    "/spreadsheet-id-123/spreadsheet-name-456/column/B:C",
+    {
+        "spreadsheet-id": "spreadsheet-id-123",
+        "spreadsheet-name": SPREADSHEET_NAME,
+        "selection": new SpreadsheetColumnOrRowSelectHistoryHashToken(
+            new SpreadsheetViewportSelection(
+                COLUMN_RANGE
+            )
+        ),
     }
 );
 
@@ -1145,8 +1193,12 @@ testParseAndStringify(
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
-        "selection": COLUMN_RANGE,
-        "selection-anchor": SpreadsheetViewportSelectionAnchor.LEFT
+        "selection": new SpreadsheetColumnOrRowSelectHistoryHashToken(
+            new SpreadsheetViewportSelection(
+                COLUMN_RANGE,
+                SpreadsheetViewportSelectionAnchor.LEFT
+            )
+        )
     }
 );
 
@@ -1155,8 +1207,12 @@ testParseAndStringify(
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
-        "selection": COLUMN_RANGE,
-        "selection-anchor": SpreadsheetViewportSelectionAnchor.RIGHT
+        "selection": new SpreadsheetColumnOrRowSelectHistoryHashToken(
+            new SpreadsheetViewportSelection(
+                COLUMN_RANGE,
+                SpreadsheetViewportSelectionAnchor.RIGHT
+            )
+        )
     }
 );
 
@@ -1165,8 +1221,11 @@ testParseAndStringify(
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
-        "selection": COLUMN_RANGE,
-        "selection-action": COLUMN_ROW_CLEAR,
+        "selection": new SpreadsheetColumnOrRowClearHistoryHashToken(
+            new SpreadsheetViewportSelection(
+                COLUMN_RANGE
+            )
+        ),
     }
 );
 
@@ -1175,8 +1234,11 @@ testParseAndStringify(
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
-        "selection": COLUMN_RANGE,
-        "selection-action": COLUMN_ROW_DELETE,
+        "selection": new SpreadsheetColumnOrRowDeleteHistoryHashToken(
+            new SpreadsheetViewportSelection(
+                COLUMN_RANGE
+            )
+        ),
     }
 );
 
@@ -1185,8 +1247,12 @@ testParseAndStringify(
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
-        "selection": COLUMN_RANGE,
-        "selection-action": new SpreadsheetColumnOrRowInsertAfterHistoryHashToken(1),
+        "selection": new SpreadsheetColumnOrRowInsertAfterHistoryHashToken(
+            new SpreadsheetViewportSelection(
+                COLUMN_RANGE
+            ),
+            1
+        ),
     }
 );
 
@@ -1195,8 +1261,12 @@ testParseAndStringify(
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
-        "selection": COLUMN_RANGE,
-        "selection-action": new SpreadsheetColumnOrRowInsertBeforeHistoryHashToken(2),
+        "selection": new SpreadsheetColumnOrRowInsertBeforeHistoryHashToken(
+            new SpreadsheetViewportSelection(
+                COLUMN_RANGE
+            ),
+            2
+        ),
     }
 );
 
@@ -1205,8 +1275,12 @@ testParseAndStringify(
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
-        "selection": COLUMN_RANGE,
-        "selection-action": COLUMN_ROW_MENU,
+        "selection": new SpreadsheetColumnOrRowMenuHistoryHashToken(
+            new SpreadsheetViewportSelection(
+                COLUMN_RANGE
+            ),
+            CONTEXT_MENU
+        ),
     }
 );
 
@@ -1215,7 +1289,7 @@ testParseAndStringify(
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
-        "selection": COLUMN,
+        "selection": COLUMN_SELECT,
         "select": true,
     }
 );
@@ -1225,7 +1299,7 @@ testParseAndStringify(
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
-        "selection": ROW,
+        "selection": ROW_SELECT,
     }
 );
 
@@ -1234,8 +1308,7 @@ testParseAndStringify(
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
-        "selection": ROW,
-        "selection-action": COLUMN_ROW_CLEAR,
+        "selection": ROW_CLEAR,
     }
 );
 
@@ -1244,8 +1317,7 @@ testParseAndStringify(
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
-        "selection": ROW,
-        "selection-action": COLUMN_ROW_DELETE,
+        "selection": ROW_DELETE
     }
 );
 
@@ -1254,8 +1326,7 @@ testParseAndStringify(
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
-        "selection": ROW_1,
-        "selection-action": COLUMN_ROW_FREEZE,
+        "selection": ROW_FREEZE,
     }
 );
 
@@ -1273,8 +1344,11 @@ testParseAndStringify(
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
-        "selection": ROW_RANGE_1_3,
-        "selection-action": COLUMN_ROW_FREEZE,
+        "selection": new SpreadsheetColumnOrRowFreezeHistoryHashToken(
+            new SpreadsheetViewportSelection(
+                SpreadsheetRowReferenceRange.parse("1:3")
+            )
+        )
     }
 );
 
@@ -1292,8 +1366,11 @@ testParseAndStringify(
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
-        "selection": ROW_RANGE,
-        "selection-action": COLUMN_ROW_CLEAR,
+        "selection": new SpreadsheetColumnOrRowClearHistoryHashToken(
+            new SpreadsheetViewportSelection(
+                ROW_RANGE
+            )
+        )
     }
 );
 
@@ -1302,8 +1379,11 @@ testParseAndStringify(
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
-        "selection": ROW_RANGE,
-        "selection-action": COLUMN_ROW_DELETE,
+        "selection": new SpreadsheetColumnOrRowDeleteHistoryHashToken(
+            new SpreadsheetViewportSelection(
+                ROW_RANGE
+            )
+        ),
     }
 );
 
@@ -1330,8 +1410,7 @@ testParseAndStringify(
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
-        "selection": ROW,
-        "selection-action": HIDDEN_FALSE,
+        "selection": ROW_HIDDEN_FALSE,
     }
 );
 
@@ -1340,8 +1419,7 @@ testParseAndStringify(
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
-        "selection": ROW,
-        "selection-action": HIDDEN_TRUE,
+        "selection": ROW_HIDDEN_TRUE,
     }
 );
 
@@ -1376,8 +1454,10 @@ testParseAndStringify(
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
-        "selection": ROW,
-        "selection-action": new SpreadsheetColumnOrRowInsertAfterHistoryHashToken(123),
+        "selection": new SpreadsheetColumnOrRowInsertAfterHistoryHashToken(
+            new SpreadsheetViewportSelection(ROW),
+            123
+        ),
     }
 );
 
@@ -1447,8 +1527,10 @@ testParseAndStringify(
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
-        "selection": ROW,
-        "selection-action": new SpreadsheetColumnOrRowInsertBeforeHistoryHashToken(123),
+        "selection": new SpreadsheetColumnOrRowInsertBeforeHistoryHashToken(
+            new SpreadsheetViewportSelection(ROW),
+            123
+        ),
     }
 );
 
@@ -1493,8 +1575,7 @@ testParseAndStringify(
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
-        "selection": ROW,
-        "selection-action": COLUMN_ROW_MENU,
+        "selection": ROW_MENU,
     }
 );
 
@@ -1503,8 +1584,7 @@ testParseAndStringify(
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
-        "selection": ROW_1,
-        "selection-action": COLUMN_ROW_UNFREEZE,
+        "selection": ROW_UNFREEZE,
     }
 );
 
@@ -1522,8 +1602,11 @@ testParseAndStringify(
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
-        "selection": ROW_RANGE_1_3,
-        "selection-action": COLUMN_ROW_UNFREEZE,
+        "selection": new SpreadsheetColumnOrRowUnFreezeHistoryHashToken(
+            new SpreadsheetViewportSelection(
+                ROW_RANGE_1_3
+            )
+        )
     }
 );
 
@@ -1541,7 +1624,11 @@ testParseAndStringify(
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
-        "selection": ROW_RANGE,
+        "selection": new SpreadsheetColumnOrRowSelectHistoryHashToken(
+            new SpreadsheetViewportSelection(
+                ROW_RANGE
+            )
+        ),
     }
 );
 
@@ -1550,7 +1637,7 @@ testParseAndStringify(
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
-        "selection": ROW,
+        "selection": ROW_SELECT,
     }
 );
 
@@ -1559,8 +1646,12 @@ testParseAndStringify(
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
-        "selection": ROW_RANGE,
-        "selection-anchor": SpreadsheetViewportSelectionAnchor.TOP
+        "selection": new SpreadsheetColumnOrRowSelectHistoryHashToken(
+            new SpreadsheetViewportSelection(
+                ROW_RANGE,
+                SpreadsheetViewportSelectionAnchor.TOP
+            )
+        )
     }
 );
 
@@ -1569,8 +1660,12 @@ testParseAndStringify(
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
-        "selection": ROW_RANGE,
-        "selection-anchor": SpreadsheetViewportSelectionAnchor.BOTTOM
+        "selection": new SpreadsheetColumnOrRowSelectHistoryHashToken(
+            new SpreadsheetViewportSelection(
+                ROW_RANGE,
+                SpreadsheetViewportSelectionAnchor.BOTTOM
+            )
+        )
     }
 );
 
@@ -1579,8 +1674,11 @@ testParseAndStringify(
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
-        "selection": ROW_RANGE,
-        "selection-action": COLUMN_ROW_DELETE,
+        "selection": new SpreadsheetColumnOrRowDeleteHistoryHashToken(
+            new SpreadsheetViewportSelection(
+                ROW_RANGE
+            )
+        )
     }
 );
 
@@ -1589,8 +1687,10 @@ testParseAndStringify(
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
-        "selection": ROW_RANGE,
-        "selection-action": new SpreadsheetColumnOrRowInsertAfterHistoryHashToken(1),
+        "selection": new SpreadsheetColumnOrRowInsertAfterHistoryHashToken(
+            new SpreadsheetViewportSelection(ROW_RANGE),
+            1
+        ),
     }
 );
 
@@ -1599,8 +1699,10 @@ testParseAndStringify(
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
-        "selection": ROW_RANGE,
-        "selection-action": new SpreadsheetColumnOrRowInsertBeforeHistoryHashToken(2),
+        "selection": new SpreadsheetColumnOrRowInsertBeforeHistoryHashToken(
+            new SpreadsheetViewportSelection(ROW_RANGE),
+            2
+        ),
     }
 );
 
@@ -1609,8 +1711,12 @@ testParseAndStringify(
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
-        "selection": ROW_RANGE,
-        "selection-action": COLUMN_ROW_MENU,
+        "selection": new SpreadsheetColumnOrRowMenuHistoryHashToken(
+            new SpreadsheetViewportSelection(
+                ROW_RANGE
+            ),
+            CONTEXT_MENU
+        )
     }
 );
 
@@ -1628,7 +1734,7 @@ testParseAndStringify(
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
-        "selection": ROW,
+        "selection": ROW_SELECT,
         "select": true,
     }
 );
@@ -1710,8 +1816,7 @@ testParseAndStringify(
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
-        "selection": CELL,
-        "selection-action": CELL_FREEZE,
+        "selection": CELL_FREEZE,
     }
 );
 
@@ -1729,8 +1834,9 @@ testParseAndStringify(
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
-        "selection": CELL_RANGE_A1C3,
-        "selection-action": CELL_FREEZE,
+        "selection": new SpreadsheetCellFreezeHistoryHashToken(
+            new SpreadsheetViewportSelection(CELL_RANGE_A1C3)
+        )
     }
 );
 
@@ -1748,8 +1854,7 @@ testParseAndStringify(
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
-        "selection": CELL,
-        "selection-action": CELL_UNFREEZE,
+        "selection": CELL_UNFREEZE,
     }
 );
 
@@ -1767,8 +1872,11 @@ testParseAndStringify(
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
-        "selection": CELL_RANGE_A1C3,
-        "selection-action": CELL_UNFREEZE,
+        "selection": new SpreadsheetCellUnFreezeHistoryHashToken(
+            new SpreadsheetViewportSelection(
+                CELL_RANGE_A1C3
+            )
+        )
     }
 );
 
@@ -1809,8 +1917,7 @@ function testParseAndStringify(hash, expected, expectedError) {
 
         expect(SpreadsheetHistoryHash.parse(string, e => {
             throw new Error(e)
-        }))
-            .toStrictEqual(expected);
+        })).toStrictEqual(expected);
     });
 }
 
@@ -1967,7 +2074,7 @@ testMerge(
 testMerge(
     "/123abc/Untitled456/name",
     {
-        "selection": SpreadsheetCellReference.parse("A1")
+        "selection": CELL_SELECT
     },
     "/123abc/Untitled456/cell/A1"
 );
@@ -1983,8 +2090,7 @@ testMerge(
 testMerge(
     "/123abc/Untitled456/name",
     {
-        "selection": SpreadsheetCellReference.parse("A1"),
-        "selection-action": CELL_FORMULA_LOAD_EDIT,
+        "selection": CELL_FORMULA_LOAD_EDIT,
     },
     "/123abc/Untitled456/cell/A1/formula"
 );
@@ -2016,25 +2122,25 @@ testMerge(
 testMerge(
     "/123abc/Untitled456/cell/A1",
     {
-        "selection-action": null,
-    },
-    "/123abc/Untitled456/cell/A1"
-);
-
-testMerge(
-    "/123abc/Untitled456/cell/A1",
-    {
-        "selection-action": CELL_FORMULA_LOAD_EDIT,
-    },
-    "/123abc/Untitled456/cell/A1/formula"
-);
-
-testMerge(
-    "/123abc/Untitled456/cell/A1",
-    {
-        "selection": SpreadsheetCellReference.parse("B2"),
+        "selection": new SpreadsheetCellSelectHistoryHashToken(
+            new SpreadsheetViewportSelection(
+                SpreadsheetCellReference.parse("B2")
+            )
+        )
     },
     "/123abc/Untitled456/cell/B2"
+);
+
+testMerge(
+    "/123abc/Untitled456/cell/B2",
+    {
+        "selection": new SpreadsheetCellFormulaEditHistoryHashToken(
+            new SpreadsheetViewportSelection(
+                SpreadsheetCellReference.parse("C3")
+            )
+        )
+    },
+    "/123abc/Untitled456/cell/C3/formula"
 );
 
 testMerge(
@@ -2044,27 +2150,15 @@ testMerge(
 );
 
 testMerge(
-    "/123abc/Untitled456/cell/A1",
-    {
-        "selection": SpreadsheetCellReference.parse("B2"),
-    },
-    "/123abc/Untitled456/cell/B2"
-);
-
-testMerge(
     "/123abc/Untitled456/cell/A1/formula",
     {
-        "selection": SpreadsheetCellReference.parse("B2"),
+        "selection": new SpreadsheetCellFormulaEditHistoryHashToken(
+            new SpreadsheetViewportSelection(
+                SpreadsheetCellReference.parse("B2")
+            )
+        )
     },
     "/123abc/Untitled456/cell/B2/formula"
-);
-
-testMerge(
-    "/123abc/Untitled456/cell/A1/formula",
-    {
-        "selection-action": null,
-    },
-    "/123abc/Untitled456/cell/A1"
 );
 
 testMerge(
@@ -2073,22 +2167,6 @@ testMerge(
         "selection": null,
     },
     "/123abc/Untitled456"
-);
-
-testMerge(
-    "/123abc/Untitled456/cell/A1/formula",
-    {
-        "selection-action": null,
-    },
-    "/123abc/Untitled456/cell/A1"
-);
-
-testMerge(
-    "/123abc/Untitled456/cell/A2",
-    {
-        "spreadsheet-name-edit": null,
-    },
-    "/123abc/Untitled456/cell/A2"
 );
 
 testMerge(
@@ -2118,7 +2196,11 @@ testMerge(
 testMerge(
     "/123abc/Untitled456/cell/A1",
     {
-        "selection": CELL_RANGE,
+        "selection": new SpreadsheetCellSelectHistoryHashToken(
+            new SpreadsheetViewportSelection(
+                CELL_RANGE
+            )
+        )
     },
     "/123abc/Untitled456/cell/C3:D4"
 );
@@ -2126,97 +2208,19 @@ testMerge(
 testMerge(
     "/123abc/Untitled456/cell/A1/formula",
     {
-        "selection": CELL_RANGE,
-        "selection-action": null,
+        "selection": new SpreadsheetCellSelectHistoryHashToken(
+            new SpreadsheetViewportSelection(
+                CELL_RANGE
+            )
+        )
     },
     "/123abc/Untitled456/cell/C3:D4"
-);
-
-testMerge(
-    "/123abc/Untitled456/cell/A1/freeze",
-    {
-        "selection": CELL,
-    },
-    "/123abc/Untitled456/cell/A1/freeze"
-);
-
-testMerge(
-    "/123abc/Untitled456/cell/A1/freeze",
-    {
-        "selection": SpreadsheetCellReference.parse("A2"),
-    },
-    "/123abc/Untitled456"
-);
-
-testMerge(
-    "/123abc/Untitled456/cell/A1:B2/freeze",
-    {
-        "selection": CELL_RANGE_A1C3,
-    },
-    "/123abc/Untitled456/cell/A1:C3/freeze"
-);
-
-testMerge(
-    "/123abc/Untitled456/cell/A1:B2/freeze",
-    {
-        "selection": SpreadsheetCellRange.parse("B2:C3"),
-    },
-    "/123abc/Untitled456"
-);
-
-testMerge(
-    "/123abc/Untitled456/cell/A1",
-    {
-        "selection-action": CELL_MENU,
-    },
-    "/123abc/Untitled456/cell/A1/menu"
-);
-
-testMerge(
-    "/123abc/Untitled456/cell/A1/unfreeze",
-    {
-        "selection": CELL,
-    },
-    "/123abc/Untitled456/cell/A1/unfreeze"
-);
-
-testMerge(
-    "/123abc/Untitled456/cell/A1/unfreeze",
-    {
-        "selection": SpreadsheetCellReference.parse("A2"),
-    },
-    "/123abc/Untitled456"
-);
-
-testMerge(
-    "/123abc/Untitled456/cell/A1:B2/unfreeze",
-    {
-        "selection": CELL_RANGE_A1C3,
-    },
-    "/123abc/Untitled456/cell/A1:C3/unfreeze"
-);
-
-testMerge(
-    "/123abc/Untitled456/cell/A1:B2/unfreeze",
-    {
-        "selection": SpreadsheetCellRange.parse("B2:C3"),
-    },
-    "/123abc/Untitled456"
 );
 
 testMerge(
     "/123abc/Untitled456/cell/LABEL123",
     {},
     "/123abc/Untitled456/cell/LABEL123"
-);
-
-testMerge(
-    "/123abc/Untitled456/cell/A1",
-    {
-        "selection": CELL_RANGE,
-        "selection-anchor": SpreadsheetViewportSelectionAnchor.TOP_LEFT,
-    },
-    "/123abc/Untitled456/cell/C3:D4/top-left"
 );
 
 // label.................................................................................................................
@@ -2254,7 +2258,7 @@ testMerge(
 testMerge(
     "/123abc/Untitled456",
     {
-        selection: COLUMN,
+        selection: COLUMN_SELECT,
     },
     "/123abc/Untitled456/column/B"
 );
@@ -2262,7 +2266,11 @@ testMerge(
 testMerge(
     "/123abc/Untitled456/column/B",
     {
-        selection: COLUMN_RANGE,
+        selection: new SpreadsheetColumnOrRowSelectHistoryHashToken(
+            new SpreadsheetViewportSelection(
+                COLUMN_RANGE
+            )
+        ),
     },
     "/123abc/Untitled456/column/B:C"
 );
@@ -2270,8 +2278,12 @@ testMerge(
 testMerge(
     "/123abc/Untitled456/column/B",
     {
-        "selection": COLUMN_RANGE,
-        "selection-anchor": SpreadsheetViewportSelectionAnchor.LEFT,
+        "selection": new SpreadsheetColumnOrRowSelectHistoryHashToken(
+            new SpreadsheetViewportSelection(
+                COLUMN_RANGE,
+                SpreadsheetViewportSelectionAnchor.LEFT
+            )
+        )
     },
     "/123abc/Untitled456/column/B:C/left"
 );
@@ -2279,7 +2291,7 @@ testMerge(
 testMerge(
     "/123abc/Untitled456/column/B:D",
     {
-        selection: COLUMN,
+        selection: COLUMN_SELECT,
     },
     "/123abc/Untitled456/column/B"
 );
@@ -2287,7 +2299,7 @@ testMerge(
 testMerge(
     "/123abc/Untitled456/column/B",
     {
-        "selection-action": COLUMN_ROW_DELETE,
+        "selection": COLUMN_DELETE,
     },
     "/123abc/Untitled456/column/B/delete"
 );
@@ -2295,7 +2307,7 @@ testMerge(
 testMerge(
     "/123abc/Untitled456/column/A",
     {
-        "selection-action": COLUMN_ROW_FREEZE,
+        "selection": COLUMN_FREEZE,
     },
     "/123abc/Untitled456/column/A/freeze"
 );
@@ -2303,7 +2315,11 @@ testMerge(
 testMerge(
     "/123abc/Untitled456/column/A:B",
     {
-        "selection-action": COLUMN_ROW_FREEZE,
+        "selection": new SpreadsheetColumnOrRowFreezeHistoryHashToken(
+            new SpreadsheetViewportSelection(
+                SpreadsheetColumnReferenceRange.parse("A:B")
+            )
+        ),
     },
     "/123abc/Untitled456/column/A:B/freeze"
 );
@@ -2311,15 +2327,7 @@ testMerge(
 testMerge(
     "/123abc/Untitled456/column/B",
     {
-        "selection-action": COLUMN_ROW_FREEZE,
-    },
-    "/123abc/Untitled456"
-);
-
-testMerge(
-    "/123abc/Untitled456/column/B",
-    {
-        "selection-action": HIDDEN_TRUE,
+        "selection": COLUMN_HIDDEN_TRUE,
     },
     "/123abc/Untitled456/column/B/hidden/true"
 );
@@ -2327,33 +2335,48 @@ testMerge(
 testMerge(
     "/123abc/Untitled456/column/B",
     {
-        "selection-action": COLUMN_ROW_MENU,
+        "selection": COLUMN_MENU,
     },
     "/123abc/Untitled456/column/B/menu"
 );
 
 testMerge(
-    "/123abc/Untitled456/column/C:D",
+    "/123abc/Untitled456/column/B:C",
     {
-        "selection-action": COLUMN_ROW_DELETE,
+        "selection": new SpreadsheetColumnOrRowDeleteHistoryHashToken(
+            new SpreadsheetViewportSelection(
+                COLUMN_RANGE
+            )
+        ),
     },
-    "/123abc/Untitled456/column/C:D/delete"
+    "/123abc/Untitled456/column/B:C/delete"
 );
 
 testMerge(
-    "/123abc/Untitled456/column/C:D",
+    "/123abc/Untitled456/column/B:C",
     {
-        "selection-action": HIDDEN_TRUE,
+        "selection": new SpreadsheetColumnOrRowSaveHistoryHashToken(
+            new SpreadsheetViewportSelection(
+                COLUMN_RANGE
+            ),
+            "hidden",
+            true
+        ),
     },
-    "/123abc/Untitled456/column/C:D/hidden/true"
+    "/123abc/Untitled456/column/B:C/hidden/true"
 );
 
 testMerge(
-    "/123abc/Untitled456/column/C:D",
+    "/123abc/Untitled456/column/B:C",
     {
-        "selection-action": COLUMN_ROW_MENU,
+        "selection": new SpreadsheetColumnOrRowMenuHistoryHashToken(
+            new SpreadsheetViewportSelection(
+                COLUMN_RANGE
+            ),
+            CONTEXT_MENU
+        ),
     },
-    "/123abc/Untitled456/column/C:D/menu"
+    "/123abc/Untitled456/column/B:C/menu"
 );
 
 // row...........................................................................................................
@@ -2361,7 +2384,7 @@ testMerge(
 testMerge(
     "/123abc/Untitled456",
     {
-        selection: ROW,
+        selection: ROW_SELECT,
     },
     "/123abc/Untitled456/row/2"
 );
@@ -2369,7 +2392,11 @@ testMerge(
 testMerge(
     "/123abc/Untitled456/row/2",
     {
-        selection: ROW_RANGE,
+        selection: new SpreadsheetColumnOrRowSelectHistoryHashToken(
+            new SpreadsheetViewportSelection(
+                ROW_RANGE
+            )
+        ),
     },
     "/123abc/Untitled456/row/2:3"
 );
@@ -2377,8 +2404,12 @@ testMerge(
 testMerge(
     "/123abc/Untitled456/row/2",
     {
-        "selection": ROW_RANGE,
-        "selection-anchor": SpreadsheetViewportSelectionAnchor.TOP,
+        "selection": new SpreadsheetColumnOrRowSelectHistoryHashToken(
+            new SpreadsheetViewportSelection(
+                ROW_RANGE,
+                SpreadsheetViewportSelectionAnchor.TOP
+            )
+        )
     },
     "/123abc/Untitled456/row/2:3/top"
 );
@@ -2386,7 +2417,7 @@ testMerge(
 testMerge(
     "/123abc/Untitled456/row/2:3",
     {
-        selection: ROW,
+        selection: ROW_SELECT,
     },
     "/123abc/Untitled456/row/2"
 );
@@ -2394,39 +2425,47 @@ testMerge(
 testMerge(
     "/123abc/Untitled456/row/45",
     {
-        "selection-action": COLUMN_ROW_DELETE,
+        "selection": ROW_DELETE,
     },
-    "/123abc/Untitled456/row/45/delete"
+    "/123abc/Untitled456/row/2/delete"
 );
 
 testMerge(
     "/123abc/Untitled456/row/45",
     {
-        "selection-action": COLUMN_ROW_FREEZE,
-    },
-    "/123abc/Untitled456"
-);
-
-testMerge(
-    "/123abc/Untitled456/row/45:67",
-    {
-        "selection-action": COLUMN_ROW_FREEZE,
-    },
-    "/123abc/Untitled456"
-);
-
-testMerge(
-    "/123abc/Untitled456/row/1",
-    {
-        "selection-action": COLUMN_ROW_FREEZE,
+        "selection": ROW_FREEZE,
     },
     "/123abc/Untitled456/row/1/freeze"
 );
 
 testMerge(
-    "/123abc/Untitled456/row/1:2",
+    "/123abc/Untitled456/row/45:67",
     {
-        "selection-action": COLUMN_ROW_FREEZE,
+        "selection": new SpreadsheetColumnOrRowFreezeHistoryHashToken(
+            new SpreadsheetViewportSelection(
+                SpreadsheetRowReferenceRange.parse("1:23")
+            )
+        ),
+    },
+    "/123abc/Untitled456/row/1:23/freeze"
+);
+
+testMerge(
+    "/123abc/Untitled456/row/1",
+    {
+        "selection": ROW_FREEZE,
+    },
+    "/123abc/Untitled456/row/1/freeze"
+);
+
+testMerge(
+    "/123abc/Untitled456/row/1:23",
+    {
+        "selection": new SpreadsheetColumnOrRowFreezeHistoryHashToken(
+            new SpreadsheetViewportSelection(
+                SpreadsheetRowReferenceRange.parse("1:2")
+            )
+        )
     },
     "/123abc/Untitled456/row/1:2/freeze"
 );
@@ -2434,23 +2473,23 @@ testMerge(
 testMerge(
     "/123abc/Untitled456/row/45",
     {
-        "selection-action": COLUMN_ROW_MENU,
+        "selection": ROW_MENU,
     },
-    "/123abc/Untitled456/row/45/menu"
+    "/123abc/Untitled456/row/2/menu"
 );
 
 testMerge(
     "/123abc/Untitled456/row/45:67",
     {
-        "selection-action": COLUMN_ROW_DELETE,
+        "selection": ROW_DELETE,
     },
-    "/123abc/Untitled456/row/45:67/delete"
+    "/123abc/Untitled456/row/2/delete"
 );
 
 testMerge(
     "/123abc/Untitled456/row/2",
     {
-        "selection-action": HIDDEN_TRUE,
+        "selection": ROW_HIDDEN_TRUE,
     },
     "/123abc/Untitled456/row/2/hidden/true"
 );
@@ -2458,15 +2497,20 @@ testMerge(
 testMerge(
     "/123abc/Untitled456/row/45:67",
     {
-        "selection-action": HIDDEN_TRUE,
+        "selection": ROW_HIDDEN_TRUE,
     },
-    "/123abc/Untitled456/row/45:67/hidden/true"
+    "/123abc/Untitled456/row/2/hidden/true"
 );
 
 testMerge(
     "/123abc/Untitled456/row/45:67",
     {
-        "selection-action": COLUMN_ROW_MENU,
+        "selection": new SpreadsheetColumnOrRowMenuHistoryHashToken(
+            new SpreadsheetViewportSelection(
+                SpreadsheetRowReferenceRange.parse("45:67"),
+            ),
+            CONTEXT_MENU
+        ),
     },
     "/123abc/Untitled456/row/45:67/menu"
 );
@@ -2476,7 +2520,9 @@ testMerge(
 testMerge(
     "/123abc456/Untitled456",
     {
-        "label": new SpreadsheetLabelMappingEditHistoryHashToken(SpreadsheetLabelName.parse("LABEL123")),
+        "label": new SpreadsheetLabelMappingEditHistoryHashToken(
+            SpreadsheetLabelName.parse("LABEL123")
+        ),
     },
     "/123abc456/Untitled456/label/LABEL123"
 );
@@ -2688,25 +2734,49 @@ testMerge(
 testMerge(
     "/123abc/Untitled456/cell/A1",
     {
-        "selection-action": CELL_DELETE,
+        "selection": CELL_DELETE,
     },
     "/123abc/Untitled456/cell/A1/delete"
 );
 
 testMerge(
-    "/123abc/Untitled456/cell/A1/delete",
+    "/123abc/Untitled456/cell/A123",
     {
         "settings": SpreadsheetSettingsSelectHistoryHashToken.NOTHING,
     },
-    "/123abc/Untitled456/cell/A1/settings"
+    "/123abc/Untitled456/cell/A123/settings"
+);
+
+testMerge(
+    "/123abc/Untitled456/cell/A124/delete",
+    {
+        "settings": SpreadsheetSettingsSelectHistoryHashToken.NOTHING,
+    },
+    "/123abc/Untitled456/cell/A124/delete"
+);
+
+testMerge(
+    "/123abc/Untitled456/column/ABC",
+    {
+        "settings": SpreadsheetSettingsSelectHistoryHashToken.NOTHING,
+    },
+    "/123abc/Untitled456/column/ABC/settings"
+);
+
+testMerge(
+    "/123abc/Untitled456/column/ABC/delete",
+    {
+        "settings": SpreadsheetSettingsSelectHistoryHashToken.NOTHING,
+    },
+    "/123abc/Untitled456/column/ABC/delete"
 );
 
 testMerge(
     "/123abc/Untitled456",
     {
-        "selection-action": CELL_FORMULA_LOAD_EDIT,
+        "selection": CELL_FORMULA_LOAD_EDIT,
     },
-    "/123abc/Untitled456"
+    "/123abc/Untitled456/cell/A1/formula"
 );
 
 function testMerge(hash, update, expected) {
@@ -2747,8 +2817,8 @@ test("spreadsheetIdAndName", () => {
             {
                 "spreadsheet-id": ID,
                 "spreadsheet-name": SPREADSHEET_NAME,
-                "selection": CELL,
-                "selection-action": CELL_FORMULA_LOAD_EDIT,
+                "select": CELL_SELECT,
+                "selection": CELL_FORMULA_LOAD_EDIT,
             }
         )
     ).toStrictEqual({

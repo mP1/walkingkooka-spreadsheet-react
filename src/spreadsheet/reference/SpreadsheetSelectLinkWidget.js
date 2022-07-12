@@ -35,7 +35,7 @@ export default class SpreadsheetSelectLinkWidget extends SpreadsheetHistoryAware
 
         return {
             target: '#' + this.props.history.mergeAndStringify(tokens),
-            cell: tokens[SpreadsheetHistoryHashTokens.SELECTION],
+            selection: tokens[SpreadsheetHistoryHashTokens.SELECTION],
         };
     }
 
@@ -44,10 +44,10 @@ export default class SpreadsheetSelectLinkWidget extends SpreadsheetHistoryAware
     }
 
     render() {
-        const {cell, target} = this.state;
+        const {selection, target} = this.state;
 
         return <Link id={SpreadsheetSelectLinkWidget.SELECT_LINK_ID}
-                     disabled={!cell}
+                     disabled={!Boolean(selection)}
                      href={target}
                      style={{
                          display: "inline-block",
@@ -56,7 +56,7 @@ export default class SpreadsheetSelectLinkWidget extends SpreadsheetHistoryAware
                          paddingTop: "2px",
                          paddingBottom: "2px",
                      }}>{
-            cell ? cell.toString() : "Go"
+            selection ? selection.viewportSelection().selection().toString() : "Go"
         }</Link>
     }
 }

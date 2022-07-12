@@ -10,8 +10,11 @@ import Preconditions from "../Preconditions.js";
 import PropTypes from "prop-types";
 import React from 'react';
 import Slider from "@mui/material/Slider";
+import selectHistoryHashToken from "./history/selectHistoryHashToken.js";
 import SpreadsheetCell from "./SpreadsheetCell.js";
 import SpreadsheetCellColumnOrRowParse from "./reference/SpreadsheetCellColumnOrRowParse.js";
+import SpreadsheetCellFormulaEditHistoryHashToken from "./history/SpreadsheetCellFormulaEditHistoryHashToken.js";
+import SpreadsheetCellFormulaHistoryHashToken from "./history/SpreadsheetCellFormulaHistoryHashToken.js";
 import SpreadsheetCellMenuHistoryHashToken from "./history/SpreadsheetCellMenuHistoryHashToken.js";
 import SpreadsheetCellRange from "./reference/SpreadsheetCellRange.js";
 import SpreadsheetCellReference from "./reference/SpreadsheetCellReference.js";
@@ -25,11 +28,8 @@ import SpreadsheetColumnReferenceRange from "./reference/SpreadsheetColumnRefere
 import SpreadsheetContextMenu from "../widget/SpreadsheetContextMenu.js";
 import SpreadsheetDelta from "./engine/SpreadsheetDelta.js";
 import SpreadsheetFormula from "./SpreadsheetFormula.js";
-import SpreadsheetFormulaEditHistoryHashToken from "./history/SpreadsheetFormulaEditHistoryHashToken.js";
-import SpreadsheetFormulaHistoryHashToken from "./history/SpreadsheetFormulaHistoryHashToken.js";
 import SpreadsheetHistoryAwareStateWidget from "./history/SpreadsheetHistoryAwareStateWidget.js";
 import SpreadsheetHistoryHash from "./history/SpreadsheetHistoryHash.js";
-import SpreadsheetHistoryHashToken from "./history/SpreadsheetHistoryHashToken.js";
 import SpreadsheetHistoryHashTokens from "./history/SpreadsheetHistoryHashTokens.js";
 import SpreadsheetLabelName from "./reference/SpreadsheetLabelName.js";
 import SpreadsheetMessenger from "./message/SpreadsheetMessenger.js";
@@ -38,9 +38,7 @@ import SpreadsheetMetadata from "./meta/SpreadsheetMetadata.js";
 import SpreadsheetReferenceKind from "./reference/SpreadsheetReferenceKind.js";
 import SpreadsheetRowReference from "./reference/SpreadsheetRowReference.js";
 import SpreadsheetRowReferenceRange from "./reference/SpreadsheetRowReferenceRange.js";
-import SpreadsheetSelection from "./reference/SpreadsheetSelection.js";
 import SpreadsheetViewportSelection from "./reference/SpreadsheetViewportSelection.js";
-import SpreadsheetViewportSelectionAnchor from "./reference/SpreadsheetViewportSelectionAnchor.js";
 import SpreadsheetViewportSelectionNavigation from "./reference/SpreadsheetViewportSelectionNavigation.js";
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -49,6 +47,7 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import TextStyle from "../text/TextStyle.js";
+import SpreadsheetExpressionReference from "./reference/SpreadsheetExpressionReference.js";
 
 // default header cell styles
 
@@ -99,7 +98,7 @@ const COLUMN_HEADER = (width, selected) => {
             width: width,
             height: COLUMN_HEIGHT_PX,
         },
-        selected ? SELECTED: {},
+        selected ? SELECTED : {},
     )
 };
 
@@ -111,7 +110,7 @@ const ROW_HEADER = (height, selected) => {
             width: ROW_WIDTH_PX,
             height: height,
         },
-        selected ? SELECTED: {},
+        selected ? SELECTED : {},
     )
 };
 
@@ -133,12 +132,9 @@ const CONTEXT_MENU_Y_OFFSET = 10;
  * <li>object dimensions: Holds the width and height of the viewport in pixels</li>
  * <li>SpreadsheetMetadata spreadsheetMetadata: holds the viewport home cell & default style</li>
  * <li>Array of SpreadsheetCellRange window: One or more ranges that will hold any frozen column/rows and the actual viewport</li>
- * <li>boolean giveFocus: if cells changed give focus to the selected cell. This helps giving focus after a delta load.</li>
  * <li>boolean focused: When true the viewport has focus, and cleared when the blur event happens.</li>
  * <li>SpreadsheetContextMenu contextMenu When present indicates an open context menu with its state.</li>
  * <li>SpreadsheetViewportSelection selection: The currently active selection including ranges</li>
- * <li>SpreadsheetViewportSelectionAnchor selectionAnchor: When a range is the current selection this will hold the anchor.</li>
- * <li>SpreadsheetViewportSelectionNavigation selectionNavigation: Tracks the last navigation entry from the keyboard</li>
  * </ul>
  */
 export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareStateWidget {
@@ -171,7 +167,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
         this.resizeObserver = new ResizeObserver(
             (entries) => {
 
-                for (const entry of entries) {
+                for(const entry of entries) {
                     this.setState({
                         dimensions: {
                             width: entry.contentRect.width,
@@ -204,7 +200,8 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
                 cellReferenceToLabels,
                 columnReferenceToColumns,
                 labelToReferences,
-                rowReferenceToRows
+                rowReferenceToRows,
+                selection,
             } = state;
 
             // first remove any deleted cells.
@@ -231,7 +228,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
                         cellOrRange = labelToReferences.get(cellOrRange);
                     }
 
-                    if(!cellOrRange) {
+                    if(!cellOrRange){
                         break;
                     }
 
@@ -276,18 +273,19 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
                     );
                 }
 
-                // if the request SpreadsheetDelta#viewportSelection was present then update the state with the response SpreadsheetDelta#viewportSelection
-                const queryParameterSelection = queryParameters.selection;
-                if(queryParameterSelection || (requestDelta && requestDelta.selection())){
-                    const viewportSelection = responseDelta.selection();
-                    Object.assign(
-                        newState,
-                        {
-                            selection: viewportSelection ? viewportSelection.selection() : null,
-                            selectionAnchor: viewportSelection ? viewportSelection.anchor() : null,
-                            selectionNavigation: viewportSelection ? viewportSelection.navigation() : null,
-                        }
-                    );
+                // before replacing the history selection with the response.selection verify the queryparameters & state are equal.
+                const responseViewportSelection = responseDelta.selection();
+                if(responseViewportSelection && selection && !(selection instanceof SpreadsheetCellFormulaHistoryHashToken)){
+                    const queryParameterSelection = queryParameters.selection && queryParameters.selection[0];
+                    const selectionSelection = selection.viewportSelection().selection();
+                    if(selectionSelection && selectionSelection.equalsIgnoringKind(queryParameterSelection)){
+                        Object.assign(
+                            newState,
+                            {
+                                selection: selectHistoryHashToken(responseViewportSelection),
+                            }
+                        );
+                    }
                 }
             }
 
@@ -297,68 +295,87 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
                         newState,
                         {
                             selection: null,
-                            selectionAction: null,
-                            selectionAnchor: null,
-                            selectionNavigation: null,
                         }
                     );
                     break;
                 case HttpMethod.POST:
                     const historyTokens = this.props.history.tokens();
-                    const selectionAction = historyTokens[SpreadsheetHistoryHashTokens.SELECTION_ACTION];
-                    if(selectionAction instanceof SpreadsheetColumnOrRowInsertBeforeHistoryHashToken){
-                        const urlPaths = url.path().split("/");
-                        if(urlPaths.length === 7){
-                            // 0 = ""
-                            // 1 == api
-                            // 2 == spreadsheet
-                            // 3 == $spreadsheet-id
-                            // 4 == column == Selection
-                            // 5 == $selection
-                            // 6 == before == insert-action.toUrl
-                            if(urlPaths[3] === historyTokens[SpreadsheetHistoryHashTokens.SPREADSHEET_ID].toString()){
-                                const selection = historyTokens[SpreadsheetHistoryHashTokens.SELECTION];
-                                if(selection && selection.apiInsertBeforePostUrl(urlPaths)){
-                                    Object.assign(
-                                        newState,
-                                        {
-                                            selection: selection.viewportInsertBeforePostSuccessSelection(selectionAction.count()),
-                                            selectionAction: null,
-                                            selectionAnchor: historyTokens[SpreadsheetHistoryHashTokens.SELECTION_ANCHOR],
-                                            selectionNavigation: null,
-                                        }
-                                    );
+                    //const selectionAction = historyTokens[SpreadsheetHistoryHashTokens.SELECTION_ACTION];
+                    const selection = historyTokens[SpreadsheetHistoryHashTokens.SELECTION];
+                    if(selection){
+                        const viewportSelection = selection.viewportSelection();
+                        const selectionSelection = viewportSelection.selection();
+
+                        if(selection instanceof SpreadsheetColumnOrRowInsertBeforeHistoryHashToken){
+                            const urlPaths = url.path().split("/");
+                            if(urlPaths.length === 7){
+                                // 0 = ""
+                                // 1 == api
+                                // 2 == spreadsheet
+                                // 3 == $spreadsheet-id
+                                // 4 == column == Selection
+                                // 5 == $selection
+                                // 6 == before == insert-action.toUrl
+                                if(urlPaths[3] === historyTokens[SpreadsheetHistoryHashTokens.SPREADSHEET_ID].toString()){
+                                    //const selection = historyTokens[SpreadsheetHistoryHashTokens.SELECTION];
+                                    //if(selection && selection.apiInsertBeforePostUrl(urlPaths)){
+                                    if(selectionSelection.apiInsertBeforePostUrl(urlPaths)){
+                                        Object.assign(
+                                            newState,
+                                            {
+                                                // selection: selectionSelection.viewportInsertBeforePostSuccessSelection(selection.count()),
+                                                // selectionAction: null,
+                                                // selectionAnchor: historyTokens[SpreadsheetHistoryHashTokens.SELECTION_ANCHOR],
+                                                // selectionNavigation: null,
+                                                selection: selectHistoryHashToken(
+                                                    new SpreadsheetViewportSelection(
+                                                        selectionSelection.viewportInsertBeforePostSuccessSelection(selection.count()),
+                                                        viewportSelection.anchor()
+                                                    )
+                                                )
+                                            }
+                                        );
+                                    }
                                 }
                             }
+                            break;
                         }
-                        break;
-                    }
-                    if(selectionAction instanceof SpreadsheetColumnOrRowInsertAfterHistoryHashToken){
-                        const urlPaths = url.path().split("/");
-                        if(urlPaths.length === 7){
-                            // 0 = ""
-                            // 1 == api
-                            // 2 == spreadsheet
-                            // 3 == $spreadsheet-id
-                            // 4 == column == Selection
-                            // 5 == $selection
-                            // 6 == before == insert-action.toUrl
-                            if(urlPaths[3] === historyTokens[SpreadsheetHistoryHashTokens.SPREADSHEET_ID].toString()){
-                                const selection = historyTokens[SpreadsheetHistoryHashTokens.SELECTION];
-                                if(selection && selection.isInsertAfterPostUrl(urlPaths)){
-                                    Object.assign(
-                                        newState,
-                                        {
-                                            selection: selection,
-                                            selectionAction: null,
-                                            selectionAnchor: historyTokens[SpreadsheetHistoryHashTokens.SELECTION_ANCHOR],
-                                            selectionNavigation: null,
-                                        }
-                                    );
+                        if(selection instanceof SpreadsheetColumnOrRowInsertAfterHistoryHashToken){ // TODOMP
+                            //if(selectionAction instanceof SpreadsheetColumnOrRowInsertAfterHistoryHashToken){
+                            const urlPaths = url.path().split("/");
+                            if(urlPaths.length === 7){
+                                // 0 = ""
+                                // 1 == api
+                                // 2 == spreadsheet
+                                // 3 == $spreadsheet-id
+                                // 4 == column == Selection
+                                // 5 == $selection
+                                // 6 == before == insert-action.toUrl
+                                if(urlPaths[3] === historyTokens[SpreadsheetHistoryHashTokens.SPREADSHEET_ID].toString()){
+                                    //const selection = historyTokens[SpreadsheetHistoryHashTokens.SELECTION];
+                                    //if(selection && selection.isInsertAfterPostUrl(urlPaths)){
+
+                                    if(selectionSelection.isInsertAfterPostUrl(urlPaths)){
+                                        Object.assign(
+                                            newState,
+                                            {
+                                                // selection: selection,
+                                                // selectionAction: null,
+                                                // selectionAnchor: historyTokens[SpreadsheetHistoryHashTokens.SELECTION_ANCHOR],
+                                                // selectionNavigation: null,
+                                                selection: selectHistoryHashToken(
+                                                    new SpreadsheetViewportSelection(
+                                                        selectionSelection,
+                                                        viewportSelection.anchor()
+                                                    )
+                                                )
+                                            }
+                                        );
+                                    }
                                 }
                             }
+                            break;
                         }
-                        break;
                     }
                     break;
                 default:
@@ -384,9 +401,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
                                 viewportElement.offsetWidth - ROW_WIDTH,
                                 viewportElement.offsetHeight - COLUMN_HEIGHT,
                             ),
-                        null, // selection
-                        null, // selectionAnchor
-                        null, // selectionNavigation
+                        null, // viewportSelection
                     );
                 }
                 break;
@@ -441,11 +456,11 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
         this.onSpreadsheetMetadataRemover && this.onSpreadsheetMetadataRemover();
         delete this.onSpreadsheetMetadataRemover;
 
-        if (this.resizeObserver) {
+        if(this.resizeObserver){
             this.resizeObserver.disconnect();
         }
     }
-    
+
     initialStateFromProps(props) {
         const historyHashTokens = props.history.tokens();
 
@@ -458,8 +473,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
             rowReferenceToRows: ImmutableMap.EMPTY,
             columnWidths: ImmutableMap.EMPTY,
             rowHeights: ImmutableMap.EMPTY,
-            dimensions: {
-            },
+            dimensions: {},
             spreadsheetMetadata: SpreadsheetMetadata.EMPTY,
             window: [],
             contextMenu: null, // no open context menu
@@ -467,11 +481,17 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
     }
 
     stateFromHistoryTokens(tokens) {
+        console.log("@Viewport stateFromHistoryTokens " + JSON.stringify(tokens));
+
+        if(SpreadsheetHistoryHash.stringify(tokens).includes("/cell/B1")){
+            this.b1 = true;
+        }
+        if(this.b1 && SpreadsheetHistoryHash.stringify(tokens).includes("/cell/A1:B1")){
+            debugger;
+        }
+
         return {
-            selection: tokens[SpreadsheetHistoryHashTokens.SELECTION],
-            selectionAction: tokens[SpreadsheetHistoryHashTokens.SELECTION_ACTION],
-            selectionAnchor: tokens[SpreadsheetHistoryHashTokens.SELECTION_ANCHOR],
-            selectionNavigation: null,
+            selection: tokens[SpreadsheetHistoryHashTokens.SELECTION], // TODO ?? clear navigation ?
             contextMenu: null, // close context menu
         };
     }
@@ -488,7 +508,6 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
         const previousMetadata = prevState.spreadsheetMetadata;
 
         const props = this.props;
-
         const viewportElement = this.viewportElement.current;
 
         if(viewportElement){
@@ -501,7 +520,10 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
                     .begin();
                 if(!begin.equals(SpreadsheetDelta.viewportRange(prevWindow).begin())){
                     this.horizontalSlider.current.value = begin.column().value();
-                    this.verticalSlider.current.value = SpreadsheetViewportWidget.toVerticalSliderValue(begin.column().value());
+                    this.verticalSlider.current.value = SpreadsheetViewportWidget.toVerticalSliderValue(
+                        begin.column()
+                            .value()
+                    );
                 }
             }
 
@@ -514,78 +536,54 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
                 const width = viewportElement.offsetWidth - ROW_WIDTH;
                 const height = viewportElement.offsetHeight - COLUMN_HEIGHT;
 
-                const selectionAnchor = state.selectionAnchor;
-
-                const selectionActionOld = prevState.selectionAction;
-                const selectionActionNew = state.selectionAction;
-
-                const selectionNavigationOld = prevState.selectionNavigation;
-                const selectionNavigationNew = state.selectionNavigation;
-
-                let viewportLoadCells = false;
-
                 do {
-                    if(!Equality.safeEquals(selectionActionNew, selectionActionOld)){
-                        // new action perform
-                        if(selectionActionNew){
-                            selectionActionNew.onViewportSelectionAction(
-                                new SpreadsheetViewportSelection(selectionNew, selectionAnchor, selectionNavigationNew),
-                                this
-                            ); // perform delete/insert etc.
-                            break;
+                    if(selectionNew && (!(selectionNew.equals(selectionOld)))){
+                        console.log(this.prefix() + " execute " + selectionNew);
+                        selectionNew.spreadsheetViewportWidgetExecute(
+                            viewportCell,
+                            width,
+                            height,
+                            this,
+                        ); // perform delete/insert etc.
+
+                        // still have focus better update history
+                        if(state.focused){
+                            historyTokens[SpreadsheetHistoryHashTokens.SELECTION] = selectionNew;
                         }
-                    }
-                    if(!Equality.safeEquals(selectionNew, selectionOld)){
-                        console.log("New selection " + selectionOld + " to " + selectionNew);
-
-                        viewportLoadCells = true;
-                        break;
-                    }
-
-                    if(selectionNavigationNew && !Equality.safeEquals(selectionNavigationNew, selectionNavigationOld)) {
-                        console.log("New selection navigation " + selectionNavigationOld + " to " + selectionNavigationNew);
-
-                        viewportLoadCells = true;
-                        break;
                     }
 
                     // if viewport width or height increased reload viewport cells
                     const prevDimensions = prevState.dimensions;
                     if(width > prevDimensions.width || height > prevDimensions.height){
-                        console.log("Viewport width/height increased need to reload viewport cells");
+                        console.log(this.prefix() + " viewport width/height increased need to reload viewport cells");
 
-                        viewportLoadCells = true;
+                        this.loadCells(
+                            viewportCell.viewport(
+                                width,
+                                height
+                            ),
+                            selectionNew && selectionNew.viewportSelection()
+                        );
                         break;
                     }
 
                     // some metadata properties changed that will mean formatting of values changed so reload
                     if(metadata.viewportShouldLoadCells(previousMetadata)){
-                        console.log("Metadata change need to format all viewport cells", metadata);
-                        viewportLoadCells = true;
+                        console.log(this.prefix() + " Metadata change need to format all viewport cells", metadata);
+                        this.loadCells(
+                            viewportCell.viewport(
+                                width,
+                                height
+                            ),
+                            selectionNew && selectionNew.viewportSelection()
+                        );
                         break;
                     }
                 } while(false);
 
-                if(viewportLoadCells){
-                    this.loadCells(
-                        viewportCell.viewport(
-                            width,
-                            height
-                        ),
-                        selectionNew,
-                        selectionAnchor,
-                        selectionNavigationNew,
-                    );
-
-                    if(state.focused) {
-                        historyTokens[SpreadsheetHistoryHashTokens.SELECTION] = selectionNew;
-                        historyTokens[SpreadsheetHistoryHashTokens.SELECTION_ACTION] = selectionActionNew;
-                        historyTokens[SpreadsheetHistoryHashTokens.SELECTION_ANCHOR] = selectionAnchor;
-                    }
-                }
-
-                if(!Equality.safeEquals(selectionNew, selectionOld)){
-                    this.giveSelectionFocus(selectionNew, selectionAnchor);
+                // id selection changed and not formula editing, give focus.
+                if(selectionNew && (!(selectionNew.equals(selectionOld))) && !(selectionNew instanceof SpreadsheetCellFormulaHistoryHashToken)){
+                    this.giveViewportSelectionFocus(selectionNew.viewportSelection());
                 }
             }
         }
@@ -612,7 +610,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
 
         this.removeHistoryHashSelectionAction();
     }
-    
+
     /**
      * Remove the selection, the deleted column, row etc and then perform the delete API.
      */
@@ -659,9 +657,15 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
      * Clears the selection action from the history hash. This is done after a clear and other similar actions.
      */
     removeHistoryHashSelectionAction() {
-        const tokens = SpreadsheetHistoryHashTokens.emptyTokens();
-        tokens[SpreadsheetHistoryHashTokens.SELECTION_ACTION] = null;
-        this.historyParseMergeAndPush(tokens);
+        const tokens = this.props.history.tokens();
+        const selection = tokens[SpreadsheetHistoryHashTokens.SELECTION];
+        if(selection){
+            const viewportSelection = selection.viewportSelection();
+            tokens[SpreadsheetHistoryHashTokens.SELECTION] = selectHistoryHashToken(
+                viewportSelection
+            );
+            this.historyParseMergeAndPush(tokens);
+        }
     }
 
     patchColumnOrRow(viewportSelection, property, value) {
@@ -729,8 +733,8 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
      * Saves the given formula text to the given cell, including the creation of new cells that were previously empty.
      * This assumes that the cell being saved has been loaded.
      */
-    saveFormulaText(cellReference, selection, formulaText) {
-        console.log("saving formula for " + selection + " with " + CharSequences.quoteAndEscape(formulaText));
+    saveFormulaText(cellReference, formulaText, selection, anchor) {
+        console.log(this.prefix() + " saving formula for " + selection + " with " + CharSequences.quoteAndEscape(formulaText));
 
         var cell = new SpreadsheetCell(
             cellReference,
@@ -739,7 +743,12 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
         );
 
         const tokens = SpreadsheetHistoryHashTokens.emptyTokens();
-        tokens[SpreadsheetHistoryHashTokens.SELECTION_ACTION] = new SpreadsheetFormulaEditHistoryHashToken();
+        tokens[SpreadsheetHistoryHashTokens.SELECTION] = new SpreadsheetCellFormulaEditHistoryHashToken(
+            new SpreadsheetViewportSelection(
+                selection,
+                anchor
+            )
+        );
         this.historyParseMergeAndPush(tokens);
 
         const props = this.props;
@@ -777,7 +786,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
         const selection = viewportSelection.selection();
 
         const element = document.getElementById(selection.viewportId());
-        if(element) {
+        if(element){
             const history = this.props.history;
 
             const {top, left} = element.getBoundingClientRect();
@@ -817,49 +826,44 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
     /**
      * Loads the requested cells, and includes the selection, anchor and any recently entered navigation.
      */
-    loadCells(viewport, selection, anchor, navigation) {
+    loadCells(spreadsheetViewport, viewportSelection) {
         const props = this.props;
 
         props.spreadsheetDeltaCellCrud.get(
             "*",
-            viewport.apiLoadCellsQueryStringParameters(selection, anchor, navigation),
+            spreadsheetViewport.apiLoadCellsQueryStringParameters(
+                viewportSelection && viewportSelection.selection(),
+                viewportSelection && viewportSelection.anchor(),
+                viewportSelection && viewportSelection.navigation()
+            ),
             props.showError
         );
-    }
-
-    giveDeltaSelectionFocus(delta) {
-        var viewportSelection = delta.selection();
-
-        if(viewportSelection){
-            this.giveSelectionFocus(
-                viewportSelection.selection(),
-                viewportSelection.anchor()
-            );
-        }
     }
 
     /**
      * Attempts to give focus to the selection including resolving of labels to cells, using the anchor to find
      * actual cell or column or row within a range etc.
      */
-    giveSelectionFocus(selection, anchor) {
+    giveViewportSelectionFocus(viewportSelection) {
+        console.log(this.prefix() + ".giveViewportSelectionFocus " + viewportSelection);
+
         this.giveFocus(
             () => {
                 var element;
-
-                if(!(this.state.selectionAction instanceof SpreadsheetFormulaHistoryHashToken)){
-                    if(selection){
+                if(viewportSelection){
+                    const stateSelection = this.state.selection;
+                    if(!(stateSelection instanceof SpreadsheetCellFormulaHistoryHashToken)){
+                        const selection = viewportSelection.selection();
                         const cellColumnOrRow = selection.viewportFocus(
                             this.state.labelToReferences,
-                            anchor
+                            viewportSelection.anchor()
                         );
 
                         if(cellColumnOrRow){
-                            element = document.getElementById(cellColumnOrRow.viewportId());
+                            element = document.getElementById(cellColumnOrRow.viewportId().toString());
                         }
                     }
                 }
-
                 return element;
             }
         );
@@ -876,7 +880,6 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
             {
                 flexGrow: 1,
                 width: "100%",
-                //height: "100%",
             }}>
             {(home) ?
                 this.renderViewport(spreadsheetMetadata, home) :
@@ -891,26 +894,12 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
      * Renders the column and row gutters and cells within the viewport.
      */
     renderViewport(spreadsheetMetadata, home) {
-        const state = this.state;
-        const {
-            contextMenu,
-            dimensions,
-            selection
-        } = state;
-
-        // need to resolve the selection to an actual cell or range so these may be highlighted.........................
-        let selectionNotLabel = selection instanceof SpreadsheetLabelName ?
-            state.labelToReferences.get(selection) :
-            selection;
-
-        const menuItems = contextMenu && contextMenu.items();
-
-        const history = this.props.history;
-
         // handles any viewport blur events, clearing the state.focused flag............................................
         const onBlur = (e) => {
             // only set focused to false if new focus is outside viewport table.
             if(!this.viewportElement.current.contains(e.relatedTarget)){
+                console.log(this.prefix() + ".blur focused false");
+
                 this.setState({
                     focused: false,
                 });
@@ -919,56 +908,36 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
 
         // translates any viewport clicks into selection history updates................................................
         const onClick = (e) => {
-            const selection = this.findEventTargetSelection(e.target);
-            if(selection){
+            const clickedSelection = this.findEventTargetSelection(e.target);
+            if(clickedSelection){
                 const tokens = SpreadsheetHistoryHashTokens.emptyTokens();
-                tokens[SpreadsheetHistoryHashTokens.SELECTION] = selection;
-                tokens[SpreadsheetHistoryHashTokens.SELECTION_ANCHOR] = null;
-                tokens[SpreadsheetHistoryHashTokens.SELECTION_ACTION] = null;
-
+                tokens[SpreadsheetHistoryHashTokens.SELECTION] = selectHistoryHashToken(
+                    new SpreadsheetViewportSelection(clickedSelection)
+                );
                 this.historyParseMergeAndPush(tokens);
             }
         };
+
+        const history = this.props.history;
 
         // handles closing any previously open context menu.............................................................
         const onCloseContextMenu = () => {
             const tokens = history.tokens();
 
-            const action = tokens[SpreadsheetHistoryHashTokens.SELECTION_ACTION];
-            if(action instanceof SpreadsheetCellMenuHistoryHashToken || action instanceof SpreadsheetColumnOrRowMenuHistoryHashToken){
-                tokens[SpreadsheetHistoryHashTokens.SELECTION_ACTION] = null;
+            const historySelection = tokens[SpreadsheetHistoryHashTokens.SELECTION];
+            if(historySelection instanceof SpreadsheetCellMenuHistoryHashToken || historySelection instanceof SpreadsheetColumnOrRowMenuHistoryHashToken){
+                tokens[SpreadsheetHistoryHashTokens.SELECTION] = selectHistoryHashToken(
+                    historySelection.viewportSelection()
+                );
                 this.historyParseMergeAndPush(tokens);
-            }
-        };
-
-        // handles context menu clicks..................................................................................
-        const onContextMenu = (e) => {
-            e.preventDefault();
-
-            const clickedSelection = this.findEventTargetSelection(e.target);
-            if(clickedSelection){
-                const historyHashTokens = history.tokens();
-                const historyHashTokenSelection = historyHashTokens[SpreadsheetHistoryHashTokens.SELECTION];
-
-                const selection = historyHashTokenSelection && historyHashTokenSelection.viewportContextMenuClick(clickedSelection) ?
-                    historyHashTokenSelection :
-                    clickedSelection;
-
-                historyHashTokens[SpreadsheetHistoryHashTokens.SELECTION] = selection;
-                historyHashTokens[SpreadsheetHistoryHashTokens.SELECTION_ACTION] = selection instanceof SpreadsheetCellReference ||
-                selection instanceof SpreadsheetCellRange ?
-                    SpreadsheetCellMenuHistoryHashToken.INSTANCE :
-                    SpreadsheetColumnOrRowMenuHistoryHashToken.INSTANCE;
-
-                this.historyParseMergeAndPush(historyHashTokens);
             }
         };
 
         // records that the viewport has just received focus...........................................................
         const onFocus = (e) => {
-            // only update state if formula not active and focus changed.
-            const {selectionAction, focused} = state;
-            if(!(selectionAction instanceof SpreadsheetFormulaHistoryHashToken) || !focused){
+            console.log(this.prefix() + "..onFocus focused");
+            if(!(this.state.selection instanceof SpreadsheetCellFormulaHistoryHashToken) || !this.state.focused){
+                console.log(this.prefix() + ".onfocus true");
                 this.setState({
                     focused: true
                 });
@@ -977,62 +946,66 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
 
         // handles translating keyboard events often into selection navigation actions.................................
         const onKeyDown = (e) => {
+            const key = e.key;
+            console.log(this.prefix() + ".onKeyDown.onKeyDown " + CharSequences.quoteAndEscape(key));
+
             e.preventDefault();
 
             const eventSelection = this.findEventTargetSelection(e.target);
             if(eventSelection){
-                var {
-                    selection,
-                    selectionAnchor
-                } = this.state;
+                var selection = this.state.selection;
+                if(selection){
+                    const viewportSelection = selection.viewportSelection();
+                    var navigation = null;
+                    const shifted = e.shiftKey;
 
-                var selectionNavigation = null;
-                const shifted = e.shiftKey;
+                    switch(key) {
+                        case Keys.ARROW_LEFT:
+                            navigation = shifted ? SpreadsheetViewportSelectionNavigation.EXTEND_LEFT : SpreadsheetViewportSelectionNavigation.LEFT;
+                            break;
+                        case Keys.ARROW_UP:
+                            navigation = shifted ? SpreadsheetViewportSelectionNavigation.EXTEND_UP : SpreadsheetViewportSelectionNavigation.UP;
+                            break;
+                        case Keys.ARROW_RIGHT:
+                            navigation = shifted ? SpreadsheetViewportSelectionNavigation.EXTEND_RIGHT : SpreadsheetViewportSelectionNavigation.RIGHT;
+                            break;
+                        case Keys.ARROW_DOWN:
+                            navigation = shifted ? SpreadsheetViewportSelectionNavigation.EXTEND_DOWN : SpreadsheetViewportSelectionNavigation.DOWN;
+                            break;
+                        case Keys.ENTER:
+                            // ENTER on a cell selection gives focus to formula text box TODOMP need to handle label.
+                            const selectionNotLabel = this.selectionNotLabel();
+                            if(selectionNotLabel instanceof SpreadsheetCellReference){
+                                selection = new SpreadsheetCellFormulaEditHistoryHashToken(
+                                    viewportSelection
+                                );
+                                console.log(this.prefix() + ".ENTER new selection: " + selection);
+                            }
+                            break;
+                        // ESCAPE clears any selection
+                        case Keys.ESCAPE:
+                            selection = null;
+                            break;
+                        default:
+                            break;
+                    }
 
-                switch(e.key) {
-                    case Keys.ARROW_LEFT:
-                        selectionNavigation = shifted ? SpreadsheetViewportSelectionNavigation.EXTEND_LEFT : SpreadsheetViewportSelectionNavigation.LEFT;
-                        break;
-                    case Keys.ARROW_UP:
-                        selectionNavigation = shifted ? SpreadsheetViewportSelectionNavigation.EXTEND_UP : SpreadsheetViewportSelectionNavigation.UP;
-                        break;
-                    case Keys.ARROW_RIGHT:
-                        selectionNavigation = shifted ? SpreadsheetViewportSelectionNavigation.EXTEND_RIGHT : SpreadsheetViewportSelectionNavigation.RIGHT;
-                        break;
-                    case Keys.ARROW_DOWN:
-                        selectionNavigation = shifted ? SpreadsheetViewportSelectionNavigation.EXTEND_DOWN : SpreadsheetViewportSelectionNavigation.DOWN;
-                        break;
-                    case Keys.ENTER:
-                        // ENTER on a cell selection gives focus to formula text box
-                        if(selection instanceof SpreadsheetCellReference){
-                            this.saveSelection(
-                                selection,
-                                null,
-                                new SpreadsheetFormulaEditHistoryHashToken()
-                            );
-                        }
-                        break;
-                    // ESCAPE clears any selection
-                    case Keys.ESCAPE:
-                        selection = null;
-                        selectionAnchor = null;
-                        selectionNavigation = null;
-                        break;
-                    default:
-                        break;
+                    const newSel = navigation ?
+                        selectHistoryHashToken(
+                            viewportSelection.setNavigation(navigation)
+                        ) :
+                        selection;
+
+                    this.setState({
+                        selection: newSel,
+                    });
                 }
-
-                this.setState({
-                    selection: selection,
-                    selectionAnchor: selectionAnchor,
-                    selectionNavigation: selectionNavigation,
-                });
             }
         };
 
         // handles any slider change events............................................................................
         const onHorizontalVerticalSliderChange = (newColumn, newRow) => {
-            const window = state.window;
+            const window = this.state.window;
 
             if(window.length){
                 const viewport = SpreadsheetDelta.viewportRange(window);
@@ -1048,7 +1021,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
 
                 // updating will force a reload of viewport
                 if(!begin.equals(topLeft)){
-                    console.log("onHorizontalVerticalSliderChange " + viewport + " TO " + new SpreadsheetCellRange(topLeft, topLeft));
+                    console.log(this.prefix() + ".onHorizontalVerticalSliderChange " + viewport + " TO " + new SpreadsheetCellRange(topLeft, topLeft));
 
                     const viewportElement = this.viewportElement.current;
 
@@ -1060,11 +1033,13 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
                             width,
                             height
                         ),
-                        null, // ignore selection, unnecessary to keep it within view etc.
-                        null // no anchor
+                        null // no viewportSelection
                     );
                     this.setState({
-                        spreadsheetMetadata: state.spreadsheetMetadata.set(SpreadsheetMetadata.VIEWPORT_CELL, topLeft),
+                        spreadsheetMetadata: this.state.spreadsheetMetadata.set(
+                            SpreadsheetMetadata.VIEWPORT_CELL,
+                            topLeft
+                        ),
                     });
                 }
             }
@@ -1074,7 +1049,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
         const columns = [];
         const rows = [];
 
-        state.window.forEach(w => {
+        this.state.window.forEach(w => {
             w.columnRange()
                 .values()
                 .forEach(c => {
@@ -1102,8 +1077,10 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
 
         // create all the layout........................................................................................
         const {
+            dimensions,
             columnWidths,
-            rowHeights
+            rowHeights,
+            contextMenu,
         } = this.state;
 
         const width = dimensions.width;
@@ -1118,6 +1095,9 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
         const columnWidthsFn = (c) => columnWidths.get(c) | defaultColumnWidth;
         const rowHeightFn = (r) => rowHeights.get(r) | defaultRowHeight;
 
+        const selectionNotLabel = this.selectionNotLabel();
+        const menuItems = contextMenu && contextMenu.items();
+
         return [
             <TableContainer id={SpreadsheetViewportWidget.VIEWPORT_ID}
                             key={SpreadsheetViewportWidget.VIEWPORT_ID + "TableContainer"}
@@ -1131,7 +1111,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
                             }}
                             onBlur={onBlur}
                             onClick={onClick}
-                            onContextMenu={onContextMenu}
+                            onContextMenu={this.onContextMenu.bind(this)}
                             onFocus={onFocus}
                             onKeyDown={onKeyDown}
             ><Table key={SpreadsheetViewportWidget.VIEWPORT_ID + "Table"}
@@ -1205,7 +1185,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
                   open={Boolean(contextMenu)}
                   onClose={onCloseContextMenu}
                   anchorReference="anchorPosition"
-                  anchorPosition={ contextMenu && {
+                  anchorPosition={contextMenu && {
                       left: contextMenu.left(),
                       top: contextMenu.top(),
                   }}
@@ -1213,6 +1193,19 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
                 {menuItems}
             </Menu>
         ];
+    }
+
+    /**
+     * Gets any selection resolving any label to a cell or cell-range.
+     */
+    selectionNotLabel() {
+        const selection = this.state.selection;
+
+        const selectionSelection = selection && selection.viewportSelection()
+            .selection();
+        return selectionSelection instanceof SpreadsheetLabelName ?
+            this.state.labelToReferences.get(selectionSelection) :
+            selectionSelection;
     }
 
     /**
@@ -1233,13 +1226,44 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
         return targetSelection;
     }
 
+    onContextMenu(e) {
+        e.preventDefault();
+
+        const clickedSelection = this.findEventTargetSelection(e.target);
+        if(clickedSelection){
+            const current = this.state.selection;
+            var contextMenuSelection = clickedSelection;
+
+            if(current){
+                const currentSelection = current.viewportSelection()
+                    .selection();
+                contextMenuSelection = currentSelection &&
+                currentSelection.viewportContextMenuClick(clickedSelection) ?
+                    currentSelection :
+                    clickedSelection;
+            }
+
+            const viewportSelection = new SpreadsheetViewportSelection(contextMenuSelection);
+
+            const tokens = this.props.history.tokens();
+            const contextMenu = new SpreadsheetContextMenu(
+                CONTEXT_MENU_X_OFFSET,
+                CONTEXT_MENU_Y_OFFSET,
+            );
+            tokens[SpreadsheetHistoryHashTokens.SELECTION] = contextMenuSelection instanceof SpreadsheetExpressionReference ?
+                new SpreadsheetCellMenuHistoryHashToken(viewportSelection, contextMenu) :
+                new SpreadsheetColumnOrRowMenuHistoryHashToken(viewportSelection, contextMenu);
+            this.historyParseMergeAndPush(tokens);
+        }
+    }
+
     static SLIDER_STEP = 1;
 
     /**
      * Normally the vertical slider has the max at the top and min at the bottom, however we wish to have the opposite, lower number rows at the top.
      */
     static toVerticalSliderValue(value) {
-        return SpreadsheetRowReference.MAX -1 - value;
+        return SpreadsheetRowReference.MAX - 1 - value;
     }
 
     /**
@@ -1294,7 +1318,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
                 );
 
                 // render all the cells in the row.
-                columns.forEach( c => {
+                columns.forEach(c => {
                     const cellReference = new SpreadsheetCellReference(c, r);
                     const cell = cellReferenceToCells.get(cellReference) || cellReference.emptyCell();
 
@@ -1336,24 +1360,6 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
     isRowHidden(rowReference) {
         const row = this.state.rowReferenceToRows.get(rowReference);
         return null != row && row.hidden();
-    }
-
-    /**
-     * Saves the new selection which may be made by using arrow keys to move around the viewport or a mouse click on
-     * a cell etc.
-     */
-    saveSelection(selection, anchor, action) {
-        Preconditions.optionalInstance(selection, SpreadsheetSelection, "selection");
-        Preconditions.optionalInstance(anchor, SpreadsheetViewportSelectionAnchor, "anchor");
-        Preconditions.optionalInstance(action, SpreadsheetHistoryHashToken, "action");
-
-        const tokens = SpreadsheetHistoryHashTokens.emptyTokens();
-
-        tokens[SpreadsheetHistoryHashTokens.SELECTION] = selection;
-        tokens[SpreadsheetHistoryHashTokens.SELECTION_ANCHOR] = anchor
-        tokens[SpreadsheetHistoryHashTokens.SELECTION_ACTION] = action;
-
-        this.historyParseMergeAndPush(tokens);
     }
 }
 

@@ -8,6 +8,7 @@ import SpreadsheetCellReference from "./SpreadsheetCellReference.js";
 import SpreadsheetColumnReference from "./SpreadsheetColumnReference.js";
 import SpreadsheetColumnReferenceRange from "./SpreadsheetColumnReferenceRange.js";
 import SpreadsheetDialog from "../../widget/SpreadsheetDialog.js";
+import SpreadsheetExpressionReference from "./SpreadsheetExpressionReference.js";
 import SpreadsheetHistoryAwareStateWidget from "../history/SpreadsheetHistoryAwareStateWidget.js";
 import SpreadsheetHistoryHash from "../history/SpreadsheetHistoryHash.js";
 import SpreadsheetHistoryHashTokens from "../history/SpreadsheetHistoryHashTokens.js";
@@ -89,8 +90,6 @@ export default class SpreadsheetSelectAutocompleteWidget extends SpreadsheetHist
         const state = {
             select: select,
             selection: tokens[SpreadsheetHistoryHashTokens.SELECTION],
-            selectionAction: tokens[SpreadsheetHistoryHashTokens.SELECTION_ACTION],
-            selectionAnchor: tokens[SpreadsheetHistoryHashTokens.SELECTION_ANCHOR],
             label: tokens[SpreadsheetHistoryHashTokens.LABEL],
         };
 
@@ -312,8 +311,7 @@ export default class SpreadsheetSelectAutocompleteWidget extends SpreadsheetHist
             tokens[SpreadsheetHistoryHashTokens.SELECT] = null; // close the navigate modal
 
             if(goto){
-                tokens[SpreadsheetHistoryHashTokens.SELECTION] = goto;
-                tokens[SpreadsheetHistoryHashTokens.SELECTION_ACTION] = null;
+                tokens[SpreadsheetHistoryHashTokens.SELECTION] = goto instanceof SpreadsheetExpressionReference;
             }
 
             if(label){
