@@ -180,7 +180,7 @@ export default class SpreadsheetTesting {
             .click();
 
         this.hash()
-            .should("match", /^#\/.*\/.*\/cell\/.*\/formula(\/.*)*$/);
+            .should("match", /^#\/.*\/.*\/cell\/.*\/formula(\/.*)*$/); // // lgtm [js/redos]
 
         this.formulaTextLoadWait();
     }
