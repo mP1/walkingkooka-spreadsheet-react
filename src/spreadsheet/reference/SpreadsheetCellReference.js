@@ -11,7 +11,7 @@ import SpreadsheetFormula from "../SpreadsheetFormula.js";
 import SpreadsheetReferenceKind from "./SpreadsheetReferenceKind";
 import SpreadsheetRowReference from "./SpreadsheetRowReference";
 import SpreadsheetSelection from "./SpreadsheetSelection.js";
-import SpreadsheetViewportSelectionAnchor from "./SpreadsheetViewportSelectionAnchor.js";
+import SpreadsheetViewportSelectionAnchor from "./viewport/SpreadsheetViewportSelectionAnchor.js";
 import SystemObject from "../../SystemObject.js";
 import TextStyle from "../../text/TextStyle.js";
 import Text from "../../text/Text.js";

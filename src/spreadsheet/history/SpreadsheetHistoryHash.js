@@ -48,7 +48,7 @@ import SpreadsheetSettingsHistoryHashToken from "../settings/SpreadsheetSettings
 import SpreadsheetSettingsSaveHistoryHashToken from "../settings/SpreadsheetSettingsSaveHistoryHashToken.js";
 import SpreadsheetSettingsSelectHistoryHashToken from "../settings/SpreadsheetSettingsSelectHistoryHashToken.js";
 import SpreadsheetSettingsWidgetHistoryHashTokens from "../settings/SpreadsheetSettingsWidgetHistoryHashTokens.js";
-import SpreadsheetViewportSelection from "../reference/SpreadsheetViewportSelection.js";
+import SpreadsheetViewportSelection from "../reference/viewport/SpreadsheetViewportSelection.js";
 
 function tokenize(pathname) {
     return pathname && pathname.startsWith("/") ?

@@ -4,7 +4,7 @@ import SpreadsheetColumnReference from "./SpreadsheetColumnReference.js";
 import SpreadsheetColumnReferenceRange from "./SpreadsheetColumnReferenceRange.js";
 import SpreadsheetRowReference from "./SpreadsheetRowReference.js";
 import SpreadsheetRowReferenceRange from "./SpreadsheetRowReferenceRange.js";
-import SpreadsheetViewportSelectionAnchor from "./SpreadsheetViewportSelectionAnchor.js";
+import SpreadsheetViewportSelectionAnchor from "./viewport/SpreadsheetViewportSelectionAnchor.js";
 import systemObjectTesting from "../../SystemObjectTesting.js";
 
 function begin() {

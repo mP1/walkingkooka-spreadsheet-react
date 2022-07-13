@@ -9,7 +9,7 @@ import spreadsheetRangeParse from "./SpreadsheetRangeParser.js";
 import SpreadsheetReferenceKind from "./SpreadsheetReferenceKind.js";
 import SpreadsheetRowReference from "./SpreadsheetRowReference.js";
 import SpreadsheetSelection from "./SpreadsheetSelection.js";
-import SpreadsheetViewportSelectionAnchor from "./SpreadsheetViewportSelectionAnchor.js";
+import SpreadsheetViewportSelectionAnchor from "./viewport/SpreadsheetViewportSelectionAnchor.js";
 import SystemObject from "../../SystemObject.js";
 
 const TYPE_NAME = "spreadsheet-row-reference-range";

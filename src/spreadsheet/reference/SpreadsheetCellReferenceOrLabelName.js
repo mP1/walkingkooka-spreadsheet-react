@@ -1,5 +1,5 @@
 import SpreadsheetExpressionReference from "./SpreadsheetExpressionReference.js";
-import SpreadsheetViewport from "../SpreadsheetViewport.js";
+import SpreadsheetViewport from "./viewport/SpreadsheetViewport.js";
 
 /**
  * Common base class for cell-reference and labels.

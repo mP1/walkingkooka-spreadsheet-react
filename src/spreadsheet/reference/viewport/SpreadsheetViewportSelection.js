@@ -1,10 +1,10 @@
-import Equality from "../../Equality.js";
-import Preconditions from "../../Preconditions.js";
-import RelativeUrl from "../../net/RelativeUrl.js";
-import SpreadsheetSelection from "./SpreadsheetSelection.js";
+import Equality from "../../../Equality.js";
+import Preconditions from "../../../Preconditions.js";
+import RelativeUrl from "../../../net/RelativeUrl.js";
+import SpreadsheetSelection from "../SpreadsheetSelection.js";
 import SpreadsheetViewportSelectionAnchor from "./SpreadsheetViewportSelectionAnchor.js";
 import SpreadsheetViewportSelectionNavigation from "./SpreadsheetViewportSelectionNavigation.js";
-import SystemObject from "../../SystemObject.js";
+import SystemObject from "../../../SystemObject.js";
 
 const TYPE_NAME = "spreadsheet-viewport-selection";
 
