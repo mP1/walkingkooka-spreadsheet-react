@@ -1,5 +1,5 @@
 import SpreadsheetCellHistoryHashToken from "./SpreadsheetCellHistoryHashToken.js";
-import SpreadsheetHistoryHashTokens from "./SpreadsheetHistoryHashTokens.js";
+import SpreadsheetHistoryHashTokens from "../history/SpreadsheetHistoryHashTokens.js";
 
 /**
  * A history hash token that represents a cell or cell-range clear

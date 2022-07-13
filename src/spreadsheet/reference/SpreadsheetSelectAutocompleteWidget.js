@@ -13,7 +13,7 @@ import SpreadsheetHistoryAwareStateWidget from "../history/SpreadsheetHistoryAwa
 import SpreadsheetHistoryHash from "../history/SpreadsheetHistoryHash.js";
 import SpreadsheetHistoryHashTokens from "../history/SpreadsheetHistoryHashTokens.js";
 import SpreadsheetLabelMapping from "./SpreadsheetLabelMapping.js";
-import SpreadsheetLabelMappingEditHistoryHashToken from "../history/SpreadsheetLabelMappingEditHistoryHashToken.js";
+import SpreadsheetLabelMappingEditHistoryHashToken from "./SpreadsheetLabelMappingEditHistoryHashToken.js";
 import SpreadsheetLabelName from "./SpreadsheetLabelName.js";
 import SpreadsheetRowReference from "./SpreadsheetRowReference.js";
 import SpreadsheetRowReferenceRange from "./SpreadsheetRowReferenceRange.js";

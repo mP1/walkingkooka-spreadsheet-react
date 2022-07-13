@@ -1,7 +1,7 @@
 import Equality from "../../Equality.js";
-import selectHistoryHashToken from "./selectHistoryHashToken.js";
+import selectHistoryHashToken from "../history/selectHistoryHashToken.js";
 import SpreadsheetColumnOrRowHistoryHashToken from "./SpreadsheetColumnOrRowHistoryHashToken.js";
-import SpreadsheetHistoryHashTokens from "./SpreadsheetHistoryHashTokens.js";
+import SpreadsheetHistoryHashTokens from "../history/SpreadsheetHistoryHashTokens.js";
 
 /**
  * Represents a save column/row property with value history hash token.

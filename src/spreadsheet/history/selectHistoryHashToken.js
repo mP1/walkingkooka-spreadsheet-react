@@ -1,5 +1,5 @@
-import SpreadsheetCellSelectHistoryHashToken from "./SpreadsheetCellSelectHistoryHashToken.js";
-import SpreadsheetColumnOrRowSelectHistoryHashToken from "./SpreadsheetColumnOrRowSelectHistoryHashToken.js";
+import SpreadsheetCellSelectHistoryHashToken from "../reference/SpreadsheetCellSelectHistoryHashToken.js";
+import SpreadsheetColumnOrRowSelectHistoryHashToken from "../reference/SpreadsheetColumnOrRowSelectHistoryHashToken.js";
 import SpreadsheetExpressionReference from "../reference/SpreadsheetExpressionReference.js";
 
 /**

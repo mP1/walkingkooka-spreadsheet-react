@@ -10,9 +10,9 @@ import SpreadsheetHistoryAwareStateWidget from "../history/SpreadsheetHistoryAwa
 import SpreadsheetHistoryHash from "../history/SpreadsheetHistoryHash.js";
 import SpreadsheetHistoryHashTokens from "../history/SpreadsheetHistoryHashTokens.js";
 import SpreadsheetLabelMapping from "./SpreadsheetLabelMapping.js";
-import SpreadsheetLabelMappingDeleteHistoryHashToken from "../history/SpreadsheetLabelMappingDeleteHistoryHashToken.js";
-import SpreadsheetLabelMappingEditHistoryHashToken from "../history/SpreadsheetLabelMappingEditHistoryHashToken.js";
-import SpreadsheetLabelMappingSaveHistoryHashToken from "../history/SpreadsheetLabelMappingSaveHistoryHashToken.js";
+import SpreadsheetLabelMappingDeleteHistoryHashToken from "./SpreadsheetLabelMappingDeleteHistoryHashToken.js";
+import SpreadsheetLabelMappingEditHistoryHashToken from "./SpreadsheetLabelMappingEditHistoryHashToken.js";
+import SpreadsheetLabelMappingSaveHistoryHashToken from "./SpreadsheetLabelMappingSaveHistoryHashToken.js";
 import SpreadsheetLabelName from "./SpreadsheetLabelName.js";
 import SpreadsheetMessengerCrud from "../message/SpreadsheetMessengerCrud.js";
 import SpreadsheetNotification from "../notification/SpreadsheetNotification.js";

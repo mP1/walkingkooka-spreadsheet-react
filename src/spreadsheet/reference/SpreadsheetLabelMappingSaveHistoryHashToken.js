@@ -1,8 +1,8 @@
 import Preconditions from "../../Preconditions.js";
-import SpreadsheetExpressionReference from "../reference/SpreadsheetExpressionReference.js";
-import SpreadsheetHistoryHash from "./SpreadsheetHistoryHash.js";
+import SpreadsheetExpressionReference from "./SpreadsheetExpressionReference.js";
+import SpreadsheetHistoryHash from "../history/SpreadsheetHistoryHash.js";
 import SpreadsheetLabelMappingHistoryHashToken from "./SpreadsheetLabelMappingHistoryHashToken.js";
-import SpreadsheetLabelName from "../reference/SpreadsheetLabelName.js";
+import SpreadsheetLabelName from "./SpreadsheetLabelName.js";
 
 /**
  * A history hash token that represents a label mapping save including the reference or target of the mapping.
