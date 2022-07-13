@@ -1,7 +1,7 @@
 import Equality from "../../Equality.js";
 import Preconditions from "../../Preconditions.js";
-import SpreadsheetHistoryHashTokens from "./SpreadsheetHistoryHashTokens.js";
-import SpreadsheetName from "../SpreadsheetName.js";
+import SpreadsheetHistoryHashTokens from "../history/SpreadsheetHistoryHashTokens.js";
+import SpreadsheetName from "./SpreadsheetName.js";
 import SpreadsheetNameHistoryHashToken from "./SpreadsheetNameHistoryHashToken.js";
 
 /**

@@ -28,9 +28,9 @@ import SpreadsheetLabelMappingDeleteHistoryHashToken from "./SpreadsheetLabelMap
 import SpreadsheetLabelMappingEditHistoryHashToken from "./SpreadsheetLabelMappingEditHistoryHashToken.js";
 import SpreadsheetLabelMappingSaveHistoryHashToken from "./SpreadsheetLabelMappingSaveHistoryHashToken.js";
 import SpreadsheetLabelName from "../reference/SpreadsheetLabelName.js";
-import SpreadsheetName from "../SpreadsheetName.js";
-import SpreadsheetNameEditHistoryHashToken from "./SpreadsheetNameEditHistoryHashToken.js";
-import SpreadsheetNameSaveHistoryHashToken from "./SpreadsheetNameSaveHistoryHashToken.js";
+import SpreadsheetName from "../name/SpreadsheetName.js";
+import SpreadsheetNameEditHistoryHashToken from "../name/SpreadsheetNameEditHistoryHashToken.js";
+import SpreadsheetNameSaveHistoryHashToken from "../name/SpreadsheetNameSaveHistoryHashToken.js";
 import SpreadsheetRowReference from "../reference/SpreadsheetRowReference.js";
 import SpreadsheetRowReferenceRange from "../reference/SpreadsheetRowReferenceRange.js"
 import SpreadsheetSettingsSaveHistoryHashToken from "./SpreadsheetSettingsSaveHistoryHashToken.js";

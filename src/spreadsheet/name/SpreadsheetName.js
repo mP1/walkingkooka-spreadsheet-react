@@ -1,8 +1,8 @@
 /**
  * Holds a spreadsheet name, no validation is performed on the text
  */
-import Preconditions from "../Preconditions.js";
-import SystemObject from "../SystemObject.js";
+import Preconditions from "../../Preconditions.js";
+import SystemObject from "../../SystemObject.js";
 
 const TYPE_NAME = "spreadsheet-name";
 

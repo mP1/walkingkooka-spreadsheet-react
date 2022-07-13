@@ -1,5 +1,5 @@
-import SpreadsheetName from "./SpreadsheetName";
-import systemObjectTesting from "../SystemObjectTesting.js";
+import SpreadsheetName from "./SpreadsheetName.js";
+import systemObjectTesting from "../../SystemObjectTesting.js";
 
 const value = "spreadsheetName-123-abc";
 

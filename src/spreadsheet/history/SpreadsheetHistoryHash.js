@@ -35,10 +35,10 @@ import SpreadsheetLabelMappingEditHistoryHashToken from "./SpreadsheetLabelMappi
 import SpreadsheetLabelMappingHistoryHashToken from "./SpreadsheetLabelMappingHistoryHashToken.js";
 import SpreadsheetLabelMappingSaveHistoryHashToken from "./SpreadsheetLabelMappingSaveHistoryHashToken.js";
 import SpreadsheetLabelName from "../reference/SpreadsheetLabelName.js";
-import SpreadsheetName from "../SpreadsheetName.js";
-import SpreadsheetNameEditHistoryHashToken from "./SpreadsheetNameEditHistoryHashToken.js";
-import SpreadsheetNameHistoryHashToken from "./SpreadsheetNameHistoryHashToken.js";
-import SpreadsheetNameSaveHistoryHashToken from "./SpreadsheetNameSaveHistoryHashToken.js";
+import SpreadsheetName from "../name/SpreadsheetName.js";
+import SpreadsheetNameEditHistoryHashToken from "../name/SpreadsheetNameEditHistoryHashToken.js";
+import SpreadsheetNameHistoryHashToken from "../name/SpreadsheetNameHistoryHashToken.js";
+import SpreadsheetNameSaveHistoryHashToken from "../name/SpreadsheetNameSaveHistoryHashToken.js";
 import SpreadsheetRowReferenceRange from "../reference/SpreadsheetRowReferenceRange.js";
 import SpreadsheetSelectionHistoryHashToken from "./SpreadsheetSelectionHistoryHashToken.js";
 import SpreadsheetSettingsHistoryHashToken from "./SpreadsheetSettingsHistoryHashToken.js";
