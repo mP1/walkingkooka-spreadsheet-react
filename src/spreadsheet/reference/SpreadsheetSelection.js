@@ -1,15 +1,14 @@
 import CharSequences from "../../CharSequences.js";
 import Character from "../../Character.js";
-import SpreadsheetCellFreezeHistoryHashToken from "../history/SpreadsheetCellFreezeHistoryHashToken.js";
-import SpreadsheetCellUnFreezeHistoryHashToken from "../history/SpreadsheetCellUnFreezeHistoryHashToken.js";
-import SpreadsheetColumnOrRowClearHistoryHashToken from "../history/SpreadsheetColumnOrRowClearHistoryHashToken.js";
-import SpreadsheetColumnOrRowDeleteHistoryHashToken from "../history/SpreadsheetColumnOrRowDeleteHistoryHashToken.js";
-import SpreadsheetColumnOrRowFreezeHistoryHashToken from "../history/SpreadsheetColumnOrRowFreezeHistoryHashToken.js";
+import SpreadsheetCellFreezeHistoryHashToken from "./SpreadsheetCellFreezeHistoryHashToken.js";
+import SpreadsheetCellUnFreezeHistoryHashToken from "./SpreadsheetCellUnFreezeHistoryHashToken.js";
+import SpreadsheetColumnOrRowClearHistoryHashToken from "./SpreadsheetColumnOrRowClearHistoryHashToken.js";
+import SpreadsheetColumnOrRowDeleteHistoryHashToken from "./SpreadsheetColumnOrRowDeleteHistoryHashToken.js";
+import SpreadsheetColumnOrRowFreezeHistoryHashToken from "./SpreadsheetColumnOrRowFreezeHistoryHashToken.js";
 import SpreadsheetColumnOrRowInsertBeforeHistoryHashToken
-    from "../history/SpreadsheetColumnOrRowInsertBeforeHistoryHashToken.js";
-import SpreadsheetColumnOrRowInsertAfterHistoryHashToken
-    from "../history/SpreadsheetColumnOrRowInsertAfterHistoryHashToken.js";
-import SpreadsheetColumnOrRowSaveHistoryHashToken from "../history/SpreadsheetColumnOrRowSaveHistoryHashToken.js";
+    from "./SpreadsheetColumnOrRowInsertBeforeHistoryHashToken.js";
+import SpreadsheetColumnOrRowInsertAfterHistoryHashToken from "./SpreadsheetColumnOrRowInsertAfterHistoryHashToken.js";
+import SpreadsheetColumnOrRowSaveHistoryHashToken from "./SpreadsheetColumnOrRowSaveHistoryHashToken.js";
 import SpreadsheetHistoryHashTokens from "../history/SpreadsheetHistoryHashTokens.js";
 import SpreadsheetViewportSelection from "./SpreadsheetViewportSelection.js";
 import SystemObject from "../../SystemObject.js";

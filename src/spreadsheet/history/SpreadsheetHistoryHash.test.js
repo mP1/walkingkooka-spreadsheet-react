@@ -1,32 +1,35 @@
 import CharSequences from "../../CharSequences.js";
-import SpreadsheetCellClearHistoryHashToken from "./SpreadsheetCellClearHistoryHashToken.js";
-import SpreadsheetCellDeleteHistoryHashToken from "./SpreadsheetCellDeleteHistoryHashToken.js";
-import SpreadsheetCellFormulaEditHistoryHashToken from "./SpreadsheetCellFormulaEditHistoryHashToken.js";
-import SpreadsheetCellFormulaSaveHistoryHashToken from "./SpreadsheetCellFormulaSaveHistoryHashToken.js";
-import SpreadsheetCellFreezeHistoryHashToken from "./SpreadsheetCellFreezeHistoryHashToken.js";
-import SpreadsheetCellMenuHistoryHashToken from "./SpreadsheetCellMenuHistoryHashToken.js";
+import SpreadsheetCellClearHistoryHashToken from "../reference/SpreadsheetCellClearHistoryHashToken.js";
+import SpreadsheetCellDeleteHistoryHashToken from "../reference/SpreadsheetCellDeleteHistoryHashToken.js";
+import SpreadsheetCellFormulaEditHistoryHashToken from "../reference/SpreadsheetCellFormulaEditHistoryHashToken.js";
+import SpreadsheetCellFormulaSaveHistoryHashToken from "../reference/SpreadsheetCellFormulaSaveHistoryHashToken.js";
+import SpreadsheetCellFreezeHistoryHashToken from "../reference/SpreadsheetCellFreezeHistoryHashToken.js";
+import SpreadsheetCellMenuHistoryHashToken from "../reference/SpreadsheetCellMenuHistoryHashToken.js";
 import SpreadsheetCellRange from "../reference/SpreadsheetCellRange.js";
 import SpreadsheetCellReference from "../reference/SpreadsheetCellReference.js";
-import SpreadsheetCellSelectHistoryHashToken from "./SpreadsheetCellSelectHistoryHashToken.js";
-import SpreadsheetCellUnFreezeHistoryHashToken from "./SpreadsheetCellUnFreezeHistoryHashToken.js";
-import SpreadsheetColumnOrRowClearHistoryHashToken from "./SpreadsheetColumnOrRowClearHistoryHashToken.js";
-import SpreadsheetColumnOrRowDeleteHistoryHashToken from "./SpreadsheetColumnOrRowDeleteHistoryHashToken.js";
-import SpreadsheetColumnOrRowFreezeHistoryHashToken from "./SpreadsheetColumnOrRowFreezeHistoryHashToken.js";
-import SpreadsheetColumnOrRowInsertAfterHistoryHashToken from "./SpreadsheetColumnOrRowInsertAfterHistoryHashToken.js";
+import SpreadsheetCellSelectHistoryHashToken from "../reference/SpreadsheetCellSelectHistoryHashToken.js";
+import SpreadsheetCellUnFreezeHistoryHashToken from "../reference/SpreadsheetCellUnFreezeHistoryHashToken.js";
+import SpreadsheetColumnOrRowClearHistoryHashToken from "../reference/SpreadsheetColumnOrRowClearHistoryHashToken.js";
+import SpreadsheetColumnOrRowDeleteHistoryHashToken from "../reference/SpreadsheetColumnOrRowDeleteHistoryHashToken.js";
+import SpreadsheetColumnOrRowFreezeHistoryHashToken from "../reference/SpreadsheetColumnOrRowFreezeHistoryHashToken.js";
+import SpreadsheetColumnOrRowInsertAfterHistoryHashToken
+    from "../reference/SpreadsheetColumnOrRowInsertAfterHistoryHashToken.js";
 import SpreadsheetColumnOrRowInsertBeforeHistoryHashToken
-    from "./SpreadsheetColumnOrRowInsertBeforeHistoryHashToken.js";
-import SpreadsheetColumnOrRowMenuHistoryHashToken from "./SpreadsheetColumnOrRowMenuHistoryHashToken.js";
-import SpreadsheetColumnOrRowSaveHistoryHashToken from "./SpreadsheetColumnOrRowSaveHistoryHashToken.js";
-import SpreadsheetColumnOrRowSelectHistoryHashToken from "./SpreadsheetColumnOrRowSelectHistoryHashToken.js";
-import SpreadsheetColumnOrRowUnFreezeHistoryHashToken from "./SpreadsheetColumnOrRowUnFreezeHistoryHashToken.js";
+    from "../reference/SpreadsheetColumnOrRowInsertBeforeHistoryHashToken.js";
+import SpreadsheetColumnOrRowMenuHistoryHashToken from "../reference/SpreadsheetColumnOrRowMenuHistoryHashToken.js";
+import SpreadsheetColumnOrRowSaveHistoryHashToken from "../reference/SpreadsheetColumnOrRowSaveHistoryHashToken.js";
+import SpreadsheetColumnOrRowSelectHistoryHashToken from "../reference/SpreadsheetColumnOrRowSelectHistoryHashToken.js";
+import SpreadsheetColumnOrRowUnFreezeHistoryHashToken
+    from "../reference/SpreadsheetColumnOrRowUnFreezeHistoryHashToken.js";
 import SpreadsheetColumnReference from "../reference/SpreadsheetColumnReference.js";
 import SpreadsheetColumnReferenceRange from "../reference/SpreadsheetColumnReferenceRange.js";
 import SpreadsheetContextMenu from "../../widget/SpreadsheetContextMenu.js";
 import SpreadsheetHistoryHash from "./SpreadsheetHistoryHash.js";
 import SpreadsheetHistoryHashTokens from "./SpreadsheetHistoryHashTokens.js";
-import SpreadsheetLabelMappingDeleteHistoryHashToken from "./SpreadsheetLabelMappingDeleteHistoryHashToken.js";
-import SpreadsheetLabelMappingEditHistoryHashToken from "./SpreadsheetLabelMappingEditHistoryHashToken.js";
-import SpreadsheetLabelMappingSaveHistoryHashToken from "./SpreadsheetLabelMappingSaveHistoryHashToken.js";
+import SpreadsheetLabelMappingDeleteHistoryHashToken
+    from "../reference/SpreadsheetLabelMappingDeleteHistoryHashToken.js";
+import SpreadsheetLabelMappingEditHistoryHashToken from "../reference/SpreadsheetLabelMappingEditHistoryHashToken.js";
+import SpreadsheetLabelMappingSaveHistoryHashToken from "../reference/SpreadsheetLabelMappingSaveHistoryHashToken.js";
 import SpreadsheetLabelName from "../reference/SpreadsheetLabelName.js";
 import SpreadsheetName from "../name/SpreadsheetName.js";
 import SpreadsheetNameEditHistoryHashToken from "../name/SpreadsheetNameEditHistoryHashToken.js";

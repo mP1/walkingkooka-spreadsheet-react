@@ -1,6 +1,6 @@
 import Preconditions from "../../Preconditions.js";
 import SpreadsheetCellFormulaHistoryHashToken from "./SpreadsheetCellFormulaHistoryHashToken.js";
-import SpreadsheetHistoryHashTokens from "./SpreadsheetHistoryHashTokens.js";
+import SpreadsheetHistoryHashTokens from "../history/SpreadsheetHistoryHashTokens.js";
 
 /**
  * A history hash token that saves the given formula text for the current cell.
