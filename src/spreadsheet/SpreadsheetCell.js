@@ -5,7 +5,7 @@ import React from "react";
 import SpreadsheetCellReference from "./reference/SpreadsheetCellReference.js";
 import SpreadsheetCellFormat from "./SpreadsheetCellFormat";
 import SpreadsheetCellReferenceOrLabelName from "./reference/SpreadsheetCellReferenceOrLabelName.js";
-import SpreadsheetFormula from "./SpreadsheetFormula";
+import SpreadsheetFormula from "./reference/formula/SpreadsheetFormula.js";
 import SpreadsheetLabelName from "./reference/SpreadsheetLabelName.js";
 import SystemObject from "../SystemObject.js";
 import TableCell from "@mui/material/TableCell";

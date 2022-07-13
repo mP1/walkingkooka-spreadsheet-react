@@ -4,7 +4,7 @@ import SpreadsheetCell from "./SpreadsheetCell.js";
 import SpreadsheetCellFormat from "./SpreadsheetCellFormat";
 import SpreadsheetCellReference from "./reference/SpreadsheetCellReference";
 import SpreadsheetCellReferenceOrLabelName from "./reference/SpreadsheetCellReferenceOrLabelName.js";
-import SpreadsheetFormula from "./SpreadsheetFormula";
+import SpreadsheetFormula from "./reference/formula/SpreadsheetFormula.js";
 import SpreadsheetLabelName from "./reference/SpreadsheetLabelName.js";
 import systemObjectTesting from "../SystemObjectTesting.js";
 import TableCell from "@mui/material/TableCell";

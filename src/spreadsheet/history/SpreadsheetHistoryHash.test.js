@@ -1,8 +1,10 @@
 import CharSequences from "../../CharSequences.js";
 import SpreadsheetCellClearHistoryHashToken from "../reference/SpreadsheetCellClearHistoryHashToken.js";
 import SpreadsheetCellDeleteHistoryHashToken from "../reference/SpreadsheetCellDeleteHistoryHashToken.js";
-import SpreadsheetCellFormulaEditHistoryHashToken from "../reference/SpreadsheetCellFormulaEditHistoryHashToken.js";
-import SpreadsheetCellFormulaSaveHistoryHashToken from "../reference/SpreadsheetCellFormulaSaveHistoryHashToken.js";
+import SpreadsheetCellFormulaEditHistoryHashToken
+    from "../reference/formula/SpreadsheetCellFormulaEditHistoryHashToken.js";
+import SpreadsheetCellFormulaSaveHistoryHashToken
+    from "../reference/formula/SpreadsheetCellFormulaSaveHistoryHashToken.js";
 import SpreadsheetCellFreezeHistoryHashToken from "../reference/SpreadsheetCellFreezeHistoryHashToken.js";
 import SpreadsheetCellMenuHistoryHashToken from "../reference/SpreadsheetCellMenuHistoryHashToken.js";
 import SpreadsheetCellRange from "../reference/SpreadsheetCellRange.js";
