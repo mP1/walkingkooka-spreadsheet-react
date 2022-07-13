@@ -1,6 +1,6 @@
 import SpreadsheetCellReference from "../../src/spreadsheet/reference/SpreadsheetCellReference.js";
 import SpreadsheetColumnReference from "../../src/spreadsheet/reference/SpreadsheetColumnReference.js";
-import SpreadsheetFormulaWidget from "../../src/spreadsheet/SpreadsheetFormulaWidget.js";
+import SpreadsheetFormulaWidget from "../../src/spreadsheet/reference/formula/SpreadsheetFormulaWidget.js";
 import SpreadsheetNameWidget from "../../src/spreadsheet/name/SpreadsheetNameWidget.js";
 import SpreadsheetRowReference from "../../src/spreadsheet/reference/SpreadsheetRowReference.js";
 import SpreadsheetLabelMappingWidget from "../../src/spreadsheet/reference/SpreadsheetLabelMappingWidget.js";
