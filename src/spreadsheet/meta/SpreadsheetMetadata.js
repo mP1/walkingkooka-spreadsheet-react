@@ -21,7 +21,7 @@ import SpreadsheetRowReferenceRange from "../reference/SpreadsheetRowReferenceRa
 import SpreadsheetTextFormatPattern from "../format/SpreadsheetTextFormatPattern.js";
 import SpreadsheetTimeFormatPattern from "../format/SpreadsheetTimeFormatPattern.js";
 import SpreadsheetTimeParsePatterns from "../format/SpreadsheetTimeParsePatterns.js";
-import SpreadsheetViewportSelection from "../reference/SpreadsheetViewportSelection.js";
+import SpreadsheetViewportSelection from "../reference/viewport/SpreadsheetViewportSelection.js";
 import SystemObject from "../../SystemObject.js";
 import TextStyle from "../../text/TextStyle";
 

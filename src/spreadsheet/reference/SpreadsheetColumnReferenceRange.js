@@ -8,7 +8,7 @@ import spreadsheetRangeParse from "./SpreadsheetRangeParser.js";
 import SpreadsheetReferenceKind from "./SpreadsheetReferenceKind.js";
 import SpreadsheetRowReference from "./SpreadsheetRowReference.js";
 import SpreadsheetRowReferenceRange from "./SpreadsheetRowReferenceRange.js";
-import SpreadsheetViewportSelectionAnchor from "./SpreadsheetViewportSelectionAnchor.js";
+import SpreadsheetViewportSelectionAnchor from "./viewport/SpreadsheetViewportSelectionAnchor.js";
 import SystemObject from "../../SystemObject.js";
 
 

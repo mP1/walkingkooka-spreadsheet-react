@@ -9,7 +9,7 @@ import SpreadsheetSelectAutocompleteWidget
     from "../../src/spreadsheet/reference/SpreadsheetSelectAutocompleteWidget.js";
 import SpreadsheetSelection from "../../src/spreadsheet/reference/SpreadsheetSelection.js";
 import SpreadsheetSettingsWidget from "../../src/spreadsheet/settings/SpreadsheetSettingsWidget.js";
-import SpreadsheetViewportWidget from "../../src/spreadsheet/SpreadsheetViewportWidget.js";
+import SpreadsheetViewportWidget from "../../src/spreadsheet/reference/viewport/SpreadsheetViewportWidget.js";
 
 export default class SpreadsheetTesting {
 

@@ -10,7 +10,7 @@ import SpreadsheetColumnOrRowInsertBeforeHistoryHashToken
 import SpreadsheetColumnOrRowInsertAfterHistoryHashToken from "./SpreadsheetColumnOrRowInsertAfterHistoryHashToken.js";
 import SpreadsheetColumnOrRowSaveHistoryHashToken from "./SpreadsheetColumnOrRowSaveHistoryHashToken.js";
 import SpreadsheetHistoryHashTokens from "../history/SpreadsheetHistoryHashTokens.js";
-import SpreadsheetViewportSelection from "./SpreadsheetViewportSelection.js";
+import SpreadsheetViewportSelection from "./viewport/SpreadsheetViewportSelection.js";
 import SystemObject from "../../SystemObject.js";
 
 /**

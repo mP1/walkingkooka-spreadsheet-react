@@ -39,8 +39,8 @@ import SpreadsheetRowReferenceRange from "../reference/SpreadsheetRowReferenceRa
 import SpreadsheetSettingsSaveHistoryHashToken from "../settings/SpreadsheetSettingsSaveHistoryHashToken.js";
 import SpreadsheetSettingsSelectHistoryHashToken from "../settings/SpreadsheetSettingsSelectHistoryHashToken.js";
 import SpreadsheetSettingsWidgetHistoryHashTokens from "../settings/SpreadsheetSettingsWidgetHistoryHashTokens.js";
-import SpreadsheetViewportSelection from "../reference/SpreadsheetViewportSelection.js";
-import SpreadsheetViewportSelectionAnchor from "../reference/SpreadsheetViewportSelectionAnchor.js";
+import SpreadsheetViewportSelection from "../reference/viewport/SpreadsheetViewportSelection.js";
+import SpreadsheetViewportSelectionAnchor from "../reference/viewport/SpreadsheetViewportSelectionAnchor.js";
 import TextStyle from "../../text/TextStyle.js";
 
 const ID = "spreadsheet-id-123";

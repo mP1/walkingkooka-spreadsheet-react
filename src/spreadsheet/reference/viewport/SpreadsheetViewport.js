@@ -1,12 +1,12 @@
 /**
  * A pixel rectangle marks a region with one or more cells.
  */
-import Preconditions from "../Preconditions.js";
-import SpreadsheetCellReference from "./reference/SpreadsheetCellReference.js";
-import SpreadsheetSelection from "./reference/SpreadsheetSelection.js";
-import SpreadsheetViewportSelectionAnchor from "./reference/SpreadsheetViewportSelectionAnchor.js";
-import SpreadsheetViewportSelectionNavigation from "./reference/SpreadsheetViewportSelectionNavigation.js";
-import SystemObject from "../SystemObject.js";
+import Preconditions from "../../../Preconditions.js";
+import SpreadsheetCellReference from "../SpreadsheetCellReference.js";
+import SpreadsheetSelection from "../SpreadsheetSelection.js";
+import SpreadsheetViewportSelectionAnchor from "./SpreadsheetViewportSelectionAnchor.js";
+import SpreadsheetViewportSelectionNavigation from "./SpreadsheetViewportSelectionNavigation.js";
+import SystemObject from "../../../SystemObject.js";
 
 const SEPARATOR = ":";
 const TYPE_NAME = "spreadsheet-viewport";

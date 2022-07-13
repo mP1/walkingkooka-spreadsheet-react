@@ -1,13 +1,13 @@
-import SpreadsheetCellReference from "./reference/SpreadsheetCellReference.js";
-import SpreadsheetCellRange from "./reference/SpreadsheetCellRange.js";
-import SpreadsheetColumnReference from "./reference/SpreadsheetColumnReference.js";
-import SpreadsheetColumnReferenceRange from "./reference/SpreadsheetColumnReferenceRange.js";
-import SpreadsheetRowReferenceRange from "./reference/SpreadsheetRowReferenceRange.js";
-import SpreadsheetRowReference from "./reference/SpreadsheetRowReference.js";
+import SpreadsheetCellReference from "../SpreadsheetCellReference.js";
+import SpreadsheetCellRange from "../SpreadsheetCellRange.js";
+import SpreadsheetColumnReference from "../SpreadsheetColumnReference.js";
+import SpreadsheetColumnReferenceRange from "../SpreadsheetColumnReferenceRange.js";
+import SpreadsheetRowReferenceRange from "../SpreadsheetRowReferenceRange.js";
+import SpreadsheetRowReference from "../SpreadsheetRowReference.js";
 import SpreadsheetViewport from "./SpreadsheetViewport.js";
-import SpreadsheetViewportSelectionAnchor from "./reference/SpreadsheetViewportSelectionAnchor.js";
-import SpreadsheetViewportSelectionNavigation from "./reference/SpreadsheetViewportSelectionNavigation.js";
-import systemObjectTesting from "../SystemObjectTesting.js";
+import SpreadsheetViewportSelectionAnchor from "./SpreadsheetViewportSelectionAnchor.js";
+import SpreadsheetViewportSelectionNavigation from "./SpreadsheetViewportSelectionNavigation.js";
+import systemObjectTesting from "../../../SystemObjectTesting.js";
 
 function cellOrLabel() {
     return SpreadsheetCellReference.fromJson("B2");

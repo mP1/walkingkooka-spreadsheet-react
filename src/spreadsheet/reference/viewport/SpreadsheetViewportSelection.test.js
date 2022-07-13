@@ -1,14 +1,14 @@
-import SpreadsheetCellRange from "./SpreadsheetCellRange.js";
-import SpreadsheetCellReference from "./SpreadsheetCellReference.js";
-import SpreadsheetColumnReference from "./SpreadsheetColumnReference.js";
-import SpreadsheetColumnReferenceRange from "./SpreadsheetColumnReferenceRange.js";
-import SpreadsheetLabelName from "./SpreadsheetLabelName.js";
-import SpreadsheetRowReference from "./SpreadsheetRowReference.js";
-import SpreadsheetRowReferenceRange from "./SpreadsheetRowReferenceRange.js";
+import SpreadsheetCellRange from "../SpreadsheetCellRange.js";
+import SpreadsheetCellReference from "../SpreadsheetCellReference.js";
+import SpreadsheetColumnReference from "../SpreadsheetColumnReference.js";
+import SpreadsheetColumnReferenceRange from "../SpreadsheetColumnReferenceRange.js";
+import SpreadsheetLabelName from "../SpreadsheetLabelName.js";
+import SpreadsheetRowReference from "../SpreadsheetRowReference.js";
+import SpreadsheetRowReferenceRange from "../SpreadsheetRowReferenceRange.js";
 import SpreadsheetViewportSelection from "./SpreadsheetViewportSelection.js";
 import SpreadsheetViewportSelectionAnchor from "./SpreadsheetViewportSelectionAnchor.js";
 import SpreadsheetViewportSelectionNavigation from "./SpreadsheetViewportSelectionNavigation.js";
-import systemObjectTesting from "../../SystemObjectTesting.js";
+import systemObjectTesting from "../../../SystemObjectTesting.js";
 
 function selection() {
     return cellRange();

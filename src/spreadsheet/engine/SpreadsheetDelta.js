@@ -12,7 +12,7 @@ import SpreadsheetLabelMapping from "../reference/SpreadsheetLabelMapping.js";
 import SpreadsheetLabelName from "../reference/SpreadsheetLabelName.js";
 import SpreadsheetRow from "../reference/SpreadsheetRow.js";
 import SpreadsheetRowReference from "../reference/SpreadsheetRowReference";
-import SpreadsheetViewportSelection from "../reference/SpreadsheetViewportSelection.js";
+import SpreadsheetViewportSelection from "../reference/viewport/SpreadsheetViewportSelection.js";
 import SystemObject from "../../SystemObject.js";
 
 /**
