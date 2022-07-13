@@ -1,5 +1,5 @@
 import Equality from "../../Equality.js";
-import SpreadsheetHistoryHashTokens from "./SpreadsheetHistoryHashTokens.js";
+import SpreadsheetHistoryHashTokens from "../history/SpreadsheetHistoryHashTokens.js";
 import SpreadsheetSettingsHistoryHashToken from "./SpreadsheetSettingsHistoryHashToken.js";
 
 /**

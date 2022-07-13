@@ -9,7 +9,7 @@ import SpreadsheetHistoryHash from "../spreadsheet/history/SpreadsheetHistoryHas
 import SpreadsheetHistoryHashTokens from "../spreadsheet/history/SpreadsheetHistoryHashTokens.js";
 import Toolbar from '@mui/material/Toolbar';
 import SpreadsheetSettingsSelectHistoryHashToken
-    from "../spreadsheet/history/SpreadsheetSettingsSelectHistoryHashToken.js";
+    from "../spreadsheet/settings/SpreadsheetSettingsSelectHistoryHashToken.js";
 
 function computeSettingsLink(historyHashTokens) {
     // flip the settings token.
