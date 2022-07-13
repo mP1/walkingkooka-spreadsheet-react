@@ -1,16 +1,16 @@
 import Button from "@mui/material/Button";
-import Equality from "../Equality.js";
-import Keys from "../Keys.js";
+import Equality from "../../Equality.js";
+import Keys from "../../Keys.js";
 import PropTypes from 'prop-types';
 import React from 'react';
-import SpreadsheetHistoryAwareStateWidget from "./history/SpreadsheetHistoryAwareStateWidget.js";
-import SpreadsheetHistoryHash from "./history/SpreadsheetHistoryHash.js";
-import SpreadsheetHistoryHashTokens from "./history/SpreadsheetHistoryHashTokens.js";
-import SpreadsheetMessengerCrud from "./message/SpreadsheetMessengerCrud.js";
-import SpreadsheetMetadata from "./meta/SpreadsheetMetadata.js";
+import SpreadsheetHistoryAwareStateWidget from "../history/SpreadsheetHistoryAwareStateWidget.js";
+import SpreadsheetHistoryHash from "../history/SpreadsheetHistoryHash.js";
+import SpreadsheetHistoryHashTokens from "../history/SpreadsheetHistoryHashTokens.js";
+import SpreadsheetMessengerCrud from "../message/SpreadsheetMessengerCrud.js";
+import SpreadsheetMetadata from "../meta/SpreadsheetMetadata.js";
 import SpreadsheetName from "./SpreadsheetName.js";
-import SpreadsheetNameEditHistoryHashToken from "./history/SpreadsheetNameEditHistoryHashToken.js";
-import SpreadsheetNameSaveHistoryHashToken from "./history/SpreadsheetNameSaveHistoryHashToken.js";
+import SpreadsheetNameEditHistoryHashToken from "./SpreadsheetNameEditHistoryHashToken.js";
+import SpreadsheetNameSaveHistoryHashToken from "./SpreadsheetNameSaveHistoryHashToken.js";
 import TextField from "@mui/material/TextField";
 
 /**
