@@ -147,7 +147,7 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetHistoryAwareSta
                 this.setState({
                     cellReference: null,
                     selection: null,
-                }, "loadFormulaText");
+                });
 
                 this.showError(message, error);
             }
@@ -232,7 +232,7 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetHistoryAwareSta
                newState.selection = null;
             }
 
-            this.setState(newState, "onblur");
+            this.setState(newState);
         }
     }
 
@@ -285,11 +285,11 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetHistoryAwareSta
 
         const selection = this.state.selection;
         this.setState({
-            selection: new SpreadsheetCellFormulaSaveHistoryHashToken(
-                selection.viewportSelection(),
-                e.target.value
-            )
-        }, "onEnterKey")
+                selection: new SpreadsheetCellFormulaSaveHistoryHashToken(
+                    selection.viewportSelection(),
+                    e.target.value
+                )
+            });
     }
 
     /**
@@ -331,7 +331,7 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetHistoryAwareSta
 
                 console.log(this.prefix() + " .onSpDela state.sel: " + selection  + " history is " + SpreadsheetHistoryHash.stringify(this.props.history.tokens()));
 
-                this.setState(newState, "onSpreadsheetDelta loaded...");
+                this.setState(newState);
             }
         }
     }
