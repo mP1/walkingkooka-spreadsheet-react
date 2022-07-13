@@ -9,8 +9,8 @@ import SpreadsheetHistoryHash from "../history/SpreadsheetHistoryHash.js";
 import SpreadsheetHistoryHashTokens from "../history/SpreadsheetHistoryHashTokens.js";
 import SpreadsheetMetadata from "../meta/SpreadsheetMetadata.js";
 import SpreadsheetMessengerCrud from "../message/SpreadsheetMessengerCrud.js";
-import SpreadsheetSettingsSelectHistoryHashToken from "../history/SpreadsheetSettingsSelectHistoryHashToken.js";
-import SpreadsheetSettingsSaveHistoryHashToken from "../history/SpreadsheetSettingsSaveHistoryHashToken.js";
+import SpreadsheetSettingsSelectHistoryHashToken from "./SpreadsheetSettingsSelectHistoryHashToken.js";
+import SpreadsheetSettingsSaveHistoryHashToken from "./SpreadsheetSettingsSaveHistoryHashToken.js";
 import Tooltip from '@mui/material/Tooltip';
 
 /**
