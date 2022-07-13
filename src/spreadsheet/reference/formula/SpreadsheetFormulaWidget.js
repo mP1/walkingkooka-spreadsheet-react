@@ -168,7 +168,7 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetHistoryAwareSta
         if(this.state.selection instanceof SpreadsheetCellFormulaEditHistoryHashToken){
             // if textField does not have focus and not save -> load give focus.
             if(this.textField.current){
-                console.log("@@Formula not focused so give Focus: " + this.input.current);
+                console.log(this.prefix() + ".Formula not focused so give Focus: " + this.input.current);
 
                 element = this.input.current;
             }
@@ -189,8 +189,6 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetHistoryAwareSta
         const visibility = selection instanceof SpreadsheetCellHistoryHashToken && cellReference ?
             "visible" :
             "hidden";
-
-////        console.log("@@Formula render visibility: " + visibility + " " +  this.state.cellReference + " " + this.state.value);
 
         return (
             <TextField ref={this.textField}
@@ -318,7 +316,6 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetHistoryAwareSta
 
                 if(cell){
                     formulaText = cell.formula().text();
-                    //console.log("loaded formula text for " + selection + " is " + CharSequences.quoteAndEscape(formulaText));
                 }else {
                     if(responseDelta.deletedCells().find(deleted => deleted.equals(cellReference))){
                         console.log("cell " + selectionSelection + " deleted, formula cleared");
