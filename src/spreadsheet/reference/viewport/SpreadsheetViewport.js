@@ -32,10 +32,10 @@ export default class SpreadsheetViewport extends SystemObject {
         );
     }
 
-    constructor(cellOrLabel, width, height) {
+    constructor(home, width, height) {
         super();
-        Preconditions.requireInstance(cellOrLabel, SpreadsheetCellReference, "cellOrLabel");
-        this.cellOrLabelValue = cellOrLabel;
+        Preconditions.requireInstance(home, SpreadsheetCellReference, "home");
+        this.homeValue = home;
 
         Preconditions.requirePositiveNumber(width, "width");
         this.widthValue = width;
@@ -44,8 +44,8 @@ export default class SpreadsheetViewport extends SystemObject {
         this.heightValue = height;
     }
 
-    cellOrLabel() {
-        return this.cellOrLabelValue;
+    home() {
+        return this.homeValue;
     }
 
     width() {
@@ -65,7 +65,7 @@ export default class SpreadsheetViewport extends SystemObject {
         Preconditions.optionalInstance(navigation, SpreadsheetViewportSelectionNavigation, "navigation");
 
         const parameters = {
-            home: [this.cellOrLabel()],
+            home: [this.home()],
             width: [this.width()],
             height: [this.height()],
             includeFrozenColumnsRows: [true],
@@ -88,7 +88,7 @@ export default class SpreadsheetViewport extends SystemObject {
     }
 
     toJson() {
-        return this.cellOrLabel() + SEPARATOR + this.width() + SEPARATOR + this.height();
+        return this.home() + SEPARATOR + this.width() + SEPARATOR + this.height();
     }
 
     typeName() {
@@ -97,7 +97,7 @@ export default class SpreadsheetViewport extends SystemObject {
 
     equals(other) {
         return other instanceof SpreadsheetViewport &&
-            this.cellOrLabel().equals(other.cellOrLabel()) &&
+            this.home().equals(other.home()) &&
             this.width() === other.width() &&
             this.height() === other.height();
     }

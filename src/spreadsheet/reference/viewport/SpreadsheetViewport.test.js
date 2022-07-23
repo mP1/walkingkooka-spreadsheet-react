@@ -9,7 +9,7 @@ import SpreadsheetViewportSelectionAnchor from "./SpreadsheetViewportSelectionAn
 import SpreadsheetViewportSelectionNavigation from "./SpreadsheetViewportSelectionNavigation.js";
 import systemObjectTesting from "../../../SystemObjectTesting.js";
 
-function cellOrLabel() {
+function home() {
     return SpreadsheetCellReference.fromJson("B2");
 }
 
@@ -22,7 +22,7 @@ function height() {
 }
 
 function viewport() {
-    return new SpreadsheetViewport(cellOrLabel(), width(), height());
+    return new SpreadsheetViewport(home(), width(), height());
 }
 
 systemObjectTesting(
@@ -36,78 +36,78 @@ systemObjectTesting(
 
 // create...............................................................................................................
 
-test("create without cellOrLabel fails", () => {
-    expect(() => new SpreadsheetViewport(null, width(), height())).toThrow("Missing cellOrLabel");
+test("create without home fails", () => {
+    expect(() => new SpreadsheetViewport(null, width(), height())).toThrow("Missing home");
 });
 
-test("create invalid cellOrLabel type fails", () => {
-    const cellOrLabel = "invalid!";
-    expect(() => new SpreadsheetViewport(cellOrLabel, width(), height())).toThrow("Expected SpreadsheetCellReference cellOrLabel got " + cellOrLabel);
+test("create invalid home type fails", () => {
+    const home = "invalid!";
+    expect(() => new SpreadsheetViewport(home, width(), height())).toThrow("Expected SpreadsheetCellReference home got " + home);
 });
 
 // width
 
 test("create missing width fails", () => {
     const width = null;
-    expect(() => new SpreadsheetViewport(cellOrLabel(), width, height())).toThrow("Missing width");
+    expect(() => new SpreadsheetViewport(home(), width, height())).toThrow("Missing width");
 });
 
 test("create invalid width type fails", () => {
     const width = "invalid!"
-    expect(() => new SpreadsheetViewport(cellOrLabel(), width, height())).toThrow("Expected number width got " + width);
+    expect(() => new SpreadsheetViewport(home(), width, height())).toThrow("Expected number width got " + width);
 });
 
 test("create invalid width value fails", () => {
     const width = -1;
-    expect(() => new SpreadsheetViewport(cellOrLabel(), width, height())).toThrow("Expected number width >= 0 got " + width);
+    expect(() => new SpreadsheetViewport(home(), width, height())).toThrow("Expected number width >= 0 got " + width);
 });
 
 test("create invalid width value fails2", () => {
     const width = -123;
-    expect(() => new SpreadsheetViewport(cellOrLabel(), width, height())).toThrow("Expected number width >= 0 got " + width);
+    expect(() => new SpreadsheetViewport(home(), width, height())).toThrow("Expected number width >= 0 got " + width);
 });
 
 // height
 
 test("create missing height fails", () => {
     const height = null;
-    expect(() => new SpreadsheetViewport(cellOrLabel(), width(), height)).toThrow("Missing height");
+    expect(() => new SpreadsheetViewport(home(), width(), height)).toThrow("Missing height");
 });
 
 test("create invalid height type fails", () => {
     const height = "invalid!"
-    expect(() => new SpreadsheetViewport(cellOrLabel(), width(), height)).toThrow("Expected number height got " + height);
+    expect(() => new SpreadsheetViewport(home(), width(), height)).toThrow("Expected number height got " + height);
 });
 
 test("create invalid height value fails", () => {
     const height = -1;
-    expect(() => new SpreadsheetViewport(cellOrLabel(), width(), height)).toThrow("Expected number height >= 0 got " + height);
+    expect(() => new SpreadsheetViewport(home(), width(), height)).toThrow("Expected number height >= 0 got " + height);
 });
 
 test("create invalid height value fails2", () => {
     const height = -123;
-    expect(() => new SpreadsheetViewport(cellOrLabel(), width(), height)).toThrow("Expected number height >= 0 got " + height);
+    expect(() => new SpreadsheetViewport(home(), width(), height)).toThrow("Expected number height >= 0 got " + height);
 });
 
 test("new", () => {
-    check(new SpreadsheetViewport(cellOrLabel(), width(), height()),
-        cellOrLabel(),
+    check(new SpreadsheetViewport(home(), width(), height()),
+        home(),
         width(),
         height());
 });
 
 test("new 0 width", () => {
     const width = 0;
-    check(new SpreadsheetViewport(cellOrLabel(), width, height()),
-        cellOrLabel(),
+    check(new SpreadsheetViewport(home(), width, height()),
+        home(),
         width,
         height());
 });
 
 test("new 0 height", () => {
     const height = 0;
-    check(new SpreadsheetViewport(cellOrLabel(), width(), height),
-        cellOrLabel(),
+    check(new SpreadsheetViewport(home(), width(), height),
+        home(),
         width(),
         height);
 });
@@ -124,14 +124,14 @@ function apiLoadCellsQueryStringParametersAndCheck(c, w, h, s, a, n, expected) {
 }
 
 apiLoadCellsQueryStringParametersAndCheck(
-    cellOrLabel(),
+    home(),
     width(),
     height(),
     null,
     null,
     null,
     {
-        home: [cellOrLabel()],
+        home: [home()],
         width: [width()],
         height: [height()],
         includeFrozenColumnsRows: [true],
@@ -139,14 +139,14 @@ apiLoadCellsQueryStringParametersAndCheck(
 );
 
 apiLoadCellsQueryStringParametersAndCheck(
-    cellOrLabel(),
+    home(),
     width(),
     height(),
     SpreadsheetCellReference.parse("B2"),
     null,
     null,
     {
-        home: [cellOrLabel()],
+        home: [home()],
         width: [width()],
         height: [height()],
         selectionType: ["cell"],
@@ -156,14 +156,14 @@ apiLoadCellsQueryStringParametersAndCheck(
 );
 
 apiLoadCellsQueryStringParametersAndCheck(
-    cellOrLabel(),
+    home(),
     width(),
     height(),
     SpreadsheetCellRange.parse("B2:C3"),
     SpreadsheetViewportSelectionAnchor.TOP_LEFT,
     null,
     {
-        home: [cellOrLabel()],
+        home: [home()],
         width: [width()],
         height: [height()],
         selectionType: ["cell-range"],
@@ -174,14 +174,14 @@ apiLoadCellsQueryStringParametersAndCheck(
 );
 
 apiLoadCellsQueryStringParametersAndCheck(
-    cellOrLabel(),
+    home(),
     width(),
     height(),
     SpreadsheetCellReference.parse("B2"),
     null,
     null,
     {
-        home: [cellOrLabel()],
+        home: [home()],
         width: [width()],
         height: [height()],
         selectionType: ["cell"],
@@ -191,14 +191,14 @@ apiLoadCellsQueryStringParametersAndCheck(
 );
 
 apiLoadCellsQueryStringParametersAndCheck(
-    cellOrLabel(),
+    home(),
     width(),
     height(),
     SpreadsheetColumnReference.parse("B"),
     null,
     null,
     {
-        home: [cellOrLabel()],
+        home: [home()],
         width: [width()],
         height: [height()],
         selectionType: ["column"],
@@ -208,14 +208,14 @@ apiLoadCellsQueryStringParametersAndCheck(
 );
 
 apiLoadCellsQueryStringParametersAndCheck(
-    cellOrLabel(),
+    home(),
     width(),
     height(),
     SpreadsheetColumnReferenceRange.parse("B:C"),
     SpreadsheetViewportSelectionAnchor.LEFT,
     null,
     {
-        home: [cellOrLabel()],
+        home: [home()],
         width: [width()],
         height: [height()],
         selectionType: ["column-range"],
@@ -226,14 +226,14 @@ apiLoadCellsQueryStringParametersAndCheck(
 );
 
 apiLoadCellsQueryStringParametersAndCheck(
-    cellOrLabel(),
+    home(),
     width(),
     height(),
     SpreadsheetRowReference.parse("99"),
     null,
     null,
     {
-        home: [cellOrLabel()],
+        home: [home()],
         width: [width()],
         height: [height()],
         selectionType: ["row"],
@@ -243,14 +243,14 @@ apiLoadCellsQueryStringParametersAndCheck(
 );
 
 apiLoadCellsQueryStringParametersAndCheck(
-    cellOrLabel(),
+    home(),
     width(),
     height(),
     SpreadsheetRowReferenceRange.parse("98:99"),
     SpreadsheetViewportSelectionAnchor.TOP,
     null,
     {
-        home: [cellOrLabel()],
+        home: [home()],
         width: [width()],
         height: [height()],
         selectionType: ["row-range"],
@@ -261,14 +261,14 @@ apiLoadCellsQueryStringParametersAndCheck(
 );
 
 apiLoadCellsQueryStringParametersAndCheck(
-    cellOrLabel(),
+    home(),
     width(),
     height(),
     SpreadsheetRowReferenceRange.parse("98:99"),
     SpreadsheetViewportSelectionAnchor.TOP,
     SpreadsheetViewportSelectionNavigation.UP,
     {
-        home: [cellOrLabel()],
+        home: [home()],
         width: [width()],
         height: [height()],
         selectionType: ["row-range"],
@@ -280,19 +280,19 @@ apiLoadCellsQueryStringParametersAndCheck(
 );
 // equals...............................................................................................................
 
-test("equals different cellOrLabel false", () => {
+test("equals different home false", () => {
     const v = viewport();
     expect(v.equals(new SpreadsheetViewport(SpreadsheetCellReference.parse("Z9"), width(), height()))).toBeFalse();
 });
 
 test("equals different width false", () => {
     const v = viewport();
-    expect(v.equals(new SpreadsheetViewport(cellOrLabel(), width() + 1, height()))).toBeFalse();
+    expect(v.equals(new SpreadsheetViewport(home(), width() + 1, height()))).toBeFalse();
 });
 
 test("equals different height false", () => {
     const v = viewport();
-    expect(v.equals(new SpreadsheetViewport(cellOrLabel(), width(), height() + 1))).toBeFalse();
+    expect(v.equals(new SpreadsheetViewport(home(), width(), height() + 1))).toBeFalse();
 });
 
 test("equals equivalent true", () => {
@@ -308,9 +308,9 @@ test("equals equivalent true #2", () => {
 
 // helpers..............................................................................................................
 
-function check(viewport, cellOrLabel, width, height) {
-    expect(viewport.cellOrLabel()).toStrictEqual(cellOrLabel);
-    expect(viewport.cellOrLabel()).toBeInstanceOf(SpreadsheetCellReference);
+function check(viewport, home, width, height) {
+    expect(viewport.home()).toStrictEqual(home);
+    expect(viewport.home()).toBeInstanceOf(SpreadsheetCellReference);
     
     expect(viewport.width()).toStrictEqual(width);
     expect(viewport.width()).toBeNumber();
@@ -318,7 +318,7 @@ function check(viewport, cellOrLabel, width, height) {
     expect(viewport.height()).toStrictEqual(height);
     expect(viewport.height()).toBeNumber();
 
-    const json = [cellOrLabel, width, height].join(":");
+    const json = [home, width, height].join(":");
     expect(viewport.toJson()).toStrictEqual(json);
 
     expect(SpreadsheetViewport.fromJson(json)).toStrictEqual(viewport);
