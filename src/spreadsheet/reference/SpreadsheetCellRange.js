@@ -120,10 +120,6 @@ export default class SpreadsheetCellRange extends SpreadsheetExpressionReference
         return keys;
     }
 
-    isCellScalarOrRange() {
-        return true;
-    }
-
     canFreeze() {
         return this.begin().canFreeze();
     }

@@ -19,6 +19,10 @@ export default class SpreadsheetExpressionReference extends SpreadsheetSelection
         SystemObject.throwUnsupportedOperation();
     }
 
+    isCellScalarOrRange() {
+        return true;
+    }
+
     selectOptionText() {
         return this.toString();
     }
