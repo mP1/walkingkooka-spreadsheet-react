@@ -10,10 +10,6 @@ export default class SpreadsheetCellReferenceOrLabelName extends SpreadsheetExpr
         return this;
     }
 
-    isCellScalarOrRange() {
-        return true;
-    }
-
     apiClearUrl() {
         return "/cell/" + this + "/clear";
     }
