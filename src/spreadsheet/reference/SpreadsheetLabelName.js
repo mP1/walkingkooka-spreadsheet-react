@@ -2,14 +2,15 @@ import Character from "../../Character.js";
 import CharSequences from "../../CharSequences.js";
 import Preconditions from "../../Preconditions.js";
 import SpreadsheetCellReference from "./SpreadsheetCellReference.js";
-import SpreadsheetCellReferenceOrLabelName from "./SpreadsheetCellReferenceOrLabelName.js";
+import SpreadsheetExpressionReference from "./SpreadsheetExpressionReference.js";
 import SpreadsheetLabelMapping from "./SpreadsheetLabelMapping.js";
+import SpreadsheetViewport from "./viewport/SpreadsheetViewport.js";
 import SystemObject from "../../SystemObject.js";
 
 const TYPE_NAME = "spreadsheet-label-name";
 const MAX_LENGTH = 255;
 
-export default class SpreadsheetLabelName extends SpreadsheetCellReferenceOrLabelName {
+export default class SpreadsheetLabelName extends SpreadsheetExpressionReference {
 
     static fromJson(json) {
         return SpreadsheetLabelName.parse(json);
@@ -69,12 +70,24 @@ export default class SpreadsheetLabelName extends SpreadsheetCellReferenceOrLabe
         return this.textValue;
     }
 
+    apiClearUrl() {
+        return "/cell/" + this + "/clear";
+    }
+
+    apiDeleteUrl() {
+        return "/cell/" + this;
+    }
+
     mapping(reference) {
         return new SpreadsheetLabelMapping(this, reference);
     }
 
     canFreeze() {
         return true;
+    }
+
+    cellOrRange() {
+        return this;
     }
 
     cellMapKeys(labels) {
@@ -109,9 +122,17 @@ export default class SpreadsheetLabelName extends SpreadsheetCellReferenceOrLabe
 
     // viewport.........................................................................................................
 
+    viewport(width, height) {
+        return new SpreadsheetViewport(this, width, height);
+    }
+
     viewportFocus(labelToReference, anchor) {
         const target = labelToReference.get(this);
         return target && target.viewportFocus(labelToReference, anchor);
+    }
+
+    defaultAnchor() {
+        return null;
     }
 
     setAnchorConditional(anchor) {

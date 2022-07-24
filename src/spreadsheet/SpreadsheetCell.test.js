@@ -3,7 +3,7 @@ import React from "react";
 import SpreadsheetCell from "./SpreadsheetCell.js";
 import SpreadsheetCellFormat from "./SpreadsheetCellFormat";
 import SpreadsheetCellReference from "./reference/SpreadsheetCellReference";
-import SpreadsheetCellReferenceOrLabelName from "./reference/SpreadsheetCellReferenceOrLabelName.js";
+import SpreadsheetExpressionReference from "./reference/SpreadsheetExpressionReference.js";
 import SpreadsheetFormula from "./reference/formula/SpreadsheetFormula.js";
 import SpreadsheetLabelName from "./reference/SpreadsheetLabelName.js";
 import systemObjectTesting from "../SystemObjectTesting.js";
@@ -69,7 +69,7 @@ test("create without reference fails", () => {
 });
 
 test("create with invalid reference fails", () => {
-    expect(() => new SpreadsheetCell(1.5)).toThrow("Expected SpreadsheetCellReferenceOrLabelName reference got 1.5");
+    expect(() => new SpreadsheetCell(1.5)).toThrow("Expected SpreadsheetExpressionReference reference got 1.5");
 });
 
 test("create without formula fails", () => {
@@ -548,7 +548,7 @@ test("equals equivalent true #2", () => {
 
 function check(cell, reference, formula, style, format, formatted, json) {
     expect(cell.reference()).toStrictEqual(reference);
-    expect(cell.reference()).toBeInstanceOf(SpreadsheetCellReferenceOrLabelName);
+    expect(cell.reference()).toBeInstanceOf(SpreadsheetExpressionReference);
 
     expect(cell.formula()).toStrictEqual(formula);
     expect(cell.formula()).toBeInstanceOf(SpreadsheetFormula);

@@ -7,7 +7,7 @@ import SpreadsheetCellFormulaHistoryHashToken from "./SpreadsheetCellFormulaHist
 import SpreadsheetCellFormulaSaveHistoryHashToken from "./SpreadsheetCellFormulaSaveHistoryHashToken.js";
 import SpreadsheetCellHistoryHashToken from "../SpreadsheetCellHistoryHashToken.js";
 import SpreadsheetCellReference from "../SpreadsheetCellReference.js";
-import SpreadsheetCellReferenceOrLabelName from "../SpreadsheetCellReferenceOrLabelName.js";
+import SpreadsheetExpressionReference from "../SpreadsheetExpressionReference.js";
 import SpreadsheetHistoryHash from "../../history/SpreadsheetHistoryHash.js";
 import SpreadsheetHistoryHashTokens from "../../history/SpreadsheetHistoryHashTokens.js";
 import SpreadsheetHistoryAwareStateWidget from "../../history/SpreadsheetHistoryAwareStateWidget.js";
@@ -304,7 +304,7 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetHistoryAwareSta
         if(selection instanceof SpreadsheetCellHistoryHashToken){
             const viewportSelection = selection.viewportSelection();
             const selectionSelection = viewportSelection.selection();
-            if(selectionSelection instanceof SpreadsheetCellReferenceOrLabelName){
+            if(selectionSelection instanceof SpreadsheetExpressionReference){
                 // check if selection was loaded.
                 var formulaText = "";
 

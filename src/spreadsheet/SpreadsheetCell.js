@@ -4,7 +4,7 @@ import Preconditions from "../Preconditions.js";
 import React from "react";
 import SpreadsheetCellReference from "./reference/SpreadsheetCellReference.js";
 import SpreadsheetCellFormat from "./SpreadsheetCellFormat";
-import SpreadsheetCellReferenceOrLabelName from "./reference/SpreadsheetCellReferenceOrLabelName.js";
+import SpreadsheetExpressionReference from "./reference/SpreadsheetExpressionReference.js";
 import SpreadsheetFormula from "./reference/formula/SpreadsheetFormula.js";
 import SpreadsheetLabelName from "./reference/SpreadsheetLabelName.js";
 import SystemObject from "../SystemObject.js";
@@ -62,7 +62,7 @@ export default class SpreadsheetCell extends SystemObject {
 
     constructor(reference, formula, style, format, formatted) {
         super();
-        Preconditions.requireInstance(reference, SpreadsheetCellReferenceOrLabelName, "reference");
+        Preconditions.requireInstance(reference, SpreadsheetExpressionReference, "reference");
         Preconditions.requireInstance(formula, SpreadsheetFormula, "formula");
         Preconditions.requireInstance(style, TextStyle, "style");
         Preconditions.optionalInstance(format, SpreadsheetCellFormat, "format");

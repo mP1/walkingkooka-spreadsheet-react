@@ -14,7 +14,7 @@ import SpreadsheetCellHistoryHashToken from "../reference/SpreadsheetCellHistory
 import SpreadsheetCellMenuHistoryHashToken from "../reference/SpreadsheetCellMenuHistoryHashToken.js";
 import spreadsheetCellRangeCellReferenceOrLabelParse
     from "../reference/SpreadsheetCellRangeCellReferenceOrLabelParse.js";
-import SpreadsheetCellReferenceOrLabelName from "../reference/SpreadsheetCellReferenceOrLabelName.js";
+import SpreadsheetCellReference from "../reference/SpreadsheetCellReference.js";
 import spreadsheetCellReferenceOrLabelNameParse from "../reference/SpreadsheetCellReferenceOrLabelNameParse.js";
 import SpreadsheetCellSelectHistoryHashToken from "../reference/SpreadsheetCellSelectHistoryHashToken.js";
 import SpreadsheetCellUnFreezeHistoryHashToken from "../reference/SpreadsheetCellUnFreezeHistoryHashToken.js";
@@ -176,7 +176,9 @@ export default class SpreadsheetHistoryHash extends SpreadsheetHistoryHashTokens
                                     token = tokens.shift();
                                 }else {
                                     // /cell/A1/formula
-                                    if(cellOrLabel instanceof SpreadsheetCellReferenceOrLabelName && SpreadsheetHistoryHashTokens.CELL_FORMULA === token){
+                                    if((cellOrLabel instanceof SpreadsheetCellReference ||
+                                            cellOrLabel instanceof SpreadsheetLabelName) &&
+                                        SpreadsheetHistoryHashTokens.CELL_FORMULA === token){
                                         token = tokens.shift();
 
                                         // /cell/A1/formula

@@ -5,12 +5,13 @@ import CharSequences from "../../CharSequences.js";
 import Preconditions from "../../Preconditions.js";
 import SpreadsheetCell from "../SpreadsheetCell.js";
 import SpreadsheetCellRange from "./SpreadsheetCellRange.js";
-import SpreadsheetCellReferenceOrLabelName from "./SpreadsheetCellReferenceOrLabelName.js";
 import SpreadsheetColumnReference from "./SpreadsheetColumnReference";
+import SpreadsheetExpressionReference from "./SpreadsheetExpressionReference.js";
 import SpreadsheetFormula from "./formula/SpreadsheetFormula.js";
 import SpreadsheetReferenceKind from "./SpreadsheetReferenceKind";
 import SpreadsheetRowReference from "./SpreadsheetRowReference";
 import SpreadsheetSelection from "./SpreadsheetSelection.js";
+import SpreadsheetViewport from "./viewport/SpreadsheetViewport.js";
 import SpreadsheetViewportSelectionAnchor from "./viewport/SpreadsheetViewportSelectionAnchor.js";
 import SystemObject from "../../SystemObject.js";
 import TextStyle from "../../text/TextStyle.js";
@@ -102,7 +103,7 @@ function isCellReferenceText0(text, reporter) {
     return MODE_ROW === mode;
 }
 
-export default class SpreadsheetCellReference extends SpreadsheetCellReferenceOrLabelName {
+export default class SpreadsheetCellReference extends SpreadsheetExpressionReference {
 
     /**
      * Tests if the text is a valid cell reference. This may be used to test text that can contain either a
@@ -205,9 +206,21 @@ export default class SpreadsheetCellReference extends SpreadsheetCellReferenceOr
         return this.row();
     }
 
+    apiClearUrl() {
+        return "/cell/" + this + "/clear";
+    }
+
+    apiDeleteUrl() {
+        return "/cell/" + this;
+    }
+
     canFreeze() {
         return this.column().canFreeze() &&
             this.row().canFreeze();
+    }
+
+    cellOrRange() {
+        return this;
     }
 
     freezePatch() {
@@ -269,6 +282,10 @@ export default class SpreadsheetCellReference extends SpreadsheetCellReferenceOr
         );
     }
 
+    viewport(width, height) {
+        return new SpreadsheetViewport(this, width, height);
+    }
+
     viewportId() {
         return "viewport-cell-" + this.toString().toUpperCase();
     }
@@ -303,6 +320,11 @@ export default class SpreadsheetCellReference extends SpreadsheetCellReferenceOr
     viewportFocus(labelToReference, anchor) {
         return this;
     }
+
+    defaultAnchor() {
+        return null;
+    }
+
     setAnchorConditional(anchor) {
         return this.setAnchor(); // ignore anchor
     }
