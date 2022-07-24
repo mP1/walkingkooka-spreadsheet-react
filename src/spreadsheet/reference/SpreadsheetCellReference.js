@@ -321,10 +321,6 @@ export default class SpreadsheetCellReference extends SpreadsheetExpressionRefer
         return this;
     }
 
-    defaultAnchor() {
-        return null;
-    }
-
     setAnchorConditional(anchor) {
         return this.setAnchor(); // ignore anchor
     }
