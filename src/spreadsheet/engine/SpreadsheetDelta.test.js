@@ -652,7 +652,7 @@ test("cell() missing cellOrLabel fails", () => {
 test("cell() invalid cellOrLabel fails", () => {
     expect(
         () => delta().cell("!invalid")
-    ).toThrow("Expected SpreadsheetCellReferenceOrLabelName cellOrLabel got !invalid");
+    ).toThrow("Expected SpreadsheetExpressionReference cellOrLabel got !invalid");
 });
 
 function testCellAndCheck(cells, labels, cellOrLabel, expected) {

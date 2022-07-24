@@ -5,9 +5,9 @@ import Preconditions from "../../Preconditions.js";
 import SpreadsheetCell from "../SpreadsheetCell";
 import SpreadsheetCellRange from "../reference/SpreadsheetCellRange.js";
 import SpreadsheetCellReference from "../reference/SpreadsheetCellReference.js";
-import SpreadsheetCellReferenceOrLabelName from "../reference/SpreadsheetCellReferenceOrLabelName.js";
 import SpreadsheetColumn from "../reference/SpreadsheetColumn.js";
 import SpreadsheetColumnReference from "../reference/SpreadsheetColumnReference";
+import SpreadsheetExpressionReference from "../reference/SpreadsheetExpressionReference.js";
 import SpreadsheetLabelMapping from "../reference/SpreadsheetLabelMapping.js";
 import SpreadsheetLabelName from "../reference/SpreadsheetLabelName.js";
 import SpreadsheetRow from "../reference/SpreadsheetRow.js";
@@ -156,7 +156,7 @@ export default class SpreadsheetDelta extends SystemObject {
      * Returns the {@link SpreadsheetCell} that matches the given cell or label.
      */
     cell(cellOrLabel) {
-        Preconditions.requireInstance(cellOrLabel, SpreadsheetCellReferenceOrLabelName, "cellOrLabel");
+        Preconditions.requireInstance(cellOrLabel, SpreadsheetExpressionReference, "cellOrLabel");
 
         const cellReference = cellOrLabel instanceof SpreadsheetLabelName ?
             this.cellReference(cellOrLabel) :
