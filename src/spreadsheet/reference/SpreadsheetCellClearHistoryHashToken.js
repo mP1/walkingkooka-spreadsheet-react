@@ -15,7 +15,7 @@ export default class SpreadsheetCellClearHistoryHashToken extends SpreadsheetCel
     /**
      * Handles history hash token evens such as /cell/A1/clear or /cell/A1:B2/clear
      */
-    spreadsheetViewportWidgetExecute(viewportCell, width, height, viewportWidget) {
+    spreadsheetViewportWidgetExecute(viewportWidget, viewportCell, width, height) {
         viewportWidget.clearSelection(
             this.viewportSelection()
         );

@@ -15,7 +15,7 @@ export default class SpreadsheetColumnOrRowClearHistoryHashToken extends Spreads
     /**
      * Handles history hash token evens such as /column/A/clear or /column/B:C/clear or /row/1/clear or /row/1:2/clear
      */
-    spreadsheetViewportWidgetExecute(viewportCell, width, height, viewportWidget) {
+    spreadsheetViewportWidgetExecute(viewportWidget, viewportCell, width, height) {
         viewportWidget.clearSelection(
             this.viewportSelection()
         );

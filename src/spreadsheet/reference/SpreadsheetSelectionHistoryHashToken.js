@@ -16,7 +16,7 @@ export default class SpreadsheetSelectionHistoryHashToken extends SpreadsheetHis
         );
     }
 
-    spreadsheetViewportWidgetExecute(viewportCell, width, height, viewportWidget) {
+    spreadsheetViewportWidgetExecute(viewportWidget, viewportCell, width, height) {
         SystemObject.throwUnsupportedOperation();
     }
 

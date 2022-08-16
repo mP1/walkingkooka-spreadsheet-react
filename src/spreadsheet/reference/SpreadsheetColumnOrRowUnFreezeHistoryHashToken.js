@@ -15,7 +15,7 @@ export default class SpreadsheetColumnOrRowUnFreezeHistoryHashToken extends Spre
     /**
      * Handles history hash token evens such as /column/A/unfreeze or /column/A:C/unfreeze
      */
-    spreadsheetViewportWidgetExecute(viewportCell, width, height, viewportWidget) {
+    spreadsheetViewportWidgetExecute(viewportWidget, viewportCell, width, height) {
         viewportWidget.unFreezeSelection(
             this.viewportSelection()
         );

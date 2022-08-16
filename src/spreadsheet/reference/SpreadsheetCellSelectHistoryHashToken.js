@@ -8,7 +8,7 @@ export default class SpreadsheetCellSelectHistoryHashToken extends SpreadsheetCe
     /**
      * Loads cells to fill the viewport.
      */
-    spreadsheetViewportWidgetExecute(viewportCell, width, height, viewportWidget) {
+    spreadsheetViewportWidgetExecute(viewportWidget, viewportCell, width, height) {
         viewportWidget.loadCells(
             viewportCell.viewport(
                 width,

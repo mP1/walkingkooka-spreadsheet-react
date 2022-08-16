@@ -15,7 +15,7 @@ export default class SpreadsheetCellDeleteHistoryHashToken extends SpreadsheetCe
     /**
      * Handles history hash token evens such as /cell/A1/delete or /cell/A1:B2/delete
      */
-    spreadsheetViewportWidgetExecute(viewportCell, width, height, viewportWidget) {
+    spreadsheetViewportWidgetExecute(viewportWidget, viewportCell, width, height) {
         viewportWidget.deleteSelection(
             this.viewportSelection()
         );
