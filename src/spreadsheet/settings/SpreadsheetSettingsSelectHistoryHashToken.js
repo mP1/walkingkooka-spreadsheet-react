@@ -24,7 +24,7 @@ export default class SpreadsheetSettingsSelectHistoryHashToken extends Spreadshe
         return this.itemValue;
     }
 
-    onSettingsAction(settingsWidget) {
+    settingsWidgetExecute(settingsWidget) {
         // nop
     }
 
