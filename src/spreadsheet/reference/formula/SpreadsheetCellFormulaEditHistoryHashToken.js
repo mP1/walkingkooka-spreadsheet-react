@@ -15,7 +15,7 @@ export default class SpreadsheetCellFormulaEditHistoryHashToken extends Spreadsh
         return this.formulaTextValue;
     }
 
-    spreadsheetViewportWidgetExecute(viewportCell, width, height, viewportWidget) {
+    spreadsheetViewportWidgetExecute(viewportWidget, viewportCell, width, height) {
         // viewport is not interested in formula token.
     }
 

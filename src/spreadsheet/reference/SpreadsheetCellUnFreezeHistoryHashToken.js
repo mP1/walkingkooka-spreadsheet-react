@@ -15,7 +15,7 @@ export default class SpreadsheetCellUnFreezeHistoryHashToken extends Spreadsheet
     /**
      * Handles history hash token evens such as /cell/A1/unfreeze or /cell/B2:C3/unfreeze
      */
-    spreadsheetViewportWidgetExecute(viewportCell, width, height, viewportWidget) {
+    spreadsheetViewportWidgetExecute(viewportWidget, viewportCell, width, height) {
         viewportWidget.unFreezeSelection(
             this.viewportSelection()
         );

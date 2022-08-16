@@ -25,7 +25,7 @@ export default class SpreadsheetCellFormulaSaveHistoryHashToken extends Spreadsh
             encodeURIComponent(this.formulaText());
     }
 
-    spreadsheetViewportWidgetExecute(viewportCell, width, height, viewportWidget) {
+    spreadsheetViewportWidgetExecute(viewportWidget, viewportCell, width, height) {
         // nop
     }
 

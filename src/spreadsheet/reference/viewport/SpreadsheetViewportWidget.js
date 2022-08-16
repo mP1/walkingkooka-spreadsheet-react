@@ -538,11 +538,12 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
                 do {
                     if(selectionNew && (!(selectionNew.equals(selectionOld)))){
                         console.log(this.prefix() + " spreadsheetLabelMappingWidgetExecute " + selectionNew);
+
                         selectionNew.spreadsheetViewportWidgetExecute(
+                            this,
                             viewportCell,
                             width,
-                            height,
-                            this,
+                            height
                         ); // perform delete/insert etc.
 
                         // still have focus better update history
