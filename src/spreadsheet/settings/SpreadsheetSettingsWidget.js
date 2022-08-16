@@ -189,7 +189,7 @@ class SpreadsheetSettingsWidget extends SpreadsheetHistoryAwareStateWidget {
             if(!Equality.safeEquals(newSettings, oldSettings)){
                 if(newSettings){
                     if(oldSettings){
-                        newSettings.onSettingsAction(this);
+                        newSettings.settingsWidgetExecute(this);
                     }else {
                         this.loadSpreadsheetMetadata(); // load spreadsheet metadata when the settings drawer opens
                     }

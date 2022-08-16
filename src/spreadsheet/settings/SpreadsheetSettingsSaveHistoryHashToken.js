@@ -39,7 +39,7 @@ export default class SpreadsheetSettingsSaveHistoryHashToken extends Spreadsheet
             (value ? encodeURIComponent(value) : "");
     }
 
-    onSettingsAction(settingsWidget) {
+    settingsWidgetExecute(settingsWidget) {
         settingsWidget.patchSpreadsheetMetadata(
             this.property(),
             this.value()
