@@ -130,10 +130,6 @@ export default class SpreadsheetColumnReferenceRange extends SpreadsheetColumnOr
         );
     }
 
-    apiInsertAfterUrl(count) {
-        return "/column/" + this + "/after?count=" + count;
-    }
-
     apiInsertBeforeUrl(count) {
         return "/column/" + this + "/before?count=" + count;
     }
