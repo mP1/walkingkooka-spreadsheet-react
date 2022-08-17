@@ -206,10 +206,6 @@ export default class SpreadsheetCellReference extends SpreadsheetExpressionRefer
         return this.row();
     }
 
-    apiClearUrl() {
-        return "/cell/" + this + "/clear";
-    }
-
     apiDeleteUrl() {
         return "/cell/" + this;
     }
