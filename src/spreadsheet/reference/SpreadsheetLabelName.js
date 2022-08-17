@@ -71,10 +71,6 @@ export default class SpreadsheetLabelName extends SpreadsheetExpressionReference
         return this.textValue;
     }
 
-    apiDeleteUrl() {
-        return "/cell/" + this;
-    }
-
     mapping(reference) {
         return new SpreadsheetLabelMapping(this, reference);
     }

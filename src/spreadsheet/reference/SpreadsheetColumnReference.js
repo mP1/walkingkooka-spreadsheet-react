@@ -147,10 +147,6 @@ export default class SpreadsheetColumnReference extends SpreadsheetColumnOrRowRe
         return SpreadsheetHistoryHashTokens.COLUMN + "/" + this;
     }
 
-    apiDeleteUrl() {
-        return "/column/" + this;
-    }
-
     apiInsertAfterUrl(count) {
         return "/column/" + this + "/after?count=" + count;
     }
