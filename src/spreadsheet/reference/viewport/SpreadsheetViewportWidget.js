@@ -317,8 +317,8 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
                                 // 6 == before == insert-action.toUrl
                                 if(urlPaths[3] === historyTokens[SpreadsheetHistoryHashTokens.SPREADSHEET_ID].toString()){
                                     //const selection = historyTokens[SpreadsheetHistoryHashTokens.SELECTION];
-                                    //if(selection && selection.apiInsertBeforePostUrl(urlPaths)){
-                                    if(selectionSelection.apiInsertBeforePostUrl(urlPaths)){
+                                    //if(selection && selection.isApiInsertBeforePostUrl(urlPaths)){
+                                    if(selectionSelection.isApiInsertBeforePostUrl(urlPaths)){
                                         Object.assign(
                                             newState,
                                             {
