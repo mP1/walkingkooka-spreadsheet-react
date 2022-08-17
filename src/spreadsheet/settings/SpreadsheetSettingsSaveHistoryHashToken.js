@@ -28,7 +28,7 @@ export default class SpreadsheetSettingsSaveHistoryHashToken extends Spreadsheet
         return this.valueValue;
     }
 
-    toHistoryHashToken() {
+    historyHashPath() {
         const value = this.value();
 
         return "/" +

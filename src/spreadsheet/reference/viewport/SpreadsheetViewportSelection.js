@@ -75,15 +75,15 @@ export default class SpreadsheetViewportSelection extends SystemObject {
             );
     }
 
-    toHistoryHashToken() {
+    historyHashPath() {
         var tokens = this.selection()
-            .toHistoryHashToken();
+            .historyHashPath();
 
         const anchor = this.anchor();
         if(anchor) {
             tokens = tokens +
                 "/" +
-                anchor.toHistoryHashToken();
+                anchor.historyHashPath();
         }
 
         return tokens;

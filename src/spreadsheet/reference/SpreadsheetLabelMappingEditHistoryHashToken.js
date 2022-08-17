@@ -20,7 +20,7 @@ export default class SpreadsheetLabelMappingEditHistoryHashToken extends Spreads
         return this.labelValue;
     }
 
-    toHistoryHashToken() {
+    historyHashPath() {
         return "/" + SpreadsheetHistoryHash.LABEL + "/" + this.label();
     }
 

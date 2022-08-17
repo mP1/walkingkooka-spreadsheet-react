@@ -28,7 +28,7 @@ export default class SpreadsheetSettingsSelectHistoryHashToken extends Spreadshe
         // nop
     }
 
-    toHistoryHashToken() {
+    historyHashPath() {
         const item = this.item();
 
         return "/" +

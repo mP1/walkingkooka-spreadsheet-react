@@ -6,8 +6,8 @@ import SpreadsheetHistoryHashTokens from "../history/SpreadsheetHistoryHashToken
  */
 export default class SpreadsheetCellFreezeHistoryHashToken extends SpreadsheetCellHistoryHashToken {
 
-    toHistoryHashToken() {
-        return super.toHistoryHashToken() +
+    historyHashPath() {
+        return super.historyHashPath() +
             "/" +
             SpreadsheetHistoryHashTokens.FREEZE;
     }

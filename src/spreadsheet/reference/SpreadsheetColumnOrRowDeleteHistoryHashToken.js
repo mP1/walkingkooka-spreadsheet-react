@@ -6,8 +6,8 @@ import SpreadsheetHistoryHashTokens from "../history/SpreadsheetHistoryHashToken
  */
 export default class SpreadsheetColumnOrRowDeleteHistoryHashToken extends SpreadsheetColumnOrRowHistoryHashToken {
 
-    toHistoryHashToken() {
-        return super.toHistoryHashToken() +
+    historyHashPath() {
+        return super.historyHashPath() +
             "/" +
             SpreadsheetHistoryHashTokens.DELETE;
     }

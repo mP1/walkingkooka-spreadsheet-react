@@ -28,7 +28,7 @@ export default class SpreadsheetExpressionReference extends SpreadsheetSelection
         return this.toString();
     }
 
-    toHistoryHashToken() {
+    historyHashPath() {
         return SpreadsheetHistoryHashTokens.CELL + "/" + this;
     }
 }

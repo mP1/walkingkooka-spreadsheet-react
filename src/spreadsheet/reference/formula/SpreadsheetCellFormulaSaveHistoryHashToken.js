@@ -17,8 +17,8 @@ export default class SpreadsheetCellFormulaSaveHistoryHashToken extends Spreadsh
         return this.formulaTextValue;
     }
 
-    toHistoryHashToken() {
-        return super.toHistoryHashToken() +
+    historyHashPath() {
+        return super.historyHashPath() +
             "/" +
             SpreadsheetHistoryHashTokens.CELL_FORMULA +
             "/" +

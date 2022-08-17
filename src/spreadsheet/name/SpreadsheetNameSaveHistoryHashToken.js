@@ -26,7 +26,7 @@ export default class SpreadsheetNameSaveHistoryHashToken extends SpreadsheetName
         spreadsheetNameWidget.patchSpreadsheetMetadataWithName(this.value());
     }
 
-    toHistoryHashToken() {
+    historyHashPath() {
         return "/" + SpreadsheetHistoryHashTokens.SPREADSHEET_NAME_PATH + "/" + encodeURIComponent(this.value().value());
     }
 

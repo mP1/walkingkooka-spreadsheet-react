@@ -19,10 +19,10 @@ export default class SpreadsheetCellFormulaEditHistoryHashToken extends Spreadsh
         // viewport is not interested in formula token.
     }
 
-    toHistoryHashToken() {
+    historyHashPath() {
         const formulaText = this.formulaText();
 
-        return super.toHistoryHashToken() +
+        return super.historyHashPath() +
             "/" +
             SpreadsheetHistoryHashTokens.CELL_FORMULA +
             (formulaText != null ?

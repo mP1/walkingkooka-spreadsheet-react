@@ -354,7 +354,7 @@ export default class SpreadsheetTesting {
         this.hash()
             .should(
                 'match',
-                new RegExp( "^#\/.*\/.*\/" + (selection || click).toHistoryHashToken() + "(\/.*)?\/menu$")
+                new RegExp( "^#\/.*\/.*\/" + (selection || click).historyHashPath() + "(\/.*)?\/menu$")
             );
 
         return this.viewportContextMenu()

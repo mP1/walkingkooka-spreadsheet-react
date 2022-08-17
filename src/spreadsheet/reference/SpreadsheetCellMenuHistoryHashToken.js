@@ -16,8 +16,8 @@ export default class SpreadsheetCellMenuHistoryHashToken extends SpreadsheetCell
         return this.contextMenuValue;
     }
 
-    toHistoryHashToken() {
-        return super.toHistoryHashToken() + "/" + SpreadsheetHistoryHashTokens.MENU;
+    historyHashPath() {
+        return super.historyHashPath() + "/" + SpreadsheetHistoryHashTokens.MENU;
     }
 
     /**

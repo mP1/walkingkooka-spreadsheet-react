@@ -24,8 +24,8 @@ export default class SpreadsheetColumnOrRowSaveHistoryHashToken extends Spreadsh
     }
 
     // /$property/value
-    toHistoryHashToken() {
-        return super.toHistoryHashToken() +
+    historyHashPath() {
+        return super.historyHashPath() +
             "/" +
             this.property() +
             "/" +

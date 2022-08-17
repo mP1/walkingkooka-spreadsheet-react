@@ -119,7 +119,7 @@ export default class SpreadsheetColumnReferenceRange extends SpreadsheetColumnOr
             this.begin().compareTo(range.end().column()) <= 0;
     }
 
-    toHistoryHashToken() {
+    historyHashPath() {
         return SpreadsheetHistoryHash.COLUMN + "/" + this;
     }
 
