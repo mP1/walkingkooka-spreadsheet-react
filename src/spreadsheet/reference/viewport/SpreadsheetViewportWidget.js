@@ -736,11 +736,22 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
     saveFormulaText(cellReference, formulaText, selection, anchor) {
         console.log(this.prefix() + " saving formula for " + selection + " with " + CharSequences.quoteAndEscape(formulaText));
 
-        var cell = new SpreadsheetCell(
-            cellReference,
-            new SpreadsheetFormula(formulaText),
-            TextStyle.EMPTY
+        this.patchCell(
+            new SpreadsheetCell(
+                cellReference,
+                new SpreadsheetFormula(formulaText),
+                TextStyle.EMPTY
+            ),
+            selection,
+            anchor
         );
+    }
+
+    /**
+     * Calls the server to PATCH a cell and also handles updating the history hash leaving just the selection.
+     */
+    patchCell(cell, selection, anchor) {
+        Preconditions.requireInstance(cell, SpreadsheetCell, "cell");
 
         const tokens = SpreadsheetHistoryHashTokens.emptyTokens();
         tokens[SpreadsheetHistoryHashTokens.SELECTION] = new SpreadsheetCellFormulaEditHistoryHashToken(
@@ -753,7 +764,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
 
         const props = this.props;
         props.spreadsheetDeltaCellCrud.patch(
-            cellReference,
+            cell.reference(),
             new SpreadsheetDelta(
                 null,
                 [cell],
