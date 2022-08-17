@@ -130,10 +130,6 @@ export default class SpreadsheetColumnReferenceRange extends SpreadsheetColumnOr
         );
     }
 
-    apiInsertBeforeUrl(count) {
-        return "/column/" + this + "/before?count=" + count;
-    }
-
     freezePatch() {
         return {
             "frozen-columns": this.toString()

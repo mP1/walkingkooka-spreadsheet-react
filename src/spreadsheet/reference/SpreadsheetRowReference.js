@@ -169,10 +169,6 @@ export default class SpreadsheetRowReference extends SpreadsheetColumnOrRowRefer
         return SpreadsheetMetadata.FROZEN_ROWS;
     }
 
-    apiInsertBeforeUrl(count) {
-        return "/row/" + this + "/before?count=" + count;
-    }
-
     freezePatch() {
         return {
             "frozen-rows": this.toString()

@@ -147,10 +147,6 @@ export default class SpreadsheetColumnReference extends SpreadsheetColumnOrRowRe
         return SpreadsheetHistoryHashTokens.COLUMN + "/" + this;
     }
 
-    apiInsertBeforeUrl(count) {
-        return "/column/" + this + "/before?count=" + count;
-    }
-
     freezePatch() {
         return {
             "frozen-columns": this.toString()
