@@ -268,10 +268,6 @@ export default class SpreadsheetCellRange extends SpreadsheetExpressionReference
         return SpreadsheetCellRange.DEFAULT_ANCHOR;
     }
 
-    apiDeleteUrl() {
-        return "/cell/" + this;
-    }
-
     kebabClassName() {
         return "cell-range";
     }

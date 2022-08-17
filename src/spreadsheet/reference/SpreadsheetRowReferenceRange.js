@@ -130,10 +130,6 @@ export default class SpreadsheetRowReferenceRange extends SpreadsheetColumnOrRow
         );
     }
 
-    apiDeleteUrl() {
-        return "/row/" + this;
-    }
-
     apiInsertAfterUrl(count) {
         return "/row/" + this + "/after?count=" + count;
     }

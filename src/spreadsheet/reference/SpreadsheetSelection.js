@@ -85,10 +85,6 @@ export default class SpreadsheetSelection extends SystemObject {
     historyHashPath() {
         SystemObject.throwUnsupportedOperation();
     }
-    
-    apiDeleteUrl() {
-        SystemObject.throwUnsupportedOperation();
-    }
 
     apiInsertAfterUrl(count) {
         SystemObject.throwUnsupportedOperation();

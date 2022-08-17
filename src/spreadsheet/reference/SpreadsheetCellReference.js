@@ -206,10 +206,6 @@ export default class SpreadsheetCellReference extends SpreadsheetExpressionRefer
         return this.row();
     }
 
-    apiDeleteUrl() {
-        return "/cell/" + this;
-    }
-
     canFreeze() {
         return this.column().canFreeze() &&
             this.row().canFreeze();

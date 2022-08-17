@@ -381,7 +381,8 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
             HttpMethod.DELETE,
             RelativeUrl.parse(
                 this.apiSpreadsheetMetadataUrl() +
-                selection.apiDeleteUrl() +
+                "/" +
+                selection.historyHashPath() +
                 "?window=" + CharSequences.csv(window) +
                 viewportSelection.toQueryString("&")
             ),
