@@ -1,3 +1,4 @@
+import SpreadsheetHistoryHashTokens from "../history/SpreadsheetHistoryHashTokens.js";
 import SpreadsheetSelection from "./SpreadsheetSelection.js";
 import SystemObject from "../../SystemObject.js";
 
@@ -28,7 +29,6 @@ export default class SpreadsheetExpressionReference extends SpreadsheetSelection
     }
 
     toHistoryHashToken() {
-        // avoid referencing constant to avoid runtime TypeErrors.
-        return /*SpreadsheetHistoryHash.CELL*/ "cell/" + this;
+        return SpreadsheetHistoryHashTokens.CELL + "/" + this;
     }
 }
