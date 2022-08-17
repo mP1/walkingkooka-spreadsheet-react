@@ -165,10 +165,6 @@ export default class SpreadsheetRowReference extends SpreadsheetColumnOrRowRefer
         return SpreadsheetHistoryHashTokens.ROW + "/" + this;
     }
 
-    apiClearUrl() {
-        return "/row/" + this + "/clear";
-    }
-
     apiDeleteUrl() {
         return "/row/" + this;
     }

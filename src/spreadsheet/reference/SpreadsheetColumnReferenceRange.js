@@ -130,10 +130,6 @@ export default class SpreadsheetColumnReferenceRange extends SpreadsheetColumnOr
         );
     }
 
-    apiClearUrl() {
-        return "/column/" + this + "/clear";
-    }
-
     apiDeleteUrl() {
         return "/column/" + this;
     }

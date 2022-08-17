@@ -268,10 +268,6 @@ export default class SpreadsheetCellRange extends SpreadsheetExpressionReference
         return SpreadsheetCellRange.DEFAULT_ANCHOR;
     }
 
-    apiClearUrl() {
-        return "/cell/" + this + "/clear";
-    }
-
     apiDeleteUrl() {
         return "/cell/" + this;
     }

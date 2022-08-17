@@ -359,7 +359,10 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
             HttpMethod.POST,
             RelativeUrl.parse(
                 this.apiSpreadsheetMetadataUrl() +
-                selection.apiClearUrl() +
+                "/" +
+                selection.historyHashPath() +
+                "/" +
+                SpreadsheetHistoryHashTokens.CLEAR +
                 "?window=" + CharSequences.csv(window) +
                 viewportSelection.toQueryString("&")
             ),

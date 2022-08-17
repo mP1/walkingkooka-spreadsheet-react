@@ -71,10 +71,6 @@ export default class SpreadsheetLabelName extends SpreadsheetExpressionReference
         return this.textValue;
     }
 
-    apiClearUrl() {
-        return "/cell/" + this + "/clear";
-    }
-
     apiDeleteUrl() {
         return "/cell/" + this;
     }
