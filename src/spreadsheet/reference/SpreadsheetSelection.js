@@ -86,10 +86,6 @@ export default class SpreadsheetSelection extends SystemObject {
         SystemObject.throwUnsupportedOperation();
     }
 
-    apiInsertAfterUrl(count) {
-        SystemObject.throwUnsupportedOperation();
-    }
-
     // 0 = ""
     // 1 == api
     // 2 == spreadsheet
