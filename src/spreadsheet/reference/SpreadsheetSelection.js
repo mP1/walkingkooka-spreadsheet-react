@@ -93,7 +93,7 @@ export default class SpreadsheetSelection extends SystemObject {
     // 4 == column == Selection
     // 5 == $selection
     // 6 == before == insert-action.toUrl
-    apiInsertBeforePostUrl(urlPaths) {
+    isApiInsertBeforePostUrl(urlPaths) {
         SystemObject.throwUnsupportedOperation();
     }
 

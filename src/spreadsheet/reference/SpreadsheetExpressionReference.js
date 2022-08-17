@@ -8,7 +8,7 @@ import SystemObject from "../../SystemObject.js";
 export default class SpreadsheetExpressionReference extends SpreadsheetSelection {
 
     // insertBefore not supported by cell or cell range or label
-    apiInsertBeforePostUrl(urlPaths) {
+    isApiInsertBeforePostUrl(urlPaths) {
         return false;
     }
 
