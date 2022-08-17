@@ -130,10 +130,6 @@ export default class SpreadsheetRowReferenceRange extends SpreadsheetColumnOrRow
         );
     }
 
-    apiInsertBeforeUrl(count) {
-        return "/row/" + this + "/before?count=" + count;
-    }
-
     freezePatch() {
         return {
             "frozen-rows": this.toString()

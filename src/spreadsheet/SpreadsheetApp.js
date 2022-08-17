@@ -421,7 +421,10 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
             HttpMethod.POST,
             RelativeUrl.parse(
                 this.apiSpreadsheetMetadataUrl() +
-                selection.apiInsertBeforeUrl(count) +
+                "/" +
+                selection.historyHashPath() +
+                "/before?count=" +
+                count +
                 "&window=" + CharSequences.csv(window) +
                 viewportSelection.toQueryString("&")
             ),
