@@ -157,7 +157,7 @@ export default class SpreadsheetHistoryHash extends SpreadsheetHistoryHashTokens
                             viewportSelection = new SpreadsheetViewportSelection(cellOrLabel);
 
                             for(const anchor of cellOrLabel.anchors()) {
-                                if(token === anchor.toHistoryHashToken()){
+                                if(token === anchor.historyHashPath()){
                                     viewportSelection = viewportSelection.setAnchor(anchor);
                                     token = tokens.shift();
                                     break;
@@ -247,7 +247,7 @@ export default class SpreadsheetHistoryHash extends SpreadsheetHistoryHashTokens
 
                                 // column | row then anchor.................................................................
                                 for(const anchor of columnOrRow.anchors()) {
-                                    if(token === anchor.toHistoryHashToken()){
+                                    if(token === anchor.historyHashPath()){
                                         viewportSelection = viewportSelection.setAnchor(anchor);
                                         token = tokens.shift();
                                         break;
@@ -698,7 +698,7 @@ export default class SpreadsheetHistoryHash extends SpreadsheetHistoryHashTokens
 
         if(valid){
             if(spreadsheetNameEdit){
-                hash = hash + spreadsheetNameEdit.toHistoryHashToken();
+                hash = hash + spreadsheetNameEdit.historyHashPath();
 
                 selection = null;
                 label = null;
@@ -706,11 +706,11 @@ export default class SpreadsheetHistoryHash extends SpreadsheetHistoryHashTokens
             }
 
             if(selection){
-                hash = hash + "/" + selection.toHistoryHashToken();
+                hash = hash + "/" + selection.historyHashPath();
             }
 
             if(label){
-                hash = hash + label.toHistoryHashToken();
+                hash = hash + label.historyHashPath();
             }
 
             if(select){
@@ -718,7 +718,7 @@ export default class SpreadsheetHistoryHash extends SpreadsheetHistoryHashTokens
             }
 
             if(settings){
-                hash = hash + settings.toHistoryHashToken();
+                hash = hash + settings.historyHashPath();
             }
         }
 

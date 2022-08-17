@@ -21,7 +21,7 @@ export default class SpreadsheetLabelMappingDeleteHistoryHashToken extends Sprea
     }
 
     // /label/$label/delete
-    toHistoryHashToken() {
+    historyHashPath() {
         return "/" + SpreadsheetHistoryHash.LABEL + "/" + this.label() + "/" + SpreadsheetHistoryHash.DELETE;
     }
 

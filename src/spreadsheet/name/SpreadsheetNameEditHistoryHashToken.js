@@ -12,7 +12,7 @@ export default class SpreadsheetNameEditHistoryHashToken extends SpreadsheetName
         // nop
     }
 
-    toHistoryHashToken() {
+    historyHashPath() {
         return "/" + SpreadsheetHistoryHashTokens.SPREADSHEET_NAME_PATH;
     }
 }

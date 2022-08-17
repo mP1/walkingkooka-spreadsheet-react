@@ -6,8 +6,8 @@ import SpreadsheetHistoryHashTokens from "../history/SpreadsheetHistoryHashToken
  */
 export default class SpreadsheetColumnOrRowInsertAfterHistoryHashToken extends SpreadsheetColumnOrRowInsertHistoryHashToken {
 
-    toHistoryHashToken() {
-        return super.toHistoryHashToken() +
+    historyHashPath() {
+        return super.historyHashPath() +
             "/" +
             SpreadsheetHistoryHashTokens.INSERT_AFTER +
             "/" +

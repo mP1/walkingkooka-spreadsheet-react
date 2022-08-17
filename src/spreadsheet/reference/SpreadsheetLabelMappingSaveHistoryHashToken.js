@@ -34,7 +34,7 @@ export default class SpreadsheetLabelMappingSaveHistoryHashToken extends Spreads
     }
 
     // /label/$label/save/$newLabel/$newReference
-    toHistoryHashToken() {
+    historyHashPath() {
         return "/" + SpreadsheetHistoryHash.LABEL + "/" + this.label() + "/" + SpreadsheetHistoryHash.SAVE + "/" + this.newLabel() + "/" + this.reference();
     }
 

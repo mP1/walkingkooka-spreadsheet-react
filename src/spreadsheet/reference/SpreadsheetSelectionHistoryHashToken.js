@@ -20,10 +20,10 @@ export default class SpreadsheetSelectionHistoryHashToken extends SpreadsheetHis
         SystemObject.throwUnsupportedOperation();
     }
 
-    toHistoryHashToken() {
+    historyHashPath() {
         // /cell/A1 | /column/A | /row/2
         return this.viewportSelection()
-            .toHistoryHashToken();
+            .historyHashPath();
     }
 
     viewportSelection() {
@@ -36,7 +36,7 @@ export default class SpreadsheetSelectionHistoryHashToken extends SpreadsheetHis
     }
 
     toString() {
-        var toString = this.toHistoryHashToken();
+        var toString = this.historyHashPath();
 
         const navigation = this.viewportSelection()
             .navigation();

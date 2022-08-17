@@ -143,7 +143,7 @@ export default class SpreadsheetColumnReference extends SpreadsheetColumnOrRowRe
         return "viewport-column-" + this.toString().toUpperCase();
     }
 
-    toHistoryHashToken() {
+    historyHashPath() {
         return SpreadsheetHistoryHashTokens.COLUMN + "/" + this;
     }
 

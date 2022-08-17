@@ -2,7 +2,7 @@ import SystemObject from "../../SystemObject.js";
 
 export default class SpreadsheetHistoryHashToken extends SystemObject {
 
-    toHistoryHashToken() {
+    historyHashPath() {
         SystemObject.throwUnsupportedOperation();
     }
 
@@ -11,6 +11,6 @@ export default class SpreadsheetHistoryHashToken extends SystemObject {
     }
 
     toString() {
-        return this.toHistoryHashToken();
+        return this.historyHashPath();
     }
 }

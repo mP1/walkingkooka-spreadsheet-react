@@ -84,7 +84,7 @@ export default class SystemEnum extends SystemObject {
     /**
      * TOP_LEFT -> top-left, TOP_RIGHT -> top-right
      */
-    toHistoryHashToken() {
+    historyHashPath() {
         return this.nameKebabCase();
     }
 
