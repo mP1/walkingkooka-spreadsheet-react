@@ -316,16 +316,10 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
                                 // 5 == $selection
                                 // 6 == before == insert-action.toUrl
                                 if(urlPaths[3] === historyTokens[SpreadsheetHistoryHashTokens.SPREADSHEET_ID].toString()){
-                                    //const selection = historyTokens[SpreadsheetHistoryHashTokens.SELECTION];
-                                    //if(selection && selection.isApiInsertBeforePostUrl(urlPaths)){
                                     if(selectionSelection.isApiInsertBeforePostUrl(urlPaths)){
                                         Object.assign(
                                             newState,
                                             {
-                                                // selection: selectionSelection.viewportInsertBeforePostSuccessSelection(selection.count()),
-                                                // selectionAction: null,
-                                                // selectionAnchor: historyTokens[SpreadsheetHistoryHashTokens.SELECTION_ANCHOR],
-                                                // selectionNavigation: null,
                                                 selection: selectHistoryHashToken(
                                                     new SpreadsheetViewportSelection(
                                                         selectionSelection.viewportInsertBeforePostSuccessSelection(selection.count()),
@@ -339,8 +333,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
                             }
                             break;
                         }
-                        if(selection instanceof SpreadsheetColumnOrRowInsertAfterHistoryHashToken){ // TODOMP
-                            //if(selectionAction instanceof SpreadsheetColumnOrRowInsertAfterHistoryHashToken){
+                        if(selection instanceof SpreadsheetColumnOrRowInsertAfterHistoryHashToken){
                             const urlPaths = url.path().split("/");
                             if(urlPaths.length === 7){
                                 // 0 = ""
@@ -351,17 +344,10 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
                                 // 5 == $selection
                                 // 6 == before == insert-action.toUrl
                                 if(urlPaths[3] === historyTokens[SpreadsheetHistoryHashTokens.SPREADSHEET_ID].toString()){
-                                    //const selection = historyTokens[SpreadsheetHistoryHashTokens.SELECTION];
-                                    //if(selection && selection.isInsertAfterPostUrl(urlPaths)){
-
                                     if(selectionSelection.isInsertAfterPostUrl(urlPaths)){
                                         Object.assign(
                                             newState,
                                             {
-                                                // selection: selection,
-                                                // selectionAction: null,
-                                                // selectionAnchor: historyTokens[SpreadsheetHistoryHashTokens.SELECTION_ANCHOR],
-                                                // selectionNavigation: null,
                                                 selection: selectHistoryHashToken(
                                                     new SpreadsheetViewportSelection(
                                                         selectionSelection,
