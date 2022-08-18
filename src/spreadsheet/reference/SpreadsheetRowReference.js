@@ -194,19 +194,6 @@ export default class SpreadsheetRowReference extends SpreadsheetColumnOrRowRefer
             urlPaths[6] === "after";
     }
 
-    // 0 = ""
-    // 1 == api
-    // 2 == spreadsheet
-    // 3 == $spreadsheet-id
-    // 4 == column == Selection
-    // 5 == $selection
-    // 6 == before == insert-action.toUrl
-    isApiInsertBeforePostUrl(urlPaths) {
-        return urlPaths[4] === "row" &&
-            urlPaths[5] === this.toString() &&
-            urlPaths[6] === "before";
-    }
-
     kebabClassName() {
         return "row";
     }
