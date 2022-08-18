@@ -94,7 +94,9 @@ export default class SpreadsheetSelection extends SystemObject {
     // 5 == $selection
     // 6 == before == insert-action.toUrl
     isApiInsertBeforePostUrl(urlPaths) {
-        SystemObject.throwUnsupportedOperation();
+        return (!(this.isCellScalarOrRange())) &&
+            this.toString() == urlPaths[5] && // TODO case insensitive ?
+            urlPaths[6] === "before";
     }
 
     freezePatch() {

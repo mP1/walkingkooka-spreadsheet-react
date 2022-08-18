@@ -7,11 +7,6 @@ import SystemObject from "../../SystemObject.js";
  */
 export default class SpreadsheetExpressionReference extends SpreadsheetSelection {
 
-    // insertBefore not supported by cell or cell range or label
-    isApiInsertBeforePostUrl(urlPaths) {
-        return false;
-    }
-
     /**
      * Returns an array of all the keys for this selection. This helps SpreadsheetDelta build cellReferenceToLabel,
      * particularly a range to labels expanding to multple keys for each cell in the range.
