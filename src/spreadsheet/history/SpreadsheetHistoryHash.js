@@ -119,6 +119,7 @@ export default class SpreadsheetHistoryHash extends SpreadsheetHistoryHashTokens
 
                 var settings = null;
 
+                Loop:
                 do {
                     var token = tokens.shift();
 
@@ -345,19 +346,20 @@ export default class SpreadsheetHistoryHash extends SpreadsheetHistoryHashTokens
                                 labelName = SpreadsheetLabelName.parse(tokens.shift());
                             } catch(invalid) {
                                 errors("Label: " + invalid.message);
-                                break;
+                                break Loop;
                             }
                             label = new SpreadsheetLabelMappingEditHistoryHashToken(labelName);
 
                             token = tokens.shift();
-                            if(SpreadsheetHistoryHashTokens.DELETE === token){
-                                label = new SpreadsheetLabelMappingDeleteHistoryHashToken(labelName);
-                                token = tokens.shift();
-                            }else {
-                                if(SpreadsheetHistoryHashTokens.SAVE === token){
+                            switch(token) {
+                                case SpreadsheetHistoryHashTokens.DELETE:
+                                    label = new SpreadsheetLabelMappingDeleteHistoryHashToken(labelName);
+                                    token = tokens.shift();
+                                    break;
+                                case SpreadsheetHistoryHashTokens.SAVE:
                                     if(tokens.length < 2){
                                         errors("Label save missing label or cell");
-                                        break;
+                                        break Loop;
                                     }
                                     label = new SpreadsheetLabelMappingSaveHistoryHashToken(
                                         labelName,
@@ -373,7 +375,9 @@ export default class SpreadsheetHistoryHash extends SpreadsheetHistoryHashTokens
                                         )
                                     );
                                     token = tokens.shift();
-                                }
+                                    break;
+                                default:
+                                    break;
                             }
                         }
                         // select
