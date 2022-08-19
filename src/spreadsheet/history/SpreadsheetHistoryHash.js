@@ -389,9 +389,10 @@ export default class SpreadsheetHistoryHash extends SpreadsheetHistoryHashTokens
                         // settings
                         if((selection instanceof SpreadsheetCellSelectHistoryHashToken || selection instanceof SpreadsheetColumnOrRowSelectHistoryHashToken || !selection) && !label && !select){
                             if(SpreadsheetHistoryHashTokens.SETTINGS === token){
-                                token = tokens.shift();
+                                settings = null;
 
                                 // /settings
+                                token = tokens.shift();
                                 if(null == token){
                                     settings = SpreadsheetSettingsSelectHistoryHashToken.NOTHING;
                                 }else {
@@ -409,15 +410,11 @@ export default class SpreadsheetHistoryHash extends SpreadsheetHistoryHashTokens
                                                 );
                                                 token = tokens.shift();
                                             }else {
-                                                settings = null;
                                                 tokens.unshift(token);
                                             }
                                         }else {
                                             settings = new SpreadsheetSettingsSelectHistoryHashToken(settingsItemOrMetadataProperty);
                                         }
-                                    }else {
-                                        settings = null;
-                                        break;
                                     }
                                 }
                             }
