@@ -5,7 +5,6 @@ import SpreadsheetCellReference from "./SpreadsheetCellReference.js";
 import SpreadsheetColumnOrRowReference from "./SpreadsheetColumnOrRowReference";
 import SpreadsheetColumnReference from "./SpreadsheetColumnReference.js";
 import SpreadsheetHistoryHashTokens from "../history/SpreadsheetHistoryHashTokens.js";
-import SpreadsheetMetadata from "../meta/SpreadsheetMetadata.js";
 import SpreadsheetReferenceKind from "./SpreadsheetReferenceKind";
 import SpreadsheetRow from "./SpreadsheetRow.js";
 import SpreadsheetSelection from "./SpreadsheetSelection.js";
@@ -163,10 +162,6 @@ export default class SpreadsheetRowReference extends SpreadsheetColumnOrRowRefer
 
     historyHashPath() {
         return SpreadsheetHistoryHashTokens.ROW + "/" + this;
-    }
-
-    apiFreezeMetadataPropertyName() {
-        return SpreadsheetMetadata.FROZEN_ROWS;
     }
 
     freezePatch() {
