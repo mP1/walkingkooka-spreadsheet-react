@@ -167,22 +167,19 @@ export default class SpreadsheetHistoryHash extends SpreadsheetHistoryHashTokens
 
                             selection = new SpreadsheetCellSelectHistoryHashToken(viewportSelection);
 
-                            // /cell/A1/delete
-                            if(SpreadsheetHistoryHashTokens.CLEAR === token){
-                                selection = new SpreadsheetCellClearHistoryHashToken(viewportSelection);
-                                token = tokens.shift();
-                            }else {
-                                if(SpreadsheetHistoryHashTokens.DELETE === token){
+                            switch(token) {
+                                case SpreadsheetHistoryHashTokens.CLEAR:
+                                    selection = new SpreadsheetCellClearHistoryHashToken(viewportSelection);
+                                    token = tokens.shift();
+                                    break;
+                                case SpreadsheetHistoryHashTokens.DELETE:
                                     selection = new SpreadsheetCellDeleteHistoryHashToken(viewportSelection);
                                     token = tokens.shift();
-                                }else {
-                                    // /cell/A1/formula
-                                    if((cellOrLabel instanceof SpreadsheetCellReference ||
-                                            cellOrLabel instanceof SpreadsheetLabelName) &&
-                                        SpreadsheetHistoryHashTokens.CELL_FORMULA === token){
+                                    break;
+                                case SpreadsheetHistoryHashTokens.CELL_FORMULA:
+                                    if(cellOrLabel instanceof SpreadsheetCellReference || cellOrLabel instanceof SpreadsheetLabelName){
                                         token = tokens.shift();
 
-                                        // /cell/A1/formula
                                         if(null == token){
                                             selection = new SpreadsheetCellFormulaEditHistoryHashToken(viewportSelection);
                                         }else {
@@ -192,28 +189,29 @@ export default class SpreadsheetHistoryHash extends SpreadsheetHistoryHashTokens
                                             );
                                             token = tokens.shift();
                                         }
-                                    }else {
-                                        // /cell/A1/freeze OR /cell/B2:C3/freeze
-                                        if(cellOrLabel.canFreeze() && SpreadsheetHistoryHashTokens.FREEZE === token){
-                                            selection = new SpreadsheetCellFreezeHistoryHashToken(viewportSelection);
-                                            token = tokens.shift();
-                                        }else {
-                                            // /cell/A1/menu OR /cell/A1:B2/menu
-                                            if(SpreadsheetHistoryHashTokens.MENU === token){
-                                                selection = new SpreadsheetCellMenuHistoryHashToken(
-                                                    viewportSelection,
-                                                    new SpreadsheetContextMenu()
-                                                );
-                                                token = tokens.shift();
-                                            }else {
-                                                if(cellOrLabel.canFreeze() && SpreadsheetHistoryHashTokens.UNFREEZE === token){
-                                                    selection = new SpreadsheetCellUnFreezeHistoryHashToken(viewportSelection);
-                                                    token = tokens.shift();
-                                                }
-                                            }
-                                        }
                                     }
-                                }
+                                    break;
+                                case SpreadsheetHistoryHashTokens.FREEZE:
+                                    if(cellOrLabel.canFreeze()){
+                                        selection = new SpreadsheetCellFreezeHistoryHashToken(viewportSelection);
+                                        token = tokens.shift();
+                                    }
+                                    break;
+                                case SpreadsheetHistoryHashTokens.MENU:
+                                    selection = new SpreadsheetCellMenuHistoryHashToken(
+                                        viewportSelection,
+                                        new SpreadsheetContextMenu()
+                                    );
+                                    token = tokens.shift();
+                                    break;
+                                case SpreadsheetHistoryHashTokens.UNFREEZE:
+                                    if(cellOrLabel.canFreeze()){
+                                        selection = new SpreadsheetCellUnFreezeHistoryHashToken(viewportSelection);
+                                        token = tokens.shift();
+                                    }
+                                    break;
+                                default:
+                                    break;
                             }
 
                         }else {
