@@ -256,87 +256,85 @@ export default class SpreadsheetHistoryHash extends SpreadsheetHistoryHashTokens
                                 }
                                 selection = new SpreadsheetColumnOrRowSelectHistoryHashToken(viewportSelection);
 
-                                // column | row / delete....................................................................
-                                if(SpreadsheetHistoryHashTokens.CLEAR === token){
-                                    selection = new SpreadsheetColumnOrRowClearHistoryHashToken(viewportSelection);
-                                    token = tokens.shift();
-                                }else {
-                                    if(SpreadsheetHistoryHashTokens.DELETE === token){
+                                switch(token) {
+                                    case SpreadsheetHistoryHashTokens.CLEAR:
+                                        selection = new SpreadsheetColumnOrRowClearHistoryHashToken(viewportSelection);
+                                        token = tokens.shift();
+                                        break;
+                                    case SpreadsheetHistoryHashTokens.DELETE:
                                         selection = new SpreadsheetColumnOrRowDeleteHistoryHashToken(viewportSelection);
                                         token = tokens.shift();
-                                    }else {
+                                        break;
+                                    case SpreadsheetHistoryHashTokens.FREEZE:
                                         // column/A/freeze OR /row/1/freeze
-                                        if(SpreadsheetHistoryHashTokens.FREEZE === token && columnOrRow.canFreeze()){
+                                        if(columnOrRow.canFreeze()){
                                             selection = new SpreadsheetColumnOrRowFreezeHistoryHashToken(viewportSelection);
                                             token = tokens.shift();
-                                        }else {
-                                            if(SpreadsheetHistoryHashTokens.HIDDEN === token){
-                                                const value = tokens.shift();
-                                                if(!value){
-                                                    break; // value required but missing.
-                                                }
-                                                selection = new SpreadsheetColumnOrRowSaveHistoryHashToken(
-                                                    viewportSelection,
-                                                    token,
-                                                    "true" === value ? true :
-                                                        "false" === value ? false :
-                                                            value
-                                                );
-                                                token = tokens.shift();
-                                            }else {
-                                                // column | row / insert-after / 123...................................................
-                                                if(SpreadsheetHistoryHashTokens.INSERT_AFTER === token){
-                                                    const insertAfterCount = tokens.shift();
-                                                    if(!insertAfterCount || Number.isNaN(Number(insertAfterCount))){
-                                                        break;
-                                                    }
-                                                    try {
-                                                        selection = new SpreadsheetColumnOrRowInsertAfterHistoryHashToken(
-                                                            viewportSelection,
-                                                            Number(insertAfterCount)
-                                                        );
-                                                    } catch(invalid) {
-                                                        errors("Insert after count: " + invalid.message);
-                                                        break;
-                                                    }
-                                                    token = tokens.shift();
-                                                }else {
-                                                    // column | row / insert-before / 123...............................................
-                                                    if(SpreadsheetHistoryHashTokens.INSERT_BEFORE === token){
-                                                        const insertBeforeCount = tokens.shift();
-                                                        if(!insertBeforeCount || Number.isNaN(Number(insertBeforeCount))){
-                                                            break;
-                                                        }
-                                                        try {
-                                                            selection = new SpreadsheetColumnOrRowInsertBeforeHistoryHashToken(
-                                                                viewportSelection,
-                                                                Number(insertBeforeCount)
-                                                            );
-                                                        } catch(invalid) {
-                                                            errors("Insert before count: " + invalid.message);
-                                                            break;
-                                                        }
-                                                        token = tokens.shift();
-                                                    }else {
-                                                        if(SpreadsheetHistoryHashTokens.MENU === token){
-                                                            selection = new SpreadsheetColumnOrRowMenuHistoryHashToken(
-                                                                viewportSelection,
-                                                                new SpreadsheetContextMenu(),
-                                                            );
-                                                            token = tokens.shift();
-                                                        }else {
-                                                            if(SpreadsheetHistoryHashTokens.UNFREEZE === token && columnOrRow.canFreeze()){
-                                                                selection = new SpreadsheetColumnOrRowUnFreezeHistoryHashToken(
-                                                                    viewportSelection
-                                                                );
-                                                                token = tokens.shift();
-                                                            }
-                                                        }
-                                                    }
-                                                }
-                                            }
                                         }
-                                    }
+                                        break;
+                                    case SpreadsheetHistoryHashTokens.HIDDEN:
+                                        const hiddenValue = tokens.shift();
+                                        if(!hiddenValue){
+                                            break Loop; // value required but missing.
+                                        }
+                                        selection = new SpreadsheetColumnOrRowSaveHistoryHashToken(
+                                            viewportSelection,
+                                            token,
+                                            "true" === hiddenValue ? true :
+                                                "false" === hiddenValue ? false :
+                                                    hiddenValue
+                                        );
+                                        token = tokens.shift();
+                                        break;
+                                    case SpreadsheetHistoryHashTokens.INSERT_AFTER:
+                                        const insertAfterCount = tokens.shift();
+                                        if(!insertAfterCount || Number.isNaN(Number(insertAfterCount))){
+                                            break Loop;
+                                        }
+                                        try {
+                                            selection = new SpreadsheetColumnOrRowInsertAfterHistoryHashToken(
+                                                viewportSelection,
+                                                Number(insertAfterCount)
+                                            );
+                                        } catch(invalid) {
+                                            errors("Insert after count: " + invalid.message);
+                                            break Loop;
+                                        }
+                                        token = tokens.shift();
+                                        break;
+                                    case SpreadsheetHistoryHashTokens.INSERT_BEFORE:
+                                        const insertBeforeCount = tokens.shift();
+                                        if(!insertBeforeCount || Number.isNaN(Number(insertBeforeCount))){
+                                            break Loop;
+                                        }
+                                        try {
+                                            selection = new SpreadsheetColumnOrRowInsertBeforeHistoryHashToken(
+                                                viewportSelection,
+                                                Number(insertBeforeCount)
+                                            );
+                                        } catch(invalid) {
+                                            errors("Insert before count: " + invalid.message);
+                                            break Loop;
+                                        }
+                                        token = tokens.shift();
+                                        break;
+                                    case SpreadsheetHistoryHashTokens.MENU:
+                                        selection = new SpreadsheetColumnOrRowMenuHistoryHashToken(
+                                            viewportSelection,
+                                            new SpreadsheetContextMenu(),
+                                        );
+                                        token = tokens.shift();
+                                        break;
+                                    case SpreadsheetHistoryHashTokens.UNFREEZE:
+                                        if(columnOrRow.canFreeze()){
+                                            selection = new SpreadsheetColumnOrRowUnFreezeHistoryHashToken(
+                                                viewportSelection
+                                            );
+                                            token = tokens.shift();
+                                        }
+                                        break;
+                                    default:
+                                        break;
                                 }
                             }
                         }
