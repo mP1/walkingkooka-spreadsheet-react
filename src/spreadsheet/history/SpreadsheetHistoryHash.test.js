@@ -1777,7 +1777,8 @@ testParseAndStringify(
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
-    }
+    },
+    "Invalid token: \"!invalid\""
 );
 
 testParseAndStringify(
