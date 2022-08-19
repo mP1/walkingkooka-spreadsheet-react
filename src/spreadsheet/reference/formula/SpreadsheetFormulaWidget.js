@@ -1,20 +1,25 @@
+import CharSequences from "../../../CharSequences.js";
 import Keys from "../../../Keys.js";
 import PropTypes from "prop-types";
 import React from 'react';
 import selectHistoryHashToken from "../../history/selectHistoryHashToken.js";
+import SpreadsheetCell from "../../SpreadsheetCell.js";
 import SpreadsheetCellFormulaEditHistoryHashToken from "./SpreadsheetCellFormulaEditHistoryHashToken.js";
 import SpreadsheetCellFormulaHistoryHashToken from "./SpreadsheetCellFormulaHistoryHashToken.js";
 import SpreadsheetCellFormulaSaveHistoryHashToken from "./SpreadsheetCellFormulaSaveHistoryHashToken.js";
 import SpreadsheetCellHistoryHashToken from "../SpreadsheetCellHistoryHashToken.js";
 import SpreadsheetCellReference from "../SpreadsheetCellReference.js";
 import SpreadsheetExpressionReference from "../SpreadsheetExpressionReference.js";
+import SpreadsheetFormula from "./SpreadsheetFormula.js";
 import SpreadsheetHistoryHash from "../../history/SpreadsheetHistoryHash.js";
 import SpreadsheetHistoryHashTokens from "../../history/SpreadsheetHistoryHashTokens.js";
 import SpreadsheetHistoryAwareStateWidget from "../../history/SpreadsheetHistoryAwareStateWidget.js";
 import SpreadsheetLabelName from "../SpreadsheetLabelName.js";
 import SpreadsheetMessengerCrud from "../../message/SpreadsheetMessengerCrud.js";
+import SpreadsheetViewportSelection from "../viewport/SpreadsheetViewportSelection.js";
 import SpreadsheetViewportWidget from "../viewport/SpreadsheetViewportWidget.js";
 import TextField from '@mui/material/TextField';
+import TextStyle from "../../../text/TextStyle.js";
 
 /**
  * A widget that supports editing formula text.
@@ -155,12 +160,25 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetHistoryAwareSta
     }
 
     saveFormulaText(cellReference, formulaText, selection, anchor) {
-        this.props.spreadsheetViewportWidget.current.saveFormulaText(
-            cellReference,
-            formulaText,
-            selection,
-            anchor,
+        console.log(this.prefix() + " saving formula for " + cellReference + " with " + CharSequences.quoteAndEscape(formulaText));
+
+        this.props.spreadsheetViewportWidget.current.patchCell(
+            new SpreadsheetCell(
+                cellReference,
+                new SpreadsheetFormula(formulaText),
+                TextStyle.EMPTY
+            ),
+            formulaText
         );
+
+        const tokens = SpreadsheetHistoryHashTokens.emptyTokens();
+        tokens[SpreadsheetHistoryHashTokens.SELECTION] = new SpreadsheetCellFormulaEditHistoryHashToken(
+            new SpreadsheetViewportSelection(
+                selection,
+                anchor
+            )
+        );
+        this.historyParseMergeAndPush(tokens);
     }
 
     giveFormulaFocus() {

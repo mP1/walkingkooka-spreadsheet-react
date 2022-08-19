@@ -26,7 +26,7 @@ import SpreadsheetColumnReference from "../SpreadsheetColumnReference.js";
 import SpreadsheetColumnReferenceRange from "../SpreadsheetColumnReferenceRange.js";
 import SpreadsheetContextMenu from "../../../widget/SpreadsheetContextMenu.js";
 import SpreadsheetDelta from "../../engine/SpreadsheetDelta.js";
-import SpreadsheetFormula from "../formula/SpreadsheetFormula.js";
+import SpreadsheetExpressionReference from "../SpreadsheetExpressionReference.js";
 import SpreadsheetHistoryAwareStateWidget from "../../history/SpreadsheetHistoryAwareStateWidget.js";
 import SpreadsheetHistoryHash from "../../history/SpreadsheetHistoryHash.js";
 import SpreadsheetHistoryHashTokens from "../../history/SpreadsheetHistoryHashTokens.js";
@@ -45,8 +45,6 @@ import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
-import TextStyle from "../../../text/TextStyle.js";
-import SpreadsheetExpressionReference from "../SpreadsheetExpressionReference.js";
 
 // default header cell styles
 
@@ -716,37 +714,10 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
     }
 
     /**
-     * Saves the given formula text to the given cell, including the creation of new cells that were previously empty.
-     * This assumes that the cell being saved has been loaded.
-     */
-    saveFormulaText(cellReference, formulaText, selection, anchor) {
-        console.log(this.prefix() + " saving formula for " + selection + " with " + CharSequences.quoteAndEscape(formulaText));
-
-        this.patchCell(
-            new SpreadsheetCell(
-                cellReference,
-                new SpreadsheetFormula(formulaText),
-                TextStyle.EMPTY
-            ),
-            selection,
-            anchor
-        );
-    }
-
-    /**
      * Calls the server to PATCH a cell and also handles updating the history hash leaving just the selection.
      */
-    patchCell(cell, selection, anchor) {
+    patchCell(cell) {
         Preconditions.requireInstance(cell, SpreadsheetCell, "cell");
-
-        const tokens = SpreadsheetHistoryHashTokens.emptyTokens();
-        tokens[SpreadsheetHistoryHashTokens.SELECTION] = new SpreadsheetCellFormulaEditHistoryHashToken(
-            new SpreadsheetViewportSelection(
-                selection,
-                anchor
-            )
-        );
-        this.historyParseMergeAndPush(tokens);
 
         const props = this.props;
         props.spreadsheetDeltaCellCrud.patch(
