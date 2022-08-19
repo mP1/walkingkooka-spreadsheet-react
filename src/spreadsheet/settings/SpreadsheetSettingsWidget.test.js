@@ -84,8 +84,6 @@ test("textStylePropertyLabel", () => {
 });
 
 test("textStylePropertyLabel unnecessary labels", () => {
-    console.log(JSON.stringify(allRows()));
-
     const extra = TextStyle.properties()
         .filter(property => {
             var filter = false;
