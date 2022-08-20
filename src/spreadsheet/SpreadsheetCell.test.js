@@ -72,12 +72,8 @@ test("create with invalid reference fails", () => {
     expect(() => new SpreadsheetCell(1.5)).toThrow("Expected SpreadsheetExpressionReference reference got 1.5");
 });
 
-test("create without formula fails", () => {
-    expect(() => new SpreadsheetCell(reference())).toThrow("Missing formula");
-});
-
 test("create with invalid formula fails", () => {
-    expect(() => new SpreadsheetCell(reference(), 1.5)).toThrow("Expected SpreadsheetFormula formula got 1.5");
+    expect(() => new SpreadsheetCell(reference(), 1.5)).toThrow("Expected SpreadsheetFormula or nothing formula got 1.5");
 });
 
 test("create with missing style fails", () => {
@@ -111,6 +107,29 @@ test("create reference, formula, TextStyle.EMPTY, format, formatted", () => {
         }
     })
 })
+
+test("create reference, missing formula", () => {
+    const r = reference();
+    const f = undefined;
+    const s = style();
+    const f2 = format();
+    const f3 = formatted();
+
+    check(
+        new SpreadsheetCell(r, f, s, f2, f3),
+        r,
+        f,
+        s,
+        f2,
+        f3,
+        {
+            "A99": {
+                style: s.toJson(),
+                format: f2.toJson(),
+                formatted: f3.toJson()
+            }
+        })
+});
 
 test("create reference, formula, style, missing format, formatted", () => {
     const r = reference();
@@ -551,7 +570,15 @@ function check(cell, reference, formula, style, format, formatted, json) {
     expect(cell.reference()).toBeInstanceOf(SpreadsheetExpressionReference);
 
     expect(cell.formula()).toStrictEqual(formula);
-    expect(cell.formula()).toBeInstanceOf(SpreadsheetFormula);
+
+    if(formula){
+        expect(cell.formula())
+            .toBeInstanceOf(SpreadsheetFormula);
+    } else {
+        expect(cell.formula())
+            .toBeUndefined();
+    }
+    expect(cell.formula()).toStrictEqual(formula);
 
     expect(cell.style()).toStrictEqual(style);
 
