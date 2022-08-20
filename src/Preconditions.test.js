@@ -236,6 +236,7 @@ function testOptionalInstanceNotThrows(title, value) {
 testOptionalInstanceNotThrows("optionalInstance undefined", undefined);
 testOptionalInstanceNotThrows("optionalInstance null", null);
 testOptionalInstanceThrows("optionalInstance false", false, "Expected Test1 or nothing Label123 got false");
+testOptionalInstanceThrows("optionalInstance instanceof false", 12.3, "Expected Test1 or nothing Label123 got 12.3");
 testOptionalInstanceThrows("optionalInstance instanceof false", new Test3(), "Expected Test1 or nothing Label123 got " + new Test3());
 testOptionalInstanceThrows("optionalInstance instanceof false", new Test4(), "Expected Test1 or nothing Label123 got Test4!");
 testOptionalInstanceNotThrows("optionalInstance instanceof class", new Test1());
