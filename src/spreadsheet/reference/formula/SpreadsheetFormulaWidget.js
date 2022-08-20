@@ -167,8 +167,7 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetHistoryAwareSta
                 cellReference,
                 new SpreadsheetFormula(formulaText),
                 TextStyle.EMPTY
-            ),
-            formulaText
+            )
         );
 
         const tokens = SpreadsheetHistoryHashTokens.emptyTokens();
