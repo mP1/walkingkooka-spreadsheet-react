@@ -1,6 +1,8 @@
+import CharSequences from "../../CharSequences.js";
 import Equality from "../../Equality.js";
 import SpreadsheetHistoryHashTokens from "../history/SpreadsheetHistoryHashTokens.js";
 import SpreadsheetSettingsHistoryHashToken from "./SpreadsheetSettingsHistoryHashToken.js";
+import SpreadsheetSettingsWidgetHistoryHashTokens from "./SpreadsheetSettingsWidgetHistoryHashTokens.js";
 
 /**
  * This token represents a selection of a settings section or property.
@@ -14,6 +16,11 @@ export default class SpreadsheetSettingsSelectHistoryHashToken extends Spreadshe
 
     constructor(item) {
         super();
+
+        if(item && !SpreadsheetSettingsWidgetHistoryHashTokens.isToken(item)){
+            throw new Error("Unknown settings token " + CharSequences.quoteAndEscape(item));
+        }
+
         this.itemValue = item;
     }
 
