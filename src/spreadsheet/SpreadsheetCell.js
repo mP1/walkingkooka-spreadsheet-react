@@ -45,13 +45,18 @@ export default class SpreadsheetCell extends SystemObject {
                 throw new Error("Missing reference");
             case 1:
                 const cellReferenceOrLabel = keys[0];
-                const {formula, style, format, formatted} = json[cellReferenceOrLabel];
+                const {
+                    formula,
+                    style,
+                    format,
+                    formatted
+                } = json[cellReferenceOrLabel];
 
                 return new SpreadsheetCell(
                     SpreadsheetCellReference.isCellReferenceText(cellReferenceOrLabel) ?
                       SpreadsheetCellReference.fromJson(cellReferenceOrLabel) :
                         SpreadsheetLabelName.fromJson(cellReferenceOrLabel),
-                    SpreadsheetFormula.fromJson(formula),
+                    formula && SpreadsheetFormula.fromJson(formula), // formula is optional
                     (style && TextStyle.fromJson(style)) || TextStyle.EMPTY,
                     format != null ? SpreadsheetCellFormat.fromJson(format) : format,
                     formatted && textNodeJsonSupportFromJson(formatted));
@@ -63,7 +68,7 @@ export default class SpreadsheetCell extends SystemObject {
     constructor(reference, formula, style, format, formatted) {
         super();
         Preconditions.requireInstance(reference, SpreadsheetExpressionReference, "reference");
-        Preconditions.requireInstance(formula, SpreadsheetFormula, "formula");
+        Preconditions.optionalInstance(formula, SpreadsheetFormula, "formula"); // only optional to support creating a cell patch with only a style.
         Preconditions.requireInstance(style, TextStyle, "style");
         Preconditions.optionalInstance(format, SpreadsheetCellFormat, "format");
         Preconditions.optionalInstance(formatted, TextNode, "formatted");
@@ -107,11 +112,18 @@ export default class SpreadsheetCell extends SystemObject {
     }
 
     toJson() {
-        const {formulaValue, styleValue, formatValue, formattedValue} = this;
+        const {
+            formulaValue,
+            styleValue,
+            formatValue,
+            formattedValue
+        } = this;
 
-        let json2 = {
-            formula: formulaValue.toJson()
-        };
+        const json2 = {};
+
+        if(formulaValue){
+            json2.formula = formulaValue.toJson();
+        }
 
         if(!styleValue.isEmpty()){
             json2.style = styleValue.toJson();
@@ -178,7 +190,7 @@ export default class SpreadsheetCell extends SystemObject {
     equals(other) {
         return (other instanceof SpreadsheetCell &&
                 this.reference().equals(other.reference()) &&
-                this.formula().equals(other.formula()) &&
+                Equality.safeEquals(this.formula(), other.formula()) &&
                 Equality.safeEquals(this.style(), other.style()) &&
                 Equality.safeEquals(this.format(), other.format()) &&
                 Equality.safeEquals(this.formatted(), other.formatted())
