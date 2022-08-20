@@ -67,16 +67,6 @@ function split(pathname) {
     return components;
 }
 
-function isSettingsToken(token) {
-    return SpreadsheetSettingsWidgetHistoryHashTokens.accordions()
-            .indexOf(token) > -1 ||
-        isSettingsProperty(token);
-}
-
-function isSettingsProperty(token) {
-    return Boolean(SpreadsheetSettingsWidgetHistoryHashTokens.parentAccordion(token));
-}
-
 function copyTx(from, to) {
     if(from.hasOwnProperty(SpreadsheetHistoryHashTokens.TX_ID)){
         to[SpreadsheetHistoryHashTokens.TX_ID] = from[SpreadsheetHistoryHashTokens.TX_ID];
@@ -419,13 +409,13 @@ export default class SpreadsheetHistoryHash extends SpreadsheetHistoryHashTokens
                                         settings = SpreadsheetSettingsSelectHistoryHashToken.NOTHING;
                                     }else {
                                         // /settings/metadata
-                                        if(isSettingsToken(token)){
+                                        if(SpreadsheetSettingsWidgetHistoryHashTokens.isToken(token)){
                                             const settingsItemOrMetadataProperty = token;
 
                                             // /settings/color/#123456
                                             token = tokens.shift(); // property value
                                             if(null != token){
-                                                if(isSettingsProperty(settingsItemOrMetadataProperty)){
+                                                if(SpreadsheetSettingsWidgetHistoryHashTokens.isProperty(settingsItemOrMetadataProperty)){
                                                     settings = new SpreadsheetSettingsSaveHistoryHashToken(
                                                         settingsItemOrMetadataProperty,
                                                         "" === token ? null : decodeURIComponent(token)
