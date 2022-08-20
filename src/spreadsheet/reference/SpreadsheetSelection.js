@@ -58,10 +58,6 @@ export default class SpreadsheetSelection extends SystemObject {
         SystemObject.throwUnsupportedOperation();
     }
 
-    deleteHistoryHashToken() {
-        SystemObject.throwUnsupportedOperation();
-    }
-
     patch(property, value) {
         SystemObject.throwUnsupportedOperation();
     }
