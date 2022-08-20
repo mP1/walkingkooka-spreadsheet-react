@@ -1,4 +1,5 @@
 import CharSequences from "../../CharSequences.js";
+import FontStyle from "../../text/FontStyle.js";
 import SpreadsheetCellClearHistoryHashToken from "../reference/SpreadsheetCellClearHistoryHashToken.js";
 import SpreadsheetCellDeleteHistoryHashToken from "../reference/SpreadsheetCellDeleteHistoryHashToken.js";
 import SpreadsheetCellFormulaEditHistoryHashToken
@@ -10,6 +11,8 @@ import SpreadsheetCellMenuHistoryHashToken from "../reference/SpreadsheetCellMen
 import SpreadsheetCellRange from "../reference/SpreadsheetCellRange.js";
 import SpreadsheetCellReference from "../reference/SpreadsheetCellReference.js";
 import SpreadsheetCellSelectHistoryHashToken from "../reference/SpreadsheetCellSelectHistoryHashToken.js";
+import SpreadsheetCellStyleEditHistoryHashToken from "../reference/SpreadsheetCellStyleEditHistoryHashToken.js";
+import SpreadsheetCellStyleSaveHistoryHashToken from "../reference/SpreadsheetCellStyleSaveHistoryHashToken.js";
 import SpreadsheetCellUnFreezeHistoryHashToken from "../reference/SpreadsheetCellUnFreezeHistoryHashToken.js";
 import SpreadsheetColumnOrRowClearHistoryHashToken from "../reference/SpreadsheetColumnOrRowClearHistoryHashToken.js";
 import SpreadsheetColumnOrRowDeleteHistoryHashToken from "../reference/SpreadsheetColumnOrRowDeleteHistoryHashToken.js";
@@ -1893,6 +1896,35 @@ testParseAndStringify(
         "spreadsheet-name": SPREADSHEET_NAME
     },
     "Invalid token: \"unfreeze\"",
+);
+
+testParseAndStringify(
+    "/spreadsheet-id-123/spreadsheet-name-456/cell/A1/style/font-style",
+    {
+        "spreadsheet-id": "spreadsheet-id-123",
+        "spreadsheet-name": SPREADSHEET_NAME,
+        "selection": new SpreadsheetCellStyleEditHistoryHashToken(
+            new SpreadsheetViewportSelection(
+                CELL
+            ),
+            TextStyle.FONT_STYLE,
+        )
+    }
+);
+
+testParseAndStringify(
+    "/spreadsheet-id-123/spreadsheet-name-456/cell/A1/style/font-style/ITALIC",
+    {
+        "spreadsheet-id": "spreadsheet-id-123",
+        "spreadsheet-name": SPREADSHEET_NAME,
+        "selection": new SpreadsheetCellStyleSaveHistoryHashToken(
+            new SpreadsheetViewportSelection(
+                CELL
+            ),
+            TextStyle.FONT_STYLE,
+            FontStyle.ITALIC.toJson()
+        )
+    }
 );
 
 testParseAndStringify(

@@ -51,6 +51,9 @@ import SpreadsheetSettingsSaveHistoryHashToken from "../settings/SpreadsheetSett
 import SpreadsheetSettingsSelectHistoryHashToken from "../settings/SpreadsheetSettingsSelectHistoryHashToken.js";
 import SpreadsheetSettingsWidgetHistoryHashTokens from "../settings/SpreadsheetSettingsWidgetHistoryHashTokens.js";
 import SpreadsheetViewportSelection from "../reference/viewport/SpreadsheetViewportSelection.js";
+import SpreadsheetCellStyleSaveHistoryHashToken from "../reference/SpreadsheetCellStyleSaveHistoryHashToken.js";
+import SpreadsheetCellStyleEditHistoryHashToken from "../reference/SpreadsheetCellStyleEditHistoryHashToken.js";
+import TextStyle from "../../text/TextStyle.js";
 
 function tokenize(pathname) {
     return pathname && pathname.startsWith("/") ?
@@ -204,6 +207,31 @@ export default class SpreadsheetHistoryHash extends SpreadsheetHistoryHashTokens
                                                 new SpreadsheetContextMenu()
                                             );
                                             token = tokens.shift();
+                                            break;
+                                        case SpreadsheetHistoryHashTokens.STYLE:
+                                            // cell/A1/style/font-style/italics
+                                            token = tokens.shift(); // style property name
+                                            if(null != token){
+                                                const stylePropertyName = token;
+                                                if(TextStyle.isProperty(stylePropertyName)){
+                                                    if(tokens.length){
+                                                        token = tokens.shift(); // style property value
+                                                        selection = new SpreadsheetCellStyleSaveHistoryHashToken(
+                                                            viewportSelection,
+                                                            stylePropertyName,
+                                                            "" === token ? null : decodeURIComponent(token)
+                                                        );
+                                                    }else {
+                                                        selection = new SpreadsheetCellStyleEditHistoryHashToken(
+                                                            viewportSelection,
+                                                            stylePropertyName
+                                                        );
+                                                    }
+                                                    token = tokens.shift();
+                                                }else {
+                                                    tokens.unshift(token);
+                                                }
+                                            }
                                             break;
                                         case SpreadsheetHistoryHashTokens.UNFREEZE:
                                             if(cellOrLabel.canFreeze()){
