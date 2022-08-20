@@ -24,6 +24,19 @@ export default class SpreadsheetSettingsWidgetHistoryHashTokens {
     }
 
     /**
+     * Tests if the given token is a settings property
+     */
+    static isProperty(token) {
+        return Boolean(SpreadsheetSettingsWidgetHistoryHashTokens.parentAccordion(token));
+    }
+
+    static isToken(token) {
+        return SpreadsheetSettingsWidgetHistoryHashTokens.accordions()
+                .indexOf(token) > -1 ||
+            SpreadsheetSettingsWidgetHistoryHashTokens.isProperty(token);
+    }
+    
+    /**
      * Returns the settings accordion name for the given property or null if not found.
      */
     static parentAccordion(property) {
