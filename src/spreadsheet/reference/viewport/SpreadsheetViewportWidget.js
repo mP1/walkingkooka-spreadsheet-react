@@ -464,14 +464,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
     }
 
     stateFromHistoryTokens(tokens) {
-        console.log("@Viewport stateFromHistoryTokens " + JSON.stringify(tokens));
-
-        if(SpreadsheetHistoryHash.stringify(tokens).includes("/cell/B1")){
-            this.b1 = true;
-        }
-        if(this.b1 && SpreadsheetHistoryHash.stringify(tokens).includes("/cell/A1:B1")){
-            debugger;
-        }
+        console.log("Viewport stateFromHistoryTokens " + JSON.stringify(tokens));
 
         return {
             selection: tokens[SpreadsheetHistoryHashTokens.SELECTION], // TODO ?? clear navigation ?
