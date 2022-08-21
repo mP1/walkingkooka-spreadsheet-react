@@ -19,7 +19,7 @@ export default class SpreadsheetSettingsWidgetSlider extends SpreadsheetSettings
     focus() {
         // slider.focus doesnt work, give focus to the thumb
         this.giveFocus(
-            () => this.sliderRef.current.querySelector("[role=slider]")
+            () => this.sliderRef.current.querySelector("[type=range]")
         );
     }
 
