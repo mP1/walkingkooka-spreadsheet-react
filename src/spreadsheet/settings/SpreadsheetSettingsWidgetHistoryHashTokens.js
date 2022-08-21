@@ -236,10 +236,10 @@ export default class SpreadsheetSettingsWidgetHistoryHashTokens {
                 case SpreadsheetMetadata.FROZEN_ROWS:
                     value = new SpreadsheetRowReferenceRange.parse(token);
                     break;
-                case SpreadsheetMetadata.GROUPING_SEPARATOR :
                 //case SpreadsheetMetadata.LOCALE :
                 //case SpreadsheetMetadata.MODIFIED_BY :
                 //case SpreadsheetMetadata.MODIFIED_DATE_TIME :
+                case SpreadsheetMetadata.GROUPING_SEPARATOR :
                 case SpreadsheetMetadata.NEGATIVE_SIGN :
                     value = token;
                     break;
@@ -281,7 +281,6 @@ export default class SpreadsheetSettingsWidgetHistoryHashTokens {
                 //case SpreadsheetMetadata.SPREADSHEET_ID :
                 //case SpreadsheetMetadata.STYLE :
                 //case SpreadsheetMetadata.VIEWPORT_CELL :
-                    throw new Error("Invalid property " + propertyName);
                 default:
                     value = TextStyle.parseHistoryHashToken(propertyName, token);
                     break;
