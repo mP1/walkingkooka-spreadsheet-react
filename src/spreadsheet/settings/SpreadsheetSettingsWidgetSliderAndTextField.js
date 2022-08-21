@@ -89,7 +89,7 @@ export default class SpreadsheetSettingsWidgetSliderAndTextField extends Spreads
         const props = this.props;
         const value = props.numberToValue(number);
 
-        console.log(this.prefix() + ".onChangeNumber " + props.property + " number=" + number + ", value=" + value);
+        this.log(".onChangeNumber number=" + number + ", value=" + value);
         this.setState({
             value: value,
         });
