@@ -123,11 +123,9 @@ export default class SpreadsheetSettingsWidgetValue extends SpreadsheetHistoryAw
 
         const ref = React.createRef();
 
-        const prefix = this.prefix() + "." + property
-
         const onFocus = (e) => {
             if(!state.focused){
-                console.log(prefix + ".onFocus: e.target:", e.target);
+                this.log(".onFocus: e.target:", e.target);
 
                 this.setState({
                     focused: true,
@@ -141,12 +139,11 @@ export default class SpreadsheetSettingsWidgetValue extends SpreadsheetHistoryAw
         const onBlur = (e) => {
             // new focus belongs does not belong to property
             if(ref.current && !ref.current.contains(e.relatedTarget)){
-                console.log(
-                    prefix + ".onBlur: state", this.state,
+                this.log(
+                    ".onBlur: state", this.state,
                     "e.target:", e.target,
                     "e.relatedTarget", e.relatedTarget
                 );
-
 
                 const value = state.value;
                 if(!Equality.safeEquals(value, state.savedValue)){
@@ -155,7 +152,7 @@ export default class SpreadsheetSettingsWidgetValue extends SpreadsheetHistoryAw
                         property,
                         null == value ? null : "" + value
                     );
-                    console.log(prefix + ".save " + property + "=" + value + " last saved: " + state.savedValue, tokens, JSON.stringify(tokens));
+                    this.log(" push " + property + "=" + value + " last saved: " + state.savedValue, tokens, JSON.stringify(tokens));
 
                     this.historyParseMergeAndPush(tokens);
                 }
@@ -247,12 +244,12 @@ export default class SpreadsheetSettingsWidgetValue extends SpreadsheetHistoryAw
      * Updates the value and default value whenever a new SpreadsheetMetadata is loaded.
      */
     onSpreadsheetMetadata(method, id, url, requestMetadata, responseMetadata) {
-        const {getValue, property} = this.props;
+        const {getValue} = this.props;
 
         const value = getValue(responseMetadata);
         const defaultValue = getValue(responseMetadata.getIgnoringDefaults(SpreadsheetMetadata.DEFAULTS));
 
-        console.log(this.prefix() + "." + property + ".onSpreadsheetMetadata got value: " + value + " default=" + defaultValue, responseMetadata);
+        this.log(".onSpreadsheetMetadata got value: " + value + " default=" + defaultValue, responseMetadata);
 
         this.setState({
             value: value,
@@ -260,5 +257,9 @@ export default class SpreadsheetSettingsWidgetValue extends SpreadsheetHistoryAw
             savedValue: value,
             defaultValue: defaultValue,
         });
+    }
+
+    log(...params) {
+        console.log(this.prefix() + "." + this.props.property + params[0], params.shift());
     }
 }
