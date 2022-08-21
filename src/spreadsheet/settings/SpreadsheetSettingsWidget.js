@@ -1306,32 +1306,18 @@ class SpreadsheetSettingsWidget extends SpreadsheetHistoryAwareStateWidget {
                 )
             );
         }
-        //
-        const onFocus = (e) => {
-            if(settingsItem){
-                const target = e.target;
-                if(target.isEqualNode(accordion.current) || target.isEqualNode(expandIconRef.current)){
-                    console.log("settings accordion focus " + accordion);
-
-                    const historyTokens = this.props.history.tokens();
-                    historyTokens[SpreadsheetHistoryHashTokens.SETTINGS] = new SpreadsheetSettingsSelectHistoryHashToken(accordion);
-                    this.historyParseMergeAndPush(historyTokens);
-                }
-            }
-        };
 
         const onChange = (e, expanded) => {
             console.log("settings accordion change " + accordion + " " + (expanded ? "expanding" : "collapsing"));
 
             const historyHashTokens = SpreadsheetHistoryHashTokens.emptyTokens();
-            historyHashTokens[SpreadsheetHistoryHashTokens.SETTINGS] = expanded && new SpreadsheetSettingsSelectHistoryHashToken(accordion);
+            historyHashTokens[SpreadsheetHistoryHashTokens.SETTINGS] = expanded ? new SpreadsheetSettingsSelectHistoryHashToken(accordion) : SpreadsheetSettingsSelectHistoryHashToken.NOTHING;
             this.historyParseMergeAndPush(historyHashTokens);
         }
 
         return <Accordion id={id}
                           key={id}
                           ref={accordingRef}
-                          onFocus={e => onFocus(e)}
                           expanded={accordionSelected || accordionPropertySelected}
                           onChange={onChange}
                           disableGutters
