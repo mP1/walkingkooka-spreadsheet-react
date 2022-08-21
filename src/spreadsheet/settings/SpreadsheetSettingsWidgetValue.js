@@ -194,7 +194,7 @@ export default class SpreadsheetSettingsWidgetValue extends SpreadsheetHistoryAw
      * The defaultValue parameter is useful for choices such as whether a slider should include a default choice.
      */
     renderValue(id, value, defaultValue) {
-        throw new Error("renderInput not overridden");
+        throw new Error("renderValue not overridden");
     }
 
     /**
