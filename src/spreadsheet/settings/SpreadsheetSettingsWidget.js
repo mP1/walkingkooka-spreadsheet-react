@@ -132,7 +132,7 @@ class SpreadsheetSettingsWidget extends SpreadsheetHistoryAwareStateWidget {
     }
 
     init() {
-        this.ref = React.createRef();
+        this.drawer = React.createRef();
     }
 
     initialStateFromProps(props) {
@@ -272,7 +272,7 @@ class SpreadsheetSettingsWidget extends SpreadsheetHistoryAwareStateWidget {
                         giveSettingsFocus: false,
                     });
 
-                    element = this.ref.current;
+                    element = this.drawer.current;
                 }
 
                 return element;
@@ -301,9 +301,9 @@ class SpreadsheetSettingsWidget extends SpreadsheetHistoryAwareStateWidget {
                 ]);
 
         const onFocus = (e) => {
-            const ref = this.ref;
+            const drawer = this.drawer;
 
-            if(!(settings) && ref.current && ref.current.isEqualNode(e.target)){
+            if(!(settings) && drawer.current && drawer.current.isEqualNode(e.target)){
                 console.log("settings.focus target: ", e.target);
 
                 const tokens = SpreadsheetHistoryHashTokens.emptyTokens();
@@ -314,9 +314,9 @@ class SpreadsheetSettingsWidget extends SpreadsheetHistoryAwareStateWidget {
         const onBlur = (e) => {
             if(BLUR_CLOSES_DRAWER && this.state.settings){
                 const target = e.relatedTarget;
-                const ref = this.ref;
+                const drawer = this.drawer;
 
-                if(!ref.current.contains(target) && !(document.getElementById(SpreadsheetSettingsWidget.menuIcon()).contains(target))){
+                if(!drawer.current.contains(target) && !(document.getElementById(SpreadsheetSettingsWidget.menuIcon()).contains(target))){
                     const tokens = SpreadsheetHistoryHashTokens.emptyTokens();
                     tokens[SpreadsheetHistoryHashTokens.SETTINGS] = null;
                     this.historyParseMergeAndPush(tokens);
@@ -339,7 +339,7 @@ class SpreadsheetSettingsWidget extends SpreadsheetHistoryAwareStateWidget {
                        anchor={"right"}
                        variant={"persistent"}
                        open={open}
-                       ref={this.ref}
+                       ref={this.drawer}
                        modal={"false"}
                        onFocus={onFocus}
                        onBlur={onBlur}
