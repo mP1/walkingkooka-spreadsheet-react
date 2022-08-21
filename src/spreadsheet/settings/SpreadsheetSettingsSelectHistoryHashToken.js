@@ -31,8 +31,10 @@ export default class SpreadsheetSettingsSelectHistoryHashToken extends Spreadshe
         return this.itemValue;
     }
 
-    settingsWidgetExecute(settingsWidget) {
-        // nop
+    settingsWidgetExecute(settingsWidget, previousSettings) {
+        if(!previousSettings) {
+            settingsWidget.loadSpreadsheetMetadata(); // load spreadsheet metadata when the settings drawer opens
+        }
     }
 
     historyHashPath() {

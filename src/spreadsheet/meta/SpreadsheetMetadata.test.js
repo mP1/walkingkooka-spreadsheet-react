@@ -7,6 +7,7 @@ import Locale from "../../util/Locale.js";
 import PixelLength from "../../text/PixelLength";
 import RoundingMode from "../../math/RoundingMode.js";
 import SpreadsheetCellReference from "../reference/SpreadsheetCellReference";
+import SpreadsheetColumnReferenceRange from "../reference/SpreadsheetColumnReferenceRange.js";
 import SpreadsheetDateFormatPattern from "../format/SpreadsheetDateFormatPattern.js";
 import SpreadsheetDateParsePatterns from "../format/SpreadsheetDateParsePatterns.js";
 import SpreadsheetDateTimeFormatPattern from "../format/SpreadsheetDateTimeFormatPattern.js";
@@ -15,13 +16,12 @@ import SpreadsheetMetadata from "./SpreadsheetMetadata";
 import SpreadsheetName from "../name/SpreadsheetName.js";
 import SpreadsheetNumberFormatPattern from "../format/SpreadsheetNumberFormatPattern.js";
 import SpreadsheetNumberParsePatterns from "../format/SpreadsheetNumberParsePatterns.js";
+import SpreadsheetRowReferenceRange from "../reference/SpreadsheetRowReferenceRange.js";
 import SpreadsheetTextFormatPattern from "../format/SpreadsheetTextFormatPattern.js";
 import SpreadsheetTimeFormatPattern from "../format/SpreadsheetTimeFormatPattern.js";
 import SpreadsheetTimeParsePatterns from "../format/SpreadsheetTimeParsePatterns.js";
 import systemObjectTesting from "../../SystemObjectTesting.js";
 import TextStyle from "../../text/TextStyle";
-import SpreadsheetColumnReferenceRange from "../reference/SpreadsheetColumnReferenceRange.js";
-import SpreadsheetRowReferenceRange from "../reference/SpreadsheetRowReferenceRange.js";
 
 systemObjectTesting(
     new SpreadsheetMetadata(
@@ -49,31 +49,6 @@ test("isProperty using properties()", () => {
 
     expect(missing).toStrictEqual(["Unknown123"]);
 });
-
-// stringValueToJson....................................................................................................
-
-test("stringValueToJson invalid property fails", () => {
-    expect(() => SpreadsheetMetadata.stringValueToJson("!invalid", 123))
-        .toThrow("Unknown propertyName \"!invalid\"");
-});
-
-test("stringValueToJson non text value fails", () => {
-    expect(() => SpreadsheetMetadata.stringValueToJson(SpreadsheetMetadata.CELL_CHARACTER_WIDTH, 123))
-        .toThrow("Expected string value got 123");
-});
-
-function teststringValueToJson(propertyName, value, json) {
-    test("stringValueToJson " + propertyName + "=" + value, () => {
-        expect(SpreadsheetMetadata.stringValueToJson(propertyName, value))
-            .toStrictEqual(json);
-    });
-}
-
-teststringValueToJson(SpreadsheetMetadata.DATETIME_OFFSET, "123", 123);
-teststringValueToJson(SpreadsheetMetadata.TWO_DIGIT_YEAR, "20", 20);
-teststringValueToJson(SpreadsheetMetadata.CURRENCY_SYMBOL, "AUD", "AUD");
-teststringValueToJson(SpreadsheetMetadata.CREATOR, "user@example.com", "user@example.com");
-teststringValueToJson(SpreadsheetMetadata.POSITIVE_SIGN, "+", "+");
 
 // EMPTY................................................................................................................
 
