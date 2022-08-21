@@ -8,6 +8,10 @@ const TYPE_NAME = "font-weight";
  */
 export default class FontWeight extends SystemObject {
 
+    static parseHistoryHashToken(value) {
+        return value && FontWeight.fromJson(Number.parseFloat(value));
+    }
+
     static fromJson(value) {
         Preconditions.requireNumber(value, "value");
         if(value <= 0) {

@@ -1,5 +1,19 @@
+import Preconditions from "../../Preconditions.js";
 import SpreadsheetMetadata from "../meta/SpreadsheetMetadata.js";
 import TextStyle from "../../text/TextStyle.js";
+import SpreadsheetColumnReferenceRange from "../reference/SpreadsheetColumnReferenceRange.js";
+import SpreadsheetRowReferenceRange from "../reference/SpreadsheetRowReferenceRange.js";
+import SpreadsheetNumberParsePatterns from "../format/SpreadsheetNumberParsePatterns.js";
+import SpreadsheetNumberFormatPattern from "../format/SpreadsheetNumberFormatPattern.js";
+import ExpressionNumberKind from "../../math/ExpressionNumberKind.js";
+import SpreadsheetTextFormatPattern from "../format/SpreadsheetTextFormatPattern.js";
+import SpreadsheetTimeFormatPattern from "../format/SpreadsheetTimeFormatPattern.js";
+import SpreadsheetTimeParsePatterns from "../format/SpreadsheetTimeParsePatterns.js";
+import SpreadsheetDateTimeParsePatterns from "../format/SpreadsheetDateTimeParsePatterns.js";
+import SpreadsheetDateTimeFormatPattern from "../format/SpreadsheetDateTimeFormatPattern.js";
+import SpreadsheetDateFormatPattern from "../format/SpreadsheetDateFormatPattern.js";
+import SpreadsheetDateParsePatterns from "../format/SpreadsheetDateParsePatterns.js";
+import RoundingMode from "../../math/RoundingMode.js";
 
 /**
  * Helpers required by SpreadsheetSettingsWidget and SpreadsheetHistoryHash extracted to avoid cycles between classes.
@@ -161,5 +175,119 @@ export default class SpreadsheetSettingsWidgetHistoryHashTokens {
             TextStyle.PADDING_RIGHT,
             TextStyle.PADDING_BOTTOM,
         ];
+    }
+
+    /**
+     * Translates a style property value from a string (probably sourced from a history hash token) into its
+     * matching json type like a null, string or number.
+     */
+    static parseHistoryHashToken(propertyName, token) {
+        Preconditions.optionalText(token, "token");
+
+        return SpreadsheetSettingsWidgetHistoryHashTokens.parseHistoryHashToken0(
+            propertyName,
+            token && decodeURIComponent(token)
+        );
+    }
+
+    static parseHistoryHashToken0(propertyName, token) {
+        let value = null;
+
+        if(null != token){
+            switch(propertyName) {
+                case SpreadsheetMetadata.CELL_CHARACTER_WIDTH :
+                    value = Number(token);
+                    break;
+                //case SpreadsheetMetadata.CREATOR :
+                //case SpreadsheetMetadata.CREATE_DATE_TIME :
+                case SpreadsheetMetadata.CURRENCY_SYMBOL :
+                    value = token;
+                    break;
+                case SpreadsheetMetadata.DATE_FORMAT_PATTERN :
+                    value = new SpreadsheetDateFormatPattern(token);
+                    break;
+                case SpreadsheetMetadata.DATE_PARSE_PATTERNS :
+                    value = new SpreadsheetDateParsePatterns(token);
+                    break;
+                case SpreadsheetMetadata.DATETIME_FORMAT_PATTERN :
+                    value = new SpreadsheetDateTimeFormatPattern(token);
+                    break;
+                case SpreadsheetMetadata.DATETIME_OFFSET :
+                    value = Number(token);
+                    break;
+                case SpreadsheetMetadata.DATETIME_PARSE_PATTERNS :
+                    value = new SpreadsheetDateTimeParsePatterns(token);
+                    break;
+                case SpreadsheetMetadata.DECIMAL_SEPARATOR :
+                    value = token;
+                    break;
+                case SpreadsheetMetadata.DEFAULT_YEAR :
+                    value = Number(token);
+                    break;
+                case SpreadsheetMetadata.EXPONENT_SYMBOL :
+                    value = token;
+                    break;
+                case SpreadsheetMetadata.EXPRESSION_NUMBER_KIND :
+                    value = ExpressionNumberKind.fromJson(token);
+                    break;
+                case SpreadsheetMetadata.FROZEN_COLUMNS:
+                    value = new SpreadsheetColumnReferenceRange.parse(token);
+                    break;
+                case SpreadsheetMetadata.FROZEN_ROWS:
+                    value = new SpreadsheetRowReferenceRange.parse(token);
+                    break;
+                case SpreadsheetMetadata.GROUPING_SEPARATOR :
+                //case SpreadsheetMetadata.LOCALE :
+                //case SpreadsheetMetadata.MODIFIED_BY :
+                //case SpreadsheetMetadata.MODIFIED_DATE_TIME :
+                case SpreadsheetMetadata.NEGATIVE_SIGN :
+                    value = token;
+                    break;
+                case SpreadsheetMetadata.NUMBER_FORMAT_PATTERN :
+                    value = new SpreadsheetNumberFormatPattern(token);
+                    break;
+                case SpreadsheetMetadata.NUMBER_PARSE_PATTERNS :
+                    value = new SpreadsheetNumberParsePatterns(token);
+                    break;
+                case SpreadsheetMetadata.PERCENTAGE_SYMBOL :
+                    value = token;
+                    break;
+                case SpreadsheetMetadata.PRECISION :
+                    value = Number(token);
+                    break;
+                case SpreadsheetMetadata.POSITIVE_SIGN :
+                    value = token;
+                    break;
+                case SpreadsheetMetadata.ROUNDING_MODE :
+                    value = RoundingMode.fromJson(token);
+                    break;
+                //case SpreadsheetMetadata.SPREADSHEET_NAME :
+                case SpreadsheetMetadata.TEXT_FORMAT_PATTERN :
+                    value = new SpreadsheetTextFormatPattern(token);
+                    break;
+                case SpreadsheetMetadata.TIME_FORMAT_PATTERN :
+                    value = new SpreadsheetTimeFormatPattern(token);
+                    break;
+                case SpreadsheetMetadata.TIME_PARSE_PATTERNS :
+                    value = new SpreadsheetTimeParsePatterns(token);
+                    break;
+                case SpreadsheetMetadata.TWO_DIGIT_YEAR :
+                    value = Number(token);
+                    break;
+                case SpreadsheetMetadata.VALUE_SEPARATOR :
+                    value = token;
+                    break;
+                //case SpreadsheetMetadata.SELECTION :
+                //case SpreadsheetMetadata.SPREADSHEET_ID :
+                //case SpreadsheetMetadata.STYLE :
+                //case SpreadsheetMetadata.VIEWPORT_CELL :
+                    throw new Error("Invalid property " + propertyName);
+                default:
+                    value = TextStyle.parseHistoryHashToken(propertyName, token);
+                    break;
+            }
+        }
+
+        return value;
     }
 }

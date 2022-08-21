@@ -144,11 +144,198 @@ export default class TextStyle extends SystemObject {
      * Translates a style property value from a string (probably sourced from a history hash token) into its
      * matching json type like a null, string or number.
      */
-    static stringValueToJson(property, value) {
+    static parseHistoryHashToken(property, value) {
         checkProperty(property);
         Preconditions.optionalText(value, "value");
 
-        return value;
+        let parser;
+
+        switch(property) {
+            case TextStyle.BACKGROUND_COLOR:
+            case TextStyle.BORDER_BOTTOM_COLOR:
+                parser = Color.fromJson;
+                break;
+            case TextStyle.BORDER_BOTTOM_STYLE:
+                parser = BorderStyle.fromJson;
+                break;
+            case TextStyle.BORDER_BOTTOM_WIDTH:
+                parser = LengthFromJson;
+                break;
+            case TextStyle.BORDER_COLLAPSE:
+                parser = BorderCollapse.fromJson;
+                break;
+            case TextStyle.BORDER_LEFT_COLOR:
+                parser = Color.fromJson;
+                break;
+            case TextStyle.BORDER_LEFT_STYLE:
+                parser = BorderStyle.fromJson;
+                break;
+            case TextStyle.BORDER_LEFT_WIDTH:
+                parser = LengthFromJson;
+                break;
+            case TextStyle.BORDER_RIGHT_COLOR:
+                parser = Color.fromJson;
+                break;
+            case TextStyle.BORDER_RIGHT_STYLE:
+                parser = BorderStyle.fromJson;
+                break;
+            case TextStyle.BORDER_RIGHT_WIDTH:
+            case TextStyle.BORDER_SPACING:
+                parser = LengthFromJson;
+                break;
+            case TextStyle.BORDER_TOP_COLOR:
+                parser = Color.fromJson;
+                break;
+            case TextStyle.BORDER_TOP_STYLE:
+                parser = BorderStyle.fromJson;
+                break;
+            case TextStyle.BORDER_TOP_WIDTH:
+                parser = LengthFromJson;
+                break;
+            case TextStyle.COLOR:
+                parser = Color.fromJson;
+                break;
+            case TextStyle.DIRECTION:
+                parser = Direction.fromJson;
+                break;
+            case TextStyle.FONT_FAMILY:
+                parser = FontFamily.fromJson;
+                break;
+            case TextStyle.FONT_KERNING:
+                parser = FontKerning.fromJson;
+                break;
+            case TextStyle.FONT_SIZE:
+                parser = FontSize.parseHistoryHashToken;
+                break;
+            case TextStyle.FONT_STRETCH:
+                parser = FontStretch.fromJson;
+                break;
+            case TextStyle.FONT_STYLE:
+                parser = FontStyle.fromJson;
+                break;
+            case TextStyle.FONT_VARIANT:
+                parser = FontVariant.fromJson;
+                break;
+            case TextStyle.FONT_WEIGHT:
+                parser = FontWeight.parseHistoryHashToken;
+                break;
+            case TextStyle.HANGING_PUNCTUATION:
+                parser = HangingPunctuation.fromJson;
+                break;
+            case TextStyle.HEIGHT:
+                parser = LengthFromJson;
+                break;
+            case TextStyle.HYPHENS:
+                parser = Hyphens.fromJson;
+                break;
+            case TextStyle.LETTER_SPACING:
+            case TextStyle.LINE_HEIGHT:
+                parser = LengthFromJson;
+                break;
+            case TextStyle.LIST_STYLE_POSITION:
+                parser = ListStylePosition.fromJson;
+                break;
+            case TextStyle.LIST_STYLE_TYPE:
+                parser = ListStyleType.fromJson;
+                break;
+            case TextStyle.MARGIN_BOTTOM:
+            case TextStyle.MARGIN_LEFT:
+            case TextStyle.MARGIN_RIGHT:
+            case TextStyle.MARGIN_TOP:
+            case TextStyle.MAX_HEIGHT:
+            case TextStyle.MAX_WIDTH:
+            case TextStyle.MIN_HEIGHT:
+            case TextStyle.MIN_WIDTH:
+                parser = LengthFromJson;
+                break;
+            case TextStyle.OPACITY:
+                // Opacity
+                break;
+            case TextStyle.OUTLINE_COLOR:
+                parser = Color.fromJson;
+                break;
+            case TextStyle.OUTLINE_OFFSET:
+                parser = LengthFromJson;
+                break;
+            case TextStyle.OUTLINE_STYLE:
+                parser = OutlineStyle.fromJson;
+                break;
+            case TextStyle.OUTLINE_WIDTH:
+                parser = LengthFromJson;
+                break;
+            case TextStyle.OVERFLOW_X:
+            case TextStyle.OVERFLOW_Y:
+                parser = Overflow.fromJson;
+                break;
+            case TextStyle.PADDING_BOTTOM:
+            case TextStyle.PADDING_LEFT:
+            case TextStyle.PADDING_RIGHT:
+            case TextStyle.PADDING_TOP:
+            case TextStyle.TAB_SIZE:
+                parser = LengthFromJson;
+                break;
+            case TextStyle.TEXT:
+                // String
+                break;
+            case TextStyle.TEXT_ALIGN:
+                parser = TextAlign.fromJson;
+                break;
+            case TextStyle.TEXT_DECORATION_COLOR:
+                parser = Color.fromJson;
+                break;
+            case TextStyle.TEXT_DECORATION_LINE:
+                parser = TextDecorationLine.fromJson;
+                break;
+            case TextStyle.TEXT_DECORATION_STYLE:
+                parser = TextDecorationStyle.fromJson;
+                break;
+            case TextStyle.TEXT_DECORATION_THICKNESS:
+                parser = LengthFromJson;
+                break;
+            case TextStyle.TEXT_INDENT:
+                parser = LengthFromJson;
+                break;
+            case TextStyle.TEXT_JUSTIFY:
+                parser = TextJustify.fromJson;
+                break;
+            case TextStyle.TEXT_OVERFLOW:
+                // TextOverflow
+                break;
+            case TextStyle.TEXT_TRANSFORM:
+                parser = TextTransform.fromJson;
+                break;
+            case TextStyle.TEXT_WRAPPING:
+                parser = TextWrapping.fromJson;
+                break;
+            case TextStyle.VERTICAL_ALIGN:
+                parser = VerticalAlign.fromJson;
+                break;
+            case TextStyle.VISIBILITY:
+                parser = Visibility.fromJson;
+                break;
+            case TextStyle.WHITE_SPACE:
+                parser = TextWhitespace.fromJson;
+                break;
+            case TextStyle.WIDTH:
+                parser = LengthFromJson;
+                break;
+            case TextStyle.WORD_BREAK:
+                parser = WordBreak.fromJson;
+                break;
+            case TextStyle.WORD_SPACING:
+                parser = LengthFromJson;
+                break;
+            case TextStyle.WORD_WRAP:
+                parser = WordWrap.fromJson;
+                break;
+            case TextStyle.WRITING_MODE:
+                parser = WritingMode.fromJson;
+                break;
+            default:
+                throw new Error("Unknown property " + property);
+        }
+
+        return (parser && null != value && parser(decodeURIComponent(value))) || value;
     }
 
     /**

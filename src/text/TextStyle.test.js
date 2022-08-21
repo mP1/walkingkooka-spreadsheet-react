@@ -1,5 +1,6 @@
 import BorderStyle from "./BorderStyle.js";
 import BorderCollapse from "./BorderCollapse.js";
+import CharSequences from "../CharSequences.js";
 import Color from "../color/Color.js";
 import Direction from "./Direction.js";
 import FontFamily from "./FontFamily.js";
@@ -79,36 +80,134 @@ test("isProperty() true", () => {
         });
 });
 
-// stringValueToJson....................................................................................................
+// parseHistoryHashToken....................................................................................................
 
-test("stringValueToJson invalid property fails", () => {
-    expect(() => TextStyle.stringValueToJson("!invalid", 123))
+test("parseHistoryHashToken invalid property fails", () => {
+    expect(() => TextStyle.parseHistoryHashToken("!invalid", 123))
         .toThrow("Unknown property \"!invalid\"");
 });
 
-test("stringValueToJson non text value fails", () => {
-    expect(() => TextStyle.stringValueToJson(TextStyle.COLOR, 123))
+test("parseHistoryHashToken non text value fails", () => {
+    expect(() => TextStyle.parseHistoryHashToken(TextStyle.COLOR, 123))
         .toThrow("Expected string value got 123");
 });
 
-test("stringValueToJson null", () => {
-    expect(TextStyle.stringValueToJson(TextStyle.COLOR, null))
+test("parseHistoryHashToken null", () => {
+    expect(TextStyle.parseHistoryHashToken(TextStyle.COLOR, null))
         .toBeNull();
 });
 
-test("stringValueToJson BORDER_TOP_WIDTH", () => {
-    const length = new PixelLength(123);
+function testParseHistoryHashToken(property, tokenText, expected) {
+    test("parseHistoryHashToken " + property + ", " + CharSequences.quoteAndEscape(tokenText),
+        () => {
+            TextStyle.EMPTY.set(property, expected);
 
-    expect(TextStyle.stringValueToJson(TextStyle.BORDER_TOP_WIDTH, length.toJson()))
-        .toStrictEqual(length.toJson());
-});
+            expect(
+                TextStyle.parseHistoryHashToken(
+                    property,
+                    tokenText
+                )
+            ).toStrictEqual(expected);
+        }
+    );
+}
 
-test("stringValueToJson COLOR", () => {
-    const color = Color.fromJson("#012345");
+const COLOR_123456_STRING = "#123456";
+const COLOR_123456 = Color.parse(COLOR_123456_STRING);
 
-    expect(TextStyle.stringValueToJson(TextStyle.COLOR, color.toJson()))
-        .toStrictEqual(color.toJson());
-});
+const PIXEL_LENGTH_125_STRING = "12.5px";
+const PIXEL_LENGTH_125 = new PixelLength(12.5);
+
+testParseHistoryHashToken(TextStyle.BACKGROUND_COLOR, COLOR_123456_STRING, COLOR_123456);
+
+testParseHistoryHashToken(TextStyle.BORDER_BOTTOM_COLOR, COLOR_123456_STRING, COLOR_123456);
+testParseHistoryHashToken(TextStyle.BORDER_BOTTOM_STYLE, "DASHED", BorderStyle.DASHED);
+testParseHistoryHashToken(TextStyle.BORDER_BOTTOM_WIDTH, PIXEL_LENGTH_125_STRING, PIXEL_LENGTH_125);
+
+testParseHistoryHashToken(TextStyle.BORDER_COLLAPSE, "COLLAPSE", BorderCollapse.COLLAPSE);
+
+testParseHistoryHashToken(TextStyle.BORDER_LEFT_COLOR, COLOR_123456_STRING, COLOR_123456);
+testParseHistoryHashToken(TextStyle.BORDER_LEFT_STYLE, "DASHED", BorderStyle.DASHED);
+testParseHistoryHashToken(TextStyle.BORDER_LEFT_WIDTH, PIXEL_LENGTH_125_STRING, PIXEL_LENGTH_125);
+
+testParseHistoryHashToken(TextStyle.BORDER_RIGHT_COLOR, COLOR_123456_STRING, COLOR_123456);
+testParseHistoryHashToken(TextStyle.BORDER_RIGHT_STYLE, "DASHED", BorderStyle.DASHED);
+testParseHistoryHashToken(TextStyle.BORDER_RIGHT_WIDTH, PIXEL_LENGTH_125_STRING, PIXEL_LENGTH_125);
+
+testParseHistoryHashToken(TextStyle.BORDER_SPACING, PIXEL_LENGTH_125_STRING, PIXEL_LENGTH_125);
+
+testParseHistoryHashToken(TextStyle.BORDER_TOP_COLOR, COLOR_123456_STRING, COLOR_123456);
+testParseHistoryHashToken(TextStyle.BORDER_TOP_STYLE, "DASHED", BorderStyle.DASHED);
+testParseHistoryHashToken(TextStyle.BORDER_TOP_WIDTH, PIXEL_LENGTH_125_STRING, PIXEL_LENGTH_125);
+
+testParseHistoryHashToken(TextStyle.COLOR, COLOR_123456_STRING, COLOR_123456);
+testParseHistoryHashToken(TextStyle.DIRECTION, "LTR", Direction.LTR);
+testParseHistoryHashToken(TextStyle.FONT_FAMILY, "Time New Roman", new FontFamily("Time New Roman"));
+testParseHistoryHashToken(TextStyle.FONT_KERNING, "AUTO", FontKerning.AUTO);
+testParseHistoryHashToken(TextStyle.FONT_SIZE, "25.75", new FontSize(25.75));
+testParseHistoryHashToken(TextStyle.FONT_STRETCH, "ULTRA_CONDENSED", FontStretch.ULTRA_CONDENSED);
+testParseHistoryHashToken(TextStyle.FONT_STYLE, "ITALIC", FontStyle.ITALIC);
+testParseHistoryHashToken(TextStyle.FONT_VARIANT, "NORMAL", FontVariant.NORMAL);
+testParseHistoryHashToken(TextStyle.FONT_WEIGHT, "25.75", new FontWeight(25.75));
+
+testParseHistoryHashToken(TextStyle.HANGING_PUNCTUATION, "ALLOW_END", HangingPunctuation.ALLOW_END);
+testParseHistoryHashToken(TextStyle.HEIGHT, PIXEL_LENGTH_125_STRING, PIXEL_LENGTH_125);
+testParseHistoryHashToken(TextStyle.HYPHENS, "AUTO", Hyphens.AUTO);
+
+testParseHistoryHashToken(TextStyle.LETTER_SPACING, PIXEL_LENGTH_125_STRING, PIXEL_LENGTH_125);
+testParseHistoryHashToken(TextStyle.LINE_HEIGHT, PIXEL_LENGTH_125_STRING, PIXEL_LENGTH_125);
+testParseHistoryHashToken(TextStyle.LIST_STYLE_POSITION, "INSIDE", ListStylePosition.INSIDE);
+
+testParseHistoryHashToken(TextStyle.MARGIN_BOTTOM, PIXEL_LENGTH_125_STRING, PIXEL_LENGTH_125);
+testParseHistoryHashToken(TextStyle.MARGIN_LEFT, PIXEL_LENGTH_125_STRING, PIXEL_LENGTH_125);
+testParseHistoryHashToken(TextStyle.MARGIN_RIGHT, PIXEL_LENGTH_125_STRING, PIXEL_LENGTH_125);
+testParseHistoryHashToken(TextStyle.MARGIN_TOP, PIXEL_LENGTH_125_STRING, PIXEL_LENGTH_125);
+
+testParseHistoryHashToken(TextStyle.MAX_HEIGHT, PIXEL_LENGTH_125_STRING, PIXEL_LENGTH_125);
+testParseHistoryHashToken(TextStyle.MAX_WIDTH, PIXEL_LENGTH_125_STRING, PIXEL_LENGTH_125);
+testParseHistoryHashToken(TextStyle.MIN_HEIGHT, PIXEL_LENGTH_125_STRING, PIXEL_LENGTH_125);
+testParseHistoryHashToken(TextStyle.MIN_WIDTH, PIXEL_LENGTH_125_STRING, PIXEL_LENGTH_125);
+
+// OPACITY
+
+testParseHistoryHashToken(TextStyle.OUTLINE_COLOR, COLOR_123456_STRING, COLOR_123456);
+testParseHistoryHashToken(TextStyle.OUTLINE_OFFSET, PIXEL_LENGTH_125_STRING, PIXEL_LENGTH_125);
+testParseHistoryHashToken(TextStyle.OUTLINE_STYLE, "DASHED", OutlineStyle.DASHED);
+testParseHistoryHashToken(TextStyle.OUTLINE_WIDTH, PIXEL_LENGTH_125_STRING, PIXEL_LENGTH_125);
+
+testParseHistoryHashToken(TextStyle.OVERFLOW_X, "VISIBLE", Overflow.VISIBLE);
+testParseHistoryHashToken(TextStyle.OVERFLOW_Y, "VISIBLE", Overflow.VISIBLE);
+
+testParseHistoryHashToken(TextStyle.PADDING_BOTTOM, PIXEL_LENGTH_125_STRING, PIXEL_LENGTH_125);
+testParseHistoryHashToken(TextStyle.PADDING_LEFT, PIXEL_LENGTH_125_STRING, PIXEL_LENGTH_125);
+testParseHistoryHashToken(TextStyle.PADDING_RIGHT, PIXEL_LENGTH_125_STRING, PIXEL_LENGTH_125);
+testParseHistoryHashToken(TextStyle.PADDING_TOP, PIXEL_LENGTH_125_STRING, PIXEL_LENGTH_125);
+
+testParseHistoryHashToken(TextStyle.TAB_SIZE, PIXEL_LENGTH_125_STRING, PIXEL_LENGTH_125);
+
+testParseHistoryHashToken(TextStyle.TEXT, "Hello", "Hello");
+testParseHistoryHashToken(TextStyle.TEXT_ALIGN, "CENTER", TextAlign.CENTER);
+
+testParseHistoryHashToken(TextStyle.TEXT_DECORATION_COLOR, COLOR_123456_STRING, COLOR_123456);
+testParseHistoryHashToken(TextStyle.TEXT_DECORATION_LINE, "LINE_THROUGH", TextDecorationLine.LINE_THROUGH);
+testParseHistoryHashToken(TextStyle.TEXT_DECORATION_STYLE, "DASHED", TextDecorationStyle.DASHED);
+testParseHistoryHashToken(TextStyle.TEXT_DECORATION_THICKNESS, PIXEL_LENGTH_125_STRING, PIXEL_LENGTH_125);
+
+testParseHistoryHashToken(TextStyle.TEXT_INDENT, PIXEL_LENGTH_125_STRING, PIXEL_LENGTH_125);
+testParseHistoryHashToken(TextStyle.TEXT_JUSTIFY, "AUTO", TextJustify.AUTO);
+testParseHistoryHashToken(TextStyle.TEXT_OVERFLOW, "Hello", "Hello");
+testParseHistoryHashToken(TextStyle.TEXT_TRANSFORM, "CAPITALIZE", TextTransform.CAPITALIZE);
+testParseHistoryHashToken(TextStyle.TEXT_WRAPPING, "OVERFLOW", TextWrapping.OVERFLOW);
+
+testParseHistoryHashToken(TextStyle.VERTICAL_ALIGN, "BOTTOM", VerticalAlign.BOTTOM);
+testParseHistoryHashToken(TextStyle.VISIBILITY, "HIDDEN", Visibility.HIDDEN);
+
+testParseHistoryHashToken(TextStyle.WHITE_SPACE, "NORMAL", TextWhitespace.NORMAL);
+testParseHistoryHashToken(TextStyle.WIDTH, PIXEL_LENGTH_125_STRING, PIXEL_LENGTH_125);
+testParseHistoryHashToken(TextStyle.WORD_BREAK, "BREAK_ALL", WordBreak.BREAK_ALL);
+testParseHistoryHashToken(TextStyle.WORD_SPACING, PIXEL_LENGTH_125_STRING, PIXEL_LENGTH_125);
+testParseHistoryHashToken(TextStyle.WORD_WRAP, "BREAK_WORD", WordWrap.BREAK_WORD);
+testParseHistoryHashToken(TextStyle.WRITING_MODE, "HORIZONTAL_TB", WritingMode.HORIZONTAL_TB);
 
 // create...............................................................................................................
 

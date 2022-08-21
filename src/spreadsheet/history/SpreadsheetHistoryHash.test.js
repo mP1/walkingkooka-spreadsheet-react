@@ -1,5 +1,11 @@
+import BorderStyle from "../../text/BorderStyle.js";
 import CharSequences from "../../CharSequences.js";
+import Color from "../../color/Color.js";
+import ExpressionNumberKind from "../../math/ExpressionNumberKind.js";
 import FontStyle from "../../text/FontStyle.js";
+import Hyphens from "../../text/Hyphens.js";
+import PixelLength from "../../text/PixelLength.js";
+import RoundingMode from "../../math/RoundingMode.js";
 import SpreadsheetCellClearHistoryHashToken from "../reference/SpreadsheetCellClearHistoryHashToken.js";
 import SpreadsheetCellDeleteHistoryHashToken from "../reference/SpreadsheetCellDeleteHistoryHashToken.js";
 import SpreadsheetCellFormulaEditHistoryHashToken
@@ -29,6 +35,10 @@ import SpreadsheetColumnOrRowUnFreezeHistoryHashToken
 import SpreadsheetColumnReference from "../reference/SpreadsheetColumnReference.js";
 import SpreadsheetColumnReferenceRange from "../reference/SpreadsheetColumnReferenceRange.js";
 import SpreadsheetContextMenu from "../../widget/SpreadsheetContextMenu.js";
+import SpreadsheetDateFormatPattern from "../format/SpreadsheetDateFormatPattern.js";
+import SpreadsheetDateParsePatterns from "../format/SpreadsheetDateParsePatterns.js";
+import SpreadsheetDateTimeFormatPattern from "../format/SpreadsheetDateTimeFormatPattern.js";
+import SpreadsheetDateTimeParsePatterns from "../format/SpreadsheetDateTimeParsePatterns.js";
 import SpreadsheetHistoryHash from "./SpreadsheetHistoryHash.js";
 import SpreadsheetHistoryHashTokens from "./SpreadsheetHistoryHashTokens.js";
 import SpreadsheetLabelMappingDeleteHistoryHashToken
@@ -36,6 +46,7 @@ import SpreadsheetLabelMappingDeleteHistoryHashToken
 import SpreadsheetLabelMappingEditHistoryHashToken from "../reference/SpreadsheetLabelMappingEditHistoryHashToken.js";
 import SpreadsheetLabelMappingSaveHistoryHashToken from "../reference/SpreadsheetLabelMappingSaveHistoryHashToken.js";
 import SpreadsheetLabelName from "../reference/SpreadsheetLabelName.js";
+import SpreadsheetMetadata from "../meta/SpreadsheetMetadata.js";
 import SpreadsheetName from "../name/SpreadsheetName.js";
 import SpreadsheetNameEditHistoryHashToken from "../name/SpreadsheetNameEditHistoryHashToken.js";
 import SpreadsheetNameSaveHistoryHashToken from "../name/SpreadsheetNameSaveHistoryHashToken.js";
@@ -44,6 +55,9 @@ import SpreadsheetRowReferenceRange from "../reference/SpreadsheetRowReferenceRa
 import SpreadsheetSettingsSaveHistoryHashToken from "../settings/SpreadsheetSettingsSaveHistoryHashToken.js";
 import SpreadsheetSettingsSelectHistoryHashToken from "../settings/SpreadsheetSettingsSelectHistoryHashToken.js";
 import SpreadsheetSettingsWidgetHistoryHashTokens from "../settings/SpreadsheetSettingsWidgetHistoryHashTokens.js";
+import SpreadsheetTextFormatPattern from "../format/SpreadsheetTextFormatPattern.js";
+import SpreadsheetTimeFormatPattern from "../format/SpreadsheetTimeFormatPattern.js";
+import SpreadsheetTimeParsePatterns from "../format/SpreadsheetTimeParsePatterns.js";
 import SpreadsheetViewportSelection from "../reference/viewport/SpreadsheetViewportSelection.js";
 import SpreadsheetViewportSelectionAnchor from "../reference/viewport/SpreadsheetViewportSelectionAnchor.js";
 import TextStyle from "../../text/TextStyle.js";
@@ -1785,37 +1799,256 @@ testParseAndStringify(
 );
 
 testParseAndStringify(
-    "/spreadsheet-id-123/spreadsheet-name-456/settings/color",
+    "/spreadsheet-id-123/spreadsheet-name-456/settings/background-color",
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
         "settings": new SpreadsheetSettingsSelectHistoryHashToken(
-            TextStyle.COLOR,
+            TextStyle.BACKGROUND_COLOR,
             null
         )
     }
 );
 
+const COLOR_STRING = "#012345";
+const COLOR = Color.parse(COLOR_STRING);
+
 testParseAndStringify(
-    "/spreadsheet-id-123/spreadsheet-name-456/settings/color/",
+    "/spreadsheet-id-123/spreadsheet-name-456/settings/background-color/",
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
         "settings": new SpreadsheetSettingsSaveHistoryHashToken(
-            TextStyle.COLOR,
+            TextStyle.BACKGROUND_COLOR,
             null
         ),
     }
 );
 
 testParseAndStringify(
-    "/spreadsheet-id-123/spreadsheet-name-456/settings/color/012345",
+    "/spreadsheet-id-123/spreadsheet-name-456/settings/background-color/" + COLOR_STRING,
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
         "settings": new SpreadsheetSettingsSaveHistoryHashToken(
-            TextStyle.COLOR,
-            "012345"
+            TextStyle.BACKGROUND_COLOR,
+            COLOR
+        ),
+    }
+);
+
+testParseAndStringify(
+    "/spreadsheet-id-123/spreadsheet-name-456/settings/background-color/%23012345",
+    {
+        "spreadsheet-id": "spreadsheet-id-123",
+        "spreadsheet-name": SPREADSHEET_NAME,
+        "settings": new SpreadsheetSettingsSaveHistoryHashToken(
+            TextStyle.BACKGROUND_COLOR,
+            COLOR
+        ),
+    }
+);
+
+testParseAndStringify(
+    "/spreadsheet-id-123/spreadsheet-name-456/settings/border-bottom-color/" + COLOR_STRING,
+    {
+        "spreadsheet-id": "spreadsheet-id-123",
+        "spreadsheet-name": SPREADSHEET_NAME,
+        "settings": new SpreadsheetSettingsSaveHistoryHashToken(
+            TextStyle.BORDER_BOTTOM_COLOR,
+            COLOR
+        ),
+    }
+);
+
+testParseAndStringify(
+    "/spreadsheet-id-123/spreadsheet-name-456/settings/border-bottom-style/DASHED",
+    {
+        "spreadsheet-id": "spreadsheet-id-123",
+        "spreadsheet-name": SPREADSHEET_NAME,
+        "settings": new SpreadsheetSettingsSaveHistoryHashToken(
+            TextStyle.BORDER_BOTTOM_STYLE,
+            BorderStyle.DASHED
+        ),
+    }
+);
+
+testParseAndStringify(
+    "/spreadsheet-id-123/spreadsheet-name-456/settings/border-bottom-width/25.75px",
+    {
+        "spreadsheet-id": "spreadsheet-id-123",
+        "spreadsheet-name": SPREADSHEET_NAME,
+        "settings": new SpreadsheetSettingsSaveHistoryHashToken(
+            TextStyle.BORDER_BOTTOM_WIDTH,
+            new PixelLength(25.75)
+        ),
+    }
+);
+
+testParseAndStringify(
+    "/spreadsheet-id-123/spreadsheet-name-456/settings/hyphens/AUTO",
+    {
+        "spreadsheet-id": "spreadsheet-id-123",
+        "spreadsheet-name": SPREADSHEET_NAME,
+        "settings": new SpreadsheetSettingsSaveHistoryHashToken(
+            TextStyle.HYPHENS,
+            Hyphens.AUTO
+        ),
+    }
+);
+
+testParseAndStringify(
+    "/spreadsheet-id-123/spreadsheet-name-456/settings/currency-symbol/AUD",
+    {
+        "spreadsheet-id": "spreadsheet-id-123",
+        "spreadsheet-name": SPREADSHEET_NAME,
+        "settings": new SpreadsheetSettingsSaveHistoryHashToken(
+            SpreadsheetMetadata.CURRENCY_SYMBOL,
+            "AUD"
+        ),
+    }
+);
+
+testParseAndStringify(
+    "/spreadsheet-id-123/spreadsheet-name-456/settings/date-format-pattern/YY%2FMM%2FDD",
+    {
+        "spreadsheet-id": "spreadsheet-id-123",
+        "spreadsheet-name": SPREADSHEET_NAME,
+        "settings": new SpreadsheetSettingsSaveHistoryHashToken(
+            SpreadsheetMetadata.DATE_FORMAT_PATTERN,
+            new SpreadsheetDateFormatPattern("YY/MM/DD")
+        ),
+    }
+);
+
+testParseAndStringify(
+    "/spreadsheet-id-123/spreadsheet-name-456/settings/date-parse-patterns/YY%2FMM%2FDD",
+    {
+        "spreadsheet-id": "spreadsheet-id-123",
+        "spreadsheet-name": SPREADSHEET_NAME,
+        "settings": new SpreadsheetSettingsSaveHistoryHashToken(
+            SpreadsheetMetadata.DATE_PARSE_PATTERNS,
+            new SpreadsheetDateParsePatterns("YY/MM/DD")
+        ),
+    }
+);
+
+testParseAndStringify(
+    "/spreadsheet-id-123/spreadsheet-name-456/settings/date-time-offset/123456",
+    {
+        "spreadsheet-id": "spreadsheet-id-123",
+        "spreadsheet-name": SPREADSHEET_NAME,
+        "settings": new SpreadsheetSettingsSaveHistoryHashToken(
+            SpreadsheetMetadata.DATETIME_OFFSET,
+            123456
+        ),
+    }
+);
+
+testParseAndStringify(
+    "/spreadsheet-id-123/spreadsheet-name-456/settings/date-time-format-pattern/YY%2FMM%2FDD%20HH:MM:SS",
+    {
+        "spreadsheet-id": "spreadsheet-id-123",
+        "spreadsheet-name": SPREADSHEET_NAME,
+        "settings": new SpreadsheetSettingsSaveHistoryHashToken(
+            SpreadsheetMetadata.DATETIME_FORMAT_PATTERN,
+            new SpreadsheetDateTimeFormatPattern("YY/MM/DD HH:MM:SS")
+        ),
+    }
+);
+
+testParseAndStringify(
+    "/spreadsheet-id-123/spreadsheet-name-456/settings/date-time-parse-patterns/YY%2FMM%2FDD%20HH:MM:SS",
+    {
+        "spreadsheet-id": "spreadsheet-id-123",
+        "spreadsheet-name": SPREADSHEET_NAME,
+        "settings": new SpreadsheetSettingsSaveHistoryHashToken(
+            SpreadsheetMetadata.DATETIME_PARSE_PATTERNS,
+            new SpreadsheetDateTimeParsePatterns("YY/MM/DD HH:MM:SS")
+        ),
+    }
+);
+
+testParseAndStringify(
+    "/spreadsheet-id-123/spreadsheet-name-456/settings/decimal-separator/,",
+    {
+        "spreadsheet-id": "spreadsheet-id-123",
+        "spreadsheet-name": SPREADSHEET_NAME,
+        "settings": new SpreadsheetSettingsSaveHistoryHashToken(
+            SpreadsheetMetadata.DECIMAL_SEPARATOR,
+            ","
+        ),
+    }
+);
+
+testParseAndStringify(
+    "/spreadsheet-id-123/spreadsheet-name-456/settings/expression-number-kind/BIG_DECIMAL",
+    {
+        "spreadsheet-id": "spreadsheet-id-123",
+        "spreadsheet-name": SPREADSHEET_NAME,
+        "settings": new SpreadsheetSettingsSaveHistoryHashToken(
+            SpreadsheetMetadata.EXPRESSION_NUMBER_KIND,
+            ExpressionNumberKind.BIG_DECIMAL
+        ),
+    }
+);
+
+testParseAndStringify(
+    "/spreadsheet-id-123/spreadsheet-name-456/settings/precision/12",
+    {
+        "spreadsheet-id": "spreadsheet-id-123",
+        "spreadsheet-name": SPREADSHEET_NAME,
+        "settings": new SpreadsheetSettingsSaveHistoryHashToken(
+            SpreadsheetMetadata.PRECISION,
+            12
+        ),
+    }
+);
+
+testParseAndStringify(
+    "/spreadsheet-id-123/spreadsheet-name-456/settings/rounding-mode/CEILING",
+    {
+        "spreadsheet-id": "spreadsheet-id-123",
+        "spreadsheet-name": SPREADSHEET_NAME,
+        "settings": new SpreadsheetSettingsSaveHistoryHashToken(
+            SpreadsheetMetadata.ROUNDING_MODE,
+            RoundingMode.CEILING
+        ),
+    }
+);
+
+testParseAndStringify(
+    "/spreadsheet-id-123/spreadsheet-name-456/settings/text-format-pattern/@@",
+    {
+        "spreadsheet-id": "spreadsheet-id-123",
+        "spreadsheet-name": SPREADSHEET_NAME,
+        "settings": new SpreadsheetSettingsSaveHistoryHashToken(
+            SpreadsheetMetadata.TEXT_FORMAT_PATTERN,
+            new SpreadsheetTextFormatPattern("@@")
+        ),
+    }
+);
+
+testParseAndStringify(
+    "/spreadsheet-id-123/spreadsheet-name-456/settings/time-format-pattern/HH:MM:SS",
+    {
+        "spreadsheet-id": "spreadsheet-id-123",
+        "spreadsheet-name": SPREADSHEET_NAME,
+        "settings": new SpreadsheetSettingsSaveHistoryHashToken(
+            SpreadsheetMetadata.TIME_FORMAT_PATTERN,
+            new SpreadsheetTimeFormatPattern("HH:MM:SS")
+        ),
+    }
+);
+
+testParseAndStringify(
+    "/spreadsheet-id-123/spreadsheet-name-456/settings/time-parse-patterns/HH:MM:SS",
+    {
+        "spreadsheet-id": "spreadsheet-id-123",
+        "spreadsheet-name": SPREADSHEET_NAME,
+        "settings": new SpreadsheetSettingsSaveHistoryHashToken(
+            SpreadsheetMetadata.TIME_PARSE_PATTERNS,
+            new SpreadsheetTimeParsePatterns("HH:MM:SS")
         ),
     }
 );
@@ -2726,7 +2959,7 @@ testMerge(
     {
         "settings": new SpreadsheetSettingsSaveHistoryHashToken(
             TextStyle.COLOR,
-            "#123456"
+            Color.parse("#123456")
         ),
     },
     "/123abc/Untitled456/settings/color/#123456"
@@ -2755,7 +2988,7 @@ testMerge(
     {
         "settings": new SpreadsheetSettingsSaveHistoryHashToken(
             TextStyle.COLOR,
-            "#abcdef"
+            Color.parse("#abcdef")
         ),
     },
     "/123abc/Untitled456/settings/color/#abcdef"

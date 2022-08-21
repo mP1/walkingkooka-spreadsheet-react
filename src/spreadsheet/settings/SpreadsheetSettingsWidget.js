@@ -183,14 +183,15 @@ class SpreadsheetSettingsWidget extends SpreadsheetHistoryAwareStateWidget {
 
         const state = this.state;
         const newSettings = state.settings;
-        if(newSettings){
-            const oldSettings = prevState.settings;
+        const oldSettings = prevState.settings;
 
+        if(newSettings){
             if(!Equality.safeEquals(newSettings, oldSettings)){
-                if(oldSettings){
-                    newSettings.settingsWidgetExecute(this);
-                }else {
-                    this.loadSpreadsheetMetadata(); // load spreadsheet metadata when the settings drawer opens
+                if(newSettings){
+                    newSettings.settingsWidgetExecute(
+                        this,
+                        oldSettings
+                    );
                 }
             }
         }
@@ -238,10 +239,10 @@ class SpreadsheetSettingsWidget extends SpreadsheetHistoryAwareStateWidget {
         const patch = {};
 
         if(SpreadsheetMetadata.isProperty(property)){
-            patch[property] = SpreadsheetMetadata.stringValueToJson(property, value);
+            patch[property] = value;
         }else {
             patch.style = {};
-            patch.style[property] = TextStyle.stringValueToJson(property, value);
+            patch.style[property] = value;
         }
 
         props.spreadsheetMetadataCrud.patch(
@@ -249,11 +250,6 @@ class SpreadsheetSettingsWidget extends SpreadsheetHistoryAwareStateWidget {
             JSON.stringify(patch),
             (message, error) => props.showError("Unable to save property " + property + " with value " + value, error)
         );
-
-        // clear the save action
-        const historyHashTokens = SpreadsheetHistoryHashTokens.emptyTokens();
-        historyHashTokens[SpreadsheetHistoryHashTokens.SETTINGS] = new SpreadsheetSettingsSelectHistoryHashToken(property);
-        this.historyParseMergeAndPush(historyHashTokens);
     }
 
     onSpreadsheetMetadata(method, id, url, requestMetadata, responseMetadata) {

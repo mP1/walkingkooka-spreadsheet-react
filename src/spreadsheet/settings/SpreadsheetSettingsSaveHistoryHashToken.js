@@ -1,6 +1,8 @@
+import CharSequences from "../../CharSequences.js";
 import Equality from "../../Equality.js";
 import SpreadsheetHistoryHashTokens from "../history/SpreadsheetHistoryHashTokens.js";
 import SpreadsheetSettingsHistoryHashToken from "./SpreadsheetSettingsHistoryHashToken.js";
+import SpreadsheetSettingsWidgetHistoryHashTokens from "./SpreadsheetSettingsWidgetHistoryHashTokens.js";
 
 /**
  * Saves the metadata or text style property with a new value, which may be null if the property should be removed.
@@ -9,6 +11,11 @@ export default class SpreadsheetSettingsSaveHistoryHashToken extends Spreadsheet
 
     constructor(property, value) {
         super();
+
+        if(!SpreadsheetSettingsWidgetHistoryHashTokens.isToken(property)){
+            throw new Error("Unknown settings property " + CharSequences.quoteAndEscape(property));
+        }
+
         this.propertyValue = property;
         this.valueValue = value;
     }
@@ -39,11 +46,15 @@ export default class SpreadsheetSettingsSaveHistoryHashToken extends Spreadsheet
             (value ? encodeURIComponent(value) : "");
     }
 
-    settingsWidgetExecute(settingsWidget) {
+    settingsWidgetExecute(settingsWidget, previousSettings) {
         settingsWidget.patchSpreadsheetMetadata(
             this.property(),
             this.value()
         );
+
+        const tokens = SpreadsheetHistoryHashTokens.emptyTokens();
+        tokens[SpreadsheetHistoryHashTokens.SETTINGS] = previousSettings;
+        settingsWidget.historyParseMergeAndPush(tokens);
     }
 
     equals(other) {

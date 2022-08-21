@@ -233,67 +233,6 @@ export default class SpreadsheetMetadata extends SystemObject {
         return is;
     }
 
-    /**
-     * Translates a style property value from a string (probably sourced from a history hash token) into its
-     * matching json type like a null, string or number.
-     */
-    static stringValueToJson(propertyName, value) {
-        checkPropertyName(propertyName);
-        Preconditions.optionalText(value, "value");
-
-        let jsonValue = null;
-
-        if(null != value){
-            switch(propertyName) {
-                case SpreadsheetMetadata.CELL_CHARACTER_WIDTH :
-                case SpreadsheetMetadata.DATETIME_OFFSET :
-                case SpreadsheetMetadata.DEFAULT_YEAR :
-                case SpreadsheetMetadata.PRECISION :
-                case SpreadsheetMetadata.TWO_DIGIT_YEAR :
-                    jsonValue = Number(value);
-                    break;
-                case SpreadsheetMetadata.CREATOR :
-                case SpreadsheetMetadata.CREATE_DATE_TIME :
-                case SpreadsheetMetadata.CURRENCY_SYMBOL :
-                case SpreadsheetMetadata.DATE_FORMAT_PATTERN :
-                case SpreadsheetMetadata.DATE_PARSE_PATTERNS :
-                case SpreadsheetMetadata.DATETIME_FORMAT_PATTERN :
-                case SpreadsheetMetadata.DATETIME_PARSE_PATTERNS :
-                case SpreadsheetMetadata.DECIMAL_SEPARATOR :
-                case SpreadsheetMetadata.EXPONENT_SYMBOL :
-                case SpreadsheetMetadata.EXPRESSION_NUMBER_KIND :
-                case SpreadsheetMetadata.FROZEN_COLUMNS:
-                case SpreadsheetMetadata.FROZEN_ROWS:
-                case SpreadsheetMetadata.GROUPING_SEPARATOR :
-                case SpreadsheetMetadata.LOCALE :
-                case SpreadsheetMetadata.MODIFIED_BY :
-                case SpreadsheetMetadata.MODIFIED_DATE_TIME :
-                case SpreadsheetMetadata.NEGATIVE_SIGN :
-                case SpreadsheetMetadata.NUMBER_FORMAT_PATTERN :
-                case SpreadsheetMetadata.NUMBER_PARSE_PATTERNS :
-                case SpreadsheetMetadata.PERCENTAGE_SYMBOL :
-                case SpreadsheetMetadata.POSITIVE_SIGN :
-                case SpreadsheetMetadata.ROUNDING_MODE :
-                case SpreadsheetMetadata.SPREADSHEET_NAME :
-                case SpreadsheetMetadata.TEXT_FORMAT_PATTERN :
-                case SpreadsheetMetadata.TIME_FORMAT_PATTERN :
-                case SpreadsheetMetadata.TIME_PARSE_PATTERNS :
-                case SpreadsheetMetadata.VALUE_SEPARATOR :
-                    jsonValue = value;
-                    break;
-                case SpreadsheetMetadata.SELECTION :
-                case SpreadsheetMetadata.SPREADSHEET_ID :
-                case SpreadsheetMetadata.STYLE :
-                case SpreadsheetMetadata.VIEWPORT_CELL :
-                    throw new Error("Invalid property " + propertyName);
-                default:
-                    break;
-            }
-        }
-
-        return jsonValue;
-    }
-
     static EMPTY = new SpreadsheetMetadata({});
 
     static fromJson(json) {
