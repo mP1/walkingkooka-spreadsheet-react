@@ -121,6 +121,7 @@ const PIXEL_LENGTH_125_STRING = "12.5px";
 const PIXEL_LENGTH_125 = new PixelLength(12.5);
 
 testParseHistoryHashToken(TextStyle.BACKGROUND_COLOR, COLOR_123456_STRING, COLOR_123456);
+testParseHistoryHashToken(TextStyle.BACKGROUND_COLOR, "%23123456", COLOR_123456);
 
 testParseHistoryHashToken(TextStyle.BORDER_BOTTOM_COLOR, COLOR_123456_STRING, COLOR_123456);
 testParseHistoryHashToken(TextStyle.BORDER_BOTTOM_STYLE, "DASHED", BorderStyle.DASHED);
