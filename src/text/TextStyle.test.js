@@ -100,7 +100,7 @@ test("parseHistoryHashToken null", () => {
 function testParseHistoryHashToken(property, tokenText, expected) {
     test("parseHistoryHashToken " + property + ", " + CharSequences.quoteAndEscape(tokenText),
         () => {
-            TextStyle.EMPTY.set(property, expected);
+            TextStyle.EMPTY.setOrRemove(property, expected); // verify expected is a valid value.
 
             expect(
                 TextStyle.parseHistoryHashToken(
@@ -111,6 +111,8 @@ function testParseHistoryHashToken(property, tokenText, expected) {
         }
     );
 }
+
+testParseHistoryHashToken(TextStyle.BACKGROUND_COLOR, "", null);
 
 const COLOR_123456_STRING = "#123456";
 const COLOR_123456 = Color.parse(COLOR_123456_STRING);

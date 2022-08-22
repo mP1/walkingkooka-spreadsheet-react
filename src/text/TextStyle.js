@@ -148,6 +148,12 @@ export default class TextStyle extends SystemObject {
         checkProperty(property);
         Preconditions.optionalText(value, "value");
 
+        return "" == value ?
+            null :
+            TextStyle.parseHistoryHashToken0(property, value);
+    }
+
+    static parseHistoryHashToken0(property, value) {
         let parser;
 
         switch(property) {
@@ -632,6 +638,12 @@ export default class TextStyle extends SystemObject {
         checkProperty(property);
 
         return this.properties[property];
+    }
+
+    setOrRemove(property, value) {
+        return null != value ?
+            this.set(property, value) :
+            this.remove(property);
     }
 
     set(property, value) {
