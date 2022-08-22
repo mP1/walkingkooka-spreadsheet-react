@@ -148,9 +148,12 @@ export default class TextStyle extends SystemObject {
         checkProperty(property);
         Preconditions.optionalText(value, "value");
 
-        return "" == value ?
+        return (null == value || "" === value)?
             null :
-            TextStyle.parseHistoryHashToken0(property, value);
+            TextStyle.parseHistoryHashToken0(
+                property,
+                decodeURIComponent(value)
+            );
     }
 
     static parseHistoryHashToken0(property, value) {
