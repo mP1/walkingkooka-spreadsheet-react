@@ -418,12 +418,10 @@ export default class SpreadsheetHistoryHash extends SpreadsheetHistoryHashTokens
                                                 if(SpreadsheetSettingsWidgetHistoryHashTokens.isProperty(settingsItemOrMetadataProperty)){
                                                     settings = new SpreadsheetSettingsSaveHistoryHashToken(
                                                         settingsItemOrMetadataProperty,
-                                                        "" === token ?
-                                                            null :
-                                                            SpreadsheetSettingsWidgetHistoryHashTokens.parseHistoryHashToken(
-                                                                settingsItemOrMetadataProperty,
-                                                                token
-                                                            )
+                                                        SpreadsheetSettingsWidgetHistoryHashTokens.parseHistoryHashToken(
+                                                            settingsItemOrMetadataProperty,
+                                                            token
+                                                        )
                                                     );
                                                     token = tokens.shift();
                                                 }else {

@@ -184,10 +184,12 @@ export default class SpreadsheetSettingsWidgetHistoryHashTokens {
     static parseHistoryHashToken(propertyName, token) {
         Preconditions.optionalText(token, "token");
 
-        return SpreadsheetSettingsWidgetHistoryHashTokens.parseHistoryHashToken0(
-            propertyName,
-            token && decodeURIComponent(token)
-        );
+        return "" === token ?
+            null :
+            SpreadsheetSettingsWidgetHistoryHashTokens.parseHistoryHashToken0(
+                propertyName,
+                token && decodeURIComponent(token)
+            );
     }
 
     static parseHistoryHashToken0(propertyName, token) {

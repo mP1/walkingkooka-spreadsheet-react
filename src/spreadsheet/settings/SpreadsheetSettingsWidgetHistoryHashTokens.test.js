@@ -24,6 +24,7 @@ function testParseHistoryHashToken(propertyName, value, expected) {
     });
 }
 
+testParseHistoryHashToken(SpreadsheetMetadata.CURRENCY_SYMBOL, "", null);
 testParseHistoryHashToken(SpreadsheetMetadata.CURRENCY_SYMBOL, "AUD", "AUD");
 testParseHistoryHashToken(SpreadsheetMetadata.DATETIME_OFFSET, "123", 123);
 testParseHistoryHashToken(SpreadsheetMetadata.DATETIME_PARSE_PATTERNS, "yy%2Fmm%2Fdd", new SpreadsheetDateTimeParsePatterns("yy/mm/dd"));
