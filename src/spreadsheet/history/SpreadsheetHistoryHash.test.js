@@ -2132,7 +2132,7 @@ testParseAndStringify(
 );
 
 testParseAndStringify(
-    "/spreadsheet-id-123/spreadsheet-name-456/cell/A1/style/font-style",
+    "/spreadsheet-id-123/spreadsheet-name-456/cell/A1/font-style",
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
@@ -2146,7 +2146,7 @@ testParseAndStringify(
 );
 
 testParseAndStringify(
-    "/spreadsheet-id-123/spreadsheet-name-456/cell/A1/style/font-style/ITALIC",
+    "/spreadsheet-id-123/spreadsheet-name-456/cell/A1/font-style/ITALIC",
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,

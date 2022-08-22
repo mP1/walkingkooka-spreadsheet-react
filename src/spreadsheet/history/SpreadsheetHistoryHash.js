@@ -198,10 +198,15 @@ export default class SpreadsheetHistoryHash extends SpreadsheetHistoryHashTokens
                                             );
                                             token = tokens.shift();
                                             break;
-                                        case SpreadsheetHistoryHashTokens.STYLE:
-                                            // cell/A1/style/font-style/italics
-                                            token = tokens.shift(); // style property name
+                                        case SpreadsheetHistoryHashTokens.UNFREEZE:
+                                            if(cellOrLabel.canFreeze()){
+                                                selection = new SpreadsheetCellUnFreezeHistoryHashToken(viewportSelection);
+                                                token = tokens.shift();
+                                            }
+                                            break;
+                                        default:
                                             if(null != token){
+                                                // cell/A1/font-style/italics
                                                 const stylePropertyName = token;
                                                 if(TextStyle.isProperty(stylePropertyName)){
                                                     if(tokens.length){
@@ -218,18 +223,8 @@ export default class SpreadsheetHistoryHash extends SpreadsheetHistoryHashTokens
                                                         );
                                                     }
                                                     token = tokens.shift();
-                                                }else {
-                                                    tokens.unshift(token);
                                                 }
                                             }
-                                            break;
-                                        case SpreadsheetHistoryHashTokens.UNFREEZE:
-                                            if(cellOrLabel.canFreeze()){
-                                                selection = new SpreadsheetCellUnFreezeHistoryHashToken(viewportSelection);
-                                                token = tokens.shift();
-                                            }
-                                            break;
-                                        default:
                                             break;
                                     }
                                     break;
