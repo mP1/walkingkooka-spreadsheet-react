@@ -21,12 +21,6 @@ test("create", () => {
     expect(placeholder.value()).toBe(value);
 });
 
-// render...............................................................................................................
-
-test("render fails", () => {
-    expect(() => new TextPlaceholderNode(value).render()).toThrow("Unsupported: render");
-});
-
 // toJson...............................................................................................................
 
 test("toJson", () => {

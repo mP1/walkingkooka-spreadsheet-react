@@ -150,13 +150,17 @@ export default class SpreadsheetCell extends SystemObject {
      * Renders a TableCell with the formatted content. The default style will typically come from {@link SpreadsheetMetadata}.
      */
     renderViewport(defaultStyle, labels) {
-        Preconditions.requireInstance(defaultStyle,TextStyle, "defaultStyle");
+        Preconditions.requireInstance(defaultStyle, TextStyle, "defaultStyle");
         Preconditions.requireArray(labels, "labels");
 
-        const style = defaultStyle.merge(this.style());
-
         const formatted = this.formatted();
-        const formattedRender = formatted ? formatted.render() : "";
+
+        const formattedRender = formatted ?
+            formatted.renderRoot() :
+            "";
+        const style = formatted ?
+            formatted.cellStyle(defaultStyle):
+            defaultStyle;
         const css = style.toCss();
         css.boxSizing = "border-box";
 

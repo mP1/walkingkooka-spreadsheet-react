@@ -46,10 +46,29 @@ export default class TextStyleNode extends TextNode {
         textNodeVisitor.endVisitTextStyleNode(this);
     }
 
+    cellStyle(defaultStyle) {
+        return defaultStyle.merge(this.styles());
+    }
+
+    // the SpreadsheetCell will render a TABLE CELL with style from #cellStyle
+    renderRoot() {
+        return (
+            <React.Fragment>
+                {
+                    this.children()
+                        .map(c => c.render())
+                }
+            </React.Fragment>
+        );
+    }
+
     render() {
         return (
             <div style={this.styles().toCss()}>
-                {this.children().map(c => c.render())}
+                {
+                    this.children()
+                        .map(c => c.render())
+                }
             </div>
         );
     }

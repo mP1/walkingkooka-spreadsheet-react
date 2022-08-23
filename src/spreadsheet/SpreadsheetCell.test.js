@@ -11,6 +11,7 @@ import TableCell from "@mui/material/TableCell";
 import Text from "../text/Text";
 import TextStyle from "../text/TextStyle";
 import Tooltip from "@mui/material/Tooltip";
+import TextStyleNode from "../text/TextStyleNode.js";
 
 function cell() {
     return new SpreadsheetCell(reference(),
@@ -400,21 +401,28 @@ test("renderViewport style=width&height, text & defaultStyle=empty", () => {
     const r = reference();
     const l = [];
 
-    expect(new SpreadsheetCell(r,
-        formula(),
-        TextStyle.EMPTY
-            .set("width", lengthFromJson("100px"))
-            .set("height", lengthFromJson("50px")),
-        format(),
-        new Text(text))
-        .renderViewport(TextStyle.EMPTY, l))
+    expect(
+        new SpreadsheetCell(
+            r,
+            formula(),
+            TextStyle.EMPTY,
+            format(),
+            new TextStyleNode(
+                TextStyle.EMPTY
+                    .set("width", lengthFromJson("100px"))
+                    .set("height", lengthFromJson("50px")),
+                [
+                    new Text(text)
+                ]
+            )
+        ).renderViewport(TextStyle.EMPTY, l))
         .toEqual(<TableCell key={r.viewportId()}
                             id={r.viewportId()}
                             tabIndex={0}
                             className={"cell"}
                             style={{boxSizing: "border-box", width: "100px", height: "50px"}}
                             data-selection={r}
-        >{text}</TableCell>);
+        ><React.Fragment>{[text]}</React.Fragment></TableCell>);
 });
 
 test("renderViewport style=height, text & defaultStyle=width", () => {
@@ -422,13 +430,20 @@ test("renderViewport style=height, text & defaultStyle=width", () => {
     const r = reference();
     const l = [];
 
-    expect(new SpreadsheetCell(r,
-        formula(),
-        TextStyle.EMPTY
-            .set("height", lengthFromJson("50px")),
-        format(),
-        new Text(text))
-        .renderViewport(TextStyle.EMPTY
+    expect(
+        new SpreadsheetCell(
+            r,
+            formula(),
+            TextStyle.EMPTY,
+            format(),
+            new TextStyleNode(
+                TextStyle.EMPTY
+                    .set("height", lengthFromJson("50px")),
+                [
+                    new Text(text)
+                ]
+            )
+        ).renderViewport(TextStyle.EMPTY
                 .set("width", lengthFromJson("100px")),
             l))
         .toEqual(<TableCell key={r.viewportId()}
@@ -437,7 +452,7 @@ test("renderViewport style=height, text & defaultStyle=width", () => {
                             className={"cell"}
                             style={{boxSizing: "border-box", width: "100px", height: "50px"}}
                             data-selection={r}
-        >{text}</TableCell>);
+        ><React.Fragment>{[text]}</React.Fragment></TableCell>);
 });
 
 test("renderViewport style=width&height, text & defaultStyle=width", () => {
@@ -445,25 +460,31 @@ test("renderViewport style=width&height, text & defaultStyle=width", () => {
     const r = reference();
     const l = [];
 
-    expect(new SpreadsheetCell(r,
-        formula(),
-        TextStyle.EMPTY
-            .set("width", lengthFromJson("100px"))
-            .set("height", lengthFromJson("50px")),
-        format(),
-        new Text(text))
-        .renderViewport(
+    expect(
+        new SpreadsheetCell(
+            r,
+            formula(),
+            TextStyle.EMPTY,
+            format(),
+            new TextStyleNode(
+                TextStyle.EMPTY
+                    .set("width", lengthFromJson("100px"))
+                    .set("height", lengthFromJson("50px")),
+                [
+                    new Text(text)
+                ]
+            )
+        ).renderViewport(
             TextStyle.EMPTY
                 .set("width", lengthFromJson("99px")),
             l)
-    )
-        .toEqual(<TableCell key={r.viewportId()}
-                            id={r.viewportId()}
-                            tabIndex={0}
-                            className={"cell"}
-                            style={{boxSizing: "border-box", width: "100px", height: "50px"}}
-                            data-selection={r}
-        >{text}</TableCell>);
+    ).toEqual(<TableCell key={r.viewportId()}
+                         id={r.viewportId()}
+                         tabIndex={0}
+                         className={"cell"}
+                         style={{boxSizing: "border-box", width: "100px", height: "50px"}}
+                         data-selection={r}
+    ><React.Fragment>{[text]}</React.Fragment></TableCell>);
 });
 
 test("renderViewport with labels", () => {
@@ -471,14 +492,21 @@ test("renderViewport with labels", () => {
     const r = reference();
     const l = [SpreadsheetLabelName.parse("Label1"), SpreadsheetLabelName.parse("Label2")];
 
-    expect(new SpreadsheetCell(r,
-        formula(),
-        TextStyle.EMPTY
-            .set("width", lengthFromJson("100px"))
-            .set("height", lengthFromJson("50px")),
-        format(),
-        new Text(text))
-        .renderViewport(TextStyle.EMPTY
+    expect(
+        new SpreadsheetCell(
+            r,
+            formula(),
+            TextStyle.EMPTY,
+            format(),
+            new TextStyleNode(
+                TextStyle.EMPTY
+                    .set("width", lengthFromJson("100px"))
+                    .set("height", lengthFromJson("50px")),
+                [
+                    new Text(text)
+                ]
+            )
+        ).renderViewport(TextStyle.EMPTY
                 .set("width", lengthFromJson("99px")),
             l))
         .toEqual(<Tooltip key={r.viewportTooltipId()}
@@ -491,7 +519,7 @@ test("renderViewport with labels", () => {
                        className={"cell"}
                        style={{boxSizing: "border-box", width: "100px", height: "50px"}}
                        data-selection={r}
-            >{text}</TableCell>
+            ><React.Fragment>{[text]}</React.Fragment></TableCell>
         </Tooltip>);
 });
 

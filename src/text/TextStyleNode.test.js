@@ -39,73 +39,113 @@ test("create style with children", () => {
     expect(textStyleNode.children()).toStrictEqual([text]);
 });
 
+// renderRoot...........................................................................................................
+
+function testRenderRoot(textStyle, expected) {
+    test(
+        "renderRoot " + textStyle.toJson(),
+        () => {
+
+            expect(
+                textStyle.renderRoot()
+            ).toStrictEqual(expected);
+    });
+};
+
+testRenderRoot(
+    new TextStyleNode(TextStyle.EMPTY, []),
+    <React.Fragment>{[]}</React.Fragment>
+);
+
+testRenderRoot(
+    new TextStyleNode(TextStyle.EMPTY, [ new Text("ABC123")]),
+    <React.Fragment>{["ABC123"]}</React.Fragment>
+);
+
 // render...............................................................................................................
 
-test("render EMPTY", () => {
-    expect(new TextStyleNode(TextStyle.EMPTY, [])
-        .render())
-        .toStrictEqual((<div style={{}}>{[]}</div>));
-});
+function testRender(textStyle, expected) {
+    test(
+        "render " + textStyle,
+        () => {
+            expect(
+                textStyle.render()
+            ).toStrictEqual(expected);
+        }
+    );
+};
 
-test("render EMPTY width", () => {
-    expect(new TextStyleNode(TextStyle.EMPTY
-        .set("width", lengthFromJson("100px")), [])
-        .render())
-        .toStrictEqual((<div style={{width: "100px"}}>{[]}</div>));
-});
+testRender(
+    new TextStyleNode(TextStyle.EMPTY, []),
+    <div style={{}}>{[]}</div>
+);
 
-test("render EMPTY background-color", () => {
-    expect(new TextStyleNode(TextStyle.EMPTY
-        .set("background-color", Color.fromJson("#123456")), [])
-        .render())
-        .toStrictEqual((<div style={{backgroundColor: "#123456"}}>{[]}</div>));
-});
+testRender(
+    new TextStyleNode(
+        TextStyle.EMPTY,
+        [
+            new Text("ABC")
+        ]
+    ),
+    <div style={{}}>{["ABC"]}</div>
+);
 
-test("render EMPTY background-color & width", () => {
-    expect(new TextStyleNode(TextStyle.EMPTY
-            .set("background-color", Color.fromJson("#123456"))
-            .set("width", lengthFromJson("100px"))
-        , [])
-        .render())
-        .toStrictEqual((<div style={{backgroundColor: "#123456", width: "100px"}}>{[]}</div>));
-});
+testRender(
+    new TextStyleNode(
+        TextStyle.EMPTY,
+        [
+            new Text("ABC"),
+            new Text("XYZ")
+        ]
+    ),
+    <div style={{}}>{["ABC","XYZ"]}</div>
+);
 
-test("render style & text child", () => {
-    const styles = TextStyle.fromJson({
-        "background-color": "#123456"
-    });
-    const text = "text-xyz";
-    expect(new TextStyleNode(styles, [new Text(text)])
-        .render())
-        .toStrictEqual((<div style={{backgroundColor: "#123456"}}>{[text]}</div>));
-});
+testRender(
+    new TextStyleNode(
+        TextStyle.EMPTY
+            .set("background-color", Color.fromJson("#123456")),
+        [
+            new Text("ABC123")
+        ]
+    ),
+    <div style={{backgroundColor: "#123456"}}>{["ABC123"]}</div>
+);
 
-test("render style & 2 text child", () => {
-    const styles = TextStyle.fromJson({
-        "background-color": "#123456"
-    });
-    const text1 = "text-1";
-    const text2 = "text-2";
+testRender(
+    new TextStyleNode(
+        TextStyle.EMPTY
+            .set("background-color", Color.fromJson("#123456")),
+        [
+            new Text("ABC"),
+            new Text("XYZ")
+        ]
+    ),
+    <div style={{backgroundColor: "#123456"}}>{["ABC","XYZ"]}</div>
+);
 
-    expect(new TextStyleNode(styles, [new Text(text1), new Text(text2)])
-        .render())
-        .toStrictEqual((<div style={{backgroundColor: "#123456"}}>{[text1, text2]}</div>));
-});
-
-test("render style & TextStyleNode child ", () => {
-    const styles1 = TextStyle.fromJson({
-        "width": "100px"
-    });
-    const text1 = "text1";
-    const styles2 = TextStyle.fromJson({
-        "height": "50px"
-    });
-    const text2 = "text2";
-
-    expect(new TextStyleNode(styles1, [new Text(text1), new TextStyleNode(styles2, [new Text(text2)])])
-        .render())
-        .toStrictEqual((<div style={{width: "100px"}}>{[text1, <div style={{height: "50px"}}>{[text2]}</div>]}</div>));
-});
+testRender(
+    new TextStyleNode(
+        TextStyle.EMPTY
+            .set("background-color", Color.fromJson("#123456")),
+        [
+            new Text("ABC111"),
+            new TextStyleNode(
+                TextStyle.EMPTY
+                    .set("color", Color.fromJson("#ABCDEF")),
+                [
+                    new Text("DEF")
+                ]
+            )
+        ]
+    ),
+    <div style={{backgroundColor: "#123456"}}>{
+        [
+            "ABC111",
+            <div style={{color: "#ABCDEF"}}>{["DEF"]}</div>
+        ]
+    }</div>
+);
 
 // toJson...............................................................................................................
 
