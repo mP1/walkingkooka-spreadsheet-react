@@ -28,12 +28,6 @@ test("create style with children", () => {
     expect(styleNameNode.children()).toStrictEqual([text]);
 });
 
-// render...............................................................................................................
-
-test("render fails", () => {
-    expect(() => new TextStyleNameNode(styleName).render()).toThrow("Unsupported: render");
-});
-
 // toJson...............................................................................................................
 
 test("toJson", () => {

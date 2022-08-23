@@ -45,10 +45,6 @@ export default class TextStyleNameNode extends TextNode {
         textNodeVisitor.endVisitTextStyleNameNode(this);
     }
 
-    render() {
-        throw new Error("Unsupported: render");
-    }
-
     equals(other) {
         return other instanceof TextStyleNameNode &&
             this.styleName() === other.styleName() &&

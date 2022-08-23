@@ -26,11 +26,19 @@ export default class Text extends TextLeafNode {
     }
 
     toJson() {
-        return this.text;
+        return this.value();
     }
 
     accept(textNodeVisitor) {
         textNodeVisitor.visitText(this);
+    }
+
+    cellStyle(defaultStyle) {
+        return defaultStyle;
+    }
+
+    renderRoot() {
+        return this.render();
     }
 
     render() {

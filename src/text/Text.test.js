@@ -30,9 +30,19 @@ test("create non empty string", () => {
 
 // render...............................................................................................................
 
+test("renderRoot", () => {
+    expect(
+        new Text(textValue)
+            .renderRoot())
+        .toStrictEqual(textValue);
+});
+
+// render...............................................................................................................
+
 test("render", () => {
-    expect(new Text(textValue)
-        .render())
+    expect(
+        new Text(textValue)
+            .render())
         .toStrictEqual(textValue);
 });
 

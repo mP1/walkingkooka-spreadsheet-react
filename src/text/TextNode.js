@@ -7,6 +7,18 @@ export default class TextNode extends SystemObject {
     static PLACEHOLDER = "text-placeholder";
     static STYLE_NAME = "text-styleName";
 
+    cellStyle(defaultStyle) {
+        SystemObject.throwUnsupportedOperation();
+    }
+
+    renderRoot() {
+        SystemObject.throwUnsupportedOperation();
+    }
+
+    render() {
+        SystemObject.throwUnsupportedOperation();
+    }
+
     toString() {
         return JSON.stringify(this.toJson());
     }
