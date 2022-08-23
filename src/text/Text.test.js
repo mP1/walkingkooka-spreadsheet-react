@@ -1,6 +1,6 @@
-import textNodeJsonSupportFromJson from "./TextNodeJsonSupport";
 import React from "react";
 import Text from "./Text";
+import textNodeJsonSupportFromJson from "./TextNodeJsonSupport";
 import TextStyle from "./TextStyle";
 
 const textValue = "text-123-abc";
@@ -50,7 +50,7 @@ test("fromJson empty string", () => {
 test("toJson", () => {
     const text = new Text(textValue);
 
-    check(text, {type: "text", value: textValue});
+    check(text, textValue);
 });
 
 // equals...............................................................................................................
@@ -87,5 +87,6 @@ function check(text, json) {
     expect(text.styles()).toStrictEqual(TextStyle.EMPTY);
     expect(text.toJson()).toStrictEqual(json);
     expect(text.toString()).toBe(JSON.stringify(json));
-    expect(textNodeJsonSupportFromJson(text.toJson())).toStrictEqual(text);
+
+    expect(textNodeJsonSupportFromJson(text.toJsonWithType())).toStrictEqual(text);
 }

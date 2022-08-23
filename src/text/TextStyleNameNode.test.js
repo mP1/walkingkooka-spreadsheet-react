@@ -1,8 +1,8 @@
 import Text from "./Text";
+import textNodeJsonSupportFromJson from "./TextNodeJsonSupport";
 import TextPlaceholderNode from "./TextPlaceholderNode";
 import TextStyleNameNode from "./TextStyleNameNode";
 import TextStyle from "./TextStyle";
-import fromJson from "./TextNodeJsonSupport";
 
 const styleName = "style-name-123-abc";
 
@@ -39,7 +39,7 @@ test("render fails", () => {
 test("toJson", () => {
     const styleNameNode = new TextStyleNameNode(styleName);
 
-    checkJson(styleNameNode, {type: "text-styleName", value: {styleName: styleName}});
+    checkJson(styleNameNode, {styleName: styleName});
 });
 
 test("toJson with children", () => {
@@ -47,9 +47,9 @@ test("toJson with children", () => {
     const placeholder = new TextPlaceholderNode("placeholder-tuv");
     const styleNameNode = new TextStyleNameNode(styleName, [text, placeholder]);
 
-    checkJson(styleNameNode, {
-        type: "text-styleName",
-        value: {
+    checkJson(
+        styleNameNode,
+        {
             styleName: styleName, children: [
                 {
                     type: "text",
@@ -61,7 +61,7 @@ test("toJson with children", () => {
                 },
             ]
         }
-    });
+    );
 });
 
 // equals...............................................................................................................
@@ -108,5 +108,5 @@ function checkJson(styleNameNode, json) {
     expect(styleNameNode.styles()).toStrictEqual(TextStyle.EMPTY);
     expect(styleNameNode.toJson()).toStrictEqual(json);
     expect(styleNameNode.toString()).toBe(JSON.stringify(json));
-    expect(fromJson(styleNameNode.toJson())).toStrictEqual(styleNameNode);
+    expect(textNodeJsonSupportFromJson(styleNameNode.toJsonWithType())).toStrictEqual(styleNameNode);
 }

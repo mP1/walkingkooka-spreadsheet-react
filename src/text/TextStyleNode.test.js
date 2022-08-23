@@ -1,12 +1,11 @@
 import Color from "../color/Color.js";
-import fromJson from "./TextNodeJsonSupport";
 import lengthFromJson from "./LengthFromJson.js";
 import React from 'react';
 import Text from "./Text";
+import textNodeJsonSupportFromJson from "./TextNodeJsonSupport";
+import TextPlaceholderNode from "./TextPlaceholderNode";
 import TextStyle from "./TextStyle";
 import TextStyleNode from "./TextStyleNode";
-import TextPlaceholderNode from "./TextPlaceholderNode";
-
 
 function children() {
     return [new Text("text-1")];
@@ -110,42 +109,52 @@ test("render style & TextStyleNode child ", () => {
 
 // toJson...............................................................................................................
 
-test("toJson", () => {
-    const styles = TextStyle.fromJson({
-        "background-color": "#123456",
-        "color": "#abcdef"
-    });
-    const style = new TextStyleNode(styles);
+test(
+    "toJson",
+    () => {
+        const styles = TextStyle.fromJson({
+            "background-color": "#123456",
+            "color": "#abcdef"
+        });
+        const style = new TextStyleNode(styles);
 
-    check(style,
-        styles,
-        {
-            type: "text-style-node", value: {
+        check(
+            style,
+            styles,
+            {
                 styles: {
                     "background-color": "#123456",
                     "color": "#abcdef"
                 }
             }
+        );
+    }
+);
+
+test(
+    "toJson with children",
+    () => {
+        const text = new Text("text-xyz");
+        const placeholder = new TextPlaceholderNode("placeholder-tuv");
+
+        const styles = TextStyle.fromJson({
+            "background-color": "#123456",
+            "color": "#abcdef"
         });
-});
+        const style = new TextStyleNode(styles, [text, placeholder]);
 
-test("toJson with children", () => {
-    const text = new Text("text-xyz");
-    const placeholder = new TextPlaceholderNode("placeholder-tuv");
-
-    const styles = TextStyle.fromJson({
-        "background-color": "#123456",
-        "color": "#abcdef"
-    });
-    const style = new TextStyleNode(styles, [text, placeholder]);
-
-    check(style,
-        styles,
-        {
-            type: "text-style-node",
-            value: {styles: styles.toJson(), children: [text.toJson(), placeholder.toJson()]}
-        });
-});
+        check(
+            style,
+            styles,
+            {
+                styles: styles.toJson(),
+                children: [
+                    text.toJsonWithType(),
+                    placeholder.toJsonWithType()
+                ]}
+        );
+    }
+);
 
 // equals...............................................................................................................
 
@@ -197,5 +206,6 @@ function check(style, styles, json) {
 
     expect(style.toJson()).toStrictEqual(json);
     expect(style.toString()).toBe(JSON.stringify(json));
-    expect(fromJson(style.toJson())).toStrictEqual(style);
+
+    expect(textNodeJsonSupportFromJson(style.toJsonWithType())).toStrictEqual(style);
 }

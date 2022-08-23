@@ -27,13 +27,13 @@ export default class TextStyleNameNode extends TextNode {
         return TextNode.STYLE_NAME;
     }
 
-    value() {
+    toJson() {
         const value = {
             styleName: this.styleName()
         }
         const children = this.children();
         if(children && children.length > 0){
-            value.children = children.map(c => c.toJson());
+            value.children = children.map(c => c.toJsonWithType());
         }
         return value;
     }
