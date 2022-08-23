@@ -2155,7 +2155,7 @@ testParseAndStringify(
                 CELL
             ),
             TextStyle.FONT_STYLE,
-            FontStyle.ITALIC.toJson()
+            FontStyle.ITALIC
         )
     }
 );

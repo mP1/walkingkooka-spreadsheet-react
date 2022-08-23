@@ -209,7 +209,10 @@ export default class SpreadsheetHistoryHash extends SpreadsheetHistoryHashTokens
                                                         selection = new SpreadsheetCellStyleSaveHistoryHashToken(
                                                             viewportSelection,
                                                             stylePropertyName,
-                                                            "" === token ? null : decodeURIComponent(token)
+                                                            TextStyle.parseHistoryHashToken(
+                                                                stylePropertyName,
+                                                                token
+                                                            )
                                                         );
                                                     }else {
                                                         selection = new SpreadsheetCellStyleEditHistoryHashToken(
