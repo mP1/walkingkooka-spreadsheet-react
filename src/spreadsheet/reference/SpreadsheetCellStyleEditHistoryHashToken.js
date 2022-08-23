@@ -1,6 +1,8 @@
+import CharSequences from "../../CharSequences.js";
 import Equality from "../../Equality.js";
-import SpreadsheetCellStyleHistoryHashToken from "./SpreadsheetCellStyleHistoryHashToken.js";
 import Preconditions from "../../Preconditions.js";
+import SpreadsheetCellStyleHistoryHashToken from "./SpreadsheetCellStyleHistoryHashToken.js";
+import TextStyle from "../../text/TextStyle.js";
 
 /**
  * A command that represents a cell style property value save.
@@ -11,6 +13,10 @@ export default class SpreadsheetCellStyleEditHistoryHashToken extends Spreadshee
         super(selection);
 
         this.propertyNameValue = Preconditions.requireText(propertyName, "propertyName");
+
+        if(!TextStyle.isProperty(propertyName)){
+            throw new Error("Unknown style property " + CharSequences.quoteAndEscape(propertyName));
+        }
     }
 
     /**
@@ -27,7 +33,7 @@ export default class SpreadsheetCellStyleEditHistoryHashToken extends Spreadshee
     }
 
     spreadsheetViewportWidgetExecute(viewportWidget, viewportCell, width, height) {
-        // nop
+        // TODO give focus to style property editor widget
     }
 
     equals(other) {
