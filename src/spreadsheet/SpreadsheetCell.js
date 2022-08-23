@@ -134,7 +134,7 @@ export default class SpreadsheetCell extends SystemObject {
         }
 
         if(formattedValue){
-            json2.formatted = formattedValue.toJson();
+            json2.formatted = formattedValue.toJsonWithType();
         }
 
         const json = {};

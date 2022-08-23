@@ -17,11 +17,15 @@ export default class Text extends TextLeafNode {
         this.text = text;
     }
 
+    value() {
+        return this.text;
+    }
+
     typeName() {
         return TextNode.TEXT;
     }
 
-    value() {
+    toJson() {
         return this.text;
     }
 

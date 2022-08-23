@@ -56,7 +56,7 @@ systemObjectTesting(
         "A99": {
             formula: formula().toJson(),
             format: format().toJson(),
-            formatted: formatted().toJson(),
+            formatted: formatted().toJsonWithType(),
             style: style().toJson(),
         }
     }
@@ -103,7 +103,7 @@ test("create reference, formula, TextStyle.EMPTY, format, formatted", () => {
         "A99": {
             formula: f.toJson(),
             format: f2.toJson(),
-            formatted: f3.toJson()
+            formatted: f3.toJsonWithType()
         }
     })
 })
@@ -126,7 +126,7 @@ test("create reference, missing formula", () => {
             "A99": {
                 style: s.toJson(),
                 format: f2.toJson(),
-                formatted: f3.toJson()
+                formatted: f3.toJsonWithType()
             }
         })
 });
@@ -142,7 +142,7 @@ test("create reference, formula, style, missing format, formatted", () => {
         "A99": {
             formula: f.toJson(),
             style: s.toJson(),
-            formatted: f3.toJson()
+            formatted: f3.toJsonWithType()
         }
     })
 })
@@ -189,7 +189,7 @@ test("create reference, formula, style, format, formatted", () => {
             formula: f.toJson(),
             style: s.toJson(),
             format: f2.toJson(),
-            formatted: f3.toJson()
+            formatted: f3.toJsonWithType()
         }
     })
 });
@@ -212,7 +212,7 @@ test("create ABSOLUTE reference, formula, style, format, formatted", () => {
                 formula: f.toJson(),
                 style: s.toJson(),
                 format: f2.toJson(),
-                formatted: f3.toJson()
+                formatted: f3.toJsonWithType()
             }
         })
 });
@@ -235,7 +235,7 @@ test("create label, formula, style, format, formatted", () => {
                 formula: f.toJson(),
                 style: s.toJson(),
                 format: f2.toJson(),
-                formatted: f3.toJson()
+                formatted: f3.toJsonWithType()
             }
         })
 });
@@ -253,7 +253,7 @@ test("fromJson missing style", () => {
         "B78": {
             formula: f.toJson(),
             format: f2.toJson(),
-            formatted: f3.toJson()
+            formatted: f3.toJsonWithType()
         }
     })).toStrictEqual(new SpreadsheetCell(r, f, s, f2, f3));
 });
@@ -313,7 +313,7 @@ test("setFormula different", () => {
                 formula: differentFormula.toJson(),
                 style: s.toJson(),
                 format: f2.toJson(),
-                formatted: f3.toJson()
+                formatted: f3.toJsonWithType()
             }
         });
 });

@@ -32,7 +32,7 @@ test("render fails", () => {
 test("toJson", () => {
     const placeholder = new TextPlaceholderNode(value);
 
-    check(placeholder, {type: "text-placeholder", value: value});
+    check(placeholder, value);
 });
 
 // equals...............................................................................................................
@@ -74,5 +74,5 @@ function check(placeholder, json) {
     expect(placeholder.styles()).toStrictEqual(TextStyle.EMPTY);
     expect(placeholder.toJson()).toStrictEqual(json);
     expect(placeholder.toString()).toBe(JSON.stringify(json));
-    expect(textNodeJsonSupportFromJson(placeholder.toJson())).toStrictEqual(placeholder);
+    expect(textNodeJsonSupportFromJson(placeholder.toJsonWithType())).toStrictEqual(placeholder);
 }

@@ -15,12 +15,16 @@ export default class TextPlaceholderNode extends TextLeafNode {
         this.placeholder = placeholder;
     }
 
+    value() {
+        return this.placeholder;
+    }
+
     typeName() {
         return TextNode.PLACEHOLDER;
     }
 
-    value() {
-        return this.placeholder;
+    toJson() {
+        return this.value();
     }
 
     accept(textNodeVisitor) {

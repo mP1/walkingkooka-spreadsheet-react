@@ -7,16 +7,6 @@ export default class TextNode extends SystemObject {
     static PLACEHOLDER = "text-placeholder";
     static STYLE_NAME = "text-styleName";
 
-    /**
-     * Returns this metadata as a JSON. Perfect to perform REST api calls.
-     */
-    toJson() {
-        return {
-            type: this.typeName(),
-            value: this.value()
-        };
-    }
-
     toString() {
         return JSON.stringify(this.toJson());
     }
