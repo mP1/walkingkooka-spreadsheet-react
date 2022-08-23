@@ -17,10 +17,6 @@ export default class TextNode extends SystemObject {
         };
     }
 
-    toJsonWithType() {
-        return this.toJson();
-    }
-
     toString() {
         return JSON.stringify(this.toJson());
     }
