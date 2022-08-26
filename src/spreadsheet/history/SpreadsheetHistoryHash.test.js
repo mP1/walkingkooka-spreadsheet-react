@@ -17,8 +17,8 @@ import SpreadsheetCellMenuHistoryHashToken from "../reference/SpreadsheetCellMen
 import SpreadsheetCellRange from "../reference/SpreadsheetCellRange.js";
 import SpreadsheetCellReference from "../reference/SpreadsheetCellReference.js";
 import SpreadsheetCellSelectHistoryHashToken from "../reference/SpreadsheetCellSelectHistoryHashToken.js";
-import SpreadsheetCellStyleEditHistoryHashToken from "../reference/SpreadsheetCellStyleEditHistoryHashToken.js";
-import SpreadsheetCellStyleSaveHistoryHashToken from "../reference/SpreadsheetCellStyleSaveHistoryHashToken.js";
+import SpreadsheetCellStyleEditHistoryHashToken from "../reference/style/SpreadsheetCellStyleEditHistoryHashToken.js";
+import SpreadsheetCellStyleSaveHistoryHashToken from "../reference/style/SpreadsheetCellStyleSaveHistoryHashToken.js";
 import SpreadsheetCellUnFreezeHistoryHashToken from "../reference/SpreadsheetCellUnFreezeHistoryHashToken.js";
 import SpreadsheetColumnOrRowClearHistoryHashToken from "../reference/SpreadsheetColumnOrRowClearHistoryHashToken.js";
 import SpreadsheetColumnOrRowDeleteHistoryHashToken from "../reference/SpreadsheetColumnOrRowDeleteHistoryHashToken.js";
