@@ -19,5 +19,7 @@ export default class SpreadsheetColumnOrRowClearHistoryHashToken extends Spreads
         viewportWidget.clearSelection(
             this.viewportSelection()
         );
+
+        viewportWidget.historyPushSelectionOnly();
     }
 }

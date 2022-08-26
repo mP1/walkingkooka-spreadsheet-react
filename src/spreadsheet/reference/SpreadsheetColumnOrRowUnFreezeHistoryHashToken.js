@@ -19,5 +19,6 @@ export default class SpreadsheetColumnOrRowUnFreezeHistoryHashToken extends Spre
         viewportWidget.unFreezeSelection(
             this.viewportSelection()
         );
+        viewportWidget.historyPushSelectionOnly();
     }
 }
