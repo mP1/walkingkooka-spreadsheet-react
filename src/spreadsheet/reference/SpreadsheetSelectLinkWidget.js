@@ -8,7 +8,6 @@ import SpreadsheetHistoryHashTokens from "../history/SpreadsheetHistoryHashToken
 /**
  * A widget that updates the href of a Link to which when clicked will display the navigate modal.
  * <ol>
- *     <li>target: the target link hash that will be displayed by the link</li>
  *     <li>cell: the cell displayed as text by the link</li>
  * </ol>
  */
@@ -31,10 +30,9 @@ export default class SpreadsheetSelectLinkWidget extends SpreadsheetHistoryAware
      * Recreate the target of the link.
      */
     stateFromHistoryTokens(tokens) {
-        tokens[SpreadsheetHistoryHashTokens.SELECT] = true;
-
         return {
-            target: '#' + this.props.history.mergeAndStringify(tokens),
+            spreadsheetId: tokens[SpreadsheetHistoryHashTokens.SPREADSHEET_ID],
+            spreadsheetName: tokens[SpreadsheetHistoryHashTokens.SPREADSHEET_NAME],
             selection: tokens[SpreadsheetHistoryHashTokens.SELECTION],
         };
     }
@@ -44,7 +42,12 @@ export default class SpreadsheetSelectLinkWidget extends SpreadsheetHistoryAware
     }
 
     render() {
-        const {selection, target} = this.state;
+        const history = this.props.history;
+        const tokens = this.state;
+        tokens[SpreadsheetHistoryHashTokens.SELECT] = true;
+        const target = '#' + history.mergeAndStringify(tokens)
+
+        const selection = tokens.selection;
 
         return <Link id={SpreadsheetSelectLinkWidget.SELECT_LINK_ID}
                      disabled={!Boolean(selection)}
