@@ -584,8 +584,6 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
             viewportSelection,
             this.state.window
         );
-
-        this.removeHistoryHashSelectionAction();
     }
 
     /**
@@ -596,16 +594,12 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
             viewportSelection,
             this.state.window
         );
-
-        this.removeHistoryHashSelectionAction();
     }
 
     freezeSelection(viewportSelection) {
         this.patchSpreadsheetMetadata(
             viewportSelection.selection().freezePatch()
         );
-
-        this.removeHistoryHashSelectionAction();
     }
 
     /**
@@ -633,7 +627,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
     /**
      * Clears the selection action from the history hash. This is done after a clear and other similar actions.
      */
-    removeHistoryHashSelectionAction() {
+    historyPushSelectionOnly() {
         const tokens = this.props.history.tokens();
         const selection = tokens[SpreadsheetHistoryHashTokens.SELECTION];
         if(selection){
@@ -736,8 +730,6 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
         this.patchSpreadsheetMetadata(
             viewportSelection.selection().unFreezePatch()
         );
-
-        this.removeHistoryHashSelectionAction();
     }
 
     /**

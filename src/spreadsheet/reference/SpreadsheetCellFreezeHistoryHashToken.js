@@ -19,5 +19,6 @@ export default class SpreadsheetCellFreezeHistoryHashToken extends SpreadsheetCe
         viewportWidget.freezeSelection(
             this.viewportSelection()
         );
+        viewportWidget.historyPushSelectionOnly();
     }
 }
