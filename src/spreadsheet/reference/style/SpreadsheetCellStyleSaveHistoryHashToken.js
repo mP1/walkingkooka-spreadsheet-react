@@ -1,9 +1,9 @@
-import CharSequences from "../../CharSequences.js";
-import Equality from "../../Equality.js";
-import Preconditions from "../../Preconditions.js";
-import SpreadsheetCell from "../SpreadsheetCell.js";
+import CharSequences from "../../../CharSequences.js";
+import Equality from "../../../Equality.js";
+import Preconditions from "../../../Preconditions.js";
+import SpreadsheetCell from "../../SpreadsheetCell.js";
 import SpreadsheetCellStyleHistoryHashToken from "./SpreadsheetCellStyleHistoryHashToken.js";
-import TextStyle from "../../text/TextStyle.js";
+import TextStyle from "../../../text/TextStyle.js";
 
 /**
  * A command that represents a cell style property value save.

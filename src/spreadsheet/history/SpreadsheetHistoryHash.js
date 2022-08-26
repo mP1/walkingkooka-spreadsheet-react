@@ -17,6 +17,8 @@ import spreadsheetCellRangeCellReferenceOrLabelParse
 import SpreadsheetCellReference from "../reference/SpreadsheetCellReference.js";
 import spreadsheetCellReferenceOrLabelNameParse from "../reference/SpreadsheetCellReferenceOrLabelNameParse.js";
 import SpreadsheetCellSelectHistoryHashToken from "../reference/SpreadsheetCellSelectHistoryHashToken.js";
+import SpreadsheetCellStyleEditHistoryHashToken from "../reference/style/SpreadsheetCellStyleEditHistoryHashToken.js";
+import SpreadsheetCellStyleSaveHistoryHashToken from "../reference/style/SpreadsheetCellStyleSaveHistoryHashToken.js";
 import SpreadsheetCellUnFreezeHistoryHashToken from "../reference/SpreadsheetCellUnFreezeHistoryHashToken.js";
 import SpreadsheetColumnOrRowClearHistoryHashToken from "../reference/SpreadsheetColumnOrRowClearHistoryHashToken.js";
 import SpreadsheetColumnOrRowDeleteHistoryHashToken from "../reference/SpreadsheetColumnOrRowDeleteHistoryHashToken.js";
@@ -51,8 +53,6 @@ import SpreadsheetSettingsSaveHistoryHashToken from "../settings/SpreadsheetSett
 import SpreadsheetSettingsSelectHistoryHashToken from "../settings/SpreadsheetSettingsSelectHistoryHashToken.js";
 import SpreadsheetSettingsWidgetHistoryHashTokens from "../settings/SpreadsheetSettingsWidgetHistoryHashTokens.js";
 import SpreadsheetViewportSelection from "../reference/viewport/SpreadsheetViewportSelection.js";
-import SpreadsheetCellStyleSaveHistoryHashToken from "../reference/SpreadsheetCellStyleSaveHistoryHashToken.js";
-import SpreadsheetCellStyleEditHistoryHashToken from "../reference/SpreadsheetCellStyleEditHistoryHashToken.js";
 import TextStyle from "../../text/TextStyle.js";
 
 function tokenize(pathname) {
