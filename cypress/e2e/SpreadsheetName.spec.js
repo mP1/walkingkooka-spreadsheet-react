@@ -118,7 +118,7 @@ context(
                 .should("eq", updatedSpreadsheetName.toString());
 
             testing.hash()
-                .should("match", /^#\/.*\/SpreadsheetName234$/);
+                .should("match", /^#\/.*\/SpreadsheetName234\/name$/);
         });
     }
 );
