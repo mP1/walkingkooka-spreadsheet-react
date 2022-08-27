@@ -8,15 +8,15 @@ import SpreadsheetHistoryAwareStateWidget from "../spreadsheet/history/Spreadshe
 import SpreadsheetHistoryHash from "../spreadsheet/history/SpreadsheetHistoryHash.js";
 import SpreadsheetHistoryHashTokens from "../spreadsheet/history/SpreadsheetHistoryHashTokens.js";
 import SpreadsheetMetadataPanelWidget from "../spreadsheet/meta/drawer/SpreadsheetMetadataPanelWidget.js";
+import SpreadsheetMetadataSelectHistoryHashToken
+    from "../spreadsheet/meta/drawer/SpreadsheetMetadataSelectHistoryHashToken.js";
 import Toolbar from '@mui/material/Toolbar';
-import SpreadsheetSettingsSelectHistoryHashToken
-    from "../spreadsheet/meta/drawer/SpreadsheetSettingsSelectHistoryHashToken.js";
 
 function computeSettingsLink(historyHashTokens) {
     // flip the settings token.
     historyHashTokens[SpreadsheetHistoryHashTokens.SETTINGS] = historyHashTokens[SpreadsheetHistoryHashTokens.SETTINGS] ?
         null :
-        SpreadsheetSettingsSelectHistoryHashToken.NOTHING;
+        SpreadsheetMetadataSelectHistoryHashToken.NOTHING;
     return "#" + SpreadsheetHistoryHash.stringify(historyHashTokens);
 }
 

@@ -9,8 +9,8 @@ import SpreadsheetHistoryHash from "../../history/SpreadsheetHistoryHash.js";
 import SpreadsheetHistoryHashTokens from "../../history/SpreadsheetHistoryHashTokens.js";
 import SpreadsheetMetadata from "../SpreadsheetMetadata.js";
 import SpreadsheetMessengerCrud from "../../message/SpreadsheetMessengerCrud.js";
-import SpreadsheetSettingsSelectHistoryHashToken from "./SpreadsheetSettingsSelectHistoryHashToken.js";
-import SpreadsheetSettingsSaveHistoryHashToken from "./SpreadsheetSettingsSaveHistoryHashToken.js";
+import SpreadsheetMetadataSelectHistoryHashToken from "./SpreadsheetMetadataSelectHistoryHashToken.js";
+import SpreadsheetMetadataSaveHistoryHashToken from "./SpreadsheetMetadataSaveHistoryHashToken.js";
 import Tooltip from '@mui/material/Tooltip';
 
 /**
@@ -87,7 +87,7 @@ export default class SpreadsheetMetadataPanelWidgetValue extends SpreadsheetHist
 
         if(newFocused){
             if(newFocused !== prevState.focused){
-                historyTokens[SpreadsheetHistoryHashTokens.SETTINGS] = new SpreadsheetSettingsSelectHistoryHashToken(property);
+                historyTokens[SpreadsheetHistoryHashTokens.SETTINGS] = new SpreadsheetMetadataSelectHistoryHashToken(property);
             }
 
             const value = state.value;
@@ -129,7 +129,7 @@ export default class SpreadsheetMetadataPanelWidgetValue extends SpreadsheetHist
 
                 this.setState({
                     focused: true,
-                    settings: new SpreadsheetSettingsSelectHistoryHashToken(
+                    settings: new SpreadsheetMetadataSelectHistoryHashToken(
                         property
                     ),
                 });
@@ -148,7 +148,7 @@ export default class SpreadsheetMetadataPanelWidgetValue extends SpreadsheetHist
                 const value = state.value;
                 if(!Equality.safeEquals(value, state.savedValue)){
                     const tokens = SpreadsheetHistoryHashTokens.emptyTokens();
-                    tokens[SpreadsheetHistoryHashTokens.SETTINGS] = new SpreadsheetSettingsSaveHistoryHashToken(
+                    tokens[SpreadsheetHistoryHashTokens.SETTINGS] = new SpreadsheetMetadataSaveHistoryHashToken(
                         property,
                         null == value ? null : "" + value
                     );
@@ -159,7 +159,7 @@ export default class SpreadsheetMetadataPanelWidgetValue extends SpreadsheetHist
 
                 this.setState({
                     focused: false,
-                    settings: SpreadsheetSettingsSelectHistoryHashToken.NOTHING,
+                    settings: SpreadsheetMetadataSelectHistoryHashToken.NOTHING,
                 });
             }
         };
@@ -208,7 +208,7 @@ export default class SpreadsheetMetadataPanelWidgetValue extends SpreadsheetHist
 
         // default button removes any assigned value
         const historyHashTokens = props.history.tokens();
-        historyHashTokens[SpreadsheetHistoryHashTokens.SETTINGS] = new SpreadsheetSettingsSaveHistoryHashToken(
+        historyHashTokens[SpreadsheetHistoryHashTokens.SETTINGS] = new SpreadsheetMetadataSaveHistoryHashToken(
             props.property,
             null
         );

@@ -52,8 +52,8 @@ import SpreadsheetMetadataNameSaveHistoryHashToken from "../meta/SpreadsheetMeta
 import SpreadsheetName from "../meta/SpreadsheetName.js";
 import SpreadsheetRowReference from "../reference/SpreadsheetRowReference.js";
 import SpreadsheetRowReferenceRange from "../reference/SpreadsheetRowReferenceRange.js"
-import SpreadsheetSettingsSaveHistoryHashToken from "../meta/drawer/SpreadsheetSettingsSaveHistoryHashToken.js";
-import SpreadsheetSettingsSelectHistoryHashToken from "../meta/drawer/SpreadsheetSettingsSelectHistoryHashToken.js";
+import SpreadsheetMetadataSaveHistoryHashToken from "../meta/drawer/SpreadsheetMetadataSaveHistoryHashToken.js";
+import SpreadsheetMetadataSelectHistoryHashToken from "../meta/drawer/SpreadsheetMetadataSelectHistoryHashToken.js";
 import SpreadsheetSettingsWidgetHistoryHashTokens from "../meta/drawer/SpreadsheetSettingsWidgetHistoryHashTokens.js";
 import SpreadsheetTextFormatPattern from "../format/SpreadsheetTextFormatPattern.js";
 import SpreadsheetTimeFormatPattern from "../format/SpreadsheetTimeFormatPattern.js";
@@ -124,7 +124,7 @@ const LABEL_SAVE = new SpreadsheetLabelMappingSaveHistoryHashToken(
     CELL_RANGE
 );
 
-const SETTINGS_NOTHING = SpreadsheetSettingsSelectHistoryHashToken.NOTHING;
+const SETTINGS_NOTHING = SpreadsheetMetadataSelectHistoryHashToken.NOTHING;
 
 // emptyTokens................................................................................................................
 
@@ -1803,7 +1803,7 @@ testParseAndStringify(
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
-        "settings": new SpreadsheetSettingsSelectHistoryHashToken(
+        "settings": new SpreadsheetMetadataSelectHistoryHashToken(
             TextStyle.BACKGROUND_COLOR,
             null
         )
@@ -1818,7 +1818,7 @@ testParseAndStringify(
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
-        "settings": new SpreadsheetSettingsSaveHistoryHashToken(
+        "settings": new SpreadsheetMetadataSaveHistoryHashToken(
             TextStyle.BACKGROUND_COLOR,
             null
         ),
@@ -1830,7 +1830,7 @@ testParseAndStringify(
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
-        "settings": new SpreadsheetSettingsSaveHistoryHashToken(
+        "settings": new SpreadsheetMetadataSaveHistoryHashToken(
             TextStyle.BACKGROUND_COLOR,
             COLOR
         ),
@@ -1842,7 +1842,7 @@ testParseAndStringify(
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
-        "settings": new SpreadsheetSettingsSaveHistoryHashToken(
+        "settings": new SpreadsheetMetadataSaveHistoryHashToken(
             TextStyle.BACKGROUND_COLOR,
             COLOR
         ),
@@ -1854,7 +1854,7 @@ testParseAndStringify(
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
-        "settings": new SpreadsheetSettingsSaveHistoryHashToken(
+        "settings": new SpreadsheetMetadataSaveHistoryHashToken(
             TextStyle.BORDER_BOTTOM_COLOR,
             COLOR
         ),
@@ -1866,7 +1866,7 @@ testParseAndStringify(
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
-        "settings": new SpreadsheetSettingsSaveHistoryHashToken(
+        "settings": new SpreadsheetMetadataSaveHistoryHashToken(
             TextStyle.BORDER_BOTTOM_STYLE,
             BorderStyle.DASHED
         ),
@@ -1878,7 +1878,7 @@ testParseAndStringify(
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
-        "settings": new SpreadsheetSettingsSaveHistoryHashToken(
+        "settings": new SpreadsheetMetadataSaveHistoryHashToken(
             TextStyle.BORDER_BOTTOM_WIDTH,
             new PixelLength(25.75)
         ),
@@ -1890,7 +1890,7 @@ testParseAndStringify(
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
-        "settings": new SpreadsheetSettingsSaveHistoryHashToken(
+        "settings": new SpreadsheetMetadataSaveHistoryHashToken(
             TextStyle.HYPHENS,
             Hyphens.AUTO
         ),
@@ -1902,7 +1902,7 @@ testParseAndStringify(
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
-        "settings": new SpreadsheetSettingsSaveHistoryHashToken(
+        "settings": new SpreadsheetMetadataSaveHistoryHashToken(
             SpreadsheetMetadata.CURRENCY_SYMBOL,
             "AUD"
         ),
@@ -1914,7 +1914,7 @@ testParseAndStringify(
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
-        "settings": new SpreadsheetSettingsSaveHistoryHashToken(
+        "settings": new SpreadsheetMetadataSaveHistoryHashToken(
             SpreadsheetMetadata.DATE_FORMAT_PATTERN,
             new SpreadsheetDateFormatPattern("YY/MM/DD")
         ),
@@ -1926,7 +1926,7 @@ testParseAndStringify(
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
-        "settings": new SpreadsheetSettingsSaveHistoryHashToken(
+        "settings": new SpreadsheetMetadataSaveHistoryHashToken(
             SpreadsheetMetadata.DATE_PARSE_PATTERNS,
             new SpreadsheetDateParsePatterns("YY/MM/DD")
         ),
@@ -1938,7 +1938,7 @@ testParseAndStringify(
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
-        "settings": new SpreadsheetSettingsSaveHistoryHashToken(
+        "settings": new SpreadsheetMetadataSaveHistoryHashToken(
             SpreadsheetMetadata.DATETIME_OFFSET,
             123456
         ),
@@ -1950,7 +1950,7 @@ testParseAndStringify(
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
-        "settings": new SpreadsheetSettingsSaveHistoryHashToken(
+        "settings": new SpreadsheetMetadataSaveHistoryHashToken(
             SpreadsheetMetadata.DATETIME_FORMAT_PATTERN,
             new SpreadsheetDateTimeFormatPattern("YY/MM/DD HH:MM:SS")
         ),
@@ -1962,7 +1962,7 @@ testParseAndStringify(
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
-        "settings": new SpreadsheetSettingsSaveHistoryHashToken(
+        "settings": new SpreadsheetMetadataSaveHistoryHashToken(
             SpreadsheetMetadata.DATETIME_PARSE_PATTERNS,
             new SpreadsheetDateTimeParsePatterns("YY/MM/DD HH:MM:SS")
         ),
@@ -1974,7 +1974,7 @@ testParseAndStringify(
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
-        "settings": new SpreadsheetSettingsSaveHistoryHashToken(
+        "settings": new SpreadsheetMetadataSaveHistoryHashToken(
             SpreadsheetMetadata.DECIMAL_SEPARATOR,
             ","
         ),
@@ -1986,7 +1986,7 @@ testParseAndStringify(
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
-        "settings": new SpreadsheetSettingsSaveHistoryHashToken(
+        "settings": new SpreadsheetMetadataSaveHistoryHashToken(
             SpreadsheetMetadata.EXPRESSION_NUMBER_KIND,
             ExpressionNumberKind.BIG_DECIMAL
         ),
@@ -1998,7 +1998,7 @@ testParseAndStringify(
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
-        "settings": new SpreadsheetSettingsSaveHistoryHashToken(
+        "settings": new SpreadsheetMetadataSaveHistoryHashToken(
             SpreadsheetMetadata.PRECISION,
             12
         ),
@@ -2010,7 +2010,7 @@ testParseAndStringify(
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
-        "settings": new SpreadsheetSettingsSaveHistoryHashToken(
+        "settings": new SpreadsheetMetadataSaveHistoryHashToken(
             SpreadsheetMetadata.ROUNDING_MODE,
             RoundingMode.CEILING
         ),
@@ -2022,7 +2022,7 @@ testParseAndStringify(
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
-        "settings": new SpreadsheetSettingsSaveHistoryHashToken(
+        "settings": new SpreadsheetMetadataSaveHistoryHashToken(
             SpreadsheetMetadata.TEXT_FORMAT_PATTERN,
             new SpreadsheetTextFormatPattern("@@")
         ),
@@ -2034,7 +2034,7 @@ testParseAndStringify(
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
-        "settings": new SpreadsheetSettingsSaveHistoryHashToken(
+        "settings": new SpreadsheetMetadataSaveHistoryHashToken(
             SpreadsheetMetadata.TIME_FORMAT_PATTERN,
             new SpreadsheetTimeFormatPattern("HH:MM:SS")
         ),
@@ -2046,7 +2046,7 @@ testParseAndStringify(
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
-        "settings": new SpreadsheetSettingsSaveHistoryHashToken(
+        "settings": new SpreadsheetMetadataSaveHistoryHashToken(
             SpreadsheetMetadata.TIME_PARSE_PATTERNS,
             new SpreadsheetTimeParsePatterns("HH:MM:SS")
         ),
@@ -2947,7 +2947,7 @@ testMerge(
 testMerge(
     "/123abc/Untitled456/settings",
     {
-        "settings": new SpreadsheetSettingsSelectHistoryHashToken(
+        "settings": new SpreadsheetMetadataSelectHistoryHashToken(
             SpreadsheetSettingsWidgetHistoryHashTokens.METADATA
         ),
     },
@@ -2957,7 +2957,7 @@ testMerge(
 testMerge(
     "/123abc/Untitled456/settings",
     {
-        "settings": new SpreadsheetSettingsSaveHistoryHashToken(
+        "settings": new SpreadsheetMetadataSaveHistoryHashToken(
             TextStyle.COLOR,
             Color.parse("#123456")
         ),
@@ -2968,7 +2968,7 @@ testMerge(
 testMerge(
     "/123abc/Untitled456/settings/metadata",
     {
-        "settings": new SpreadsheetSettingsSelectHistoryHashToken(
+        "settings": new SpreadsheetMetadataSelectHistoryHashToken(
             SpreadsheetSettingsWidgetHistoryHashTokens.TEXT
         ),
     },
@@ -2986,7 +2986,7 @@ testMerge(
 testMerge(
     "/123abc/Untitled456/settings/color/#012345",
     {
-        "settings": new SpreadsheetSettingsSaveHistoryHashToken(
+        "settings": new SpreadsheetMetadataSaveHistoryHashToken(
             TextStyle.COLOR,
             Color.parse("#abcdef")
         ),
@@ -3013,7 +3013,7 @@ testMerge(
 testMerge(
     "/123abc/Untitled456/cell/A123",
     {
-        "settings": SpreadsheetSettingsSelectHistoryHashToken.NOTHING,
+        "settings": SpreadsheetMetadataSelectHistoryHashToken.NOTHING,
     },
     "/123abc/Untitled456/cell/A123/settings"
 );
@@ -3021,7 +3021,7 @@ testMerge(
 testMerge(
     "/123abc/Untitled456/cell/A124/delete",
     {
-        "settings": SpreadsheetSettingsSelectHistoryHashToken.NOTHING,
+        "settings": SpreadsheetMetadataSelectHistoryHashToken.NOTHING,
     },
     "/123abc/Untitled456/cell/A124/delete"
 );
@@ -3029,7 +3029,7 @@ testMerge(
 testMerge(
     "/123abc/Untitled456/column/ABC",
     {
-        "settings": SpreadsheetSettingsSelectHistoryHashToken.NOTHING,
+        "settings": SpreadsheetMetadataSelectHistoryHashToken.NOTHING,
     },
     "/123abc/Untitled456/column/ABC/settings"
 );
@@ -3037,7 +3037,7 @@ testMerge(
 testMerge(
     "/123abc/Untitled456/column/ABC/delete",
     {
-        "settings": SpreadsheetSettingsSelectHistoryHashToken.NOTHING,
+        "settings": SpreadsheetMetadataSelectHistoryHashToken.NOTHING,
     },
     "/123abc/Untitled456/column/ABC/delete"
 );
