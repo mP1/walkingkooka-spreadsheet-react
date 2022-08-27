@@ -302,7 +302,6 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetCellWidget {
     onSpreadsheetDelta(method, cellOrLabel, url, requestDelta, responseDelta) {
         const {
             selection,
-            //selectionBeforeSaveFormula,
         }   = this.state;
 
         if(selection instanceof SpreadsheetCellHistoryHashToken){
