@@ -172,8 +172,11 @@ export default class SpreadsheetNameWidget extends SpreadsheetHistoryAwareStateW
         const tokens = this.props.history.tokens();
         const edit = tokens[SpreadsheetHistoryHashTokens.SPREADSHEET_NAME_EDIT];
         if(edit instanceof SpreadsheetNameSaveHistoryHashToken) {
+            tokens[SpreadsheetHistoryHashTokens.SPREADSHEET_NAME] = spreadsheetName;
             tokens[SpreadsheetHistoryHashTokens.SPREADSHEET_NAME_EDIT] = SpreadsheetNameEditHistoryHashToken.INSTANCE;
             this.historyParseMergeAndPush(tokens);
+
+            document.title = spreadsheetName;
         }
     }
 }
