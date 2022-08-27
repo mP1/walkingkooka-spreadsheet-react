@@ -781,17 +781,16 @@ export default class SpreadsheetViewportWidget extends SpreadsheetCellWidget {
      * Renders a TABLE which will hold all the columns, rows and cells visible in the spreadsheet viewport.
      */
     render() {
-        const {spreadsheetMetadata} = this.state;
-        const home = spreadsheetMetadata && spreadsheetMetadata.getIgnoringDefaults(SpreadsheetMetadata.VIEWPORT_CELL);
+        const spreadsheetMetadata = this.state.spreadsheetMetadata;
 
         return <div ref={this.viewportElement} style={
             {
                 flexGrow: 1,
                 width: "100%",
             }}>
-            {(home) ?
-                this.renderViewport(spreadsheetMetadata, home) :
-                this.renderViewportEmpty()
+            {(spreadsheetMetadata.isEmpty()) ?
+                this.renderViewportEmpty() :
+                this.renderViewport(spreadsheetMetadata)
             }
         </div>;
     }
@@ -801,7 +800,9 @@ export default class SpreadsheetViewportWidget extends SpreadsheetCellWidget {
     /**
      * Renders the column and row gutters and cells within the viewport.
      */
-    renderViewport(spreadsheetMetadata, home) {
+    renderViewport(spreadsheetMetadata) {
+        const home = spreadsheetMetadata.getIgnoringDefaults(SpreadsheetMetadata.VIEWPORT_CELL)
+
         // handles any viewport blur events, clearing the state.focused flag............................................
         const onBlur = (e) => {
             // only set focused to false if new focus is outside viewport table.
