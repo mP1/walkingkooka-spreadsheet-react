@@ -13,7 +13,7 @@ export default class SpreadsheetMetadataSaveHistoryHashToken extends Spreadsheet
         super();
 
         if(!SpreadsheetMetadataWidgetHistoryHashTokens.isToken(property)){
-            throw new Error("Unknown settings property " + CharSequences.quoteAndEscape(property));
+            throw new Error("Unknown metadata property " + CharSequences.quoteAndEscape(property));
         }
 
         this.propertyValue = property;
@@ -46,14 +46,14 @@ export default class SpreadsheetMetadataSaveHistoryHashToken extends Spreadsheet
             (value ? encodeURIComponent(value) : "");
     }
 
-    metadataDrawerWidget(metadataDrawerWidget, previousSettings) {
+    metadataDrawerWidget(metadataDrawerWidget, metadata) {
         metadataDrawerWidget.patchSpreadsheetMetadata(
             this.property(),
             this.value()
         );
 
         const tokens = SpreadsheetHistoryHashTokens.emptyTokens();
-        tokens[SpreadsheetHistoryHashTokens.METADATA] = previousSettings;
+        tokens[SpreadsheetHistoryHashTokens.METADATA] = metadata;
         metadataDrawerWidget.historyParseMergeAndPush(tokens);
     }
 

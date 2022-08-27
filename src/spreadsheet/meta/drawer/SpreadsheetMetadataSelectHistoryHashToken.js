@@ -18,7 +18,7 @@ export default class SpreadsheetMetadataSelectHistoryHashToken extends Spreadshe
         super();
 
         if(item && !SpreadsheetMetadataWidgetHistoryHashTokens.isToken(item)){
-            throw new Error("Unknown settings token " + CharSequences.quoteAndEscape(item));
+            throw new Error("Unknown metadata token " + CharSequences.quoteAndEscape(item));
         }
 
         this.itemValue = item;
@@ -31,9 +31,9 @@ export default class SpreadsheetMetadataSelectHistoryHashToken extends Spreadshe
         return this.itemValue;
     }
 
-    metadataDrawerWidget(metadataDrawerWidget, previousSettings) {
-        if(!previousSettings) {
-            metadataDrawerWidget.loadSpreadsheetMetadata(); // load spreadsheet metadata when the settings drawer opens
+    metadataDrawerWidget(metadataDrawerWidget, metadata) {
+        if(!metadata) {
+            metadataDrawerWidget.loadSpreadsheetMetadata(); // load spreadsheet metadata when the metadata drawer opens
         }
     }
 

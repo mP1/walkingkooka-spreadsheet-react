@@ -315,7 +315,7 @@ testValidate(
 );
 
 testValidate(
-    "validate id & name & selection=CELL & settings",
+    "validate id & name & selection=CELL & metadata",
     {
         "spreadsheet-id": ID,
         "spreadsheet-name": SPREADSHEET_NAME,
@@ -417,7 +417,7 @@ testValidate(
 );
 
 testValidate(
-    "validate id & name & label=LABEL & settings",
+    "validate id & name & label=LABEL & metadata",
     {
         "spreadsheet-id": ID,
         "spreadsheet-name": SPREADSHEET_NAME,
@@ -478,7 +478,7 @@ testValidate(
 );
 
 testValidate(
-    "validate id & name & select & settings",
+    "validate id & name & select & metadata",
     {
         "spreadsheet-id": ID,
         "spreadsheet-name": SPREADSHEET_NAME,
@@ -488,7 +488,7 @@ testValidate(
 );
 
 testValidate(
-    "validate id & name & settings",
+    "validate id & name & metadata",
     {
         "spreadsheet-id": ID,
         "spreadsheet-name": SPREADSHEET_NAME,
@@ -2928,7 +2928,7 @@ testMerge(
     "/123abc/Untitled456/name",
 );
 
-// settings.............................................................................................................
+// metadata.............................................................................................................
 
 testMerge(
     "/123abc/Untitled456/metadata",

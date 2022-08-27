@@ -67,7 +67,7 @@ const DEFAULT_VALUE_FORMATTER_LABEL = (v) => v ? v.nameCapitalCase().replace("Ha
 const DEFAULT_VALUE_FORMATTER_TOSTRING = (v) => null != v ? v.toString() : "";
 
 /**
- * The settings appears holds all general settings and tools for a spreadsheet sheet.
+ * The metadata appears holds all general metadata and tools for a spreadsheet sheet.
  */
 const useStyles = theme => ({
     root: {
@@ -97,7 +97,7 @@ const BLUR_CLOSES_DRAWER = true;
 class SpreadsheetMetadataPanelWidget extends SpreadsheetHistoryAwareStateWidget {
 
     /**
-     * The width of the settings in pixels holding settings and tools.
+     * The width of the metadata in pixels holding metadata and tools.
      */
     static WIDTH = 750;
 
@@ -122,7 +122,7 @@ class SpreadsheetMetadataPanelWidget extends SpreadsheetHistoryAwareStateWidget 
         return accordion + "-expand-more-icon";
     }
 
-    // the menu icon which when clicked expands the settings widget drawer.
+    // the menu icon which when clicked expands the metadata widget drawer.
     static menuIcon() {
         return SpreadsheetMetadataPanelWidget.ID + "-icon";
     }
@@ -143,7 +143,7 @@ class SpreadsheetMetadataPanelWidget extends SpreadsheetHistoryAwareStateWidget 
             spreadsheetMetadata: null,
             createDateTimeFormatted: "",
             modifiedDateTimeFormatted: "",
-            giveSettingsFocus: true,
+            giveMetadataFocus: true,
         };
     }
 
@@ -161,15 +161,15 @@ class SpreadsheetMetadataPanelWidget extends SpreadsheetHistoryAwareStateWidget 
     }
 
     stateFromHistoryTokens(tokens) {
-        const settings = tokens[SpreadsheetHistoryHashTokens.METADATA];
+        const metadata = tokens[SpreadsheetHistoryHashTokens.METADATA];
 
         const state = {
             id: tokens[SpreadsheetHistoryHashTokens.SPREADSHEET_ID],
-            settings: settings,
+            metadata: metadata,
         };
 
-        if(!Boolean(settings)){
-            state.giveSettingsFocus = true;
+        if(!Boolean(metadata)){
+            state.giveMetadataFocus = true;
         }
 
         return state;
@@ -182,15 +182,15 @@ class SpreadsheetMetadataPanelWidget extends SpreadsheetHistoryAwareStateWidget 
         const historyTokens = SpreadsheetHistoryHashTokens.emptyTokens();
 
         const state = this.state;
-        const newSettings = state.settings;
-        const oldSettings = prevState.settings;
+        const newMetadata = state.metadata;
+        const oldMetadata = prevState.metadata;
 
-        if(newSettings){
-            if(!Equality.safeEquals(newSettings, oldSettings)){
-                if(newSettings){
-                    newSettings.metadataDrawerWidget(
+        if(newMetadata){
+            if(!Equality.safeEquals(newMetadata, oldMetadata)){
+                if(newMetadata){
+                    newMetadata.metadataDrawerWidget(
                         this,
-                        oldSettings
+                        oldMetadata
                     );
                 }
             }
@@ -203,9 +203,9 @@ class SpreadsheetMetadataPanelWidget extends SpreadsheetHistoryAwareStateWidget 
      * Unconditionally loads the SpreadsheetMetadata again.
      */
     loadSpreadsheetMetadata() {
-        console.log("settings.loadSpreadsheetMetadata");
+        console.log("metadata.loadSpreadsheetMetadata");
 
-        // settings just opened, load metadata.
+        // metadata just opened, load metadata.
         const id = this.state.id;
         if(id){
             const props = this.props;
@@ -226,7 +226,7 @@ class SpreadsheetMetadataPanelWidget extends SpreadsheetHistoryAwareStateWidget 
             tokens[SpreadsheetHistoryHashTokens.METADATA] = new SpreadsheetMetadataSaveHistoryHashToken(property, value);
             this.historyParseMergeAndPush(tokens);
 
-            console.log("settings save " + property + "=" + value, tokens);
+            console.log("metadata save " + property + "=" + value, tokens);
         };
     }
 
@@ -262,14 +262,14 @@ class SpreadsheetMetadataPanelWidget extends SpreadsheetHistoryAwareStateWidget 
         this.giveFocus(
             () => {
                 const {
-                    giveSettingsFocus,
-                    settings,
+                    giveMetadataFocus,
+                    metadata,
                 } = this.state;
 
                 var element;
-                if(giveSettingsFocus && settings && !settings.item()){
+                if(giveMetadataFocus && metadata && !metadata.item()){
                     this.setState({
-                        giveSettingsFocus: false,
+                        giveMetadataFocus: false,
                     });
 
                     element = this.drawer.current;
@@ -283,28 +283,28 @@ class SpreadsheetMetadataPanelWidget extends SpreadsheetHistoryAwareStateWidget 
     render() {
         const {classes} = this.props;
         const {
-            settings,
+            metadata,
             spreadsheetMetadata
         } = this.state;
 
-        const settingsItem = settings && settings.item();
+        const metadataItem = metadata && metadata.item();
 
         // if metadata is empty skip rendering content.
         const children = spreadsheetMetadata &&
-            (!spreadsheetMetadata.isEmpty() && settings &&
+            (!spreadsheetMetadata.isEmpty() && metadata &&
                 [
-                    this.metadataAccordion(classes, SpreadsheetMetadataWidgetHistoryHashTokens.METADATA === settingsItem),
-                    this.textPropertiesAccordion(classes, SpreadsheetMetadataWidgetHistoryHashTokens.TEXT === settingsItem),
-                    this.numberPropertiesAccordion(classes, SpreadsheetMetadataWidgetHistoryHashTokens.NUMBER === settingsItem),
-                    this.dateTimePropertiesAccordion(classes, SpreadsheetMetadataWidgetHistoryHashTokens.DATE_TIME === settingsItem),
-                    this.stylePropertiesAccordion(classes, SpreadsheetMetadataWidgetHistoryHashTokens.STYLE === settingsItem)
+                    this.metadataAccordion(classes, SpreadsheetMetadataWidgetHistoryHashTokens.METADATA === metadataItem),
+                    this.textPropertiesAccordion(classes, SpreadsheetMetadataWidgetHistoryHashTokens.TEXT === metadataItem),
+                    this.numberPropertiesAccordion(classes, SpreadsheetMetadataWidgetHistoryHashTokens.NUMBER === metadataItem),
+                    this.dateTimePropertiesAccordion(classes, SpreadsheetMetadataWidgetHistoryHashTokens.DATE_TIME === metadataItem),
+                    this.stylePropertiesAccordion(classes, SpreadsheetMetadataWidgetHistoryHashTokens.STYLE === metadataItem)
                 ]);
 
         const onFocus = (e) => {
             const drawer = this.drawer;
 
-            if(!(settings) && drawer.current && drawer.current.isEqualNode(e.target)){
-                console.log("settings.focus target: ", e.target);
+            if(!(metadata) && drawer.current && drawer.current.isEqualNode(e.target)){
+                console.log("metadata.focus target: ", e.target);
 
                 const tokens = SpreadsheetHistoryHashTokens.emptyTokens();
                 tokens[SpreadsheetHistoryHashTokens.METADATA] = SpreadsheetMetadataSelectHistoryHashToken.NOTHING;
@@ -312,7 +312,7 @@ class SpreadsheetMetadataPanelWidget extends SpreadsheetHistoryAwareStateWidget 
             }
         };
         const onBlur = (e) => {
-            if(BLUR_CLOSES_DRAWER && this.state.settings){
+            if(BLUR_CLOSES_DRAWER && this.state.metadata){
                 const target = e.relatedTarget;
                 const drawer = this.drawer;
 
@@ -321,7 +321,7 @@ class SpreadsheetMetadataPanelWidget extends SpreadsheetHistoryAwareStateWidget 
                     tokens[SpreadsheetHistoryHashTokens.METADATA] = null;
                     this.historyParseMergeAndPush(tokens);
 
-                    console.log("settings.blur", target);
+                    console.log("metadata.blur", target);
                 }
             }
         };
@@ -333,7 +333,7 @@ class SpreadsheetMetadataPanelWidget extends SpreadsheetHistoryAwareStateWidget 
             this.historyParseMergeAndPush(tokens);
         }
 
-        const open = Boolean(settings);
+        const open = Boolean(metadata);
 
         return <Drawer id={SpreadsheetMetadataPanelWidget.drawerId()}
                        anchor={"right"}
@@ -373,10 +373,10 @@ class SpreadsheetMetadataPanelWidget extends SpreadsheetHistoryAwareStateWidget 
      */
     formatCreateDateTimeModifiedDateTime() {
         const state = this.state;
-        const settings = state.settings;
-        const settingsItem = settings.item();
+        const metadata = state.metadata;
+        const metadataItem = metadata.item();
 
-        if(SpreadsheetMetadataWidgetHistoryHashTokens.METADATA === settingsItem || SpreadsheetMetadataWidgetHistoryHashTokens.METADATA === SpreadsheetMetadataWidgetHistoryHashTokens.parentAccordion(settingsItem)){
+        if(SpreadsheetMetadataWidgetHistoryHashTokens.METADATA === metadataItem || SpreadsheetMetadataWidgetHistoryHashTokens.METADATA === SpreadsheetMetadataWidgetHistoryHashTokens.parentAccordion(metadataItem)){
             if(!state.createDateTimeFormatted && !state.modifiedDateTimeFormatted){
                 const metadata = this.state.spreadsheetMetadata;
 
@@ -440,7 +440,7 @@ class SpreadsheetMetadataPanelWidget extends SpreadsheetHistoryAwareStateWidget 
             SpreadsheetMetadataWidgetHistoryHashTokens.NUMBER,
             classes,
             "Number",
-            "Spreadsheet Number Settings",
+            "Spreadsheet Number Metadata",
             SpreadsheetMetadataWidgetHistoryHashTokens.spreadsheetNumberRows()
         );
     }
@@ -1278,7 +1278,7 @@ class SpreadsheetMetadataPanelWidget extends SpreadsheetHistoryAwareStateWidget 
     // https://material-ui.com/components/accordion/
 
     /**
-     * Creates the accordion container so all items in the settings have a common look and feel and history hash management.
+     * Creates the accordion container so all items in the metadata have a common look and feel and history hash management.
      */
     // TODO AccordionSummary aria-control
     renderAccordion(accordion,
@@ -1289,16 +1289,16 @@ class SpreadsheetMetadataPanelWidget extends SpreadsheetHistoryAwareStateWidget 
         const id = SpreadsheetMetadataPanelWidget.accordionId(accordion)
 
         const state = this.state;
-        const settings = state.settings;
-        const settingsItem = settings.item();
+        const metadata = state.metadata;
+        const metadataItem = metadata.item();
 
         const accordingRef = React.createRef();
         const expandIconRef = React.createRef();
 
-        const accordionSelected = settingsItem === accordion;
-        const accordionPropertySelected = SpreadsheetMetadataWidgetHistoryHashTokens.parentAccordion(settingsItem) === accordion;
+        const accordionSelected = metadataItem === accordion;
+        const accordionPropertySelected = SpreadsheetMetadataWidgetHistoryHashTokens.parentAccordion(metadataItem) === accordion;
 
-        // give focus to the heading text if history hash = /settings or /settings/$accordion
+        // give focus to the heading text if history hash = /metadata or /metadata/$accordion
         if(accordionSelected){
             this.giveFocus(
                 () => document.querySelector(
@@ -1308,7 +1308,7 @@ class SpreadsheetMetadataPanelWidget extends SpreadsheetHistoryAwareStateWidget 
         }
 
         const onChange = (e, expanded) => {
-            console.log("settings accordion change " + accordion + " " + (expanded ? "expanding" : "collapsing"));
+            console.log("metadata accordion change " + accordion + " " + (expanded ? "expanding" : "collapsing"));
 
             const historyHashTokens = SpreadsheetHistoryHashTokens.emptyTokens();
             historyHashTokens[SpreadsheetHistoryHashTokens.METADATA] = expanded ? new SpreadsheetMetadataSelectHistoryHashToken(accordion) : SpreadsheetMetadataSelectHistoryHashToken.NOTHING;
