@@ -9,14 +9,15 @@ import Paper from '@mui/material/Paper';
 import Preconditions from "../../../Preconditions.js";
 import PropTypes from "prop-types";
 import React from 'react';
-import Slider from "@mui/material/Slider";
 import selectHistoryHashToken from "../../history/selectHistoryHashToken.js";
+import Slider from "@mui/material/Slider";
 import SpreadsheetCellColumnOrRowParse from "../cell/SpreadsheetCellColumnOrRowParse.js";
 import SpreadsheetCellFormulaEditHistoryHashToken from "../cell/formula/SpreadsheetCellFormulaEditHistoryHashToken.js";
 import SpreadsheetCellFormulaHistoryHashToken from "../cell/formula/SpreadsheetCellFormulaHistoryHashToken.js";
 import SpreadsheetCellMenuHistoryHashToken from "../cell/SpreadsheetCellMenuHistoryHashToken.js";
 import SpreadsheetCellRange from "../cell/SpreadsheetCellRange.js";
 import SpreadsheetCellReference from "../cell/SpreadsheetCellReference.js";
+import SpreadsheetCellWidget from "../cell/SpreadsheetCellWidget.js";
 import SpreadsheetColumnOrRowInsertAfterHistoryHashToken
     from "../columnrow/SpreadsheetColumnOrRowInsertAfterHistoryHashToken.js";
 import SpreadsheetColumnOrRowInsertBeforeHistoryHashToken
@@ -44,8 +45,6 @@ import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
-import SpreadsheetCellWidget from "../cell/SpreadsheetCellWidget.js";
-import SpreadsheetColumnOrRowSelectHistoryHashToken from "../columnrow/SpreadsheetColumnOrRowSelectHistoryHashToken.js";
 
 // default header cell styles
 
