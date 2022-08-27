@@ -45,6 +45,7 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import SpreadsheetCellWidget from "../cell/SpreadsheetCellWidget.js";
+import SpreadsheetColumnOrRowSelectHistoryHashToken from "../columnrow/SpreadsheetColumnOrRowSelectHistoryHashToken.js";
 
 // default header cell styles
 
@@ -1006,6 +1007,10 @@ export default class SpreadsheetViewportWidget extends SpreadsheetCellWidget {
         const selectionNotLabel = this.selectionNotLabel();
         const menuItems = contextMenu && contextMenu.items();
 
+        const tokens = SpreadsheetHistoryHashTokens.emptyTokens();
+        tokens[SpreadsheetHistoryHashTokens.SPREADSHEET_ID] = this.state[SpreadsheetHistoryHashTokens.SPREADSHEET_ID];
+        tokens[SpreadsheetHistoryHashTokens.SPREADSHEET_NAME] = this.state[SpreadsheetHistoryHashTokens.SPREADSHEET_NAME];
+
         return [
             <TableContainer id={SpreadsheetViewportWidget.VIEWPORT_ID}
                             key={SpreadsheetViewportWidget.VIEWPORT_ID + "TableContainer"}
@@ -1032,13 +1037,13 @@ export default class SpreadsheetViewportWidget extends SpreadsheetCellWidget {
                 <TableHead>
                     <TableRow>
                         {
-                            this.renderViewportColumnHeaders(columns, columnWidthsFn, selectionNotLabel)
+                            this.renderViewportColumnHeaders(columns, columnWidthsFn, selectionNotLabel, tokens)
                         }
                     </TableRow>
                 </TableHead>
                 <TableBody>
                     {
-                        this.renderViewportRowsAndBody(columns, rows, rowHeightFn, selectionNotLabel, defaultStyle)
+                        this.renderViewportRowsAndBody(columns, rows, rowHeightFn, selectionNotLabel, defaultStyle, tokens)
                     }
                 </TableBody>
             </Table>
@@ -1177,7 +1182,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetCellWidget {
     /**
      * Returns an array of TableCell, one for each column header.
      */
-    renderViewportColumnHeaders(columns, columnWidth, selection) {
+    renderViewportColumnHeaders(columns, columnWidth, selection, tokens) {
         let headers = [
             <TableCell key={SpreadsheetViewportWidget.VIEWPORT_SELECT_ALL_ID}
                        id={SpreadsheetViewportWidget.VIEWPORT_SELECT_ALL_ID}
@@ -1193,7 +1198,8 @@ export default class SpreadsheetViewportWidget extends SpreadsheetCellWidget {
                     COLUMN_HEADER(
                         columnWidth(c),
                         selection && selection.testColumn(c)
-                    )
+                    ),
+                    tokens
                 )
             );
         });
@@ -1204,7 +1210,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetCellWidget {
     /**
      * Renders the TABLE BODY where each TR represents a spreadsheet viewport row
      */
-    renderViewportRowsAndBody(columns, rows, rowHeightFn, selection, defaultStyle) {
+    renderViewportRowsAndBody(columns, rows, rowHeightFn, selection, defaultStyle, tokens) {
         const {
             cellReferenceToCells,
             cellReferenceToLabels,
@@ -1221,7 +1227,8 @@ export default class SpreadsheetViewportWidget extends SpreadsheetCellWidget {
                         ROW_HEADER(
                             height,
                             selection && selection.testRow(r)
-                        )
+                        ),
+                        tokens
                     )
                 );
 
