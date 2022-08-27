@@ -1,5 +1,5 @@
 import SpreadsheetMetadata from "../SpreadsheetMetadata.js";
-import SpreadsheetSettingsWidget from "./SpreadsheetMetadataPanelWidget.js";
+import SpreadsheetMetadataDrawerWidget from "./SpreadsheetMetadataPanelWidget.js";
 import SpreadsheetMetadataWidgetHistoryHashTokens from "./SpreadsheetMetadataWidgetHistoryHashTokens.js";
 import TextStyle from "../../../text/TextStyle.js";
 
@@ -36,7 +36,7 @@ test("spreadsheetMetadataPropertyLabel", () => {
 
             if(SpreadsheetMetadata.properties().indexOf(property) > -1){
                 try {
-                    SpreadsheetSettingsWidget.spreadsheetMetadataPropertyLabel(property);
+                    SpreadsheetMetadataDrawerWidget.spreadsheetMetadataPropertyLabel(property);
                 } catch(e) {
                     filter = true;
                 }
@@ -53,7 +53,7 @@ test("spreadsheetMetadataPropertyLabel unnecessary labels", () => {
             var filter = false;
 
             try {
-                SpreadsheetSettingsWidget.spreadsheetMetadataPropertyLabel(property);
+                SpreadsheetMetadataDrawerWidget.spreadsheetMetadataPropertyLabel(property);
                 filter = allRows()
                     .indexOf(property) === -1;
             } catch(e) {
@@ -72,7 +72,7 @@ test("textStylePropertyLabel", () => {
 
             if(TextStyle.properties().indexOf(property) > -1){
                 try {
-                    SpreadsheetSettingsWidget.textStylePropertyLabel(property);
+                    SpreadsheetMetadataDrawerWidget.textStylePropertyLabel(property);
                 } catch(e) {
                     filter = true;
                 }
@@ -89,7 +89,7 @@ test("textStylePropertyLabel unnecessary labels", () => {
             var filter = false;
 
             try {
-                SpreadsheetSettingsWidget.textStylePropertyLabel(property);
+                SpreadsheetMetadataDrawerWidget.textStylePropertyLabel(property);
                 filter = allRows()
                     .indexOf(property) === -1;
             } catch(e) {

@@ -28,7 +28,7 @@ import SpreadsheetMetadataNameWidget from "./meta/SpreadsheetMetadataNameWidget.
 import SpreadsheetNotification from "./notification/SpreadsheetNotification.js";
 import SpreadsheetSelectAutocompleteWidget from "./reference/SpreadsheetSelectAutocompleteWidget.js";
 import SpreadsheetSelectLinkWidget from "./reference/SpreadsheetSelectLinkWidget.js";
-import SpreadsheetSettingsWidget from "./meta/drawer/SpreadsheetMetadataPanelWidget.js";
+import SpreadsheetMetadataDrawerWidget from "./meta/drawer/SpreadsheetMetadataPanelWidget.js";
 import SpreadsheetViewportWidget from "./reference/viewport/SpreadsheetViewportWidget.js";
 
 const useStyles = theme => ({
@@ -340,7 +340,7 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
                                                notificationShow={notificationShow}
                                                showError={showError}
                 />
-                <SpreadsheetSettingsWidget history={history}
+                <SpreadsheetMetadataDrawerWidget history={history}
                                            spreadsheetMetadataCrud={spreadsheetMetadataCrud}
                                            notificationShow={notificationShow}
                                            showError={showError}
