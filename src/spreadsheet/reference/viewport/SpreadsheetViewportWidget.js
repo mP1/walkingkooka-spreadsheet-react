@@ -11,7 +11,6 @@ import PropTypes from "prop-types";
 import React from 'react';
 import Slider from "@mui/material/Slider";
 import selectHistoryHashToken from "../../history/selectHistoryHashToken.js";
-import SpreadsheetCell from "../../SpreadsheetCell.js";
 import SpreadsheetCellColumnOrRowParse from "../cell/SpreadsheetCellColumnOrRowParse.js";
 import SpreadsheetCellFormulaEditHistoryHashToken from "../cell/formula/SpreadsheetCellFormulaEditHistoryHashToken.js";
 import SpreadsheetCellFormulaHistoryHashToken from "../cell/formula/SpreadsheetCellFormulaHistoryHashToken.js";
@@ -28,7 +27,6 @@ import SpreadsheetColumnReferenceRange from "../columnrow/SpreadsheetColumnRefer
 import SpreadsheetContextMenu from "../../../widget/SpreadsheetContextMenu.js";
 import SpreadsheetDelta from "../../engine/SpreadsheetDelta.js";
 import SpreadsheetExpressionReference from "../SpreadsheetExpressionReference.js";
-import SpreadsheetHistoryAwareStateWidget from "../../history/SpreadsheetHistoryAwareStateWidget.js";
 import SpreadsheetHistoryHash from "../../history/SpreadsheetHistoryHash.js";
 import SpreadsheetHistoryHashTokens from "../../history/SpreadsheetHistoryHashTokens.js";
 import SpreadsheetLabelName from "../label/SpreadsheetLabelName.js";
@@ -46,6 +44,7 @@ import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
+import SpreadsheetCellWidget from "../cell/SpreadsheetCellWidget.js";
 
 // default header cell styles
 
@@ -135,7 +134,7 @@ const CONTEXT_MENU_Y_OFFSET = 10;
  * <li>SpreadsheetViewportSelection selection: The currently active selection including ranges</li>
  * </ul>
  */
-export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareStateWidget {
+export default class SpreadsheetViewportWidget extends SpreadsheetCellWidget {
 
     static VIEWPORT_ID = "viewport";
 
@@ -155,10 +154,9 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
         super.componentDidMount();
 
         const props = this.props;
-        this.onSpreadsheetDeltaCellRemover = props.spreadsheetDeltaCellCrud.addListener(this.onSpreadsheetDelta.bind(this));
+
         this.onSpreadsheetDeltaColumnRemover = props.spreadsheetDeltaColumnCrud.addListener(this.onSpreadsheetDelta.bind(this));
         this.onSpreadsheetDeltaRowRemover = props.spreadsheetDeltaRowCrud.addListener(this.onSpreadsheetDelta.bind(this));
-
         this.onSpreadsheetLabelCrudRemover = props.spreadsheetLabelCrud.addListener(this.onSpreadsheetLabel.bind(this));
         this.onSpreadsheetMetadataRemover = props.spreadsheetMetadataCrud.addListener(this.onSpreadsheetMetadata.bind(this));
 
@@ -425,9 +423,6 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
     componentWillUnmount() {
         super.componentWillUnmount();
 
-        this.onSpreadsheetDeltaCellRemover && this.onSpreadsheetDeltaCellRemover();
-        delete this.onSpreadsheetDeltaCellRemover;
-
         this.onSpreadsheetDeltaColumnRemover && this.onSpreadsheetDeltaColumnRemover();
         delete this.onSpreadsheetDeltaColumnRemover;
 
@@ -625,21 +620,6 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
         );
     }
 
-    /**
-     * Clears the selection action from the history hash. This is done after a clear and other similar actions.
-     */
-    historyPushSelectionOnly() {
-        const tokens = this.props.history.tokens();
-        const selection = tokens[SpreadsheetHistoryHashTokens.SELECTION];
-        if(selection){
-            const viewportSelection = selection.viewportSelection();
-            tokens[SpreadsheetHistoryHashTokens.SELECTION] = selectHistoryHashToken(
-                viewportSelection
-            );
-            this.historyParseMergeAndPush(tokens);
-        }
-    }
-
     patchColumnOrRow(viewportSelection, property, value) {
         Preconditions.requireInstance(viewportSelection, SpreadsheetViewportSelection, "viewportSelection");
         Preconditions.requireText(property, "property");
@@ -698,32 +678,6 @@ export default class SpreadsheetViewportWidget extends SpreadsheetHistoryAwareSt
             this.state.spreadsheetMetadata.getIgnoringDefaults(SpreadsheetMetadata.SPREADSHEET_ID),
             JSON.stringify(patch),
             this.props.showError
-        );
-    }
-
-    /**
-     * Calls the server to PATCH a cell and also handles updating the history hash leaving just the selection.
-     */
-    patchCell(cell) {
-        Preconditions.requireInstance(cell, SpreadsheetCell, "cell");
-
-        const props = this.props;
-        props.spreadsheetDeltaCellCrud.patch(
-            cell.reference(),
-            new SpreadsheetDelta(
-                null,
-                [cell],
-                [],
-                [],
-                [],
-                [],
-                [],
-                [],
-                ImmutableMap.EMPTY,
-                ImmutableMap.EMPTY,
-                this.state.window,
-            ),
-            props.showError,
         );
     }
 
