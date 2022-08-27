@@ -463,7 +463,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetCellWidget {
         console.log("Viewport stateFromHistoryTokens " + JSON.stringify(tokens));
 
         return {
-            selection: tokens[SpreadsheetHistoryHashTokens.SELECTION], // TODO ?? clear navigation ?
+            selection: tokens[SpreadsheetHistoryHashTokens.SELECTION],
             contextMenu: null, // close context menu
         };
     }
