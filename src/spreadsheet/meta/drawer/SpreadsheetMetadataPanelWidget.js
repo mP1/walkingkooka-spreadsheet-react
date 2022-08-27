@@ -161,7 +161,7 @@ class SpreadsheetMetadataPanelWidget extends SpreadsheetHistoryAwareStateWidget 
     }
 
     stateFromHistoryTokens(tokens) {
-        const settings = tokens[SpreadsheetHistoryHashTokens.SETTINGS];
+        const settings = tokens[SpreadsheetHistoryHashTokens.METADATA];
 
         const state = {
             id: tokens[SpreadsheetHistoryHashTokens.SPREADSHEET_ID],
@@ -223,7 +223,7 @@ class SpreadsheetMetadataPanelWidget extends SpreadsheetHistoryAwareStateWidget 
     saveProperty(property) {
         return (value) => {
             const tokens = SpreadsheetHistoryHashTokens.emptyTokens();
-            tokens[SpreadsheetHistoryHashTokens.SETTINGS] = new SpreadsheetMetadataSaveHistoryHashToken(property, value);
+            tokens[SpreadsheetHistoryHashTokens.METADATA] = new SpreadsheetMetadataSaveHistoryHashToken(property, value);
             this.historyParseMergeAndPush(tokens);
 
             console.log("settings save " + property + "=" + value, tokens);
@@ -307,7 +307,7 @@ class SpreadsheetMetadataPanelWidget extends SpreadsheetHistoryAwareStateWidget 
                 console.log("settings.focus target: ", e.target);
 
                 const tokens = SpreadsheetHistoryHashTokens.emptyTokens();
-                tokens[SpreadsheetHistoryHashTokens.SETTINGS] = SpreadsheetMetadataSelectHistoryHashToken.NOTHING;
+                tokens[SpreadsheetHistoryHashTokens.METADATA] = SpreadsheetMetadataSelectHistoryHashToken.NOTHING;
                 this.historyParseMergeAndPush(tokens);
             }
         };
@@ -318,7 +318,7 @@ class SpreadsheetMetadataPanelWidget extends SpreadsheetHistoryAwareStateWidget 
 
                 if(!drawer.current.contains(target) && !(document.getElementById(SpreadsheetMetadataPanelWidget.menuIcon()).contains(target))){
                     const tokens = SpreadsheetHistoryHashTokens.emptyTokens();
-                    tokens[SpreadsheetHistoryHashTokens.SETTINGS] = null;
+                    tokens[SpreadsheetHistoryHashTokens.METADATA] = null;
                     this.historyParseMergeAndPush(tokens);
 
                     console.log("settings.blur", target);
@@ -328,7 +328,7 @@ class SpreadsheetMetadataPanelWidget extends SpreadsheetHistoryAwareStateWidget 
 
         const onClose = () => {
             const tokens = SpreadsheetHistoryHashTokens.emptyTokens();
-            tokens[SpreadsheetHistoryHashTokens.SETTINGS] = null;
+            tokens[SpreadsheetHistoryHashTokens.METADATA] = null;
 
             this.historyParseMergeAndPush(tokens);
         }
@@ -1311,7 +1311,7 @@ class SpreadsheetMetadataPanelWidget extends SpreadsheetHistoryAwareStateWidget 
             console.log("settings accordion change " + accordion + " " + (expanded ? "expanding" : "collapsing"));
 
             const historyHashTokens = SpreadsheetHistoryHashTokens.emptyTokens();
-            historyHashTokens[SpreadsheetHistoryHashTokens.SETTINGS] = expanded ? new SpreadsheetMetadataSelectHistoryHashToken(accordion) : SpreadsheetMetadataSelectHistoryHashToken.NOTHING;
+            historyHashTokens[SpreadsheetHistoryHashTokens.METADATA] = expanded ? new SpreadsheetMetadataSelectHistoryHashToken(accordion) : SpreadsheetMetadataSelectHistoryHashToken.NOTHING;
             this.historyParseMergeAndPush(historyHashTokens);
         }
 

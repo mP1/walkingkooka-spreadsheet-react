@@ -44,8 +44,9 @@ export default class SpreadsheetHistoryHashTokens {
 
     static LABEL = "label";
 
+    static METADATA = "metadata";
+
     static SELECT = "select";
-    static SETTINGS = "settings";
 
     static TX_ID = "_tx-id";
 }

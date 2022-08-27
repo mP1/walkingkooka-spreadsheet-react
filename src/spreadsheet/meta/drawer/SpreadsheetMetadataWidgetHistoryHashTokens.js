@@ -20,7 +20,7 @@ import RoundingMode from "../../../math/RoundingMode.js";
  */
 export default class SpreadsheetMetadataWidgetHistoryHashTokens {
 
-    // these tokens are optional and only one may appear after SETTINGS
+    // these tokens are optional and only one may appear after METADATA
     static METADATA = "metadata";
     static TEXT = "text";
     static NUMBER = "number";

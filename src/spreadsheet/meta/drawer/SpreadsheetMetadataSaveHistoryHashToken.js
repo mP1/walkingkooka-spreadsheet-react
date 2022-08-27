@@ -39,7 +39,7 @@ export default class SpreadsheetMetadataSaveHistoryHashToken extends Spreadsheet
         const value = this.value();
 
         return "/" +
-            SpreadsheetHistoryHashTokens.SETTINGS +
+            SpreadsheetHistoryHashTokens.METADATA +
             "/" +
             this.property() +
             "/" +
@@ -53,7 +53,7 @@ export default class SpreadsheetMetadataSaveHistoryHashToken extends Spreadsheet
         );
 
         const tokens = SpreadsheetHistoryHashTokens.emptyTokens();
-        tokens[SpreadsheetHistoryHashTokens.SETTINGS] = previousSettings;
+        tokens[SpreadsheetHistoryHashTokens.METADATA] = previousSettings;
         metadataDrawerWidget.historyParseMergeAndPush(tokens);
     }
 

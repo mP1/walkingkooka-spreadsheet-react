@@ -40,7 +40,7 @@ export default class SpreadsheetMetadataPanelWidgetValue extends SpreadsheetHist
 
     initialStateFromProps(props) {
         const historyHashTokens = props.history.tokens();
-        const settings = historyHashTokens[SpreadsheetHistoryHashTokens.SETTINGS];
+        const settings = historyHashTokens[SpreadsheetHistoryHashTokens.METADATA];
 
         return {
             spreadsheetId: historyHashTokens[SpreadsheetHistoryHash.SPREADSHEET_ID],
@@ -66,7 +66,7 @@ export default class SpreadsheetMetadataPanelWidgetValue extends SpreadsheetHist
     }
 
     stateFromHistoryTokens(historyHashTokens) {
-        const settings = historyHashTokens[SpreadsheetHistoryHashTokens.SETTINGS];
+        const settings = historyHashTokens[SpreadsheetHistoryHashTokens.METADATA];
 
         return {
             spreadsheetId: historyHashTokens[SpreadsheetHistoryHashTokens.SPREADSHEET_ID],
@@ -87,7 +87,7 @@ export default class SpreadsheetMetadataPanelWidgetValue extends SpreadsheetHist
 
         if(newFocused){
             if(newFocused !== prevState.focused){
-                historyTokens[SpreadsheetHistoryHashTokens.SETTINGS] = new SpreadsheetMetadataSelectHistoryHashToken(property);
+                historyTokens[SpreadsheetHistoryHashTokens.METADATA] = new SpreadsheetMetadataSelectHistoryHashToken(property);
             }
 
             const value = state.value;
@@ -148,7 +148,7 @@ export default class SpreadsheetMetadataPanelWidgetValue extends SpreadsheetHist
                 const value = state.value;
                 if(!Equality.safeEquals(value, state.savedValue)){
                     const tokens = SpreadsheetHistoryHashTokens.emptyTokens();
-                    tokens[SpreadsheetHistoryHashTokens.SETTINGS] = new SpreadsheetMetadataSaveHistoryHashToken(
+                    tokens[SpreadsheetHistoryHashTokens.METADATA] = new SpreadsheetMetadataSaveHistoryHashToken(
                         property,
                         null == value ? null : "" + value
                     );
@@ -208,7 +208,7 @@ export default class SpreadsheetMetadataPanelWidgetValue extends SpreadsheetHist
 
         // default button removes any assigned value
         const historyHashTokens = props.history.tokens();
-        historyHashTokens[SpreadsheetHistoryHashTokens.SETTINGS] = new SpreadsheetMetadataSaveHistoryHashToken(
+        historyHashTokens[SpreadsheetHistoryHashTokens.METADATA] = new SpreadsheetMetadataSaveHistoryHashToken(
             props.property,
             null
         );
