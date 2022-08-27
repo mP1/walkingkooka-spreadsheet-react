@@ -1,7 +1,7 @@
 import SpreadsheetCellReference from "../../src/spreadsheet/reference/SpreadsheetCellReference.js";
 import SpreadsheetColumnReference from "../../src/spreadsheet/reference/SpreadsheetColumnReference.js";
 import SpreadsheetFormulaWidget from "../../src/spreadsheet/reference/formula/SpreadsheetFormulaWidget.js";
-import SpreadsheetNameWidget from "../../src/spreadsheet/name/SpreadsheetNameWidget.js";
+import SpreadsheetMetadataNameWidget from "../../src/spreadsheet/name/SpreadsheetMetadataNameWidget.js";
 import SpreadsheetRowReference from "../../src/spreadsheet/reference/SpreadsheetRowReference.js";
 import SpreadsheetLabelMappingWidget from "../../src/spreadsheet/reference/SpreadsheetLabelMappingWidget.js";
 import SpreadsheetSelectLinkWidget from "../../src/spreadsheet/reference/SpreadsheetSelectLinkWidget.js";
@@ -147,7 +147,7 @@ export default class SpreadsheetTesting {
     }
 
     spreadsheetNameButton() {
-        return this.getById(SpreadsheetNameWidget.BUTTON_ID);
+        return this.getById(SpreadsheetMetadataNameWidget.BUTTON_ID);
     }
 
     spreadsheetNameButtonClick() {
@@ -164,7 +164,7 @@ export default class SpreadsheetTesting {
         this.hash()
             .should("match", /^#\/.*\/.*\/name$/);
 
-        return this.getById(SpreadsheetNameWidget.TEXT_FIELD_ID);
+        return this.getById(SpreadsheetMetadataNameWidget.TEXT_FIELD_ID);
     }
 
     spreadsheetNameWait() {

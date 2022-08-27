@@ -16,13 +16,13 @@ import TextField from "@mui/material/TextField";
 /**
  * A widget that displays the spreadsheet name as a button which when clicked turns into a text field and may be edited.
  */
-export default class SpreadsheetNameWidget extends SpreadsheetHistoryAwareStateWidget {
+export default class SpreadsheetMetadataNameWidget extends SpreadsheetHistoryAwareStateWidget {
 
-    static SPREADSHEET_NAME_ID = "spreadsheet-name";
+    static SPREADSHEET_NAME_ID = "spreadsheet-metadata-name-";
 
-    static BUTTON_ID = SpreadsheetNameWidget.SPREADSHEET_NAME_ID + "-Button";
+    static BUTTON_ID = SpreadsheetMetadataNameWidget.SPREADSHEET_NAME_ID + "-Button";
 
-    static TEXT_FIELD_ID = SpreadsheetNameWidget.SPREADSHEET_NAME_ID + "-TextField";
+    static TEXT_FIELD_ID = SpreadsheetMetadataNameWidget.SPREADSHEET_NAME_ID + "-TextField";
 
     init() {
     }
@@ -116,7 +116,7 @@ export default class SpreadsheetNameWidget extends SpreadsheetHistoryAwareStateW
 
         return !edit ?
             <Button
-                id={SpreadsheetNameWidget.BUTTON_ID}
+                id={SpreadsheetMetadataNameWidget.BUTTON_ID}
                 href={buttonLink}
                 style={{
                     color: "#000",
@@ -124,7 +124,7 @@ export default class SpreadsheetNameWidget extends SpreadsheetHistoryAwareStateW
                 }}
             >{text}</Button> :
             <TextField ref={this.textField}
-                       id={SpreadsheetNameWidget.TEXT_FIELD_ID}
+                       id={SpreadsheetMetadataNameWidget.TEXT_FIELD_ID}
                        fullWidth={true}
                        margin={"none"}
                        onBlur={textOnBlur}
@@ -178,7 +178,7 @@ export default class SpreadsheetNameWidget extends SpreadsheetHistoryAwareStateW
     }
 }
 
-SpreadsheetNameWidget.propTypes = {
+SpreadsheetMetadataNameWidget.propTypes = {
     history: PropTypes.instanceOf(SpreadsheetHistoryHash).isRequired,
     spreadsheetMetadataCrud: PropTypes.instanceOf(SpreadsheetMessengerCrud).isRequired,
     showError: PropTypes.func.isRequired,
