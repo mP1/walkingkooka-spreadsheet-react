@@ -1,7 +1,7 @@
-import SpreadsheetMetadata from "../meta/SpreadsheetMetadata.js";
+import SpreadsheetMetadata from "../SpreadsheetMetadata.js";
 import SpreadsheetSettingsWidget from "./SpreadsheetMetadataPanelWidget.js";
 import SpreadsheetSettingsWidgetHistoryHashTokens from "./SpreadsheetSettingsWidgetHistoryHashTokens.js";
-import TextStyle from "../../text/TextStyle.js";
+import TextStyle from "../../../text/TextStyle.js";
 
 function allRows() {
     return SpreadsheetSettingsWidgetHistoryHashTokens.metadataRows()

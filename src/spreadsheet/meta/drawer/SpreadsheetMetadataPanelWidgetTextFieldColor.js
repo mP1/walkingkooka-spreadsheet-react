@@ -1,6 +1,6 @@
-import Color from "../../color/Color.js";
+import Color from "../../../color/Color.js";
 import PropTypes from "prop-types";
-import SpreadsheetNotification from "../notification/SpreadsheetNotification.js";
+import SpreadsheetNotification from "../../notification/SpreadsheetNotification.js";
 import SpreadsheetMetadataPanelWidgetTextField from "./SpreadsheetMetadataPanelWidgetTextField.js";
 import SpreadsheetMetadataPanelWidgetValue from "./SpreadsheetMetadataPanelWidgetValue.js";
 

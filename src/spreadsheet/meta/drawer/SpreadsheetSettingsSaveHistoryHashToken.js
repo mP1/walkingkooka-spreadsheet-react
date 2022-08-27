@@ -1,6 +1,6 @@
-import CharSequences from "../../CharSequences.js";
-import Equality from "../../Equality.js";
-import SpreadsheetHistoryHashTokens from "../history/SpreadsheetHistoryHashTokens.js";
+import CharSequences from "../../../CharSequences.js";
+import Equality from "../../../Equality.js";
+import SpreadsheetHistoryHashTokens from "../../history/SpreadsheetHistoryHashTokens.js";
 import SpreadsheetSettingsHistoryHashToken from "./SpreadsheetSettingsHistoryHashToken.js";
 import SpreadsheetSettingsWidgetHistoryHashTokens from "./SpreadsheetSettingsWidgetHistoryHashTokens.js";
 

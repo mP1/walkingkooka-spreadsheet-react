@@ -1,19 +1,19 @@
-import Preconditions from "../../Preconditions.js";
-import SpreadsheetMetadata from "../meta/SpreadsheetMetadata.js";
-import TextStyle from "../../text/TextStyle.js";
-import SpreadsheetColumnReferenceRange from "../reference/SpreadsheetColumnReferenceRange.js";
-import SpreadsheetRowReferenceRange from "../reference/SpreadsheetRowReferenceRange.js";
-import SpreadsheetNumberParsePatterns from "../format/SpreadsheetNumberParsePatterns.js";
-import SpreadsheetNumberFormatPattern from "../format/SpreadsheetNumberFormatPattern.js";
-import ExpressionNumberKind from "../../math/ExpressionNumberKind.js";
-import SpreadsheetTextFormatPattern from "../format/SpreadsheetTextFormatPattern.js";
-import SpreadsheetTimeFormatPattern from "../format/SpreadsheetTimeFormatPattern.js";
-import SpreadsheetTimeParsePatterns from "../format/SpreadsheetTimeParsePatterns.js";
-import SpreadsheetDateTimeParsePatterns from "../format/SpreadsheetDateTimeParsePatterns.js";
-import SpreadsheetDateTimeFormatPattern from "../format/SpreadsheetDateTimeFormatPattern.js";
-import SpreadsheetDateFormatPattern from "../format/SpreadsheetDateFormatPattern.js";
-import SpreadsheetDateParsePatterns from "../format/SpreadsheetDateParsePatterns.js";
-import RoundingMode from "../../math/RoundingMode.js";
+import Preconditions from "../../../Preconditions.js";
+import SpreadsheetMetadata from "../SpreadsheetMetadata.js";
+import TextStyle from "../../../text/TextStyle.js";
+import SpreadsheetColumnReferenceRange from "../../reference/SpreadsheetColumnReferenceRange.js";
+import SpreadsheetRowReferenceRange from "../../reference/SpreadsheetRowReferenceRange.js";
+import SpreadsheetNumberParsePatterns from "../../format/SpreadsheetNumberParsePatterns.js";
+import SpreadsheetNumberFormatPattern from "../../format/SpreadsheetNumberFormatPattern.js";
+import ExpressionNumberKind from "../../../math/ExpressionNumberKind.js";
+import SpreadsheetTextFormatPattern from "../../format/SpreadsheetTextFormatPattern.js";
+import SpreadsheetTimeFormatPattern from "../../format/SpreadsheetTimeFormatPattern.js";
+import SpreadsheetTimeParsePatterns from "../../format/SpreadsheetTimeParsePatterns.js";
+import SpreadsheetDateTimeParsePatterns from "../../format/SpreadsheetDateTimeParsePatterns.js";
+import SpreadsheetDateTimeFormatPattern from "../../format/SpreadsheetDateTimeFormatPattern.js";
+import SpreadsheetDateFormatPattern from "../../format/SpreadsheetDateFormatPattern.js";
+import SpreadsheetDateParsePatterns from "../../format/SpreadsheetDateParsePatterns.js";
+import RoundingMode from "../../../math/RoundingMode.js";
 
 /**
  * Helpers required by SpreadsheetMetadataPanelWidget and SpreadsheetHistoryHash extracted to avoid cycles between classes.

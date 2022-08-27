@@ -52,9 +52,9 @@ import SpreadsheetMetadataNameSaveHistoryHashToken from "../meta/SpreadsheetMeta
 import SpreadsheetName from "../meta/SpreadsheetName.js";
 import SpreadsheetRowReference from "../reference/SpreadsheetRowReference.js";
 import SpreadsheetRowReferenceRange from "../reference/SpreadsheetRowReferenceRange.js"
-import SpreadsheetSettingsSaveHistoryHashToken from "../settings/SpreadsheetSettingsSaveHistoryHashToken.js";
-import SpreadsheetSettingsSelectHistoryHashToken from "../settings/SpreadsheetSettingsSelectHistoryHashToken.js";
-import SpreadsheetSettingsWidgetHistoryHashTokens from "../settings/SpreadsheetSettingsWidgetHistoryHashTokens.js";
+import SpreadsheetSettingsSaveHistoryHashToken from "../meta/drawer/SpreadsheetSettingsSaveHistoryHashToken.js";
+import SpreadsheetSettingsSelectHistoryHashToken from "../meta/drawer/SpreadsheetSettingsSelectHistoryHashToken.js";
+import SpreadsheetSettingsWidgetHistoryHashTokens from "../meta/drawer/SpreadsheetSettingsWidgetHistoryHashTokens.js";
 import SpreadsheetTextFormatPattern from "../format/SpreadsheetTextFormatPattern.js";
 import SpreadsheetTimeFormatPattern from "../format/SpreadsheetTimeFormatPattern.js";
 import SpreadsheetTimeParsePatterns from "../format/SpreadsheetTimeParsePatterns.js";

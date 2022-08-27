@@ -48,10 +48,10 @@ import SpreadsheetMetadataNameSaveHistoryHashToken from "../meta/SpreadsheetMeta
 import SpreadsheetName from "../meta/SpreadsheetName.js";
 import SpreadsheetRowReferenceRange from "../reference/SpreadsheetRowReferenceRange.js";
 import SpreadsheetSelectionHistoryHashToken from "../reference/SpreadsheetSelectionHistoryHashToken.js";
-import SpreadsheetSettingsHistoryHashToken from "../settings/SpreadsheetSettingsHistoryHashToken.js";
-import SpreadsheetSettingsSaveHistoryHashToken from "../settings/SpreadsheetSettingsSaveHistoryHashToken.js";
-import SpreadsheetSettingsSelectHistoryHashToken from "../settings/SpreadsheetSettingsSelectHistoryHashToken.js";
-import SpreadsheetSettingsWidgetHistoryHashTokens from "../settings/SpreadsheetSettingsWidgetHistoryHashTokens.js";
+import SpreadsheetSettingsHistoryHashToken from "../meta/drawer/SpreadsheetSettingsHistoryHashToken.js";
+import SpreadsheetSettingsSaveHistoryHashToken from "../meta/drawer/SpreadsheetSettingsSaveHistoryHashToken.js";
+import SpreadsheetSettingsSelectHistoryHashToken from "../meta/drawer/SpreadsheetSettingsSelectHistoryHashToken.js";
+import SpreadsheetSettingsWidgetHistoryHashTokens from "../meta/drawer/SpreadsheetSettingsWidgetHistoryHashTokens.js";
 import SpreadsheetViewportSelection from "../reference/viewport/SpreadsheetViewportSelection.js";
 import TextStyle from "../../text/TextStyle.js";
 
