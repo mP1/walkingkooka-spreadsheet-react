@@ -10,7 +10,7 @@ import Preconditions from "../../Preconditions.js";
 import RoundingMode from "../../math/RoundingMode.js";
 import SpreadsheetCellReference from "../reference/SpreadsheetCellReference";
 import SpreadsheetColumnReferenceRange from "../reference/SpreadsheetColumnReferenceRange.js";
-import SpreadsheetName from "./SpreadsheetName.js";
+import SpreadsheetName from "./name/SpreadsheetName.js";
 import SpreadsheetDateFormatPattern from "../format/SpreadsheetDateFormatPattern.js";
 import SpreadsheetDateParsePatterns from "../format/SpreadsheetDateParsePatterns.js";
 import SpreadsheetDateTimeFormatPattern from "../format/SpreadsheetDateTimeFormatPattern.js";
