@@ -16,7 +16,7 @@ import SpreadsheetDateParsePatterns from "../format/SpreadsheetDateParsePatterns
 import RoundingMode from "../../math/RoundingMode.js";
 
 /**
- * Helpers required by SpreadsheetSettingsWidget and SpreadsheetHistoryHash extracted to avoid cycles between classes.
+ * Helpers required by SpreadsheetMetadataPanelWidget and SpreadsheetHistoryHash extracted to avoid cycles between classes.
  */
 export default class SpreadsheetSettingsWidgetHistoryHashTokens {
 

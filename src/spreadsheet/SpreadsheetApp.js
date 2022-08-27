@@ -28,7 +28,7 @@ import SpreadsheetMetadataNameWidget from "./meta/SpreadsheetMetadataNameWidget.
 import SpreadsheetNotification from "./notification/SpreadsheetNotification.js";
 import SpreadsheetSelectAutocompleteWidget from "./reference/SpreadsheetSelectAutocompleteWidget.js";
 import SpreadsheetSelectLinkWidget from "./reference/SpreadsheetSelectLinkWidget.js";
-import SpreadsheetSettingsWidget from "./settings/SpreadsheetSettingsWidget.js";
+import SpreadsheetSettingsWidget from "./settings/SpreadsheetMetadataPanelWidget.js";
 import SpreadsheetViewportWidget from "./reference/viewport/SpreadsheetViewportWidget.js";
 
 const useStyles = theme => ({

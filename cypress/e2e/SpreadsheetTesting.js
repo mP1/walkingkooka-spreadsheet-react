@@ -2,13 +2,13 @@ import SpreadsheetCellReference from "../../src/spreadsheet/reference/Spreadshee
 import SpreadsheetColumnReference from "../../src/spreadsheet/reference/SpreadsheetColumnReference.js";
 import SpreadsheetFormulaWidget from "../../src/spreadsheet/reference/formula/SpreadsheetFormulaWidget.js";
 import SpreadsheetMetadataNameWidget from "../../src/spreadsheet/meta/SpreadsheetMetadataNameWidget.js";
+import SpreadsheetMetadataPanelWidget from "../../src/spreadsheet/settings/SpreadsheetMetadataPanelWidget.js";
 import SpreadsheetRowReference from "../../src/spreadsheet/reference/SpreadsheetRowReference.js";
 import SpreadsheetLabelMappingWidget from "../../src/spreadsheet/reference/SpreadsheetLabelMappingWidget.js";
 import SpreadsheetSelectLinkWidget from "../../src/spreadsheet/reference/SpreadsheetSelectLinkWidget.js";
 import SpreadsheetSelectAutocompleteWidget
     from "../../src/spreadsheet/reference/SpreadsheetSelectAutocompleteWidget.js";
 import SpreadsheetSelection from "../../src/spreadsheet/reference/SpreadsheetSelection.js";
-import SpreadsheetSettingsWidget from "../../src/spreadsheet/settings/SpreadsheetSettingsWidget.js";
 import SpreadsheetViewportWidget from "../../src/spreadsheet/reference/viewport/SpreadsheetViewportWidget.js";
 
 export default class SpreadsheetTesting {
@@ -416,23 +416,23 @@ export default class SpreadsheetTesting {
     }
 
     settings() {
-        return this.getById(SpreadsheetSettingsWidget.drawerId());
+        return this.getById(SpreadsheetMetadataPanelWidget.drawerId());
     }
 
     settingsAccordion(accordion) {
-        return this.get(SpreadsheetSettingsWidget.accordionElementSelector(accordion));
+        return this.get(SpreadsheetMetadataPanelWidget.accordionElementSelector(accordion));
     }
 
     settingsAccordionExpandMoreIcon(accordion) {
-        return this.getById(SpreadsheetSettingsWidget.accordionId(accordion) + "-expand-more-icon");
+        return this.getById(SpreadsheetMetadataPanelWidget.accordionId(accordion) + "-expand-more-icon");
     }
 
     settingsAccordionContent(accordion) {
-        return this.getById(SpreadsheetSettingsWidget.accordionId(accordion) + "-content");
+        return this.getById(SpreadsheetMetadataPanelWidget.accordionId(accordion) + "-content");
     }
 
     settingsProperty(property, suffix) {
-        return this.getById(SpreadsheetSettingsWidget.propertyId(property) + (suffix || ""));
+        return this.getById(SpreadsheetMetadataPanelWidget.propertyId(property) + (suffix || ""));
     }
 
     /**

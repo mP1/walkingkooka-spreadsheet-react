@@ -7,6 +7,7 @@ import React from 'react';
 import SpreadsheetHistoryAwareStateWidget from "../spreadsheet/history/SpreadsheetHistoryAwareStateWidget.js";
 import SpreadsheetHistoryHash from "../spreadsheet/history/SpreadsheetHistoryHash.js";
 import SpreadsheetHistoryHashTokens from "../spreadsheet/history/SpreadsheetHistoryHashTokens.js";
+import SpreadsheetMetadataPanelWidget from "../spreadsheet/settings/SpreadsheetMetadataPanelWidget.js";
 import Toolbar from '@mui/material/Toolbar';
 import SpreadsheetSettingsSelectHistoryHashToken
     from "../spreadsheet/settings/SpreadsheetSettingsSelectHistoryHashToken.js";
@@ -64,7 +65,7 @@ export default class SpreadsheetAppBar extends SpreadsheetHistoryAwareStateWidge
     render() {
         return (<AppBar position="static">
             <Toolbar>
-                <IconButton id="settings-icon"
+                <IconButton id={SpreadsheetMetadataPanelWidget.ID + "-icon"}
                             edge="start"
                             className={SpreadsheetAppBar.classes.menuButton}
                             color="inherit"

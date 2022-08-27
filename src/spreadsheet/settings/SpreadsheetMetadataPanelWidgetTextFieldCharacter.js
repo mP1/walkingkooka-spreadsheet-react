@@ -1,12 +1,12 @@
 import Character from "../../Character.js";
 import PropTypes from "prop-types";
-import SpreadsheetSettingsWidgetTextField from "./SpreadsheetSettingsWidgetTextField.js";
-import SpreadsheetSettingsWidgetValue from "./SpreadsheetSettingsWidgetValue.js";
+import SpreadsheetMetadataPanelWidgetTextField from "./SpreadsheetMetadataPanelWidgetTextField.js";
+import SpreadsheetMetadataPanelWidgetValue from "./SpreadsheetMetadataPanelWidgetValue.js";
 
 /**
  * A widget which displays a {@link Character} for editing using a TextField. All edits immediately update the spreadsheet.
  */
-export default class SpreadsheetSettingsWidgetTextFieldCharacter extends SpreadsheetSettingsWidgetTextField {
+export default class SpreadsheetMetadataPanelWidgetTextFieldCharacter extends SpreadsheetMetadataPanelWidgetTextField {
 
     placeholder() {
         return "Enter 1 character";
@@ -38,4 +38,4 @@ export default class SpreadsheetSettingsWidgetTextFieldCharacter extends Spreads
     }
 }
 
-SpreadsheetSettingsWidgetTextFieldCharacter.propTypes = SpreadsheetSettingsWidgetValue.createPropTypes(PropTypes.instanceOf(Character));
+SpreadsheetMetadataPanelWidgetTextFieldCharacter.propTypes = SpreadsheetMetadataPanelWidgetValue.createPropTypes(PropTypes.instanceOf(Character));

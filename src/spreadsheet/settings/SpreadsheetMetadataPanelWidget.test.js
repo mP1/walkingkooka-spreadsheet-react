@@ -1,5 +1,5 @@
 import SpreadsheetMetadata from "../meta/SpreadsheetMetadata.js";
-import SpreadsheetSettingsWidget from "./SpreadsheetSettingsWidget.js";
+import SpreadsheetSettingsWidget from "./SpreadsheetMetadataPanelWidget.js";
 import SpreadsheetSettingsWidgetHistoryHashTokens from "./SpreadsheetSettingsWidgetHistoryHashTokens.js";
 import TextStyle from "../../text/TextStyle.js";
 

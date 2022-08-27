@@ -25,34 +25,34 @@ import SpreadsheetMessengerCrud from "../message/SpreadsheetMessengerCrud.js";
 import SpreadsheetMetadata from "../meta/SpreadsheetMetadata.js";
 import SpreadsheetMultiFormatRequest from "../server/format/SpreadsheetMultiFormatRequest.js";
 import SpreadsheetMultiFormatResponse from "../server/format/SpreadsheetMultiFormatResponse.js";
+import SpreadsheetMetadataPanelWidgetTextFieldCharacter from "./SpreadsheetMetadataPanelWidgetTextFieldCharacter.js";
+import SpreadsheetMetadataPanelWidgetTextFieldColor from "./SpreadsheetMetadataPanelWidgetTextFieldColor.js";
+import SpreadsheetMetadataPanelWidgetDropDownList from "./SpreadsheetMetadataPanelWidgetDropDownList.js";
+import SpreadsheetMetadataPanelWidgetTextFieldNumber from "./SpreadsheetMetadataPanelWidgetTextFieldNumber.js";
+import SpreadsheetMetadataPanelWidgetSlider from "./SpreadsheetMetadataPanelWidgetSlider.js";
+import SpreadsheetMetadataPanelWidgetSliderAndTextField from "./SpreadsheetMetadataPanelWidgetSliderAndTextField.js";
+import SpreadsheetMetadataPanelWidgetTextFieldSpreadsheetDateFormatPattern
+    from "./SpreadsheetMetadataPanelWidgetTextFieldSpreadsheetDateFormatPattern.js";
+import SpreadsheetMetadataPanelWidgetTextFieldSpreadsheetDateParsePatterns
+    from "./SpreadsheetMetadataPanelWidgetTextFieldSpreadsheetDateParsePatterns.js";
+import SpreadsheetMetadataPanelWidgetTextFieldSpreadsheetDateTimeFormatPattern
+    from "./SpreadsheetMetadataPanelWidgetTextFieldSpreadsheetDateTimeFormatPattern.js";
+import SpreadsheetMetadataPanelWidgetTextFieldSpreadsheetDateTimeParsePatterns
+    from "./SpreadsheetMetadataPanelWidgetTextFieldSpreadsheetDateTimeParsePatterns.js";
+import SpreadsheetMetadataPanelWidgetTextFieldSpreadsheetNumberFormatPattern
+    from "./SpreadsheetMetadataPanelWidgetTextFieldSpreadsheetNumberFormatPattern.js";
+import SpreadsheetMetadataPanelWidgetTextFieldSpreadsheetNumberParsePatterns
+    from "./SpreadsheetMetadataPanelWidgetTextFieldSpreadsheetNumberParsePatterns.js";
+import SpreadsheetMetadataPanelWidgetTextFieldSpreadsheetTextFormatPattern
+    from "./SpreadsheetMetadataPanelWidgetTextFieldSpreadsheetTextFormatPattern.js";
+import SpreadsheetMetadataPanelWidgetTextFieldSpreadsheetTimeFormatPattern
+    from "./SpreadsheetMetadataPanelWidgetTextFieldSpreadsheetTimeFormatPattern.js";
+import SpreadsheetMetadataPanelWidgetTextFieldSpreadsheetTimeParsePatterns
+    from "./SpreadsheetMetadataPanelWidgetTextFieldSpreadsheetTimeParsePatterns.js";
+import SpreadsheetMetadataPanelWidgetTextFieldString from "./SpreadsheetMetadataPanelWidgetTextFieldString.js";
 import SpreadsheetSettingsSaveHistoryHashToken from "./SpreadsheetSettingsSaveHistoryHashToken.js";
 import SpreadsheetSettingsSelectHistoryHashToken from "./SpreadsheetSettingsSelectHistoryHashToken.js";
-import SpreadsheetSettingsWidgetTextFieldCharacter from "./SpreadsheetSettingsWidgetTextFieldCharacter.js";
-import SpreadsheetSettingsWidgetTextFieldColor from "./SpreadsheetSettingsWidgetTextFieldColor.js";
-import SpreadsheetSettingsWidgetDropDownList from "./SpreadsheetSettingsWidgetDropDownList.js";
 import SpreadsheetSettingsWidgetHistoryHashTokens from "./SpreadsheetSettingsWidgetHistoryHashTokens.js";
-import SpreadsheetSettingsWidgetTextFieldNumber from "./SpreadsheetSettingsWidgetTextFieldNumber.js";
-import SpreadsheetSettingsWidgetSlider from "./SpreadsheetSettingsWidgetSlider.js";
-import SpreadsheetSettingsWidgetSliderAndTextField from "./SpreadsheetSettingsWidgetSliderAndTextField.js";
-import SpreadsheetSettingsWidgetTextFieldSpreadsheetDateFormatPattern
-    from "./SpreadsheetSettingsWidgetTextFieldSpreadsheetDateFormatPattern.js";
-import SpreadsheetSettingsWidgetTextFieldSpreadsheetDateParsePatterns
-    from "./SpreadsheetSettingsWidgetTextFieldSpreadsheetDateParsePatterns.js";
-import SpreadsheetSettingsWidgetTextFieldSpreadsheetDateTimeFormatPattern
-    from "./SpreadsheetSettingsWidgetTextFieldSpreadsheetDateTimeFormatPattern.js";
-import SpreadsheetSettingsWidgetTextFieldSpreadsheetDateTimeParsePatterns
-    from "./SpreadsheetSettingsWidgetTextFieldSpreadsheetDateTimeParsePatterns.js";
-import SpreadsheetSettingsWidgetTextFieldSpreadsheetNumberFormatPattern
-    from "./SpreadsheetSettingsWidgetTextFieldSpreadsheetNumberFormatPattern.js";
-import SpreadsheetSettingsWidgetTextFieldSpreadsheetNumberParsePatterns
-    from "./SpreadsheetSettingsWidgetTextFieldSpreadsheetNumberParsePatterns.js";
-import SpreadsheetSettingsWidgetTextFieldSpreadsheetTextFormatPattern
-    from "./SpreadsheetSettingsWidgetTextFieldSpreadsheetTextFormatPattern.js";
-import SpreadsheetSettingsWidgetTextFieldSpreadsheetTimeFormatPattern
-    from "./SpreadsheetSettingsWidgetTextFieldSpreadsheetTimeFormatPattern.js";
-import SpreadsheetSettingsWidgetTextFieldSpreadsheetTimeParsePatterns
-    from "./SpreadsheetSettingsWidgetTextFieldSpreadsheetTimeParsePatterns.js";
-import SpreadsheetSettingsWidgetTextFieldString from "./SpreadsheetSettingsWidgetTextFieldString.js";
 import stylePropertyNameToEnum from "../../text/stylePropertyNameToEnum.js";
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -94,28 +94,28 @@ const useStyles = theme => ({
  */
 const BLUR_CLOSES_DRAWER = true;
 
-class SpreadsheetSettingsWidget extends SpreadsheetHistoryAwareStateWidget {
+class SpreadsheetMetadataPanelWidget extends SpreadsheetHistoryAwareStateWidget {
 
     /**
      * The width of the settings in pixels holding settings and tools.
      */
     static WIDTH = 750;
 
-    static ID = "settings";
+    static ID = "metadata-panel";
 
     static accordionId(accordion) {
-        return SpreadsheetSettingsWidget.ID + "-" + accordion;
+        return SpreadsheetMetadataPanelWidget.ID + "-" + accordion;
     }
 
     /**
      * Returns a selector that fetches the accordion element that can take focus.
      */
     static accordionElementSelector(accordion) {
-        return "#" + SpreadsheetSettingsWidget.accordionId(accordion) + " div[tabindex]";
+        return "#" + SpreadsheetMetadataPanelWidget.accordionId(accordion) + " div[tabindex]";
     }
 
     static drawerId() {
-        return SpreadsheetSettingsWidget.ID;
+        return SpreadsheetMetadataPanelWidget.ID;
     }
 
     static expandIconId(accordion) {
@@ -124,11 +124,11 @@ class SpreadsheetSettingsWidget extends SpreadsheetHistoryAwareStateWidget {
 
     // the menu icon which when clicked expands the settings widget drawer.
     static menuIcon() {
-        return SpreadsheetSettingsWidget.ID + "-icon";
+        return SpreadsheetMetadataPanelWidget.ID + "-icon";
     }
 
     static propertyId(property) {
-        return SpreadsheetSettingsWidget.ID + "-" + property;
+        return SpreadsheetMetadataPanelWidget.ID + "-" + property;
     }
 
     init() {
@@ -316,7 +316,7 @@ class SpreadsheetSettingsWidget extends SpreadsheetHistoryAwareStateWidget {
                 const target = e.relatedTarget;
                 const drawer = this.drawer;
 
-                if(!drawer.current.contains(target) && !(document.getElementById(SpreadsheetSettingsWidget.menuIcon()).contains(target))){
+                if(!drawer.current.contains(target) && !(document.getElementById(SpreadsheetMetadataPanelWidget.menuIcon()).contains(target))){
                     const tokens = SpreadsheetHistoryHashTokens.emptyTokens();
                     tokens[SpreadsheetHistoryHashTokens.SETTINGS] = null;
                     this.historyParseMergeAndPush(tokens);
@@ -335,7 +335,7 @@ class SpreadsheetSettingsWidget extends SpreadsheetHistoryAwareStateWidget {
 
         const open = Boolean(settings);
 
-        return <Drawer id={SpreadsheetSettingsWidget.drawerId()}
+        return <Drawer id={SpreadsheetMetadataPanelWidget.drawerId()}
                        anchor={"right"}
                        variant={"persistent"}
                        open={open}
@@ -347,7 +347,7 @@ class SpreadsheetSettingsWidget extends SpreadsheetHistoryAwareStateWidget {
                        tabIndex={0}
         >
             <div className={classes.root}
-                 style={{margin: 0, border: 0, padding: 0, width: SpreadsheetSettingsWidget.WIDTH + "px"}}>
+                 style={{margin: 0, border: 0, padding: 0, width: SpreadsheetMetadataPanelWidget.WIDTH + "px"}}>
                 {children}
             </div>
         </Drawer>;
@@ -465,7 +465,7 @@ class SpreadsheetSettingsWidget extends SpreadsheetHistoryAwareStateWidget {
      * Returns a react component for the given property.
      */
     renderStylePropertyRow(property, classes) {
-        const id = SpreadsheetSettingsWidget.propertyId(property);
+        const id = SpreadsheetMetadataPanelWidget.propertyId(property);
 
         const getValue = (metadata) => {
             const style = metadata.getIgnoringDefaults(SpreadsheetMetadata.STYLE);
@@ -486,16 +486,16 @@ class SpreadsheetSettingsWidget extends SpreadsheetHistoryAwareStateWidget {
             case TextStyle.COLOR:
             case TextStyle.OUTLINE_COLOR:
             case TextStyle.TEXT_DECORATION_COLOR:
-                render = <SpreadsheetSettingsWidgetTextFieldColor id={id}
-                                                                  key={id}
-                                                                  property={property}
-                                                                  defaultButtonTooltip={false}
-                                                                  defaultValueFormatter={DEFAULT_VALUE_FORMATTER_TOSTRING}
-                                                                  getValue={getValue}
-                                                                  setValue={setValue}
-                                                                  history={history}
-                                                                  notificationShow={notificationShow}
-                                                                  spreadsheetMetadataCrud={spreadsheetMetadataCrud}
+                render = <SpreadsheetMetadataPanelWidgetTextFieldColor id={id}
+                                                                       key={id}
+                                                                       property={property}
+                                                                       defaultButtonTooltip={false}
+                                                                       defaultValueFormatter={DEFAULT_VALUE_FORMATTER_TOSTRING}
+                                                                       getValue={getValue}
+                                                                       setValue={setValue}
+                                                                       history={history}
+                                                                       notificationShow={notificationShow}
+                                                                       spreadsheetMetadataCrud={spreadsheetMetadataCrud}
                 />;
                 break;
             default:
@@ -535,31 +535,31 @@ class SpreadsheetSettingsWidget extends SpreadsheetHistoryAwareStateWidget {
                     case TextStyle.WORD_SPACING:
                     case TextStyle.WORD_WRAP:
                     case TextStyle.WRITING_MODE:
-                        render = <SpreadsheetSettingsWidgetSlider id={id}
-                                                                  key={id}
-                                                                  property={property}
-                                                                  values={stylePropertyNameToEnum(property)}
-                                                                  getValue={getValue}
-                                                                  setValue={setValue}
-                                                                  defaultValueFormatter={DEFAULT_VALUE_FORMATTER_ENUM}
-                                                                  defaultButtonTooltip={false}
-                                                                  history={history}
-                                                                  notificationShow={notificationShow}
-                                                                  spreadsheetMetadataCrud={spreadsheetMetadataCrud}
+                        render = <SpreadsheetMetadataPanelWidgetSlider id={id}
+                                                                       key={id}
+                                                                       property={property}
+                                                                       values={stylePropertyNameToEnum(property)}
+                                                                       getValue={getValue}
+                                                                       setValue={setValue}
+                                                                       defaultValueFormatter={DEFAULT_VALUE_FORMATTER_ENUM}
+                                                                       defaultButtonTooltip={false}
+                                                                       history={history}
+                                                                       notificationShow={notificationShow}
+                                                                       spreadsheetMetadataCrud={spreadsheetMetadataCrud}
                         />;
                         break;
                     case TextStyle.FONT_FAMILY:
-                        render = <SpreadsheetSettingsWidgetSlider id={id}
-                                                                  key={id}
-                                                                  property={property}
-                                                                  values={[new FontFamily("Times New Roman")]}
-                                                                  getValue={getValue}
-                                                                  setValue={setValue}
-                                                                  defaultValueFormatter={DEFAULT_VALUE_FORMATTER_TOSTRING}
-                                                                  defaultButtonTooltip={false}
-                                                                  history={history}
-                                                                  notificationShow={notificationShow}
-                                                                  spreadsheetMetadataCrud={spreadsheetMetadataCrud}
+                        render = <SpreadsheetMetadataPanelWidgetSlider id={id}
+                                                                       key={id}
+                                                                       property={property}
+                                                                       values={[new FontFamily("Times New Roman")]}
+                                                                       getValue={getValue}
+                                                                       setValue={setValue}
+                                                                       defaultValueFormatter={DEFAULT_VALUE_FORMATTER_TOSTRING}
+                                                                       defaultButtonTooltip={false}
+                                                                       history={history}
+                                                                       notificationShow={notificationShow}
+                                                                       spreadsheetMetadataCrud={spreadsheetMetadataCrud}
                         />;
                         break;
                     default:
@@ -586,7 +586,7 @@ class SpreadsheetSettingsWidget extends SpreadsheetHistoryAwareStateWidget {
                 }
         }
 
-        const label = SpreadsheetSettingsWidget.textStylePropertyLabel(property);
+        const label = SpreadsheetMetadataPanelWidget.textStylePropertyLabel(property);
         return this.tableRow(id, label, render, classes);
     }
 
@@ -643,16 +643,16 @@ class SpreadsheetSettingsWidget extends SpreadsheetHistoryAwareStateWidget {
 
         const {history, notificationShow, spreadsheetMetadataCrud} = this.props;
 
-        return <SpreadsheetSettingsWidgetSliderAndTextField id={id}
-                                                            key={id}
-                                                            property={property}
-                                                            getValue={getValue}
-                                                            valueToNumber={
+        return <SpreadsheetMetadataPanelWidgetSliderAndTextField id={id}
+                                                                 key={id}
+                                                                 property={property}
+                                                                 getValue={getValue}
+                                                                 valueToNumber={
                                                                 (value) => {
                                                                     return value ? value.pixelValue() : 0;
                                                                 }
                                                             }
-                                                            numberToValue={
+                                                                 numberToValue={
                                                                 (value) => {
                                                                     return value === null ?
                                                                         null :
@@ -661,17 +661,17 @@ class SpreadsheetSettingsWidget extends SpreadsheetHistoryAwareStateWidget {
                                                                             lengthFromJson(value + "px");
                                                                 }
                                                             }
-                                                            setValue={setValue}
-                                                            defaultValueFormatter={DEFAULT_VALUE_FORMATTER_TOSTRING}
-                                                            defaultButtonTooltip={false}
-                                                            history={history}
-                                                            notificationShow={notificationShow}
-                                                            spreadsheetMetadataCrud={spreadsheetMetadataCrud}
-                                                            min={min}
-                                                            max={max}
-                                                            marks={marks}
-                                                            step={1}
-                                                            style={{
+                                                                 setValue={setValue}
+                                                                 defaultValueFormatter={DEFAULT_VALUE_FORMATTER_TOSTRING}
+                                                                 defaultButtonTooltip={false}
+                                                                 history={history}
+                                                                 notificationShow={notificationShow}
+                                                                 spreadsheetMetadataCrud={spreadsheetMetadataCrud}
+                                                                 min={min}
+                                                                 max={max}
+                                                                 marks={marks}
+                                                                 step={1}
+                                                                 style={{
                                                                 marginLeft: "1em",
                                                                 marginRight: "1em",
                                                             }}
@@ -767,7 +767,7 @@ class SpreadsheetSettingsWidget extends SpreadsheetHistoryAwareStateWidget {
     renderMetadataPropertyRow(property, classes) {
         const state = this.state;
         const {history, notificationShow, spreadsheetMetadataCrud} = this.props;
-        const id = SpreadsheetSettingsWidget.propertyId(property);
+        const id = SpreadsheetMetadataPanelWidget.propertyId(property);
         let render;
 
         switch(property) {
@@ -796,70 +796,70 @@ class SpreadsheetSettingsWidget extends SpreadsheetHistoryAwareStateWidget {
 
                         switch(property) {
                             case SpreadsheetMetadata.CURRENCY_SYMBOL:
-                                render = <SpreadsheetSettingsWidgetTextFieldString id={id}
-                                                                                   key={property}
-                                                                                   property={property}
-                                                                                   getValue={getValue}
-                                                                                   setValue={setValue}
-                                                                                   defaultValueFormatter={(s) => s}
-                                                                                   defaultButtonTooltip={false}
-                                                                                   history={history}
-                                                                                   notificationShow={notificationShow}
-                                                                                   spreadsheetMetadataCrud={spreadsheetMetadataCrud}
-                                                                                   length={10}
-                                                                                   maxLength={10}
+                                render = <SpreadsheetMetadataPanelWidgetTextFieldString id={id}
+                                                                                        key={property}
+                                                                                        property={property}
+                                                                                        getValue={getValue}
+                                                                                        setValue={setValue}
+                                                                                        defaultValueFormatter={(s) => s}
+                                                                                        defaultButtonTooltip={false}
+                                                                                        history={history}
+                                                                                        notificationShow={notificationShow}
+                                                                                        spreadsheetMetadataCrud={spreadsheetMetadataCrud}
+                                                                                        length={10}
+                                                                                        maxLength={10}
                                 />;
                                 break;
                             case SpreadsheetMetadata.DATE_FORMAT_PATTERN:
-                                render = <SpreadsheetSettingsWidgetTextFieldSpreadsheetDateFormatPattern id={id}
-                                                                                                         key={property}
-                                                                                                         property={property}
-                                                                                                         getValue={getValue}
-                                                                                                         setValue={setValue}
-                                                                                                         defaultValueFormatter={DEFAULT_VALUE_FORMATTER_TOSTRING}
-                                                                                                         defaultButtonTooltip={true}
-                                                                                                         history={history}
-                                                                                                         notificationShow={notificationShow}
-                                                                                                         spreadsheetMetadataCrud={spreadsheetMetadataCrud}
+                                render = <SpreadsheetMetadataPanelWidgetTextFieldSpreadsheetDateFormatPattern id={id}
+                                                                                                              key={property}
+                                                                                                              property={property}
+                                                                                                              getValue={getValue}
+                                                                                                              setValue={setValue}
+                                                                                                              defaultValueFormatter={DEFAULT_VALUE_FORMATTER_TOSTRING}
+                                                                                                              defaultButtonTooltip={true}
+                                                                                                              history={history}
+                                                                                                              notificationShow={notificationShow}
+                                                                                                              spreadsheetMetadataCrud={spreadsheetMetadataCrud}
                                 />;
                                 break;
                             case SpreadsheetMetadata.DATE_PARSE_PATTERNS:
-                                render = <SpreadsheetSettingsWidgetTextFieldSpreadsheetDateParsePatterns id={id}
-                                                                                                         key={property}
-                                                                                                         property={property}
-                                                                                                         getValue={getValue}
-                                                                                                         setValue={setValue}
-                                                                                                         defaultValueFormatter={DEFAULT_VALUE_FORMATTER_TOSTRING}
-                                                                                                         defaultButtonTooltip={true}
-                                                                                                         history={history}
-                                                                                                         notificationShow={notificationShow}
-                                                                                                         spreadsheetMetadataCrud={spreadsheetMetadataCrud}
+                                render = <SpreadsheetMetadataPanelWidgetTextFieldSpreadsheetDateParsePatterns id={id}
+                                                                                                              key={property}
+                                                                                                              property={property}
+                                                                                                              getValue={getValue}
+                                                                                                              setValue={setValue}
+                                                                                                              defaultValueFormatter={DEFAULT_VALUE_FORMATTER_TOSTRING}
+                                                                                                              defaultButtonTooltip={true}
+                                                                                                              history={history}
+                                                                                                              notificationShow={notificationShow}
+                                                                                                              spreadsheetMetadataCrud={spreadsheetMetadataCrud}
                                 />;
                                 break;
                             case SpreadsheetMetadata.DATETIME_FORMAT_PATTERN:
-                                render = <SpreadsheetSettingsWidgetTextFieldSpreadsheetDateTimeFormatPattern id={id}
-                                                                                                             key={property}
-                                                                                                             property={property}
-                                                                                                             getValue={getValue}
-                                                                                                             setValue={setValue}
-                                                                                                             defaultValueFormatter={DEFAULT_VALUE_FORMATTER_TOSTRING}
-                                                                                                             defaultButtonTooltip={true}
-                                                                                                             history={history}
-                                                                                                             notificationShow={notificationShow}
-                                                                                                             spreadsheetMetadataCrud={spreadsheetMetadataCrud}
+                                render = <SpreadsheetMetadataPanelWidgetTextFieldSpreadsheetDateTimeFormatPattern id={id}
+                                                                                                                  key={property}
+                                                                                                                  property={property}
+                                                                                                                  getValue={getValue}
+                                                                                                                  setValue={setValue}
+                                                                                                                  defaultValueFormatter={DEFAULT_VALUE_FORMATTER_TOSTRING}
+                                                                                                                  defaultButtonTooltip={true}
+                                                                                                                  history={history}
+                                                                                                                  notificationShow={notificationShow}
+                                                                                                                  spreadsheetMetadataCrud={spreadsheetMetadataCrud}
                                 />;
                                 break;
                             case SpreadsheetMetadata.DATETIME_PARSE_PATTERNS:
-                                render = <SpreadsheetSettingsWidgetTextFieldSpreadsheetDateTimeParsePatterns id={id}
-                                                                                                             key={property}
-                                                                                                             property={property}
-                                                                                                             getValue={getValue}
-                                                                                                             setValue={setValue}
-                                                                                                             defaultValueFormatter={DEFAULT_VALUE_FORMATTER_TOSTRING}
-                                                                                                             defaultButtonTooltip={true}
-                                                                                                             history={history}
-                                                                                                             notificationShow={notificationShow}
-                                                                                                             spreadsheetMetadataCrud={spreadsheetMetadataCrud}
+                                render = <SpreadsheetMetadataPanelWidgetTextFieldSpreadsheetDateTimeParsePatterns id={id}
+                                                                                                                  key={property}
+                                                                                                                  property={property}
+                                                                                                                  getValue={getValue}
+                                                                                                                  setValue={setValue}
+                                                                                                                  defaultValueFormatter={DEFAULT_VALUE_FORMATTER_TOSTRING}
+                                                                                                                  defaultButtonTooltip={true}
+                                                                                                                  history={history}
+                                                                                                                  notificationShow={notificationShow}
+                                                                                                                  spreadsheetMetadataCrud={spreadsheetMetadataCrud}
                                 />;
                                 break;
                             case SpreadsheetMetadata.DECIMAL_SEPARATOR:
@@ -869,30 +869,30 @@ class SpreadsheetSettingsWidget extends SpreadsheetHistoryAwareStateWidget {
                             case SpreadsheetMetadata.PERCENTAGE_SYMBOL:
                             case SpreadsheetMetadata.POSITIVE_SIGN:
                             case SpreadsheetMetadata.VALUE_SEPARATOR:
-                                render = <SpreadsheetSettingsWidgetTextFieldCharacter id={id}
-                                                                                      key={property}
-                                                                                      property={property}
-                                                                                      getValue={getValue}
-                                                                                      setValue={setValue}
-                                                                                      defaultValueFormatter={DEFAULT_VALUE_FORMATTER_TOSTRING}
-                                                                                      defaultButtonTooltip={false}
-                                                                                      history={history}
-                                                                                      notificationShow={notificationShow}
-                                                                                      spreadsheetMetadataCrud={spreadsheetMetadataCrud}
+                                render = <SpreadsheetMetadataPanelWidgetTextFieldCharacter id={id}
+                                                                                           key={property}
+                                                                                           property={property}
+                                                                                           getValue={getValue}
+                                                                                           setValue={setValue}
+                                                                                           defaultValueFormatter={DEFAULT_VALUE_FORMATTER_TOSTRING}
+                                                                                           defaultButtonTooltip={false}
+                                                                                           history={history}
+                                                                                           notificationShow={notificationShow}
+                                                                                           spreadsheetMetadataCrud={spreadsheetMetadataCrud}
                                 />;
                                 break;
                             case SpreadsheetMetadata.EXPRESSION_NUMBER_KIND:
-                                render = <SpreadsheetSettingsWidgetSlider id={id}
-                                                                          key={property}
-                                                                          property={property}
-                                                                          values={ExpressionNumberKind.values()}
-                                                                          getValue={getValue}
-                                                                          setValue={setValue}
-                                                                          defaultValueFormatter={DEFAULT_VALUE_FORMATTER_LABEL}
-                                                                          defaultButtonTooltip={false}
-                                                                          history={history}
-                                                                          notificationShow={notificationShow}
-                                                                          spreadsheetMetadataCrud={spreadsheetMetadataCrud}
+                                render = <SpreadsheetMetadataPanelWidgetSlider id={id}
+                                                                               key={property}
+                                                                               property={property}
+                                                                               values={ExpressionNumberKind.values()}
+                                                                               getValue={getValue}
+                                                                               setValue={setValue}
+                                                                               defaultValueFormatter={DEFAULT_VALUE_FORMATTER_LABEL}
+                                                                               defaultButtonTooltip={false}
+                                                                               history={history}
+                                                                               notificationShow={notificationShow}
+                                                                               spreadsheetMetadataCrud={spreadsheetMetadataCrud}
                                 />;
                                 break;
                             case SpreadsheetMetadata.DEFAULT_YEAR:
@@ -915,82 +915,82 @@ class SpreadsheetSettingsWidget extends SpreadsheetHistoryAwareStateWidget {
                                 );
                                 break;
                             case SpreadsheetMetadata.NUMBER_FORMAT_PATTERN:
-                                render = <SpreadsheetSettingsWidgetTextFieldSpreadsheetNumberFormatPattern id={id}
-                                                                                                           key={property}
-                                                                                                           property={property}
-                                                                                                           getValue={getValue}
-                                                                                                           setValue={setValue}
-                                                                                                           defaultValueFormatter={DEFAULT_VALUE_FORMATTER_TOSTRING}
-                                                                                                           defaultButtonTooltip={true}
-                                                                                                           history={history}
-                                                                                                           notificationShow={notificationShow}
-                                                                                                           spreadsheetMetadataCrud={spreadsheetMetadataCrud}
+                                render = <SpreadsheetMetadataPanelWidgetTextFieldSpreadsheetNumberFormatPattern id={id}
+                                                                                                                key={property}
+                                                                                                                property={property}
+                                                                                                                getValue={getValue}
+                                                                                                                setValue={setValue}
+                                                                                                                defaultValueFormatter={DEFAULT_VALUE_FORMATTER_TOSTRING}
+                                                                                                                defaultButtonTooltip={true}
+                                                                                                                history={history}
+                                                                                                                notificationShow={notificationShow}
+                                                                                                                spreadsheetMetadataCrud={spreadsheetMetadataCrud}
                                 />;
                                 break;
                             case SpreadsheetMetadata.NUMBER_PARSE_PATTERNS:
-                                render = <SpreadsheetSettingsWidgetTextFieldSpreadsheetNumberParsePatterns id={id}
-                                                                                                           key={property}
-                                                                                                           property={property}
-                                                                                                           getValue={getValue}
-                                                                                                           setValue={setValue}
-                                                                                                           defaultValueFormatter={DEFAULT_VALUE_FORMATTER_TOSTRING}
-                                                                                                           defaultButtonTooltip={true}
-                                                                                                           history={history}
-                                                                                                           notificationShow={notificationShow}
-                                                                                                           spreadsheetMetadataCrud={spreadsheetMetadataCrud}
+                                render = <SpreadsheetMetadataPanelWidgetTextFieldSpreadsheetNumberParsePatterns id={id}
+                                                                                                                key={property}
+                                                                                                                property={property}
+                                                                                                                getValue={getValue}
+                                                                                                                setValue={setValue}
+                                                                                                                defaultValueFormatter={DEFAULT_VALUE_FORMATTER_TOSTRING}
+                                                                                                                defaultButtonTooltip={true}
+                                                                                                                history={history}
+                                                                                                                notificationShow={notificationShow}
+                                                                                                                spreadsheetMetadataCrud={spreadsheetMetadataCrud}
                                 />;
                                 break;
                             case SpreadsheetMetadata.ROUNDING_MODE:
-                                render = <SpreadsheetSettingsWidgetDropDownList id={id}
-                                                                                key={property}
-                                                                                property={property}
-                                                                                values={RoundingMode.values()}
-                                                                                getValue={getValue}
-                                                                                setValue={setValue}
-                                                                                defaultValueFormatter={DEFAULT_VALUE_FORMATTER_LABEL}
-                                                                                defaultButtonTooltip={false}
-                                                                                history={history}
-                                                                                notificationShow={notificationShow}
-                                                                                spreadsheetMetadataCrud={spreadsheetMetadataCrud}
+                                render = <SpreadsheetMetadataPanelWidgetDropDownList id={id}
+                                                                                     key={property}
+                                                                                     property={property}
+                                                                                     values={RoundingMode.values()}
+                                                                                     getValue={getValue}
+                                                                                     setValue={setValue}
+                                                                                     defaultValueFormatter={DEFAULT_VALUE_FORMATTER_LABEL}
+                                                                                     defaultButtonTooltip={false}
+                                                                                     history={history}
+                                                                                     notificationShow={notificationShow}
+                                                                                     spreadsheetMetadataCrud={spreadsheetMetadataCrud}
                                 />;
                                 break;
                             case SpreadsheetMetadata.TEXT_FORMAT_PATTERN:
-                                render = <SpreadsheetSettingsWidgetTextFieldSpreadsheetTextFormatPattern id={id}
-                                                                                                         key={property}
-                                                                                                         property={property}
-                                                                                                         getValue={getValue}
-                                                                                                         setValue={setValue}
-                                                                                                         defaultValueFormatter={DEFAULT_VALUE_FORMATTER_TOSTRING}
-                                                                                                         defaultButtonTooltip={true}
-                                                                                                         history={history}
-                                                                                                         notificationShow={notificationShow}
-                                                                                                         spreadsheetMetadataCrud={spreadsheetMetadataCrud}
+                                render = <SpreadsheetMetadataPanelWidgetTextFieldSpreadsheetTextFormatPattern id={id}
+                                                                                                              key={property}
+                                                                                                              property={property}
+                                                                                                              getValue={getValue}
+                                                                                                              setValue={setValue}
+                                                                                                              defaultValueFormatter={DEFAULT_VALUE_FORMATTER_TOSTRING}
+                                                                                                              defaultButtonTooltip={true}
+                                                                                                              history={history}
+                                                                                                              notificationShow={notificationShow}
+                                                                                                              spreadsheetMetadataCrud={spreadsheetMetadataCrud}
                                 />;
                                 break;
                             case SpreadsheetMetadata.TIME_FORMAT_PATTERN:
-                                render = <SpreadsheetSettingsWidgetTextFieldSpreadsheetTimeFormatPattern id={id}
-                                                                                                         key={property}
-                                                                                                         property={property}
-                                                                                                         getValue={getValue}
-                                                                                                         setValue={setValue}
-                                                                                                         defaultValueFormatter={DEFAULT_VALUE_FORMATTER_TOSTRING}
-                                                                                                         defaultButtonTooltip={true}
-                                                                                                         history={history}
-                                                                                                         notificationShow={notificationShow}
-                                                                                                         spreadsheetMetadataCrud={spreadsheetMetadataCrud}
+                                render = <SpreadsheetMetadataPanelWidgetTextFieldSpreadsheetTimeFormatPattern id={id}
+                                                                                                              key={property}
+                                                                                                              property={property}
+                                                                                                              getValue={getValue}
+                                                                                                              setValue={setValue}
+                                                                                                              defaultValueFormatter={DEFAULT_VALUE_FORMATTER_TOSTRING}
+                                                                                                              defaultButtonTooltip={true}
+                                                                                                              history={history}
+                                                                                                              notificationShow={notificationShow}
+                                                                                                              spreadsheetMetadataCrud={spreadsheetMetadataCrud}
                                 />;
                                 break;
                             case SpreadsheetMetadata.TIME_PARSE_PATTERNS:
-                                render = <SpreadsheetSettingsWidgetTextFieldSpreadsheetTimeParsePatterns id={id}
-                                                                                                         key={property}
-                                                                                                         property={property}
-                                                                                                         getValue={getValue}
-                                                                                                         setValue={setValue}
-                                                                                                         defaultValueFormatter={DEFAULT_VALUE_FORMATTER_TOSTRING}
-                                                                                                         defaultButtonTooltip={true}
-                                                                                                         history={history}
-                                                                                                         notificationShow={notificationShow}
-                                                                                                         spreadsheetMetadataCrud={spreadsheetMetadataCrud}
+                                render = <SpreadsheetMetadataPanelWidgetTextFieldSpreadsheetTimeParsePatterns id={id}
+                                                                                                              key={property}
+                                                                                                              property={property}
+                                                                                                              getValue={getValue}
+                                                                                                              setValue={setValue}
+                                                                                                              defaultValueFormatter={DEFAULT_VALUE_FORMATTER_TOSTRING}
+                                                                                                              defaultButtonTooltip={true}
+                                                                                                              history={history}
+                                                                                                              notificationShow={notificationShow}
+                                                                                                              spreadsheetMetadataCrud={spreadsheetMetadataCrud}
                                 />;
                                 break;
                             default:
@@ -1002,7 +1002,7 @@ class SpreadsheetSettingsWidget extends SpreadsheetHistoryAwareStateWidget {
 
         return this.tableRow(
             id,
-            SpreadsheetSettingsWidget.spreadsheetMetadataPropertyLabel(property),
+            SpreadsheetMetadataPanelWidget.spreadsheetMetadataPropertyLabel(property),
             render,
             classes
         );
@@ -1140,21 +1140,21 @@ class SpreadsheetSettingsWidget extends SpreadsheetHistoryAwareStateWidget {
 
         const {history, notificationShow, spreadsheetMetadataCrud} = this.props;
 
-        return <SpreadsheetSettingsWidgetTextFieldNumber id={id}
-                                                         key={property}
-                                                         property={property}
-                                                         style={style}
-                                                         length={length}
-                                                         maxLength={maxLength}
-                                                         min={min}
-                                                         max={max}
-                                                         getValue={getValue}
-                                                         setValue={setValue}
-                                                         defaultValueFormatter={DEFAULT_VALUE_FORMATTER_TOSTRING}
-                                                         defaultButtonTooltip={false}
-                                                         history={history}
-                                                         notificationShow={notificationShow}
-                                                         spreadsheetMetadataCrud={spreadsheetMetadataCrud}
+        return <SpreadsheetMetadataPanelWidgetTextFieldNumber id={id}
+                                                              key={property}
+                                                              property={property}
+                                                              style={style}
+                                                              length={length}
+                                                              maxLength={maxLength}
+                                                              min={min}
+                                                              max={max}
+                                                              getValue={getValue}
+                                                              setValue={setValue}
+                                                              defaultValueFormatter={DEFAULT_VALUE_FORMATTER_TOSTRING}
+                                                              defaultButtonTooltip={false}
+                                                              history={history}
+                                                              notificationShow={notificationShow}
+                                                              spreadsheetMetadataCrud={spreadsheetMetadataCrud}
         />;
     }
 
@@ -1243,23 +1243,23 @@ class SpreadsheetSettingsWidget extends SpreadsheetHistoryAwareStateWidget {
         }
         const {history, notificationShow, spreadsheetMetadataCrud} = this.props;
 
-        return <SpreadsheetSettingsWidgetSliderAndTextField id={id}
-                                                            key={property}
-                                                            property={property}
-                                                            valueToNumber={(v) => v}
-                                                            numberToValue={(v) => v}
-                                                            getValue={getValue}
-                                                            setValue={setValue}
-                                                            defaultValueFormatter={DEFAULT_VALUE_FORMATTER_TOSTRING}
-                                                            defaultButtonTooltip={false}
-                                                            style={style}
-                                                            min={min}
-                                                            max={max}
-                                                            marks={marks}
-                                                            step={step}
-                                                            history={history}
-                                                            notificationShow={notificationShow}
-                                                            spreadsheetMetadataCrud={spreadsheetMetadataCrud}
+        return <SpreadsheetMetadataPanelWidgetSliderAndTextField id={id}
+                                                                 key={property}
+                                                                 property={property}
+                                                                 valueToNumber={(v) => v}
+                                                                 numberToValue={(v) => v}
+                                                                 getValue={getValue}
+                                                                 setValue={setValue}
+                                                                 defaultValueFormatter={DEFAULT_VALUE_FORMATTER_TOSTRING}
+                                                                 defaultButtonTooltip={false}
+                                                                 style={style}
+                                                                 min={min}
+                                                                 max={max}
+                                                                 marks={marks}
+                                                                 step={step}
+                                                                 history={history}
+                                                                 notificationShow={notificationShow}
+                                                                 spreadsheetMetadataCrud={spreadsheetMetadataCrud}
         />;
     }
 
@@ -1286,7 +1286,7 @@ class SpreadsheetSettingsWidget extends SpreadsheetHistoryAwareStateWidget {
                     heading,
                     tableAriaLabel,
                     rows) {
-        const id = SpreadsheetSettingsWidget.accordionId(accordion)
+        const id = SpreadsheetMetadataPanelWidget.accordionId(accordion)
 
         const state = this.state;
         const settings = state.settings;
@@ -1302,7 +1302,7 @@ class SpreadsheetSettingsWidget extends SpreadsheetHistoryAwareStateWidget {
         if(accordionSelected){
             this.giveFocus(
                 () => document.querySelector(
-                    SpreadsheetSettingsWidget.accordionElementSelector(accordion)
+                    SpreadsheetMetadataPanelWidget.accordionElementSelector(accordion)
                 )
             );
         }
@@ -1323,7 +1323,7 @@ class SpreadsheetSettingsWidget extends SpreadsheetHistoryAwareStateWidget {
                           disableGutters
         ><AccordionSummary ref={expandIconRef}
                            expandIcon={
-                               <ExpandMoreIcon id={SpreadsheetSettingsWidget.expandIconId(id)}/>
+                               <ExpandMoreIcon id={SpreadsheetMetadataPanelWidget.expandIconId(id)}/>
                            }
         ><Typography className={classes.heading}>{heading}</Typography>
         </AccordionSummary>
@@ -1345,11 +1345,11 @@ class SpreadsheetSettingsWidget extends SpreadsheetHistoryAwareStateWidget {
     }
 }
 
-SpreadsheetSettingsWidget.propTypes = {
+SpreadsheetMetadataPanelWidget.propTypes = {
     history: PropTypes.instanceOf(SpreadsheetHistoryHash).isRequired,
     spreadsheetMetadataCrud: PropTypes.instanceOf(SpreadsheetMessengerCrud).isRequired,
     notificationShow: PropTypes.func.isRequired,
     showError: PropTypes.func.isRequired,
 }
 
-export default withStyles(useStyles)(SpreadsheetSettingsWidget);
+export default withStyles(useStyles)(SpreadsheetMetadataPanelWidget);
