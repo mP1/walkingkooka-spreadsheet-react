@@ -1,6 +1,6 @@
 import Character from "./Character.js";
 import CharSequences from "./CharSequences.js";
-import SpreadsheetCellRange from "./spreadsheet/reference/SpreadsheetCellRange.js";
+import SpreadsheetCellRange from "./spreadsheet/reference/cell/SpreadsheetCellRange.js";
 
 
 // csv...........................................................................................................

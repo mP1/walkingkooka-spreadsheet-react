@@ -8,7 +8,7 @@ import LocalTime from "../../datetime/LocalTime.js";
 import Locale from "../../util/Locale.js";
 import Preconditions from "../../Preconditions.js";
 import RoundingMode from "../../math/RoundingMode.js";
-import SpreadsheetCellReference from "../reference/SpreadsheetCellReference";
+import SpreadsheetCellReference from "../reference/cell/SpreadsheetCellReference.js";
 import SpreadsheetColumnReferenceRange from "../reference/SpreadsheetColumnReferenceRange.js";
 import SpreadsheetName from "./name/SpreadsheetName.js";
 import SpreadsheetDateFormatPattern from "../format/SpreadsheetDateFormatPattern.js";

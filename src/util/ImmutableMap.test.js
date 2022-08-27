@@ -1,6 +1,6 @@
 import ImmutableMap from "./ImmutableMap";
 import lengthFromJson from "../text/LengthFromJson.js";
-import SpreadsheetCellReference from "../spreadsheet/reference/SpreadsheetCellReference";
+import SpreadsheetCellReference from "../spreadsheet/reference/cell/SpreadsheetCellReference.js";
 import SpreadsheetColumnReference from "../spreadsheet/reference/SpreadsheetColumnReference";
 import TextStyle from "../text/TextStyle";
 

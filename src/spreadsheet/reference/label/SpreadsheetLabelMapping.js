@@ -1,6 +1,6 @@
 import CharSequences from "../../../CharSequences.js";
 import Preconditions from "../../../Preconditions.js";
-import spreadsheetCellRangeCellReferenceOrLabelParse from "../SpreadsheetCellRangeCellReferenceOrLabelParse.js";
+import spreadsheetCellRangeCellReferenceOrLabelParse from "../cell/SpreadsheetCellRangeCellReferenceOrLabelParse.js";
 import SpreadsheetExpressionReference from "../SpreadsheetExpressionReference.js";
 import SpreadsheetLabelName from "./SpreadsheetLabelName.js";
 import SystemObject from "../../../SystemObject.js";

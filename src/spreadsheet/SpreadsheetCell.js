@@ -2,7 +2,7 @@ import textNodeJsonSupportFromJson from "../text/TextNodeJsonSupport";
 import Equality from "../Equality.js";
 import Preconditions from "../Preconditions.js";
 import React from "react";
-import SpreadsheetCellReference from "./reference/SpreadsheetCellReference.js";
+import SpreadsheetCellReference from "./reference/cell/SpreadsheetCellReference.js";
 import SpreadsheetCellFormat from "./SpreadsheetCellFormat";
 import SpreadsheetExpressionReference from "./reference/SpreadsheetExpressionReference.js";
 import SpreadsheetFormula from "./reference/formula/SpreadsheetFormula.js";

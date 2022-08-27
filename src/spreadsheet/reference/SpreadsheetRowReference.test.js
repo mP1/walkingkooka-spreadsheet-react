@@ -1,10 +1,10 @@
-import SpreadsheetCellReference from "./SpreadsheetCellReference.js";
+import SpreadsheetCellReference from "./cell/SpreadsheetCellReference.js";
 import SpreadsheetColumnReference from "./SpreadsheetColumnReference";
 import SpreadsheetReferenceKind from "./SpreadsheetReferenceKind";
 import SpreadsheetRow from "./SpreadsheetRow.js";
 import SpreadsheetRowReference from "./SpreadsheetRowReference";
 import systemObjectTesting from "../../SystemObjectTesting.js";
-import SpreadsheetCellRange from "./SpreadsheetCellRange.js";
+import SpreadsheetCellRange from "./cell/SpreadsheetCellRange.js";
 
 systemObjectTesting(
     new SpreadsheetRowReference(0, SpreadsheetReferenceKind.ABSOLUTE),

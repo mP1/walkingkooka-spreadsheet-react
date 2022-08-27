@@ -4,7 +4,7 @@ import HttpMethod from "../../../net/HttpMethod.js";
 import Keys from "../../../Keys.js";
 import PropTypes from 'prop-types';
 import React from 'react';
-import spreadsheetCellRangeCellReferenceOrLabelParse from "../SpreadsheetCellRangeCellReferenceOrLabelParse.js";
+import spreadsheetCellRangeCellReferenceOrLabelParse from "../cell/SpreadsheetCellRangeCellReferenceOrLabelParse.js";
 import SpreadsheetDialog from "../../../widget/SpreadsheetDialog.js";
 import SpreadsheetHistoryAwareStateWidget from "../../history/SpreadsheetHistoryAwareStateWidget.js";
 import SpreadsheetHistoryHash from "../../history/SpreadsheetHistoryHash.js";

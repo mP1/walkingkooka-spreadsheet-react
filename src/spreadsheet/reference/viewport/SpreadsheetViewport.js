@@ -2,7 +2,7 @@
  * A pixel rectangle marks a region with one or more cells.
  */
 import Preconditions from "../../../Preconditions.js";
-import SpreadsheetCellReference from "../SpreadsheetCellReference.js";
+import SpreadsheetCellReference from "../cell/SpreadsheetCellReference.js";
 import SpreadsheetSelection from "../SpreadsheetSelection.js";
 import SpreadsheetViewportSelectionAnchor from "./SpreadsheetViewportSelectionAnchor.js";
 import SpreadsheetViewportSelectionNavigation from "./SpreadsheetViewportSelectionNavigation.js";
