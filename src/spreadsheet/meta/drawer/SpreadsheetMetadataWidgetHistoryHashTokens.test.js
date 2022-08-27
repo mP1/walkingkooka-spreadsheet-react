@@ -1,25 +1,25 @@
 import SpreadsheetDateTimeParsePatterns from "../../format/SpreadsheetDateTimeParsePatterns.js";
 import SpreadsheetMetadata from "../SpreadsheetMetadata.js";
-import SpreadsheetSettingsWidgetHistoryHashTokens from "./SpreadsheetSettingsWidgetHistoryHashTokens.js";
+import SpreadsheetMetadataWidgetHistoryHashTokens from "./SpreadsheetMetadataWidgetHistoryHashTokens.js";
 
 // parseHistoryHashToken....................................................................................................
 
 test("parseHistoryHashToken invalid property fails", () => {
     expect(
-        () => SpreadsheetSettingsWidgetHistoryHashTokens.parseHistoryHashToken("!invalid", "abc123")
+        () => SpreadsheetMetadataWidgetHistoryHashTokens.parseHistoryHashToken("!invalid", "abc123")
     ).toThrow("Unknown property \"!invalid\"");
 });
 
 test("parseHistoryHashToken non text value fails", () => {
     expect(
-        () => SpreadsheetSettingsWidgetHistoryHashTokens.parseHistoryHashToken(SpreadsheetMetadata.CELL_CHARACTER_WIDTH, 123)
+        () => SpreadsheetMetadataWidgetHistoryHashTokens.parseHistoryHashToken(SpreadsheetMetadata.CELL_CHARACTER_WIDTH, 123)
     ).toThrow("Expected string token got 123");
 });
 
 function testParseHistoryHashToken(propertyName, value, expected) {
     test("parseHistoryHashToken " + propertyName + "=" + value, () => {
         expect(
-            SpreadsheetSettingsWidgetHistoryHashTokens.parseHistoryHashToken(propertyName, value)
+            SpreadsheetMetadataWidgetHistoryHashTokens.parseHistoryHashToken(propertyName, value)
         ).toStrictEqual(expected);
     });
 }

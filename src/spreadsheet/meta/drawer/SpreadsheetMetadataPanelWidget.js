@@ -52,7 +52,7 @@ import SpreadsheetMetadataPanelWidgetTextFieldSpreadsheetTimeParsePatterns
 import SpreadsheetMetadataPanelWidgetTextFieldString from "./SpreadsheetMetadataPanelWidgetTextFieldString.js";
 import SpreadsheetMetadataSaveHistoryHashToken from "./SpreadsheetMetadataSaveHistoryHashToken.js";
 import SpreadsheetMetadataSelectHistoryHashToken from "./SpreadsheetMetadataSelectHistoryHashToken.js";
-import SpreadsheetSettingsWidgetHistoryHashTokens from "./SpreadsheetSettingsWidgetHistoryHashTokens.js";
+import SpreadsheetMetadataWidgetHistoryHashTokens from "./SpreadsheetMetadataWidgetHistoryHashTokens.js";
 import stylePropertyNameToEnum from "../../../text/stylePropertyNameToEnum.js";
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -293,11 +293,11 @@ class SpreadsheetMetadataPanelWidget extends SpreadsheetHistoryAwareStateWidget 
         const children = spreadsheetMetadata &&
             (!spreadsheetMetadata.isEmpty() && settings &&
                 [
-                    this.metadataAccordion(classes, SpreadsheetSettingsWidgetHistoryHashTokens.METADATA === settingsItem),
-                    this.textPropertiesAccordion(classes, SpreadsheetSettingsWidgetHistoryHashTokens.TEXT === settingsItem),
-                    this.numberPropertiesAccordion(classes, SpreadsheetSettingsWidgetHistoryHashTokens.NUMBER === settingsItem),
-                    this.dateTimePropertiesAccordion(classes, SpreadsheetSettingsWidgetHistoryHashTokens.DATE_TIME === settingsItem),
-                    this.stylePropertiesAccordion(classes, SpreadsheetSettingsWidgetHistoryHashTokens.STYLE === settingsItem)
+                    this.metadataAccordion(classes, SpreadsheetMetadataWidgetHistoryHashTokens.METADATA === settingsItem),
+                    this.textPropertiesAccordion(classes, SpreadsheetMetadataWidgetHistoryHashTokens.TEXT === settingsItem),
+                    this.numberPropertiesAccordion(classes, SpreadsheetMetadataWidgetHistoryHashTokens.NUMBER === settingsItem),
+                    this.dateTimePropertiesAccordion(classes, SpreadsheetMetadataWidgetHistoryHashTokens.DATE_TIME === settingsItem),
+                    this.stylePropertiesAccordion(classes, SpreadsheetMetadataWidgetHistoryHashTokens.STYLE === settingsItem)
                 ]);
 
         const onFocus = (e) => {
@@ -361,10 +361,10 @@ class SpreadsheetMetadataPanelWidget extends SpreadsheetHistoryAwareStateWidget 
     metadataAccordion(classes) {
         this.formatCreateDateTimeModifiedDateTime();
 
-        return this.renderAccordion(SpreadsheetSettingsWidgetHistoryHashTokens.METADATA,
+        return this.renderAccordion(SpreadsheetMetadataWidgetHistoryHashTokens.METADATA,
             classes,
             "Metadata",
-            "Readonly Spreadsheet Metadata", SpreadsheetSettingsWidgetHistoryHashTokens.metadataRows()
+            "Readonly Spreadsheet Metadata", SpreadsheetMetadataWidgetHistoryHashTokens.metadataRows()
         );
     }
 
@@ -376,7 +376,7 @@ class SpreadsheetMetadataPanelWidget extends SpreadsheetHistoryAwareStateWidget 
         const settings = state.settings;
         const settingsItem = settings.item();
 
-        if(SpreadsheetSettingsWidgetHistoryHashTokens.METADATA === settingsItem || SpreadsheetSettingsWidgetHistoryHashTokens.METADATA === SpreadsheetSettingsWidgetHistoryHashTokens.parentAccordion(settingsItem)){
+        if(SpreadsheetMetadataWidgetHistoryHashTokens.METADATA === settingsItem || SpreadsheetMetadataWidgetHistoryHashTokens.METADATA === SpreadsheetMetadataWidgetHistoryHashTokens.parentAccordion(settingsItem)){
             if(!state.createDateTimeFormatted && !state.modifiedDateTimeFormatted){
                 const metadata = this.state.spreadsheetMetadata;
 
@@ -417,41 +417,41 @@ class SpreadsheetMetadataPanelWidget extends SpreadsheetHistoryAwareStateWidget 
 
     textPropertiesAccordion(classes) {
         return this.renderAccordion(
-            SpreadsheetSettingsWidgetHistoryHashTokens.TEXT,
+            SpreadsheetMetadataWidgetHistoryHashTokens.TEXT,
             classes,
             "Text",
             "Text",
-            SpreadsheetSettingsWidgetHistoryHashTokens.spreadsheetTextRows()
+            SpreadsheetMetadataWidgetHistoryHashTokens.spreadsheetTextRows()
         );
     }
 
     dateTimePropertiesAccordion(classes) {
         return this.renderAccordion(
-            SpreadsheetSettingsWidgetHistoryHashTokens.DATE_TIME,
+            SpreadsheetMetadataWidgetHistoryHashTokens.DATE_TIME,
             classes,
             "Date/Time",
             "Spreadsheet Date/Time",
-            SpreadsheetSettingsWidgetHistoryHashTokens.spreadsheetDateTimeRows()
+            SpreadsheetMetadataWidgetHistoryHashTokens.spreadsheetDateTimeRows()
         );
     }
 
     numberPropertiesAccordion(classes) {
         return this.renderAccordion(
-            SpreadsheetSettingsWidgetHistoryHashTokens.NUMBER,
+            SpreadsheetMetadataWidgetHistoryHashTokens.NUMBER,
             classes,
             "Number",
             "Spreadsheet Number Settings",
-            SpreadsheetSettingsWidgetHistoryHashTokens.spreadsheetNumberRows()
+            SpreadsheetMetadataWidgetHistoryHashTokens.spreadsheetNumberRows()
         );
     }
 
     stylePropertiesAccordion(classes) {
         return this.renderAccordion(
-            SpreadsheetSettingsWidgetHistoryHashTokens.STYLE,
+            SpreadsheetMetadataWidgetHistoryHashTokens.STYLE,
             classes,
             "Style",
             "Styles",
-            SpreadsheetSettingsWidgetHistoryHashTokens.spreadsheetStyleRows()
+            SpreadsheetMetadataWidgetHistoryHashTokens.spreadsheetStyleRows()
         );
     }
 
@@ -1296,7 +1296,7 @@ class SpreadsheetMetadataPanelWidget extends SpreadsheetHistoryAwareStateWidget 
         const expandIconRef = React.createRef();
 
         const accordionSelected = settingsItem === accordion;
-        const accordionPropertySelected = SpreadsheetSettingsWidgetHistoryHashTokens.parentAccordion(settingsItem) === accordion;
+        const accordionPropertySelected = SpreadsheetMetadataWidgetHistoryHashTokens.parentAccordion(settingsItem) === accordion;
 
         // give focus to the heading text if history hash = /settings or /settings/$accordion
         if(accordionSelected){

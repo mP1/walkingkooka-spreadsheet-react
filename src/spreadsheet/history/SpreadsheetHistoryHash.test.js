@@ -49,12 +49,12 @@ import SpreadsheetLabelName from "../reference/SpreadsheetLabelName.js";
 import SpreadsheetMetadata from "../meta/SpreadsheetMetadata.js";
 import SpreadsheetMetadataNameEditHistoryHashToken from "../meta/SpreadsheetMetadataNameEditHistoryHashToken.js";
 import SpreadsheetMetadataNameSaveHistoryHashToken from "../meta/SpreadsheetMetadataNameSaveHistoryHashToken.js";
+import SpreadsheetMetadataSaveHistoryHashToken from "../meta/drawer/SpreadsheetMetadataSaveHistoryHashToken.js";
+import SpreadsheetMetadataSelectHistoryHashToken from "../meta/drawer/SpreadsheetMetadataSelectHistoryHashToken.js";
+import SpreadsheetMetadataWidgetHistoryHashTokens from "../meta/drawer/SpreadsheetMetadataWidgetHistoryHashTokens.js";
 import SpreadsheetName from "../meta/SpreadsheetName.js";
 import SpreadsheetRowReference from "../reference/SpreadsheetRowReference.js";
 import SpreadsheetRowReferenceRange from "../reference/SpreadsheetRowReferenceRange.js"
-import SpreadsheetMetadataSaveHistoryHashToken from "../meta/drawer/SpreadsheetMetadataSaveHistoryHashToken.js";
-import SpreadsheetMetadataSelectHistoryHashToken from "../meta/drawer/SpreadsheetMetadataSelectHistoryHashToken.js";
-import SpreadsheetSettingsWidgetHistoryHashTokens from "../meta/drawer/SpreadsheetSettingsWidgetHistoryHashTokens.js";
 import SpreadsheetTextFormatPattern from "../format/SpreadsheetTextFormatPattern.js";
 import SpreadsheetTimeFormatPattern from "../format/SpreadsheetTimeFormatPattern.js";
 import SpreadsheetTimeParsePatterns from "../format/SpreadsheetTimeParsePatterns.js";
@@ -2948,7 +2948,7 @@ testMerge(
     "/123abc/Untitled456/settings",
     {
         "settings": new SpreadsheetMetadataSelectHistoryHashToken(
-            SpreadsheetSettingsWidgetHistoryHashTokens.METADATA
+            SpreadsheetMetadataWidgetHistoryHashTokens.METADATA
         ),
     },
     "/123abc/Untitled456/settings/metadata"
@@ -2969,7 +2969,7 @@ testMerge(
     "/123abc/Untitled456/settings/metadata",
     {
         "settings": new SpreadsheetMetadataSelectHistoryHashToken(
-            SpreadsheetSettingsWidgetHistoryHashTokens.TEXT
+            SpreadsheetMetadataWidgetHistoryHashTokens.TEXT
         ),
     },
     "/123abc/Untitled456/settings/text"

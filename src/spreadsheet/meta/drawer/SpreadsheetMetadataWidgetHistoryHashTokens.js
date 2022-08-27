@@ -18,7 +18,7 @@ import RoundingMode from "../../../math/RoundingMode.js";
 /**
  * Helpers required by SpreadsheetMetadataPanelWidget and SpreadsheetHistoryHash extracted to avoid cycles between classes.
  */
-export default class SpreadsheetSettingsWidgetHistoryHashTokens {
+export default class SpreadsheetMetadataWidgetHistoryHashTokens {
 
     // these tokens are optional and only one may appear after SETTINGS
     static METADATA = "metadata";
@@ -29,11 +29,11 @@ export default class SpreadsheetSettingsWidgetHistoryHashTokens {
 
     static accordions() {
         return [
-            SpreadsheetSettingsWidgetHistoryHashTokens.METADATA,
-            SpreadsheetSettingsWidgetHistoryHashTokens.TEXT,
-            SpreadsheetSettingsWidgetHistoryHashTokens.NUMBER,
-            SpreadsheetSettingsWidgetHistoryHashTokens.DATE_TIME,
-            SpreadsheetSettingsWidgetHistoryHashTokens.STYLE
+            SpreadsheetMetadataWidgetHistoryHashTokens.METADATA,
+            SpreadsheetMetadataWidgetHistoryHashTokens.TEXT,
+            SpreadsheetMetadataWidgetHistoryHashTokens.NUMBER,
+            SpreadsheetMetadataWidgetHistoryHashTokens.DATE_TIME,
+            SpreadsheetMetadataWidgetHistoryHashTokens.STYLE
         ];
     }
 
@@ -41,13 +41,13 @@ export default class SpreadsheetSettingsWidgetHistoryHashTokens {
      * Tests if the given token is a settings property
      */
     static isProperty(token) {
-        return Boolean(SpreadsheetSettingsWidgetHistoryHashTokens.parentAccordion(token));
+        return Boolean(SpreadsheetMetadataWidgetHistoryHashTokens.parentAccordion(token));
     }
 
     static isToken(token) {
-        return SpreadsheetSettingsWidgetHistoryHashTokens.accordions()
+        return SpreadsheetMetadataWidgetHistoryHashTokens.accordions()
                 .indexOf(token) > -1 ||
-            SpreadsheetSettingsWidgetHistoryHashTokens.isProperty(token);
+            SpreadsheetMetadataWidgetHistoryHashTokens.isProperty(token);
     }
     
     /**
@@ -57,24 +57,24 @@ export default class SpreadsheetSettingsWidgetHistoryHashTokens {
         var parentAccordion;
 
         do {
-            if(SpreadsheetSettingsWidgetHistoryHashTokens.metadataRows().includes(property)){
-                parentAccordion = SpreadsheetSettingsWidgetHistoryHashTokens.METADATA;
+            if(SpreadsheetMetadataWidgetHistoryHashTokens.metadataRows().includes(property)){
+                parentAccordion = SpreadsheetMetadataWidgetHistoryHashTokens.METADATA;
                 break;
             }
-            if(SpreadsheetSettingsWidgetHistoryHashTokens.spreadsheetTextRows().includes(property)){
-                parentAccordion = SpreadsheetSettingsWidgetHistoryHashTokens.TEXT;
+            if(SpreadsheetMetadataWidgetHistoryHashTokens.spreadsheetTextRows().includes(property)){
+                parentAccordion = SpreadsheetMetadataWidgetHistoryHashTokens.TEXT;
                 break;
             }
-            if(SpreadsheetSettingsWidgetHistoryHashTokens.spreadsheetDateTimeRows().includes(property)){
-                parentAccordion = SpreadsheetSettingsWidgetHistoryHashTokens.DATE_TIME;
+            if(SpreadsheetMetadataWidgetHistoryHashTokens.spreadsheetDateTimeRows().includes(property)){
+                parentAccordion = SpreadsheetMetadataWidgetHistoryHashTokens.DATE_TIME;
                 break;
             }
-            if(SpreadsheetSettingsWidgetHistoryHashTokens.spreadsheetNumberRows().includes(property)){
-                parentAccordion = SpreadsheetSettingsWidgetHistoryHashTokens.NUMBER;
+            if(SpreadsheetMetadataWidgetHistoryHashTokens.spreadsheetNumberRows().includes(property)){
+                parentAccordion = SpreadsheetMetadataWidgetHistoryHashTokens.NUMBER;
                 break;
             }
-            if(SpreadsheetSettingsWidgetHistoryHashTokens.spreadsheetStyleRows().includes(property)){
-                parentAccordion = SpreadsheetSettingsWidgetHistoryHashTokens.STYLE;
+            if(SpreadsheetMetadataWidgetHistoryHashTokens.spreadsheetStyleRows().includes(property)){
+                parentAccordion = SpreadsheetMetadataWidgetHistoryHashTokens.STYLE;
                 break;
             }
         } while(false);
@@ -186,7 +186,7 @@ export default class SpreadsheetSettingsWidgetHistoryHashTokens {
 
         return "" === token ?
             null :
-            SpreadsheetSettingsWidgetHistoryHashTokens.parseHistoryHashToken0(
+            SpreadsheetMetadataWidgetHistoryHashTokens.parseHistoryHashToken0(
                 propertyName,
                 token && decodeURIComponent(token)
             );
