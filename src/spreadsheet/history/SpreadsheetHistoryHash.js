@@ -42,10 +42,10 @@ import SpreadsheetLabelMappingEditHistoryHashToken from "../reference/Spreadshee
 import SpreadsheetLabelMappingHistoryHashToken from "../reference/SpreadsheetLabelMappingHistoryHashToken.js";
 import SpreadsheetLabelMappingSaveHistoryHashToken from "../reference/SpreadsheetLabelMappingSaveHistoryHashToken.js";
 import SpreadsheetLabelName from "../reference/SpreadsheetLabelName.js";
-import SpreadsheetMetadataNameEditHistoryHashToken from "../name/SpreadsheetMetadataNameEditHistoryHashToken.js";
-import SpreadsheetMetadataNameHistoryHashToken from "../name/SpreadsheetMetadataNameHistoryHashToken.js";
-import SpreadsheetMetadataNameSaveHistoryHashToken from "../name/SpreadsheetMetadataNameSaveHistoryHashToken.js";
-import SpreadsheetName from "../name/SpreadsheetName.js";
+import SpreadsheetMetadataNameEditHistoryHashToken from "../meta/SpreadsheetMetadataNameEditHistoryHashToken.js";
+import SpreadsheetMetadataNameHistoryHashToken from "../meta/SpreadsheetMetadataNameHistoryHashToken.js";
+import SpreadsheetMetadataNameSaveHistoryHashToken from "../meta/SpreadsheetMetadataNameSaveHistoryHashToken.js";
+import SpreadsheetName from "../meta/SpreadsheetName.js";
 import SpreadsheetRowReferenceRange from "../reference/SpreadsheetRowReferenceRange.js";
 import SpreadsheetSelectionHistoryHashToken from "../reference/SpreadsheetSelectionHistoryHashToken.js";
 import SpreadsheetSettingsHistoryHashToken from "../settings/SpreadsheetSettingsHistoryHashToken.js";
