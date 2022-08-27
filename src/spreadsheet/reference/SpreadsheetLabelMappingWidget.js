@@ -110,7 +110,7 @@ export default class SpreadsheetLabelMappingWidget extends SpreadsheetHistoryAwa
     }
 
     saveLabelMapping(oldLabel, newLabel, reference) {
-        console.log("saveLabelMapping: " + oldLabel, newLabel + " " + reference);
+        this.log(".saveLabelMapping: " + oldLabel, newLabel + " " + reference);
 
         const props = this.props;
 
@@ -124,7 +124,7 @@ export default class SpreadsheetLabelMappingWidget extends SpreadsheetHistoryAwa
     deleteLabelMapping(label) {
         const {props} = this;
 
-        console.log("deleteLabelMapping: " + label);
+        this.log(".deleteLabelMapping: " + label);
 
         props.spreadsheetLabelCrud.delete(
             label,
@@ -178,7 +178,7 @@ export default class SpreadsheetLabelMappingWidget extends SpreadsheetHistoryAwa
         tokens[SpreadsheetHistoryHashTokens.LABEL] = new SpreadsheetLabelMappingDeleteHistoryHashToken(labelName);
         const labelDelete = "#" + SpreadsheetHistoryHash.stringify(tokens);
 
-        console.log("render: ", "label:" + labelName, "newLabel:" + newLabel + ", labelHelper:" + labelHelper, ", reference:" + reference, "referenceHelper" + referenceHelper, "saveButton", labelSave, "labelDelete", labelDelete);
+        this.log(".render: ", "label:" + labelName, "newLabel:" + newLabel + ", labelHelper:" + labelHelper, ", reference:" + reference, "referenceHelper" + referenceHelper, "saveButton", labelSave, "labelDelete", labelDelete);
 
         return <SpreadsheetDialog id={SpreadsheetLabelMappingWidget.DIALOG_ID}
                                   key={"label-mapping"}
@@ -232,7 +232,7 @@ export default class SpreadsheetLabelMappingWidget extends SpreadsheetHistoryAwa
         const value = e.target.value;
         this.parseLabel(value, state);
 
-        console.log("onLabelTextFieldValueChange " + value, "state", state);
+        this.log(".onLabelTextFieldValueChange " + value, "state", state);
         this.setState(state);
     }
 
@@ -256,7 +256,7 @@ export default class SpreadsheetLabelMappingWidget extends SpreadsheetHistoryAwa
         const value = e.target.value;
         this.parseReference(value, state);
 
-        console.log("onReferenceTextFieldValueChange " + value, "state", state);
+        this.log(".onReferenceTextFieldValueChange " + value, "state", state);
         this.setState(state);
     }
 
@@ -332,7 +332,7 @@ export default class SpreadsheetLabelMappingWidget extends SpreadsheetHistoryAwa
      * Handles the response of a load label attempt.
      */
     onLabelMappingLoadSuccess(label, mapping) {
-        console.log("onLabelMappingLoadSuccess: " + mapping);
+        this.log("onLabelMappingLoadSuccess: " + mapping);
 
         const labelValue = mapping ? mapping.label().toString() : label.toString();
         const referenceValue = mapping ? mapping.reference().toString() : "";
@@ -374,6 +374,10 @@ export default class SpreadsheetLabelMappingWidget extends SpreadsheetHistoryAwa
         this.props.notificationShow(SpreadsheetNotification.success("Label deleted"));
 
         this.close();
+    }
+
+    log(...params) {
+        console.log(this.prefix() + "." + this.props.property + params[0], params.shift());
     }
 }
 
