@@ -12,8 +12,8 @@ import SpreadsheetMetadataSelectHistoryHashToken
     from "../spreadsheet/meta/drawer/SpreadsheetMetadataSelectHistoryHashToken.js";
 import Toolbar from '@mui/material/Toolbar';
 
-function computeSettingsLink(historyHashTokens) {
-    // flip the settings token.
+function computeMetadataLink(historyHashTokens) {
+    // flip the metadata token.
     historyHashTokens[SpreadsheetHistoryHashTokens.METADATA] = historyHashTokens[SpreadsheetHistoryHashTokens.METADATA] ?
         null :
         SpreadsheetMetadataSelectHistoryHashToken.NOTHING;
@@ -42,16 +42,16 @@ export default class SpreadsheetAppBar extends SpreadsheetHistoryAwareStateWidge
 
     initialStateFromProps(props) {
         return {
-            settingsLink: computeSettingsLink(props.history.tokens())
+            metadataLink: computeMetadataLink(props.history.tokens())
         };
     }
 
     /**
-     * Re-compute the settings link url.
+     * Re-compute the metadata link url.
      */
     stateFromHistoryTokens(historyHashTokens) {
         return {
-            settingsLink: computeSettingsLink(historyHashTokens)
+            metadataLink: computeMetadataLink(historyHashTokens)
         };
     }
 
@@ -70,7 +70,7 @@ export default class SpreadsheetAppBar extends SpreadsheetHistoryAwareStateWidge
                             className={SpreadsheetAppBar.classes.menuButton}
                             color="inherit"
                             aria-label="menu"
-                            href={this.state.settingsLink}>
+                            href={this.state.metadataLink}>
                     <MenuIcon/>
                 </IconButton>
                 {this.props.children}
