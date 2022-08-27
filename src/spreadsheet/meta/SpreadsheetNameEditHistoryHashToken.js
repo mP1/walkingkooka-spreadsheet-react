@@ -1,12 +1,12 @@
-import SpreadsheetMetadataNameHistoryHashToken from "./SpreadsheetMetadataNameHistoryHashToken.js";
+import SpreadsheetNameHistoryHashToken from "./SpreadsheetNameHistoryHashToken.js";
 import SpreadsheetHistoryHashTokens from "../history/SpreadsheetHistoryHashTokens.js";
 
 /**
  * This token represents the spreadsheet name being edited.
  */
-export default class SpreadsheetMetadataNameEditHistoryHashToken extends SpreadsheetMetadataNameHistoryHashToken {
+export default class SpreadsheetNameEditHistoryHashToken extends SpreadsheetNameHistoryHashToken {
 
-    static INSTANCE = new SpreadsheetMetadataNameEditHistoryHashToken();
+    static INSTANCE = new SpreadsheetNameEditHistoryHashToken();
 
     spreadsheetNameWidgetExecute(spreadsheetNameWidget) {
         // nop
