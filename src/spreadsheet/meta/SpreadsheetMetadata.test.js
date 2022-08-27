@@ -6,7 +6,7 @@ import LocalDateTime from "../../datetime/LocalDateTime.js";
 import Locale from "../../util/Locale.js";
 import PixelLength from "../../text/PixelLength";
 import RoundingMode from "../../math/RoundingMode.js";
-import SpreadsheetCellReference from "../reference/SpreadsheetCellReference";
+import SpreadsheetCellReference from "../reference/cell/SpreadsheetCellReference.js";
 import SpreadsheetColumnReferenceRange from "../reference/SpreadsheetColumnReferenceRange.js";
 import SpreadsheetDateFormatPattern from "../format/SpreadsheetDateFormatPattern.js";
 import SpreadsheetDateParsePatterns from "../format/SpreadsheetDateParsePatterns.js";

@@ -1,5 +1,5 @@
 import systemObjectTesting from "../SystemObjectTesting.js";
-import SpreadsheetCellReference from "./reference/SpreadsheetCellReference.js";
+import SpreadsheetCellReference from "./reference/cell/SpreadsheetCellReference.js";
 import SpreadsheetExpressionReferenceSimilarities from "./SpreadsheetExpressionReferenceSimilarities.js";
 import SpreadsheetLabelMapping from "./reference/label/SpreadsheetLabelMapping.js";
 import SpreadsheetLabelName from "./reference/label/SpreadsheetLabelName.js";

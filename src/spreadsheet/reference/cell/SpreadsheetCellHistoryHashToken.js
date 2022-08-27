@@ -1,4 +1,4 @@
-import SpreadsheetSelectionHistoryHashToken from "./SpreadsheetSelectionHistoryHashToken.js";
+import SpreadsheetSelectionHistoryHashToken from "../SpreadsheetSelectionHistoryHashToken.js";
 
 /**
  * Base for all cell actions

@@ -1,7 +1,7 @@
-import Preconditions from "../../Preconditions.js";
+import Preconditions from "../../../Preconditions.js";
 import SpreadsheetCellReference from "./SpreadsheetCellReference.js";
-import SpreadsheetColumnReference from "./SpreadsheetColumnReference.js";
-import SpreadsheetRowReference from "./SpreadsheetRowReference.js";
+import SpreadsheetColumnReference from "../SpreadsheetColumnReference.js";
+import SpreadsheetRowReference from "../SpreadsheetRowReference.js";
 
 /**
  * This parse method is used by SpreadsheetViewportWidget to identify the selection for an individual table element,

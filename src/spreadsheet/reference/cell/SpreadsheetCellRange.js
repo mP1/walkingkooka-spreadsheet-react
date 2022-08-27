@@ -1,14 +1,14 @@
-import Preconditions from "../../Preconditions.js";
-import SpreadsheetCellReference from "./SpreadsheetCellReference";
-import SpreadsheetColumnReference from "./SpreadsheetColumnReference.js";
-import SpreadsheetColumnReferenceRange from "./SpreadsheetColumnReferenceRange.js";
-import SpreadsheetExpressionReference from "./SpreadsheetExpressionReference.js";
-import spreadsheetRangeParse from "./SpreadsheetRangeParser.js";
-import SpreadsheetRowReference from "./SpreadsheetRowReference.js";
-import SpreadsheetRowReferenceRange from "./SpreadsheetRowReferenceRange.js";
-import SpreadsheetSelection from "./SpreadsheetSelection.js";
-import SpreadsheetViewportSelectionAnchor from "./viewport/SpreadsheetViewportSelectionAnchor.js";
-import SystemObject from "../../SystemObject.js";
+import Preconditions from "../../../Preconditions.js";
+import SpreadsheetCellReference from "./SpreadsheetCellReference.js";
+import SpreadsheetColumnReference from "../SpreadsheetColumnReference.js";
+import SpreadsheetColumnReferenceRange from "../SpreadsheetColumnReferenceRange.js";
+import SpreadsheetExpressionReference from "../SpreadsheetExpressionReference.js";
+import spreadsheetRangeParse from "../SpreadsheetRangeParser.js";
+import SpreadsheetRowReference from "../SpreadsheetRowReference.js";
+import SpreadsheetRowReferenceRange from "../SpreadsheetRowReferenceRange.js";
+import SpreadsheetSelection from "../SpreadsheetSelection.js";
+import SpreadsheetViewportSelectionAnchor from "../viewport/SpreadsheetViewportSelectionAnchor.js";
+import SystemObject from "../../../SystemObject.js";
 
 const TYPE_NAME = "spreadsheet-cell-range";
 /**

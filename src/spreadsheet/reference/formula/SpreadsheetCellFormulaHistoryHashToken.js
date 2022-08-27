@@ -1,4 +1,4 @@
-import SpreadsheetCellHistoryHashToken from "../SpreadsheetCellHistoryHashToken.js";
+import SpreadsheetCellHistoryHashToken from "../cell/SpreadsheetCellHistoryHashToken.js";
 
 /**
  * Base for all formula actions

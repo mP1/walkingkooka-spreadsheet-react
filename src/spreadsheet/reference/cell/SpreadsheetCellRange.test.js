@@ -1,11 +1,11 @@
 import SpreadsheetCellRange from "./SpreadsheetCellRange.js";
-import SpreadsheetCellReference from "./SpreadsheetCellReference";
-import SpreadsheetColumnReference from "./SpreadsheetColumnReference.js";
-import SpreadsheetColumnReferenceRange from "./SpreadsheetColumnReferenceRange.js";
-import SpreadsheetRowReference from "./SpreadsheetRowReference.js";
-import SpreadsheetRowReferenceRange from "./SpreadsheetRowReferenceRange.js";
-import SpreadsheetViewportSelectionAnchor from "./viewport/SpreadsheetViewportSelectionAnchor.js";
-import systemObjectTesting from "../../SystemObjectTesting.js";
+import SpreadsheetCellReference from "./SpreadsheetCellReference.js";
+import SpreadsheetColumnReference from "../SpreadsheetColumnReference.js";
+import SpreadsheetColumnReferenceRange from "../SpreadsheetColumnReferenceRange.js";
+import SpreadsheetRowReference from "../SpreadsheetRowReference.js";
+import SpreadsheetRowReferenceRange from "../SpreadsheetRowReferenceRange.js";
+import SpreadsheetViewportSelectionAnchor from "../viewport/SpreadsheetViewportSelectionAnchor.js";
+import systemObjectTesting from "../../../SystemObjectTesting.js";
 
 function begin() {
     return SpreadsheetCellReference.parse("A1");

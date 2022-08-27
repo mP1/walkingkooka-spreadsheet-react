@@ -1,4 +1,4 @@
-import SpreadsheetCellReference from "../SpreadsheetCellReference.js";
+import SpreadsheetCellReference from "../cell/SpreadsheetCellReference.js";
 import SpreadsheetLabelMapping from "./SpreadsheetLabelMapping.js";
 import SpreadsheetLabelName from "./SpreadsheetLabelName.js";
 import systemObjectTesting from "../../../SystemObjectTesting.js";

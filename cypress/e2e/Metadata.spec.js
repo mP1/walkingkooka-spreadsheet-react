@@ -5,7 +5,7 @@ import CharSequences from "../../src/CharSequences.js";
 import ExpressionNumberKind from "../../src/math/ExpressionNumberKind.js";
 import Hyphens from "../../src/text/Hyphens.js";
 import RoundingMode from "../../src/math/RoundingMode.js";
-import SpreadsheetCellReference from "../../src/spreadsheet/reference/SpreadsheetCellReference.js";
+import SpreadsheetCellReference from "../../src/spreadsheet/reference/cell/SpreadsheetCellReference.js";
 import SpreadsheetMetadata from "../../src/spreadsheet/meta/SpreadsheetMetadata.js";
 import SpreadsheetMetadataPanelWidget from "../../src/spreadsheet/meta/drawer/SpreadsheetMetadataPanelWidget.js";
 import SpreadsheetTesting from "./SpreadsheetTesting.js";

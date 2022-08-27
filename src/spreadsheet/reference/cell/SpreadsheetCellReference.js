@@ -1,21 +1,21 @@
 /**
  * Holds a cell reference. Note the reference is not validated in anyway.
  */
-import CharSequences from "../../CharSequences.js";
-import Preconditions from "../../Preconditions.js";
-import SpreadsheetCell from "../SpreadsheetCell.js";
+import CharSequences from "../../../CharSequences.js";
+import Preconditions from "../../../Preconditions.js";
+import SpreadsheetCell from "../../SpreadsheetCell.js";
 import SpreadsheetCellRange from "./SpreadsheetCellRange.js";
-import SpreadsheetColumnReference from "./SpreadsheetColumnReference";
-import SpreadsheetExpressionReference from "./SpreadsheetExpressionReference.js";
-import SpreadsheetFormula from "./formula/SpreadsheetFormula.js";
-import SpreadsheetReferenceKind from "./SpreadsheetReferenceKind";
-import SpreadsheetRowReference from "./SpreadsheetRowReference";
-import SpreadsheetSelection from "./SpreadsheetSelection.js";
-import SpreadsheetViewport from "./viewport/SpreadsheetViewport.js";
-import SpreadsheetViewportSelectionAnchor from "./viewport/SpreadsheetViewportSelectionAnchor.js";
-import SystemObject from "../../SystemObject.js";
-import TextStyle from "../../text/TextStyle.js";
-import Text from "../../text/Text.js";
+import SpreadsheetColumnReference from "../SpreadsheetColumnReference.js";
+import SpreadsheetExpressionReference from "../SpreadsheetExpressionReference.js";
+import SpreadsheetFormula from "../formula/SpreadsheetFormula.js";
+import SpreadsheetReferenceKind from "../SpreadsheetReferenceKind.js";
+import SpreadsheetRowReference from "../SpreadsheetRowReference.js";
+import SpreadsheetSelection from "../SpreadsheetSelection.js";
+import SpreadsheetViewport from "../viewport/SpreadsheetViewport.js";
+import SpreadsheetViewportSelectionAnchor from "../viewport/SpreadsheetViewportSelectionAnchor.js";
+import SystemObject from "../../../SystemObject.js";
+import TextStyle from "../../../text/TextStyle.js";
+import Text from "../../../text/Text.js";
 
 const TYPE_NAME = "spreadsheet-cell-reference";
 

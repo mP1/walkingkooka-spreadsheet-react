@@ -1,7 +1,7 @@
 import SpreadsheetCellRange from "./SpreadsheetCellRange.js";
 import SpreadsheetCellReference from "./SpreadsheetCellReference.js";
 import SpreadsheetExpressionReferenceParse from "./SpreadsheetCellRangeCellReferenceOrLabelParse.js";
-import SpreadsheetLabelName from "./label/SpreadsheetLabelName.js";
+import SpreadsheetLabelName from "../label/SpreadsheetLabelName.js";
 
 test("parse null fails", () => {
     expect(() => SpreadsheetExpressionReferenceParse(null)).toThrow("Missing text");

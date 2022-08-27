@@ -1,5 +1,5 @@
-import SpreadsheetCellRange from "../SpreadsheetCellRange.js";
-import SpreadsheetCellReference from "../SpreadsheetCellReference.js";
+import SpreadsheetCellRange from "../cell/SpreadsheetCellRange.js";
+import SpreadsheetCellReference from "../cell/SpreadsheetCellReference.js";
 import SpreadsheetColumnReference from "../SpreadsheetColumnReference.js";
 import SpreadsheetColumnReferenceRange from "../SpreadsheetColumnReferenceRange.js";
 import SpreadsheetLabelName from "../label/SpreadsheetLabelName.js";

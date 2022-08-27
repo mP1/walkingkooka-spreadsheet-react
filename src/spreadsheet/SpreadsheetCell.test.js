@@ -2,7 +2,7 @@ import lengthFromJson from "../text/LengthFromJson.js";
 import React from "react";
 import SpreadsheetCell from "./SpreadsheetCell.js";
 import SpreadsheetCellFormat from "./SpreadsheetCellFormat";
-import SpreadsheetCellReference from "./reference/SpreadsheetCellReference";
+import SpreadsheetCellReference from "./reference/cell/SpreadsheetCellReference.js";
 import SpreadsheetExpressionReference from "./reference/SpreadsheetExpressionReference.js";
 import SpreadsheetFormula from "./reference/formula/SpreadsheetFormula.js";
 import SpreadsheetLabelName from "./reference/label/SpreadsheetLabelName.js";

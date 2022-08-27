@@ -1,6 +1,6 @@
 /// <reference types="cypress" />
 
-import SpreadsheetCellReference from "../../src/spreadsheet/reference/SpreadsheetCellReference.js";
+import SpreadsheetCellReference from "../../src/spreadsheet/reference/cell/SpreadsheetCellReference.js";
 import SpreadsheetSelection from "../../src/spreadsheet/reference/SpreadsheetSelection.js";
 import SpreadsheetTesting from "./SpreadsheetTesting.js";
 

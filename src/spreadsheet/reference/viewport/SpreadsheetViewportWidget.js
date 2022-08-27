@@ -12,12 +12,12 @@ import React from 'react';
 import Slider from "@mui/material/Slider";
 import selectHistoryHashToken from "../../history/selectHistoryHashToken.js";
 import SpreadsheetCell from "../../SpreadsheetCell.js";
-import SpreadsheetCellColumnOrRowParse from "../SpreadsheetCellColumnOrRowParse.js";
+import SpreadsheetCellColumnOrRowParse from "../cell/SpreadsheetCellColumnOrRowParse.js";
 import SpreadsheetCellFormulaEditHistoryHashToken from "../formula/SpreadsheetCellFormulaEditHistoryHashToken.js";
 import SpreadsheetCellFormulaHistoryHashToken from "../formula/SpreadsheetCellFormulaHistoryHashToken.js";
-import SpreadsheetCellMenuHistoryHashToken from "../SpreadsheetCellMenuHistoryHashToken.js";
-import SpreadsheetCellRange from "../SpreadsheetCellRange.js";
-import SpreadsheetCellReference from "../SpreadsheetCellReference.js";
+import SpreadsheetCellMenuHistoryHashToken from "../cell/SpreadsheetCellMenuHistoryHashToken.js";
+import SpreadsheetCellRange from "../cell/SpreadsheetCellRange.js";
+import SpreadsheetCellReference from "../cell/SpreadsheetCellReference.js";
 import SpreadsheetColumnOrRowInsertAfterHistoryHashToken from "../SpreadsheetColumnOrRowInsertAfterHistoryHashToken.js";
 import SpreadsheetColumnOrRowInsertBeforeHistoryHashToken
     from "../SpreadsheetColumnOrRowInsertBeforeHistoryHashToken.js";

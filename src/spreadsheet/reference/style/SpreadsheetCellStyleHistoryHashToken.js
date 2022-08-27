@@ -1,4 +1,4 @@
-import SpreadsheetCellHistoryHashToken from "../SpreadsheetCellHistoryHashToken.js";
+import SpreadsheetCellHistoryHashToken from "../cell/SpreadsheetCellHistoryHashToken.js";
 import SpreadsheetHistoryHashTokens from "../../history/SpreadsheetHistoryHashTokens.js";
 
 /**
