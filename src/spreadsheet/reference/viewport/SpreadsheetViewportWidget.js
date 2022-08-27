@@ -18,12 +18,13 @@ import SpreadsheetCellFormulaHistoryHashToken from "../formula/SpreadsheetCellFo
 import SpreadsheetCellMenuHistoryHashToken from "../cell/SpreadsheetCellMenuHistoryHashToken.js";
 import SpreadsheetCellRange from "../cell/SpreadsheetCellRange.js";
 import SpreadsheetCellReference from "../cell/SpreadsheetCellReference.js";
-import SpreadsheetColumnOrRowInsertAfterHistoryHashToken from "../SpreadsheetColumnOrRowInsertAfterHistoryHashToken.js";
+import SpreadsheetColumnOrRowInsertAfterHistoryHashToken
+    from "../columnrow/SpreadsheetColumnOrRowInsertAfterHistoryHashToken.js";
 import SpreadsheetColumnOrRowInsertBeforeHistoryHashToken
-    from "../SpreadsheetColumnOrRowInsertBeforeHistoryHashToken.js";
-import SpreadsheetColumnOrRowMenuHistoryHashToken from "../SpreadsheetColumnOrRowMenuHistoryHashToken.js";
-import SpreadsheetColumnReference from "../SpreadsheetColumnReference.js";
-import SpreadsheetColumnReferenceRange from "../SpreadsheetColumnReferenceRange.js";
+    from "../columnrow/SpreadsheetColumnOrRowInsertBeforeHistoryHashToken.js";
+import SpreadsheetColumnOrRowMenuHistoryHashToken from "../columnrow/SpreadsheetColumnOrRowMenuHistoryHashToken.js";
+import SpreadsheetColumnReference from "../columnrow/SpreadsheetColumnReference.js";
+import SpreadsheetColumnReferenceRange from "../columnrow/SpreadsheetColumnReferenceRange.js";
 import SpreadsheetContextMenu from "../../../widget/SpreadsheetContextMenu.js";
 import SpreadsheetDelta from "../../engine/SpreadsheetDelta.js";
 import SpreadsheetExpressionReference from "../SpreadsheetExpressionReference.js";
@@ -35,8 +36,8 @@ import SpreadsheetMessenger from "../../message/SpreadsheetMessenger.js";
 import SpreadsheetMessengerCrud from "../../message/SpreadsheetMessengerCrud.js";
 import SpreadsheetMetadata from "../../meta/SpreadsheetMetadata.js";
 import SpreadsheetReferenceKind from "../SpreadsheetReferenceKind.js";
-import SpreadsheetRowReference from "../SpreadsheetRowReference.js";
-import SpreadsheetRowReferenceRange from "../SpreadsheetRowReferenceRange.js";
+import SpreadsheetRowReference from "../columnrow/SpreadsheetRowReference.js";
+import SpreadsheetRowReferenceRange from "../columnrow/SpreadsheetRowReferenceRange.js";
 import SpreadsheetViewportSelection from "./SpreadsheetViewportSelection.js";
 import SpreadsheetViewportSelectionNavigation from "./SpreadsheetViewportSelectionNavigation.js";
 import Table from '@mui/material/Table';

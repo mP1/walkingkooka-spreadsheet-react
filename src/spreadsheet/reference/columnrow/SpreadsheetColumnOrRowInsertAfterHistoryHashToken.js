@@ -1,15 +1,15 @@
 import SpreadsheetColumnOrRowInsertHistoryHashToken from "./SpreadsheetColumnOrRowInsertHistoryHashToken.js";
-import SpreadsheetHistoryHashTokens from "../history/SpreadsheetHistoryHashTokens.js";
+import SpreadsheetHistoryHashTokens from "../../history/SpreadsheetHistoryHashTokens.js";
 
 /**
- * Represents a column/row insert BEFORE history hash token.
+ * Represents a column/row insert AFTER history hash token.
  */
-export default class SpreadsheetColumnOrRowInsertBeforeHistoryHashToken extends SpreadsheetColumnOrRowInsertHistoryHashToken {
+export default class SpreadsheetColumnOrRowInsertAfterHistoryHashToken extends SpreadsheetColumnOrRowInsertHistoryHashToken {
 
     historyHashPath() {
         return super.historyHashPath() +
             "/" +
-            SpreadsheetHistoryHashTokens.INSERT_BEFORE +
+            SpreadsheetHistoryHashTokens.INSERT_AFTER +
             "/" +
             this.count();
     }
@@ -18,7 +18,7 @@ export default class SpreadsheetColumnOrRowInsertBeforeHistoryHashToken extends 
      * Handles history hash token evens such as /column/A/insertAfter/1 or /column/B:C/insertAfter/2
      */
     spreadsheetViewportWidgetExecute(viewportWidget, viewportCell, width, height) {
-        viewportWidget.insertBeforeSelection(
+        viewportWidget.insertAfterSelection(
             this.viewportSelection(),
             this.count()
         );

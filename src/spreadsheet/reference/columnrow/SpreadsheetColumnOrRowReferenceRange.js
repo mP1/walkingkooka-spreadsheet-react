@@ -1,5 +1,5 @@
-import SpreadsheetSelection from "./SpreadsheetSelection.js";
-import SystemObject from "../../SystemObject.js";
+import SpreadsheetSelection from "../SpreadsheetSelection.js";
+import SystemObject from "../../../SystemObject.js";
 
 /**
  * Base class for both column or row ranges.

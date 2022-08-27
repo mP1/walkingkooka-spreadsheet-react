@@ -1,10 +1,10 @@
 /// <reference types="cypress" />
 
 import SpreadsheetCellReference from "../../src/spreadsheet/reference/cell/SpreadsheetCellReference.js";
-import SpreadsheetRowReference from "../../src/spreadsheet/reference/SpreadsheetRowReference.js";
+import SpreadsheetRowReference from "../../src/spreadsheet/reference/columnrow/SpreadsheetRowReference.js";
 import SpreadsheetSelection from "../../src/spreadsheet/reference/SpreadsheetSelection.js";
 import SpreadsheetTesting from "./SpreadsheetTesting.js";
-import SpreadsheetRowReferenceRange from "../../src/spreadsheet/reference/SpreadsheetRowReferenceRange.js";
+import SpreadsheetRowReferenceRange from "../../src/spreadsheet/reference/columnrow/SpreadsheetRowReferenceRange.js";
 
 const A1 = SpreadsheetCellReference.parse("A1");
 const A2 = SpreadsheetCellReference.parse("A2");

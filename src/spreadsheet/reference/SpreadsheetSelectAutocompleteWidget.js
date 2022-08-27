@@ -5,8 +5,8 @@ import PropTypes from 'prop-types';
 import React from 'react';
 import SpreadsheetCellRange from "./cell/SpreadsheetCellRange.js";
 import SpreadsheetCellReference from "./cell/SpreadsheetCellReference.js";
-import SpreadsheetColumnReference from "./SpreadsheetColumnReference.js";
-import SpreadsheetColumnReferenceRange from "./SpreadsheetColumnReferenceRange.js";
+import SpreadsheetColumnReference from "./columnrow/SpreadsheetColumnReference.js";
+import SpreadsheetColumnReferenceRange from "./columnrow/SpreadsheetColumnReferenceRange.js";
 import SpreadsheetDialog from "../../widget/SpreadsheetDialog.js";
 import SpreadsheetHistoryAwareStateWidget from "../history/SpreadsheetHistoryAwareStateWidget.js";
 import SpreadsheetHistoryHash from "../history/SpreadsheetHistoryHash.js";
@@ -14,8 +14,8 @@ import SpreadsheetHistoryHashTokens from "../history/SpreadsheetHistoryHashToken
 import SpreadsheetLabelMapping from "./label/SpreadsheetLabelMapping.js";
 import SpreadsheetLabelMappingEditHistoryHashToken from "./label/SpreadsheetLabelMappingEditHistoryHashToken.js";
 import SpreadsheetLabelName from "./label/SpreadsheetLabelName.js";
-import SpreadsheetRowReference from "./SpreadsheetRowReference.js";
-import SpreadsheetRowReferenceRange from "./SpreadsheetRowReferenceRange.js";
+import SpreadsheetRowReference from "./columnrow/SpreadsheetRowReference.js";
+import SpreadsheetRowReferenceRange from "./columnrow/SpreadsheetRowReferenceRange.js";
 import SpreadsheetSelection from "./SpreadsheetSelection.js";
 import TextField from '@mui/material/TextField';
 

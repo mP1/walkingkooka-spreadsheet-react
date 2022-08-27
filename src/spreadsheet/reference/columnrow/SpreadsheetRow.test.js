@@ -1,9 +1,9 @@
-import SpreadsheetColumn from "./SpreadsheetColumn.js";
-import SpreadsheetColumnReference from "./SpreadsheetColumnReference.js";
-import systemObjectTesting from "../../SystemObjectTesting.js";
+import SpreadsheetRow from "./SpreadsheetRow.js";
+import SpreadsheetRowReference from "./SpreadsheetRowReference.js";
+import systemObjectTesting from "../../../SystemObjectTesting.js";
 
 function reference() {
-    return SpreadsheetColumnReference.parse("B");
+    return SpreadsheetRowReference.parse("2");
 }
 
 function hidden() {
@@ -12,36 +12,36 @@ function hidden() {
 
 function json() {
     return {
-        "B": {
+        "2": {
             hidden: hidden(),
         },
     };
 }
 
 systemObjectTesting(
-    new SpreadsheetColumn(reference(), hidden()),
-    new SpreadsheetColumn(SpreadsheetColumnReference.parse("Z"), hidden()),
-    SpreadsheetColumn.fromJson,
+    new SpreadsheetRow(reference(), hidden()),
+    new SpreadsheetRow(SpreadsheetRowReference.parse("999"), hidden()),
+    SpreadsheetRow.fromJson,
     "Missing json",
-    "spreadsheet-column",
+    "spreadsheet-row",
     json()
 );
 
 // create...............................................................................................................
 
 test("create without reference fails", () => {
-    expect(() => new SpreadsheetColumn(null, hidden()))
+    expect(() => new SpreadsheetRow(null, hidden()))
         .toThrow("Missing reference");
 });
 
 test("create without hidden fails", () => {
-    expect(() => new SpreadsheetColumn(reference(), null))
+    expect(() => new SpreadsheetRow(reference(), null))
         .toThrow("Missing hidden");
 });
 
 test("create", () => {
     check(
-        new SpreadsheetColumn(
+        new SpreadsheetRow(
             reference(),
             hidden()
         ),
@@ -54,20 +54,17 @@ test("create", () => {
 // fromJson.............................................................................................................
 
 test("from missing reference fails", () => {
-    expect(() => SpreadsheetColumn.fromJson({
-    })).toThrow("Missing reference");
+    expect(() => SpreadsheetRow.fromJson({})).toThrow("Missing reference");
 });
 
 test("from missing hidden fails", () => {
-    expect(() => SpreadsheetColumn.fromJson({
-        "B": {
-
-        }
+    expect(() => SpreadsheetRow.fromJson({
+        "2": {}
     })).toThrow("Missing hidden");
 });
 
 test("fromJson", () => {
-    const column = SpreadsheetColumn.fromJson(json());
+    const column = SpreadsheetRow.fromJson(json());
     check(
         column,
         reference(),
@@ -78,11 +75,11 @@ test("fromJson", () => {
 
 // patch................................................................................................................
 
-function testPatchAndCheck(column, property, value, expected) {
-    test("testPatchAndCheck " + column + " " + property + " " + value,
+function testPatchAndCheck(row, property, value, expected) {
+    test("testPatchAndCheck " + row + " " + property + " " + value,
         () => {
             expect(
-                column
+                row
                     .patch(property, value)
             ).toStrictEqual(expected);
         }
@@ -90,28 +87,28 @@ function testPatchAndCheck(column, property, value, expected) {
 }
 
 testPatchAndCheck(
-    new SpreadsheetColumn(reference(), false),
+    new SpreadsheetRow(reference(), false),
     "hidden",
     true,
-    new SpreadsheetColumn(reference(), true)
+    new SpreadsheetRow(reference(), true)
 );
 
 testPatchAndCheck(
-    new SpreadsheetColumn(reference(), true),
+    new SpreadsheetRow(reference(), true),
     "hidden",
     false,
-    new SpreadsheetColumn(reference(), false)
+    new SpreadsheetRow(reference(), false)
 );
 
 function check(column, reference, hidden, json) {
     expect(column.reference()).toStrictEqual(reference);
-    expect(column.reference()).toBeInstanceOf(SpreadsheetColumnReference);
+    expect(column.reference()).toBeInstanceOf(SpreadsheetRowReference);
 
     expect(column.hidden()).toStrictEqual(hidden);
     expect(column.hidden()).toBeBoolean();
 
     expect(column.toJson()).toStrictEqual(json);
-    expect(SpreadsheetColumn.fromJson(json)).toStrictEqual(column);
+    expect(SpreadsheetRow.fromJson(json)).toStrictEqual(column);
 
     expect(column.toString()).toStrictEqual(JSON.stringify(json));
 }

@@ -3,13 +3,13 @@ import SpreadsheetCell from "../SpreadsheetCell";
 import SpreadsheetCellReference from "../reference/cell/SpreadsheetCellReference.js";
 import spreadsheetCellReferenceOrLabelNameParse from "../reference/cell/SpreadsheetCellReferenceOrLabelNameParse.js";
 import SpreadsheetCellRange from "../reference/cell/SpreadsheetCellRange.js";
-import SpreadsheetColumn from "../reference/SpreadsheetColumn.js";
-import SpreadsheetColumnReference from "../reference/SpreadsheetColumnReference";
+import SpreadsheetColumn from "../reference/columnrow/SpreadsheetColumn.js";
+import SpreadsheetColumnReference from "../reference/columnrow/SpreadsheetColumnReference.js";
 import SpreadsheetDelta from "./SpreadsheetDelta";
 import SpreadsheetLabelMapping from "../reference/label/SpreadsheetLabelMapping.js";
 import SpreadsheetLabelName from "../reference/label/SpreadsheetLabelName.js";
-import SpreadsheetRow from "../reference/SpreadsheetRow.js";
-import SpreadsheetRowReference from "../reference/SpreadsheetRowReference";
+import SpreadsheetRow from "../reference/columnrow/SpreadsheetRow.js";
+import SpreadsheetRowReference from "../reference/columnrow/SpreadsheetRowReference.js";
 import systemObjectTesting from "../../SystemObjectTesting.js";
 
 function selection() {

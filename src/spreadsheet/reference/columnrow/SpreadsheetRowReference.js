@@ -1,14 +1,14 @@
-import CharSequences from "../../CharSequences.js";
-import Preconditions from "../../Preconditions.js";
-import SpreadsheetCellRange from "./cell/SpreadsheetCellRange.js";
-import SpreadsheetCellReference from "./cell/SpreadsheetCellReference.js";
-import SpreadsheetColumnOrRowReference from "./SpreadsheetColumnOrRowReference";
+import CharSequences from "../../../CharSequences.js";
+import Preconditions from "../../../Preconditions.js";
+import SpreadsheetCellRange from "../cell/SpreadsheetCellRange.js";
+import SpreadsheetCellReference from "../cell/SpreadsheetCellReference.js";
+import SpreadsheetColumnOrRowReference from "./SpreadsheetColumnOrRowReference.js";
 import SpreadsheetColumnReference from "./SpreadsheetColumnReference.js";
-import SpreadsheetHistoryHashTokens from "../history/SpreadsheetHistoryHashTokens.js";
-import SpreadsheetReferenceKind from "./SpreadsheetReferenceKind";
+import SpreadsheetHistoryHashTokens from "../../history/SpreadsheetHistoryHashTokens.js";
+import SpreadsheetReferenceKind from "../SpreadsheetReferenceKind.js";
 import SpreadsheetRow from "./SpreadsheetRow.js";
-import SpreadsheetSelection from "./SpreadsheetSelection.js";
-import SystemObject from "../../SystemObject.js";
+import SpreadsheetSelection from "../SpreadsheetSelection.js";
+import SystemObject from "../../../SystemObject.js";
 
 const TYPE_NAME = "spreadsheet-row-reference";
 

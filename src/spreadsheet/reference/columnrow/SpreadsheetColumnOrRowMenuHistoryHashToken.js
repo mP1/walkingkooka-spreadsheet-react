@@ -1,6 +1,6 @@
-import Preconditions from "../../Preconditions.js";
+import Preconditions from "../../../Preconditions.js";
 import SpreadsheetColumnOrRowHistoryHashToken from "./SpreadsheetColumnOrRowHistoryHashToken.js";
-import SpreadsheetHistoryHashTokens from "../history/SpreadsheetHistoryHashTokens.js";
+import SpreadsheetHistoryHashTokens from "../../history/SpreadsheetHistoryHashTokens.js";
 
 /**
  * Represents a column/row open menu history hash token.

@@ -9,7 +9,7 @@ import Locale from "../../util/Locale.js";
 import Preconditions from "../../Preconditions.js";
 import RoundingMode from "../../math/RoundingMode.js";
 import SpreadsheetCellReference from "../reference/cell/SpreadsheetCellReference.js";
-import SpreadsheetColumnReferenceRange from "../reference/SpreadsheetColumnReferenceRange.js";
+import SpreadsheetColumnReferenceRange from "../reference/columnrow/SpreadsheetColumnReferenceRange.js";
 import SpreadsheetName from "./name/SpreadsheetName.js";
 import SpreadsheetDateFormatPattern from "../format/SpreadsheetDateFormatPattern.js";
 import SpreadsheetDateParsePatterns from "../format/SpreadsheetDateParsePatterns.js";
@@ -17,7 +17,7 @@ import SpreadsheetDateTimeFormatPattern from "../format/SpreadsheetDateTimeForma
 import SpreadsheetDateTimeParsePatterns from "../format/SpreadsheetDateTimeParsePatterns.js";
 import SpreadsheetNumberFormatPattern from "../format/SpreadsheetNumberFormatPattern.js";
 import SpreadsheetNumberParsePatterns from "../format/SpreadsheetNumberParsePatterns.js";
-import SpreadsheetRowReferenceRange from "../reference/SpreadsheetRowReferenceRange.js";
+import SpreadsheetRowReferenceRange from "../reference/columnrow/SpreadsheetRowReferenceRange.js";
 import SpreadsheetTextFormatPattern from "../format/SpreadsheetTextFormatPattern.js";
 import SpreadsheetTimeFormatPattern from "../format/SpreadsheetTimeFormatPattern.js";
 import SpreadsheetTimeParsePatterns from "../format/SpreadsheetTimeParsePatterns.js";

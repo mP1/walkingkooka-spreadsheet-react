@@ -1,10 +1,10 @@
-import Preconditions from "../../Preconditions.js";
+import Preconditions from "../../../Preconditions.js";
 import SpreadsheetColumnOrRow from "./SpreadsheetColumnOrRow.js";
-import SpreadsheetColumnReference from "./SpreadsheetColumnReference.js";
+import SpreadsheetRowReference from "./SpreadsheetRowReference.js";
 
-const TYPE_NAME = "spreadsheet-column";
+const TYPE_NAME = "spreadsheet-row";
 
-export default class SpreadsheetColumn extends SpreadsheetColumnOrRow {
+export default class SpreadsheetRow extends SpreadsheetColumnOrRow {
 
     static fromJson(json) {
         Preconditions.requireObject(json, "json");
@@ -17,8 +17,8 @@ export default class SpreadsheetColumn extends SpreadsheetColumnOrRow {
                 const reference = keys[0];
                 const {hidden} = json[reference];
 
-                return new SpreadsheetColumn(
-                    SpreadsheetColumnReference.fromJson(reference),
+                return new SpreadsheetRow(
+                    SpreadsheetRowReference.fromJson(reference),
                     hidden,
                 );
             default:
@@ -28,7 +28,7 @@ export default class SpreadsheetColumn extends SpreadsheetColumnOrRow {
 
     constructor(reference, hidden) {
         super(
-            Preconditions.requireInstance(reference, SpreadsheetColumnReference, "reference"),
+            Preconditions.requireInstance(reference, SpreadsheetRowReference, "reference"),
             Preconditions.requireNonNull(hidden, "hidden")
         )
     }
@@ -38,7 +38,7 @@ export default class SpreadsheetColumn extends SpreadsheetColumnOrRow {
 
         switch(property) {
             case "hidden":
-                patched = new SpreadsheetColumn(this.reference(), value);
+                patched = new SpreadsheetRow(this.reference(), value);
                 break;
             default:
                 throw new Error("Unknown property: " + property);
