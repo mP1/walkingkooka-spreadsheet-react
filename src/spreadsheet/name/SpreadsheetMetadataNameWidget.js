@@ -8,9 +8,9 @@ import SpreadsheetHistoryHash from "../history/SpreadsheetHistoryHash.js";
 import SpreadsheetHistoryHashTokens from "../history/SpreadsheetHistoryHashTokens.js";
 import SpreadsheetMessengerCrud from "../message/SpreadsheetMessengerCrud.js";
 import SpreadsheetMetadata from "../meta/SpreadsheetMetadata.js";
+import SpreadsheetMetadataNameEditHistoryHashToken from "./SpreadsheetMetadataNameEditHistoryHashToken.js";
+import SpreadsheetMetadataNameSaveHistoryHashToken from "./SpreadsheetMetadataNameSaveHistoryHashToken.js";
 import SpreadsheetName from "./SpreadsheetName.js";
-import SpreadsheetNameEditHistoryHashToken from "./SpreadsheetNameEditHistoryHashToken.js";
-import SpreadsheetNameSaveHistoryHashToken from "./SpreadsheetNameSaveHistoryHashToken.js";
 import TextField from "@mui/material/TextField";
 
 /**
@@ -18,11 +18,11 @@ import TextField from "@mui/material/TextField";
  */
 export default class SpreadsheetMetadataNameWidget extends SpreadsheetHistoryAwareStateWidget {
 
-    static SPREADSHEET_NAME_ID = "spreadsheet-metadata-name-";
+    static SPREADSHEET_METADATA_NAME_ID = "spreadsheet-metadata-name-";
 
-    static BUTTON_ID = SpreadsheetMetadataNameWidget.SPREADSHEET_NAME_ID + "-Button";
+    static BUTTON_ID = SpreadsheetMetadataNameWidget.SPREADSHEET_METADATA_NAME_ID + "-Button";
 
-    static TEXT_FIELD_ID = SpreadsheetMetadataNameWidget.SPREADSHEET_NAME_ID + "-TextField";
+    static TEXT_FIELD_ID = SpreadsheetMetadataNameWidget.SPREADSHEET_METADATA_NAME_ID + "-TextField";
 
     init() {
     }
@@ -81,7 +81,7 @@ export default class SpreadsheetMetadataNameWidget extends SpreadsheetHistoryAwa
         document.title = text;
 
         const tokens = this.props.history.tokens();
-        tokens[SpreadsheetHistoryHashTokens.SPREADSHEET_NAME_EDIT] = SpreadsheetNameEditHistoryHashToken.INSTANCE;
+        tokens[SpreadsheetHistoryHashTokens.SPREADSHEET_NAME_EDIT] = SpreadsheetMetadataNameEditHistoryHashToken.INSTANCE;
         const buttonLink = "#" + SpreadsheetHistoryHash.stringify(tokens);
 
         const textOnBlur = () => {
@@ -137,7 +137,7 @@ export default class SpreadsheetMetadataNameWidget extends SpreadsheetHistoryAwa
 
     saveNewSpreadsheetName() {
         const historyHashTokens = SpreadsheetHistoryHash.emptyTokens();
-        historyHashTokens[SpreadsheetHistoryHashTokens.SPREADSHEET_NAME_EDIT] = new SpreadsheetNameSaveHistoryHashToken(
+        historyHashTokens[SpreadsheetHistoryHashTokens.SPREADSHEET_NAME_EDIT] = new SpreadsheetMetadataNameSaveHistoryHashToken(
             new SpreadsheetName(this.state.value)
         );
         this.historyParseMergeAndPush(historyHashTokens);
@@ -171,8 +171,8 @@ export default class SpreadsheetMetadataNameWidget extends SpreadsheetHistoryAwa
         // when the save completes clear any name save history hash token.
         const tokens = this.props.history.tokens();
         const edit = tokens[SpreadsheetHistoryHashTokens.SPREADSHEET_NAME_EDIT];
-        if(edit instanceof SpreadsheetNameSaveHistoryHashToken) {
-            tokens[SpreadsheetHistoryHashTokens.SPREADSHEET_NAME_EDIT] = SpreadsheetNameEditHistoryHashToken.INSTANCE;
+        if(edit instanceof SpreadsheetMetadataNameSaveHistoryHashToken) {
+            tokens[SpreadsheetHistoryHashTokens.SPREADSHEET_NAME_EDIT] = SpreadsheetMetadataNameEditHistoryHashToken.INSTANCE;
             this.historyParseMergeAndPush(tokens);
         }
     }

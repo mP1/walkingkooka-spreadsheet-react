@@ -2,12 +2,12 @@ import Equality from "../../Equality.js";
 import Preconditions from "../../Preconditions.js";
 import SpreadsheetHistoryHashTokens from "../history/SpreadsheetHistoryHashTokens.js";
 import SpreadsheetName from "./SpreadsheetName.js";
-import SpreadsheetNameHistoryHashToken from "./SpreadsheetNameHistoryHashToken.js";
+import SpreadsheetMetadataNameHistoryHashToken from "./SpreadsheetMetadataNameHistoryHashToken.js";
 
 /**
  * Saves the given spreadsheet name..
  */
-export default class SpreadsheetNameSaveHistoryHashToken extends SpreadsheetNameHistoryHashToken {
+export default class SpreadsheetMetadataNameSaveHistoryHashToken extends SpreadsheetMetadataNameHistoryHashToken {
 
     constructor(value) {
         super();
