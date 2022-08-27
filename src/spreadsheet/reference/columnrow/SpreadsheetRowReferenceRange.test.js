@@ -1,11 +1,11 @@
-import SpreadsheetCellReference from "./cell/SpreadsheetCellReference.js";
+import SpreadsheetCellReference from "../cell/SpreadsheetCellReference.js";
 import SpreadsheetColumnReference from "./SpreadsheetColumnReference.js";
 import SpreadsheetRowReferenceRange from "./SpreadsheetRowReferenceRange.js";
 import SpreadsheetRowReference from "./SpreadsheetRowReference.js";
-import systemObjectTesting from "../../SystemObjectTesting.js";
+import systemObjectTesting from "../../../SystemObjectTesting.js";
 import SpreadsheetRow from "./SpreadsheetRow.js";
 import SpreadsheetColumnReferenceRange from "./SpreadsheetColumnReferenceRange.js";
-import SpreadsheetCellRange from "./cell/SpreadsheetCellRange.js";
+import SpreadsheetCellRange from "../cell/SpreadsheetCellRange.js";
 
 const JSON = "2:4";
 

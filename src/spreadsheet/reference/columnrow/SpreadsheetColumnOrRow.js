@@ -1,4 +1,4 @@
-import SystemObject from "../../SystemObject.js";
+import SystemObject from "../../../SystemObject.js";
 
 export default class SpreadsheetColumnOrRow extends SystemObject {
 

@@ -20,20 +20,26 @@ import SpreadsheetCellSelectHistoryHashToken from "../reference/cell/Spreadsheet
 import SpreadsheetCellStyleEditHistoryHashToken from "../reference/style/SpreadsheetCellStyleEditHistoryHashToken.js";
 import SpreadsheetCellStyleSaveHistoryHashToken from "../reference/style/SpreadsheetCellStyleSaveHistoryHashToken.js";
 import SpreadsheetCellUnFreezeHistoryHashToken from "../reference/cell/SpreadsheetCellUnFreezeHistoryHashToken.js";
-import SpreadsheetColumnOrRowClearHistoryHashToken from "../reference/SpreadsheetColumnOrRowClearHistoryHashToken.js";
-import SpreadsheetColumnOrRowDeleteHistoryHashToken from "../reference/SpreadsheetColumnOrRowDeleteHistoryHashToken.js";
-import SpreadsheetColumnOrRowFreezeHistoryHashToken from "../reference/SpreadsheetColumnOrRowFreezeHistoryHashToken.js";
+import SpreadsheetColumnOrRowClearHistoryHashToken
+    from "../reference/columnrow/SpreadsheetColumnOrRowClearHistoryHashToken.js";
+import SpreadsheetColumnOrRowDeleteHistoryHashToken
+    from "../reference/columnrow/SpreadsheetColumnOrRowDeleteHistoryHashToken.js";
+import SpreadsheetColumnOrRowFreezeHistoryHashToken
+    from "../reference/columnrow/SpreadsheetColumnOrRowFreezeHistoryHashToken.js";
 import SpreadsheetColumnOrRowInsertAfterHistoryHashToken
-    from "../reference/SpreadsheetColumnOrRowInsertAfterHistoryHashToken.js";
+    from "../reference/columnrow/SpreadsheetColumnOrRowInsertAfterHistoryHashToken.js";
 import SpreadsheetColumnOrRowInsertBeforeHistoryHashToken
-    from "../reference/SpreadsheetColumnOrRowInsertBeforeHistoryHashToken.js";
-import SpreadsheetColumnOrRowMenuHistoryHashToken from "../reference/SpreadsheetColumnOrRowMenuHistoryHashToken.js";
-import SpreadsheetColumnOrRowSaveHistoryHashToken from "../reference/SpreadsheetColumnOrRowSaveHistoryHashToken.js";
-import SpreadsheetColumnOrRowSelectHistoryHashToken from "../reference/SpreadsheetColumnOrRowSelectHistoryHashToken.js";
+    from "../reference/columnrow/SpreadsheetColumnOrRowInsertBeforeHistoryHashToken.js";
+import SpreadsheetColumnOrRowMenuHistoryHashToken
+    from "../reference/columnrow/SpreadsheetColumnOrRowMenuHistoryHashToken.js";
+import SpreadsheetColumnOrRowSaveHistoryHashToken
+    from "../reference/columnrow/SpreadsheetColumnOrRowSaveHistoryHashToken.js";
+import SpreadsheetColumnOrRowSelectHistoryHashToken
+    from "../reference/columnrow/SpreadsheetColumnOrRowSelectHistoryHashToken.js";
 import SpreadsheetColumnOrRowUnFreezeHistoryHashToken
-    from "../reference/SpreadsheetColumnOrRowUnFreezeHistoryHashToken.js";
-import SpreadsheetColumnReference from "../reference/SpreadsheetColumnReference.js";
-import SpreadsheetColumnReferenceRange from "../reference/SpreadsheetColumnReferenceRange.js";
+    from "../reference/columnrow/SpreadsheetColumnOrRowUnFreezeHistoryHashToken.js";
+import SpreadsheetColumnReference from "../reference/columnrow/SpreadsheetColumnReference.js";
+import SpreadsheetColumnReferenceRange from "../reference/columnrow/SpreadsheetColumnReferenceRange.js";
 import SpreadsheetContextMenu from "../../widget/SpreadsheetContextMenu.js";
 import SpreadsheetDateFormatPattern from "../format/SpreadsheetDateFormatPattern.js";
 import SpreadsheetDateParsePatterns from "../format/SpreadsheetDateParsePatterns.js";
@@ -55,8 +61,8 @@ import SpreadsheetMetadataWidgetHistoryHashTokens from "../meta/drawer/Spreadshe
 import SpreadsheetName from "../meta/name/SpreadsheetName.js";
 import SpreadsheetNameEditHistoryHashToken from "../meta/name/SpreadsheetNameEditHistoryHashToken.js";
 import SpreadsheetNameSaveHistoryHashToken from "../meta/name/SpreadsheetNameSaveHistoryHashToken.js";
-import SpreadsheetRowReference from "../reference/SpreadsheetRowReference.js";
-import SpreadsheetRowReferenceRange from "../reference/SpreadsheetRowReferenceRange.js"
+import SpreadsheetRowReference from "../reference/columnrow/SpreadsheetRowReference.js";
+import SpreadsheetRowReferenceRange from "../reference/columnrow/SpreadsheetRowReferenceRange.js"
 import SpreadsheetTextFormatPattern from "../format/SpreadsheetTextFormatPattern.js";
 import SpreadsheetTimeFormatPattern from "../format/SpreadsheetTimeFormatPattern.js";
 import SpreadsheetTimeParsePatterns from "../format/SpreadsheetTimeParsePatterns.js";

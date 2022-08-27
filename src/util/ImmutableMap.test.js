@@ -1,7 +1,7 @@
 import ImmutableMap from "./ImmutableMap";
 import lengthFromJson from "../text/LengthFromJson.js";
 import SpreadsheetCellReference from "../spreadsheet/reference/cell/SpreadsheetCellReference.js";
-import SpreadsheetColumnReference from "../spreadsheet/reference/SpreadsheetColumnReference";
+import SpreadsheetColumnReference from "../spreadsheet/reference/columnrow/SpreadsheetColumnReference.js";
 import TextStyle from "../text/TextStyle";
 
 // new..................................................................................................................

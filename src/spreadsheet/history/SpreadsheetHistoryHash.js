@@ -20,20 +20,26 @@ import SpreadsheetCellSelectHistoryHashToken from "../reference/cell/Spreadsheet
 import SpreadsheetCellStyleEditHistoryHashToken from "../reference/style/SpreadsheetCellStyleEditHistoryHashToken.js";
 import SpreadsheetCellStyleSaveHistoryHashToken from "../reference/style/SpreadsheetCellStyleSaveHistoryHashToken.js";
 import SpreadsheetCellUnFreezeHistoryHashToken from "../reference/cell/SpreadsheetCellUnFreezeHistoryHashToken.js";
-import SpreadsheetColumnOrRowClearHistoryHashToken from "../reference/SpreadsheetColumnOrRowClearHistoryHashToken.js";
-import SpreadsheetColumnOrRowDeleteHistoryHashToken from "../reference/SpreadsheetColumnOrRowDeleteHistoryHashToken.js";
-import SpreadsheetColumnOrRowFreezeHistoryHashToken from "../reference/SpreadsheetColumnOrRowFreezeHistoryHashToken.js";
-import SpreadsheetColumnOrRowHistoryHashToken from "../reference/SpreadsheetColumnOrRowHistoryHashToken.js";
+import SpreadsheetColumnOrRowClearHistoryHashToken
+    from "../reference/columnrow/SpreadsheetColumnOrRowClearHistoryHashToken.js";
+import SpreadsheetColumnOrRowDeleteHistoryHashToken
+    from "../reference/columnrow/SpreadsheetColumnOrRowDeleteHistoryHashToken.js";
+import SpreadsheetColumnOrRowFreezeHistoryHashToken
+    from "../reference/columnrow/SpreadsheetColumnOrRowFreezeHistoryHashToken.js";
+import SpreadsheetColumnOrRowHistoryHashToken from "../reference/columnrow/SpreadsheetColumnOrRowHistoryHashToken.js";
 import SpreadsheetColumnOrRowInsertAfterHistoryHashToken
-    from "../reference/SpreadsheetColumnOrRowInsertAfterHistoryHashToken.js";
+    from "../reference/columnrow/SpreadsheetColumnOrRowInsertAfterHistoryHashToken.js";
 import SpreadsheetColumnOrRowInsertBeforeHistoryHashToken
-    from "../reference/SpreadsheetColumnOrRowInsertBeforeHistoryHashToken.js";
-import SpreadsheetColumnOrRowMenuHistoryHashToken from "../reference/SpreadsheetColumnOrRowMenuHistoryHashToken.js";
-import SpreadsheetColumnOrRowSaveHistoryHashToken from "../reference/SpreadsheetColumnOrRowSaveHistoryHashToken.js";
-import SpreadsheetColumnOrRowSelectHistoryHashToken from "../reference/SpreadsheetColumnOrRowSelectHistoryHashToken.js";
+    from "../reference/columnrow/SpreadsheetColumnOrRowInsertBeforeHistoryHashToken.js";
+import SpreadsheetColumnOrRowMenuHistoryHashToken
+    from "../reference/columnrow/SpreadsheetColumnOrRowMenuHistoryHashToken.js";
+import SpreadsheetColumnOrRowSaveHistoryHashToken
+    from "../reference/columnrow/SpreadsheetColumnOrRowSaveHistoryHashToken.js";
+import SpreadsheetColumnOrRowSelectHistoryHashToken
+    from "../reference/columnrow/SpreadsheetColumnOrRowSelectHistoryHashToken.js";
 import SpreadsheetColumnOrRowUnFreezeHistoryHashToken
-    from "../reference/SpreadsheetColumnOrRowUnFreezeHistoryHashToken.js";
-import SpreadsheetColumnReferenceRange from "../reference/SpreadsheetColumnReferenceRange.js";
+    from "../reference/columnrow/SpreadsheetColumnOrRowUnFreezeHistoryHashToken.js";
+import SpreadsheetColumnReferenceRange from "../reference/columnrow/SpreadsheetColumnReferenceRange.js";
 import SpreadsheetContextMenu from "../../widget/SpreadsheetContextMenu.js";
 import SpreadsheetHistoryHashTokens from "./SpreadsheetHistoryHashTokens.js";
 import SpreadsheetLabelMappingDeleteHistoryHashToken
@@ -52,7 +58,7 @@ import SpreadsheetName from "../meta/name/SpreadsheetName.js";
 import SpreadsheetNameEditHistoryHashToken from "../meta/name/SpreadsheetNameEditHistoryHashToken.js";
 import SpreadsheetNameHistoryHashToken from "../meta/name/SpreadsheetNameHistoryHashToken.js";
 import SpreadsheetNameSaveHistoryHashToken from "../meta/name/SpreadsheetNameSaveHistoryHashToken.js";
-import SpreadsheetRowReferenceRange from "../reference/SpreadsheetRowReferenceRange.js";
+import SpreadsheetRowReferenceRange from "../reference/columnrow/SpreadsheetRowReferenceRange.js";
 import SpreadsheetSelectionHistoryHashToken from "../reference/SpreadsheetSelectionHistoryHashToken.js";
 import SpreadsheetViewportSelection from "../reference/viewport/SpreadsheetViewportSelection.js";
 import TextStyle from "../../text/TextStyle.js";

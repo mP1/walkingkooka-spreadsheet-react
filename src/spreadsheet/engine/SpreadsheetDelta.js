@@ -5,13 +5,13 @@ import Preconditions from "../../Preconditions.js";
 import SpreadsheetCell from "../SpreadsheetCell";
 import SpreadsheetCellRange from "../reference/cell/SpreadsheetCellRange.js";
 import SpreadsheetCellReference from "../reference/cell/SpreadsheetCellReference.js";
-import SpreadsheetColumn from "../reference/SpreadsheetColumn.js";
-import SpreadsheetColumnReference from "../reference/SpreadsheetColumnReference";
+import SpreadsheetColumn from "../reference/columnrow/SpreadsheetColumn.js";
+import SpreadsheetColumnReference from "../reference/columnrow/SpreadsheetColumnReference.js";
 import SpreadsheetExpressionReference from "../reference/SpreadsheetExpressionReference.js";
 import SpreadsheetLabelMapping from "../reference/label/SpreadsheetLabelMapping.js";
 import SpreadsheetLabelName from "../reference/label/SpreadsheetLabelName.js";
-import SpreadsheetRow from "../reference/SpreadsheetRow.js";
-import SpreadsheetRowReference from "../reference/SpreadsheetRowReference";
+import SpreadsheetRow from "../reference/columnrow/SpreadsheetRow.js";
+import SpreadsheetRowReference from "../reference/columnrow/SpreadsheetRowReference.js";
 import SpreadsheetViewportSelection from "../reference/viewport/SpreadsheetViewportSelection.js";
 import SystemObject from "../../SystemObject.js";
 

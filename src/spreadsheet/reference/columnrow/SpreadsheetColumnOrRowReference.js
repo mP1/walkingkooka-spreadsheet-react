@@ -1,8 +1,8 @@
-import Preconditions from "../../Preconditions.js";
+import Preconditions from "../../../Preconditions.js";
 import React from "react";
-import SpreadsheetReferenceKind from "./SpreadsheetReferenceKind";
-import SpreadsheetSelection from "./SpreadsheetSelection.js";
-import SpreadsheetViewportSelectionAnchor from "./viewport/SpreadsheetViewportSelectionAnchor.js";
+import SpreadsheetReferenceKind from "../SpreadsheetReferenceKind.js";
+import SpreadsheetSelection from "../SpreadsheetSelection.js";
+import SpreadsheetViewportSelectionAnchor from "../viewport/SpreadsheetViewportSelectionAnchor.js";
 import TableCell from "@mui/material/TableCell";
 
 export default class SpreadsheetColumnOrRowReference extends SpreadsheetSelection {

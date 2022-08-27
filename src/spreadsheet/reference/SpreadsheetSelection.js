@@ -2,13 +2,14 @@ import CharSequences from "../../CharSequences.js";
 import Character from "../../Character.js";
 import SpreadsheetCellFreezeHistoryHashToken from "./cell/SpreadsheetCellFreezeHistoryHashToken.js";
 import SpreadsheetCellUnFreezeHistoryHashToken from "./cell/SpreadsheetCellUnFreezeHistoryHashToken.js";
-import SpreadsheetColumnOrRowClearHistoryHashToken from "./SpreadsheetColumnOrRowClearHistoryHashToken.js";
-import SpreadsheetColumnOrRowDeleteHistoryHashToken from "./SpreadsheetColumnOrRowDeleteHistoryHashToken.js";
-import SpreadsheetColumnOrRowFreezeHistoryHashToken from "./SpreadsheetColumnOrRowFreezeHistoryHashToken.js";
+import SpreadsheetColumnOrRowClearHistoryHashToken from "./columnrow/SpreadsheetColumnOrRowClearHistoryHashToken.js";
+import SpreadsheetColumnOrRowDeleteHistoryHashToken from "./columnrow/SpreadsheetColumnOrRowDeleteHistoryHashToken.js";
+import SpreadsheetColumnOrRowFreezeHistoryHashToken from "./columnrow/SpreadsheetColumnOrRowFreezeHistoryHashToken.js";
 import SpreadsheetColumnOrRowInsertBeforeHistoryHashToken
-    from "./SpreadsheetColumnOrRowInsertBeforeHistoryHashToken.js";
-import SpreadsheetColumnOrRowInsertAfterHistoryHashToken from "./SpreadsheetColumnOrRowInsertAfterHistoryHashToken.js";
-import SpreadsheetColumnOrRowSaveHistoryHashToken from "./SpreadsheetColumnOrRowSaveHistoryHashToken.js";
+    from "./columnrow/SpreadsheetColumnOrRowInsertBeforeHistoryHashToken.js";
+import SpreadsheetColumnOrRowInsertAfterHistoryHashToken
+    from "./columnrow/SpreadsheetColumnOrRowInsertAfterHistoryHashToken.js";
+import SpreadsheetColumnOrRowSaveHistoryHashToken from "./columnrow/SpreadsheetColumnOrRowSaveHistoryHashToken.js";
 import SpreadsheetHistoryHashTokens from "../history/SpreadsheetHistoryHashTokens.js";
 import SpreadsheetViewportSelection from "./viewport/SpreadsheetViewportSelection.js";
 import SystemObject from "../../SystemObject.js";

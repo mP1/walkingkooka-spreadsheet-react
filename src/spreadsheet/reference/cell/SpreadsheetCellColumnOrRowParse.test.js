@@ -1,7 +1,7 @@
 import SpreadsheetCellReference from "./SpreadsheetCellReference.js";
 import SpreadsheetCellColumnOrRowParse from "./SpreadsheetCellColumnOrRowParse.js";
-import SpreadsheetColumnReference from "../SpreadsheetColumnReference.js";
-import SpreadsheetRowReference from "../SpreadsheetRowReference.js";
+import SpreadsheetColumnReference from "../columnrow/SpreadsheetColumnReference.js";
+import SpreadsheetRowReference from "../columnrow/SpreadsheetRowReference.js";
 
 function spreadsheetCellColumnOrRowParseAndCheck(text, parse) {
     test("spreadsheetCellColumnOrRowParseAndCheck \"" + text + "\"", () => {

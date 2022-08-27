@@ -1,4 +1,4 @@
-import Preconditions from "../../Preconditions.js";
+import Preconditions from "../../../Preconditions.js";
 import SpreadsheetColumnOrRowHistoryHashToken from "./SpreadsheetColumnOrRowHistoryHashToken.js";
 
 /**

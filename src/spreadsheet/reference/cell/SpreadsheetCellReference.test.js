@@ -1,6 +1,6 @@
 import SpreadsheetCellReference from "./SpreadsheetCellReference.js";
-import SpreadsheetColumnReference from "../SpreadsheetColumnReference.js";
-import SpreadsheetRowReference from "../SpreadsheetRowReference.js";
+import SpreadsheetColumnReference from "../columnrow/SpreadsheetColumnReference.js";
+import SpreadsheetRowReference from "../columnrow/SpreadsheetRowReference.js";
 import systemObjectTesting from "../../../SystemObjectTesting.js";
 import SpreadsheetCellRange from "./SpreadsheetCellRange.js";
 
