@@ -8,8 +8,8 @@ import SpreadsheetHistoryHash from "../history/SpreadsheetHistoryHash.js";
 import SpreadsheetHistoryHashTokens from "../history/SpreadsheetHistoryHashTokens.js";
 import SpreadsheetMessengerCrud from "../message/SpreadsheetMessengerCrud.js";
 import SpreadsheetMetadata from "./SpreadsheetMetadata.js";
-import SpreadsheetMetadataNameEditHistoryHashToken from "./SpreadsheetMetadataNameEditHistoryHashToken.js";
-import SpreadsheetMetadataNameSaveHistoryHashToken from "./SpreadsheetMetadataNameSaveHistoryHashToken.js";
+import SpreadsheetNameEditHistoryHashToken from "./SpreadsheetNameEditHistoryHashToken.js";
+import SpreadsheetNameSaveHistoryHashToken from "./SpreadsheetNameSaveHistoryHashToken.js";
 import SpreadsheetName from "./SpreadsheetName.js";
 import TextField from "@mui/material/TextField";
 
@@ -81,7 +81,7 @@ export default class SpreadsheetNameWidget extends SpreadsheetHistoryAwareStateW
         document.title = text;
 
         const tokens = this.props.history.tokens();
-        tokens[SpreadsheetHistoryHashTokens.SPREADSHEET_NAME_EDIT] = SpreadsheetMetadataNameEditHistoryHashToken.INSTANCE;
+        tokens[SpreadsheetHistoryHashTokens.SPREADSHEET_NAME_EDIT] = SpreadsheetNameEditHistoryHashToken.INSTANCE;
         const buttonLink = "#" + SpreadsheetHistoryHash.stringify(tokens);
 
         const textOnBlur = () => {
@@ -137,7 +137,7 @@ export default class SpreadsheetNameWidget extends SpreadsheetHistoryAwareStateW
 
     saveNewSpreadsheetName() {
         const historyHashTokens = SpreadsheetHistoryHash.emptyTokens();
-        historyHashTokens[SpreadsheetHistoryHashTokens.SPREADSHEET_NAME_EDIT] = new SpreadsheetMetadataNameSaveHistoryHashToken(
+        historyHashTokens[SpreadsheetHistoryHashTokens.SPREADSHEET_NAME_EDIT] = new SpreadsheetNameSaveHistoryHashToken(
             new SpreadsheetName(this.state.value)
         );
         this.historyParseMergeAndPush(historyHashTokens);
@@ -171,8 +171,8 @@ export default class SpreadsheetNameWidget extends SpreadsheetHistoryAwareStateW
         // when the save completes clear any name save history hash token.
         const tokens = this.props.history.tokens();
         const edit = tokens[SpreadsheetHistoryHashTokens.SPREADSHEET_NAME_EDIT];
-        if(edit instanceof SpreadsheetMetadataNameSaveHistoryHashToken) {
-            tokens[SpreadsheetHistoryHashTokens.SPREADSHEET_NAME_EDIT] = SpreadsheetMetadataNameEditHistoryHashToken.INSTANCE;
+        if(edit instanceof SpreadsheetNameSaveHistoryHashToken) {
+            tokens[SpreadsheetHistoryHashTokens.SPREADSHEET_NAME_EDIT] = SpreadsheetNameEditHistoryHashToken.INSTANCE;
             this.historyParseMergeAndPush(tokens);
         }
     }

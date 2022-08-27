@@ -42,10 +42,10 @@ import SpreadsheetLabelMappingEditHistoryHashToken from "../reference/Spreadshee
 import SpreadsheetLabelMappingHistoryHashToken from "../reference/SpreadsheetLabelMappingHistoryHashToken.js";
 import SpreadsheetLabelMappingSaveHistoryHashToken from "../reference/SpreadsheetLabelMappingSaveHistoryHashToken.js";
 import SpreadsheetLabelName from "../reference/SpreadsheetLabelName.js";
-import SpreadsheetMetadataNameEditHistoryHashToken from "../meta/SpreadsheetMetadataNameEditHistoryHashToken.js";
-import SpreadsheetMetadataNameHistoryHashToken from "../meta/SpreadsheetMetadataNameHistoryHashToken.js";
-import SpreadsheetMetadataNameSaveHistoryHashToken from "../meta/SpreadsheetMetadataNameSaveHistoryHashToken.js";
 import SpreadsheetName from "../meta/SpreadsheetName.js";
+import SpreadsheetNameEditHistoryHashToken from "../meta/SpreadsheetNameEditHistoryHashToken.js";
+import SpreadsheetNameHistoryHashToken from "../meta/SpreadsheetNameHistoryHashToken.js";
+import SpreadsheetNameSaveHistoryHashToken from "../meta/SpreadsheetNameSaveHistoryHashToken.js";
 import SpreadsheetRowReferenceRange from "../reference/SpreadsheetRowReferenceRange.js";
 import SpreadsheetSelectionHistoryHashToken from "../reference/SpreadsheetSelectionHistoryHashToken.js";
 import SpreadsheetMetadataHistoryHashToken from "../meta/drawer/SpreadsheetMetadataHistoryHashToken.js";
@@ -117,12 +117,12 @@ export default class SpreadsheetHistoryHash extends SpreadsheetHistoryHashTokens
                         var token = tokens.shift();
 
                         if(SpreadsheetHistoryHashTokens.SPREADSHEET_NAME_PATH === token){
-                            spreadsheetNameEdit = SpreadsheetMetadataNameEditHistoryHashToken.INSTANCE;
+                            spreadsheetNameEdit = SpreadsheetNameEditHistoryHashToken.INSTANCE;
                             token = tokens.shift();
 
                             if(token){
                                 // /$id/$name/name/$new-spreadsheet-name
-                                spreadsheetNameEdit = new SpreadsheetMetadataNameSaveHistoryHashToken(
+                                spreadsheetNameEdit = new SpreadsheetNameSaveHistoryHashToken(
                                     new SpreadsheetName(
                                         decodeURIComponent(token)
                                     )
@@ -505,7 +505,7 @@ export default class SpreadsheetHistoryHash extends SpreadsheetHistoryHashTokens
                 if(selection || label || select || settings){
                     spreadsheetNameEdit = null;
                 }
-                if(spreadsheetNameEdit instanceof SpreadsheetMetadataNameHistoryHashToken){
+                if(spreadsheetNameEdit instanceof SpreadsheetNameHistoryHashToken){
                     verified[SpreadsheetHistoryHashTokens.SPREADSHEET_NAME_EDIT] = spreadsheetNameEdit;
                 }
                 if(selection instanceof SpreadsheetSelectionHistoryHashToken){
@@ -584,7 +584,7 @@ export default class SpreadsheetHistoryHash extends SpreadsheetHistoryHashTokens
 
         if(delta.hasOwnProperty(SpreadsheetHistoryHashTokens.SPREADSHEET_NAME_EDIT)){
             spreadsheetNameEdit = delta[SpreadsheetHistoryHashTokens.SPREADSHEET_NAME_EDIT];
-            if(spreadsheetNameEdit instanceof SpreadsheetMetadataNameHistoryHashToken){
+            if(spreadsheetNameEdit instanceof SpreadsheetNameHistoryHashToken){
                 selection = null;
                 label = null;
                 select = null;

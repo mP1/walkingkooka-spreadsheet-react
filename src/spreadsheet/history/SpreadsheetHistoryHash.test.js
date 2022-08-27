@@ -47,8 +47,8 @@ import SpreadsheetLabelMappingEditHistoryHashToken from "../reference/Spreadshee
 import SpreadsheetLabelMappingSaveHistoryHashToken from "../reference/SpreadsheetLabelMappingSaveHistoryHashToken.js";
 import SpreadsheetLabelName from "../reference/SpreadsheetLabelName.js";
 import SpreadsheetMetadata from "../meta/SpreadsheetMetadata.js";
-import SpreadsheetMetadataNameEditHistoryHashToken from "../meta/SpreadsheetMetadataNameEditHistoryHashToken.js";
-import SpreadsheetMetadataNameSaveHistoryHashToken from "../meta/SpreadsheetMetadataNameSaveHistoryHashToken.js";
+import SpreadsheetNameEditHistoryHashToken from "../meta/SpreadsheetNameEditHistoryHashToken.js";
+import SpreadsheetNameSaveHistoryHashToken from "../meta/SpreadsheetNameSaveHistoryHashToken.js";
 import SpreadsheetMetadataSaveHistoryHashToken from "../meta/drawer/SpreadsheetMetadataSaveHistoryHashToken.js";
 import SpreadsheetMetadataSelectHistoryHashToken from "../meta/drawer/SpreadsheetMetadataSelectHistoryHashToken.js";
 import SpreadsheetMetadataWidgetHistoryHashTokens from "../meta/drawer/SpreadsheetMetadataWidgetHistoryHashTokens.js";
@@ -65,9 +65,9 @@ import TextStyle from "../../text/TextStyle.js";
 const ID = "spreadsheet-id-123";
 const SPREADSHEET_NAME = new SpreadsheetName("spreadsheet-name-456");
 
-const NAME_EDIT = SpreadsheetMetadataNameEditHistoryHashToken.INSTANCE;
+const NAME_EDIT = SpreadsheetNameEditHistoryHashToken.INSTANCE;
 const SPREADSHEET_NAME_NEW = "new-spreadsheet-name-789";
-const NAME_SAVE = new SpreadsheetMetadataNameSaveHistoryHashToken(new SpreadsheetName(SPREADSHEET_NAME_NEW));
+const NAME_SAVE = new SpreadsheetNameSaveHistoryHashToken(new SpreadsheetName(SPREADSHEET_NAME_NEW));
 
 const CONTEXT_MENU = new SpreadsheetContextMenu();
 
