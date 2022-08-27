@@ -42,16 +42,16 @@ import SpreadsheetLabelMappingEditHistoryHashToken from "../reference/Spreadshee
 import SpreadsheetLabelMappingHistoryHashToken from "../reference/SpreadsheetLabelMappingHistoryHashToken.js";
 import SpreadsheetLabelMappingSaveHistoryHashToken from "../reference/SpreadsheetLabelMappingSaveHistoryHashToken.js";
 import SpreadsheetLabelName from "../reference/SpreadsheetLabelName.js";
+import SpreadsheetMetadataHistoryHashToken from "../meta/drawer/SpreadsheetMetadataHistoryHashToken.js";
+import SpreadsheetMetadataSaveHistoryHashToken from "../meta/drawer/SpreadsheetMetadataSaveHistoryHashToken.js";
+import SpreadsheetMetadataSelectHistoryHashToken from "../meta/drawer/SpreadsheetMetadataSelectHistoryHashToken.js";
+import SpreadsheetMetadataWidgetHistoryHashTokens from "../meta/drawer/SpreadsheetMetadataWidgetHistoryHashTokens.js";
 import SpreadsheetName from "../meta/SpreadsheetName.js";
 import SpreadsheetNameEditHistoryHashToken from "../meta/SpreadsheetNameEditHistoryHashToken.js";
 import SpreadsheetNameHistoryHashToken from "../meta/SpreadsheetNameHistoryHashToken.js";
 import SpreadsheetNameSaveHistoryHashToken from "../meta/SpreadsheetNameSaveHistoryHashToken.js";
 import SpreadsheetRowReferenceRange from "../reference/SpreadsheetRowReferenceRange.js";
 import SpreadsheetSelectionHistoryHashToken from "../reference/SpreadsheetSelectionHistoryHashToken.js";
-import SpreadsheetMetadataHistoryHashToken from "../meta/drawer/SpreadsheetMetadataHistoryHashToken.js";
-import SpreadsheetMetadataSaveHistoryHashToken from "../meta/drawer/SpreadsheetMetadataSaveHistoryHashToken.js";
-import SpreadsheetMetadataSelectHistoryHashToken from "../meta/drawer/SpreadsheetMetadataSelectHistoryHashToken.js";
-import SpreadsheetMetadataWidgetHistoryHashTokens from "../meta/drawer/SpreadsheetMetadataWidgetHistoryHashTokens.js";
 import SpreadsheetViewportSelection from "../reference/viewport/SpreadsheetViewportSelection.js";
 import TextStyle from "../../text/TextStyle.js";
 
