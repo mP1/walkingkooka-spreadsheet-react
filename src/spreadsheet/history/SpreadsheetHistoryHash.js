@@ -46,10 +46,10 @@ import SpreadsheetMetadataHistoryHashToken from "../meta/drawer/SpreadsheetMetad
 import SpreadsheetMetadataSaveHistoryHashToken from "../meta/drawer/SpreadsheetMetadataSaveHistoryHashToken.js";
 import SpreadsheetMetadataSelectHistoryHashToken from "../meta/drawer/SpreadsheetMetadataSelectHistoryHashToken.js";
 import SpreadsheetMetadataWidgetHistoryHashTokens from "../meta/drawer/SpreadsheetMetadataWidgetHistoryHashTokens.js";
-import SpreadsheetName from "../meta/SpreadsheetName.js";
-import SpreadsheetNameEditHistoryHashToken from "../meta/SpreadsheetNameEditHistoryHashToken.js";
-import SpreadsheetNameHistoryHashToken from "../meta/SpreadsheetNameHistoryHashToken.js";
-import SpreadsheetNameSaveHistoryHashToken from "../meta/SpreadsheetNameSaveHistoryHashToken.js";
+import SpreadsheetName from "../meta/name/SpreadsheetName.js";
+import SpreadsheetNameEditHistoryHashToken from "../meta/name/SpreadsheetNameEditHistoryHashToken.js";
+import SpreadsheetNameHistoryHashToken from "../meta/name/SpreadsheetNameHistoryHashToken.js";
+import SpreadsheetNameSaveHistoryHashToken from "../meta/name/SpreadsheetNameSaveHistoryHashToken.js";
 import SpreadsheetRowReferenceRange from "../reference/SpreadsheetRowReferenceRange.js";
 import SpreadsheetSelectionHistoryHashToken from "../reference/SpreadsheetSelectionHistoryHashToken.js";
 import SpreadsheetViewportSelection from "../reference/viewport/SpreadsheetViewportSelection.js";

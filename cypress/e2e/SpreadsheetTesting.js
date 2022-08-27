@@ -2,7 +2,7 @@ import SpreadsheetCellReference from "../../src/spreadsheet/reference/Spreadshee
 import SpreadsheetColumnReference from "../../src/spreadsheet/reference/SpreadsheetColumnReference.js";
 import SpreadsheetFormulaWidget from "../../src/spreadsheet/reference/formula/SpreadsheetFormulaWidget.js";
 import SpreadsheetMetadataPanelWidget from "../../src/spreadsheet/meta/drawer/SpreadsheetMetadataPanelWidget.js";
-import SpreadsheetNameWidget from "../../src/spreadsheet/meta/SpreadsheetNameWidget.js";
+import SpreadsheetNameWidget from "../../src/spreadsheet/meta/name/SpreadsheetNameWidget.js";
 import SpreadsheetRowReference from "../../src/spreadsheet/reference/SpreadsheetRowReference.js";
 import SpreadsheetLabelMappingWidget from "../../src/spreadsheet/reference/SpreadsheetLabelMappingWidget.js";
 import SpreadsheetSelectLinkWidget from "../../src/spreadsheet/reference/SpreadsheetSelectLinkWidget.js";

@@ -50,9 +50,9 @@ import SpreadsheetMetadata from "../meta/SpreadsheetMetadata.js";
 import SpreadsheetMetadataSaveHistoryHashToken from "../meta/drawer/SpreadsheetMetadataSaveHistoryHashToken.js";
 import SpreadsheetMetadataSelectHistoryHashToken from "../meta/drawer/SpreadsheetMetadataSelectHistoryHashToken.js";
 import SpreadsheetMetadataWidgetHistoryHashTokens from "../meta/drawer/SpreadsheetMetadataWidgetHistoryHashTokens.js";
-import SpreadsheetName from "../meta/SpreadsheetName.js";
-import SpreadsheetNameEditHistoryHashToken from "../meta/SpreadsheetNameEditHistoryHashToken.js";
-import SpreadsheetNameSaveHistoryHashToken from "../meta/SpreadsheetNameSaveHistoryHashToken.js";
+import SpreadsheetName from "../meta/name/SpreadsheetName.js";
+import SpreadsheetNameEditHistoryHashToken from "../meta/name/SpreadsheetNameEditHistoryHashToken.js";
+import SpreadsheetNameSaveHistoryHashToken from "../meta/name/SpreadsheetNameSaveHistoryHashToken.js";
 import SpreadsheetRowReference from "../reference/SpreadsheetRowReference.js";
 import SpreadsheetRowReferenceRange from "../reference/SpreadsheetRowReferenceRange.js"
 import SpreadsheetTextFormatPattern from "../format/SpreadsheetTextFormatPattern.js";
