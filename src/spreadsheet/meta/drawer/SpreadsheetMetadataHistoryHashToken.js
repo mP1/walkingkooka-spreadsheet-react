@@ -4,9 +4,9 @@
 import SpreadsheetHistoryHashToken from "../../history/SpreadsheetHistoryHashToken.js";
 import SystemObject from "../../../SystemObject.js";
 
-export default class SpreadsheetSettingsHistoryHashToken extends SpreadsheetHistoryHashToken {
+export default class SpreadsheetMetadataHistoryHashToken extends SpreadsheetHistoryHashToken {
 
-    settingsWidgetExecute(settingsWidget, previousSettings) {
+    metadataDrawerWidget(metadataDrawerWidget, previousSettings) {
         SystemObject.throwUnsupportedOperation();
     }
 }

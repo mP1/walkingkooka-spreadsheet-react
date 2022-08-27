@@ -50,8 +50,8 @@ import SpreadsheetMetadataPanelWidgetTextFieldSpreadsheetTimeFormatPattern
 import SpreadsheetMetadataPanelWidgetTextFieldSpreadsheetTimeParsePatterns
     from "./SpreadsheetMetadataPanelWidgetTextFieldSpreadsheetTimeParsePatterns.js";
 import SpreadsheetMetadataPanelWidgetTextFieldString from "./SpreadsheetMetadataPanelWidgetTextFieldString.js";
-import SpreadsheetSettingsSaveHistoryHashToken from "./SpreadsheetSettingsSaveHistoryHashToken.js";
-import SpreadsheetSettingsSelectHistoryHashToken from "./SpreadsheetSettingsSelectHistoryHashToken.js";
+import SpreadsheetMetadataSaveHistoryHashToken from "./SpreadsheetMetadataSaveHistoryHashToken.js";
+import SpreadsheetMetadataSelectHistoryHashToken from "./SpreadsheetMetadataSelectHistoryHashToken.js";
 import SpreadsheetSettingsWidgetHistoryHashTokens from "./SpreadsheetSettingsWidgetHistoryHashTokens.js";
 import stylePropertyNameToEnum from "../../../text/stylePropertyNameToEnum.js";
 import Table from '@mui/material/Table';
@@ -188,7 +188,7 @@ class SpreadsheetMetadataPanelWidget extends SpreadsheetHistoryAwareStateWidget 
         if(newSettings){
             if(!Equality.safeEquals(newSettings, oldSettings)){
                 if(newSettings){
-                    newSettings.settingsWidgetExecute(
+                    newSettings.metadataDrawerWidget(
                         this,
                         oldSettings
                     );
@@ -223,7 +223,7 @@ class SpreadsheetMetadataPanelWidget extends SpreadsheetHistoryAwareStateWidget 
     saveProperty(property) {
         return (value) => {
             const tokens = SpreadsheetHistoryHashTokens.emptyTokens();
-            tokens[SpreadsheetHistoryHashTokens.SETTINGS] = new SpreadsheetSettingsSaveHistoryHashToken(property, value);
+            tokens[SpreadsheetHistoryHashTokens.SETTINGS] = new SpreadsheetMetadataSaveHistoryHashToken(property, value);
             this.historyParseMergeAndPush(tokens);
 
             console.log("settings save " + property + "=" + value, tokens);
@@ -307,7 +307,7 @@ class SpreadsheetMetadataPanelWidget extends SpreadsheetHistoryAwareStateWidget 
                 console.log("settings.focus target: ", e.target);
 
                 const tokens = SpreadsheetHistoryHashTokens.emptyTokens();
-                tokens[SpreadsheetHistoryHashTokens.SETTINGS] = SpreadsheetSettingsSelectHistoryHashToken.NOTHING;
+                tokens[SpreadsheetHistoryHashTokens.SETTINGS] = SpreadsheetMetadataSelectHistoryHashToken.NOTHING;
                 this.historyParseMergeAndPush(tokens);
             }
         };
@@ -1311,7 +1311,7 @@ class SpreadsheetMetadataPanelWidget extends SpreadsheetHistoryAwareStateWidget 
             console.log("settings accordion change " + accordion + " " + (expanded ? "expanding" : "collapsing"));
 
             const historyHashTokens = SpreadsheetHistoryHashTokens.emptyTokens();
-            historyHashTokens[SpreadsheetHistoryHashTokens.SETTINGS] = expanded ? new SpreadsheetSettingsSelectHistoryHashToken(accordion) : SpreadsheetSettingsSelectHistoryHashToken.NOTHING;
+            historyHashTokens[SpreadsheetHistoryHashTokens.SETTINGS] = expanded ? new SpreadsheetMetadataSelectHistoryHashToken(accordion) : SpreadsheetMetadataSelectHistoryHashToken.NOTHING;
             this.historyParseMergeAndPush(historyHashTokens);
         }
 

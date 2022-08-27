@@ -1,13 +1,13 @@
 import CharSequences from "../../../CharSequences.js";
 import Equality from "../../../Equality.js";
 import SpreadsheetHistoryHashTokens from "../../history/SpreadsheetHistoryHashTokens.js";
-import SpreadsheetSettingsHistoryHashToken from "./SpreadsheetSettingsHistoryHashToken.js";
+import SpreadsheetMetadataHistoryHashToken from "./SpreadsheetMetadataHistoryHashToken.js";
 import SpreadsheetSettingsWidgetHistoryHashTokens from "./SpreadsheetSettingsWidgetHistoryHashTokens.js";
 
 /**
  * Saves the metadata or text style property with a new value, which may be null if the property should be removed.
  */
-export default class SpreadsheetSettingsSaveHistoryHashToken extends SpreadsheetSettingsHistoryHashToken {
+export default class SpreadsheetMetadataSaveHistoryHashToken extends SpreadsheetMetadataHistoryHashToken {
 
     constructor(property, value) {
         super();
@@ -46,15 +46,15 @@ export default class SpreadsheetSettingsSaveHistoryHashToken extends Spreadsheet
             (value ? encodeURIComponent(value) : "");
     }
 
-    settingsWidgetExecute(settingsWidget, previousSettings) {
-        settingsWidget.patchSpreadsheetMetadata(
+    metadataDrawerWidget(metadataDrawerWidget, previousSettings) {
+        metadataDrawerWidget.patchSpreadsheetMetadata(
             this.property(),
             this.value()
         );
 
         const tokens = SpreadsheetHistoryHashTokens.emptyTokens();
         tokens[SpreadsheetHistoryHashTokens.SETTINGS] = previousSettings;
-        settingsWidget.historyParseMergeAndPush(tokens);
+        metadataDrawerWidget.historyParseMergeAndPush(tokens);
     }
 
     equals(other) {

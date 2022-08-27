@@ -48,9 +48,9 @@ import SpreadsheetMetadataNameSaveHistoryHashToken from "../meta/SpreadsheetMeta
 import SpreadsheetName from "../meta/SpreadsheetName.js";
 import SpreadsheetRowReferenceRange from "../reference/SpreadsheetRowReferenceRange.js";
 import SpreadsheetSelectionHistoryHashToken from "../reference/SpreadsheetSelectionHistoryHashToken.js";
-import SpreadsheetSettingsHistoryHashToken from "../meta/drawer/SpreadsheetSettingsHistoryHashToken.js";
-import SpreadsheetSettingsSaveHistoryHashToken from "../meta/drawer/SpreadsheetSettingsSaveHistoryHashToken.js";
-import SpreadsheetSettingsSelectHistoryHashToken from "../meta/drawer/SpreadsheetSettingsSelectHistoryHashToken.js";
+import SpreadsheetMetadataHistoryHashToken from "../meta/drawer/SpreadsheetMetadataHistoryHashToken.js";
+import SpreadsheetMetadataSaveHistoryHashToken from "../meta/drawer/SpreadsheetMetadataSaveHistoryHashToken.js";
+import SpreadsheetMetadataSelectHistoryHashToken from "../meta/drawer/SpreadsheetMetadataSelectHistoryHashToken.js";
 import SpreadsheetSettingsWidgetHistoryHashTokens from "../meta/drawer/SpreadsheetSettingsWidgetHistoryHashTokens.js";
 import SpreadsheetViewportSelection from "../reference/viewport/SpreadsheetViewportSelection.js";
 import TextStyle from "../../text/TextStyle.js";
@@ -409,7 +409,7 @@ export default class SpreadsheetHistoryHash extends SpreadsheetHistoryHashTokens
                                     // /settings
                                     token = tokens.shift();
                                     if(null == token){
-                                        settings = SpreadsheetSettingsSelectHistoryHashToken.NOTHING;
+                                        settings = SpreadsheetMetadataSelectHistoryHashToken.NOTHING;
                                     }else {
                                         // /settings/metadata
                                         if(SpreadsheetSettingsWidgetHistoryHashTokens.isToken(token)){
@@ -419,7 +419,7 @@ export default class SpreadsheetHistoryHash extends SpreadsheetHistoryHashTokens
                                             token = tokens.shift(); // property value
                                             if(null != token){
                                                 if(SpreadsheetSettingsWidgetHistoryHashTokens.isProperty(settingsItemOrMetadataProperty)){
-                                                    settings = new SpreadsheetSettingsSaveHistoryHashToken(
+                                                    settings = new SpreadsheetMetadataSaveHistoryHashToken(
                                                         settingsItemOrMetadataProperty,
                                                         SpreadsheetSettingsWidgetHistoryHashTokens.parseHistoryHashToken(
                                                             settingsItemOrMetadataProperty,
@@ -431,7 +431,7 @@ export default class SpreadsheetHistoryHash extends SpreadsheetHistoryHashTokens
                                                     tokens.unshift(token);
                                                 }
                                             }else {
-                                                settings = new SpreadsheetSettingsSelectHistoryHashToken(settingsItemOrMetadataProperty);
+                                                settings = new SpreadsheetMetadataSelectHistoryHashToken(settingsItemOrMetadataProperty);
                                             }
                                         }
                                     }
@@ -548,7 +548,7 @@ export default class SpreadsheetHistoryHash extends SpreadsheetHistoryHashTokens
                 if(select){
                     verified[SpreadsheetHistoryHashTokens.SELECT] = select;
                 }
-                if(settings instanceof SpreadsheetSettingsHistoryHashToken){
+                if(settings instanceof SpreadsheetMetadataHistoryHashToken){
                     verified[SpreadsheetHistoryHashTokens.SETTINGS] = settings;
                 }
             }

@@ -1,18 +1,18 @@
 import CharSequences from "../../../CharSequences.js";
 import Equality from "../../../Equality.js";
 import SpreadsheetHistoryHashTokens from "../../history/SpreadsheetHistoryHashTokens.js";
-import SpreadsheetSettingsHistoryHashToken from "./SpreadsheetSettingsHistoryHashToken.js";
+import SpreadsheetMetadataHistoryHashToken from "./SpreadsheetMetadataHistoryHashToken.js";
 import SpreadsheetSettingsWidgetHistoryHashTokens from "./SpreadsheetSettingsWidgetHistoryHashTokens.js";
 
 /**
- * This token represents a selection of a settings section or property.
+ * This token represents a selection of a metadata section or property.
  */
-export default class SpreadsheetSettingsSelectHistoryHashToken extends SpreadsheetSettingsHistoryHashToken {
+export default class SpreadsheetMetadataSelectHistoryHashToken extends SpreadsheetMetadataHistoryHashToken {
 
     /**
      * Used to indicate the drawer has been opened but no accordion header or property selected.
      */
-    static NOTHING = new SpreadsheetSettingsSelectHistoryHashToken();
+    static NOTHING = new SpreadsheetMetadataSelectHistoryHashToken();
 
     constructor(item) {
         super();
@@ -31,9 +31,9 @@ export default class SpreadsheetSettingsSelectHistoryHashToken extends Spreadshe
         return this.itemValue;
     }
 
-    settingsWidgetExecute(settingsWidget, previousSettings) {
+    metadataDrawerWidget(metadataDrawerWidget, previousSettings) {
         if(!previousSettings) {
-            settingsWidget.loadSpreadsheetMetadata(); // load spreadsheet metadata when the settings drawer opens
+            metadataDrawerWidget.loadSpreadsheetMetadata(); // load spreadsheet metadata when the settings drawer opens
         }
     }
 
