@@ -68,7 +68,7 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
         this.spreadsheetDeltaCellCrud = new SpreadsheetMessengerCrud(
             (method, cellOrRange, queryStringParameters) => {
                 var url = this.apiSpreadsheetMetadataUrl() + "/cell/" + cellOrRange;
-                if(method.equals(HttpMethod.GET)) {
+                if(method.equals(HttpMethod.GET)){
                     url = url + "/" + SpreadsheetEngineEvaluation.FORCE_RECOMPUTE.nameKebabCase();
                 }
                 return new RelativeUrl(
@@ -111,7 +111,7 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
         this.spreadsheetMetadataCrud = new SpreadsheetMessengerCrud(
             (method, spreadsheetId) => new RelativeUrl(
                 "/api/spreadsheet/" + (spreadsheetId ? spreadsheetId : ""),
-                    {}
+                {}
             ),
             messenger,
             SpreadsheetMetadata.fromJson,
@@ -136,7 +136,12 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
 
         // initiate an empty spreadsheet
         setTimeout(
-            () => this.spreadsheetEmptyCreate(),
+            () =>
+                this.setState({
+                    creatingEmptySpreadsheet: true,
+                    spreadsheetId: null,
+                    spreadsheetMetadata: null,
+                }),
             1
         );
     }
@@ -195,7 +200,9 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
         const id = state.spreadsheetId;
         const differentId = !(Equality.safeEquals(id, previousId));
 
-        if(!state.creatingEmptySpreadsheet){
+        if(state.creatingEmptySpreadsheet){
+            this.spreadsheetEmptyCreate();
+        }else {
             if(id){
                 const metadata = state.spreadsheetMetadata;
                 if(metadata.isEmpty() || differentId){
@@ -217,8 +224,6 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
                     historyTokens[SpreadsheetHistoryHashTokens.SPREADSHEET_ID] = id;
                     historyTokens[SpreadsheetHistoryHashTokens.SPREADSHEET_NAME] = name;
                 }
-            }else {
-                this.spreadsheetEmptyCreate();
             }
         }
 
@@ -352,9 +357,9 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
                                                showError={showError}
                 />
                 <SpreadsheetMetadataDrawerWidget history={history}
-                                           spreadsheetMetadataCrud={spreadsheetMetadataCrud}
-                                           notificationShow={notificationShow}
-                                           showError={showError}
+                                                 spreadsheetMetadataCrud={spreadsheetMetadataCrud}
+                                                 notificationShow={notificationShow}
+                                                 showError={showError}
                 />
             </React.Fragment>
         );
@@ -381,7 +386,7 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
             JSON.stringify(SpreadsheetDelta.EMPTY.toJson()),
         );
     }
-    
+
     /**
      * Deletes the given selection and appends the window if present as a query parameter.
      */
