@@ -9,11 +9,11 @@ import SpreadsheetCellFormulaHistoryHashToken from "./SpreadsheetCellFormulaHist
 import SpreadsheetCellFormulaSaveHistoryHashToken from "./SpreadsheetCellFormulaSaveHistoryHashToken.js";
 import SpreadsheetCellHistoryHashToken from "../SpreadsheetCellHistoryHashToken.js";
 import SpreadsheetCellReference from "../SpreadsheetCellReference.js";
+import SpreadsheetCellWidget from "../SpreadsheetCellWidget.js";
 import SpreadsheetExpressionReference from "../../SpreadsheetExpressionReference.js";
 import SpreadsheetFormula from "./SpreadsheetFormula.js";
 import SpreadsheetHistoryHash from "../../../history/SpreadsheetHistoryHash.js";
 import SpreadsheetHistoryHashTokens from "../../../history/SpreadsheetHistoryHashTokens.js";
-import SpreadsheetHistoryAwareStateWidget from "../../../history/SpreadsheetHistoryAwareStateWidget.js";
 import SpreadsheetLabelName from "../../label/SpreadsheetLabelName.js";
 import SpreadsheetMessengerCrud from "../../../message/SpreadsheetMessengerCrud.js";
 import SpreadsheetViewportSelection from "../../viewport/SpreadsheetViewportSelection.js";
@@ -25,7 +25,7 @@ import TextStyle from "../../../../text/TextStyle.js";
  * A widget that supports editing formula text.
  * ENTER calls the setter, ESCAPE reloads the initial value(text).
  */
-export default class SpreadsheetFormulaWidget extends SpreadsheetHistoryAwareStateWidget {
+export default class SpreadsheetFormulaWidget extends SpreadsheetCellWidget {
 
     static TEXT_FIELD_ID = "formula-TextField";
 
@@ -40,19 +40,6 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetHistoryAwareSta
         return {
             selection: historyHashTokens[SpreadsheetHistoryHash.SELECTION],
         }
-    }
-
-    componentDidMount() {
-        super.componentDidMount();
-
-        this.onSpreadsheetDeltaRemover = this.props.spreadsheetDeltaCellCrud.addListener(this.onSpreadsheetDelta.bind(this));
-    }
-
-    componentWillUnmount() {
-        super.componentWillUnmount();
-
-        this.onSpreadsheetDeltaRemover && this.onSpreadsheetDeltaRemover();
-        delete this.onSpreadsheetDeltaRemover;
     }
 
     /**
