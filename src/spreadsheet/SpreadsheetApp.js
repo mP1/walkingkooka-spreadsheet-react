@@ -14,7 +14,7 @@ import SpreadsheetAppBar from "../widget/SpreadsheetAppBar.js";
 import SpreadsheetDelta from "./engine/SpreadsheetDelta.js";
 import SpreadsheetEngineEvaluation from "./engine/SpreadsheetEngineEvaluation.js";
 import SpreadsheetExpressionReferenceSimilarities from "./SpreadsheetExpressionReferenceSimilarities.js";
-import SpreadsheetFormulaWidget from "./reference/formula/SpreadsheetFormulaWidget.js";
+import SpreadsheetFormulaWidget from "./reference/cell/formula/SpreadsheetFormulaWidget.js";
 import SpreadsheetHistoryHash from "./history/SpreadsheetHistoryHash.js";
 import SpreadsheetHistoryAwareStateWidget from "./history/SpreadsheetHistoryAwareStateWidget.js";
 import SpreadsheetHistoryHashTokens from "./history/SpreadsheetHistoryHashTokens.js";

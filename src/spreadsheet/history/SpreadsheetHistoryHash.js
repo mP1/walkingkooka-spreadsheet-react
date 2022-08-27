@@ -6,9 +6,9 @@ import React from 'react';
 import SpreadsheetCellClearHistoryHashToken from "../reference/cell/SpreadsheetCellClearHistoryHashToken.js";
 import SpreadsheetCellDeleteHistoryHashToken from "../reference/cell/SpreadsheetCellDeleteHistoryHashToken.js";
 import SpreadsheetCellFormulaEditHistoryHashToken
-    from "../reference/formula/SpreadsheetCellFormulaEditHistoryHashToken.js";
+    from "../reference/cell/formula/SpreadsheetCellFormulaEditHistoryHashToken.js";
 import SpreadsheetCellFormulaSaveHistoryHashToken
-    from "../reference/formula/SpreadsheetCellFormulaSaveHistoryHashToken.js";
+    from "../reference/cell/formula/SpreadsheetCellFormulaSaveHistoryHashToken.js";
 import SpreadsheetCellFreezeHistoryHashToken from "../reference/cell/SpreadsheetCellFreezeHistoryHashToken.js";
 import SpreadsheetCellHistoryHashToken from "../reference/cell/SpreadsheetCellHistoryHashToken.js";
 import SpreadsheetCellMenuHistoryHashToken from "../reference/cell/SpreadsheetCellMenuHistoryHashToken.js";
@@ -17,8 +17,10 @@ import spreadsheetCellRangeCellReferenceOrLabelParse
 import SpreadsheetCellReference from "../reference/cell/SpreadsheetCellReference.js";
 import spreadsheetCellReferenceOrLabelNameParse from "../reference/cell/SpreadsheetCellReferenceOrLabelNameParse.js";
 import SpreadsheetCellSelectHistoryHashToken from "../reference/cell/SpreadsheetCellSelectHistoryHashToken.js";
-import SpreadsheetCellStyleEditHistoryHashToken from "../reference/style/SpreadsheetCellStyleEditHistoryHashToken.js";
-import SpreadsheetCellStyleSaveHistoryHashToken from "../reference/style/SpreadsheetCellStyleSaveHistoryHashToken.js";
+import SpreadsheetCellStyleEditHistoryHashToken
+    from "../reference/cell/style/SpreadsheetCellStyleEditHistoryHashToken.js";
+import SpreadsheetCellStyleSaveHistoryHashToken
+    from "../reference/cell/style/SpreadsheetCellStyleSaveHistoryHashToken.js";
 import SpreadsheetCellUnFreezeHistoryHashToken from "../reference/cell/SpreadsheetCellUnFreezeHistoryHashToken.js";
 import SpreadsheetColumnOrRowClearHistoryHashToken
     from "../reference/columnrow/SpreadsheetColumnOrRowClearHistoryHashToken.js";

@@ -1,8 +1,8 @@
-import SpreadsheetError from "../../SpreadsheetError.js";
+import SpreadsheetError from "../../../SpreadsheetError.js";
 import SpreadsheetFormula from "./SpreadsheetFormula.js";
-import SystemObject from "../../../SystemObject.js";
-import systemObjectTesting from "../../../SystemObjectTesting.js";
-import SpreadsheetErrorKind from "../../SpreadsheetErrorKind.js";
+import SystemObject from "../../../../SystemObject.js";
+import systemObjectTesting from "../../../../SystemObjectTesting.js";
+import SpreadsheetErrorKind from "../../../SpreadsheetErrorKind.js";
 
 const text = "###-123-abc";
 const value = 1.5;

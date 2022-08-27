@@ -1,7 +1,7 @@
-import Equality from "../../../Equality.js";
-import Preconditions from "../../../Preconditions.js";
-import SpreadsheetError from "../../SpreadsheetError.js";
-import SystemObject from "../../../SystemObject.js";
+import Equality from "../../../../Equality.js";
+import Preconditions from "../../../../Preconditions.js";
+import SpreadsheetError from "../../../SpreadsheetError.js";
+import SystemObject from "../../../../SystemObject.js";
 
 const TYPE_NAME = "spreadsheet-formula";
 /**
