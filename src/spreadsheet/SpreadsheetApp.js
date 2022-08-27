@@ -33,7 +33,7 @@ import SpreadsheetViewportWidget from "./reference/viewport/SpreadsheetViewportW
 
 const useStyles = theme => ({
     header: {
-        zIndex: theme.zIndex.settings + 1, // forces settings to not overlap application header
+        zIndex: theme.zIndex.metadata + 1, // forces metadata to not overlap application header
     },
 });
 

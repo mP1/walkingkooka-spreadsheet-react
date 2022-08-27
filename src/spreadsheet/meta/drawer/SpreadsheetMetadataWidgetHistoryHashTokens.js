@@ -38,7 +38,7 @@ export default class SpreadsheetMetadataWidgetHistoryHashTokens {
     }
 
     /**
-     * Tests if the given token is a settings property
+     * Tests if the given token is a metadata property
      */
     static isProperty(token) {
         return Boolean(SpreadsheetMetadataWidgetHistoryHashTokens.parentAccordion(token));
@@ -51,7 +51,7 @@ export default class SpreadsheetMetadataWidgetHistoryHashTokens {
     }
     
     /**
-     * Returns the settings accordion name for the given property or null if not found.
+     * Returns the metadata accordion name for the given property or null if not found.
      */
     static parentAccordion(property) {
         var parentAccordion;

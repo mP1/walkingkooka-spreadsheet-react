@@ -40,11 +40,11 @@ export default class SpreadsheetMetadataPanelWidgetValue extends SpreadsheetHist
 
     initialStateFromProps(props) {
         const historyHashTokens = props.history.tokens();
-        const settings = historyHashTokens[SpreadsheetHistoryHashTokens.METADATA];
+        const metadata = historyHashTokens[SpreadsheetHistoryHashTokens.METADATA];
 
         return {
             spreadsheetId: historyHashTokens[SpreadsheetHistoryHash.SPREADSHEET_ID],
-            settings: settings,
+            metadata: metadata,
             focused: false, // when true this widget has focus
             spreadsheetMetadata: null,
             value: null,
@@ -66,16 +66,16 @@ export default class SpreadsheetMetadataPanelWidgetValue extends SpreadsheetHist
     }
 
     stateFromHistoryTokens(historyHashTokens) {
-        const settings = historyHashTokens[SpreadsheetHistoryHashTokens.METADATA];
+        const metadata = historyHashTokens[SpreadsheetHistoryHashTokens.METADATA];
 
         return {
             spreadsheetId: historyHashTokens[SpreadsheetHistoryHashTokens.SPREADSHEET_ID],
-            settings: settings,
+            metadata: metadata,
         };
     }
 
     /**
-     * If this widget is focused set the token settings item which will update
+     * If this widget is focused set the token metadata item which will update
      */
     historyTokensFromState(prevState) {
         const historyTokens = SpreadsheetHistoryHashTokens.emptyTokens();
@@ -99,8 +99,8 @@ export default class SpreadsheetMetadataPanelWidgetValue extends SpreadsheetHist
                 }
             }
         }else {
-            const settings = state.settings;
-            if(settings && settings.item() === property && state.focused !== property){
+            const metadata = state.metadata;
+            if(metadata && metadata.item() === property && state.focused !== property){
                 this.focus();
             }
         }
@@ -129,7 +129,7 @@ export default class SpreadsheetMetadataPanelWidgetValue extends SpreadsheetHist
 
                 this.setState({
                     focused: true,
-                    settings: new SpreadsheetMetadataSelectHistoryHashToken(
+                    metadata: new SpreadsheetMetadataSelectHistoryHashToken(
                         property
                     ),
                 });
@@ -159,7 +159,7 @@ export default class SpreadsheetMetadataPanelWidgetValue extends SpreadsheetHist
 
                 this.setState({
                     focused: false,
-                    settings: SpreadsheetMetadataSelectHistoryHashToken.NOTHING,
+                    metadata: SpreadsheetMetadataSelectHistoryHashToken.NOTHING,
                 });
             }
         };
