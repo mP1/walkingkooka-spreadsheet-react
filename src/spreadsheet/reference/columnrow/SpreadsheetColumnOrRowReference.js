@@ -4,6 +4,10 @@ import SpreadsheetReferenceKind from "../SpreadsheetReferenceKind.js";
 import SpreadsheetSelection from "../SpreadsheetSelection.js";
 import SpreadsheetViewportSelectionAnchor from "../viewport/SpreadsheetViewportSelectionAnchor.js";
 import TableCell from "@mui/material/TableCell";
+import Link from "@mui/material/Link";
+import SpreadsheetHistoryHashTokens from "../../history/SpreadsheetHistoryHashTokens.js";
+import SpreadsheetColumnOrRowSelectHistoryHashToken from "./SpreadsheetColumnOrRowSelectHistoryHashToken.js";
+import SpreadsheetHistoryHash from "../../history/SpreadsheetHistoryHash.js";
 
 export default class SpreadsheetColumnOrRowReference extends SpreadsheetSelection {
 
@@ -86,17 +90,27 @@ export default class SpreadsheetColumnOrRowReference extends SpreadsheetSelectio
     /**
      * Renders a TABLE CELL that may be highlighted.
      */
-    renderViewport(style) {
+    renderViewport(style, tokens) {
         const id = this.viewportId();
 
+        tokens[SpreadsheetHistoryHashTokens.SELECTION] = new SpreadsheetColumnOrRowSelectHistoryHashToken(this);
+        const link = "#" + SpreadsheetHistoryHash.stringify(tokens);
+
         return <TableCell key={id}
-                          id={id}
                           style={style}
                           tabIndex={0}
                           data-selection={this}
-        >{
+        ><Link id={id}
+               href={link}
+               style={{
+                   display: "inline-block",
+                   paddingLeft: "1ex",
+                   paddingRight: "1ex",
+                   paddingTop: "2px",
+                   paddingBottom: "2px",
+               }}>{
             this.toString()
-        }</TableCell>
+        }</Link></TableCell>
     }
 
     // viewport.........................................................................................................
