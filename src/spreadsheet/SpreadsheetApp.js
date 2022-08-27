@@ -199,7 +199,7 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
             if(id){
                 const metadata = state.spreadsheetMetadata;
                 if(metadata.isEmpty() || differentId){
-                    console.log("stateSpreadsheetMetadataSpreadsheetId spreadsheetId changed from " + previousId + " to " + id);
+                    this.log(".historyTokensFromState spreadsheetId changed from " + previousId + " to " + id);
 
                     this.spreadsheetMetadataCrud.get(
                         id,
@@ -229,7 +229,7 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
      * Makes a request which returns some basic default metadata, and without cells the spreadsheet will be empty.
      */
     spreadsheetEmptyCreate() {
-        console.log("spreadsheetEmptyCreate");
+        this.log("spreadsheetEmptyCreate");
 
         this.spreadsheetMetadataCrud.post(
             null,
