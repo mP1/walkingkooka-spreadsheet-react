@@ -22,7 +22,7 @@ const FORCE_TRUE = {
 const A1 = SpreadsheetCellReference.parse("A1");
 
 describe(
-    "Settings",
+    "Metadata",
     () => {
 
         const testing = new SpreadsheetTesting(cy);
@@ -1287,7 +1287,7 @@ describe(
          * The metadata that appears on the right containing metadata, tools and more.
          */
         function metadata() {
-            return cy.get("#metadata > DIV"); // the #metadata remains 1000x0 while the DIV child has an actual height
+            return cy.get("#" + SpreadsheetMetadataPanelWidget.ID + " > DIV"); // the #metadata remains 1000x0 while the DIV child has an actual height
         }
 
         /**
@@ -1303,7 +1303,7 @@ describe(
          * Fetches the icon that when clicked toggles the metadata
          */
         function metadataToggle() {
-            cy.get("#metadata-icon")
+            cy.get("#" + SpreadsheetMetadataPanelWidget.ID + "-icon")
                 .click();
 
             testing.metadataWait();
