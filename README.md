@@ -251,9 +251,9 @@ Note the labels will have links as described above for the various label compone
 
 
 
-#### /spreadsheet-id/spreadsheet-name/settings
+#### /spreadsheet-id/spreadsheet-name/metadata
 
-Opens the right panel that holds global or shared settings for this spreadsheet.
+Opens the right panel that holds global or shared settings (called metadata internally) for this spreadsheet.
 
 - Metadata
 - Text
@@ -263,21 +263,21 @@ Opens the right panel that holds global or shared settings for this spreadsheet.
 
 Each of these sections will hold appropriate key/values. For example Number will have default parsing and formatting patterns.
 
-> /#123/Untitled/settings/
+> /#123/Untitled/metadata/
 > 
-> /#123/Untitled/settings/metadata
+> /#123/Untitled/metadata/metadata
 >
-> /#123/Untitled/settings/text
+> /#123/Untitled/metadata/text
 > 
-> /#123/Untitled/settings/number
+> /#123/Untitled/metadata/number
 >
-> /#123/Untitled/settings/date-Time
+> /#123/Untitled/metadata/date-Time
 >
-> /#123/Untitled/settings/style
+> /#123/Untitled/metadata/style
 >
-> /#123/Untitled/settings/$property-name eg: color, background-color, text-align etc.
+> /#123/Untitled/metadata/$property-name eg: color, background-color, text-align etc.
 > 
-> /#123/Untitled/settings/$property-name/$property-value or empty to remove and use default.
+> /#123/Untitled/metadata/$property-name/$property-value or empty to remove and use default.
 
 ## Value types
 

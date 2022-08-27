@@ -41,7 +41,7 @@ export default class SpreadsheetMetadataSelectHistoryHashToken extends Spreadshe
         const item = this.item();
 
         return "/" +
-            SpreadsheetHistoryHashTokens.SETTINGS +
+            SpreadsheetHistoryHashTokens.METADATA +
             (item ? "/" + item : "");
     }
 

@@ -14,7 +14,7 @@ import Toolbar from '@mui/material/Toolbar';
 
 function computeSettingsLink(historyHashTokens) {
     // flip the settings token.
-    historyHashTokens[SpreadsheetHistoryHashTokens.SETTINGS] = historyHashTokens[SpreadsheetHistoryHashTokens.SETTINGS] ?
+    historyHashTokens[SpreadsheetHistoryHashTokens.METADATA] = historyHashTokens[SpreadsheetHistoryHashTokens.METADATA] ?
         null :
         SpreadsheetMetadataSelectHistoryHashToken.NOTHING;
     return "#" + SpreadsheetHistoryHash.stringify(historyHashTokens);

@@ -403,7 +403,7 @@ export default class SpreadsheetHistoryHash extends SpreadsheetHistoryHashTokens
 
                             // settings
                             if((selection instanceof SpreadsheetCellSelectHistoryHashToken || selection instanceof SpreadsheetColumnOrRowSelectHistoryHashToken || !selection) && !label && !select){
-                                if(SpreadsheetHistoryHashTokens.SETTINGS === token){
+                                if(SpreadsheetHistoryHashTokens.METADATA === token){
                                     settings = null;
 
                                     // /settings
@@ -463,7 +463,7 @@ export default class SpreadsheetHistoryHash extends SpreadsheetHistoryHashTokens
                             historyHashTokens[SpreadsheetHistoryHashTokens.SELECT] = select;
                         }
                         if(settings){
-                            historyHashTokens[SpreadsheetHistoryHashTokens.SETTINGS] = settings;
+                            historyHashTokens[SpreadsheetHistoryHashTokens.METADATA] = settings;
                         }
                     } while(false);
             }
@@ -482,7 +482,7 @@ export default class SpreadsheetHistoryHash extends SpreadsheetHistoryHashTokens
         var selection = tokens[SpreadsheetHistoryHashTokens.SELECTION];
         var label = tokens[SpreadsheetHistoryHashTokens.LABEL];
         var select = tokens[SpreadsheetHistoryHashTokens.SELECT];
-        var settings = tokens[SpreadsheetHistoryHashTokens.SETTINGS];
+        var settings = tokens[SpreadsheetHistoryHashTokens.METADATA];
 
         const verified = {};
 
@@ -549,7 +549,7 @@ export default class SpreadsheetHistoryHash extends SpreadsheetHistoryHashTokens
                     verified[SpreadsheetHistoryHashTokens.SELECT] = select;
                 }
                 if(settings instanceof SpreadsheetMetadataHistoryHashToken){
-                    verified[SpreadsheetHistoryHashTokens.SETTINGS] = settings;
+                    verified[SpreadsheetHistoryHashTokens.METADATA] = settings;
                 }
             }
         }
@@ -571,7 +571,7 @@ export default class SpreadsheetHistoryHash extends SpreadsheetHistoryHashTokens
         var selection = current[SpreadsheetHistoryHashTokens.SELECTION];
         var label = current[SpreadsheetHistoryHashTokens.LABEL];
         var select = current[SpreadsheetHistoryHashTokens.SELECT];
-        var settings = current[SpreadsheetHistoryHashTokens.SETTINGS];
+        var settings = current[SpreadsheetHistoryHashTokens.METADATA];
 
         // try replacing...
         if(delta.hasOwnProperty(SpreadsheetHistoryHashTokens.SPREADSHEET_ID)){
@@ -613,8 +613,8 @@ export default class SpreadsheetHistoryHash extends SpreadsheetHistoryHashTokens
             }
         }
 
-        if(delta.hasOwnProperty(SpreadsheetHistoryHashTokens.SETTINGS)){
-            settings = delta[SpreadsheetHistoryHashTokens.SETTINGS];
+        if(delta.hasOwnProperty(SpreadsheetHistoryHashTokens.METADATA)){
+            settings = delta[SpreadsheetHistoryHashTokens.METADATA];
             if(settings){
                 spreadsheetNameEdit = false;
 
@@ -663,7 +663,7 @@ export default class SpreadsheetHistoryHash extends SpreadsheetHistoryHashTokens
             }
 
             if(null != settings){
-                merged[SpreadsheetHistoryHashTokens.SETTINGS] = settings;
+                merged[SpreadsheetHistoryHashTokens.METADATA] = settings;
             }
         }
 
@@ -680,7 +680,7 @@ export default class SpreadsheetHistoryHash extends SpreadsheetHistoryHashTokens
         var selection = tokens[SpreadsheetHistoryHashTokens.SELECTION];
         var label = tokens[SpreadsheetHistoryHashTokens.LABEL];
         var select = tokens[SpreadsheetHistoryHashTokens.SELECT];
-        var settings = tokens[SpreadsheetHistoryHashTokens.SETTINGS];
+        var settings = tokens[SpreadsheetHistoryHashTokens.METADATA];
 
         let hash = "";
         let valid = false;
@@ -850,7 +850,7 @@ export default class SpreadsheetHistoryHash extends SpreadsheetHistoryHashTokens
      */
     settingsToggle() {
         const tokens = this.tokens();
-        tokens[SpreadsheetHistoryHashTokens.SETTINGS] = !Boolean(tokens[SpreadsheetHistoryHashTokens.SETTINGS]);
+        tokens[SpreadsheetHistoryHashTokens.METADATA] = !Boolean(tokens[SpreadsheetHistoryHashTokens.METADATA]);
         this.push(tokens);
     }
 }
