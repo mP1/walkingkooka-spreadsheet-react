@@ -7,7 +7,7 @@ import SpreadsheetHistoryAwareStateWidget from "../history/SpreadsheetHistoryAwa
 import SpreadsheetHistoryHash from "../history/SpreadsheetHistoryHash.js";
 import SpreadsheetHistoryHashTokens from "../history/SpreadsheetHistoryHashTokens.js";
 import SpreadsheetMessengerCrud from "../message/SpreadsheetMessengerCrud.js";
-import SpreadsheetMetadata from "../meta/SpreadsheetMetadata.js";
+import SpreadsheetMetadata from "./SpreadsheetMetadata.js";
 import SpreadsheetMetadataNameEditHistoryHashToken from "./SpreadsheetMetadataNameEditHistoryHashToken.js";
 import SpreadsheetMetadataNameSaveHistoryHashToken from "./SpreadsheetMetadataNameSaveHistoryHashToken.js";
 import SpreadsheetName from "./SpreadsheetName.js";

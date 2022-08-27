@@ -47,9 +47,9 @@ import SpreadsheetLabelMappingEditHistoryHashToken from "../reference/Spreadshee
 import SpreadsheetLabelMappingSaveHistoryHashToken from "../reference/SpreadsheetLabelMappingSaveHistoryHashToken.js";
 import SpreadsheetLabelName from "../reference/SpreadsheetLabelName.js";
 import SpreadsheetMetadata from "../meta/SpreadsheetMetadata.js";
-import SpreadsheetName from "../name/SpreadsheetMetadataName.js";
-import SpreadsheetMetadataNameEditHistoryHashToken from "../name/SpreadsheetMetadataNameEditHistoryHashToken.js";
-import SpreadsheetMetadataNameSaveHistoryHashToken from "../name/SpreadsheetMetadataNameSaveHistoryHashToken.js";
+import SpreadsheetMetadataNameEditHistoryHashToken from "../meta/SpreadsheetMetadataNameEditHistoryHashToken.js";
+import SpreadsheetMetadataNameSaveHistoryHashToken from "../meta/SpreadsheetMetadataNameSaveHistoryHashToken.js";
+import SpreadsheetName from "../meta/SpreadsheetName.js";
 import SpreadsheetRowReference from "../reference/SpreadsheetRowReference.js";
 import SpreadsheetRowReferenceRange from "../reference/SpreadsheetRowReferenceRange.js"
 import SpreadsheetSettingsSaveHistoryHashToken from "../settings/SpreadsheetSettingsSaveHistoryHashToken.js";
