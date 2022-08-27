@@ -1,9 +1,9 @@
-import CharSequences from "../../CharSequences.js";
-import Preconditions from "../../Preconditions.js";
-import spreadsheetCellRangeCellReferenceOrLabelParse from "./SpreadsheetCellRangeCellReferenceOrLabelParse.js";
-import SpreadsheetExpressionReference from "./SpreadsheetExpressionReference.js";
+import CharSequences from "../../../CharSequences.js";
+import Preconditions from "../../../Preconditions.js";
+import spreadsheetCellRangeCellReferenceOrLabelParse from "../SpreadsheetCellRangeCellReferenceOrLabelParse.js";
+import SpreadsheetExpressionReference from "../SpreadsheetExpressionReference.js";
 import SpreadsheetLabelName from "./SpreadsheetLabelName.js";
-import SystemObject from "../../SystemObject.js";
+import SystemObject from "../../../SystemObject.js";
 
 const TYPE_NAME = "spreadsheet-label-mapping";
 

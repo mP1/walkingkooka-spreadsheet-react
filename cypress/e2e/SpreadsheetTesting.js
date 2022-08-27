@@ -4,7 +4,7 @@ import SpreadsheetFormulaWidget from "../../src/spreadsheet/reference/formula/Sp
 import SpreadsheetMetadataPanelWidget from "../../src/spreadsheet/meta/drawer/SpreadsheetMetadataPanelWidget.js";
 import SpreadsheetNameWidget from "../../src/spreadsheet/meta/name/SpreadsheetNameWidget.js";
 import SpreadsheetRowReference from "../../src/spreadsheet/reference/SpreadsheetRowReference.js";
-import SpreadsheetLabelMappingWidget from "../../src/spreadsheet/reference/SpreadsheetLabelMappingWidget.js";
+import SpreadsheetLabelMappingWidget from "../../src/spreadsheet/reference/label/SpreadsheetLabelMappingWidget.js";
 import SpreadsheetSelectLinkWidget from "../../src/spreadsheet/reference/SpreadsheetSelectLinkWidget.js";
 import SpreadsheetSelectAutocompleteWidget
     from "../../src/spreadsheet/reference/SpreadsheetSelectAutocompleteWidget.js";

@@ -1,6 +1,6 @@
-import Preconditions from "../../Preconditions.js";
-import SpreadsheetExpressionReference from "./SpreadsheetExpressionReference.js";
-import SpreadsheetHistoryHash from "../history/SpreadsheetHistoryHash.js";
+import Preconditions from "../../../Preconditions.js";
+import SpreadsheetExpressionReference from "../SpreadsheetExpressionReference.js";
+import SpreadsheetHistoryHash from "../../history/SpreadsheetHistoryHash.js";
 import SpreadsheetLabelMappingHistoryHashToken from "./SpreadsheetLabelMappingHistoryHashToken.js";
 import SpreadsheetLabelName from "./SpreadsheetLabelName.js";
 
