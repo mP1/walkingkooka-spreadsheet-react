@@ -239,13 +239,16 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
     }
 
     onSpreadsheetMetadata(method, id, url, requestMetadata, responseMetadata) {
+        const spreadsheetName = responseMetadata ? responseMetadata.getIgnoringDefaults(SpreadsheetMetadata.SPREADSHEET_NAME) : null;
+
         this.setState({
             spreadsheetId: responseMetadata && responseMetadata.getIgnoringDefaults(SpreadsheetMetadata.SPREADSHEET_ID),
-            spreadsheetName: responseMetadata && responseMetadata.getIgnoringDefaults(SpreadsheetMetadata.SPREADSHEET_NAME),
+            spreadsheetName: spreadsheetName,
             creatingEmptySpreadsheet: false,
             spreadsheetMetadata: responseMetadata,
         });
 
+        // save notification...
         switch(method) {
             case HttpMethod.POST:
                 this.props.notificationShow(SpreadsheetNotification.success("Spreadsheet metadata saved"));
@@ -253,6 +256,14 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
             default:
                 break;
         }
+
+        // update history with just loaded spreadsheet name.
+        const tokens = this.props.history.tokens();
+        tokens[SpreadsheetHistoryHashTokens.SPREADSHEET_NAME] = spreadsheetName;
+        this.historyParseMergeAndPush(tokens);
+
+        // update document title
+        document.title = spreadsheetName;
     }
 
     // rendering........................................................................................................

@@ -138,17 +138,6 @@ export default class SpreadsheetNameWidget extends SpreadsheetMetadataWidget {
             name: spreadsheetName,
             value: spreadsheetName ? spreadsheetName.value() : "",
         });
-
-        // when the save completes clear any name save history hash token.
-        const tokens = this.props.history.tokens();
-        const edit = tokens[SpreadsheetHistoryHashTokens.SPREADSHEET_NAME_EDIT];
-        if(edit instanceof SpreadsheetNameSaveHistoryHashToken) {
-            tokens[SpreadsheetHistoryHashTokens.SPREADSHEET_NAME] = spreadsheetName;
-            tokens[SpreadsheetHistoryHashTokens.SPREADSHEET_NAME_EDIT] = SpreadsheetNameEditHistoryHashToken.INSTANCE;
-            this.historyParseMergeAndPush(tokens);
-
-            document.title = spreadsheetName;
-        }
     }
 }
 
