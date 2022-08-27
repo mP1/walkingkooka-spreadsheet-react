@@ -51,7 +51,7 @@ import SpreadsheetSelectionHistoryHashToken from "../reference/SpreadsheetSelect
 import SpreadsheetMetadataHistoryHashToken from "../meta/drawer/SpreadsheetMetadataHistoryHashToken.js";
 import SpreadsheetMetadataSaveHistoryHashToken from "../meta/drawer/SpreadsheetMetadataSaveHistoryHashToken.js";
 import SpreadsheetMetadataSelectHistoryHashToken from "../meta/drawer/SpreadsheetMetadataSelectHistoryHashToken.js";
-import SpreadsheetSettingsWidgetHistoryHashTokens from "../meta/drawer/SpreadsheetSettingsWidgetHistoryHashTokens.js";
+import SpreadsheetMetadataWidgetHistoryHashTokens from "../meta/drawer/SpreadsheetMetadataWidgetHistoryHashTokens.js";
 import SpreadsheetViewportSelection from "../reference/viewport/SpreadsheetViewportSelection.js";
 import TextStyle from "../../text/TextStyle.js";
 
@@ -412,16 +412,16 @@ export default class SpreadsheetHistoryHash extends SpreadsheetHistoryHashTokens
                                         settings = SpreadsheetMetadataSelectHistoryHashToken.NOTHING;
                                     }else {
                                         // /settings/metadata
-                                        if(SpreadsheetSettingsWidgetHistoryHashTokens.isToken(token)){
+                                        if(SpreadsheetMetadataWidgetHistoryHashTokens.isToken(token)){
                                             const settingsItemOrMetadataProperty = token;
 
                                             // /settings/color/#123456
                                             token = tokens.shift(); // property value
                                             if(null != token){
-                                                if(SpreadsheetSettingsWidgetHistoryHashTokens.isProperty(settingsItemOrMetadataProperty)){
+                                                if(SpreadsheetMetadataWidgetHistoryHashTokens.isProperty(settingsItemOrMetadataProperty)){
                                                     settings = new SpreadsheetMetadataSaveHistoryHashToken(
                                                         settingsItemOrMetadataProperty,
-                                                        SpreadsheetSettingsWidgetHistoryHashTokens.parseHistoryHashToken(
+                                                        SpreadsheetMetadataWidgetHistoryHashTokens.parseHistoryHashToken(
                                                             settingsItemOrMetadataProperty,
                                                             token
                                                         )

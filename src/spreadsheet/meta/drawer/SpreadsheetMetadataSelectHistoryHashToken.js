@@ -2,7 +2,7 @@ import CharSequences from "../../../CharSequences.js";
 import Equality from "../../../Equality.js";
 import SpreadsheetHistoryHashTokens from "../../history/SpreadsheetHistoryHashTokens.js";
 import SpreadsheetMetadataHistoryHashToken from "./SpreadsheetMetadataHistoryHashToken.js";
-import SpreadsheetSettingsWidgetHistoryHashTokens from "./SpreadsheetSettingsWidgetHistoryHashTokens.js";
+import SpreadsheetMetadataWidgetHistoryHashTokens from "./SpreadsheetMetadataWidgetHistoryHashTokens.js";
 
 /**
  * This token represents a selection of a metadata section or property.
@@ -17,7 +17,7 @@ export default class SpreadsheetMetadataSelectHistoryHashToken extends Spreadshe
     constructor(item) {
         super();
 
-        if(item && !SpreadsheetSettingsWidgetHistoryHashTokens.isToken(item)){
+        if(item && !SpreadsheetMetadataWidgetHistoryHashTokens.isToken(item)){
             throw new Error("Unknown settings token " + CharSequences.quoteAndEscape(item));
         }
 
