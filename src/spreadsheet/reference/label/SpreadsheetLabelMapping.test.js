@@ -1,9 +1,9 @@
-import SpreadsheetCellRange from "./SpreadsheetCellRange.js";
-import SpreadsheetCellReference from "./SpreadsheetCellReference.js";
-import SpreadsheetExpressionReference from "./SpreadsheetExpressionReference.js";
+import SpreadsheetCellRange from "../SpreadsheetCellRange.js";
+import SpreadsheetCellReference from "../SpreadsheetCellReference.js";
+import SpreadsheetExpressionReference from "../SpreadsheetExpressionReference.js";
 import SpreadsheetLabelName from "./SpreadsheetLabelName.js";
 import SpreadsheetLabelMapping from "./SpreadsheetLabelMapping.js";
-import systemObjectTesting from "../../SystemObjectTesting.js";
+import systemObjectTesting from "../../../SystemObjectTesting.js";
 
 function label() {
     return SpreadsheetLabelName.parse("Label123");

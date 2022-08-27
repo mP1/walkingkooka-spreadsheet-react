@@ -18,9 +18,9 @@ import SpreadsheetFormulaWidget from "./reference/formula/SpreadsheetFormulaWidg
 import SpreadsheetHistoryHash from "./history/SpreadsheetHistoryHash.js";
 import SpreadsheetHistoryAwareStateWidget from "./history/SpreadsheetHistoryAwareStateWidget.js";
 import SpreadsheetHistoryHashTokens from "./history/SpreadsheetHistoryHashTokens.js";
-import SpreadsheetLabelMapping from "./reference/SpreadsheetLabelMapping.js";
-import SpreadsheetLabelName from "./reference/SpreadsheetLabelName.js";
-import SpreadsheetLabelMappingWidget from "./reference/SpreadsheetLabelMappingWidget.js";
+import SpreadsheetLabelMapping from "./reference/label/SpreadsheetLabelMapping.js";
+import SpreadsheetLabelName from "./reference/label/SpreadsheetLabelName.js";
+import SpreadsheetLabelMappingWidget from "./reference/label/SpreadsheetLabelMappingWidget.js";
 import SpreadsheetMessenger from "./message/SpreadsheetMessenger.js";
 import SpreadsheetMessengerCrud from "./message/SpreadsheetMessengerCrud.js";
 import SpreadsheetMetadata from "./meta/SpreadsheetMetadata.js";

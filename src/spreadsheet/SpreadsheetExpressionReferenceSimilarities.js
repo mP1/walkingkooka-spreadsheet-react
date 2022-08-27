@@ -1,8 +1,8 @@
 import Equality from "../Equality.js";
 import Preconditions from "../Preconditions.js";
 import SpreadsheetCellReference from "./reference/SpreadsheetCellReference.js";
-import SpreadsheetLabelMapping from "./reference/SpreadsheetLabelMapping.js";
-import SpreadsheetLabelName from "./reference/SpreadsheetLabelName.js";
+import SpreadsheetLabelMapping from "./reference/label/SpreadsheetLabelMapping.js";
+import SpreadsheetLabelName from "./reference/label/SpreadsheetLabelName.js";
 import SystemObject from "../SystemObject.js";
 
 const TYPE_NAME = "spreadsheet-expression-reference-similarities";

@@ -2,7 +2,7 @@ import CharSequences from "../../CharSequences.js";
 import SpreadsheetCellRange from "./SpreadsheetCellRange.js";
 import SpreadsheetCellReference from "./SpreadsheetCellReference.js";
 import spreadsheetCellReferenceOrLabelNameParse from "./SpreadsheetCellReferenceOrLabelNameParse.js";
-import SpreadsheetLabelName from "./SpreadsheetLabelName.js";
+import SpreadsheetLabelName from "./label/SpreadsheetLabelName.js";
 
 
 function parseFails(text, message) {

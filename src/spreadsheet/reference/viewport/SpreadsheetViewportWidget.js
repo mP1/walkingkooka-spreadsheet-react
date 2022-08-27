@@ -30,7 +30,7 @@ import SpreadsheetExpressionReference from "../SpreadsheetExpressionReference.js
 import SpreadsheetHistoryAwareStateWidget from "../../history/SpreadsheetHistoryAwareStateWidget.js";
 import SpreadsheetHistoryHash from "../../history/SpreadsheetHistoryHash.js";
 import SpreadsheetHistoryHashTokens from "../../history/SpreadsheetHistoryHashTokens.js";
-import SpreadsheetLabelName from "../SpreadsheetLabelName.js";
+import SpreadsheetLabelName from "../label/SpreadsheetLabelName.js";
 import SpreadsheetMessenger from "../../message/SpreadsheetMessenger.js";
 import SpreadsheetMessengerCrud from "../../message/SpreadsheetMessengerCrud.js";
 import SpreadsheetMetadata from "../../meta/SpreadsheetMetadata.js";

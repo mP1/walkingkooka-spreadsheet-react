@@ -1,7 +1,7 @@
-import SpreadsheetCellReference from "./SpreadsheetCellReference.js";
+import SpreadsheetCellReference from "../SpreadsheetCellReference.js";
 import SpreadsheetLabelMapping from "./SpreadsheetLabelMapping.js";
-import SpreadsheetLabelName from "./SpreadsheetLabelName";
-import systemObjectTesting from "../../SystemObjectTesting.js";
+import SpreadsheetLabelName from "./SpreadsheetLabelName.js";
+import systemObjectTesting from "../../../SystemObjectTesting.js";
 
 
 const NAME = "Label123";

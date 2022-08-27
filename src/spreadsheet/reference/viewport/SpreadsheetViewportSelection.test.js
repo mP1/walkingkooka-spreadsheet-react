@@ -2,7 +2,7 @@ import SpreadsheetCellRange from "../SpreadsheetCellRange.js";
 import SpreadsheetCellReference from "../SpreadsheetCellReference.js";
 import SpreadsheetColumnReference from "../SpreadsheetColumnReference.js";
 import SpreadsheetColumnReferenceRange from "../SpreadsheetColumnReferenceRange.js";
-import SpreadsheetLabelName from "../SpreadsheetLabelName.js";
+import SpreadsheetLabelName from "../label/SpreadsheetLabelName.js";
 import SpreadsheetRowReference from "../SpreadsheetRowReference.js";
 import SpreadsheetRowReferenceRange from "../SpreadsheetRowReferenceRange.js";
 import SpreadsheetViewportSelection from "./SpreadsheetViewportSelection.js";
