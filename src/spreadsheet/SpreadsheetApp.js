@@ -24,7 +24,7 @@ import SpreadsheetLabelMappingWidget from "./reference/SpreadsheetLabelMappingWi
 import SpreadsheetMetadata from "./meta/SpreadsheetMetadata.js";
 import SpreadsheetMessenger from "./message/SpreadsheetMessenger.js";
 import SpreadsheetMessengerCrud from "./message/SpreadsheetMessengerCrud.js";
-import SpreadsheetNameWidget from "./name/SpreadsheetNameWidget.js";
+import SpreadsheetMetadataNameWidget from "./name/SpreadsheetMetadataNameWidget.js";
 import SpreadsheetNotification from "./notification/SpreadsheetNotification.js";
 import SpreadsheetSelectAutocompleteWidget from "./reference/SpreadsheetSelectAutocompleteWidget.js";
 import SpreadsheetSelectLinkWidget from "./reference/SpreadsheetSelectLinkWidget.js";
@@ -287,10 +287,10 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
                 }}>
                     <SpreadsheetAppBar key={"AppBar"}
                                        history={history}>
-                        <SpreadsheetNameWidget key={"SpreadsheetName"}
-                                               history={history}
-                                               spreadsheetMetadataCrud={spreadsheetMetadataCrud}
-                                               showError={showError}
+                        <SpreadsheetMetadataNameWidget key={"SpreadsheetName"}
+                                                       history={history}
+                                                       spreadsheetMetadataCrud={spreadsheetMetadataCrud}
+                                                       showError={showError}
                         />
                     </SpreadsheetAppBar>
                     <div style={{
