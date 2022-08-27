@@ -7,7 +7,7 @@ import SpreadsheetCell from "../../SpreadsheetCell.js";
 import SpreadsheetCellRange from "./SpreadsheetCellRange.js";
 import SpreadsheetColumnReference from "../columnrow/SpreadsheetColumnReference.js";
 import SpreadsheetExpressionReference from "../SpreadsheetExpressionReference.js";
-import SpreadsheetFormula from "../formula/SpreadsheetFormula.js";
+import SpreadsheetFormula from "./formula/SpreadsheetFormula.js";
 import SpreadsheetReferenceKind from "../SpreadsheetReferenceKind.js";
 import SpreadsheetRowReference from "../columnrow/SpreadsheetRowReference.js";
 import SpreadsheetSelection from "../SpreadsheetSelection.js";

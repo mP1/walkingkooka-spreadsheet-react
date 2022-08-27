@@ -1,5 +1,5 @@
-import SpreadsheetCellHistoryHashToken from "../cell/SpreadsheetCellHistoryHashToken.js";
-import SpreadsheetHistoryHashTokens from "../../history/SpreadsheetHistoryHashTokens.js";
+import SpreadsheetCellHistoryHashToken from "../SpreadsheetCellHistoryHashToken.js";
+import SpreadsheetHistoryHashTokens from "../../../history/SpreadsheetHistoryHashTokens.js";
 
 /**
  * The style token.
