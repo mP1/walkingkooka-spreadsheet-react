@@ -411,27 +411,27 @@ export default class SpreadsheetTesting {
         return this.getById(spreadsheetRowReference.viewportId());
     }
 
-    settingsWait() {
+    metadataWait() {
         this.wait(100);
     }
 
-    settings() {
+    metadata() {
         return this.getById(SpreadsheetMetadataPanelWidget.drawerId());
     }
 
-    settingsAccordion(accordion) {
+    metadataAccordion(accordion) {
         return this.get(SpreadsheetMetadataPanelWidget.accordionElementSelector(accordion));
     }
 
-    settingsAccordionExpandMoreIcon(accordion) {
+    metadataAccordionExpandMoreIcon(accordion) {
         return this.getById(SpreadsheetMetadataPanelWidget.accordionId(accordion) + "-expand-more-icon");
     }
 
-    settingsAccordionContent(accordion) {
+    metadataAccordionContent(accordion) {
         return this.getById(SpreadsheetMetadataPanelWidget.accordionId(accordion) + "-content");
     }
 
-    settingsProperty(property, suffix) {
+    metadataProperty(property, suffix) {
         return this.getById(SpreadsheetMetadataPanelWidget.propertyId(property) + (suffix || ""));
     }
 
