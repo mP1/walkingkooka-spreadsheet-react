@@ -42,7 +42,7 @@ const useStyles = theme => ({
  * <ul>
  *      <li>spreadsheetId: The current spreadsheet id</li>
  *      <li>spreadsheetName: The current spreadsheet name</li>
- *      <li>boolean creatingEmptySpreadsheet: when true indicates a new spreadsheet is being created</li>
+ *      <li>boolean creatingOrLoadingSpreadsheet: when true indicates a new spreadsheet is being created</li>
  *      <li>SpreadsheetMetadata spreadsheetMetadata: The current SpreadsheetMetadata</li>
  * </ul>
  */
@@ -138,8 +138,8 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
         setTimeout(
             () =>
                 this.setState({
-                    creatingEmptySpreadsheet: true,
-                    spreadsheetId: null,
+                    creatingOrLoadingSpreadsheet: true,
+                    spreadsheetId: this.props.history.tokens()[SpreadsheetHistoryHash.SPREADSHEET_ID],
                     spreadsheetMetadata: null,
                 }),
             1
@@ -150,13 +150,8 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
      * Creates a state with some defaults and empty values.
      */
     initialStateFromProps(props) {
-        const historyHashTokens = props.history.tokens();
-
         return {
-            creatingEmptySpreadsheet: false,
-            spreadsheetId: historyHashTokens[SpreadsheetHistoryHash.SPREADSHEET_ID],
-            spreadsheetMetadata: SpreadsheetMetadata.EMPTY,
-        };
+        }
     }
 
     /**
@@ -187,42 +182,48 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
 
     // state-change.....................................................................................................
 
-    /**
-     * This is called when the state changes and returns the history tokens equivalent. This may involve
-     * creating a new spreadsheet, loading a new id, correcting the name so the history hash matches what has been saved etc.
-     */
     historyTokensFromState(prevState) {
         const historyTokens = SpreadsheetHistoryHashTokens.emptyTokens();
 
+        const {
+            creatingOrLoadingSpreadsheet,
+            spreadsheetId,
+            spreadsheetMetadata
+        } = this.state;
+
         const previousId = prevState.spreadsheetId;
+        const differentId = (!Equality.safeEquals(spreadsheetId, previousId));
 
-        const state = this.state;
-        const id = state.spreadsheetId;
-        const differentId = !(Equality.safeEquals(id, previousId));
+        if(creatingOrLoadingSpreadsheet) {
+            if(spreadsheetId) {
+                this.log(".historyTokensFromState loading " + spreadsheetId);
 
-        if(state.creatingEmptySpreadsheet){
-            this.spreadsheetEmptyCreate();
-        }else {
-            if(id){
-                const metadata = state.spreadsheetMetadata;
-                if(metadata.isEmpty() || differentId){
-                    this.log(".historyTokensFromState spreadsheetId changed from " + previousId + " to " + id);
-
-                    this.spreadsheetMetadataCrud.get(
-                        id,
-                        {},
-                        (message, error) => this.props.showError("Unable to load spreadsheet " + id, error)
-                    );
-                }
-
-                const name = metadata.getIgnoringDefaults(SpreadsheetMetadata.SPREADSHEET_NAME);
-                document.title = name ? name.toString() : "";
-
-                if(differentId || !(Equality.safeEquals(name, prevState.spreadsheetMetadata.getIgnoringDefaults(SpreadsheetMetadata.SPREADSHEET_NAME)))){
-                    historyTokens[SpreadsheetHistoryHashTokens.SPREADSHEET_ID] = id;
-                    historyTokens[SpreadsheetHistoryHashTokens.SPREADSHEET_NAME] = name;
-                }
+                this.spreadsheetMetadataCrud.get(
+                    spreadsheetId,
+                    {},
+                    (message, error) => this.props.showError("Unable to load spreadsheet " + spreadsheetId, error)
+                );
+            } else {
+                this.spreadsheetEmptyCreate();
             }
+        } else {
+            if(differentId) {
+                this.log(".historyTokensFromState spreadsheetId changed from " + previousId + " to " + spreadsheetId);
+
+                setTimeout(
+                    () =>
+                        this.setState({
+                            creatingOrLoadingSpreadsheet: true,
+                        }),
+                    1
+                );
+            }
+
+            const name = spreadsheetMetadata.getIgnoringDefaults(SpreadsheetMetadata.SPREADSHEET_NAME);
+            document.title = name ? name.toString() : "";
+
+            historyTokens[SpreadsheetHistoryHashTokens.SPREADSHEET_ID] = spreadsheetId;
+            historyTokens[SpreadsheetHistoryHashTokens.SPREADSHEET_NAME] = name;
         }
 
         return historyTokens;
@@ -247,7 +248,7 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
         this.setState({
             spreadsheetId: responseMetadata && responseMetadata.getIgnoringDefaults(SpreadsheetMetadata.SPREADSHEET_ID),
             spreadsheetName: spreadsheetName,
-            creatingEmptySpreadsheet: false,
+            creatingOrLoadingSpreadsheet: false,
             spreadsheetMetadata: responseMetadata,
         });
 
