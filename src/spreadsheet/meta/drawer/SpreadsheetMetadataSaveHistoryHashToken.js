@@ -47,7 +47,7 @@ export default class SpreadsheetMetadataSaveHistoryHashToken extends Spreadsheet
     }
 
     metadataDrawerWidget(metadataDrawerWidget, metadata) {
-        metadataDrawerWidget.patchSpreadsheetMetadata(
+        metadataDrawerWidget.patchSpreadsheetMetadataProperty(
             this.property(),
             this.value()
         );

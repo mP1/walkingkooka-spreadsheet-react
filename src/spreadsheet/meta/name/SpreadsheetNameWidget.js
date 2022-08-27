@@ -3,11 +3,11 @@ import Equality from "../../../Equality.js";
 import Keys from "../../../Keys.js";
 import PropTypes from 'prop-types';
 import React from 'react';
-import SpreadsheetHistoryAwareStateWidget from "../../history/SpreadsheetHistoryAwareStateWidget.js";
 import SpreadsheetHistoryHash from "../../history/SpreadsheetHistoryHash.js";
 import SpreadsheetHistoryHashTokens from "../../history/SpreadsheetHistoryHashTokens.js";
 import SpreadsheetMessengerCrud from "../../message/SpreadsheetMessengerCrud.js";
 import SpreadsheetMetadata from "../SpreadsheetMetadata.js";
+import SpreadsheetMetadataWidget from "../SpreadsheetMetadataWidget.js";
 import SpreadsheetNameEditHistoryHashToken from "./SpreadsheetNameEditHistoryHashToken.js";
 import SpreadsheetNameSaveHistoryHashToken from "./SpreadsheetNameSaveHistoryHashToken.js";
 import SpreadsheetName from "./SpreadsheetName.js";
@@ -16,7 +16,7 @@ import TextField from "@mui/material/TextField";
 /**
  * A widget that displays the spreadsheet name as a button which when clicked turns into a text field and may be edited.
  */
-export default class SpreadsheetNameWidget extends SpreadsheetHistoryAwareStateWidget {
+export default class SpreadsheetNameWidget extends SpreadsheetMetadataWidget {
 
     static SPREADSHEET_METADATA_NAME_ID = "metadata-name";
 
@@ -33,19 +33,6 @@ export default class SpreadsheetNameWidget extends SpreadsheetHistoryAwareStateW
             value: "",
             edit: null,
         };
-    }
-
-    componentDidMount() {
-        super.componentDidMount();
-
-        this.spreadsheetMetadataCrudRemover = this.props.spreadsheetMetadataCrud.addListener(this.onSpreadsheetMetadata.bind(this));
-    }
-
-    componentWillUnmount() {
-        super.componentWillUnmount();
-
-        this.spreadsheetMetadataCrudRemover && this.spreadsheetMetadataCrudRemover();
-        delete this.spreadsheetMetadataCrudRemover;
     }
 
     stateFromHistoryTokens(tokens) {
@@ -141,22 +128,6 @@ export default class SpreadsheetNameWidget extends SpreadsheetHistoryAwareStateW
             new SpreadsheetName(this.state.value)
         );
         this.historyParseMergeAndPush(historyHashTokens);
-    }
-
-    /**
-     * Performs a PATCH to the server with the new name.
-     */
-    patchSpreadsheetMetadataWithName(name) {
-        const {id} = this.state;
-
-        const patch = {};
-        patch[SpreadsheetMetadata.SPREADSHEET_NAME] = name;
-
-        this.props.spreadsheetMetadataCrud.patch(
-            id,
-            JSON.stringify(patch),
-            this.props.showError
-        );
     }
 
     onSpreadsheetMetadata(method, id, url, requestMetadata, responseMetadata) {

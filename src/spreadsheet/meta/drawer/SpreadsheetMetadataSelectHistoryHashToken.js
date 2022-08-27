@@ -33,7 +33,9 @@ export default class SpreadsheetMetadataSelectHistoryHashToken extends Spreadshe
 
     metadataDrawerWidget(metadataDrawerWidget, metadata) {
         if(!metadata) {
-            metadataDrawerWidget.loadSpreadsheetMetadata(); // load spreadsheet metadata when the metadata drawer opens
+            metadataDrawerWidget.loadSpreadsheetMetadata(
+                metadataDrawerWidget.state.id
+            ); // load spreadsheet metadata when the metadata drawer opens
         }
     }
 

@@ -17,12 +17,12 @@ import React from 'react';
 import RelativeUrl from "../../../net/RelativeUrl.js";
 import RoundingMode from "../../../math/RoundingMode.js";
 import SpreadsheetFormatRequest from "../../server/format/SpreadsheetFormatRequest.js";
-import SpreadsheetHistoryAwareStateWidget from "../../history/SpreadsheetHistoryAwareStateWidget.js";
 import SpreadsheetHistoryHash from "../../history/SpreadsheetHistoryHash.js";
 import SpreadsheetHistoryHashTokens from "../../history/SpreadsheetHistoryHashTokens.js";
 import SpreadsheetLocaleDefaultDateTimeFormat from "../../server/format/SpreadsheetLocaleDefaultDateTimeFormat.js";
 import SpreadsheetMessengerCrud from "../../message/SpreadsheetMessengerCrud.js";
 import SpreadsheetMetadata from "../SpreadsheetMetadata.js";
+import SpreadsheetMetadataWidget from "../SpreadsheetMetadataWidget.js";
 import SpreadsheetMultiFormatRequest from "../../server/format/SpreadsheetMultiFormatRequest.js";
 import SpreadsheetMultiFormatResponse from "../../server/format/SpreadsheetMultiFormatResponse.js";
 import SpreadsheetMetadataPanelWidgetTextFieldCharacter from "./SpreadsheetMetadataPanelWidgetTextFieldCharacter.js";
@@ -94,7 +94,7 @@ const useStyles = theme => ({
  */
 const BLUR_CLOSES_DRAWER = true;
 
-class SpreadsheetMetadataPanelWidget extends SpreadsheetHistoryAwareStateWidget {
+class SpreadsheetMetadataPanelWidget extends SpreadsheetMetadataWidget {
 
     /**
      * The width of the metadata in pixels holding metadata and tools.
@@ -147,19 +147,6 @@ class SpreadsheetMetadataPanelWidget extends SpreadsheetHistoryAwareStateWidget 
         };
     }
 
-    componentDidMount() {
-        super.componentDidMount();
-
-        this.onSpreadsheetMetadataRemover = this.props.spreadsheetMetadataCrud.addListener(this.onSpreadsheetMetadata.bind(this));
-    }
-
-    componentWillUnmount() {
-        super.componentWillUnmount();
-
-        this.onSpreadsheetMetadataRemover && this.onSpreadsheetMetadataRemover();
-        delete this.onSpreadsheetMetadataRemover;
-    }
-
     stateFromHistoryTokens(tokens) {
         const metadata = tokens[SpreadsheetHistoryHashTokens.METADATA];
 
@@ -200,24 +187,6 @@ class SpreadsheetMetadataPanelWidget extends SpreadsheetHistoryAwareStateWidget 
     }
 
     /**
-     * Unconditionally loads the SpreadsheetMetadata again.
-     */
-    loadSpreadsheetMetadata() {
-        console.log("metadata.loadSpreadsheetMetadata");
-
-        // metadata just opened, load metadata.
-        const id = this.state.id;
-        if(id){
-            const props = this.props;
-            props.spreadsheetMetadataCrud.get(
-                id,
-                {},
-                (message, error) => props.showError("Unable to load spreadsheet " + id, error)
-            );
-        }
-    }
-
-    /**
      * Returns a function that will accept a value and updates the history hash with a save command.
      */
     saveProperty(property) {
@@ -228,28 +197,6 @@ class SpreadsheetMetadataPanelWidget extends SpreadsheetHistoryAwareStateWidget 
 
             console.log("metadata save " + property + "=" + value, tokens);
         };
-    }
-
-    /**
-     * Performs a PATCH to save the current property and value to the server
-     */
-    patchSpreadsheetMetadata(property, value) {
-        const {state, props} = this;
-
-        const patch = {};
-
-        if(SpreadsheetMetadata.isProperty(property)){
-            patch[property] = value;
-        }else {
-            patch.style = {};
-            patch.style[property] = value;
-        }
-
-        props.spreadsheetMetadataCrud.patch(
-            state.id,
-            JSON.stringify(patch),
-            (message, error) => props.showError("Unable to save property " + property + " with value " + value, error)
-        );
     }
 
     onSpreadsheetMetadata(method, id, url, requestMetadata, responseMetadata) {
