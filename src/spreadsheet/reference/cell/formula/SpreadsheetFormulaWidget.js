@@ -147,7 +147,7 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetCellWidget {
     }
 
     saveFormulaText(cellReference, formulaText, selection, anchor) {
-        console.log(this.prefix() + " saving formula for " + cellReference + " with " + CharSequences.quoteAndEscape(formulaText));
+        this.log(" Saving formula for " + cellReference + " with " + CharSequences.quoteAndEscape(formulaText));
 
         this.props.spreadsheetViewportWidget.current.patchCell(
             new SpreadsheetCell(
@@ -172,7 +172,7 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetCellWidget {
         if(this.state.selection instanceof SpreadsheetCellFormulaEditHistoryHashToken){
             // if textField does not have focus and not save -> load give focus.
             if(this.textField.current){
-                console.log(this.prefix() + ".Formula not focused so give Focus: " + this.input.current);
+                this.log(" Formula not focused so giving focus to: " + this.input.current);
 
                 element = this.input.current;
             }
@@ -223,7 +223,7 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetCellWidget {
     onBlur(e) {
         const newTarget = e.relatedTarget;
         const inside = this.textField.current.contains(newTarget);
-        console.log(this.prefix() + " .onBlur new target is " + (inside ? "inside" : "outside"));
+        this.log(".onBlur new target is " + (inside ? "inside" : "outside"));
 
         if(!inside) {
             const newState = {
@@ -242,7 +242,8 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetCellWidget {
 
     onFocus(e) {
         const selection = this.state.selection;
-        console.log(this.prefix() + " .onFocus " + selection + " " + (selection && new SpreadsheetCellFormulaEditHistoryHashToken(selection.viewportSelection())),  this.state);
+        this.log(".onFocus " + selection + " " + (selection && new SpreadsheetCellFormulaEditHistoryHashToken(selection.viewportSelection())),  this.state);
+
         this.setState({
             focused: true,
             selection: selection && new SpreadsheetCellFormulaEditHistoryHashToken(selection.viewportSelection()),
@@ -284,7 +285,8 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetCellWidget {
      * ENTER saves the formula content.
      */
     onEnterKey(e) {
-        console.log(this.prefix() + " onEnter");
+        this.log(".onEnter");
+
         e.preventDefault();
 
         const selection = this.state.selection;
@@ -321,7 +323,7 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetCellWidget {
                     formulaText = cell.formula().text();
                 }else {
                     if(responseDelta.deletedCells().find(deleted => deleted.equals(cellReference))){
-                        console.log("cell " + selectionSelection + " deleted, formula cleared");
+                        this.log(".onSpreadsheetDelta cell " + selectionSelection + " deleted, formula cleared");
                     }
                 }
 
@@ -331,8 +333,6 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetCellWidget {
                     cellReference: cellReference,
                     value: formulaText,
                 };
-
-                console.log(this.prefix() + " .onSpDela state.sel: " + selection  + " history is " + SpreadsheetHistoryHash.stringify(this.props.history.tokens()));
 
                 this.setState(newState);
             }
