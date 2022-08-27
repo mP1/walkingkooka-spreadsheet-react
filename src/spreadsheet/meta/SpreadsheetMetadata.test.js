@@ -13,7 +13,7 @@ import SpreadsheetDateParsePatterns from "../format/SpreadsheetDateParsePatterns
 import SpreadsheetDateTimeFormatPattern from "../format/SpreadsheetDateTimeFormatPattern.js";
 import SpreadsheetDateTimeParsePatterns from "../format/SpreadsheetDateTimeParsePatterns.js";
 import SpreadsheetMetadata from "./SpreadsheetMetadata";
-import SpreadsheetName from "../name/SpreadsheetName.js";
+import SpreadsheetName from "../name/SpreadsheetMetadataName.js";
 import SpreadsheetNumberFormatPattern from "../format/SpreadsheetNumberFormatPattern.js";
 import SpreadsheetNumberParsePatterns from "../format/SpreadsheetNumberParsePatterns.js";
 import SpreadsheetRowReferenceRange from "../reference/SpreadsheetRowReferenceRange.js";
