@@ -259,7 +259,7 @@ export default class SpreadsheetMetadataPanelWidgetValue extends SpreadsheetHist
         });
     }
 
-    log(...params) {
-        console.log(this.prefix() + "." + this.props.property + params[0], params.shift());
+    prefix() {
+        return super.prefix() + "." + this.props.property;
     }
 }
