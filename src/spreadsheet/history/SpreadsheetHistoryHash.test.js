@@ -47,12 +47,12 @@ import SpreadsheetLabelMappingEditHistoryHashToken from "../reference/Spreadshee
 import SpreadsheetLabelMappingSaveHistoryHashToken from "../reference/SpreadsheetLabelMappingSaveHistoryHashToken.js";
 import SpreadsheetLabelName from "../reference/SpreadsheetLabelName.js";
 import SpreadsheetMetadata from "../meta/SpreadsheetMetadata.js";
-import SpreadsheetNameEditHistoryHashToken from "../meta/SpreadsheetNameEditHistoryHashToken.js";
-import SpreadsheetNameSaveHistoryHashToken from "../meta/SpreadsheetNameSaveHistoryHashToken.js";
 import SpreadsheetMetadataSaveHistoryHashToken from "../meta/drawer/SpreadsheetMetadataSaveHistoryHashToken.js";
 import SpreadsheetMetadataSelectHistoryHashToken from "../meta/drawer/SpreadsheetMetadataSelectHistoryHashToken.js";
 import SpreadsheetMetadataWidgetHistoryHashTokens from "../meta/drawer/SpreadsheetMetadataWidgetHistoryHashTokens.js";
 import SpreadsheetName from "../meta/SpreadsheetName.js";
+import SpreadsheetNameEditHistoryHashToken from "../meta/SpreadsheetNameEditHistoryHashToken.js";
+import SpreadsheetNameSaveHistoryHashToken from "../meta/SpreadsheetNameSaveHistoryHashToken.js";
 import SpreadsheetRowReference from "../reference/SpreadsheetRowReference.js";
 import SpreadsheetRowReferenceRange from "../reference/SpreadsheetRowReferenceRange.js"
 import SpreadsheetTextFormatPattern from "../format/SpreadsheetTextFormatPattern.js";
