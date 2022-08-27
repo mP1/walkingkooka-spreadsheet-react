@@ -216,9 +216,7 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
                 }
 
                 const name = metadata.getIgnoringDefaults(SpreadsheetMetadata.SPREADSHEET_NAME);
-                if(name){
-                    document.title = name.toString();
-                }
+                document.title = name ? name.toString() : "";
 
                 if(differentId || !(Equality.safeEquals(name, prevState.spreadsheetMetadata.getIgnoringDefaults(SpreadsheetMetadata.SPREADSHEET_NAME)))){
                     historyTokens[SpreadsheetHistoryHashTokens.SPREADSHEET_ID] = id;
@@ -261,14 +259,6 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
             default:
                 break;
         }
-
-        // update history with just loaded spreadsheet name.
-        const tokens = this.props.history.tokens();
-        tokens[SpreadsheetHistoryHashTokens.SPREADSHEET_NAME] = spreadsheetName;
-        this.historyParseMergeAndPush(tokens);
-
-        // update document title
-        document.title = spreadsheetName;
     }
 
     // rendering........................................................................................................
