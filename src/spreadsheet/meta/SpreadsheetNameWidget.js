@@ -18,7 +18,7 @@ import TextField from "@mui/material/TextField";
  */
 export default class SpreadsheetNameWidget extends SpreadsheetHistoryAwareStateWidget {
 
-    static SPREADSHEET_METADATA_NAME_ID = "metadata-name-";
+    static SPREADSHEET_METADATA_NAME_ID = "metadata-name";
 
     static BUTTON_ID = SpreadsheetNameWidget.SPREADSHEET_METADATA_NAME_ID + "-Button";
 
