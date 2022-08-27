@@ -375,10 +375,6 @@ export default class SpreadsheetLabelMappingWidget extends SpreadsheetHistoryAwa
 
         this.close();
     }
-
-    log(...params) {
-        console.log(this.prefix() + "." + this.props.property + params[0], params.shift());
-    }
 }
 
 SpreadsheetLabelMappingWidget.propTypes = {
