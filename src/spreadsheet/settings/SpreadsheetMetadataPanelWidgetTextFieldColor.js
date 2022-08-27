@@ -1,13 +1,13 @@
 import Color from "../../color/Color.js";
 import PropTypes from "prop-types";
 import SpreadsheetNotification from "../notification/SpreadsheetNotification.js";
-import SpreadsheetSettingsWidgetTextField from "./SpreadsheetSettingsWidgetTextField.js";
-import SpreadsheetSettingsWidgetValue from "./SpreadsheetSettingsWidgetValue.js";
+import SpreadsheetMetadataPanelWidgetTextField from "./SpreadsheetMetadataPanelWidgetTextField.js";
+import SpreadsheetMetadataPanelWidgetValue from "./SpreadsheetMetadataPanelWidgetValue.js";
 
 /**
  * A widget that displays a TextField and creates a Color from any entered text.
  */
-export default class SpreadsheetSettingsWidgetTextFieldColor extends SpreadsheetSettingsWidgetTextField {
+export default class SpreadsheetMetadataPanelWidgetTextFieldColor extends SpreadsheetMetadataPanelWidgetTextField {
 
     placeholder() {
         return "#rrggbb";
@@ -34,7 +34,7 @@ export default class SpreadsheetSettingsWidgetTextFieldColor extends Spreadsheet
     }
 }
 
-SpreadsheetSettingsWidgetTextFieldColor.propTypes = SpreadsheetSettingsWidgetValue.createPropTypes(
+SpreadsheetMetadataPanelWidgetTextFieldColor.propTypes = SpreadsheetMetadataPanelWidgetValue.createPropTypes(
     PropTypes.instanceOf(Color),
     {
         notificationShow: PropTypes.func.isRequired

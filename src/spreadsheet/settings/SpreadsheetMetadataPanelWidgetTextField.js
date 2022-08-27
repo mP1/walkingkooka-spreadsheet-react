@@ -1,13 +1,13 @@
 import Keys from "../../Keys.js";
 import React from 'react';
-import SpreadsheetSettingsWidgetValue from "./SpreadsheetSettingsWidgetValue.js";
+import SpreadsheetMetadataPanelWidgetValue from "./SpreadsheetMetadataPanelWidgetValue.js";
 import TextField from "@mui/material/TextField";
 
 /**
  * A widget which displays a value for editing using a TextField. Edits are delayed and only saved when ENTER is
  * entered or a blur event.
  */
-export default class SpreadsheetSettingsWidgetTextField extends SpreadsheetSettingsWidgetValue {
+export default class SpreadsheetMetadataPanelWidgetTextField extends SpreadsheetMetadataPanelWidgetValue {
 
     constructor(props) {
         super(props);

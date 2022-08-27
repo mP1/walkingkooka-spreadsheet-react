@@ -1,12 +1,12 @@
 import PropTypes from "prop-types";
 import SpreadsheetDateTimeParsePatterns from "../format/SpreadsheetDateTimeParsePatterns.js";
-import SpreadsheetSettingsWidgetTextField from "./SpreadsheetSettingsWidgetTextField.js";
-import SpreadsheetSettingsWidgetValue from "./SpreadsheetSettingsWidgetValue.js";
+import SpreadsheetMetadataPanelWidgetTextField from "./SpreadsheetMetadataPanelWidgetTextField.js";
+import SpreadsheetMetadataPanelWidgetValue from "./SpreadsheetMetadataPanelWidgetValue.js";
 
 /**
  * A widget which accepts a String and creates an unvalidated {@link SpreadsheetDateTimeParsePatterns}.
  */
-export default class SpreadsheetSettingsWidgetTextFieldSpreadsheetDateTimeParsePatterns extends SpreadsheetSettingsWidgetTextField {
+export default class SpreadsheetMetadataPanelWidgetTextFieldSpreadsheetDateTimeParsePatterns extends SpreadsheetMetadataPanelWidgetTextField {
 
     placeholder() {
         return "Enter pattern";
@@ -35,4 +35,4 @@ export default class SpreadsheetSettingsWidgetTextFieldSpreadsheetDateTimeParseP
     }
 }
 
-SpreadsheetSettingsWidgetTextFieldSpreadsheetDateTimeParsePatterns.propTypes = SpreadsheetSettingsWidgetValue.createPropTypes(PropTypes.instanceOf(SpreadsheetDateTimeParsePatterns));
+SpreadsheetMetadataPanelWidgetTextFieldSpreadsheetDateTimeParsePatterns.propTypes = SpreadsheetMetadataPanelWidgetValue.createPropTypes(PropTypes.instanceOf(SpreadsheetDateTimeParsePatterns));

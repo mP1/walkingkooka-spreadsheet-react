@@ -1,12 +1,12 @@
 import PropTypes from "prop-types";
 import SpreadsheetTextFormatPattern from "../format/SpreadsheetTextFormatPattern.js";
-import SpreadsheetSettingsWidgetTextField from "./SpreadsheetSettingsWidgetTextField.js";
-import SpreadsheetSettingsWidgetValue from "./SpreadsheetSettingsWidgetValue.js";
+import SpreadsheetMetadataPanelWidgetTextField from "./SpreadsheetMetadataPanelWidgetTextField.js";
+import SpreadsheetMetadataPanelWidgetValue from "./SpreadsheetMetadataPanelWidgetValue.js";
 
 /**
  * A widget which accepts a String and creates an unvalidated {@link SpreadsheetTextFormatPattern}.
  */
-export default class SpreadsheetSettingsWidgetTextFieldSpreadsheetTextFormatPattern extends SpreadsheetSettingsWidgetTextField {
+export default class SpreadsheetMetadataPanelWidgetTextFieldSpreadsheetTextFormatPattern extends SpreadsheetMetadataPanelWidgetTextField {
 
     placeholder() {
         return "Enter pattern";
@@ -34,4 +34,4 @@ export default class SpreadsheetSettingsWidgetTextFieldSpreadsheetTextFormatPatt
     }
 }
 
-SpreadsheetSettingsWidgetTextFieldSpreadsheetTextFormatPattern.propTypes = SpreadsheetSettingsWidgetValue.createPropTypes(PropTypes.instanceOf(SpreadsheetTextFormatPattern));
+SpreadsheetMetadataPanelWidgetTextFieldSpreadsheetTextFormatPattern.propTypes = SpreadsheetMetadataPanelWidgetValue.createPropTypes(PropTypes.instanceOf(SpreadsheetTextFormatPattern));

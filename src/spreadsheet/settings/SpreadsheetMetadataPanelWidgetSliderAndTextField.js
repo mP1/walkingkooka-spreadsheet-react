@@ -2,14 +2,14 @@ import Keys from "../../Keys.js";
 import PropTypes from "prop-types";
 import React from 'react';
 import Slider from "@mui/material/Slider";
-import SpreadsheetSettingsWidgetValue from "./SpreadsheetSettingsWidgetValue.js";
+import SpreadsheetMetadataPanelWidgetValue from "./SpreadsheetMetadataPanelWidgetValue.js";
 import TextField from "@mui/material/TextField";
 
 /**
  * Shows a slider that allows editing of a number including min/max support and translation to a similar number value
  * such as Length.
  */
-export default class SpreadsheetSettingsWidgetSliderAndTextField extends SpreadsheetSettingsWidgetValue {
+export default class SpreadsheetMetadataPanelWidgetSliderAndTextField extends SpreadsheetMetadataPanelWidgetValue {
 
     constructor(props) {
         super(props);
@@ -111,7 +111,7 @@ export default class SpreadsheetSettingsWidgetSliderAndTextField extends Spreads
     }
 }
 
-SpreadsheetSettingsWidgetSliderAndTextField.propTypes = SpreadsheetSettingsWidgetValue.createPropTypes(
+SpreadsheetMetadataPanelWidgetSliderAndTextField.propTypes = SpreadsheetMetadataPanelWidgetValue.createPropTypes(
     PropTypes.number,
     {
         min: PropTypes.number.isRequired,

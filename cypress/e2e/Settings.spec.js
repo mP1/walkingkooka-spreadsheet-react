@@ -7,7 +7,7 @@ import Hyphens from "../../src/text/Hyphens.js";
 import RoundingMode from "../../src/math/RoundingMode.js";
 import SpreadsheetCellReference from "../../src/spreadsheet/reference/SpreadsheetCellReference.js";
 import SpreadsheetMetadata from "../../src/spreadsheet/meta/SpreadsheetMetadata.js";
-import SpreadsheetSettingsWidget from "../../src/spreadsheet/settings/SpreadsheetSettingsWidget.js";
+import SpreadsheetMetadataPanelWidget from "../../src/spreadsheet/settings/SpreadsheetMetadataPanelWidget.js";
 import SpreadsheetTesting from "./SpreadsheetTesting.js";
 import TextAlign from "../../src/text/TextAlign.js";
 import TextStyle from "../../src/text/TextStyle.js";
@@ -167,7 +167,7 @@ describe(
                 // update settings property
                 settingsProperty(property);
 
-                const textFieldId = SpreadsheetSettingsWidget.propertyId(property) + "-TextField";
+                const textFieldId = SpreadsheetMetadataPanelWidget.propertyId(property) + "-TextField";
                 testing.getById(textFieldId)
                     .then((input) => {
                         const textBackup = input.text();
@@ -268,7 +268,7 @@ describe(
                 }
                 settingsProperty(property);
 
-                const sliderId = SpreadsheetSettingsWidget.propertyId(property) + "-Slider";
+                const sliderId = SpreadsheetMetadataPanelWidget.propertyId(property) + "-Slider";
 
                 if(defaultButtonText){
                     testing.cellFormattedTextCheck(A1, defaultA1);
@@ -335,7 +335,7 @@ describe(
 
                 settingsProperty(property);
 
-                const baseId = SpreadsheetSettingsWidget.propertyId(property);
+                const baseId = SpreadsheetMetadataPanelWidget.propertyId(property);
                 const sliderId = baseId + "-Slider";
                 const numberTextFieldId = baseId + "-NumberTextField";
 
@@ -396,7 +396,7 @@ describe(
 
                 settingsProperty(property);
 
-                const dropDownListId = SpreadsheetSettingsWidget.propertyId(property) + "-DropDownList";
+                const dropDownListId = SpreadsheetMetadataPanelWidget.propertyId(property) + "-DropDownList";
 
                 values.forEach((v, i) => {
                     testing.historyWait();
@@ -689,7 +689,7 @@ describe(
 
                 settingsProperty(property);
 
-                const textFieldId = SpreadsheetSettingsWidget.propertyId(property) + "-TextField";
+                const textFieldId = SpreadsheetMetadataPanelWidget.propertyId(property) + "-TextField";
 
                 testing.getById(textFieldId)
                     .type("{selectall}#123456{enter}");
@@ -724,7 +724,7 @@ describe(
 
                 settingsProperty(property);
 
-                const sliderId = SpreadsheetSettingsWidget.propertyId(property) + "-Slider";
+                const sliderId = SpreadsheetMetadataPanelWidget.propertyId(property) + "-Slider";
                 const defaultOffset = defaultButtonText ? 1 : 0;
 
                 // the first slot of a Slider is reserved for "Default".
@@ -760,8 +760,8 @@ describe(
 
                 settingsProperty(property);
 
-                const sliderId = SpreadsheetSettingsWidget.propertyId(property) + "-Slider";
-                const numberTextFieldId = SpreadsheetSettingsWidget.propertyId(property) + "-NumberTextField";
+                const sliderId = SpreadsheetMetadataPanelWidget.propertyId(property) + "-Slider";
+                const numberTextFieldId = SpreadsheetMetadataPanelWidget.propertyId(property) + "-NumberTextField";
 
                 // type a number in TextField & verify slider moved.
                 const values = [
@@ -1204,7 +1204,7 @@ describe(
                 .scrollIntoView()
                 .tab();
 
-            const id = SpreadsheetSettingsWidget.propertyId(property);
+            const id = SpreadsheetMetadataPanelWidget.propertyId(property);
 
             testing.focused()
                 .should("have.attr", "id", id + "-default-Button")
@@ -1223,7 +1223,7 @@ describe(
             testing.hash()
                 .should("match", new RegExp(".*\/.*\/settings\/" + property));
 
-            const id = SpreadsheetSettingsWidget.propertyId(property);
+            const id = SpreadsheetMetadataPanelWidget.propertyId(property);
 
             // eg $id-TextField
             testing.focused()
@@ -1252,7 +1252,7 @@ describe(
             testing.focused()
                 .tab();
 
-            const id = SpreadsheetSettingsWidget.propertyId(property);
+            const id = SpreadsheetMetadataPanelWidget.propertyId(property);
 
             testing.focused()
                 .should("have.attr", "id", id + "-default-Button")

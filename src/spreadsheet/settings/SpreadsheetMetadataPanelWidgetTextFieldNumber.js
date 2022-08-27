@@ -1,11 +1,11 @@
 import PropTypes from "prop-types";
-import SpreadsheetSettingsWidgetTextField from "./SpreadsheetSettingsWidgetTextField.js";
-import SpreadsheetSettingsWidgetValue from "./SpreadsheetSettingsWidgetValue.js";
+import SpreadsheetMetadataPanelWidgetTextField from "./SpreadsheetMetadataPanelWidgetTextField.js";
+import SpreadsheetMetadataPanelWidgetValue from "./SpreadsheetMetadataPanelWidgetValue.js";
 
 /**
  * A widget which displays a number for editing using a TextField. All edits immediately update the spreadsheet.
  */
-export default class SpreadsheetSettingsWidgetTextFieldNumber extends SpreadsheetSettingsWidgetTextField {
+export default class SpreadsheetMetadataPanelWidgetTextFieldNumber extends SpreadsheetMetadataPanelWidgetTextField {
 
     placeholder() {
         return;
@@ -28,7 +28,7 @@ export default class SpreadsheetSettingsWidgetTextFieldNumber extends Spreadshee
     }
 }
 
-SpreadsheetSettingsWidgetTextFieldNumber.propTypes = SpreadsheetSettingsWidgetValue.createPropTypes(
+SpreadsheetMetadataPanelWidgetTextFieldNumber.propTypes = SpreadsheetMetadataPanelWidgetValue.createPropTypes(
     PropTypes.number,
     {
         length: PropTypes.number.isRequired,
