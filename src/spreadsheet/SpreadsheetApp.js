@@ -21,14 +21,14 @@ import SpreadsheetHistoryHashTokens from "./history/SpreadsheetHistoryHashTokens
 import SpreadsheetLabelMapping from "./reference/SpreadsheetLabelMapping.js";
 import SpreadsheetLabelName from "./reference/SpreadsheetLabelName.js";
 import SpreadsheetLabelMappingWidget from "./reference/SpreadsheetLabelMappingWidget.js";
-import SpreadsheetMetadata from "./meta/SpreadsheetMetadata.js";
 import SpreadsheetMessenger from "./message/SpreadsheetMessenger.js";
 import SpreadsheetMessengerCrud from "./message/SpreadsheetMessengerCrud.js";
+import SpreadsheetMetadata from "./meta/SpreadsheetMetadata.js";
+import SpreadsheetMetadataDrawerWidget from "./meta/drawer/SpreadsheetMetadataPanelWidget.js";
 import SpreadsheetNameWidget from "./meta/name/SpreadsheetNameWidget.js";
 import SpreadsheetNotification from "./notification/SpreadsheetNotification.js";
 import SpreadsheetSelectAutocompleteWidget from "./reference/SpreadsheetSelectAutocompleteWidget.js";
 import SpreadsheetSelectLinkWidget from "./reference/SpreadsheetSelectLinkWidget.js";
-import SpreadsheetMetadataDrawerWidget from "./meta/drawer/SpreadsheetMetadataPanelWidget.js";
 import SpreadsheetViewportWidget from "./reference/viewport/SpreadsheetViewportWidget.js";
 
 const useStyles = theme => ({
