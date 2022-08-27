@@ -2,7 +2,7 @@ import PropTypes from "prop-types";
 import React from 'react';
 import Select from '@mui/material/Select';
 import SpreadsheetMetadataPanelWidgetValue from "./SpreadsheetMetadataPanelWidgetValue.js";
-import SystemEnum from "../../SystemEnum.js";
+import SystemEnum from "../../../SystemEnum.js";
 
 /**
  * Shows the enum values using a drop down list. This is preferred because over slider when there are too many values,

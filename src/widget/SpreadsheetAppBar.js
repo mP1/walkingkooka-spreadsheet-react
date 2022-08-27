@@ -7,10 +7,10 @@ import React from 'react';
 import SpreadsheetHistoryAwareStateWidget from "../spreadsheet/history/SpreadsheetHistoryAwareStateWidget.js";
 import SpreadsheetHistoryHash from "../spreadsheet/history/SpreadsheetHistoryHash.js";
 import SpreadsheetHistoryHashTokens from "../spreadsheet/history/SpreadsheetHistoryHashTokens.js";
-import SpreadsheetMetadataPanelWidget from "../spreadsheet/settings/SpreadsheetMetadataPanelWidget.js";
+import SpreadsheetMetadataPanelWidget from "../spreadsheet/meta/drawer/SpreadsheetMetadataPanelWidget.js";
 import Toolbar from '@mui/material/Toolbar';
 import SpreadsheetSettingsSelectHistoryHashToken
-    from "../spreadsheet/settings/SpreadsheetSettingsSelectHistoryHashToken.js";
+    from "../spreadsheet/meta/drawer/SpreadsheetSettingsSelectHistoryHashToken.js";
 
 function computeSettingsLink(historyHashTokens) {
     // flip the settings token.

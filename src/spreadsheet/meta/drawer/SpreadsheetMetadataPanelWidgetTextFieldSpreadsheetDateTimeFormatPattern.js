@@ -1,5 +1,5 @@
 import PropTypes from "prop-types";
-import SpreadsheetDateTimeFormatPattern from "../format/SpreadsheetDateTimeFormatPattern.js";
+import SpreadsheetDateTimeFormatPattern from "../../format/SpreadsheetDateTimeFormatPattern.js";
 import SpreadsheetMetadataPanelWidgetTextField from "./SpreadsheetMetadataPanelWidgetTextField.js";
 import SpreadsheetMetadataPanelWidgetValue from "./SpreadsheetMetadataPanelWidgetValue.js";
 

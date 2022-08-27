@@ -1,6 +1,6 @@
-import SpreadsheetDateTimeParsePatterns from "../format/SpreadsheetDateTimeParsePatterns.js";
-import SpreadsheetMetadata from "../meta/SpreadsheetMetadata.js";
-import SpreadsheetSettingsWidgetHistoryHashTokens from "./SpreadsheetSettingsWidgetHistoryHashTokens";
+import SpreadsheetDateTimeParsePatterns from "../../format/SpreadsheetDateTimeParsePatterns.js";
+import SpreadsheetMetadata from "../SpreadsheetMetadata.js";
+import SpreadsheetSettingsWidgetHistoryHashTokens from "./SpreadsheetSettingsWidgetHistoryHashTokens.js";
 
 // parseHistoryHashToken....................................................................................................
 

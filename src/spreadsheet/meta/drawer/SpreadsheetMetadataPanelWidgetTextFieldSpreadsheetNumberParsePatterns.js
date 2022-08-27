@@ -1,12 +1,12 @@
 import PropTypes from "prop-types";
-import SpreadsheetTimeFormatPattern from "../format/SpreadsheetTimeFormatPattern.js";
+import SpreadsheetNumberParsePatterns from "../../format/SpreadsheetNumberParsePatterns.js";
 import SpreadsheetMetadataPanelWidgetTextField from "./SpreadsheetMetadataPanelWidgetTextField.js";
 import SpreadsheetMetadataPanelWidgetValue from "./SpreadsheetMetadataPanelWidgetValue.js";
 
 /**
- * A widget which accepts a String and creates an unvalidated {@link SpreadsheetTimeFormatPattern}.
+ * A widget which accepts a String and creates an unvalidated {@link SpreadsheetNumberParsePatterns}.
  */
-export default class SpreadsheetMetadataPanelWidgetTextFieldSpreadsheetTimeFormatPattern extends SpreadsheetMetadataPanelWidgetTextField {
+export default class SpreadsheetMetadataPanelWidgetTextFieldSpreadsheetNumberParsePatterns extends SpreadsheetMetadataPanelWidgetTextField {
 
     placeholder() {
         return "Enter pattern";
@@ -28,11 +28,11 @@ export default class SpreadsheetMetadataPanelWidgetTextFieldSpreadsheetTimeForma
                 value = null;
                 break;
             default:
-                value = SpreadsheetTimeFormatPattern.fromJson(string);
+                value = SpreadsheetNumberParsePatterns.fromJson(string);
                 break;
         }
         return value;
     }
 }
 
-SpreadsheetMetadataPanelWidgetTextFieldSpreadsheetTimeFormatPattern.propTypes = SpreadsheetMetadataPanelWidgetValue.createPropTypes(PropTypes.instanceOf(SpreadsheetTimeFormatPattern));
+SpreadsheetMetadataPanelWidgetTextFieldSpreadsheetNumberParsePatterns.propTypes = SpreadsheetMetadataPanelWidgetValue.createPropTypes(PropTypes.instanceOf(SpreadsheetNumberParsePatterns));

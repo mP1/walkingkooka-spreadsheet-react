@@ -7,7 +7,7 @@ import Hyphens from "../../src/text/Hyphens.js";
 import RoundingMode from "../../src/math/RoundingMode.js";
 import SpreadsheetCellReference from "../../src/spreadsheet/reference/SpreadsheetCellReference.js";
 import SpreadsheetMetadata from "../../src/spreadsheet/meta/SpreadsheetMetadata.js";
-import SpreadsheetMetadataPanelWidget from "../../src/spreadsheet/settings/SpreadsheetMetadataPanelWidget.js";
+import SpreadsheetMetadataPanelWidget from "../../src/spreadsheet/meta/drawer/SpreadsheetMetadataPanelWidget.js";
 import SpreadsheetTesting from "./SpreadsheetTesting.js";
 import TextAlign from "../../src/text/TextAlign.js";
 import TextStyle from "../../src/text/TextStyle.js";

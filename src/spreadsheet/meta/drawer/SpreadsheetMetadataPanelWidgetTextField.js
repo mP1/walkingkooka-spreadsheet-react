@@ -1,4 +1,4 @@
-import Keys from "../../Keys.js";
+import Keys from "../../../Keys.js";
 import React from 'react';
 import SpreadsheetMetadataPanelWidgetValue from "./SpreadsheetMetadataPanelWidgetValue.js";
 import TextField from "@mui/material/TextField";

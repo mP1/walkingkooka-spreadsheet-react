@@ -1,7 +1,7 @@
 import PropTypes from "prop-types";
 import SpreadsheetMetadataPanelWidgetTextField from "./SpreadsheetMetadataPanelWidgetTextField.js";
 import SpreadsheetMetadataPanelWidgetValue from "./SpreadsheetMetadataPanelWidgetValue.js";
-import SpreadsheetTimeParsePatterns from "../format/SpreadsheetTimeParsePatterns.js";
+import SpreadsheetTimeParsePatterns from "../../format/SpreadsheetTimeParsePatterns.js";
 
 /**
  * A widget which accepts a String and creates an unvalidated {@link SpreadsheetTimeParsePatterns}.

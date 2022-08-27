@@ -1,4 +1,4 @@
-import Character from "../../Character.js";
+import Character from "../../../Character.js";
 import PropTypes from "prop-types";
 import SpreadsheetMetadataPanelWidgetTextField from "./SpreadsheetMetadataPanelWidgetTextField.js";
 import SpreadsheetMetadataPanelWidgetValue from "./SpreadsheetMetadataPanelWidgetValue.js";

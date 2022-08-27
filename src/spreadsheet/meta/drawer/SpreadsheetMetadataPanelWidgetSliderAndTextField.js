@@ -1,4 +1,4 @@
-import Keys from "../../Keys.js";
+import Keys from "../../../Keys.js";
 import PropTypes from "prop-types";
 import React from 'react';
 import Slider from "@mui/material/Slider";

@@ -1,9 +1,9 @@
-import Equality from "../../Equality.js";
+import Equality from "../../../Equality.js";
 import PropTypes from "prop-types";
 import React from 'react';
 import Slider from "@mui/material/Slider";
 import SpreadsheetMetadataPanelWidgetValue from "./SpreadsheetMetadataPanelWidgetValue.js";
-import SystemEnum from "../../SystemEnum.js";
+import SystemEnum from "../../../SystemEnum.js";
 
 /**
  * Shows the enum values of an SystemEnum as a slider, and inserts an extra mark called Default if a default value is also present in the metadata.
