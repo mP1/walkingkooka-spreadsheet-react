@@ -1,7 +1,7 @@
 import SpreadsheetCellReference from "../../src/spreadsheet/reference/cell/SpreadsheetCellReference.js";
 import SpreadsheetColumnReference from "../../src/spreadsheet/reference/columnrow/SpreadsheetColumnReference.js";
 import SpreadsheetFormulaWidget from "../../src/spreadsheet/reference/cell/formula/SpreadsheetFormulaWidget.js";
-import SpreadsheetMetadataPanelWidget from "../../src/spreadsheet/meta/drawer/SpreadsheetMetadataPanelWidget.js";
+import SpreadsheetMetadataDrawerWidget from "../../src/spreadsheet/meta/drawer/SpreadsheetMetadataDrawerWidget.js";
 import SpreadsheetNameWidget from "../../src/spreadsheet/meta/name/SpreadsheetNameWidget.js";
 import SpreadsheetRowReference from "../../src/spreadsheet/reference/columnrow/SpreadsheetRowReference.js";
 import SpreadsheetLabelMappingWidget from "../../src/spreadsheet/reference/label/SpreadsheetLabelMappingWidget.js";
@@ -416,23 +416,23 @@ export default class SpreadsheetTesting {
     }
 
     metadata() {
-        return this.getById(SpreadsheetMetadataPanelWidget.drawerId());
+        return this.getById(SpreadsheetMetadataDrawerWidget.drawerId());
     }
 
     metadataAccordion(accordion) {
-        return this.get(SpreadsheetMetadataPanelWidget.accordionElementSelector(accordion));
+        return this.get(SpreadsheetMetadataDrawerWidget.accordionElementSelector(accordion));
     }
 
     metadataAccordionExpandMoreIcon(accordion) {
-        return this.getById(SpreadsheetMetadataPanelWidget.accordionId(accordion) + "-expand-more-icon");
+        return this.getById(SpreadsheetMetadataDrawerWidget.accordionId(accordion) + "-expand-more-icon");
     }
 
     metadataAccordionContent(accordion) {
-        return this.getById(SpreadsheetMetadataPanelWidget.accordionId(accordion) + "-content");
+        return this.getById(SpreadsheetMetadataDrawerWidget.accordionId(accordion) + "-content");
     }
 
     metadataProperty(property, suffix) {
-        return this.getById(SpreadsheetMetadataPanelWidget.propertyId(property) + (suffix || ""));
+        return this.getById(SpreadsheetMetadataDrawerWidget.propertyId(property) + (suffix || ""));
     }
 
     /**

@@ -1,14 +1,14 @@
 import PropTypes from "prop-types";
 import React from 'react';
 import Select from '@mui/material/Select';
-import SpreadsheetMetadataPanelWidgetValue from "./SpreadsheetMetadataPanelWidgetValue.js";
+import SpreadsheetMetadataDrawerWidgetValue from "./SpreadsheetMetadataDrawerWidgetValue.js";
 import SystemEnum from "../../../SystemEnum.js";
 
 /**
  * Shows the enum values using a drop down list. This is preferred because over slider when there are too many values,
  * which would not fit on a slider.
  */
-export default class SpreadsheetMetadataPanelWidgetDropDownList extends SpreadsheetMetadataPanelWidgetValue {
+export default class SpreadsheetMetadataDrawerWidgetDropDownList extends SpreadsheetMetadataDrawerWidgetValue {
 
     constructor(props) {
         super(props);
@@ -67,8 +67,8 @@ export default class SpreadsheetMetadataPanelWidgetDropDownList extends Spreadsh
     }
 }
 
-SpreadsheetMetadataPanelWidgetDropDownList.propTypes = Object.assign(
-    SpreadsheetMetadataPanelWidgetValue.createPropTypes(PropTypes.instanceOf(SystemEnum)),
+SpreadsheetMetadataDrawerWidgetDropDownList.propTypes = Object.assign(
+    SpreadsheetMetadataDrawerWidgetValue.createPropTypes(PropTypes.instanceOf(SystemEnum)),
     {
         values: PropTypes.array.isRequired,
     }

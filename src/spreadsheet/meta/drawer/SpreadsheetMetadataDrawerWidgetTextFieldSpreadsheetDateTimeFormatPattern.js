@@ -1,12 +1,12 @@
 import PropTypes from "prop-types";
 import SpreadsheetDateTimeFormatPattern from "../../format/SpreadsheetDateTimeFormatPattern.js";
-import SpreadsheetMetadataPanelWidgetTextField from "./SpreadsheetMetadataPanelWidgetTextField.js";
-import SpreadsheetMetadataPanelWidgetValue from "./SpreadsheetMetadataPanelWidgetValue.js";
+import SpreadsheetMetadataDrawerWidgetTextField from "./SpreadsheetMetadataDrawerWidgetTextField.js";
+import SpreadsheetMetadataDrawerWidgetValue from "./SpreadsheetMetadataDrawerWidgetValue.js";
 
 /**
  * A widget which accepts a String and creates an unvalidated {@link SpreadsheetDateTimeFormatPattern}.
  */
-export default class SpreadsheetMetadataPanelWidgetTextFieldSpreadsheetDateTimeFormatPattern extends SpreadsheetMetadataPanelWidgetTextField {
+export default class SpreadsheetMetadataDrawerWidgetTextFieldSpreadsheetDateTimeFormatPattern extends SpreadsheetMetadataDrawerWidgetTextField {
 
     // eslint-disable-next-line
     constructor(props) {
@@ -40,4 +40,4 @@ export default class SpreadsheetMetadataPanelWidgetTextFieldSpreadsheetDateTimeF
     }
 }
 
-SpreadsheetMetadataPanelWidgetTextFieldSpreadsheetDateTimeFormatPattern.propTypes = SpreadsheetMetadataPanelWidgetValue.createPropTypes(PropTypes.instanceOf(SpreadsheetDateTimeFormatPattern));
+SpreadsheetMetadataDrawerWidgetTextFieldSpreadsheetDateTimeFormatPattern.propTypes = SpreadsheetMetadataDrawerWidgetValue.createPropTypes(PropTypes.instanceOf(SpreadsheetDateTimeFormatPattern));

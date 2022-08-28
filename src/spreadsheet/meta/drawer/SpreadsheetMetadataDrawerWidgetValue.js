@@ -16,7 +16,7 @@ import Tooltip from '@mui/material/Tooltip';
 /**
  * A base class that calls a renderInput method during a render adding a button to set the default value to the right.
  */
-export default class SpreadsheetMetadataPanelWidgetValue extends SpreadsheetHistoryAwareStateWidget {
+export default class SpreadsheetMetadataDrawerWidgetValue extends SpreadsheetHistoryAwareStateWidget {
 
     // value and defaultValue are not required because the SpreadsheetMetadata property may be absent.
     static createPropTypes(valueType, extraProps) {

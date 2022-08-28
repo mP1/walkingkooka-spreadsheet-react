@@ -2,13 +2,13 @@ import Equality from "../../../Equality.js";
 import PropTypes from "prop-types";
 import React from 'react';
 import Slider from "@mui/material/Slider";
-import SpreadsheetMetadataPanelWidgetValue from "./SpreadsheetMetadataPanelWidgetValue.js";
+import SpreadsheetMetadataDrawerWidgetValue from "./SpreadsheetMetadataDrawerWidgetValue.js";
 import SystemEnum from "../../../SystemEnum.js";
 
 /**
  * Shows the enum values of an SystemEnum as a slider, and inserts an extra mark called Default if a default value is also present in the metadata.
  */
-export default class SpreadsheetMetadataPanelWidgetSlider extends SpreadsheetMetadataPanelWidgetValue {
+export default class SpreadsheetMetadataDrawerWidgetSlider extends SpreadsheetMetadataDrawerWidgetValue {
 
     constructor(props) {
         super(props);
@@ -73,7 +73,7 @@ export default class SpreadsheetMetadataPanelWidgetSlider extends SpreadsheetMet
     }
 }
 
-SpreadsheetMetadataPanelWidgetSlider.propTypes = SpreadsheetMetadataPanelWidgetValue.createPropTypes(
+SpreadsheetMetadataDrawerWidgetSlider.propTypes = SpreadsheetMetadataDrawerWidgetValue.createPropTypes(
     PropTypes.instanceOf(SystemEnum),
     {
         values: PropTypes.array.isRequired,

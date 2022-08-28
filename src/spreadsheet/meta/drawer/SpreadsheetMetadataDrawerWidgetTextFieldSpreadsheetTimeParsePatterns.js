@@ -1,12 +1,12 @@
 import PropTypes from "prop-types";
-import SpreadsheetMetadataPanelWidgetTextField from "./SpreadsheetMetadataPanelWidgetTextField.js";
-import SpreadsheetMetadataPanelWidgetValue from "./SpreadsheetMetadataPanelWidgetValue.js";
+import SpreadsheetMetadataDrawerWidgetTextField from "./SpreadsheetMetadataDrawerWidgetTextField.js";
+import SpreadsheetMetadataDrawerWidgetValue from "./SpreadsheetMetadataDrawerWidgetValue.js";
 import SpreadsheetTimeParsePatterns from "../../format/SpreadsheetTimeParsePatterns.js";
 
 /**
  * A widget which accepts a String and creates an unvalidated {@link SpreadsheetTimeParsePatterns}.
  */
-export default class SpreadsheetMetadataPanelWidgetTextFieldSpreadsheetTimeParsePatterns extends SpreadsheetMetadataPanelWidgetTextField {
+export default class SpreadsheetMetadataDrawerWidgetTextFieldSpreadsheetTimeParsePatterns extends SpreadsheetMetadataDrawerWidgetTextField {
 
     placeholder() {
         return "Enter pattern";
@@ -35,4 +35,4 @@ export default class SpreadsheetMetadataPanelWidgetTextFieldSpreadsheetTimeParse
     }
 }
 
-SpreadsheetMetadataPanelWidgetTextFieldSpreadsheetTimeParsePatterns.propTypes = SpreadsheetMetadataPanelWidgetValue.createPropTypes(PropTypes.instanceOf(SpreadsheetTimeParsePatterns));
+SpreadsheetMetadataDrawerWidgetTextFieldSpreadsheetTimeParsePatterns.propTypes = SpreadsheetMetadataDrawerWidgetValue.createPropTypes(PropTypes.instanceOf(SpreadsheetTimeParsePatterns));

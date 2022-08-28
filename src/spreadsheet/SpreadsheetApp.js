@@ -24,7 +24,7 @@ import SpreadsheetLabelMappingWidget from "./reference/label/SpreadsheetLabelMap
 import SpreadsheetMessenger from "./message/SpreadsheetMessenger.js";
 import SpreadsheetMessengerCrud from "./message/SpreadsheetMessengerCrud.js";
 import SpreadsheetMetadata from "./meta/SpreadsheetMetadata.js";
-import SpreadsheetMetadataDrawerWidget from "./meta/drawer/SpreadsheetMetadataPanelWidget.js";
+import SpreadsheetMetadataDrawerWidget from "./meta/drawer/SpreadsheetMetadataDrawerWidget.js";
 import SpreadsheetNameWidget from "./meta/name/SpreadsheetNameWidget.js";
 import SpreadsheetNotification from "./notification/SpreadsheetNotification.js";
 import SpreadsheetSelectAutocompleteWidget from "./reference/SpreadsheetSelectAutocompleteWidget.js";

@@ -1,8 +1,8 @@
 import CharSequences from "../../../CharSequences.js";
 import Equality from "../../../Equality.js";
 import SpreadsheetHistoryHashTokens from "../../history/SpreadsheetHistoryHashTokens.js";
+import SpreadsheetMetadataDrawerWidgetHistoryHashTokens from "./SpreadsheetMetadataDrawerWidgetHistoryHashTokens.js";
 import SpreadsheetMetadataHistoryHashToken from "./SpreadsheetMetadataHistoryHashToken.js";
-import SpreadsheetMetadataWidgetHistoryHashTokens from "./SpreadsheetMetadataWidgetHistoryHashTokens.js";
 
 /**
  * This token represents a selection of a metadata section or property.
@@ -17,7 +17,7 @@ export default class SpreadsheetMetadataSelectHistoryHashToken extends Spreadshe
     constructor(item) {
         super();
 
-        if(item && !SpreadsheetMetadataWidgetHistoryHashTokens.isToken(item)){
+        if(item && !SpreadsheetMetadataDrawerWidgetHistoryHashTokens.isToken(item)){
             throw new Error("Unknown metadata token " + CharSequences.quoteAndEscape(item));
         }
 
