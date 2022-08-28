@@ -39,6 +39,7 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetCellWidget {
 
         return {
             selection: historyHashTokens[SpreadsheetHistoryHash.SELECTION],
+            window: [],
         }
     }
 
@@ -330,6 +331,7 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetCellWidget {
                 var newState = {
                     cellReference: cellReference,
                     value: formulaText,
+                    window: responseDelta.window(),
                 };
 
                 this.setState(newState);
