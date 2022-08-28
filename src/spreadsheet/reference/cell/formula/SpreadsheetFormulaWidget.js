@@ -136,11 +136,8 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetCellWidget {
             cellOrLabel,
             {},
             (message, error) => {
-                // clear cell selection...
-                const tokens = SpreadsheetHistoryHashTokens.emptyTokens();
-                tokens[SpreadsheetHistoryHashTokens.SELECTION] = null;
-                this.historyParseMergeAndPush(tokens);
-
+                // label must not exist clear selection
+                this.historyParseMergeAndPushSelection(null);
                 this.showError(message, error);
             }
         );
@@ -224,12 +221,12 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetCellWidget {
                     e.preventDefault();
 
                     const selection = this.state.selection;
-                    const saveTokens = SpreadsheetHistoryHashTokens.emptyTokens();
-                    saveTokens[SpreadsheetHistoryHashTokens.SELECTION] = new SpreadsheetCellFormulaSaveHistoryHashToken(
-                                 selection.viewportSelection(),
-                                 e.target.value
+                    this.historyParseMergeAndPushSelection(
+                        new SpreadsheetCellFormulaSaveHistoryHashToken(
+                            selection.viewportSelection(),
+                            e.target.value
+                        )
                     );
-                    this.historyParseMergeAndPush(saveTokens);
                     break;
                 default:
                 // nothing special to do for other keys

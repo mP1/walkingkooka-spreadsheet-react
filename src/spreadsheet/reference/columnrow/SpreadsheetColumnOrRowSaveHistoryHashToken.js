@@ -45,9 +45,9 @@ export default class SpreadsheetColumnOrRowSaveHistoryHashToken extends Spreadsh
         );
 
         // remove the saved property and value from the history hash
-        const tokens = SpreadsheetHistoryHashTokens.emptyTokens();
-        tokens[SpreadsheetHistoryHashTokens.SELECTION] = selectHistoryHashToken(viewportSelection);
-        viewportWidget.historyParseMergeAndPush(tokens);
+        viewportWidget.historyParseMergeAndPushSelection(
+            selectHistoryHashToken(viewportSelection)
+        );
     }
 
     equals(other) {

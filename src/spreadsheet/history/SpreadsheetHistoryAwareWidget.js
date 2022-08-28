@@ -31,6 +31,12 @@ export default class SpreadsheetHistoryAwareWidget extends SpreadsheetWidget {
         throw new Error("Sub classes must override onHistoryChange");
     }
 
+    historyParseMergeAndPushSelection(viewportSelection) {
+        const tokens = SpreadsheetHistoryHashTokens.emptyTokens();
+        tokens[SpreadsheetHistoryHashTokens.SELECTION] = viewportSelection;
+        this.historyParseMergeAndPush(tokens);
+    }
+
     historyParseMergeAndPush(tokens) {
         const copy = Object.assign({}, tokens);
 
