@@ -1,10 +1,13 @@
+import Link from "@mui/material/Link";
+import React from "react";
+import SpreadsheetCellRange from "../cell/SpreadsheetCellRange.js";
 import SpreadsheetCellReference from "../cell/SpreadsheetCellReference.js";
 import SpreadsheetColumn from "./SpreadsheetColumn.js";
 import SpreadsheetColumnReference from "./SpreadsheetColumnReference.js";
 import SpreadsheetReferenceKind from "../SpreadsheetReferenceKind.js";
 import SpreadsheetRowReference from "./SpreadsheetRowReference.js";
 import systemObjectTesting from "../../../SystemObjectTesting.js";
-import SpreadsheetCellRange from "../cell/SpreadsheetCellRange.js";
+import TableCell from "@mui/material/TableCell";
 
 systemObjectTesting(
     new SpreadsheetColumnReference(0, SpreadsheetReferenceKind.ABSOLUTE),
@@ -425,6 +428,34 @@ function toRelativeAndCheck(selection, expected) {
 
 toRelativeAndCheck("A", "A");
 toRelativeAndCheck("$B", "B");
+
+// renderViewport.......................................................................................................
+
+test("renderViewport", () => {
+    const style = {
+        "color": "#ABCDEF",
+    };
+
+    const reference = SpreadsheetColumnReference.parse("AB");
+
+    expect(
+        reference.renderViewport(style, "#/123/SpreadsheetName/column/AB")
+    ).toEqual(<TableCell key={"viewport-column-AB"}
+                         id={"viewport-column-AB"}
+                         style={style}
+                         tabIndex={0}
+                         data-selection={reference}
+        ><Link id="viewport-column-AB-Link"
+               href="#/123/SpreadsheetName/column/AB"
+               style={{
+                   display: "inline-block",
+                   paddingLeft: "1ex",
+                   paddingRight: "1ex",
+                   paddingTop: "2px",
+                   paddingBottom: "2px",
+               }}>AB</Link></TableCell>
+    );
+});
 
 // equals................................................................................................................
 

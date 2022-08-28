@@ -445,6 +445,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetCellWidget {
 
         return {
             spreadsheetId: historyHashTokens[SpreadsheetHistoryHash.SPREADSHEET_ID],
+            spreadsheetName: historyHashTokens[SpreadsheetHistoryHashTokens.SPREADSHEET_NAME],
             cellReferenceToCells: ImmutableMap.EMPTY,
             cellReferenceToLabels: ImmutableMap.EMPTY,
             columnReferenceToColumns: ImmutableMap.EMPTY,
@@ -463,6 +464,8 @@ export default class SpreadsheetViewportWidget extends SpreadsheetCellWidget {
         console.log("Viewport stateFromHistoryTokens " + JSON.stringify(tokens));
 
         return {
+            spreadsheetId: tokens[SpreadsheetHistoryHashTokens.SPREADSHEET_ID],
+            spreadsheetName: tokens[SpreadsheetHistoryHashTokens.SPREADSHEET_NAME],
             selection: tokens[SpreadsheetHistoryHashTokens.SELECTION],
             contextMenu: null, // close context menu
         };
@@ -990,6 +993,8 @@ export default class SpreadsheetViewportWidget extends SpreadsheetCellWidget {
             columnWidths,
             rowHeights,
             contextMenu,
+            spreadsheetId,
+            spreadsheetName,
         } = this.state;
 
         const width = dimensions.width;
@@ -1008,8 +1013,8 @@ export default class SpreadsheetViewportWidget extends SpreadsheetCellWidget {
         const menuItems = contextMenu && contextMenu.items();
 
         const tokens = SpreadsheetHistoryHashTokens.emptyTokens();
-        tokens[SpreadsheetHistoryHashTokens.SPREADSHEET_ID] = this.state[SpreadsheetHistoryHashTokens.SPREADSHEET_ID];
-        tokens[SpreadsheetHistoryHashTokens.SPREADSHEET_NAME] = this.state[SpreadsheetHistoryHashTokens.SPREADSHEET_NAME];
+        tokens[SpreadsheetHistoryHashTokens.SPREADSHEET_ID] = spreadsheetId;
+        tokens[SpreadsheetHistoryHashTokens.SPREADSHEET_NAME] = spreadsheetName;
 
         return [
             <TableContainer id={SpreadsheetViewportWidget.VIEWPORT_ID}
@@ -1193,13 +1198,17 @@ export default class SpreadsheetViewportWidget extends SpreadsheetCellWidget {
         ];
 
         columns.forEach(c => {
+            tokens[SpreadsheetHistoryHashTokens.SELECTION] = selectHistoryHashToken(
+                new SpreadsheetViewportSelection(c)
+            );
+
             headers.push(
                 c.renderViewport(
                     COLUMN_HEADER(
                         columnWidth(c),
                         selection && selection.testColumn(c)
                     ),
-                    tokens
+                    "#" + SpreadsheetHistoryHash.stringify(tokens)
                 )
             );
         });
@@ -1221,6 +1230,10 @@ export default class SpreadsheetViewportWidget extends SpreadsheetCellWidget {
                 const tableRowCells = [];
                 const height = rowHeightFn(r);
 
+                tokens[SpreadsheetHistoryHashTokens.SELECTION] = selectHistoryHashToken(
+                    new SpreadsheetViewportSelection(r)
+                );
+
                 // render ROW gutter widget with row number.
                 tableRowCells.push(
                     r.renderViewport(
@@ -1228,7 +1241,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetCellWidget {
                             height,
                             selection && selection.testRow(r)
                         ),
-                        tokens
+                        "#" + SpreadsheetHistoryHash.stringify(tokens)
                     )
                 );
 
