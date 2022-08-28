@@ -130,7 +130,7 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetCellWidget {
      * Loads the SpreadsheetDelta for the given cell or label.
      */
     loadFormulaText(cellOrLabel) {
-        console.log(this.prefix() + " loadFormulaText " + cellOrLabel);
+        this.log(".loadFormulaText " + cellOrLabel);
 
         this.props.spreadsheetDeltaCellCrud.get(
             cellOrLabel,
