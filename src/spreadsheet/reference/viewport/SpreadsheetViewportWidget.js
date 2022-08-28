@@ -801,7 +801,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetCellWidget {
      * Renders the column and row gutters and cells within the viewport.
      */
     renderViewport(spreadsheetMetadata) {
-        const home = spreadsheetMetadata.getIgnoringDefaults(SpreadsheetMetadata.VIEWPORT_CELL)
+        const home = spreadsheetMetadata.getIgnoringDefaults(SpreadsheetMetadata.VIEWPORT_CELL);
 
         // handles any viewport blur events, clearing the state.focused flag............................................
         const onBlur = (e) => {
