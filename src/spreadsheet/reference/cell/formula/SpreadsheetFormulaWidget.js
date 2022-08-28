@@ -181,8 +181,6 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetCellWidget {
         return element;
     }
 
-  //  static __saveFormulaText = 0;
-
     render() {
         const {
             value,
