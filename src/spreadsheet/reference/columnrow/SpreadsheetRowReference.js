@@ -73,7 +73,7 @@ export default class SpreadsheetRowReference extends SpreadsheetColumnOrRowRefer
     testCell(cellReference) {
         Preconditions.requireInstance(cellReference, SpreadsheetCellReference, "cellReference");
 
-        return this.value() === cellReference.row().value();
+        return this.testRow(cellReference.row());
     }
 
     testColumn(columnReference) {
