@@ -149,7 +149,7 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetCellWidget {
     saveFormulaText(cellReference, formulaText, selection, anchor) {
         this.log(" Saving formula for " + cellReference + " with " + CharSequences.quoteAndEscape(formulaText));
 
-        this.props.spreadsheetViewportWidget.current.patchCell(
+        this.patchCell(
             new SpreadsheetCell(
                 cellReference,
                 new SpreadsheetFormula(formulaText),
