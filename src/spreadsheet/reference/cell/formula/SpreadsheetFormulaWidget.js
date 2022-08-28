@@ -109,7 +109,12 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetCellWidget {
 
             // if NOT focused and history is formula edit give focus.
             if(selection instanceof SpreadsheetCellFormulaEditHistoryHashToken && !(previousSelection instanceof SpreadsheetCellFormulaHistoryHashToken)){
-                this.giveFocus(this.giveFormulaFocus.bind(this));
+
+                this.giveFocus(
+                    () => {
+                        this.log(" giving focus to Formula textbox");
+                        return this.input.current;
+                    });
             }
 
             // unconditionally if selection.selection changed load text and selection is not a save then load text
@@ -166,20 +171,6 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetCellWidget {
             )
         );
         this.historyParseMergeAndPush(tokens);
-    }
-
-    giveFormulaFocus() {
-        var element;
-        if(this.state.selection instanceof SpreadsheetCellFormulaEditHistoryHashToken){
-            // if textField does not have focus and not save -> load give focus.
-            if(this.textField.current){
-                this.log(" Formula not focused so giving focus to: " + this.input.current);
-
-                element = this.input.current;
-            }
-        }
-
-        return element;
     }
 
     render() {
