@@ -1,14 +1,14 @@
 import SpreadsheetMetadata from "../SpreadsheetMetadata.js";
-import SpreadsheetMetadataDrawerWidget from "./SpreadsheetMetadataPanelWidget.js";
-import SpreadsheetMetadataWidgetHistoryHashTokens from "./SpreadsheetMetadataWidgetHistoryHashTokens.js";
+import SpreadsheetMetadataDrawerWidget from "./SpreadsheetMetadataDrawerWidget.js";
+import SpreadsheetMetadataDrawerWidgetHistoryHashTokens from "./SpreadsheetMetadataDrawerWidgetHistoryHashTokens.js";
 import TextStyle from "../../../text/TextStyle.js";
 
 function allRows() {
-    return SpreadsheetMetadataWidgetHistoryHashTokens.metadataRows()
-        .concat(SpreadsheetMetadataWidgetHistoryHashTokens.spreadsheetDateTimeRows())
-        .concat(SpreadsheetMetadataWidgetHistoryHashTokens.spreadsheetNumberRows())
-        .concat(SpreadsheetMetadataWidgetHistoryHashTokens.spreadsheetStyleRows())
-        .concat(SpreadsheetMetadataWidgetHistoryHashTokens.spreadsheetTextRows());
+    return SpreadsheetMetadataDrawerWidgetHistoryHashTokens.metadataRows()
+        .concat(SpreadsheetMetadataDrawerWidgetHistoryHashTokens.spreadsheetDateTimeRows())
+        .concat(SpreadsheetMetadataDrawerWidgetHistoryHashTokens.spreadsheetNumberRows())
+        .concat(SpreadsheetMetadataDrawerWidgetHistoryHashTokens.spreadsheetStyleRows())
+        .concat(SpreadsheetMetadataDrawerWidgetHistoryHashTokens.spreadsheetTextRows());
 }
 
 // tests................................................................................................................
@@ -23,11 +23,11 @@ function testSectionRowsIsSpreadsheetMetadataOrTextStyleProperty(sectionLabel, r
     });
 }
 
-testSectionRowsIsSpreadsheetMetadataOrTextStyleProperty("metadata", SpreadsheetMetadataWidgetHistoryHashTokens.metadataRows);
-testSectionRowsIsSpreadsheetMetadataOrTextStyleProperty("data/time", SpreadsheetMetadataWidgetHistoryHashTokens.spreadsheetDateTimeRows);
-testSectionRowsIsSpreadsheetMetadataOrTextStyleProperty("number", SpreadsheetMetadataWidgetHistoryHashTokens.spreadsheetNumberRows);
-testSectionRowsIsSpreadsheetMetadataOrTextStyleProperty("style", SpreadsheetMetadataWidgetHistoryHashTokens.spreadsheetStyleRows);
-testSectionRowsIsSpreadsheetMetadataOrTextStyleProperty("text", SpreadsheetMetadataWidgetHistoryHashTokens.spreadsheetTextRows);
+testSectionRowsIsSpreadsheetMetadataOrTextStyleProperty("metadata", SpreadsheetMetadataDrawerWidgetHistoryHashTokens.metadataRows);
+testSectionRowsIsSpreadsheetMetadataOrTextStyleProperty("data/time", SpreadsheetMetadataDrawerWidgetHistoryHashTokens.spreadsheetDateTimeRows);
+testSectionRowsIsSpreadsheetMetadataOrTextStyleProperty("number", SpreadsheetMetadataDrawerWidgetHistoryHashTokens.spreadsheetNumberRows);
+testSectionRowsIsSpreadsheetMetadataOrTextStyleProperty("style", SpreadsheetMetadataDrawerWidgetHistoryHashTokens.spreadsheetStyleRows);
+testSectionRowsIsSpreadsheetMetadataOrTextStyleProperty("text", SpreadsheetMetadataDrawerWidgetHistoryHashTokens.spreadsheetTextRows);
 
 test("spreadsheetMetadataPropertyLabel", () => {
     const missing = allRows()

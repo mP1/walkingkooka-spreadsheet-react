@@ -1,11 +1,11 @@
 import PropTypes from "prop-types";
-import SpreadsheetMetadataPanelWidgetTextField from "./SpreadsheetMetadataPanelWidgetTextField.js";
-import SpreadsheetMetadataPanelWidgetValue from "./SpreadsheetMetadataPanelWidgetValue.js";
+import SpreadsheetMetadataDrawerWidgetTextField from "./SpreadsheetMetadataDrawerWidgetTextField.js";
+import SpreadsheetMetadataDrawerWidgetValue from "./SpreadsheetMetadataDrawerWidgetValue.js";
 
 /**
  * A widget which displays a {@link String} for editing using a TextField. All edits immediately update the spreadsheet.
  */
-export default class SpreadsheetMetadataPanelWidgetTextFieldString extends SpreadsheetMetadataPanelWidgetTextField {
+export default class SpreadsheetMetadataDrawerWidgetTextFieldString extends SpreadsheetMetadataDrawerWidgetTextField {
 
     placeholder() {
         return;
@@ -28,7 +28,7 @@ export default class SpreadsheetMetadataPanelWidgetTextFieldString extends Sprea
     }
 }
 
-SpreadsheetMetadataPanelWidgetTextFieldString.propTypes = SpreadsheetMetadataPanelWidgetValue.createPropTypes(
+SpreadsheetMetadataDrawerWidgetTextFieldString.propTypes = SpreadsheetMetadataDrawerWidgetValue.createPropTypes(
     PropTypes.string,
     {
         length: PropTypes.number.isRequired,

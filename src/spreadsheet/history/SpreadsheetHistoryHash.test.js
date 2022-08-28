@@ -57,9 +57,10 @@ import SpreadsheetLabelMappingSaveHistoryHashToken
     from "../reference/label/SpreadsheetLabelMappingSaveHistoryHashToken.js";
 import SpreadsheetLabelName from "../reference/label/SpreadsheetLabelName.js";
 import SpreadsheetMetadata from "../meta/SpreadsheetMetadata.js";
+import SpreadsheetMetadataDrawerWidgetHistoryHashTokens
+    from "../meta/drawer/SpreadsheetMetadataDrawerWidgetHistoryHashTokens.js";
 import SpreadsheetMetadataSaveHistoryHashToken from "../meta/drawer/SpreadsheetMetadataSaveHistoryHashToken.js";
 import SpreadsheetMetadataSelectHistoryHashToken from "../meta/drawer/SpreadsheetMetadataSelectHistoryHashToken.js";
-import SpreadsheetMetadataWidgetHistoryHashTokens from "../meta/drawer/SpreadsheetMetadataWidgetHistoryHashTokens.js";
 import SpreadsheetName from "../meta/name/SpreadsheetName.js";
 import SpreadsheetNameEditHistoryHashToken from "../meta/name/SpreadsheetNameEditHistoryHashToken.js";
 import SpreadsheetNameSaveHistoryHashToken from "../meta/name/SpreadsheetNameSaveHistoryHashToken.js";
@@ -2958,7 +2959,7 @@ testMerge(
     "/123abc/Untitled456/metadata",
     {
         "metadata": new SpreadsheetMetadataSelectHistoryHashToken(
-            SpreadsheetMetadataWidgetHistoryHashTokens.METADATA
+            SpreadsheetMetadataDrawerWidgetHistoryHashTokens.METADATA
         ),
     },
     "/123abc/Untitled456/metadata/metadata"
@@ -2979,7 +2980,7 @@ testMerge(
     "/123abc/Untitled456/metadata/metadata",
     {
         "metadata": new SpreadsheetMetadataSelectHistoryHashToken(
-            SpreadsheetMetadataWidgetHistoryHashTokens.TEXT
+            SpreadsheetMetadataDrawerWidgetHistoryHashTokens.TEXT
         ),
     },
     "/123abc/Untitled456/metadata/text"

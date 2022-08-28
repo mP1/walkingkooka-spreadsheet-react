@@ -1,24 +1,24 @@
-import Preconditions from "../../../Preconditions.js";
-import SpreadsheetMetadata from "../SpreadsheetMetadata.js";
-import TextStyle from "../../../text/TextStyle.js";
-import SpreadsheetColumnReferenceRange from "../../reference/columnrow/SpreadsheetColumnReferenceRange.js";
-import SpreadsheetRowReferenceRange from "../../reference/columnrow/SpreadsheetRowReferenceRange.js";
-import SpreadsheetNumberParsePatterns from "../../format/SpreadsheetNumberParsePatterns.js";
-import SpreadsheetNumberFormatPattern from "../../format/SpreadsheetNumberFormatPattern.js";
 import ExpressionNumberKind from "../../../math/ExpressionNumberKind.js";
-import SpreadsheetTextFormatPattern from "../../format/SpreadsheetTextFormatPattern.js";
-import SpreadsheetTimeFormatPattern from "../../format/SpreadsheetTimeFormatPattern.js";
-import SpreadsheetTimeParsePatterns from "../../format/SpreadsheetTimeParsePatterns.js";
+import Preconditions from "../../../Preconditions.js";
+import RoundingMode from "../../../math/RoundingMode.js";
+import SpreadsheetMetadata from "../SpreadsheetMetadata.js";
+import SpreadsheetColumnReferenceRange from "../../reference/columnrow/SpreadsheetColumnReferenceRange.js";
 import SpreadsheetDateTimeParsePatterns from "../../format/SpreadsheetDateTimeParsePatterns.js";
 import SpreadsheetDateTimeFormatPattern from "../../format/SpreadsheetDateTimeFormatPattern.js";
 import SpreadsheetDateFormatPattern from "../../format/SpreadsheetDateFormatPattern.js";
 import SpreadsheetDateParsePatterns from "../../format/SpreadsheetDateParsePatterns.js";
-import RoundingMode from "../../../math/RoundingMode.js";
+import SpreadsheetNumberParsePatterns from "../../format/SpreadsheetNumberParsePatterns.js";
+import SpreadsheetNumberFormatPattern from "../../format/SpreadsheetNumberFormatPattern.js";
+import SpreadsheetRowReferenceRange from "../../reference/columnrow/SpreadsheetRowReferenceRange.js";
+import SpreadsheetTextFormatPattern from "../../format/SpreadsheetTextFormatPattern.js";
+import SpreadsheetTimeFormatPattern from "../../format/SpreadsheetTimeFormatPattern.js";
+import SpreadsheetTimeParsePatterns from "../../format/SpreadsheetTimeParsePatterns.js";
+import TextStyle from "../../../text/TextStyle.js";
 
 /**
- * Helpers required by SpreadsheetMetadataPanelWidget and SpreadsheetHistoryHash extracted to avoid cycles between classes.
+ * Helpers required by SpreadsheetMetadataDrawerWidget and SpreadsheetHistoryHash extracted to avoid cycles between classes.
  */
-export default class SpreadsheetMetadataWidgetHistoryHashTokens {
+export default class SpreadsheetMetadataDrawerWidgetHistoryHashTokens {
 
     // these tokens are optional and only one may appear after METADATA
     static METADATA = "metadata";
@@ -29,11 +29,11 @@ export default class SpreadsheetMetadataWidgetHistoryHashTokens {
 
     static accordions() {
         return [
-            SpreadsheetMetadataWidgetHistoryHashTokens.METADATA,
-            SpreadsheetMetadataWidgetHistoryHashTokens.TEXT,
-            SpreadsheetMetadataWidgetHistoryHashTokens.NUMBER,
-            SpreadsheetMetadataWidgetHistoryHashTokens.DATE_TIME,
-            SpreadsheetMetadataWidgetHistoryHashTokens.STYLE
+            SpreadsheetMetadataDrawerWidgetHistoryHashTokens.METADATA,
+            SpreadsheetMetadataDrawerWidgetHistoryHashTokens.TEXT,
+            SpreadsheetMetadataDrawerWidgetHistoryHashTokens.NUMBER,
+            SpreadsheetMetadataDrawerWidgetHistoryHashTokens.DATE_TIME,
+            SpreadsheetMetadataDrawerWidgetHistoryHashTokens.STYLE
         ];
     }
 
@@ -41,13 +41,13 @@ export default class SpreadsheetMetadataWidgetHistoryHashTokens {
      * Tests if the given token is a metadata property
      */
     static isProperty(token) {
-        return Boolean(SpreadsheetMetadataWidgetHistoryHashTokens.parentAccordion(token));
+        return Boolean(SpreadsheetMetadataDrawerWidgetHistoryHashTokens.parentAccordion(token));
     }
 
     static isToken(token) {
-        return SpreadsheetMetadataWidgetHistoryHashTokens.accordions()
+        return SpreadsheetMetadataDrawerWidgetHistoryHashTokens.accordions()
                 .indexOf(token) > -1 ||
-            SpreadsheetMetadataWidgetHistoryHashTokens.isProperty(token);
+            SpreadsheetMetadataDrawerWidgetHistoryHashTokens.isProperty(token);
     }
     
     /**
@@ -57,24 +57,24 @@ export default class SpreadsheetMetadataWidgetHistoryHashTokens {
         var parentAccordion;
 
         do {
-            if(SpreadsheetMetadataWidgetHistoryHashTokens.metadataRows().includes(property)){
-                parentAccordion = SpreadsheetMetadataWidgetHistoryHashTokens.METADATA;
+            if(SpreadsheetMetadataDrawerWidgetHistoryHashTokens.metadataRows().includes(property)){
+                parentAccordion = SpreadsheetMetadataDrawerWidgetHistoryHashTokens.METADATA;
                 break;
             }
-            if(SpreadsheetMetadataWidgetHistoryHashTokens.spreadsheetTextRows().includes(property)){
-                parentAccordion = SpreadsheetMetadataWidgetHistoryHashTokens.TEXT;
+            if(SpreadsheetMetadataDrawerWidgetHistoryHashTokens.spreadsheetTextRows().includes(property)){
+                parentAccordion = SpreadsheetMetadataDrawerWidgetHistoryHashTokens.TEXT;
                 break;
             }
-            if(SpreadsheetMetadataWidgetHistoryHashTokens.spreadsheetDateTimeRows().includes(property)){
-                parentAccordion = SpreadsheetMetadataWidgetHistoryHashTokens.DATE_TIME;
+            if(SpreadsheetMetadataDrawerWidgetHistoryHashTokens.spreadsheetDateTimeRows().includes(property)){
+                parentAccordion = SpreadsheetMetadataDrawerWidgetHistoryHashTokens.DATE_TIME;
                 break;
             }
-            if(SpreadsheetMetadataWidgetHistoryHashTokens.spreadsheetNumberRows().includes(property)){
-                parentAccordion = SpreadsheetMetadataWidgetHistoryHashTokens.NUMBER;
+            if(SpreadsheetMetadataDrawerWidgetHistoryHashTokens.spreadsheetNumberRows().includes(property)){
+                parentAccordion = SpreadsheetMetadataDrawerWidgetHistoryHashTokens.NUMBER;
                 break;
             }
-            if(SpreadsheetMetadataWidgetHistoryHashTokens.spreadsheetStyleRows().includes(property)){
-                parentAccordion = SpreadsheetMetadataWidgetHistoryHashTokens.STYLE;
+            if(SpreadsheetMetadataDrawerWidgetHistoryHashTokens.spreadsheetStyleRows().includes(property)){
+                parentAccordion = SpreadsheetMetadataDrawerWidgetHistoryHashTokens.STYLE;
                 break;
             }
         } while(false);
@@ -186,7 +186,7 @@ export default class SpreadsheetMetadataWidgetHistoryHashTokens {
 
         return "" === token ?
             null :
-            SpreadsheetMetadataWidgetHistoryHashTokens.parseHistoryHashToken0(
+            SpreadsheetMetadataDrawerWidgetHistoryHashTokens.parseHistoryHashToken0(
                 propertyName,
                 token && decodeURIComponent(token)
             );

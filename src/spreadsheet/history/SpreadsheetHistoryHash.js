@@ -52,10 +52,11 @@ import SpreadsheetLabelMappingHistoryHashToken from "../reference/label/Spreadsh
 import SpreadsheetLabelMappingSaveHistoryHashToken
     from "../reference/label/SpreadsheetLabelMappingSaveHistoryHashToken.js";
 import SpreadsheetLabelName from "../reference/label/SpreadsheetLabelName.js";
+import SpreadsheetMetadataDrawerWidgetHistoryHashTokens
+    from "../meta/drawer/SpreadsheetMetadataDrawerWidgetHistoryHashTokens.js";
 import SpreadsheetMetadataHistoryHashToken from "../meta/drawer/SpreadsheetMetadataHistoryHashToken.js";
 import SpreadsheetMetadataSaveHistoryHashToken from "../meta/drawer/SpreadsheetMetadataSaveHistoryHashToken.js";
 import SpreadsheetMetadataSelectHistoryHashToken from "../meta/drawer/SpreadsheetMetadataSelectHistoryHashToken.js";
-import SpreadsheetMetadataWidgetHistoryHashTokens from "../meta/drawer/SpreadsheetMetadataWidgetHistoryHashTokens.js";
 import SpreadsheetName from "../meta/name/SpreadsheetName.js";
 import SpreadsheetNameEditHistoryHashToken from "../meta/name/SpreadsheetNameEditHistoryHashToken.js";
 import SpreadsheetNameHistoryHashToken from "../meta/name/SpreadsheetNameHistoryHashToken.js";
@@ -422,16 +423,16 @@ export default class SpreadsheetHistoryHash extends SpreadsheetHistoryHashTokens
                                         metadata = SpreadsheetMetadataSelectHistoryHashToken.NOTHING;
                                     }else {
                                         // /metadata/metadata
-                                        if(SpreadsheetMetadataWidgetHistoryHashTokens.isToken(token)){
+                                        if(SpreadsheetMetadataDrawerWidgetHistoryHashTokens.isToken(token)){
                                             const metadataItemOrMetadataProperty = token;
 
                                             // /metadata/color/#123456
                                             token = tokens.shift(); // property value
                                             if(null != token){
-                                                if(SpreadsheetMetadataWidgetHistoryHashTokens.isProperty(metadataItemOrMetadataProperty)){
+                                                if(SpreadsheetMetadataDrawerWidgetHistoryHashTokens.isProperty(metadataItemOrMetadataProperty)){
                                                     metadata = new SpreadsheetMetadataSaveHistoryHashToken(
                                                         metadataItemOrMetadataProperty,
-                                                        SpreadsheetMetadataWidgetHistoryHashTokens.parseHistoryHashToken(
+                                                        SpreadsheetMetadataDrawerWidgetHistoryHashTokens.parseHistoryHashToken(
                                                             metadataItemOrMetadataProperty,
                                                             token
                                                         )

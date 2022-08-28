@@ -1,8 +1,8 @@
 import CharSequences from "../../../CharSequences.js";
 import Equality from "../../../Equality.js";
 import SpreadsheetHistoryHashTokens from "../../history/SpreadsheetHistoryHashTokens.js";
+import SpreadsheetMetadataDrawerWidgetHistoryHashTokens from "./SpreadsheetMetadataDrawerWidgetHistoryHashTokens.js";
 import SpreadsheetMetadataHistoryHashToken from "./SpreadsheetMetadataHistoryHashToken.js";
-import SpreadsheetMetadataWidgetHistoryHashTokens from "./SpreadsheetMetadataWidgetHistoryHashTokens.js";
 
 /**
  * Saves the metadata or text style property with a new value, which may be null if the property should be removed.
@@ -12,7 +12,7 @@ export default class SpreadsheetMetadataSaveHistoryHashToken extends Spreadsheet
     constructor(property, value) {
         super();
 
-        if(!SpreadsheetMetadataWidgetHistoryHashTokens.isToken(property)){
+        if(!SpreadsheetMetadataDrawerWidgetHistoryHashTokens.isToken(property)){
             throw new Error("Unknown metadata property " + CharSequences.quoteAndEscape(property));
         }
 
