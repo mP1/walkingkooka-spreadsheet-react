@@ -817,26 +817,23 @@ export default class SpreadsheetViewportWidget extends SpreadsheetCellWidget {
         const onClick = (e) => {
             const clickedSelection = this.findEventTargetSelection(e.target);
             if(clickedSelection){
-                const tokens = SpreadsheetHistoryHashTokens.emptyTokens();
-                tokens[SpreadsheetHistoryHashTokens.SELECTION] = selectHistoryHashToken(
-                    new SpreadsheetViewportSelection(clickedSelection)
+                this.historyParseMergeAndPushSelection(
+                    selectHistoryHashToken(
+                        new SpreadsheetViewportSelection(clickedSelection)
+                    )
                 );
-                this.historyParseMergeAndPush(tokens);
             }
         };
 
-        const history = this.props.history;
-
         // handles closing any previously open context menu.............................................................
         const onCloseContextMenu = () => {
-            const tokens = history.tokens();
-
-            const historySelection = tokens[SpreadsheetHistoryHashTokens.SELECTION];
-            if(historySelection instanceof SpreadsheetCellMenuHistoryHashToken || historySelection instanceof SpreadsheetColumnOrRowMenuHistoryHashToken){
-                tokens[SpreadsheetHistoryHashTokens.SELECTION] = selectHistoryHashToken(
-                    historySelection.viewportSelection()
+            const selection = this.state.selection;
+            if(selection instanceof SpreadsheetCellMenuHistoryHashToken || selection instanceof SpreadsheetColumnOrRowMenuHistoryHashToken){
+                this.historyParseMergeAndPushSelection(
+                    selectHistoryHashToken(
+                        selection.viewportSelection()
+                    )
                 );
-                this.historyParseMergeAndPush(tokens);
             }
         };
 
@@ -1159,16 +1156,15 @@ export default class SpreadsheetViewportWidget extends SpreadsheetCellWidget {
             }
 
             const viewportSelection = new SpreadsheetViewportSelection(contextMenuSelection);
-
-            const tokens = this.props.history.tokens();
             const contextMenu = new SpreadsheetContextMenu(
                 CONTEXT_MENU_X_OFFSET,
                 CONTEXT_MENU_Y_OFFSET,
             );
-            tokens[SpreadsheetHistoryHashTokens.SELECTION] = contextMenuSelection instanceof SpreadsheetExpressionReference ?
-                new SpreadsheetCellMenuHistoryHashToken(viewportSelection, contextMenu) :
-                new SpreadsheetColumnOrRowMenuHistoryHashToken(viewportSelection, contextMenu);
-            this.historyParseMergeAndPush(tokens);
+            this.historyParseMergeAndPushSelection(
+                contextMenuSelection instanceof SpreadsheetExpressionReference ?
+                    new SpreadsheetCellMenuHistoryHashToken(viewportSelection, contextMenu) :
+                    new SpreadsheetColumnOrRowMenuHistoryHashToken(viewportSelection, contextMenu)
+            );
         }
     }
 
