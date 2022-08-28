@@ -193,14 +193,78 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetCellWidget {
             "visible" :
             "hidden";
 
+        const onBlur = (e) => {
+            const newTarget = e.relatedTarget;
+            const inside = this.textField.current.contains(newTarget);
+            this.log(".onBlur new target is " + (inside ? "inside" : "outside"));
+
+            if(!inside){
+                const newState = {
+                    focused: false,
+                };
+
+                const viewport = document.getElementById(SpreadsheetViewportWidget.VIEWPORT_ID);
+                if(!(viewport.contains(newTarget))){
+                    // new target not viewport better clear selection
+                    newState.selection = null;
+                }
+
+                this.setState(newState);
+            }
+        }
+
+        const onFocus = (e) => {
+            const selection = this.state.selection;
+            this.log(".onFocus " + selection + " " + (selection && new SpreadsheetCellFormulaEditHistoryHashToken(selection.viewportSelection())), this.state);
+
+            this.setState({
+                focused: true,
+                selection: selection && new SpreadsheetCellFormulaEditHistoryHashToken(selection.viewportSelection()),
+            });
+        }
+
+        const onChange = (e) => {
+            this.setState({
+                value: e.target.value || "",
+            });
+        }
+
+        /**
+         * ESCAPE reloads the initial formula, ENTER saves the cell with the current formula text.
+         */
+        const onKeyDown = (e) => {
+            switch(e.key) {
+                case Keys.ESCAPE:
+                    this.setState({
+                        value: this.initialValue,
+                    });
+                    break;
+                case Keys.ENTER:
+                    this.log(".onEnter");
+
+                    e.preventDefault();
+
+                    const selection = this.state.selection;
+                    this.setState({
+                        selection: new SpreadsheetCellFormulaSaveHistoryHashToken(
+                            selection.viewportSelection(),
+                            e.target.value
+                        )
+                    });
+                    break;
+                default:
+                // nothing special to do for other keys
+            }
+        }
+
         return (
             <TextField ref={this.textField}
                        id={SpreadsheetFormulaWidget.TEXT_FIELD_ID}
                        defaultValue={value}
-                       onBlur={this.onBlur.bind(this)}
-                       onFocus={this.onFocus.bind(this)}
-                       onChange={this.onChange.bind(this)}
-                       onKeyDown={this.onKeyDown.bind(this)}
+                       onBlur={onBlur}
+                       onChange={onChange}
+                       onFocus={onFocus}
+                       onKeyDown={onKeyDown}
                        inputProps={{
                            maxLength: 8192,
                            style: {
@@ -215,86 +279,6 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetCellWidget {
                        }}
             />
         );
-    }
-
-    // EVENTS..........................................................................................................
-
-    onBlur(e) {
-        const newTarget = e.relatedTarget;
-        const inside = this.textField.current.contains(newTarget);
-        this.log(".onBlur new target is " + (inside ? "inside" : "outside"));
-
-        if(!inside) {
-            const newState = {
-                focused: false,
-            };
-
-            const viewport = document.getElementById(SpreadsheetViewportWidget.VIEWPORT_ID);
-            if(!(viewport.contains(newTarget))){
-               // new target not viewport better clear selection
-               newState.selection = null;
-            }
-
-            this.setState(newState);
-        }
-    }
-
-    onFocus(e) {
-        const selection = this.state.selection;
-        this.log(".onFocus " + selection + " " + (selection && new SpreadsheetCellFormulaEditHistoryHashToken(selection.viewportSelection())),  this.state);
-
-        this.setState({
-            focused: true,
-            selection: selection && new SpreadsheetCellFormulaEditHistoryHashToken(selection.viewportSelection()),
-        });
-    }
-
-    onChange(e) {
-        this.setState({
-            value: e.target.value || "",
-        });
-    }
-
-    /**
-     * ESCAPE reloads the initial formula, ENTER saves the cell with the current formula text.
-     */
-    onKeyDown(e) {
-        switch(e.key) {
-            case Keys.ESCAPE:
-                this.onEscapeKey(e);
-                break;
-            case Keys.ENTER:
-                this.onEnterKey(e);
-                break;
-            default:
-            // nothing special to do for other keys
-        }
-    }
-
-    /**
-     * ESCAPE reloads the formula text.
-     */
-    onEscapeKey(e) {
-        this.setState({
-            value: this.initialValue,
-        });
-    }
-
-    /**
-     * ENTER saves the formula content.
-     */
-    onEnterKey(e) {
-        this.log(".onEnter");
-
-        e.preventDefault();
-
-        const selection = this.state.selection;
-        this.setState({
-                selection: new SpreadsheetCellFormulaSaveHistoryHashToken(
-                    selection.viewportSelection(),
-                    e.target.value
-                )
-            });
     }
 
     /**
