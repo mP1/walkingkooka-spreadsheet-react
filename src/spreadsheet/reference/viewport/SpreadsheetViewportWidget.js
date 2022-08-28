@@ -183,13 +183,10 @@ export default class SpreadsheetViewportWidget extends SpreadsheetCellWidget {
      * before updating the cells, cell to labels, labels etc.
      */
     onSpreadsheetDelta(method, id, url, requestDelta, responseDelta) {
-        const state = this.state;
-
         const viewportElement = this.viewportElement.current;
         if(viewportElement){
-            const metadata = state.spreadsheetMetadata;
-
             const window = responseDelta.window();
+            const state = this.state;
 
             var {
                 cellReferenceToCells,
@@ -198,6 +195,8 @@ export default class SpreadsheetViewportWidget extends SpreadsheetCellWidget {
                 labelToReferences,
                 rowReferenceToRows,
                 selection,
+                spreadsheetId,
+                spreadsheetMetadata,
             } = state;
 
             // first remove any deleted cells.
@@ -260,7 +259,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetCellWidget {
                         newState,
                         {
                             window: window,
-                            spreadsheetMetadata: metadata.set(
+                            spreadsheetMetadata: spreadsheetMetadata.set(
                                 SpreadsheetMetadata.VIEWPORT_CELL,
                                 SpreadsheetDelta.viewportRange(window)
                                     .begin()
@@ -295,9 +294,6 @@ export default class SpreadsheetViewportWidget extends SpreadsheetCellWidget {
                     );
                     break;
                 case HttpMethod.POST:
-                    const historyTokens = this.props.history.tokens();
-                    //const selectionAction = historyTokens[SpreadsheetHistoryHashTokens.SELECTION_ACTION];
-                    const selection = historyTokens[SpreadsheetHistoryHashTokens.SELECTION];
                     if(selection){
                         const viewportSelection = selection.viewportSelection();
                         const selectionSelection = viewportSelection.selection();
@@ -312,7 +308,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetCellWidget {
                                 // 4 == column == Selection
                                 // 5 == $selection
                                 // 6 == before == insert-action.toUrl
-                                if(urlPaths[3] === historyTokens[SpreadsheetHistoryHashTokens.SPREADSHEET_ID].toString()){
+                                if(urlPaths[3] === spreadsheetId.toString()){
                                     if(selectionSelection.isApiInsertBeforePostUrl(urlPaths)){
                                         Object.assign(
                                             newState,
@@ -340,7 +336,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetCellWidget {
                                 // 4 == column == Selection
                                 // 5 == $selection
                                 // 6 == before == insert-action.toUrl
-                                if(urlPaths[3] === historyTokens[SpreadsheetHistoryHashTokens.SPREADSHEET_ID].toString()){
+                                if(urlPaths[3] === spreadsheetId.toString()){
                                     if(selectionSelection.isInsertAfterPostUrl(urlPaths)){
                                         Object.assign(
                                             newState,
