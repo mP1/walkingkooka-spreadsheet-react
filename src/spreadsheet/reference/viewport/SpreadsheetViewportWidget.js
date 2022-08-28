@@ -461,8 +461,6 @@ export default class SpreadsheetViewportWidget extends SpreadsheetCellWidget {
     }
 
     stateFromHistoryTokens(tokens) {
-        console.log("Viewport stateFromHistoryTokens " + JSON.stringify(tokens));
-
         return {
             spreadsheetId: tokens[SpreadsheetHistoryHashTokens.SPREADSHEET_ID],
             spreadsheetName: tokens[SpreadsheetHistoryHashTokens.SPREADSHEET_NAME],
@@ -513,7 +511,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetCellWidget {
 
                 do {
                     if(selectionNew && (!(selectionNew.equals(selectionOld)))){
-                        console.log(this.prefix() + " spreadsheetLabelMappingWidgetExecute " + selectionNew);
+                        this.log(".historyTokensFromState executing " + selectionNew + ".spreadsheetLabelMappingWidgetExecute");
 
                         selectionNew.spreadsheetViewportWidgetExecute(
                             this,
@@ -531,7 +529,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetCellWidget {
                     // if viewport width or height increased reload viewport cells
                     const prevDimensions = prevState.dimensions;
                     if(width > prevDimensions.width || height > prevDimensions.height){
-                        console.log(this.prefix() + " viewport width/height increased need to reload viewport cells");
+                        this.log(".historyTokensFromState viewport width/height increased need to reload viewport cells");
 
                         this.loadCells(
                             viewportCell.viewport(
@@ -545,7 +543,8 @@ export default class SpreadsheetViewportWidget extends SpreadsheetCellWidget {
 
                     // some metadata properties changed that will mean formatting of values changed so reload
                     if(metadata.viewportShouldLoadCells(previousMetadata)){
-                        console.log(this.prefix() + " Metadata change need to format all viewport cells", metadata);
+                        this.log(".historyTokensFromState Metadata change need to format all viewport cells", metadata);
+
                         this.loadCells(
                             viewportCell.viewport(
                                 width,
@@ -756,7 +755,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetCellWidget {
      * actual cell or column or row within a range etc.
      */
     giveViewportSelectionFocus(viewportSelection) {
-        console.log(this.prefix() + ".giveViewportSelectionFocus " + viewportSelection);
+        this.log(".giveViewportSelectionFocus " + viewportSelection);
 
         this.giveFocus(
             () => {
@@ -810,7 +809,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetCellWidget {
         const onBlur = (e) => {
             // only set focused to false if new focus is outside viewport table.
             if(!this.viewportElement.current.contains(e.relatedTarget)){
-                console.log(this.prefix() + ".blur focused false");
+                this.log(".blur focused false");
 
                 this.setState({
                     focused: false,
@@ -847,9 +846,11 @@ export default class SpreadsheetViewportWidget extends SpreadsheetCellWidget {
 
         // records that the viewport has just received focus...........................................................
         const onFocus = (e) => {
-            console.log(this.prefix() + "..onFocus focused");
+            this.log(".onFocus focused");
+
             if(!(this.state.selection instanceof SpreadsheetCellFormulaHistoryHashToken) || !this.state.focused){
-                console.log(this.prefix() + ".onfocus true");
+                this.log(".onfocus setting focused=true");
+
                 this.setState({
                     focused: true
                 });
@@ -859,7 +860,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetCellWidget {
         // handles translating keyboard events often into selection navigation actions.................................
         const onKeyDown = (e) => {
             const key = e.key;
-            console.log(this.prefix() + ".onKeyDown.onKeyDown " + CharSequences.quoteAndEscape(key));
+            this.log(".onKeyDown key=" + CharSequences.quoteAndEscape(key));
 
             e.preventDefault();
 
@@ -891,7 +892,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetCellWidget {
                                 selection = new SpreadsheetCellFormulaEditHistoryHashToken(
                                     viewportSelection
                                 );
-                                console.log(this.prefix() + ".ENTER new selection: " + selection);
+                                this.log("onKeyDown ENTER new selection: " + selection);
                             }
                             break;
                         // ESCAPE clears any selection
@@ -933,7 +934,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetCellWidget {
 
                 // updating will force a reload of viewport
                 if(!begin.equals(topLeft)){
-                    console.log(this.prefix() + ".onHorizontalVerticalSliderChange " + viewport + " TO " + new SpreadsheetCellRange(topLeft, topLeft));
+                    this.log(".onHorizontalVerticalSliderChange " + viewport + " TO " + new SpreadsheetCellRange(topLeft, topLeft));
 
                     const viewportElement = this.viewportElement.current;
 
