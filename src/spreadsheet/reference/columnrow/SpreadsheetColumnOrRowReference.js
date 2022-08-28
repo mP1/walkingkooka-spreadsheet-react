@@ -1,13 +1,10 @@
+import Link from "@mui/material/Link";
 import Preconditions from "../../../Preconditions.js";
 import React from "react";
 import SpreadsheetReferenceKind from "../SpreadsheetReferenceKind.js";
 import SpreadsheetSelection from "../SpreadsheetSelection.js";
 import SpreadsheetViewportSelectionAnchor from "../viewport/SpreadsheetViewportSelectionAnchor.js";
 import TableCell from "@mui/material/TableCell";
-import Link from "@mui/material/Link";
-import SpreadsheetHistoryHashTokens from "../../history/SpreadsheetHistoryHashTokens.js";
-import SpreadsheetColumnOrRowSelectHistoryHashToken from "./SpreadsheetColumnOrRowSelectHistoryHashToken.js";
-import SpreadsheetHistoryHash from "../../history/SpreadsheetHistoryHash.js";
 
 export default class SpreadsheetColumnOrRowReference extends SpreadsheetSelection {
 
@@ -87,20 +84,24 @@ export default class SpreadsheetColumnOrRowReference extends SpreadsheetSelectio
 
     // selection........................................................................................................
 
+    viewportLinkId() {
+        return this.viewportId() + "-Link";
+    }
+
     /**
      * Renders a TABLE CELL that may be highlighted.
      */
-    renderViewport(style, tokens) {
+    // $link must be stringified and passed as a string because passing tokens for eventual SpreadsheetHistoryHash.stringify
+    // will cause weird cycling reference failures in tests but not in a browser
+    renderViewport(style, link) {
         const id = this.viewportId();
 
-        tokens[SpreadsheetHistoryHashTokens.SELECTION] = new SpreadsheetColumnOrRowSelectHistoryHashToken(this);
-        const link = "#" + SpreadsheetHistoryHash.stringify(tokens);
-
         return <TableCell key={id}
+                          id={id}
                           style={style}
                           tabIndex={0}
                           data-selection={this}
-        ><Link id={id}
+        ><Link id={this.viewportLinkId()}
                href={link}
                style={{
                    display: "inline-block",

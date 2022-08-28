@@ -5,6 +5,9 @@ import SpreadsheetRow from "./SpreadsheetRow.js";
 import SpreadsheetRowReference from "./SpreadsheetRowReference.js";
 import systemObjectTesting from "../../../SystemObjectTesting.js";
 import SpreadsheetCellRange from "../cell/SpreadsheetCellRange.js";
+import TableCell from "@mui/material/TableCell";
+import Link from "@mui/material/Link";
+import React from "react";
 
 systemObjectTesting(
     new SpreadsheetRowReference(0, SpreadsheetReferenceKind.ABSOLUTE),
@@ -359,6 +362,34 @@ function toRelativeAndCheck(selection, expected) {
 
 toRelativeAndCheck("1", "1");
 toRelativeAndCheck("$2", "2");
+
+// renderViewport.......................................................................................................
+
+test("renderViewport", () => {
+    const style = {
+        "color": "#ABCDEF",
+    };
+
+    const reference = SpreadsheetRowReference.parse("123");
+
+    expect(
+        reference.renderViewport(style, "#/123/SpreadsheetName/row/123")
+    ).toEqual(<TableCell key={"viewport-row-123"}
+                         id={"viewport-row-123"}
+                         style={style}
+                         tabIndex={0}
+                         data-selection={reference}
+        ><Link id="viewport-row-123-Link"
+               href="#/123/SpreadsheetName/row/123"
+               style={{
+                   display: "inline-block",
+                   paddingLeft: "1ex",
+                   paddingRight: "1ex",
+                   paddingTop: "2px",
+                   paddingBottom: "2px",
+               }}>123</Link></TableCell>
+    );
+});
 
 // compareTo..............................................................................................................
 
