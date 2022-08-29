@@ -32,8 +32,8 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetCellWidget {
      * Returns true if the given element is a child of the root of this widget.
      */
     static contains(element) {
-        const viewport = document.getElementById(SpreadsheetFormulaWidget.TEXT_FIELD_ID);
-        return viewport.contains(element);
+        return document.getElementById(SpreadsheetFormulaWidget.TEXT_FIELD_ID)
+            .contains(element);
     }
 
     init() {
