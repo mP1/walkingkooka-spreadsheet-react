@@ -45,7 +45,7 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetCellWidget {
         const historyHashTokens = props.history.tokens();
 
         return {
-            selection: historyHashTokens[SpreadsheetHistoryHash.VIEWPORT_SELECTION],
+            viewportSelection: historyHashTokens[SpreadsheetHistoryHash.VIEWPORT_SELECTION],
             window: [],
         }
     }
@@ -54,15 +54,15 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetCellWidget {
      * Filter only interested in cell or labels and load/edit or save formula actions.
      */
     stateFromHistoryTokens(historyTokens) {
-        const selection = historyTokens[SpreadsheetHistoryHashTokens.VIEWPORT_SELECTION];
+        const viewportSelectionToken = historyTokens[SpreadsheetHistoryHashTokens.VIEWPORT_SELECTION];
         const state = {
-            selection: selection,
+            viewportSelection: viewportSelectionToken,
             cellReference: null,
         };
 
         // clear clearReference which will also hide formula textbox if column | row | any range
-        if(selection instanceof SpreadsheetCellHistoryHashToken){
-            const viewportSelection = selection.viewportSelection();
+        if(viewportSelectionToken instanceof SpreadsheetCellHistoryHashToken){
+            const viewportSelection = viewportSelectionToken.viewportSelection();
             const selectionSelection = viewportSelection.selection();
             if(selectionSelection instanceof SpreadsheetCellReference){
                 state.cellReference = selectionSelection;
@@ -80,19 +80,19 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetCellWidget {
     historyTokensFromState(prevState) {
         const state = this.state;
         const {
-            selection,
+            viewportSelection: viewportSelectionToken,
             cellReference,
             focused,
         } = state;
 
         const historyTokens = SpreadsheetHistoryHashTokens.emptyTokens();
 
-        if(selection instanceof SpreadsheetCellHistoryHashToken){
-            const viewportSelection = selection.viewportSelection();
-            const selectionSelection = viewportSelection.selection();
+        if(viewportSelectionToken instanceof SpreadsheetCellHistoryHashToken){
+            const viewportSelection = viewportSelectionToken.viewportSelection();
+            const selection = viewportSelection.selection();
 
-            const previousSelection = prevState.selection;
-            const previousSelectionSelection = previousSelection && previousSelection.viewportSelection()
+            const previousViewportSelection = prevState.viewportSelection;
+            const previousSelection = previousViewportSelection && previousViewportSelection.viewportSelection()
                 .selection();
 
             // user must have just clicked/tab formula textbox update history to formula edit
@@ -103,10 +103,10 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetCellWidget {
             }
 
             // always do the save and if focused change history to formula edit or clear selection.
-            if(selection instanceof SpreadsheetCellFormulaSaveHistoryHashToken){
+            if(viewportSelectionToken instanceof SpreadsheetCellFormulaSaveHistoryHashToken){
                 this.saveFormulaText(
                     cellReference,
-                    selection.formulaText(),
+                    viewportSelectionToken.formulaText(),
                 );
 
                 historyTokens[SpreadsheetHistoryHashTokens.VIEWPORT_SELECTION] = focused ?
@@ -115,7 +115,7 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetCellWidget {
             }
 
             // if NOT focused and history is formula edit give focus.
-            if(!focused && selection instanceof SpreadsheetCellFormulaEditHistoryHashToken && !(previousSelection instanceof SpreadsheetCellFormulaHistoryHashToken)){
+            if(!focused && viewportSelectionToken instanceof SpreadsheetCellFormulaEditHistoryHashToken && !(previousViewportSelection instanceof SpreadsheetCellFormulaHistoryHashToken)){
                 this.log("historyTokensFromState giving focus");
                 this.giveFocus(
                     () => {
@@ -126,8 +126,8 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetCellWidget {
             }
 
             // if cell selection changed load text only not after a formula save. the extra selection is NOT a formula save makes the selection clear after the save completes.
-            if(!selectionSelection.equalsIgnoringKind(previousSelectionSelection) && !(selection instanceof SpreadsheetCellFormulaSaveHistoryHashToken)){
-                this.loadFormulaText(selectionSelection);
+            if(!selection.equalsIgnoringKind(previousSelection) && !(viewportSelectionToken instanceof SpreadsheetCellFormulaSaveHistoryHashToken)){
+                this.loadFormulaText(selection);
             }
         }
 
@@ -166,11 +166,11 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetCellWidget {
     render() {
         const {
             value,
-            selection,
+            viewportSelection: viewportSelectionToken,
             cellReference,
         } = this.state;
 
-        const visibility = selection instanceof SpreadsheetCellHistoryHashToken && cellReference ?
+        const visibility = viewportSelectionToken instanceof SpreadsheetCellHistoryHashToken && cellReference ?
             "visible" :
             "hidden";
 
@@ -186,7 +186,9 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetCellWidget {
 
                 }else {
                     // new target not viewport better select cell
-                    newState.selection = selectHistoryHashToken(this.selection);
+                    newState.viewportSelection = selectHistoryHashToken(
+                        viewportSelectionToken.viewportSelection()
+                    );
 
                     this.log(" onBlur new target is outside viewport setting selection cell edit");
                 }
@@ -196,12 +198,12 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetCellWidget {
         }
 
         const onFocus = (e) => {
-            const selection = this.state.selection;
-            this.log(" onFocus " + selection + " " + (selection && new SpreadsheetCellFormulaEditHistoryHashToken(selection.viewportSelection())), this.state);
+            const viewportSelectionToken = this.state.viewportSelection;
+            this.log(" onFocus " + viewportSelectionToken + " " + (viewportSelectionToken && new SpreadsheetCellFormulaEditHistoryHashToken(viewportSelectionToken.viewportSelection())), this.state);
 
             this.setState({
                 focused: true,
-                selection: selection && new SpreadsheetCellFormulaEditHistoryHashToken(selection.viewportSelection()),
+                viewportSelection: viewportSelectionToken && new SpreadsheetCellFormulaEditHistoryHashToken(viewportSelectionToken.viewportSelection()),
             });
         }
 
@@ -226,10 +228,9 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetCellWidget {
 
                     e.preventDefault();
 
-                    const selection = this.state.selection;
                     this.historyParseMergeAndPushSelection(
                         new SpreadsheetCellFormulaSaveHistoryHashToken(
-                            selection.viewportSelection(),
+                            this.state.viewportSelection.viewportSelection(),
                             e.target.value
                         )
                     );
@@ -267,12 +268,10 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetCellWidget {
      * If the delta includes an updated formula text for the cell being edited update text.
      */
     onSpreadsheetDelta(method, cellOrLabel, url, requestDelta, responseDelta) {
-        const {
-            selection,
-        }   = this.state;
+        const viewportSelectionToken = this.state.viewportSelection;
 
-        if(selection instanceof SpreadsheetCellHistoryHashToken){
-            const viewportSelection = selection.viewportSelection();
+        if(viewportSelectionToken instanceof SpreadsheetCellHistoryHashToken){
+            const viewportSelection = viewportSelectionToken.viewportSelection();
             const selectionSelection = viewportSelection.selection();
             if(selectionSelection instanceof SpreadsheetExpressionReference){
                 // check if selection was loaded.
