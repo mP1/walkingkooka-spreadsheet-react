@@ -115,7 +115,7 @@ export default class SpreadsheetHistoryHash extends SpreadsheetHistoryHashTokens
 
                 var spreadsheetNameEdit = null;
 
-                var selection = null;
+                var viewportSelectionToken = null;
 
                 var label = null;
 
@@ -170,15 +170,15 @@ export default class SpreadsheetHistoryHash extends SpreadsheetHistoryHashTokens
                                         }
                                     }
 
-                                    selection = new SpreadsheetCellSelectHistoryHashToken(viewportSelection);
+                                    viewportSelectionToken = new SpreadsheetCellSelectHistoryHashToken(viewportSelection);
 
                                     switch(token) {
                                         case SpreadsheetHistoryHashTokens.CLEAR:
-                                            selection = new SpreadsheetCellClearHistoryHashToken(viewportSelection);
+                                            viewportSelectionToken = new SpreadsheetCellClearHistoryHashToken(viewportSelection);
                                             token = tokens.shift();
                                             break;
                                         case SpreadsheetHistoryHashTokens.DELETE:
-                                            selection = new SpreadsheetCellDeleteHistoryHashToken(viewportSelection);
+                                            viewportSelectionToken = new SpreadsheetCellDeleteHistoryHashToken(viewportSelection);
                                             token = tokens.shift();
                                             break;
                                         case SpreadsheetHistoryHashTokens.CELL_FORMULA:
@@ -186,9 +186,9 @@ export default class SpreadsheetHistoryHash extends SpreadsheetHistoryHashTokens
                                                 token = tokens.shift();
 
                                                 if(null == token){
-                                                    selection = new SpreadsheetCellFormulaEditHistoryHashToken(viewportSelection);
+                                                    viewportSelectionToken = new SpreadsheetCellFormulaEditHistoryHashToken(viewportSelection);
                                                 }else {
-                                                    selection = new SpreadsheetCellFormulaSaveHistoryHashToken(
+                                                    viewportSelectionToken = new SpreadsheetCellFormulaSaveHistoryHashToken(
                                                         viewportSelection,
                                                         decodeURIComponent(token)
                                                     );
@@ -198,12 +198,12 @@ export default class SpreadsheetHistoryHash extends SpreadsheetHistoryHashTokens
                                             break;
                                         case SpreadsheetHistoryHashTokens.FREEZE:
                                             if(cellOrLabel.canFreeze()){
-                                                selection = new SpreadsheetCellFreezeHistoryHashToken(viewportSelection);
+                                                viewportSelectionToken = new SpreadsheetCellFreezeHistoryHashToken(viewportSelection);
                                                 token = tokens.shift();
                                             }
                                             break;
                                         case SpreadsheetHistoryHashTokens.MENU:
-                                            selection = new SpreadsheetCellMenuHistoryHashToken(
+                                            viewportSelectionToken = new SpreadsheetCellMenuHistoryHashToken(
                                                 viewportSelection,
                                                 new SpreadsheetContextMenu()
                                             );
@@ -217,7 +217,7 @@ export default class SpreadsheetHistoryHash extends SpreadsheetHistoryHashTokens
                                                 if(TextStyle.isProperty(stylePropertyName)){
                                                     if(tokens.length){
                                                         token = tokens.shift(); // style property value
-                                                        selection = new SpreadsheetCellStyleSaveHistoryHashToken(
+                                                        viewportSelectionToken = new SpreadsheetCellStyleSaveHistoryHashToken(
                                                             viewportSelection,
                                                             stylePropertyName,
                                                             TextStyle.parseHistoryHashToken(
@@ -226,7 +226,7 @@ export default class SpreadsheetHistoryHash extends SpreadsheetHistoryHashTokens
                                                             )
                                                         );
                                                     }else {
-                                                        selection = new SpreadsheetCellStyleEditHistoryHashToken(
+                                                        viewportSelectionToken = new SpreadsheetCellStyleEditHistoryHashToken(
                                                             viewportSelection,
                                                             stylePropertyName
                                                         );
@@ -239,7 +239,7 @@ export default class SpreadsheetHistoryHash extends SpreadsheetHistoryHashTokens
                                             break;
                                         case SpreadsheetHistoryHashTokens.UNFREEZE:
                                             if(cellOrLabel.canFreeze()){
-                                                selection = new SpreadsheetCellUnFreezeHistoryHashToken(viewportSelection);
+                                                viewportSelectionToken = new SpreadsheetCellUnFreezeHistoryHashToken(viewportSelection);
                                                 token = tokens.shift();
                                             }
                                             break;
@@ -279,21 +279,21 @@ export default class SpreadsheetHistoryHash extends SpreadsheetHistoryHashTokens
                                             break;
                                         }
                                     }
-                                    selection = new SpreadsheetColumnOrRowSelectHistoryHashToken(viewportSelection);
+                                    viewportSelectionToken = new SpreadsheetColumnOrRowSelectHistoryHashToken(viewportSelection);
 
                                     switch(token) {
                                         case SpreadsheetHistoryHashTokens.CLEAR:
-                                            selection = new SpreadsheetColumnOrRowClearHistoryHashToken(viewportSelection);
+                                            viewportSelectionToken = new SpreadsheetColumnOrRowClearHistoryHashToken(viewportSelection);
                                             token = tokens.shift();
                                             break;
                                         case SpreadsheetHistoryHashTokens.DELETE:
-                                            selection = new SpreadsheetColumnOrRowDeleteHistoryHashToken(viewportSelection);
+                                            viewportSelectionToken = new SpreadsheetColumnOrRowDeleteHistoryHashToken(viewportSelection);
                                             token = tokens.shift();
                                             break;
                                         case SpreadsheetHistoryHashTokens.FREEZE:
                                             // column/A/freeze OR /row/1/freeze
                                             if(columnOrRow.canFreeze()){
-                                                selection = new SpreadsheetColumnOrRowFreezeHistoryHashToken(viewportSelection);
+                                                viewportSelectionToken = new SpreadsheetColumnOrRowFreezeHistoryHashToken(viewportSelection);
                                                 token = tokens.shift();
                                             }
                                             break;
@@ -302,7 +302,7 @@ export default class SpreadsheetHistoryHash extends SpreadsheetHistoryHashTokens
                                             if(!hiddenValue){
                                                 break Loop; // value required but missing.
                                             }
-                                            selection = new SpreadsheetColumnOrRowSaveHistoryHashToken(
+                                            viewportSelectionToken = new SpreadsheetColumnOrRowSaveHistoryHashToken(
                                                 viewportSelection,
                                                 token,
                                                 "true" === hiddenValue ? true :
@@ -317,7 +317,7 @@ export default class SpreadsheetHistoryHash extends SpreadsheetHistoryHashTokens
                                                 break Loop;
                                             }
                                             try {
-                                                selection = new SpreadsheetColumnOrRowInsertAfterHistoryHashToken(
+                                                viewportSelectionToken = new SpreadsheetColumnOrRowInsertAfterHistoryHashToken(
                                                     viewportSelection,
                                                     Number(insertAfterCount)
                                                 );
@@ -333,7 +333,7 @@ export default class SpreadsheetHistoryHash extends SpreadsheetHistoryHashTokens
                                                 break Loop;
                                             }
                                             try {
-                                                selection = new SpreadsheetColumnOrRowInsertBeforeHistoryHashToken(
+                                                viewportSelectionToken = new SpreadsheetColumnOrRowInsertBeforeHistoryHashToken(
                                                     viewportSelection,
                                                     Number(insertBeforeCount)
                                                 );
@@ -344,7 +344,7 @@ export default class SpreadsheetHistoryHash extends SpreadsheetHistoryHashTokens
                                             token = tokens.shift();
                                             break;
                                         case SpreadsheetHistoryHashTokens.MENU:
-                                            selection = new SpreadsheetColumnOrRowMenuHistoryHashToken(
+                                            viewportSelectionToken = new SpreadsheetColumnOrRowMenuHistoryHashToken(
                                                 viewportSelection,
                                                 new SpreadsheetContextMenu(),
                                             );
@@ -352,7 +352,7 @@ export default class SpreadsheetHistoryHash extends SpreadsheetHistoryHashTokens
                                             break;
                                         case SpreadsheetHistoryHashTokens.UNFREEZE:
                                             if(columnOrRow.canFreeze()){
-                                                selection = new SpreadsheetColumnOrRowUnFreezeHistoryHashToken(
+                                                viewportSelectionToken = new SpreadsheetColumnOrRowUnFreezeHistoryHashToken(
                                                     viewportSelection
                                                 );
                                                 token = tokens.shift();
@@ -413,7 +413,7 @@ export default class SpreadsheetHistoryHash extends SpreadsheetHistoryHashTokens
                             }
 
                             // metadata
-                            if((selection instanceof SpreadsheetCellSelectHistoryHashToken || selection instanceof SpreadsheetColumnOrRowSelectHistoryHashToken || !selection) && !label && !select){
+                            if((viewportSelectionToken instanceof SpreadsheetCellSelectHistoryHashToken || viewportSelectionToken instanceof SpreadsheetColumnOrRowSelectHistoryHashToken || !viewportSelectionToken) && !label && !select){
                                 if(SpreadsheetHistoryHashTokens.METADATA === token){
                                     metadata = null;
 
@@ -464,8 +464,8 @@ export default class SpreadsheetHistoryHash extends SpreadsheetHistoryHashTokens
                         if(spreadsheetNameEdit){
                             historyHashTokens[SpreadsheetHistoryHashTokens.SPREADSHEET_NAME_EDIT] = spreadsheetNameEdit;
                         }
-                        if(selection){
-                            historyHashTokens[SpreadsheetHistoryHashTokens.VIEWPORT_SELECTION] = selection;
+                        if(viewportSelectionToken){
+                            historyHashTokens[SpreadsheetHistoryHashTokens.VIEWPORT_SELECTION] = viewportSelectionToken;
                         }
                         if(label instanceof SpreadsheetLabelMappingHistoryHashToken){
                             historyHashTokens[SpreadsheetHistoryHashTokens.LABEL] = label;
@@ -490,7 +490,7 @@ export default class SpreadsheetHistoryHash extends SpreadsheetHistoryHashTokens
         var spreadsheetId = tokens[SpreadsheetHistoryHashTokens.SPREADSHEET_ID];
         var spreadsheetName = tokens[SpreadsheetHistoryHashTokens.SPREADSHEET_NAME];
         var spreadsheetNameEdit = tokens[SpreadsheetHistoryHashTokens.SPREADSHEET_NAME_EDIT];
-        var selection = tokens[SpreadsheetHistoryHashTokens.VIEWPORT_SELECTION];
+        var viewportSelection = tokens[SpreadsheetHistoryHashTokens.VIEWPORT_SELECTION];
         var label = tokens[SpreadsheetHistoryHashTokens.LABEL];
         var select = tokens[SpreadsheetHistoryHashTokens.SELECT];
         var metadata = tokens[SpreadsheetHistoryHashTokens.METADATA];
@@ -502,52 +502,52 @@ export default class SpreadsheetHistoryHash extends SpreadsheetHistoryHashTokens
 
             if(spreadsheetName){
                 verified[SpreadsheetHistoryHashTokens.SPREADSHEET_NAME] = spreadsheetName;
-                if(spreadsheetNameEdit && (selection || label || select || metadata)){
+                if(spreadsheetNameEdit && (viewportSelection || label || select || metadata)){
                     spreadsheetNameEdit = null;
-                    selection = false;
+                    viewportSelection = false;
                     label = false;
                     select = false;
                 }
                 if(spreadsheetNameEdit){
-                    selection = false;
+                    viewportSelection = false;
                     label = false;
                     select = false;
                 }
-                if(selection || label || select || metadata){
+                if(viewportSelection || label || select || metadata){
                     spreadsheetNameEdit = null;
                 }
                 if(spreadsheetNameEdit instanceof SpreadsheetNameHistoryHashToken){
                     verified[SpreadsheetHistoryHashTokens.SPREADSHEET_NAME_EDIT] = spreadsheetNameEdit;
                 }
-                if(selection instanceof SpreadsheetSelectionHistoryHashToken){
-                    const selectionSelection = selection.viewportSelection()
+                if(viewportSelection instanceof SpreadsheetSelectionHistoryHashToken){
+                    const selectionSelection = viewportSelection.viewportSelection()
                         .selection();
 
-                    if(selection instanceof SpreadsheetCellHistoryHashToken){
+                    if(viewportSelection instanceof SpreadsheetCellHistoryHashToken){
                         if(selectionSelection.isCellScalarOrRange() || selectionSelection instanceof SpreadsheetLabelName){
-                            if(selection instanceof SpreadsheetCellFreezeHistoryHashToken || selection instanceof SpreadsheetCellUnFreezeHistoryHashToken){
+                            if(viewportSelection instanceof SpreadsheetCellFreezeHistoryHashToken || viewportSelection instanceof SpreadsheetCellUnFreezeHistoryHashToken){
                                 if(selectionSelection.canFreeze()){
-                                    verified[SpreadsheetHistoryHashTokens.VIEWPORT_SELECTION] = selection;
+                                    verified[SpreadsheetHistoryHashTokens.VIEWPORT_SELECTION] = viewportSelection;
                                     metadata = null;
                                 }
                             }else {
-                                verified[SpreadsheetHistoryHashTokens.VIEWPORT_SELECTION] = selection;
+                                verified[SpreadsheetHistoryHashTokens.VIEWPORT_SELECTION] = viewportSelection;
 
-                                if(!(selection instanceof SpreadsheetCellSelectHistoryHashToken)){
+                                if(!(viewportSelection instanceof SpreadsheetCellSelectHistoryHashToken)){
                                     metadata = null;
                                 }
                             }
                         }
                     }
-                    if(selection instanceof SpreadsheetColumnOrRowHistoryHashToken){
+                    if(viewportSelection instanceof SpreadsheetColumnOrRowHistoryHashToken){
                         if(selectionSelection.isColumnOrRowScalarOrRange()){
-                            if(selection instanceof SpreadsheetColumnOrRowFreezeHistoryHashToken || selection instanceof SpreadsheetColumnOrRowUnFreezeHistoryHashToken){
+                            if(viewportSelection instanceof SpreadsheetColumnOrRowFreezeHistoryHashToken || viewportSelection instanceof SpreadsheetColumnOrRowUnFreezeHistoryHashToken){
                                 if(selectionSelection.canFreeze()){
-                                    verified[SpreadsheetHistoryHashTokens.VIEWPORT_SELECTION] = selection;
+                                    verified[SpreadsheetHistoryHashTokens.VIEWPORT_SELECTION] = viewportSelection;
                                     metadata = null;
                                 }
                             }else {
-                                verified[SpreadsheetHistoryHashTokens.VIEWPORT_SELECTION] = selection;
+                                verified[SpreadsheetHistoryHashTokens.VIEWPORT_SELECTION] = viewportSelection;
                                 metadata = null;
                             }
                         }
@@ -579,7 +579,7 @@ export default class SpreadsheetHistoryHash extends SpreadsheetHistoryHashTokens
         var spreadsheetId = current[SpreadsheetHistoryHashTokens.SPREADSHEET_ID];
         var spreadsheetName = current[SpreadsheetHistoryHashTokens.SPREADSHEET_NAME];
         var spreadsheetNameEdit = current[SpreadsheetHistoryHashTokens.SPREADSHEET_NAME_EDIT];
-        var selection = current[SpreadsheetHistoryHashTokens.VIEWPORT_SELECTION];
+        var viewportSelection = current[SpreadsheetHistoryHashTokens.VIEWPORT_SELECTION];
         var label = current[SpreadsheetHistoryHashTokens.LABEL];
         var select = current[SpreadsheetHistoryHashTokens.SELECT];
         var metadata = current[SpreadsheetHistoryHashTokens.METADATA];
@@ -596,7 +596,7 @@ export default class SpreadsheetHistoryHash extends SpreadsheetHistoryHashTokens
         if(delta.hasOwnProperty(SpreadsheetHistoryHashTokens.SPREADSHEET_NAME_EDIT)){
             spreadsheetNameEdit = delta[SpreadsheetHistoryHashTokens.SPREADSHEET_NAME_EDIT];
             if(spreadsheetNameEdit instanceof SpreadsheetNameHistoryHashToken){
-                selection = null;
+                viewportSelection = null;
                 label = null;
                 select = null;
                 metadata = null;
@@ -604,8 +604,8 @@ export default class SpreadsheetHistoryHash extends SpreadsheetHistoryHashTokens
         }
 
         if(delta.hasOwnProperty(SpreadsheetHistoryHashTokens.VIEWPORT_SELECTION)){
-            selection = delta[SpreadsheetHistoryHashTokens.VIEWPORT_SELECTION];
-            if(selection){
+            viewportSelection = delta[SpreadsheetHistoryHashTokens.VIEWPORT_SELECTION];
+            if(viewportSelection){
                 spreadsheetNameEdit = false;
             }
         }
@@ -629,10 +629,10 @@ export default class SpreadsheetHistoryHash extends SpreadsheetHistoryHashTokens
             if(metadata){
                 spreadsheetNameEdit = false;
 
-                if(selection instanceof SpreadsheetCellHistoryHashToken && !(selection instanceof SpreadsheetCellSelectHistoryHashToken)){
+                if(viewportSelection instanceof SpreadsheetCellHistoryHashToken && !(viewportSelection instanceof SpreadsheetCellSelectHistoryHashToken)){
                     metadata = null;
                 }
-                if(selection instanceof SpreadsheetColumnOrRowHistoryHashToken && !(selection instanceof SpreadsheetColumnOrRowSelectHistoryHashToken)){
+                if(viewportSelection instanceof SpreadsheetColumnOrRowHistoryHashToken && !(viewportSelection instanceof SpreadsheetColumnOrRowSelectHistoryHashToken)){
                     metadata = null;
                 }
             }
@@ -649,7 +649,7 @@ export default class SpreadsheetHistoryHash extends SpreadsheetHistoryHashTokens
 
                 valid = true;
                 if(spreadsheetNameEdit){
-                    if(selection || label || select || metadata){
+                    if(viewportSelection || label || select || metadata){
                         valid = false;
                     }
                 }
@@ -661,8 +661,8 @@ export default class SpreadsheetHistoryHash extends SpreadsheetHistoryHashTokens
                 merged[SpreadsheetHistoryHashTokens.SPREADSHEET_NAME_EDIT] = spreadsheetNameEdit;
             }
 
-            if(selection){
-                merged[SpreadsheetHistoryHashTokens.VIEWPORT_SELECTION] = selection;
+            if(viewportSelection){
+                merged[SpreadsheetHistoryHashTokens.VIEWPORT_SELECTION] = viewportSelection;
             }
 
             if(label){
@@ -688,7 +688,7 @@ export default class SpreadsheetHistoryHash extends SpreadsheetHistoryHashTokens
         var spreadsheetId = tokens[SpreadsheetHistoryHashTokens.SPREADSHEET_ID];
         var spreadsheetName = tokens[SpreadsheetHistoryHashTokens.SPREADSHEET_NAME];
         var spreadsheetNameEdit = tokens[SpreadsheetHistoryHashTokens.SPREADSHEET_NAME_EDIT];
-        var selection = tokens[SpreadsheetHistoryHashTokens.VIEWPORT_SELECTION];
+        var viewportSelection = tokens[SpreadsheetHistoryHashTokens.VIEWPORT_SELECTION];
         var label = tokens[SpreadsheetHistoryHashTokens.LABEL];
         var select = tokens[SpreadsheetHistoryHashTokens.SELECT];
         var metadata = tokens[SpreadsheetHistoryHashTokens.METADATA];
@@ -704,7 +704,7 @@ export default class SpreadsheetHistoryHash extends SpreadsheetHistoryHashTokens
 
                 valid = true;
                 if(spreadsheetNameEdit){
-                    if(selection || label || select || metadata){
+                    if(viewportSelection || label || select || metadata){
                         valid = false;
                     }
                 }
@@ -715,13 +715,13 @@ export default class SpreadsheetHistoryHash extends SpreadsheetHistoryHashTokens
             if(spreadsheetNameEdit){
                 hash = hash + spreadsheetNameEdit.historyHashPath();
 
-                selection = null;
+                viewportSelection = null;
                 label = null;
                 select = null;
             }
 
-            if(selection){
-                hash = hash + "/" + selection.historyHashPath();
+            if(viewportSelection){
+                hash = hash + "/" + viewportSelection.historyHashPath();
             }
 
             if(label){
