@@ -87,9 +87,7 @@ export default class SpreadsheetSelectAutocompleteWidget extends SpreadsheetHist
         const select = tokens[SpreadsheetHistoryHashTokens.SELECT];
 
         const state = {
-            select: select,
-            viewportSelection: tokens[SpreadsheetHistoryHashTokens.VIEWPORT_SELECTION],
-            label: tokens[SpreadsheetHistoryHashTokens.LABEL],
+            select: select
         };
 
         if(!select){
