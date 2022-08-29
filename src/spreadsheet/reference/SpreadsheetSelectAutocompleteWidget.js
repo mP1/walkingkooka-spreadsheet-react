@@ -333,13 +333,13 @@ export default class SpreadsheetSelectAutocompleteWidget extends SpreadsheetHist
      * which will eventually update the displayed matches.
      */
     onTextFieldChange(e, newValueText) {
-        console.log("onTextFieldChange: " + newValueText, e);
+        this.log(".onTextFieldChange: " + newValueText, e);
 
         this.performSimilarities(newValueText);
     }
 
     onAutoCompleteValueChange(e, newValueOption) {
-        console.log("onAutoCompleteValueChange: " + newValueOption, newValueOption);
+        this.log(".onAutoCompleteValueChange: " + newValueOption, newValueOption);
 
         switch(typeof newValueOption) {
             case "string":
@@ -354,7 +354,7 @@ export default class SpreadsheetSelectAutocompleteWidget extends SpreadsheetHist
     }
 
     performSimilarities(text) {
-        console.log("performSimilarities: " + text);
+        this.log(".performSimilarities: " + text);
 
         const newState = {
             text: text,
@@ -418,7 +418,7 @@ export default class SpreadsheetSelectAutocompleteWidget extends SpreadsheetHist
                 },
             );
         } catch(e) {
-            console.log("performSimilarities server failed: " + e.message);
+            this.log(".performSimilarities server failed: " + e.message);
             props.showError(e);
         }
 
@@ -432,7 +432,7 @@ export default class SpreadsheetSelectAutocompleteWidget extends SpreadsheetHist
      * Closes the dialog.
      */
     close() {
-        console.log("close");
+        this.log(".close");
 
         const tokens = SpreadsheetHistoryHashTokens.emptyTokens();
         tokens[SpreadsheetHistoryHashTokens.SELECT] = null;
