@@ -142,8 +142,8 @@ export default class SpreadsheetViewportWidget extends SpreadsheetCellWidget {
      * Returns true if the given element is a child of the root of this widget.
      */
     static contains(element) {
-        const viewport = document.getElementById(SpreadsheetViewportWidget.VIEWPORT_ID);
-        return viewport.contains(element);
+        return document.getElementById(SpreadsheetViewportWidget.VIEWPORT_ID)
+            .contains(element);
     }
 
     static VIEWPORT_HORIZONTAL_SLIDER_ID = SpreadsheetViewportWidget.VIEWPORT_ID + "-horizontal-Slider";
