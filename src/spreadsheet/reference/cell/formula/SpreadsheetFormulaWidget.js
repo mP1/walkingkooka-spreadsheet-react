@@ -273,16 +273,15 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetCellWidget {
         if(viewportSelectionToken instanceof SpreadsheetCellHistoryHashToken){
             const viewportSelection = viewportSelectionToken.viewportSelection();
             const selection = viewportSelection.selection();
-            if(selection instanceof SpreadsheetExpressionReference){
-                // check if selection was loaded.
-                var formulaText = "";
 
+            if(selection instanceof SpreadsheetExpressionReference){
                 const cellReference = selection instanceof SpreadsheetLabelName ?
                     responseDelta.cellReference(selection) :
                     selection;
 
                 const cell = responseDelta.cell(selection);
 
+                var formulaText = "";
                 if(cell){
                     formulaText = cell.formula().text();
                 }else {
@@ -291,15 +290,13 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetCellWidget {
                     }
                 }
 
-                this.input.current.value = formulaText;
+                this.input.current.value = formulaText;;
 
-                var newState = {
+                this.setState({
                     cellReference: cellReference,
                     value: formulaText,
                     window: responseDelta.window(),
-                };
-
-                this.setState(newState);
+                });
             }
         }
     }
