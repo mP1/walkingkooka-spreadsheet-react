@@ -272,22 +272,22 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetCellWidget {
 
         if(viewportSelectionToken instanceof SpreadsheetCellHistoryHashToken){
             const viewportSelection = viewportSelectionToken.viewportSelection();
-            const selectionSelection = viewportSelection.selection();
-            if(selectionSelection instanceof SpreadsheetExpressionReference){
+            const selection = viewportSelection.selection();
+            if(selection instanceof SpreadsheetExpressionReference){
                 // check if selection was loaded.
                 var formulaText = "";
 
-                const cellReference = selectionSelection instanceof SpreadsheetLabelName ?
-                    responseDelta.cellReference(selectionSelection) :
-                    selectionSelection;
+                const cellReference = selection instanceof SpreadsheetLabelName ?
+                    responseDelta.cellReference(selection) :
+                    selection;
 
-                const cell = responseDelta.cell(selectionSelection);
+                const cell = responseDelta.cell(selection);
 
                 if(cell){
                     formulaText = cell.formula().text();
                 }else {
                     if(responseDelta.deletedCells().find(deleted => deleted.equals(cellReference))){
-                        this.log(".onSpreadsheetDelta cell " + selectionSelection + " deleted, formula cleared");
+                        this.log(".onSpreadsheetDelta cell " + selection + " deleted, formula cleared");
                     }
                 }
 
