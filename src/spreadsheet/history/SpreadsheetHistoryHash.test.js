@@ -190,20 +190,20 @@ testValidate(
 );
 
 testValidate(
-    "validate id & name & selection=cell",
+    "validate id & name & viewport-selection=cell",
     {
         "spreadsheet-id": ID,
         "spreadsheet-name": SPREADSHEET_NAME,
-        "selection": CELL_SELECT,
+        "viewport-selection": CELL_SELECT,
     }
 );
 
 testValidate(
-    "validate id & name & selection=LABEL",
+    "validate id & name & viewport-selection=LABEL",
     {
         "spreadsheet-id": ID,
         "spreadsheet-name": SPREADSHEET_NAME,
-        "selection": CELL_LABEL_SELECT,
+        "viewport-selection": CELL_LABEL_SELECT,
     }
 );
 
@@ -213,7 +213,7 @@ testValidate(
         "spreadsheet-id": ID,
         "spreadsheet-name": SPREADSHEET_NAME,
         "spreadsheet-name-edit": NAME_EDIT,
-        "selection": CELL_SELECT,
+        "viewport-selection": CELL_SELECT,
     },
     {
         "spreadsheet-id": ID,
@@ -250,20 +250,20 @@ testValidate(
 );
 
 testValidate(
-    "validate id & name & selection=CELL",
+    "validate id & name & viewport-selection=CELL",
     {
         "spreadsheet-id": ID,
         "spreadsheet-name": SPREADSHEET_NAME,
-        "selection": CELL_SELECT,
+        "viewport-selection": CELL_SELECT,
     }
 );
 
 testValidate(
-    "validate id & name & selection=invalid",
+    "validate id & name & viewport-selection=invalid",
     {
         "spreadsheet-id": ID,
         "spreadsheet-name": SPREADSHEET_NAME,
-        "selection": "!invalid",
+        "viewport-selection": "!invalid",
     },
     {
         "spreadsheet-id": ID,
@@ -272,107 +272,107 @@ testValidate(
 );
 
 testValidate(
-    "validate id & name & selection=CELL",
+    "validate id & name & viewport-selection=CELL",
     {
         "spreadsheet-id": ID,
         "spreadsheet-name": SPREADSHEET_NAME,
-        "selection": CELL_FORMULA_LOAD_EDIT,
+        "viewport-selection": CELL_FORMULA_LOAD_EDIT,
     }
 );
 
 testValidate(
-    "validate id & name & selection=LABEL",
+    "validate id & name & viewport-selection=LABEL",
     {
         "spreadsheet-id": ID,
         "spreadsheet-name": SPREADSHEET_NAME,
-        "selection": CELL_LABEL_SELECT,
+        "viewport-selection": CELL_LABEL_SELECT,
     }
 );
 
 testValidate(
-    "validate id & name & selection=CELL & delete",
+    "validate id & name & viewport-selection=CELL & delete",
     {
         "spreadsheet-id": ID,
         "spreadsheet-name": SPREADSHEET_NAME,
-        "selection": CELL_DELETE,
+        "viewport-selection": CELL_DELETE,
     }
 );
 
 testValidate(
-    "validate id & name & selection=CELL & formula-save",
+    "validate id & name & viewport-selection=CELL & formula-save",
     {
         "spreadsheet-id": ID,
         "spreadsheet-name": SPREADSHEET_NAME,
-        "selection": CELL_FORMULA_SAVE,
+        "viewport-selection": CELL_FORMULA_SAVE,
     }
 );
 
 testValidate(
-    "validate id & name & selection=CELL & freeze",
+    "validate id & name & viewport-selection=CELL & freeze",
     {
         "spreadsheet-id": ID,
         "spreadsheet-name": SPREADSHEET_NAME,
-        "selection": CELL_FREEZE,
+        "viewport-selection": CELL_FREEZE,
     }
 );
 
 testValidate(
-    "validate id & name & selection=CELL & menu",
+    "validate id & name & viewport-selection=CELL & menu",
     {
         "spreadsheet-id": ID,
         "spreadsheet-name": SPREADSHEET_NAME,
-        "selection": CELL_MENU,
+        "viewport-selection": CELL_MENU,
     }
 );
 
 testValidate(
-    "validate id & name & selection=CELL & metadata",
+    "validate id & name & viewport-selection=CELL & metadata",
     {
         "spreadsheet-id": ID,
         "spreadsheet-name": SPREADSHEET_NAME,
-        "selection": CELL_SELECT,
+        "viewport-selection": CELL_SELECT,
         "metadata": METADATA_NOTHING,
     }
 );
 
 testValidate(
-    "validate id & name & selection=CELL & unfreeze",
+    "validate id & name & viewport-selection=CELL & unfreeze",
     {
         "spreadsheet-id": ID,
         "spreadsheet-name": SPREADSHEET_NAME,
-        "selection": CELL_UNFREEZE,
+        "viewport-selection": CELL_UNFREEZE,
     }
 );
 
 testValidate(
-    "validate id & name & selection=COLUMN & action=DELETE",
+    "validate id & name & viewport-selection=COLUMN & action=DELETE",
     {
         "spreadsheet-id": ID,
         "spreadsheet-name": SPREADSHEET_NAME,
-        "selection": COLUMN_DELETE,
+        "viewport-selection": COLUMN_DELETE,
     }
 );
 
 testValidate(
-    "validate id & name & selection=COLUMN & action=DELETE",
+    "validate id & name & viewport-selection=COLUMN & action=DELETE",
     {
         "spreadsheet-id": ID,
         "spreadsheet-name": SPREADSHEET_NAME,
-        "selection": COLUMN_DELETE,
+        "viewport-selection": COLUMN_DELETE,
     }
 );
 
 testValidate(
-    "validate id & name & selection=COLUMN_A & action=FREEZE",
+    "validate id & name & viewport-selection=COLUMN_A & action=FREEZE",
     {
         "spreadsheet-id": ID,
         "spreadsheet-name": SPREADSHEET_NAME,
-        "selection": COLUMN_FREEZE,
+        "viewport-selection": COLUMN_FREEZE,
     }
 );
 
 testValidate(
-    "validate id & name & selection=COLUMN_B & action=FREEZE",
+    "validate id & name & viewport-selection=COLUMN_B & action=FREEZE",
     {
         "spreadsheet-id": ID,
         "spreadsheet-name": SPREADSHEET_NAME,
@@ -380,20 +380,20 @@ testValidate(
 );
 
 testValidate(
-    "validate id & name & selection=COLUMN_A & action=UNFREEZE",
+    "validate id & name & viewport-selection=COLUMN_A & action=UNFREEZE",
     {
         "spreadsheet-id": ID,
         "spreadsheet-name": SPREADSHEET_NAME,
-        "selection": COLUMN_UNFREEZE,
+        "viewport-selection": COLUMN_UNFREEZE,
     }
 );
 
 testValidate(
-    "validate id & name & selection=COLUMN_B & action=UNFREEZE",
+    "validate id & name & viewport-selection=COLUMN_B & action=UNFREEZE",
     {
         "spreadsheet-id": ID,
         "spreadsheet-name": SPREADSHEET_NAME,
-        "selection": new SpreadsheetColumnOrRowUnFreezeHistoryHashToken(
+        "viewport-selection": new SpreadsheetColumnOrRowUnFreezeHistoryHashToken(
             new SpreadsheetViewportSelection(
                 SpreadsheetColumnReference.parse("B")
             )
@@ -439,11 +439,11 @@ testValidate(
 
 
 testValidate(
-    "validate id & name & selection=LABEL & formula-save",
+    "validate id & name & viewport-selection=LABEL & formula-save",
     {
         "spreadsheet-id": ID,
         "spreadsheet-name": SPREADSHEET_NAME,
-        "selection": new SpreadsheetCellFormulaSaveHistoryHashToken(
+        "viewport-selection": new SpreadsheetCellFormulaSaveHistoryHashToken(
             new SpreadsheetViewportSelection(
                 LABEL
             ),
@@ -607,7 +607,7 @@ testParseAndStringify(
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
-        "selection": CELL_SELECT,
+        "viewport-selection": CELL_SELECT,
     }
 );
 
@@ -625,7 +625,7 @@ testParseAndStringify(
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
-        "selection": CELL_CLEAR,
+        "viewport-selection": CELL_CLEAR,
     }
 );
 
@@ -634,7 +634,7 @@ testParseAndStringify(
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
-        "selection": CELL_DELETE,
+        "viewport-selection": CELL_DELETE,
     }
 );
 
@@ -643,7 +643,7 @@ testParseAndStringify(
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
-        "selection": CELL_FORMULA_LOAD_EDIT,
+        "viewport-selection": CELL_FORMULA_LOAD_EDIT,
     }
 );
 
@@ -652,7 +652,7 @@ testParseAndStringify(
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
-        "selection": new SpreadsheetCellFormulaSaveHistoryHashToken(
+        "viewport-selection": new SpreadsheetCellFormulaSaveHistoryHashToken(
             new SpreadsheetViewportSelection(CELL),
             ""
         ),
@@ -664,7 +664,7 @@ testParseAndStringify(
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
-        "selection": new SpreadsheetCellFormulaSaveHistoryHashToken(
+        "viewport-selection": new SpreadsheetCellFormulaSaveHistoryHashToken(
             new SpreadsheetViewportSelection(CELL),
             "ABC 123"
         ),
@@ -676,7 +676,7 @@ testParseAndStringify(
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
-        "selection": new SpreadsheetCellFormulaSaveHistoryHashToken(
+        "viewport-selection": new SpreadsheetCellFormulaSaveHistoryHashToken(
             new SpreadsheetViewportSelection(CELL),
             "=12/34"
         ),
@@ -688,7 +688,7 @@ testParseAndStringify(
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
-        "selection": CELL_MENU,
+        "viewport-selection": CELL_MENU,
     }
 );
 
@@ -697,7 +697,7 @@ testParseAndStringify(
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
-        "selection": CELL_SELECT,
+        "viewport-selection": CELL_SELECT,
         "metadata": METADATA_NOTHING,
     }
 );
@@ -707,7 +707,7 @@ testParseAndStringify(
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
-        "selection": new SpreadsheetCellSelectHistoryHashToken(
+        "viewport-selection": new SpreadsheetCellSelectHistoryHashToken(
             new SpreadsheetViewportSelection(CELL_RANGE)
         ),
     }
@@ -718,7 +718,7 @@ testParseAndStringify(
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
-        "selection": new SpreadsheetCellSelectHistoryHashToken(
+        "viewport-selection": new SpreadsheetCellSelectHistoryHashToken(
             new SpreadsheetViewportSelection(
                 CELL_RANGE,
                 SpreadsheetViewportSelectionAnchor.TOP_LEFT
@@ -732,7 +732,7 @@ testParseAndStringify(
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
-        "selection": new SpreadsheetCellSelectHistoryHashToken(
+        "viewport-selection": new SpreadsheetCellSelectHistoryHashToken(
             new SpreadsheetViewportSelection(
                 CELL_RANGE,
                 SpreadsheetViewportSelectionAnchor.BOTTOM_RIGHT
@@ -755,7 +755,7 @@ testParseAndStringify(
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
-        "selection": new SpreadsheetCellMenuHistoryHashToken(
+        "viewport-selection": new SpreadsheetCellMenuHistoryHashToken(
             new SpreadsheetViewportSelection(
                 CELL_RANGE
             ),
@@ -769,7 +769,7 @@ testParseAndStringify(
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
-        "selection": CELL_LABEL_SELECT,
+        "viewport-selection": CELL_LABEL_SELECT,
     }
 );
 
@@ -778,7 +778,7 @@ testParseAndStringify(
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
-        "selection": new SpreadsheetCellFormulaEditHistoryHashToken(
+        "viewport-selection": new SpreadsheetCellFormulaEditHistoryHashToken(
             new SpreadsheetViewportSelection(
                 LABEL
             ),
@@ -791,7 +791,7 @@ testParseAndStringify(
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
-        "selection": new SpreadsheetCellFormulaSaveHistoryHashToken(
+        "viewport-selection": new SpreadsheetCellFormulaSaveHistoryHashToken(
             new SpreadsheetViewportSelection(
                 LABEL
             ),
@@ -881,7 +881,7 @@ testParseAndStringify(
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
-        "selection": new SpreadsheetCellSelectHistoryHashToken(
+        "viewport-selection": new SpreadsheetCellSelectHistoryHashToken(
             new SpreadsheetViewportSelection(
                 SpreadsheetCellReference.parse("A2")
             )
@@ -922,7 +922,7 @@ testParseAndStringify(
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
-        "selection": CELL_SELECT,
+        "viewport-selection": CELL_SELECT,
         "select": true,
     }
 );
@@ -932,7 +932,7 @@ testParseAndStringify(
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
-        "selection": COLUMN_SELECT,
+        "viewport-selection": COLUMN_SELECT,
     }
 );
 
@@ -941,7 +941,7 @@ testParseAndStringify(
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
-        "selection": COLUMN_CLEAR,
+        "viewport-selection": COLUMN_CLEAR,
     }
 );
 
@@ -950,7 +950,7 @@ testParseAndStringify(
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
-        "selection": COLUMN_DELETE,
+        "viewport-selection": COLUMN_DELETE,
     }
 );
 
@@ -959,7 +959,7 @@ testParseAndStringify(
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
-        "selection": new SpreadsheetColumnOrRowDeleteHistoryHashToken(
+        "viewport-selection": new SpreadsheetColumnOrRowDeleteHistoryHashToken(
             new SpreadsheetViewportSelection(
                 COLUMN_RANGE
             )
@@ -1008,7 +1008,7 @@ testParseAndStringify(
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
-        "selection": COLUMN_FREEZE,
+        "viewport-selection": COLUMN_FREEZE,
     }
 );
 
@@ -1017,7 +1017,7 @@ testParseAndStringify(
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
-        "selection": new SpreadsheetColumnOrRowFreezeHistoryHashToken(
+        "viewport-selection": new SpreadsheetColumnOrRowFreezeHistoryHashToken(
             new SpreadsheetViewportSelection(
                 COLUMN_RANGE_AC
             )
@@ -1048,7 +1048,7 @@ testParseAndStringify(
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
-        "selection": COLUMN_HIDDEN_FALSE,
+        "viewport-selection": COLUMN_HIDDEN_FALSE,
     }
 );
 
@@ -1057,7 +1057,7 @@ testParseAndStringify(
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
-        "selection": COLUMN_HIDDEN_TRUE,
+        "viewport-selection": COLUMN_HIDDEN_TRUE,
     }
 );
 
@@ -1090,7 +1090,7 @@ testParseAndStringify(
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
-        "selection": new SpreadsheetColumnOrRowInsertAfterHistoryHashToken(
+        "viewport-selection": new SpreadsheetColumnOrRowInsertAfterHistoryHashToken(
             new SpreadsheetViewportSelection(
                 COLUMN
             ),
@@ -1128,7 +1128,7 @@ testParseAndStringify(
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
-        "selection": new SpreadsheetColumnOrRowInsertBeforeHistoryHashToken(
+        "viewport-selection": new SpreadsheetColumnOrRowInsertBeforeHistoryHashToken(
             new SpreadsheetViewportSelection(
                 COLUMN
             ),
@@ -1151,7 +1151,7 @@ testParseAndStringify(
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
-        "selection": COLUMN_MENU,
+        "viewport-selection": COLUMN_MENU,
     }
 );
 
@@ -1160,7 +1160,7 @@ testParseAndStringify(
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
-        "selection": COLUMN_UNFREEZE,
+        "viewport-selection": COLUMN_UNFREEZE,
     }
 );
 
@@ -1169,7 +1169,7 @@ testParseAndStringify(
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
-        "selection": new SpreadsheetColumnOrRowUnFreezeHistoryHashToken(
+        "viewport-selection": new SpreadsheetColumnOrRowUnFreezeHistoryHashToken(
             new SpreadsheetViewportSelection(
                 COLUMN_RANGE_AC
             )
@@ -1200,7 +1200,7 @@ testParseAndStringify(
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
-        "selection": new SpreadsheetColumnOrRowSelectHistoryHashToken(
+        "viewport-selection": new SpreadsheetColumnOrRowSelectHistoryHashToken(
             new SpreadsheetViewportSelection(
                 SpreadsheetColumnReference.parse("B")
             )
@@ -1213,7 +1213,7 @@ testParseAndStringify(
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
-        "selection": new SpreadsheetColumnOrRowSelectHistoryHashToken(
+        "viewport-selection": new SpreadsheetColumnOrRowSelectHistoryHashToken(
             new SpreadsheetViewportSelection(
                 COLUMN_RANGE
             )
@@ -1226,7 +1226,7 @@ testParseAndStringify(
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
-        "selection": new SpreadsheetColumnOrRowSelectHistoryHashToken(
+        "viewport-selection": new SpreadsheetColumnOrRowSelectHistoryHashToken(
             new SpreadsheetViewportSelection(
                 COLUMN_RANGE,
                 SpreadsheetViewportSelectionAnchor.LEFT
@@ -1240,7 +1240,7 @@ testParseAndStringify(
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
-        "selection": new SpreadsheetColumnOrRowSelectHistoryHashToken(
+        "viewport-selection": new SpreadsheetColumnOrRowSelectHistoryHashToken(
             new SpreadsheetViewportSelection(
                 COLUMN_RANGE,
                 SpreadsheetViewportSelectionAnchor.RIGHT
@@ -1254,7 +1254,7 @@ testParseAndStringify(
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
-        "selection": new SpreadsheetColumnOrRowClearHistoryHashToken(
+        "viewport-selection": new SpreadsheetColumnOrRowClearHistoryHashToken(
             new SpreadsheetViewportSelection(
                 COLUMN_RANGE
             )
@@ -1267,7 +1267,7 @@ testParseAndStringify(
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
-        "selection": new SpreadsheetColumnOrRowDeleteHistoryHashToken(
+        "viewport-selection": new SpreadsheetColumnOrRowDeleteHistoryHashToken(
             new SpreadsheetViewportSelection(
                 COLUMN_RANGE
             )
@@ -1280,7 +1280,7 @@ testParseAndStringify(
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
-        "selection": new SpreadsheetColumnOrRowInsertAfterHistoryHashToken(
+        "viewport-selection": new SpreadsheetColumnOrRowInsertAfterHistoryHashToken(
             new SpreadsheetViewportSelection(
                 COLUMN_RANGE
             ),
@@ -1294,7 +1294,7 @@ testParseAndStringify(
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
-        "selection": new SpreadsheetColumnOrRowInsertBeforeHistoryHashToken(
+        "viewport-selection": new SpreadsheetColumnOrRowInsertBeforeHistoryHashToken(
             new SpreadsheetViewportSelection(
                 COLUMN_RANGE
             ),
@@ -1308,7 +1308,7 @@ testParseAndStringify(
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
-        "selection": new SpreadsheetColumnOrRowMenuHistoryHashToken(
+        "viewport-selection": new SpreadsheetColumnOrRowMenuHistoryHashToken(
             new SpreadsheetViewportSelection(
                 COLUMN_RANGE
             ),
@@ -1322,7 +1322,7 @@ testParseAndStringify(
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
-        "selection": COLUMN_SELECT,
+        "viewport-selection": COLUMN_SELECT,
         "select": true,
     }
 );
@@ -1332,7 +1332,7 @@ testParseAndStringify(
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
-        "selection": ROW_SELECT,
+        "viewport-selection": ROW_SELECT,
     }
 );
 
@@ -1341,7 +1341,7 @@ testParseAndStringify(
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
-        "selection": ROW_CLEAR,
+        "viewport-selection": ROW_CLEAR,
     }
 );
 
@@ -1350,7 +1350,7 @@ testParseAndStringify(
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
-        "selection": ROW_DELETE
+        "viewport-selection": ROW_DELETE
     }
 );
 
@@ -1359,7 +1359,7 @@ testParseAndStringify(
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
-        "selection": ROW_FREEZE,
+        "viewport-selection": ROW_FREEZE,
     }
 );
 
@@ -1377,7 +1377,7 @@ testParseAndStringify(
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
-        "selection": new SpreadsheetColumnOrRowFreezeHistoryHashToken(
+        "viewport-selection": new SpreadsheetColumnOrRowFreezeHistoryHashToken(
             new SpreadsheetViewportSelection(
                 SpreadsheetRowReferenceRange.parse("1:3")
             )
@@ -1399,7 +1399,7 @@ testParseAndStringify(
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
-        "selection": new SpreadsheetColumnOrRowClearHistoryHashToken(
+        "viewport-selection": new SpreadsheetColumnOrRowClearHistoryHashToken(
             new SpreadsheetViewportSelection(
                 ROW_RANGE
             )
@@ -1412,7 +1412,7 @@ testParseAndStringify(
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
-        "selection": new SpreadsheetColumnOrRowDeleteHistoryHashToken(
+        "viewport-selection": new SpreadsheetColumnOrRowDeleteHistoryHashToken(
             new SpreadsheetViewportSelection(
                 ROW_RANGE
             )
@@ -1443,7 +1443,7 @@ testParseAndStringify(
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
-        "selection": ROW_HIDDEN_FALSE,
+        "viewport-selection": ROW_HIDDEN_FALSE,
     }
 );
 
@@ -1452,7 +1452,7 @@ testParseAndStringify(
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
-        "selection": ROW_HIDDEN_TRUE,
+        "viewport-selection": ROW_HIDDEN_TRUE,
     }
 );
 
@@ -1487,7 +1487,7 @@ testParseAndStringify(
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
-        "selection": new SpreadsheetColumnOrRowInsertAfterHistoryHashToken(
+        "viewport-selection": new SpreadsheetColumnOrRowInsertAfterHistoryHashToken(
             new SpreadsheetViewportSelection(ROW),
             123
         ),
@@ -1560,7 +1560,7 @@ testParseAndStringify(
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
-        "selection": new SpreadsheetColumnOrRowInsertBeforeHistoryHashToken(
+        "viewport-selection": new SpreadsheetColumnOrRowInsertBeforeHistoryHashToken(
             new SpreadsheetViewportSelection(ROW),
             123
         ),
@@ -1608,7 +1608,7 @@ testParseAndStringify(
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
-        "selection": ROW_MENU,
+        "viewport-selection": ROW_MENU,
     }
 );
 
@@ -1617,7 +1617,7 @@ testParseAndStringify(
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
-        "selection": ROW_UNFREEZE,
+        "viewport-selection": ROW_UNFREEZE,
     }
 );
 
@@ -1635,7 +1635,7 @@ testParseAndStringify(
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
-        "selection": new SpreadsheetColumnOrRowUnFreezeHistoryHashToken(
+        "viewport-selection": new SpreadsheetColumnOrRowUnFreezeHistoryHashToken(
             new SpreadsheetViewportSelection(
                 ROW_RANGE_1_3
             )
@@ -1657,7 +1657,7 @@ testParseAndStringify(
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
-        "selection": new SpreadsheetColumnOrRowSelectHistoryHashToken(
+        "viewport-selection": new SpreadsheetColumnOrRowSelectHistoryHashToken(
             new SpreadsheetViewportSelection(
                 ROW_RANGE
             )
@@ -1670,7 +1670,7 @@ testParseAndStringify(
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
-        "selection": ROW_SELECT,
+        "viewport-selection": ROW_SELECT,
     }
 );
 
@@ -1679,7 +1679,7 @@ testParseAndStringify(
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
-        "selection": new SpreadsheetColumnOrRowSelectHistoryHashToken(
+        "viewport-selection": new SpreadsheetColumnOrRowSelectHistoryHashToken(
             new SpreadsheetViewportSelection(
                 ROW_RANGE,
                 SpreadsheetViewportSelectionAnchor.TOP
@@ -1693,7 +1693,7 @@ testParseAndStringify(
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
-        "selection": new SpreadsheetColumnOrRowSelectHistoryHashToken(
+        "viewport-selection": new SpreadsheetColumnOrRowSelectHistoryHashToken(
             new SpreadsheetViewportSelection(
                 ROW_RANGE,
                 SpreadsheetViewportSelectionAnchor.BOTTOM
@@ -1707,7 +1707,7 @@ testParseAndStringify(
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
-        "selection": new SpreadsheetColumnOrRowDeleteHistoryHashToken(
+        "viewport-selection": new SpreadsheetColumnOrRowDeleteHistoryHashToken(
             new SpreadsheetViewportSelection(
                 ROW_RANGE
             )
@@ -1720,7 +1720,7 @@ testParseAndStringify(
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
-        "selection": new SpreadsheetColumnOrRowInsertAfterHistoryHashToken(
+        "viewport-selection": new SpreadsheetColumnOrRowInsertAfterHistoryHashToken(
             new SpreadsheetViewportSelection(ROW_RANGE),
             1
         ),
@@ -1732,7 +1732,7 @@ testParseAndStringify(
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
-        "selection": new SpreadsheetColumnOrRowInsertBeforeHistoryHashToken(
+        "viewport-selection": new SpreadsheetColumnOrRowInsertBeforeHistoryHashToken(
             new SpreadsheetViewportSelection(ROW_RANGE),
             2
         ),
@@ -1744,7 +1744,7 @@ testParseAndStringify(
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
-        "selection": new SpreadsheetColumnOrRowMenuHistoryHashToken(
+        "viewport-selection": new SpreadsheetColumnOrRowMenuHistoryHashToken(
             new SpreadsheetViewportSelection(
                 ROW_RANGE
             ),
@@ -1767,7 +1767,7 @@ testParseAndStringify(
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
-        "selection": ROW_SELECT,
+        "viewport-selection": ROW_SELECT,
         "select": true,
     }
 );
@@ -2069,7 +2069,7 @@ testParseAndStringify(
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
-        "selection": CELL_FREEZE,
+        "viewport-selection": CELL_FREEZE,
     }
 );
 
@@ -2087,7 +2087,7 @@ testParseAndStringify(
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
-        "selection": new SpreadsheetCellFreezeHistoryHashToken(
+        "viewport-selection": new SpreadsheetCellFreezeHistoryHashToken(
             new SpreadsheetViewportSelection(CELL_RANGE_A1C3)
         )
     }
@@ -2107,7 +2107,7 @@ testParseAndStringify(
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
-        "selection": CELL_UNFREEZE,
+        "viewport-selection": CELL_UNFREEZE,
     }
 );
 
@@ -2125,7 +2125,7 @@ testParseAndStringify(
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
-        "selection": new SpreadsheetCellUnFreezeHistoryHashToken(
+        "viewport-selection": new SpreadsheetCellUnFreezeHistoryHashToken(
             new SpreadsheetViewportSelection(
                 CELL_RANGE_A1C3
             )
@@ -2147,7 +2147,7 @@ testParseAndStringify(
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
-        "selection": new SpreadsheetCellStyleEditHistoryHashToken(
+        "viewport-selection": new SpreadsheetCellStyleEditHistoryHashToken(
             new SpreadsheetViewportSelection(
                 CELL
             ),
@@ -2161,7 +2161,7 @@ testParseAndStringify(
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
-        "selection": new SpreadsheetCellStyleSaveHistoryHashToken(
+        "viewport-selection": new SpreadsheetCellStyleSaveHistoryHashToken(
             new SpreadsheetViewportSelection(
                 CELL
             ),
@@ -2356,7 +2356,7 @@ testMerge(
 testMerge(
     "/123abc/Untitled456/name",
     {
-        "selection": CELL_SELECT
+        "viewport-selection": CELL_SELECT
     },
     "/123abc/Untitled456/cell/A1"
 );
@@ -2364,7 +2364,7 @@ testMerge(
 testMerge(
     "/123abc/Untitled456/name",
     {
-        "selection": null,
+        "viewport-selection": null,
     },
     "/123abc/Untitled456/name"
 );
@@ -2372,7 +2372,7 @@ testMerge(
 testMerge(
     "/123abc/Untitled456/name",
     {
-        "selection": CELL_FORMULA_LOAD_EDIT,
+        "viewport-selection": CELL_FORMULA_LOAD_EDIT,
     },
     "/123abc/Untitled456/cell/A1/formula"
 );
@@ -2404,7 +2404,7 @@ testMerge(
 testMerge(
     "/123abc/Untitled456/cell/A1",
     {
-        "selection": new SpreadsheetCellSelectHistoryHashToken(
+        "viewport-selection": new SpreadsheetCellSelectHistoryHashToken(
             new SpreadsheetViewportSelection(
                 SpreadsheetCellReference.parse("B2")
             )
@@ -2416,7 +2416,7 @@ testMerge(
 testMerge(
     "/123abc/Untitled456/cell/B2",
     {
-        "selection": new SpreadsheetCellFormulaEditHistoryHashToken(
+        "viewport-selection": new SpreadsheetCellFormulaEditHistoryHashToken(
             new SpreadsheetViewportSelection(
                 SpreadsheetCellReference.parse("C3")
             )
@@ -2434,7 +2434,7 @@ testMerge(
 testMerge(
     "/123abc/Untitled456/cell/A1/formula",
     {
-        "selection": new SpreadsheetCellFormulaEditHistoryHashToken(
+        "viewport-selection": new SpreadsheetCellFormulaEditHistoryHashToken(
             new SpreadsheetViewportSelection(
                 SpreadsheetCellReference.parse("B2")
             )
@@ -2446,7 +2446,7 @@ testMerge(
 testMerge(
     "/123abc/Untitled456/cell/A1",
     {
-        "selection": null,
+        "viewport-selection": null,
     },
     "/123abc/Untitled456"
 );
@@ -2478,7 +2478,7 @@ testMerge(
 testMerge(
     "/123abc/Untitled456/cell/A1",
     {
-        "selection": new SpreadsheetCellSelectHistoryHashToken(
+        "viewport-selection": new SpreadsheetCellSelectHistoryHashToken(
             new SpreadsheetViewportSelection(
                 CELL_RANGE
             )
@@ -2490,7 +2490,7 @@ testMerge(
 testMerge(
     "/123abc/Untitled456/cell/A1/formula",
     {
-        "selection": new SpreadsheetCellSelectHistoryHashToken(
+        "viewport-selection": new SpreadsheetCellSelectHistoryHashToken(
             new SpreadsheetViewportSelection(
                 CELL_RANGE
             )
@@ -2540,7 +2540,7 @@ testMerge(
 testMerge(
     "/123abc/Untitled456",
     {
-        selection: COLUMN_SELECT,
+        "viewport-selection": COLUMN_SELECT,
     },
     "/123abc/Untitled456/column/B"
 );
@@ -2548,7 +2548,7 @@ testMerge(
 testMerge(
     "/123abc/Untitled456/column/B",
     {
-        selection: new SpreadsheetColumnOrRowSelectHistoryHashToken(
+        "viewport-selection": new SpreadsheetColumnOrRowSelectHistoryHashToken(
             new SpreadsheetViewportSelection(
                 COLUMN_RANGE
             )
@@ -2560,7 +2560,7 @@ testMerge(
 testMerge(
     "/123abc/Untitled456/column/B",
     {
-        "selection": new SpreadsheetColumnOrRowSelectHistoryHashToken(
+        "viewport-selection": new SpreadsheetColumnOrRowSelectHistoryHashToken(
             new SpreadsheetViewportSelection(
                 COLUMN_RANGE,
                 SpreadsheetViewportSelectionAnchor.LEFT
@@ -2573,7 +2573,7 @@ testMerge(
 testMerge(
     "/123abc/Untitled456/column/B:D",
     {
-        selection: COLUMN_SELECT,
+        "viewport-selection": COLUMN_SELECT,
     },
     "/123abc/Untitled456/column/B"
 );
@@ -2581,7 +2581,7 @@ testMerge(
 testMerge(
     "/123abc/Untitled456/column/B",
     {
-        "selection": COLUMN_DELETE,
+        "viewport-selection": COLUMN_DELETE,
     },
     "/123abc/Untitled456/column/B/delete"
 );
@@ -2589,7 +2589,7 @@ testMerge(
 testMerge(
     "/123abc/Untitled456/column/A",
     {
-        "selection": COLUMN_FREEZE,
+        "viewport-selection": COLUMN_FREEZE,
     },
     "/123abc/Untitled456/column/A/freeze"
 );
@@ -2597,7 +2597,7 @@ testMerge(
 testMerge(
     "/123abc/Untitled456/column/A:B",
     {
-        "selection": new SpreadsheetColumnOrRowFreezeHistoryHashToken(
+        "viewport-selection": new SpreadsheetColumnOrRowFreezeHistoryHashToken(
             new SpreadsheetViewportSelection(
                 SpreadsheetColumnReferenceRange.parse("A:B")
             )
@@ -2609,7 +2609,7 @@ testMerge(
 testMerge(
     "/123abc/Untitled456/column/B",
     {
-        "selection": COLUMN_HIDDEN_TRUE,
+        "viewport-selection": COLUMN_HIDDEN_TRUE,
     },
     "/123abc/Untitled456/column/B/hidden/true"
 );
@@ -2617,7 +2617,7 @@ testMerge(
 testMerge(
     "/123abc/Untitled456/column/B",
     {
-        "selection": COLUMN_MENU,
+        "viewport-selection": COLUMN_MENU,
     },
     "/123abc/Untitled456/column/B/menu"
 );
@@ -2625,7 +2625,7 @@ testMerge(
 testMerge(
     "/123abc/Untitled456/column/B:C",
     {
-        "selection": new SpreadsheetColumnOrRowDeleteHistoryHashToken(
+        "viewport-selection": new SpreadsheetColumnOrRowDeleteHistoryHashToken(
             new SpreadsheetViewportSelection(
                 COLUMN_RANGE
             )
@@ -2637,7 +2637,7 @@ testMerge(
 testMerge(
     "/123abc/Untitled456/column/B:C",
     {
-        "selection": new SpreadsheetColumnOrRowSaveHistoryHashToken(
+        "viewport-selection": new SpreadsheetColumnOrRowSaveHistoryHashToken(
             new SpreadsheetViewportSelection(
                 COLUMN_RANGE
             ),
@@ -2651,7 +2651,7 @@ testMerge(
 testMerge(
     "/123abc/Untitled456/column/B:C",
     {
-        "selection": new SpreadsheetColumnOrRowMenuHistoryHashToken(
+        "viewport-selection": new SpreadsheetColumnOrRowMenuHistoryHashToken(
             new SpreadsheetViewportSelection(
                 COLUMN_RANGE
             ),
@@ -2666,7 +2666,7 @@ testMerge(
 testMerge(
     "/123abc/Untitled456",
     {
-        selection: ROW_SELECT,
+        "viewport-selection": ROW_SELECT,
     },
     "/123abc/Untitled456/row/2"
 );
@@ -2674,7 +2674,7 @@ testMerge(
 testMerge(
     "/123abc/Untitled456/row/2",
     {
-        selection: new SpreadsheetColumnOrRowSelectHistoryHashToken(
+        "viewport-selection": new SpreadsheetColumnOrRowSelectHistoryHashToken(
             new SpreadsheetViewportSelection(
                 ROW_RANGE
             )
@@ -2686,7 +2686,7 @@ testMerge(
 testMerge(
     "/123abc/Untitled456/row/2",
     {
-        "selection": new SpreadsheetColumnOrRowSelectHistoryHashToken(
+        "viewport-selection": new SpreadsheetColumnOrRowSelectHistoryHashToken(
             new SpreadsheetViewportSelection(
                 ROW_RANGE,
                 SpreadsheetViewportSelectionAnchor.TOP
@@ -2699,7 +2699,7 @@ testMerge(
 testMerge(
     "/123abc/Untitled456/row/2:3",
     {
-        selection: ROW_SELECT,
+        "viewport-selection": ROW_SELECT,
     },
     "/123abc/Untitled456/row/2"
 );
@@ -2707,7 +2707,7 @@ testMerge(
 testMerge(
     "/123abc/Untitled456/row/45",
     {
-        "selection": ROW_DELETE,
+        "viewport-selection": ROW_DELETE,
     },
     "/123abc/Untitled456/row/2/delete"
 );
@@ -2715,7 +2715,7 @@ testMerge(
 testMerge(
     "/123abc/Untitled456/row/45",
     {
-        "selection": ROW_FREEZE,
+        "viewport-selection": ROW_FREEZE,
     },
     "/123abc/Untitled456/row/1/freeze"
 );
@@ -2723,7 +2723,7 @@ testMerge(
 testMerge(
     "/123abc/Untitled456/row/45:67",
     {
-        "selection": new SpreadsheetColumnOrRowFreezeHistoryHashToken(
+        "viewport-selection": new SpreadsheetColumnOrRowFreezeHistoryHashToken(
             new SpreadsheetViewportSelection(
                 SpreadsheetRowReferenceRange.parse("1:23")
             )
@@ -2735,7 +2735,7 @@ testMerge(
 testMerge(
     "/123abc/Untitled456/row/1",
     {
-        "selection": ROW_FREEZE,
+        "viewport-selection": ROW_FREEZE,
     },
     "/123abc/Untitled456/row/1/freeze"
 );
@@ -2743,7 +2743,7 @@ testMerge(
 testMerge(
     "/123abc/Untitled456/row/1:23",
     {
-        "selection": new SpreadsheetColumnOrRowFreezeHistoryHashToken(
+        "viewport-selection": new SpreadsheetColumnOrRowFreezeHistoryHashToken(
             new SpreadsheetViewportSelection(
                 SpreadsheetRowReferenceRange.parse("1:2")
             )
@@ -2755,7 +2755,7 @@ testMerge(
 testMerge(
     "/123abc/Untitled456/row/45",
     {
-        "selection": ROW_MENU,
+        "viewport-selection": ROW_MENU,
     },
     "/123abc/Untitled456/row/2/menu"
 );
@@ -2763,7 +2763,7 @@ testMerge(
 testMerge(
     "/123abc/Untitled456/row/45:67",
     {
-        "selection": ROW_DELETE,
+        "viewport-selection": ROW_DELETE,
     },
     "/123abc/Untitled456/row/2/delete"
 );
@@ -2771,7 +2771,7 @@ testMerge(
 testMerge(
     "/123abc/Untitled456/row/2",
     {
-        "selection": ROW_HIDDEN_TRUE,
+        "viewport-selection": ROW_HIDDEN_TRUE,
     },
     "/123abc/Untitled456/row/2/hidden/true"
 );
@@ -2779,7 +2779,7 @@ testMerge(
 testMerge(
     "/123abc/Untitled456/row/45:67",
     {
-        "selection": ROW_HIDDEN_TRUE,
+        "viewport-selection": ROW_HIDDEN_TRUE,
     },
     "/123abc/Untitled456/row/2/hidden/true"
 );
@@ -2787,7 +2787,7 @@ testMerge(
 testMerge(
     "/123abc/Untitled456/row/45:67",
     {
-        "selection": new SpreadsheetColumnOrRowMenuHistoryHashToken(
+        "viewport-selection": new SpreadsheetColumnOrRowMenuHistoryHashToken(
             new SpreadsheetViewportSelection(
                 SpreadsheetRowReferenceRange.parse("45:67"),
             ),
@@ -3016,7 +3016,7 @@ testMerge(
 testMerge(
     "/123abc/Untitled456/cell/A1",
     {
-        "selection": CELL_DELETE,
+        "viewport-selection": CELL_DELETE,
     },
     "/123abc/Untitled456/cell/A1/delete"
 );
@@ -3056,7 +3056,7 @@ testMerge(
 testMerge(
     "/123abc/Untitled456",
     {
-        "selection": CELL_FORMULA_LOAD_EDIT,
+        "viewport-selection": CELL_FORMULA_LOAD_EDIT,
     },
     "/123abc/Untitled456/cell/A1/formula"
 );
@@ -3100,7 +3100,7 @@ test("spreadsheetIdAndName", () => {
                 "spreadsheet-id": ID,
                 "spreadsheet-name": SPREADSHEET_NAME,
                 "select": CELL_SELECT,
-                "selection": CELL_FORMULA_LOAD_EDIT,
+                "viewport-selection": CELL_FORMULA_LOAD_EDIT,
             }
         )
     ).toStrictEqual({
