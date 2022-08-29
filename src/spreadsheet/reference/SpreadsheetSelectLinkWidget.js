@@ -33,7 +33,7 @@ export default class SpreadsheetSelectLinkWidget extends SpreadsheetHistoryAware
         return {
             spreadsheetId: tokens[SpreadsheetHistoryHashTokens.SPREADSHEET_ID],
             spreadsheetName: tokens[SpreadsheetHistoryHashTokens.SPREADSHEET_NAME],
-            selection: tokens[SpreadsheetHistoryHashTokens.SELECTION],
+            selection: tokens[SpreadsheetHistoryHashTokens.VIEWPORT_SELECTION],
         };
     }
 

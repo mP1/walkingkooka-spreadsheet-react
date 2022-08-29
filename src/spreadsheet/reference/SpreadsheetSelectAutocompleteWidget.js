@@ -88,7 +88,7 @@ export default class SpreadsheetSelectAutocompleteWidget extends SpreadsheetHist
 
         const state = {
             select: select,
-            selection: tokens[SpreadsheetHistoryHashTokens.SELECTION],
+            selection: tokens[SpreadsheetHistoryHashTokens.VIEWPORT_SELECTION],
             label: tokens[SpreadsheetHistoryHashTokens.LABEL],
         };
 
@@ -310,7 +310,7 @@ export default class SpreadsheetSelectAutocompleteWidget extends SpreadsheetHist
             tokens[SpreadsheetHistoryHashTokens.SELECT] = null; // close the navigate modal
 
             if(goto){
-                tokens[SpreadsheetHistoryHashTokens.SELECTION] = goto;
+                tokens[SpreadsheetHistoryHashTokens.VIEWPORT_SELECTION] = goto;
             }
 
             if(label){

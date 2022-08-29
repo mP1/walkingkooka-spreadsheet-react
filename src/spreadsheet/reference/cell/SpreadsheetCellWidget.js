@@ -33,10 +33,10 @@ export default class SpreadsheetCellWidget extends SpreadsheetHistoryAwareStateW
      */
     historyPushSelectionOnly() {
         const tokens = this.props.history.tokens();
-        const selection = tokens[SpreadsheetHistoryHashTokens.SELECTION];
+        const selection = tokens[SpreadsheetHistoryHashTokens.VIEWPORT_SELECTION];
         if(selection){
             const viewportSelection = selection.viewportSelection();
-            tokens[SpreadsheetHistoryHashTokens.SELECTION] = selectHistoryHashToken(
+            tokens[SpreadsheetHistoryHashTokens.VIEWPORT_SELECTION] = selectHistoryHashToken(
                 viewportSelection
             );
             this.historyParseMergeAndPush(tokens);
