@@ -1,4 +1,4 @@
-import Autocomplete from '@mui/lab/Autocomplete';
+import Autocomplete from '@mui/material/Autocomplete';
 import Button from "@mui/material/Button";
 import Preconditions from "../../Preconditions.js";
 import PropTypes from 'prop-types';
