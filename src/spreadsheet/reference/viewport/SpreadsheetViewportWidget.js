@@ -138,6 +138,14 @@ export default class SpreadsheetViewportWidget extends SpreadsheetCellWidget {
 
     static VIEWPORT_ID = "viewport";
 
+    /**
+     * Returns true if the given element is a child of the root of this widget.
+     */
+    static contains(element) {
+        const viewport = document.getElementById(SpreadsheetViewportWidget.VIEWPORT_ID);
+        return viewport.contains(element);
+    }
+
     static VIEWPORT_HORIZONTAL_SLIDER_ID = SpreadsheetViewportWidget.VIEWPORT_ID + "-horizontal-Slider";
 
     static VIEWPORT_VERTICAL_SLIDER_ID = SpreadsheetViewportWidget.VIEWPORT_ID + "-vertical-Slider";

@@ -173,9 +173,7 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetCellWidget {
 
             const newTarget = e.relatedTarget;
             if(newTarget){
-                const viewport = document.getElementById(SpreadsheetViewportWidget.VIEWPORT_ID);
-                const insideViewport = viewport.contains(newTarget);
-                if(insideViewport){
+                if(SpreadsheetViewportWidget.contains(newTarget)){
                     this.log(" onBlur new target is inside viewport will not change selection");
 
                 }else {
