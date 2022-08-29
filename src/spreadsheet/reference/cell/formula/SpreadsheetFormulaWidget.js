@@ -28,6 +28,14 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetCellWidget {
 
     static TEXT_FIELD_ID = "formula-TextField";
 
+    /**
+     * Returns true if the given element is a child of the root of this widget.
+     */
+    static contains(element) {
+        const viewport = document.getElementById(SpreadsheetFormulaWidget.TEXT_FIELD_ID);
+        return viewport.contains(element);
+    }
+
     init() {
         this.textField = React.createRef();
         this.input = React.createRef();
