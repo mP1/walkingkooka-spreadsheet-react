@@ -174,7 +174,7 @@ export default class SpreadsheetSelection extends SystemObject {
     }
 
     viewportContextMenuCellDelete(historyTokens, menuItems, history) {
-        historyTokens[SpreadsheetHistoryHashTokens.SELECTION] = new SpreadsheetColumnOrRowDeleteHistoryHashToken(
+        historyTokens[SpreadsheetHistoryHashTokens.VIEWPORT_SELECTION] = new SpreadsheetColumnOrRowDeleteHistoryHashToken(
             new SpreadsheetViewportSelection(this)
         );
 
@@ -191,7 +191,7 @@ export default class SpreadsheetSelection extends SystemObject {
     viewportContextMenuCellFreeze(range, historyTokens, menuItems, history) {
         const canFreeze = range.canFreeze();
 
-        historyTokens[SpreadsheetHistoryHashTokens.SELECTION] = new SpreadsheetCellFreezeHistoryHashToken(
+        historyTokens[SpreadsheetHistoryHashTokens.VIEWPORT_SELECTION] = new SpreadsheetCellFreezeHistoryHashToken(
             new SpreadsheetViewportSelection(range)
         );
 
@@ -208,7 +208,7 @@ export default class SpreadsheetSelection extends SystemObject {
     viewportContextMenuCellUnFreeze(range, frozenRange, historyTokens, menuItems, history) {
         const unfreeze = range.equalsIgnoringKind(frozenRange);
 
-        historyTokens[SpreadsheetHistoryHashTokens.SELECTION] = new SpreadsheetCellUnFreezeHistoryHashToken(
+        historyTokens[SpreadsheetHistoryHashTokens.VIEWPORT_SELECTION] = new SpreadsheetCellUnFreezeHistoryHashToken(
             new SpreadsheetViewportSelection(this)
         );
 
@@ -225,7 +225,7 @@ export default class SpreadsheetSelection extends SystemObject {
     viewportContextMenuColumnDelete(historyTokens, menuItems, history) {
         const columnOrRange = this.columnOrRange();
 
-        historyTokens[SpreadsheetHistoryHashTokens.SELECTION] = new SpreadsheetColumnOrRowDeleteHistoryHashToken(
+        historyTokens[SpreadsheetHistoryHashTokens.VIEWPORT_SELECTION] = new SpreadsheetColumnOrRowDeleteHistoryHashToken(
             new SpreadsheetViewportSelection(columnOrRange),
         );
 
@@ -268,7 +268,7 @@ export default class SpreadsheetSelection extends SystemObject {
     }
 
     viewportContextMenuColumnOrRowClear(historyTokens, menuItems, history) {
-        historyTokens[SpreadsheetHistoryHashTokens.SELECTION] = new SpreadsheetColumnOrRowClearHistoryHashToken(
+        historyTokens[SpreadsheetHistoryHashTokens.VIEWPORT_SELECTION] = new SpreadsheetColumnOrRowClearHistoryHashToken(
             new SpreadsheetViewportSelection(this),
         );
 
@@ -312,7 +312,7 @@ export default class SpreadsheetSelection extends SystemObject {
     }
 
     viewportContextMenuColumnOrRowFreeze0(columnOrRowRange, historyTokens, frozenColumnOrRows, menuItems, menuItemId, history) {
-        historyTokens[SpreadsheetHistoryHashTokens.SELECTION] = columnOrRowRange &&
+        historyTokens[SpreadsheetHistoryHashTokens.VIEWPORT_SELECTION] = columnOrRowRange &&
             new SpreadsheetColumnOrRowFreezeHistoryHashToken(
                 new SpreadsheetViewportSelection(columnOrRowRange),
             );
@@ -328,7 +328,7 @@ export default class SpreadsheetSelection extends SystemObject {
     }
 
     viewportContextMenuColumnOrRowHide(historyTokens, menuItems, history) {
-        historyTokens[SpreadsheetHistoryHashTokens.SELECTION] = new SpreadsheetColumnOrRowSaveHistoryHashToken(
+        historyTokens[SpreadsheetHistoryHashTokens.VIEWPORT_SELECTION] = new SpreadsheetColumnOrRowSaveHistoryHashToken(
             new SpreadsheetViewportSelection(this),
             "hidden",
             true
@@ -345,7 +345,7 @@ export default class SpreadsheetSelection extends SystemObject {
     }
 
     viewportContextMenuColumnOrRowInsertAfter(historyTokens, menuItems, history) {
-        historyTokens[SpreadsheetHistoryHashTokens.SELECTION] = new SpreadsheetColumnOrRowInsertAfterHistoryHashToken(
+        historyTokens[SpreadsheetHistoryHashTokens.VIEWPORT_SELECTION] = new SpreadsheetColumnOrRowInsertAfterHistoryHashToken(
             new SpreadsheetViewportSelection(this),
             1
         );
@@ -361,7 +361,7 @@ export default class SpreadsheetSelection extends SystemObject {
 
         //historyTokens[SpreadsheetHistoryHashTokens.SELECTION_ACTION] = new SpreadsheetColumnOrRowInsertAfterHistoryHashToken(2);
 
-        historyTokens[SpreadsheetHistoryHashTokens.SELECTION] = new SpreadsheetColumnOrRowInsertAfterHistoryHashToken(
+        historyTokens[SpreadsheetHistoryHashTokens.VIEWPORT_SELECTION] = new SpreadsheetColumnOrRowInsertAfterHistoryHashToken(
             new SpreadsheetViewportSelection(this),
             2
         );
@@ -377,7 +377,7 @@ export default class SpreadsheetSelection extends SystemObject {
     }
 
     viewportContextMenuColumnOrRowInsertBefore(historyTokens, menuItems, history) {
-        historyTokens[SpreadsheetHistoryHashTokens.SELECTION] = new SpreadsheetColumnOrRowInsertBeforeHistoryHashToken(
+        historyTokens[SpreadsheetHistoryHashTokens.VIEWPORT_SELECTION] = new SpreadsheetColumnOrRowInsertBeforeHistoryHashToken(
             new SpreadsheetViewportSelection(this),
             2
         );
@@ -391,7 +391,7 @@ export default class SpreadsheetSelection extends SystemObject {
             )
         );
 
-        historyTokens[SpreadsheetHistoryHashTokens.SELECTION] = new SpreadsheetColumnOrRowInsertBeforeHistoryHashToken(
+        historyTokens[SpreadsheetHistoryHashTokens.VIEWPORT_SELECTION] = new SpreadsheetColumnOrRowInsertBeforeHistoryHashToken(
             new SpreadsheetViewportSelection(this),
             1
         );
@@ -409,7 +409,7 @@ export default class SpreadsheetSelection extends SystemObject {
     viewportContextMenuColumnOrRowUnFreeze(historyTokens, frozenColumnOrRows, menuItems, menuItemId, history) {
         const frozen = frozenColumnOrRows();
 
-        historyTokens[SpreadsheetHistoryHashTokens.SELECTION] = frozen && new SpreadsheetColumnOrRowSaveHistoryHashToken(
+        historyTokens[SpreadsheetHistoryHashTokens.VIEWPORT_SELECTION] = frozen && new SpreadsheetColumnOrRowSaveHistoryHashToken(
             new SpreadsheetViewportSelection(frozen),
         );
 
@@ -446,7 +446,7 @@ export default class SpreadsheetSelection extends SystemObject {
 
     viewportContextMenuColumnOrRowUnHide0(columnOrRowRange, isHidden, historyTokens, menuItems, menuItemId, history) {
         if(!columnOrRowRange.equals(this) && isHidden(columnOrRowRange)){
-            historyTokens[SpreadsheetHistoryHashTokens.SELECTION] = new SpreadsheetColumnOrRowSaveHistoryHashToken(
+            historyTokens[SpreadsheetHistoryHashTokens.VIEWPORT_SELECTION] = new SpreadsheetColumnOrRowSaveHistoryHashToken(
                 new SpreadsheetViewportSelection(columnOrRowRange),
                 "hidden",
                 false
@@ -466,7 +466,7 @@ export default class SpreadsheetSelection extends SystemObject {
     viewportContextMenuRowDelete(historyTokens, menuItems, history) {
         const rowOrRange = this.rowOrRange();
 
-        historyTokens[SpreadsheetHistoryHashTokens.SELECTION] = new SpreadsheetColumnOrRowDeleteHistoryHashToken(
+        historyTokens[SpreadsheetHistoryHashTokens.VIEWPORT_SELECTION] = new SpreadsheetColumnOrRowDeleteHistoryHashToken(
             new SpreadsheetViewportSelection(rowOrRange)
         );
 

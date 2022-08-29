@@ -468,7 +468,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetCellWidget {
         return {
             spreadsheetId: tokens[SpreadsheetHistoryHashTokens.SPREADSHEET_ID],
             spreadsheetName: tokens[SpreadsheetHistoryHashTokens.SPREADSHEET_NAME],
-            selection: tokens[SpreadsheetHistoryHashTokens.SELECTION],
+            selection: tokens[SpreadsheetHistoryHashTokens.VIEWPORT_SELECTION],
             contextMenu: null, // close context menu
         };
     }
@@ -526,7 +526,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetCellWidget {
 
                         // still have focus better update history
                         if(state.focused){
-                            historyTokens[SpreadsheetHistoryHashTokens.SELECTION] = selectionNew;
+                            historyTokens[SpreadsheetHistoryHashTokens.VIEWPORT_SELECTION] = selectionNew;
                         }
                     }
 
@@ -1199,7 +1199,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetCellWidget {
         ];
 
         columns.forEach(c => {
-            tokens[SpreadsheetHistoryHashTokens.SELECTION] = selectHistoryHashToken(
+            tokens[SpreadsheetHistoryHashTokens.VIEWPORT_SELECTION] = selectHistoryHashToken(
                 new SpreadsheetViewportSelection(c)
             );
 
@@ -1231,7 +1231,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetCellWidget {
                 const tableRowCells = [];
                 const height = rowHeightFn(r);
 
-                tokens[SpreadsheetHistoryHashTokens.SELECTION] = selectHistoryHashToken(
+                tokens[SpreadsheetHistoryHashTokens.VIEWPORT_SELECTION] = selectHistoryHashToken(
                     new SpreadsheetViewportSelection(r)
                 );
 

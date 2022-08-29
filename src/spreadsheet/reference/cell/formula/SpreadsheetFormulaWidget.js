@@ -45,7 +45,7 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetCellWidget {
         const historyHashTokens = props.history.tokens();
 
         return {
-            selection: historyHashTokens[SpreadsheetHistoryHash.SELECTION],
+            selection: historyHashTokens[SpreadsheetHistoryHash.VIEWPORT_SELECTION],
             window: [],
         }
     }
@@ -54,7 +54,7 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetCellWidget {
      * Filter only interested in cell or labels and load/edit or save formula actions.
      */
     stateFromHistoryTokens(historyTokens) {
-        const selection = historyTokens[SpreadsheetHistoryHashTokens.SELECTION];
+        const selection = historyTokens[SpreadsheetHistoryHashTokens.VIEWPORT_SELECTION];
         const state = {
             selection: selection,
             cellReference: null,
@@ -98,7 +98,7 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetCellWidget {
             // user must have just clicked/tab formula textbox update history to formula edit
             if(focused){
                 if(!prevState.focused) {
-                    historyTokens[SpreadsheetHistoryHashTokens.SELECTION] = new SpreadsheetCellFormulaEditHistoryHashToken(viewportSelection);
+                    historyTokens[SpreadsheetHistoryHashTokens.VIEWPORT_SELECTION] = new SpreadsheetCellFormulaEditHistoryHashToken(viewportSelection);
                 }
             }
 
@@ -109,7 +109,7 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetCellWidget {
                     selection.formulaText(),
                 );
 
-                historyTokens[SpreadsheetHistoryHashTokens.SELECTION] = focused ?
+                historyTokens[SpreadsheetHistoryHashTokens.VIEWPORT_SELECTION] = focused ?
                     new SpreadsheetCellFormulaEditHistoryHashToken(viewportSelection) :
                     null;
             }

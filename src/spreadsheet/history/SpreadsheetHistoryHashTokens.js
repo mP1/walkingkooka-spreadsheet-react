@@ -23,7 +23,7 @@ export default class SpreadsheetHistoryHashTokens {
 
     static SPREADSHEET_NAME_PATH = "name";
 
-    static SELECTION = "selection";
+    static VIEWPORT_SELECTION = "selection";
 
     static CELL = "cell";
     static CELL_FORMULA = "formula";

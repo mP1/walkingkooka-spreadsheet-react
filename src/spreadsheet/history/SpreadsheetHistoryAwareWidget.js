@@ -33,7 +33,7 @@ export default class SpreadsheetHistoryAwareWidget extends SpreadsheetWidget {
 
     historyParseMergeAndPushSelection(viewportSelection) {
         const tokens = SpreadsheetHistoryHashTokens.emptyTokens();
-        tokens[SpreadsheetHistoryHashTokens.SELECTION] = viewportSelection;
+        tokens[SpreadsheetHistoryHashTokens.VIEWPORT_SELECTION] = viewportSelection;
         this.historyParseMergeAndPush(tokens);
     }
 
