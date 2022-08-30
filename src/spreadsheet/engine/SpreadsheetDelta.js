@@ -64,7 +64,8 @@ export default class SpreadsheetDelta extends SystemObject {
     static fromJson(json) {
         Preconditions.requireObject(json, "json");
 
-        const selection = json.selection && SpreadsheetViewportSelection.fromJson(json.selection);
+        const viewportSelection = json.viewportSelection &&
+            SpreadsheetViewportSelection.fromJson(json.viewportSelection);
 
         const cells = unmarshallHash(
             json.cells || {},
@@ -96,7 +97,7 @@ export default class SpreadsheetDelta extends SystemObject {
         const window = unmarshallCsv(json.window, SpreadsheetCellRange.fromJson);
 
         return new SpreadsheetDelta(
-            selection,
+            viewportSelection,
             cells,
             columns,
             labels,
@@ -112,9 +113,9 @@ export default class SpreadsheetDelta extends SystemObject {
 
     static EMPTY = SpreadsheetDelta.fromJson({});
 
-    constructor(selection, cells, columns, labels, rows, deletedCells, deletedColumns, deletedRows, columnWidths, rowHeights, window) {
+    constructor(viewportSelection, cells, columns, labels, rows, deletedCells, deletedColumns, deletedRows, columnWidths, rowHeights, window) {
         super();
-        Preconditions.optionalInstance(selection, SpreadsheetViewportSelection, "selection");
+        Preconditions.optionalInstance(viewportSelection, SpreadsheetViewportSelection, "viewportSelection");
         Preconditions.requireArray(cells, "cells");
         Preconditions.requireArray(columns, "columns");
         Preconditions.requireArray(labels, "labels");
@@ -128,7 +129,7 @@ export default class SpreadsheetDelta extends SystemObject {
         Preconditions.requireInstance(rowHeights, ImmutableMap, "rowHeights");
         Preconditions.requireArray(window, "window");
 
-        this.selectionValue = selection;
+        this.viewportSelectionValue = viewportSelection;
 
         this.cellsValue = cells.slice();
         this.columnsValue = columns.slice();
@@ -144,8 +145,8 @@ export default class SpreadsheetDelta extends SystemObject {
         this.windowValue = window.slice();
     }
 
-    selection() {
-        return this.selectionValue;
+    viewportSelection() {
+        return this.viewportSelectionValue;
     }
 
     cells() {
@@ -327,9 +328,9 @@ export default class SpreadsheetDelta extends SystemObject {
     toJson() {
         let json = {};
 
-        const selection = this.selection();
-        if(selection) {
-            json.selection = selection.toJson();
+        const viewportSelection = this.viewportSelection();
+        if(viewportSelection) {
+            json.viewportSelection = viewportSelection.toJson();
         }
 
         const cells = this.cells();
@@ -390,7 +391,7 @@ export default class SpreadsheetDelta extends SystemObject {
 
     equals(other) {
         return other instanceof SpreadsheetDelta &&
-                Equality.safeEquals(this.selection(), other.selection()) &&
+                Equality.safeEquals(this.viewportSelection(), other.viewportSelection()) &&
                 Equality.safeEquals(this.cells(), other.cells()) &&
                 Equality.safeEquals(this.columns(), other.columns()) &&
                 Equality.safeEquals(this.labels(), other.labels()) &&

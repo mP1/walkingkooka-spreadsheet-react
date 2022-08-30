@@ -12,7 +12,7 @@ import SpreadsheetRow from "../reference/columnrow/SpreadsheetRow.js";
 import SpreadsheetRowReference from "../reference/columnrow/SpreadsheetRowReference.js";
 import systemObjectTesting from "../../SystemObjectTesting.js";
 
-function selection() {
+function viewportSelection() {
     return SpreadsheetCellReference.parse("Z9")
         .setAnchor()
 }
@@ -202,7 +202,7 @@ function windowJson() {
 
 function delta() {
     return new SpreadsheetDelta(
-        selection(),
+        viewportSelection(),
         cells(),
         columns(),
         labels(),
@@ -219,7 +219,7 @@ function delta() {
 systemObjectTesting(
     delta(),
     new SpreadsheetDelta(
-        selection(),
+        viewportSelection(),
         [
             SpreadsheetCell.fromJson({
                 "Z9": {
@@ -250,7 +250,7 @@ systemObjectTesting(
     "Missing json",
     "spreadsheet-delta",
     {
-        selection: selection().toJson(),
+        viewportSelection: viewportSelection().toJson(),
         cells: {
             "A1": {
                 formula: {
@@ -323,7 +323,7 @@ systemObjectTesting(
 // tests................................................................................................................
 
 test("create without cells fails", () => {
-    const s = selection();
+    const vs = viewportSelection();
     const c = undefined;
     const col = columns();
     const l = labels();
@@ -335,11 +335,11 @@ test("create without cells fails", () => {
     const mrh = rowHeights();
     const w = window();
 
-    expect(() => new SpreadsheetDelta(s, c, col, l, r, dcell, dcol, drow, mcw, mrh, w)).toThrow("Missing cells");
+    expect(() => new SpreadsheetDelta(vs, c, col, l, r, dcell, dcol, drow, mcw, mrh, w)).toThrow("Missing cells");
 });
 
 test("create with cell non array fails", () => {
-    const s = selection();
+    const vs = viewportSelection();
     const c = "!invalid";
     const col = columns();
     const l = labels();
@@ -351,11 +351,11 @@ test("create with cell non array fails", () => {
     const mrh = rowHeights();
     const w = window();
 
-    expect(() => new SpreadsheetDelta(s, c, col, l, r, dcell, dcol, drow, mcw, mrh, w)).toThrow("Expected array cells got !invalid");
+    expect(() => new SpreadsheetDelta(vs, c, col, l, r, dcell, dcol, drow, mcw, mrh, w)).toThrow("Expected array cells got !invalid");
 });
 
 test("create without columns fails", () => {
-    const s = selection();
+    const vs = viewportSelection();
     const c = cells();
     const col = undefined;
     const l = labels();
@@ -367,11 +367,11 @@ test("create without columns fails", () => {
     const mrh = rowHeights();
     const w = window();
 
-    expect(() => new SpreadsheetDelta(s, c, col, l, r, dcell, dcol, drow, mcw, mrh, w)).toThrow("Missing columns");
+    expect(() => new SpreadsheetDelta(vs, c, col, l, r, dcell, dcol, drow, mcw, mrh, w)).toThrow("Missing columns");
 });
 
 test("create with columns non array fails", () => {
-    const s = selection();
+    const vs = viewportSelection();
     const c = cells();
     const col = "!invalid";
     const l = labels();
@@ -383,11 +383,11 @@ test("create with columns non array fails", () => {
     const mrh = rowHeights();
     const w = window();
 
-    expect(() => new SpreadsheetDelta(s, c, col, l, r, dcell, dcol, drow, mcw, mrh, w)).toThrow("Expected array columns got !invalid");
+    expect(() => new SpreadsheetDelta(vs, c, col, l, r, dcell, dcol, drow, mcw, mrh, w)).toThrow("Expected array columns got !invalid");
 });
 
 test("create without labels fails", () => {
-    const s = selection();
+    const vs = viewportSelection();
     const c = cells();
     const col = columns();
     const l = undefined;
@@ -399,11 +399,11 @@ test("create without labels fails", () => {
     const mrh = rowHeights();
     const w = window();
 
-    expect(() => new SpreadsheetDelta(s, c, col, l, r, dcell, dcol, drow, mcw, mrh, w)).toThrow("Missing labels");
+    expect(() => new SpreadsheetDelta(vs, c, col, l, r, dcell, dcol, drow, mcw, mrh, w)).toThrow("Missing labels");
 });
 
 test("create with labels non array fails", () => {
-    const s = selection();
+    const vs = viewportSelection();
     const c = cells();
     const col = columns();
     const l = "!invalid";
@@ -415,11 +415,11 @@ test("create with labels non array fails", () => {
     const mrh = rowHeights();
     const w = window();
 
-    expect(() => new SpreadsheetDelta(s, c, col, l, r, dcell, dcol, drow, mcw, mrh, w)).toThrow("Expected array labels got !invalid");
+    expect(() => new SpreadsheetDelta(vs, c, col, l, r, dcell, dcol, drow, mcw, mrh, w)).toThrow("Expected array labels got !invalid");
 });
 
 test("create without rows fails", () => {
-    const s = selection();
+    const vs = viewportSelection();
     const c = cells();
     const col = columns();
     const l = labels();
@@ -431,11 +431,11 @@ test("create without rows fails", () => {
     const mrh = rowHeights();
     const w = window();
 
-    expect(() => new SpreadsheetDelta(s, c, col, l, r, dcell, dcol, drow, mcw, mrh, w)).toThrow("Missing rows");
+    expect(() => new SpreadsheetDelta(vs, c, col, l, r, dcell, dcol, drow, mcw, mrh, w)).toThrow("Missing rows");
 });
 
 test("create with rows non array fails", () => {
-    const s = selection();
+    const vs = viewportSelection();
     const c = cells();
     const col = columns();
     const l = labels();
@@ -447,11 +447,11 @@ test("create with rows non array fails", () => {
     const mrh = rowHeights();
     const w = window();
 
-    expect(() => new SpreadsheetDelta(s, c, col, l, r, dcell, dcol, drow, mcw, mrh, w)).toThrow("Expected array rows got !invalid");
+    expect(() => new SpreadsheetDelta(vs, c, col, l, r, dcell, dcol, drow, mcw, mrh, w)).toThrow("Expected array rows got !invalid");
 });
 
 test("create without columnWidths fails", () => {
-    const s = selection();
+    const vs = viewportSelection();
     const c = cells();
     const col = columns();
     const l = labels();
@@ -463,11 +463,11 @@ test("create without columnWidths fails", () => {
     const mrh = rowHeights();
     const w = window();
 
-    expect(() => new SpreadsheetDelta(s, c, col, l, r, dcell, dcol, drow, mcw, mrh, w)).toThrow("Missing columnWidths");
+    expect(() => new SpreadsheetDelta(vs, c, col, l, r, dcell, dcol, drow, mcw, mrh, w)).toThrow("Missing columnWidths");
 });
 
 test("create with columnWidths non object fails", () => {
-    const s = selection();
+    const vs = viewportSelection();
     const c = cells();
     const col = columns();
     const l = labels();
@@ -479,11 +479,11 @@ test("create with columnWidths non object fails", () => {
     const mrh = rowHeights();
     const w = window();
 
-    expect(() => new SpreadsheetDelta(s, c, col, l, r, dcell, dcol, drow, mcw, mrh, w)).toThrow("Expected ImmutableMap columnWidths got !invalid");
+    expect(() => new SpreadsheetDelta(vs, c, col, l, r, dcell, dcol, drow, mcw, mrh, w)).toThrow("Expected ImmutableMap columnWidths got !invalid");
 });
 
 test("create without rowHeights fails", () => {
-    const s = selection();
+    const vs = viewportSelection();
     const c = cells();
     const col = columns();
     const l = labels();
@@ -495,11 +495,11 @@ test("create without rowHeights fails", () => {
     const mrh = undefined;
     const w = window();
 
-    expect(() => new SpreadsheetDelta(s, c, col, l, r, dcell, dcol, drow, mcw, mrh, w)).toThrow("Missing rowHeights");
+    expect(() => new SpreadsheetDelta(vs, c, col, l, r, dcell, dcol, drow, mcw, mrh, w)).toThrow("Missing rowHeights");
 });
 
 test("create with rowHeights non object fails", () => {
-    const s = selection();
+    const vs = viewportSelection();
     const c = cells();
     const col = columns();
     const l = labels();
@@ -511,11 +511,11 @@ test("create with rowHeights non object fails", () => {
     const mrh = "!invalid";
     const w = window();
 
-    expect(() => new SpreadsheetDelta(s, c, col, l, r, dcell, dcol, drow, mcw, mrh, w)).toThrow("Expected ImmutableMap rowHeights got !invalid");
+    expect(() => new SpreadsheetDelta(vs, c, col, l, r, dcell, dcol, drow, mcw, mrh, w)).toThrow("Expected ImmutableMap rowHeights got !invalid");
 });
 
 test("create", () => {
-    const s = selection();
+    const vs = viewportSelection();
     const c = cells();
     const col = columns();
     const l = labels();
@@ -528,8 +528,8 @@ test("create", () => {
     const w = window();
 
     check(
-        new SpreadsheetDelta(s, c, col, l, r, dcell, dcol, drow, mcw, mrh, w),
-        s,
+        new SpreadsheetDelta(vs, c, col, l, r, dcell, dcol, drow, mcw, mrh, w),
+        vs,
         c,
         col,
         l,
@@ -541,7 +541,7 @@ test("create", () => {
         mrh,
         w,
         {
-            selection: s.toJson(),
+            viewportSelection: vs.toJson(),
             cells: {
                 "A1": {
                     formula: {
@@ -612,7 +612,7 @@ test("create", () => {
 });
 
 test("create empty all properties", () => {
-    const s = undefined;
+    const vs = undefined;
     const c = [];
     const col = [];
     const l = [];
@@ -625,8 +625,8 @@ test("create empty all properties", () => {
     const w = [];
 
     check(
-        new SpreadsheetDelta(s, c, col, l, r, dcell, dcol, drow, mcw, mrh, w),
-        s,
+        new SpreadsheetDelta(vs, c, col, l, r, dcell, dcol, drow, mcw, mrh, w),
+        vs,
         c,
         col,
         l,
@@ -1212,7 +1212,7 @@ testRowReferenceToRowsAndCheck(
 // toJson...............................................................................................................
 
 test("toJson only 1 cell", () => {
-    const s = undefined;
+    const vs = undefined;
     const c = [a1()];
     const col = [];
     const l = [];
@@ -1225,7 +1225,7 @@ test("toJson only 1 cell", () => {
     const w = [];
 
     expect(
-        new SpreadsheetDelta(s, c, col, l, r, dcell, dcol, drow, mcw, mrh, w)
+        new SpreadsheetDelta(vs, c, col, l, r, dcell, dcol, drow, mcw, mrh, w)
             .toJson())
         .toStrictEqual({
             cells: {
@@ -1246,7 +1246,7 @@ test("toJson only 1 cell", () => {
 });
 
 test("toJson only 2 cells", () => {
-    const s = undefined;
+    const vs = undefined;
     const c = cells();
     const col = [];
     const l = [];
@@ -1259,7 +1259,7 @@ test("toJson only 2 cells", () => {
     const w = [];
 
     expect(
-        new SpreadsheetDelta(s, c, col, l, r, dcell, dcol, drow, mcw, mrh, w).toJson())
+        new SpreadsheetDelta(vs, c, col, l, r, dcell, dcol, drow, mcw, mrh, w).toJson())
         .toStrictEqual({
             "cells": {
                 "A1": {
@@ -1291,7 +1291,7 @@ test("toJson only 2 cells", () => {
 });
 
 test("toJson all properties", () => {
-    const s = undefined;
+    const vs = undefined;
     const c = cells();
     const col = columns();
     const l = labels();
@@ -1303,7 +1303,7 @@ test("toJson all properties", () => {
     const mrh = rowHeights();
     const w = window();
 
-    expect(new SpreadsheetDelta(s, c, col, l, r, dcell, dcol, drow, mcw, mrh, w).toJson())
+    expect(new SpreadsheetDelta(vs, c, col, l, r, dcell, dcol, drow, mcw, mrh, w).toJson())
         .toStrictEqual({
             cells: {
                 "A1": {
@@ -1377,7 +1377,7 @@ test("toJson all properties", () => {
 // fromJson.............................................................................................................
 
 test("fromJson empty", () => {
-    const s = undefined;
+    const vs = undefined;
     const c = [];
     const col = [];
     const l = [];
@@ -1392,12 +1392,12 @@ test("fromJson empty", () => {
     expect(
         SpreadsheetDelta.fromJson({})
     ).toStrictEqual(
-        new SpreadsheetDelta(s, c, col, l, r, dcell, dcol, drow, mcw, mrh, w)
+        new SpreadsheetDelta(vs, c, col, l, r, dcell, dcol, drow, mcw, mrh, w)
     );
 });
 
 test("fromJson 1 cell", () => {
-    const s = undefined;
+    const vs = undefined;
     const c = [a1()];
     const col = [];
     const l = [];
@@ -1429,12 +1429,12 @@ test("fromJson 1 cell", () => {
             }
         )
     ).toStrictEqual(
-        new SpreadsheetDelta(s, c, col, l, r, dcell, dcol, drow, mcw, mrh, w)
+        new SpreadsheetDelta(vs, c, col, l, r, dcell, dcol, drow, mcw, mrh, w)
     );
 });
 
 test("fromJson 2 cells only", () => {
-    const s = undefined;
+    const vs = undefined;
     const c = [a1(), b2()];
     const col = [];
     const l = [];
@@ -1478,12 +1478,12 @@ test("fromJson 2 cells only", () => {
             }
         )
     ).toStrictEqual(
-        new SpreadsheetDelta(s, c, col, l, r, dcell, dcol, drow, mcw, mrh, w)
+        new SpreadsheetDelta(vs, c, col, l, r, dcell, dcol, drow, mcw, mrh, w)
     );
 });
 
 test("fromJson all properties", () => {
-    const s = selection();
+    const vs = viewportSelection();
     const c = cells();
     const col = columns();
     const l = labels();
@@ -1498,7 +1498,7 @@ test("fromJson all properties", () => {
     expect(
         SpreadsheetDelta.fromJson(
             {
-                selection: s.toJson(),
+                viewportSelection: vs.toJson(),
                 cells: {
                     "A1": {
                         formula: {
@@ -1567,14 +1567,14 @@ test("fromJson all properties", () => {
                 window: windowJson()
             })
     ).toStrictEqual(
-        new SpreadsheetDelta(s, c, col, l, r, dcell, dcol, drow, mcw, mrh, w)
+        new SpreadsheetDelta(vs, c, col, l, r, dcell, dcol, drow, mcw, mrh, w)
     );
 });
 
 // EMPTY.............................................................................................................
 
 test("EMPTY", () => {
-    const s = undefined;
+    const vs = undefined;
     const c = [];
     const col = [];
     const l = [];
@@ -1589,14 +1589,14 @@ test("EMPTY", () => {
     expect(
         SpreadsheetDelta.EMPTY
     ).toStrictEqual(
-        new SpreadsheetDelta(s, c, col, l, r, dcell, dcol, drow, mcw, mrh, w)
+        new SpreadsheetDelta(vs, c, col, l, r, dcell, dcol, drow, mcw, mrh, w)
     );
 });
 
 // equals...............................................................................................................
 
 test("equals different selection false", () => {
-    const s = selection();
+    const vs = viewportSelection();
     const c = cells();
     const col = columns();
     const l = labels();
@@ -1609,7 +1609,7 @@ test("equals different selection false", () => {
     const w = window();
 
     expect(
-        new SpreadsheetDelta(s, c, col, l, r, dcell, dcol, drow, mcw, mrh, w)
+        new SpreadsheetDelta(vs, c, col, l, r, dcell, dcol, drow, mcw, mrh, w)
             .equals(
                 new SpreadsheetDelta(
                     SpreadsheetColumnReference.parse("Z").setAnchor(),
@@ -1629,7 +1629,7 @@ test("equals different selection false", () => {
 });
 
 test("equals different cells false", () => {
-    const s = selection();
+    const vs = viewportSelection();
     const c = cells();
     const col = columns();
     const l = labels();
@@ -1642,10 +1642,10 @@ test("equals different cells false", () => {
     const w = window();
 
     expect(
-        new SpreadsheetDelta(s, c, col, l, r, dcell, dcol, drow, mcw, mrh, w)
+        new SpreadsheetDelta(vs, c, col, l, r, dcell, dcol, drow, mcw, mrh, w)
             .equals(
                 new SpreadsheetDelta(
-                    s,
+                    vs,
                     [
                         SpreadsheetCell.fromJson({
                                 "Z9": {
@@ -1678,7 +1678,7 @@ test("equals different cells false", () => {
 });
 
 test("equals different columns false", () => {
-    const s = selection();
+    const vs = viewportSelection();
     const c = cells();
     const col = columns();
     const l = labels();
@@ -1691,10 +1691,10 @@ test("equals different columns false", () => {
     const w = window();
 
     expect(
-        new SpreadsheetDelta(s, c, col, l, r, dcell, dcol, drow, mcw, mrh, w)
+        new SpreadsheetDelta(vs, c, col, l, r, dcell, dcol, drow, mcw, mrh, w)
             .equals(
                 new SpreadsheetDelta(
-                    s,
+                    vs,
                     c,
                     [],
                     l,
@@ -1711,7 +1711,7 @@ test("equals different columns false", () => {
 });
 
 test("equals different labels false", () => {
-    const s = selection();
+    const vs = viewportSelection();
     const c = cells();
     const col = columns();
     const l = labels();
@@ -1724,15 +1724,15 @@ test("equals different labels false", () => {
     const w = window();
 
     expect(
-        new SpreadsheetDelta(s, c, col, l, r, dcell, dcol, drow, mcw, mrh, w)
+        new SpreadsheetDelta(vs, c, col, l, r, dcell, dcol, drow, mcw, mrh, w)
             .equals(
-                new SpreadsheetDelta(s, c, col, [], r, dcell, dcol, drow, mcw, mrh, w)
+                new SpreadsheetDelta(vs, c, col, [], r, dcell, dcol, drow, mcw, mrh, w)
             )
     ).toBeFalse();
 });
 
 test("equals different rows false", () => {
-    const s = selection();
+    const vs = viewportSelection();
     const c = cells();
     const col = columns();
     const l = labels();
@@ -1745,10 +1745,10 @@ test("equals different rows false", () => {
     const w = window();
 
     expect(
-        new SpreadsheetDelta(s, c, col, l, r, dcell, dcol, drow, mcw, mrh, w)
+        new SpreadsheetDelta(vs, c, col, l, r, dcell, dcol, drow, mcw, mrh, w)
             .equals(
                 new SpreadsheetDelta(
-                    s,
+                    vs,
                     c,
                     col,
                     l,
@@ -1765,7 +1765,7 @@ test("equals different rows false", () => {
 });
 
 test("equals different deletedCells false", () => {
-    const s = selection();
+    const vs = viewportSelection();
     const c = cells();
     const col = columns();
     const l = labels();
@@ -1778,15 +1778,15 @@ test("equals different deletedCells false", () => {
     const w = window();
 
     expect(
-        new SpreadsheetDelta(s, c, col, l, r, dcell, dcol, drow, mcw, mrh, w)
+        new SpreadsheetDelta(vs, c, col, l, r, dcell, dcol, drow, mcw, mrh, w)
             .equals(
-                new SpreadsheetDelta(s, c, col, l, r, ["c3"], dcol, drow, mcw, mrh, w)
+                new SpreadsheetDelta(vs, c, col, l, r, ["c3"], dcol, drow, mcw, mrh, w)
             )
     ).toBeFalse();
 });
 
 test("equals different deletedColumns false", () => {
-    const s = selection();
+    const vs = viewportSelection();
     const c = cells();
     const col = columns();
     const l = labels();
@@ -1799,15 +1799,15 @@ test("equals different deletedColumns false", () => {
     const w = window();
 
     expect(
-        new SpreadsheetDelta(s, c, col, l, r, dcell, dcol, drow, mcw, mrh, w)
+        new SpreadsheetDelta(vs, c, col, l, r, dcell, dcol, drow, mcw, mrh, w)
             .equals(
-                new SpreadsheetDelta(s, c, col, l, r, dcell, ["Z"], drow, mcw, mrh, w)
+                new SpreadsheetDelta(vs, c, col, l, r, dcell, ["Z"], drow, mcw, mrh, w)
             )
     ).toBeFalse();
 });
 
 test("equals different deletedRows false", () => {
-    const s = selection();
+    const vs = viewportSelection();
     const c = cells();
     const col = columns();
     const l = labels();
@@ -1820,15 +1820,15 @@ test("equals different deletedRows false", () => {
     const w = window();
 
     expect(
-        new SpreadsheetDelta(s, c, col, l, r, dcell, dcol, drow, mcw, mrh, w)
+        new SpreadsheetDelta(vs, c, col, l, r, dcell, dcol, drow, mcw, mrh, w)
             .equals(
-                new SpreadsheetDelta(s, c, col, l, r, dcell, dcol, ["999"], mcw, mrh, w)
+                new SpreadsheetDelta(vs, c, col, l, r, dcell, dcol, ["999"], mcw, mrh, w)
             )
     ).toBeFalse();
 });
 
 test("equals different columnWidths false", () => {
-    const s = selection();
+    const vs = viewportSelection();
     const c = cells();
     const col = columns();
     const l = labels();
@@ -1841,15 +1841,15 @@ test("equals different columnWidths false", () => {
     const w = window();
 
     expect(
-        new SpreadsheetDelta(s, c, col, l, r, dcell, dcol, drow, mcw, mrh, w)
+        new SpreadsheetDelta(vs, c, col, l, r, dcell, dcol, drow, mcw, mrh, w)
             .equals(
-                new SpreadsheetDelta(s, c, col, l, r, dcell, dcol, drow, ImmutableMap.EMPTY, mrh, w)
+                new SpreadsheetDelta(vs, c, col, l, r, dcell, dcol, drow, ImmutableMap.EMPTY, mrh, w)
             )
     ).toBeFalse();
 });
 
 test("equals different rowHeights false", () => {
-    const s = selection();
+    const vs = viewportSelection();
     const c = cells();
     const col = columns();
     const l = labels();
@@ -1862,15 +1862,15 @@ test("equals different rowHeights false", () => {
     const w = window();
 
     expect(
-        new SpreadsheetDelta(s, c, col, l, r, dcell, dcol, drow, mcw, mrh, w)
+        new SpreadsheetDelta(vs, c, col, l, r, dcell, dcol, drow, mcw, mrh, w)
             .equals(
-                new SpreadsheetDelta(s, c, col, l, r, dcell, dcol, drow, mcw, ImmutableMap.EMPTY, w)
+                new SpreadsheetDelta(vs, c, col, l, r, dcell, dcol, drow, mcw, ImmutableMap.EMPTY, w)
             )
     ).toBeFalse();
 });
 
 test("equals different window false", () => {
-    const s = selection();
+    const vs = viewportSelection();
     const c = cells();
     const col = columns();
     const l = labels();
@@ -1883,9 +1883,9 @@ test("equals different window false", () => {
     const w = window();
 
     expect(
-        new SpreadsheetDelta(s, c, col, l, r, dcell, dcol, drow, mcw, mrh, w)
+        new SpreadsheetDelta(vs, c, col, l, r, dcell, dcol, drow, mcw, mrh, w)
             .equals(
-                new SpreadsheetDelta(s, c, col, l, r, dcell, dcol, drow, mcw, mrh, [])
+                new SpreadsheetDelta(vs, c, col, l, r, dcell, dcol, drow, mcw, mrh, [])
             )
     ).toBeFalse();
 });
@@ -1898,7 +1898,7 @@ test("equals equivalent true", () => {
 // helpers..............................................................................................................
 
 function check(delta, selection, cells, columns, labels, rows, deletedCells, deletedColumns, deletedRows, columnWidths, rowHeights, window, json) {
-    expect(delta.selection()).toStrictEqual(selection);
+    expect(delta.viewportSelection()).toStrictEqual(selection);
 
     expect(delta.cells()).toStrictEqual(cells);
     expect(delta.columns()).toStrictEqual(columns);
