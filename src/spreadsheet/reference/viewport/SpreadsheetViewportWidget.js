@@ -277,7 +277,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetCellWidget {
                 }
 
                 // before replacing the history selection with the response.selection verify the queryparameters & state are equal.
-                const responseViewportSelection = responseDelta.selection();
+                const responseViewportSelection = responseDelta.viewportSelection();
                 if(responseViewportSelection && viewportSelectionToken && !(viewportSelectionToken instanceof SpreadsheetCellFormulaHistoryHashToken)){
                     const queryParameterSelection = queryParameters.selection && queryParameters.selection[0];
                     const selection = viewportSelectionToken.viewportSelection().selection();
