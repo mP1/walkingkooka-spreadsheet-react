@@ -533,13 +533,13 @@ export default class SpreadsheetHistoryHash extends SpreadsheetHistoryHashTokens
                     verified[SpreadsheetHistoryHashTokens.SPREADSHEET_NAME_EDIT] = spreadsheetNameEdit;
                 }
                 if(viewportSelection instanceof SpreadsheetSelectionHistoryHashToken){
-                    const selectionSelection = viewportSelection.viewportSelection()
+                    const selection = viewportSelection.viewportSelection()
                         .selection();
 
                     if(viewportSelection instanceof SpreadsheetCellHistoryHashToken){
-                        if(selectionSelection.isCellScalarOrRange() || selectionSelection instanceof SpreadsheetLabelName){
+                        if(selection.isCellScalarOrRange() || selection instanceof SpreadsheetLabelName){
                             if(viewportSelection instanceof SpreadsheetCellFreezeHistoryHashToken || viewportSelection instanceof SpreadsheetCellUnFreezeHistoryHashToken){
-                                if(selectionSelection.canFreeze()){
+                                if(selection.canFreeze()){
                                     verified[SpreadsheetHistoryHashTokens.VIEWPORT_SELECTION] = viewportSelection;
                                     metadata = null;
                                 }
@@ -553,9 +553,9 @@ export default class SpreadsheetHistoryHash extends SpreadsheetHistoryHashTokens
                         }
                     }
                     if(viewportSelection instanceof SpreadsheetColumnOrRowHistoryHashToken){
-                        if(selectionSelection.isColumnOrRowScalarOrRange()){
+                        if(selection.isColumnOrRowScalarOrRange()){
                             if(viewportSelection instanceof SpreadsheetColumnOrRowFreezeHistoryHashToken || viewportSelection instanceof SpreadsheetColumnOrRowUnFreezeHistoryHashToken){
-                                if(selectionSelection.canFreeze()){
+                                if(selection.canFreeze()){
                                     verified[SpreadsheetHistoryHashTokens.VIEWPORT_SELECTION] = viewportSelection;
                                     metadata = null;
                                 }
