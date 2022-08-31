@@ -188,11 +188,24 @@ export default class SpreadsheetHistoryHash extends SpreadsheetHistoryHashTokens
                                                 if(null == token){
                                                     viewportSelectionToken = new SpreadsheetCellFormulaEditHistoryHashToken(viewportSelection);
                                                 }else {
-                                                    viewportSelectionToken = new SpreadsheetCellFormulaSaveHistoryHashToken(
-                                                        viewportSelection,
-                                                        decodeURIComponent(token)
-                                                    );
-                                                    token = tokens.shift();
+                                                    switch(token) {
+                                                        case SpreadsheetHistoryHashTokens.SAVE:
+                                                            token = tokens.shift();
+                                                            if(null == token){
+                                                                errors("Missing formula text");
+                                                                break Loop;
+                                                            }
+                                                            viewportSelectionToken = new SpreadsheetCellFormulaSaveHistoryHashToken(
+                                                                viewportSelection,
+                                                                decodeURIComponent(token)
+                                                            );
+                                                            token = tokens.shift();
+                                                            break;
+                                                        default:
+                                                            // not a formula save
+                                                            viewportSelectionToken = new SpreadsheetCellFormulaEditHistoryHashToken(viewportSelection);
+                                                            break;
+                                                    }
                                                 }
                                             }
                                             break;

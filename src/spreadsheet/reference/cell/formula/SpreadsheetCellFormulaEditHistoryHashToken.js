@@ -6,9 +6,8 @@ import SpreadsheetHistoryHashTokens from "../../../history/SpreadsheetHistoryHas
  */
 export default class SpreadsheetCellFormulaEditHistoryHashToken extends SpreadsheetCellFormulaHistoryHashToken {
 
-    constructor(spreadsheetViewport, formulaText) {
+    constructor(spreadsheetViewport) {
         super(spreadsheetViewport);
-        this.formulaTextValue = formulaText;
     }
 
     formulaText() {
@@ -20,18 +19,8 @@ export default class SpreadsheetCellFormulaEditHistoryHashToken extends Spreadsh
     }
 
     historyHashPath() {
-        const formulaText = this.formulaText();
-
         return super.historyHashPath() +
             "/" +
-            SpreadsheetHistoryHashTokens.CELL_FORMULA +
-            (formulaText != null ?
-                "/" + encodeURIComponent(formulaText) :
-                "");
-    }
-
-    equals(other) {
-        return super.equals(other) &&
-            this.formulaText() === other.formulaText();
+            SpreadsheetHistoryHashTokens.CELL_FORMULA;
     }
 }
