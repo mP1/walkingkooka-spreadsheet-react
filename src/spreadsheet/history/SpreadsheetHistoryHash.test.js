@@ -648,19 +648,16 @@ testParseAndStringify(
 );
 
 testParseAndStringify(
-    "/spreadsheet-id-123/spreadsheet-name-456/cell/A1/formula/",
+    "/spreadsheet-id-123/spreadsheet-name-456/cell/A1/formula/save",
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
-        "viewport-selection": new SpreadsheetCellFormulaSaveHistoryHashToken(
-            new SpreadsheetViewportSelection(CELL),
-            ""
-        ),
-    }
+    },
+    "Missing formula text"
 );
 
 testParseAndStringify(
-    "/spreadsheet-id-123/spreadsheet-name-456/cell/A1/formula/ABC%20123",
+    "/spreadsheet-id-123/spreadsheet-name-456/cell/A1/formula/save/ABC%20123",
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
@@ -672,7 +669,7 @@ testParseAndStringify(
 );
 
 testParseAndStringify(
-    "/spreadsheet-id-123/spreadsheet-name-456/cell/A1/formula/=12%2F34",
+    "/spreadsheet-id-123/spreadsheet-name-456/cell/A1/formula/save/=12%2F34",
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
@@ -680,6 +677,16 @@ testParseAndStringify(
             new SpreadsheetViewportSelection(CELL),
             "=12/34"
         ),
+    }
+);
+
+testParseAndStringify(
+    "/spreadsheet-id-123/spreadsheet-name-456/cell/A1/formula/select",
+    {
+        "spreadsheet-id": "spreadsheet-id-123",
+        "spreadsheet-name": SPREADSHEET_NAME,
+        "viewport-selection": CELL_FORMULA_LOAD_EDIT,
+        "select": true,
     }
 );
 
@@ -699,6 +706,16 @@ testParseAndStringify(
         "spreadsheet-name": SPREADSHEET_NAME,
         "viewport-selection": CELL_SELECT,
         "metadata": METADATA_NOTHING,
+    }
+);
+
+testParseAndStringify(
+    "/spreadsheet-id-123/spreadsheet-name-456/cell/A1/select",
+    {
+        "spreadsheet-id": "spreadsheet-id-123",
+        "spreadsheet-name": SPREADSHEET_NAME,
+        "viewport-selection": CELL_SELECT,
+        "select": true,
     }
 );
 
@@ -787,7 +804,7 @@ testParseAndStringify(
 );
 
 testParseAndStringify(
-    "/spreadsheet-id-123/spreadsheet-name-456/cell/Label123/formula/ABC%20123",
+    "/spreadsheet-id-123/spreadsheet-name-456/cell/Label123/formula/save/ABC%20123",
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,

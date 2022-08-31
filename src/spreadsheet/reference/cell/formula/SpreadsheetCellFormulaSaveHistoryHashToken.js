@@ -17,10 +17,13 @@ export default class SpreadsheetCellFormulaSaveHistoryHashToken extends Spreadsh
         return this.formulaTextValue;
     }
 
+    // cell/A1/formula/save/=1+2
     historyHashPath() {
         return super.historyHashPath() +
             "/" +
             SpreadsheetHistoryHashTokens.CELL_FORMULA +
+            "/" +
+            SpreadsheetHistoryHashTokens.SAVE +
             "/" +
             encodeURIComponent(this.formulaText());
     }

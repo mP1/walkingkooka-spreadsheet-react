@@ -40,7 +40,7 @@ describe(
 
             testing.formulaTextClick();
 
-            testing.hashAppend("/=2*3")
+            testing.hashAppend("/save/=2*3")
 
             testing.cellFormattedTextCheck(B2, "6.");
         });
