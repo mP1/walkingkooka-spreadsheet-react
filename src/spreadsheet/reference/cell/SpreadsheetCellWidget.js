@@ -53,8 +53,7 @@ export default class SpreadsheetCellWidget extends SpreadsheetHistoryAwareStateW
     patchCell(cell) {
         Preconditions.requireInstance(cell, SpreadsheetCell, "cell");
 
-        const props = this.props;
-        props.spreadsheetDeltaCellCrud.patch(
+        this.patch(
             cell.reference(),
             new SpreadsheetDelta(
                 null,
@@ -68,7 +67,18 @@ export default class SpreadsheetCellWidget extends SpreadsheetHistoryAwareStateW
                 ImmutableMap.EMPTY,
                 ImmutableMap.EMPTY,
                 this.state.window,
-            ),
+            )
+        );
+    }
+
+    patch(selection, delta) {
+        Preconditions.requireNonNull(selection, "selection");
+        Preconditions.requireNonNull(delta, "delta");
+
+        const props = this.props;
+        props.spreadsheetDeltaCellCrud.patch(
+            selection,
+            delta,
             props.showError,
         );
     }
