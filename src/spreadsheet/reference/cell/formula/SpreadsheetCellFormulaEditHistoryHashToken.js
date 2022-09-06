@@ -6,10 +6,6 @@ import SpreadsheetHistoryHashTokens from "../../../history/SpreadsheetHistoryHas
  */
 export default class SpreadsheetCellFormulaEditHistoryHashToken extends SpreadsheetCellFormulaHistoryHashToken {
 
-    constructor(spreadsheetViewport) {
-        super(spreadsheetViewport);
-    }
-
     formulaText() {
         return this.formulaTextValue;
     }
