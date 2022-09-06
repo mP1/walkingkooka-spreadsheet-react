@@ -71,6 +71,32 @@ export default class SpreadsheetCellWidget extends SpreadsheetHistoryAwareStateW
         );
     }
 
+    /**
+     * {
+     *     style: {
+     *         text-align: "LEFT"
+     *     }
+     * }
+     */
+    patchStyle(selection, stylePropertyName, stylePropertyValue) {
+        Preconditions.requireNonNull(selection, "selection");
+        Preconditions.requireNonNull(stylePropertyName, "stylePropertyName");
+
+        const style = {};
+        style[stylePropertyName] = stylePropertyValue ?
+            stylePropertyValue.toJson ?
+                stylePropertyValue.toJson() :
+                stylePropertyValue :
+            stylePropertyValue;
+
+        this.patch(
+            selection,
+            {
+                "style": style
+            }
+        )
+    }
+
     patch(selection, delta) {
         Preconditions.requireNonNull(selection, "selection");
         Preconditions.requireNonNull(delta, "delta");

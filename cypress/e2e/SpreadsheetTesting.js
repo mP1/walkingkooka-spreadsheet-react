@@ -383,7 +383,15 @@ export default class SpreadsheetTesting {
     }
 
     cellA1StyleCheck(property, value) {
-        this.cell(SpreadsheetTesting.A1)
+        this.cellStyleCheck(
+            SpreadsheetTesting.A1,
+            property,
+            value
+        );
+    }
+
+    cellStyleCheck(cell, property, value) {
+        this.cell(cell)
             .should('have.css', property, value);
     }
 
