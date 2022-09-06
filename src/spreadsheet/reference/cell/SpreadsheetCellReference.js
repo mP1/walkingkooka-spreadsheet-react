@@ -206,6 +206,12 @@ export default class SpreadsheetCellReference extends SpreadsheetExpressionRefer
         return this.row();
     }
 
+    values() {
+        return [
+            this
+        ];
+    }
+
     canFreeze() {
         return this.column().canFreeze() &&
             this.row().canFreeze();

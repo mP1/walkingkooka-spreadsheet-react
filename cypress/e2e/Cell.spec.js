@@ -184,6 +184,24 @@ describe(
                 .should("have.focus");
         });
 
+        it("Cell history save style", () => {
+            testing.hashAppend("/cell/A1/style/color/#123456");
+
+            //testing.cellFormattedTextCheck(A1, "");
+            testing.cellStyleCheck(A1, "color", "rgb(18, 52, 86)");
+        });
+
+        it("Cell click center style", () => {
+            testing.cellClick(A1);
+
+            testing.formulaTextClick();
+
+            testing.getById("cell-style-text-align-CENTER")
+                .click();
+
+            testing.cellStyleCheck(A1, "textAlign", "center");
+        });
+
         it("Cell select and hit ESC loses viewport cell focus", () => {
             testing.cellClick(A3);
 

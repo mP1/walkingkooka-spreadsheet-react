@@ -1,7 +1,6 @@
 import CharSequences from "../../../../CharSequences.js";
 import Equality from "../../../../Equality.js";
 import Preconditions from "../../../../Preconditions.js";
-import SpreadsheetCell from "../../../SpreadsheetCell.js";
 import SpreadsheetCellStyleHistoryHashToken from "./SpreadsheetCellStyleHistoryHashToken.js";
 import TextStyle from "../../../../text/TextStyle.js";
 
@@ -46,23 +45,20 @@ export default class SpreadsheetCellStyleSaveHistoryHashToken extends Spreadshee
     }
 
     spreadsheetViewportWidgetExecute(viewportWidget, viewportCell, width, height) {
-        viewportWidget.patchCell(
-            new SpreadsheetCell(
-                this.viewportSelection().selection(),
-                null, // formula
-                TextStyle.EMPTY.set(
-                    this.propertyName(),
-                    this.propertyValue()
-                )
-            )
+        viewportWidget.patchStyle(
+            this.viewportSelection().selection(),
+            this.propertyName(),
+            this.propertyValue()
         );
+
+        viewportWidget.historyPushSelectionOnly();
     }
 
     equals(other) {
         return this === other ||
             (
                 other instanceof SpreadsheetCellStyleSaveHistoryHashToken &&
-                Equality.safeEquals(this.propertyName(), other.propertyName()) &&
+                this.propertyName() === other.propertyName() &&
                 Equality.safeEquals(this.propertyValue(), other.propertyValue())
             );
     }

@@ -72,7 +72,11 @@ export default class SpreadsheetMessengerCrud {
             this.url(HttpMethod.PATCH, id, {}),
             {
                 method: HttpMethod.PATCH,
-                body: value.toJson ? JSON.stringify(value.toJson()) : value.toString(),
+                body: value.toJson ?
+                    JSON.stringify(value.toJson()) :
+                    typeof value == "object" ?
+                        JSON.stringify(value) :
+                        value.toString(),
             },
             id,
             value,
