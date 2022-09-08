@@ -2,6 +2,7 @@ import CharSequences from "../../../../CharSequences.js";
 import Equality from "../../../../Equality.js";
 import Preconditions from "../../../../Preconditions.js";
 import SpreadsheetCellStyleHistoryHashToken from "./SpreadsheetCellStyleHistoryHashToken.js";
+import SpreadsheetHistoryHashTokens from "../../../history/SpreadsheetHistoryHashTokens.js";
 import TextStyle from "../../../../text/TextStyle.js";
 
 /**
@@ -40,6 +41,8 @@ export default class SpreadsheetCellStyleSaveHistoryHashToken extends Spreadshee
         return super.historyHashPath() +
             "/" +
             this.propertyName() +
+            "/" +
+            SpreadsheetHistoryHashTokens.SAVE +
             "/" +
             (null != value ? encodeURIComponent(value) : "");
     }

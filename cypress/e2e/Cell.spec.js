@@ -185,7 +185,7 @@ describe(
         });
 
         it("Cell history save style", () => {
-            testing.hashAppend("/cell/A1/style/color/#123456");
+            testing.hashAppend("/cell/A1/style/color/save/#123456");
 
             //testing.cellFormattedTextCheck(A1, "");
             testing.cellStyleCheck(A1, "color", "rgb(18, 52, 86)");

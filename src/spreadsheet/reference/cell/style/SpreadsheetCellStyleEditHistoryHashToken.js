@@ -2,6 +2,7 @@ import CharSequences from "../../../../CharSequences.js";
 import Equality from "../../../../Equality.js";
 import Preconditions from "../../../../Preconditions.js";
 import SpreadsheetCellStyleHistoryHashToken from "./SpreadsheetCellStyleHistoryHashToken.js";
+import SpreadsheetHistoryHashTokens from "../../../history/SpreadsheetHistoryHashTokens.js";
 import TextStyle from "../../../../text/TextStyle.js";
 
 /**
@@ -26,10 +27,13 @@ export default class SpreadsheetCellStyleEditHistoryHashToken extends Spreadshee
         return this.propertyNameValue;
     }
 
+    // /cell/A1/style/font-style/edit
     historyHashPath() {
         return super.historyHashPath() +
             "/" +
-            this.propertyName();
+            this.propertyName() +
+            "/" +
+            SpreadsheetHistoryHashTokens.EDIT;
     }
 
     spreadsheetViewportWidgetExecute(viewportWidget, viewportCell, width, height) {

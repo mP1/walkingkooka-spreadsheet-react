@@ -108,6 +108,8 @@ Following the selection of a cell, the following commands are possible
 - /formula Loads the formula text box with the current value for this cell
 - /formula/save/$formula-text Saves the given $formula-text for the cell.
 - /menu Displays a context menu
+- /style/$property-name selects the style property widget for editing for the selected cells.
+- /style/$property-name/save/$property-value saves the style property with the value for the selected cells.
 
 > /#123/Untitled/cell/D4/delete
 > 
@@ -121,6 +123,13 @@ Following the selection of a cell, the following commands are possible
 >
 > /#123/Untitled/cell/J10:K11/menu
 
+> /#123/Untitled/cell/M12/style/font-style/edit
+>
+> /#123/Untitled/cell/N13:O14/style/font-style/edit
+
+> /#123/Untitled/cell/P15/style/font-style/save/ITALICS
+>
+> /#123/Untitled/cell/Q16:R17/style/font-style/save/ITALICS
 
 #### /spreadsheet-id/spreadsheet-name/column/column-or-column-range
 

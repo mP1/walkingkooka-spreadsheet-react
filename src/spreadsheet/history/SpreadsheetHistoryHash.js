@@ -223,28 +223,45 @@ export default class SpreadsheetHistoryHash extends SpreadsheetHistoryHashTokens
                                             token = tokens.shift();
                                             break;
                                         case SpreadsheetHistoryHashTokens.STYLE:
-                                            // cell/A1/style/font-style/italics
+                                            // cell/A1/style/font-style/select/italics etc.
                                             token = tokens.shift(); // style property name
                                             if(null != token){
                                                 const stylePropertyName = token;
                                                 if(TextStyle.isProperty(stylePropertyName)){
-                                                    if(tokens.length){
-                                                        token = tokens.shift(); // style property value
-                                                        viewportSelectionToken = new SpreadsheetCellStyleSaveHistoryHashToken(
-                                                            viewportSelection,
-                                                            stylePropertyName,
-                                                            TextStyle.parseHistoryHashToken(
-                                                                stylePropertyName,
-                                                                token
-                                                            )
-                                                        );
+                                                    const styleAction = tokens.shift(); // style property command eg edit | save
+                                                    if(styleAction){
+                                                        switch(styleAction) {
+                                                            case SpreadsheetHistoryHashTokens.EDIT:
+                                                                viewportSelectionToken = new SpreadsheetCellStyleEditHistoryHashToken(
+                                                                    viewportSelection,
+                                                                    stylePropertyName
+                                                                );
+                                                                token = tokens.shift();
+                                                                break;
+                                                            case SpreadsheetHistoryHashTokens.SAVE:
+                                                                token = tokens.shift();
+                                                                if(token) {
+                                                                    viewportSelectionToken = new SpreadsheetCellStyleSaveHistoryHashToken(
+                                                                        viewportSelection,
+                                                                        stylePropertyName,
+                                                                        TextStyle.parseHistoryHashToken(
+                                                                            stylePropertyName,
+                                                                            encodeURIComponent(token)
+                                                                        )
+                                                                    );
+                                                                    token = tokens.shift();
+                                                                } else {
+                                                                    errors("Missing save value");
+                                                                    break Loop;
+                                                                }
+                                                                break;
+                                                            default:
+                                                                errors("Invalid style: " + styleAction);
+                                                                break Loop;
+                                                        }
                                                     }else {
-                                                        viewportSelectionToken = new SpreadsheetCellStyleEditHistoryHashToken(
-                                                            viewportSelection,
-                                                            stylePropertyName
-                                                        );
+                                                        tokens.unshift(token); // error
                                                     }
-                                                    token = tokens.shift();
                                                 }else {
                                                     tokens.unshift(token);
                                                 }
