@@ -40,6 +40,7 @@ export default class SpreadsheetHistoryHashTokens {
     static STYLE = "style";
     static UNFREEZE = "unfreeze";
 
+    static EDIT = "edit";
     static SAVE = "save";
 
     static LABEL = "label";

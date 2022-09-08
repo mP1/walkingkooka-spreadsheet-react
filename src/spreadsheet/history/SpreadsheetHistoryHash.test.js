@@ -2160,7 +2160,16 @@ testParseAndStringify(
 );
 
 testParseAndStringify(
-    "/spreadsheet-id-123/spreadsheet-name-456/cell/A1/style/font-style",
+    "/spreadsheet-id-123/spreadsheet-name-456/cell/A1/style/font-size",
+    {
+        "spreadsheet-id": "spreadsheet-id-123",
+        "spreadsheet-name": SPREADSHEET_NAME
+    },
+    "Invalid token: \"font-size\"",
+);
+
+testParseAndStringify(
+    "/spreadsheet-id-123/spreadsheet-name-456/cell/A1/style/font-style/edit",
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
@@ -2174,7 +2183,7 @@ testParseAndStringify(
 );
 
 testParseAndStringify(
-    "/spreadsheet-id-123/spreadsheet-name-456/cell/A1/style/font-style/ITALIC",
+    "/spreadsheet-id-123/spreadsheet-name-456/cell/A1/style/font-style/save/ITALIC",
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
