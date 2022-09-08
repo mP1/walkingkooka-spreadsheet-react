@@ -40,8 +40,12 @@ function checkProperty(property) {
     Preconditions.requireText(property, "property");
 
     if(!TextStyle.isProperty(property)){
-        throw new Error("Unknown property \"" + property + "\"");
+        reportUnknownProperty(property);
     }
+}
+
+function reportUnknownProperty(property) {
+    throw new Error("Unknown property \"" + property + "\"");
 }
 
 function copyAndSet(properties, property, value) {
@@ -620,7 +624,7 @@ export default class TextStyle extends SystemObject {
                     unmarshaller = WritingMode.fromJson;
                     break;
                 default:
-                    throw new Error("Unknown property " + property);
+                    reportUnknownProperty(property);
             }
 
             properties[property] = (unmarshaller && unmarshaller(value)) ||
