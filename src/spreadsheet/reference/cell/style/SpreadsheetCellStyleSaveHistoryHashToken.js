@@ -1,6 +1,4 @@
-import CharSequences from "../../../../CharSequences.js";
 import Equality from "../../../../Equality.js";
-import Preconditions from "../../../../Preconditions.js";
 import SpreadsheetCellStyleHistoryHashToken from "./SpreadsheetCellStyleHistoryHashToken.js";
 import SpreadsheetHistoryHashTokens from "../../../history/SpreadsheetHistoryHashTokens.js";
 import TextStyle from "../../../../text/TextStyle.js";
@@ -12,12 +10,8 @@ export default class SpreadsheetCellStyleSaveHistoryHashToken extends Spreadshee
 
     constructor(selection, propertyName, propertyValue) {
         super(selection);
-        this.propertyNameValue = Preconditions.requireText(propertyName, "propertyName");
 
-        if(!TextStyle.isProperty(propertyName)){
-            throw new Error("Unknown style property " + CharSequences.quoteAndEscape(propertyName));
-        }
-
+        this.propertyNameValue = TextStyle.checkPropertyName(propertyName);
         this.propertyValueValue = propertyValue;
     }
 

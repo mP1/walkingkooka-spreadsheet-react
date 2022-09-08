@@ -7,7 +7,7 @@ import SpreadsheetMetadataDrawerWidgetHistoryHashTokens from "./SpreadsheetMetad
 test("parseHistoryHashToken invalid property fails", () => {
     expect(
         () => SpreadsheetMetadataDrawerWidgetHistoryHashTokens.parseHistoryHashToken("!invalid", "abc123")
-    ).toThrow("Unknown property \"!invalid\"");
+    ).toThrow("Unknown style property \"!invalid\"");
 });
 
 test("parseHistoryHashToken non text value fails", () => {

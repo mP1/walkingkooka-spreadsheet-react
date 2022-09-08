@@ -84,7 +84,7 @@ test("isProperty() true", () => {
 
 test("parseHistoryHashToken invalid property fails", () => {
     expect(() => TextStyle.parseHistoryHashToken("!invalid", 123))
-        .toThrow("Unknown property \"!invalid\"");
+        .toThrow("Unknown style property \"!invalid\"");
 });
 
 test("parseHistoryHashToken non text value fails", () => {
@@ -312,11 +312,11 @@ test("remove property missing fails", () => {
 });
 
 test("remove property invalid fails", () => {
-    expect(() => TextStyle.EMPTY.remove(123)).toThrow("Expected string property got 123");
+    expect(() => TextStyle.EMPTY.remove(123)).toThrow("Expected string propertyName got 123");
 });
 
 test("remove property unknown fails", () => {
-    expect(() => TextStyle.EMPTY.remove("!unknown")).toThrow("Unknown property \"!unknown\"");
+    expect(() => TextStyle.EMPTY.remove("!unknown")).toThrow("Unknown style property \"!unknown\"");
 });
 
 test("remove absent property", () => {

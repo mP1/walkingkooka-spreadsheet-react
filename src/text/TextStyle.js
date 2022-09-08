@@ -3,6 +3,7 @@
  */
 import BorderCollapse from "./BorderCollapse.js";
 import BorderStyle from "./BorderStyle.js";
+import CharSequences from "../CharSequences.js";
 import Color from "../color/Color.js";
 import Direction from "./Direction.js";
 import FontFamily from "./FontFamily.js";
@@ -36,16 +37,8 @@ import WritingMode from "./WritingMode.js";
 import WordWrap from "./WordWrap.js";
 import WordBreak from "./WordBreak.js";
 
-function checkProperty(property) {
-    Preconditions.requireText(property, "property");
-
-    if(!TextStyle.isProperty(property)){
-        reportUnknownProperty(property);
-    }
-}
-
-function reportUnknownProperty(property) {
-    throw new Error("Unknown property \"" + property + "\"");
+function reportUnknownProperty(propertyName) {
+    throw new Error("Unknown style property " + CharSequences.quoteAndEscape(propertyName));
 }
 
 function copyAndSet(properties, property, value) {
@@ -149,7 +142,7 @@ export default class TextStyle extends SystemObject {
      * matching json type like a null, string or number.
      */
     static parseHistoryHashToken(property, value) {
-        checkProperty(property);
+        TextStyle.checkPropertyName(property);
         Preconditions.optionalText(value, "value");
 
         return (null == value || "" === value)?
@@ -434,6 +427,16 @@ export default class TextStyle extends SystemObject {
             .includes(property);
     }
 
+    static checkPropertyName(propertyName) {
+        Preconditions.requireText(propertyName, "propertyName");
+
+        if(!TextStyle.isProperty(propertyName)){
+            reportUnknownProperty(propertyName);
+        }
+
+        return propertyName;
+    }
+
     static fromJson(json) {
         Preconditions.requireObject(json, "json");
 
@@ -642,7 +645,7 @@ export default class TextStyle extends SystemObject {
     }
 
     get(property) {
-        checkProperty(property);
+        TextStyle.checkPropertyName(property);
 
         return this.properties[property];
     }
@@ -654,7 +657,7 @@ export default class TextStyle extends SystemObject {
     }
 
     set(property, value) {
-        checkProperty(property);
+        TextStyle.checkPropertyName(property);
 
         let expectedClass;
         let expectedTypeOf;
