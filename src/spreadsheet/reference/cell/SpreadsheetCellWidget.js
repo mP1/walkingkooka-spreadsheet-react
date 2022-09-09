@@ -3,6 +3,8 @@ import Preconditions from "../../../Preconditions.js";
 import PropTypes from 'prop-types';
 import SpreadsheetCell from "../../SpreadsheetCell.js";
 import SpreadsheetDelta from "../../engine/SpreadsheetDelta.js";
+import SpreadsheetExpressionReference from "../SpreadsheetExpressionReference.js";
+import SpreadsheetFormula from "./formula/SpreadsheetFormula.js";
 import SpreadsheetHistoryAwareStateWidget from "../../history/SpreadsheetHistoryAwareStateWidget.js";
 import SpreadsheetHistoryHash from "../../history/SpreadsheetHistoryHash.js";
 import SpreadsheetMessengerCrud from "../../message/SpreadsheetMessengerCrud.js";
@@ -51,6 +53,25 @@ export default class SpreadsheetCellWidget extends SpreadsheetHistoryAwareStateW
                 ImmutableMap.EMPTY,
                 this.state.window,
             )
+        );
+    }
+
+    /**
+     * Calls the server to PATCH a cell and also handles updating the history hash leaving just the selection.
+     */
+    patchFormula(cellOrLabel, formulaText) {
+        Preconditions.requireInstance(cellOrLabel, SpreadsheetExpressionReference, "cellOrLabel");
+
+        const cells = {}
+        cells[cellOrLabel.toString()] = {
+            "formula": new SpreadsheetFormula(formulaText).toJson()
+        };
+
+        this.patch(
+            cellOrLabel,
+            {
+                "cells" : cells,
+            }
         );
     }
 

@@ -1,23 +1,18 @@
-import CharSequences from "../../../../CharSequences.js";
 import Keys from "../../../../Keys.js";
 import PropTypes from "prop-types";
 import React from 'react';
-import SpreadsheetCell from "../../../SpreadsheetCell.js";
 import SpreadsheetCellFormulaEditHistoryHashToken from "./SpreadsheetCellFormulaEditHistoryHashToken.js";
-import SpreadsheetCellFormulaHistoryHashToken from "./SpreadsheetCellFormulaHistoryHashToken.js";
 import SpreadsheetCellFormulaSaveHistoryHashToken from "./SpreadsheetCellFormulaSaveHistoryHashToken.js";
 import SpreadsheetCellHistoryHashToken from "../SpreadsheetCellHistoryHashToken.js";
 import SpreadsheetCellReference from "../SpreadsheetCellReference.js";
 import SpreadsheetCellWidget from "../SpreadsheetCellWidget.js";
 import SpreadsheetExpressionReference from "../../SpreadsheetExpressionReference.js";
-import SpreadsheetFormula from "./SpreadsheetFormula.js";
 import SpreadsheetHistoryHash from "../../../history/SpreadsheetHistoryHash.js";
 import SpreadsheetHistoryHashTokens from "../../../history/SpreadsheetHistoryHashTokens.js";
 import SpreadsheetLabelName from "../../label/SpreadsheetLabelName.js";
 import SpreadsheetMessengerCrud from "../../../message/SpreadsheetMessengerCrud.js";
 import SpreadsheetViewportWidget from "../../viewport/SpreadsheetViewportWidget.js";
 import TextField from '@mui/material/TextField';
-import TextStyle from "../../../../text/TextStyle.js";
 import viewportSelectionSelectHistoryHashToken from "../../../history/viewportSelectionSelectHistoryHashToken.js";
 
 /**
@@ -81,7 +76,6 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetCellWidget {
         const state = this.state;
         const {
             viewportSelection: viewportSelectionToken,
-            cellReference,
             focused,
         } = state;
 
@@ -89,11 +83,6 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetCellWidget {
 
         if(viewportSelectionToken instanceof SpreadsheetCellHistoryHashToken){
             const viewportSelection = viewportSelectionToken.viewportSelection();
-            const selection = viewportSelection.selection();
-
-            const previousViewportSelection = prevState.viewportSelection;
-            const previousSelection = previousViewportSelection && previousViewportSelection.viewportSelection()
-                .selection();
 
             // user must have just clicked/tab formula textbox update history to formula edit
             if(focused){
@@ -102,36 +91,26 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetCellWidget {
                 }
             }
 
-            // always do the save and if focused change history to formula edit or clear selection.
-            if(viewportSelectionToken instanceof SpreadsheetCellFormulaSaveHistoryHashToken){
-                this.saveFormulaText(
-                    cellReference,
-                    viewportSelectionToken.formulaText(),
-                );
-
-                historyTokens[SpreadsheetHistoryHashTokens.VIEWPORT_SELECTION] = focused ?
-                    new SpreadsheetCellFormulaEditHistoryHashToken(viewportSelection) :
-                    null;
-            }
-
-            // if NOT focused and history is formula edit give focus.
-            if(!focused && viewportSelectionToken instanceof SpreadsheetCellFormulaEditHistoryHashToken && !(previousViewportSelection instanceof SpreadsheetCellFormulaHistoryHashToken)){
-                this.log("historyTokensFromState giving focus");
-                this.giveFocus(
-                    () => {
-                        this.log(" giving focus to Formula textbox");
-                        return this.input.current;
-                    }
-                );
-            }
-
-            // if cell selection changed load text only not after a formula save. the extra selection is NOT a formula save makes the selection clear after the save completes.
-            if(!selection.equalsIgnoringKind(previousSelection) && !(viewportSelectionToken instanceof SpreadsheetCellFormulaSaveHistoryHashToken)){
-                this.loadFormulaText(selection);
-            }
+            viewportSelectionToken.spreadsheetFormulaWidgetExecute(
+                this,
+                prevState.viewportSelection
+            );
         }
 
         return historyTokens;
+    }
+
+    isFocused() {
+        return this.state.focused;
+    }
+
+    giveFormulaTextBoxFocus() {
+        this.giveFocus(
+            () => {
+                this.log(" giving focus to Formula textbox");
+                return this.input.current;
+            }
+        );
     }
 
     /**
@@ -144,22 +123,9 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetCellWidget {
             cellOrLabel,
             {},
             (message, error) => {
-                // label must not exist clear selection
                 this.historyPushViewportSelection(null);
                 this.showError(message, error);
             }
-        );
-    }
-
-    saveFormulaText(cellReference, formulaText) {
-        this.log(" Saving formula for " + cellReference + " with " + CharSequences.quoteAndEscape(formulaText));
-
-        this.patchCell(
-            new SpreadsheetCell(
-                cellReference,
-                new SpreadsheetFormula(formulaText),
-                TextStyle.EMPTY
-            )
         );
     }
 
