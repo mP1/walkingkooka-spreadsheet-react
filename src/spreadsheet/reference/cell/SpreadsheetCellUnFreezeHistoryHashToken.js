@@ -19,6 +19,6 @@ export default class SpreadsheetCellUnFreezeHistoryHashToken extends Spreadsheet
         viewportWidget.unFreezeSelection(
             this.viewportSelection()
         );
-        viewportWidget.historyPushSelectionOnly();
+        viewportWidget.historyPushViewportSelectionSelect();
     }
 }

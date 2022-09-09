@@ -48,7 +48,7 @@ export default class SpreadsheetCellStyleSaveHistoryHashToken extends Spreadshee
             this.propertyValue()
         );
 
-        viewportWidget.historyPushSelectionOnly();
+        viewportWidget.historyPushViewportSelectionSelect();
     }
 
     equals(other) {
