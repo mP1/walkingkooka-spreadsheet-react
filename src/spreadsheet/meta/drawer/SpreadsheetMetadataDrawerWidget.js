@@ -193,7 +193,7 @@ class SpreadsheetMetadataDrawerWidget extends SpreadsheetMetadataWidget {
         return (value) => {
             const tokens = SpreadsheetHistoryHashTokens.emptyTokens();
             tokens[SpreadsheetHistoryHashTokens.METADATA] = new SpreadsheetMetadataSaveHistoryHashToken(property, value);
-            this.historyParseMergeAndPush(tokens);
+            this.historyMergeAndPush(tokens);
 
             console.log("metadata save " + property + "=" + value, tokens);
         };
@@ -255,7 +255,7 @@ class SpreadsheetMetadataDrawerWidget extends SpreadsheetMetadataWidget {
 
                 const tokens = SpreadsheetHistoryHashTokens.emptyTokens();
                 tokens[SpreadsheetHistoryHashTokens.METADATA] = SpreadsheetMetadataSelectHistoryHashToken.NOTHING;
-                this.historyParseMergeAndPush(tokens);
+                this.historyMergeAndPush(tokens);
             }
         };
         const onBlur = (e) => {
@@ -266,7 +266,7 @@ class SpreadsheetMetadataDrawerWidget extends SpreadsheetMetadataWidget {
                 if(!drawer.current.contains(target) && !(document.getElementById(SpreadsheetMetadataDrawerWidget.menuIcon()).contains(target))){
                     const tokens = SpreadsheetHistoryHashTokens.emptyTokens();
                     tokens[SpreadsheetHistoryHashTokens.METADATA] = null;
-                    this.historyParseMergeAndPush(tokens);
+                    this.historyMergeAndPush(tokens);
 
                     console.log("metadata.blur", target);
                 }
@@ -277,7 +277,7 @@ class SpreadsheetMetadataDrawerWidget extends SpreadsheetMetadataWidget {
             const tokens = SpreadsheetHistoryHashTokens.emptyTokens();
             tokens[SpreadsheetHistoryHashTokens.METADATA] = null;
 
-            this.historyParseMergeAndPush(tokens);
+            this.historyMergeAndPush(tokens);
         }
 
         const open = Boolean(metadata);
@@ -1259,7 +1259,7 @@ class SpreadsheetMetadataDrawerWidget extends SpreadsheetMetadataWidget {
 
             const historyHashTokens = SpreadsheetHistoryHashTokens.emptyTokens();
             historyHashTokens[SpreadsheetHistoryHashTokens.METADATA] = expanded ? new SpreadsheetMetadataSelectHistoryHashToken(accordion) : SpreadsheetMetadataSelectHistoryHashToken.NOTHING;
-            this.historyParseMergeAndPush(historyHashTokens);
+            this.historyMergeAndPush(historyHashTokens);
         }
 
         return <Accordion id={id}

@@ -145,7 +145,7 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetCellWidget {
             {},
             (message, error) => {
                 // label must not exist clear selection
-                this.historyParseMergeAndPushSelection(null);
+                this.historyMergeAndPushSelection(null);
                 this.showError(message, error);
             }
         );
@@ -228,7 +228,7 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetCellWidget {
 
                     e.preventDefault();
 
-                    this.historyParseMergeAndPushSelection(
+                    this.historyMergeAndPushSelection(
                         new SpreadsheetCellFormulaSaveHistoryHashToken(
                             this.state.viewportSelection.viewportSelection(),
                             e.target.value

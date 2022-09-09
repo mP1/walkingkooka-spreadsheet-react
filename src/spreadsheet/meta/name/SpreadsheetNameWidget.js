@@ -127,7 +127,7 @@ export default class SpreadsheetNameWidget extends SpreadsheetMetadataWidget {
         historyHashTokens[SpreadsheetHistoryHashTokens.SPREADSHEET_NAME_EDIT] = new SpreadsheetNameSaveHistoryHashToken(
             new SpreadsheetName(this.state.value)
         );
-        this.historyParseMergeAndPush(historyHashTokens);
+        this.historyMergeAndPush(historyHashTokens);
     }
 
     onSpreadsheetMetadata(method, id, url, requestMetadata, responseMetadata) {

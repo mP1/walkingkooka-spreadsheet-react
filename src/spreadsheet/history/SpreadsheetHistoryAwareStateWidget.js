@@ -60,7 +60,7 @@ export default class SpreadsheetHistoryAwareStateWidget extends SpreadsheetHisto
         this.insideHistoryTokensFromState = true;
         try {
             const historyHashTokens = this.historyTokensFromState(prevState);
-            this.historyParseMergeAndPush(historyHashTokens);
+            this.historyMergeAndPush(historyHashTokens);
         } finally {
             delete this.insideHistoryTokensFromState;
         }

@@ -285,7 +285,7 @@ export default class SpreadsheetLabelMappingWidget extends SpreadsheetHistoryAwa
     close() {
         const tokens = SpreadsheetHistoryHashTokens.emptyTokens();
         tokens[SpreadsheetHistoryHashTokens.LABEL] = null;
-        this.historyParseMergeAndPush(tokens);
+        this.historyMergeAndPush(tokens);
     }
 
     /**
