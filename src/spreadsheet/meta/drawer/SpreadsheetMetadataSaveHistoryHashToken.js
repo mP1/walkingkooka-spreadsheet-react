@@ -54,7 +54,7 @@ export default class SpreadsheetMetadataSaveHistoryHashToken extends Spreadsheet
 
         const tokens = SpreadsheetHistoryHashTokens.emptyTokens();
         tokens[SpreadsheetHistoryHashTokens.METADATA] = metadata;
-        metadataDrawerWidget.historyParseMergeAndPush(tokens);
+        metadataDrawerWidget.historyMergeAndPush(tokens);
     }
 
     equals(other) {

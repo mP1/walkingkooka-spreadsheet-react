@@ -825,7 +825,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetCellWidget {
         const onClick = (e) => {
             const clickedSelection = this.findEventTargetSelection(e.target);
             if(clickedSelection){
-                this.historyParseMergeAndPushSelection(
+                this.historyMergeAndPushSelection(
                     selectHistoryHashToken(
                         new SpreadsheetViewportSelection(clickedSelection)
                     )
@@ -837,7 +837,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetCellWidget {
         const onCloseContextMenu = () => {
             const stateViewportSelection = this.state.viewportSelection;
             if(stateViewportSelection instanceof SpreadsheetCellMenuHistoryHashToken || stateViewportSelection instanceof SpreadsheetColumnOrRowMenuHistoryHashToken){
-                this.historyParseMergeAndPushSelection(
+                this.historyMergeAndPushSelection(
                     selectHistoryHashToken(
                         stateViewportSelection.viewportSelection()
                     )
@@ -1169,7 +1169,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetCellWidget {
                 CONTEXT_MENU_X_OFFSET,
                 CONTEXT_MENU_Y_OFFSET,
             );
-            this.historyParseMergeAndPushSelection(
+            this.historyMergeAndPushSelection(
                 contextMenuSelection instanceof SpreadsheetExpressionReference ?
                     new SpreadsheetCellMenuHistoryHashToken(viewportSelectionToken, contextMenu) :
                     new SpreadsheetColumnOrRowMenuHistoryHashToken(viewportSelectionToken, contextMenu)

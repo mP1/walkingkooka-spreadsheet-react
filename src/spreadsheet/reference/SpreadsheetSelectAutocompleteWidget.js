@@ -434,7 +434,7 @@ export default class SpreadsheetSelectAutocompleteWidget extends SpreadsheetHist
 
         const tokens = SpreadsheetHistoryHashTokens.emptyTokens();
         tokens[SpreadsheetHistoryHashTokens.SELECT] = null;
-        this.historyParseMergeAndPush(tokens);
+        this.historyMergeAndPush(tokens);
     }
 }
 

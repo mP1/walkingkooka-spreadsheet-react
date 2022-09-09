@@ -31,13 +31,13 @@ export default class SpreadsheetHistoryAwareWidget extends SpreadsheetWidget {
         throw new Error("Sub classes must override onHistoryChange");
     }
 
-    historyParseMergeAndPushSelection(viewportSelection) {
+    historyMergeAndPushSelection(viewportSelection) {
         const tokens = SpreadsheetHistoryHashTokens.emptyTokens();
         tokens[SpreadsheetHistoryHashTokens.VIEWPORT_SELECTION] = viewportSelection;
-        this.historyParseMergeAndPush(tokens);
+        this.historyMergeAndPush(tokens);
     }
 
-    historyParseMergeAndPush(tokens) {
+    historyMergeAndPush(tokens) {
         const copy = Object.assign({}, tokens);
 
         const propertyCount = Object.keys(copy).length;
@@ -52,7 +52,7 @@ export default class SpreadsheetHistoryAwareWidget extends SpreadsheetWidget {
 
 
             setTimeout(() => {
-                console.log(this.prefix() + ".historyParseMergeAndPush: txId: " + SpreadsheetHistoryHashTokens.currentTxId() + " ", copy);
+                console.log(this.prefix() + ".historyMergeAndPush: txId: " + SpreadsheetHistoryHashTokens.currentTxId() + " ", copy);
                 this.props.history.mergeAndPush(copy);
             }, 1);
         }

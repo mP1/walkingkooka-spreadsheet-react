@@ -39,7 +39,7 @@ export default class SpreadsheetCellWidget extends SpreadsheetHistoryAwareStateW
             tokens[SpreadsheetHistoryHashTokens.VIEWPORT_SELECTION] = selectHistoryHashToken(
                 viewportSelection
             );
-            this.historyParseMergeAndPush(tokens);
+            this.historyMergeAndPush(tokens);
         }
     }
 

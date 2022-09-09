@@ -154,7 +154,7 @@ export default class SpreadsheetMetadataDrawerWidgetValue extends SpreadsheetHis
                     );
                     this.log(" push " + property + "=" + value + " last saved: " + state.savedValue, tokens, JSON.stringify(tokens));
 
-                    this.historyParseMergeAndPush(tokens);
+                    this.historyMergeAndPush(tokens);
                 }
 
                 this.setState({
