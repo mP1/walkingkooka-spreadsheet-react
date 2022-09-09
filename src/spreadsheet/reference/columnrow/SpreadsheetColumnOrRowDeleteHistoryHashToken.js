@@ -19,6 +19,6 @@ export default class SpreadsheetColumnOrRowDeleteHistoryHashToken extends Spread
         viewportWidget.deleteSelection(
             this.viewportSelection()
         );
-        viewportWidget.historyPushSelectionOnly();
+        viewportWidget.historyPushViewportSelectionSelect();
     }
 }

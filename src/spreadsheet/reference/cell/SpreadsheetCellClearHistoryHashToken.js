@@ -20,6 +20,6 @@ export default class SpreadsheetCellClearHistoryHashToken extends SpreadsheetCel
             this.viewportSelection()
         );
 
-        viewportWidget.historyPushSelectionOnly();
+        viewportWidget.historyPushViewportSelectionSelect();
     }
 }

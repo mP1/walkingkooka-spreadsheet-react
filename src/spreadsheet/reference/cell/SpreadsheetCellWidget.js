@@ -1,12 +1,10 @@
 import ImmutableMap from "../../../util/ImmutableMap.js";
 import Preconditions from "../../../Preconditions.js";
 import PropTypes from 'prop-types';
-import selectHistoryHashToken from "../../history/selectHistoryHashToken.js";
 import SpreadsheetCell from "../../SpreadsheetCell.js";
 import SpreadsheetDelta from "../../engine/SpreadsheetDelta.js";
 import SpreadsheetHistoryAwareStateWidget from "../../history/SpreadsheetHistoryAwareStateWidget.js";
 import SpreadsheetHistoryHash from "../../history/SpreadsheetHistoryHash.js";
-import SpreadsheetHistoryHashTokens from "../../history/SpreadsheetHistoryHashTokens.js";
 import SpreadsheetMessengerCrud from "../../message/SpreadsheetMessengerCrud.js";
 import SystemObject from "../../../SystemObject.js";
 
@@ -26,21 +24,6 @@ export default class SpreadsheetCellWidget extends SpreadsheetHistoryAwareStateW
 
         this.onSpreadsheetDeltaRemover && this.onSpreadsheetDeltaRemover();
         delete this.onSpreadsheetDeltaRemover;
-    }
-
-    /**
-     * Clears the selection action from the history hash. This is done after a clear and other similar actions.
-     */
-    historyPushSelectionOnly() {
-        const tokens = this.props.history.tokens();
-        const viewportSelectionToken = tokens[SpreadsheetHistoryHashTokens.VIEWPORT_SELECTION];
-        if(viewportSelectionToken){
-            const viewportSelection = viewportSelectionToken.viewportSelection();
-            tokens[SpreadsheetHistoryHashTokens.VIEWPORT_SELECTION] = selectHistoryHashToken(
-                viewportSelection
-            );
-            this.historyMergeAndPush(tokens);
-        }
     }
 
     onSpreadsheetDelta(method, cellOrLabel, url, requestDelta, responseDelta) {

@@ -19,7 +19,7 @@ export default class SpreadsheetCellDeleteHistoryHashToken extends SpreadsheetCe
         viewportWidget.deleteSelection(
             this.viewportSelection()
         );
-        viewportWidget.historyPushSelectionOnly();
+        viewportWidget.historyPushViewportSelectionSelect();
     }
 
     labelMappingWidget(widget) {

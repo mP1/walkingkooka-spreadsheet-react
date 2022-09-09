@@ -1,4 +1,5 @@
 import PropTypes from "prop-types";
+import selectHistoryHashToken from "./selectHistoryHashToken.js";
 import SpreadsheetHistoryHash from "./SpreadsheetHistoryHash.js";
 import SpreadsheetHistoryHashTokens from "./SpreadsheetHistoryHashTokens.js";
 import SpreadsheetWidget from "../SpreadsheetWidget.js";
@@ -29,6 +30,22 @@ export default class SpreadsheetHistoryAwareWidget extends SpreadsheetWidget {
 
     onHistoryChange(tokens) {
         throw new Error("Sub classes must override onHistoryChange");
+    }
+
+    /**
+     * If a viewport selection is present replace it with only a basic selection and not some other action,
+     * eg formula-edit becomes cell select.
+     */
+    historyPushViewportSelectionSelect() {
+        const tokens = this.props.history.tokens();
+        const viewportSelectionToken = tokens[SpreadsheetHistoryHashTokens.VIEWPORT_SELECTION];
+        if(viewportSelectionToken){
+            this.historyMergeAndPushSelection(
+                selectHistoryHashToken(
+                    viewportSelectionToken.viewportSelection()
+                )
+            );
+        }
     }
 
     historyMergeAndPushSelection(viewportSelection) {
