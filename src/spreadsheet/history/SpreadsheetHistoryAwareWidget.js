@@ -40,7 +40,7 @@ export default class SpreadsheetHistoryAwareWidget extends SpreadsheetWidget {
         const tokens = this.props.history.tokens();
         const viewportSelectionToken = tokens[SpreadsheetHistoryHashTokens.VIEWPORT_SELECTION];
         if(viewportSelectionToken){
-            this.historyMergeAndPushSelection(
+            this.historyPushViewportSelection(
                 selectHistoryHashToken(
                     viewportSelectionToken.viewportSelection()
                 )
@@ -48,7 +48,7 @@ export default class SpreadsheetHistoryAwareWidget extends SpreadsheetWidget {
         }
     }
 
-    historyMergeAndPushSelection(viewportSelection) {
+    historyPushViewportSelection(viewportSelection) {
         const tokens = SpreadsheetHistoryHashTokens.emptyTokens();
         tokens[SpreadsheetHistoryHashTokens.VIEWPORT_SELECTION] = viewportSelection;
         this.historyMergeAndPush(tokens);

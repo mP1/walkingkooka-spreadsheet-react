@@ -44,7 +44,7 @@ export default class SpreadsheetColumnOrRowSaveHistoryHashToken extends Spreadsh
         );
 
         // remove the saved property and value from the history hash
-        viewportWidget.historyMergeAndPushSelection(
+        viewportWidget.historyPushViewportSelection(
             selectHistoryHashToken(viewportSelection)
         );
     }
