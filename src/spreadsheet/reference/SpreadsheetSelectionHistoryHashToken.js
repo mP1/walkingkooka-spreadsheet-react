@@ -16,6 +16,10 @@ export default class SpreadsheetSelectionHistoryHashToken extends SpreadsheetHis
         );
     }
 
+    spreadsheetFormulaWidgetExecute(formulaWidget, previousViewportSelection) {
+        // default NO-OP
+    }
+
     spreadsheetViewportWidgetExecute(viewportWidget, viewportCell, width, height) {
         SystemObject.throwUnsupportedOperation();
     }

@@ -10,6 +10,20 @@ export default class SpreadsheetCellFormulaEditHistoryHashToken extends Spreadsh
         return this.formulaTextValue;
     }
 
+    spreadsheetFormulaWidgetExecute(formulaWidget, previousViewportSelection) {
+        const viewportSelection = this.viewportSelection();
+
+        if(!formulaWidget.isFocused() && !(previousViewportSelection instanceof SpreadsheetCellFormulaHistoryHashToken)) {
+            formulaWidget.giveFormulaTextBoxFocus();
+        }
+
+        // if cell selection changed load text only not after a formula save. the extra selection is NOT a formula save makes the selection clear after the save completes.
+        const selection = viewportSelection.selection();
+        if(!selection.equalsIgnoringKind(previousViewportSelection && previousViewportSelection.viewportSelection().selection())){
+            formulaWidget.loadFormulaText(selection);
+        }
+    }
+
     spreadsheetViewportWidgetExecute(viewportWidget, viewportCell, width, height) {
         // viewport is not interested in formula token.
     }

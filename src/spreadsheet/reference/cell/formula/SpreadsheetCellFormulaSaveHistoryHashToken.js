@@ -1,4 +1,5 @@
 import Preconditions from "../../../../Preconditions.js";
+import SpreadsheetCellFormulaEditHistoryHashToken from "./SpreadsheetCellFormulaEditHistoryHashToken.js";
 import SpreadsheetCellFormulaHistoryHashToken from "./SpreadsheetCellFormulaHistoryHashToken.js";
 import SpreadsheetHistoryHashTokens from "../../../history/SpreadsheetHistoryHashTokens.js";
 
@@ -26,6 +27,22 @@ export default class SpreadsheetCellFormulaSaveHistoryHashToken extends Spreadsh
             SpreadsheetHistoryHashTokens.SAVE +
             "/" +
             encodeURIComponent(this.formulaText());
+    }
+
+    // previousViewportSelection ignored
+    spreadsheetFormulaWidgetExecute(formulaWidget, previousViewportSelection) {
+        const viewportSelection = this.viewportSelection();
+
+        formulaWidget.patchFormula(
+            viewportSelection.selection(),
+            this.formulaText(),
+        );
+
+        formulaWidget.historyPushViewportSelection(
+            formulaWidget.isFocused() ?
+                new SpreadsheetCellFormulaEditHistoryHashToken(viewportSelection) :
+                null
+        );
     }
 
     spreadsheetViewportWidgetExecute(viewportWidget, viewportCell, width, height) {
