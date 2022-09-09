@@ -1,6 +1,6 @@
 import Equality from "../../../Equality.js";
-import selectHistoryHashToken from "../../history/selectHistoryHashToken.js";
 import SpreadsheetColumnOrRowHistoryHashToken from "./SpreadsheetColumnOrRowHistoryHashToken.js";
+import viewportSelectionSelectHistoryHashToken from "../../history/viewportSelectionSelectHistoryHashToken.js";
 
 /**
  * Represents a save column/row property with value history hash token.
@@ -45,7 +45,7 @@ export default class SpreadsheetColumnOrRowSaveHistoryHashToken extends Spreadsh
 
         // remove the saved property and value from the history hash
         viewportWidget.historyPushViewportSelection(
-            selectHistoryHashToken(viewportSelection)
+            viewportSelectionSelectHistoryHashToken(viewportSelection)
         );
     }
 

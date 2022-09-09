@@ -9,7 +9,6 @@ import Paper from '@mui/material/Paper';
 import Preconditions from "../../../Preconditions.js";
 import PropTypes from "prop-types";
 import React from 'react';
-import selectHistoryHashToken from "../../history/selectHistoryHashToken.js";
 import Slider from "@mui/material/Slider";
 import SpreadsheetCellColumnOrRowParse from "../cell/SpreadsheetCellColumnOrRowParse.js";
 import SpreadsheetCellFormulaEditHistoryHashToken from "../cell/formula/SpreadsheetCellFormulaEditHistoryHashToken.js";
@@ -45,6 +44,7 @@ import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
+import viewportSelectionSelectHistoryHashToken from "../../history/viewportSelectionSelectHistoryHashToken.js";
 
 // default header cell styles
 
@@ -285,7 +285,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetCellWidget {
                         Object.assign(
                             newState,
                             {
-                                viewportSelection: selectHistoryHashToken(responseViewportSelection),
+                                viewportSelection: viewportSelectionSelectHistoryHashToken(responseViewportSelection),
                             }
                         );
                     }
@@ -321,7 +321,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetCellWidget {
                                         Object.assign(
                                             newState,
                                             {
-                                                viewportSelection: selectHistoryHashToken(
+                                                viewportSelection: viewportSelectionSelectHistoryHashToken(
                                                     new SpreadsheetViewportSelection(
                                                         selection.viewportInsertBeforePostSuccessSelection(viewportSelectionToken.count()),
                                                         viewportSelection.anchor()
@@ -349,7 +349,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetCellWidget {
                                         Object.assign(
                                             newState,
                                             {
-                                                viewportSelection: selectHistoryHashToken(
+                                                viewportSelection: viewportSelectionSelectHistoryHashToken(
                                                     new SpreadsheetViewportSelection(
                                                         selection,
                                                         viewportSelection.anchor()
@@ -826,7 +826,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetCellWidget {
             const clickedSelection = this.findEventTargetSelection(e.target);
             if(clickedSelection){
                 this.historyPushViewportSelection(
-                    selectHistoryHashToken(
+                    viewportSelectionSelectHistoryHashToken(
                         new SpreadsheetViewportSelection(clickedSelection)
                     )
                 );
@@ -838,7 +838,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetCellWidget {
             const stateViewportSelection = this.state.viewportSelection;
             if(stateViewportSelection instanceof SpreadsheetCellMenuHistoryHashToken || stateViewportSelection instanceof SpreadsheetColumnOrRowMenuHistoryHashToken){
                 this.historyPushViewportSelection(
-                    selectHistoryHashToken(
+                    viewportSelectionSelectHistoryHashToken(
                         stateViewportSelection.viewportSelection()
                     )
                 );
@@ -905,7 +905,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetCellWidget {
                     }
 
                     const newViewportSelection = navigation ?
-                        selectHistoryHashToken(
+                        viewportSelectionSelectHistoryHashToken(
                             viewportSelection.setNavigation(navigation)
                         ) :
                         viewportSelectionToken;
@@ -1200,7 +1200,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetCellWidget {
         ];
 
         columns.forEach(c => {
-            tokens[SpreadsheetHistoryHashTokens.VIEWPORT_SELECTION] = selectHistoryHashToken(
+            tokens[SpreadsheetHistoryHashTokens.VIEWPORT_SELECTION] = viewportSelectionSelectHistoryHashToken(
                 new SpreadsheetViewportSelection(c)
             );
 
@@ -1232,7 +1232,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetCellWidget {
                 const tableRowCells = [];
                 const height = rowHeightFn(r);
 
-                tokens[SpreadsheetHistoryHashTokens.VIEWPORT_SELECTION] = selectHistoryHashToken(
+                tokens[SpreadsheetHistoryHashTokens.VIEWPORT_SELECTION] = viewportSelectionSelectHistoryHashToken(
                     new SpreadsheetViewportSelection(r)
                 );
 

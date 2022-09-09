@@ -1,8 +1,8 @@
 import PropTypes from "prop-types";
-import selectHistoryHashToken from "./selectHistoryHashToken.js";
 import SpreadsheetHistoryHash from "./SpreadsheetHistoryHash.js";
 import SpreadsheetHistoryHashTokens from "./SpreadsheetHistoryHashTokens.js";
 import SpreadsheetWidget from "../SpreadsheetWidget.js";
+import viewportSelectionSelectHistoryHashToken from "./viewportSelectionSelectHistoryHashToken.js";
 
 /**
  * A React.Component that is also interested in history change events. Some of the basics like registering a history
@@ -41,7 +41,7 @@ export default class SpreadsheetHistoryAwareWidget extends SpreadsheetWidget {
         const viewportSelectionToken = tokens[SpreadsheetHistoryHashTokens.VIEWPORT_SELECTION];
         if(viewportSelectionToken){
             this.historyPushViewportSelection(
-                selectHistoryHashToken(
+                viewportSelectionSelectHistoryHashToken(
                     viewportSelectionToken.viewportSelection()
                 )
             );

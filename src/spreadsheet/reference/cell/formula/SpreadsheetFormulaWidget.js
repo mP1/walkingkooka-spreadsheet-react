@@ -2,7 +2,6 @@ import CharSequences from "../../../../CharSequences.js";
 import Keys from "../../../../Keys.js";
 import PropTypes from "prop-types";
 import React from 'react';
-import selectHistoryHashToken from "../../../history/selectHistoryHashToken.js";
 import SpreadsheetCell from "../../../SpreadsheetCell.js";
 import SpreadsheetCellFormulaEditHistoryHashToken from "./SpreadsheetCellFormulaEditHistoryHashToken.js";
 import SpreadsheetCellFormulaHistoryHashToken from "./SpreadsheetCellFormulaHistoryHashToken.js";
@@ -19,6 +18,7 @@ import SpreadsheetMessengerCrud from "../../../message/SpreadsheetMessengerCrud.
 import SpreadsheetViewportWidget from "../../viewport/SpreadsheetViewportWidget.js";
 import TextField from '@mui/material/TextField';
 import TextStyle from "../../../../text/TextStyle.js";
+import viewportSelectionSelectHistoryHashToken from "../../../history/viewportSelectionSelectHistoryHashToken.js";
 
 /**
  * A widget that supports editing formula text.
@@ -186,7 +186,7 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetCellWidget {
 
                 }else {
                     // new target not viewport better select cell
-                    newState.viewportSelection = selectHistoryHashToken(
+                    newState.viewportSelection = viewportSelectionSelectHistoryHashToken(
                         viewportSelectionToken.viewportSelection()
                     );
 
