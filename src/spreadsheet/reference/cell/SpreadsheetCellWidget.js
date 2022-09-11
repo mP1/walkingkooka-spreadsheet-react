@@ -1,8 +1,5 @@
-import ImmutableMap from "../../../util/ImmutableMap.js";
 import Preconditions from "../../../Preconditions.js";
 import PropTypes from 'prop-types';
-import SpreadsheetCell from "../../SpreadsheetCell.js";
-import SpreadsheetDelta from "../../engine/SpreadsheetDelta.js";
 import SpreadsheetExpressionReference from "../SpreadsheetExpressionReference.js";
 import SpreadsheetFormula from "./formula/SpreadsheetFormula.js";
 import SpreadsheetHistoryAwareStateWidget from "../../history/SpreadsheetHistoryAwareStateWidget.js";
@@ -30,30 +27,6 @@ export default class SpreadsheetCellWidget extends SpreadsheetHistoryAwareStateW
 
     onSpreadsheetDelta(method, cellOrLabel, url, requestDelta, responseDelta) {
         SystemObject.throwUnsupportedOperation();
-    }
-
-    /**
-     * Calls the server to PATCH a cell and also handles updating the history hash leaving just the selection.
-     */
-    patchCell(cell) {
-        Preconditions.requireInstance(cell, SpreadsheetCell, "cell");
-
-        this.patch(
-            cell.reference(),
-            new SpreadsheetDelta(
-                null,
-                [cell],
-                [],
-                [],
-                [],
-                [],
-                [],
-                [],
-                ImmutableMap.EMPTY,
-                ImmutableMap.EMPTY,
-                this.state.window,
-            )
-        );
     }
 
     /**
