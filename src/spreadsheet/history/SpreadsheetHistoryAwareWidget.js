@@ -113,10 +113,6 @@ export default class SpreadsheetHistoryAwareWidget extends SpreadsheetWidget {
         };
     }
 
-    showError(message, error) {
-        throw new Error("Sub classes must override showError");
-    }
-
     log(...params) {
         console.log(this.prefix() + params[0], params.shift());
     }

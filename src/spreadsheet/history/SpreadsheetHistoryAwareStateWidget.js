@@ -72,10 +72,6 @@ export default class SpreadsheetHistoryAwareStateWidget extends SpreadsheetHisto
     historyTokensFromState(prevState) {
         throw new Error("Sub classes must override historyTokensFromState()");
     }
-
-    showError(message, error) {
-        this.props.showError(message, error);
-    }
 }
 
 SpreadsheetHistoryAwareStateWidget.propTypes = {
