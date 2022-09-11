@@ -206,7 +206,12 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
                 this.spreadsheetMetadataCrud.get(
                     spreadsheetId,
                     {},
-                    (message, error) => this.props.showError("Unable to load spreadsheet " + spreadsheetId, error)
+                    this.unknownSpreadsheetErrorHandler(
+                        null, // $previousId broken in StrictMode
+                        (statusCode, statusMessage) => {
+                            this.props.showError("Unable to load spreadsheet " + spreadsheetId);
+                        }
+                    )
                 );
             } else {
                 this.spreadsheetEmptyCreate();
@@ -243,27 +248,29 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
         this.spreadsheetMetadataCrud.post(
             null,
             "",
-            this.props.showError
+            this.showErrorErrorHandler(this.props.showError)
         );
     }
 
     onSpreadsheetMetadata(method, id, url, requestMetadata, responseMetadata) {
-        const spreadsheetName = responseMetadata ? responseMetadata.getIgnoringDefaults(SpreadsheetMetadata.SPREADSHEET_NAME) : null;
+        if(responseMetadata) {
+            const spreadsheetName = responseMetadata.getIgnoringDefaults(SpreadsheetMetadata.SPREADSHEET_NAME);
 
-        this.setState({
-            spreadsheetId: responseMetadata && responseMetadata.getIgnoringDefaults(SpreadsheetMetadata.SPREADSHEET_ID),
-            spreadsheetName: spreadsheetName,
-            creatingOrLoadingSpreadsheet: false,
-            spreadsheetMetadata: responseMetadata,
-        });
+            this.setState({
+                spreadsheetId: responseMetadata && responseMetadata.getIgnoringDefaults(SpreadsheetMetadata.SPREADSHEET_ID),
+                spreadsheetName: spreadsheetName,
+                creatingOrLoadingSpreadsheet: false,
+                spreadsheetMetadata: responseMetadata,
+            });
 
-        // save notification...
-        switch(method) {
-            case HttpMethod.POST:
-                this.props.notificationShow(SpreadsheetNotification.success("Spreadsheet metadata saved"));
-                break;
-            default:
-                break;
+            // save notification...
+            switch(method) {
+                case HttpMethod.POST:
+                    this.props.notificationShow(SpreadsheetNotification.success("Spreadsheet metadata saved"));
+                    break;
+                default:
+                    break;
+            }
         }
     }
 
@@ -462,17 +469,15 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
         };
         const requestValue = null;
 
-        const failure = this.props.showError;
-
         crud.messenger.send(
             url,
             parameters,
             (json) => {
                 crud.fireResponse(method, id, url, requestValue, json)
             },
-            () => {
-                failure();
-            },
+            this.unknownLabelErrorHandler(
+                this.showErrorErrorHandler(this.props.showError)
+            ),
         );
     }
 
@@ -486,7 +491,7 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
             url,
             parameters,
             response,
-            error || this.props.showError,
+            error || this.showErrorErrorHandler(this.props.showError),
         )
     }
 

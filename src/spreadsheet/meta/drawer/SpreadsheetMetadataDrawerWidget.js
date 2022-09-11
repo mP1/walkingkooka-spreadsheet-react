@@ -200,31 +200,33 @@ class SpreadsheetMetadataDrawerWidget extends SpreadsheetMetadataWidget {
     }
 
     onSpreadsheetMetadata(method, id, url, requestMetadata, responseMetadata) {
-        this.setState({
-            createDateTimeFormatted: "", // clear forcing reformatting of create/modified timestamps.
-            modifiedDateTimeFormatted: "",
-            spreadsheetMetadata: responseMetadata,
-        });
+        if(responseMetadata) {
+            this.setState({
+                createDateTimeFormatted: "", // clear forcing reformatting of create/modified timestamps.
+                modifiedDateTimeFormatted: "",
+                spreadsheetMetadata: responseMetadata,
+            });
 
-        this.giveFocus(
-            () => {
-                const {
-                    giveMetadataFocus,
-                    metadata,
-                } = this.state;
+            this.giveFocus(
+                () => {
+                    const {
+                        giveMetadataFocus,
+                        metadata,
+                    } = this.state;
 
-                var element;
-                if(giveMetadataFocus && metadata && !metadata.item()){
-                    this.setState({
-                        giveMetadataFocus: false,
-                    });
+                    var element;
+                    if(giveMetadataFocus && metadata && !metadata.item()){
+                        this.setState({
+                            giveMetadataFocus: false,
+                        });
 
-                    element = this.drawer.current;
+                        element = this.drawer.current;
+                    }
+
+                    return element;
                 }
-
-                return element;
-            }
-        );
+            );
+        }
     }
 
     render() {

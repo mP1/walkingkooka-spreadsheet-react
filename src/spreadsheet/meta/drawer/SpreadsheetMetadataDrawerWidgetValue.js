@@ -244,19 +244,21 @@ export default class SpreadsheetMetadataDrawerWidgetValue extends SpreadsheetHis
      * Updates the value and default value whenever a new SpreadsheetMetadata is loaded.
      */
     onSpreadsheetMetadata(method, id, url, requestMetadata, responseMetadata) {
-        const {getValue} = this.props;
+        if(responseMetadata){
+            const {getValue} = this.props;
 
-        const value = getValue(responseMetadata);
-        const defaultValue = getValue(responseMetadata.getIgnoringDefaults(SpreadsheetMetadata.DEFAULTS));
+            const value = getValue(responseMetadata);
+            const defaultValue = getValue(responseMetadata.getIgnoringDefaults(SpreadsheetMetadata.DEFAULTS));
 
-        this.log(".onSpreadsheetMetadata got value: " + value + " default=" + defaultValue, responseMetadata);
+            this.log(".onSpreadsheetMetadata got value: " + value + " default=" + defaultValue, responseMetadata);
 
-        this.setState({
-            value: value,
-            value2: value,
-            savedValue: value,
-            defaultValue: defaultValue,
-        });
+            this.setState({
+                value: value,
+                value2: value,
+                savedValue: value,
+                defaultValue: defaultValue,
+            });
+        }
     }
 
     prefix() {

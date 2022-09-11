@@ -82,7 +82,7 @@ export default class SpreadsheetCellWidget extends SpreadsheetHistoryAwareStateW
         props.spreadsheetDeltaCellCrud.patch(
             selection,
             delta,
-            props.showError,
+            this.unknownLabelErrorHandler(props.showError),
         );
     }
 }

@@ -355,8 +355,9 @@ export default class SpreadsheetLabelMappingWidget extends SpreadsheetHistoryAwa
         }
     }
 
+    // TODO inline.
     onLabelMappingLoadFailure(message, error) {
-        this.props.showError(message, error);
+        this.props.showError(message);
 
         const state = {};
         this.parseLabel("", state);
@@ -364,6 +365,7 @@ export default class SpreadsheetLabelMappingWidget extends SpreadsheetHistoryAwa
         this.setState(state);
     }
 
+    // TODO inline
     onLabelMappingSaveSuccess(mapping) {
         this.props.notificationShow(SpreadsheetNotification.success("Label saved"));
 

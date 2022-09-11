@@ -66,7 +66,10 @@ export default class SpreadsheetMetadataWidget extends SpreadsheetHistoryAwareSt
         this.props.spreadsheetMetadataCrud.patch(
             id,
             JSON.stringify(patch),
-            this.props.showError
+            this.unknownSpreadsheetErrorHandler(
+                null,
+                this.showErrorErrorHandler(this.props.showError)
+            )
         );
     }
 }

@@ -122,10 +122,9 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetCellWidget {
         this.props.spreadsheetDeltaCellCrud.get(
             cellOrLabel,
             {},
-            (message, error) => {
-                this.historyPushViewportSelection(null);
-                this.showError(message, error);
-            }
+            this.unknownLabelErrorHandler(
+                this.showErrorErrorHandler(this.props.showError)
+            )
         );
     }
 
@@ -234,35 +233,37 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetCellWidget {
      * If the delta includes an updated formula text for the cell being edited update text.
      */
     onSpreadsheetDelta(method, cellOrLabel, url, requestDelta, responseDelta) {
-        const viewportSelectionToken = this.state.viewportSelection;
+        if(responseDelta) {
+            const viewportSelectionToken = this.state.viewportSelection;
 
-        if(viewportSelectionToken instanceof SpreadsheetCellHistoryHashToken){
-            const viewportSelection = viewportSelectionToken.viewportSelection();
-            const selection = viewportSelection.selection();
+            if(viewportSelectionToken instanceof SpreadsheetCellHistoryHashToken){
+                const viewportSelection = viewportSelectionToken.viewportSelection();
+                const selection = viewportSelection.selection();
 
-            if(selection instanceof SpreadsheetExpressionReference){
-                const cellReference = selection instanceof SpreadsheetLabelName ?
-                    responseDelta.cellReference(selection) :
-                    selection;
+                if(selection instanceof SpreadsheetExpressionReference){
+                    const cellReference = selection instanceof SpreadsheetLabelName ?
+                        responseDelta.cellReference(selection) :
+                        selection;
 
-                const cell = responseDelta.cell(selection);
+                    const cell = responseDelta.cell(selection);
 
-                var formulaText = "";
-                if(cell){
-                    formulaText = cell.formula().text();
-                }else {
-                    if(responseDelta.deletedCells().find(deleted => deleted.equals(cellReference))){
-                        this.log(".onSpreadsheetDelta cell " + selection + " deleted, formula cleared");
+                    var formulaText = "";
+                    if(cell){
+                        formulaText = cell.formula().text();
+                    }else {
+                        if(responseDelta.deletedCells().find(deleted => deleted.equals(cellReference))){
+                            this.log(".onSpreadsheetDelta cell " + selection + " deleted, formula cleared");
+                        }
                     }
+
+                    this.input.current.value = formulaText;
+
+                    this.setState({
+                        cellReference: cellReference,
+                        value: formulaText,
+                        window: responseDelta.window(),
+                    });
                 }
-
-                this.input.current.value = formulaText;
-
-                this.setState({
-                    cellReference: cellReference,
-                    value: formulaText,
-                    window: responseDelta.window(),
-                });
             }
         }
     }

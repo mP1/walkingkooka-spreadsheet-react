@@ -46,35 +46,37 @@ export default class SpreadsheetCellStylePropertyWidget extends SpreadsheetCellW
      * If the delta includes an updated formula text for the cell being edited update text.
      */
     onSpreadsheetDelta(method, cellOrLabel, url, requestDelta, responseDelta) {
-        const viewportSelectionToken = this.state.viewportSelection;
+        if(responseDelta) {
+            const viewportSelectionToken = this.state.viewportSelection;
 
-        if(viewportSelectionToken instanceof SpreadsheetCellHistoryHashToken){
-            const viewportSelection = viewportSelectionToken.viewportSelection();
-            var selection = viewportSelection.selection();
+            if(viewportSelectionToken instanceof SpreadsheetCellHistoryHashToken){
+                const viewportSelection = viewportSelectionToken.viewportSelection();
+                var selection = viewportSelection.selection();
 
-            if(selection instanceof SpreadsheetLabelName) {
-                selection = responseDelta.cellReference(selection);
+                if(selection instanceof SpreadsheetLabelName) {
+                    selection = responseDelta.cellReference(selection);
+                }
+
+                const propertyName = this.props.propertyName;
+                const propertyValue = this.props.propertyValue;
+                const selected = -1 !== selection.values()
+                    .findIndex(
+                        (cellReference) => {
+                            const cell = responseDelta.cell(cellReference);
+                            return Boolean(
+                                cell && Equality.safeEquals(
+                                    propertyValue,
+                                    cell.style()
+                                        .get(propertyName)
+                                )
+                            );
+                        });
+
+                // selection might be a cell or cell-range
+                this.setState({
+                    selected: selected,
+                });
             }
-
-            const propertyName = this.props.propertyName;
-            const propertyValue = this.props.propertyValue;
-            const selected = -1 !== selection.values()
-                .findIndex(
-                    (cellReference) => {
-                        const cell = responseDelta.cell(cellReference);
-                        return Boolean(
-                            cell && Equality.safeEquals(
-                                propertyValue,
-                                cell.style()
-                                    .get(propertyName)
-                            )
-                        );
-                    });
-
-            // selection might be a cell or cell-range
-            this.setState({
-               selected: selected,
-            });
         }
     }
 

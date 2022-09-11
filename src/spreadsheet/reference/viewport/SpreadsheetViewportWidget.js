@@ -191,184 +191,186 @@ export default class SpreadsheetViewportWidget extends SpreadsheetCellWidget {
      * before updating the cells, cell to labels, labels etc.
      */
     onSpreadsheetDelta(method, id, url, requestDelta, responseDelta) {
-        const viewportElement = this.viewportElement.current;
-        if(viewportElement){
-            const window = responseDelta.window();
-            const state = this.state;
+        if(responseDelta) {
+            const viewportElement = this.viewportElement.current;
+            if(viewportElement){
+                const window = responseDelta.window();
+                const state = this.state;
 
-            var {
-                cellReferenceToCells,
-                cellReferenceToLabels,
-                columnReferenceToColumns,
-                labelToReferences,
-                rowReferenceToRows,
-                viewportSelection: viewportSelectionToken,
-                spreadsheetId,
-                spreadsheetMetadata,
-            } = state;
+                var {
+                    cellReferenceToCells,
+                    cellReferenceToLabels,
+                    columnReferenceToColumns,
+                    labelToReferences,
+                    rowReferenceToRows,
+                    viewportSelection: viewportSelectionToken,
+                    spreadsheetId,
+                    spreadsheetMetadata,
+                } = state;
 
-            // first remove any deleted cells.
-            responseDelta.deletedCells()
-                .forEach(r => {
-                    cellReferenceToCells = cellReferenceToCells.remove(r)
-                });
+                // first remove any deleted cells.
+                responseDelta.deletedCells()
+                    .forEach(r => {
+                        cellReferenceToCells = cellReferenceToCells.remove(r)
+                    });
 
-            // if a window was present on the response delta, clear any label mappings within the window space
-            if(window.length){
-                var tempCellReferenceToLabels = new Map();
+                // if a window was present on the response delta, clear any label mappings within the window space
+                if(window.length){
+                    var tempCellReferenceToLabels = new Map();
 
-                cellReferenceToLabels = new ImmutableMap(tempCellReferenceToLabels);
+                    cellReferenceToLabels = new ImmutableMap(tempCellReferenceToLabels);
 
-                // only copy labels that are not within the window.
-                var tempLabelToReferences = new Map();
+                    // only copy labels that are not within the window.
+                    var tempLabelToReferences = new Map();
 
-                for(const [label, reference] of labelToReferences.toMap().entries()) {
-                    var all = true;
+                    for(const [label, reference] of labelToReferences.toMap().entries()) {
+                        var all = true;
 
-                    // resolve label to a cell OR range
-                    var cellOrRange = reference;
-                    while(cellOrRange instanceof SpreadsheetLabelName) {
-                        cellOrRange = labelToReferences.get(cellOrRange);
-                    }
+                        // resolve label to a cell OR range
+                        var cellOrRange = reference;
+                        while(cellOrRange instanceof SpreadsheetLabelName) {
+                            cellOrRange = labelToReferences.get(cellOrRange);
+                        }
 
-                    if(!cellOrRange){
-                        break;
-                    }
-
-                    for(const windowCellRange of window) {
-                        if(cellOrRange.testCellRange(windowCellRange)){
-                            all = false;
+                        if(!cellOrRange){
                             break;
                         }
-                    }
 
-                    if(!all){
-                        tempLabelToReferences.set(label, reference);
-                    }
-                }
-
-                labelToReferences = new ImmutableMap(tempLabelToReferences);
-            }
-
-            const newState = { // lgtm [js/react/inconsistent-state-update]
-                cellReferenceToCells: cellReferenceToCells.setAll(responseDelta.cellReferenceToCells()),
-                cellReferenceToLabels: cellReferenceToLabels.setAll(responseDelta.cellReferenceToLabels()),
-                columnReferenceToColumns: columnReferenceToColumns.setAll(responseDelta.columnReferenceToColumns()),
-                labelToReferences: labelToReferences.setAll(responseDelta.labelToReferences()),
-                rowReferenceToRows: rowReferenceToRows.setAll(responseDelta.rowReferenceToRows()),
-                columnWidths: state.columnWidths.setAll(responseDelta.columnWidths()),
-                rowHeights: state.rowHeights.setAll(responseDelta.rowHeights()),
-            };
-
-            if(window.length){
-                const queryParameters = url.queryParameters();
-                if(queryParameters.home){
-                    Object.assign(
-                        newState,
-                        {
-                            window: window,
-                            spreadsheetMetadata: spreadsheetMetadata.set(
-                                SpreadsheetMetadata.VIEWPORT_CELL,
-                                SpreadsheetDelta.viewportRange(window)
-                                    .begin()
-                            )
+                        for(const windowCellRange of window) {
+                            if(cellOrRange.testCellRange(windowCellRange)){
+                                all = false;
+                                break;
+                            }
                         }
-                    );
+
+                        if(!all){
+                            tempLabelToReferences.set(label, reference);
+                        }
+                    }
+
+                    labelToReferences = new ImmutableMap(tempLabelToReferences);
                 }
 
-                // before replacing the history selection with the response.selection verify the queryparameters & state are equal.
-                const responseViewportSelection = responseDelta.viewportSelection();
-                if(responseViewportSelection && viewportSelectionToken && !(viewportSelectionToken instanceof SpreadsheetCellFormulaHistoryHashToken)){
-                    const queryParameterSelection = queryParameters.selection && queryParameters.selection[0];
-                    const selection = viewportSelectionToken.viewportSelection().selection();
-                    if(selection.equalsIgnoringKind(queryParameterSelection)){
+                const newState = { // lgtm [js/react/inconsistent-state-update]
+                    cellReferenceToCells: cellReferenceToCells.setAll(responseDelta.cellReferenceToCells()),
+                    cellReferenceToLabels: cellReferenceToLabels.setAll(responseDelta.cellReferenceToLabels()),
+                    columnReferenceToColumns: columnReferenceToColumns.setAll(responseDelta.columnReferenceToColumns()),
+                    labelToReferences: labelToReferences.setAll(responseDelta.labelToReferences()),
+                    rowReferenceToRows: rowReferenceToRows.setAll(responseDelta.rowReferenceToRows()),
+                    columnWidths: state.columnWidths.setAll(responseDelta.columnWidths()),
+                    rowHeights: state.rowHeights.setAll(responseDelta.rowHeights()),
+                };
+
+                if(window.length){
+                    const queryParameters = url.queryParameters();
+                    if(queryParameters.home){
                         Object.assign(
                             newState,
                             {
-                                viewportSelection: viewportSelectionSelectHistoryHashToken(responseViewportSelection),
+                                window: window,
+                                spreadsheetMetadata: spreadsheetMetadata.set(
+                                    SpreadsheetMetadata.VIEWPORT_CELL,
+                                    SpreadsheetDelta.viewportRange(window)
+                                        .begin()
+                                )
                             }
                         );
                     }
-                }
-            }
 
-            switch(method) {
-                case HttpMethod.DELETE:
-                    Object.assign(
-                        newState,
-                        {
-                            viewportSelection: null,
-                        }
-                    );
-                    break;
-                case HttpMethod.POST:
-                    if(viewportSelectionToken){
-                        const viewportSelection = viewportSelectionToken.viewportSelection();
-                        const selection = viewportSelection.selection();
-
-                        if(viewportSelectionToken instanceof SpreadsheetColumnOrRowInsertBeforeHistoryHashToken){
-                            const urlPaths = url.path().split("/");
-                            if(urlPaths.length === 7){
-                                // 0 = ""
-                                // 1 == api
-                                // 2 == spreadsheet
-                                // 3 == $spreadsheet-id
-                                // 4 == column == Selection
-                                // 5 == $selection
-                                // 6 == before == insert-action.toUrl
-                                if(urlPaths[3] === spreadsheetId.toString()){
-                                    if(selection.isApiInsertBeforePostUrl(urlPaths)){
-                                        Object.assign(
-                                            newState,
-                                            {
-                                                viewportSelection: viewportSelectionSelectHistoryHashToken(
-                                                    new SpreadsheetViewportSelection(
-                                                        selection.viewportInsertBeforePostSuccessSelection(viewportSelectionToken.count()),
-                                                        viewportSelection.anchor()
-                                                    )
-                                                )
-                                            }
-                                        );
-                                    }
+                    // before replacing the history selection with the response.selection verify the queryparameters & state are equal.
+                    const responseViewportSelection = responseDelta.viewportSelection();
+                    if(responseViewportSelection && viewportSelectionToken && !(viewportSelectionToken instanceof SpreadsheetCellFormulaHistoryHashToken)){
+                        const queryParameterSelection = queryParameters.selection && queryParameters.selection[0];
+                        const selection = viewportSelectionToken.viewportSelection().selection();
+                        if(selection.equalsIgnoringKind(queryParameterSelection)){
+                            Object.assign(
+                                newState,
+                                {
+                                    viewportSelection: viewportSelectionSelectHistoryHashToken(responseViewportSelection),
                                 }
-                            }
-                            break;
-                        }
-                        if(viewportSelectionToken instanceof SpreadsheetColumnOrRowInsertAfterHistoryHashToken){
-                            const urlPaths = url.path().split("/");
-                            if(urlPaths.length === 7){
-                                // 0 = ""
-                                // 1 == api
-                                // 2 == spreadsheet
-                                // 3 == $spreadsheet-id
-                                // 4 == column == Selection
-                                // 5 == $selection
-                                // 6 == before == insert-action.toUrl
-                                if(urlPaths[3] === spreadsheetId.toString()){
-                                    if(selection.isInsertAfterPostUrl(urlPaths)){
-                                        Object.assign(
-                                            newState,
-                                            {
-                                                viewportSelection: viewportSelectionSelectHistoryHashToken(
-                                                    new SpreadsheetViewportSelection(
-                                                        selection,
-                                                        viewportSelection.anchor()
-                                                    )
-                                                )
-                                            }
-                                        );
-                                    }
-                                }
-                            }
-                            break;
+                            );
                         }
                     }
-                    break;
-                default:
-                    break;
-            }
+                }
 
-            this.setState(newState);
+                switch(method) {
+                    case HttpMethod.DELETE:
+                        Object.assign(
+                            newState,
+                            {
+                                viewportSelection: null,
+                            }
+                        );
+                        break;
+                    case HttpMethod.POST:
+                        if(viewportSelectionToken){
+                            const viewportSelection = viewportSelectionToken.viewportSelection();
+                            const selection = viewportSelection.selection();
+
+                            if(viewportSelectionToken instanceof SpreadsheetColumnOrRowInsertBeforeHistoryHashToken){
+                                const urlPaths = url.path().split("/");
+                                if(urlPaths.length === 7){
+                                    // 0 = ""
+                                    // 1 == api
+                                    // 2 == spreadsheet
+                                    // 3 == $spreadsheet-id
+                                    // 4 == column == Selection
+                                    // 5 == $selection
+                                    // 6 == before == insert-action.toUrl
+                                    if(urlPaths[3] === spreadsheetId.toString()){
+                                        if(selection.isApiInsertBeforePostUrl(urlPaths)){
+                                            Object.assign(
+                                                newState,
+                                                {
+                                                    viewportSelection: viewportSelectionSelectHistoryHashToken(
+                                                        new SpreadsheetViewportSelection(
+                                                            selection.viewportInsertBeforePostSuccessSelection(viewportSelectionToken.count()),
+                                                            viewportSelection.anchor()
+                                                        )
+                                                    )
+                                                }
+                                            );
+                                        }
+                                    }
+                                }
+                                break;
+                            }
+                            if(viewportSelectionToken instanceof SpreadsheetColumnOrRowInsertAfterHistoryHashToken){
+                                const urlPaths = url.path().split("/");
+                                if(urlPaths.length === 7){
+                                    // 0 = ""
+                                    // 1 == api
+                                    // 2 == spreadsheet
+                                    // 3 == $spreadsheet-id
+                                    // 4 == column == Selection
+                                    // 5 == $selection
+                                    // 6 == before == insert-action.toUrl
+                                    if(urlPaths[3] === spreadsheetId.toString()){
+                                        if(selection.isInsertAfterPostUrl(urlPaths)){
+                                            Object.assign(
+                                                newState,
+                                                {
+                                                    viewportSelection: viewportSelectionSelectHistoryHashToken(
+                                                        new SpreadsheetViewportSelection(
+                                                            selection,
+                                                            viewportSelection.anchor()
+                                                        )
+                                                    )
+                                                }
+                                            );
+                                        }
+                                    }
+                                }
+                                break;
+                            }
+                        }
+                        break;
+                    default:
+                        break;
+                }
+
+                this.setState(newState);
+            }
         }
     }
 
@@ -397,31 +399,33 @@ export default class SpreadsheetViewportWidget extends SpreadsheetCellWidget {
     }
 
     onSpreadsheetMetadata(method, id, url, requestMetadata, responseMetadata) {
-        const newState = {
-            spreadsheetMetadata: responseMetadata,
-        };
+        if(responseMetadata) {
+            const newState = {
+                spreadsheetMetadata: responseMetadata,
+            };
 
-        const previousMetadata = this.state.spreadsheetMetadata;
-        if(previousMetadata){
-            const previousId = previousMetadata.getIgnoringDefaults(SpreadsheetMetadata.SPREADSHEET_ID);
+            const previousMetadata = this.state.spreadsheetMetadata;
+            if(previousMetadata){
+                const previousId = previousMetadata.getIgnoringDefaults(SpreadsheetMetadata.SPREADSHEET_ID);
 
-            // if id changed clear caches...
-            if(!Equality.safeEquals(previousId, responseMetadata.getIgnoringDefaults(SpreadsheetMetadata.SPREADSHEET_ID))){
-                Object.assign(
-                    newState,
-                    {
-                        cellReferenceToCells: ImmutableMap.EMPTY,
-                        cellReferenceToLabels: ImmutableMap.EMPTY,
-                        columnReferenceToColumns: ImmutableMap.EMPTY,
-                        labelToReferences: ImmutableMap.EMPTY,
-                        rowReferenceToRows: ImmutableMap.EMPTY,
-                        columnWidths: ImmutableMap.EMPTY,
-                        rowHeights: ImmutableMap.EMPTY,
-                    });
+                // if id changed clear caches...
+                if(!Equality.safeEquals(previousId, responseMetadata.getIgnoringDefaults(SpreadsheetMetadata.SPREADSHEET_ID))){
+                    Object.assign(
+                        newState,
+                        {
+                            cellReferenceToCells: ImmutableMap.EMPTY,
+                            cellReferenceToLabels: ImmutableMap.EMPTY,
+                            columnReferenceToColumns: ImmutableMap.EMPTY,
+                            labelToReferences: ImmutableMap.EMPTY,
+                            rowReferenceToRows: ImmutableMap.EMPTY,
+                            columnWidths: ImmutableMap.EMPTY,
+                            rowHeights: ImmutableMap.EMPTY,
+                        });
+                }
             }
-        }
 
-        this.setState(newState);
+            this.setState(newState);
+        }
     }
 
     componentWillUnmount() {
@@ -683,7 +687,10 @@ export default class SpreadsheetViewportWidget extends SpreadsheetCellWidget {
         this.props.spreadsheetMetadataCrud.patch(
             this.state.spreadsheetMetadata.getIgnoringDefaults(SpreadsheetMetadata.SPREADSHEET_ID),
             JSON.stringify(patch),
-            this.props.showError
+            this.unknownSpreadsheetErrorHandler(
+                null,
+                this.showErrorErrorHandler(this.props.showError)
+            )
         );
     }
 
@@ -750,7 +757,9 @@ export default class SpreadsheetViewportWidget extends SpreadsheetCellWidget {
                 viewportSelection && viewportSelection.anchor(),
                 viewportSelection && viewportSelection.navigation()
             ),
-            props.showError
+            this.unknownLabelErrorHandler(
+                this.showErrorErrorHandler(props.showError)
+            )
         );
     }
 
