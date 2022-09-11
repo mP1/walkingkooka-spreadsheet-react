@@ -131,13 +131,15 @@ export default class SpreadsheetNameWidget extends SpreadsheetMetadataWidget {
     }
 
     onSpreadsheetMetadata(method, id, url, requestMetadata, responseMetadata) {
-        const spreadsheetName = responseMetadata ? responseMetadata.getIgnoringDefaults(SpreadsheetMetadata.SPREADSHEET_NAME) : null;
+        if(responseMetadata){
+            const spreadsheetName = responseMetadata.getIgnoringDefaults(SpreadsheetMetadata.SPREADSHEET_NAME);
 
-        this.setState({
-            id: id, // SpreadsheetId
-            name: spreadsheetName,
-            value: spreadsheetName ? spreadsheetName.value() : "",
-        });
+            this.setState({
+                id: id, // SpreadsheetId
+                name: spreadsheetName,
+                value: spreadsheetName ? spreadsheetName.value() : "",
+            });
+        }
     }
 }
 

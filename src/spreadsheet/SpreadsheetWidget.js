@@ -27,4 +27,10 @@ export default class SpreadsheetWidget extends React.Component {
             10
         );
     }
+
+    showErrorErrorHandler(showError) {
+        return (statusCode, statusMessage) => {
+            showError(statusMessage);
+        };
+    }
 }

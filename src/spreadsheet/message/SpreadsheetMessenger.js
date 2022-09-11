@@ -113,8 +113,6 @@ export default class SpreadsheetMessenger {
                     const statusCode = resp.status;
                     const statusText = resp.statusText;
                     switch(Math.floor(statusCode / 100)) {
-                        case 1:
-                            throw new Error("1xx " + statusCode + "=" + statusText);
                         case 2:
                             response.statusCode = statusCode;
                             response.statusText = statusText;
@@ -122,14 +120,16 @@ export default class SpreadsheetMessenger {
                             return 204 === statusCode ?
                                 Promise.resolve(null) :
                                 resp.json();
+                        case 1:
                         case 3:
-                            throw new Error("Redirect " + statusCode + "=" + statusText);
                         case 4:
-                            throw new Error("Bad request " + statusCode + "=" + statusText);
                         case 5:
-                            throw new Error("Server error " + statusCode + "=" + statusText);
                         default:
-                            throw new Error("Misc error: " + statusCode + "=" + statusText);
+                            failure(
+                                statusCode,
+                                statusText
+                            );
+                            return Promise.resolve(null);
                     }
                 })
                 .then(json => {
@@ -137,7 +137,10 @@ export default class SpreadsheetMessenger {
                     success(json);
                 })
                 .catch((e) => {
-                    failure("fetch failed, using " + url + " with " + JSON.stringify(parameters) + "\n" + e, e);
+                    failure(
+                        null,
+                        e.message
+                    );
                 }));
     }
 

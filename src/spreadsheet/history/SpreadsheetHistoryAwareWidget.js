@@ -75,6 +75,44 @@ export default class SpreadsheetHistoryAwareWidget extends SpreadsheetWidget {
         }
     }
 
+    /**
+     * Wraps another error handler but when invoked clears the viewport-selection. This is useful for cases such as
+     * clearing the selection of an invalid or unknown label.
+     */
+    unknownLabelErrorHandler(showError) {
+        const history = this.props.history;
+
+        return (statusCode, statusMessage) => {
+            this.log("statusCode: " + statusCode + " statusMessage: " + statusMessage);
+
+            if(statusCode >= 400){
+                const tokens = SpreadsheetHistoryHash.emptyTokens();
+                tokens[SpreadsheetHistoryHashTokens.VIEWPORT_SELECTION] = null;
+                history.mergeAndPush(tokens);
+
+                showError(statusCode, statusMessage);
+            }
+        }
+    }
+
+    /**
+     * Displays the error, and then restores the original (given) spreadsheetId.
+     */
+    unknownSpreadsheetErrorHandler(spreadsheetId, showError) {
+        const history = this.props.history;
+
+        return (statusCode, statusMessage) => {
+            this.log("statusCode: " + statusCode + " statusMessage: " + statusMessage);
+
+            showError(statusCode, statusMessage);
+
+            const tokens = SpreadsheetHistoryHash.emptyTokens();
+            tokens[SpreadsheetHistoryHashTokens.SPREADSHEET_ID] = spreadsheetId;
+            tokens[SpreadsheetHistoryHashTokens.SPREADSHEET_NAME] = null;
+            history.mergeAndPush(tokens);
+        };
+    }
+
     showError(message, error) {
         throw new Error("Sub classes must override showError");
     }
