@@ -256,7 +256,7 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetCellWidget {
                     }
                 }
 
-                this.input.current.value = formulaText;;
+                this.input.current.value = formulaText;
 
                 this.setState({
                     cellReference: cellReference,
