@@ -1,7 +1,6 @@
 import './SpreadsheetApp.css';
 
 import {withStyles} from '@mui/styles';
-import ButtonGroup from "@mui/material/ButtonGroup";
 import CharSequences from "../CharSequences.js";
 import Divider from '@mui/material/Divider';
 import Equality from "../Equality.js";
@@ -12,8 +11,6 @@ import Preconditions from "../Preconditions.js";
 import React from 'react';
 import RelativeUrl from "../net/RelativeUrl.js";
 import SpreadsheetAppBar from "../widget/SpreadsheetAppBar.js";
-import SpreadsheetCellStylePropertyToggleButtonGroupWidget
-    from "./reference/cell/style/SpreadsheetCellStylePropertyToggleButtonGroupWidget.js";
 import SpreadsheetDelta from "./engine/SpreadsheetDelta.js";
 import SpreadsheetEngineEvaluation from "./engine/SpreadsheetEngineEvaluation.js";
 import SpreadsheetExpressionReferenceSimilarities from "./SpreadsheetExpressionReferenceSimilarities.js";
@@ -33,8 +30,7 @@ import SpreadsheetNotification from "./notification/SpreadsheetNotification.js";
 import SpreadsheetSelectAutocompleteWidget from "./reference/SpreadsheetSelectAutocompleteWidget.js";
 import SpreadsheetSelectLinkWidget from "./reference/SpreadsheetSelectLinkWidget.js";
 import SpreadsheetViewportWidget from "./reference/viewport/SpreadsheetViewportWidget.js";
-import TextStyle from "../text/TextStyle.js";
-import TextAlign from "../text/TextAlign.js";
+import SpreadsheetToolbarWidget from "./reference/cell/SpreadsheetToolbarWidget.js";
 
 const useStyles = theme => ({
     header: {
@@ -311,12 +307,11 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
                                                spreadsheetMetadataCrud={spreadsheetMetadataCrud}
                                                showError={showError}
                         />
-                        <ButtonGroup variant="contained" aria-label="outlined primary button group">
-                            <SpreadsheetCellStylePropertyToggleButtonGroupWidget label={"Left"} propertyName={TextStyle.TEXT_ALIGN} propertyValue={TextAlign.LEFT} history={history} spreadsheetDeltaCellCrud={spreadsheetDeltaCellCrud}/>
-                            <SpreadsheetCellStylePropertyToggleButtonGroupWidget label={"Center"} propertyName={TextStyle.TEXT_ALIGN} propertyValue={TextAlign.CENTER} history={history} spreadsheetDeltaCellCrud={spreadsheetDeltaCellCrud}/>
-                            <SpreadsheetCellStylePropertyToggleButtonGroupWidget label={"Right"} propertyName={TextStyle.TEXT_ALIGN} propertyValue={TextAlign.RIGHT} history={history} spreadsheetDeltaCellCrud={spreadsheetDeltaCellCrud}/>
-                            <SpreadsheetCellStylePropertyToggleButtonGroupWidget label={"Justify"} propertyName={TextStyle.TEXT_ALIGN} propertyValue={TextAlign.JUSTIFY} history={history} spreadsheetDeltaCellCrud={spreadsheetDeltaCellCrud}/>
-                        </ButtonGroup>
+                        <SpreadsheetToolbarWidget key={"SpreadsheetToolbarWidget"}
+                                                  history={history}
+                                                  spreadsheetDeltaCellCrud={spreadsheetDeltaCellCrud}
+                                                  showError={showError}
+                        />
                     </SpreadsheetAppBar>
                     <div style={{
                         display: "flex",
