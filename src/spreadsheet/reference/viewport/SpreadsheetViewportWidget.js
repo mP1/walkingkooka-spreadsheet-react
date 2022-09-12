@@ -16,7 +16,7 @@ import SpreadsheetCellFormulaHistoryHashToken from "../cell/formula/SpreadsheetC
 import SpreadsheetCellMenuHistoryHashToken from "../cell/SpreadsheetCellMenuHistoryHashToken.js";
 import SpreadsheetCellRange from "../cell/SpreadsheetCellRange.js";
 import SpreadsheetCellReference from "../cell/SpreadsheetCellReference.js";
-import SpreadsheetCellWidget from "../cell/SpreadsheetCellWidget.js";
+import SpreadsheetSelectionWidget from "../SpreadsheetSelectionWidget.js";
 import SpreadsheetColumnOrRowInsertAfterHistoryHashToken
     from "../columnrow/SpreadsheetColumnOrRowInsertAfterHistoryHashToken.js";
 import SpreadsheetColumnOrRowInsertBeforeHistoryHashToken
@@ -134,7 +134,7 @@ const CONTEXT_MENU_Y_OFFSET = 10;
  * <li>SpreadsheetViewportSelection selection: The currently active selection including ranges</li>
  * </ul>
  */
-export default class SpreadsheetViewportWidget extends SpreadsheetCellWidget {
+export default class SpreadsheetViewportWidget extends SpreadsheetSelectionWidget {
 
     static VIEWPORT_ID = "viewport";
 
