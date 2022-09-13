@@ -1,14 +1,14 @@
-import SpreadsheetSelectionWidget from "../SpreadsheetSelectionWidget.js";
 import ButtonGroup from "@mui/material/ButtonGroup";
+import PropTypes from "prop-types";
+import React from "react";
 import SpreadsheetCellStylePropertyToggleButtonGroupWidget
     from "./style/SpreadsheetCellStylePropertyToggleButtonGroupWidget.js";
-import TextStyle from "../../../text/TextStyle.js";
-import TextAlign from "../../../text/TextAlign.js";
-import React from "react";
-import PropTypes from "prop-types";
 import SpreadsheetHistoryHash from "../../history/SpreadsheetHistoryHash.js";
-import SpreadsheetMessengerCrud from "../../message/SpreadsheetMessengerCrud.js";
 import SpreadsheetHistoryHashTokens from "../../history/SpreadsheetHistoryHashTokens.js";
+import SpreadsheetMessengerCrud from "../../message/SpreadsheetMessengerCrud.js";
+import SpreadsheetSelectionWidget from "../SpreadsheetSelectionWidget.js";
+import TextAlign from "../../../text/TextAlign.js";
+import TextStyle from "../../../text/TextStyle.js";
 
 /**
  * A container that holds all format and style widgets.
@@ -34,7 +34,7 @@ export default class SpreadsheetToolbarWidget extends SpreadsheetSelectionWidget
     }
 
     historyTokensFromState(prevState) {
-        return null; // never updates history.
+        return SpreadsheetHistoryHashTokens.emptyTokens();
     }
 
     render() {
@@ -65,6 +65,10 @@ export default class SpreadsheetToolbarWidget extends SpreadsheetSelectionWidget
                                                                      spreadsheetDeltaCellCrud={spreadsheetDeltaCellCrud}/>
             </ButtonGroup>
         </div>
+    }
+
+    onSpreadsheetDelta(method, cellOrLabel, url, requestDelta, responseDelta) {
+        // nop
     }
 }
 
