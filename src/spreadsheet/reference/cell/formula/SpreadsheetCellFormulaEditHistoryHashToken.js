@@ -24,10 +24,6 @@ export default class SpreadsheetCellFormulaEditHistoryHashToken extends Spreadsh
         }
     }
 
-    spreadsheetViewportWidgetExecute(viewportWidget, viewportCell, width, height) {
-        // viewport is not interested in formula token.
-    }
-
     historyHashPath() {
         return super.historyHashPath() +
             "/" +
