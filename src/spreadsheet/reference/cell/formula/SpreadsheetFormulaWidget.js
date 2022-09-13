@@ -119,13 +119,7 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetCellWidget {
     loadFormulaText(cellOrLabel) {
         this.log(".loadFormulaText " + cellOrLabel);
 
-        this.props.spreadsheetDeltaCellCrud.get(
-            cellOrLabel,
-            {},
-            this.unknownLabelErrorHandler(
-                this.showErrorErrorHandler(this.props.showError)
-            )
-        );
+        this.loadCell(cellOrLabel);
     }
 
     render() {
