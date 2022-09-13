@@ -45,10 +45,6 @@ export default class SpreadsheetCellFormulaSaveHistoryHashToken extends Spreadsh
         );
     }
 
-    spreadsheetViewportWidgetExecute(viewportWidget, viewportCell, width, height) {
-        // nop
-    }
-
     equals(other) {
         return super.equals(other) &&
             this.formulaText() === other.formulaText();
