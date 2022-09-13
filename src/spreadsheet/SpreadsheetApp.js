@@ -253,7 +253,7 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
             const spreadsheetName = responseMetadata.getIgnoringDefaults(SpreadsheetMetadata.SPREADSHEET_NAME);
 
             this.setState({
-                spreadsheetId: responseMetadata && responseMetadata.getIgnoringDefaults(SpreadsheetMetadata.SPREADSHEET_ID),
+                spreadsheetId: responseMetadata.getIgnoringDefaults(SpreadsheetMetadata.SPREADSHEET_ID),
                 spreadsheetName: spreadsheetName,
                 creatingOrLoadingSpreadsheet: false,
                 spreadsheetMetadata: responseMetadata,
