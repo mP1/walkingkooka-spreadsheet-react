@@ -9,6 +9,21 @@ import SpreadsheetSelectionWidget from "../SpreadsheetSelectionWidget.js";
 export default class SpreadsheetCellWidget extends SpreadsheetSelectionWidget {
 
     /**
+     * Loads the single cell, this is useful for loading formula text or style etc.
+     */
+    loadCell(cellOrLabel) {
+        this.log(".loadCell " + cellOrLabel);
+
+        this.props.spreadsheetDeltaCellCrud.get(
+            cellOrLabel,
+            {},
+            this.unknownLabelErrorHandler(
+                this.showErrorErrorHandler(this.props.showError)
+            )
+        );
+    }
+
+    /**
      * Calls the server to PATCH a cell and also handles updating the history hash leaving just the selection.
      */
     patchFormula(cellOrLabel, formulaText) {
