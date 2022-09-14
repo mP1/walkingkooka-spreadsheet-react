@@ -25,9 +25,18 @@ export default class ListenerCollection {
 
     /**
      * Fires all currently registered listeners giving them the supplied params.
+     * Note if any individual listener fired error, that is caught and logged and the remaining listeners fired.
      */
     fire() {
-        this.listeners.forEach(l => l.apply(this, arguments));
+        this.listeners.forEach(
+            l => {
+                try {
+                    l.apply(this, arguments);
+                } catch(e) {
+                    console.log("fired listener " + (l.name && "") + " threw error", e);
+                }
+            }
+        );
     }
 
     listeners = [];
