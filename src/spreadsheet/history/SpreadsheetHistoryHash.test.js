@@ -2160,6 +2160,16 @@ testParseAndStringify(
 );
 
 testParseAndStringify(
+    "/spreadsheet-id-123/spreadsheet-name-456/cell/A1/style",
+    {
+        "spreadsheet-id": "spreadsheet-id-123",
+        "spreadsheet-name": SPREADSHEET_NAME,
+        "viewport-selection": CELL_SELECT,
+    },
+    "Invalid token: \"style\"",
+);
+
+testParseAndStringify(
     "/spreadsheet-id-123/spreadsheet-name-456/cell/A1/style/font-size",
     {
         "spreadsheet-id": "spreadsheet-id-123",
