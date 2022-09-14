@@ -1,8 +1,7 @@
 import ButtonGroup from "@mui/material/ButtonGroup";
 import PropTypes from "prop-types";
 import React from "react";
-import SpreadsheetCellStylePropertyToggleButtonGroupWidget
-    from "./style/SpreadsheetCellStylePropertyToggleButtonGroupWidget.js";
+import SpreadsheetCellStylePropertyToggleButtonWidget from "./style/SpreadsheetCellStylePropertyToggleButtonWidget.js";
 import SpreadsheetHistoryHash from "../../history/SpreadsheetHistoryHash.js";
 import SpreadsheetHistoryHashTokens from "../../history/SpreadsheetHistoryHashTokens.js";
 import SpreadsheetMessengerCrud from "../../message/SpreadsheetMessengerCrud.js";
@@ -49,20 +48,20 @@ export default class SpreadsheetToolbarWidget extends SpreadsheetSelectionWidget
             padding: 0,
         }}>
             <ButtonGroup variant="contained" aria-label="outlined primary button group">
-                <SpreadsheetCellStylePropertyToggleButtonGroupWidget label={"Left"} propertyName={TextStyle.TEXT_ALIGN}
-                                                                     propertyValue={TextAlign.LEFT} history={history}
-                                                                     spreadsheetDeltaCellCrud={spreadsheetDeltaCellCrud}/>
-                <SpreadsheetCellStylePropertyToggleButtonGroupWidget label={"Center"}
-                                                                     propertyName={TextStyle.TEXT_ALIGN}
-                                                                     propertyValue={TextAlign.CENTER} history={history}
-                                                                     spreadsheetDeltaCellCrud={spreadsheetDeltaCellCrud}/>
-                <SpreadsheetCellStylePropertyToggleButtonGroupWidget label={"Right"} propertyName={TextStyle.TEXT_ALIGN}
-                                                                     propertyValue={TextAlign.RIGHT} history={history}
-                                                                     spreadsheetDeltaCellCrud={spreadsheetDeltaCellCrud}/>
-                <SpreadsheetCellStylePropertyToggleButtonGroupWidget label={"Justify"}
-                                                                     propertyName={TextStyle.TEXT_ALIGN}
-                                                                     propertyValue={TextAlign.JUSTIFY} history={history}
-                                                                     spreadsheetDeltaCellCrud={spreadsheetDeltaCellCrud}/>
+                <SpreadsheetCellStylePropertyToggleButtonWidget label={"Left"} propertyName={TextStyle.TEXT_ALIGN}
+                                                                propertyValue={TextAlign.LEFT} history={history}
+                                                                spreadsheetDeltaCellCrud={spreadsheetDeltaCellCrud}/>
+                <SpreadsheetCellStylePropertyToggleButtonWidget label={"Center"}
+                                                                propertyName={TextStyle.TEXT_ALIGN}
+                                                                propertyValue={TextAlign.CENTER} history={history}
+                                                                spreadsheetDeltaCellCrud={spreadsheetDeltaCellCrud}/>
+                <SpreadsheetCellStylePropertyToggleButtonWidget label={"Right"} propertyName={TextStyle.TEXT_ALIGN}
+                                                                propertyValue={TextAlign.RIGHT} history={history}
+                                                                spreadsheetDeltaCellCrud={spreadsheetDeltaCellCrud}/>
+                <SpreadsheetCellStylePropertyToggleButtonWidget label={"Justify"}
+                                                                propertyName={TextStyle.TEXT_ALIGN}
+                                                                propertyValue={TextAlign.JUSTIFY} history={history}
+                                                                spreadsheetDeltaCellCrud={spreadsheetDeltaCellCrud}/>
             </ButtonGroup>
         </div>
     }
