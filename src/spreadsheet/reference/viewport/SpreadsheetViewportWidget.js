@@ -16,7 +16,6 @@ import SpreadsheetCellFormulaHistoryHashToken from "../cell/formula/SpreadsheetC
 import SpreadsheetCellMenuHistoryHashToken from "../cell/SpreadsheetCellMenuHistoryHashToken.js";
 import SpreadsheetCellRange from "../cell/SpreadsheetCellRange.js";
 import SpreadsheetCellReference from "../cell/SpreadsheetCellReference.js";
-import SpreadsheetSelectionWidget from "../SpreadsheetSelectionWidget.js";
 import SpreadsheetColumnOrRowInsertAfterHistoryHashToken
     from "../columnrow/SpreadsheetColumnOrRowInsertAfterHistoryHashToken.js";
 import SpreadsheetColumnOrRowInsertBeforeHistoryHashToken
@@ -36,6 +35,7 @@ import SpreadsheetMetadata from "../../meta/SpreadsheetMetadata.js";
 import SpreadsheetReferenceKind from "../SpreadsheetReferenceKind.js";
 import SpreadsheetRowReference from "../columnrow/SpreadsheetRowReference.js";
 import SpreadsheetRowReferenceRange from "../columnrow/SpreadsheetRowReferenceRange.js";
+import SpreadsheetSelectionWidget from "../SpreadsheetSelectionWidget.js";
 import SpreadsheetViewportSelection from "./SpreadsheetViewportSelection.js";
 import SpreadsheetViewportSelectionNavigation from "./SpreadsheetViewportSelectionNavigation.js";
 import Table from '@mui/material/Table';
