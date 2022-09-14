@@ -5,9 +5,9 @@ import SpreadsheetHistoryHash from "../../../history/SpreadsheetHistoryHash.js";
 import ToggleButton from "@mui/material/ToggleButton";
 
 /**
- * A button that holds and displays the style for a cell/cell-range with support for updating the property when clicked.
+ * A ToggleButton that holds and displays the style for a cell/cell-range with support for updating the property when clicked.
  */
-export default class SpreadsheetCellStylePropertyToggleButtonGroupWidget extends SpreadsheetCellStylePropertyWidget {
+export default class SpreadsheetCellStylePropertyToggleButtonWidget extends SpreadsheetCellStylePropertyWidget {
 
     // $selected figure out how to select a ToggleButton
     render0(enabled, selected, linkUrl, clicked) {
@@ -24,7 +24,7 @@ export default class SpreadsheetCellStylePropertyToggleButtonGroupWidget extends
     }
 }
 
-SpreadsheetCellStylePropertyToggleButtonGroupWidget.propTypes = {
+SpreadsheetCellStylePropertyToggleButtonWidget.propTypes = {
     history: PropTypes.instanceOf(SpreadsheetHistoryHash).isRequired,
     label: PropTypes.string.isRequired,
     propertyName: PropTypes.string.isRequired,
