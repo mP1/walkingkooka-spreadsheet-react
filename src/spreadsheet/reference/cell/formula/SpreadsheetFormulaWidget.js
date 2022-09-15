@@ -14,6 +14,7 @@ import SpreadsheetMessengerCrud from "../../../message/SpreadsheetMessengerCrud.
 import SpreadsheetViewportWidget from "../../viewport/SpreadsheetViewportWidget.js";
 import TextField from '@mui/material/TextField';
 import viewportSelectionSelectHistoryHashToken from "../../../history/viewportSelectionSelectHistoryHashToken.js";
+import SpreadsheetCellFormulaHistoryHashToken from "./SpreadsheetCellFormulaHistoryHashToken.js";
 
 /**
  * A widget that supports editing formula text.
@@ -81,7 +82,7 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetCellWidget {
 
         const historyTokens = SpreadsheetHistoryHashTokens.emptyTokens();
 
-        if(viewportSelectionToken instanceof SpreadsheetCellHistoryHashToken){
+        if(viewportSelectionToken instanceof SpreadsheetCellFormulaHistoryHashToken){
             const viewportSelection = viewportSelectionToken.viewportSelection();
 
             // user must have just clicked/tab formula textbox update history to formula edit
