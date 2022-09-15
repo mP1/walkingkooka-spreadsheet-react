@@ -45,6 +45,7 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import viewportSelectionSelectHistoryHashToken from "../../history/viewportSelectionSelectHistoryHashToken.js";
+import SpreadsheetCellStyleHistoryHashToken from "../cell/style/SpreadsheetCellStyleHistoryHashToken.js";
 
 // default header cell styles
 
@@ -517,7 +518,19 @@ export default class SpreadsheetViewportWidget extends SpreadsheetSelectionWidge
                 const width = viewportElement.offsetWidth - ROW_WIDTH;
                 const height = viewportElement.offsetHeight - COLUMN_HEIGHT;
 
-                do {
+                // some metadata properties changed that will mean formatting of values changed so reload
+                if(metadata.viewportShouldLoadCells(previousMetadata)){
+                    this.log(".historyTokensFromState Metadata change need to format all viewport cells", metadata);
+
+                    this.loadCells(
+                        viewportCell.viewport(
+                            width,
+                            height
+                        ),
+                        viewportSelectionNew && viewportSelectionNew.viewportSelection()
+                    );
+                }else {
+                    // if viewportSelection changed execute it...
                     if(viewportSelectionNew && (!(viewportSelectionNew.equals(viewportSelectionOld)))){
                         this.log(".historyTokensFromState executing " + viewportSelectionNew + ".spreadsheetViewportWidgetExecute");
 
@@ -528,45 +541,30 @@ export default class SpreadsheetViewportWidget extends SpreadsheetSelectionWidge
                             height
                         ); // perform delete/insert etc.
 
-                        // still have focus better update history
+                        // still have focus better update history because onKeyDown updates state.viewportSelection to formula edit.
                         if(state.focused){
                             historyTokens[SpreadsheetHistoryHashTokens.VIEWPORT_SELECTION] = viewportSelectionNew;
                         }
+
+                        // selection changed but ignore if
+                        if(!(viewportSelectionNew instanceof SpreadsheetCellFormulaHistoryHashToken || viewportSelectionNew instanceof SpreadsheetCellStyleHistoryHashToken)){
+                            this.giveViewportSelectionFocus(viewportSelectionNew.viewportSelection()); // TODO move this into spreadsheetViewportWidgetExecute
+                        }
+                    }else {
+                        // if viewport width or height increased reload viewport cells
+                        const prevDimensions = prevState.dimensions;
+                        if(width > prevDimensions.width || height > prevDimensions.height){
+                            this.log(".historyTokensFromState viewport width/height increased need to reload viewport cells");
+
+                            this.loadCells(
+                                viewportCell.viewport(
+                                    width,
+                                    height
+                                ),
+                                viewportSelectionNew && viewportSelectionNew.viewportSelection()
+                            );
+                        }
                     }
-
-                    // if viewport width or height increased reload viewport cells
-                    const prevDimensions = prevState.dimensions;
-                    if(width > prevDimensions.width || height > prevDimensions.height){
-                        this.log(".historyTokensFromState viewport width/height increased need to reload viewport cells");
-
-                        this.loadCells(
-                            viewportCell.viewport(
-                                width,
-                                height
-                            ),
-                            viewportSelectionNew && viewportSelectionNew.viewportSelection()
-                        );
-                        break;
-                    }
-
-                    // some metadata properties changed that will mean formatting of values changed so reload
-                    if(metadata.viewportShouldLoadCells(previousMetadata)){
-                        this.log(".historyTokensFromState Metadata change need to format all viewport cells", metadata);
-
-                        this.loadCells(
-                            viewportCell.viewport(
-                                width,
-                                height
-                            ),
-                            viewportSelectionNew && viewportSelectionNew.viewportSelection()
-                        );
-                        break;
-                    }
-                } while(false);
-
-                // id selection changed and not formula editing, give focus.
-                if(viewportSelectionNew && (!(viewportSelectionNew.equals(viewportSelectionOld))) && !(viewportSelectionNew instanceof SpreadsheetCellFormulaHistoryHashToken)){
-                    this.giveViewportSelectionFocus(viewportSelectionNew.viewportSelection());
                 }
             }
         }
