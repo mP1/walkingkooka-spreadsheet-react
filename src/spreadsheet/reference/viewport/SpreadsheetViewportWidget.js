@@ -519,7 +519,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetSelectionWidge
 
                 do {
                     if(viewportSelectionNew && (!(viewportSelectionNew.equals(viewportSelectionOld)))){
-                        this.log(".historyTokensFromState executing " + viewportSelectionNew + ".spreadsheetLabelMappingWidgetExecute");
+                        this.log(".historyTokensFromState executing " + viewportSelectionNew + ".spreadsheetViewportWidgetExecute");
 
                         viewportSelectionNew.spreadsheetViewportWidgetExecute(
                             this,
