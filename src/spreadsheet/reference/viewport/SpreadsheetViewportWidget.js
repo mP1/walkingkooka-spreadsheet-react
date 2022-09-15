@@ -45,7 +45,6 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import viewportSelectionSelectHistoryHashToken from "../../history/viewportSelectionSelectHistoryHashToken.js";
-import SpreadsheetCellStyleHistoryHashToken from "../cell/style/SpreadsheetCellStyleHistoryHashToken.js";
 
 // default header cell styles
 
@@ -544,11 +543,6 @@ export default class SpreadsheetViewportWidget extends SpreadsheetSelectionWidge
                         // still have focus better update history because onKeyDown updates state.viewportSelection to formula edit.
                         if(state.focused){
                             historyTokens[SpreadsheetHistoryHashTokens.VIEWPORT_SELECTION] = viewportSelectionNew;
-                        }
-
-                        // selection changed but ignore if
-                        if(!(viewportSelectionNew instanceof SpreadsheetCellFormulaHistoryHashToken || viewportSelectionNew instanceof SpreadsheetCellStyleHistoryHashToken)){
-                            this.giveViewportSelectionFocus(viewportSelectionNew.viewportSelection()); // TODO move this into spreadsheetViewportWidgetExecute
                         }
                     }else {
                         // if viewport width or height increased reload viewport cells
