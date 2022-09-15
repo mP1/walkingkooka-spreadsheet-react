@@ -894,7 +894,6 @@ export default class SpreadsheetViewportWidget extends SpreadsheetSelectionWidge
                             navigation = shifted ? SpreadsheetViewportSelectionNavigation.EXTEND_DOWN : SpreadsheetViewportSelectionNavigation.DOWN;
                             break;
                         case Keys.ENTER:
-                            // ENTER on a cell selection gives focus to formula text box TODOMP need to handle label.
                             const selectionNotLabel = this.selectionNotLabel();
                             if(selectionNotLabel instanceof SpreadsheetCellReference){
                                 viewportSelectionToken = new SpreadsheetCellFormulaEditHistoryHashToken(
