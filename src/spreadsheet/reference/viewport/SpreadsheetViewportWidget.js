@@ -902,7 +902,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetSelectionWidge
                                 viewportSelectionToken = new SpreadsheetCellFormulaEditHistoryHashToken(
                                     viewportSelection
                                 );
-                                this.log("onKeyDown ENTER new selection: " + viewportSelectionToken);
+                                this.log(".onKeyDown ENTER new selection: " + viewportSelectionToken);
                             }
                             break;
                         // ESCAPE clears any selection
