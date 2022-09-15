@@ -142,7 +142,7 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetCellWidget {
             const newTarget = e.relatedTarget;
             if(newTarget){
                 if(SpreadsheetViewportWidget.contains(newTarget)){
-                    this.log(" onBlur new target is inside viewport will not change selection");
+                    this.log(".onBlur new target is inside viewport will not change selection");
 
                 }else {
                     // new target not viewport better select cell
@@ -150,7 +150,7 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetCellWidget {
                         viewportSelectionToken.viewportSelection()
                     );
 
-                    this.log(" onBlur new target is outside viewport setting selection cell edit");
+                    this.log(".onBlur new target is outside viewport setting selection cell edit");
                 }
             }
 
@@ -159,7 +159,7 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetCellWidget {
 
         const onFocus = (e) => {
             const viewportSelectionToken = this.state.viewportSelection;
-            this.log(" onFocus " + viewportSelectionToken + " " + (viewportSelectionToken && new SpreadsheetCellFormulaEditHistoryHashToken(viewportSelectionToken.viewportSelection())), this.state);
+            this.log(".onFocus " + viewportSelectionToken + " " + (viewportSelectionToken && new SpreadsheetCellFormulaEditHistoryHashToken(viewportSelectionToken.viewportSelection())), this.state);
 
             this.setState({
                 focused: true,
