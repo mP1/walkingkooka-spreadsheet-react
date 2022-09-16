@@ -59,15 +59,6 @@ export default class SpreadsheetHistoryAwareWidget extends SpreadsheetWidget {
 
         const propertyCount = Object.keys(copy).length;
         if(propertyCount > (copy[SpreadsheetHistoryHashTokens.TX_ID] != null ? 1 : 0)){
-
-            if(SpreadsheetHistoryHash.stringify(this.props.history.tokens()).includes("/cell/B1")) {
-                this.b1 = true;
-            }
-            if(this.b1 && SpreadsheetHistoryHash.stringify(this.props.history.tokens()).includes("A1:B1")) {
-                debugger;
-            }
-
-
             setTimeout(() => {
                 console.log(this.prefix() + ".historyMergeAndPush: txId: " + SpreadsheetHistoryHashTokens.currentTxId() + " ", copy);
                 this.props.history.mergeAndPush(copy);
