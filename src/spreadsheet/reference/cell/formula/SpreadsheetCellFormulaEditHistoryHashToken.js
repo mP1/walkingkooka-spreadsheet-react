@@ -12,9 +12,16 @@ export default class SpreadsheetCellFormulaEditHistoryHashToken extends Spreadsh
 
     spreadsheetFormulaWidgetExecute(formulaWidget, previousViewportSelection) {
         const viewportSelection = this.viewportSelection();
+        let historyTokens;
 
-        if(!formulaWidget.isFocused() && !(previousViewportSelection instanceof SpreadsheetCellFormulaHistoryHashToken)) {
-            formulaWidget.giveFormulaTextBoxFocus();
+        if(formulaWidget.isFocused()){
+            historyTokens = SpreadsheetHistoryHashTokens.viewportSelection(
+                new SpreadsheetCellFormulaEditHistoryHashToken(viewportSelection)
+            );
+        }else {
+            if(!(previousViewportSelection instanceof SpreadsheetCellFormulaHistoryHashToken)){
+                formulaWidget.giveFormulaTextBoxFocus();
+            }
         }
 
         // if cell selection changed load text only not after a formula save. the extra selection is NOT a formula save makes the selection clear after the save completes.
@@ -22,6 +29,8 @@ export default class SpreadsheetCellFormulaEditHistoryHashToken extends Spreadsh
         if(!selection.equalsIgnoringKind(previousViewportSelection && previousViewportSelection.viewportSelection().selection())){
             formulaWidget.loadFormulaText(selection);
         }
+
+        return historyTokens;
     }
 
     historyHashPath() {
