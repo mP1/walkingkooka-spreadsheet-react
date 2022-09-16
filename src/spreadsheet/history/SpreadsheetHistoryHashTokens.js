@@ -8,6 +8,15 @@ export default class SpreadsheetHistoryHashTokens {
         return tokens;
     }
 
+    /**
+     * Creates a history hash tokens with the given which may be null, {@link SpreadsheetHistoryHashTokens#VIEWPORT_SELECTION}.
+     */
+    static viewportSelection(viewportSelection) {
+        const tokens = SpreadsheetHistoryHashTokens.emptyTokens();
+        tokens[SpreadsheetHistoryHashTokens.VIEWPORT_SELECTION] = viewportSelection;
+        return tokens;
+    }
+
     static currentTxId() {
         return txId;
     }
