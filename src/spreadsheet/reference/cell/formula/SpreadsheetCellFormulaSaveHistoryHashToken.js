@@ -2,6 +2,7 @@ import Preconditions from "../../../../Preconditions.js";
 import SpreadsheetCellFormulaEditHistoryHashToken from "./SpreadsheetCellFormulaEditHistoryHashToken.js";
 import SpreadsheetCellFormulaHistoryHashToken from "./SpreadsheetCellFormulaHistoryHashToken.js";
 import SpreadsheetHistoryHashTokens from "../../../history/SpreadsheetHistoryHashTokens.js";
+import viewportSelectionSelectHistoryHashToken from "../../../history/viewportSelectionSelectHistoryHashToken.js";
 
 /**
  * A history hash token that saves the given formula text for the current cell.
@@ -38,11 +39,15 @@ export default class SpreadsheetCellFormulaSaveHistoryHashToken extends Spreadsh
             this.formulaText(),
         );
 
-        formulaWidget.historyPushViewportSelection(
-            formulaWidget.isFocused() ?
-                new SpreadsheetCellFormulaEditHistoryHashToken(viewportSelection) :
-                null
-        );
+        return formulaWidget.isFocused() ?
+            SpreadsheetHistoryHashTokens.viewportSelection(
+                new SpreadsheetCellFormulaEditHistoryHashToken(viewportSelection)
+            ) :
+            null != previousViewportSelection ?
+                SpreadsheetHistoryHashTokens.viewportSelection(
+                    viewportSelectionSelectHistoryHashToken(viewportSelection)
+                ) :
+                null;
     }
 
     equals(other) {

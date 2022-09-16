@@ -77,22 +77,12 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetCellWidget {
         const state = this.state;
         const {
             viewportSelection: viewportSelectionToken,
-            focused,
         } = state;
 
-        const historyTokens = SpreadsheetHistoryHashTokens.emptyTokens();
+        let historyTokens;
 
         if(viewportSelectionToken instanceof SpreadsheetCellFormulaHistoryHashToken){
-            const viewportSelection = viewportSelectionToken.viewportSelection();
-
-            // user must have just clicked/tab formula textbox update history to formula edit
-            if(focused){
-                if(!prevState.focused) {
-                    historyTokens[SpreadsheetHistoryHashTokens.VIEWPORT_SELECTION] = new SpreadsheetCellFormulaEditHistoryHashToken(viewportSelection);
-                }
-            }
-
-            viewportSelectionToken.spreadsheetFormulaWidgetExecute(
+            historyTokens = viewportSelectionToken.spreadsheetFormulaWidgetExecute(
                 this,
                 prevState.viewportSelection
             );
