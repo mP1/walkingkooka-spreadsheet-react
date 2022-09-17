@@ -60,7 +60,7 @@ export default class SpreadsheetHistoryAwareWidget extends SpreadsheetWidget {
         const propertyCount = Object.keys(copy).length;
         if(propertyCount > (copy[SpreadsheetHistoryHashTokens.TX_ID] != null ? 1 : 0)){
             setTimeout(() => {
-                this.log(".historyMergeAndPush: txId: " + SpreadsheetHistoryHashTokens.currentTxId() + " ", copy);
+                this.log(".historyMergeAndPush: txId: " + SpreadsheetHistoryHashTokens.currentTxId() + " " + JSON.stringify(copy));
                 this.props.history.mergeAndPush(copy);
             }, 1);
         }
