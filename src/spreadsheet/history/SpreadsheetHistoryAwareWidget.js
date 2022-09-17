@@ -105,7 +105,8 @@ export default class SpreadsheetHistoryAwareWidget extends SpreadsheetWidget {
     }
 
     log(...params) {
-        console.log(this.prefix() + params[0], params.shift());
+        const first = params.shift();
+        console.log(this.prefix() + first, params);
     }
 }
 
