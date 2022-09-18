@@ -88,6 +88,8 @@ export default class SpreadsheetToolbarWidget extends SpreadsheetSelectionWidget
             case TextStyle.TEXT_ALIGN:
                 style = this.textAlign.current;
                 break;
+            default:
+                break;
         }
 
         style && style.giveFocus(() => style.focusElement())
