@@ -14,7 +14,6 @@ import SpreadsheetLabelName from "../../label/SpreadsheetLabelName.js";
 import SpreadsheetMessengerCrud from "../../../message/SpreadsheetMessengerCrud.js";
 import SpreadsheetViewportWidget from "../../viewport/SpreadsheetViewportWidget.js";
 import TextField from '@mui/material/TextField';
-import viewportSelectionSelectHistoryHashToken from "../../../history/viewportSelectionSelectHistoryHashToken.js";
 
 /**
  * A widget that supports editing formula text.
@@ -130,17 +129,19 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetCellWidget {
             };
 
             const newTarget = e.relatedTarget;
-            if(newTarget){
-                if(SpreadsheetViewportWidget.contains(newTarget)){
-                    this.log(".onBlur new target is inside viewport will not change selection");
 
-                }else {
-                    // new target not viewport better select cell
-                    newState.viewportSelection = viewportSelectionSelectHistoryHashToken(
-                        viewportSelectionToken.viewportSelection()
-                    );
+            // if newTarget is viewport
+            if(SpreadsheetViewportWidget.contains(newTarget)){
+                // do nothing let viewport update history
+                this.log(".onBlur new target is viewport, will let viewport update history");
+            }else {
+                if(
+                    !newTarget ||
+                    SpreadsheetFormulaWidget.contains(newTarget)
+                ){
+                    this.log(".onBlur new target is outside formula & NOT viewport setting selection cell select");
 
-                    this.log(".onBlur new target is outside viewport setting selection cell edit");
+                    this.historyPushViewportSelectionSelect();
                 }
             }
 
