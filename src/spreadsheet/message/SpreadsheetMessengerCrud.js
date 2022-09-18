@@ -74,7 +74,7 @@ export default class SpreadsheetMessengerCrud {
                 method: HttpMethod.PATCH,
                 body: value.toJson ?
                     JSON.stringify(value.toJson()) :
-                    typeof value == "object" ?
+                    typeof value === "object" ?
                         JSON.stringify(value) :
                         value.toString(),
             },
