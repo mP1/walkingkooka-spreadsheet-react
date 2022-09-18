@@ -160,12 +160,7 @@ export default class SpreadsheetCellStylePropertyWidget extends SpreadsheetCellW
     }
 
     prefix() {
-        const {
-            propertyName,
-            propertyValue, // TODO include ?
-        } = this.props;
-
-        return super.prefix() + "." + propertyName;
+        return super.prefix() + "." + this.props.propertyName;
     }
 }
 
