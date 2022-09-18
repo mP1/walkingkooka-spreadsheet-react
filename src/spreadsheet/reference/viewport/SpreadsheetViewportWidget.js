@@ -520,7 +520,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetSelectionWidge
 
                 // some metadata properties changed that will mean formatting of values changed so reload
                 if(metadata.viewportShouldLoadCells(previousMetadata)){
-                    this.log(".historyTokensFromState Metadata change need to format all viewport cells", metadata);
+                    this.log(".historyTokensFromState Metadata change need to format all viewport cells", metadata, previousMetadata);
 
                     this.loadCells(
                         viewportCell.viewport(
@@ -551,9 +551,19 @@ export default class SpreadsheetViewportWidget extends SpreadsheetSelectionWidge
                         }
                     }else {
                         // if viewport width or height increased reload viewport cells
-                        const prevDimensions = prevState.dimensions;
-                        if(width > prevDimensions.width || height > prevDimensions.height){
-                            this.log(".historyTokensFromState viewport width/height increased need to reload viewport cells");
+                        const {
+                            width: previousWidth,
+                            height: previousHeight
+                        } = prevState.dimensions;
+
+                        if(width > previousWidth || height > previousHeight){
+                            this.log(
+                                ".historyTokensFromState viewport width OR height increased from " +
+                                previousWidth + "x" + previousHeight +
+                                " to " +
+                                width + "x" + height +
+                                " need to reload viewport cells"
+                            );
 
                             this.loadCells(
                                 viewportCell.viewport(
