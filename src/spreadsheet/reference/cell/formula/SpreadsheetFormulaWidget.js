@@ -55,7 +55,7 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetCellWidget {
             cellReference: null,
         };
 
-        // clear clearReference which will also hide formula textbox if column | row | any range
+        // clear cellReference which will also hide formula textbox if column | row | any range
         if(viewportSelectionToken instanceof SpreadsheetCellHistoryHashToken){
             const viewportSelection = viewportSelectionToken.viewportSelection();
             const selection = viewportSelection.selection();
