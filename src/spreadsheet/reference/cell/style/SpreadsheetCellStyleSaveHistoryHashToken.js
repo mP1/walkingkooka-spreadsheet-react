@@ -1,4 +1,5 @@
 import Equality from "../../../../Equality.js";
+import SpreadsheetCellStyleEditHistoryHashToken from "./SpreadsheetCellStyleEditHistoryHashToken.js";
 import SpreadsheetCellStyleHistoryHashToken from "./SpreadsheetCellStyleHistoryHashToken.js";
 import SpreadsheetHistoryHashTokens from "../../../history/SpreadsheetHistoryHashTokens.js";
 import TextStyle from "../../../../text/TextStyle.js";
@@ -41,14 +42,24 @@ export default class SpreadsheetCellStyleSaveHistoryHashToken extends Spreadshee
             (null != value ? encodeURIComponent(value) : "");
     }
 
-    spreadsheetViewportWidgetExecute(viewportWidget, viewportCell, width, height) {
-        viewportWidget.patchStyle(
-            this.viewportSelection().selection(),
-            this.propertyName(),
+    spreadsheetToolbarWidgetExecute(toolbarWidget, previousViewportSelection) {
+        const viewportSelection = this.viewportSelection();
+        const propertyName = this.propertyName();
+
+        toolbarWidget.patchStyle(
+            viewportSelection.selection(),
+            propertyName,
             this.propertyValue()
         );
 
-        viewportWidget.historyPushViewportSelectionSelect();
+        return SpreadsheetHistoryHashTokens.viewportSelection(
+            previousViewportSelection instanceof SpreadsheetCellStyleHistoryHashToken ?
+                new SpreadsheetCellStyleEditHistoryHashToken(
+                    viewportSelection,
+                    propertyName
+                ) :
+                null
+        );
     }
 
     equals(other) {

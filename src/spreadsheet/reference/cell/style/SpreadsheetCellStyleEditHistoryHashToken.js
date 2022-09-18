@@ -30,8 +30,13 @@ export default class SpreadsheetCellStyleEditHistoryHashToken extends Spreadshee
             SpreadsheetHistoryHashTokens.EDIT;
     }
 
-    spreadsheetViewportWidgetExecute(viewportWidget, viewportCell, width, height) {
-        // TODO give focus to style property editor widget
+    spreadsheetToolbarWidgetExecute(toolbarWidget, previousViewportSelection) {
+        if(!(previousViewportSelection instanceof SpreadsheetCellStyleHistoryHashToken)){
+            toolbarWidget.giveSelectedFocus(this.propertyName());
+        }
+
+        // no need to load cell if selection changes formula will do so.
+        return SpreadsheetHistoryHashTokens.viewportSelection(this);
     }
 
     equals(other) {

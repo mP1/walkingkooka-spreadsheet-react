@@ -1,4 +1,6 @@
 import SpreadsheetCellReference from "../../src/spreadsheet/reference/cell/SpreadsheetCellReference.js";
+import SpreadsheetCellStylePropertyWidget
+    from "../../src/spreadsheet/reference/cell/style/SpreadsheetCellStylePropertyWidget.js";
 import SpreadsheetColumnReference from "../../src/spreadsheet/reference/columnrow/SpreadsheetColumnReference.js";
 import SpreadsheetFormulaWidget from "../../src/spreadsheet/reference/cell/formula/SpreadsheetFormulaWidget.js";
 import SpreadsheetMetadataDrawerWidget from "../../src/spreadsheet/meta/drawer/SpreadsheetMetadataDrawerWidget.js";
@@ -9,6 +11,7 @@ import SpreadsheetSelectLinkWidget from "../../src/spreadsheet/reference/Spreads
 import SpreadsheetSelectAutocompleteWidget
     from "../../src/spreadsheet/reference/SpreadsheetSelectAutocompleteWidget.js";
 import SpreadsheetSelection from "../../src/spreadsheet/reference/SpreadsheetSelection.js";
+import SpreadsheetToolbarWidget from "../../src/spreadsheet/reference/cell/SpreadsheetToolbarWidget.js";
 import SpreadsheetViewportWidget from "../../src/spreadsheet/reference/viewport/SpreadsheetViewportWidget.js";
 
 export default class SpreadsheetTesting {
@@ -169,6 +172,16 @@ export default class SpreadsheetTesting {
 
     spreadsheetNameWait() {
         this.wait(100);
+    }
+
+    formulaTextHidden() {
+        return this.formulaText()
+            .should("be.hidden");
+    }
+
+    formulaTextShown() {
+        return this.formulaText()
+            .should("be.visible");
     }
 
     formulaText() {
@@ -417,6 +430,36 @@ export default class SpreadsheetTesting {
             SpreadsheetRowReference.parse(rowReference);
 
         return this.getById(spreadsheetRowReference.viewportId());
+    }
+
+    toolbar() {
+        return this.getById(SpreadsheetToolbarWidget.ID);
+    }
+
+    toolbarHidden() {
+        this.toolbar()
+            .should('not.be.visible');
+    }
+
+    toolbarShown() {
+        this.toolbar()
+            .should('be.visible');
+    }
+
+    toolbarStyle(propertyName, propertyValue) {
+        return this.getById(
+            SpreadsheetCellStylePropertyWidget.computeId(
+                propertyName,
+                propertyValue
+            )
+        );
+    }
+
+    toolbarStyleClick(propertyName, propertyValue) {
+        this.toolbarStyle(
+            propertyName,
+            propertyValue
+        ).click();
     }
 
     metadataWait() {

@@ -12,6 +12,7 @@ import SpreadsheetHistoryHash from "../../../history/SpreadsheetHistoryHash.js";
 import SpreadsheetHistoryHashTokens from "../../../history/SpreadsheetHistoryHashTokens.js";
 import SpreadsheetLabelName from "../../label/SpreadsheetLabelName.js";
 import SpreadsheetMessengerCrud from "../../../message/SpreadsheetMessengerCrud.js";
+import SpreadsheetToolbarWidget from "../SpreadsheetToolbarWidget.js";
 import SpreadsheetViewportWidget from "../../viewport/SpreadsheetViewportWidget.js";
 import TextField from '@mui/material/TextField';
 
@@ -131,13 +132,17 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetCellWidget {
                 // do nothing let viewport update history
                 this.log(".onBlur new target is viewport, will let viewport update history");
             }else {
-                if(
-                    !newTarget ||
-                    SpreadsheetFormulaWidget.contains(newTarget)
-                ){
-                    this.log(".onBlur new target is outside formula & NOT viewport setting selection cell select");
+                if(SpreadsheetToolbarWidget.contains(newTarget)) {
+                    this.log(".onBlur new target is toolbar, will let toolbar update history");
+                } else {
+                    if(
+                        !newTarget ||
+                        SpreadsheetFormulaWidget.contains(newTarget)
+                    ){
+                        this.log(".onBlur new target is outside formula & NOT viewport setting selection cell select");
 
-                    this.historyPushViewportSelectionSelect();
+                        this.historyPushViewportSelectionSelect();
+                    }
                 }
             }
 

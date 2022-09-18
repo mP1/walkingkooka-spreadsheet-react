@@ -3,6 +3,8 @@
 import SpreadsheetCellReference from "../../src/spreadsheet/reference/cell/SpreadsheetCellReference.js";
 import SpreadsheetSelection from "../../src/spreadsheet/reference/SpreadsheetSelection.js";
 import SpreadsheetTesting from "./SpreadsheetTesting.js";
+import TextAlign from "../../src/text/TextAlign.js";
+import TextStyle from "../../src/text/TextStyle.js";
 
 const A1 = SpreadsheetCellReference.parse("A1");
 const A3 = SpreadsheetCellReference.parse("A3");
@@ -30,8 +32,15 @@ describe(
 
         // CELL ........................................................................................................
 
+        it("viewport without selection", () => {
+            testing.formulaTextHidden();
+            testing.toolbarHidden();
+        });
+
         it("Cell viewport cell click", () => {
             testing.cellClick(B2);
+            testing.formulaTextShown();
+            testing.toolbarShown();
         });
 
         // @see https://github.com/mP1/walkingkooka-spreadsheet-react/issues/1256
@@ -191,16 +200,79 @@ describe(
             testing.cellStyleCheck(A1, "color", "rgb(18, 52, 86)");
         });
 
-        it("Cell click center style", () => {
-            testing.cellClick(A1);
+        it("Cell toolbar style links", () => {
+            testing.cellClick(B2);
 
-            testing.formulaTextClick();
+            testing.toolbarStyle(TextStyle.TEXT_ALIGN, TextAlign.LEFT)
+                .should("have.attr", "href")
+                .and("match", /^#\/.*\/Untitled\/cell\/B2\/style\/text-align\/save\/LEFT$/);
 
-            testing.getById("cell-style-text-align-CENTER")
-                .click();
+            testing.toolbarStyle(TextStyle.TEXT_ALIGN, TextAlign.CENTER)
+                .should("have.attr", "href")
+                .and("match", /^#\/.*\/Untitled\/cell\/B2\/style\/text-align\/save\/CENTER$/);
 
-            testing.cellStyleCheck(A1, "textAlign", "center");
+            testing.toolbarStyle(TextStyle.TEXT_ALIGN, TextAlign.RIGHT)
+                .should("have.attr", "href")
+                .and("match", /^#\/.*\/Untitled\/cell\/B2\/style\/text-align\/save\/RIGHT$/);
+
+            testing.toolbarStyle(TextStyle.TEXT_ALIGN, TextAlign.JUSTIFY)
+                .should("have.attr", "href")
+                .and("match", /^#\/.*\/Untitled\/cell\/B2\/style\/text-align\/save\/JUSTIFY$/);
         });
+
+        it("Cell style save TextAlign.CENTER hash", () => {
+            testing.hashAppendAfterSpreadsheetName("/cell/B2/style/text-align/save/CENTER");
+
+            testing.historyWait();
+
+            testing.hash()
+                .should("match", /^#\/.*\/Untitled$/);
+
+            testing.cellStyleCheck(B2, "text-align", "center");
+        });
+
+        it("Cell click cell, then style TextAlign.CENTER click", () => {
+            testing.cellClick(B2);
+            testing.toolbarStyleClick(TextStyle.TEXT_ALIGN, TextAlign.CENTER);
+
+            testing.hash()
+                .should("match", /^#\/.*\/Untitled\/cell\/B2\/style\/text-align\/edit$/);
+
+            testing.cellStyleCheck(B2, "text-align", "center");
+        });
+
+        it("Cell formula then style save TextAlign.CENTER hash", () => {
+            testing.cellClick(B2);
+            testing.formulaTextEnterAndSave("=1");
+
+            testing.hashAppendAfterSpreadsheetName("/cell/B2/style/text-align/save/CENTER");
+
+            testing.historyWait();
+
+            // testing.hash()
+            //     .should("match", /^#\/.*\/Untitled\/cell\/B2\/style\/text-align\/edit$/);
+
+            testing.cellStyleCheck(B2, "text-align", "center");
+        });
+
+        // tab
+        // it("Cell style TextAlign.LEFT click, tab TextAlign.CENTER enter", () => {
+        //     testing.cellClick(B2);
+        //     testing.formulaTextEnterAndSave("=1");
+        //
+        //     testing.toolbarStyleClick(TextStyle.TEXT_ALIGN, TextAlign.LEFT);
+        //     testing.hash()
+        //         .should("match", /^#\/.*\/Untitled\/cell\/B2\/style\/text-align\/edit$/);
+        //     testing.cellStyleCheck(B2, "text-align", "left");
+        //
+        //     testing.tab();
+        //     testing.focused()
+        //         .type("{enter}")
+        //     testing.cellStyleCheck(B2, "text-align", "center");
+        //
+        //     testing.hash()
+        //         .should("match", /^#\/.*\/Untitled\/cell\/B2\/style\/text-align\/edit$/);
+        // });
 
         it("Cell select and hit ESC loses viewport cell focus", () => {
             testing.cellClick(A3);
