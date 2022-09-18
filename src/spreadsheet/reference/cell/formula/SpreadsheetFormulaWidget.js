@@ -119,10 +119,6 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetCellWidget {
             cellReference,
         } = this.state;
 
-        const visibility = viewportSelectionToken instanceof SpreadsheetCellHistoryHashToken && cellReference ?
-            "visible" :
-            "hidden";
-
         const onBlur = (e) => {
             const newState = {
                 focused: false,
@@ -190,6 +186,10 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetCellWidget {
                 // nothing special to do for other keys
             }
         }
+
+        const visibility = viewportSelectionToken instanceof SpreadsheetCellHistoryHashToken && cellReference ?
+            "visible" :
+            "hidden";
 
         return (
             <TextField ref={this.textField}
