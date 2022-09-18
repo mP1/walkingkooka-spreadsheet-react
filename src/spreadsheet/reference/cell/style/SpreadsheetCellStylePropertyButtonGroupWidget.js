@@ -101,7 +101,7 @@ export default class SpreadsheetCellStylePropertyButtonGroupWidget extends Sprea
                             onFocus={onFocus}
                             onBlur={onBlur}
                             tabIndex={0}
-        >{buttons}</ButtonGroup>
+        >{buttons}</ButtonGroup>;
     }
 
     focusElement() {
