@@ -16,6 +16,7 @@ import SpreadsheetCellFormulaHistoryHashToken from "../cell/formula/SpreadsheetC
 import SpreadsheetCellMenuHistoryHashToken from "../cell/SpreadsheetCellMenuHistoryHashToken.js";
 import SpreadsheetCellRange from "../cell/SpreadsheetCellRange.js";
 import SpreadsheetCellReference from "../cell/SpreadsheetCellReference.js";
+import SpreadsheetCellStyleHistoryHashToken from "../cell/style/SpreadsheetCellStyleHistoryHashToken.js";
 import SpreadsheetColumnOrRowInsertAfterHistoryHashToken
     from "../columnrow/SpreadsheetColumnOrRowInsertAfterHistoryHashToken.js";
 import SpreadsheetColumnOrRowInsertBeforeHistoryHashToken
@@ -530,8 +531,12 @@ export default class SpreadsheetViewportWidget extends SpreadsheetSelectionWidge
                     );
                 }else {
                     // if viewportSelection changed execute it...
-                    if(viewportSelectionNew && (!(viewportSelectionNew.equals(viewportSelectionOld)))){
-                        this.log(".historyTokensFromState executing " + viewportSelectionNew + ".spreadsheetViewportWidgetExecute");
+                    if(viewportSelectionNew &&
+                        //!viewportSelectionNew instanceof SpreadsheetCellFormulaHistoryHashToken &&
+                        (!(viewportSelectionNew instanceof SpreadsheetCellStyleHistoryHashToken)) &&
+                        (!(viewportSelectionNew.equals(viewportSelectionOld)))){
+
+                        this.log(".historyTokensFromState executing " + viewportSelectionNew + ".spreadsheetViewportWidgetExecute", viewportSelectionNew);
 
                         viewportSelectionNew.spreadsheetViewportWidgetExecute(
                             this,

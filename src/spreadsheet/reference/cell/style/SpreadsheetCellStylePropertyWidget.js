@@ -1,9 +1,8 @@
-import Equality from "../../../../Equality.js";
 import PropTypes from 'prop-types';
 import SpreadsheetCellHistoryHashToken from "../SpreadsheetCellHistoryHashToken.js";
-import SpreadsheetCellStyleSaveHistoryHashToken from "./SpreadsheetCellStyleSaveHistoryHashToken.js";
+import SpreadsheetCellStyleEditHistoryHashToken from "./SpreadsheetCellStyleEditHistoryHashToken.js";
+import SpreadsheetCellStyleHistoryHashToken from "./SpreadsheetCellStyleHistoryHashToken.js";
 import SpreadsheetCellWidget from "../SpreadsheetCellWidget.js";
-import SpreadsheetExpressionReference from "../../SpreadsheetExpressionReference.js";
 import SpreadsheetHistoryHash from "../../../history/SpreadsheetHistoryHash.js";
 import SpreadsheetHistoryHashTokens from "../../../history/SpreadsheetHistoryHashTokens.js";
 import SpreadsheetLabelName from "../../label/SpreadsheetLabelName.js";
@@ -30,7 +29,19 @@ export default class SpreadsheetCellStylePropertyWidget extends SpreadsheetCellW
     }
 
     historyTokensFromState(prevState) {
-        return SpreadsheetHistoryHashTokens.emptyTokens(); // never update history from state.
+        let tokens;
+
+        const viewportSelection = this.state.viewportSelection;
+
+        if(viewportSelection instanceof SpreadsheetCellStyleHistoryHashToken) {
+            tokens = viewportSelection.spreadsheetToolbarWidgetExecute(
+                this.props.spreadsheetToolbarWidget,
+                prevState.viewportSelection
+            )
+        }
+
+
+        return tokens;
     }
 
     id() {
@@ -39,91 +50,122 @@ export default class SpreadsheetCellStylePropertyWidget extends SpreadsheetCellW
             propertyValue
         } = this.props;
 
-        return "cell-style-" + propertyName + "-" + propertyValue;
+        return SpreadsheetCellStylePropertyWidget.computeId(
+            propertyName,
+            propertyValue
+        );
+    }
+
+    static computeId(propertyName, propertyValue) {
+        return "cell-style-" +
+            propertyName +
+            (propertyValue ? ("-" + propertyValue) : "");
     }
 
     /**
      * If the delta includes an updated formula text for the cell being edited update text.
      */
     onSpreadsheetDelta(method, cellOrLabel, url, requestDelta, responseDelta) {
-        if(responseDelta) {
-            const viewportSelectionToken = this.state.viewportSelection;
+        if(responseDelta){
+            const {
+                viewportSelection: viewportSelectionToken,
+            } = this.state;
+
+            // A1=TextAlign.LEFT, B1=null
+            const cellToValue = Object.assign(
+                {},
+                this.state.cellToValue
+            );
 
             if(viewportSelectionToken instanceof SpreadsheetCellHistoryHashToken){
                 const viewportSelection = viewportSelectionToken.viewportSelection();
                 var selection = viewportSelection.selection();
 
-                if(selection instanceof SpreadsheetLabelName) {
+                if(selection instanceof SpreadsheetLabelName){
                     selection = responseDelta.cellReference(selection);
                 }
 
                 const propertyName = this.props.propertyName;
-                const propertyValue = this.props.propertyValue;
-                const selected = -1 !== selection.values()
-                    .findIndex(
+
+                selection.values()
+                    .forEach(
                         (cellReference) => {
                             const cell = responseDelta.cell(cellReference);
-                            return Boolean(
-                                cell && Equality.safeEquals(
-                                    propertyValue,
-                                    cell.style()
-                                        .get(propertyName)
-                                )
-                            );
+                            cellToValue[cellReference.toRelative().toString()] = cell ?
+                                cell.style().get(propertyName) :
+                                null;
                         });
 
-                // selection might be a cell or cell-range
+                // cellToValue will be used during render
                 this.setState({
-                    selected: selected,
+                    cellOrRange: selection, // never label
+                    cellToValue: cellToValue,
                 });
             }
         }
     }
 
+    // render nothing if a cell is not selected.
     render() {
-        const state = this.state;
-        const selected = Boolean(state.selected);
+        const viewportSelection = this.state.viewportSelection;
+        return viewportSelection instanceof SpreadsheetCellHistoryHashToken ?
+            this.render0(viewportSelection) :
+            null;
+    }
 
-        const {
-            history,
-            propertyName,
-            propertyValue
-        } = this.props;
+    render0(viewportSelection) {
+        const propertyName = this.props.propertyName;
 
-        // must be a SpreadsheetExpressionReference
-        const viewportSelectionToken = state.viewportSelection && state.viewportSelection.viewportSelection();
-        const enabled = null != viewportSelectionToken &&
-            viewportSelectionToken.selection() instanceof SpreadsheetExpressionReference;
+        const onFocus = () => {
+            this.log(".onFocus");
 
-        var linkUrl;
-        var clicked;
+            this.setState({
+                focused: true,
+                viewportSelection: new SpreadsheetCellStyleEditHistoryHashToken(
+                    viewportSelection.viewportSelection(),
+                    propertyName,
+                )
+            });
+        };
 
-        if(enabled) {
-            const tokens = SpreadsheetHistoryHash.emptyTokens();
-            tokens[SpreadsheetHistoryHashTokens.SPREADSHEET_ID] = state.spreadsheetId;
-            tokens[SpreadsheetHistoryHashTokens.SPREADSHEET_NAME] = state.spreadsheetName;
-            tokens[SpreadsheetHistoryHashTokens.VIEWPORT_SELECTION] =  new SpreadsheetCellStyleSaveHistoryHashToken(
-                viewportSelectionToken,
-                propertyName,
-                propertyValue,
-            );
+        const onBlur = (e) => {
+            this.log(".onBlur");
 
-            linkUrl = "#" + SpreadsheetHistoryHash.stringify(tokens);
-            clicked = () => {
-                history.mergeAndPush(tokens)
-            };
-        }
-        this.log(".render enabled=" + enabled + " selected=" + selected + " linkUrl=" + linkUrl);
-        return this.render0(
-            enabled,
-            selected,
-            linkUrl,
-            clicked,
+            this.setState({
+                focused: false,
+            });
+        };
+
+        return this.renderStyleWidget(
+            onFocus,
+            onBlur
         );
     }
 
-    render0(enabled, selected, linkUrl, clicked) {
+    renderStyleWidget() {
         SystemObject.throwUnsupportedOperation();
+    }
+
+
+    isFocused() {
+        return this.state.focused;
+    }
+
+    focusElement() {
+        SystemObject.throwUnsupportedOperation();
+    }
+
+    spreadsheetViewportWidgetExecute(viewportWidget, viewportCell, width, height) {
+        // NOP
+    }
+
+    prefix() {
+        const {
+            propertyName,
+            propertyValue, // TODO include ?
+        } = this.props;
+
+        return super.prefix() + "." + propertyName;
     }
 }
 
@@ -132,5 +174,5 @@ SpreadsheetCellStylePropertyWidget.propTypes = {
     history: PropTypes.instanceOf(SpreadsheetHistoryHash).isRequired,
     label: PropTypes.string.isRequired,
     propertyName: PropTypes.string.isRequired,
-    propertyValues: PropTypes.object, // might be null
+    spreadsheetToolbarWidget: PropTypes.object.isRequired, // PropTypes.instanceOf(SpreadsheetToolbarWidget).isRequired
 }

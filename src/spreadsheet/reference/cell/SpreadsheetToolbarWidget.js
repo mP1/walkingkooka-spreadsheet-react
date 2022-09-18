@@ -1,7 +1,7 @@
-import ButtonGroup from "@mui/material/ButtonGroup";
 import PropTypes from "prop-types";
 import React from "react";
-import SpreadsheetCellStylePropertyToggleButtonWidget from "./style/SpreadsheetCellStylePropertyToggleButtonWidget.js";
+import SpreadsheetCellHistoryHashToken from "./SpreadsheetCellHistoryHashToken.js";
+import SpreadsheetCellStylePropertyButtonGroupWidget from "./style/SpreadsheetCellStylePropertyButtonGroupWidget.js";
 import SpreadsheetHistoryHash from "../../history/SpreadsheetHistoryHash.js";
 import SpreadsheetHistoryHashTokens from "../../history/SpreadsheetHistoryHashTokens.js";
 import SpreadsheetMessengerCrud from "../../message/SpreadsheetMessengerCrud.js";
@@ -16,8 +16,16 @@ export default class SpreadsheetToolbarWidget extends SpreadsheetSelectionWidget
 
     static ID = "toolbar";
 
+    /**
+     * Returns true if the given element is a child of the root of this widget.
+     */
+    static contains(element) {
+        return document.getElementById(SpreadsheetToolbarWidget.ID)
+            .contains(element);
+    }
+
     init() {
-        // NOP
+        this.textAlign = React.createRef();
     }
 
     initialStateFromProps() {
@@ -32,42 +40,57 @@ export default class SpreadsheetToolbarWidget extends SpreadsheetSelectionWidget
         }
     }
 
+    // SpreadsheetToolbarWidget never updates the history hash tokens.
     historyTokensFromState(prevState) {
-        return SpreadsheetHistoryHashTokens.emptyTokens();
+        return null;
     }
 
+    // if the viewportSelection is NOT a cell render the outer DIV as hidden.
+    // this is necessary so SpreadsheetCellStylePropertyButtonGroupWidget is registered and handles history such as
+    // /style/text-align/save/CENTER
     render() {
         const {
             history,
             spreadsheetDeltaCellCrud
         } = this.props;
 
-        return <div style={{
-            border: 0,
-            margin: 0,
-            padding: 0,
-        }}>
-            <ButtonGroup variant="contained" aria-label="outlined primary button group">
-                <SpreadsheetCellStylePropertyToggleButtonWidget label={"Left"} propertyName={TextStyle.TEXT_ALIGN}
-                                                                propertyValue={TextAlign.LEFT} history={history}
-                                                                spreadsheetDeltaCellCrud={spreadsheetDeltaCellCrud}/>
-                <SpreadsheetCellStylePropertyToggleButtonWidget label={"Center"}
-                                                                propertyName={TextStyle.TEXT_ALIGN}
-                                                                propertyValue={TextAlign.CENTER} history={history}
-                                                                spreadsheetDeltaCellCrud={spreadsheetDeltaCellCrud}/>
-                <SpreadsheetCellStylePropertyToggleButtonWidget label={"Right"} propertyName={TextStyle.TEXT_ALIGN}
-                                                                propertyValue={TextAlign.RIGHT} history={history}
-                                                                spreadsheetDeltaCellCrud={spreadsheetDeltaCellCrud}/>
-                <SpreadsheetCellStylePropertyToggleButtonWidget label={"Justify"}
-                                                                propertyName={TextStyle.TEXT_ALIGN}
-                                                                propertyValue={TextAlign.JUSTIFY} history={history}
-                                                                spreadsheetDeltaCellCrud={spreadsheetDeltaCellCrud}/>
-            </ButtonGroup>
+        const {
+            viewportSelection
+        } = this.state
+
+        return <div id={SpreadsheetToolbarWidget.ID}
+                    style={{
+                        border: 0,
+                        margin: 0,
+                        padding: 0,
+                        visibility: viewportSelection instanceof SpreadsheetCellHistoryHashToken ? "visible" : "hidden"
+                    }}><SpreadsheetCellStylePropertyButtonGroupWidget ref={this.textAlign}
+                                                                      variant="contained"
+                                                                      aria-label="outlined primary button group"
+                                                                      history={history}
+                                                                      propertyName={TextStyle.TEXT_ALIGN}
+                                                                      labels={["left", "center", "right", "justify"]}
+                                                                      values={[TextAlign.LEFT, TextAlign.CENTER, TextAlign.RIGHT, TextAlign.JUSTIFY]}
+                                                                      spreadsheetDeltaCellCrud={spreadsheetDeltaCellCrud}
+                                                                      spreadsheetToolbarWidget={this}
+        />
         </div>
     }
 
     onSpreadsheetDelta(method, cellOrLabel, url, requestDelta, responseDelta) {
         // nop
+    }
+
+    giveSelectedFocus(propertyName) {
+        let style;
+
+        switch(propertyName) {
+            case TextStyle.TEXT_ALIGN:
+                style = this.textAlign.current;
+                break;
+        }
+
+        style && style.giveFocus(() => style.focusElement())
     }
 }
 
