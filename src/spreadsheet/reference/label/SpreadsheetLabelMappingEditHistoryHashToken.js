@@ -1,3 +1,4 @@
+import Equality from "../../../Equality.js";
 import Preconditions from "../../../Preconditions.js";
 import SpreadsheetHistoryHash from "../../history/SpreadsheetHistoryHash.js";
 import SpreadsheetLabelMappingHistoryHashToken from "./SpreadsheetLabelMappingHistoryHashToken.js";
@@ -24,8 +25,15 @@ export default class SpreadsheetLabelMappingEditHistoryHashToken extends Spreads
         return "/" + SpreadsheetHistoryHash.LABEL + "/" + this.label();
     }
 
-    spreadsheetLabelMappingWidgetExecute(widget) {
-        widget.loadLabelMapping(this.label());
+    spreadsheetLabelMappingWidgetExecute(widget, previousLabel) {
+        const label = this.label();
+
+        // only load the label if the label changed.
+        if(!Equality.safeEquals(previousLabel, label)){
+            widget.loadLabelMapping(label);
+        }
+
+        return null;
     }
 
     equals(other) {

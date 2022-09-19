@@ -1,5 +1,4 @@
 import Button from '@mui/material/Button';
-import Equality from "../../../Equality.js";
 import HttpMethod from "../../../net/HttpMethod.js";
 import Keys from "../../../Keys.js";
 import PropTypes from 'prop-types';
@@ -90,15 +89,17 @@ export default class SpreadsheetLabelMappingWidget extends SpreadsheetHistoryAwa
     historyTokensFromState(prevState) {
         const {label} = this.state;
 
-        if(null != label){
+        let tokens;
+        if(label){
             const previousLabel = prevState.label;
 
-            if(!Equality.safeEquals(previousLabel, label)){
-                label.spreadsheetLabelMappingWidgetExecute(this);
-            }
+            tokens = label.spreadsheetLabelMappingWidgetExecute(
+                this,
+                previousLabel && previousLabel.label()
+            );
         }
 
-        return SpreadsheetHistoryHashTokens.emptyTokens();
+        return tokens;
     }
 
     loadLabelMapping(label) {
