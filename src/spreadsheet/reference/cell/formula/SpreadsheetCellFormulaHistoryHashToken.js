@@ -9,8 +9,4 @@ export default class SpreadsheetCellFormulaHistoryHashToken extends SpreadsheetC
     spreadsheetFormulaWidgetExecute(formulaWidget, previousViewportSelection) {
         SystemObject.throwUnsupportedOperation();
     }
-
-    spreadsheetViewportWidgetExecute(viewportWidget, viewportCell, width, height) {
-        // nop
-    }
 }

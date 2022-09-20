@@ -17,11 +17,15 @@ export default class SpreadsheetColumnOrRowInsertBeforeHistoryHashToken extends 
     /**
      * Handles history hash token evens such as /column/A/insertAfter/1 or /column/B:C/insertAfter/2
      */
-    spreadsheetViewportWidgetExecute(viewportWidget, viewportCell, width, height) {
-        viewportWidget.insertBeforeSelection(
-            this.viewportSelection(),
-            this.count()
-        );
+    spreadsheetViewportWidgetExecute(viewportWidget, previousViewportSelection, viewportCell, width, height) {
+        if(!this.equals(previousViewportSelection)) {
+            viewportWidget.insertBeforeSelection(
+                this.viewportSelection(),
+                this.count()
+            );
+        }
+
+        return null;
     }
 
     equals(other) {

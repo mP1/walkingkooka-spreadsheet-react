@@ -155,7 +155,7 @@ export default class SpreadsheetCellStylePropertyWidget extends SpreadsheetCellW
         SystemObject.throwUnsupportedOperation();
     }
 
-    spreadsheetViewportWidgetExecute(viewportWidget, viewportCell, width, height) {
+    spreadsheetViewportWidgetExecute(viewportWidget, previousViewportSelection, viewportCell, width, height) {
         // NOP
     }
 

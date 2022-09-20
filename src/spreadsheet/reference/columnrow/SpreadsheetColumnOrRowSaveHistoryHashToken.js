@@ -1,5 +1,6 @@
 import Equality from "../../../Equality.js";
 import SpreadsheetColumnOrRowHistoryHashToken from "./SpreadsheetColumnOrRowHistoryHashToken.js";
+import SpreadsheetHistoryHashTokens from "../../history/SpreadsheetHistoryHashTokens.js";
 import viewportSelectionSelectHistoryHashToken from "../../history/viewportSelectionSelectHistoryHashToken.js";
 
 /**
@@ -34,7 +35,7 @@ export default class SpreadsheetColumnOrRowSaveHistoryHashToken extends Spreadsh
     /**
      * Handles history hash token evens such as /column/A/hidden/true or /row/1/hidden/false
      */
-    spreadsheetViewportWidgetExecute(viewportWidget, viewportCell, width, height) {
+    spreadsheetViewportWidgetExecute(viewportWidget, previousViewportSelection, viewportCell, width, height) {
         const viewportSelection = this.viewportSelection();
 
         viewportWidget.patchColumnOrRow(
@@ -44,8 +45,10 @@ export default class SpreadsheetColumnOrRowSaveHistoryHashToken extends Spreadsh
         );
 
         // remove the saved property and value from the history hash
-        viewportWidget.historyPushViewportSelection(
-            viewportSelectionSelectHistoryHashToken(viewportSelection)
+        return SpreadsheetHistoryHashTokens.viewportSelection(
+            viewportSelectionSelectHistoryHashToken(
+                viewportSelection
+            )
         );
     }
 

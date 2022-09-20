@@ -1,4 +1,6 @@
 import SpreadsheetColumnOrRowHistoryHashToken from "./SpreadsheetColumnOrRowHistoryHashToken.js";
+import SpreadsheetHistoryHashTokens from "../../history/SpreadsheetHistoryHashTokens.js";
+import viewportSelectionSelectHistoryHashToken from "../../history/viewportSelectionSelectHistoryHashToken.js";
 
 /**
  * Represents a selection one or more columns or rows.
@@ -8,17 +10,26 @@ export default class SpreadsheetColumnOrRowSelectHistoryHashToken extends Spread
     /**
      * Loads cells to fill the viewport.
      */
-    spreadsheetViewportWidgetExecute(viewportWidget, viewportCell, width, height) {
+    spreadsheetViewportWidgetExecute(viewportWidget, previousViewportSelection, viewportCell, width, height) {
         const viewportSelection = this.viewportSelection();
 
-        viewportWidget.loadCells(
-            viewportCell.viewport(
-                width,
-                height
-            ),
-            viewportSelection
-        );
+        if(!this.equals(previousViewportSelection)) {
+            viewportWidget.loadCells(
+                viewportCell.viewport(
+                    width,
+                    height
+                ),
+                viewportSelection
+            );
 
-        viewportWidget.giveViewportSelectionFocus(viewportSelection);
+            viewportWidget.giveViewportSelectionFocus(viewportSelection);
+        }
+
+        return viewportWidget.isFocused() &&
+            SpreadsheetHistoryHashTokens.viewportSelection(
+                viewportSelectionSelectHistoryHashToken(
+                    viewportSelection
+                )
+            );
     }
 }

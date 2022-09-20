@@ -483,7 +483,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetSelectionWidge
      * if cell or range change.
      */
     historyTokensFromState(prevState) {
-        const historyTokens = SpreadsheetHistoryHashTokens.emptyTokens();
+        var historyTokens;
 
         const state = this.state;
         const metadata = state.spreadsheetMetadata;
@@ -509,10 +509,8 @@ export default class SpreadsheetViewportWidget extends SpreadsheetSelectionWidge
                 }
             }
 
-            const viewportSelectionOld = prevState.viewportSelection;
-            const viewportSelectionNew = state.viewportSelection;
-
             const viewportCell = metadata.getIgnoringDefaults(SpreadsheetMetadata.VIEWPORT_CELL);
+            const viewportSelectionToken = state.viewportSelection;
 
             if(viewportCell){
                 const width = viewportElement.offsetWidth - ROW_WIDTH;
@@ -527,28 +525,23 @@ export default class SpreadsheetViewportWidget extends SpreadsheetSelectionWidge
                             width,
                             height
                         ),
-                        viewportSelectionNew && viewportSelectionNew.viewportSelection()
+                        viewportSelectionToken && viewportSelectionToken.viewportSelection()
                     );
                 }else {
                     // if viewportSelection changed execute it...
-                    if(viewportSelectionNew &&
-                        //!viewportSelectionNew instanceof SpreadsheetCellFormulaHistoryHashToken &&
-                        (!(viewportSelectionNew instanceof SpreadsheetCellStyleHistoryHashToken)) &&
-                        (!(viewportSelectionNew.equals(viewportSelectionOld)))){
+                    if(viewportSelectionToken &&
+                        (!(viewportSelectionToken instanceof SpreadsheetCellFormulaHistoryHashToken)) &&
+                        (!(viewportSelectionToken instanceof SpreadsheetCellStyleHistoryHashToken))
+                    ){
+                        this.log(".historyTokensFromState executing " + viewportSelectionToken + ".spreadsheetViewportWidgetExecute");
 
-                        this.log(".historyTokensFromState executing " + viewportSelectionNew + ".spreadsheetViewportWidgetExecute", viewportSelectionNew);
-
-                        viewportSelectionNew.spreadsheetViewportWidgetExecute(
+                        historyTokens = viewportSelectionToken.spreadsheetViewportWidgetExecute(
                             this,
+                            prevState.viewportSelection,
                             viewportCell,
                             width,
                             height
                         ); // perform delete/insert etc.
-
-                        // still have focus better update history because onKeyDown updates state.viewportSelection to formula edit.
-                        if(state.focused){
-                            historyTokens[SpreadsheetHistoryHashTokens.VIEWPORT_SELECTION] = viewportSelectionNew;
-                        }
                     }else {
                         // if viewport width or height increased reload viewport cells
                         const {
@@ -570,7 +563,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetSelectionWidge
                                     width,
                                     height
                                 ),
-                                viewportSelectionNew && viewportSelectionNew.viewportSelection()
+                                viewportSelectionToken && viewportSelectionToken.viewportSelection()
                             );
                         }
                     }
@@ -905,29 +898,31 @@ export default class SpreadsheetViewportWidget extends SpreadsheetSelectionWidge
                         case Keys.ENTER:
                             const selectionNotLabel = this.selectionNotLabel();
                             if(selectionNotLabel instanceof SpreadsheetCellReference){
-                                viewportSelectionToken = new SpreadsheetCellFormulaEditHistoryHashToken(
-                                    viewportSelection
+                                this.historyMergeAndPush(
+                                    SpreadsheetHistoryHashTokens.viewportSelection(
+                                        new SpreadsheetCellFormulaEditHistoryHashToken(
+                                            viewportSelection
+                                        )
+                                    )
                                 );
                                 this.log(".onKeyDown ENTER new selection: " + viewportSelectionToken);
                             }
                             break;
                         // ESCAPE clears any selection
                         case Keys.ESCAPE:
-                            viewportSelectionToken = null;
+                            this.historyPushViewportSelection(null);
                             break;
                         default:
                             break;
                     }
 
-                    const newViewportSelection = navigation ?
-                        viewportSelectionSelectHistoryHashToken(
-                            viewportSelection.setNavigation(navigation)
-                        ) :
-                        viewportSelectionToken;
-
-                    this.setState({
-                        viewportSelection: newViewportSelection,
-                    });
+                    if(navigation){
+                        this.setState({
+                            viewportSelection: viewportSelectionSelectHistoryHashToken(
+                                viewportSelection.setNavigation(navigation)
+                            ),
+                        });
+                    }
                 }
             }
         };
@@ -1305,6 +1300,10 @@ export default class SpreadsheetViewportWidget extends SpreadsheetSelectionWidge
     isRowHidden(rowReference) {
         const row = this.state.rowReferenceToRows.get(rowReference);
         return null != row && row.hidden();
+    }
+
+    isFocused() {
+        return this.state.focused;
     }
 }
 

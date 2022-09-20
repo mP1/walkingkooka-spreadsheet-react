@@ -23,10 +23,12 @@ export default class SpreadsheetCellMenuHistoryHashToken extends SpreadsheetCell
     /**
      * Opens the context menu for the given cell
      */
-    spreadsheetViewportWidgetExecute(viewportWidget, viewportCell, width, height) {
+    spreadsheetViewportWidgetExecute(viewportWidget, previousViewportSelection, viewportCell, width, height) {
         viewportWidget.showContextMenu(
             this.viewportSelection()
         );
+
+        return null;
     }
 
     equals(other) {
