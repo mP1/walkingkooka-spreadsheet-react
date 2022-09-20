@@ -25,10 +25,12 @@ export default class SpreadsheetColumnOrRowMenuHistoryHashToken extends Spreadsh
     /**
      * Opens the context menu for the given column/row
      */
-    spreadsheetViewportWidgetExecute(viewportWidget, viewportCell, width, height) {
+    spreadsheetViewportWidgetExecute(viewportWidget, previousViewportSelection, viewportCell, width, height) {
         viewportWidget.showContextMenu(
             this.viewportSelection()
         );
+
+        return null;
     }
 
     equals(other) {

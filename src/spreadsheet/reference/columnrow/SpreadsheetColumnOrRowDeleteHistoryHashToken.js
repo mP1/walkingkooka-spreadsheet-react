@@ -15,10 +15,15 @@ export default class SpreadsheetColumnOrRowDeleteHistoryHashToken extends Spread
     /**
      * Handles history hash token evens such as /column/A/delete or /column/B:C/delete
      */
-    spreadsheetViewportWidgetExecute(viewportWidget, viewportCell, width, height) {
-        viewportWidget.deleteSelection(
-            this.viewportSelection()
-        );
-        viewportWidget.historyPushViewportSelectionSelect();
+    spreadsheetViewportWidgetExecute(viewportWidget, previousViewportSelection, viewportCell, width, height) {
+        const viewportSelection = this.viewportSelection();
+
+        if(!this.equals(previousViewportSelection)) {
+            viewportWidget.deleteSelection(
+                viewportSelection
+            );
+        }
+
+        return SpreadsheetHistoryHashTokens.viewportSelection(null);
     }
 }
