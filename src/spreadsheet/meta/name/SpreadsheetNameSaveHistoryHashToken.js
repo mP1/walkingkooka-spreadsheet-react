@@ -3,6 +3,7 @@ import Preconditions from "../../../Preconditions.js";
 import SpreadsheetHistoryHashTokens from "../../history/SpreadsheetHistoryHashTokens.js";
 import SpreadsheetMetadata from "../SpreadsheetMetadata.js";
 import SpreadsheetName from "./SpreadsheetName.js";
+import SpreadsheetNameEditHistoryHashToken from "./SpreadsheetNameEditHistoryHashToken.js";
 import SpreadsheetNameHistoryHashToken from "./SpreadsheetNameHistoryHashToken.js";
 
 /**
@@ -28,6 +29,10 @@ export default class SpreadsheetNameSaveHistoryHashToken extends SpreadsheetName
             SpreadsheetMetadata.SPREADSHEET_NAME,
             this.value()
         );
+
+        const historyTokens = SpreadsheetHistoryHashTokens.emptyTokens();
+        historyTokens[SpreadsheetHistoryHashTokens.SPREADSHEET_NAME_EDIT] = new SpreadsheetNameEditHistoryHashToken();
+        return historyTokens;
     }
 
     historyHashPath() {
