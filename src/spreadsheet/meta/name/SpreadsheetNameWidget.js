@@ -1,5 +1,4 @@
 import Button from "@mui/material/Button";
-import Equality from "../../../Equality.js";
 import Keys from "../../../Keys.js";
 import PropTypes from 'prop-types';
 import React from 'react';
@@ -44,22 +43,20 @@ export default class SpreadsheetNameWidget extends SpreadsheetMetadataWidget {
     }
 
     historyTokensFromState(prevState) {
-        const state = this.state;
-        const newEdit = state.edit;
+        const newEdit = this.state.edit;
 
-        const historyTokens = SpreadsheetHistoryHashTokens.emptyTokens();
-
-        if(!Equality.safeEquals(newEdit, prevState.edit)){
-            newEdit && newEdit.spreadsheetNameWidgetExecute(this);
-
-            historyTokens[SpreadsheetHistoryHashTokens.SPREADSHEET_NAME_EDIT] = newEdit;
-        }
-
-        return historyTokens;
+        return newEdit && newEdit.spreadsheetNameWidgetExecute(
+            this,
+            prevState.edit
+        );
     }
 
     render() {
-        const {edit, name, value} = this.state;
+        const {
+            edit,
+            name,
+            value
+        } = this.state;
 
         const text = edit ?
             value :
@@ -72,10 +69,7 @@ export default class SpreadsheetNameWidget extends SpreadsheetMetadataWidget {
         const buttonLink = "#" + SpreadsheetHistoryHash.stringify(tokens);
 
         const textOnBlur = () => {
-            this.setState({
-                edit: null,
-                value: this.state.name,
-            });
+            this.stopEditing();
         };
 
         const textOnChange = (e) => {
@@ -88,16 +82,15 @@ export default class SpreadsheetNameWidget extends SpreadsheetMetadataWidget {
             switch(e.key) {
                 case Keys.ESCAPE:
                     e.preventDefault();
-                    this.setState({
-                        edit: null,
-                    });
+                    this.stopEditing();
                     break;
                 case Keys.ENTER:
                     e.preventDefault();
                     this.saveNewSpreadsheetName();
                     break;
                 default:
-                // ignore other keys
+                    // ignore other keys
+                    break;
             }
         };
 
@@ -122,11 +115,27 @@ export default class SpreadsheetNameWidget extends SpreadsheetMetadataWidget {
             />;
     }
 
-    saveNewSpreadsheetName() {
-        const historyHashTokens = SpreadsheetHistoryHash.emptyTokens();
-        historyHashTokens[SpreadsheetHistoryHashTokens.SPREADSHEET_NAME_EDIT] = new SpreadsheetNameSaveHistoryHashToken(
-            new SpreadsheetName(this.state.value)
+    beginEditing() {
+        this.loadSpreadsheetMetadata(
+            this.state.id
         );
+    }
+
+    stopEditing() {
+        this.pushSpreadsheetNameEditHistoryHashToken(null);
+    }
+
+    saveNewSpreadsheetName() {
+        this.pushSpreadsheetNameEditHistoryHashToken(
+            new SpreadsheetNameSaveHistoryHashToken(
+                new SpreadsheetName(this.state.value)
+            )
+        );
+    }
+
+    pushSpreadsheetNameEditHistoryHashToken(token) {
+        const historyHashTokens = SpreadsheetHistoryHash.emptyTokens();
+        historyHashTokens[SpreadsheetHistoryHashTokens.SPREADSHEET_NAME_EDIT] = token;
         this.historyMergeAndPush(historyHashTokens);
     }
 
