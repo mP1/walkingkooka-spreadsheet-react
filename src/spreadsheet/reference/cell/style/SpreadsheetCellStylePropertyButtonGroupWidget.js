@@ -79,7 +79,7 @@ export default class SpreadsheetCellStylePropertyButtonGroupWidget extends Sprea
 
             buttons.push(
                 <ToggleButton key={id}
-                              ref={0 == i ? this.focusElementTarget : null}
+                              ref={0 === i ? this.focusElementTarget : null}
                               id={id}
                               color="primary"
                               size="small"
