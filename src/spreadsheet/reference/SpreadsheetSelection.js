@@ -1,5 +1,6 @@
 import CharSequences from "../../CharSequences.js";
 import Character from "../../Character.js";
+import SpreadsheetCellDeleteHistoryHashToken from "./cell/SpreadsheetCellDeleteHistoryHashToken.js";
 import SpreadsheetCellFreezeHistoryHashToken from "./cell/SpreadsheetCellFreezeHistoryHashToken.js";
 import SpreadsheetCellUnFreezeHistoryHashToken from "./cell/SpreadsheetCellUnFreezeHistoryHashToken.js";
 import SpreadsheetColumnOrRowClearHistoryHashToken from "./columnrow/SpreadsheetColumnOrRowClearHistoryHashToken.js";
@@ -174,7 +175,7 @@ export default class SpreadsheetSelection extends SystemObject {
     }
 
     viewportContextMenuCellDelete(historyTokens, menuItems, history) {
-        historyTokens[SpreadsheetHistoryHashTokens.VIEWPORT_SELECTION] = new SpreadsheetColumnOrRowDeleteHistoryHashToken(
+        historyTokens[SpreadsheetHistoryHashTokens.VIEWPORT_SELECTION] = new SpreadsheetCellDeleteHistoryHashToken(
             new SpreadsheetViewportSelection(this)
         );
 

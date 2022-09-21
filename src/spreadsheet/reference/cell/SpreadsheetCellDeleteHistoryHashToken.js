@@ -1,6 +1,5 @@
 import SpreadsheetCellHistoryHashToken from "./SpreadsheetCellHistoryHashToken.js";
 import SpreadsheetHistoryHashTokens from "../../history/SpreadsheetHistoryHashTokens.js";
-import viewportSelectionSelectHistoryHashToken from "../../history/viewportSelectionSelectHistoryHashToken.js";
 
 /**
  * A history hash token that represents a cell or cell-range delete
@@ -25,11 +24,8 @@ export default class SpreadsheetCellDeleteHistoryHashToken extends SpreadsheetCe
             );
         }
 
-        return SpreadsheetHistoryHashTokens.viewportSelection(
-            viewportSelectionSelectHistoryHashToken(
-                viewportSelection
-            )
-        );
+        // clear selection
+        return SpreadsheetHistoryHashTokens.viewportSelection(null);
     }
 
     labelMappingWidget(widget) {
