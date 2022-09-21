@@ -1,5 +1,6 @@
 /// <reference types="cypress" />
 
+import SpreadsheetCellRange from "../../src/spreadsheet/reference/cell/SpreadsheetCellRange.js";
 import SpreadsheetCellReference from "../../src/spreadsheet/reference/cell/SpreadsheetCellReference.js";
 import SpreadsheetSelection from "../../src/spreadsheet/reference/SpreadsheetSelection.js";
 import SpreadsheetTesting from "./SpreadsheetTesting.js";
@@ -944,6 +945,57 @@ describe(
                 .should("have.attr", "aria-disabled", "true")
                 .should("have.attr", "href")
                 .and("match", /#\/.*\/.*\/cell\/A1\/unfreeze$/);
+        });
+
+        // context menu delete..........................................................................................
+
+        it("Context menu delete cell", () => {
+            testing.cellFormulaEnterAndSave(B2, "'Deleted");
+
+            testing.cellClick(B2);
+
+            testing.viewportContextMenuOpen(B2)
+                .find("#" + SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_DELETE_CELL_ID)
+                .should("have.text", "Delete cell")
+                .should("have.attr", "href")
+                .and("match", /#\/.*\/.*\/cell\/B2\/delete$/)
+
+            testing.getById(SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_DELETE_CELL_ID)
+                .click();
+
+            testing.hash()
+                .should("match", /^#\/.*\/Untitled$/);
+
+            testing.cellFormattedTextCheck(B2, ""); // verify cell has lost its contents.
+        });
+
+        it("Context menu delete cell-range", () => {
+            testing.cellFormulaEnterAndSave(A1, "'NotDeletedA1");
+            testing.cellFormulaEnterAndSave(B2, "'DeletedB2");
+            testing.cellFormulaEnterAndSave(C3, "'DeletedC3");
+            testing.cellFormulaEnterAndSave(D4, "'NotDeletedD4");
+
+            testing.hashAppendAfterSpreadsheetName("/cell/B2:C3");
+
+            testing.historyWait();
+            testing.historyWait(); // less failures with 2x wait
+
+            testing.viewportContextMenuOpen(B2, SpreadsheetCellRange.parse("B2:C3"))
+                .find("#" + SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_DELETE_CELL_ID)
+                .should("have.text", "Delete cells")
+                .should("have.attr", "href")
+                .and("match", /#\/.*\/.*\/cell\/B2:C3\/delete$/)
+
+            testing.getById(SpreadsheetSelection.VIEWPORT_CONTEXT_MENU_DELETE_CELL_ID)
+                .click();
+
+            testing.hash()
+                .should("match", /^#\/.*\/Untitled$/);
+
+            testing.cellFormattedTextCheck("A1", "NotDeletedA1");
+            testing.cellFormattedTextCheck(B2, "");
+            testing.cellFormattedTextCheck(C3, "");
+            testing.cellFormattedTextCheck("D4", "NotDeletedD4");
         });
 
         // Freeze.......................................................................................................
