@@ -9,6 +9,7 @@ import SpreadsheetMessengerCrud from "../../message/SpreadsheetMessengerCrud.js"
 import SpreadsheetSelectionWidget from "../SpreadsheetSelectionWidget.js";
 import TextAlign from "../../../text/TextAlign.js";
 import TextStyle from "../../../text/TextStyle.js";
+import VerticalAlign from "../../../text/VerticalAlign.js";
 
 /**
  * A container that holds all format and style widgets.
@@ -28,6 +29,7 @@ export default class SpreadsheetToolbarWidget extends SpreadsheetSelectionWidget
     init() {
         this.fontStyle = React.createRef();
         this.textAlign = React.createRef();
+        this.verticalAlign = React.createRef();
     }
 
     initialStateFromProps() {
@@ -87,6 +89,16 @@ export default class SpreadsheetToolbarWidget extends SpreadsheetSelectionWidget
                                                            spreadsheetDeltaCellCrud={spreadsheetDeltaCellCrud}
                                                            spreadsheetToolbarWidget={this}
             />
+            <SpreadsheetCellStylePropertyButtonGroupWidget ref={this.verticalAlign}
+                                                           variant="contained"
+                                                           aria-label="outlined primary button group"
+                                                           history={history}
+                                                           propertyName={TextStyle.VERTICAL_ALIGN}
+                                                           labels={["top", "middle", "bottom"]}
+                                                           values={[VerticalAlign.TOP, VerticalAlign.MIDDLE, VerticalAlign.BOTTOM]}
+                                                           spreadsheetDeltaCellCrud={spreadsheetDeltaCellCrud}
+                                                           spreadsheetToolbarWidget={this}
+            />
         </div>
     }
 
@@ -103,6 +115,9 @@ export default class SpreadsheetToolbarWidget extends SpreadsheetSelectionWidget
                 break;
             case TextStyle.TEXT_ALIGN:
                 style = this.textAlign.current;
+                break;
+            case TextStyle.VERTICAL_ALIGN:
+                style = this.verticalAlign.current;
                 break;
             default:
                 break;

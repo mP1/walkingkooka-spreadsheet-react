@@ -7,6 +7,7 @@ import SpreadsheetSelection from "../../src/spreadsheet/reference/SpreadsheetSel
 import SpreadsheetTesting from "./SpreadsheetTesting.js";
 import TextAlign from "../../src/text/TextAlign.js";
 import TextStyle from "../../src/text/TextStyle.js";
+import VerticalAlign from "../../src/text/VerticalAlign.js";
 
 const A1 = SpreadsheetCellReference.parse("A1");
 const A3 = SpreadsheetCellReference.parse("A3");
@@ -232,6 +233,18 @@ describe(
             testing.toolbarStyle(TextStyle.TEXT_ALIGN, TextAlign.JUSTIFY)
                 .should("have.attr", "href")
                 .and("match", /^#\/.*\/Untitled\/cell\/B2\/style\/text-align\/save\/JUSTIFY$/);
+
+            testing.toolbarStyle(TextStyle.VERTICAL_ALIGN, VerticalAlign.TOP)
+                .should("have.attr", "href")
+                .and("match", /^#\/.*\/Untitled\/cell\/B2\/style\/vertical-align\/save\/TOP$/);
+
+            testing.toolbarStyle(TextStyle.VERTICAL_ALIGN, VerticalAlign.MIDDLE)
+                .should("have.attr", "href")
+                .and("match", /^#\/.*\/Untitled\/cell\/B2\/style\/vertical-align\/save\/MIDDLE$/);
+
+            testing.toolbarStyle(TextStyle.VERTICAL_ALIGN, VerticalAlign.BOTTOM)
+                .should("have.attr", "href")
+                .and("match", /^#\/.*\/Untitled\/cell\/B2\/style\/vertical-align\/save\/BOTTOM$/);
         });
 
         it("Cell style save TextAlign.CENTER hash", () => {
