@@ -1,3 +1,4 @@
+import FontStyle from "../../../text/FontStyle.js";
 import PropTypes from "prop-types";
 import React from "react";
 import SpreadsheetCellHistoryHashToken from "./SpreadsheetCellHistoryHashToken.js";
@@ -25,6 +26,7 @@ export default class SpreadsheetToolbarWidget extends SpreadsheetSelectionWidget
     }
 
     init() {
+        this.fontStyle = React.createRef();
         this.textAlign = React.createRef();
     }
 
@@ -64,16 +66,27 @@ export default class SpreadsheetToolbarWidget extends SpreadsheetSelectionWidget
                         margin: 0,
                         padding: 0,
                         visibility: viewportSelection instanceof SpreadsheetCellHistoryHashToken ? "visible" : "hidden"
-                    }}><SpreadsheetCellStylePropertyButtonGroupWidget ref={this.textAlign}
-                                                                      variant="contained"
-                                                                      aria-label="outlined primary button group"
-                                                                      history={history}
-                                                                      propertyName={TextStyle.TEXT_ALIGN}
-                                                                      labels={["left", "center", "right", "justify"]}
-                                                                      values={[TextAlign.LEFT, TextAlign.CENTER, TextAlign.RIGHT, TextAlign.JUSTIFY]}
-                                                                      spreadsheetDeltaCellCrud={spreadsheetDeltaCellCrud}
-                                                                      spreadsheetToolbarWidget={this}
-        />
+                    }}>
+            <SpreadsheetCellStylePropertyButtonGroupWidget ref={this.textAlign}
+                                                           variant="contained"
+                                                           aria-label="outlined primary button group"
+                                                           history={history}
+                                                           propertyName={TextStyle.FONT_STYLE}
+                                                           labels={["normal", "italic", "oblique"]}
+                                                           values={[FontStyle.NORMAL, FontStyle.ITALIC, FontStyle.OBLIQUE]}
+                                                           spreadsheetDeltaCellCrud={spreadsheetDeltaCellCrud}
+                                                           spreadsheetToolbarWidget={this}
+            />
+            <SpreadsheetCellStylePropertyButtonGroupWidget ref={this.textAlign}
+                                                           variant="contained"
+                                                           aria-label="outlined primary button group"
+                                                           history={history}
+                                                           propertyName={TextStyle.TEXT_ALIGN}
+                                                           labels={["left", "center", "right", "justify"]}
+                                                           values={[TextAlign.LEFT, TextAlign.CENTER, TextAlign.RIGHT, TextAlign.JUSTIFY]}
+                                                           spreadsheetDeltaCellCrud={spreadsheetDeltaCellCrud}
+                                                           spreadsheetToolbarWidget={this}
+            />
         </div>
     }
 
@@ -85,6 +98,9 @@ export default class SpreadsheetToolbarWidget extends SpreadsheetSelectionWidget
         let style;
 
         switch(propertyName) {
+            case TextStyle.FONT_STYLE:
+                style = this.fontStyle.current;
+                break;
             case TextStyle.TEXT_ALIGN:
                 style = this.textAlign.current;
                 break;

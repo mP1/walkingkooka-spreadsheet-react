@@ -1,5 +1,6 @@
 /// <reference types="cypress" />
 
+import FontStyle from "../../src/text/FontStyle.js";
 import SpreadsheetCellRange from "../../src/spreadsheet/reference/cell/SpreadsheetCellRange.js";
 import SpreadsheetCellReference from "../../src/spreadsheet/reference/cell/SpreadsheetCellReference.js";
 import SpreadsheetSelection from "../../src/spreadsheet/reference/SpreadsheetSelection.js";
@@ -203,6 +204,18 @@ describe(
 
         it("Cell toolbar style links", () => {
             testing.cellClick(B2);
+
+            testing.toolbarStyle(TextStyle.FONT_STYLE, FontStyle.NORMAL)
+                .should("have.attr", "href")
+                .and("match", /^#\/.*\/Untitled\/cell\/B2\/style\/font-style\/save\/NORMAL$/);
+
+            testing.toolbarStyle(TextStyle.FONT_STYLE, FontStyle.ITALIC)
+                .should("have.attr", "href")
+                .and("match", /^#\/.*\/Untitled\/cell\/B2\/style\/font-style\/save\/ITALIC$/);
+
+            testing.toolbarStyle(TextStyle.FONT_STYLE, FontStyle.OBLIQUE)
+                .should("have.attr", "href")
+                .and("match", /^#\/.*\/Untitled\/cell\/B2\/style\/font-style\/save\/OBLIQUE$/);
 
             testing.toolbarStyle(TextStyle.TEXT_ALIGN, TextAlign.LEFT)
                 .should("have.attr", "href")
