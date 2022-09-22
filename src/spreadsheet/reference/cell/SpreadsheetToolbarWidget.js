@@ -168,7 +168,7 @@ export default class SpreadsheetToolbarWidget extends SpreadsheetSelectionWidget
                 break;
         }
 
-        style && style.giveFocus(() => style.focusElement())
+        style && style.giveFocus(() => style.focusElement());
     }
 }
 
