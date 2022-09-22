@@ -12,6 +12,7 @@ import TextDecorationLine from "../../../text/TextDecorationLine.js";
 import TextStyle from "../../../text/TextStyle.js";
 import VerticalAlign from "../../../text/VerticalAlign.js";
 import WordBreak from "../../../text/WordBreak.js";
+import WordWrap from "../../../text/WordWrap.js";
 
 /**
  * A container that holds all format and style widgets.
@@ -34,6 +35,7 @@ export default class SpreadsheetToolbarWidget extends SpreadsheetSelectionWidget
         this.textDecorationLine = React.createRef();
         this.verticalAlign = React.createRef();
         this.workbreak = React.createRef();
+        this.wordWrap = React.createRef();
     }
 
     initialStateFromProps() {
@@ -123,6 +125,16 @@ export default class SpreadsheetToolbarWidget extends SpreadsheetSelectionWidget
                                                            spreadsheetDeltaCellCrud={spreadsheetDeltaCellCrud}
                                                            spreadsheetToolbarWidget={this}
             />
+            <SpreadsheetCellStylePropertyButtonGroupWidget ref={this.wordWrap}
+                                                           variant="contained"
+                                                           aria-label="outlined primary button group"
+                                                           history={history}
+                                                           propertyName={TextStyle.WORD_WRAP}
+                                                           labels={["normal", "break word"]}
+                                                           values={[WordWrap.NORMAL, WordWrap.BREAK_WORD]}
+                                                           spreadsheetDeltaCellCrud={spreadsheetDeltaCellCrud}
+                                                           spreadsheetToolbarWidget={this}
+            />
         </div>
     }
 
@@ -148,6 +160,9 @@ export default class SpreadsheetToolbarWidget extends SpreadsheetSelectionWidget
                 break;
             case TextStyle.WORD_BREAK:
                 style = this.workbreak.current;
+                break;
+            case TextStyle.WORD_WRAP:
+                style = this.wordWrap.current;
                 break;
             default:
                 break;

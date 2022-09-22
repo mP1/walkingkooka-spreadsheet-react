@@ -10,6 +10,7 @@ import TextStyle from "../../src/text/TextStyle.js";
 import VerticalAlign from "../../src/text/VerticalAlign.js";
 import TextDecorationLine from "../../src/text/TextDecorationLine.js";
 import WordBreak from "../../src/text/WordBreak.js";
+import WordWrap from "../../src/text/WordWrap.js";
 
 const A1 = SpreadsheetCellReference.parse("A1");
 const A3 = SpreadsheetCellReference.parse("A3");
@@ -287,6 +288,15 @@ describe(
             testing.toolbarStyle(TextStyle.WORD_BREAK, WordBreak.KEEP_ALL)
                 .should("have.attr", "href")
                 .and("match", /^#\/.*\/Untitled\/cell\/B2\/style\/word-break\/save\/KEEP_ALL$/);
+
+
+            testing.toolbarStyle(TextStyle.WORD_WRAP, WordWrap.NORMAL)
+                .should("have.attr", "href")
+                .and("match", /^#\/.*\/Untitled\/cell\/B2\/style\/word-wrap\/save\/NORMAL$/);
+
+            testing.toolbarStyle(TextStyle.WORD_WRAP, WordWrap.BREAK_WORD)
+                .should("have.attr", "href")
+                .and("match", /^#\/.*\/Untitled\/cell\/B2\/style\/word-wrap\/save\/BREAK_WORD$/);
         });
 
         it("Cell style save TextAlign.CENTER hash", () => {
