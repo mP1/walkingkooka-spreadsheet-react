@@ -34,7 +34,7 @@ export default class SpreadsheetToolbarWidget extends SpreadsheetSelectionWidget
         this.textAlign = React.createRef();
         this.textDecorationLine = React.createRef();
         this.verticalAlign = React.createRef();
-        this.workbreak = React.createRef();
+        this.workBreak = React.createRef();
         this.wordWrap = React.createRef();
     }
 
@@ -115,7 +115,7 @@ export default class SpreadsheetToolbarWidget extends SpreadsheetSelectionWidget
                                                            spreadsheetDeltaCellCrud={spreadsheetDeltaCellCrud}
                                                            spreadsheetToolbarWidget={this}
             />
-            <SpreadsheetCellStylePropertyButtonGroupWidget ref={this.workbreak}
+            <SpreadsheetCellStylePropertyButtonGroupWidget ref={this.workBreak}
                                                            variant="contained"
                                                            aria-label="outlined primary button group"
                                                            history={history}
@@ -159,7 +159,7 @@ export default class SpreadsheetToolbarWidget extends SpreadsheetSelectionWidget
                 style = this.verticalAlign.current;
                 break;
             case TextStyle.WORD_BREAK:
-                style = this.workbreak.current;
+                style = this.workBreak.current;
                 break;
             case TextStyle.WORD_WRAP:
                 style = this.wordWrap.current;
