@@ -46,11 +46,14 @@ export default class SpreadsheetCellStyleSaveHistoryHashToken extends Spreadshee
         const viewportSelection = this.viewportSelection();
         const propertyName = this.propertyName();
 
-        toolbarWidget.patchStyle(
-            viewportSelection.selection(),
-            propertyName,
-            this.propertyValue()
-        );
+        // want to avoid multiple save (PATCH) requests to server.
+        if(!this.equals(previousViewportSelection)) {
+            toolbarWidget.patchStyle(
+                viewportSelection.selection(),
+                propertyName,
+                this.propertyValue()
+            );
+        }
 
         return SpreadsheetHistoryHashTokens.viewportSelection(
             previousViewportSelection instanceof SpreadsheetCellStyleHistoryHashToken ?

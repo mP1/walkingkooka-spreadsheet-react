@@ -33,13 +33,19 @@ export default class SpreadsheetCellStylePropertyWidget extends SpreadsheetCellW
 
         const viewportSelection = this.state.viewportSelection;
 
-        if(viewportSelection instanceof SpreadsheetCellStyleHistoryHashToken) {
+        const {
+            propertyName,
+            spreadsheetToolbarWidget
+        } = this.props;
+
+        // Need to also test propertyName otherwise a SpreadsheetCellStyleSaveHistoryHashToken will be executed multiple times.
+        // FIXES https://github.com/mP1/walkingkooka-spreadsheet-react/issues/2118
+        if(viewportSelection instanceof SpreadsheetCellStyleHistoryHashToken && propertyName === viewportSelection.propertyName()) {
             tokens = viewportSelection.spreadsheetToolbarWidgetExecute(
-                this.props.spreadsheetToolbarWidget,
+                spreadsheetToolbarWidget,
                 prevState.viewportSelection
             )
         }
-
 
         return tokens;
     }
