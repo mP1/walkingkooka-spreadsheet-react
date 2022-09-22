@@ -131,14 +131,26 @@ export default class SpreadsheetHistoryHash extends SpreadsheetHistoryHashTokens
                             spreadsheetNameEdit = SpreadsheetNameEditHistoryHashToken.INSTANCE;
                             token = tokens.shift();
 
-                            if(token){
-                                // /$id/$name/name/$new-spreadsheet-name
-                                spreadsheetNameEdit = new SpreadsheetNameSaveHistoryHashToken(
-                                    new SpreadsheetName(
-                                        decodeURIComponent(token)
-                                    )
-                                );
-                                token = tokens.shift();
+                            if(null != token){
+                                switch(token) {
+                                    case SpreadsheetHistoryHashTokens.SAVE:
+                                        const saveName = tokens.shift();
+                                        if(!saveName) {
+                                            errors("Missing spreadsheet name");
+                                            break Loop;
+                                        }
+
+                                        // /$id/$name/name/$new-spreadsheet-name
+                                        spreadsheetNameEdit = new SpreadsheetNameSaveHistoryHashToken(
+                                            new SpreadsheetName(
+                                                decodeURIComponent(saveName)
+                                            )
+                                        );
+                                        token = tokens.shift();
+                                        break;
+                                    default:
+                                        break;
+                                }
                             }
                         }
 
