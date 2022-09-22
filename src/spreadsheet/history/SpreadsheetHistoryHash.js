@@ -815,8 +815,13 @@ export default class SpreadsheetHistoryHash extends SpreadsheetHistoryHashTokens
         }
 
         console.log("onHistoryChange txId:" + tokens[SpreadsheetHistoryHashTokens.TX_ID] + " newUrl: " + newURL + " WAS " + e.oldURL + " " + hash + " tokens: ", tokens);
+
         for(const listener of this.listeners.listeners.slice()) {
-            listener(Object.assign({}, tokens));
+            try {
+                listener(Object.assign({}, tokens));
+            } catch (e) {
+                console.error("listener " + listener.name + " failed", e);
+            }
         }
     }
 
