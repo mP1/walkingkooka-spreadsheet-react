@@ -8,6 +8,7 @@ import SpreadsheetTesting from "./SpreadsheetTesting.js";
 import TextAlign from "../../src/text/TextAlign.js";
 import TextStyle from "../../src/text/TextStyle.js";
 import VerticalAlign from "../../src/text/VerticalAlign.js";
+import TextDecorationLine from "../../src/text/TextDecorationLine.js";
 
 const A1 = SpreadsheetCellReference.parse("A1");
 const A3 = SpreadsheetCellReference.parse("A3");
@@ -218,6 +219,7 @@ describe(
                 .should("have.attr", "href")
                 .and("match", /^#\/.*\/Untitled\/cell\/B2\/style\/font-style\/save\/OBLIQUE$/);
 
+            
             testing.toolbarStyle(TextStyle.TEXT_ALIGN, TextAlign.LEFT)
                 .should("have.attr", "href")
                 .and("match", /^#\/.*\/Untitled\/cell\/B2\/style\/text-align\/save\/LEFT$/);
@@ -234,6 +236,24 @@ describe(
                 .should("have.attr", "href")
                 .and("match", /^#\/.*\/Untitled\/cell\/B2\/style\/text-align\/save\/JUSTIFY$/);
 
+
+            testing.toolbarStyle(TextStyle.TEXT_DECORATION_LINE, TextDecorationLine.NONE)
+                .should("have.attr", "href")
+                .and("match", /^#\/.*\/Untitled\/cell\/B2\/style\/text-decoration-line\/save\/NONE$/);
+
+            testing.toolbarStyle(TextStyle.TEXT_DECORATION_LINE, TextDecorationLine.LINE_THROUGH)
+                .should("have.attr", "href")
+                .and("match", /^#\/.*\/Untitled\/cell\/B2\/style\/text-decoration-line\/save\/LINE_THROUGH$/);
+
+            testing.toolbarStyle(TextStyle.TEXT_DECORATION_LINE, TextDecorationLine.OVERLINE)
+                .should("have.attr", "href")
+                .and("match", /^#\/.*\/Untitled\/cell\/B2\/style\/text-decoration-line\/save\/OVERLINE$/);
+
+            testing.toolbarStyle(TextStyle.TEXT_DECORATION_LINE, TextDecorationLine.UNDERLINE)
+                .should("have.attr", "href")
+                .and("match", /^#\/.*\/Untitled\/cell\/B2\/style\/text-decoration-line\/save\/UNDERLINE$/);
+
+            
             testing.toolbarStyle(TextStyle.VERTICAL_ALIGN, VerticalAlign.TOP)
                 .should("have.attr", "href")
                 .and("match", /^#\/.*\/Untitled\/cell\/B2\/style\/vertical-align\/save\/TOP$/);
