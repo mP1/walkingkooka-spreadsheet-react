@@ -9,6 +9,7 @@ import TextAlign from "../../src/text/TextAlign.js";
 import TextStyle from "../../src/text/TextStyle.js";
 import VerticalAlign from "../../src/text/VerticalAlign.js";
 import TextDecorationLine from "../../src/text/TextDecorationLine.js";
+import WordBreak from "../../src/text/WordBreak.js";
 
 const A1 = SpreadsheetCellReference.parse("A1");
 const A3 = SpreadsheetCellReference.parse("A3");
@@ -265,10 +266,31 @@ describe(
             testing.toolbarStyle(TextStyle.VERTICAL_ALIGN, VerticalAlign.BOTTOM)
                 .should("have.attr", "href")
                 .and("match", /^#\/.*\/Untitled\/cell\/B2\/style\/vertical-align\/save\/BOTTOM$/);
+
+
+            testing.toolbarStyle(TextStyle.WORD_BREAK, WordBreak.NONE)
+                .should("have.attr", "href")
+                .and("match", /^#\/.*\/Untitled\/cell\/B2\/style\/word-break\/save\/NONE$/);
+
+            testing.toolbarStyle(TextStyle.WORD_BREAK, WordBreak.NORMAL)
+                .should("have.attr", "href")
+                .and("match", /^#\/.*\/Untitled\/cell\/B2\/style\/word-break\/save\/NORMAL$/);
+
+            testing.toolbarStyle(TextStyle.WORD_BREAK, WordBreak.BREAK_ALL)
+                .should("have.attr", "href")
+                .and("match", /^#\/.*\/Untitled\/cell\/B2\/style\/word-break\/save\/BREAK_ALL$/);
+
+            testing.toolbarStyle(TextStyle.WORD_BREAK, WordBreak.BREAK_WORD)
+                .should("have.attr", "href")
+                .and("match", /^#\/.*\/Untitled\/cell\/B2\/style\/word-break\/save\/BREAK_WORD$/);
+
+            testing.toolbarStyle(TextStyle.WORD_BREAK, WordBreak.KEEP_ALL)
+                .should("have.attr", "href")
+                .and("match", /^#\/.*\/Untitled\/cell\/B2\/style\/word-break\/save\/KEEP_ALL$/);
         });
 
         it("Cell style save TextAlign.CENTER hash", () => {
-            testing.hashAppendAfterSpreadsheetName("/cell/B2/style/text-align/save/CENTER");
+            testing.hashAppendAfterSpreadsheetName("/cell/B2/style/workbreak/save/CENTER");
 
             testing.historyWait();
 
