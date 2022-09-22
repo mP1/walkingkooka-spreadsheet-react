@@ -8,6 +8,7 @@ import SpreadsheetHistoryHashTokens from "../../history/SpreadsheetHistoryHashTo
 import SpreadsheetMessengerCrud from "../../message/SpreadsheetMessengerCrud.js";
 import SpreadsheetSelectionWidget from "../SpreadsheetSelectionWidget.js";
 import TextAlign from "../../../text/TextAlign.js";
+import TextDecorationLine from "../../../text/TextDecorationLine.js";
 import TextStyle from "../../../text/TextStyle.js";
 import VerticalAlign from "../../../text/VerticalAlign.js";
 
@@ -29,6 +30,7 @@ export default class SpreadsheetToolbarWidget extends SpreadsheetSelectionWidget
     init() {
         this.fontStyle = React.createRef();
         this.textAlign = React.createRef();
+        this.textDecorationLine = React.createRef();
         this.verticalAlign = React.createRef();
     }
 
@@ -89,6 +91,16 @@ export default class SpreadsheetToolbarWidget extends SpreadsheetSelectionWidget
                                                            spreadsheetDeltaCellCrud={spreadsheetDeltaCellCrud}
                                                            spreadsheetToolbarWidget={this}
             />
+            <SpreadsheetCellStylePropertyButtonGroupWidget ref={this.textDecorationLine}
+                                                           variant="contained"
+                                                           aria-label="outlined primary button group"
+                                                           history={history}
+                                                           propertyName={TextStyle.TEXT_DECORATION_LINE}
+                                                           labels={["none", "line through", "overline", "underline"]}
+                                                           values={[TextDecorationLine.NONE, TextDecorationLine.LINE_THROUGH, TextDecorationLine.OVERLINE, TextDecorationLine.UNDERLINE]}
+                                                           spreadsheetDeltaCellCrud={spreadsheetDeltaCellCrud}
+                                                           spreadsheetToolbarWidget={this}
+            />
             <SpreadsheetCellStylePropertyButtonGroupWidget ref={this.verticalAlign}
                                                            variant="contained"
                                                            aria-label="outlined primary button group"
@@ -115,6 +127,9 @@ export default class SpreadsheetToolbarWidget extends SpreadsheetSelectionWidget
                 break;
             case TextStyle.TEXT_ALIGN:
                 style = this.textAlign.current;
+                break;
+            case TextStyle.TEXT_DECORATION_LINE:
+                style = this.textDecorationLine.current;
                 break;
             case TextStyle.VERTICAL_ALIGN:
                 style = this.verticalAlign.current;
