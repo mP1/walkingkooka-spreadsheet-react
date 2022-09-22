@@ -11,6 +11,7 @@ import TextAlign from "../../../text/TextAlign.js";
 import TextDecorationLine from "../../../text/TextDecorationLine.js";
 import TextStyle from "../../../text/TextStyle.js";
 import VerticalAlign from "../../../text/VerticalAlign.js";
+import WordBreak from "../../../text/WordBreak.js";
 
 /**
  * A container that holds all format and style widgets.
@@ -32,6 +33,7 @@ export default class SpreadsheetToolbarWidget extends SpreadsheetSelectionWidget
         this.textAlign = React.createRef();
         this.textDecorationLine = React.createRef();
         this.verticalAlign = React.createRef();
+        this.workbreak = React.createRef();
     }
 
     initialStateFromProps() {
@@ -111,6 +113,16 @@ export default class SpreadsheetToolbarWidget extends SpreadsheetSelectionWidget
                                                            spreadsheetDeltaCellCrud={spreadsheetDeltaCellCrud}
                                                            spreadsheetToolbarWidget={this}
             />
+            <SpreadsheetCellStylePropertyButtonGroupWidget ref={this.workbreak}
+                                                           variant="contained"
+                                                           aria-label="outlined primary button group"
+                                                           history={history}
+                                                           propertyName={TextStyle.WORD_BREAK}
+                                                           labels={["none", "normal", "break all", "break word", "keep all"]}
+                                                           values={[WordBreak.NONE, WordBreak.NORMAL, WordBreak.BREAK_ALL, WordBreak.BREAK_WORD, WordBreak.KEEP_ALL]}
+                                                           spreadsheetDeltaCellCrud={spreadsheetDeltaCellCrud}
+                                                           spreadsheetToolbarWidget={this}
+            />
         </div>
     }
 
@@ -133,6 +145,9 @@ export default class SpreadsheetToolbarWidget extends SpreadsheetSelectionWidget
                 break;
             case TextStyle.VERTICAL_ALIGN:
                 style = this.verticalAlign.current;
+                break;
+            case TextStyle.WORD_BREAK:
+                style = this.workbreak.current;
                 break;
             default:
                 break;
