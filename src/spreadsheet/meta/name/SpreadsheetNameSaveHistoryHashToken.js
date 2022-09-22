@@ -36,7 +36,12 @@ export default class SpreadsheetNameSaveHistoryHashToken extends SpreadsheetName
     }
 
     historyHashPath() {
-        return "/" + SpreadsheetHistoryHashTokens.SPREADSHEET_NAME_PATH + "/" + encodeURIComponent(this.value().value());
+        return "/" +
+            SpreadsheetHistoryHashTokens.SPREADSHEET_NAME_PATH +
+            "/" +
+            SpreadsheetHistoryHashTokens.SAVE +
+            "/" +
+            encodeURIComponent(this.value().value());
     }
 
     equals(other) {

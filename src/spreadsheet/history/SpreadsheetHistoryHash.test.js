@@ -558,7 +558,7 @@ testParseAndStringify(
 );
 
 testParseAndStringify(
-    "/spreadsheet-id-123/spreadsheet-name-456/name/new-spreadsheet-name-789",
+    "/spreadsheet-id-123/spreadsheet-name-456/name/save/new-spreadsheet-name-789",
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
@@ -572,7 +572,7 @@ testParseAndStringify(
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
     },
-    "Invalid token: \"A1\"",
+    "Invalid token: \"cell\"",
 );
 
 testParseAndStringify(
@@ -922,7 +922,7 @@ testParseAndStringify(
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
     },
-    "Invalid token: \"Label123\""
+    "Invalid token: \"label\""
 );
 
 testParseAndStringify(
@@ -2330,7 +2330,7 @@ testMerge(
     {
         "spreadsheet-name-edit": NAME_SAVE,
     },
-    "/123abc/Untitled4567890/name/new-spreadsheet-name-789"
+    "/123abc/Untitled4567890/name/save/new-spreadsheet-name-789"
 );
 
 testMerge(
@@ -2370,11 +2370,11 @@ testMerge(
     {
         "spreadsheet-name-edit": NAME_SAVE,
     },
-    "/123abc/Untitled456/name/new-spreadsheet-name-789"
+    "/123abc/Untitled456/name/save/new-spreadsheet-name-789"
 );
 
 testMerge(
-    "/123abc/Untitled4567890a/name/new-spreadsheet-name-789",
+    "/123abc/Untitled4567890a/name/save/new-spreadsheet-name-789",
     {
         "spreadsheet-name-edit": null,
     },
