@@ -106,16 +106,16 @@ Following the selection of a cell, the following commands are possible
 
 - /delete Deletes the cell or cell-range
 - /formula Loads the formula text box with the current value for this cell
-- /formula/save/$formula-text Saves the given $formula-text for the cell.
+- /formula/save/$formula-text/edit Saves the given $formula-text for the cell.
 - /menu Displays a context menu
 - /style/$property-name selects the style property widget for editing for the selected cells.
 - /style/$property-name/save/$property-value saves the style property with the value for the selected cells.
 
 > /#123/Untitled/cell/D4/delete
 > 
-> /#123/Untitled/cell/E5:F6/formula
+> /#123/Untitled/cell/E5:F6/formula/edit
 > 
-> /#123/Untitled/cell/G7/formula
+> /#123/Untitled/cell/G7/formula/edit
 > 
 > /#123/Untitled/cell/H8/formula/save/=1+2
 
