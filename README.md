@@ -88,7 +88,7 @@ The history hash tokens are evolving and more will be available shortly to make 
 
 Activates editing of the spreadsheet name.
 
-> /#123/Untitled/name/NewSpreadsheetName
+> /#123/Untitled/name/save/NewSpreadsheetName
 
 Saves a new spreadsheet name
 
