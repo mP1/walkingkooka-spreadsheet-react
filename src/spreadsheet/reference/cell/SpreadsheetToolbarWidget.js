@@ -75,7 +75,7 @@ export default class SpreadsheetToolbarWidget extends SpreadsheetSelectionWidget
                         padding: 0,
                         visibility: viewportSelection instanceof SpreadsheetCellHistoryHashToken ? "visible" : "hidden"
                     }}>
-            <SpreadsheetCellStylePropertyButtonGroupWidget ref={this.textAlign}
+            <SpreadsheetCellStylePropertyButtonGroupWidget ref={this.fontStyle}
                                                            variant="contained"
                                                            aria-label="outlined primary button group"
                                                            history={history}
