@@ -31,6 +31,7 @@ export default class SpreadsheetToolbarWidget extends SpreadsheetSelectionWidget
     }
 
     init() {
+        this.backgroundColor = React.createRef();
         this.color = React.createRef();
         this.fontStyle = React.createRef();
         this.textAlign = React.createRef();
@@ -77,6 +78,12 @@ export default class SpreadsheetToolbarWidget extends SpreadsheetSelectionWidget
                         padding: 0,
                         visibility: viewportSelection instanceof SpreadsheetCellHistoryHashToken ? "visible" : "hidden"
                     }}>
+            <SpreadsheetCellStylePropertyColorPickerWidget ref={this.backgroundColor}
+                                                           history={history}
+                                                           propertyName={TextStyle.BACKGROUND_COLOR}
+                                                           spreadsheetDeltaCellCrud={spreadsheetDeltaCellCrud}
+                                                           spreadsheetToolbarWidget={this}
+            />
             <SpreadsheetCellStylePropertyColorPickerWidget ref={this.color}
                                                            history={history}
                                                            propertyName={TextStyle.COLOR}
@@ -154,6 +161,9 @@ export default class SpreadsheetToolbarWidget extends SpreadsheetSelectionWidget
         let style;
 
         switch(propertyName) {
+            case TextStyle.BACKGROUND_COLOR:
+                style = this.backgroundColor.current;
+                break;
             case TextStyle.COLOR:
                 style = this.color.current;
                 break;
