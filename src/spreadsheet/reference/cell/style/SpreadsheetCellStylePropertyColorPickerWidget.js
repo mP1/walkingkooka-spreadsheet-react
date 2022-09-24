@@ -71,7 +71,7 @@ export default class SpreadsheetCellStylePropertyColorPickerWidget extends Sprea
                             onChange={onChange}
                             onFocus={onFocus}
                             onOpen={onFocus}
-        />
+        />;
     }
 
     focusElement() {
