@@ -3,6 +3,7 @@ import PropTypes from "prop-types";
 import React from "react";
 import SpreadsheetCellHistoryHashToken from "./SpreadsheetCellHistoryHashToken.js";
 import SpreadsheetCellStylePropertyButtonGroupWidget from "./style/SpreadsheetCellStylePropertyButtonGroupWidget.js";
+import SpreadsheetCellStylePropertyColorPickerWidget from "./style/SpreadsheetCellStylePropertyColorPickerWidget.js";
 import SpreadsheetHistoryHash from "../../history/SpreadsheetHistoryHash.js";
 import SpreadsheetHistoryHashTokens from "../../history/SpreadsheetHistoryHashTokens.js";
 import SpreadsheetMessengerCrud from "../../message/SpreadsheetMessengerCrud.js";
@@ -30,6 +31,7 @@ export default class SpreadsheetToolbarWidget extends SpreadsheetSelectionWidget
     }
 
     init() {
+        this.color = React.createRef();
         this.fontStyle = React.createRef();
         this.textAlign = React.createRef();
         this.textDecorationLine = React.createRef();
@@ -75,6 +77,12 @@ export default class SpreadsheetToolbarWidget extends SpreadsheetSelectionWidget
                         padding: 0,
                         visibility: viewportSelection instanceof SpreadsheetCellHistoryHashToken ? "visible" : "hidden"
                     }}>
+            <SpreadsheetCellStylePropertyColorPickerWidget ref={this.color}
+                                                           history={history}
+                                                           propertyName={TextStyle.COLOR}
+                                                           spreadsheetDeltaCellCrud={spreadsheetDeltaCellCrud}
+                                                           spreadsheetToolbarWidget={this}
+            />
             <SpreadsheetCellStylePropertyButtonGroupWidget ref={this.fontStyle}
                                                            variant="contained"
                                                            aria-label="outlined primary button group"
@@ -146,6 +154,9 @@ export default class SpreadsheetToolbarWidget extends SpreadsheetSelectionWidget
         let style;
 
         switch(propertyName) {
+            case TextStyle.COLOR:
+                style = this.color.current;
+                break;
             case TextStyle.FONT_STYLE:
                 style = this.fontStyle.current;
                 break;
