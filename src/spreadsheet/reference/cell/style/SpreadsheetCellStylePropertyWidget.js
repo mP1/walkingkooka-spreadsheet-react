@@ -7,6 +7,9 @@ import SpreadsheetHistoryHash from "../../../history/SpreadsheetHistoryHash.js";
 import SpreadsheetHistoryHashTokens from "../../../history/SpreadsheetHistoryHashTokens.js";
 import SpreadsheetLabelName from "../../label/SpreadsheetLabelName.js";
 import SystemObject from "../../../../SystemObject.js";
+import SpreadsheetToolbarWidget from "../SpreadsheetToolbarWidget.js";
+import SpreadsheetFormulaWidget from "../formula/SpreadsheetFormulaWidget.js";
+import SpreadsheetViewportWidget from "../../viewport/SpreadsheetViewportWidget.js";
 
 /**
  * Common base class for any style widget that represents a single style property and value.
@@ -119,7 +122,8 @@ export default class SpreadsheetCellStylePropertyWidget extends SpreadsheetCellW
             null;
     }
 
-    render0(viewportSelection) {
+    render0(viewportSelectionToken) {
+        const viewportSelection = viewportSelectionToken.viewportSelection();
         const propertyName = this.props.propertyName;
 
         const onFocus = () => {
@@ -128,18 +132,24 @@ export default class SpreadsheetCellStylePropertyWidget extends SpreadsheetCellW
             this.setState({
                 focused: true,
                 viewportSelection: new SpreadsheetCellStyleEditHistoryHashToken(
-                    viewportSelection.viewportSelection(),
+                    viewportSelection,
                     propertyName,
                 )
             });
         };
 
         const onBlur = (e) => {
-            this.log(".onBlur");
+            const target = e.relatedTarget;
 
-            this.setState({
-                focused: false,
-            });
+            if(SpreadsheetViewportWidget.contains(target) || SpreadsheetFormulaWidget.contains(target) || SpreadsheetToolbarWidget.contains(target)){
+                this.log(".onBlur but new target is one of viewport/formula/toolbar no update to history hash");
+
+                this.setState({
+                    focused: false,
+                });
+            }else {
+                this.props.spreadsheetToolbarWidget.historyPushViewportSelectionSelect();
+            }
         };
 
         return this.renderStyleWidget(
