@@ -296,7 +296,7 @@ describe(
         });
 
         it("Cell style save TextAlign.CENTER hash", () => {
-            testing.hashAppendAfterSpreadsheetName("/cell/B2/style/workbreak/save/CENTER");
+            testing.hashAppendAfterSpreadsheetName("/cell/B2/style/text-align/save/CENTER");
 
             testing.historyWait();
 
