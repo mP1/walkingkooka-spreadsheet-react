@@ -1,4 +1,3 @@
-import SpreadsheetHistoryHashTokens from "../../history/SpreadsheetHistoryHashTokens.js";
 import SpreadsheetNameHistoryHashToken from "./SpreadsheetNameHistoryHashToken.js";
 
 /**
@@ -13,9 +12,5 @@ export default class SpreadsheetNameEditHistoryHashToken extends SpreadsheetName
             spreadsheetNameWidget.beginEditing();
         }
         return null;
-    }
-
-    historyHashPath() {
-        return "/" + SpreadsheetHistoryHashTokens.SPREADSHEET_NAME_PATH;
     }
 }
