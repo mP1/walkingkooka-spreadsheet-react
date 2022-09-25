@@ -467,24 +467,37 @@ export default class SpreadsheetHistoryHash extends SpreadsheetHistoryHashTokens
                                     if(null == token){
                                         metadata = SpreadsheetMetadataSelectHistoryHashToken.NOTHING;
                                     }else {
-                                        // /metadata/metadata
+                                        // /metadata/$item-OR-property
                                         if(SpreadsheetMetadataDrawerWidgetHistoryHashTokens.isToken(token)){
                                             const metadataItemOrMetadataProperty = token;
 
-                                            // /metadata/color/#123456
-                                            token = tokens.shift(); // property value
+                                            token = tokens.shift();
                                             if(null != token){
-                                                if(SpreadsheetMetadataDrawerWidgetHistoryHashTokens.isProperty(metadataItemOrMetadataProperty)){
-                                                    metadata = new SpreadsheetMetadataSaveHistoryHashToken(
-                                                        metadataItemOrMetadataProperty,
-                                                        SpreadsheetMetadataDrawerWidgetHistoryHashTokens.parseHistoryHashToken(
-                                                            metadataItemOrMetadataProperty,
-                                                            token
-                                                        )
-                                                    );
-                                                    token = tokens.shift();
-                                                }else {
-                                                    tokens.unshift(token);
+                                                switch(token) {
+                                                    case SpreadsheetHistoryHashTokens.SAVE:
+                                                        // /metadata/color/save/#123456
+                                                        if(SpreadsheetMetadataDrawerWidgetHistoryHashTokens.isProperty(metadataItemOrMetadataProperty)){
+                                                            token = tokens.shift();
+                                                            if(null == token) {
+                                                                errors("Missing metadata property " + CharSequences.quoteAndEscape(metadataItemOrMetadataProperty) + " missing value");
+                                                                break Loop;
+                                                            }
+
+                                                            metadata = new SpreadsheetMetadataSaveHistoryHashToken(
+                                                                metadataItemOrMetadataProperty,
+                                                                SpreadsheetMetadataDrawerWidgetHistoryHashTokens.parseHistoryHashToken(
+                                                                    metadataItemOrMetadataProperty,
+                                                                    token
+                                                                )
+                                                            );
+                                                            token = tokens.shift();
+                                                        }else {
+                                                            errors("Cannot save unknown metadata property " + CharSequences.quoteAndEscape(metadataItemOrMetadataProperty));
+                                                        }
+                                                        break;
+                                                    default:
+                                                        tokens.unshift(token);
+                                                        break;
                                                 }
                                             }else {
                                                 metadata = new SpreadsheetMetadataSelectHistoryHashToken(metadataItemOrMetadataProperty);

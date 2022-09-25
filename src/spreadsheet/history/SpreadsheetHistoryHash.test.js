@@ -1807,7 +1807,6 @@ testParseAndStringify(
     "Invalid token: \"metadata\""
 );
 
-
 testParseAndStringify(
     "/spreadsheet-id-123/spreadsheet-name-456/metadata",
     {
@@ -1838,11 +1837,20 @@ testParseAndStringify(
     }
 );
 
+testParseAndStringify(
+    "/spreadsheet-id-123/spreadsheet-name-456/metadata/background-color/save",
+    {
+        "spreadsheet-id": "spreadsheet-id-123",
+        "spreadsheet-name": SPREADSHEET_NAME,
+    },
+    "Missing metadata property \"background-color\" missing value"
+);
+
 const COLOR_STRING = "#012345";
 const COLOR = Color.parse(COLOR_STRING);
 
 testParseAndStringify(
-    "/spreadsheet-id-123/spreadsheet-name-456/metadata/background-color/",
+    "/spreadsheet-id-123/spreadsheet-name-456/metadata/background-color/save/",
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
@@ -1854,7 +1862,7 @@ testParseAndStringify(
 );
 
 testParseAndStringify(
-    "/spreadsheet-id-123/spreadsheet-name-456/metadata/background-color/" + COLOR_STRING,
+    "/spreadsheet-id-123/spreadsheet-name-456/metadata/background-color/save/" + COLOR_STRING,
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
@@ -1866,7 +1874,7 @@ testParseAndStringify(
 );
 
 testParseAndStringify(
-    "/spreadsheet-id-123/spreadsheet-name-456/metadata/background-color/%23012345",
+    "/spreadsheet-id-123/spreadsheet-name-456/metadata/background-color/save/%23012345",
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
@@ -1878,7 +1886,7 @@ testParseAndStringify(
 );
 
 testParseAndStringify(
-    "/spreadsheet-id-123/spreadsheet-name-456/metadata/border-bottom-color/" + COLOR_STRING,
+    "/spreadsheet-id-123/spreadsheet-name-456/metadata/border-bottom-color/save/" + COLOR_STRING,
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
@@ -1890,7 +1898,7 @@ testParseAndStringify(
 );
 
 testParseAndStringify(
-    "/spreadsheet-id-123/spreadsheet-name-456/metadata/border-bottom-style/DASHED",
+    "/spreadsheet-id-123/spreadsheet-name-456/metadata/border-bottom-style/save/DASHED",
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
@@ -1902,7 +1910,7 @@ testParseAndStringify(
 );
 
 testParseAndStringify(
-    "/spreadsheet-id-123/spreadsheet-name-456/metadata/border-bottom-width/25.75px",
+    "/spreadsheet-id-123/spreadsheet-name-456/metadata/border-bottom-width/save/25.75px",
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
@@ -1914,7 +1922,7 @@ testParseAndStringify(
 );
 
 testParseAndStringify(
-    "/spreadsheet-id-123/spreadsheet-name-456/metadata/hyphens/AUTO",
+    "/spreadsheet-id-123/spreadsheet-name-456/metadata/hyphens/save/AUTO",
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
@@ -1926,7 +1934,7 @@ testParseAndStringify(
 );
 
 testParseAndStringify(
-    "/spreadsheet-id-123/spreadsheet-name-456/metadata/currency-symbol/AUD",
+    "/spreadsheet-id-123/spreadsheet-name-456/metadata/currency-symbol/save/AUD",
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
@@ -1938,7 +1946,7 @@ testParseAndStringify(
 );
 
 testParseAndStringify(
-    "/spreadsheet-id-123/spreadsheet-name-456/metadata/date-format-pattern/YY%2FMM%2FDD",
+    "/spreadsheet-id-123/spreadsheet-name-456/metadata/date-format-pattern/save/YY%2FMM%2FDD",
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
@@ -1950,7 +1958,7 @@ testParseAndStringify(
 );
 
 testParseAndStringify(
-    "/spreadsheet-id-123/spreadsheet-name-456/metadata/date-parse-patterns/YY%2FMM%2FDD",
+    "/spreadsheet-id-123/spreadsheet-name-456/metadata/date-parse-patterns/save/YY%2FMM%2FDD",
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
@@ -1962,7 +1970,7 @@ testParseAndStringify(
 );
 
 testParseAndStringify(
-    "/spreadsheet-id-123/spreadsheet-name-456/metadata/date-time-offset/123456",
+    "/spreadsheet-id-123/spreadsheet-name-456/metadata/date-time-offset/save/123456",
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
@@ -1974,7 +1982,7 @@ testParseAndStringify(
 );
 
 testParseAndStringify(
-    "/spreadsheet-id-123/spreadsheet-name-456/metadata/date-time-format-pattern/YY%2FMM%2FDD%20HH:MM:SS",
+    "/spreadsheet-id-123/spreadsheet-name-456/metadata/date-time-format-pattern/save/YY%2FMM%2FDD%20HH:MM:SS",
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
@@ -1986,7 +1994,7 @@ testParseAndStringify(
 );
 
 testParseAndStringify(
-    "/spreadsheet-id-123/spreadsheet-name-456/metadata/date-time-parse-patterns/YY%2FMM%2FDD%20HH:MM:SS",
+    "/spreadsheet-id-123/spreadsheet-name-456/metadata/date-time-parse-patterns/save/YY%2FMM%2FDD%20HH:MM:SS",
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
@@ -1998,7 +2006,7 @@ testParseAndStringify(
 );
 
 testParseAndStringify(
-    "/spreadsheet-id-123/spreadsheet-name-456/metadata/decimal-separator/,",
+    "/spreadsheet-id-123/spreadsheet-name-456/metadata/decimal-separator/save/,",
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
@@ -2010,7 +2018,7 @@ testParseAndStringify(
 );
 
 testParseAndStringify(
-    "/spreadsheet-id-123/spreadsheet-name-456/metadata/expression-number-kind/BIG_DECIMAL",
+    "/spreadsheet-id-123/spreadsheet-name-456/metadata/expression-number-kind/save/BIG_DECIMAL",
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
@@ -2022,7 +2030,7 @@ testParseAndStringify(
 );
 
 testParseAndStringify(
-    "/spreadsheet-id-123/spreadsheet-name-456/metadata/precision/12",
+    "/spreadsheet-id-123/spreadsheet-name-456/metadata/precision/save/12",
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
@@ -2034,7 +2042,7 @@ testParseAndStringify(
 );
 
 testParseAndStringify(
-    "/spreadsheet-id-123/spreadsheet-name-456/metadata/rounding-mode/CEILING",
+    "/spreadsheet-id-123/spreadsheet-name-456/metadata/rounding-mode/save/CEILING",
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
@@ -2046,7 +2054,7 @@ testParseAndStringify(
 );
 
 testParseAndStringify(
-    "/spreadsheet-id-123/spreadsheet-name-456/metadata/text-format-pattern/@@",
+    "/spreadsheet-id-123/spreadsheet-name-456/metadata/text-format-pattern/save/@@",
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
@@ -2058,7 +2066,7 @@ testParseAndStringify(
 );
 
 testParseAndStringify(
-    "/spreadsheet-id-123/spreadsheet-name-456/metadata/time-format-pattern/HH:MM:SS",
+    "/spreadsheet-id-123/spreadsheet-name-456/metadata/time-format-pattern/save/HH:MM:SS",
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
@@ -2070,7 +2078,7 @@ testParseAndStringify(
 );
 
 testParseAndStringify(
-    "/spreadsheet-id-123/spreadsheet-name-456/metadata/time-parse-patterns/HH:MM:SS",
+    "/spreadsheet-id-123/spreadsheet-name-456/metadata/time-parse-patterns/save/HH:MM:SS",
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
@@ -3017,7 +3025,7 @@ testMerge(
             Color.parse("#123456")
         ),
     },
-    "/123abc/Untitled456/metadata/color/#123456"
+    "/123abc/Untitled456/metadata/color/save/#123456"
 );
 
 testMerge(
@@ -3031,7 +3039,7 @@ testMerge(
 );
 
 testMerge(
-    "/123abc/Untitled456/metadata/color/#012345",
+    "/123abc/Untitled456/metadata/color/save/#012345",
     {
         "metadata": null,
     },
@@ -3039,14 +3047,14 @@ testMerge(
 );
 
 testMerge(
-    "/123abc/Untitled456/metadata/color/#012345",
+    "/123abc/Untitled456/metadata/color/save/#012345",
     {
         "metadata": new SpreadsheetMetadataSaveHistoryHashToken(
             TextStyle.COLOR,
             Color.parse("#abcdef")
         ),
     },
-    "/123abc/Untitled456/metadata/color/#abcdef"
+    "/123abc/Untitled456/metadata/color/save/#abcdef"
 );
 
 testMerge(

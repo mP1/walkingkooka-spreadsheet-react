@@ -43,6 +43,8 @@ export default class SpreadsheetMetadataSaveHistoryHashToken extends Spreadsheet
             "/" +
             this.property() +
             "/" +
+            SpreadsheetHistoryHashTokens.SAVE +
+            "/" +
             (value ? encodeURIComponent(value) : "");
     }
 
