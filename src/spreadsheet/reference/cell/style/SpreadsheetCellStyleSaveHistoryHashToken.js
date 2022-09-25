@@ -2,7 +2,6 @@ import Equality from "../../../../Equality.js";
 import SpreadsheetCellStyleEditHistoryHashToken from "./SpreadsheetCellStyleEditHistoryHashToken.js";
 import SpreadsheetCellStyleHistoryHashToken from "./SpreadsheetCellStyleHistoryHashToken.js";
 import SpreadsheetHistoryHashTokens from "../../../history/SpreadsheetHistoryHashTokens.js";
-import TextStyle from "../../../../text/TextStyle.js";
 
 /**
  * A command that represents a cell style property value save.
@@ -10,19 +9,10 @@ import TextStyle from "../../../../text/TextStyle.js";
 export default class SpreadsheetCellStyleSaveHistoryHashToken extends SpreadsheetCellStyleHistoryHashToken {
 
     constructor(selection, propertyName, propertyValue) {
-        super(selection);
+        super(selection, propertyName);
 
-        this.propertyNameValue = TextStyle.checkPropertyName(propertyName);
         this.propertyValueValue = propertyValue;
     }
-
-    /**
-     * The value which may be null if the property was cleared or removed.
-     */
-    propertyName() {
-        return this.propertyNameValue;
-    }
-
     /**
      * The value which may be null if the property was cleared or removed.
      */
@@ -34,8 +24,6 @@ export default class SpreadsheetCellStyleSaveHistoryHashToken extends Spreadshee
         const value = this.propertyValue();
 
         return super.historyHashPath() +
-            "/" +
-            this.propertyName() +
             "/" +
             SpreadsheetHistoryHashTokens.SAVE +
             "/" +
@@ -66,11 +54,8 @@ export default class SpreadsheetCellStyleSaveHistoryHashToken extends Spreadshee
     }
 
     equals(other) {
-        return this === other ||
-            (
-                other instanceof SpreadsheetCellStyleSaveHistoryHashToken &&
-                this.propertyName() === other.propertyName() &&
-                Equality.safeEquals(this.propertyValue(), other.propertyValue())
-            );
+        return super.equals(other) &&
+            other instanceof SpreadsheetCellStyleSaveHistoryHashToken &&
+            Equality.safeEquals(this.propertyValue(), other.propertyValue());
     }
 }
