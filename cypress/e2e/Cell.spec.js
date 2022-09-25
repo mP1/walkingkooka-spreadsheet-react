@@ -269,10 +269,6 @@ describe(
                 .and("match", /^#\/.*\/Untitled\/cell\/B2\/style\/vertical-align\/save\/BOTTOM$/);
 
 
-            testing.toolbarStyle(TextStyle.WORD_BREAK, WordBreak.NONE)
-                .should("have.attr", "href")
-                .and("match", /^#\/.*\/Untitled\/cell\/B2\/style\/word-break\/save\/NONE$/);
-
             testing.toolbarStyle(TextStyle.WORD_BREAK, WordBreak.NORMAL)
                 .should("have.attr", "href")
                 .and("match", /^#\/.*\/Untitled\/cell\/B2\/style\/word-break\/save\/NORMAL$/);
