@@ -113,9 +113,9 @@ Following the selection of a cell, the following commands are possible
 
 > /#123/Untitled/cell/D4/delete
 > 
-> /#123/Untitled/cell/E5:F6/formula/edit
+> /#123/Untitled/cell/E5:F6/formula
 > 
-> /#123/Untitled/cell/G7/formula/edit
+> /#123/Untitled/cell/G7/formula
 > 
 > /#123/Untitled/cell/H8/formula/save/=1+2
 
