@@ -1,5 +1,5 @@
-import SpreadsheetNameHistoryHashToken from "./SpreadsheetNameHistoryHashToken.js";
 import SpreadsheetHistoryHashTokens from "../../history/SpreadsheetHistoryHashTokens.js";
+import SpreadsheetNameHistoryHashToken from "./SpreadsheetNameHistoryHashToken.js";
 
 /**
  * This token represents the spreadsheet name being edited.
