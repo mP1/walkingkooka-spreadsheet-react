@@ -315,7 +315,7 @@ describe(
             testing.toolbarStyleClick(TextStyle.TEXT_ALIGN, TextAlign.CENTER);
 
             testing.hash()
-                .should("match", /^#\/.*\/Untitled\/cell\/B2\/style\/text-align\/edit$/);
+                .should("match", /^#\/.*\/Untitled\/cell\/B2\/style\/text-align$/);
 
             testing.cellStyleCheck(B2, "text-align", "center");
         });
@@ -329,7 +329,7 @@ describe(
             testing.historyWait();
 
             // testing.hash()
-            //     .should("match", /^#\/.*\/Untitled\/cell\/B2\/style\/text-align\/edit$/);
+            //     .should("match", /^#\/.*\/Untitled\/cell\/B2\/style\/text-align$/);
 
             testing.cellStyleCheck(B2, "text-align", "center");
         });
@@ -341,7 +341,7 @@ describe(
         //
         //     testing.toolbarStyleClick(TextStyle.TEXT_ALIGN, TextAlign.LEFT);
         //     testing.hash()
-        //         .should("match", /^#\/.*\/Untitled\/cell\/B2\/style\/text-align\/edit$/);
+        //         .should("match", /^#\/.*\/Untitled\/cell\/B2\/style\/text-align$/);
         //     testing.cellStyleCheck(B2, "text-align", "left");
         //
         //     testing.tab();
@@ -350,7 +350,7 @@ describe(
         //     testing.cellStyleCheck(B2, "text-align", "center");
         //
         //     testing.hash()
-        //         .should("match", /^#\/.*\/Untitled\/cell\/B2\/style\/text-align\/edit$/);
+        //         .should("match", /^#\/.*\/Untitled\/cell\/B2\/style\/text-align$/);
         // });
 
         it("Cell select and hit ESC loses viewport cell focus", () => {
