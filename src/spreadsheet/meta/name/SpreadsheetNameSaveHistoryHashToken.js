@@ -24,6 +24,14 @@ export default class SpreadsheetNameSaveHistoryHashToken extends SpreadsheetName
         return this.valueValue;
     }
 
+    historyHashPath() {
+        return super.historyHashPath() +
+            "/" +
+            SpreadsheetHistoryHashTokens.SAVE +
+            "/" +
+            encodeURIComponent(this.value().value());
+    }
+
     spreadsheetNameWidgetExecute(spreadsheetNameWidget) {
         spreadsheetNameWidget.patchSpreadsheetMetadataProperty(
             SpreadsheetMetadata.SPREADSHEET_NAME,
@@ -33,15 +41,6 @@ export default class SpreadsheetNameSaveHistoryHashToken extends SpreadsheetName
         const historyTokens = SpreadsheetHistoryHashTokens.emptyTokens();
         historyTokens[SpreadsheetHistoryHashTokens.SPREADSHEET_NAME_EDIT] = new SpreadsheetNameEditHistoryHashToken();
         return historyTokens;
-    }
-
-    historyHashPath() {
-        return "/" +
-            SpreadsheetHistoryHashTokens.SPREADSHEET_NAME_PATH +
-            "/" +
-            SpreadsheetHistoryHashTokens.SAVE +
-            "/" +
-            encodeURIComponent(this.value().value());
     }
 
     equals(other) {
