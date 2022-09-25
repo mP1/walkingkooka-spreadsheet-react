@@ -3,13 +3,13 @@ import SpreadsheetCellHistoryHashToken from "../SpreadsheetCellHistoryHashToken.
 import SpreadsheetCellStyleEditHistoryHashToken from "./SpreadsheetCellStyleEditHistoryHashToken.js";
 import SpreadsheetCellStyleHistoryHashToken from "./SpreadsheetCellStyleHistoryHashToken.js";
 import SpreadsheetCellWidget from "../SpreadsheetCellWidget.js";
+import SpreadsheetFormulaWidget from "../formula/SpreadsheetFormulaWidget.js";
 import SpreadsheetHistoryHash from "../../../history/SpreadsheetHistoryHash.js";
 import SpreadsheetHistoryHashTokens from "../../../history/SpreadsheetHistoryHashTokens.js";
 import SpreadsheetLabelName from "../../label/SpreadsheetLabelName.js";
-import SystemObject from "../../../../SystemObject.js";
 import SpreadsheetToolbarWidget from "../SpreadsheetToolbarWidget.js";
-import SpreadsheetFormulaWidget from "../formula/SpreadsheetFormulaWidget.js";
 import SpreadsheetViewportWidget from "../../viewport/SpreadsheetViewportWidget.js";
+import SystemObject from "../../../../SystemObject.js";
 
 /**
  * Common base class for any style widget that represents a single style property and value.
