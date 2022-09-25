@@ -20,16 +20,6 @@ import WordWrap from "../../../text/WordWrap.js";
  */
 export default class SpreadsheetToolbarWidget extends SpreadsheetSelectionWidget {
 
-    static ID = "toolbar";
-
-    /**
-     * Returns true if the given element is a child of the root of this widget.
-     */
-    static contains(element) {
-        return document.getElementById(SpreadsheetToolbarWidget.ID)
-            .contains(element);
-    }
-
     init() {
         this.backgroundColor = React.createRef();
         this.color = React.createRef();
@@ -71,7 +61,7 @@ export default class SpreadsheetToolbarWidget extends SpreadsheetSelectionWidget
             viewportSelection
         } = this.state
 
-        return <div id={SpreadsheetToolbarWidget.ID}
+        return <div id={SpreadsheetToolbarWidget.TOOLBAR_ID}
                     style={{
                         border: 0,
                         margin: 0,

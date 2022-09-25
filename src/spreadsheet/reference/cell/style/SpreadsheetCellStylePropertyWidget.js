@@ -3,12 +3,10 @@ import SpreadsheetCellHistoryHashToken from "../SpreadsheetCellHistoryHashToken.
 import SpreadsheetCellStyleEditHistoryHashToken from "./SpreadsheetCellStyleEditHistoryHashToken.js";
 import SpreadsheetCellStyleHistoryHashToken from "./SpreadsheetCellStyleHistoryHashToken.js";
 import SpreadsheetCellWidget from "../SpreadsheetCellWidget.js";
-import SpreadsheetFormulaWidget from "../formula/SpreadsheetFormulaWidget.js";
 import SpreadsheetHistoryHash from "../../../history/SpreadsheetHistoryHash.js";
 import SpreadsheetHistoryHashTokens from "../../../history/SpreadsheetHistoryHashTokens.js";
 import SpreadsheetLabelName from "../../label/SpreadsheetLabelName.js";
-import SpreadsheetToolbarWidget from "../SpreadsheetToolbarWidget.js";
-import SpreadsheetViewportWidget from "../../viewport/SpreadsheetViewportWidget.js";
+import SpreadsheetSelectionWidget from "../../SpreadsheetSelectionWidget.js";
 import SystemObject from "../../../../SystemObject.js";
 
 /**
@@ -141,7 +139,7 @@ export default class SpreadsheetCellStylePropertyWidget extends SpreadsheetCellW
         const onBlur = (e) => {
             const target = e.relatedTarget;
 
-            if(SpreadsheetViewportWidget.contains(target) || SpreadsheetFormulaWidget.contains(target) || SpreadsheetToolbarWidget.contains(target)){
+            if(SpreadsheetSelectionWidget.viewportContains(target) || SpreadsheetSelectionWidget.formulaContains(target) || SpreadsheetSelectionWidget.toolbarContains(target)){
                 this.log(".onBlur but new target is one of viewport/formula/toolbar no update to history hash");
 
                 this.setState({

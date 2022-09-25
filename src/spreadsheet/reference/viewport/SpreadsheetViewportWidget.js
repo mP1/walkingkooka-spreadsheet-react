@@ -137,16 +137,6 @@ const CONTEXT_MENU_Y_OFFSET = 10;
  */
 export default class SpreadsheetViewportWidget extends SpreadsheetSelectionWidget {
 
-    static VIEWPORT_ID = "viewport";
-
-    /**
-     * Returns true if the given element is a child of the root of this widget.
-     */
-    static contains(element) {
-        return document.getElementById(SpreadsheetViewportWidget.VIEWPORT_ID)
-            .contains(element);
-    }
-
     static VIEWPORT_HORIZONTAL_SLIDER_ID = SpreadsheetViewportWidget.VIEWPORT_ID + "-horizontal-Slider";
 
     static VIEWPORT_VERTICAL_SLIDER_ID = SpreadsheetViewportWidget.VIEWPORT_ID + "-vertical-Slider";

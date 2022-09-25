@@ -185,7 +185,7 @@ export default class SpreadsheetTesting {
     }
 
     formulaText() {
-        return this.getById(SpreadsheetFormulaWidget.TEXT_FIELD_ID);
+        return this.getById(SpreadsheetFormulaWidget.FORMULA_TEXT_FIELD_ID);
     }
 
     formulaTextClick() {
@@ -433,7 +433,7 @@ export default class SpreadsheetTesting {
     }
 
     toolbar() {
-        return this.getById(SpreadsheetToolbarWidget.ID);
+        return this.getById(SpreadsheetToolbarWidget.TOOLBAR_ID);
     }
 
     toolbarHidden() {

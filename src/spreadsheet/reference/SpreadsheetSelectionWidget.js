@@ -10,6 +10,36 @@ import SystemObject from "../../SystemObject.js";
  */
 export default class SpreadsheetSelectionWidget extends SpreadsheetHistoryAwareStateWidget {
 
+    static FORMULA_TEXT_FIELD_ID = "formula-TextField";
+
+    /**
+     * Returns true if the given element is a child of the root of this widget.
+     */
+    static formulaContains(element) {
+        return document.getElementById(SpreadsheetSelectionWidget.FORMULA_TEXT_FIELD_ID)
+            .contains(element);
+    }
+
+    static TOOLBAR_ID = "toolbar";
+
+    /**
+     * Returns true if the given element is a child of the root of this widget.
+     */
+    static toolbarContains(element) {
+        return document.getElementById(SpreadsheetSelectionWidget.TOOLBAR_ID)
+            .contains(element);
+    }
+
+    static VIEWPORT_ID = "viewport";
+
+    /**
+     * Returns true if the given element is a child of the root of this widget.
+     */
+    static viewportContains(element) {
+        return document.getElementById(SpreadsheetSelectionWidget.VIEWPORT_ID)
+            .contains(element);
+    }
+
     componentDidMount() {
         super.componentDidMount();
 

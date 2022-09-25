@@ -22,16 +22,6 @@ import TextField from '@mui/material/TextField';
  */
 export default class SpreadsheetFormulaWidget extends SpreadsheetCellWidget {
 
-    static TEXT_FIELD_ID = "formula-TextField";
-
-    /**
-     * Returns true if the given element is a child of the root of this widget.
-     */
-    static contains(element) {
-        return document.getElementById(SpreadsheetFormulaWidget.TEXT_FIELD_ID)
-            .contains(element);
-    }
-
     init() {
         this.textField = React.createRef();
         this.input = React.createRef();
@@ -128,16 +118,16 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetCellWidget {
             const newTarget = e.relatedTarget;
 
             // if newTarget is viewport
-            if(SpreadsheetViewportWidget.contains(newTarget)){
+            if(SpreadsheetViewportWidget.viewportContains(newTarget)){
                 // do nothing let viewport update history
                 this.log(".onBlur new target is viewport, will let viewport update history");
             }else {
-                if(SpreadsheetToolbarWidget.contains(newTarget)) {
+                if(SpreadsheetToolbarWidget.toolbarContains(newTarget)) {
                     this.log(".onBlur new target is toolbar, will let toolbar update history");
                 } else {
                     if(
                         !newTarget ||
-                        SpreadsheetFormulaWidget.contains(newTarget)
+                        SpreadsheetFormulaWidget.formulaContains(newTarget)
                     ){
                         this.log(".onBlur new target is outside formula & NOT viewport setting selection cell select");
 
@@ -198,7 +188,7 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetCellWidget {
 
         return (
             <TextField ref={this.textField}
-                       id={SpreadsheetFormulaWidget.TEXT_FIELD_ID}
+                       id={SpreadsheetFormulaWidget.FORMULA_TEXT_FIELD_ID}
                        defaultValue={value}
                        onBlur={onBlur}
                        onChange={onChange}
