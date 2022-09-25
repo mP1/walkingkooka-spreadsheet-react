@@ -5,8 +5,8 @@ import SpreadsheetColumnReference from "../../src/spreadsheet/reference/columnro
 import SpreadsheetFormulaWidget from "../../src/spreadsheet/reference/cell/formula/SpreadsheetFormulaWidget.js";
 import SpreadsheetMetadataDrawerWidget from "../../src/spreadsheet/meta/drawer/SpreadsheetMetadataDrawerWidget.js";
 import SpreadsheetNameWidget from "../../src/spreadsheet/meta/name/SpreadsheetNameWidget.js";
-import SpreadsheetRowReference from "../../src/spreadsheet/reference/columnrow/SpreadsheetRowReference.js";
 import SpreadsheetLabelMappingWidget from "../../src/spreadsheet/reference/label/SpreadsheetLabelMappingWidget.js";
+import SpreadsheetRowReference from "../../src/spreadsheet/reference/columnrow/SpreadsheetRowReference.js";
 import SpreadsheetSelectLinkWidget from "../../src/spreadsheet/reference/SpreadsheetSelectLinkWidget.js";
 import SpreadsheetSelectAutocompleteWidget
     from "../../src/spreadsheet/reference/SpreadsheetSelectAutocompleteWidget.js";
