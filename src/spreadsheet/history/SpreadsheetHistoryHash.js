@@ -414,7 +414,7 @@ export default class SpreadsheetHistoryHash extends SpreadsheetHistoryHashTokens
                                     labelName = SpreadsheetLabelName.parse(tokens.shift());
                                 } catch(invalid) {
                                     errors("Label: " + invalid.message);
-                                    break Loop;
+                                    break;
                                 }
                                 label = new SpreadsheetLabelMappingEditHistoryHashToken(labelName);
 
