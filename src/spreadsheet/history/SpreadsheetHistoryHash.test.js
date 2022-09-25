@@ -2082,6 +2082,15 @@ testParseAndStringify(
 );
 
 testParseAndStringify(
+    "/spreadsheet-id-123/spreadsheet-name-456/cell/A1/!invalid",
+    {
+        "spreadsheet-id": "spreadsheet-id-123",
+        "spreadsheet-name": SPREADSHEET_NAME,
+    },
+    "Invalid token: \"!invalid\""
+);
+
+testParseAndStringify(
     "/spreadsheet-id-123/spreadsheet-name-456/cell/A1/freeze",
     {
         "spreadsheet-id": "spreadsheet-id-123",
