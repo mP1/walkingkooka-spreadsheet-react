@@ -6,13 +6,6 @@ import SpreadsheetHistoryHashTokens from "../../../history/SpreadsheetHistoryHas
  */
 export default class SpreadsheetCellStyleEditHistoryHashToken extends SpreadsheetCellStyleHistoryHashToken {
 
-    // /cell/A1/style/font-style/edit
-    historyHashPath() {
-        return super.historyHashPath() +
-            "/" +
-            SpreadsheetHistoryHashTokens.EDIT;
-    }
-
     spreadsheetToolbarWidgetExecute(toolbarWidget, previousViewportSelection) {
         if(!(previousViewportSelection instanceof SpreadsheetCellStyleHistoryHashToken)){
             toolbarWidget.giveSelectedFocus(this.propertyName());

@@ -2164,22 +2164,21 @@ testParseAndStringify(
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
-        "viewport-selection": CELL_SELECT,
     },
-    "Invalid token: \"style\"",
+    "Missing style property",
 );
 
 testParseAndStringify(
-    "/spreadsheet-id-123/spreadsheet-name-456/cell/A1/style/font-size",
+    "/spreadsheet-id-123/spreadsheet-name-456/cell/A1/style/!invalid",
     {
         "spreadsheet-id": "spreadsheet-id-123",
-        "spreadsheet-name": SPREADSHEET_NAME
+        "spreadsheet-name": SPREADSHEET_NAME,
     },
-    "Invalid token: \"font-size\"",
+    "Invalid style property \"!invalid\"",
 );
 
 testParseAndStringify(
-    "/spreadsheet-id-123/spreadsheet-name-456/cell/A1/style/font-style/edit",
+    "/spreadsheet-id-123/spreadsheet-name-456/cell/A1/style/font-style",
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,

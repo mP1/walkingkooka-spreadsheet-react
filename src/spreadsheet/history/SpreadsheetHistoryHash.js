@@ -235,24 +235,25 @@ export default class SpreadsheetHistoryHash extends SpreadsheetHistoryHashTokens
                                             token = tokens.shift();
                                             break;
                                         case SpreadsheetHistoryHashTokens.STYLE:
-                                            // cell/A1/style/font-style/select/italics etc.
                                             token = tokens.shift(); // style property name
                                             if(null != token){
+                                                // cell/A1/style/font-style/italics etc.
                                                 const stylePropertyName = token;
+
                                                 if(TextStyle.isProperty(stylePropertyName)){
-                                                    const styleAction = tokens.shift(); // style property command eg edit | save
-                                                    if(styleAction){
+                                                    const styleAction = tokens.shift(); // style property command eg save
+                                                    if(null == styleAction){
+                                                        viewportSelectionToken = new SpreadsheetCellStyleEditHistoryHashToken(
+                                                            viewportSelection,
+                                                            stylePropertyName
+                                                        );
+
+                                                        token = null;
+                                                    }else {
                                                         switch(styleAction) {
-                                                            case SpreadsheetHistoryHashTokens.EDIT:
-                                                                viewportSelectionToken = new SpreadsheetCellStyleEditHistoryHashToken(
-                                                                    viewportSelection,
-                                                                    stylePropertyName
-                                                                );
-                                                                token = tokens.shift();
-                                                                break;
                                                             case SpreadsheetHistoryHashTokens.SAVE:
                                                                 token = tokens.shift();
-                                                                if(token) {
+                                                                if(token){
                                                                     viewportSelectionToken = new SpreadsheetCellStyleSaveHistoryHashToken(
                                                                         viewportSelection,
                                                                         stylePropertyName,
@@ -262,7 +263,7 @@ export default class SpreadsheetHistoryHash extends SpreadsheetHistoryHashTokens
                                                                         )
                                                                     );
                                                                     token = tokens.shift();
-                                                                } else {
+                                                                }else {
                                                                     errors("Missing save value");
                                                                     break Loop;
                                                                 }
@@ -271,12 +272,14 @@ export default class SpreadsheetHistoryHash extends SpreadsheetHistoryHashTokens
                                                                 errors("Invalid style: " + styleAction);
                                                                 break Loop;
                                                         }
-                                                    }else {
-                                                        tokens.unshift(token); // error
                                                     }
                                                 }else {
-                                                    tokens.unshift(token);
+                                                    errors("Invalid style property " + CharSequences.quoteAndEscape(stylePropertyName));
+                                                    break Loop;
                                                 }
+                                            } else {
+                                                errors("Missing style property");
+                                                break Loop;
                                             }
                                             break;
                                         case SpreadsheetHistoryHashTokens.UNFREEZE:
