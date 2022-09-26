@@ -1,15 +1,15 @@
-import textNodeJsonSupportFromJson from "../text/TextNodeJsonSupport";
 import Equality from "../Equality.js";
 import Preconditions from "../Preconditions.js";
 import React from "react";
 import SpreadsheetCellReference from "./reference/cell/SpreadsheetCellReference.js";
-import SpreadsheetCellFormat from "./SpreadsheetCellFormat";
 import SpreadsheetExpressionReference from "./reference/SpreadsheetExpressionReference.js";
+import SpreadsheetFormatPattern from "./format/SpreadsheetFormatPattern.js";
 import SpreadsheetFormula from "./reference/cell/formula/SpreadsheetFormula.js";
 import SpreadsheetLabelName from "./reference/label/SpreadsheetLabelName.js";
 import SystemObject from "../SystemObject.js";
 import TableCell from "@mui/material/TableCell";
 import TextNode from "../text/TextNode";
+import textNodeJsonSupportFromJson from "../text/TextNodeJsonSupport";
 import TextStyle from "../text/TextStyle";
 import Tooltip from "@mui/material/Tooltip";
 
@@ -31,7 +31,7 @@ export default class SpreadsheetCell extends SystemObject {
      *         "font-textStyle": "ITALIC",
      *         "font-weight": "bold"
      *       },
-     *       "format": "pattern"
+     *       "formatPattern": "pattern"
      *    }
      * }
      * </pre>
@@ -48,7 +48,7 @@ export default class SpreadsheetCell extends SystemObject {
                 const {
                     formula,
                     style,
-                    format,
+                    formatPattern,
                     formatted
                 } = json[cellReferenceOrLabel];
 
@@ -58,25 +58,25 @@ export default class SpreadsheetCell extends SystemObject {
                         SpreadsheetLabelName.fromJson(cellReferenceOrLabel),
                     formula && SpreadsheetFormula.fromJson(formula), // formula is optional
                     (style && TextStyle.fromJson(style)) || TextStyle.EMPTY,
-                    format != null ? SpreadsheetCellFormat.fromJson(format) : format,
+                    formatPattern != null ? SystemObject.fromJsonWithType(formatPattern) : undefined,
                     formatted && textNodeJsonSupportFromJson(formatted));
             default:
                 throw new Error("Expected only reference got " + JSON.stringify(json));
         }
     }
 
-    constructor(reference, formula, style, format, formatted) {
+    constructor(reference, formula, style, formatPattern, formatted) {
         super();
         Preconditions.requireInstance(reference, SpreadsheetExpressionReference, "reference");
         Preconditions.optionalInstance(formula, SpreadsheetFormula, "formula"); // only optional to support creating a cell patch with only a style.
         Preconditions.requireInstance(style, TextStyle, "style");
-        Preconditions.optionalInstance(format, SpreadsheetCellFormat, "format");
+        Preconditions.optionalInstance(formatPattern, SpreadsheetFormatPattern, "formatPattern");
         Preconditions.optionalInstance(formatted, TextNode, "formatted");
 
         this.referenceValue = reference.toRelative();
         this.formulaValue = formula;
         this.styleValue = style;
-        this.formatValue = format;
+        this.formatPatternValue = formatPattern;
         this.formattedValue = formatted;
     }
 
@@ -96,15 +96,15 @@ export default class SpreadsheetCell extends SystemObject {
 
         return this.formula() === formula ?
             this :
-            new SpreadsheetCell(this.reference(), formula, this.style(), this.format(), this.formatted());
+            new SpreadsheetCell(this.reference(), formula, this.style(), this.formatPattern(), this.formatted());
     }
 
     style() {
         return this.styleValue;
     }
 
-    format() {
-        return this.formatValue;
+    formatPattern() {
+        return this.formatPatternValue;
     }
 
     formatted() {
@@ -115,7 +115,7 @@ export default class SpreadsheetCell extends SystemObject {
         const {
             formulaValue,
             styleValue,
-            formatValue,
+            formatPatternValue,
             formattedValue
         } = this;
 
@@ -129,8 +129,8 @@ export default class SpreadsheetCell extends SystemObject {
             json2.style = styleValue.toJson();
         }
 
-        if(formatValue){
-            json2.format = formatValue.toJson();
+        if(formatPatternValue){
+            json2.formatPattern = formatPatternValue.toJsonWithType();
         }
 
         if(formattedValue){
@@ -196,7 +196,7 @@ export default class SpreadsheetCell extends SystemObject {
                 this.reference().equals(other.reference()) &&
                 Equality.safeEquals(this.formula(), other.formula()) &&
                 Equality.safeEquals(this.style(), other.style()) &&
-                Equality.safeEquals(this.format(), other.format()) &&
+                Equality.safeEquals(this.formatPattern(), other.formatPattern()) &&
                 Equality.safeEquals(this.formatted(), other.formatted())
             );
     }
