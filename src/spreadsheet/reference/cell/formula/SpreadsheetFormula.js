@@ -17,9 +17,15 @@ export default class SpreadsheetFormula extends SystemObject {
     static fromJson(json) {
         Preconditions.requireObject(json, "json");
 
-        const {text, value} = json;
-        return new SpreadsheetFormula(
+        // text maybe null if a token is present.
+        const {
             text,
+            value,
+            token
+        } = json;
+
+        return new SpreadsheetFormula(
+            token ? token.value.text : text,
             null != value ? SystemObject.fromJsonWithType(value) : value
         );
     }
