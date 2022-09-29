@@ -29,7 +29,7 @@ import SpreadsheetNameWidget from "./meta/name/SpreadsheetNameWidget.js";
 import SpreadsheetNotification from "./notification/SpreadsheetNotification.js";
 import SpreadsheetSelectAutocompleteWidget from "./reference/SpreadsheetSelectAutocompleteWidget.js";
 import SpreadsheetSelectLinkWidget from "./reference/SpreadsheetSelectLinkWidget.js";
-import SpreadsheetToolbarWidget from "./reference/cell/SpreadsheetToolbarWidget.js";
+import SpreadsheetToolbarWidget from "./reference/cell/toolbar/SpreadsheetToolbarWidget.js";
 import SpreadsheetViewportWidget from "./reference/viewport/SpreadsheetViewportWidget.js";
 
 const useStyles = theme => ({
