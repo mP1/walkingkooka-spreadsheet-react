@@ -10,6 +10,7 @@ import SpreadsheetCellClearHistoryHashToken from "../reference/cell/SpreadsheetC
 import SpreadsheetCellDeleteHistoryHashToken from "../reference/cell/SpreadsheetCellDeleteHistoryHashToken.js";
 import SpreadsheetCellEditFormatPatternHistoryHashToken
     from "../format/SpreadsheetCellEditFormatPatternHistoryHashToken.js";
+import SpreadsheetCellFormatPatternKind from "../format/SpreadsheetCellFormatPatternKind.js";
 import SpreadsheetCellFormulaEditHistoryHashToken
     from "../reference/cell/formula/SpreadsheetCellFormulaEditHistoryHashToken.js";
 import SpreadsheetCellFormulaSaveHistoryHashToken
@@ -645,8 +646,39 @@ testParseAndStringify(
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
+    },
+    "Missing format-pattern kind"
+);
+
+testParseAndStringify(
+    "/spreadsheet-id-123/spreadsheet-name-456/cell/A1/format-pattern/!invalid",
+    {
+        "spreadsheet-id": "spreadsheet-id-123",
+        "spreadsheet-name": SPREADSHEET_NAME,
+    },
+    "Unknown format-pattern kind: !invalid"
+);
+
+testParseAndStringify(
+    "/spreadsheet-id-123/spreadsheet-name-456/cell/A1/format-pattern/date",
+    {
+        "spreadsheet-id": "spreadsheet-id-123",
+        "spreadsheet-name": SPREADSHEET_NAME,
         "viewport-selection": new SpreadsheetCellEditFormatPatternHistoryHashToken(
-            new SpreadsheetViewportSelection(CELL)
+            new SpreadsheetViewportSelection(CELL),
+            SpreadsheetCellFormatPatternKind.DATE,
+        ),
+    }
+);
+
+testParseAndStringify(
+    "/spreadsheet-id-123/spreadsheet-name-456/cell/A1/format-pattern/date-time",
+    {
+        "spreadsheet-id": "spreadsheet-id-123",
+        "spreadsheet-name": SPREADSHEET_NAME,
+        "viewport-selection": new SpreadsheetCellEditFormatPatternHistoryHashToken(
+            new SpreadsheetViewportSelection(CELL),
+            SpreadsheetCellFormatPatternKind.DATE_TIME,
         ),
     }
 );
