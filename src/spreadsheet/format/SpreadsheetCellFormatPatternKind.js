@@ -8,6 +8,7 @@ export default class SpreadsheetCellFormatPatternKind extends SystemEnum {
     static DATE = new SpreadsheetCellFormatPatternKind("DATE");
     static DATE_TIME = new SpreadsheetCellFormatPatternKind("DATE_TIME");
     static NUMBER = new SpreadsheetCellFormatPatternKind("NUMBER");
+    static TEXT = new SpreadsheetCellFormatPatternKind("TEXT");
     static TIME = new SpreadsheetCellFormatPatternKind("TIME");
 
     static values() {
@@ -15,6 +16,7 @@ export default class SpreadsheetCellFormatPatternKind extends SystemEnum {
             SpreadsheetCellFormatPatternKind.DATE,
             SpreadsheetCellFormatPatternKind.DATE_TIME,
             SpreadsheetCellFormatPatternKind.NUMBER,
+            SpreadsheetCellFormatPatternKind.TEXT,
             SpreadsheetCellFormatPatternKind.TIME
         ];
     }
