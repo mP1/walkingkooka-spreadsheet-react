@@ -8,6 +8,8 @@ import PixelLength from "../../text/PixelLength.js";
 import RoundingMode from "../../math/RoundingMode.js";
 import SpreadsheetCellClearHistoryHashToken from "../reference/cell/SpreadsheetCellClearHistoryHashToken.js";
 import SpreadsheetCellDeleteHistoryHashToken from "../reference/cell/SpreadsheetCellDeleteHistoryHashToken.js";
+import SpreadsheetCellEditFormatPatternHistoryHashToken
+    from "../format/SpreadsheetCellEditFormatPatternHistoryHashToken.js";
 import SpreadsheetCellFormulaEditHistoryHashToken
     from "../reference/cell/formula/SpreadsheetCellFormulaEditHistoryHashToken.js";
 import SpreadsheetCellFormulaSaveHistoryHashToken
@@ -635,6 +637,17 @@ testParseAndStringify(
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
         "viewport-selection": CELL_DELETE,
+    }
+);
+
+testParseAndStringify(
+    "/spreadsheet-id-123/spreadsheet-name-456/cell/A1/format-pattern",
+    {
+        "spreadsheet-id": "spreadsheet-id-123",
+        "spreadsheet-name": SPREADSHEET_NAME,
+        "viewport-selection": new SpreadsheetCellEditFormatPatternHistoryHashToken(
+            new SpreadsheetViewportSelection(CELL)
+        ),
     }
 );
 

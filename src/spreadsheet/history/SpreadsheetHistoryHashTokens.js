@@ -41,6 +41,7 @@ export default class SpreadsheetHistoryHashTokens {
 
     static CLEAR = "clear";
     static DELETE = "delete";
+    static FORMAT_PATTERN = "format-pattern";
     static FREEZE = "freeze";
     static HIDDEN = "hidden";
     static INSERT_AFTER = "insert-after";
