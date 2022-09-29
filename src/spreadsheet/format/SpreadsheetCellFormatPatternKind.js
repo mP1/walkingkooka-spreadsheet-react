@@ -1,3 +1,8 @@
+import SpreadsheetDateFormatPattern from "./SpreadsheetDateFormatPattern.js";
+import SpreadsheetDateTimeFormatPattern from "./SpreadsheetDateTimeFormatPattern.js";
+import SpreadsheetNumberFormatPattern from "./SpreadsheetNumberFormatPattern.js";
+import SpreadsheetTextFormatPattern from "./SpreadsheetTextFormatPattern.js";
+import SpreadsheetTimeFormatPattern from "./SpreadsheetTimeFormatPattern.js";
 import SystemEnum from "../../SystemEnum.js";
 import SystemObject from "../../SystemObject.js";
 
@@ -27,6 +32,34 @@ export default class SpreadsheetCellFormatPatternKind extends SystemEnum {
 
     static fromJson(name) {
         return SpreadsheetCellFormatPatternKind.valueOf(name);
+    }
+
+    createPattern(pattern) {
+        const name = this.name();
+        let formatPattern;
+
+        switch(name) {
+            case "DATE":
+                formatPattern = new SpreadsheetDateFormatPattern(pattern);
+                break;
+            case "DATE_TIME":
+                formatPattern = new SpreadsheetDateTimeFormatPattern(pattern);
+                break;
+            case "NUMBER":
+                formatPattern = new SpreadsheetNumberFormatPattern(pattern);
+                break;
+            case "TEXT":
+                formatPattern = new SpreadsheetTextFormatPattern(pattern);
+                break;
+            case "TIME":
+                formatPattern = new SpreadsheetTimeFormatPattern(pattern);
+                break;
+            default:
+                SystemObject.throwUnsupportedOperation();
+                break;
+        }
+
+        return formatPattern;
     }
 
     typeName() {

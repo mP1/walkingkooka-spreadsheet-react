@@ -13,6 +13,8 @@ import SpreadsheetCellEditFormatPatternHistoryHashToken
 import SpreadsheetCellFormatPatternKind from "../format/SpreadsheetCellFormatPatternKind.js";
 import SpreadsheetCellFormulaEditHistoryHashToken
     from "../reference/cell/formula/SpreadsheetCellFormulaEditHistoryHashToken.js";
+import SpreadsheetCellFormatPatternSaveHistoryHashToken
+    from "../format/SpreadsheetCellFormatPatternSaveHistoryHashToken.js";
 import SpreadsheetCellFormulaSaveHistoryHashToken
     from "../reference/cell/formula/SpreadsheetCellFormulaSaveHistoryHashToken.js";
 import SpreadsheetCellFreezeHistoryHashToken from "../reference/cell/SpreadsheetCellFreezeHistoryHashToken.js";
@@ -67,6 +69,7 @@ import SpreadsheetMetadataSelectHistoryHashToken from "../meta/drawer/Spreadshee
 import SpreadsheetName from "../meta/name/SpreadsheetName.js";
 import SpreadsheetNameEditHistoryHashToken from "../meta/name/SpreadsheetNameEditHistoryHashToken.js";
 import SpreadsheetNameSaveHistoryHashToken from "../meta/name/SpreadsheetNameSaveHistoryHashToken.js";
+import SpreadsheetNumberFormatPattern from "../format/SpreadsheetNumberFormatPattern.js";
 import SpreadsheetRowReference from "../reference/columnrow/SpreadsheetRowReference.js";
 import SpreadsheetRowReferenceRange from "../reference/columnrow/SpreadsheetRowReferenceRange.js"
 import SpreadsheetTextFormatPattern from "../format/SpreadsheetTextFormatPattern.js";
@@ -679,6 +682,93 @@ testParseAndStringify(
         "viewport-selection": new SpreadsheetCellEditFormatPatternHistoryHashToken(
             new SpreadsheetViewportSelection(CELL),
             SpreadsheetCellFormatPatternKind.DATE_TIME,
+        ),
+    }
+);
+
+testParseAndStringify(
+    "/spreadsheet-id-123/spreadsheet-name-456/cell/A1/format-pattern/number/save",
+    {
+        "spreadsheet-id": "spreadsheet-id-123",
+        "spreadsheet-name": SPREADSHEET_NAME
+    },
+    "Missing save value"
+);
+
+testParseAndStringify(
+    "/spreadsheet-id-123/spreadsheet-name-456/cell/A1/format-pattern/date/save/",
+    {
+        "spreadsheet-id": "spreadsheet-id-123",
+        "spreadsheet-name": SPREADSHEET_NAME,
+        "viewport-selection": new SpreadsheetCellFormatPatternSaveHistoryHashToken(
+            new SpreadsheetViewportSelection(CELL),
+            SpreadsheetCellFormatPatternKind.DATE,
+            null
+        ),
+    }
+);
+
+testParseAndStringify(
+"/spreadsheet-id-123/spreadsheet-name-456/cell/A1/format-pattern/date/save/ddmmyyyy",
+    {
+        "spreadsheet-id": "spreadsheet-id-123",
+        "spreadsheet-name": SPREADSHEET_NAME,
+        "viewport-selection": new SpreadsheetCellFormatPatternSaveHistoryHashToken(
+            new SpreadsheetViewportSelection(CELL),
+            SpreadsheetCellFormatPatternKind.DATE,
+            new SpreadsheetDateFormatPattern("ddmmyyyy")
+        ),
+    }
+);
+
+testParseAndStringify(
+"/spreadsheet-id-123/spreadsheet-name-456/cell/A1/format-pattern/date-time/save/ddmmyyyyhhmmss",
+    {
+        "spreadsheet-id": "spreadsheet-id-123",
+        "spreadsheet-name": SPREADSHEET_NAME,
+        "viewport-selection": new SpreadsheetCellFormatPatternSaveHistoryHashToken(
+            new SpreadsheetViewportSelection(CELL),
+            SpreadsheetCellFormatPatternKind.DATE_TIME,
+            new SpreadsheetDateTimeFormatPattern("ddmmyyyyhhmmss")
+        ),
+    }
+);
+
+testParseAndStringify(
+    "/spreadsheet-id-123/spreadsheet-name-456/cell/A1/format-pattern/number/save/##.00",
+    {
+        "spreadsheet-id": "spreadsheet-id-123",
+        "spreadsheet-name": SPREADSHEET_NAME,
+        "viewport-selection": new SpreadsheetCellFormatPatternSaveHistoryHashToken(
+            new SpreadsheetViewportSelection(CELL),
+            SpreadsheetCellFormatPatternKind.NUMBER,
+            new SpreadsheetNumberFormatPattern("##.00")
+        ),
+    }
+);
+
+testParseAndStringify(
+    "/spreadsheet-id-123/spreadsheet-name-456/cell/A1/format-pattern/text/save/@@",
+    {
+        "spreadsheet-id": "spreadsheet-id-123",
+        "spreadsheet-name": SPREADSHEET_NAME,
+        "viewport-selection": new SpreadsheetCellFormatPatternSaveHistoryHashToken(
+            new SpreadsheetViewportSelection(CELL),
+            SpreadsheetCellFormatPatternKind.TEXT,
+            new SpreadsheetTextFormatPattern("@@")
+        ),
+    }
+);
+
+testParseAndStringify(
+    "/spreadsheet-id-123/spreadsheet-name-456/cell/A1/format-pattern/time/save/hh:mm:dd",
+    {
+        "spreadsheet-id": "spreadsheet-id-123",
+        "spreadsheet-name": SPREADSHEET_NAME,
+        "viewport-selection": new SpreadsheetCellFormatPatternSaveHistoryHashToken(
+            new SpreadsheetViewportSelection(CELL),
+            SpreadsheetCellFormatPatternKind.TIME,
+            new SpreadsheetTimeFormatPattern("hh:mm:dd")
         ),
     }
 );

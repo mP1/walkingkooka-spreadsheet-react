@@ -7,9 +7,11 @@ import SpreadsheetCellClearHistoryHashToken from "../reference/cell/SpreadsheetC
 import SpreadsheetCellDeleteHistoryHashToken from "../reference/cell/SpreadsheetCellDeleteHistoryHashToken.js";
 import SpreadsheetCellEditFormatPatternHistoryHashToken
     from "../format/SpreadsheetCellEditFormatPatternHistoryHashToken.js";
+import SpreadsheetCellFormatPatternKind from "../format/SpreadsheetCellFormatPatternKind.js";
+import SpreadsheetCellFormatPatternSaveHistoryHashToken
+    from "../format/SpreadsheetCellFormatPatternSaveHistoryHashToken.js";
 import SpreadsheetCellFormulaEditHistoryHashToken
     from "../reference/cell/formula/SpreadsheetCellFormulaEditHistoryHashToken.js";
-import SpreadsheetCellFormatPatternKind from "../format/SpreadsheetCellFormatPatternKind.js";
 import SpreadsheetCellFormulaSaveHistoryHashToken
     from "../reference/cell/formula/SpreadsheetCellFormulaSaveHistoryHashToken.js";
 import SpreadsheetCellFreezeHistoryHashToken from "../reference/cell/SpreadsheetCellFreezeHistoryHashToken.js";
@@ -252,6 +254,30 @@ export default class SpreadsheetHistoryHash extends SpreadsheetHistoryHashTokens
                                                     cellFormatPatternKind
                                                 );
                                                 token = tokens.shift();
+                                            }else {
+                                                switch(token) {
+                                                    case SpreadsheetHistoryHashTokens.SAVE:
+                                                        token = tokens.shift();
+                                                        if(null != token){
+                                                            viewportSelectionToken = new SpreadsheetCellFormatPatternSaveHistoryHashToken(
+                                                                viewportSelection,
+                                                                cellFormatPatternKind,
+                                                                "" === token ?
+                                                                    null :
+                                                                    cellFormatPatternKind.createPattern(
+                                                                        decodeURIComponent(token)
+                                                                    )
+                                                            );
+                                                            token = tokens.shift();
+                                                        }else {
+                                                            errors("Missing save value");
+                                                            break Loop;
+                                                        }
+                                                        break;
+                                                    default:
+                                                        errors("Invalid format-pattern: " + token);
+                                                        break Loop;
+                                                }
                                             }
                                             break;
                                         case SpreadsheetHistoryHashTokens.FREEZE:
