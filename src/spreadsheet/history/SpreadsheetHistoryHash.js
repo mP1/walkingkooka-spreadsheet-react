@@ -9,6 +9,7 @@ import SpreadsheetCellEditFormatPatternHistoryHashToken
     from "../format/SpreadsheetCellEditFormatPatternHistoryHashToken.js";
 import SpreadsheetCellFormulaEditHistoryHashToken
     from "../reference/cell/formula/SpreadsheetCellFormulaEditHistoryHashToken.js";
+import SpreadsheetCellFormatPatternKind from "../format/SpreadsheetCellFormatPatternKind.js";
 import SpreadsheetCellFormulaSaveHistoryHashToken
     from "../reference/cell/formula/SpreadsheetCellFormulaSaveHistoryHashToken.js";
 import SpreadsheetCellFreezeHistoryHashToken from "../reference/cell/SpreadsheetCellFreezeHistoryHashToken.js";
@@ -224,8 +225,34 @@ export default class SpreadsheetHistoryHash extends SpreadsheetHistoryHashTokens
                                             }
                                             break;
                                         case SpreadsheetHistoryHashTokens.FORMAT_PATTERN:
-                                            viewportSelectionToken = new SpreadsheetCellEditFormatPatternHistoryHashToken(viewportSelection);
                                             token = tokens.shift();
+                                            if(null == token){
+                                                viewportSelectionToken = null;
+                                                errors("Missing format-pattern kind");
+                                                break;
+                                            }
+                                            var cellFormatPatternKind;
+
+                                            for(const possibleCellFormatPatternKind of SpreadsheetCellFormatPatternKind.values()) {
+                                                if(token == possibleCellFormatPatternKind.historyHashPath()){
+                                                    cellFormatPatternKind = possibleCellFormatPatternKind;
+                                                    break;
+                                                }
+                                            }
+
+                                            if(!cellFormatPatternKind){
+                                                errors("Unknown format-pattern kind: " + token);
+                                                break Loop;
+                                            }
+
+                                            token = tokens.shift();
+                                            if(null == token){
+                                                viewportSelectionToken = new SpreadsheetCellEditFormatPatternHistoryHashToken(
+                                                    viewportSelection,
+                                                    cellFormatPatternKind
+                                                );
+                                                token = tokens.shift();
+                                            }
                                             break;
                                         case SpreadsheetHistoryHashTokens.FREEZE:
                                             if(cellOrLabel.canFreeze()){
