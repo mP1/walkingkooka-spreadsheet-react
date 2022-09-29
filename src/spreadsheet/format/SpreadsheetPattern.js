@@ -18,6 +18,10 @@ export default class SpreadsheetPattern extends SystemObject {
         return this.patternValue;
     }
 
+    historyHashPath() {
+        return encodeURIComponent(this.pattern());
+    }
+
     toJson() {
         return this.pattern();
     }
