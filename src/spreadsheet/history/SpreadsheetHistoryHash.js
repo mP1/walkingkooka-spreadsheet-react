@@ -5,6 +5,8 @@ import Preconditions from "../../Preconditions.js";
 import React from 'react';
 import SpreadsheetCellClearHistoryHashToken from "../reference/cell/SpreadsheetCellClearHistoryHashToken.js";
 import SpreadsheetCellDeleteHistoryHashToken from "../reference/cell/SpreadsheetCellDeleteHistoryHashToken.js";
+import SpreadsheetCellEditFormatPatternHistoryHashToken
+    from "../format/SpreadsheetCellEditFormatPatternHistoryHashToken.js";
 import SpreadsheetCellFormulaEditHistoryHashToken
     from "../reference/cell/formula/SpreadsheetCellFormulaEditHistoryHashToken.js";
 import SpreadsheetCellFormulaSaveHistoryHashToken
@@ -220,6 +222,10 @@ export default class SpreadsheetHistoryHash extends SpreadsheetHistoryHashTokens
                                                     }
                                                 }
                                             }
+                                            break;
+                                        case SpreadsheetHistoryHashTokens.FORMAT_PATTERN:
+                                            viewportSelectionToken = new SpreadsheetCellEditFormatPatternHistoryHashToken(viewportSelection);
+                                            token = tokens.shift();
                                             break;
                                         case SpreadsheetHistoryHashTokens.FREEZE:
                                             if(cellOrLabel.canFreeze()){
