@@ -11,7 +11,7 @@ import SpreadsheetSelectLinkWidget from "../../src/spreadsheet/reference/Spreads
 import SpreadsheetSelectAutocompleteWidget
     from "../../src/spreadsheet/reference/SpreadsheetSelectAutocompleteWidget.js";
 import SpreadsheetSelection from "../../src/spreadsheet/reference/SpreadsheetSelection.js";
-import SpreadsheetToolbarWidget from "../../src/spreadsheet/reference/cell/SpreadsheetToolbarWidget.js";
+import SpreadsheetToolbarWidget from "../../src/spreadsheet/reference/cell/toolbar/SpreadsheetToolbarWidget.js";
 import SpreadsheetViewportWidget from "../../src/spreadsheet/reference/viewport/SpreadsheetViewportWidget.js";
 
 export default class SpreadsheetTesting {

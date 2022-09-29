@@ -1,19 +1,19 @@
-import FontStyle from "../../../text/FontStyle.js";
+import FontStyle from "../../../../text/FontStyle.js";
 import PropTypes from "prop-types";
 import React from "react";
-import SpreadsheetCellHistoryHashToken from "./SpreadsheetCellHistoryHashToken.js";
-import SpreadsheetCellStylePropertyButtonGroupWidget from "./style/SpreadsheetCellStylePropertyButtonGroupWidget.js";
-import SpreadsheetCellStylePropertyColorPickerWidget from "./style/SpreadsheetCellStylePropertyColorPickerWidget.js";
-import SpreadsheetHistoryHash from "../../history/SpreadsheetHistoryHash.js";
-import SpreadsheetHistoryHashTokens from "../../history/SpreadsheetHistoryHashTokens.js";
-import SpreadsheetMessengerCrud from "../../message/SpreadsheetMessengerCrud.js";
-import SpreadsheetSelectionWidget from "../SpreadsheetSelectionWidget.js";
-import TextAlign from "../../../text/TextAlign.js";
-import TextDecorationLine from "../../../text/TextDecorationLine.js";
-import TextStyle from "../../../text/TextStyle.js";
-import VerticalAlign from "../../../text/VerticalAlign.js";
-import WordBreak from "../../../text/WordBreak.js";
-import WordWrap from "../../../text/WordWrap.js";
+import SpreadsheetCellHistoryHashToken from "../SpreadsheetCellHistoryHashToken.js";
+import SpreadsheetCellStylePropertyButtonGroupWidget from "../style/SpreadsheetCellStylePropertyButtonGroupWidget.js";
+import SpreadsheetCellStylePropertyColorPickerWidget from "../style/SpreadsheetCellStylePropertyColorPickerWidget.js";
+import SpreadsheetHistoryHash from "../../../history/SpreadsheetHistoryHash.js";
+import SpreadsheetHistoryHashTokens from "../../../history/SpreadsheetHistoryHashTokens.js";
+import SpreadsheetMessengerCrud from "../../../message/SpreadsheetMessengerCrud.js";
+import SpreadsheetSelectionWidget from "../../SpreadsheetSelectionWidget.js";
+import TextAlign from "../../../../text/TextAlign.js";
+import TextDecorationLine from "../../../../text/TextDecorationLine.js";
+import TextStyle from "../../../../text/TextStyle.js";
+import VerticalAlign from "../../../../text/VerticalAlign.js";
+import WordBreak from "../../../../text/WordBreak.js";
+import WordWrap from "../../../../text/WordWrap.js";
 
 /**
  * A container that holds all format and style widgets.

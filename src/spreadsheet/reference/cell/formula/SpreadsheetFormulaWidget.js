@@ -12,7 +12,7 @@ import SpreadsheetHistoryHash from "../../../history/SpreadsheetHistoryHash.js";
 import SpreadsheetHistoryHashTokens from "../../../history/SpreadsheetHistoryHashTokens.js";
 import SpreadsheetLabelName from "../../label/SpreadsheetLabelName.js";
 import SpreadsheetMessengerCrud from "../../../message/SpreadsheetMessengerCrud.js";
-import SpreadsheetToolbarWidget from "../SpreadsheetToolbarWidget.js";
+import SpreadsheetToolbarWidget from "../toolbar/SpreadsheetToolbarWidget.js";
 import SpreadsheetViewportWidget from "../../viewport/SpreadsheetViewportWidget.js";
 import TextField from '@mui/material/TextField';
 
