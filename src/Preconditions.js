@@ -130,13 +130,20 @@ export default class Preconditions {
     }
 
     /**
-     * Throws an exception if value is null or not the correct type
+     * Throws an exception if value is null or not the correct type. Note that prototype may also be the prototype or
+     * constructor.name as a String.
      */
     static requireInstance(value, prototype, label) {
         Preconditions.requireNonNull(value, label);
 
-        if(!(value instanceof prototype)){
-            reportError("Expected " + prototype.name + " "  + label + " got " + value);
+        if(typeof prototype === "string"){
+            if(value.constructor.name !== prototype){
+                reportError("Expected " + prototype + " " + label + " got " + value);
+            }
+        }else {
+            if(!(value instanceof prototype)){
+                reportError("Expected " + prototype.name + " " + label + " got " + value);
+            }
         }
 
         return value;
