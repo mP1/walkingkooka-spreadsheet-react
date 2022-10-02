@@ -9,8 +9,8 @@ import SpreadsheetHistoryHashTokens from "../history/SpreadsheetHistoryHashToken
  */
 export default class SpreadsheetCellFormatPatternSaveHistoryHashToken extends SpreadsheetCellFormatPatternHistoryHashToken {
 
-    constructor(selection, kind, formatPattern) {
-        super(selection, kind);
+    constructor(viewportSelection, kind, formatPattern) {
+        super(viewportSelection, kind);
 
         this.formatPatternValue = Preconditions.optionalInstance(
             formatPattern,

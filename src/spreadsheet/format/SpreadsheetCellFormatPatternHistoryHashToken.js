@@ -8,8 +8,8 @@ import SpreadsheetHistoryHashTokens from "../history/SpreadsheetHistoryHashToken
  */
 export default class SpreadsheetCellFormatPatternHistoryHashToken extends SpreadsheetCellHistoryHashToken {
 
-    constructor(selection, kind) {
-        super(selection);
+    constructor(viewportSelection, kind) {
+        super(viewportSelection);
 
         this.kindValue = Preconditions.requireInstance(
             kind,
