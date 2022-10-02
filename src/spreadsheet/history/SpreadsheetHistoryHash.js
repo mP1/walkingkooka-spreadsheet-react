@@ -5,8 +5,8 @@ import Preconditions from "../../Preconditions.js";
 import React from 'react';
 import SpreadsheetCellClearHistoryHashToken from "../reference/cell/SpreadsheetCellClearHistoryHashToken.js";
 import SpreadsheetCellDeleteHistoryHashToken from "../reference/cell/SpreadsheetCellDeleteHistoryHashToken.js";
-import SpreadsheetCellEditFormatPatternHistoryHashToken
-    from "../format/SpreadsheetCellEditFormatPatternHistoryHashToken.js";
+import SpreadsheetCellFormatPatternEditHistoryHashToken
+    from "../format/SpreadsheetCellFormatPatternEditHistoryHashToken.js";
 import SpreadsheetCellFormatPatternKind from "../format/SpreadsheetCellFormatPatternKind.js";
 import SpreadsheetCellFormatPatternSaveHistoryHashToken
     from "../format/SpreadsheetCellFormatPatternSaveHistoryHashToken.js";
@@ -249,7 +249,7 @@ export default class SpreadsheetHistoryHash extends SpreadsheetHistoryHashTokens
 
                                             token = tokens.shift();
                                             if(null == token){
-                                                viewportSelectionToken = new SpreadsheetCellEditFormatPatternHistoryHashToken(
+                                                viewportSelectionToken = new SpreadsheetCellFormatPatternEditHistoryHashToken(
                                                     viewportSelection,
                                                     cellFormatPatternKind
                                                 );
