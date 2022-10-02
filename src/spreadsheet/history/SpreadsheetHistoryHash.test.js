@@ -8,8 +8,8 @@ import PixelLength from "../../text/PixelLength.js";
 import RoundingMode from "../../math/RoundingMode.js";
 import SpreadsheetCellClearHistoryHashToken from "../reference/cell/SpreadsheetCellClearHistoryHashToken.js";
 import SpreadsheetCellDeleteHistoryHashToken from "../reference/cell/SpreadsheetCellDeleteHistoryHashToken.js";
-import SpreadsheetCellEditFormatPatternHistoryHashToken
-    from "../format/SpreadsheetCellEditFormatPatternHistoryHashToken.js";
+import SpreadsheetCellFormatPatternEditHistoryHashToken
+    from "../format/SpreadsheetCellFormatPatternEditHistoryHashToken.js";
 import SpreadsheetCellFormatPatternKind from "../format/SpreadsheetCellFormatPatternKind.js";
 import SpreadsheetCellFormulaEditHistoryHashToken
     from "../reference/cell/formula/SpreadsheetCellFormulaEditHistoryHashToken.js";
@@ -667,7 +667,7 @@ testParseAndStringify(
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
-        "viewport-selection": new SpreadsheetCellEditFormatPatternHistoryHashToken(
+        "viewport-selection": new SpreadsheetCellFormatPatternEditHistoryHashToken(
             new SpreadsheetViewportSelection(CELL),
             SpreadsheetCellFormatPatternKind.DATE,
         ),
@@ -679,7 +679,7 @@ testParseAndStringify(
     {
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
-        "viewport-selection": new SpreadsheetCellEditFormatPatternHistoryHashToken(
+        "viewport-selection": new SpreadsheetCellFormatPatternEditHistoryHashToken(
             new SpreadsheetViewportSelection(CELL),
             SpreadsheetCellFormatPatternKind.DATE_TIME,
         ),
