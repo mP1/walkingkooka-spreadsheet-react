@@ -153,8 +153,16 @@ export default class Preconditions {
      * Throws an exception if value not the correct type, null is ok.
      */
     static optionalInstance(value, prototype, label) {
-        if(null != value && !(value instanceof prototype)){
-            reportError("Expected " + prototype.name + " or nothing "  + label + " got " + value);
+        if(null != value) {
+            if(typeof prototype === "string"){
+                if(value.constructor.name !== prototype){
+                    reportError("Expected " + prototype + " or nothing " + label + " got " + value);
+                }
+            }else {
+                if(!(value instanceof prototype)){
+                    reportError("Expected " + prototype.name + " or nothing " + label + " got " + value);
+                }
+            }
         }
 
         return value;
