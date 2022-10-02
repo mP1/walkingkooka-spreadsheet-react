@@ -17,6 +17,11 @@ import SpreadsheetCellFormulaSaveHistoryHashToken
 import SpreadsheetCellFreezeHistoryHashToken from "../reference/cell/SpreadsheetCellFreezeHistoryHashToken.js";
 import SpreadsheetCellHistoryHashToken from "../reference/cell/SpreadsheetCellHistoryHashToken.js";
 import SpreadsheetCellMenuHistoryHashToken from "../reference/cell/SpreadsheetCellMenuHistoryHashToken.js";
+import SpreadsheetCellParsePatternsEditHistoryHashToken
+    from "../format/SpreadsheetCellParsePatternsEditHistoryHashToken.js";
+import SpreadsheetCellParsePatternsKind from "../format/SpreadsheetCellParsePatternsKind.js";
+import SpreadsheetCellParsePatternsSaveHistoryHashToken
+    from "../format/SpreadsheetCellParsePatternsSaveHistoryHashToken.js";
 import spreadsheetCellRangeCellReferenceOrLabelParse
     from "../reference/cell/SpreadsheetCellRangeCellReferenceOrLabelParse.js";
 import SpreadsheetCellReference from "../reference/cell/SpreadsheetCellReference.js";
@@ -293,6 +298,60 @@ export default class SpreadsheetHistoryHash extends SpreadsheetHistoryHashTokens
                                             );
                                             token = tokens.shift();
                                             break;
+                                        case SpreadsheetHistoryHashTokens.PARSE_PATTERNS:
+                                            token = tokens.shift();
+                                            if(null == token){
+                                                viewportSelectionToken = null;
+                                                errors("Missing parse-patterns kind");
+                                                break;
+                                            }
+                                            var cellParsePatternsKind;
+
+                                            for(const possibleCellParsePatternsKind of SpreadsheetCellParsePatternsKind.values()) {
+                                                if(token == possibleCellParsePatternsKind.historyHashPath()){
+                                                    cellParsePatternsKind = possibleCellParsePatternsKind;
+                                                    break;
+                                                }
+                                            }
+
+                                            if(!cellParsePatternsKind){
+                                                errors("Unknown parse-patterns kind: " + token);
+                                                break Loop;
+                                            }
+
+                                            token = tokens.shift();
+                                            if(null == token){
+                                                viewportSelectionToken = new SpreadsheetCellParsePatternsEditHistoryHashToken(
+                                                    viewportSelection,
+                                                    cellParsePatternsKind
+                                                );
+                                                token = tokens.shift();
+                                            }else {
+                                                switch(token) {
+                                                    case SpreadsheetHistoryHashTokens.SAVE:
+                                                        token = tokens.shift();
+                                                        if(null != token){
+                                                            viewportSelectionToken = new SpreadsheetCellParsePatternsSaveHistoryHashToken(
+                                                                viewportSelection,
+                                                                cellParsePatternsKind,
+                                                                "" === token ?
+                                                                    null :
+                                                                    cellParsePatternsKind.createPattern(
+                                                                        decodeURIComponent(token)
+                                                                    )
+                                                            );
+                                                            token = tokens.shift();
+                                                        }else {
+                                                            errors("Missing save value");
+                                                            break Loop;
+                                                        }
+                                                        break;
+                                                    default:
+                                                        errors("Invalid parse-patterns: " + token);
+                                                        break Loop;
+                                                }
+                                            }
+                                            break;    
                                         case SpreadsheetHistoryHashTokens.STYLE:
                                             token = tokens.shift(); // style property name
                                             if(null != token){

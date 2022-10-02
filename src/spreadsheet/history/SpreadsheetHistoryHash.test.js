@@ -19,6 +19,11 @@ import SpreadsheetCellFormulaSaveHistoryHashToken
     from "../reference/cell/formula/SpreadsheetCellFormulaSaveHistoryHashToken.js";
 import SpreadsheetCellFreezeHistoryHashToken from "../reference/cell/SpreadsheetCellFreezeHistoryHashToken.js";
 import SpreadsheetCellMenuHistoryHashToken from "../reference/cell/SpreadsheetCellMenuHistoryHashToken.js";
+import SpreadsheetCellParsePatternsEditHistoryHashToken
+    from "../format/SpreadsheetCellParsePatternsEditHistoryHashToken.js";
+import SpreadsheetCellParsePatternsKind from "../format/SpreadsheetCellParsePatternsKind.js";
+import SpreadsheetCellParsePatternsSaveHistoryHashToken
+    from "../format/SpreadsheetCellParsePatternsSaveHistoryHashToken.js";
 import SpreadsheetCellRange from "../reference/cell/SpreadsheetCellRange.js";
 import SpreadsheetCellReference from "../reference/cell/SpreadsheetCellReference.js";
 import SpreadsheetCellSelectHistoryHashToken from "../reference/cell/SpreadsheetCellSelectHistoryHashToken.js";
@@ -70,6 +75,7 @@ import SpreadsheetName from "../meta/name/SpreadsheetName.js";
 import SpreadsheetNameEditHistoryHashToken from "../meta/name/SpreadsheetNameEditHistoryHashToken.js";
 import SpreadsheetNameSaveHistoryHashToken from "../meta/name/SpreadsheetNameSaveHistoryHashToken.js";
 import SpreadsheetNumberFormatPattern from "../format/SpreadsheetNumberFormatPattern.js";
+import SpreadsheetNumberParsePatterns from "../format/SpreadsheetNumberParsePatterns.js";
 import SpreadsheetRowReference from "../reference/columnrow/SpreadsheetRowReference.js";
 import SpreadsheetRowReferenceRange from "../reference/columnrow/SpreadsheetRowReferenceRange.js"
 import SpreadsheetTextFormatPattern from "../format/SpreadsheetTextFormatPattern.js";
@@ -831,6 +837,122 @@ testParseAndStringify(
         "spreadsheet-id": "spreadsheet-id-123",
         "spreadsheet-name": SPREADSHEET_NAME,
         "viewport-selection": CELL_MENU,
+    }
+);
+
+testParseAndStringify(
+    "/spreadsheet-id-123/spreadsheet-name-456/cell/A1/parse-patterns",
+    {
+        "spreadsheet-id": "spreadsheet-id-123",
+        "spreadsheet-name": SPREADSHEET_NAME,
+    },
+    "Missing parse-patterns kind"
+);
+
+testParseAndStringify(
+    "/spreadsheet-id-123/spreadsheet-name-456/cell/A1/parse-patterns/!invalid",
+    {
+        "spreadsheet-id": "spreadsheet-id-123",
+        "spreadsheet-name": SPREADSHEET_NAME,
+    },
+    "Unknown parse-patterns kind: !invalid"
+);
+
+testParseAndStringify(
+    "/spreadsheet-id-123/spreadsheet-name-456/cell/A1/parse-patterns/date",
+    {
+        "spreadsheet-id": "spreadsheet-id-123",
+        "spreadsheet-name": SPREADSHEET_NAME,
+        "viewport-selection": new SpreadsheetCellParsePatternsEditHistoryHashToken(
+            new SpreadsheetViewportSelection(CELL),
+            SpreadsheetCellParsePatternsKind.DATE,
+        ),
+    }
+);
+
+testParseAndStringify(
+    "/spreadsheet-id-123/spreadsheet-name-456/cell/A1/parse-patterns/date-time",
+    {
+        "spreadsheet-id": "spreadsheet-id-123",
+        "spreadsheet-name": SPREADSHEET_NAME,
+        "viewport-selection": new SpreadsheetCellParsePatternsEditHistoryHashToken(
+            new SpreadsheetViewportSelection(CELL),
+            SpreadsheetCellParsePatternsKind.DATE_TIME,
+        ),
+    }
+);
+
+testParseAndStringify(
+    "/spreadsheet-id-123/spreadsheet-name-456/cell/A1/parse-patterns/number/save",
+    {
+        "spreadsheet-id": "spreadsheet-id-123",
+        "spreadsheet-name": SPREADSHEET_NAME
+    },
+    "Missing save value"
+);
+
+testParseAndStringify(
+    "/spreadsheet-id-123/spreadsheet-name-456/cell/A1/parse-patterns/date/save/",
+    {
+        "spreadsheet-id": "spreadsheet-id-123",
+        "spreadsheet-name": SPREADSHEET_NAME,
+        "viewport-selection": new SpreadsheetCellParsePatternsSaveHistoryHashToken(
+            new SpreadsheetViewportSelection(CELL),
+            SpreadsheetCellParsePatternsKind.DATE,
+            null
+        ),
+    }
+);
+
+testParseAndStringify(
+    "/spreadsheet-id-123/spreadsheet-name-456/cell/A1/parse-patterns/date/save/ddmmyyyy",
+    {
+        "spreadsheet-id": "spreadsheet-id-123",
+        "spreadsheet-name": SPREADSHEET_NAME,
+        "viewport-selection": new SpreadsheetCellParsePatternsSaveHistoryHashToken(
+            new SpreadsheetViewportSelection(CELL),
+            SpreadsheetCellParsePatternsKind.DATE,
+            new SpreadsheetDateParsePatterns("ddmmyyyy")
+        ),
+    }
+);
+
+testParseAndStringify(
+    "/spreadsheet-id-123/spreadsheet-name-456/cell/A1/parse-patterns/date-time/save/ddmmyyyyhhmmss",
+    {
+        "spreadsheet-id": "spreadsheet-id-123",
+        "spreadsheet-name": SPREADSHEET_NAME,
+        "viewport-selection": new SpreadsheetCellParsePatternsSaveHistoryHashToken(
+            new SpreadsheetViewportSelection(CELL),
+            SpreadsheetCellParsePatternsKind.DATE_TIME,
+            new SpreadsheetDateTimeParsePatterns("ddmmyyyyhhmmss")
+        ),
+    }
+);
+
+testParseAndStringify(
+    "/spreadsheet-id-123/spreadsheet-name-456/cell/A1/parse-patterns/number/save/##.00",
+    {
+        "spreadsheet-id": "spreadsheet-id-123",
+        "spreadsheet-name": SPREADSHEET_NAME,
+        "viewport-selection": new SpreadsheetCellParsePatternsSaveHistoryHashToken(
+            new SpreadsheetViewportSelection(CELL),
+            SpreadsheetCellParsePatternsKind.NUMBER,
+            new SpreadsheetNumberParsePatterns("##.00")
+        ),
+    }
+);
+
+testParseAndStringify(
+    "/spreadsheet-id-123/spreadsheet-name-456/cell/A1/parse-patterns/time/save/hh:mm:dd",
+    {
+        "spreadsheet-id": "spreadsheet-id-123",
+        "spreadsheet-name": SPREADSHEET_NAME,
+        "viewport-selection": new SpreadsheetCellParsePatternsSaveHistoryHashToken(
+            new SpreadsheetViewportSelection(CELL),
+            SpreadsheetCellParsePatternsKind.TIME,
+            new SpreadsheetTimeParsePatterns("hh:mm:dd")
+        ),
     }
 );
 

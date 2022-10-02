@@ -1,7 +1,7 @@
-import SpreadsheetDateFormatPattern from "./SpreadsheetDateFormatPattern.js";
-import SpreadsheetDateTimeFormatPattern from "./SpreadsheetDateTimeFormatPattern.js";
-import SpreadsheetNumberFormatPattern from "./SpreadsheetNumberFormatPattern.js";
-import SpreadsheetTimeFormatPattern from "./SpreadsheetTimeFormatPattern.js";
+import SpreadsheetDateParsePatterns from "./SpreadsheetDateParsePatterns.js";
+import SpreadsheetDateTimeParsePatterns from "./SpreadsheetDateTimeParsePatterns.js";
+import SpreadsheetNumberParsePatterns from "./SpreadsheetNumberParsePatterns.js";
+import SpreadsheetTimeParsePatterns from "./SpreadsheetTimeParsePatterns.js";
 import SystemEnum from "../../SystemEnum.js";
 import SystemObject from "../../SystemObject.js";
 
@@ -37,16 +37,16 @@ export default class SpreadsheetCellParsePatternsKind extends SystemEnum {
 
         switch(name) {
             case "DATE":
-                parsePatterns = new SpreadsheetDateFormatPattern(pattern);
+                parsePatterns = new SpreadsheetDateParsePatterns(pattern);
                 break;
             case "DATE_TIME":
-                parsePatterns = new SpreadsheetDateTimeFormatPattern(pattern);
+                parsePatterns = new SpreadsheetDateTimeParsePatterns(pattern);
                 break;
             case "NUMBER":
-                parsePatterns = new SpreadsheetNumberFormatPattern(pattern);
+                parsePatterns = new SpreadsheetNumberParsePatterns(pattern);
                 break;
             case "TIME":
-                parsePatterns = new SpreadsheetTimeFormatPattern(pattern);
+                parsePatterns = new SpreadsheetTimeParsePatterns(pattern);
                 break;
             default:
                 SystemObject.throwUnsupportedOperation();
