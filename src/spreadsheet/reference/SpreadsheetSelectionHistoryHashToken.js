@@ -14,6 +14,12 @@ export default class SpreadsheetSelectionHistoryHashToken extends SpreadsheetHis
             viewportSelection,
             "viewportSelection"
         );
+
+        // Must check Constructor.name rather than Class to avoid cycles.
+        const viewportSelectionType = viewportSelection.constructor.name;
+        if("SpreadsheetViewportSelection" !== viewportSelectionType){
+            throw new Error("Expected SpreadsheetViewportSelection but got " + viewportSelectionType);
+        }
     }
 
     spreadsheetViewportWidgetExecute(viewportWidget, previousViewportSelection, viewportCell, width, height) {
