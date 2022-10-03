@@ -1,8 +1,8 @@
 import Equality from "../../Equality.js";
 import Preconditions from "../../Preconditions.js";
 import SpreadsheetCellParsePatternsHistoryHashToken from "./SpreadsheetCellParsePatternsHistoryHashToken.js";
-import SpreadsheetParsePatterns from "./SpreadsheetParsePatterns.js";
 import SpreadsheetHistoryHashTokens from "../history/SpreadsheetHistoryHashTokens.js";
+import SpreadsheetParsePatterns from "./SpreadsheetParsePatterns.js";
 
 /**
  * Represents the save of a cell parse-patterns
