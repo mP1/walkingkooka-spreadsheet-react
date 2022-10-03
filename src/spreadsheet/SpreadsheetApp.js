@@ -348,12 +348,6 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
                                                showError={showError}
                     />
                 </div>
-                <SpreadsheetSelectAutocompleteWidget key="navigateAutocompleteWidget"
-                                                     history={history}
-                                                     getSimilarities={this.similaritiesGet.bind(this)}
-                                                     notificationShow={notificationShow}
-                                                     showError={showError}
-                />
                 <SpreadsheetLabelMappingWidget key="labelWidget"
                                                history={history}
                                                spreadsheetLabelCrud={this.spreadsheetLabelCrud}
@@ -364,6 +358,12 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
                                                  spreadsheetMetadataCrud={spreadsheetMetadataCrud}
                                                  notificationShow={notificationShow}
                                                  showError={showError}
+                />
+                <SpreadsheetSelectAutocompleteWidget key="navigateAutocompleteWidget"
+                                                     history={history}
+                                                     getSimilarities={this.similaritiesGet.bind(this)}
+                                                     notificationShow={notificationShow}
+                                                     showError={showError}
                 />
             </React.Fragment>
         );
