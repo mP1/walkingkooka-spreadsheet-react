@@ -253,6 +253,5 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetCellWidget {
 SpreadsheetFormulaWidget.propTypes = {
     history: PropTypes.instanceOf(SpreadsheetHistoryHash).isRequired,
     spreadsheetDeltaCellCrud: PropTypes.instanceOf(SpreadsheetMessengerCrud),
-    spreadsheetViewportWidget: PropTypes.object, // Ref with SpreadsheetViewportWidget
     showError: PropTypes.func.isRequired,
 }
