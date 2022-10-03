@@ -354,12 +354,13 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
                                                notificationShow={notificationShow}
                                                showError={showError}
                 />
-                <SpreadsheetMetadataDrawerWidget history={history}
+                <SpreadsheetMetadataDrawerWidget key="metadataDrawerWidget"
+                                                 history={history}
                                                  spreadsheetMetadataCrud={spreadsheetMetadataCrud}
                                                  notificationShow={notificationShow}
                                                  showError={showError}
                 />
-                <SpreadsheetSelectAutocompleteWidget key="navigateAutocompleteWidget"
+                <SpreadsheetSelectAutocompleteWidget key="selectAutocompleteWidget"
                                                      history={history}
                                                      getSimilarities={this.similaritiesGet.bind(this)}
                                                      notificationShow={notificationShow}
