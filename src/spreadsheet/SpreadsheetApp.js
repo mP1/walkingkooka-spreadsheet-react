@@ -61,7 +61,6 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
         this.messenger = messenger;
 
         this.notification = React.createRef();
-        this.formula = React.createRef();
 
         document.title = "Empty spreadsheet";
 
@@ -322,8 +321,7 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
                                                      history={history}
                                                      showError={showError}
                         />
-                        <SpreadsheetFormulaWidget ref={this.formula}
-                                                  key={"spreadsheetFormula"}
+                        <SpreadsheetFormulaWidget key={"spreadsheetFormula"}
                                                   history={history}
                                                   spreadsheetDeltaCellCrud={spreadsheetDeltaCellCrud}
                                                   showError={showError}
