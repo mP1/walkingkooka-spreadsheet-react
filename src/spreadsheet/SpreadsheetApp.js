@@ -62,7 +62,6 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
 
         this.notification = React.createRef();
         this.formula = React.createRef();
-        this.viewport = React.createRef();
 
         document.title = "Empty spreadsheet";
 
@@ -326,14 +325,12 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
                         <SpreadsheetFormulaWidget ref={this.formula}
                                                   key={"spreadsheetFormula"}
                                                   history={history}
-                                                  spreadsheetViewportWidget={this.viewport}
                                                   spreadsheetDeltaCellCrud={spreadsheetDeltaCellCrud}
                                                   showError={showError}
                         />
                     </div>
                     <Divider/>
-                    <SpreadsheetViewportWidget ref={this.viewport}
-                                               key={"viewport"}
+                    <SpreadsheetViewportWidget key={"viewport"}
                                                clearSelection={this.clearSelection.bind(this)}
                                                deleteSelection={this.deleteSelection.bind(this)}
                                                history={history}
