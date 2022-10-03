@@ -60,8 +60,6 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
         messenger.setWebWorker(false); // TODO test webworker mode
         this.messenger = messenger;
 
-        this.notification = React.createRef();
-
         document.title = "Empty spreadsheet";
 
         this.spreadsheetDeltaCellCrud = new SpreadsheetMessengerCrud(
