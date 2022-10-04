@@ -52,7 +52,9 @@ export default class SystemObject {
                 }
                 break;
             default:
-                jsonWithTypeFail(json);
+                // json must be undefined
+                result = json;
+                break;
         }
 
         return result;
