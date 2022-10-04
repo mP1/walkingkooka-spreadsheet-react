@@ -1,23 +1,25 @@
 import SpreadsheetError from "./SpreadsheetError";
-import systemObjectTesting from "../SystemObjectTesting.js";
 import SpreadsheetErrorKind from "./SpreadsheetErrorKind.js";
+import systemObjectTesting from "../SystemObjectTesting.js";
 
 const KIND = SpreadsheetErrorKind.DIV0;
 const MESSAGE = "spreadsheetError-123-abc";
+const VALUE = "xyz123";
 
 function error() {
-    return new SpreadsheetError(KIND, MESSAGE);
+    return new SpreadsheetError(KIND, MESSAGE, VALUE);
 }
 
 systemObjectTesting(
-    new SpreadsheetError(KIND, MESSAGE),
-    new SpreadsheetError(KIND, "different"),
+    new SpreadsheetError(KIND, MESSAGE, VALUE),
+    new SpreadsheetError(KIND, "different", VALUE),
     SpreadsheetError.fromJson,
     "Missing json",
     "spreadsheet-error",
     {
         "kind": KIND.toJson(),
         "message": MESSAGE,
+        "value": VALUE
     }
 );
 
@@ -36,9 +38,10 @@ test("create with non string fails", () => {
 });
 
 test("create", () => {
-    const spreadsheetError = new SpreadsheetError(KIND, MESSAGE);
+    const spreadsheetError = new SpreadsheetError(KIND, MESSAGE, VALUE);
     expect(spreadsheetError.kind()).toBe(KIND);
     expect(spreadsheetError.message()).toBe(MESSAGE);
+    expect(spreadsheetError.value()).toBe(VALUE);
 });
 
 // equals...............................................................................................................
@@ -50,18 +53,6 @@ test("equals equivalent true", () => {
 
 test("equals equivalent true #2", () => {
     const message = "different";
-    const e = new SpreadsheetError(KIND, message);
-    expect(e.equals(new SpreadsheetError(KIND, message))).toBeTrue();
+    const e = new SpreadsheetError(KIND, message, VALUE);
+    expect(e.equals(new SpreadsheetError(KIND, message, VALUE))).toBeTrue();
 });
-
-// helpers..............................................................................................................
-
-function check(spreadsheetError, kind, message) {
-    expect(spreadsheetError.message()).toStrictEqual(message);
-    expect(spreadsheetError.kind()).toStrictEqual(kind);
-    expect(spreadsheetError.message()).toBeString();
-
-    expect(spreadsheetError.toJson()).toStrictEqual(message);
-    expect(spreadsheetError.toString()).toBe(kind + " " + message);
-    expect(SpreadsheetError.fromJson(spreadsheetError.toJson())).toStrictEqual(spreadsheetError);
-}

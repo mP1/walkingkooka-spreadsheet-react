@@ -102,6 +102,14 @@ test("fromJsonWithType string", () => {
     ).toStrictEqual(string);
 });
 
+test("fromJsonWithType undefined", () => {
+    let value;
+    expect(
+        SystemObject.fromJsonWithType(value)
+    ).toStrictEqual(value);
+});
+
+
 test("fromJsonWithType type:double", () => {
     const double = 1.5;
     expect(
