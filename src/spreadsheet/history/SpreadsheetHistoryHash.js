@@ -241,7 +241,7 @@ export default class SpreadsheetHistoryHash extends SpreadsheetHistoryHashTokens
                                             var cellFormatPatternKind;
 
                                             for(const possibleCellFormatPatternKind of SpreadsheetCellFormatPatternKind.values()) {
-                                                if(token == possibleCellFormatPatternKind.historyHashPath()){
+                                                if(token === possibleCellFormatPatternKind.historyHashPath()){
                                                     cellFormatPatternKind = possibleCellFormatPatternKind;
                                                     break;
                                                 }
@@ -308,7 +308,7 @@ export default class SpreadsheetHistoryHash extends SpreadsheetHistoryHashTokens
                                             var cellParsePatternsKind;
 
                                             for(const possibleCellParsePatternsKind of SpreadsheetCellParsePatternsKind.values()) {
-                                                if(token == possibleCellParsePatternsKind.historyHashPath()){
+                                                if(token === possibleCellParsePatternsKind.historyHashPath()){
                                                     cellParsePatternsKind = possibleCellParsePatternsKind;
                                                     break;
                                                 }
