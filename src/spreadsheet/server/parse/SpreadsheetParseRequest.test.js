@@ -1,5 +1,5 @@
-import SpreadsheetDateParsePatterns from "../../format/SpreadsheetDateParsePatterns.js";
-import SpreadsheetDateTimeParsePatterns from "../../format/SpreadsheetDateTimeParsePatterns.js";
+import SpreadsheetDateParsePattern from "../../format/SpreadsheetDateParsePattern.js";
+import SpreadsheetDateTimeParsePattern from "../../format/SpreadsheetDateTimeParsePattern.js";
 import SpreadsheetParseRequest from "./SpreadsheetParseRequest.js";
 import systemObjectTesting from "../../../SystemObjectTesting.js";
 
@@ -8,7 +8,7 @@ function text() {
 }
 
 function parser() {
-    return SpreadsheetDateParsePatterns.TYPE_NAME;
+    return SpreadsheetDateParsePattern.TYPE_NAME;
 }
 
 function parseRequest() {
@@ -19,7 +19,7 @@ systemObjectTesting(
     parseRequest(),
     new SpreadsheetParseRequest(
         "different",
-        SpreadsheetDateTimeParsePatterns.TYPE_NAME
+        SpreadsheetDateTimeParsePattern.TYPE_NAME
     ),
     SpreadsheetParseRequest.fromJson,
     "Missing json",
@@ -98,7 +98,7 @@ test("equals different text false", () => {
 
 test("equals different different false", () => {
     expect(parseRequest()
-        .equals(new SpreadsheetParseRequest(text(), SpreadsheetDateTimeParsePatterns.TYPE_NAME)))
+        .equals(new SpreadsheetParseRequest(text(), SpreadsheetDateTimeParsePattern.TYPE_NAME)))
         .toBeFalse();
 });
 

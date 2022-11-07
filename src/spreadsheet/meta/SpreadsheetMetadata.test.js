@@ -9,17 +9,17 @@ import RoundingMode from "../../math/RoundingMode.js";
 import SpreadsheetCellReference from "../reference/cell/SpreadsheetCellReference.js";
 import SpreadsheetColumnReferenceRange from "../reference/columnrow/SpreadsheetColumnReferenceRange.js";
 import SpreadsheetDateFormatPattern from "../format/SpreadsheetDateFormatPattern.js";
-import SpreadsheetDateParsePatterns from "../format/SpreadsheetDateParsePatterns.js";
+import SpreadsheetDateParsePattern from "../format/SpreadsheetDateParsePattern.js";
 import SpreadsheetDateTimeFormatPattern from "../format/SpreadsheetDateTimeFormatPattern.js";
-import SpreadsheetDateTimeParsePatterns from "../format/SpreadsheetDateTimeParsePatterns.js";
+import SpreadsheetDateTimeParsePattern from "../format/SpreadsheetDateTimeParsePattern.js";
 import SpreadsheetMetadata from "./SpreadsheetMetadata";
 import SpreadsheetName from "./name/SpreadsheetName.js";
 import SpreadsheetNumberFormatPattern from "../format/SpreadsheetNumberFormatPattern.js";
-import SpreadsheetNumberParsePatterns from "../format/SpreadsheetNumberParsePatterns.js";
+import SpreadsheetNumberParsePattern from "../format/SpreadsheetNumberParsePattern.js";
 import SpreadsheetRowReferenceRange from "../reference/columnrow/SpreadsheetRowReferenceRange.js";
 import SpreadsheetTextFormatPattern from "../format/SpreadsheetTextFormatPattern.js";
 import SpreadsheetTimeFormatPattern from "../format/SpreadsheetTimeFormatPattern.js";
-import SpreadsheetTimeParsePatterns from "../format/SpreadsheetTimeParsePatterns.js";
+import SpreadsheetTimeParsePattern from "../format/SpreadsheetTimeParsePattern.js";
 import systemObjectTesting from "../../SystemObjectTesting.js";
 import TextStyle from "../../text/TextStyle";
 
@@ -132,10 +132,10 @@ test("from json all properties", () => {
         "creator": "creator@example.com",
         "currency-symbol": "$AUD",
         "date-format-pattern": "DD/MM/YYYY",
-        "date-parse-patterns": "DD/MM/YYYYDDMMYYYY",
+        "date-parse-pattern": "DD/MM/YYYYDDMMYYYY",
         "date-time-format-pattern": "DD/MM/YYYY hh:mm",
         "date-time-offset": "0",
-        "date-time-parse-patterns": "DD/MM/YYYY hh:mmDDMMYYYYHHMMDDMMYYYY HHMM",
+        "date-time-parse-pattern": "DD/MM/YYYY hh:mmDDMMYYYYHHMMDDMMYYYY HHMM",
         "decimal-separator": "D",
         "exponent-symbol": "E",
         "expression-number-kind": "DOUBLE",
@@ -147,7 +147,7 @@ test("from json all properties", () => {
         "modified-date-time": "1999-12-31T12:58:59",
         "negative-sign": "N",
         "number-format-pattern": "#0.0",
-        "number-parse-patterns": "#0.0$#0.00",
+        "number-parse-pattern": "#0.0$#0.00",
         "percentage-symbol": "P",
         "positive-sign": "O",
         "precision": 123,
@@ -155,7 +155,7 @@ test("from json all properties", () => {
         "spreadsheet-id": "7b",
         "text-format-pattern": "@@",
         "time-format-pattern": "hh:mm",
-        "time-parse-patterns": "hh:mmhh:mm:ss.000",
+        "time-parse-pattern": "hh:mmhh:mm:ss.000",
         "two-digit-year": 31,
     });
 });
@@ -600,13 +600,13 @@ getSetRemoveTest(SpreadsheetMetadata.CURRENCY_SYMBOL, "AUD");
 
 getSetRemoveTest(SpreadsheetMetadata.DATE_FORMAT_PATTERN, SpreadsheetDateFormatPattern.fromJson("YYYY-MM-DD"));
 
-getSetRemoveTest(SpreadsheetMetadata.DATE_PARSE_PATTERNS, SpreadsheetDateParsePatterns.fromJson("YYYY-MM-DD"));
+getSetRemoveTest(SpreadsheetMetadata.DATE_PARSE_PATTERNS, SpreadsheetDateParsePattern.fromJson("YYYY-MM-DD"));
 
 getSetTest(SpreadsheetMetadata.DATETIME_OFFSET, 1234);
 
 getSetRemoveTest(SpreadsheetMetadata.DATETIME_FORMAT_PATTERN, SpreadsheetDateTimeFormatPattern.fromJson("YYYY-MM-DD HH-MM"));
 
-getSetRemoveTest(SpreadsheetMetadata.DATETIME_PARSE_PATTERNS, SpreadsheetDateTimeParsePatterns.fromJson("YYYY-MM-DD HH-MM-SS"));
+getSetRemoveTest(SpreadsheetMetadata.DATETIME_PARSE_PATTERNS, SpreadsheetDateTimeParsePattern.fromJson("YYYY-MM-DD HH-MM-SS"));
 
 getSetRemoveTest(SpreadsheetMetadata.DECIMAL_SEPARATOR, Character.fromJson(","));
 
@@ -636,7 +636,7 @@ getSetRemoveTest(SpreadsheetMetadata.NEGATIVE_SIGN, Character.fromJson("-"));
 
 getSetRemoveTest(SpreadsheetMetadata.NUMBER_FORMAT_PATTERN, SpreadsheetNumberFormatPattern.fromJson("#.#"));
 
-getSetRemoveTest(SpreadsheetMetadata.NUMBER_PARSE_PATTERNS, SpreadsheetNumberParsePatterns.fromJson("#.##"));
+getSetRemoveTest(SpreadsheetMetadata.NUMBER_PARSE_PATTERNS, SpreadsheetNumberParsePattern.fromJson("#.##"));
 
 getSetRemoveTest(SpreadsheetMetadata.PERCENTAGE_SYMBOL, Character.fromJson("%"));
 
@@ -674,7 +674,7 @@ getSetRemoveTest(SpreadsheetMetadata.TEXT_FORMAT_PATTERN, SpreadsheetTextFormatP
 
 getSetRemoveTest(SpreadsheetMetadata.TIME_FORMAT_PATTERN, SpreadsheetTimeFormatPattern.fromJson("HH-MM"));
 
-getSetRemoveTest(SpreadsheetMetadata.TIME_PARSE_PATTERNS, SpreadsheetTimeParsePatterns.fromJson("HH-MM-SS"));
+getSetRemoveTest(SpreadsheetMetadata.TIME_PARSE_PATTERNS, SpreadsheetTimeParsePattern.fromJson("HH-MM-SS"));
 
 getSetRemoveTest(SpreadsheetMetadata.TWO_DIGIT_YEAR, 2);
 
@@ -801,10 +801,10 @@ test("all setters & getters", () => {
     const cellCharacterWidth = 1;
     const currencySymbol = "$AUD";
     const dateFormatPattern = SpreadsheetDateFormatPattern.fromJson("yyyymmdd");
-    const dateParsePatterns = SpreadsheetDateParsePatterns.fromJson("yyyymmdd");
+    const dateParsePattern = SpreadsheetDateParsePattern.fromJson("yyyymmdd");
     const dateTimeOffset = 123;
     const dateTimeFormatPattern = SpreadsheetDateTimeFormatPattern.fromJson("yyyymmddhhmm");
-    const dateTimeParsePatterns = SpreadsheetDateTimeParsePatterns.fromJson("yyyymmddhhmm");
+    const dateTimeParsePattern = SpreadsheetDateTimeParsePattern.fromJson("yyyymmddhhmm");
     const decimalSeparator = Character.fromJson(".");
     const defaultYear = 1987;
     const exponentSymbol = Character.fromJson("^");
@@ -814,7 +814,7 @@ test("all setters & getters", () => {
     const name = new SpreadsheetName("Spreadsheet-name-123");
     const negativeSign = Character.fromJson("-");
     const numberFormatPattern = SpreadsheetNumberFormatPattern.fromJson("#.##");
-    const numberParsePatterns = SpreadsheetNumberParsePatterns.fromJson("#.##");
+    const numberParsePattern = SpreadsheetNumberParsePattern.fromJson("#.##");
     const percentSymbol = Character.fromJson("%");
     const positiveSign = Character.fromJson("+");
     const precision = 1;
@@ -825,7 +825,7 @@ test("all setters & getters", () => {
         .set("width", PixelLength.parse("123px"));
     const textFormatPattern = SpreadsheetTextFormatPattern.fromJson("@@");
     const timeFormatPattern = SpreadsheetTimeFormatPattern.fromJson("hhmm");
-    const timeParsePatterns = SpreadsheetTimeParsePatterns.fromJson("hhmmss");
+    const timeParsePattern = SpreadsheetTimeParsePattern.fromJson("hhmmss");
     const twoDigitYear = 80;
     const valueSeparator = Character.fromJson(",");
     const viewportCell = SpreadsheetCellReference.parse("A99");
@@ -834,10 +834,10 @@ test("all setters & getters", () => {
         .set(SpreadsheetMetadata.CELL_CHARACTER_WIDTH, cellCharacterWidth)
         .set(SpreadsheetMetadata.CURRENCY_SYMBOL, currencySymbol)
         .set(SpreadsheetMetadata.DATE_FORMAT_PATTERN, dateFormatPattern)
-        .set(SpreadsheetMetadata.DATE_PARSE_PATTERNS, dateParsePatterns)
+        .set(SpreadsheetMetadata.DATE_PARSE_PATTERNS, dateParsePattern)
         .set(SpreadsheetMetadata.DATETIME_OFFSET, dateTimeOffset)
         .set(SpreadsheetMetadata.DATETIME_FORMAT_PATTERN, dateTimeFormatPattern)
-        .set(SpreadsheetMetadata.DATETIME_PARSE_PATTERNS, dateTimeParsePatterns)
+        .set(SpreadsheetMetadata.DATETIME_PARSE_PATTERNS, dateTimeParsePattern)
         .set(SpreadsheetMetadata.DECIMAL_SEPARATOR, decimalSeparator)
         .set(SpreadsheetMetadata.DEFAULT_YEAR, defaultYear)
         .set(SpreadsheetMetadata.EXPONENT_SYMBOL, exponentSymbol)
@@ -846,7 +846,7 @@ test("all setters & getters", () => {
         .set(SpreadsheetMetadata.LOCALE, locale)
         .set(SpreadsheetMetadata.NEGATIVE_SIGN, negativeSign)
         .set(SpreadsheetMetadata.NUMBER_FORMAT_PATTERN, numberFormatPattern)
-        .set(SpreadsheetMetadata.NUMBER_PARSE_PATTERNS, numberParsePatterns)
+        .set(SpreadsheetMetadata.NUMBER_PARSE_PATTERNS, numberParsePattern)
         .set(SpreadsheetMetadata.PERCENTAGE_SYMBOL, percentSymbol)
         .set(SpreadsheetMetadata.POSITIVE_SIGN, positiveSign)
         .set(SpreadsheetMetadata.PRECISION, precision)
@@ -856,7 +856,7 @@ test("all setters & getters", () => {
         .set(SpreadsheetMetadata.STYLE, style)
         .set(SpreadsheetMetadata.TEXT_FORMAT_PATTERN, textFormatPattern)
         .set(SpreadsheetMetadata.TIME_FORMAT_PATTERN, timeFormatPattern)
-        .set(SpreadsheetMetadata.TIME_PARSE_PATTERNS, timeParsePatterns)
+        .set(SpreadsheetMetadata.TIME_PARSE_PATTERNS, timeParsePattern)
         .set(SpreadsheetMetadata.TWO_DIGIT_YEAR, twoDigitYear)
         .set(SpreadsheetMetadata.VALUE_SEPARATOR, valueSeparator)
         .set(SpreadsheetMetadata.VIEWPORT_CELL, viewportCell);
@@ -864,10 +864,10 @@ test("all setters & getters", () => {
     expect(metadata.getIgnoringDefaults(SpreadsheetMetadata.CELL_CHARACTER_WIDTH)).toEqual(cellCharacterWidth);
     expect(metadata.getIgnoringDefaults(SpreadsheetMetadata.CURRENCY_SYMBOL)).toEqual(currencySymbol);
     expect(metadata.getIgnoringDefaults(SpreadsheetMetadata.DATE_FORMAT_PATTERN)).toEqual(dateFormatPattern);
-    expect(metadata.getIgnoringDefaults(SpreadsheetMetadata.DATE_PARSE_PATTERNS)).toEqual(dateParsePatterns);
+    expect(metadata.getIgnoringDefaults(SpreadsheetMetadata.DATE_PARSE_PATTERNS)).toEqual(dateParsePattern);
     expect(metadata.getIgnoringDefaults(SpreadsheetMetadata.DATETIME_OFFSET)).toEqual(dateTimeOffset);
     expect(metadata.getIgnoringDefaults(SpreadsheetMetadata.DATETIME_FORMAT_PATTERN)).toEqual(dateTimeFormatPattern);
-    expect(metadata.getIgnoringDefaults(SpreadsheetMetadata.DATETIME_PARSE_PATTERNS)).toEqual(dateTimeParsePatterns);
+    expect(metadata.getIgnoringDefaults(SpreadsheetMetadata.DATETIME_PARSE_PATTERNS)).toEqual(dateTimeParsePattern);
     expect(metadata.getIgnoringDefaults(SpreadsheetMetadata.DECIMAL_SEPARATOR)).toEqual(decimalSeparator);
     expect(metadata.getIgnoringDefaults(SpreadsheetMetadata.DEFAULT_YEAR)).toEqual(defaultYear);
     expect(metadata.getIgnoringDefaults(SpreadsheetMetadata.EXPONENT_SYMBOL)).toEqual(exponentSymbol);
@@ -876,7 +876,7 @@ test("all setters & getters", () => {
     expect(metadata.getIgnoringDefaults(SpreadsheetMetadata.LOCALE)).toEqual(locale);
     expect(metadata.getIgnoringDefaults(SpreadsheetMetadata.NEGATIVE_SIGN)).toEqual(negativeSign);
     expect(metadata.getIgnoringDefaults(SpreadsheetMetadata.NUMBER_FORMAT_PATTERN)).toEqual(numberFormatPattern);
-    expect(metadata.getIgnoringDefaults(SpreadsheetMetadata.NUMBER_PARSE_PATTERNS)).toEqual(numberParsePatterns);
+    expect(metadata.getIgnoringDefaults(SpreadsheetMetadata.NUMBER_PARSE_PATTERNS)).toEqual(numberParsePattern);
     expect(metadata.getIgnoringDefaults(SpreadsheetMetadata.PERCENTAGE_SYMBOL)).toEqual(percentSymbol);
     expect(metadata.getIgnoringDefaults(SpreadsheetMetadata.POSITIVE_SIGN)).toEqual(positiveSign);
     expect(metadata.getIgnoringDefaults(SpreadsheetMetadata.PRECISION)).toEqual(precision);
@@ -886,7 +886,7 @@ test("all setters & getters", () => {
     expect(metadata.getIgnoringDefaults(SpreadsheetMetadata.STYLE)).toEqual(style);
     expect(metadata.getIgnoringDefaults(SpreadsheetMetadata.TEXT_FORMAT_PATTERN)).toEqual(textFormatPattern);
     expect(metadata.getIgnoringDefaults(SpreadsheetMetadata.TIME_FORMAT_PATTERN)).toEqual(timeFormatPattern);
-    expect(metadata.getIgnoringDefaults(SpreadsheetMetadata.TIME_PARSE_PATTERNS)).toEqual(timeParsePatterns);
+    expect(metadata.getIgnoringDefaults(SpreadsheetMetadata.TIME_PARSE_PATTERNS)).toEqual(timeParsePattern);
     expect(metadata.getIgnoringDefaults(SpreadsheetMetadata.TWO_DIGIT_YEAR)).toEqual(twoDigitYear);
     expect(metadata.getIgnoringDefaults(SpreadsheetMetadata.VALUE_SEPARATOR)).toEqual(valueSeparator);
     expect(metadata.getIgnoringDefaults(SpreadsheetMetadata.VIEWPORT_CELL)).toEqual(viewportCell);

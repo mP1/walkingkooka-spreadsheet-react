@@ -17,11 +17,11 @@ import SpreadsheetCellFormulaSaveHistoryHashToken
 import SpreadsheetCellFreezeHistoryHashToken from "../reference/cell/SpreadsheetCellFreezeHistoryHashToken.js";
 import SpreadsheetCellHistoryHashToken from "../reference/cell/SpreadsheetCellHistoryHashToken.js";
 import SpreadsheetCellMenuHistoryHashToken from "../reference/cell/SpreadsheetCellMenuHistoryHashToken.js";
-import SpreadsheetCellParsePatternsEditHistoryHashToken
-    from "../format/SpreadsheetCellParsePatternsEditHistoryHashToken.js";
-import SpreadsheetCellParsePatternsKind from "../format/SpreadsheetCellParsePatternsKind.js";
-import SpreadsheetCellParsePatternsSaveHistoryHashToken
-    from "../format/SpreadsheetCellParsePatternsSaveHistoryHashToken.js";
+import SpreadsheetCellParsePatternEditHistoryHashToken
+    from "../format/SpreadsheetCellParsePatternEditHistoryHashToken.js";
+import SpreadsheetCellParsePatternKind from "../format/SpreadsheetCellParsePatternKind.js";
+import SpreadsheetCellParsePatternSaveHistoryHashToken
+    from "../format/SpreadsheetCellParsePatternSaveHistoryHashToken.js";
 import spreadsheetCellRangeCellReferenceOrLabelParse
     from "../reference/cell/SpreadsheetCellRangeCellReferenceOrLabelParse.js";
 import SpreadsheetCellReference from "../reference/cell/SpreadsheetCellReference.js";
@@ -302,28 +302,28 @@ export default class SpreadsheetHistoryHash extends SpreadsheetHistoryHashTokens
                                             token = tokens.shift();
                                             if(null == token){
                                                 viewportSelectionToken = null;
-                                                errors("Missing parse-patterns kind");
+                                                errors("Missing parse-pattern kind");
                                                 break;
                                             }
-                                            var cellParsePatternsKind;
+                                            var cellParsePatternKind;
 
-                                            for(const possibleCellParsePatternsKind of SpreadsheetCellParsePatternsKind.values()) {
-                                                if(token === possibleCellParsePatternsKind.historyHashPath()){
-                                                    cellParsePatternsKind = possibleCellParsePatternsKind;
+                                            for(const possibleCellParsePatternKind of SpreadsheetCellParsePatternKind.values()) {
+                                                if(token === possibleCellParsePatternKind.historyHashPath()){
+                                                    cellParsePatternKind = possibleCellParsePatternKind;
                                                     break;
                                                 }
                                             }
 
-                                            if(!cellParsePatternsKind){
-                                                errors("Unknown parse-patterns kind: " + token);
+                                            if(!cellParsePatternKind){
+                                                errors("Unknown parse-pattern kind: " + token);
                                                 break Loop;
                                             }
 
                                             token = tokens.shift();
                                             if(null == token){
-                                                viewportSelectionToken = new SpreadsheetCellParsePatternsEditHistoryHashToken(
+                                                viewportSelectionToken = new SpreadsheetCellParsePatternEditHistoryHashToken(
                                                     viewportSelection,
-                                                    cellParsePatternsKind
+                                                    cellParsePatternKind
                                                 );
                                                 token = tokens.shift();
                                             }else {
@@ -331,12 +331,12 @@ export default class SpreadsheetHistoryHash extends SpreadsheetHistoryHashTokens
                                                     case SpreadsheetHistoryHashTokens.SAVE:
                                                         token = tokens.shift();
                                                         if(null != token){
-                                                            viewportSelectionToken = new SpreadsheetCellParsePatternsSaveHistoryHashToken(
+                                                            viewportSelectionToken = new SpreadsheetCellParsePatternSaveHistoryHashToken(
                                                                 viewportSelection,
-                                                                cellParsePatternsKind,
+                                                                cellParsePatternKind,
                                                                 "" === token ?
                                                                     null :
-                                                                    cellParsePatternsKind.createPattern(
+                                                                    cellParsePatternKind.createPattern(
                                                                         decodeURIComponent(token)
                                                                     )
                                                             );
@@ -347,7 +347,7 @@ export default class SpreadsheetHistoryHash extends SpreadsheetHistoryHashTokens
                                                         }
                                                         break;
                                                     default:
-                                                        errors("Invalid parse-patterns: " + token);
+                                                        errors("Invalid parse-pattern: " + token);
                                                         break Loop;
                                                 }
                                             }

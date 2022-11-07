@@ -1,15 +1,15 @@
-import SpreadsheetDateParsePatterns from "../../format/SpreadsheetDateParsePatterns.js";
-import SpreadsheetDateTimeParsePatterns from "../../format/SpreadsheetDateTimeParsePatterns.js";
+import SpreadsheetDateParsePattern from "../../format/SpreadsheetDateParsePattern.js";
+import SpreadsheetDateTimeParsePattern from "../../format/SpreadsheetDateTimeParsePattern.js";
 import SpreadsheetMultiParseRequest from "./SpreadsheetMultiParseRequest.js";
 import SpreadsheetParseRequest from "./SpreadsheetParseRequest.js";
 import systemObjectTesting from "../../../SystemObjectTesting.js";
 
 function request1() {
-    return request("2000/1/1", SpreadsheetDateParsePatterns.TYPE_NAME);
+    return request("2000/1/1", SpreadsheetDateParsePattern.TYPE_NAME);
 }
 
 function request2() {
-    return request("2000/2/2", SpreadsheetDateParsePatterns.TYPE_NAME);
+    return request("2000/2/2", SpreadsheetDateParsePattern.TYPE_NAME);
 }
 
 function requests() {
@@ -33,7 +33,7 @@ systemObjectTesting(
     multi(),
     new SpreadsheetMultiParseRequest(
         [
-            request("12:00:00", SpreadsheetDateTimeParsePatterns.TYPE_NAME)
+            request("12:00:00", SpreadsheetDateTimeParsePattern.TYPE_NAME)
         ]
     ),
     SpreadsheetMultiParseRequest.fromJson,

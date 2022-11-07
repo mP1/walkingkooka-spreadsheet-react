@@ -1,12 +1,12 @@
 import PropTypes from "prop-types";
-import SpreadsheetDateTimeParsePatterns from "../../format/SpreadsheetDateTimeParsePatterns.js";
+import SpreadsheetNumberParsePattern from "../../format/SpreadsheetNumberParsePattern.js";
 import SpreadsheetMetadataDrawerWidgetTextField from "./SpreadsheetMetadataDrawerWidgetTextField.js";
 import SpreadsheetMetadataDrawerWidgetValue from "./SpreadsheetMetadataDrawerWidgetValue.js";
 
 /**
- * A widget which accepts a String and creates an unvalidated {@link SpreadsheetDateTimeParsePatterns}.
+ * A widget which accepts a String and creates an unvalidated {@link SpreadsheetNumberParsePattern}.
  */
-export default class SpreadsheetMetadataDrawerWidgetTextFieldSpreadsheetDateTimeParsePatterns extends SpreadsheetMetadataDrawerWidgetTextField {
+export default class SpreadsheetMetadataDrawerWidgetTextFieldSpreadsheetNumberParsePattern extends SpreadsheetMetadataDrawerWidgetTextField {
 
     placeholder() {
         return "Enter pattern";
@@ -28,11 +28,11 @@ export default class SpreadsheetMetadataDrawerWidgetTextFieldSpreadsheetDateTime
                 value = null;
                 break;
             default:
-                value = SpreadsheetDateTimeParsePatterns.fromJson(string);
+                value = SpreadsheetNumberParsePattern.fromJson(string);
                 break;
         }
         return value;
     }
 }
 
-SpreadsheetMetadataDrawerWidgetTextFieldSpreadsheetDateTimeParsePatterns.propTypes = SpreadsheetMetadataDrawerWidgetValue.createPropTypes(PropTypes.instanceOf(SpreadsheetDateTimeParsePatterns));
+SpreadsheetMetadataDrawerWidgetTextFieldSpreadsheetNumberParsePattern.propTypes = SpreadsheetMetadataDrawerWidgetValue.createPropTypes(PropTypes.instanceOf(SpreadsheetNumberParsePattern));

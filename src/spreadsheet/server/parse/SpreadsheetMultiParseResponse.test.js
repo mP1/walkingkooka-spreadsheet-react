@@ -1,12 +1,12 @@
 import LocalDateTime from "../../../datetime/LocalDateTime.js";
-import SpreadsheetDateParsePatterns from "../../format/SpreadsheetDateParsePatterns.js";
+import SpreadsheetDateParsePattern from "../../format/SpreadsheetDateParsePattern.js";
 import SpreadsheetMultiParseResponse from "./SpreadsheetMultiParseResponse.js";
-import SpreadsheetTimeParsePatterns from "../../format/SpreadsheetTimeParsePatterns.js";
+import SpreadsheetTimeParsePattern from "../../format/SpreadsheetTimeParsePattern.js";
 import SystemObject from "../../../SystemObject.js";
 import systemObjectTesting from "../../../SystemObjectTesting.js";
 
 function response1() {
-    return SpreadsheetDateParsePatterns.fromJson("yyyy-mm-dd");
+    return SpreadsheetDateParsePattern.fromJson("yyyy-mm-dd");
 }
 
 function response2() {
@@ -30,7 +30,7 @@ systemObjectTesting(
     multi(),
     new SpreadsheetMultiParseResponse(
         [
-            SpreadsheetTimeParsePatterns.fromJson("hhmss")
+            SpreadsheetTimeParsePattern.fromJson("hhmss")
         ]
     ),
     SpreadsheetMultiParseResponse.fromJson,

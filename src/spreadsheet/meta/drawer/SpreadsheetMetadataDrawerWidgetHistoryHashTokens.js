@@ -3,16 +3,16 @@ import Preconditions from "../../../Preconditions.js";
 import RoundingMode from "../../../math/RoundingMode.js";
 import SpreadsheetMetadata from "../SpreadsheetMetadata.js";
 import SpreadsheetColumnReferenceRange from "../../reference/columnrow/SpreadsheetColumnReferenceRange.js";
-import SpreadsheetDateTimeParsePatterns from "../../format/SpreadsheetDateTimeParsePatterns.js";
+import SpreadsheetDateTimeParsePattern from "../../format/SpreadsheetDateTimeParsePattern.js";
 import SpreadsheetDateTimeFormatPattern from "../../format/SpreadsheetDateTimeFormatPattern.js";
 import SpreadsheetDateFormatPattern from "../../format/SpreadsheetDateFormatPattern.js";
-import SpreadsheetDateParsePatterns from "../../format/SpreadsheetDateParsePatterns.js";
-import SpreadsheetNumberParsePatterns from "../../format/SpreadsheetNumberParsePatterns.js";
+import SpreadsheetDateParsePattern from "../../format/SpreadsheetDateParsePattern.js";
+import SpreadsheetNumberParsePattern from "../../format/SpreadsheetNumberParsePattern.js";
 import SpreadsheetNumberFormatPattern from "../../format/SpreadsheetNumberFormatPattern.js";
 import SpreadsheetRowReferenceRange from "../../reference/columnrow/SpreadsheetRowReferenceRange.js";
 import SpreadsheetTextFormatPattern from "../../format/SpreadsheetTextFormatPattern.js";
 import SpreadsheetTimeFormatPattern from "../../format/SpreadsheetTimeFormatPattern.js";
-import SpreadsheetTimeParsePatterns from "../../format/SpreadsheetTimeParsePatterns.js";
+import SpreadsheetTimeParsePattern from "../../format/SpreadsheetTimeParsePattern.js";
 import TextStyle from "../../../text/TextStyle.js";
 
 /**
@@ -209,7 +209,7 @@ export default class SpreadsheetMetadataDrawerWidgetHistoryHashTokens {
                     value = new SpreadsheetDateFormatPattern(token);
                     break;
                 case SpreadsheetMetadata.DATE_PARSE_PATTERNS :
-                    value = new SpreadsheetDateParsePatterns(token);
+                    value = new SpreadsheetDateParsePattern(token);
                     break;
                 case SpreadsheetMetadata.DATETIME_FORMAT_PATTERN :
                     value = new SpreadsheetDateTimeFormatPattern(token);
@@ -218,7 +218,7 @@ export default class SpreadsheetMetadataDrawerWidgetHistoryHashTokens {
                     value = Number(token);
                     break;
                 case SpreadsheetMetadata.DATETIME_PARSE_PATTERNS :
-                    value = new SpreadsheetDateTimeParsePatterns(token);
+                    value = new SpreadsheetDateTimeParsePattern(token);
                     break;
                 case SpreadsheetMetadata.DECIMAL_SEPARATOR :
                     value = token;
@@ -249,7 +249,7 @@ export default class SpreadsheetMetadataDrawerWidgetHistoryHashTokens {
                     value = new SpreadsheetNumberFormatPattern(token);
                     break;
                 case SpreadsheetMetadata.NUMBER_PARSE_PATTERNS :
-                    value = new SpreadsheetNumberParsePatterns(token);
+                    value = new SpreadsheetNumberParsePattern(token);
                     break;
                 case SpreadsheetMetadata.PERCENTAGE_SYMBOL :
                     value = token;
@@ -271,7 +271,7 @@ export default class SpreadsheetMetadataDrawerWidgetHistoryHashTokens {
                     value = new SpreadsheetTimeFormatPattern(token);
                     break;
                 case SpreadsheetMetadata.TIME_PARSE_PATTERNS :
-                    value = new SpreadsheetTimeParsePatterns(token);
+                    value = new SpreadsheetTimeParsePattern(token);
                     break;
                 case SpreadsheetMetadata.TWO_DIGIT_YEAR :
                     value = Number(token);
