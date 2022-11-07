@@ -34,22 +34,22 @@ import SpreadsheetMetadataDrawerWidgetTextFieldColor from "./SpreadsheetMetadata
 import SpreadsheetMetadataDrawerWidgetTextFieldNumber from "./SpreadsheetMetadataDrawerWidgetTextFieldNumber.js";
 import SpreadsheetMetadataDrawerWidgetTextFieldSpreadsheetDateFormatPattern
     from "./SpreadsheetMetadataDrawerWidgetTextFieldSpreadsheetDateFormatPattern.js";
-import SpreadsheetMetadataDrawerWidgetTextFieldSpreadsheetDateParsePatterns
-    from "./SpreadsheetMetadataDrawerWidgetTextFieldSpreadsheetDateParsePatterns.js";
+import SpreadsheetMetadataDrawerWidgetTextFieldSpreadsheetDateParsePattern
+    from "./SpreadsheetMetadataDrawerWidgetTextFieldSpreadsheetDateParsePattern.js";
 import SpreadsheetMetadataDrawerWidgetTextFieldSpreadsheetDateTimeFormatPattern
     from "./SpreadsheetMetadataDrawerWidgetTextFieldSpreadsheetDateTimeFormatPattern.js";
-import SpreadsheetMetadataDrawerWidgetTextFieldSpreadsheetDateTimeParsePatterns
-    from "./SpreadsheetMetadataDrawerWidgetTextFieldSpreadsheetDateTimeParsePatterns.js";
+import SpreadsheetMetadataDrawerWidgetTextFieldSpreadsheetDateTimeParsePattern
+    from "./SpreadsheetMetadataDrawerWidgetTextFieldSpreadsheetDateTimeParsePattern.js";
 import SpreadsheetMetadataDrawerWidgetTextFieldSpreadsheetNumberFormatPattern
     from "./SpreadsheetMetadataDrawerWidgetTextFieldSpreadsheetNumberFormatPattern.js";
-import SpreadsheetMetadataDrawerWidgetTextFieldSpreadsheetNumberParsePatterns
-    from "./SpreadsheetMetadataDrawerWidgetTextFieldSpreadsheetNumberParsePatterns.js";
+import SpreadsheetMetadataDrawerWidgetTextFieldSpreadsheetNumberParsePattern
+    from "./SpreadsheetMetadataDrawerWidgetTextFieldSpreadsheetNumberParsePattern.js";
 import SpreadsheetMetadataDrawerWidgetTextFieldSpreadsheetTextFormatPattern
     from "./SpreadsheetMetadataDrawerWidgetTextFieldSpreadsheetTextFormatPattern.js";
 import SpreadsheetMetadataDrawerWidgetTextFieldSpreadsheetTimeFormatPattern
     from "./SpreadsheetMetadataDrawerWidgetTextFieldSpreadsheetTimeFormatPattern.js";
-import SpreadsheetMetadataDrawerWidgetTextFieldSpreadsheetTimeParsePatterns
-    from "./SpreadsheetMetadataDrawerWidgetTextFieldSpreadsheetTimeParsePatterns.js";
+import SpreadsheetMetadataDrawerWidgetTextFieldSpreadsheetTimeParsePattern
+    from "./SpreadsheetMetadataDrawerWidgetTextFieldSpreadsheetTimeParsePattern.js";
 import SpreadsheetMetadataDrawerWidgetTextFieldString from "./SpreadsheetMetadataDrawerWidgetTextFieldString.js";
 import SpreadsheetMetadataSaveHistoryHashToken from "./SpreadsheetMetadataSaveHistoryHashToken.js";
 import SpreadsheetMetadataSelectHistoryHashToken from "./SpreadsheetMetadataSelectHistoryHashToken.js";
@@ -773,7 +773,7 @@ class SpreadsheetMetadataDrawerWidget extends SpreadsheetMetadataWidget {
                                 />;
                                 break;
                             case SpreadsheetMetadata.DATE_PARSE_PATTERNS:
-                                render = <SpreadsheetMetadataDrawerWidgetTextFieldSpreadsheetDateParsePatterns id={id}
+                                render = <SpreadsheetMetadataDrawerWidgetTextFieldSpreadsheetDateParsePattern id={id}
                                                                                                                key={property}
                                                                                                                property={property}
                                                                                                                getValue={getValue}
@@ -799,7 +799,7 @@ class SpreadsheetMetadataDrawerWidget extends SpreadsheetMetadataWidget {
                                 />;
                                 break;
                             case SpreadsheetMetadata.DATETIME_PARSE_PATTERNS:
-                                render = <SpreadsheetMetadataDrawerWidgetTextFieldSpreadsheetDateTimeParsePatterns id={id}
+                                render = <SpreadsheetMetadataDrawerWidgetTextFieldSpreadsheetDateTimeParsePattern id={id}
                                                                                                                    key={property}
                                                                                                                    property={property}
                                                                                                                    getValue={getValue}
@@ -877,7 +877,7 @@ class SpreadsheetMetadataDrawerWidget extends SpreadsheetMetadataWidget {
                                 />;
                                 break;
                             case SpreadsheetMetadata.NUMBER_PARSE_PATTERNS:
-                                render = <SpreadsheetMetadataDrawerWidgetTextFieldSpreadsheetNumberParsePatterns id={id}
+                                render = <SpreadsheetMetadataDrawerWidgetTextFieldSpreadsheetNumberParsePattern id={id}
                                                                                                                  key={property}
                                                                                                                  property={property}
                                                                                                                  getValue={getValue}
@@ -930,7 +930,7 @@ class SpreadsheetMetadataDrawerWidget extends SpreadsheetMetadataWidget {
                                 />;
                                 break;
                             case SpreadsheetMetadata.TIME_PARSE_PATTERNS:
-                                render = <SpreadsheetMetadataDrawerWidgetTextFieldSpreadsheetTimeParsePatterns id={id}
+                                render = <SpreadsheetMetadataDrawerWidgetTextFieldSpreadsheetTimeParsePattern id={id}
                                                                                                                key={property}
                                                                                                                property={property}
                                                                                                                getValue={getValue}

@@ -1,19 +1,19 @@
 import Preconditions from "../../Preconditions.js";
-import SpreadsheetCellParsePatternsKind from "./SpreadsheetCellParsePatternsKind.js";
+import SpreadsheetCellParsePatternKind from "./SpreadsheetCellParsePatternKind.js";
 import SpreadsheetCellHistoryHashToken from "../reference/cell/SpreadsheetCellHistoryHashToken.js";
 import SpreadsheetHistoryHashTokens from "../history/SpreadsheetHistoryHashTokens.js";
 
 /**
  * A base class for the edit and save parse patterns.
  */
-export default class SpreadsheetCellParsePatternsHistoryHashToken extends SpreadsheetCellHistoryHashToken {
+export default class SpreadsheetCellParsePatternHistoryHashToken extends SpreadsheetCellHistoryHashToken {
 
     constructor(viewportSelection, kind) {
         super(viewportSelection);
 
         this.kindValue = Preconditions.requireInstance(
             kind,
-            SpreadsheetCellParsePatternsKind,
+            SpreadsheetCellParsePatternKind,
             "kind"
         );
     }
@@ -34,7 +34,7 @@ export default class SpreadsheetCellParsePatternsHistoryHashToken extends Spread
     }
 
     equals(other) {
-        return super.equals(other) && other instanceof SpreadsheetCellParsePatternsHistoryHashToken &&
+        return super.equals(other) && other instanceof SpreadsheetCellParsePatternHistoryHashToken &&
             this.kind().equals(other.kind());
     }
 }

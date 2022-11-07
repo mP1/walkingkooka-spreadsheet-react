@@ -1,4 +1,4 @@
-import SpreadsheetDateTimeParsePatterns from "../../format/SpreadsheetDateTimeParsePatterns.js";
+import SpreadsheetDateTimeParsePattern from "../../format/SpreadsheetDateTimeParsePattern.js";
 import SpreadsheetMetadata from "../SpreadsheetMetadata.js";
 import SpreadsheetMetadataDrawerWidgetHistoryHashTokens from "./SpreadsheetMetadataDrawerWidgetHistoryHashTokens.js";
 
@@ -27,6 +27,6 @@ function testParseHistoryHashToken(propertyName, value, expected) {
 testParseHistoryHashToken(SpreadsheetMetadata.CURRENCY_SYMBOL, "", null);
 testParseHistoryHashToken(SpreadsheetMetadata.CURRENCY_SYMBOL, "AUD", "AUD");
 testParseHistoryHashToken(SpreadsheetMetadata.DATETIME_OFFSET, "123", 123);
-testParseHistoryHashToken(SpreadsheetMetadata.DATETIME_PARSE_PATTERNS, "yy%2Fmm%2Fdd", new SpreadsheetDateTimeParsePatterns("yy/mm/dd"));
+testParseHistoryHashToken(SpreadsheetMetadata.DATETIME_PARSE_PATTERNS, "yy%2Fmm%2Fdd", new SpreadsheetDateTimeParsePattern("yy/mm/dd"));
 testParseHistoryHashToken(SpreadsheetMetadata.POSITIVE_SIGN, "+", "+");
 testParseHistoryHashToken(SpreadsheetMetadata.TWO_DIGIT_YEAR, "20", 20);
