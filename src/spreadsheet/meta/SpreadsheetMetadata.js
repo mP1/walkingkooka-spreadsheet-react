@@ -605,7 +605,7 @@ export default class SpreadsheetMetadata extends SystemObject {
         const copy = Object.assign({}, this.properties);
         copy[propertyName] = value;
 
-        const groupOrValue = isGroupingSeparatorOrValueSeparator(propertyName);
+        const groupOrValue = isgroupSeparatorOrValueSeparator(propertyName);
 
         if(swapIfDuplicateValue){
             for(var i = 0; i < SWAPPABLE_PROPERTY_NAMES.length; i++) {
@@ -613,7 +613,7 @@ export default class SpreadsheetMetadata extends SystemObject {
                 if(propertyName === duplicate){
                     continue;
                 }
-                const duplicateIsGroupingOrValue = isGroupingSeparatorOrValueSeparator(duplicate);
+                const duplicateIsGroupingOrValue = isgroupSeparatorOrValueSeparator(duplicate);
                 if(groupOrValue && duplicateIsGroupingOrValue){
                     continue;
                 }
@@ -911,7 +911,7 @@ function reportDuplicateProperty(property, value, original) {
     throw new Error("Cannot set " + property + "=" + value + " duplicate of " + original);
 }
 
-function isGroupingSeparatorOrValueSeparator(propertyName) {
+function isgroupSeparatorOrValueSeparator(propertyName) {
     return SpreadsheetMetadata.GROUP_SEPARATOR === propertyName || SpreadsheetMetadata.VALUE_SEPARATOR === propertyName;
 }
 
