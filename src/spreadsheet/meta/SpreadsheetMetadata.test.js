@@ -141,7 +141,7 @@ test("from json all properties", () => {
         "expression-number-kind": "DOUBLE",
         "frozen-columns": "A:B",
         "frozen-rows": "1:2",
-        "grouping-separator": "G",
+        "group-separator": "G",
         "locale": "en-AU",
         "modified-by": "modified@example.com",
         "modified-date-time": "1999-12-31T12:58:59",
@@ -289,7 +289,7 @@ test("set new character duplicate fails", () => {
         "decimal-separator": comma,
     });
 
-    expect(() => metadata.set(SpreadsheetMetadata.GROUPING_SEPARATOR, comma)).toThrow("Cannot set grouping-separator=, duplicate of decimal-separator");
+    expect(() => metadata.set(SpreadsheetMetadata.GROUP_SEPARATOR, comma)).toThrow("Cannot set group-separator=, duplicate of decimal-separator");
 });
 
 test("set new character duplicate fails #2", () => {
@@ -329,17 +329,17 @@ test("set character copy default group-separator", () => {
 
     const metadata = new SpreadsheetMetadata({
         "decimal-separator": dot,
-        "grouping-separator": comma,
+        "group-separator": comma,
         "percentage-symbol": percent,
     });
-    const metadata2 = metadata.set(SpreadsheetMetadata.GROUPING_SEPARATOR, dot);
+    const metadata2 = metadata.set(SpreadsheetMetadata.GROUP_SEPARATOR, dot);
     expect(metadata).not.toEqual(metadata2);
 
     checkJson(
         metadata,
         {
             "decimal-separator": dot.toJson(),
-            "grouping-separator": comma.toJson(),
+            "group-separator": comma.toJson(),
             "percentage-symbol": percent.toJson(),
         }
     );
@@ -347,7 +347,7 @@ test("set character copy default group-separator", () => {
         metadata2,
         {
             "decimal-separator": comma.toJson(),
-            "grouping-separator": dot.toJson(),
+            "group-separator": dot.toJson(),
             "percentage-symbol": percent.toJson(),
         });
 });
@@ -397,7 +397,7 @@ test("set character copy default non group-separator/value-separator", () => {
     const metadata = new SpreadsheetMetadata({
         "defaults": {
             "decimal-separator": dot.toJson(),
-            "grouping-separator": comma.toJson(),
+            "group-separator": comma.toJson(),
             "percentage-symbol": percent.toJson(),
         }
     });
@@ -409,7 +409,7 @@ test("set character copy default non group-separator/value-separator", () => {
         {
             "defaults": {
                 "decimal-separator": dot.toJson(),
-                "grouping-separator": comma.toJson(),
+                "group-separator": comma.toJson(),
                 "percentage-symbol": percent.toJson(),
             },
         }
@@ -419,7 +419,7 @@ test("set character copy default non group-separator/value-separator", () => {
         {
             "defaults": {
                 "decimal-separator": dot.toJson(),
-                "grouping-separator": comma.toJson(),
+                "group-separator": comma.toJson(),
                 "percentage-symbol": percent.toJson(),
             },
             "percentage-symbol": percent.toJson(),
@@ -454,7 +454,7 @@ test("set duplicate dont swap character", () => {
     const comma = new Character('.');
 
     const metadata = new SpreadsheetMetadata({
-        "grouping-separator": comma,
+        "group-separator": comma,
     });
     const metadata2 = metadata.set(SpreadsheetMetadata.VALUE_SEPARATOR, comma);
     expect(metadata).not.toEqual(metadata2);
@@ -462,13 +462,13 @@ test("set duplicate dont swap character", () => {
     checkJson(
         metadata,
         {
-            "grouping-separator": comma.toJson(),
+            "group-separator": comma.toJson(),
         }
     );
     checkJson(
         metadata2,
         {
-            "grouping-separator": comma.toJson(),
+            "group-separator": comma.toJson(),
             "value-separator": comma.toJson(),
         }
     );
@@ -480,7 +480,7 @@ test("set character swap", () => {
 
     const metadata = new SpreadsheetMetadata({
         "decimal-separator": dot,
-        "grouping-separator": comma,
+        "group-separator": comma,
     });
 
     const metadata2 = metadata.set(SpreadsheetMetadata.DECIMAL_SEPARATOR, comma);
@@ -490,14 +490,14 @@ test("set character swap", () => {
         metadata,
         {
             "decimal-separator": dot.toJson(),
-            "grouping-separator": comma.toJson(),
+            "group-separator": comma.toJson(),
         }
     );
     checkJson(
         metadata2,
         {
             "decimal-separator": comma.toJson(),
-            "grouping-separator": dot.toJson(), // swap!
+            "group-separator": dot.toJson(), // swap!
         });
 });
 
@@ -508,7 +508,7 @@ test("set character swap 2", () => {
 
     const metadata = new SpreadsheetMetadata({
         "decimal-separator": dot,
-        "grouping-separator": comma,
+        "group-separator": comma,
         "percentage-symbol": percent,
     });
     const metadata2 = metadata.set(SpreadsheetMetadata.DECIMAL_SEPARATOR, comma);
@@ -516,13 +516,13 @@ test("set character swap 2", () => {
 
     checkJson(metadata, {
         "decimal-separator": dot.toJson(),
-        "grouping-separator": comma.toJson(),
+        "group-separator": comma.toJson(),
         "percentage-symbol": percent.toJson(),
     });
     checkJson(metadata2,
         {
             "decimal-separator": comma.toJson(),
-            "grouping-separator": dot.toJson(), // swap!
+            "group-separator": dot.toJson(), // swap!
             "percentage-symbol": percent.toJson(),
         });
 });
@@ -624,7 +624,7 @@ getSetRemoveTest(SpreadsheetMetadata.FROZEN_COLUMNS, SpreadsheetColumnReferenceR
 
 getSetRemoveTest(SpreadsheetMetadata.FROZEN_ROWS, SpreadsheetRowReferenceRange.parse("1:2"));
 
-getSetRemoveTest(SpreadsheetMetadata.GROUPING_SEPARATOR, Character.fromJson(","));
+getSetRemoveTest(SpreadsheetMetadata.GROUP_SEPARATOR, Character.fromJson(","));
 
 getSetTest(SpreadsheetMetadata.LOCALE, Locale.fromJson("EN-AU"));
 
@@ -842,7 +842,7 @@ test("all setters & getters", () => {
         .set(SpreadsheetMetadata.DEFAULT_YEAR, defaultYear)
         .set(SpreadsheetMetadata.EXPONENT_SYMBOL, exponentSymbol)
         .set(SpreadsheetMetadata.EXPRESSION_NUMBER_KIND, expressionNumberKind)
-        .set(SpreadsheetMetadata.GROUPING_SEPARATOR, groupingSeparator)
+        .set(SpreadsheetMetadata.GROUP_SEPARATOR, groupingSeparator)
         .set(SpreadsheetMetadata.LOCALE, locale)
         .set(SpreadsheetMetadata.NEGATIVE_SIGN, negativeSign)
         .set(SpreadsheetMetadata.NUMBER_FORMAT_PATTERN, numberFormatPattern)
@@ -872,7 +872,7 @@ test("all setters & getters", () => {
     expect(metadata.getIgnoringDefaults(SpreadsheetMetadata.DEFAULT_YEAR)).toEqual(defaultYear);
     expect(metadata.getIgnoringDefaults(SpreadsheetMetadata.EXPONENT_SYMBOL)).toEqual(exponentSymbol);
     expect(metadata.getIgnoringDefaults(SpreadsheetMetadata.EXPRESSION_NUMBER_KIND)).toEqual(expressionNumberKind);
-    expect(metadata.getIgnoringDefaults(SpreadsheetMetadata.GROUPING_SEPARATOR)).toEqual(groupingSeparator);
+    expect(metadata.getIgnoringDefaults(SpreadsheetMetadata.GROUP_SEPARATOR)).toEqual(groupingSeparator);
     expect(metadata.getIgnoringDefaults(SpreadsheetMetadata.LOCALE)).toEqual(locale);
     expect(metadata.getIgnoringDefaults(SpreadsheetMetadata.NEGATIVE_SIGN)).toEqual(negativeSign);
     expect(metadata.getIgnoringDefaults(SpreadsheetMetadata.NUMBER_FORMAT_PATTERN)).toEqual(numberFormatPattern);

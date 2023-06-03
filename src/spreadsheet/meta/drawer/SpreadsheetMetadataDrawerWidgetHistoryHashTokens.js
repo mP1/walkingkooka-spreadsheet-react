@@ -137,7 +137,7 @@ export default class SpreadsheetMetadataDrawerWidgetHistoryHashTokens {
             SpreadsheetMetadata.CURRENCY_SYMBOL,
             SpreadsheetMetadata.DECIMAL_SEPARATOR,
             SpreadsheetMetadata.EXPONENT_SYMBOL,
-            SpreadsheetMetadata.GROUPING_SEPARATOR,
+            SpreadsheetMetadata.GROUP_SEPARATOR,
             SpreadsheetMetadata.NEGATIVE_SIGN,
             SpreadsheetMetadata.PERCENTAGE_SYMBOL,
             SpreadsheetMetadata.POSITIVE_SIGN,
@@ -241,7 +241,7 @@ export default class SpreadsheetMetadataDrawerWidgetHistoryHashTokens {
                 //case SpreadsheetMetadata.LOCALE :
                 //case SpreadsheetMetadata.MODIFIED_BY :
                 //case SpreadsheetMetadata.MODIFIED_DATE_TIME :
-                case SpreadsheetMetadata.GROUPING_SEPARATOR :
+                case SpreadsheetMetadata.GROUP_SEPARATOR :
                 case SpreadsheetMetadata.NEGATIVE_SIGN :
                     value = token;
                     break;

@@ -48,7 +48,7 @@ function checkPropertyName(propertyName) {
         case SpreadsheetMetadata.EXPRESSION_NUMBER_KIND:
         case SpreadsheetMetadata.FROZEN_COLUMNS:
         case SpreadsheetMetadata.FROZEN_ROWS:
-        case SpreadsheetMetadata.GROUPING_SEPARATOR:
+        case SpreadsheetMetadata.GROUP_SEPARATOR:
         case SpreadsheetMetadata.LOCALE:
         case SpreadsheetMetadata.MODIFIED_BY:
         case SpreadsheetMetadata.MODIFIED_DATE_TIME:
@@ -112,7 +112,7 @@ export default class SpreadsheetMetadata extends SystemObject {
     static EXPRESSION_NUMBER_KIND = "expression-number-kind";
     static FROZEN_COLUMNS = "frozen-columns";
     static FROZEN_ROWS = "frozen-rows";
-    static GROUPING_SEPARATOR = "grouping-separator";
+    static GROUP_SEPARATOR = "group-separator";
     static LOCALE = "locale";
     static MODIFIED_BY = "modified-by";
     static MODIFIED_DATE_TIME = "modified-date-time";
@@ -155,7 +155,7 @@ export default class SpreadsheetMetadata extends SystemObject {
             SpreadsheetMetadata.EXPRESSION_NUMBER_KIND,
             SpreadsheetMetadata.FROZEN_COLUMNS,
             SpreadsheetMetadata.FROZEN_ROWS,
-            SpreadsheetMetadata.GROUPING_SEPARATOR,
+            SpreadsheetMetadata.GROUP_SEPARATOR,
             SpreadsheetMetadata.LOCALE,
             SpreadsheetMetadata.MODIFIED_BY,
             SpreadsheetMetadata.MODIFIED_DATE_TIME,
@@ -202,7 +202,7 @@ export default class SpreadsheetMetadata extends SystemObject {
             case SpreadsheetMetadata.EXPRESSION_NUMBER_KIND :
             case SpreadsheetMetadata.FROZEN_COLUMNS :
             case SpreadsheetMetadata.FROZEN_ROWS :
-            case SpreadsheetMetadata.GROUPING_SEPARATOR :
+            case SpreadsheetMetadata.GROUP_SEPARATOR :
             case SpreadsheetMetadata.LOCALE :
             case SpreadsheetMetadata.MODIFIED_BY :
             case SpreadsheetMetadata.MODIFIED_DATE_TIME :
@@ -294,7 +294,7 @@ export default class SpreadsheetMetadata extends SystemObject {
                 case SpreadsheetMetadata.FROZEN_ROWS:
                     unmarshaller = SpreadsheetRowReferenceRange.fromJson;
                     break;
-                case SpreadsheetMetadata.GROUPING_SEPARATOR:
+                case SpreadsheetMetadata.GROUP_SEPARATOR:
                     unmarshaller = Character.fromJson;
                     break;
                 case SpreadsheetMetadata.LOCALE:
@@ -483,7 +483,7 @@ export default class SpreadsheetMetadata extends SystemObject {
                 checkFrozenRows(value);
                 expectedClass = SpreadsheetRowReferenceRange;
                 break;
-            case SpreadsheetMetadata.GROUPING_SEPARATOR:
+            case SpreadsheetMetadata.GROUP_SEPARATOR:
                 checkCharacter(value);
                 break;
             case SpreadsheetMetadata.LOCALE:
@@ -659,7 +659,7 @@ export default class SpreadsheetMetadata extends SystemObject {
             case SpreadsheetMetadata.EXPRESSION_NUMBER_KIND:
             case SpreadsheetMetadata.FROZEN_COLUMNS:
             case SpreadsheetMetadata.FROZEN_ROWS:
-            case SpreadsheetMetadata.GROUPING_SEPARATOR:
+            case SpreadsheetMetadata.GROUP_SEPARATOR:
             case SpreadsheetMetadata.NEGATIVE_SIGN:
             case SpreadsheetMetadata.NUMBER_FORMAT_PATTERN:
             case SpreadsheetMetadata.NUMBER_PARSE_PATTERNS:
@@ -783,7 +783,7 @@ const PROPERTY_NAMES = [
     SpreadsheetMetadata.EXPRESSION_NUMBER_KIND,
     SpreadsheetMetadata.FROZEN_COLUMNS,
     SpreadsheetMetadata.FROZEN_ROWS,
-    SpreadsheetMetadata.GROUPING_SEPARATOR,
+    SpreadsheetMetadata.GROUP_SEPARATOR,
     SpreadsheetMetadata.LOCALE,
     SpreadsheetMetadata.MODIFIED_BY,
     SpreadsheetMetadata.MODIFIED_DATE_TIME,
@@ -912,12 +912,12 @@ function reportDuplicateProperty(property, value, original) {
 }
 
 function isGroupingSeparatorOrValueSeparator(propertyName) {
-    return SpreadsheetMetadata.GROUPING_SEPARATOR === propertyName || SpreadsheetMetadata.VALUE_SEPARATOR === propertyName;
+    return SpreadsheetMetadata.GROUP_SEPARATOR === propertyName || SpreadsheetMetadata.VALUE_SEPARATOR === propertyName;
 }
 
 const SWAPPABLE_PROPERTY_NAMES = [
     SpreadsheetMetadata.DECIMAL_SEPARATOR,
-    SpreadsheetMetadata.GROUPING_SEPARATOR,
+    SpreadsheetMetadata.GROUP_SEPARATOR,
     SpreadsheetMetadata.NEGATIVE_SIGN,
     SpreadsheetMetadata.PERCENTAGE_SYMBOL,
     SpreadsheetMetadata.POSITIVE_SIGN,
