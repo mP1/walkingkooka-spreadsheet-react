@@ -809,7 +809,7 @@ test("all setters & getters", () => {
     const defaultYear = 1987;
     const exponentSymbol = Character.fromJson("^");
     const expressionNumberKind = ExpressionNumberKind.BIG_DECIMAL;
-    const groupingSeparator = Character.fromJson(",");
+    const groupSeparator = Character.fromJson(",");
     const locale = Locale.fromJson("EN-NZ");
     const name = new SpreadsheetName("Spreadsheet-name-123");
     const negativeSign = Character.fromJson("-");
@@ -842,7 +842,7 @@ test("all setters & getters", () => {
         .set(SpreadsheetMetadata.DEFAULT_YEAR, defaultYear)
         .set(SpreadsheetMetadata.EXPONENT_SYMBOL, exponentSymbol)
         .set(SpreadsheetMetadata.EXPRESSION_NUMBER_KIND, expressionNumberKind)
-        .set(SpreadsheetMetadata.GROUP_SEPARATOR, groupingSeparator)
+        .set(SpreadsheetMetadata.GROUP_SEPARATOR, groupSeparator)
         .set(SpreadsheetMetadata.LOCALE, locale)
         .set(SpreadsheetMetadata.NEGATIVE_SIGN, negativeSign)
         .set(SpreadsheetMetadata.NUMBER_FORMAT_PATTERN, numberFormatPattern)
@@ -872,7 +872,7 @@ test("all setters & getters", () => {
     expect(metadata.getIgnoringDefaults(SpreadsheetMetadata.DEFAULT_YEAR)).toEqual(defaultYear);
     expect(metadata.getIgnoringDefaults(SpreadsheetMetadata.EXPONENT_SYMBOL)).toEqual(exponentSymbol);
     expect(metadata.getIgnoringDefaults(SpreadsheetMetadata.EXPRESSION_NUMBER_KIND)).toEqual(expressionNumberKind);
-    expect(metadata.getIgnoringDefaults(SpreadsheetMetadata.GROUP_SEPARATOR)).toEqual(groupingSeparator);
+    expect(metadata.getIgnoringDefaults(SpreadsheetMetadata.GROUP_SEPARATOR)).toEqual(groupSeparator);
     expect(metadata.getIgnoringDefaults(SpreadsheetMetadata.LOCALE)).toEqual(locale);
     expect(metadata.getIgnoringDefaults(SpreadsheetMetadata.NEGATIVE_SIGN)).toEqual(negativeSign);
     expect(metadata.getIgnoringDefaults(SpreadsheetMetadata.NUMBER_FORMAT_PATTERN)).toEqual(numberFormatPattern);
