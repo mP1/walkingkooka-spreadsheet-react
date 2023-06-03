@@ -813,7 +813,7 @@ class SpreadsheetMetadataDrawerWidget extends SpreadsheetMetadataWidget {
                                 break;
                             case SpreadsheetMetadata.DECIMAL_SEPARATOR:
                             case SpreadsheetMetadata.EXPONENT_SYMBOL:
-                            case SpreadsheetMetadata.GROUPING_SEPARATOR:
+                            case SpreadsheetMetadata.GROUP_SEPARATOR:
                             case SpreadsheetMetadata.NEGATIVE_SIGN:
                             case SpreadsheetMetadata.PERCENTAGE_SYMBOL:
                             case SpreadsheetMetadata.POSITIVE_SIGN:
@@ -1000,7 +1000,7 @@ class SpreadsheetMetadataDrawerWidget extends SpreadsheetMetadataWidget {
             case SpreadsheetMetadata.EXPRESSION_NUMBER_KIND :
                 label = "Number";
                 break;
-            case SpreadsheetMetadata.GROUPING_SEPARATOR :
+            case SpreadsheetMetadata.GROUP_SEPARATOR :
                 label = "Grouping separator";
                 break;
             case SpreadsheetMetadata.LOCALE :
