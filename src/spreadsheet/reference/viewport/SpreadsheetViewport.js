@@ -76,7 +76,9 @@ export default class SpreadsheetViewport extends SystemObject {
             parameters.selection = [selection];
 
             if(navigation) {
-                parameters.selectionNavigation = [navigation.nameKebabCase()];
+                parameters.selectionNavigation = [
+                    navigation.toQueryString()
+                ];
             }
         }
 

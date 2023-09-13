@@ -874,16 +874,16 @@ export default class SpreadsheetViewportWidget extends SpreadsheetSelectionWidge
 
                     switch(key) {
                         case Keys.ARROW_LEFT:
-                            navigation = shifted ? SpreadsheetViewportSelectionNavigation.EXTEND_LEFT : SpreadsheetViewportSelectionNavigation.LEFT;
+                            navigation = shifted ? SpreadsheetViewportSelectionNavigation.EXTEND_LEFT_COLUMN : SpreadsheetViewportSelectionNavigation.LEFT_COLUMN;
                             break;
                         case Keys.ARROW_UP:
-                            navigation = shifted ? SpreadsheetViewportSelectionNavigation.EXTEND_UP : SpreadsheetViewportSelectionNavigation.UP;
+                            navigation = shifted ? SpreadsheetViewportSelectionNavigation.EXTEND_UP_ROW : SpreadsheetViewportSelectionNavigation.UP_ROW;
                             break;
                         case Keys.ARROW_RIGHT:
-                            navigation = shifted ? SpreadsheetViewportSelectionNavigation.EXTEND_RIGHT : SpreadsheetViewportSelectionNavigation.RIGHT;
+                            navigation = shifted ? SpreadsheetViewportSelectionNavigation.EXTEND_RIGHT_COLUMN : SpreadsheetViewportSelectionNavigation.RIGHT_COLUMN;
                             break;
                         case Keys.ARROW_DOWN:
-                            navigation = shifted ? SpreadsheetViewportSelectionNavigation.EXTEND_DOWN : SpreadsheetViewportSelectionNavigation.DOWN;
+                            navigation = shifted ? SpreadsheetViewportSelectionNavigation.EXTEND_DOWN_ROW : SpreadsheetViewportSelectionNavigation.DOWN_ROW;
                             break;
                         case Keys.ENTER:
                             const selectionNotLabel = this.selectionNotLabel();

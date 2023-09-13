@@ -7,25 +7,25 @@ const TYPE_NAME = "spreadsheet-viewport-selection-navigation";
 
 export default class SpreadsheetViewportSelectionNavigation extends SystemEnum {
   
-  static LEFT = new SpreadsheetViewportSelectionNavigation("LEFT");
-  static UP = new SpreadsheetViewportSelectionNavigation("UP");
-  static RIGHT = new SpreadsheetViewportSelectionNavigation("RIGHT");
-  static DOWN = new SpreadsheetViewportSelectionNavigation("DOWN");
-  static EXTEND_LEFT = new SpreadsheetViewportSelectionNavigation("EXTEND_LEFT");
-  static EXTEND_UP = new SpreadsheetViewportSelectionNavigation("EXTEND_UP");
-  static EXTEND_RIGHT = new SpreadsheetViewportSelectionNavigation("EXTEND_RIGHT");
-  static EXTEND_DOWN = new SpreadsheetViewportSelectionNavigation("EXTEND_DOWN");
+  static LEFT_COLUMN = new SpreadsheetViewportSelectionNavigation("LEFT_COLUMN");
+  static UP_ROW = new SpreadsheetViewportSelectionNavigation("UP_ROW");
+  static RIGHT_COLUMN = new SpreadsheetViewportSelectionNavigation("RIGHT_COLUMN");
+  static DOWN_ROW = new SpreadsheetViewportSelectionNavigation("DOWN_ROW");
+  static EXTEND_LEFT_COLUMN = new SpreadsheetViewportSelectionNavigation("EXTEND_LEFT_COLUMN");
+  static EXTEND_UP_ROW = new SpreadsheetViewportSelectionNavigation("EXTEND_UP_ROW");
+  static EXTEND_RIGHT_COLUMN = new SpreadsheetViewportSelectionNavigation("EXTEND_RIGHT_COLUMN");
+  static EXTEND_DOWN_ROW = new SpreadsheetViewportSelectionNavigation("EXTEND_DOWN_ROW");
   
   static values() {
     return [
-      SpreadsheetViewportSelectionNavigation.LEFT,
-      SpreadsheetViewportSelectionNavigation.UP,
-      SpreadsheetViewportSelectionNavigation.RIGHT,
-      SpreadsheetViewportSelectionNavigation.DOWN,
-      SpreadsheetViewportSelectionNavigation.EXTEND_LEFT,
-      SpreadsheetViewportSelectionNavigation.EXTEND_UP,
-      SpreadsheetViewportSelectionNavigation.EXTEND_RIGHT,
-      SpreadsheetViewportSelectionNavigation.EXTEND_DOWN
+      SpreadsheetViewportSelectionNavigation.LEFT_COLUMN,
+      SpreadsheetViewportSelectionNavigation.UP_ROW,
+      SpreadsheetViewportSelectionNavigation.RIGHT_COLUMN,
+      SpreadsheetViewportSelectionNavigation.DOWN_ROW,
+      SpreadsheetViewportSelectionNavigation.EXTEND_LEFT_COLUMN,
+      SpreadsheetViewportSelectionNavigation.EXTEND_UP_ROW,
+      SpreadsheetViewportSelectionNavigation.EXTEND_RIGHT_COLUMN,
+      SpreadsheetViewportSelectionNavigation.EXTEND_DOWN_ROW
     ];
   }
   
@@ -43,6 +43,14 @@ export default class SpreadsheetViewportSelectionNavigation extends SystemEnum {
   
   typeName() {
     return TYPE_NAME;
+  }
+
+  toQueryString() {
+    return this.name()
+        .toLowerCase()
+        .replace("_", "-" )
+        .replace("-column", " column")
+        .replace("-row", " row");
   }
 }
 
