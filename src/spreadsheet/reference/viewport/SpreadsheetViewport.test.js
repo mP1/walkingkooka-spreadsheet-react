@@ -266,7 +266,7 @@ apiLoadCellsQueryStringParametersAndCheck(
     height(),
     SpreadsheetRowReferenceRange.parse("98:99"),
     SpreadsheetViewportSelectionAnchor.TOP,
-    SpreadsheetViewportSelectionNavigation.UP,
+    SpreadsheetViewportSelectionNavigation.UP_ROW,
     {
         home: [home()],
         width: [width()],
@@ -274,7 +274,7 @@ apiLoadCellsQueryStringParametersAndCheck(
         selectionType: ["row-range"],
         selection: [SpreadsheetRowReferenceRange.parse("98:99")],
         selectionAnchor: ["top"],
-        selectionNavigation: ["up"],
+        selectionNavigation: ["up row"],
         includeFrozenColumnsRows: [true],
     }
 );
