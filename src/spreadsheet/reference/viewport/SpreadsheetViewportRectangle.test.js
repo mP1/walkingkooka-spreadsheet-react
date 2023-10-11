@@ -5,7 +5,7 @@ import SpreadsheetColumnReferenceRange from "../columnrow/SpreadsheetColumnRefer
 import SpreadsheetRowReferenceRange from "../columnrow/SpreadsheetRowReferenceRange.js";
 import SpreadsheetRowReference from "../columnrow/SpreadsheetRowReference.js";
 import SpreadsheetViewportRectangle from "./SpreadsheetViewportRectangle.js";
-import SpreadsheetViewportSelectionAnchor from "./SpreadsheetViewportSelectionAnchor.js";
+import SpreadsheetViewportAnchor from "./SpreadsheetViewportAnchor.js";
 import SpreadsheetViewportSelectionNavigation from "./SpreadsheetViewportSelectionNavigation.js";
 import systemObjectTesting from "../../../SystemObjectTesting.js";
 
@@ -160,7 +160,7 @@ apiLoadCellsQueryStringParametersAndCheck(
     width(),
     height(),
     SpreadsheetCellRange.parse("B2:C3"),
-    SpreadsheetViewportSelectionAnchor.TOP_LEFT,
+    SpreadsheetViewportAnchor.TOP_LEFT,
     null,
     {
         home: [home()],
@@ -212,7 +212,7 @@ apiLoadCellsQueryStringParametersAndCheck(
     width(),
     height(),
     SpreadsheetColumnReferenceRange.parse("B:C"),
-    SpreadsheetViewportSelectionAnchor.LEFT,
+    SpreadsheetViewportAnchor.LEFT,
     null,
     {
         home: [home()],
@@ -247,7 +247,7 @@ apiLoadCellsQueryStringParametersAndCheck(
     width(),
     height(),
     SpreadsheetRowReferenceRange.parse("98:99"),
-    SpreadsheetViewportSelectionAnchor.TOP,
+    SpreadsheetViewportAnchor.TOP,
     null,
     {
         home: [home()],
@@ -265,7 +265,7 @@ apiLoadCellsQueryStringParametersAndCheck(
     width(),
     height(),
     SpreadsheetRowReferenceRange.parse("98:99"),
-    SpreadsheetViewportSelectionAnchor.TOP,
+    SpreadsheetViewportAnchor.TOP,
     SpreadsheetViewportSelectionNavigation.UP_ROW,
     {
         home: [home()],

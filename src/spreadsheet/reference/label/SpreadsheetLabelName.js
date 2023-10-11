@@ -6,7 +6,7 @@ import SpreadsheetExpressionReference from "../SpreadsheetExpressionReference.js
 import SpreadsheetLabelMapping from "./SpreadsheetLabelMapping.js";
 import SpreadsheetViewportRectangle from "../viewport/SpreadsheetViewportRectangle.js";
 import SystemObject from "../../../SystemObject.js";
-import SpreadsheetViewportSelectionAnchor from "../viewport/SpreadsheetViewportSelectionAnchor.js";
+import SpreadsheetViewportAnchor from "../viewport/SpreadsheetViewportAnchor.js";
 
 const TYPE_NAME = "spreadsheet-label-name";
 const MAX_LENGTH = 255;
@@ -125,7 +125,7 @@ export default class SpreadsheetLabelName extends SpreadsheetExpressionReference
     }
 
     defaultAnchor() {
-        return SpreadsheetViewportSelectionAnchor.NONE;
+        return SpreadsheetViewportAnchor.NONE;
     }
 
     setAnchorConditional(anchor) {

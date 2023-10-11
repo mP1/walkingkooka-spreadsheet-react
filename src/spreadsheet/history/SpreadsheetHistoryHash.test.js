@@ -82,7 +82,7 @@ import SpreadsheetTextFormatPattern from "../format/SpreadsheetTextFormatPattern
 import SpreadsheetTimeFormatPattern from "../format/SpreadsheetTimeFormatPattern.js";
 import SpreadsheetTimeParsePattern from "../format/SpreadsheetTimeParsePattern.js";
 import SpreadsheetViewport from "../reference/viewport/SpreadsheetViewport.js";
-import SpreadsheetViewportSelectionAnchor from "../reference/viewport/SpreadsheetViewportSelectionAnchor.js";
+import SpreadsheetViewportAnchor from "../reference/viewport/SpreadsheetViewportAnchor.js";
 import TextStyle from "../../text/TextStyle.js";
 
 const ID = "spreadsheet-id-123";
@@ -995,7 +995,7 @@ testParseAndStringify(
         "viewport": new SpreadsheetCellSelectHistoryHashToken(
             new SpreadsheetViewport(
                 CELL_RANGE,
-                SpreadsheetViewportSelectionAnchor.TOP_LEFT
+                SpreadsheetViewportAnchor.TOP_LEFT
             )
         )
     }
@@ -1009,7 +1009,7 @@ testParseAndStringify(
         "viewport": new SpreadsheetCellSelectHistoryHashToken(
             new SpreadsheetViewport(
                 CELL_RANGE,
-                SpreadsheetViewportSelectionAnchor.BOTTOM_RIGHT
+                SpreadsheetViewportAnchor.BOTTOM_RIGHT
             )
         )
     }
@@ -1503,7 +1503,7 @@ testParseAndStringify(
         "viewport": new SpreadsheetColumnOrRowSelectHistoryHashToken(
             new SpreadsheetViewport(
                 COLUMN_RANGE,
-                SpreadsheetViewportSelectionAnchor.LEFT
+                SpreadsheetViewportAnchor.LEFT
             )
         )
     }
@@ -1517,7 +1517,7 @@ testParseAndStringify(
         "viewport": new SpreadsheetColumnOrRowSelectHistoryHashToken(
             new SpreadsheetViewport(
                 COLUMN_RANGE,
-                SpreadsheetViewportSelectionAnchor.RIGHT
+                SpreadsheetViewportAnchor.RIGHT
             )
         )
     }
@@ -1956,7 +1956,7 @@ testParseAndStringify(
         "viewport": new SpreadsheetColumnOrRowSelectHistoryHashToken(
             new SpreadsheetViewport(
                 ROW_RANGE,
-                SpreadsheetViewportSelectionAnchor.TOP
+                SpreadsheetViewportAnchor.TOP
             )
         )
     }
@@ -1970,7 +1970,7 @@ testParseAndStringify(
         "viewport": new SpreadsheetColumnOrRowSelectHistoryHashToken(
             new SpreadsheetViewport(
                 ROW_RANGE,
-                SpreadsheetViewportSelectionAnchor.BOTTOM
+                SpreadsheetViewportAnchor.BOTTOM
             )
         )
     }
@@ -2872,7 +2872,7 @@ testMerge(
         "viewport": new SpreadsheetColumnOrRowSelectHistoryHashToken(
             new SpreadsheetViewport(
                 COLUMN_RANGE,
-                SpreadsheetViewportSelectionAnchor.LEFT
+                SpreadsheetViewportAnchor.LEFT
             )
         )
     },
@@ -2998,7 +2998,7 @@ testMerge(
         "viewport": new SpreadsheetColumnOrRowSelectHistoryHashToken(
             new SpreadsheetViewport(
                 ROW_RANGE,
-                SpreadsheetViewportSelectionAnchor.TOP
+                SpreadsheetViewportAnchor.TOP
             )
         )
     },
