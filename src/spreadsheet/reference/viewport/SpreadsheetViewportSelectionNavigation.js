@@ -3,7 +3,7 @@
 import SystemEnum from "../../../SystemEnum.js";
 import SystemObject from "../../../SystemObject.js";
 
-const TYPE_NAME = "spreadsheet-viewport-selection-navigation";
+const TYPE_NAME = "spreadsheet-viewport-navigation";
 
 export default class SpreadsheetViewportSelectionNavigation extends SystemEnum {
   

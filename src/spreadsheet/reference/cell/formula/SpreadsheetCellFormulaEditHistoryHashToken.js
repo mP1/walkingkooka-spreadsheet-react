@@ -10,23 +10,23 @@ export default class SpreadsheetCellFormulaEditHistoryHashToken extends Spreadsh
         return this.formulaTextValue;
     }
 
-    spreadsheetFormulaWidgetExecute(formulaWidget, previousViewportSelection) {
-        const viewportSelection = this.viewportSelection();
+    spreadsheetFormulaWidgetExecute(formulaWidget, previousViewport) {
+        const viewport = this.viewport();
         let historyTokens;
 
         if(formulaWidget.isFocused()){
-            historyTokens = SpreadsheetHistoryHashTokens.viewportSelection(
-                new SpreadsheetCellFormulaEditHistoryHashToken(viewportSelection)
+            historyTokens = SpreadsheetHistoryHashTokens.viewport(
+                new SpreadsheetCellFormulaEditHistoryHashToken(viewport)
             );
         }else {
-            if(!(previousViewportSelection instanceof SpreadsheetCellFormulaHistoryHashToken)){
+            if(!(previousViewport instanceof SpreadsheetCellFormulaHistoryHashToken)){
                 formulaWidget.giveFormulaTextBoxFocus();
             }
         }
 
         // if cell selection changed load text only not after a formula save. the extra selection is NOT a formula save makes the selection clear after the save completes.
-        const selection = viewportSelection.selection();
-        if(!selection.equalsIgnoringKind(previousViewportSelection && previousViewportSelection.viewportSelection().selection())){
+        const selection = viewport.selection();
+        if(!selection.equalsIgnoringKind(previousViewport && previousViewport.viewport().selection())){
             formulaWidget.loadFormulaText(selection);
         }
 

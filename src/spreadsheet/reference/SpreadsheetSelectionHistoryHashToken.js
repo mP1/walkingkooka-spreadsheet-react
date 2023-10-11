@@ -7,39 +7,39 @@ import SystemObject from "../../SystemObject.js";
  */
 export default class SpreadsheetSelectionHistoryHashToken extends SpreadsheetHistoryHashToken {
 
-    constructor(viewportSelection) {
+    constructor(viewport) {
         super();
 
-        this.viewportSelectionValue = Preconditions.requireInstance(
-            viewportSelection,
-            "SpreadsheetViewportSelection",
-            "viewportSelection"
+        this.viewportValue = Preconditions.requireInstance(
+            viewport,
+            "SpreadsheetViewport",
+            "viewport"
         );
     }
 
-    spreadsheetViewportWidgetExecute(viewportWidget, previousViewportSelection, viewportCell, width, height) {
+    spreadsheetViewportWidgetExecute(viewportWidget, previousViewport, viewportCell, width, height) {
         SystemObject.throwUnsupportedOperation();
     }
 
     historyHashPath() {
         // /cell/A1 | /column/A | /row/2
-        return this.viewportSelection()
+        return this.viewport()
             .historyHashPath();
     }
 
-    viewportSelection() {
-        return this.viewportSelectionValue;
+    viewport() {
+        return this.viewportValue;
     }
 
     equals(other) {
         return super.equals(other) &&
-            this.viewportSelection().equals(other.viewportSelection());
+            this.viewport().equals(other.viewport());
     }
 
     toString() {
         var toString = this.historyHashPath();
 
-        const navigation = this.viewportSelection()
+        const navigation = this.viewport()
             .navigation();
         if(navigation) {
             toString = toString + ";navigation=" + navigation

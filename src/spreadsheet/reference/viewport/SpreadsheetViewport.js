@@ -1,96 +1,150 @@
-/**
- * A pixel rectangle marks a region with one or more cells.
- */
+import Equality from "../../../Equality.js";
 import Preconditions from "../../../Preconditions.js";
-import SpreadsheetCellReference from "../cell/SpreadsheetCellReference.js";
+import RelativeUrl from "../../../net/RelativeUrl.js";
 import SpreadsheetSelection from "../SpreadsheetSelection.js";
 import SpreadsheetViewportSelectionAnchor from "./SpreadsheetViewportSelectionAnchor.js";
 import SpreadsheetViewportSelectionNavigation from "./SpreadsheetViewportSelectionNavigation.js";
 import SystemObject from "../../../SystemObject.js";
 
-const SEPARATOR = ":";
 const TYPE_NAME = "spreadsheet-viewport";
 
 export default class SpreadsheetViewport extends SystemObject {
 
     static fromJson(json) {
-        return SpreadsheetViewport.parse(json);
-    }
+        Preconditions.requireObject(json, "json");
 
-    static parse(text) {
-        Preconditions.requireText(text, "text");
-
-        let tokens = text.split(SEPARATOR);
-        if(3 !== tokens.length){
-            throw new Error("Expected 3 tokens got " + text);
-        }
-
+        const {
+            selection,
+            anchor,
+            navigation
+        } = json;
         return new SpreadsheetViewport(
-            SpreadsheetCellReference.parse(tokens[0]),
-            Number(tokens[1]),
-            Number(tokens[2])
+            SystemObject.fromJsonWithType(selection),
+            anchor && SpreadsheetViewportSelectionAnchor.fromJson(anchor),
+            navigation && SpreadsheetViewportSelectionNavigation.fromJson(navigation)
         );
     }
 
-    constructor(home, width, height) {
+    constructor(selection, anchor, navigation) {
         super();
-        Preconditions.requireInstance(home, SpreadsheetCellReference, "home");
-        this.homeValue = home;
-
-        Preconditions.requirePositiveNumber(width, "width");
-        this.widthValue = width;
-
-        Preconditions.requirePositiveNumber(height, "height");
-        this.heightValue = height;
-    }
-
-    home() {
-        return this.homeValue;
-    }
-
-    width() {
-        return this.widthValue;
-    }
-
-    height() {
-        return this.heightValue;
-    }
-
-    /**
-     * Returns a query parameters map that will be used to load all the cells for the viewport widget.
-     */
-    apiLoadCellsQueryStringParameters(selection, anchor, navigation) {
-        Preconditions.optionalInstance(selection, SpreadsheetSelection, "selection");
+        Preconditions.requireInstance(selection, SpreadsheetSelection, "selection");
         Preconditions.optionalInstance(anchor, SpreadsheetViewportSelectionAnchor, "anchor");
+
+        anchor && selection.checkAnchor(anchor);
+
         Preconditions.optionalInstance(navigation, SpreadsheetViewportSelectionNavigation, "navigation");
 
-        const parameters = {
-            home: [this.home()],
-            width: [this.width()],
-            height: [this.height()],
-            includeFrozenColumnsRows: [true],
-        };
+        this.selectionValue = selection;
+        this.anchorValue = anchor;
+        this.navigationValue = navigation;
+    }
 
-        if(selection) {
-            parameters.selectionType = [selection.kebabClassName()];
-            parameters.selection = [selection];
+    selection() {
+        return this.selectionValue;
+    }
 
-            if(navigation) {
-                parameters.selectionNavigation = [
-                    navigation.toQueryString()
-                ];
-            }
-        }
+    anchor() {
+        return this.anchorValue;
+    }
 
+    setAnchor(anchor) {
+        Preconditions.optionalInstance(anchor, SpreadsheetViewportSelectionAnchor, "anchor");
+
+        return Equality.safeEquals(this.anchor(), anchor) ?
+            this :
+            new SpreadsheetViewport(
+                this.selection(),
+                anchor,
+                this.navigation()
+            );
+    }
+
+    navigation() {
+        return this.navigationValue;
+    }
+
+    setNavigation(navigation) {
+        Preconditions.optionalInstance(navigation, SpreadsheetViewportSelectionNavigation, "navigation");
+
+        return Equality.safeEquals(this.navigation(), navigation) ?
+            this :
+            new SpreadsheetViewport(
+                this.selection(),
+                this.anchor(),
+                navigation
+            );
+    }
+
+    historyHashPath() {
+        var tokens = this.selection()
+            .historyHashPath();
+
+        const anchor = this.anchor();
         if(anchor) {
-            parameters.selectionAnchor = [anchor.nameKebabCase()];
+            tokens = tokens +
+                "/" +
+                anchor.historyHashPath();
         }
 
-        return parameters;
+        return tokens;
     }
 
     toJson() {
-        return this.home() + SEPARATOR + this.width() + SEPARATOR + this.height();
+        const json = {
+            selection: this.selection().toJsonWithType(),
+        }
+
+        const anchor = this.anchor();
+        if(anchor) {
+            Object.assign(
+                json,
+                {
+                    anchor: anchor.toJson(),
+                }
+            );
+        }
+
+        const navigation = this.navigation();
+        if(navigation) {
+            Object.assign(
+                json,
+                {
+                    navigation: navigation.toJson(),
+                }
+            );
+        }
+
+        return json;
+    }
+
+    toQueryString(firstSeparator) {
+        const selection = this.selection();
+        const parameters = {
+            selection: [selection.toString()],
+            selectionType: [selection.kebabClassName()],
+        };
+
+        const anchor = this.anchor();
+        if(anchor){
+            Object.assign(
+                parameters,
+                {
+                    selectionAnchor: [anchor.nameKebabCase()]
+                }
+            )
+        }
+
+        const navigation = this.navigation();
+        if(navigation){
+            Object.assign(
+                parameters,
+                {
+                    selectionNavigation: [navigation.nameKebabCase()]
+                }
+            )
+        }
+
+        return RelativeUrl.toQueryString(firstSeparator, parameters);
     }
 
     typeName() {
@@ -99,13 +153,16 @@ export default class SpreadsheetViewport extends SystemObject {
 
     equals(other) {
         return other instanceof SpreadsheetViewport &&
-            this.home().equals(other.home()) &&
-            this.width() === other.width() &&
-            this.height() === other.height();
+                this.selection().equals(other.selection()) &&
+                Equality.safeEquals(this.anchor(), other.anchor()) &&
+                Equality.safeEquals(this.navigation(), other.navigation());
     }
 
     toString() {
-        return this.toJson();
+        const anchor = this.anchor();
+        const navigation = this.navigation();
+
+        return this.selection() + (anchor ? " " + anchor : "") + (navigation ? " " + navigation : "");
     }
 }
 

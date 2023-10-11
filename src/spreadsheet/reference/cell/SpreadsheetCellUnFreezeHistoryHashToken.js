@@ -1,6 +1,6 @@
 import SpreadsheetCellHistoryHashToken from "./SpreadsheetCellHistoryHashToken.js";
 import SpreadsheetHistoryHashTokens from "../../history/SpreadsheetHistoryHashTokens.js";
-import viewportSelectionSelectHistoryHashToken from "../../history/viewportSelectionSelectHistoryHashToken.js";
+import viewportSelectHistoryHashToken from "../../history/viewportSelectHistoryHashToken.js";
 
 /**
  * Represents a command to unfreeze one or more cells.
@@ -16,16 +16,16 @@ export default class SpreadsheetCellUnFreezeHistoryHashToken extends Spreadsheet
     /**
      * Handles history hash token evens such as /cell/A1/unfreeze or /cell/B2:C3/unfreeze
      */
-    spreadsheetViewportWidgetExecute(viewportWidget, previousViewportSelection, viewportCell, width, height) {
-        const viewportSelection = this.viewportSelection();
+    spreadsheetViewportWidgetExecute(viewportWidget, previousViewport, viewportCell, width, height) {
+        const viewport = this.viewport();
 
         viewportWidget.unFreezeSelection(
-            viewportSelection
+            viewport
         );
 
-        return SpreadsheetHistoryHashTokens.viewportSelection(
-            viewportSelectionSelectHistoryHashToken(
-                viewportSelection
+        return SpreadsheetHistoryHashTokens.viewport(
+            viewportSelectHistoryHashToken(
+                viewport
             )
         );
     }

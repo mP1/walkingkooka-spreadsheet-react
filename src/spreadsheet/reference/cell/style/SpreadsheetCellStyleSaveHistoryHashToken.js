@@ -30,23 +30,23 @@ export default class SpreadsheetCellStyleSaveHistoryHashToken extends Spreadshee
             (null != value ? encodeURIComponent(value) : "");
     }
 
-    spreadsheetToolbarWidgetExecute(toolbarWidget, previousViewportSelection) {
-        const viewportSelection = this.viewportSelection();
+    spreadsheetToolbarWidgetExecute(toolbarWidget, previousViewport) {
+        const viewport = this.viewport();
         const propertyName = this.propertyName();
 
         // want to avoid multiple save (PATCH) requests to server.
-        if(!this.equals(previousViewportSelection)) {
+        if(!this.equals(previousViewport)) {
             toolbarWidget.patchStyle(
-                viewportSelection.selection(),
+                viewport.selection(),
                 propertyName,
                 this.propertyValue()
             );
         }
 
-        return SpreadsheetHistoryHashTokens.viewportSelection(
-            previousViewportSelection instanceof SpreadsheetCellStyleHistoryHashToken ?
+        return SpreadsheetHistoryHashTokens.viewport(
+            previousViewport instanceof SpreadsheetCellStyleHistoryHashToken ?
                 new SpreadsheetCellStyleEditHistoryHashToken(
-                    viewportSelection,
+                    viewport,
                     propertyName
                 ) :
                 null

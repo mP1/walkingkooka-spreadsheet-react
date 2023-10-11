@@ -3,7 +3,7 @@
 import SystemEnum from "../../../SystemEnum.js";
 import SystemObject from "../../../SystemObject.js";
 
-const TYPE_NAME = "spreadsheet-viewport-selection-anchor";
+const TYPE_NAME = "spreadsheet-viewport-anchor";
 
 export default class SpreadsheetViewportSelectionAnchor extends SystemEnum {
   

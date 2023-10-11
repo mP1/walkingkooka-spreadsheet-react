@@ -25,14 +25,14 @@ export default class SpreadsheetCellStylePropertyWidget extends SpreadsheetCellW
         return {
             spreadsheetId: tokens[SpreadsheetHistoryHash.SPREADSHEET_ID],
             spreadsheetName: tokens[SpreadsheetHistoryHash.SPREADSHEET_NAME],
-            viewportSelection: tokens[SpreadsheetHistoryHashTokens.VIEWPORT_SELECTION],
+            viewport: tokens[SpreadsheetHistoryHashTokens.VIEWPORT],
         };
     }
 
     historyTokensFromState(prevState) {
         let tokens;
 
-        const viewportSelection = this.state.viewportSelection;
+        const viewport = this.state.viewport;
 
         const {
             propertyName,
@@ -41,10 +41,10 @@ export default class SpreadsheetCellStylePropertyWidget extends SpreadsheetCellW
 
         // Need to also test propertyName otherwise a SpreadsheetCellStyleSaveHistoryHashToken will be executed multiple times.
         // FIXES https://github.com/mP1/walkingkooka-spreadsheet-react/issues/2118
-        if(viewportSelection instanceof SpreadsheetCellStyleHistoryHashToken && propertyName === viewportSelection.propertyName()) {
-            tokens = viewportSelection.spreadsheetToolbarWidgetExecute(
+        if(viewport instanceof SpreadsheetCellStyleHistoryHashToken && propertyName === viewport.propertyName()) {
+            tokens = viewport.spreadsheetToolbarWidgetExecute(
                 spreadsheetToolbarWidget,
-                prevState.viewportSelection
+                prevState.viewport
             )
         }
 
@@ -75,7 +75,7 @@ export default class SpreadsheetCellStylePropertyWidget extends SpreadsheetCellW
     onSpreadsheetDelta(method, cellOrLabel, url, requestDelta, responseDelta) {
         if(responseDelta){
             const {
-                viewportSelection: viewportSelectionToken,
+                viewport: viewportToken,
             } = this.state;
 
             // A1=TextAlign.LEFT, B1=null
@@ -84,9 +84,9 @@ export default class SpreadsheetCellStylePropertyWidget extends SpreadsheetCellW
                 this.state.cellToValue
             );
 
-            if(viewportSelectionToken instanceof SpreadsheetCellHistoryHashToken){
-                const viewportSelection = viewportSelectionToken.viewportSelection();
-                var selection = viewportSelection.selection();
+            if(viewportToken instanceof SpreadsheetCellHistoryHashToken){
+                const viewport = viewportToken.viewport();
+                var selection = viewport.selection();
 
                 if(selection instanceof SpreadsheetLabelName){
                     selection = responseDelta.cellReference(selection);
@@ -114,14 +114,14 @@ export default class SpreadsheetCellStylePropertyWidget extends SpreadsheetCellW
 
     // render nothing if a cell is not selected.
     render() {
-        const viewportSelection = this.state.viewportSelection;
-        return viewportSelection instanceof SpreadsheetCellHistoryHashToken ?
-            this.render0(viewportSelection) :
+        const viewport = this.state.viewport;
+        return viewport instanceof SpreadsheetCellHistoryHashToken ?
+            this.render0(viewport) :
             null;
     }
 
-    render0(viewportSelectionToken) {
-        const viewportSelection = viewportSelectionToken.viewportSelection();
+    render0(viewportToken) {
+        const viewport = viewportToken.viewport();
         const propertyName = this.props.propertyName;
 
         const onFocus = () => {
@@ -129,8 +129,8 @@ export default class SpreadsheetCellStylePropertyWidget extends SpreadsheetCellW
 
             this.setState({
                 focused: true,
-                viewportSelection: new SpreadsheetCellStyleEditHistoryHashToken(
-                    viewportSelection,
+                viewport: new SpreadsheetCellStyleEditHistoryHashToken(
+                    viewport,
                     propertyName,
                 )
             });
@@ -146,7 +146,7 @@ export default class SpreadsheetCellStylePropertyWidget extends SpreadsheetCellW
                     focused: false,
                 });
             }else {
-                this.props.spreadsheetToolbarWidget.historyPushViewportSelectionSelect();
+                this.props.spreadsheetToolbarWidget.historyPushViewportSelect();
             }
         };
 
@@ -169,7 +169,7 @@ export default class SpreadsheetCellStylePropertyWidget extends SpreadsheetCellW
         SystemObject.throwUnsupportedOperation();
     }
 
-    spreadsheetViewportWidgetExecute(viewportWidget, previousViewportSelection, viewportCell, width, height) {
+    spreadsheetViewportWidgetExecute(viewportWidget, previousViewport, viewportCell, width, height) {
         // NOP
     }
 

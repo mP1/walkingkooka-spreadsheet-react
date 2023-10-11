@@ -308,7 +308,7 @@ export default class SpreadsheetSelectAutocompleteWidget extends SpreadsheetHist
             tokens[SpreadsheetHistoryHashTokens.SELECT] = null; // close the navigate modal
 
             if(goto){
-                tokens[SpreadsheetHistoryHashTokens.VIEWPORT_SELECTION] = goto;
+                tokens[SpreadsheetHistoryHashTokens.VIEWPORT] = goto;
             }
 
             if(label){

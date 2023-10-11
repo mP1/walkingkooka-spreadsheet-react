@@ -2,7 +2,7 @@ import PropTypes from "prop-types";
 import SpreadsheetHistoryHash from "./SpreadsheetHistoryHash.js";
 import SpreadsheetHistoryHashTokens from "./SpreadsheetHistoryHashTokens.js";
 import SpreadsheetWidget from "../SpreadsheetWidget.js";
-import viewportSelectionSelectHistoryHashToken from "./viewportSelectionSelectHistoryHashToken.js";
+import viewportSelectHistoryHashToken from "./viewportSelectHistoryHashToken.js";
 
 /**
  * A React.Component that is also interested in history change events. Some of the basics like registering a history
@@ -36,21 +36,21 @@ export default class SpreadsheetHistoryAwareWidget extends SpreadsheetWidget {
      * If a viewport selection is present replace it with only a basic selection and not some other action,
      * eg formula-edit becomes cell select.
      */
-    historyPushViewportSelectionSelect() {
+    historyPushViewportSelect() {
         const tokens = this.props.history.tokens();
-        const viewportSelectionToken = tokens[SpreadsheetHistoryHashTokens.VIEWPORT_SELECTION];
-        if(viewportSelectionToken){
-            this.historyPushViewportSelection(
-                viewportSelectionSelectHistoryHashToken(
-                    viewportSelectionToken.viewportSelection()
+        const viewportToken = tokens[SpreadsheetHistoryHashTokens.VIEWPORT];
+        if(viewportToken){
+            this.historyPushViewport(
+                viewportSelectHistoryHashToken(
+                    viewportToken.viewport()
                 )
             );
         }
     }
 
-    historyPushViewportSelection(viewportSelection) {
+    historyPushViewport(viewport) {
         this.historyMergeAndPush(
-            SpreadsheetHistoryHashTokens.viewportSelection(viewportSelection)
+            SpreadsheetHistoryHashTokens.viewport(viewport)
         );
     }
 
@@ -67,7 +67,7 @@ export default class SpreadsheetHistoryAwareWidget extends SpreadsheetWidget {
     }
 
     /**
-     * Wraps another error handler but when invoked clears the viewport-selection. This is useful for cases such as
+     * Wraps another error handler but when invoked clears the viewport. This is useful for cases such as
      * clearing the selection of an invalid or unknown label.
      */
     unknownLabelErrorHandler(showError) {
@@ -78,7 +78,7 @@ export default class SpreadsheetHistoryAwareWidget extends SpreadsheetWidget {
 
             if(statusCode >= 400){
                 const tokens = SpreadsheetHistoryHash.emptyTokens();
-                tokens[SpreadsheetHistoryHashTokens.VIEWPORT_SELECTION] = null;
+                tokens[SpreadsheetHistoryHashTokens.VIEWPORT] = null;
                 history.mergeAndPush(tokens);
 
                 showError(statusCode, statusMessage);

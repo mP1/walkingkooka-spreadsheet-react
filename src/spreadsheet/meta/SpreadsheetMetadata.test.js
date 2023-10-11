@@ -777,20 +777,20 @@ function removePropertyFailsTest(propertyName) {
 }
 
 test("setOrRemove non null", () => {
-    const viewportSelection = SpreadsheetCellReference.parse("Z99")
+    const viewport = SpreadsheetCellReference.parse("Z99")
         .setAnchor();
     const metadata = SpreadsheetMetadata.EMPTY
-        .setOrRemove(SpreadsheetMetadata.SELECTION, viewportSelection);
+        .setOrRemove(SpreadsheetMetadata.SELECTION, viewport);
 
     expect(metadata.getIgnoringDefaults(SpreadsheetMetadata.SELECTION))
-        .toEqual(viewportSelection);
+        .toEqual(viewport);
 });
 
 test("setOrRemove null", () => {
-    const viewportSelection = SpreadsheetCellReference.parse("Z99")
+    const viewport = SpreadsheetCellReference.parse("Z99")
         .setAnchor();
     const metadata = SpreadsheetMetadata.EMPTY
-        .set(SpreadsheetMetadata.SELECTION, viewportSelection);
+        .set(SpreadsheetMetadata.SELECTION, viewport);
     const metadata2 = metadata.setOrRemove(SpreadsheetMetadata.SELECTION, null)
     expect(metadata2.getIgnoringDefaults(SpreadsheetMetadata.SELECTION)).toBeNull();
 });

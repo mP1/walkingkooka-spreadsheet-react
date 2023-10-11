@@ -9,8 +9,8 @@ import SpreadsheetParsePattern from "./SpreadsheetParsePattern.js";
  */
 export default class SpreadsheetCellParsePatternSaveHistoryHashToken extends SpreadsheetCellParsePatternHistoryHashToken {
 
-    constructor(viewportSelection, kind, parsePattern) {
-        super(viewportSelection, kind);
+    constructor(viewport, kind, parsePattern) {
+        super(viewport, kind);
 
         this.parsePatternValue = Preconditions.optionalInstance(
             parsePattern,
