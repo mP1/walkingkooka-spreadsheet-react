@@ -2,7 +2,7 @@ import Equality from "../../../Equality.js";
 import Preconditions from "../../../Preconditions.js";
 import RelativeUrl from "../../../net/RelativeUrl.js";
 import SpreadsheetSelection from "../SpreadsheetSelection.js";
-import SpreadsheetViewportSelectionAnchor from "./SpreadsheetViewportSelectionAnchor.js";
+import SpreadsheetViewportAnchor from "./SpreadsheetViewportAnchor.js";
 import SpreadsheetViewportSelectionNavigation from "./SpreadsheetViewportSelectionNavigation.js";
 import SystemObject from "../../../SystemObject.js";
 
@@ -20,7 +20,7 @@ export default class SpreadsheetViewport extends SystemObject {
         } = json;
         return new SpreadsheetViewport(
             SystemObject.fromJsonWithType(selection),
-            anchor && SpreadsheetViewportSelectionAnchor.fromJson(anchor),
+            anchor && SpreadsheetViewportAnchor.fromJson(anchor),
             navigation && SpreadsheetViewportSelectionNavigation.fromJson(navigation)
         );
     }
@@ -28,7 +28,7 @@ export default class SpreadsheetViewport extends SystemObject {
     constructor(selection, anchor, navigation) {
         super();
         Preconditions.requireInstance(selection, SpreadsheetSelection, "selection");
-        Preconditions.optionalInstance(anchor, SpreadsheetViewportSelectionAnchor, "anchor");
+        Preconditions.optionalInstance(anchor, SpreadsheetViewportAnchor, "anchor");
 
         anchor && selection.checkAnchor(anchor);
 
@@ -48,7 +48,7 @@ export default class SpreadsheetViewport extends SystemObject {
     }
 
     setAnchor(anchor) {
-        Preconditions.optionalInstance(anchor, SpreadsheetViewportSelectionAnchor, "anchor");
+        Preconditions.optionalInstance(anchor, SpreadsheetViewportAnchor, "anchor");
 
         return Equality.safeEquals(this.anchor(), anchor) ?
             this :

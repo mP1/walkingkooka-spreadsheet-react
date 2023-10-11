@@ -7,7 +7,7 @@ import spreadsheetRangeParse from "../SpreadsheetRangeParser.js";
 import SpreadsheetRowReference from "../columnrow/SpreadsheetRowReference.js";
 import SpreadsheetRowReferenceRange from "../columnrow/SpreadsheetRowReferenceRange.js";
 import SpreadsheetSelection from "../SpreadsheetSelection.js";
-import SpreadsheetViewportSelectionAnchor from "../viewport/SpreadsheetViewportSelectionAnchor.js";
+import SpreadsheetViewportAnchor from "../viewport/SpreadsheetViewportAnchor.js";
 import SystemObject from "../../../SystemObject.js";
 
 const TYPE_NAME = "spreadsheet-cell-range";
@@ -249,7 +249,7 @@ export default class SpreadsheetCellRange extends SpreadsheetExpressionReference
         return this.begin().viewportId();
     }
 
-    static DEFAULT_ANCHOR = SpreadsheetViewportSelectionAnchor.BOTTOM_RIGHT;
+    static DEFAULT_ANCHOR = SpreadsheetViewportAnchor.BOTTOM_RIGHT;
 
     setAnchorConditional(anchor) {
         return this.setAnchor(anchor);
@@ -257,10 +257,10 @@ export default class SpreadsheetCellRange extends SpreadsheetExpressionReference
 
     anchors() {
         return [
-            SpreadsheetViewportSelectionAnchor.TOP_LEFT,
-            SpreadsheetViewportSelectionAnchor.TOP_RIGHT,
-            SpreadsheetViewportSelectionAnchor.BOTTOM_LEFT,
-            SpreadsheetViewportSelectionAnchor.BOTTOM_RIGHT,
+            SpreadsheetViewportAnchor.TOP_LEFT,
+            SpreadsheetViewportAnchor.TOP_RIGHT,
+            SpreadsheetViewportAnchor.BOTTOM_LEFT,
+            SpreadsheetViewportAnchor.BOTTOM_RIGHT,
         ];
     }
 

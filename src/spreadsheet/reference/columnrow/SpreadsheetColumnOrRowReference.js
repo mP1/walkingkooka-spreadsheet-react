@@ -3,7 +3,7 @@ import Preconditions from "../../../Preconditions.js";
 import React from "react";
 import SpreadsheetReferenceKind from "../SpreadsheetReferenceKind.js";
 import SpreadsheetSelection from "../SpreadsheetSelection.js";
-import SpreadsheetViewportSelectionAnchor from "../viewport/SpreadsheetViewportSelectionAnchor.js";
+import SpreadsheetViewportAnchor from "../viewport/SpreadsheetViewportAnchor.js";
 import TableCell from "@mui/material/TableCell";
 
 export default class SpreadsheetColumnOrRowReference extends SpreadsheetSelection {
@@ -134,12 +134,12 @@ export default class SpreadsheetColumnOrRowReference extends SpreadsheetSelectio
     }
 
     defaultAnchor() {
-        return SpreadsheetViewportSelectionAnchor.NONE;
+        return SpreadsheetViewportAnchor.NONE;
     }
 
     anchors() {
         return [
-            SpreadsheetViewportSelectionAnchor.NONE,
+            SpreadsheetViewportAnchor.NONE,
         ];
     }
 

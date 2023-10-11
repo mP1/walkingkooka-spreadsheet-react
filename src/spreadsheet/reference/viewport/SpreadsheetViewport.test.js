@@ -6,7 +6,7 @@ import SpreadsheetLabelName from "../label/SpreadsheetLabelName.js";
 import SpreadsheetRowReference from "../columnrow/SpreadsheetRowReference.js";
 import SpreadsheetRowReferenceRange from "../columnrow/SpreadsheetRowReferenceRange.js";
 import SpreadsheetViewport from "./SpreadsheetViewport.js";
-import SpreadsheetViewportSelectionAnchor from "./SpreadsheetViewportSelectionAnchor.js";
+import SpreadsheetViewportAnchor from "./SpreadsheetViewportAnchor.js";
 import SpreadsheetViewportSelectionNavigation from "./SpreadsheetViewportSelectionNavigation.js";
 import systemObjectTesting from "../../../SystemObjectTesting.js";
 
@@ -43,7 +43,7 @@ function label() {
 }
 
 function anchor() {
-    return SpreadsheetViewportSelectionAnchor.TOP_LEFT;
+    return SpreadsheetViewportAnchor.TOP_LEFT;
 }
 
 function navigation() {
@@ -96,80 +96,80 @@ function testNew(selection, anchor, navigation) {
 testNewFails(null, null, "Missing selection");
 
 // cell
-testNewFails(cell(), SpreadsheetViewportSelectionAnchor.TOP, "Unknown anchor TOP, expected any of NONE for " + cell());
-testNewFails(cell(), SpreadsheetViewportSelectionAnchor.TOP_LEFT);
-testNewFails(cell(), SpreadsheetViewportSelectionAnchor.TOP_RIGHT);
-testNewFails(cell(), SpreadsheetViewportSelectionAnchor.BOTTOM);
-testNewFails(cell(), SpreadsheetViewportSelectionAnchor.BOTTOM_LEFT);
-testNewFails(cell(), SpreadsheetViewportSelectionAnchor.BOTTOM_RIGHT);
-testNewFails(cell(), SpreadsheetViewportSelectionAnchor.LEFT);
-testNewFails(cell(), SpreadsheetViewportSelectionAnchor.RIGHT);
+testNewFails(cell(), SpreadsheetViewportAnchor.TOP, "Unknown anchor TOP, expected any of NONE for " + cell());
+testNewFails(cell(), SpreadsheetViewportAnchor.TOP_LEFT);
+testNewFails(cell(), SpreadsheetViewportAnchor.TOP_RIGHT);
+testNewFails(cell(), SpreadsheetViewportAnchor.BOTTOM);
+testNewFails(cell(), SpreadsheetViewportAnchor.BOTTOM_LEFT);
+testNewFails(cell(), SpreadsheetViewportAnchor.BOTTOM_RIGHT);
+testNewFails(cell(), SpreadsheetViewportAnchor.LEFT);
+testNewFails(cell(), SpreadsheetViewportAnchor.RIGHT);
 testNew(cell(), null);
 testNew(cell(), null, SpreadsheetViewportSelectionNavigation.LEFT_COLUMN);
 
 // cellRange
-testNewFails(cellRange(), SpreadsheetViewportSelectionAnchor.TOP);
-testNew(cellRange(), SpreadsheetViewportSelectionAnchor.TOP_LEFT);
-testNew(cellRange(), SpreadsheetViewportSelectionAnchor.TOP_RIGHT);
-testNewFails(cellRange(), SpreadsheetViewportSelectionAnchor.BOTTOM);
-testNew(cellRange(), SpreadsheetViewportSelectionAnchor.BOTTOM_LEFT);
-testNew(cellRange(), SpreadsheetViewportSelectionAnchor.BOTTOM_RIGHT);
-testNewFails(cellRange(), SpreadsheetViewportSelectionAnchor.LEFT);
-testNewFails(cellRange(), SpreadsheetViewportSelectionAnchor.RIGHT);
+testNewFails(cellRange(), SpreadsheetViewportAnchor.TOP);
+testNew(cellRange(), SpreadsheetViewportAnchor.TOP_LEFT);
+testNew(cellRange(), SpreadsheetViewportAnchor.TOP_RIGHT);
+testNewFails(cellRange(), SpreadsheetViewportAnchor.BOTTOM);
+testNew(cellRange(), SpreadsheetViewportAnchor.BOTTOM_LEFT);
+testNew(cellRange(), SpreadsheetViewportAnchor.BOTTOM_RIGHT);
+testNewFails(cellRange(), SpreadsheetViewportAnchor.LEFT);
+testNewFails(cellRange(), SpreadsheetViewportAnchor.RIGHT);
 
 // column
-testNewFails(column(), SpreadsheetViewportSelectionAnchor.TOP, "Unknown anchor TOP, expected any of NONE for " + column());
-testNewFails(column(), SpreadsheetViewportSelectionAnchor.TOP_LEFT);
-testNewFails(column(), SpreadsheetViewportSelectionAnchor.TOP_RIGHT);
-testNewFails(column(), SpreadsheetViewportSelectionAnchor.BOTTOM);
-testNewFails(column(), SpreadsheetViewportSelectionAnchor.BOTTOM_LEFT);
-testNewFails(column(), SpreadsheetViewportSelectionAnchor.BOTTOM_RIGHT);
-testNewFails(column(), SpreadsheetViewportSelectionAnchor.LEFT);
-testNewFails(column(), SpreadsheetViewportSelectionAnchor.RIGHT);
+testNewFails(column(), SpreadsheetViewportAnchor.TOP, "Unknown anchor TOP, expected any of NONE for " + column());
+testNewFails(column(), SpreadsheetViewportAnchor.TOP_LEFT);
+testNewFails(column(), SpreadsheetViewportAnchor.TOP_RIGHT);
+testNewFails(column(), SpreadsheetViewportAnchor.BOTTOM);
+testNewFails(column(), SpreadsheetViewportAnchor.BOTTOM_LEFT);
+testNewFails(column(), SpreadsheetViewportAnchor.BOTTOM_RIGHT);
+testNewFails(column(), SpreadsheetViewportAnchor.LEFT);
+testNewFails(column(), SpreadsheetViewportAnchor.RIGHT);
 testNew(column(), null);
 
 // columnRange
-testNewFails(columnRange(), SpreadsheetViewportSelectionAnchor.TOP, "Unknown anchor TOP, expected any of LEFT, RIGHT for " + columnRange());
-testNewFails(columnRange(), SpreadsheetViewportSelectionAnchor.TOP_LEFT);
-testNewFails(columnRange(), SpreadsheetViewportSelectionAnchor.TOP_RIGHT);
-testNewFails(columnRange(), SpreadsheetViewportSelectionAnchor.BOTTOM);
-testNewFails(columnRange(), SpreadsheetViewportSelectionAnchor.BOTTOM_LEFT);
-testNewFails(columnRange(), SpreadsheetViewportSelectionAnchor.BOTTOM_RIGHT);
-testNew(columnRange(), SpreadsheetViewportSelectionAnchor.LEFT);
-testNew(columnRange(), SpreadsheetViewportSelectionAnchor.RIGHT);
+testNewFails(columnRange(), SpreadsheetViewportAnchor.TOP, "Unknown anchor TOP, expected any of LEFT, RIGHT for " + columnRange());
+testNewFails(columnRange(), SpreadsheetViewportAnchor.TOP_LEFT);
+testNewFails(columnRange(), SpreadsheetViewportAnchor.TOP_RIGHT);
+testNewFails(columnRange(), SpreadsheetViewportAnchor.BOTTOM);
+testNewFails(columnRange(), SpreadsheetViewportAnchor.BOTTOM_LEFT);
+testNewFails(columnRange(), SpreadsheetViewportAnchor.BOTTOM_RIGHT);
+testNew(columnRange(), SpreadsheetViewportAnchor.LEFT);
+testNew(columnRange(), SpreadsheetViewportAnchor.RIGHT);
 testNew(columnRange(), null);
 
 // row
-testNewFails(row(), SpreadsheetViewportSelectionAnchor.TOP, "Unknown anchor TOP, expected any of NONE for " + row());
-testNewFails(row(), SpreadsheetViewportSelectionAnchor.TOP_LEFT);
-testNewFails(row(), SpreadsheetViewportSelectionAnchor.TOP_RIGHT);
-testNewFails(row(), SpreadsheetViewportSelectionAnchor.BOTTOM);
-testNewFails(row(), SpreadsheetViewportSelectionAnchor.BOTTOM_LEFT);
-testNewFails(row(), SpreadsheetViewportSelectionAnchor.BOTTOM_RIGHT);
-testNewFails(row(), SpreadsheetViewportSelectionAnchor.LEFT);
-testNewFails(row(), SpreadsheetViewportSelectionAnchor.RIGHT);
+testNewFails(row(), SpreadsheetViewportAnchor.TOP, "Unknown anchor TOP, expected any of NONE for " + row());
+testNewFails(row(), SpreadsheetViewportAnchor.TOP_LEFT);
+testNewFails(row(), SpreadsheetViewportAnchor.TOP_RIGHT);
+testNewFails(row(), SpreadsheetViewportAnchor.BOTTOM);
+testNewFails(row(), SpreadsheetViewportAnchor.BOTTOM_LEFT);
+testNewFails(row(), SpreadsheetViewportAnchor.BOTTOM_RIGHT);
+testNewFails(row(), SpreadsheetViewportAnchor.LEFT);
+testNewFails(row(), SpreadsheetViewportAnchor.RIGHT);
 testNew(row(), null);
 
 // rowRange
-testNew(rowRange(), SpreadsheetViewportSelectionAnchor.TOP);
-testNewFails(rowRange(), SpreadsheetViewportSelectionAnchor.TOP_LEFT, "Unknown anchor TOP_LEFT, expected any of TOP, BOTTOM for " + rowRange());
-testNewFails(rowRange(), SpreadsheetViewportSelectionAnchor.TOP_RIGHT);
-testNew(rowRange(), SpreadsheetViewportSelectionAnchor.BOTTOM);
-testNewFails(rowRange(), SpreadsheetViewportSelectionAnchor.BOTTOM_LEFT);
-testNewFails(rowRange(), SpreadsheetViewportSelectionAnchor.BOTTOM_RIGHT);
-testNewFails(rowRange(), SpreadsheetViewportSelectionAnchor.LEFT);
-testNewFails(rowRange(), SpreadsheetViewportSelectionAnchor.RIGHT);
+testNew(rowRange(), SpreadsheetViewportAnchor.TOP);
+testNewFails(rowRange(), SpreadsheetViewportAnchor.TOP_LEFT, "Unknown anchor TOP_LEFT, expected any of TOP, BOTTOM for " + rowRange());
+testNewFails(rowRange(), SpreadsheetViewportAnchor.TOP_RIGHT);
+testNew(rowRange(), SpreadsheetViewportAnchor.BOTTOM);
+testNewFails(rowRange(), SpreadsheetViewportAnchor.BOTTOM_LEFT);
+testNewFails(rowRange(), SpreadsheetViewportAnchor.BOTTOM_RIGHT);
+testNewFails(rowRange(), SpreadsheetViewportAnchor.LEFT);
+testNewFails(rowRange(), SpreadsheetViewportAnchor.RIGHT);
 testNew(rowRange(), null);
 
 // label
-testNew(label(), SpreadsheetViewportSelectionAnchor.TOP);
-testNew(label(), SpreadsheetViewportSelectionAnchor.TOP_LEFT);
-testNew(label(), SpreadsheetViewportSelectionAnchor.TOP_RIGHT);
-testNew(label(), SpreadsheetViewportSelectionAnchor.BOTTOM);
-testNew(label(), SpreadsheetViewportSelectionAnchor.BOTTOM_LEFT);
-testNew(label(), SpreadsheetViewportSelectionAnchor.BOTTOM_RIGHT);
-testNew(label(), SpreadsheetViewportSelectionAnchor.LEFT);
-testNew(label(), SpreadsheetViewportSelectionAnchor.RIGHT);
+testNew(label(), SpreadsheetViewportAnchor.TOP);
+testNew(label(), SpreadsheetViewportAnchor.TOP_LEFT);
+testNew(label(), SpreadsheetViewportAnchor.TOP_RIGHT);
+testNew(label(), SpreadsheetViewportAnchor.BOTTOM);
+testNew(label(), SpreadsheetViewportAnchor.BOTTOM_LEFT);
+testNew(label(), SpreadsheetViewportAnchor.BOTTOM_RIGHT);
+testNew(label(), SpreadsheetViewportAnchor.LEFT);
+testNew(label(), SpreadsheetViewportAnchor.RIGHT);
 testNew(label(), null);
 
 // toQueryString........................................................................................................
@@ -192,7 +192,7 @@ function testToQueryString(selection, anchor, navigation, firstSeparator, queryS
 
 testToQueryString(
     column(),
-    SpreadsheetViewportSelectionAnchor.NONE,
+    SpreadsheetViewportAnchor.NONE,
     null,
     "",
     "selection=" + column() + "&selectionType=column&selectionAnchor=none"
@@ -200,7 +200,7 @@ testToQueryString(
 
 testToQueryString(
     column(),
-    SpreadsheetViewportSelectionAnchor.NONE,
+    SpreadsheetViewportAnchor.NONE,
     null,
     "?",
     "?selection=" + column() + "&selectionType=column&selectionAnchor=none"
@@ -208,7 +208,7 @@ testToQueryString(
 
 testToQueryString(
     cell(),
-    SpreadsheetViewportSelectionAnchor.NONE,
+    SpreadsheetViewportAnchor.NONE,
     null,
     "?",
     "?selection=" + cell() + "&selectionType=cell&selectionAnchor=none"
@@ -216,7 +216,7 @@ testToQueryString(
 
 testToQueryString(
     cellRange(),
-    SpreadsheetViewportSelectionAnchor.TOP_LEFT,
+    SpreadsheetViewportAnchor.TOP_LEFT,
     null,
     "?",
     "?selection=B2%3AC3&selectionType=cell-range&selectionAnchor=top-left"
@@ -224,7 +224,7 @@ testToQueryString(
 
 testToQueryString(
     cellRange(),
-    SpreadsheetViewportSelectionAnchor.BOTTOM_LEFT,
+    SpreadsheetViewportAnchor.BOTTOM_LEFT,
     null,
     "?",
     "?selection=B2%3AC3&selectionType=cell-range&selectionAnchor=bottom-left"
@@ -252,24 +252,24 @@ function testFromJson(selection, anchor, navigation) {
 
 testFromJson(cell(), null);
 
-testFromJson(cellRange(), SpreadsheetViewportSelectionAnchor.TOP_LEFT);
-testFromJson(cellRange(), SpreadsheetViewportSelectionAnchor.TOP_RIGHT);
-testFromJson(cellRange(), SpreadsheetViewportSelectionAnchor.BOTTOM_LEFT);
-testFromJson(cellRange(), SpreadsheetViewportSelectionAnchor.BOTTOM_RIGHT);
-testFromJson(cellRange(), SpreadsheetViewportSelectionAnchor.BOTTOM_RIGHT, SpreadsheetViewportSelectionNavigation.LEFT_COLUMN);
-testFromJson(cellRange(), SpreadsheetViewportSelectionAnchor.BOTTOM_RIGHT, SpreadsheetViewportSelectionNavigation.EXTEND_RIGHT_COLUMN);
+testFromJson(cellRange(), SpreadsheetViewportAnchor.TOP_LEFT);
+testFromJson(cellRange(), SpreadsheetViewportAnchor.TOP_RIGHT);
+testFromJson(cellRange(), SpreadsheetViewportAnchor.BOTTOM_LEFT);
+testFromJson(cellRange(), SpreadsheetViewportAnchor.BOTTOM_RIGHT);
+testFromJson(cellRange(), SpreadsheetViewportAnchor.BOTTOM_RIGHT, SpreadsheetViewportSelectionNavigation.LEFT_COLUMN);
+testFromJson(cellRange(), SpreadsheetViewportAnchor.BOTTOM_RIGHT, SpreadsheetViewportSelectionNavigation.EXTEND_RIGHT_COLUMN);
 
 testFromJson(column(), null);
-testFromJson(column(), SpreadsheetViewportSelectionAnchor.NONE, SpreadsheetViewportSelectionNavigation.LEFT_COLUMN);
+testFromJson(column(), SpreadsheetViewportAnchor.NONE, SpreadsheetViewportSelectionNavigation.LEFT_COLUMN);
 
-testFromJson(columnRange(), SpreadsheetViewportSelectionAnchor.LEFT);
-testFromJson(columnRange(), SpreadsheetViewportSelectionAnchor.RIGHT);
-testFromJson(columnRange(), SpreadsheetViewportSelectionAnchor.RIGHT, SpreadsheetViewportSelectionNavigation.LEFT_COLUMN);
+testFromJson(columnRange(), SpreadsheetViewportAnchor.LEFT);
+testFromJson(columnRange(), SpreadsheetViewportAnchor.RIGHT);
+testFromJson(columnRange(), SpreadsheetViewportAnchor.RIGHT, SpreadsheetViewportSelectionNavigation.LEFT_COLUMN);
 
 testFromJson(row());
-testFromJson(rowRange(), SpreadsheetViewportSelectionAnchor.TOP);
-testFromJson(rowRange(), SpreadsheetViewportSelectionAnchor.BOTTOM);
-testFromJson(rowRange(), SpreadsheetViewportSelectionAnchor.BOTTOM, SpreadsheetViewportSelectionNavigation.UP_ROW);
+testFromJson(rowRange(), SpreadsheetViewportAnchor.TOP);
+testFromJson(rowRange(), SpreadsheetViewportAnchor.BOTTOM);
+testFromJson(rowRange(), SpreadsheetViewportAnchor.BOTTOM, SpreadsheetViewportSelectionNavigation.UP_ROW);
 
 // toJson.............................................................................................................
 
@@ -290,19 +290,19 @@ function testToJson(selection, anchor) {
 
 testToJson(cell(), null);
 
-testToJson(cellRange(), SpreadsheetViewportSelectionAnchor.TOP_LEFT);
-testToJson(cellRange(), SpreadsheetViewportSelectionAnchor.TOP_RIGHT);
-testToJson(cellRange(), SpreadsheetViewportSelectionAnchor.BOTTOM_LEFT);
-testToJson(cellRange(), SpreadsheetViewportSelectionAnchor.BOTTOM_RIGHT);
+testToJson(cellRange(), SpreadsheetViewportAnchor.TOP_LEFT);
+testToJson(cellRange(), SpreadsheetViewportAnchor.TOP_RIGHT);
+testToJson(cellRange(), SpreadsheetViewportAnchor.BOTTOM_LEFT);
+testToJson(cellRange(), SpreadsheetViewportAnchor.BOTTOM_RIGHT);
 
 testToJson(column(), null);
 
-testToJson(columnRange(), SpreadsheetViewportSelectionAnchor.LEFT);
-testToJson(columnRange(), SpreadsheetViewportSelectionAnchor.RIGHT);
+testToJson(columnRange(), SpreadsheetViewportAnchor.LEFT);
+testToJson(columnRange(), SpreadsheetViewportAnchor.RIGHT);
 
 testToJson(row(), null);
-testToJson(rowRange(), SpreadsheetViewportSelectionAnchor.TOP);
-testToJson(rowRange(), SpreadsheetViewportSelectionAnchor.BOTTOM);
+testToJson(rowRange(), SpreadsheetViewportAnchor.TOP);
+testToJson(rowRange(), SpreadsheetViewportAnchor.BOTTOM);
 
 // setAnchor.............................................................................................................
 
@@ -328,7 +328,7 @@ test("setAnchor different", () => {
         navigation()
     );
 
-    const different = SpreadsheetViewportSelectionAnchor.TOP_RIGHT;
+    const different = SpreadsheetViewportAnchor.TOP_RIGHT;
 
     expect(
         viewport.setAnchor(different)
@@ -493,8 +493,8 @@ test("equals selection without anchor", () => {
 });
 
 test("equals selection with anchor", () => {
-    expect(new SpreadsheetViewport(cellRange(), SpreadsheetViewportSelectionAnchor.TOP_LEFT)
-        .equals(new SpreadsheetViewport(cellRange(), SpreadsheetViewportSelectionAnchor.TOP_LEFT)))
+    expect(new SpreadsheetViewport(cellRange(), SpreadsheetViewportAnchor.TOP_LEFT)
+        .equals(new SpreadsheetViewport(cellRange(), SpreadsheetViewportAnchor.TOP_LEFT)))
         .toBeTrue();
 });
 
@@ -505,14 +505,14 @@ test("equals different selection false", () => {
 });
 
 test("equals different anchor false", () => {
-    expect(new SpreadsheetViewport(cellRange(), SpreadsheetViewportSelectionAnchor.TOP_LEFT)
-        .equals(new SpreadsheetViewport(cellRange(), SpreadsheetViewportSelectionAnchor.BOTTOM_RIGHT)))
+    expect(new SpreadsheetViewport(cellRange(), SpreadsheetViewportAnchor.TOP_LEFT)
+        .equals(new SpreadsheetViewport(cellRange(), SpreadsheetViewportAnchor.BOTTOM_RIGHT)))
         .toBeFalse();
 });
 
 test("equals same anchor, different navigation false", () => {
-    expect(new SpreadsheetViewport(cell(), SpreadsheetViewportSelectionAnchor.NONE, SpreadsheetViewportSelectionNavigation.LEFT_COLUMN)
-        .equals(new SpreadsheetViewport(cell(), SpreadsheetViewportSelectionAnchor.NONE)))
+    expect(new SpreadsheetViewport(cell(), SpreadsheetViewportAnchor.NONE, SpreadsheetViewportSelectionNavigation.LEFT_COLUMN)
+        .equals(new SpreadsheetViewport(cell(), SpreadsheetViewportAnchor.NONE)))
         .toBeFalse();
 });
 
@@ -523,13 +523,13 @@ test("equals missing anchor, different navigation false", () => {
 });
 
 test("equals different navigation false", () => {
-    expect(new SpreadsheetViewport(cell(), SpreadsheetViewportSelectionAnchor.NONE, SpreadsheetViewportSelectionNavigation.LEFT_COLUMN)
-        .equals(new SpreadsheetViewport(cell(), SpreadsheetViewportSelectionAnchor.NONE, SpreadsheetViewportSelectionNavigation.RIGHT_COLUMN)))
+    expect(new SpreadsheetViewport(cell(), SpreadsheetViewportAnchor.NONE, SpreadsheetViewportSelectionNavigation.LEFT_COLUMN)
+        .equals(new SpreadsheetViewport(cell(), SpreadsheetViewportAnchor.NONE, SpreadsheetViewportSelectionNavigation.RIGHT_COLUMN)))
         .toBeFalse();
 });
 
 test("equals different navigation true", () => {
-    expect(new SpreadsheetViewport(cell(), SpreadsheetViewportSelectionAnchor.NONE, SpreadsheetViewportSelectionNavigation.DOWN_ROW)
-        .equals(new SpreadsheetViewport(cell(), SpreadsheetViewportSelectionAnchor.NONE, SpreadsheetViewportSelectionNavigation.DOWN_ROW)))
+    expect(new SpreadsheetViewport(cell(), SpreadsheetViewportAnchor.NONE, SpreadsheetViewportSelectionNavigation.DOWN_ROW)
+        .equals(new SpreadsheetViewport(cell(), SpreadsheetViewportAnchor.NONE, SpreadsheetViewportSelectionNavigation.DOWN_ROW)))
         .toBeTrue();
 });

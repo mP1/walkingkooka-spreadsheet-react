@@ -4,7 +4,7 @@ import SpreadsheetColumnReference from "../columnrow/SpreadsheetColumnReference.
 import SpreadsheetColumnReferenceRange from "../columnrow/SpreadsheetColumnReferenceRange.js";
 import SpreadsheetRowReference from "../columnrow/SpreadsheetRowReference.js";
 import SpreadsheetRowReferenceRange from "../columnrow/SpreadsheetRowReferenceRange.js";
-import SpreadsheetViewportSelectionAnchor from "../viewport/SpreadsheetViewportSelectionAnchor.js";
+import SpreadsheetViewportAnchor from "../viewport/SpreadsheetViewportAnchor.js";
 import systemObjectTesting from "../../../SystemObjectTesting.js";
 
 function begin() {
@@ -532,19 +532,19 @@ function testViewportFocus(range, anchor, expected) {
         });
 }
 
-testViewportFocus("B2:B3", SpreadsheetViewportSelectionAnchor.LEFT, "B3");
-testViewportFocus("B2:C3", SpreadsheetViewportSelectionAnchor.LEFT, "C3");
+testViewportFocus("B2:B3", SpreadsheetViewportAnchor.LEFT, "B3");
+testViewportFocus("B2:C3", SpreadsheetViewportAnchor.LEFT, "C3");
 
-testViewportFocus("B2:C3", SpreadsheetViewportSelectionAnchor.TOP, "C3");
-testViewportFocus("B2:C3", SpreadsheetViewportSelectionAnchor.TOP_LEFT, "C3");
-testViewportFocus("B2:C3", SpreadsheetViewportSelectionAnchor.TOP_RIGHT, "B3");
+testViewportFocus("B2:C3", SpreadsheetViewportAnchor.TOP, "C3");
+testViewportFocus("B2:C3", SpreadsheetViewportAnchor.TOP_LEFT, "C3");
+testViewportFocus("B2:C3", SpreadsheetViewportAnchor.TOP_RIGHT, "B3");
 
-testViewportFocus("B2:C2", SpreadsheetViewportSelectionAnchor.RIGHT, "B2");
-testViewportFocus("B2:C3", SpreadsheetViewportSelectionAnchor.RIGHT, "B3");
+testViewportFocus("B2:C2", SpreadsheetViewportAnchor.RIGHT, "B2");
+testViewportFocus("B2:C3", SpreadsheetViewportAnchor.RIGHT, "B3");
 
-testViewportFocus("B2:C3", SpreadsheetViewportSelectionAnchor.BOTTOM, "C2");
-testViewportFocus("B2:C3", SpreadsheetViewportSelectionAnchor.BOTTOM_LEFT, "C2");
-testViewportFocus("B2:C3", SpreadsheetViewportSelectionAnchor.BOTTOM_RIGHT, "B2");
+testViewportFocus("B2:C3", SpreadsheetViewportAnchor.BOTTOM, "C2");
+testViewportFocus("B2:C3", SpreadsheetViewportAnchor.BOTTOM_LEFT, "C2");
+testViewportFocus("B2:C3", SpreadsheetViewportAnchor.BOTTOM_RIGHT, "B2");
 
 // equals...............................................................................................................
 

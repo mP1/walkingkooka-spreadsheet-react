@@ -8,7 +8,7 @@ import spreadsheetRangeParse from "../SpreadsheetRangeParser.js";
 import SpreadsheetReferenceKind from "../SpreadsheetReferenceKind.js";
 import SpreadsheetRowReference from "./SpreadsheetRowReference.js";
 import SpreadsheetRowReferenceRange from "./SpreadsheetRowReferenceRange.js";
-import SpreadsheetViewportSelectionAnchor from "../viewport/SpreadsheetViewportSelectionAnchor.js";
+import SpreadsheetViewportAnchor from "../viewport/SpreadsheetViewportAnchor.js";
 import SystemObject from "../../../SystemObject.js";
 
 
@@ -221,12 +221,12 @@ export default class SpreadsheetColumnReferenceRange extends SpreadsheetColumnOr
         return focus;
     }
 
-    static DEFAULT_ANCHOR = SpreadsheetViewportSelectionAnchor.RIGHT;
+    static DEFAULT_ANCHOR = SpreadsheetViewportAnchor.RIGHT;
 
     anchors() {
         return [
-            SpreadsheetViewportSelectionAnchor.LEFT,
-            SpreadsheetViewportSelectionAnchor.RIGHT,
+            SpreadsheetViewportAnchor.LEFT,
+            SpreadsheetViewportAnchor.RIGHT,
         ];
     }
 

@@ -9,7 +9,7 @@ import spreadsheetRangeParse from "../SpreadsheetRangeParser.js";
 import SpreadsheetReferenceKind from "../SpreadsheetReferenceKind.js";
 import SpreadsheetRowReference from "./SpreadsheetRowReference.js";
 import SpreadsheetSelection from "../SpreadsheetSelection.js";
-import SpreadsheetViewportSelectionAnchor from "../viewport/SpreadsheetViewportSelectionAnchor.js";
+import SpreadsheetViewportAnchor from "../viewport/SpreadsheetViewportAnchor.js";
 import SystemObject from "../../../SystemObject.js";
 
 const TYPE_NAME = "spreadsheet-row-reference-range";
@@ -221,12 +221,12 @@ export default class SpreadsheetRowReferenceRange extends SpreadsheetColumnOrRow
         return focus;
     }
 
-    static DEFAULT_ANCHOR = SpreadsheetViewportSelectionAnchor.BOTTOM;
+    static DEFAULT_ANCHOR = SpreadsheetViewportAnchor.BOTTOM;
 
     anchors() {
         return [
-            SpreadsheetViewportSelectionAnchor.TOP,
-            SpreadsheetViewportSelectionAnchor.BOTTOM,
+            SpreadsheetViewportAnchor.TOP,
+            SpreadsheetViewportAnchor.BOTTOM,
         ];
     }
 

@@ -12,7 +12,7 @@ import SpreadsheetReferenceKind from "../SpreadsheetReferenceKind.js";
 import SpreadsheetRowReference from "../columnrow/SpreadsheetRowReference.js";
 import SpreadsheetSelection from "../SpreadsheetSelection.js";
 import SpreadsheetViewportRectangle from "../viewport/SpreadsheetViewportRectangle.js";
-import SpreadsheetViewportSelectionAnchor from "../viewport/SpreadsheetViewportSelectionAnchor.js";
+import SpreadsheetViewportAnchor from "../viewport/SpreadsheetViewportAnchor.js";
 import SystemObject from "../../../SystemObject.js";
 import TextStyle from "../../../text/TextStyle.js";
 import Text from "../../../text/Text.js";
@@ -325,12 +325,12 @@ export default class SpreadsheetCellReference extends SpreadsheetExpressionRefer
 
     anchors() {
         return [
-            SpreadsheetViewportSelectionAnchor.NONE,
+            SpreadsheetViewportAnchor.NONE,
         ];
     }
 
     defaultAnchor() {
-        return SpreadsheetViewportSelectionAnchor.NONE;
+        return SpreadsheetViewportAnchor.NONE;
     }
 
     kebabClassName() {
