@@ -1,6 +1,6 @@
 import SpreadsheetColumnOrRowHistoryHashToken from "./SpreadsheetColumnOrRowHistoryHashToken.js";
 import SpreadsheetHistoryHashTokens from "../../history/SpreadsheetHistoryHashTokens.js";
-import viewportSelectionSelectHistoryHashToken from "../../history/viewportSelectionSelectHistoryHashToken.js";
+import viewportSelectHistoryHashToken from "../../history/viewportSelectHistoryHashToken.js";
 
 /**
  * Represents a command to freeze one or more columns or rows.
@@ -16,16 +16,16 @@ export default class SpreadsheetColumnOrRowFreezeHistoryHashToken extends Spread
     /**
      * Handles history hash token evens such as /column/A/freeze or /column/A:C/freeze
      */
-    spreadsheetViewportWidgetExecute(viewportWidget, previousViewportSelection, viewportCell, width, height) {
-        const viewportSelection = this.viewportSelection();
+    spreadsheetViewportWidgetExecute(viewportWidget, previousViewport, viewportCell, width, height) {
+        const viewport = this.viewport();
 
         viewportWidget.freezeSelection(
-            viewportSelection
+            viewport
         );
 
-        return SpreadsheetHistoryHashTokens.viewportSelection(
-            viewportSelectionSelectHistoryHashToken(
-                viewportSelection
+        return SpreadsheetHistoryHashTokens.viewport(
+            viewportSelectHistoryHashToken(
+                viewport
             )
         );
     }

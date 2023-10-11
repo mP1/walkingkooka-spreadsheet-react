@@ -1,6 +1,6 @@
 import SpreadsheetCellHistoryHashToken from "./SpreadsheetCellHistoryHashToken.js";
 import SpreadsheetHistoryHashTokens from "../../history/SpreadsheetHistoryHashTokens.js";
-import viewportSelectionSelectHistoryHashToken from "../../history/viewportSelectionSelectHistoryHashToken.js";
+import viewportSelectHistoryHashToken from "../../history/viewportSelectHistoryHashToken.js";
 
 /**
  * A history hash token that represents a cell or cell-range clear
@@ -16,16 +16,16 @@ export default class SpreadsheetCellClearHistoryHashToken extends SpreadsheetCel
     /**
      * Handles history hash token evens such as /cell/A1/clear or /cell/A1:B2/clear
      */
-    spreadsheetViewportWidgetExecute(viewportWidget, previousViewportSelection, viewportCell, width, height) {
-        const viewportSelection = this.viewportSelection();
+    spreadsheetViewportWidgetExecute(viewportWidget, previousViewport, viewportCell, width, height) {
+        const viewport = this.viewport();
 
         viewportWidget.clearSelection(
-            viewportSelection
+            viewport
         );
 
-        return SpreadsheetHistoryHashTokens.viewportSelection(
-            viewportSelectionSelectHistoryHashToken(
-                viewportSelection
+        return SpreadsheetHistoryHashTokens.viewport(
+            viewportSelectHistoryHashToken(
+                viewport
             )
         );
     }

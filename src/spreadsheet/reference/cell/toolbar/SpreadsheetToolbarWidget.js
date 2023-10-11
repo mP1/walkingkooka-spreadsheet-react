@@ -33,13 +33,13 @@ export default class SpreadsheetToolbarWidget extends SpreadsheetSelectionWidget
 
     initialStateFromProps() {
         return {
-            viewportSelection: null,
+            viewport: null,
         };
     }
 
     stateFromHistoryTokens(historyTokens) {
         return {
-            viewportSelection: historyTokens[SpreadsheetHistoryHashTokens.VIEWPORT_SELECTION],
+            viewport: historyTokens[SpreadsheetHistoryHashTokens.VIEWPORT],
         }
     }
 
@@ -48,7 +48,7 @@ export default class SpreadsheetToolbarWidget extends SpreadsheetSelectionWidget
         return null;
     }
 
-    // if the viewportSelection is NOT a cell render the outer DIV as hidden.
+    // if the viewport is NOT a cell render the outer DIV as hidden.
     // this is necessary so SpreadsheetCellStylePropertyButtonGroupWidget is registered and handles history such as
     // /style/text-align/save/CENTER
     render() {
@@ -58,7 +58,7 @@ export default class SpreadsheetToolbarWidget extends SpreadsheetSelectionWidget
         } = this.props;
 
         const {
-            viewportSelection
+            viewportSelection: viewport
         } = this.state
 
         return <div id={SpreadsheetToolbarWidget.TOOLBAR_ID}
@@ -66,7 +66,7 @@ export default class SpreadsheetToolbarWidget extends SpreadsheetSelectionWidget
                         border: 0,
                         margin: 0,
                         padding: 0,
-                        visibility: viewportSelection instanceof SpreadsheetCellHistoryHashToken ? "visible" : "hidden"
+                        visibility: viewport instanceof SpreadsheetCellHistoryHashToken ? "visible" : "hidden"
                     }}>
             <SpreadsheetCellStylePropertyColorPickerWidget ref={this.backgroundColor}
                                                            history={history}

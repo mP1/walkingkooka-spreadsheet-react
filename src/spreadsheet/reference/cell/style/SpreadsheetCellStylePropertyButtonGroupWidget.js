@@ -27,20 +27,20 @@ export default class SpreadsheetCellStylePropertyButtonGroupWidget extends Sprea
         const {
             spreadsheetId,
             spreadsheetName,
-            viewportSelection: viewportSelectionToken,
-            cellOrRange, // viewportSelection.selection() might be a label, $cellORange never is
+            viewport: viewportToken,
+            cellOrRange, // viewport.selection() might be a label, $cellORange never is
             cellToValue, // A1 to cell.style().get($propertyName)
         } = this.state;
 
         // must be a SpreadsheetExpressionReference
-        const viewportSelection = viewportSelectionToken && viewportSelectionToken.viewportSelection();
+        const viewport = viewportToken && viewportToken.viewport();
 
         const buttons = [];
         var i = 0;
 
         for(const value of values) {
-            const viewportSelectionToken = new SpreadsheetCellStyleSaveHistoryHashToken(
-                viewportSelection,
+            const viewportToken = new SpreadsheetCellStyleSaveHistoryHashToken(
+                viewport,
                 propertyName,
                 value,
             );
@@ -48,13 +48,13 @@ export default class SpreadsheetCellStylePropertyButtonGroupWidget extends Sprea
             const tokens = SpreadsheetHistoryHash.emptyTokens();
             tokens[SpreadsheetHistoryHashTokens.SPREADSHEET_ID] = spreadsheetId;
             tokens[SpreadsheetHistoryHashTokens.SPREADSHEET_NAME] = spreadsheetName;
-            tokens[SpreadsheetHistoryHashTokens.VIEWPORT_SELECTION] = viewportSelectionToken;
+            tokens[SpreadsheetHistoryHashTokens.VIEWPORT] = viewportToken;
 
             const linkUrl = "#" + SpreadsheetHistoryHash.stringify(tokens);
 
             const onClick = () => {
                 this.log(".onClick " + linkUrl);
-                this.historyPushViewportSelection(viewportSelectionToken);
+                this.historyPushViewport(viewportToken);
             };
 
             var selected = false;

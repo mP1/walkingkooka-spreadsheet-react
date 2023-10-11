@@ -4,10 +4,10 @@ import SpreadsheetColumnOrRowSelectHistoryHashToken
 
 /**
  * Null safe history hash token factory that creates the appropriate {@link SpreadsheetSelectHistoryHashToken} after testing the
- * given {@link SpreadsheetViewportSelection}.
+ * given {@link SpreadsheetViewport}.
  */
-export default function viewportSelectionSelectHistoryHashToken(viewportSelection) {
-    return viewportSelection && viewportSelection.selection().isCellScalarOrRange() ?
-        new SpreadsheetCellSelectHistoryHashToken(viewportSelection) :
-        new SpreadsheetColumnOrRowSelectHistoryHashToken(viewportSelection);
+export default function viewportSelectHistoryHashToken(viewport) {
+    return viewport && viewport.selection().isCellScalarOrRange() ?
+        new SpreadsheetCellSelectHistoryHashToken(viewport) :
+        new SpreadsheetColumnOrRowSelectHistoryHashToken(viewport);
 }

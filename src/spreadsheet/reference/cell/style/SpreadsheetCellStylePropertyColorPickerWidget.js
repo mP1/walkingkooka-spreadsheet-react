@@ -24,28 +24,28 @@ export default class SpreadsheetCellStylePropertyColorPickerWidget extends Sprea
         } = this.props;
 
         const {
-            viewportSelection: viewportSelectionToken,
-            cellOrRange, // viewportSelection.selection() might be a label, $cellORange never is
+            viewport: viewportToken,
+            cellOrRange, // viewport.selection() might be a label, $cellORange never is
             cellToValue, // A1 to cell.style().get($propertyName)
         } = this.state;
 
         // open the picker if editing...
-        const open = viewportSelectionToken instanceof SpreadsheetCellStyleEditHistoryHashToken &&
-            viewportSelectionToken.propertyName() === propertyName;
+        const open = viewportToken instanceof SpreadsheetCellStyleEditHistoryHashToken &&
+            viewportToken.propertyName() === propertyName;
 
         // // must be a SpreadsheetExpressionReference
-        const viewportSelection = viewportSelectionToken && viewportSelectionToken.viewportSelection();
+        const viewport = viewportToken && viewportToken.viewport();
 
         const onChange = (newColor) => {
             this.log(".onChange " + newColor, newColor);
 
-            const viewportSelectionToken = new SpreadsheetCellStyleSaveHistoryHashToken(
-                viewportSelection,
+            const viewportToken = new SpreadsheetCellStyleSaveHistoryHashToken(
+                viewport,
                 propertyName,
                 Color.parse("#" + newColor.hex),
             );
 
-            this.historyPushViewportSelection(viewportSelectionToken);
+            this.historyPushViewport(viewportToken);
         };
 
         // pick the first color

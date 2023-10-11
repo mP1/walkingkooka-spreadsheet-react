@@ -366,8 +366,8 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
     /**
      * Clears the given selection and appends the window if present as a query parameter.
      */
-    clearSelection(viewportSelection, window) {
-        const selection = viewportSelection.selection();
+    clearSelection(viewport, window) {
+        const selection = viewport.selection();
 
         this.performSpreadsheetDelta(
             HttpMethod.POST,
@@ -378,7 +378,7 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
                 "/" +
                 SpreadsheetHistoryHashTokens.CLEAR +
                 "?window=" + CharSequences.csv(window) +
-                viewportSelection.toQueryString("&")
+                viewport.toQueryString("&")
             ),
             selection,
             JSON.stringify(SpreadsheetDelta.EMPTY.toJson()),
@@ -388,8 +388,8 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
     /**
      * Deletes the given selection and appends the window if present as a query parameter.
      */
-    deleteSelection(viewportSelection, window) {
-        const selection = viewportSelection.selection();
+    deleteSelection(viewport, window) {
+        const selection = viewport.selection();
 
         this.performSpreadsheetDelta(
             HttpMethod.DELETE,
@@ -398,7 +398,7 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
                 "/" +
                 selection.historyHashPath() +
                 "?window=" + CharSequences.csv(window) +
-                viewportSelection.toQueryString("&")
+                viewport.toQueryString("&")
             ),
             selection
         );
@@ -407,8 +407,8 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
     /**
      * Does a POST to a url which will insert after the requested count columns or rows.
      */
-    insertAfterSelection(viewportSelection, count, window) {
-        const selection = viewportSelection.selection();
+    insertAfterSelection(viewport, count, window) {
+        const selection = viewport.selection();
 
         this.performSpreadsheetDelta(
             HttpMethod.POST,
@@ -419,7 +419,7 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
                 "/after?count=" +
                 count +
                 "&window=" + CharSequences.csv(window) +
-                viewportSelection.toQueryString("&")
+                viewport.toQueryString("&")
             ),
             selection
         );
@@ -428,8 +428,8 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
     /**
      * Does a POST to a url which will insert before the requested count columns or rows.
      */
-    insertBeforeSelection(viewportSelection, count, window) {
-        const selection = viewportSelection.selection();
+    insertBeforeSelection(viewport, count, window) {
+        const selection = viewport.selection();
 
         this.performSpreadsheetDelta(
             HttpMethod.POST,
@@ -440,7 +440,7 @@ class SpreadsheetApp extends SpreadsheetHistoryAwareStateWidget {
                 "/before?count=" +
                 count +
                 "&window=" + CharSequences.csv(window) +
-                viewportSelection.toQueryString("&")
+                viewport.toQueryString("&")
             ),
             selection
         );

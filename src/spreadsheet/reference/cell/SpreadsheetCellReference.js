@@ -11,7 +11,7 @@ import SpreadsheetFormula from "./formula/SpreadsheetFormula.js";
 import SpreadsheetReferenceKind from "../SpreadsheetReferenceKind.js";
 import SpreadsheetRowReference from "../columnrow/SpreadsheetRowReference.js";
 import SpreadsheetSelection from "../SpreadsheetSelection.js";
-import SpreadsheetViewport from "../viewport/SpreadsheetViewport.js";
+import SpreadsheetViewportRectangle from "../viewport/SpreadsheetViewportRectangle.js";
 import SpreadsheetViewportSelectionAnchor from "../viewport/SpreadsheetViewportSelectionAnchor.js";
 import SystemObject from "../../../SystemObject.js";
 import TextStyle from "../../../text/TextStyle.js";
@@ -281,7 +281,7 @@ export default class SpreadsheetCellReference extends SpreadsheetExpressionRefer
     }
 
     viewport(width, height) {
-        return new SpreadsheetViewport(this, width, height);
+        return new SpreadsheetViewportRectangle(this, width, height);
     }
 
     viewportId() {

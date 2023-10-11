@@ -21,7 +21,7 @@ import SpreadsheetRowReferenceRange from "../reference/columnrow/SpreadsheetRowR
 import SpreadsheetTextFormatPattern from "../format/SpreadsheetTextFormatPattern.js";
 import SpreadsheetTimeFormatPattern from "../format/SpreadsheetTimeFormatPattern.js";
 import SpreadsheetTimeParsePattern from "../format/SpreadsheetTimeParsePattern.js";
-import SpreadsheetViewportSelection from "../reference/viewport/SpreadsheetViewportSelection.js";
+import SpreadsheetViewport from "../reference/viewport/SpreadsheetViewport.js";
 import SystemObject from "../../SystemObject.js";
 import TextStyle from "../../text/TextStyle";
 
@@ -327,7 +327,7 @@ export default class SpreadsheetMetadata extends SystemObject {
                     unmarshaller = RoundingMode.fromJson;
                     break;
                 case SpreadsheetMetadata.SELECTION:
-                    unmarshaller = SpreadsheetViewportSelection.fromJson;
+                    unmarshaller = SpreadsheetViewport.fromJson;
                     break;
                 case SpreadsheetMetadata.SPREADSHEET_ID:
                     unmarshaller = null;
@@ -516,7 +516,7 @@ export default class SpreadsheetMetadata extends SystemObject {
                 expectedClass = RoundingMode;
                 break;
             case SpreadsheetMetadata.SELECTION:
-                expectedClass = SpreadsheetViewportSelection;
+                expectedClass = SpreadsheetViewport;
                 break;
             case SpreadsheetMetadata.SPREADSHEET_ID:
                 setFails(propertyName);

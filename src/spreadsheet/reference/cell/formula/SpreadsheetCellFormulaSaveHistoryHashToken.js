@@ -2,15 +2,15 @@ import Preconditions from "../../../../Preconditions.js";
 import SpreadsheetCellFormulaEditHistoryHashToken from "./SpreadsheetCellFormulaEditHistoryHashToken.js";
 import SpreadsheetCellFormulaHistoryHashToken from "./SpreadsheetCellFormulaHistoryHashToken.js";
 import SpreadsheetHistoryHashTokens from "../../../history/SpreadsheetHistoryHashTokens.js";
-import viewportSelectionSelectHistoryHashToken from "../../../history/viewportSelectionSelectHistoryHashToken.js";
+import viewportSelectHistoryHashToken from "../../../history/viewportSelectHistoryHashToken.js";
 
 /**
  * A history hash token that saves the given formula text for the current cell.
  */
 export default class SpreadsheetCellFormulaSaveHistoryHashToken extends SpreadsheetCellFormulaHistoryHashToken {
 
-    constructor(viewportSelection, formulaText) {
-        super(viewportSelection);
+    constructor(viewport, formulaText) {
+        super(viewport);
 
         this.formulaTextValue = Preconditions.requireText(formulaText, "formulaText");
     }
@@ -30,22 +30,22 @@ export default class SpreadsheetCellFormulaSaveHistoryHashToken extends Spreadsh
             encodeURIComponent(this.formulaText());
     }
 
-    // previousViewportSelection ignored
-    spreadsheetFormulaWidgetExecute(formulaWidget, previousViewportSelection) {
-        const viewportSelection = this.viewportSelection();
+    // previousViewport ignored
+    spreadsheetFormulaWidgetExecute(formulaWidget, previousViewport) {
+        const viewport = this.viewport();
 
         formulaWidget.patchFormula(
-            viewportSelection.selection(),
+            viewport.selection(),
             this.formulaText(),
         );
 
         return formulaWidget.isFocused() ?
-            SpreadsheetHistoryHashTokens.viewportSelection(
-                new SpreadsheetCellFormulaEditHistoryHashToken(viewportSelection)
+            SpreadsheetHistoryHashTokens.viewport(
+                new SpreadsheetCellFormulaEditHistoryHashToken(viewport)
             ) :
-            null != previousViewportSelection ?
-                SpreadsheetHistoryHashTokens.viewportSelection(
-                    viewportSelectionSelectHistoryHashToken(viewportSelection)
+            null != previousViewport ?
+                SpreadsheetHistoryHashTokens.viewport(
+                    viewportSelectHistoryHashToken(viewport)
                 ) :
                 null;
     }

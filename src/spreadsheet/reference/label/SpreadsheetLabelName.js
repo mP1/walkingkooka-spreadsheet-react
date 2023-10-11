@@ -4,7 +4,7 @@ import Preconditions from "../../../Preconditions.js";
 import SpreadsheetCellReference from "../cell/SpreadsheetCellReference.js";
 import SpreadsheetExpressionReference from "../SpreadsheetExpressionReference.js";
 import SpreadsheetLabelMapping from "./SpreadsheetLabelMapping.js";
-import SpreadsheetViewport from "../viewport/SpreadsheetViewport.js";
+import SpreadsheetViewportRectangle from "../viewport/SpreadsheetViewportRectangle.js";
 import SystemObject from "../../../SystemObject.js";
 import SpreadsheetViewportSelectionAnchor from "../viewport/SpreadsheetViewportSelectionAnchor.js";
 
@@ -116,7 +116,7 @@ export default class SpreadsheetLabelName extends SpreadsheetExpressionReference
     // viewport.........................................................................................................
 
     viewport(width, height) {
-        return new SpreadsheetViewport(this, width, height);
+        return new SpreadsheetViewportRectangle(this, width, height);
     }
 
     viewportFocus(labelToReference, anchor) {

@@ -12,7 +12,7 @@ import SpreadsheetRow from "../reference/columnrow/SpreadsheetRow.js";
 import SpreadsheetRowReference from "../reference/columnrow/SpreadsheetRowReference.js";
 import systemObjectTesting from "../../SystemObjectTesting.js";
 
-function viewportSelection() {
+function viewport() {
     return SpreadsheetCellReference.parse("Z9")
         .setAnchor()
 }
@@ -202,7 +202,7 @@ function windowJson() {
 
 function delta() {
     return new SpreadsheetDelta(
-        viewportSelection(),
+        viewport(),
         cells(),
         columns(),
         labels(),
@@ -219,7 +219,7 @@ function delta() {
 systemObjectTesting(
     delta(),
     new SpreadsheetDelta(
-        viewportSelection(),
+        viewport(),
         [
             SpreadsheetCell.fromJson({
                 "Z9": {
@@ -250,7 +250,7 @@ systemObjectTesting(
     "Missing json",
     "spreadsheet-delta",
     {
-        viewportSelection: viewportSelection().toJson(),
+        viewport: viewport().toJson(),
         cells: {
             "A1": {
                 formula: {
@@ -323,7 +323,7 @@ systemObjectTesting(
 // tests................................................................................................................
 
 test("create without cells fails", () => {
-    const vs = viewportSelection();
+    const vs = viewport();
     const c = undefined;
     const col = columns();
     const l = labels();
@@ -339,7 +339,7 @@ test("create without cells fails", () => {
 });
 
 test("create with cell non array fails", () => {
-    const vs = viewportSelection();
+    const vs = viewport();
     const c = "!invalid";
     const col = columns();
     const l = labels();
@@ -355,7 +355,7 @@ test("create with cell non array fails", () => {
 });
 
 test("create without columns fails", () => {
-    const vs = viewportSelection();
+    const vs = viewport();
     const c = cells();
     const col = undefined;
     const l = labels();
@@ -371,7 +371,7 @@ test("create without columns fails", () => {
 });
 
 test("create with columns non array fails", () => {
-    const vs = viewportSelection();
+    const vs = viewport();
     const c = cells();
     const col = "!invalid";
     const l = labels();
@@ -387,7 +387,7 @@ test("create with columns non array fails", () => {
 });
 
 test("create without labels fails", () => {
-    const vs = viewportSelection();
+    const vs = viewport();
     const c = cells();
     const col = columns();
     const l = undefined;
@@ -403,7 +403,7 @@ test("create without labels fails", () => {
 });
 
 test("create with labels non array fails", () => {
-    const vs = viewportSelection();
+    const vs = viewport();
     const c = cells();
     const col = columns();
     const l = "!invalid";
@@ -419,7 +419,7 @@ test("create with labels non array fails", () => {
 });
 
 test("create without rows fails", () => {
-    const vs = viewportSelection();
+    const vs = viewport();
     const c = cells();
     const col = columns();
     const l = labels();
@@ -435,7 +435,7 @@ test("create without rows fails", () => {
 });
 
 test("create with rows non array fails", () => {
-    const vs = viewportSelection();
+    const vs = viewport();
     const c = cells();
     const col = columns();
     const l = labels();
@@ -451,7 +451,7 @@ test("create with rows non array fails", () => {
 });
 
 test("create without columnWidths fails", () => {
-    const vs = viewportSelection();
+    const vs = viewport();
     const c = cells();
     const col = columns();
     const l = labels();
@@ -467,7 +467,7 @@ test("create without columnWidths fails", () => {
 });
 
 test("create with columnWidths non object fails", () => {
-    const vs = viewportSelection();
+    const vs = viewport();
     const c = cells();
     const col = columns();
     const l = labels();
@@ -483,7 +483,7 @@ test("create with columnWidths non object fails", () => {
 });
 
 test("create without rowHeights fails", () => {
-    const vs = viewportSelection();
+    const vs = viewport();
     const c = cells();
     const col = columns();
     const l = labels();
@@ -499,7 +499,7 @@ test("create without rowHeights fails", () => {
 });
 
 test("create with rowHeights non object fails", () => {
-    const vs = viewportSelection();
+    const vs = viewport();
     const c = cells();
     const col = columns();
     const l = labels();
@@ -515,7 +515,7 @@ test("create with rowHeights non object fails", () => {
 });
 
 test("create", () => {
-    const vs = viewportSelection();
+    const vs = viewport();
     const c = cells();
     const col = columns();
     const l = labels();
@@ -541,7 +541,7 @@ test("create", () => {
         mrh,
         w,
         {
-            viewportSelection: vs.toJson(),
+            viewport: vs.toJson(),
             cells: {
                 "A1": {
                     formula: {
@@ -1483,7 +1483,7 @@ test("fromJson 2 cells only", () => {
 });
 
 test("fromJson all properties", () => {
-    const vs = viewportSelection();
+    const vs = viewport();
     const c = cells();
     const col = columns();
     const l = labels();
@@ -1498,7 +1498,7 @@ test("fromJson all properties", () => {
     expect(
         SpreadsheetDelta.fromJson(
             {
-                viewportSelection: vs.toJson(),
+                viewport: vs.toJson(),
                 cells: {
                     "A1": {
                         formula: {
@@ -1596,7 +1596,7 @@ test("EMPTY", () => {
 // equals...............................................................................................................
 
 test("equals different selection false", () => {
-    const vs = viewportSelection();
+    const vs = viewport();
     const c = cells();
     const col = columns();
     const l = labels();
@@ -1629,7 +1629,7 @@ test("equals different selection false", () => {
 });
 
 test("equals different cells false", () => {
-    const vs = viewportSelection();
+    const vs = viewport();
     const c = cells();
     const col = columns();
     const l = labels();
@@ -1678,7 +1678,7 @@ test("equals different cells false", () => {
 });
 
 test("equals different columns false", () => {
-    const vs = viewportSelection();
+    const vs = viewport();
     const c = cells();
     const col = columns();
     const l = labels();
@@ -1711,7 +1711,7 @@ test("equals different columns false", () => {
 });
 
 test("equals different labels false", () => {
-    const vs = viewportSelection();
+    const vs = viewport();
     const c = cells();
     const col = columns();
     const l = labels();
@@ -1732,7 +1732,7 @@ test("equals different labels false", () => {
 });
 
 test("equals different rows false", () => {
-    const vs = viewportSelection();
+    const vs = viewport();
     const c = cells();
     const col = columns();
     const l = labels();
@@ -1765,7 +1765,7 @@ test("equals different rows false", () => {
 });
 
 test("equals different deletedCells false", () => {
-    const vs = viewportSelection();
+    const vs = viewport();
     const c = cells();
     const col = columns();
     const l = labels();
@@ -1786,7 +1786,7 @@ test("equals different deletedCells false", () => {
 });
 
 test("equals different deletedColumns false", () => {
-    const vs = viewportSelection();
+    const vs = viewport();
     const c = cells();
     const col = columns();
     const l = labels();
@@ -1807,7 +1807,7 @@ test("equals different deletedColumns false", () => {
 });
 
 test("equals different deletedRows false", () => {
-    const vs = viewportSelection();
+    const vs = viewport();
     const c = cells();
     const col = columns();
     const l = labels();
@@ -1828,7 +1828,7 @@ test("equals different deletedRows false", () => {
 });
 
 test("equals different columnWidths false", () => {
-    const vs = viewportSelection();
+    const vs = viewport();
     const c = cells();
     const col = columns();
     const l = labels();
@@ -1849,7 +1849,7 @@ test("equals different columnWidths false", () => {
 });
 
 test("equals different rowHeights false", () => {
-    const vs = viewportSelection();
+    const vs = viewport();
     const c = cells();
     const col = columns();
     const l = labels();
@@ -1870,7 +1870,7 @@ test("equals different rowHeights false", () => {
 });
 
 test("equals different window false", () => {
-    const vs = viewportSelection();
+    const vs = viewport();
     const c = cells();
     const col = columns();
     const l = labels();
@@ -1898,7 +1898,7 @@ test("equals equivalent true", () => {
 // helpers..............................................................................................................
 
 function check(delta, selection, cells, columns, labels, rows, deletedCells, deletedColumns, deletedRows, columnWidths, rowHeights, window, json) {
-    expect(delta.viewportSelection()).toStrictEqual(selection);
+    expect(delta.viewport()).toStrictEqual(selection);
 
     expect(delta.cells()).toStrictEqual(cells);
     expect(delta.columns()).toStrictEqual(columns);

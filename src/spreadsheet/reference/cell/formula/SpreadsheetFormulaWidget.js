@@ -31,7 +31,7 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetCellWidget {
         const historyHashTokens = props.history.tokens();
 
         return {
-            viewportSelection: historyHashTokens[SpreadsheetHistoryHash.VIEWPORT_SELECTION],
+            viewport: historyHashTokens[SpreadsheetHistoryHash.VIEWPORT],
             window: [],
         }
     }
@@ -40,16 +40,16 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetCellWidget {
      * Filter only interested in cell or labels and load/edit or save formula actions.
      */
     stateFromHistoryTokens(historyTokens) {
-        const viewportSelectionToken = historyTokens[SpreadsheetHistoryHashTokens.VIEWPORT_SELECTION];
+        const viewportToken = historyTokens[SpreadsheetHistoryHashTokens.VIEWPORT];
         const state = {
-            viewportSelection: viewportSelectionToken,
+            viewport: viewportToken,
             cellReference: null,
         };
 
         // clear cellReference which will also hide formula textbox if column | row | any range
-        if(viewportSelectionToken instanceof SpreadsheetCellHistoryHashToken){
-            const viewportSelection = viewportSelectionToken.viewportSelection();
-            const selection = viewportSelection.selection();
+        if(viewportToken instanceof SpreadsheetCellHistoryHashToken){
+            const viewport = viewportToken.viewport();
+            const selection = viewport.selection();
             if(selection instanceof SpreadsheetCellReference){
                 state.cellReference = selection;
             }
@@ -66,15 +66,15 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetCellWidget {
     historyTokensFromState(prevState) {
         const state = this.state;
         const {
-            viewportSelection: viewportSelectionToken,
+            viewport: viewportToken,
         } = state;
 
         let historyTokens;
 
-        if(viewportSelectionToken instanceof SpreadsheetCellFormulaHistoryHashToken){
-            historyTokens = viewportSelectionToken.spreadsheetFormulaWidgetExecute(
+        if(viewportToken instanceof SpreadsheetCellFormulaHistoryHashToken){
+            historyTokens = viewportToken.spreadsheetFormulaWidgetExecute(
                 this,
-                prevState.viewportSelection
+                prevState.viewport
             );
         }
 
@@ -106,7 +106,7 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetCellWidget {
     render() {
         const {
             value,
-            viewportSelection: viewportSelectionToken,
+            viewport: viewportToken,
             cellReference,
         } = this.state;
 
@@ -131,7 +131,7 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetCellWidget {
                     ){
                         this.log(".onBlur new target is outside formula & NOT viewport setting selection cell select");
 
-                        this.historyPushViewportSelectionSelect();
+                        this.historyPushViewportSelect();
                     }
                 }
             }
@@ -140,12 +140,12 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetCellWidget {
         }
 
         const onFocus = (e) => {
-            const viewportSelectionToken = this.state.viewportSelection;
-            this.log(".onFocus " + viewportSelectionToken + " " + (viewportSelectionToken && new SpreadsheetCellFormulaEditHistoryHashToken(viewportSelectionToken.viewportSelection())), this.state);
+            const viewportToken = this.state.viewport;
+            this.log(".onFocus " + viewportToken + " " + (viewportToken && new SpreadsheetCellFormulaEditHistoryHashToken(viewportToken.viewport())), this.state);
 
             this.setState({
                 focused: true,
-                viewportSelection: viewportSelectionToken && new SpreadsheetCellFormulaEditHistoryHashToken(viewportSelectionToken.viewportSelection()),
+                viewport: viewportToken && new SpreadsheetCellFormulaEditHistoryHashToken(viewportToken.viewport()),
             });
         }
 
@@ -170,9 +170,9 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetCellWidget {
 
                     e.preventDefault();
 
-                    this.historyPushViewportSelection(
+                    this.historyPushViewport(
                         new SpreadsheetCellFormulaSaveHistoryHashToken(
-                            this.state.viewportSelection.viewportSelection(),
+                            this.state.viewport.viewport(),
                             e.target.value
                         )
                     );
@@ -182,7 +182,7 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetCellWidget {
             }
         }
 
-        const visibility = viewportSelectionToken instanceof SpreadsheetCellHistoryHashToken && cellReference ?
+        const visibility = viewportToken instanceof SpreadsheetCellHistoryHashToken && cellReference ?
             "visible" :
             "hidden";
 
@@ -215,11 +215,11 @@ export default class SpreadsheetFormulaWidget extends SpreadsheetCellWidget {
      */
     onSpreadsheetDelta(method, cellOrLabel, url, requestDelta, responseDelta) {
         if(responseDelta) {
-            const viewportSelectionToken = this.state.viewportSelection;
+            const viewportToken = this.state.viewport;
 
-            if(viewportSelectionToken instanceof SpreadsheetCellHistoryHashToken){
-                const viewportSelection = viewportSelectionToken.viewportSelection();
-                const selection = viewportSelection.selection();
+            if(viewportToken instanceof SpreadsheetCellHistoryHashToken){
+                const viewport = viewportToken.viewport();
+                const selection = viewport.selection();
 
                 if(selection instanceof SpreadsheetExpressionReference){
                     const cellReference = selection instanceof SpreadsheetLabelName ?

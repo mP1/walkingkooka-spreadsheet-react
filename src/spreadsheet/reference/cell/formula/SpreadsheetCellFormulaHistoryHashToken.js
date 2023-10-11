@@ -6,7 +6,7 @@ import SystemObject from "../../../../SystemObject.js";
  */
 export default class SpreadsheetCellFormulaHistoryHashToken extends SpreadsheetCellHistoryHashToken {
 
-    spreadsheetFormulaWidgetExecute(formulaWidget, previousViewportSelection) {
+    spreadsheetFormulaWidgetExecute(formulaWidget, previousViewport) {
         SystemObject.throwUnsupportedOperation();
     }
 }

@@ -37,7 +37,7 @@ import SpreadsheetReferenceKind from "../SpreadsheetReferenceKind.js";
 import SpreadsheetRowReference from "../columnrow/SpreadsheetRowReference.js";
 import SpreadsheetRowReferenceRange from "../columnrow/SpreadsheetRowReferenceRange.js";
 import SpreadsheetSelectionWidget from "../SpreadsheetSelectionWidget.js";
-import SpreadsheetViewportSelection from "./SpreadsheetViewportSelection.js";
+import SpreadsheetViewport from "./SpreadsheetViewport.js";
 import SpreadsheetViewportSelectionNavigation from "./SpreadsheetViewportSelectionNavigation.js";
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -45,7 +45,7 @@ import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
-import viewportSelectionSelectHistoryHashToken from "../../history/viewportSelectionSelectHistoryHashToken.js";
+import viewportSelectHistoryHashToken from "../../history/viewportSelectHistoryHashToken.js";
 
 // default header cell styles
 
@@ -132,7 +132,7 @@ const CONTEXT_MENU_Y_OFFSET = 10;
  * <li>Array of SpreadsheetCellRange window: One or more ranges that will hold any frozen column/rows and the actual viewport</li>
  * <li>boolean focused: When true the viewport has focus, and cleared when the blur event happens.</li>
  * <li>SpreadsheetContextMenu contextMenu When present indicates an open context menu with its state.</li>
- * <li>SpreadsheetViewportSelection selection: The currently active selection including ranges</li>
+ * <li>SpreadsheetViewport selection: The currently active selection including ranges</li>
  * </ul>
  */
 export default class SpreadsheetViewportWidget extends SpreadsheetSelectionWidget {
@@ -194,7 +194,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetSelectionWidge
                     columnReferenceToColumns,
                     labelToReferences,
                     rowReferenceToRows,
-                    viewportSelection: viewportSelectionToken,
+                    viewport: viewportToken,
                     spreadsheetId,
                     spreadsheetMetadata,
                 } = state;
@@ -269,15 +269,15 @@ export default class SpreadsheetViewportWidget extends SpreadsheetSelectionWidge
                     }
 
                     // before replacing the history selection with the response.selection verify the queryparameters & state are equal.
-                    const responseViewportSelection = responseDelta.viewportSelection();
-                    if(responseViewportSelection && viewportSelectionToken && !(viewportSelectionToken instanceof SpreadsheetCellFormulaHistoryHashToken)){
+                    const responseViewport = responseDelta.viewport();
+                    if(responseViewport && viewportToken && !(viewportToken instanceof SpreadsheetCellFormulaHistoryHashToken)){
                         const queryParameterSelection = queryParameters.selection && queryParameters.selection[0];
-                        const selection = viewportSelectionToken.viewportSelection().selection();
+                        const selection = viewportToken.viewport().selection();
                         if(selection.equalsIgnoringKind(queryParameterSelection)){
                             Object.assign(
                                 newState,
                                 {
-                                    viewportSelection: viewportSelectionSelectHistoryHashToken(responseViewportSelection),
+                                    viewport: viewportSelectHistoryHashToken(responseViewport),
                                 }
                             );
                         }
@@ -289,16 +289,16 @@ export default class SpreadsheetViewportWidget extends SpreadsheetSelectionWidge
                         Object.assign(
                             newState,
                             {
-                                viewportSelection: null,
+                                viewport: null,
                             }
                         );
                         break;
                     case HttpMethod.POST:
-                        if(viewportSelectionToken){
-                            const viewportSelection = viewportSelectionToken.viewportSelection();
-                            const selection = viewportSelection.selection();
+                        if(viewportToken){
+                            const viewport = viewportToken.viewport();
+                            const selection = viewport.selection();
 
-                            if(viewportSelectionToken instanceof SpreadsheetColumnOrRowInsertBeforeHistoryHashToken){
+                            if(viewportToken instanceof SpreadsheetColumnOrRowInsertBeforeHistoryHashToken){
                                 const urlPaths = url.path().split("/");
                                 if(urlPaths.length === 7){
                                     // 0 = ""
@@ -313,10 +313,10 @@ export default class SpreadsheetViewportWidget extends SpreadsheetSelectionWidge
                                             Object.assign(
                                                 newState,
                                                 {
-                                                    viewportSelection: viewportSelectionSelectHistoryHashToken(
-                                                        new SpreadsheetViewportSelection(
-                                                            selection.viewportInsertBeforePostSuccessSelection(viewportSelectionToken.count()),
-                                                            viewportSelection.anchor()
+                                                    viewport: viewportSelectHistoryHashToken(
+                                                        new SpreadsheetViewport(
+                                                            selection.viewportInsertBeforePostSuccessSelection(viewportToken.count()),
+                                                            viewport.anchor()
                                                         )
                                                     )
                                                 }
@@ -326,7 +326,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetSelectionWidge
                                 }
                                 break;
                             }
-                            if(viewportSelectionToken instanceof SpreadsheetColumnOrRowInsertAfterHistoryHashToken){
+                            if(viewportToken instanceof SpreadsheetColumnOrRowInsertAfterHistoryHashToken){
                                 const urlPaths = url.path().split("/");
                                 if(urlPaths.length === 7){
                                     // 0 = ""
@@ -341,10 +341,10 @@ export default class SpreadsheetViewportWidget extends SpreadsheetSelectionWidge
                                             Object.assign(
                                                 newState,
                                                 {
-                                                    viewportSelection: viewportSelectionSelectHistoryHashToken(
-                                                        new SpreadsheetViewportSelection(
+                                                    viewport: viewportSelectHistoryHashToken(
+                                                        new SpreadsheetViewport(
                                                             selection,
-                                                            viewportSelection.anchor()
+                                                            viewport.anchor()
                                                         )
                                                     )
                                                 }
@@ -380,7 +380,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetSelectionWidge
                                 viewportElement.offsetWidth - ROW_WIDTH,
                                 viewportElement.offsetHeight - COLUMN_HEIGHT,
                             ),
-                        null, // viewportSelection
+                        null, // viewport
                     );
                 }
                 break;
@@ -463,7 +463,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetSelectionWidge
         return {
             spreadsheetId: tokens[SpreadsheetHistoryHashTokens.SPREADSHEET_ID],
             spreadsheetName: tokens[SpreadsheetHistoryHashTokens.SPREADSHEET_NAME],
-            viewportSelection: tokens[SpreadsheetHistoryHashTokens.VIEWPORT_SELECTION],
+            viewport: tokens[SpreadsheetHistoryHashTokens.VIEWPORT],
             contextMenu: null, // close context menu
         };
     }
@@ -500,7 +500,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetSelectionWidge
             }
 
             const viewportCell = metadata.getIgnoringDefaults(SpreadsheetMetadata.VIEWPORT_CELL);
-            const viewportSelectionToken = state.viewportSelection;
+            const viewportToken = state.viewport;
 
             if(viewportCell){
                 const width = viewportElement.offsetWidth - ROW_WIDTH;
@@ -515,19 +515,19 @@ export default class SpreadsheetViewportWidget extends SpreadsheetSelectionWidge
                             width,
                             height
                         ),
-                        viewportSelectionToken && viewportSelectionToken.viewportSelection()
+                        viewportToken && viewportToken.viewport()
                     );
                 }else {
-                    // if viewportSelection changed execute it...
-                    if(viewportSelectionToken &&
-                        (!(viewportSelectionToken instanceof SpreadsheetCellFormulaHistoryHashToken)) &&
-                        (!(viewportSelectionToken instanceof SpreadsheetCellStyleHistoryHashToken))
+                    // if viewport changed execute it...
+                    if(viewportToken &&
+                        (!(viewportToken instanceof SpreadsheetCellFormulaHistoryHashToken)) &&
+                        (!(viewportToken instanceof SpreadsheetCellStyleHistoryHashToken))
                     ){
-                        this.log(".historyTokensFromState executing " + viewportSelectionToken + ".spreadsheetViewportWidgetExecute");
+                        this.log(".historyTokensFromState executing " + viewportToken + ".spreadsheetViewportWidgetExecute");
 
-                        historyTokens = viewportSelectionToken.spreadsheetViewportWidgetExecute(
+                        historyTokens = viewportToken.spreadsheetViewportWidgetExecute(
                             this,
-                            prevState.viewportSelection,
+                            prevState.viewport,
                             viewportCell,
                             width,
                             height
@@ -553,7 +553,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetSelectionWidge
                                     width,
                                     height
                                 ),
-                                viewportSelectionToken && viewportSelectionToken.viewportSelection()
+                                viewportToken && viewportToken.viewport()
                             );
                         }
                     }
@@ -575,9 +575,9 @@ export default class SpreadsheetViewportWidget extends SpreadsheetSelectionWidge
     /**
      * Remove the selection, the cleard column, row etc and then perform the clear API.
      */
-    clearSelection(viewportSelection) {
+    clearSelection(viewport) {
         this.props.clearSelection(
-            viewportSelection,
+            viewport,
             this.state.window
         );
     }
@@ -585,25 +585,25 @@ export default class SpreadsheetViewportWidget extends SpreadsheetSelectionWidge
     /**
      * Remove the selection, the deleted column, row etc and then perform the delete API.
      */
-    deleteSelection(viewportSelection) {
+    deleteSelection(viewport) {
         this.props.deleteSelection(
-            viewportSelection,
+            viewport,
             this.state.window
         );
     }
 
-    freezeSelection(viewportSelection) {
+    freezeSelection(viewport) {
         this.patchSpreadsheetMetadata(
-            viewportSelection.selection().freezePatch()
+            viewport.selection().freezePatch()
         );
     }
 
     /**
      * Performs the insertAfter operation, leaving the selection unchanged.
      */
-    insertAfterSelection(viewportSelection, count) {
+    insertAfterSelection(viewport, count) {
         this.props.insertAfterSelection(
-            viewportSelection,
+            viewport,
             count,
             this.state.window
         );
@@ -612,19 +612,19 @@ export default class SpreadsheetViewportWidget extends SpreadsheetSelectionWidge
     /**
      * Performs the insert-before operation, leaving the selection unchanged.
      */
-    insertBeforeSelection(viewportSelection, count) {
+    insertBeforeSelection(viewport, count) {
         this.props.insertBeforeSelection(
-            viewportSelection,
+            viewport,
             count,
             this.state.window
         );
     }
 
-    patchColumnOrRow(viewportSelection, property, value) {
-        Preconditions.requireInstance(viewportSelection, SpreadsheetViewportSelection, "viewportSelection");
+    patchColumnOrRow(viewport, property, value) {
+        Preconditions.requireInstance(viewport, SpreadsheetViewport, "viewport");
         Preconditions.requireText(property, "property");
 
-        const selection = viewportSelection.selection();
+        const selection = viewport.selection();
         const patched = selection.patch(property, value);
         const window = this.state.window;
         const props = this.props;
@@ -633,7 +633,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetSelectionWidge
             props.spreadsheetDeltaColumnCrud.patch(
                 selection,
                 new SpreadsheetDelta(
-                    viewportSelection,
+                    viewport,
                     [], // cells
                     Array.isArray(patched) ? patched : [patched], // columns
                     [], // labels
@@ -653,7 +653,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetSelectionWidge
             props.spreadsheetDeltaRowCrud.patch(
                 selection,
                 new SpreadsheetDelta(
-                    viewportSelection,
+                    viewport,
                     [], // cells
                     [], // columns
                     [], // labels
@@ -684,17 +684,17 @@ export default class SpreadsheetViewportWidget extends SpreadsheetSelectionWidge
         );
     }
 
-    unFreezeSelection(viewportSelection) {
+    unFreezeSelection(viewport) {
         this.patchSpreadsheetMetadata(
-            viewportSelection.selection().unFreezePatch()
+            viewport.selection().unFreezePatch()
         );
     }
 
     /**
      * Updates the state so the context menu will be shown.
      */
-    showContextMenu(viewportSelection) {
-        const selection = viewportSelection.selection();
+    showContextMenu(viewport) {
+        const selection = viewport.selection();
 
         const element = document.getElementById(selection.viewportId());
         if(element){
@@ -737,15 +737,15 @@ export default class SpreadsheetViewportWidget extends SpreadsheetSelectionWidge
     /**
      * Loads the requested cells, and includes the selection, anchor and any recently entered navigation.
      */
-    loadCells(spreadsheetViewport, viewportSelection) {
+    loadCells(spreadsheetViewport, viewport) {
         const props = this.props;
 
         props.spreadsheetDeltaCellCrud.get(
             "*",
             spreadsheetViewport.apiLoadCellsQueryStringParameters(
-                viewportSelection && viewportSelection.selection(),
-                viewportSelection && viewportSelection.anchor(),
-                viewportSelection && viewportSelection.navigation()
+                viewport && viewport.selection(),
+                viewport && viewport.anchor(),
+                viewport && viewport.navigation()
             ),
             this.unknownLabelErrorHandler(
                 this.showErrorErrorHandler(props.showError)
@@ -757,19 +757,19 @@ export default class SpreadsheetViewportWidget extends SpreadsheetSelectionWidge
      * Attempts to give focus to the selection including resolving of labels to cells, using the anchor to find
      * actual cell or column or row within a range etc.
      */
-    giveViewportSelectionFocus(viewportSelection) {
-        this.log(".giveViewportSelectionFocus " + viewportSelection);
+    giveViewportFocus(viewport) {
+        this.log(".giveViewportFocus " + viewport);
 
         this.giveFocus(
             () => {
                 var element;
-                if(viewportSelection){
-                    const stateViewportSelection = this.state.viewportSelection;
-                    if(!(stateViewportSelection instanceof SpreadsheetCellFormulaHistoryHashToken)){
-                        const selection = viewportSelection.selection();
+                if(viewport){
+                    const stateViewport = this.state.viewport;
+                    if(!(stateViewport instanceof SpreadsheetCellFormulaHistoryHashToken)){
+                        const selection = viewport.selection();
                         const cellColumnOrRow = selection.viewportFocus(
                             this.state.labelToReferences,
-                            viewportSelection.anchor()
+                            viewport.anchor()
                         );
 
                         if(cellColumnOrRow){
@@ -824,9 +824,9 @@ export default class SpreadsheetViewportWidget extends SpreadsheetSelectionWidge
         const onClick = (e) => {
             const clickedSelection = this.findEventTargetSelection(e.target);
             if(clickedSelection){
-                this.historyPushViewportSelection(
-                    viewportSelectionSelectHistoryHashToken(
-                        new SpreadsheetViewportSelection(clickedSelection)
+                this.historyPushViewport(
+                    viewportSelectHistoryHashToken(
+                        new SpreadsheetViewport(clickedSelection)
                     )
                 );
             }
@@ -834,11 +834,11 @@ export default class SpreadsheetViewportWidget extends SpreadsheetSelectionWidge
 
         // handles closing any previously open context menu.............................................................
         const onCloseContextMenu = () => {
-            const stateViewportSelection = this.state.viewportSelection;
-            if(stateViewportSelection instanceof SpreadsheetCellMenuHistoryHashToken || stateViewportSelection instanceof SpreadsheetColumnOrRowMenuHistoryHashToken){
-                this.historyPushViewportSelection(
-                    viewportSelectionSelectHistoryHashToken(
-                        stateViewportSelection.viewportSelection()
+            const stateViewport = this.state.viewport;
+            if(stateViewport instanceof SpreadsheetCellMenuHistoryHashToken || stateViewport instanceof SpreadsheetColumnOrRowMenuHistoryHashToken){
+                this.historyPushViewport(
+                    viewportSelectHistoryHashToken(
+                        stateViewport.viewport()
                     )
                 );
             }
@@ -848,7 +848,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetSelectionWidge
         const onFocus = (e) => {
             this.log(".onFocus focused");
 
-            if(!(this.state.viewportSelection instanceof SpreadsheetCellFormulaHistoryHashToken) || !this.state.focused){
+            if(!(this.state.viewport instanceof SpreadsheetCellFormulaHistoryHashToken) || !this.state.focused){
                 this.log(".onfocus setting focused=true");
 
                 this.setState({
@@ -866,9 +866,9 @@ export default class SpreadsheetViewportWidget extends SpreadsheetSelectionWidge
 
             const eventSelection = this.findEventTargetSelection(e.target);
             if(eventSelection){
-                var viewportSelectionToken = this.state.viewportSelection;
-                if(viewportSelectionToken){
-                    const viewportSelection = viewportSelectionToken.viewportSelection();
+                var viewportToken = this.state.viewport;
+                if(viewportToken){
+                    const viewport = viewportToken.viewport();
                     var navigation = null;
                     const shifted = e.shiftKey;
 
@@ -889,18 +889,18 @@ export default class SpreadsheetViewportWidget extends SpreadsheetSelectionWidge
                             const selectionNotLabel = this.selectionNotLabel();
                             if(selectionNotLabel instanceof SpreadsheetCellReference){
                                 this.historyMergeAndPush(
-                                    SpreadsheetHistoryHashTokens.viewportSelection(
+                                    SpreadsheetHistoryHashTokens.viewport(
                                         new SpreadsheetCellFormulaEditHistoryHashToken(
-                                            viewportSelection
+                                            viewport
                                         )
                                     )
                                 );
-                                this.log(".onKeyDown ENTER new selection: " + viewportSelectionToken);
+                                this.log(".onKeyDown ENTER new selection: " + viewportToken);
                             }
                             break;
                         // ESCAPE clears any selection
                         case Keys.ESCAPE:
-                            this.historyPushViewportSelection(null);
+                            this.historyPushViewport(null);
                             break;
                         default:
                             break;
@@ -908,8 +908,8 @@ export default class SpreadsheetViewportWidget extends SpreadsheetSelectionWidge
 
                     if(navigation){
                         this.setState({
-                            viewportSelection: viewportSelectionSelectHistoryHashToken(
-                                viewportSelection.setNavigation(navigation)
+                            viewport: viewportSelectHistoryHashToken(
+                                viewport.setNavigation(navigation)
                             ),
                         });
                     }
@@ -947,7 +947,7 @@ export default class SpreadsheetViewportWidget extends SpreadsheetSelectionWidge
                             width,
                             height
                         ),
-                        null // no viewportSelection
+                        null // no viewport
                     );
                     this.setState({
                         spreadsheetMetadata: this.state.spreadsheetMetadata.set(
@@ -1119,10 +1119,10 @@ export default class SpreadsheetViewportWidget extends SpreadsheetSelectionWidge
      * Gets any selection resolving any label to a cell or cell-range.
      */
     selectionNotLabel() {
-        const viewportSelectionToken = this.state.viewportSelection;
+        const viewportToken = this.state.viewport;
 
-        const selection = viewportSelectionToken &&
-            viewportSelectionToken.viewportSelection()
+        const selection = viewportToken &&
+            viewportToken.viewport()
                 .selection();
         return selection instanceof SpreadsheetLabelName ?
             this.state.labelToReferences.get(selection) :
@@ -1152,11 +1152,11 @@ export default class SpreadsheetViewportWidget extends SpreadsheetSelectionWidge
 
         const clickedSelection = this.findEventTargetSelection(e.target);
         if(clickedSelection){
-            const stateViewportSelection = this.state.viewportSelection;
+            const stateViewport = this.state.viewport;
             var contextMenuSelection = clickedSelection;
 
-            if(stateViewportSelection){
-                const selection = stateViewportSelection.viewportSelection()
+            if(stateViewport){
+                const selection = stateViewport.viewport()
                     .selection();
                 contextMenuSelection = selection &&
                 selection.viewportContextMenuClick(clickedSelection) ?
@@ -1164,15 +1164,15 @@ export default class SpreadsheetViewportWidget extends SpreadsheetSelectionWidge
                     clickedSelection;
             }
 
-            const viewportSelectionToken = new SpreadsheetViewportSelection(contextMenuSelection);
+            const viewportToken = new SpreadsheetViewport(contextMenuSelection);
             const contextMenu = new SpreadsheetContextMenu(
                 CONTEXT_MENU_X_OFFSET,
                 CONTEXT_MENU_Y_OFFSET,
             );
-            this.historyPushViewportSelection(
+            this.historyPushViewport(
                 contextMenuSelection instanceof SpreadsheetExpressionReference ?
-                    new SpreadsheetCellMenuHistoryHashToken(viewportSelectionToken, contextMenu) :
-                    new SpreadsheetColumnOrRowMenuHistoryHashToken(viewportSelectionToken, contextMenu)
+                    new SpreadsheetCellMenuHistoryHashToken(viewportToken, contextMenu) :
+                    new SpreadsheetColumnOrRowMenuHistoryHashToken(viewportToken, contextMenu)
             );
         }
     }
@@ -1200,8 +1200,8 @@ export default class SpreadsheetViewportWidget extends SpreadsheetSelectionWidge
         ];
 
         columns.forEach(c => {
-            tokens[SpreadsheetHistoryHashTokens.VIEWPORT_SELECTION] = viewportSelectionSelectHistoryHashToken(
-                new SpreadsheetViewportSelection(c)
+            tokens[SpreadsheetHistoryHashTokens.VIEWPORT] = viewportSelectHistoryHashToken(
+                new SpreadsheetViewport(c)
             );
 
             headers.push(
@@ -1232,8 +1232,8 @@ export default class SpreadsheetViewportWidget extends SpreadsheetSelectionWidge
                 const tableRowCells = [];
                 const height = rowHeightFn(r);
 
-                tokens[SpreadsheetHistoryHashTokens.VIEWPORT_SELECTION] = viewportSelectionSelectHistoryHashToken(
-                    new SpreadsheetViewportSelection(r)
+                tokens[SpreadsheetHistoryHashTokens.VIEWPORT] = viewportSelectHistoryHashToken(
+                    new SpreadsheetViewport(r)
                 );
 
                 // render ROW gutter widget with row number.

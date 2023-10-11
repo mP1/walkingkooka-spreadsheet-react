@@ -7,8 +7,8 @@ import SpreadsheetHistoryHashTokens from "../../history/SpreadsheetHistoryHashTo
  */
 export default class SpreadsheetColumnOrRowMenuHistoryHashToken extends SpreadsheetColumnOrRowHistoryHashToken {
 
-    constructor(viewportSelection, contextMenu) {
-        super(viewportSelection);
+    constructor(viewport, contextMenu) {
+        super(viewport);
         this.contextMenuValue = Preconditions.requireObject(contextMenu, "contextMenu");
     }
 
@@ -25,9 +25,9 @@ export default class SpreadsheetColumnOrRowMenuHistoryHashToken extends Spreadsh
     /**
      * Opens the context menu for the given column/row
      */
-    spreadsheetViewportWidgetExecute(viewportWidget, previousViewportSelection, viewportCell, width, height) {
+    spreadsheetViewportWidgetExecute(viewportWidget, previousViewport, viewportCell, width, height) {
         viewportWidget.showContextMenu(
-            this.viewportSelection()
+            this.viewport()
         );
 
         return null;

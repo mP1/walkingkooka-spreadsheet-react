@@ -9,11 +9,11 @@ export default class SpreadsheetHistoryHashTokens {
     }
 
     /**
-     * Creates a history hash tokens with the given which may be null, {@link SpreadsheetHistoryHashTokens#VIEWPORT_SELECTION}.
+     * Creates a history hash tokens with the given which may be null, {@link SpreadsheetHistoryHashTokens#VIEWPORT}.
      */
-    static viewportSelection(viewportSelection) {
+    static viewport(viewport) {
         const tokens = SpreadsheetHistoryHashTokens.emptyTokens();
-        tokens[SpreadsheetHistoryHashTokens.VIEWPORT_SELECTION] = viewportSelection;
+        tokens[SpreadsheetHistoryHashTokens.VIEWPORT] = viewport;
         return tokens;
     }
 
@@ -32,7 +32,7 @@ export default class SpreadsheetHistoryHashTokens {
 
     static SPREADSHEET_NAME_PATH = "name";
 
-    static VIEWPORT_SELECTION = "viewport-selection";
+    static VIEWPORT = "viewport";
 
     static CELL = "cell";
     static CELL_FORMULA = "formula";

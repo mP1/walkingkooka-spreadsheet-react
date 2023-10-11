@@ -1,15 +1,15 @@
 import Equality from "../../../Equality.js";
 import SpreadsheetColumnOrRowHistoryHashToken from "./SpreadsheetColumnOrRowHistoryHashToken.js";
 import SpreadsheetHistoryHashTokens from "../../history/SpreadsheetHistoryHashTokens.js";
-import viewportSelectionSelectHistoryHashToken from "../../history/viewportSelectionSelectHistoryHashToken.js";
+import viewportSelectHistoryHashToken from "../../history/viewportSelectHistoryHashToken.js";
 
 /**
  * Represents a save column/row property with value history hash token.
  */
 export default class SpreadsheetColumnOrRowSaveHistoryHashToken extends SpreadsheetColumnOrRowHistoryHashToken {
 
-    constructor(viewportSelection, property, value) {
-        super(viewportSelection);
+    constructor(viewport, property, value) {
+        super(viewport);
 
         this.propertyValue = property;
         this.valueValue = value;
@@ -35,19 +35,19 @@ export default class SpreadsheetColumnOrRowSaveHistoryHashToken extends Spreadsh
     /**
      * Handles history hash token evens such as /column/A/hidden/true or /row/1/hidden/false
      */
-    spreadsheetViewportWidgetExecute(viewportWidget, previousViewportSelection, viewportCell, width, height) {
-        const viewportSelection = this.viewportSelection();
+    spreadsheetViewportWidgetExecute(viewportWidget, previousViewport, viewportCell, width, height) {
+        const viewport = this.viewport();
 
         viewportWidget.patchColumnOrRow(
-            viewportSelection,
+            viewport,
             this.property(),
             this.value()
         );
 
         // remove the saved property and value from the history hash
-        return SpreadsheetHistoryHashTokens.viewportSelection(
-            viewportSelectionSelectHistoryHashToken(
-                viewportSelection
+        return SpreadsheetHistoryHashTokens.viewport(
+            viewportSelectHistoryHashToken(
+                viewport
             )
         );
     }
