@@ -38,7 +38,7 @@ import SpreadsheetRowReference from "../columnrow/SpreadsheetRowReference.js";
 import SpreadsheetRowReferenceRange from "../columnrow/SpreadsheetRowReferenceRange.js";
 import SpreadsheetSelectionWidget from "../SpreadsheetSelectionWidget.js";
 import SpreadsheetViewport from "./SpreadsheetViewport.js";
-import SpreadsheetViewportSelectionNavigation from "./SpreadsheetViewportSelectionNavigation.js";
+import SpreadsheetViewportNavigation from "./SpreadsheetViewportNavigation.js";
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -874,16 +874,16 @@ export default class SpreadsheetViewportWidget extends SpreadsheetSelectionWidge
 
                     switch(key) {
                         case Keys.ARROW_LEFT:
-                            navigation = shifted ? SpreadsheetViewportSelectionNavigation.EXTEND_LEFT_COLUMN : SpreadsheetViewportSelectionNavigation.LEFT_COLUMN;
+                            navigation = shifted ? SpreadsheetViewportNavigation.EXTEND_LEFT_COLUMN : SpreadsheetViewportNavigation.LEFT_COLUMN;
                             break;
                         case Keys.ARROW_UP:
-                            navigation = shifted ? SpreadsheetViewportSelectionNavigation.EXTEND_UP_ROW : SpreadsheetViewportSelectionNavigation.UP_ROW;
+                            navigation = shifted ? SpreadsheetViewportNavigation.EXTEND_UP_ROW : SpreadsheetViewportNavigation.UP_ROW;
                             break;
                         case Keys.ARROW_RIGHT:
-                            navigation = shifted ? SpreadsheetViewportSelectionNavigation.EXTEND_RIGHT_COLUMN : SpreadsheetViewportSelectionNavigation.RIGHT_COLUMN;
+                            navigation = shifted ? SpreadsheetViewportNavigation.EXTEND_RIGHT_COLUMN : SpreadsheetViewportNavigation.RIGHT_COLUMN;
                             break;
                         case Keys.ARROW_DOWN:
-                            navigation = shifted ? SpreadsheetViewportSelectionNavigation.EXTEND_DOWN_ROW : SpreadsheetViewportSelectionNavigation.DOWN_ROW;
+                            navigation = shifted ? SpreadsheetViewportNavigation.EXTEND_DOWN_ROW : SpreadsheetViewportNavigation.DOWN_ROW;
                             break;
                         case Keys.ENTER:
                             const selectionNotLabel = this.selectionNotLabel();

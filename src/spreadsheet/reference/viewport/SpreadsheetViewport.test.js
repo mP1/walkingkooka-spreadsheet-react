@@ -7,7 +7,7 @@ import SpreadsheetRowReference from "../columnrow/SpreadsheetRowReference.js";
 import SpreadsheetRowReferenceRange from "../columnrow/SpreadsheetRowReferenceRange.js";
 import SpreadsheetViewport from "./SpreadsheetViewport.js";
 import SpreadsheetViewportAnchor from "./SpreadsheetViewportAnchor.js";
-import SpreadsheetViewportSelectionNavigation from "./SpreadsheetViewportSelectionNavigation.js";
+import SpreadsheetViewportNavigation from "./SpreadsheetViewportNavigation.js";
 import systemObjectTesting from "../../../SystemObjectTesting.js";
 
 function selection() {
@@ -47,7 +47,7 @@ function anchor() {
 }
 
 function navigation() {
-    return SpreadsheetViewportSelectionNavigation.LEFT_COLUMN;
+    return SpreadsheetViewportNavigation.LEFT_COLUMN;
 }
 
 systemObjectTesting(
@@ -105,7 +105,7 @@ testNewFails(cell(), SpreadsheetViewportAnchor.BOTTOM_RIGHT);
 testNewFails(cell(), SpreadsheetViewportAnchor.LEFT);
 testNewFails(cell(), SpreadsheetViewportAnchor.RIGHT);
 testNew(cell(), null);
-testNew(cell(), null, SpreadsheetViewportSelectionNavigation.LEFT_COLUMN);
+testNew(cell(), null, SpreadsheetViewportNavigation.LEFT_COLUMN);
 
 // cellRange
 testNewFails(cellRange(), SpreadsheetViewportAnchor.TOP);
@@ -256,20 +256,20 @@ testFromJson(cellRange(), SpreadsheetViewportAnchor.TOP_LEFT);
 testFromJson(cellRange(), SpreadsheetViewportAnchor.TOP_RIGHT);
 testFromJson(cellRange(), SpreadsheetViewportAnchor.BOTTOM_LEFT);
 testFromJson(cellRange(), SpreadsheetViewportAnchor.BOTTOM_RIGHT);
-testFromJson(cellRange(), SpreadsheetViewportAnchor.BOTTOM_RIGHT, SpreadsheetViewportSelectionNavigation.LEFT_COLUMN);
-testFromJson(cellRange(), SpreadsheetViewportAnchor.BOTTOM_RIGHT, SpreadsheetViewportSelectionNavigation.EXTEND_RIGHT_COLUMN);
+testFromJson(cellRange(), SpreadsheetViewportAnchor.BOTTOM_RIGHT, SpreadsheetViewportNavigation.LEFT_COLUMN);
+testFromJson(cellRange(), SpreadsheetViewportAnchor.BOTTOM_RIGHT, SpreadsheetViewportNavigation.EXTEND_RIGHT_COLUMN);
 
 testFromJson(column(), null);
-testFromJson(column(), SpreadsheetViewportAnchor.NONE, SpreadsheetViewportSelectionNavigation.LEFT_COLUMN);
+testFromJson(column(), SpreadsheetViewportAnchor.NONE, SpreadsheetViewportNavigation.LEFT_COLUMN);
 
 testFromJson(columnRange(), SpreadsheetViewportAnchor.LEFT);
 testFromJson(columnRange(), SpreadsheetViewportAnchor.RIGHT);
-testFromJson(columnRange(), SpreadsheetViewportAnchor.RIGHT, SpreadsheetViewportSelectionNavigation.LEFT_COLUMN);
+testFromJson(columnRange(), SpreadsheetViewportAnchor.RIGHT, SpreadsheetViewportNavigation.LEFT_COLUMN);
 
 testFromJson(row());
 testFromJson(rowRange(), SpreadsheetViewportAnchor.TOP);
 testFromJson(rowRange(), SpreadsheetViewportAnchor.BOTTOM);
-testFromJson(rowRange(), SpreadsheetViewportAnchor.BOTTOM, SpreadsheetViewportSelectionNavigation.UP_ROW);
+testFromJson(rowRange(), SpreadsheetViewportAnchor.BOTTOM, SpreadsheetViewportNavigation.UP_ROW);
 
 // toJson.............................................................................................................
 
@@ -408,7 +408,7 @@ test("setNavigation different was null", () => {
         null
     );
 
-    const different = SpreadsheetViewportSelectionNavigation.RIGHT_COLUMN;
+    const different = SpreadsheetViewportNavigation.RIGHT_COLUMN;
 
     expect(
         viewport.setNavigation(different)
@@ -429,7 +429,7 @@ test("setNavigation different", () => {
         navigation()
     );
 
-    const different = SpreadsheetViewportSelectionNavigation.RIGHT_COLUMN;
+    const different = SpreadsheetViewportNavigation.RIGHT_COLUMN;
 
     expect(
         viewport.setNavigation(different)
@@ -511,25 +511,25 @@ test("equals different anchor false", () => {
 });
 
 test("equals same anchor, different navigation false", () => {
-    expect(new SpreadsheetViewport(cell(), SpreadsheetViewportAnchor.NONE, SpreadsheetViewportSelectionNavigation.LEFT_COLUMN)
+    expect(new SpreadsheetViewport(cell(), SpreadsheetViewportAnchor.NONE, SpreadsheetViewportNavigation.LEFT_COLUMN)
         .equals(new SpreadsheetViewport(cell(), SpreadsheetViewportAnchor.NONE)))
         .toBeFalse();
 });
 
 test("equals missing anchor, different navigation false", () => {
-    expect(new SpreadsheetViewport(cell(), undefined, SpreadsheetViewportSelectionNavigation.LEFT_COLUMN)
+    expect(new SpreadsheetViewport(cell(), undefined, SpreadsheetViewportNavigation.LEFT_COLUMN)
         .equals(new SpreadsheetViewport(cell())))
         .toBeFalse();
 });
 
 test("equals different navigation false", () => {
-    expect(new SpreadsheetViewport(cell(), SpreadsheetViewportAnchor.NONE, SpreadsheetViewportSelectionNavigation.LEFT_COLUMN)
-        .equals(new SpreadsheetViewport(cell(), SpreadsheetViewportAnchor.NONE, SpreadsheetViewportSelectionNavigation.RIGHT_COLUMN)))
+    expect(new SpreadsheetViewport(cell(), SpreadsheetViewportAnchor.NONE, SpreadsheetViewportNavigation.LEFT_COLUMN)
+        .equals(new SpreadsheetViewport(cell(), SpreadsheetViewportAnchor.NONE, SpreadsheetViewportNavigation.RIGHT_COLUMN)))
         .toBeFalse();
 });
 
 test("equals different navigation true", () => {
-    expect(new SpreadsheetViewport(cell(), SpreadsheetViewportAnchor.NONE, SpreadsheetViewportSelectionNavigation.DOWN_ROW)
-        .equals(new SpreadsheetViewport(cell(), SpreadsheetViewportAnchor.NONE, SpreadsheetViewportSelectionNavigation.DOWN_ROW)))
+    expect(new SpreadsheetViewport(cell(), SpreadsheetViewportAnchor.NONE, SpreadsheetViewportNavigation.DOWN_ROW)
+        .equals(new SpreadsheetViewport(cell(), SpreadsheetViewportAnchor.NONE, SpreadsheetViewportNavigation.DOWN_ROW)))
         .toBeTrue();
 });

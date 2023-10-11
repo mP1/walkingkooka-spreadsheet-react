@@ -5,7 +5,7 @@ import Preconditions from "../../../Preconditions.js";
 import SpreadsheetCellReference from "../cell/SpreadsheetCellReference.js";
 import SpreadsheetSelection from "../SpreadsheetSelection.js";
 import SpreadsheetViewportAnchor from "./SpreadsheetViewportAnchor.js";
-import SpreadsheetViewportSelectionNavigation from "./SpreadsheetViewportSelectionNavigation.js";
+import SpreadsheetViewportNavigation from "./SpreadsheetViewportNavigation.js";
 import SystemObject from "../../../SystemObject.js";
 
 const SEPARATOR = ":";
@@ -62,7 +62,7 @@ export default class SpreadsheetViewportRectangle extends SystemObject {
     apiLoadCellsQueryStringParameters(selection, anchor, navigation) {
         Preconditions.optionalInstance(selection, SpreadsheetSelection, "selection");
         Preconditions.optionalInstance(anchor, SpreadsheetViewportAnchor, "anchor");
-        Preconditions.optionalInstance(navigation, SpreadsheetViewportSelectionNavigation, "navigation");
+        Preconditions.optionalInstance(navigation, SpreadsheetViewportNavigation, "navigation");
 
         const parameters = {
             home: [this.home()],

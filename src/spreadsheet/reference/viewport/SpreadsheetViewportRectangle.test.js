@@ -6,7 +6,7 @@ import SpreadsheetRowReferenceRange from "../columnrow/SpreadsheetRowReferenceRa
 import SpreadsheetRowReference from "../columnrow/SpreadsheetRowReference.js";
 import SpreadsheetViewportRectangle from "./SpreadsheetViewportRectangle.js";
 import SpreadsheetViewportAnchor from "./SpreadsheetViewportAnchor.js";
-import SpreadsheetViewportSelectionNavigation from "./SpreadsheetViewportSelectionNavigation.js";
+import SpreadsheetViewportNavigation from "./SpreadsheetViewportNavigation.js";
 import systemObjectTesting from "../../../SystemObjectTesting.js";
 
 function home() {
@@ -266,7 +266,7 @@ apiLoadCellsQueryStringParametersAndCheck(
     height(),
     SpreadsheetRowReferenceRange.parse("98:99"),
     SpreadsheetViewportAnchor.TOP,
-    SpreadsheetViewportSelectionNavigation.UP_ROW,
+    SpreadsheetViewportNavigation.UP_ROW,
     {
         home: [home()],
         width: [width()],
